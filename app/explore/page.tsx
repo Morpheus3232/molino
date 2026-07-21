@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, isSessionValid } from "@/lib/storage/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
-import { ENTITIES, EntityProfile } from "@/lib/data/entities";
+import { ENTITIES, EntityProfile, EXTENDED_ENTITIES } from "@/lib/data/entities";
 import { ARCHETYPES } from "@/lib/data";
 import CompatibilityExplorer from "@/components/explore/CompatibilityExplorer";
 
@@ -28,6 +28,11 @@ const CATEGORIES = [
   { id: "comic", label: "Comics", icon: "🦸" },
   { id: "drink", label: "Bebidas", icon: "🥤" },
   { id: "dessert", label: "Dulces", icon: "🍫" },
+  { id: "philosophy", label: "Filosofía", icon: "📖" },
+  { id: "historicalEvent", label: "Eventos", icon: "📜" },
+  { id: "color", label: "Colores", icon: "🎨" },
+  { id: "crystal", label: "Cristales", icon: "💎" },
+  { id: "deity", label: "Deidades", icon: "✨" },
 ];
 
 function getOrCreateProfile(): UserProfile | null {
@@ -60,6 +65,7 @@ export default function ExplorePage() {
   }
 
   const archetypeName = ARCHETYPES[profile.lifePath]?.name || profile.archetype;
+  const allEntities = useMemo(() => [...ENTITIES, ...EXTENDED_ENTITIES], []);
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
@@ -80,7 +86,7 @@ export default function ExplorePage() {
 
       <CompatibilityExplorer
         user={profile}
-        entities={ENTITIES}
+        entities={allEntities}
         categories={CATEGORIES}
       />
     </div>
