@@ -6,6 +6,15 @@ export interface UserProfile {
   id?: string;
   name: string;
   birthDate: string;
+  birthPlace: string;
+  birthTime?: string;
+  goal: "life" | "love" | "career" | "business" | "growth";
+  interests: string[];
+  onboardingStep: number;
+  completedSections: string[];
+  theme: "light" | "dark";
+  language: "es" | "en";
+  notifications: boolean;
   lifePath: number;
   expressionNumber?: number;
   soulNumber?: number;
@@ -39,7 +48,7 @@ export interface CompatibilityResult {
   insight: string;
 }
 
-export function calculateUserProfile(name: string, birthDate: string): UserProfile {
+export function calculateUserProfile(name: string, birthDate: string, overrides?: Partial<UserProfile>): UserProfile {
   const lifePath = calculateLifePath(birthDate);
   const sunSign = getSunSign(birthDate);
   const sunSignInfo = getSunSignInfo(birthDate);
@@ -50,6 +59,15 @@ export function calculateUserProfile(name: string, birthDate: string): UserProfi
   return {
     name,
     birthDate,
+    birthPlace: overrides?.birthPlace || "",
+    birthTime: overrides?.birthTime,
+    goal: overrides?.goal || "life",
+    interests: overrides?.interests || [],
+    onboardingStep: overrides?.onboardingStep || 1,
+    completedSections: overrides?.completedSections || [],
+    theme: overrides?.theme || "light",
+    language: overrides?.language || "es",
+    notifications: overrides?.notifications ?? true,
     lifePath,
     expressionNumber: name ? calculateExpressionNumber(name) : undefined,
     soulNumber: name ? calculateSoulNumber(name) : undefined,

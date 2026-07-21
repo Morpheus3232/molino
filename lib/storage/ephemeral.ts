@@ -1,25 +1,56 @@
 export interface EphemeralSession {
   name: string;
   birthDate: string;
-  gender?: string;
-  objectives?: string[];
+  birthPlace: string;
+  birthTime?: string;
+  goal?: string;
+  interests: string[];
+  onboardingStep: number;
+  completedSections: string[];
+  theme: "light" | "dark";
+  language: "es" | "en";
+  notifications: boolean;
   timestamp: number;
 }
 
 let session: EphemeralSession | null = null;
 
-export function saveSession(data: { name: string; birthDate: string; gender?: string; objectives?: string[] }): void {
+export function saveSession(data: {
+  name: string;
+  birthDate: string;
+  birthPlace: string;
+  birthTime?: string;
+  goal?: string;
+  interests?: string[];
+  onboardingStep?: number;
+  completedSections?: string[];
+  theme?: "light" | "dark";
+  language?: "es" | "en";
+  notifications?: boolean;
+}): void {
   session = {
     name: data.name,
     birthDate: data.birthDate,
-    gender: data.gender,
-    objectives: data.objectives,
+    birthPlace: data.birthPlace,
+    birthTime: data.birthTime,
+    goal: data.goal,
+    interests: data.interests ?? [],
+    onboardingStep: data.onboardingStep ?? 1,
+    completedSections: data.completedSections ?? [],
+    theme: data.theme ?? "light",
+    language: data.language ?? "es",
+    notifications: data.notifications ?? true,
     timestamp: Date.now()
   };
 }
 
 export function getSession(): EphemeralSession | null {
   return session;
+}
+
+export function updateSession(partial: Partial<EphemeralSession>): void {
+  if (!session) return;
+  session = { ...session, ...partial };
 }
 
 export function clearSession(): void {

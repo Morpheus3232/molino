@@ -33,7 +33,17 @@ const CATEGORIES = [
 function getOrCreateProfile(): UserProfile | null {
   const existing = getSession();
   if (existing && isSessionValid()) {
-    return calculateUserProfile(existing.name, existing.birthDate);
+    return calculateUserProfile(existing.name, existing.birthDate, {
+      birthPlace: existing.birthPlace,
+      birthTime: existing.birthTime,
+      goal: existing.goal as UserProfile["goal"],
+      interests: existing.interests,
+      onboardingStep: existing.onboardingStep,
+      completedSections: existing.completedSections,
+      theme: existing.theme,
+      language: existing.language,
+      notifications: existing.notifications,
+    });
   }
   return null;
 }

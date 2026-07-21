@@ -9,15 +9,22 @@ import Input from "@/components/ui/Input";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 
-type Step = "identity" | "objectives";
+type Step = "identity" | "context";
 
 const OBJECTIVES = [
-  { id: "decisions", label: "Mejores decisiones", icon: "🎯" },
+  { id: "life", label: "Decisiones de vida", icon: "🎯" },
   { id: "love", label: "Amor y vínculos", icon: "❤️" },
   { id: "career", label: "Carrera y emprendimiento", icon: "🚀" },
   { id: "business", label: "Negocios y proyectos", icon: "🏢" },
   { id: "growth", label: "Crecimiento personal", icon: "🌱" },
-  { id: "wellness", label: "Bienestar y salud", icon: "🌿" },
+];
+
+const INTERESTS = [
+  { id: "relationships", label: "Relaciones", icon: "💞" },
+  { id: "career", label: "Carrera", icon: "🧭" },
+  { id: "finance", label: "Finanzas", icon: "💳" },
+  { id: "health", label: "Salud", icon: "🌿" },
+  { id: "spirituality", label: "Espiritualidad", icon: "🧘" },
 ];
 
 export default function OnboardingPage() {
@@ -26,16 +33,18 @@ export default function OnboardingPage() {
   const [ready, setReady] = useState(false);
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [gender, setGender] = useState("");
-  const [selectedObjectives, setSelectedObjectives] = useState<string[]>([]);
+  const [birthPlace, setBirthPlace] = useState("");
+  const [birthTime, setBirthTime] = useState("");
+  const [goal, setGoal] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
     setReady(true);
   }, []);
 
-  const toggleObjective = (id: string) => {
-    setSelectedObjectives((prev) =>
+  const toggleInterest = (id: string) => {
+    setInterests((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
@@ -43,7 +52,7 @@ export default function OnboardingPage() {
   const handleIdentitySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!name.trim() || !date) {
+    if (!name.trim() || !date || !birthPlace.trim() || !goal) {
       setError("Completá todos los campos");
       return;
     }
@@ -52,7 +61,11 @@ export default function OnboardingPage() {
       setError("Formato de fecha inválido");
       return;
     }
-    setStep("objectives");
+    if (interests.length === 0) {
+      setError("Seleccioná al menos un interés");
+      return;
+    }
+    setStep("context");
   };
 
   const handleFinish = async () => {
@@ -62,8 +75,15 @@ export default function OnboardingPage() {
       saveSession({
         name: calculated.name,
         birthDate: calculated.birthDate,
-        gender,
-        objectives: selectedObjectives,
+        birthPlace: birthPlace.trim(),
+        birthTime: birthTime || undefined,
+        goal,
+        interests,
+        onboardingStep: 2,
+        completedSections: ["identity"],
+        theme: "light",
+        language: "es",
+        notifications: true,
       });
       router.push("/profile");
     } catch (err) {
@@ -88,7 +108,7 @@ export default function OnboardingPage() {
             <span className="badge mb-3">🌾 Molino</span>
             <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Personal Intelligence</h1>
             <p className="text-muted text-sm mt-2">
-              {step === "identity" ? "Ingresá tus datos básicos para calcular tu perfil" : "Seleccioná tus objetivos principales"}
+              {step === "identity" ? "Ingresá tus datos para calcular tu mapa simbólico" : "Seleccioná tus intereses"}
             </p>
           </div>
 
@@ -111,12 +131,61 @@ export default function OnboardingPage() {
                   required
                 />
                 <Input
-                  label="Género (opcional)"
+                  label="Lugar de nacimiento"
                   type="text"
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  placeholder="Ej: Femenino, Masculino, No binario, Prefiero no decir"
+                  value={birthPlace}
+                  onChange={(e) => setBirthPlace(e.target.value)}
+                  placeholder="Ej: Córdoba, Argentina"
+                  required
                 />
+                <Input
+                  label="Hora de nacimiento (opcional)"
+                  type="time"
+                  value={birthTime}
+                  onChange={(e) => setBirthTime(e.target.value)}
+                />
+                <div>
+                  <p className="text-xs text-muted mb-2">Objetivo principal</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {OBJECTIVES.map((obj) => {
+                      const selected = goal === obj.id;
+                      return (
+                        <button
+                          key={obj.id}
+                          type="button"
+                          onClick={() => setGoal(obj.id)}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all ${
+                            selected ? "border-accent bg-accent/10 text-foreground" : "border-border bg-background text-muted hover:text-foreground"
+                          }`}
+                        >
+                          <span className="text-2xl">{obj.icon}</span>
+                          <span className="text-xs font-medium">{obj.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs text-muted mb-2">Intereses principales</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {INTERESTS.map((obj) => {
+                      const selected = interests.includes(obj.id);
+                      return (
+                        <button
+                          key={obj.id}
+                          type="button"
+                          onClick={() => toggleInterest(obj.id)}
+                          className={`flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all ${
+                            selected ? "border-accent bg-accent/10 text-foreground" : "border-border bg-background text-muted hover:text-foreground"
+                          }`}
+                        >
+                          <span className="text-2xl">{obj.icon}</span>
+                          <span className="text-xs font-medium">{obj.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
                 {error && <p className="text-sm text-error">{error}</p>}
                 <Button type="submit" fullWidth size="lg">
                   Continuar →
@@ -128,25 +197,33 @@ export default function OnboardingPage() {
             <Card hover={false}>
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm font-medium text-foreground mb-3">¿Qué querés analizar primero?</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {OBJECTIVES.map((obj) => {
-                      const selected = selectedObjectives.includes(obj.id);
-                      return (
-                        <button
-                          key={obj.id}
-                          onClick={() => toggleObjective(obj.id)}
-                          className={`flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all ${
-                            selected
-                              ? "border-accent bg-accent/10 text-foreground"
-                              : "border-border bg-background text-muted hover:text-foreground"
-                          }`}
-                        >
-                          <span className="text-2xl">{obj.icon}</span>
-                          <span className="text-xs font-medium">{obj.label}</span>
-                        </button>
-                      );
-                    })}
+                  <p className="text-sm font-medium text-foreground mb-3">Resumen</p>
+                  <div className="space-y-2">
+                    <div className="bg-background rounded-2xl p-4 border border-border">
+                      <p className="text-xs text-muted">Nombre</p>
+                      <p className="text-sm text-foreground">{name}</p>
+                    </div>
+                    <div className="bg-background rounded-2xl p-4 border border-border">
+                      <p className="text-xs text-muted">Nacimiento</p>
+                      <p className="text-sm text-foreground">{date}{birthPlace ? ` • ${birthPlace}` : ""}</p>
+                    </div>
+                    <div className="bg-background rounded-2xl p-4 border border-border">
+                      <p className="text-xs text-muted">Objetivo</p>
+                      <p className="text-sm text-foreground">{OBJECTIVES.find((o) => o.id === goal)?.label || goal}</p>
+                    </div>
+                    <div className="bg-background rounded-2xl p-4 border border-border">
+                      <p className="text-xs text-muted">Intereses</p>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {interests.map((id) => {
+                          const item = INTERESTS.find((i) => i.id === id);
+                          return (
+                            <span key={id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                              {item?.icon} {item?.label}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -154,7 +231,7 @@ export default function OnboardingPage() {
                   <Button variant="secondary" onClick={() => setStep("identity")} className="flex-1">
                     ← Volver
                   </Button>
-                  <Button onClick={handleFinish} disabled={selectedObjectives.length === 0} className="flex-1">
+                  <Button onClick={handleFinish} className="flex-1">
                     Descubrir mi perfil →
                   </Button>
                 </div>

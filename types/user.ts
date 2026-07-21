@@ -2,6 +2,15 @@ export interface UserProfile {
   id?: string;
   name: string;
   birthDate: string;
+  birthPlace: string;
+  birthTime?: string;
+  goal: "life" | "love" | "career" | "business" | "growth";
+  interests: string[];
+  onboardingStep: number;
+  completedSections: string[];
+  theme: "light" | "dark";
+  language: "es" | "en";
+  notifications: boolean;
   lifePath: number;
   sunSign: string;
   sunSignInfo: {
