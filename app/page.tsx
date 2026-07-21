@@ -38,15 +38,25 @@ function getDayCalculation(today: Date): { steps: string[]; result: number } {
   const day = today.getDate();
   const month = today.getMonth() + 1;
   const year = today.getFullYear();
-  const str = `${day}${month}${year}`;
-  let sum = 0;
-  const digits = str.split('').map(Number);
-  sum = digits.reduce((acc, d) => acc + d, 0);
-  const reduced = reduceToDigit(sum);
-  return {
-    steps: [`${day} + ${month} + ${year} = ${day + month + year} → ${sum} → ${reduced}`],
-    result: reduced
-  };
+
+  const directSum = day + month + year;
+  const dateStr = `${day}${month}${year}`;
+  let digitSum = 0;
+  const digitSteps: string[] = [];
+  for (const char of dateStr) {
+    digitSum += parseInt(char, 10);
+    digitSteps.push(char);
+  }
+
+  const reduced = reduceToDigit(digitSum);
+
+  const step1 = `${day} + ${month} + ${year} = ${directSum}`;
+  const step2 = `(${digitSteps.join("+")}) = ${digitSum}`;
+  const step3 = digitSum > 9 && reduced !== digitSum ? `${digitSum} → ${reduced}` : `${digitSum}`;
+
+  const steps = [step1, step2, step3];
+
+  return { steps, result: reduced };
 }
 
 function getDayMeaning(num: number): { name: string; description: string; color: string; gradient: string } {
