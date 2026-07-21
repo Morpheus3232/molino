@@ -1,15 +1,19 @@
 export interface EphemeralSession {
   name: string;
   birthDate: string;
+  gender?: string;
+  objectives?: string[];
   timestamp: number;
 }
 
 let session: EphemeralSession | null = null;
 
-export function saveSession(data: { name: string; birthDate: string }): void {
+export function saveSession(data: { name: string; birthDate: string; gender?: string; objectives?: string[] }): void {
   session = {
     name: data.name,
     birthDate: data.birthDate,
+    gender: data.gender,
+    objectives: data.objectives,
     timestamp: Date.now()
   };
 }

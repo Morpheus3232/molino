@@ -70,15 +70,15 @@ export default function ProfilePage() {
           <Button variant="ghost" onClick={handleNewSession}>
             ← Nueva sesión
           </Button>
-          <Button variant="ghost" onClick={() => router.push("/explore")}>
-            Explorar compatibilidades →
+          <Button variant="ghost" onClick={() => router.push("/patterns")}>
+            Ver mis patrones →
           </Button>
         </div>
 
         <Section className="mb-8">
           <Card hover={false} padding="lg">
             <div className="text-center mb-8">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">TU NOMBRE</p>
+              <span className="badge mb-3">Tu identidad</span>
               <h1 className="font-serif text-4xl font-bold text-foreground mb-1">{profile.name.toUpperCase()}</h1>
               <p className="text-sm text-muted">{profile.birthDate}</p>
             </div>
@@ -135,19 +135,45 @@ export default function ProfilePage() {
           </Card>
         </Section>
 
-        <Section>
+        <Section className="mb-8">
           <Card>
             <div className="mb-4">
-              <span className="badge">Keywords</span>
+              <span className="badge">Fortalezas</span>
             </div>
             <div className="flex flex-wrap gap-2">
-              {(archetype.keywords || []).map((keyword: string) => (
-                <span key={keyword} className="px-4 py-2 bg-background border border-border rounded-full text-sm text-foreground">
-                  {keyword}
+              {(archetype.strengths || []).map((strength: string) => (
+                <span key={strength} className="px-4 py-2 bg-background border border-border rounded-full text-sm text-foreground">
+                  {strength}
                 </span>
               ))}
             </div>
           </Card>
+        </Section>
+
+        <Section className="mb-8">
+          <Card>
+            <div className="mb-4">
+              <span className="badge">Desafíos</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(archetype.challenges || []).map((challenge: string) => (
+                <span key={challenge} className="px-4 py-2 bg-background border border-border rounded-full text-sm text-muted">
+                  {challenge}
+                </span>
+              ))}
+            </div>
+          </Card>
+        </Section>
+
+        <Section>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button fullWidth onClick={() => router.push("/patterns")}>
+              Explorar mis patrones →
+            </Button>
+            <Button variant="secondary" fullWidth onClick={() => router.push("/timing")}>
+              Mi timing personal
+            </Button>
+          </div>
         </Section>
       </div>
 

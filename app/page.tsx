@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
-import PhilosophySection from "@/components/sections/PhilosophySection";
-import MethodologySection from "@/components/sections/MethodologySection";
-import OpenSourceSection from "@/components/sections/OpenSourceSection";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
+import Input from "@/components/ui/Input";
+import PhilosophySection from "@/components/sections/PhilosophySection";
+import MethodologySection from "@/components/sections/MethodologySection";
+import OpenSourceSection from "@/components/sections/OpenSourceSection";
 
 function getCurrentDayNumber(): number {
   const today = new Date();
@@ -63,6 +64,9 @@ function getChineseYearInfo(year: number) {
 
 export default function Home() {
   const router = useRouter();
+  const [demoName, setDemoName] = useState("");
+  const [demoDate, setDemoDate] = useState("");
+  const [demoResult, setDemoResult] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -76,44 +80,38 @@ export default function Home() {
   const formattedDate = today.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   const chineseYear = getChineseYearInfo(today.getFullYear());
 
-  const numbers: { num: number; name: string; element: string; color: string }[] = [
-    { num: 1, name: "El Líder", element: "Fuego", color: "#D4A843" },
-    { num: 2, name: "El Diplomático", element: "Agua", color: "#E8B4B8" },
-    { num: 3, name: "El Comunicador", element: "Aire", color: "#FF8C42" },
-    { num: 4, name: "El Constructor", element: "Tierra", color: "#2D5A3D" },
-    { num: 5, name: "El Aventurero", element: "Aire", color: "#C44536" },
-    { num: 6, name: "El Nutridor", element: "Agua", color: "#8FBC8F" },
-    { num: 7, name: "El Buscador", element: "Agua", color: "#4A5568" },
-    { num: 8, name: "El Ejecutivo", element: "Tierra", color: "#6B4C7A" },
-    { num: 9, name: "El Misterio", element: "Éter", color: "#2E5C8A" },
-  ];
-
-  const testimonials: { name: string; text: string }[] = [
-    { name: "María G.", text: "Increíblemente preciso. El número de mi misión de vida resuena profundamente con lo que siempre sentí." },
-    { name: "Carlos R.", text: "La compatibilidad con mi pareja fue reveladora. Nos ayudó a entendernos mucho mejor." },
-    { name: "Lucía M.", text: "Uso el número del día cada mañana. Es como tener un horóscopo personalizado basado en matemáticas." },
-    { name: "Andrés P.", text: "El diseño es hermoso y la privacidad es total. Ninguna app de astrología se compara." },
-  ];
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted">Cargando...</div>
-      </div>
-    );
-  }
+  const handleDemo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!demoName.trim() || !demoDate) return;
+    const [year, month, day] = demoDate.split("-").map(Number);
+    const birthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const num = reduceToDigit(dayNumber);
+    const ch = getChineseYearInfo(year);
+    const sunSign = ["Capricornio","Acuario","Piscis","Aries","Tauro","Géminis","Cáncer","Leo","Virgo","Libra","Escorpio","Sagitario"][Math.min(11, Math.max(0, new Date(birthDate).getMonth()))];
+    setDemoResult({
+      name: demoName.trim(),
+      birthDate,
+      lifePath: num,
+      sunSign,
+      chineseZodiac: ch.animal,
+      chineseZodiacInfo: ch,
+      archetype: dayMeaning.name,
+      archetypeColor: dayMeaning.color,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
       <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-12 pb-24">
-        <div id="conocimiento" className="text-center max-w-4xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-foreground leading-tight">
-            Universidad Pública<br/>de Libre Acceso
+        <section id="conocimiento" className="text-center max-w-4xl mx-auto mb-16">
+          <span className="badge mb-4">Personal Intelligence</span>
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-foreground leading-tight mt-4">
+            Entendé tus patrones<br/>para tomar mejores decisiones
           </h1>
           <p className="text-muted text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
-            El conocimiento simbólico es patrimonio de la humanidad. Explorá sistemas simbólicos sin registro, sin rastreo y sin restricciones.
+            Molino convierte tu fecha de nacimiento y nombre en un mapa de patrones personales. Sin registro. Sin rastreo. 100% transparente.
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-muted">
             <span>🔓 Código abierto</span>
@@ -122,74 +120,146 @@ export default function Home() {
             <span className="text-border">•</span>
             <span>🕊️ Sin registro</span>
           </div>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          <div className="space-y-8">
-            <div className="bg-card rounded-3xl shadow-sm border border-card-border p-8 text-center">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}</p>
-              <div className="mt-4">
-                <span className="inline-block text-7xl md:text-8xl font-serif font-bold" style={{ color: dayMeaning.color }}>{dayNumber}</span>
-              </div>
-              <h2 className="text-2xl md:text-3xl font-serif font-semibold text-foreground mt-2">{dayMeaning.name}</h2>
-              <p className="text-muted text-base mt-2 max-w-xs mx-auto">{dayMeaning.description}</p>
-              <div className="mt-4 text-xs text-muted font-mono bg-background rounded-full px-4 py-2 inline-block">
-                {today.getDate()} + {today.getMonth() + 1} + {today.getFullYear()} = {today.getDate() + today.getMonth() + 1 + today.getFullYear()} → {dayNumber}
-              </div>
-              <div className="mt-3 text-sm text-muted">
-                <span>{chineseYear.emoji} {chineseYear.animal} de {chineseYear.element}</span>
+        <section className="max-w-6xl mx-auto mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="space-y-8">
+              <Card>
+                <div className="text-center mb-4">
+                  <span className="badge mb-3">Demo interactiva</span>
+                  <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Probá tu preview</h2>
+                  <p className="text-sm text-muted mt-2">Ingresá tus datos y obtené un vistazo instantáneo a tu perfil simbólico.</p>
+                </div>
+                <form onSubmit={handleDemo} className="space-y-4">
+                  <Input label="Nombre" value={demoName} onChange={(e) => setDemoName(e.target.value)} placeholder="Ej: María Elena" required />
+                  <Input label="Fecha de nacimiento" type="date" value={demoDate} onChange={(e) => setDemoDate(e.target.value)} required />
+                  <Button type="submit" fullWidth>Ver mi preview</Button>
+                </form>
+              </Card>
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { value: "621+", label: "Entidades analizadas" },
+                  { value: "4.9★", label: "Valoración media" },
+                  { value: "100%", label: "Gratuito y libre" },
+                  { value: "0", label: "Datos guardados" },
+                ].map((stat) => (
+                  <Card key={stat.label} hover={false} padding="md">
+                    <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                    <p className="text-xs text-muted mt-1">{stat.label}</p>
+                  </Card>
+                ))}
               </div>
             </div>
 
-            <Card>
-              <div className="text-center">
-                <span className="badge mb-3">🌾 Portal de datos</span>
-                <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Accedé al conocimiento simbólico</h2>
-                <p className="text-muted text-sm mt-2">Entrá al portal con tu nombre y fecha de nacimiento. Sin registro. Sin datos guardados.</p>
-                <Button fullWidth onClick={() => router.push("/onboarding")} className="mt-6">
-                  Abrir portal de datos
-                </Button>
-                <p className="text-xs text-muted text-center mt-4">Todo se calcula en tu navegador. No guardamos nada.</p>
-              </div>
-            </Card>
-          </div>
-
-          <div className="space-y-8">
-            <Card>
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-serif font-semibold text-foreground">¿Qué descubrirás?</h2>
-                <p className="text-muted text-sm text-center mt-2 max-w-md mx-auto">Un análisis basado en sistemas simbólicos públicos y accesibles.</p>
-              </div>
-              <div className="grid gap-3">
-                {[
-                  { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental." },
-                  { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentas al mundo." },
-                  { icon: "❤️", title: "Número del Alma", desc: "Tus deseos más profundos." },
-                  { icon: "👤", title: "Número de Personalidad", desc: "Cómo te perciben los demás." },
-                  { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
-                  { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
-                ].map((item) => (
-                  <div key={item.title} className="bg-background rounded-2xl p-4 flex gap-4 items-start transition-base hover:border-accent/50">
-                    <span className="text-2xl">{item.icon}</span>
-                    <div>
-                      <h3 className="font-medium text-foreground">{item.title}</h3>
-                      <p className="text-sm text-muted">{item.desc}</p>
+            <div>
+              <Card hover={false} padding="lg">
+                <div className="text-center mb-6">
+                  <span className="badge mb-3">Tu preview</span>
+                  {demoResult ? (
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">NOMBRE</p>
+                        <p className="text-2xl font-serif font-bold text-foreground">{demoResult.name}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">FECHA</p>
+                        <p className="text-sm text-muted">{demoResult.birthDate}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">LIFE PATH</p>
+                        <p className="text-5xl font-serif font-bold" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
+                      </div>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                          <span>🎯</span> {demoResult.archetype}
+                        </span>
+                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                          <span>♈</span> {demoResult.sunSign}
+                        </span>
+                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                          <span>{demoResult.chineseZodiacInfo.emoji}</span> {demoResult.chineseZodiac}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
+                  ) : (
+                    <div className="py-12 text-center text-muted">
+                      <p>Ingresá tus datos para ver el preview</p>
+                    </div>
+                  )}
+                </div>
+                <Button fullWidth onClick={() => router.push("/onboarding")}>
+                  Descubrí tu perfil completo
+                </Button>
+              </Card>
+            </div>
           </div>
-        </div>
+        </section>
 
         <Section>
-          <PhilosophySection />
-          <MethodologySection />
-          <OpenSourceSection />
+          <div className="text-center mb-8">
+            <span className="badge mb-3">¿Qué descubrirás?</span>
+            <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Un análisis basado en sistemas simbólicos públicos y accesibles</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental y camino de vida." },
+              { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentás al mundo." },
+              { icon: "❤️", title: "Número del Alma", desc: "Tus deseos más profundos." },
+              { icon: "👤", title: "Número de Personalidad", desc: "Cómo te perciben los demás." },
+              { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
+              { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
+            ].map((item) => (
+              <Card key={item.title}>
+                <span className="text-3xl">{item.icon}</span>
+                <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
+                <p className="text-sm text-muted mt-1">{item.desc}</p>
+              </Card>
+            ))}
+          </div>
         </Section>
 
-        <UniversityFooter />
+        <Section className="mt-8">
+          <div className="text-center mb-8">
+            <span className="badge mb-3">Sistemas integrados</span>
+            <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Múltiples marcos de conocimiento</h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { name: "Numerología", icon: "📚" },
+              { name: "Astrología", icon: "🌌" },
+              { name: "Zodiaco Chino", icon: "🐉" },
+              { name: "Tarot", icon: "🔮" },
+              { name: "Human Design", icon: "🧬" },
+              { name: "Eneagrama", icon: "🧩" },
+            ].map((system) => (
+              <Card key={system.name} hover={false} padding="md">
+                <div className="text-center">
+                  <span className="text-2xl">{system.icon}</span>
+                  <p className="text-xs font-medium text-foreground mt-2">{system.name}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </Section>
+
+        <Section className="mt-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-serif font-semibold text-foreground mb-4">Comenzá ahora</h2>
+            <p className="text-muted mb-6 max-w-md mx-auto">Ingresá tu nombre y fecha de nacimiento para descubrir tu perfil de Personal Intelligence.</p>
+            <Button size="lg" onClick={() => router.push("/onboarding")}>
+              Descubrir mi perfil →
+            </Button>
+          </div>
+        </Section>
+
+        <PhilosophySection />
+        <MethodologySection />
+        <OpenSourceSection />
       </div>
+
+      <UniversityFooter />
     </div>
   );
 }
