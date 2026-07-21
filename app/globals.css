@@ -94,10 +94,10 @@
     color: var(--color-foreground);
   }
 
-  h1 { font-size: 3rem; letter-spacing: -0.02em; }
-  h2 { font-size: 2.25rem; letter-spacing: -0.01em; }
-  h3 { font-size: 1.5rem; }
-  h4 { font-size: 1.25rem; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.02em; }
+  h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); letter-spacing: -0.01em; }
+  h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+  h4 { font-size: clamp(1rem, 2vw, 1.25rem); }
 
   p {
     color: var(--color-muted);
@@ -112,6 +112,40 @@
 
   a:hover {
     color: var(--color-foreground);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-full);
+  }
+
+  input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.2);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-foreground);
+    color: var(--color-background);
+    padding: 8px 16px;
+    z-index: 100;
+    transition: top 0.3s;
+    border-radius: 0 0 var(--radius-sm) 0;
+  }
+
+  .skip-link:focus {
+    top: 0;
   }
 
   ::selection {
@@ -131,6 +165,12 @@
   ::-webkit-scrollbar-thumb {
     background: var(--color-muted);
     border-radius: var(--radius-full);
+  }
+
+  @media (max-width: 640px) {
+    body {
+      font-size: 0.95rem;
+    }
   }
 }
 

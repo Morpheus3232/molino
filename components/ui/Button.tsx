@@ -23,9 +23,9 @@ export default function Button({
   };
 
   const sizes = {
-    sm: "px-3 py-2 text-sm",
-    md: "px-5 py-3 text-sm",
-    lg: "px-8 py-4 text-base",
+    sm: "px-3 py-2.5 text-sm min-h-[40px]",
+    md: "px-5 py-3 text-sm min-h-[44px]",
+    lg: "px-8 py-4 text-base min-h-[52px]",
   };
 
   const widthClass = fullWidth ? "w-full" : "";

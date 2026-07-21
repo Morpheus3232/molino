@@ -4,16 +4,16 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
   display: "swap",
   preload: true,
+  fallback: ['system-ui', 'arial'],
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-playfair",
   display: "swap",
   preload: true,
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: "Molino — Universidad Pública de Libre Acceso",
     description: "El conocimiento simbólico es patrimonio de la humanidad. Código abierto, sin registro, sin rastreo.",
     type: "website",
-    url: "https://molino.app",
+    url: "https://molino-alpha.vercel.app",
     images: [
       {
         url: "https://molino.app/og-image.jpg",
@@ -50,8 +50,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html lang="es">
+      <body className={`${inter.className} ${playfair.className} min-h-screen bg-background text-foreground antialiased`}>
+        <a href="#main" className="skip-link">Saltar al contenido principal</a>
         <div className="w-full bg-background relative">
           {children}
         </div>

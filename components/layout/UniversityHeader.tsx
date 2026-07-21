@@ -8,23 +8,23 @@ export default function UniversityHeader() {
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/" className="font-serif font-bold text-xl text-[#1F2937]">
+          <Link href="/" className="font-serif font-bold text-xl text-foreground">
             🌾 Molino
           </Link>
-          <nav className="hidden md:flex gap-6 text-sm text-[#6B7280]">
-            <Link href="/#metodologia" className="hover:text-[#1F2937] transition-colors">
+          <nav className="hidden md:flex gap-6 text-sm text-muted" aria-label="Navegación principal">
+            <Link href="/#metodologia" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
               Metodología
             </Link>
-            <Link href="/#codigo" className="hover:text-[#1F2937] transition-colors">
+            <Link href="/#codigo" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
               Código
             </Link>
-            <Link href="/biblioteca" className="hover:text-[#1F2937] transition-colors">
+            <Link href="/biblioteca" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
               Biblioteca
             </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-xs text-[#6B7280] hidden sm:inline">
+          <span className="text-xs text-muted hidden sm:inline">
             🎓 Universidad Pública
           </span>
           <ThemeToggle />

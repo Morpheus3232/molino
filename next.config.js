@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
+  generateEtags: false,
   images: {
     domains: ['molino.app'],
     formats: ['image/avif', 'image/webp'],
@@ -32,6 +34,10 @@ const nextConfig = {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
           },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
         ],
       },
       {
@@ -44,7 +50,7 @@ const nextConfig = {
         ],
       },
       {
-        source: '/compatibility/(.*)',
+        source: '/(fonts|manifest|favicon|apple-touch-icon)(.*)',
         headers: [
           {
             key: 'Cache-Control',

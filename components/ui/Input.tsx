@@ -17,7 +17,7 @@ export default function Input({ label, error, className = "", id, ...props }: In
       )}
       <input
         id={inputId}
-        className={`input ${error ? "border-error" : ""} ${className}`}
+        className={`input min-h-[44px] ${error ? "border-error" : ""} ${className}`}
         {...props}
       />
       {error && <p className="mt-1 text-xs text-error">{error}</p>}
