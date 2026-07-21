@@ -4,19 +4,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUserProfile } from "@/lib/storage/userProfile";
 import ThemeToggle from "@/components/ThemeToggle";
-import { getSunSignSymbol } from "@/lib/engines/astrologyEngine";
 
 // ============================================
-// FUNCIONES DE CÁLCULO DEL DÍA (CORREGIDAS)
+// FUNCIONES DE CÁLCULO
 // ============================================
 
 function getCurrentDayNumber(): number {
   const today = new Date();
-  const day = today.getDate();
-  const month = today.getMonth() + 1;
-  const year = today.getFullYear();
-  // Suma todos los dígitos
-  const str = `${day}${month}${year}`;
+  const str = `${today.getDate()}${today.getMonth() + 1}${today.getFullYear()}`;
   let sum = 0;
   for (const char of str) sum += parseInt(char, 10);
   return sum;
@@ -33,48 +28,22 @@ function reduceToDigit(num: number): number {
   return num;
 }
 
-// Desglose del cálculo para mostrar
-function getDayCalculation(today: Date): { steps: string[]; result: number } {
-  const day = today.getDate();
-  const month = today.getMonth() + 1;
-  const year = today.getFullYear();
-
-  const directSum = day + month + year;
-  const dateStr = `${day}${month}${year}`;
-  let digitSum = 0;
-  const digitSteps: string[] = [];
-  for (const char of dateStr) {
-    digitSum += parseInt(char, 10);
-    digitSteps.push(char);
-  }
-
-  const reduced = reduceToDigit(digitSum);
-
-  const step1 = `${day} + ${month} + ${year} = ${directSum}`;
-  const step2 = `(${digitSteps.join("+")}) = ${digitSum}`;
-  const step3 = digitSum > 9 && reduced !== digitSum ? `${digitSum} → ${reduced}` : `${digitSum}`;
-
-  const steps = [step1, step2, step3];
-
-  return { steps, result: reduced };
-}
-
-function getDayMeaning(num: number): { name: string; description: string; color: string; gradient: string } {
+function getDayMeaning(num: number): { name: string; description: string; color: string } {
   const meanings: Record<number, any> = {
-    1: { name: "Inicio", description: "Nuevos comienzos, liderazgo, independencia.", color: "#D4A843", gradient: "from-[#D4A843] to-[#F5E6C8]" },
-    2: { name: "Cooperación", description: "Equilibrio, diplomacia, relaciones.", color: "#E8B4B8", gradient: "from-[#E8B4B8] to-[#F5E0E3]" },
-    3: { name: "Expresión", description: "Creatividad, comunicación, optimismo.", color: "#FF8C42", gradient: "from-[#FF8C42] to-[#FFE4D1]" },
-    4: { name: "Construcción", description: "Estabilidad, disciplina, trabajo.", color: "#2D5A3D", gradient: "from-[#2D5A3D] to-[#D4E5D8]" },
-    5: { name: "Cambio", description: "Libertad, aventura, adaptabilidad.", color: "#C44536", gradient: "from-[#C44536] to-[#F5D5D0]" },
-    6: { name: "Responsabilidad", description: "Servicio, familia, armonía.", color: "#8FBC8F", gradient: "from-[#8FBC8F] to-[#E0F0E0]" },
-    7: { name: "Introspección", description: "Análisis, sabiduría, introspección.", color: "#4A5568", gradient: "from-[#4A5568] to-[#D8DEE4]" },
-    8: { name: "Manifestación", description: "Poder, logros, abundancia.", color: "#6B4C7A", gradient: "from-[#6B4C7A] to-[#E0D5E8]" },
-    9: { name: "Compasión", description: "Humanitarismo, cierre, transformación.", color: "#2E5C8A", gradient: "from-[#2E5C8A] to-[#D0E0F0]" },
-    11: { name: "Iluminación", description: "Intuición elevada, inspiración, conexión espiritual.", color: "#8B5CF6", gradient: "from-[#8B5CF6] to-[#E5D5FF]" },
-    22: { name: "Construcción Maestra", description: "Visión práctica, manifestación a gran escala.", color: "#4682B4", gradient: "from-[#4682B4] to-[#D0E0F0]" },
-    33: { name: "Amor Universal", description: "Servicio, compasión, transformación global.", color: "#B8860B", gradient: "from-[#B8860B] to-[#F5E6C8]" },
+    1: { name: "Inicio", description: "Nuevos comienzos, liderazgo, independencia.", color: "#D4A843" },
+    2: { name: "Cooperación", description: "Equilibrio, diplomacia, relaciones.", color: "#E8B4B8" },
+    3: { name: "Expresión", description: "Creatividad, comunicación, optimismo.", color: "#FF8C42" },
+    4: { name: "Construcción", description: "Estabilidad, disciplina, trabajo.", color: "#2D5A3D" },
+    5: { name: "Cambio", description: "Libertad, aventura, adaptabilidad.", color: "#C44536" },
+    6: { name: "Responsabilidad", description: "Servicio, familia, armonía.", color: "#8FBC8F" },
+    7: { name: "Introspección", description: "Análisis, sabiduría, introspección.", color: "#4A5568" },
+    8: { name: "Manifestación", description: "Poder, logros, abundancia.", color: "#6B4C7A" },
+    9: { name: "Compasión", description: "Humanitarismo, cierre, transformación.", color: "#2E5C8A" },
+    11: { name: "Iluminación", description: "Intuición elevada, inspiración, conexión espiritual.", color: "#8B5CF6" },
+    22: { name: "Construcción Maestra", description: "Visión práctica, manifestación a gran escala.", color: "#4682B4" },
+    33: { name: "Amor Universal", description: "Servicio, compasión, transformación global.", color: "#B8860B" },
   };
-  return meanings[num] || { name: "Energía", description: "Conectá con tu interior.", color: "#6B7280", gradient: "from-[#6B7280] to-[#E5E7EB]" };
+  return meanings[num] || { name: "Energía", description: "Conectá con tu interior.", color: "#6B7280" };
 }
 
 function getChineseYearInfo(year: number) {
@@ -113,7 +82,6 @@ export default function Home() {
   const dayOfWeek = today.toLocaleDateString('es-ES', { weekday: 'long' });
   const formattedDate = today.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   const chineseYear = getChineseYearInfo(today.getFullYear());
-  const dayCalc = getDayCalculation(today);
 
   const numbers = [
     { num: 1, name: "El Líder", element: "Fuego", color: "#D4A843" },
@@ -143,68 +111,76 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8F9FA] to-[#EDEFF2]">
+    <div className="min-h-screen bg-[#F8F9FA]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-card-border">
-        <div className="max-w-[430px] mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-6 text-sm">
-            <span className="font-serif font-bold text-lg text-foreground">🌾 Molino</span>
-            <nav className="hidden sm:flex gap-4 text-muted">
-              <a href="#significados" className="hover:text-foreground transition-colors">Significados</a>
-              <a href="#testimonios" className="hover:text-foreground transition-colors">Testimonios</a>
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+        <div className="max-w-[640px] mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <span className="font-serif font-bold text-xl text-[#1F2937]">🌾 Molino</span>
+            <nav className="hidden md:flex gap-6 text-sm text-[#6B7280]">
+              <a href="#significados" className="hover:text-[#1F2937] transition-colors">Significados</a>
+              <a href="#testimonios" className="hover:text-[#1F2937] transition-colors">Testimonios</a>
             </nav>
           </div>
-          <div className="flex items-center gap-3">
-            {profile ? (
+          <div className="flex items-center gap-4">
+            {profile && (
               <button
                 onClick={() => router.push("/profile")}
-                className="text-sm text-foreground hover:text-[var(--accent)] transition-colors"
+                className="text-sm text-[#1F2937] hover:text-[#D4A843] transition-colors"
               >
                 Mi perfil
               </button>
-            ) : null}
+            )}
             <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <div className="max-w-[430px] mx-auto px-4 py-6 pb-24">
+      <div className="max-w-[640px] mx-auto px-6 py-12 pb-24">
         {/* ============================================ */}
         {/* HERO */}
         {/* ============================================ */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif font-bold text-foreground">Astrología &amp; Numerología integrada</h1>
-          <p className="text-muted text-sm mt-2">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-serif font-light text-[#1F2937] leading-tight">
+            Astrología &amp; Numerología<br/>integradas
+          </h1>
+          <p className="text-[#6B7280] text-sm mt-4 max-w-md mx-auto leading-relaxed">
             Descubre los secretos que los números de tu nombre y fecha de nacimiento revelan sobre tu personalidad, propósito y destino.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 mt-4 text-xs text-muted">
+          <div className="flex justify-center gap-4 mt-6 text-xs text-[#6B7280]">
             <span>🔒 Privacidad total</span>
-            <span>•</span>
+            <span className="text-gray-300">•</span>
             <span>💯 100% Gratuito</span>
-            <span>•</span>
+            <span className="text-gray-300">•</span>
             <span>📝 Sin registro</span>
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* NÚMERO DEL DÍA */}
+        {/* NÚMERO DEL DÍA — HERO MEJORADO */}
         {/* ============================================ */}
-        <div className={`bg-gradient-to-br ${dayMeaning.gradient} rounded-3xl p-6 text-white shadow-xl mb-8 text-center relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12" />
-          
-          <p className="text-xs opacity-70 tracking-wider relative z-10">NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}</p>
-          <div className="flex flex-col items-center mt-4 relative z-10">
-            <div className="w-24 h-24 rounded-full flex items-center justify-center text-5xl font-bold font-serif shadow-2xl border-4 border-white/30" style={{ backgroundColor: dayMeaning.color }}>
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-10 text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">
+            NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}
+          </p>
+          <div className="mt-4">
+            <span
+              className="inline-block text-7xl font-serif font-bold"
+              style={{ color: dayMeaning.color }}
+            >
               {dayNumber}
-            </div>
-            <h2 className="text-2xl font-serif font-bold mt-4">{dayMeaning.name}</h2>
-            <p className="text-sm opacity-80 max-w-xs mt-2">{dayMeaning.description}</p>
+            </span>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/20 text-xs opacity-70 font-mono relative z-10">
-            {dayCalc.steps.join(' → ')}
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] mt-2">
+            {dayMeaning.name}
+          </h2>
+          <p className="text-[#6B7280] text-sm mt-2 max-w-xs mx-auto">
+            {dayMeaning.description}
+          </p>
+          <div className="mt-4 text-xs text-[#6B7280] font-mono bg-[#F8F9FA] rounded-full px-4 py-2 inline-block">
+            {today.getDate()} + {today.getMonth() + 1} + {today.getFullYear()} = {today.getDate() + today.getMonth() + 1 + today.getFullYear()} → {dayNumber}
           </div>
-          <div className="mt-3 flex justify-center gap-4 text-xs opacity-70 relative z-10">
+          <div className="mt-3 text-sm text-[#6B7280]">
             <span>{chineseYear.emoji} {chineseYear.animal} de {chineseYear.element}</span>
           </div>
         </div>
@@ -212,145 +188,135 @@ export default function Home() {
         {/* ============================================ */}
         {/* STATS */}
         {/* ============================================ */}
-        <div className="flex justify-around bg-white rounded-2xl shadow-lg p-4 border border-[#E5E7EB] mb-8">
+        <div className="flex justify-around bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-8">
           {[
             { value: "50K+", label: "Análisis realizados" },
             { value: "4.9★", label: "Valoración media" },
             { value: "100%", label: "Gratuito y privado" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <p className="text-lg font-bold text-foreground">{stat.value}</p>
-              <p className="text-xs text-muted">{stat.label}</p>
+              <p className="text-lg font-semibold text-[#1F2937]">{stat.value}</p>
+              <p className="text-xs text-[#6B7280]">{stat.label}</p>
             </div>
           ))}
         </div>
 
         {/* ============================================ */}
-        {/* FORMULARIO */}
+        {/* FORMULARIO — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-[#E5E7EB] mb-8">
-          <h2 className="text-xl font-serif font-semibold text-foreground text-center mb-2">Descubrí tu potencial</h2>
-          <p className="text-sm text-muted text-center mb-4">Ingresá tus datos para tu análisis completo</p>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              router.push("/onboarding");
-            }}
-            className="space-y-4"
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-12">
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">Descubrí tu potencial</h2>
+          <p className="text-[#6B7280] text-sm text-center mt-2">Ingresá tus datos para tu análisis completo</p>
+          <button
+            onClick={() => router.push("/onboarding")}
+            className="mt-6 w-full py-4 bg-[#1F2937] text-white rounded-full hover:bg-[#374151] transition-colors font-medium text-sm"
           >
-            <button
-              type="submit"
-              className="w-full py-3 bg-[#1F2937] text-white rounded-xl hover:bg-[#374151] transition-colors font-medium text-sm"
-            >
-              Comenzar mi análisis
-            </button>
-          </form>
-          <p className="text-xs text-[#9CA3AF] mt-3 text-center">Todo se calcula en tu navegador. No guardamos nada.</p>
+            Comenzar mi análisis
+          </button>
+          <p className="text-xs text-[#9CA3AF] text-center mt-4">Todo se calcula en tu navegador. No guardamos nada.</p>
         </div>
 
         {/* ============================================ */}
-        {/* ¿QUÉ DESCUBRIRÁS? */}
+        {/* ¿QUÉ DESCUBRIRÁS? — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div className="mb-8">
-          <h2 className="text-xl font-serif font-semibold text-foreground text-center mb-4">¿Qué descubrirás?</h2>
-          <p className="text-sm text-muted text-center mb-6">
+        <div className="mb-12">
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">¿Qué descubrirás?</h2>
+          <p className="text-[#6B7280] text-sm text-center mt-2 max-w-md mx-auto">
             Un análisis numerológico completo basado en la tabla pitagórica, que abarca múltiples dimensiones de tu ser.
           </p>
-          <div className="grid gap-4">
+          <div className="grid gap-3 mt-6">
             {[
-              { icon: "🔢", title: "Número de Misión de Vida", desc: "Descubre tu propósito fundamental basado en tu fecha de nacimiento." },
-              { icon: "📝", title: "Número de Expresión", desc: "Revela cómo te presentas al mundo a través de tu nombre completo." },
-              { icon: "❤️", title: "Número del Alma", desc: "Conoce tus deseos más profundos y lo que tu corazón realmente anhela." },
-              { icon: "👤", title: "Número de Personalidad", desc: "Descubre cómo los demás te perciben a primera vista." },
-              { icon: "📅", title: "Año Personal", desc: "Entiende la energía que rige tu año actual y cómo aprovecharla." },
-              { icon: "🌟", title: "Números Maestros", desc: "Identifica si tienes números maestros (11, 22, 33) en tu carta." },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-lg p-4 border border-[#E5E7EB]">
-                <h3 className="font-serif font-semibold text-foreground">{item.icon} {item.title}</h3>
-                <p className="text-sm text-muted">{item.desc}</p>
+              { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental basado en tu fecha de nacimiento." },
+              { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentas al mundo a través de tu nombre." },
+              { icon: "❤️", title: "Número del Alma", desc: "Tus deseos más profundos y lo que tu corazón anhela." },
+              { icon: "👤", title: "Número de Personalidad", desc: "Cómo los demás te perciben a primera vista." },
+              { icon: "📅", title: "Año Personal", desc: "La energía que rige tu año actual y cómo aprovecharla." },
+              { icon: "🌟", title: "Números Maestros", desc: "Identifica si tienes 11, 22 o 33 en tu carta." },
+            ].map((item) => (
+              <div key={item.title} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 flex gap-4 items-start">
+                <span className="text-2xl">{item.icon}</span>
+                <div>
+                  <h3 className="font-medium text-[#1F2937]">{item.title}</h3>
+                  <p className="text-sm text-[#6B7280]">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* LOS NÚMEROS Y SUS SIGNIFICADOS */}
+        {/* LOS NÚMEROS — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div id="significados" className="mb-8">
-          <h2 className="text-xl font-serif font-semibold text-foreground text-center mb-4">Los Números y sus Significados</h2>
-          <p className="text-sm text-muted text-center mb-6">
-            Cada número del 1 al 9 (y los maestros 11, 22, 33) tiene una vibración única que influye en tu vida.
+        <div id="significados" className="mb-12">
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">Los Números y sus Significados</h2>
+          <p className="text-[#6B7280] text-sm text-center mt-2 max-w-md mx-auto">
+            Cada número del 1 al 9 (y los maestros 11, 22, 33) tiene una vibración única.
           </p>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 mt-6">
             {numbers.map((item) => (
               <div
                 key={item.num}
-                className="bg-white rounded-2xl shadow-md p-4 text-center border border-[#E5E7EB]"
-                style={{ borderTop: `4px solid ${item.color}` }}
+                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-center hover:shadow-md transition-shadow"
               >
-                <p className="text-2xl font-bold font-serif" style={{ color: item.color }}>{item.num}</p>
-                <p className="text-xs font-semibold text-foreground mt-1">{item.name}</p>
-                <p className="text-[10px] text-muted">{item.element}</p>
+                <p className="text-3xl font-serif font-bold" style={{ color: item.color }}>{item.num}</p>
+                <p className="text-sm font-medium text-[#1F2937] mt-1">{item.name}</p>
+                <p className="text-xs text-[#6B7280]">{item.element}</p>
               </div>
             ))}
-          </div>
-          <div className="text-center mt-4">
-            <a href="#" className="text-sm text-[#1F2937] hover:underline font-medium">
-              Ver todos los significados →
-            </a>
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* CÓMO FUNCIONA */}
+        {/* CÓMO FUNCIONA — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 border border-[#E5E7EB] mb-8">
-          <h2 className="text-xl font-serif font-semibold text-foreground text-center mb-4">¿Cómo funciona?</h2>
-          <p className="text-sm text-muted text-center mb-4">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-12">
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">¿Cómo funciona?</h2>
+          <p className="text-[#6B7280] text-sm text-center mt-2">
             La numerología pitagórica asigna un valor numérico a cada letra del alfabeto.
           </p>
-          <div className="grid grid-cols-7 gap-1 text-center text-xs">
+          <div className="grid grid-cols-7 gap-0.5 text-center text-xs mt-4">
             {["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"].map((letter, i) => {
               const val = (i % 9) + 1;
               return (
-                <div key={letter} className="flex flex-col items-center">
-                  <span className="font-mono font-medium text-foreground">{letter}</span>
-                  <span className="text-xs text-muted">{val}</span>
+                <div key={letter} className="bg-[#F8F9FA] rounded py-1">
+                  <span className="font-mono font-medium text-[#1F2937]">{letter}</span>
+                  <span className="text-[#6B7280] block text-[10px]">{val}</span>
                 </div>
               );
             })}
           </div>
-          <p className="text-xs text-muted mt-4 text-center">
-            Cada letra se reduce a un dígito del 1 al 9, y luego se suman y reducen para obtener tu número final.
+          <p className="text-xs text-[#6B7280] text-center mt-4">
+            Cada letra se reduce a un dígito del 1 al 9, luego se suman y reducen para obtener tu número final.
           </p>
         </div>
 
         {/* ============================================ */}
-        {/* TESTIMONIOS */}
+        {/* TESTIMONIOS — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div id="testimonios" className="mb-8">
-          <h2 className="text-xl font-serif font-semibold text-foreground text-center mb-4">Lo que dicen nuestros usuarios</h2>
-          <p className="text-sm text-muted text-center mb-6">Miles de personas ya descubrieron su potencial con Molino.</p>
-          <div className="space-y-4">
+        <div id="testimonios" className="mb-12">
+          <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">Lo que dicen nuestros usuarios</h2>
+          <p className="text-[#6B7280] text-sm text-center mt-2">Miles de personas ya descubrieron su potencial.</p>
+          <div className="grid gap-4 mt-6">
             {testimonials.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-lg p-4 border border-[#E5E7EB]">
-                <p className="text-sm text-foreground/80">"{t.text}"</p>
-                <p className="text-xs text-muted mt-2">— {t.name}</p>
+              <div key={i} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <p className="text-[#1F2937] text-sm leading-relaxed">"{t.text}"</p>
+                <p className="text-xs text-[#6B7280] mt-3">— {t.name}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* ============================================ */}
-        {/* CTA FINAL */}
+        {/* CTA FINAL — CON DISEÑO MEJORADO */}
         {/* ============================================ */}
-        <div className="bg-gradient-to-br from-[#1F2937] to-[#374151] rounded-3xl p-6 text-white text-center shadow-xl">
-          <h2 className="text-2xl font-serif font-bold">¿Listo para descubrir tu potencial?</h2>
-          <p className="text-sm opacity-80 mt-2">Tu análisis numerológico completo te espera. Solo necesitas tu nombre y fecha de nacimiento.</p>
+        <div className="bg-[#1F2937] rounded-3xl p-8 text-center">
+          <h2 className="text-2xl font-serif font-bold text-white">¿Listo para descubrir tu potencial?</h2>
+          <p className="text-white/70 text-sm mt-2 max-w-md mx-auto">
+            Tu análisis numerológico completo te espera. Solo necesitas tu nombre y fecha de nacimiento.
+          </p>
           <button
             onClick={() => router.push("/onboarding")}
-            className="mt-4 px-8 py-3 bg-white text-[#1F2937] rounded-xl hover:bg-gray-100 transition-colors font-medium text-sm"
+            className="mt-6 px-8 py-3 bg-white text-[#1F2937] rounded-full hover:bg-gray-100 transition-colors font-medium text-sm"
           >
             Comenzar mi análisis
           </button>
@@ -359,7 +325,7 @@ export default function Home() {
         {/* ============================================ */}
         {/* FOOTER */}
         {/* ============================================ */}
-        <footer className="text-center mt-8 text-xs text-[#9CA3AF]">
+        <footer className="text-center mt-12 text-xs text-[#9CA3AF]">
           <p>Molino · Astrología &amp; Numerología integrada. Todo se calcula en tu navegador.</p>
           <p className="mt-1">💯 100% Gratuito · 📝 Sin registro · 🔒 Privacidad total</p>
         </footer>
