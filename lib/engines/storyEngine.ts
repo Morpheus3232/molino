@@ -2,7 +2,7 @@
 
 import { UserProfile } from "@/types/user";
 import { EntityProfile } from "@/lib/data/entities";
-import { ARCHETYPES } from "@/lib/data/archetypes";
+import { ARCHETYPES } from "@/lib/data";
 
 export interface MatchStory {
   narrative: string;
