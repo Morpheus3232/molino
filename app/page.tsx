@@ -7,10 +7,9 @@ import PhilosophySection from "@/components/sections/PhilosophySection";
 import MethodologySection from "@/components/sections/MethodologySection";
 import OpenSourceSection from "@/components/sections/OpenSourceSection";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-
-// ============================================
-// FUNCIONES DE CÁLCULO
-// ============================================
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import Section from "@/components/ui/Section";
 
 function getCurrentDayNumber(): number {
   const today = new Date();
@@ -62,10 +61,6 @@ function getChineseYearInfo(year: number) {
   };
 }
 
-// ============================================
-// COMPONENTE PRINCIPAL
-// ============================================
-
 export default function Home() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -103,62 +98,69 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[var(--muted)]">Cargando...</div>
+        <div className="text-muted">Cargando...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
+    <div className="min-h-screen bg-background">
       <UniversityHeader />
 
       <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-12 pb-24">
         <div id="conocimiento" className="text-center max-w-4xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-[#1F2937] leading-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-foreground leading-tight">
             Universidad Pública<br/>de Libre Acceso
           </h1>
-          <p className="text-[#6B7280] text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-muted text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
             El conocimiento simbólico es patrimonio de la humanidad. Explorá sistemas simbólicos sin registro, sin rastreo y sin restricciones.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-[#6B7280]">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-muted">
             <span>🔓 Código abierto</span>
-            <span className="text-gray-300">•</span>
+            <span className="text-border">•</span>
             <span>💯 100% gratuito</span>
-            <span className="text-gray-300">•</span>
+            <span className="text-border">•</span>
             <span>🕊️ Sin registro</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-8">
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
-              <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}</p>
+            <div className="bg-card rounded-3xl shadow-sm border border-card-border p-8 text-center">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}</p>
               <div className="mt-4">
                 <span className="inline-block text-7xl md:text-8xl font-serif font-bold" style={{ color: dayMeaning.color }}>{dayNumber}</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-serif font-semibold text-[#1F2937] mt-2">{dayMeaning.name}</h2>
-              <p className="text-[#6B7280] text-base mt-2 max-w-xs mx-auto">{dayMeaning.description}</p>
-              <div className="mt-4 text-xs text-[#6B7280] font-mono bg-[#F8F9FA] rounded-full px-4 py-2 inline-block">
+              <h2 className="text-2xl md:text-3xl font-serif font-semibold text-foreground mt-2">{dayMeaning.name}</h2>
+              <p className="text-muted text-base mt-2 max-w-xs mx-auto">{dayMeaning.description}</p>
+              <div className="mt-4 text-xs text-muted font-mono bg-background rounded-full px-4 py-2 inline-block">
                 {today.getDate()} + {today.getMonth() + 1} + {today.getFullYear()} = {today.getDate() + today.getMonth() + 1 + today.getFullYear()} → {dayNumber}
               </div>
-              <div className="mt-3 text-sm text-[#6B7280]">
+              <div className="mt-3 text-sm text-muted">
                 <span>{chineseYear.emoji} {chineseYear.animal} de {chineseYear.element}</span>
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
-              <h2 className="text-2xl font-serif font-semibold text-[#1F2937]">Accedé al conocimiento simbólico</h2>
-              <p className="text-[#6B7280] text-sm mt-2">Entrá al portal con tu nombre y fecha de nacimiento. Sin registro. Sin datos guardados.</p>
-              <button onClick={() => router.push("/onboarding")} className="mt-6 w-full py-4 bg-[#1F2937] text-white rounded-full hover:bg-[#374151] transition-colors font-medium text-sm">Abrir portal de datos</button>
-              <p className="text-xs text-[#9CA3AF] text-center mt-4">Todo se calcula en tu navegador. No guardamos nada.</p>
-            </div>
+            <Card>
+              <div className="text-center">
+                <span className="badge mb-3">🌾 Portal de datos</span>
+                <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Accedé al conocimiento simbólico</h2>
+                <p className="text-muted text-sm mt-2">Entrá al portal con tu nombre y fecha de nacimiento. Sin registro. Sin datos guardados.</p>
+                <Button fullWidth onClick={() => router.push("/onboarding")} className="mt-6">
+                  Abrir portal de datos
+                </Button>
+                <p className="text-xs text-muted text-center mt-4">Todo se calcula en tu navegador. No guardamos nada.</p>
+              </div>
+            </Card>
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8">
-              <h2 className="text-2xl font-serif font-semibold text-[#1F2937] text-center">¿Qué descubrirás?</h2>
-              <p className="text-[#6B7280] text-sm text-center mt-2 max-w-md mx-auto">Un análisis basado en sistemas simbólicos públicos y accesibles.</p>
-              <div className="grid gap-3 mt-6">
+            <Card>
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-serif font-semibold text-foreground">¿Qué descubrirás?</h2>
+                <p className="text-muted text-sm text-center mt-2 max-w-md mx-auto">Un análisis basado en sistemas simbólicos públicos y accesibles.</p>
+              </div>
+              <div className="grid gap-3">
                 {[
                   { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental." },
                   { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentas al mundo." },
@@ -167,22 +169,25 @@ export default function Home() {
                   { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
                   { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
                 ].map((item) => (
-                  <div key={item.title} className="bg-[#F8F9FA] rounded-2xl p-4 flex gap-4 items-start">
+                  <div key={item.title} className="bg-background rounded-2xl p-4 flex gap-4 items-start transition-base hover:border-accent/50">
                     <span className="text-2xl">{item.icon}</span>
                     <div>
-                      <h3 className="font-medium text-[#1F2937]">{item.title}</h3>
-                      <p className="text-sm text-[#6B7280]">{item.desc}</p>
+                      <h3 className="font-medium text-foreground">{item.title}</h3>
+                      <p className="text-sm text-muted">{item.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </Card>
           </div>
         </div>
 
-        <PhilosophySection />
-        <MethodologySection />
-        <OpenSourceSection />
+        <Section>
+          <PhilosophySection />
+          <MethodologySection />
+          <OpenSourceSection />
+        </Section>
+
         <UniversityFooter />
       </div>
     </div>

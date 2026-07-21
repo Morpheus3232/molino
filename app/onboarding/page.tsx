@@ -4,6 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { saveSession } from "@/lib/storage/ephemeral";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
+import Card from "@/components/ui/Card";
+import Section from "@/components/ui/Section";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -11,7 +15,6 @@ export default function OnboardingPage() {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [error, setError] = useState("");
-  const [profile, setProfile] = useState<any>(null);
 
   useEffect(() => {
     setReady(true);
@@ -46,60 +49,51 @@ export default function OnboardingPage() {
   if (!ready) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-[var(--muted)]">Cargando...</div>
+        <div className="text-muted">Cargando...</div>
       </div>
     );
   }
 
-  if (profile) {
-    router.push("/portal");
-    return null;
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8F9FA] to-[#EDEFF2]">
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="max-w-[640px] mx-auto px-6 py-12">
-        <div className="text-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-foreground mb-2">🌾 Molino</h1>
-          <p className="text-sm text-muted">Universidad Pública de Libre Acceso</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Nombre</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ej: María Elena"
-              className="w-full px-4 py-3 bg-[#F8F9FA] border border-[#E5E7EB] rounded-xl text-sm focus:ring-2 focus:ring-[#1F2937] focus:border-transparent"
-              required
-            />
+        <Section>
+          <div className="text-center mb-8">
+            <span className="badge mb-3">🌾 Molino</span>
+            <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Universidad Pública de Libre Acceso</h1>
+            <p className="text-muted text-sm mt-2">Ingresá tus datos para descubrir tu perfil simbólico</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1">Fecha de nacimiento</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full px-4 py-3 bg-[#F8F9FA] border border-[#E5E7EB] rounded-xl text-sm focus:ring-2 focus:ring-[#1F2937] focus:border-transparent"
-              required
-            />
-          </div>
+          <Card hover={false}>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Input
+                label="Nombre"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ej: María Elena"
+                required
+              />
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
+              <Input
+                label="Fecha de nacimiento"
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
 
-          <button
-            type="submit"
-            className="w-full py-4 bg-[#1F2937] text-white rounded-full hover:bg-[#374151] transition-colors font-medium text-sm"
-          >
-            Descubrir mi perfil
-          </button>
-          <p className="text-xs text-[#9CA3AF] text-center mt-4">
-            Esta sesión es efímera. No guardamos nada.
-          </p>
-        </form>
+              {error && <p className="text-sm text-error">{error}</p>}
+
+              <Button type="submit" fullWidth size="lg">
+                Descubrir mi perfil
+              </Button>
+              <p className="text-xs text-muted text-center mt-2">
+                Esta sesión es efímera. No guardamos nada.
+              </p>
+            </form>
+          </Card>
+        </Section>
       </div>
     </div>
   );
