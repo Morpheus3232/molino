@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSession, isSessionValid, clearSession } from "@/lib/storage/ephemeral";
+import { getSession, clearSession } from "@/lib/storage/ephemeral";
+import { loadProfileFromStorage, exportProfileAsJson, downloadProfileJson, clearStoredProfile } from "@/lib/storage/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { getSunSignSymbol } from "@/lib/engines/astrologyEngine";
@@ -13,28 +14,59 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 
-function getOrCreateProfile(): UserProfile | null {
-  const existing = getSession();
-  if (existing && isSessionValid()) {
-    return calculateUserProfile(existing.name, existing.birthDate);
-  }
-  return null;
-}
+const OBJECTIVES = [
+  { id: "life", label: "Decisiones de vida" },
+  { id: "love", label: "Amor y vínculos" },
+  { id: "career", label: "Carrera y emprendimiento" },
+  { id: "business", label: "Negocios y proyectos" },
+  { id: "growth", label: "Crecimiento personal" },
+];
+
+const INTERESTS = [
+  { id: "relationships", label: "Relaciones" },
+  { id: "career", label: "Carrera" },
+  { id: "finance", label: "Finanzas" },
+  { id: "health", label: "Salud" },
+  { id: "spirituality", label: "Espiritualidad" },
+];
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(getOrCreateProfile);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const current = getOrCreateProfile();
-    if (!current) {
-      router.push("/");
-      return;
+    const stored = loadProfileFromStorage();
+    if (stored) {
+      setProfile(stored as UserProfile);
+    } else {
+      const existing = getSession();
+      if (existing && existing.name && existing.birthDate) {
+        const calculated = calculateUserProfile(existing.name, existing.birthDate);
+        setProfile({
+          ...calculated,
+          birthPlace: existing.birthPlace,
+          birthTime: existing.birthTime,
+          goal: (existing.goal as UserProfile["goal"]) || "life",
+          interests: existing.interests,
+          onboardingStep: existing.onboardingStep,
+          completedSections: existing.completedSections,
+          theme: existing.theme,
+          language: existing.language,
+          notifications: existing.notifications,
+        });
+      } else {
+        router.push("/");
+      }
     }
-    setProfile(current);
   }, [router]);
+
+  const handleNewSession = () => {
+    clearSession();
+    clearStoredProfile();
+    router.push("/");
+  };
 
   if (!mounted || !profile) {
     return (
@@ -56,11 +88,6 @@ export default function ProfilePage() {
     { label: "Personalidad", value: profile.personalityNumber ?? "—", description: "Cómo te perciben los demás" },
   ];
 
-  const handleNewSession = () => {
-    clearSession();
-    router.push("/");
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <UniversityHeader />
@@ -70,8 +97,8 @@ export default function ProfilePage() {
           <Button variant="ghost" onClick={handleNewSession}>
             ← Nueva sesión
           </Button>
-          <Button variant="ghost" onClick={() => router.push("/patterns")}>
-            Ver mis patrones →
+          <Button variant="ghost" onClick={() => downloadProfileJson()}>
+            Exportar JSON ↓
           </Button>
         </div>
 
@@ -80,7 +107,11 @@ export default function ProfilePage() {
             <div className="text-center mb-8">
               <span className="badge mb-3">Tu identidad</span>
               <h1 className="font-serif text-4xl font-bold text-foreground mb-1">{profile.name.toUpperCase()}</h1>
-              <p className="text-sm text-muted">{profile.birthDate}</p>
+              <p className="text-sm text-muted">
+                {profile.birthDate}
+                {profile.birthPlace ? ` • ${profile.birthPlace}` : ""}
+                {profile.birthTime ? ` • ${profile.birthTime}` : ""}
+              </p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
@@ -118,6 +149,33 @@ export default function ProfilePage() {
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Zodiaco chino</p>
                 <p className="text-lg font-serif font-bold mt-2 text-foreground">{chineseAnimal}</p>
                 <p className="text-xs text-muted mt-1">Animal de tu año</p>
+              </div>
+            </div>
+          </Card>
+        </Section>
+
+        <Section className="mb-8">
+          <Card>
+            <div className="mb-4">
+              <span className="badge">Contexto</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="bg-background rounded-2xl p-4">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Objetivo</p>
+                <p className="text-sm text-foreground mt-2">{OBJECTIVES.find((o) => o.id === profile.goal)?.label || profile.goal}</p>
+              </div>
+              <div className="bg-background rounded-2xl p-4">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Intereses</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {profile.interests.map((id) => {
+                    const item = INTERESTS.find((i) => i.id === id);
+                    return (
+                      <span key={id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                        {item?.label}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </Card>

@@ -115,9 +115,9 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-muted">
             <span>🔓 Código abierto</span>
-            <span className="text-border">•</span>
+            <span aria-hidden="true">•</span>
             <span>💯 100% gratuito</span>
-            <span className="text-border">•</span>
+            <span aria-hidden="true">•</span>
             <span>🕊️ Sin registro</span>
           </div>
         </section>
