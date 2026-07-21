@@ -42,6 +42,10 @@ const CATEGORY_META: Record<EntityCategory, { label: string; icon: string }> = {
   videoGame: { label: "Videojuegos", icon: "🎮" },
   anime: { label: "Anime", icon: "🇯🇵" },
   comic: { label: "Comics", icon: "🦸" },
+  historicalEvent: { label: "Eventos históricos", icon: "📜" },
+  color: { label: "Colores", icon: "🎨" },
+  crystal: { label: "Cristales", icon: "💎" },
+  deity: { label: "Deidades", icon: "✨" },
 };
 
 export default function EntitySearch({ userBirthDate, category = "country", onSelectEntity, selectedEntity }: EntitySearchProps) {

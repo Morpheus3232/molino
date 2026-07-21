@@ -2,7 +2,7 @@ export { calculateLifePath, getPersonalDay, getPersonalYear, getPersonalDayForDa
 export { getPersonalDay as getPersonalDayEngine, getPersonalYear as getPersonalYearEngine, getPersonalDayForDate as getPersonalDayForDateEngine } from './engines/dateEngine';
 export { ARCHETYPES, ENERGY_TYPES, YEAR_TYPES, COUNTRY_DATA, BRAND_DATA, BAND_DATA, TEAM_DATA, POLITICIAN_DATA, ACTOR_DATA, CUISINE_DATA, CITY_DATA, CELEBRITY_DATA, INTENTION_OPTIONS, SAMPLE_RELATIONS, getCompatibility, CYCLE_YEARS, SYMBOLIC_FRAMEWORKS, getChineseAnimal, getCompatibilityScore, getCompatibilityDescription } from './data';
 export type { Archetype } from './data';
-export { ENTITIES, getEntityById, getEntitiesByCategory } from './data/entities';
+export { ENTITIES, getEntityById, getEntitiesByCategory, EXTENDED_ENTITIES, BOOKS, MOVIES, PHILOSOPHERS, HISTORICAL_EVENTS, CITIES, FOODS, COLORS, CRYSTALS, DEITIES, entities } from './data/entities';
 export type { EntityProfile, EntityCategory } from './data/entities';
 export { getChineseZodiac } from './data/chineseNewYearDates';
 export { ARCHETYPE_DESCRIPTIONS, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, getArchetypeInfo, calculateNumerologyCompatibility } from './engines/numerologyEngine';
