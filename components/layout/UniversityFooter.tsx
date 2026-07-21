@@ -24,9 +24,9 @@ export default function UniversityFooter() {
           <div>
             <h4 className="text-sm font-semibold text-[#1F2937]">Enlaces</h4>
             <ul className="mt-2 space-y-1 text-sm text-[#6B7280]">
-              <li><a href="#" className="hover:text-[#1F2937]">GitHub</a></li>
-              <li><a href="#" className="hover:text-[#1F2937]">Documentación</a></li>
-              <li><a href="#" className="hover:text-[#1F2937]">Biblioteca Pública</a></li>
+              <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-[#1F2937]">GitHub</a></li>
+              <li><a href="/biblioteca" className="hover:text-[#1F2937]">Documentación</a></li>
+              <li><a href="/biblioteca" className="hover:text-[#1F2937]">Biblioteca Pública</a></li>
             </ul>
           </div>
         </div>

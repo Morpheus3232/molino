@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function MethodologySection() {
   return (
     <section id="metodologia" className="py-16 bg-[#F8F9FA]">
@@ -56,7 +58,7 @@ export default function MethodologySection() {
             <p className="flex items-center gap-2">
               <span className="text-[#D4A843]">📖</span>
               <span>
-                Todas las fuentes están disponibles en la <a href="#" className="text-[#1F2937] underline">Biblioteca Pública</a>.
+                Todas las fuentes están disponibles en la <Link href="/biblioteca" className="text-[#1F2937] underline">Biblioteca Pública</Link>.
               </span>
             </p>
           </div>

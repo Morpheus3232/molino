@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function OpenSourceSection() {
   return (
     <section id="codigo" className="py-16">
@@ -14,29 +16,31 @@ export default function OpenSourceSection() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
             <a
-              href="#"
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
             >
               <div className="text-3xl mb-2">📂</div>
               <p className="font-medium text-[#1F2937]">Repositorio</p>
               <p className="text-xs text-[#6B7280] mt-1">Ver código en GitHub</p>
             </a>
-            <a
-              href="#"
+            <Link
+              href="/biblioteca"
               className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
             >
               <div className="text-3xl mb-2">📄</div>
               <p className="font-medium text-[#1F2937]">Documentación</p>
               <p className="text-xs text-[#6B7280] mt-1">Cómo contribuir</p>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/biblioteca"
               className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
             >
               <div className="text-3xl mb-2">🛠️</div>
               <p className="font-medium text-[#1F2937]">API Pública</p>
               <p className="text-xs text-[#6B7280] mt-1">Usa los datos libremente</p>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

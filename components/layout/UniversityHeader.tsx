@@ -12,16 +12,13 @@ export default function UniversityHeader() {
             🌾 Molino
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-[#6B7280]">
-            <Link href="/#conocimiento" className="hover:text-[#1F2937] transition-colors">
-              Conocimiento
-            </Link>
             <Link href="/#metodologia" className="hover:text-[#1F2937] transition-colors">
               Metodología
             </Link>
             <Link href="/#codigo" className="hover:text-[#1F2937] transition-colors">
               Código
             </Link>
-            <Link href="/#biblioteca" className="hover:text-[#1F2937] transition-colors">
+            <Link href="/biblioteca" className="hover:text-[#1F2937] transition-colors">
               Biblioteca
             </Link>
           </nav>
