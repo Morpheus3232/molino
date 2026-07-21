@@ -4,12 +4,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
+  asChild?: boolean;
 }
 
 export default function Button({
   variant = "primary",
   size = "md",
   fullWidth = false,
+  asChild = false,
   className = "",
   children,
   ...props
@@ -29,6 +31,13 @@ export default function Button({
   };
 
   const widthClass = fullWidth ? "w-full" : "";
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      className: `${baseStyles} ${variants[variant]} ${sizes[size]} ${widthClass} ${className} ${(children as any).props.className || ""}`,
+      ...props,
+    });
+  }
 
   return (
     <button
