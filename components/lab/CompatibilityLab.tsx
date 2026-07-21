@@ -1,0 +1,160 @@
+"use client";
+
+import { useMemo, lazy, Suspense } from "react";
+import { motion } from "framer-motion";
+import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import { CompatibilityResult, UserProfile } from "@/lib/engines/compatibilityEngine";
+import { ENTITIES } from "@/lib/data/entities";
+import { useAuthSession } from "@/hooks/useAuthSession";
+import { saveComparison, removeComparison } from "@/lib/auth/userService";
+import ScoreDisplay from "./ScoreDisplay";
+
+const AIInterpretation = lazy(() => import('./AIInterpretation'));
+
+interface CompatibilityLabProps {
+  user: UserProfile;
+  entity: any;
+  template?: string;
+}
+
+export default function CompatibilityLab({ user, entity, template }: CompatibilityLabProps) {
+  const result = useMemo(() => calculateCompatibility(user, entity), [user, entity]);
+  const { session, refreshSession } = useAuthSession();
+
+  const getScoreColor = (score: number): string => {
+    if (score >= 80) return "text-green-600 bg-green-50";
+    if (score >= 60) return "text-blue-600 bg-blue-50";
+    if (score >= 40) return "text-yellow-600 bg-yellow-50";
+    return "text-red-600 bg-red-50";
+  };
+
+  const getScoreLabel = (score: number): string => {
+    if (score >= 80) return "Excelente";
+    if (score >= 60) return "Buena";
+    if (score >= 40) return "Moderada";
+    return "Baja";
+  };
+
+  const isSaved = () => {
+    return session?.user.savedComparisons.includes(entity.id) || false;
+  };
+
+  const handleToggleSave = async () => {
+    if (!session?.user.id) return;
+    if (isSaved()) {
+      await removeComparison(session.user.id, entity.id);
+    } else {
+      await saveComparison(session.user.id, entity.id);
+    }
+    refreshSession();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h1 className="font-serif text-2xl font-bold text-gray-900">
+          Compatibilidad con {entity.name}
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Análisis integrado de numerología, astrología y zodiaco chino
+        </p>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Compatibilidad general</p>
+            <ScoreDisplay score={result.scores.overall} label={getScoreLabel(result.scores.overall)} size="lg" />
+            <p className="text-sm text-gray-500">{getScoreLabel(result.scores.overall)}</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-20 h-20 rounded-full flex items-center justify-center text-2xl">
+              {entity.emoji || entity.flag || "⭐"}
+            </div>
+            {session?.user.id && (
+              <button
+                onClick={handleToggleSave}
+                className="text-2xl"
+              >
+                {isSaved() ? "❤️" : "🤍"}
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl bg-gray-50 p-3">
+            <p className="text-xs text-gray-400 mb-1">Numerología</p>
+            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.numerology)}`}>
+              {result.scores.numerology}%
+            </div>
+          </div>
+          <div className="rounded-xl bg-gray-50 p-3">
+            <p className="text-xs text-gray-400 mb-1">Astrología occidental</p>
+            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.westernAstrology)}`}>
+              {result.scores.westernAstrology}%
+            </div>
+          </div>
+          <div className="rounded-xl bg-gray-50 p-3">
+            <p className="text-xs text-gray-400 mb-1">Zodiaco chino</p>
+            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.chineseAstrology)}`}>
+              {result.scores.chineseAstrology}%
+            </div>
+          </div>
+          <div className="rounded-xl bg-gray-50 p-3">
+            <p className="text-xs text-gray-400 mb-1">Elementos</p>
+            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.element)}`}>
+              {result.scores.element}%
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      <Suspense fallback={<div className="animate-pulse h-32 bg-gray-200 dark:bg-gray-700 rounded-xl" />}>
+        <AIInterpretation user={user} target={entity} result={result} template={template} />
+      </Suspense>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+      >
+        <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">💪 Fortalezas</h3>
+        <div className="flex flex-wrap gap-2">
+          {result.strengths.map((strength, index) => (
+            <span
+              key={index}
+              className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700"
+            >
+              {strength}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+      >
+        <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">⚠️ Desafíos</h3>
+        <div className="flex flex-wrap gap-2">
+          {result.challenges.map((challenge, index) => (
+            <span
+              key={index}
+              className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700"
+            >
+              {challenge}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}

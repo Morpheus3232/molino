@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUserProfile, type UserProfile } from "@/lib/storage/userProfile";
+import { getSession, isSessionValid } from "@/lib/storage/ephemeral";
+import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { ENTITIES, EntityProfile } from "@/lib/data/entities";
 import { ARCHETYPES } from "@/lib/data";
 import CompatibilityExplorer from "@/components/explore/CompatibilityExplorer";
@@ -28,17 +30,25 @@ const CATEGORIES = [
   { id: "dessert", label: "Dulces", icon: "🍫" },
 ];
 
+function getOrCreateProfile(): UserProfile | null {
+  const existing = getSession();
+  if (existing && isSessionValid()) {
+    return calculateUserProfile(existing.name, existing.birthDate);
+  }
+  return null;
+}
+
 export default function ExplorePage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(getOrCreateProfile);
 
   useEffect(() => {
-    const savedProfile = getUserProfile();
-    if (!savedProfile) {
+    const current = getOrCreateProfile();
+    if (!current) {
       router.push("/");
       return;
     }
-    setProfile(savedProfile);
+    setProfile(current);
   }, [router]);
 
   if (!profile) {

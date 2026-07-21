@@ -1,0 +1,18 @@
+export { calculateLifePath, getPersonalDay, getPersonalYear, getPersonalDayForDate, reduceToSingleDigit, getZodiacSign, getMoonPhase, getPlanetaryPositions } from './calculations';
+export { getPersonalDay as getPersonalDayEngine, getPersonalYear as getPersonalYearEngine, getPersonalDayForDate as getPersonalDayForDateEngine } from './engines/dateEngine';
+export { ARCHETYPES, ENERGY_TYPES, YEAR_TYPES, COUNTRY_DATA, BRAND_DATA, BAND_DATA, TEAM_DATA, POLITICIAN_DATA, ACTOR_DATA, CUISINE_DATA, CITY_DATA, CELEBRITY_DATA, INTENTION_OPTIONS, SAMPLE_RELATIONS, getCompatibility, CYCLE_YEARS, SYMBOLIC_FRAMEWORKS, getChineseAnimal, getCompatibilityScore, getCompatibilityDescription } from './data';
+export type { Archetype } from './data';
+export { ENTITIES, getEntityById, getEntitiesByCategory } from './data/entities';
+export type { EntityProfile, EntityCategory } from './data/entities';
+export { getChineseZodiac } from './data/chineseNewYearDates';
+export { ARCHETYPE_DESCRIPTIONS, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, getArchetypeInfo, calculateNumerologyCompatibility } from './engines/numerologyEngine';
+export type { NumerologyProfile } from './engines/numerologyEngine';
+export { calculateCompatibility } from './engines/compatibilityEngine';
+export type { CompatibilityResult, UserProfile, CompatibilityScore } from './engines/compatibilityEngine';
+export { getSunSign, getSunSignInfo, getElement, getModality, calculateElementCompatibility } from './engines/astrologyEngine';
+export { getChineseZodiac as getChineseZodiacEngine, getChineseZodiacInfo, getChineseElement, getChineseAnimal as getChineseAnimalEngine, calculateChineseCompatibility } from './engines/chineseZodiacEngine';
+export { getChineseZodiac as getRealChineseZodiac } from './data/chineseNewYearDates';
+export { generateAIInterpretation, generateSEOInterpretation } from './engines/aiEngine';
+export type { AIInterpretation } from './engines/aiEngine';
+export { loginUser, registerUser, getSession, logoutUser, saveComparison, removeComparison, saveEntity, removeEntity } from './auth/userService';
+export type { User, AuthSession } from './auth/userService';

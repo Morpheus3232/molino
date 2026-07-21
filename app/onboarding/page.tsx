@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { saveSession } from "@/lib/storage/ephemeral";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function OnboardingPage() {
     try {
       const birthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
       const calculated = calculateUserProfile(name.trim(), birthDate);
+      saveSession({ name: calculated.name, birthDate: calculated.birthDate });
       setProfile(calculated);
     } catch (err) {
       console.error(err);

@@ -2,22 +2,32 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUserProfile, type UserProfile } from "@/lib/storage/userProfile";
+import { getSession, isSessionValid } from "@/lib/storage/ephemeral";
+import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { getSunSignSymbol } from "@/lib/engines/astrologyEngine";
 import { ARCHETYPES } from "@/lib/data";
 
+function getOrCreateProfile(): UserProfile | null {
+  const existing = getSession();
+  if (existing && isSessionValid()) {
+    return calculateUserProfile(existing.name, existing.birthDate);
+  }
+  return null;
+}
+
 export default function ProfilePage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(getOrCreateProfile);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedProfile = getUserProfile();
-    if (!savedProfile) {
+    const current = getOrCreateProfile();
+    if (!current) {
       router.push("/");
       return;
     }
-    setProfile(savedProfile);
+    setProfile(current);
     setIsLoading(false);
   }, [router]);
 
