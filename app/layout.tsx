@@ -17,11 +17,11 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Molino — Identity & Compatibility Lab",
-  description: "Explorá patrones de identidad y compatibilidad a través de sistemas simbólicos estructurados.",
+  title: "Molino — Universidad Pública de Libre Acceso",
+  description: "Universidad Pública de Libre Acceso. Código abierto, sin registro, sin rastreo. Explorá sistemas simbólicos de forma transparente.",
   openGraph: {
-    title: "Molino — Identity & Compatibility Lab",
-    description: "Explorá tu identidad a través de numerología, astrología y zodiaco chino.",
+    title: "Molino — Universidad Pública de Libre Acceso",
+    description: "El conocimiento simbólico es patrimonio de la humanidad. Código abierto, sin registro, sin rastreo.",
     type: "website",
     url: "https://molino.app",
     images: [
@@ -29,14 +29,14 @@ export const metadata: Metadata = {
         url: "https://molino.app/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Molino — Identity & Compatibility Lab",
+        alt: "Molino — Universidad Pública de Libre Acceso",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Identity & Compatibility Lab",
-    description: "Explorá tu identidad a través de sistemas simbólicos estructurados.",
+    title: "Molino — Universidad Pública de Libre Acceso",
+    description: "Código abierto, sin registro, sin rastreo. Explorá sistemas simbólicos de forma transparente.",
   },
   icons: {
     icon: "/favicon.ico",
