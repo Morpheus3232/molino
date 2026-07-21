@@ -36,7 +36,7 @@ export default function OnboardingPage() {
       const birthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
       const calculated = calculateUserProfile(name.trim(), birthDate);
       saveSession({ name: calculated.name, birthDate: calculated.birthDate });
-      router.push("/portal");
+      router.push("/profile");
     } catch (err) {
       console.error(err);
       setError("Hubo un error generando tu perfil. Intentá de nuevo.");
