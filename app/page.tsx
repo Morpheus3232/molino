@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUserProfile } from "@/lib/storage/userProfile";
 import ThemeToggle from "@/components/ThemeToggle";
+import { getSunSignSymbol } from "@/lib/engines/astrologyEngine";
 
 // ============================================
-// FUNCIONES DE CÁLCULO DEL DÍA
+// FUNCIONES DE CÁLCULO DEL DÍA (CORREGIDAS)
 // ============================================
 
 function getCurrentDayNumber(): number {
   const today = new Date();
-  const str = `${today.getDate()}${today.getMonth() + 1}${today.getFullYear()}`;
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  // Suma todos los dígitos
+  const str = `${day}${month}${year}`;
   let sum = 0;
   for (const char of str) sum += parseInt(char, 10);
   return sum;
@@ -26,6 +31,22 @@ function reduceToDigit(num: number): number {
     if (num === 11 || num === 22 || num === 33) return num;
   }
   return num;
+}
+
+// Desglose del cálculo para mostrar
+function getDayCalculation(today: Date): { steps: string[]; result: number } {
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+  const str = `${day}${month}${year}`;
+  let sum = 0;
+  const digits = str.split('').map(Number);
+  sum = digits.reduce((acc, d) => acc + d, 0);
+  const reduced = reduceToDigit(sum);
+  return {
+    steps: [`${day} + ${month} + ${year} = ${day + month + year} → ${sum} → ${reduced}`],
+    result: reduced
+  };
 }
 
 function getDayMeaning(num: number): { name: string; description: string; color: string; gradient: string } {
@@ -82,6 +103,7 @@ export default function Home() {
   const dayOfWeek = today.toLocaleDateString('es-ES', { weekday: 'long' });
   const formattedDate = today.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   const chineseYear = getChineseYearInfo(today.getFullYear());
+  const dayCalc = getDayCalculation(today);
 
   const numbers = [
     { num: 1, name: "El Líder", element: "Fuego", color: "#D4A843" },
@@ -170,7 +192,7 @@ export default function Home() {
             <p className="text-sm opacity-80 max-w-xs mt-2">{dayMeaning.description}</p>
           </div>
           <div className="mt-4 pt-4 border-t border-white/20 text-xs opacity-70 font-mono relative z-10">
-            {today.getDate()} + {today.getMonth() + 1} + {today.getFullYear()} = {today.getDate() + today.getMonth() + 1 + today.getFullYear()} → {dayNumber}
+            {dayCalc.steps.join(' → ')}
           </div>
           <div className="mt-3 flex justify-center gap-4 text-xs opacity-70 relative z-10">
             <span>{chineseYear.emoji} {chineseYear.animal} de {chineseYear.element}</span>
