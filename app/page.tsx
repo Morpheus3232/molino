@@ -172,7 +172,7 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-6 py-12 pb-24">
+      <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-12 pb-24">
         <div className="text-center max-w-4xl mx-auto mb-16">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-[#1F2937] leading-tight">
             Astrología &amp; Numerología<br/>integradas
