@@ -59,6 +59,43 @@ function getChineseYearInfo(year: number) {
   };
 }
 
+function getPersonalYear(birthDate: string): number {
+  if (!birthDate) return 0;
+  const [year, month, day] = birthDate.split('-').map(Number);
+  const today = new Date();
+  const currentYear = today.getFullYear();
+
+  const sum = day + month + currentYear;
+
+  let reduced = sum;
+  if (reduced === 11 || reduced === 22 || reduced === 33) return reduced;
+  while (reduced > 9) {
+    let temp = 0;
+    for (const char of String(reduced)) temp += parseInt(char, 10);
+    reduced = temp;
+    if (reduced === 11 || reduced === 22 || reduced === 33) return reduced;
+  }
+  return reduced;
+}
+
+function getPersonalYearMeaning(num: number): { name: string; description: string } {
+  const meanings: Record<number, any> = {
+    1: { name: "Nuevos Comienzos", description: "Es el año para iniciar proyectos y tomar el liderazgo." },
+    2: { name: "Cooperación", description: "Año para construir relaciones y asociaciones." },
+    3: { name: "Expresión", description: "Año para crear, comunicar y compartir tu arte." },
+    4: { name: "Construcción", description: "Año para trabajar duro y establecer bases sólidas." },
+    5: { name: "Cambio", description: "Año para liberarte, viajar y explorar nuevas oportunidades." },
+    6: { name: "Responsabilidad", description: "Año para enfocarte en el hogar, la familia y el servicio." },
+    7: { name: "Introspección", description: "Año para reflexionar, estudiar y conectar con tu interior." },
+    8: { name: "Manifestación", description: "Año para lograr metas, poder y abundancia." },
+    9: { name: "Cierre", description: "Año para finalizar ciclos y prepararte para nuevos comienzos." },
+    11: { name: "Iluminación", description: "Año de intuición elevada y despertar espiritual." },
+    22: { name: "Construcción Maestra", description: "Año para materializar grandes visiones." },
+    33: { name: "Amor Universal", description: "Año de servicio y compasión." },
+  };
+  return meanings[num] || { name: "Energía", description: "Conectá con tu energía personal." };
+}
+
 // ============================================
 // COMPONENTE PRINCIPAL
 // ============================================
@@ -184,6 +221,25 @@ export default function Home() {
             <span>{chineseYear.emoji} {chineseYear.animal} de {chineseYear.element}</span>
           </div>
         </div>
+
+        {profile && (
+          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8 text-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">
+              TU AÑO PERSONAL
+            </p>
+            <div className="mt-2">
+              <span className="inline-block text-5xl font-serif font-bold text-[#D4A843]">
+                {getPersonalYear(profile.birthDate)}
+              </span>
+            </div>
+            <h3 className="text-xl font-serif font-semibold text-[#1F2937] mt-1">
+              {getPersonalYearMeaning(getPersonalYear(profile.birthDate)).name}
+            </h3>
+            <p className="text-[#6B7280] text-sm mt-2 max-w-xs mx-auto">
+              {getPersonalYearMeaning(getPersonalYear(profile.birthDate)).description}
+            </p>
+          </div>
+        )}
 
         {/* ============================================ */}
         {/* STATS */}
