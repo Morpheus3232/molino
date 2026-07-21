@@ -36,7 +36,7 @@ export default function OnboardingPage() {
       const birthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
       const calculated = calculateUserProfile(name.trim(), birthDate);
       saveSession({ name: calculated.name, birthDate: calculated.birthDate });
-      setProfile(calculated);
+      router.push("/portal");
     } catch (err) {
       console.error(err);
       setError("Hubo un error generando tu perfil. Intentá de nuevo.");
@@ -52,34 +52,8 @@ export default function OnboardingPage() {
   }
 
   if (profile) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-[#F8F9FA] to-[#EDEFF2]">
-        <div className="max-w-[640px] mx-auto px-6 py-12">
-          <div className="text-center mb-8">
-            <h1 className="font-serif text-3xl font-bold text-foreground mb-2">🌾 Molino</h1>
-            <p className="text-sm text-muted">Tu análisis sin guardar datos</p>
-          </div>
-
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center space-y-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">NOMBRE</p>
-              <p className="text-xl font-semibold text-[#1F2937]">{profile.name}</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">FECHA DE NACIMIENTO</p>
-              <p className="text-xl font-semibold text-[#1F2937]">{profile.birthDate}</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">LIFE PATH</p>
-              <p className="text-5xl font-serif font-bold text-[#D4A843]">{profile.lifePath}</p>
-            </div>
-            <p className="text-xs text-[#9CA3AF] text-center mt-4">
-              Esta sesión es efímera. No guardamos nada.
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    router.push("/portal");
+    return null;
   }
 
   return (

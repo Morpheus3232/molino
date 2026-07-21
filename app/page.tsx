@@ -146,23 +146,10 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { value: "50K+", label: "Análisis realizados" },
-                { value: "4.9★", label: "Valoración media" },
-                { value: "100%", label: "Gratuito y libre" },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 text-center">
-                  <p className="text-xl font-semibold text-[#1F2937]">{stat.value}</p>
-                  <p className="text-xs text-[#6B7280]">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
             <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
               <h2 className="text-2xl font-serif font-semibold text-[#1F2937]">Accedé al conocimiento simbólico</h2>
-              <p className="text-[#6B7280] text-sm mt-2">Sin registro. Sin datos guardados. Sin restricciones.</p>
-              <button onClick={() => router.push("/onboarding")} className="mt-6 w-full py-4 bg-[#1F2937] text-white rounded-full hover:bg-[#374151] transition-colors font-medium text-sm">Comenzar exploración</button>
+              <p className="text-[#6B7280] text-sm mt-2">Entrá al portal con tu nombre y fecha de nacimiento. Sin registro. Sin datos guardados.</p>
+              <button onClick={() => router.push("/onboarding")} className="mt-6 w-full py-4 bg-[#1F2937] text-white rounded-full hover:bg-[#374151] transition-colors font-medium text-sm">Abrir portal de datos</button>
               <p className="text-xs text-[#9CA3AF] text-center mt-4">Todo se calcula en tu navegador. No guardamos nada.</p>
             </div>
           </div>
