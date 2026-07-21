@@ -120,7 +120,14 @@ export default function Home() {
   const formattedDate = today.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   const chineseYear = getChineseYearInfo(today.getFullYear());
 
-  const numbers = [
+  const testimonials: { name: string; text: string }[] = [
+    { name: "María G.", text: "Increíblemente preciso. El número de mi misión de vida resuena profundamente con lo que siempre sentí." },
+    { name: "Carlos R.", text: "La compatibilidad con mi pareja fue reveladora. Nos ayudó a entendernos mucho mejor." },
+    { name: "Lucía M.", text: "Uso el número del día cada mañana. Es como tener un horóscopo personalizado basado en matemáticas." },
+    { name: "Andrés P.", text: "El diseño es hermoso y la privacidad es total. Ninguna app de astrología se compara." },
+  ];
+
+  const numbers: { num: number; name: string; element: string; color: string }[] = [
     { num: 1, name: "El Líder", element: "Fuego", color: "#D4A843" },
     { num: 2, name: "El Diplomático", element: "Agua", color: "#E8B4B8" },
     { num: 3, name: "El Comunicador", element: "Aire", color: "#FF8C42" },
@@ -130,13 +137,6 @@ export default function Home() {
     { num: 7, name: "El Buscador", element: "Agua", color: "#4A5568" },
     { num: 8, name: "El Ejecutivo", element: "Tierra", color: "#6B4C7A" },
     { num: 9, name: "El Misterio", element: "Éter", color: "#2E5C8A" },
-  ];
-
-  const testimonials = [
-    { name: "María G.", text: "Increíblemente preciso. El número de mi misión de vida resuena profundamente con lo que siempre sentí." },
-    { name: "Carlos R.", text: "La compatibilidad con mi pareja fue reveladora. Nos ayudó a entendernos mucho mejor." },
-    { name: "Lucía M.", text: "Uso el número del día cada mañana. Es como tener un horóscopo personalizado basado en matemáticas." },
-    { name: "Andrés P.", text: "El diseño es hermoso y la privacidad es total. Ninguna app de astrología se compara." },
   ];
 
   if (isLoading) {

@@ -37,6 +37,16 @@ export default function ProfilePage() {
       ? getSunSignSymbol(profile.birthDate)
       : "";
 
+  const keywords = Array.isArray(archetypeData?.keywords)
+    ? archetypeData.keywords
+    : [];
+  const strengths = Array.isArray(archetypeData?.strengths)
+    ? archetypeData.strengths
+    : [];
+  const challenges = Array.isArray(archetypeData?.challenges)
+    ? archetypeData.challenges
+    : [];
+
   return (
     <div className="max-w-2xl mx-auto px-6 py-12">
       <div className="text-center mb-16">
@@ -50,7 +60,7 @@ export default function ProfilePage() {
           {profile.lifePath}
         </div>
         <p className="text-[var(--muted)] tracking-wide">
-          {archetypeData.keywords.join(' · ')}
+          {keywords.join(' · ')}
         </p>
       </div>
 
@@ -100,7 +110,7 @@ export default function ProfilePage() {
           Tu Fortaleza
         </h2>
         <div className="flex flex-wrap gap-3">
-          {archetypeData.strengths.map((strength: string) => (
+          {strengths.map((strength: string) => (
             <span
               key={strength}
               className="px-4 py-2 bg-[var(--background)] border border-[var(--border)] rounded-full text-sm"
@@ -116,7 +126,7 @@ export default function ProfilePage() {
           Tu Desafío
         </h2>
         <div className="flex flex-wrap gap-3">
-          {archetypeData.challenges.map((challenge: string) => (
+          {challenges.map((challenge: string) => (
             <span
               key={challenge}
               className="px-4 py-2 bg-[var(--background)] border border-[var(--border)] rounded-full text-sm text-[var(--muted)]"
