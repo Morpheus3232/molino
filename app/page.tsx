@@ -173,7 +173,7 @@ export default function Home() {
       </header>
 
       <div className="max-w-7xl mx-auto px-6 py-12 pb-24">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-4xl mx-auto mb-16">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-[#1F2937] leading-tight">
             Astrología &amp; Numerología<br/>integradas
           </h1>
@@ -189,7 +189,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           <div className="space-y-8">
             <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 text-center">
               <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280] font-medium">NÚMERO DEL DÍA · {dayOfWeek}, {formattedDate}</p>
