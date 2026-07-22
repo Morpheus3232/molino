@@ -25,8 +25,8 @@ export default function CalendarSection({ birthDay, birthMonth, birthYear }: Cal
   return (
     <SectionCard delay={0.15}>
       <div className="mb-4">
-        <h3 className="font-serif text-lg font-semibold text-gray-900">Próximos 7 días</h3>
-        <p className="text-xs text-gray-500">Tu energía personal por día</p>
+        <h3 className="font-serif text-lg font-semibold text-foreground">Próximos 7 días</h3>
+        <p className="text-xs text-muted">Tu energía personal por día</p>
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
@@ -39,19 +39,19 @@ export default function CalendarSection({ birthDay, birthMonth, birthYear }: Cal
             transition={{ delay: index * 0.06 }}
             className={`flex-shrink-0 w-[72px] rounded-xl p-3 text-center transition ${
               day.isToday
-                ? "bg-gray-900 text-white shadow-md"
-                : "bg-gray-50 text-gray-700"
+                ? "bg-foreground text-background shadow-md"
+                : "bg-background text-muted"
             }`}
           >
-            <p className={`text-[10px] font-medium uppercase ${day.isToday ? "text-gray-300" : "text-gray-400"}`}>
+            <p className={`text-[10px] font-medium uppercase ${day.isToday ? "text-background/70" : "text-muted"}`}>
               {day.isToday ? "Hoy" : getShortDayName(day.date)}
             </p>
             <p className="text-lg font-semibold my-1">{day.date.getDate()}</p>
             <div
               className="mx-auto h-2 w-2 rounded-full mb-1"
-              style={{ backgroundColor: day.isToday ? "white" : day.energy.color }}
+              style={{ backgroundColor: day.isToday ? "var(--color-accent)" : day.energy.color }}
             />
-            <p className={`text-[10px] leading-tight ${day.isToday ? "text-gray-300" : "text-gray-500"}`}>
+            <p className={`text-[10px] leading-tight ${day.isToday ? "text-background/70" : "text-muted"}`}>
               {day.energy.name}
             </p>
           </motion.div>

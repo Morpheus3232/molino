@@ -26,10 +26,10 @@ export default function ArchetypeHero({ archetype }: ArchetypeHeroProps) {
           {archetype.name.split(" ").pop()?.charAt(0)}
         </span>
       </motion.div>
-      <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900">
+      <h1 className="font-serif text-3xl font-bold tracking-tight text-foreground">
         {archetype.name}
       </h1>
-      <p className="mt-2 text-sm text-gray-500">
+      <p className="mt-2 text-sm text-muted">
         {archetype.keywords.join(" · ")}
       </p>
     </motion.div>

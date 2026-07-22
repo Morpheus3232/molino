@@ -23,7 +23,7 @@ export default function AnimatedHero({ number, name, description, color, gradien
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-2xl p-6 shadow-lg border border-black/[0.06]"
+      className="relative overflow-hidden rounded-2xl p-6 shadow-lg border border-border"
       style={backgroundStyle}
     >
       <div className="flex items-center gap-4">

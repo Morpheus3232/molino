@@ -30,10 +30,10 @@ export default function BusinessSection({ archetype }: BusinessSectionProps) {
   return (
     <SectionCard delay={0.25}>
       <div className="mb-4 flex items-center gap-2">
-        <Briefcase size={18} className="text-gray-400" />
+        <Briefcase size={18} className="text-muted" />
         <div>
-          <h3 className="font-serif text-lg font-semibold text-gray-900">Negocios & Marca</h3>
-          <p className="text-xs text-gray-500">Tu estilo profesional</p>
+          <h3 className="font-serif text-lg font-semibold text-foreground">Negocios & Marca</h3>
+          <p className="text-xs text-muted">Tu estilo profesional</p>
         </div>
       </div>
 
@@ -47,11 +47,11 @@ export default function BusinessSection({ archetype }: BusinessSectionProps) {
         <p className="text-xs font-medium uppercase tracking-wider mb-1" style={{ color: archetype.color }}>
           Estilo
         </p>
-        <p className="font-serif text-lg font-semibold text-gray-900">{insight.style}</p>
+        <p className="font-serif text-lg font-semibold text-foreground">{insight.style}</p>
       </motion.div>
 
       <div className="mb-4">
-        <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+        <p className="text-xs font-medium uppercase tracking-wider text-muted mb-2">
           Fortalezas clave
         </p>
         <div className="flex flex-wrap gap-2">
@@ -62,7 +62,7 @@ export default function BusinessSection({ archetype }: BusinessSectionProps) {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="rounded-full px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700"
+              className="rounded-full px-3 py-1 text-xs font-medium bg-background text-foreground"
             >
               {s}
             </motion.span>
@@ -70,23 +70,23 @@ export default function BusinessSection({ archetype }: BusinessSectionProps) {
         </div>
       </div>
 
-      <div className="flex items-start gap-2 rounded-xl bg-gray-50 p-3">
-        <Sparkles size={16} className="text-gray-400 mt-0.5 flex-shrink-0" />
+      <div className="flex items-start gap-2 rounded-xl bg-background p-3">
+        <Sparkles size={16} className="text-muted mt-0.5 flex-shrink-0" />
         <div>
-          <p className="text-xs font-medium text-gray-500 mb-0.5">Ideal para</p>
-          <p className="text-sm text-gray-700">{insight.ideal}</p>
+          <p className="text-xs font-medium text-muted mb-0.5">Ideal para</p>
+          <p className="text-sm text-foreground">{insight.ideal}</p>
         </div>
       </div>
 
       <div className="mt-4">
-        <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-2">
+        <p className="text-xs font-medium uppercase tracking-wider text-muted mb-2">
           Carreras resonantes
         </p>
         <div className="flex flex-wrap gap-1.5">
           {archetype.careers.slice(0, 6).map((career) => (
             <span
               key={career}
-              className="rounded-lg border border-gray-200 px-2.5 py-1 text-xs text-gray-600"
+              className="rounded-lg border border-border px-2.5 py-1 text-xs text-muted"
             >
               {career}
             </span>

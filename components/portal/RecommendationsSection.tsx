@@ -56,17 +56,17 @@ export default function RecommendationsSection({ profile }: RecommendationsSecti
     .slice(0, 6);
 
   return (
-    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8">
-      <h2 className="font-serif text-2xl font-semibold text-[#1F2937] mb-4">🌟 Recomendaciones para ti</h2>
-      <p className="text-sm text-[#6B7280] mb-6">Basado en tu animal chino: <strong>{userAnimal}</strong></p>
+    <div className="bg-card rounded-3xl shadow-sm border border-border p-6 sm:p-8">
+      <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">🌟 Recomendaciones para ti</h2>
+      <p className="text-sm text-muted mb-6">Basado en tu animal chino: <strong>{userAnimal}</strong></p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {all.map((item) => (
-          <div key={item.name} className="bg-[#F8F9FA] rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
+          <div key={item.name} className="bg-background rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
             <div className="text-3xl mb-2">{item.flagOrLogo}</div>
-            <p className="text-sm font-medium text-[#1F2937]">{item.name}</p>
-            <p className="text-xs text-[#6B7280]">{item.category}</p>
-            <p className="text-lg font-bold mt-2 text-[#D4A843]">{item.score}%</p>
+            <p className="text-sm font-medium text-foreground">{item.name}</p>
+            <p className="text-xs text-muted">{item.category}</p>
+            <p className="text-lg font-bold mt-2 text-accent">{item.score}%</p>
           </div>
         ))}
       </div>

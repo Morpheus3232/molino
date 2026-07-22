@@ -28,20 +28,20 @@ export default function LibrarySection({ profile, knowledge }: LibrarySectionPro
     .map((s: any) => s.name);
 
   return (
-    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8">
-      <h2 className="font-serif text-2xl font-semibold text-[#1F2937] mb-4">📖 Biblioteca pública</h2>
-      <p className="text-sm text-[#6B7280] mb-6">
+    <div className="bg-card rounded-3xl shadow-sm border border-border p-6 sm:p-8">
+      <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">📖 Biblioteca pública</h2>
+      <p className="text-sm text-muted mb-6">
         Fuentes recomendadas para tu perfil: <strong>{archetype.name}</strong>
       </p>
 
       <div className="space-y-3">
         {recommended.map((book) => (
-          <div key={book.title} className="bg-[#F8F9FA] rounded-2xl p-4 flex items-center justify-between">
+          <div key={book.title} className="bg-background rounded-2xl p-4 flex items-center justify-between">
             <div>
-              <p className="font-medium text-[#1F2937]">"{book.title}"</p>
-              <p className="text-xs text-[#6B7280]">{book.author} · {book.topic}</p>
+              <p className="font-medium text-foreground">"{book.title}"</p>
+              <p className="text-xs text-muted">{book.author} · {book.topic}</p>
             </div>
-            <span className="text-xs bg-white border border-gray-200 rounded-full px-3 py-1 text-[#6B7280]">
+            <span className="text-xs bg-card border border-border rounded-full px-3 py-1 text-muted">
               {book.relevance}
             </span>
           </div>
@@ -49,9 +49,9 @@ export default function LibrarySection({ profile, knowledge }: LibrarySectionPro
       </div>
 
       {compatibleSigns.length > 0 && (
-        <div className="mt-6 p-4 bg-[#F8F9FA] rounded-2xl">
-          <p className="text-sm font-medium text-[#1F2937]">Signos afines: {userSign}</p>
-          <p className="text-xs text-[#6B7280] mt-1">Compatibilidad natural con: {compatibleSigns.join(" y ")}</p>
+        <div className="mt-6 p-4 bg-background rounded-2xl">
+          <p className="text-sm font-medium text-foreground">Signos afines: {userSign}</p>
+          <p className="text-xs text-muted mt-1">Compatibilidad natural con: {compatibleSigns.join(" y ")}</p>
         </div>
       )}
     </div>

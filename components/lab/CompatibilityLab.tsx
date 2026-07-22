@@ -52,10 +52,10 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="font-serif text-2xl font-bold text-gray-900">
+        <h1 className="font-serif text-2xl font-bold text-foreground">
           Compatibilidad con {entity.name}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-muted mt-1">
           Análisis integrado de numerología, astrología y zodiaco chino
         </p>
       </div>
@@ -63,13 +63,13 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">Compatibilidad general</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">Compatibilidad general</p>
             <ScoreDisplay score={result.scores.overall} label={getScoreLabel(result.scores.overall)} size="lg" />
-            <p className="text-sm text-gray-500">{getScoreLabel(result.scores.overall)}</p>
+            <p className="text-sm text-muted">{getScoreLabel(result.scores.overall)}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-20 h-20 rounded-full flex items-center justify-center text-2xl">
@@ -87,26 +87,26 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-xl bg-gray-50 p-3">
-            <p className="text-xs text-gray-400 mb-1">Numerología</p>
+          <div className="rounded-xl bg-background p-3">
+            <p className="text-xs text-muted mb-1">Numerología</p>
             <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.numerology)}`}>
               {result.scores.numerology}%
             </div>
           </div>
-          <div className="rounded-xl bg-gray-50 p-3">
-            <p className="text-xs text-gray-400 mb-1">Astrología occidental</p>
+          <div className="rounded-xl bg-background p-3">
+            <p className="text-xs text-muted mb-1">Astrología occidental</p>
             <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.westernAstrology)}`}>
               {result.scores.westernAstrology}%
             </div>
           </div>
-          <div className="rounded-xl bg-gray-50 p-3">
-            <p className="text-xs text-gray-400 mb-1">Zodiaco chino</p>
+          <div className="rounded-xl bg-background p-3">
+            <p className="text-xs text-muted mb-1">Zodiaco chino</p>
             <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.chineseAstrology)}`}>
               {result.scores.chineseAstrology}%
             </div>
           </div>
-          <div className="rounded-xl bg-gray-50 p-3">
-            <p className="text-xs text-gray-400 mb-1">Elementos</p>
+          <div className="rounded-xl bg-background p-3">
+            <p className="text-xs text-muted mb-1">Elementos</p>
             <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.element)}`}>
               {result.scores.element}%
             </div>
@@ -114,7 +114,7 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         </div>
       </motion.div>
 
-      <Suspense fallback={<div className="animate-pulse h-32 bg-gray-200 dark:bg-gray-700 rounded-xl" />}>
+      <Suspense fallback={<div className="animate-pulse h-32 bg-background rounded-xl" />}>
         <AIInterpretation user={user} target={entity} result={result} template={template} />
       </Suspense>
 
@@ -122,9 +122,9 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">💪 Fortalezas</h3>
+        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">💪 Fortalezas</h3>
         <div className="flex flex-wrap gap-2">
           {result.strengths.map((strength, index) => (
             <span
@@ -141,9 +141,9 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-white rounded-2xl shadow-lg p-5 border border-black/[0.06]"
+        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-gray-900 mb-3">⚠️ Desafíos</h3>
+        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">⚠️ Desafíos</h3>
         <div className="flex flex-wrap gap-2">
           {result.challenges.map((challenge, index) => (
             <span

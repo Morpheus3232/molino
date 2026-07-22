@@ -55,12 +55,12 @@ export default function RelationsSection({ userLifePath }: RelationsSectionProps
       <SectionCard delay={0.2}>
         <div className="mb-4 flex items-center justify-between">
           <div>
-            <h3 className="font-serif text-lg font-semibold text-gray-900">Relaciones</h3>
-            <p className="text-xs text-gray-500">Explorá la dinámica con otros</p>
+            <h3 className="font-serif text-lg font-semibold text-foreground">Relaciones</h3>
+            <p className="text-xs text-muted">Explorá la dinámica con otros</p>
           </div>
           <button
             onClick={() => setShowAdd(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-white transition hover:bg-gray-700"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-background transition hover:bg-accent"
           >
             <Plus size={18} />
           </button>
@@ -79,20 +79,20 @@ export default function RelationsSection({ userLifePath }: RelationsSectionProps
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
                 onClick={() => setSelectedRelation(relation)}
-                className="flex w-full items-center gap-4 rounded-xl bg-gray-50 p-3 text-left transition hover:bg-gray-100"
+                className="flex w-full items-center gap-4 rounded-xl bg-background p-3 text-left transition hover:bg-card"
               >
                 <div
                   className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-medium"
                   style={{
-                    backgroundColor: archetype?.colorLight || "#F3F4F6",
-                    color: archetype?.color || "#4A5568",
+                    backgroundColor: archetype?.colorLight || "var(--color-border)",
+                    color: archetype?.color || "var(--color-muted)",
                   }}
                 >
                   {relation.name.charAt(0)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{relation.name}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="font-medium text-foreground truncate">{relation.name}</p>
+                  <p className="text-xs text-muted">
                     {archetype?.name || `Camino ${relation.lifePath}`}
                   </p>
                 </div>
@@ -128,17 +128,17 @@ export default function RelationsSection({ userLifePath }: RelationsSectionProps
                   { label: "Comunicación", text: compat.communication },
                   { label: "Amistad", text: compat.friendship },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-xl bg-gray-50 p-3">
-                    <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-1">
+                  <div key={item.label} className="rounded-xl bg-background p-3">
+                    <p className="text-xs font-medium uppercase tracking-wider text-muted mb-1">
                       {item.label}
                     </p>
-                    <p className="text-sm text-gray-700">{item.text}</p>
+                    <p className="text-sm text-foreground">{item.text}</p>
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
-                <p className="text-xs font-medium text-amber-700 mb-1">Consejo</p>
-                <p className="text-sm text-amber-800">{compat.advice}</p>
+              <div className="rounded-xl border border-accent/30 bg-accent/5 p-3">
+                <p className="text-xs font-medium text-accent mb-1">Consejo</p>
+                <p className="text-sm text-foreground">{compat.advice}</p>
               </div>
             </div>
           );
@@ -152,7 +152,7 @@ export default function RelationsSection({ userLifePath }: RelationsSectionProps
             placeholder="Nombre"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:border-gray-400 focus:outline-none"
+            className="w-full input"
           />
           <div className="grid grid-cols-3 gap-2">
             <input
@@ -160,26 +160,26 @@ export default function RelationsSection({ userLifePath }: RelationsSectionProps
               placeholder="Día"
               value={newDay}
               onChange={(e) => setNewDay(e.target.value)}
-              className="rounded-xl border border-gray-200 px-3 py-3 text-sm focus:border-gray-400 focus:outline-none"
+              className="input"
             />
             <input
               type="number"
               placeholder="Mes"
               value={newMonth}
               onChange={(e) => setNewMonth(e.target.value)}
-              className="rounded-xl border border-gray-200 px-3 py-3 text-sm focus:border-gray-400 focus:outline-none"
+              className="input"
             />
             <input
               type="number"
               placeholder="Año"
               value={newYear}
               onChange={(e) => setNewYear(e.target.value)}
-              className="rounded-xl border border-gray-200 px-3 py-3 text-sm focus:border-gray-400 focus:outline-none"
+              className="input"
             />
           </div>
           <button
             onClick={handleAdd}
-            className="w-full rounded-xl bg-gray-900 py-3 text-sm font-medium text-white transition hover:bg-gray-700"
+            className="w-full rounded-full bg-foreground py-3 text-sm font-medium text-background transition hover:bg-accent"
           >
             Explorar compatibilidad
           </button>

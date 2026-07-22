@@ -25,7 +25,7 @@ export default function DailyCard({ birthDay, birthMonth, birthYear, energyNumbe
   const planets = useMemo(() => getPlanetaryPositions(today), [today]);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-white p-5 shadow-lg border border-black/[0.06]">
+    <div className="relative overflow-hidden rounded-2xl bg-card p-5 shadow-lg border border-border">
       <div className="flex items-start gap-4">
         <div className="relative flex-shrink-0">
           <motion.div
@@ -42,34 +42,34 @@ export default function DailyCard({ birthDay, birthMonth, birthYear, energyNumbe
           </div>
         </div>
         <div className="flex-1">
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted">
             Energía de hoy
           </p>
-          <h2 className="font-serif text-xl font-semibold text-gray-900">{energy.name}</h2>
-          <p className="mt-1 text-sm text-gray-600 leading-relaxed">{insight}</p>
+          <h2 className="font-serif text-xl font-semibold text-foreground">{energy.name}</h2>
+          <p className="mt-1 text-sm text-muted leading-relaxed">{insight}</p>
 
           {userZodiac && (
             <div className="grid grid-cols-3 gap-2 mt-3">
-              <div className="rounded-xl bg-gray-50 p-2 text-center">
-                <p className="text-[10px] text-gray-400 mb-0.5">Signo</p>
-                <p className="text-xs font-semibold text-gray-900">♋ {userZodiac}</p>
+              <div className="rounded-xl bg-background p-2 text-center">
+                <p className="text-[10px] text-muted mb-0.5">Signo</p>
+                <p className="text-xs font-semibold text-foreground">♋ {userZodiac}</p>
               </div>
-              <div className="rounded-xl bg-gray-50 p-2 text-center">
-                <p className="text-[10px] text-gray-400 mb-0.5">Luna</p>
-                <p className="text-xs font-semibold text-gray-900">
+              <div className="rounded-xl bg-background p-2 text-center">
+                <p className="text-[10px] text-muted mb-0.5">Luna</p>
+                <p className="text-xs font-semibold text-foreground">
                   {moon.emoji} {moon.phase}
                 </p>
               </div>
-              <div className="rounded-xl bg-gray-50 p-2 text-center">
-                <p className="text-[10px] text-gray-400 mb-0.5">Planeta</p>
-                <p className="text-xs font-semibold text-gray-900">
+              <div className="rounded-xl bg-background p-2 text-center">
+                <p className="text-[10px] text-muted mb-0.5">Planeta</p>
+                <p className="text-xs font-semibold text-foreground">
                   {planets[0]?.emoji} {planets[0]?.sign.split(" ")[0]}
                 </p>
               </div>
             </div>
           )}
 
-          <p className="text-[11px] text-gray-400 mt-2">{moon.description}</p>
+          <p className="text-[11px] text-muted mt-2">{moon.description}</p>
         </div>
       </div>
     </div>

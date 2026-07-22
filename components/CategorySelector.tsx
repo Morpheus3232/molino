@@ -20,7 +20,7 @@ export default function CategorySelector({ selected, onSelect }: any) {
           key={cat.id}
           onClick={() => onSelect(cat.id)}
           className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-            selected === cat.id ? 'bg-[#1F2937] text-white' : 'bg-[#F8F9FA] text-[#6B7280] hover:bg-[#E5E7EB]'
+            selected === cat.id ? 'bg-foreground text-background' : 'bg-background text-muted hover:bg-card'
           }`}
         >
           {cat.icon} {cat.label}

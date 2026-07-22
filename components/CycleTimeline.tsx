@@ -39,7 +39,7 @@ export default function CycleTimeline({ birthDay, birthMonth, birthYear }: Cycle
 
   return (
     <div className="relative pl-6">
-      <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-gray-200" />
+      <div className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-border" />
       {displayEvents.map((event, index) => (
         <motion.div
           key={event.year}
@@ -54,10 +54,10 @@ export default function CycleTimeline({ birthDay, birthMonth, birthYear }: Cycle
             whileInView={{ scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 + 0.2, type: "spring" }}
-            className="absolute -left-6 top-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-gray-800 shadow"
+            className="absolute -left-6 top-1 h-3.5 w-3.5 rounded-full border-2 border-background bg-foreground shadow"
           />
-          <p className="text-xs font-medium text-gray-400">{event.year}</p>
-          <p className="text-sm font-medium text-gray-800">{event.label}</p>
+          <p className="text-xs font-medium text-muted">{event.year}</p>
+          <p className="text-sm font-medium text-foreground">{event.label}</p>
         </motion.div>
       ))}
     </div>

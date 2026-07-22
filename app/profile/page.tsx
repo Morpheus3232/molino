@@ -1,15 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, clearSession } from "@/lib/storage/ephemeral";
 import { loadProfileFromStorage, clearStoredProfile } from "@/lib/storage/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
+import { ARCHETYPES } from "@/lib/data";
 
 function safeNumber(value: unknown, fallback = 0): number {
   const n = typeof value === "number" ? value : Number(value);
@@ -32,7 +29,7 @@ const ZODIAC_SYMBOLS: Record<string, string> = {
 };
 
 const ELEMENT_COLORS: Record<string, string> = {
-  Fuego: "#D4A843",
+  Fuego: "#C49A2A",
   Tierra: "#2D5A3D",
   Aire: "#6B4C7A",
   Agua: "#2E5C8A",
@@ -62,6 +59,35 @@ const ARCHETYPE_DESCRIPTIONS: Record<number, string> = {
   22: "Tu energía es la del arquitecto divino. Desarrollás la manifestación, la organización y la capacidad de construir a gran escala.",
   33: "Tu energía es la del amor universal en acción. Desarrollás la sanación, la compasión y la capacidad de transformar desde el corazón.",
 };
+
+function MapNode({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`bg-card border border-border rounded-xl p-5 transition-all hover:border-accent hover:shadow-md ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-5 flex items-center gap-2">
+      <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
+      {children}
+    </h2>
+  );
+}
+
+function StatCard({ label, value, subtitle, color }: { label: string; value: string | number; subtitle?: string; color?: string }) {
+  return (
+    <MapNode>
+      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">{label}</p>
+      <p className="text-3xl sm:text-4xl font-semibold" style={{ color: color || "var(--color-foreground)" }}>
+        {value}
+      </p>
+      {subtitle && <p className="text-xs text-muted mt-1.5">{subtitle}</p>}
+    </MapNode>
+  );
+}
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -116,7 +142,7 @@ export default function ProfilePage() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted">Cargando tu perfil...</div>
+        <div className="text-muted" role="status" aria-label="Cargando tu perfil">Cargando tu perfil...</div>
       </div>
     );
   }
@@ -124,14 +150,28 @@ export default function ProfilePage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
+        <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="/" className="flex items-center gap-2.5">
+              <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
+                <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
+                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+              </svg>
+              <span className="font-serif font-bold text-xl text-foreground tracking-tight">Molino</span>
+            </a>
+          </div>
+        </header>
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Mi mapa personal</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-accent font-medium mb-2">Mi mapa personal</p>
           <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground mb-4">Todavía no creaste tu mapa</h1>
           <p className="text-muted mb-8">Ingresá tu nombre y fecha de nacimiento para generar tu perfil.</p>
-          <Button onClick={() => router.push("/")}>Descubrir mi Mapa</Button>
+          <button
+            onClick={() => router.push("/")}
+            className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
+          >
+            Descubrir mi Mapa
+          </button>
         </div>
-        <UniversityFooter />
       </div>
     );
   }
@@ -155,210 +195,281 @@ export default function ProfilePage() {
   const personalYear = safeNumber(profile.cycles?.personalYear, 0);
   const personalMonth = safeNumber(profile.cycles?.personalMonth, 0);
   const personalDay = safeNumber(profile.cycles?.personalDay, 0);
-
-  const identityNarrative = useMemo(() => {
-    const lines: string[] = [];
-    lines.push(`Tu nombre es ${name}. Naciste el ${birthDate}.`);
-    lines.push(`Eres un ${archetypeName}. ${archetypeDescription}`);
-    return lines;
-  }, [name, birthDate, archetypeName, archetypeDescription]);
-
-  const patternsNarrative = useMemo(() => {
-    const paragraphs: string[] = [];
-    if (archetypeStrengths.length > 0) {
-      paragraphs.push(`Un lado muy tuyo se ve en esto: ${archetypeStrengths.slice(0, 2).join(" y ")}. Son formas naturales en las que aparecés sin esfuerzo.`);
-    }
-    if (archetypeChallenges.length > 0) {
-      paragraphs.push(`Al mismo tiempo, hay zonas que te piden más atención: ${archetypeChallenges.slice(0, 2).join(" y ")}. No son fallas, sino lugares donde podés elegir responder con más conciencia.`);
-    }
-    paragraphs.push("Reconocer estos patrones no es para etiquetarte, sino para tener más opciones. Cuando veas estas tendencias, podés decidir si querés seguir por el mismo camino o probar otra forma.");
-    return paragraphs;
-  }, [archetypeStrengths, archetypeChallenges]);
+  const archetype = ARCHETYPES[lifePath];
+  const elementColor = ELEMENT_COLORS[element] || "#C49A2A";
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-
-      <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
-          <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Mi mapa personal</p>
-            <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{name}</h1>
-            <p className="text-base text-muted mt-2">{birthDate}</p>
-          </div>
-          <Button variant="secondary" onClick={handleNewSession}>Nueva sesión</Button>
+      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2.5">
+            <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
+              <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
+              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+            </svg>
+            <span className="font-serif font-bold text-xl text-foreground tracking-tight">Molino</span>
+          </a>
+          <button
+            onClick={handleNewSession}
+            className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-2 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
+          >
+            Nueva sesión
+          </button>
         </div>
+      </header>
 
-        <nav className="mb-10 flex flex-wrap gap-2" aria-label="Mapa personal">
+      <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24" id="main-content">
+        {/* HERO */}
+        <section className="mb-12 animate-fade-in-up">
+          <p className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-3">Tu mapa personal</p>
+          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground">{name}</h1>
+          <p className="text-base text-muted mt-3">{birthDate}</p>
+
+          {archetype && (
+            <div className="mt-6 p-5 rounded-2xl border border-border bg-card">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu arquetipo</p>
+              <p className="font-serif text-xl sm:text-2xl font-semibold" style={{ color: elementColor }}>
+                {archetype.name}
+              </p>
+              {archetype.quote && (
+                <p className="text-sm text-muted mt-2 italic">"{archetype.quote}"</p>
+              )}
+            </div>
+          )}
+        </section>
+
+        {/* NAV */}
+        <nav className="mb-10 flex flex-wrap gap-2" aria-label="Secciones del mapa">
           {SECTIONS.map((section) => (
             <button
               key={section.id}
               type="button"
               onClick={() => scrollTo(section.id)}
-              className={`px-3 py-1.5 rounded-full text-xs transition-colors ${
-                activeSection === section.id ? "bg-foreground text-background" : "border border-border text-muted hover:text-foreground"
+              className={`px-3.5 py-1.5 rounded-full text-xs transition-all ${
+                activeSection === section.id
+                  ? "bg-foreground text-background shadow-sm"
+                  : "border border-border text-muted hover:text-foreground hover:border-foreground/20"
               }`}
+              aria-current={activeSection === section.id ? "true" : undefined}
             >
               {section.label}
             </button>
           ))}
         </nav>
 
-        <section id="identity" className="scroll-mt-24 mb-10">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Identidad</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <Card hover={false} padding="lg">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Life Path</p>
-              <p className="text-4xl font-semibold mt-2" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{lifePath}</p>
-              <p className="text-sm text-muted mt-1">Tu dirección principal.</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Expresión</p>
-              <p className="text-4xl font-semibold mt-2" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{expressionNumber || "—"}</p>
-              <p className="text-sm text-muted mt-1">Cómo te presentás.</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Alma</p>
-              <p className="text-4xl font-semibold mt-2" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{soulNumber || "—"}</p>
-              <p className="text-sm text-muted mt-1">Lo que realmente deseás.</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Personalidad</p>
-              <p className="text-4xl font-semibold mt-2" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{personalityNumber || "—"}</p>
-              <p className="text-sm text-muted mt-1">La imagen que proyectás.</p>
-            </Card>
+        {/* IDENTIDAD */}
+        <section id="identity" className="scroll-mt-24 mb-12">
+          <SectionLabel>Identidad</SectionLabel>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            <StatCard label="Life Path" value={lifePath} subtitle="Tu dirección principal" color={elementColor} />
+            <StatCard label="Expresión" value={expressionNumber || "—"} subtitle="Cómo te presentás" color={elementColor} />
+            <StatCard label="Alma" value={soulNumber || "—"} subtitle="Lo que realmente deseás" color={elementColor} />
+            <StatCard label="Personalidad" value={personalityNumber || "—"} subtitle="La imagen que proyectás" color={elementColor} />
           </div>
 
-          <Card hover={false} padding="lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Zodiaco</p>
-                <p className="text-base text-foreground mt-1 font-medium">
-                  {sunSignSymbol} {sunSign}
-                </p>
-                <p className="text-sm text-muted mt-1">Elemento: {element} · Modalidad: {modality}</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Arquetipo</p>
-                <p className="text-base text-foreground mt-1 font-medium">{archetypeName}</p>
-                <p className="text-sm text-muted mt-1">Zodiaco chino: {chineseZodiac} · {chineseElement}</p>
-              </div>
-            </div>
-          </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <MapNode>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Zodiaco</p>
+              <p className="text-lg font-medium text-foreground">
+                {sunSignSymbol} {sunSign}
+              </p>
+              <p className="text-sm text-muted mt-1">Elemento: {element} · Modalidad: {modality}</p>
+            </MapNode>
+            <MapNode>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Arquetipo</p>
+              <p className="text-lg font-medium text-foreground">{archetypeName}</p>
+              <p className="text-sm text-muted mt-1">Zodiaco chino: {chineseZodiac} · {chineseElement}</p>
+            </MapNode>
+          </div>
+
+          {/* Narrative */}
+          <MapNode className="mt-4">
+            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Tu identidad en contexto</p>
+            <p className="text-sm text-muted leading-relaxed">
+              Tu nombre es <span className="text-foreground font-medium">{name}</span>. Naciste el <span className="text-foreground font-medium">{birthDate}</span>.
+            </p>
+            <p className="text-sm text-muted leading-relaxed mt-2">
+              Eres un <span className="text-foreground font-medium">{archetypeName}</span>. {archetypeDescription}
+            </p>
+          </MapNode>
         </section>
 
-        <section id="patterns" className="scroll-mt-24 mb-10">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Patrones</h2>
-          <Card hover={false} padding="lg">
+        {/* PATRONES */}
+        <section id="patterns" className="scroll-mt-24 mb-12">
+          <SectionLabel>Patrones</SectionLabel>
+
+          <MapNode>
             <div className="space-y-4">
-              {patternsNarrative.map((paragraph, idx) => (
-                <p key={idx} className="text-sm text-muted leading-relaxed">{paragraph}</p>
+              {archetypeStrengths.length > 0 && (
+                <p className="text-sm text-muted leading-relaxed">
+                  Un lado muy tuyo se ve en esto: <span className="text-foreground font-medium">{archetypeStrengths.slice(0, 2).join(" y ")}</span>. Son formas naturales en las que aparecés sin esfuerzo.
+                </p>
+              )}
+              {archetypeChallenges.length > 0 && (
+                <p className="text-sm text-muted leading-relaxed">
+                  Al mismo tiempo, hay zonas que te piden más atención: <span className="text-foreground font-medium">{archetypeChallenges.slice(0, 2).join(" y ")}</span>. No son fallas, sino lugares donde podés elegir responder con más conciencia.
+                </p>
+              )}
+              <p className="text-sm text-muted leading-relaxed">
+                Reconocer estos patrones no es para etiquetarte, sino para tener más opciones. Cuando veas estas tendencias, podés decidir si querés seguir por el mismo camino o probar otra forma.
+              </p>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-background">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Fortalezas</p>
+                <ul className="space-y-1.5">
+                  {archetypeStrengths.map((item: string) => (
+                    <li key={item} className="text-sm text-muted flex items-start gap-2">
+                      <span className="w-1 h-1 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="p-4 rounded-xl bg-background">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafíos</p>
+                <ul className="space-y-1.5">
+                  {archetypeChallenges.map((item: string) => (
+                    <li key={item} className="text-sm text-muted flex items-start gap-2">
+                      <span className="w-1 h-1 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </MapNode>
+        </section>
+
+        {/* MI MOMENTO */}
+        <section id="moment" className="scroll-mt-24 mb-12">
+          <SectionLabel>Mi Momento</SectionLabel>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              { label: "Año personal", value: personalYear, desc: "El tema general de tu año" },
+              { label: "Mes personal", value: personalMonth, desc: "La energía de este mes" },
+              { label: "Día personal", value: personalDay, desc: "Tu energía hoy" },
+            ].map((cycle) => (
+              <MapNode key={cycle.label}>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{cycle.label}</p>
+                  <span className="text-2xl font-semibold" style={{ color: elementColor }}>{cycle.value || "—"}</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full bg-border overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${Math.min(((cycle.value || 0) / 9) * 100, 100)}%`,
+                      backgroundColor: elementColor,
+                    }}
+                  />
+                </div>
+                <p className="text-xs text-muted mt-2">{cycle.desc}</p>
+              </MapNode>
+            ))}
+          </div>
+        </section>
+
+        {/* NUMEROLOGÍA */}
+        <section id="numbers" className="scroll-mt-24 mb-12">
+          <SectionLabel>Numerología</SectionLabel>
+
+          <MapNode>
+            <p className="text-sm text-muted mb-5">
+              Tu Life Path es <span className="text-foreground font-medium">{lifePath}</span>. Este número resume la dirección principal de tu vida.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { label: "Expresión", value: expressionNumber, desc: "Cómo te presentás" },
+                { label: "Alma", value: soulNumber, desc: "Lo que realmente deseás" },
+                { label: "Personalidad", value: personalityNumber, desc: "La imagen que proyectás" },
+              ].map((num) => (
+                <div key={num.label} className="p-4 rounded-xl bg-background">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{num.label}</p>
+                  <p className="text-2xl font-semibold mt-1" style={{ color: elementColor }}>{num.value || "—"}</p>
+                  <p className="text-xs text-muted mt-1">{num.desc}</p>
+                </div>
               ))}
             </div>
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
-                <ul className="list-disc list-inside text-sm text-muted space-y-1">
-                  {archetypeStrengths.map((item: string) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos</p>
-                <ul className="list-disc list-inside text-sm text-muted space-y-1">
-                  {archetypeChallenges.map((item: string) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </Card>
-        </section>
-
-        <section id="moment" className="scroll-mt-24 mb-10">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi Momento</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Card hover={false} padding="lg">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Año personal</p>
-                <span className="text-2xl font-semibold" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{personalYear || "—"}</span>
-              </div>
-              <div className="w-full h-2 rounded-full border border-border bg-background">
-                <div className="h-2 rounded-full bg-foreground" style={{ width: `${Math.min(((personalYear || 0) / 9) * 100, 100)}%` }} />
-              </div>
-            </Card>
-            <Card hover={false} padding="lg">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Mes personal</p>
-                <span className="text-2xl font-semibold" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{personalMonth || "—"}</span>
-              </div>
-              <div className="w-full h-2 rounded-full border border-border bg-background">
-                <div className="h-2 rounded-full bg-foreground" style={{ width: `${Math.min(((personalMonth || 0) / 9) * 100, 100)}%` }} />
-              </div>
-            </Card>
-            <Card hover={false} padding="lg">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Día personal</p>
-                <span className="text-2xl font-semibold" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{personalDay || "—"}</span>
-              </div>
-              <div className="w-full h-2 rounded-full border border-border bg-background">
-                <div className="h-2 rounded-full bg-foreground" style={{ width: `${Math.min(((personalDay || 0) / 9) * 100, 100)}%` }} />
-              </div>
-            </Card>
-          </div>
-        </section>
-
-        <section id="numbers" className="scroll-mt-24 mb-10">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Numerología</h2>
-          <Card hover={false} padding="lg">
-            <p className="text-sm text-muted mb-4">Tu Life Path es {lifePath}. Este número resume la dirección principal de tu vida.</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Expresión</p>
-                <p className="text-2xl font-semibold mt-1" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{expressionNumber || "—"}</p>
-                <p className="text-sm text-muted mt-1">Cómo te presentás.</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Alma</p>
-                <p className="text-2xl font-semibold mt-1" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{soulNumber || "—"}</p>
-                <p className="text-sm text-muted mt-1">Lo que realmente deseás.</p>
-              </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Personalidad</p>
-                <p className="text-2xl font-semibold mt-1" style={{ color: ELEMENT_COLORS[element] || "#D4A843" }}>{personalityNumber || "—"}</p>
-                <p className="text-sm text-muted mt-1">La imagen que proyectás.</p>
-              </div>
-            </div>
             <div className="mt-6">
-              <Button fullWidth onClick={() => router.push("/numerologia")}>Explorar en Knowledge →</Button>
+              <button
+                onClick={() => router.push("/numerologia")}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
+              >
+                Explorar numerología completa
+              </button>
             </div>
-          </Card>
+          </MapNode>
         </section>
 
-        <section id="astrology" className="scroll-mt-24 mb-10">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Astrología</h2>
-          <Card hover={false} padding="lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Signo solar</p>
-                <p className="text-base text-foreground mt-1 font-medium">{sunSignSymbol} {sunSign}</p>
+        {/* ASTROLOGÍA */}
+        <section id="astrology" className="scroll-mt-24 mb-12">
+          <SectionLabel>Astrología</SectionLabel>
+
+          <MapNode>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-background">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Signo solar</p>
+                <p className="text-lg font-medium text-foreground">{sunSignSymbol} {sunSign}</p>
                 <p className="text-sm text-muted mt-1">Elemento: {element}</p>
               </div>
-              <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium">Zodiaco chino</p>
-                <p className="text-base text-foreground mt-1 font-medium">{chineseZodiac}</p>
+              <div className="p-4 rounded-xl bg-background">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Zodiaco chino</p>
+                <p className="text-lg font-medium text-foreground">{chineseZodiac}</p>
                 <p className="text-sm text-muted mt-1">Elemento: {chineseElement}</p>
               </div>
             </div>
             <div className="mt-6">
-              <Button fullWidth onClick={() => router.push("/astrologia")}>Explorar en Knowledge →</Button>
+              <button
+                onClick={() => router.push("/astrologia")}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
+              >
+                Explorar astrología completa
+              </button>
             </div>
-          </Card>
+          </MapNode>
         </section>
       </div>
 
-      <UniversityFooter />
+      <footer className="border-t border-border bg-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+              <div className="flex items-center gap-2.5 mb-3">
+                <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
+                  <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+                </svg>
+                <span className="font-serif font-bold text-lg text-foreground tracking-tight">Molino</span>
+              </div>
+              <p className="text-sm text-muted mt-2">Tu mapa personal de autoconocimiento.</p>
+              <p className="text-xs text-muted mt-1">Gratis · Sin registro · Código abierto</p>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-foreground">Principios</h4>
+              <ul className="mt-3 space-y-2 text-sm text-muted">
+                <li>Conocimiento libre</li>
+                <li>Privacidad radical</li>
+                <li>Transparencia total</li>
+                <li>Código abierto</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-foreground">Enlaces</h4>
+              <ul className="mt-3 space-y-2 text-sm text-muted">
+                <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a></li>
+                <li><a href="/biblioteca" className="hover:text-accent transition-colors">Documentación</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-10 pt-8 border-t border-border text-center text-xs text-muted">
+            <p>Molino — Universidad Pública de Libre Acceso. Todo el contenido es educativo y no constituye asesoramiento profesional.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

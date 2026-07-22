@@ -32,9 +32,9 @@ export default function ExplorerView({ profile, onReset }: ExplorerViewProps) {
 
   return (
     <div className="min-h-screen pb-10">
-      <header className="sticky top-0 z-30 flex items-center justify-between bg-[#F8F9FA]/90 backdrop-blur-md px-5 py-4 border-b border-black/[0.04]">
+      <header className="sticky top-0 z-30 flex items-center justify-between bg-background/90 backdrop-blur-md px-5 py-4 border-b border-border">
         <div className="flex items-center gap-2">
-          <Sparkles size={18} className="text-gray-800" />
+          <Sparkles size={18} className="text-foreground" />
           <span className="font-serif text-base font-semibold">Molino</span>
         </div>
         <button
@@ -42,7 +42,7 @@ export default function ExplorerView({ profile, onReset }: ExplorerViewProps) {
             clearProfile();
             onReset();
           }}
-          className="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-muted transition hover:bg-background hover:text-foreground"
           title="Reiniciar"
         >
           <Settings size={16} />
@@ -55,10 +55,10 @@ export default function ExplorerView({ profile, onReset }: ExplorerViewProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <p className="text-sm text-gray-500 mb-1">
+          <p className="text-sm text-muted mb-1">
             Hola{profile.name ? `, ${profile.name}` : ""}
           </p>
-          <h1 className="font-serif text-2xl font-bold text-gray-900">
+          <h1 className="font-serif text-2xl font-bold text-foreground">
             Tu exploración de hoy
           </h1>
         </motion.div>
@@ -83,14 +83,14 @@ export default function ExplorerView({ profile, onReset }: ExplorerViewProps) {
 
         <SectionCard delay={0.1}>
           <div className="mb-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">
               Tu año {currentYear}
             </p>
-            <h3 className="font-serif text-lg font-semibold text-gray-900">
+            <h3 className="font-serif text-lg font-semibold text-foreground">
               {cycleInfo.name}
             </h3>
           </div>
-          <p className="text-sm text-gray-600 mb-4">{cycleInfo.description}</p>
+          <p className="text-sm text-muted mb-4">{cycleInfo.description}</p>
           <CycleTimeline
             birthDay={profile.day}
             birthMonth={profile.month}
@@ -114,7 +114,7 @@ export default function ExplorerView({ profile, onReset }: ExplorerViewProps) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="text-center text-xs text-gray-400 px-4 pt-2"
+          className="text-center text-xs text-muted px-4 pt-2"
         >
           Molino es un explorador de identidad. Los marcos simbólicos son herramientas de reflexión, no verdades absolutas.
         </motion.p>

@@ -16,7 +16,7 @@ export default function SectionCard({ children, className = "", delay = 0 }: Sec
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={`rounded-2xl bg-white p-5 shadow-lg border border-black/[0.06] ${className}`}
+      className={`rounded-2xl bg-card p-5 shadow-lg border border-border ${className}`}
     >
       {children}
     </motion.div>

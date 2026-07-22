@@ -30,7 +30,7 @@ export default function CompatibilityDashboard({ userBirthDate }: CompatibilityD
           <button
             key={cat.id}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-              true ? "bg-[#1F2937] text-white shadow-md" : "bg-[#F8F9FA] text-[#6B7280] hover:bg-[#E5E7EB]"
+              true ? "bg-foreground text-background shadow-md" : "bg-background text-muted hover:bg-card"
             }`}
           >
             <span>{cat.icon}</span>
@@ -38,7 +38,7 @@ export default function CompatibilityDashboard({ userBirthDate }: CompatibilityD
           </button>
         ))}
       </div>
-      <p className="text-sm text-gray-500 text-center">Seleccioná una categoría para explorar compatibilidades</p>
+      <p className="text-sm text-muted text-center">Seleccioná una categoría para explorar compatibilidades</p>
     </div>
   );
 }

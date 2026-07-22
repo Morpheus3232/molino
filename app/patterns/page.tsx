@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loadProfileFromStorage } from "@/lib/storage/localStorage";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
@@ -92,7 +92,7 @@ export default function PatternsPage() {
   const archetypeStrengths = Array.isArray(profile.archetypeInfo?.strengths) ? profile.archetypeInfo.strengths : [];
   const archetypeChallenges = Array.isArray(profile.archetypeInfo?.challenges) ? profile.archetypeInfo.challenges : [];
 
-  const radarData = useMemo(() => {
+  const radarData = (() => {
     const base = Math.min(lifePath * 10, 100);
     return [
       { subject: "Comunicación", value: Math.min((expressionNumber || lifePath) * 10, 100) },
@@ -102,9 +102,9 @@ export default function PatternsPage() {
       { subject: "Intuición", value: 50 + (lifePath % 5) * 10 },
       { subject: "Acción", value: Math.min((lifePath + expressionNumber) * 8, 100) },
     ];
-  }, [lifePath, expressionNumber, soulNumber, personalityNumber]);
+  })();
 
-  const patterns = useMemo(() => {
+  const patterns = (() => {
     const items: { title: string; description: string; advice: string }[] = [];
 
     if (lifePath && expressionNumber) {
@@ -140,9 +140,9 @@ export default function PatternsPage() {
     }
 
     return items.slice(0, 4);
-  }, [lifePath, expressionNumber, soulNumber, personalityNumber, archetypeName, archetypeDescription, archetypeStrengths]);
+  })();
 
-  const connections = useMemo(() => {
+  const connections = (() => {
     const parts: string[] = [];
 
     if (element && lifePath) {
@@ -158,7 +158,7 @@ export default function PatternsPage() {
     }
 
     return parts.slice(0, 3);
-  }, [element, lifePath, chineseZodiac, expressionNumber, chineseElement, sunSign, soulNumber, sunSignSymbol]);
+  })();
 
   return (
     <div className="min-h-screen bg-background">

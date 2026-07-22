@@ -21,9 +21,9 @@ export default function DayHero({ birthDay, birthMonth, birthYear }: DayHeroProp
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="bg-white rounded-2xl shadow-lg border border-black/[0.06] overflow-hidden"
+      className="bg-card rounded-2xl shadow-lg border border-border overflow-hidden"
     >
-      <div className="bg-gradient-to-br from-[#1F2937] to-[#374151] px-5 py-5 text-white">
+      <div className="bg-gradient-to-br from-foreground to-card px-5 py-5 text-background">
         <p className="text-xs font-medium uppercase tracking-widest opacity-70">Energía del cosmos</p>
         <div className="mt-3 grid grid-cols-3 gap-3">
           {planets.map((planet) => (
@@ -41,19 +41,19 @@ export default function DayHero({ birthDay, birthMonth, birthYear }: DayHeroProp
           <div className="flex items-center gap-2">
             <span className="text-base">♋</span>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-gray-400">Signo</p>
-              <p className="text-sm font-semibold text-gray-900">{zodiacSign}</p>
+              <p className="text-[10px] uppercase tracking-wider text-muted">Signo</p>
+              <p className="text-sm font-semibold text-foreground">{zodiacSign}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-base">{moon.emoji}</span>
             <div>
-              <p className="text-[10px] uppercase tracking-wider text-gray-400">Luna</p>
-              <p className="text-sm font-semibold text-gray-900">{moon.phase}</p>
+              <p className="text-[10px] uppercase tracking-wider text-muted">Luna</p>
+              <p className="text-sm font-semibold text-foreground">{moon.phase}</p>
             </div>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-3 leading-relaxed">{moon.description}</p>
+        <p className="text-xs text-muted mt-3 leading-relaxed">{moon.description}</p>
       </div>
     </motion.div>
   );

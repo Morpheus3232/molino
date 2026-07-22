@@ -29,7 +29,7 @@ export default function CompatibilityRing({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="#F3F4F6"
+            stroke="var(--color-border)"
             strokeWidth={strokeWidth}
           />
           <motion.circle
@@ -48,10 +48,10 @@ export default function CompatibilityRing({
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg font-semibold text-gray-900">{score}%</span>
+          <span className="text-lg font-semibold text-foreground">{score}%</span>
         </div>
       </div>
-      {label && <span className="text-xs text-gray-500">{label}</span>}
+      {label && <span className="text-xs text-muted">{label}</span>}
     </div>
   );
 }

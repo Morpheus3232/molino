@@ -114,7 +114,7 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
             key={key}
             onClick={() => { setSelectedType(key); setSearchTerm(""); setResults([]); setInternalSelectedEntity(null); }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-              selectedType === key ? "bg-[#1F2937] text-white shadow-md" : "bg-[#F8F9FA] text-[#6B7280] hover:bg-[#E5E7EB]"
+              selectedType === key ? "bg-foreground text-background shadow-md" : "bg-background text-muted hover:bg-card"
             }`}
           >
             <span>{CATEGORY_META[key].icon}</span>
@@ -130,27 +130,27 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#1F2937] focus:border-transparent text-sm"
+          className="flex-1 input"
         />
         <button
           onClick={handleSearch}
-          className="px-4 py-2 bg-[#1F2937] text-white rounded-xl hover:bg-[#374151] text-sm font-medium transition-colors"
+          className="px-4 py-2 bg-foreground text-background rounded-xl hover:bg-accent text-sm font-medium transition-colors"
         >
-          🔍 Buscar
+          Buscar
         </button>
       </div>
 
       <AnimatePresence>
         {results.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-            <p className="text-xs text-[#6B7280] uppercase tracking-wider">{results.length} resultados encontrados</p>
+            <p className="text-xs text-muted uppercase tracking-wider">{results.length} resultados encontrados</p>
             {results.map((entity) => (
               <motion.div
                 key={entity.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`p-4 rounded-xl border cursor-pointer transition-all hover:shadow-md ${
-                  activeSelectedEntity?.id === entity.id ? "border-[#1F2937] bg-gray-50" : "border-gray-100 bg-white"
+                  activeSelectedEntity?.id === entity.id ? "border-foreground bg-background" : "border-border bg-card"
                 }`}
                 onClick={() => handleSelect(entity)}
               >
@@ -158,8 +158,8 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">{getEntityIcon(entity)}</span>
                     <div>
-                      <p className="font-medium text-sm text-gray-900">{entity.name}</p>
-                      <p className="text-xs text-[#6B7280]">
+                      <p className="font-medium text-sm text-foreground">{entity.name}</p>
+                      <p className="text-xs text-muted">
                         {entity.symbolism.chineseZodiac} ({entity.symbolism.element}) • {entity.context.keyThemes?.slice(0, 2).join(", ")}
                       </p>
                     </div>
@@ -183,10 +183,10 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
-                    className="mt-3 pt-3 border-t border-gray-100 space-y-2"
+                    className="mt-3 pt-3 border-t border-border space-y-2"
                   >
-                    <p className="text-sm text-[#6B7280]">{entity.context.description}</p>
-                    <div className="flex flex-wrap gap-2 text-xs text-[#6B7280]">
+                    <p className="text-sm text-muted">{entity.context.description}</p>
+                    <div className="flex flex-wrap gap-2 text-xs text-muted">
                       <span>Tu animal: {userAnimal}</span>
                       <span>•</span>
                       <span>Animal de {entity.name}: {entity.symbolism.chineseZodiac}</span>

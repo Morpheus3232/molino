@@ -230,20 +230,7 @@ export function getCompatibility(lifePath1: number, lifePath2: number): { score:
   };
 }
 
-export const CYCLE_YEARS: Record<number, any> = {
-  1: { name: "Año de Nuevos Comienzos", description: "Semillas, independencia, liderazgo." },
-  2: { name: "Año de Cooperación", description: "Relaciones, paciencia, diplomacia." },
-  3: { name: "Año de Expresión", description: "Creatividad, comunicación, alegría." },
-  4: { name: "Año de Construcción", description: "Trabajo, estabilidad, disciplina." },
-  5: { name: "Año de Cambio", description: "Libertad, aventura, transformación." },
-  6: { name: "Año de Responsabilidad", description: "Familia, hogar, servicio." },
-  7: { name: "Año de Introspección", description: "Análisis, espiritualidad, sabiduría." },
-  8: { name: "Año de Manifestación", description: "Poder, abundancia, logros." },
-  9: { name: "Año de Cierre", description: "Finalización, compasión, liberación." },
-  11: { name: "Año de Iluminación", description: "Intuición, inspiración, despertar espiritual." },
-  22: { name: "Año de Construcción Maestra", description: "Visión práctica, manifestación a gran escala." },
-  33: { name: "Año de Amor Universal", description: "Servicio, compasión, transformación global." }
-};
+export const CYCLE_YEARS: Record<number, any> = YEAR_TYPES;
 
 export const SYMBOLIC_FRAMEWORKS = [
   { id: "numerologia", name: "Numerología", description: "Tu número de vida y energía diaria", icon: "🔢", available: true },

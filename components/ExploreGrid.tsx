@@ -9,8 +9,8 @@ export default function ExploreGrid() {
   return (
     <SectionCard delay={0.3}>
       <div className="mb-4">
-        <h3 className="font-serif text-lg font-semibold text-gray-900">Explorar marcos</h3>
-        <p className="text-xs text-gray-500">Distintas lentes para conocerte</p>
+        <h3 className="font-serif text-lg font-semibold text-foreground">Explorar marcos</h3>
+        <p className="text-xs text-muted">Distintas lentes para conocerte</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -24,22 +24,22 @@ export default function ExploreGrid() {
             disabled={!framework.available}
             className={`relative rounded-xl p-4 text-left transition ${
               framework.available
-                ? "bg-gray-900 text-white hover:bg-gray-800"
-                : "bg-gray-50 text-gray-400 cursor-not-allowed"
+                ? "bg-foreground text-background hover:bg-accent"
+                : "bg-background text-muted cursor-not-allowed"
             }`}
           >
             {!framework.available && (
-              <Lock size={12} className="absolute top-3 right-3 text-gray-300" />
+              <Lock size={12} className="absolute top-3 right-3 text-muted" />
             )}
             <span className="text-2xl mb-2 block">{framework.icon}</span>
-            <p className={`text-sm font-semibold ${framework.available ? "text-white" : "text-gray-500"}`}>
+            <p className={`text-sm font-semibold ${framework.available ? "text-background" : "text-muted"}`}>
               {framework.name}
             </p>
-            <p className={`text-[11px] mt-0.5 ${framework.available ? "text-gray-300" : "text-gray-400"}`}>
+            <p className={`text-[11px] mt-0.5 ${framework.available ? "text-background/70" : "text-muted"}`}>
               {framework.description}
             </p>
             {framework.available && (
-              <span className="mt-2 inline-block text-[10px] font-medium uppercase tracking-wider text-gray-400">
+              <span className="mt-2 inline-block text-[10px] font-medium uppercase tracking-wider text-background/60">
                 Activo
               </span>
             )}

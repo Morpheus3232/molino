@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, isSessionValid } from "@/lib/storage/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
@@ -15,19 +15,19 @@ import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 
 const CATEGORIES = [
-  { id: "all", label: "Todos", icon: "🔍" },
-  { id: "country", label: "Países", icon: "🌍" },
-  { id: "city", label: "Ciudades", icon: "🏙️" },
-  { id: "brand", label: "Marcas", icon: "🏷️" },
-  { id: "band", label: "Bandas", icon: "🎸" },
-  { id: "movie", label: "Películas", icon: "🎬" },
-  { id: "book", label: "Libros", icon: "📚" },
-  { id: "philosophy", label: "Filosofía", icon: "📖" },
-  { id: "historicalEvent", label: "Eventos", icon: "📜" },
-  { id: "food", label: "Comidas", icon: "🍽️" },
-  { id: "color", label: "Colores", icon: "🎨" },
-  { id: "crystal", label: "Cristales", icon: "💎" },
-  { id: "deity", label: "Deidades", icon: "✨" },
+  { id: "all", label: "Todos" },
+  { id: "country", label: "Países" },
+  { id: "city", label: "Ciudades" },
+  { id: "brand", label: "Marcas" },
+  { id: "band", label: "Bandas" },
+  { id: "movie", label: "Películas" },
+  { id: "book", label: "Libros" },
+  { id: "philosophy", label: "Filosofía" },
+  { id: "historicalEvent", label: "Eventos" },
+  { id: "food", label: "Comidas" },
+  { id: "color", label: "Colores" },
+  { id: "crystal", label: "Cristales" },
+  { id: "deity", label: "Deidades" },
 ];
 
 function getOrCreateProfile(): UserProfile | null {
@@ -72,7 +72,7 @@ export default function ExplorePage() {
   }
 
   const archetypeName = ARCHETYPES[profile.lifePath]?.name || profile.archetype;
-  const allEntities = useMemo(() => [...ENTITIES, ...EXTENDED_ENTITIES], []);
+  const allEntities = [...ENTITIES, ...EXTENDED_ENTITIES];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">

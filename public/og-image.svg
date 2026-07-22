@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A1A1A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D2D2D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  
+  <!-- Subtle decorative dots (constellation pattern) -->
+  <g opacity="0.08" fill="#C49A2A">
+    <circle cx="100" cy="80" r="2" />
+    <circle cx="200" cy="120" r="1.5" />
+    <circle cx="150" cy="200" r="1" />
+    <circle cx="300" cy="60" r="2.5" />
+    <circle cx="350" cy="180" r="1.5" />
+    <circle cx="900" cy="100" r="2" />
+    <circle cx="1000" cy="150" r="1.5" />
+    <circle cx="1100" cy="80" r="1" />
+    <circle cx="1050" cy="220" r="2" />
+    <circle cx="950" cy="280" r="1.5" />
+    <circle cx="800" cy="500" r="2" />
+    <circle cx="1000" cy="520" r="1.5" />
+    <circle cx="1100" cy="480" r="1" />
+    <circle cx="200" cy="500" r="2" />
+    <circle cx="300" cy="550" r="1.5" />
+    <circle cx="100" cy="480" r="1" />
+  </g>
+  
+  <!-- Subtle connecting lines (constellation) -->
+  <g opacity="0.05" stroke="#C49A2A" stroke-width="0.5" fill="none">
+    <line x1="100" y1="80" x2="200" y2="120" />
+    <line x1="200" y1="120" x2="150" y2="200" />
+    <line x1="900" y1="100" x2="1000" y2="150" />
+    <line x1="1000" y1="150" x2="1050" y2="220" />
+    <line x1="800" y1="500" x2="950" y2="280" />
+  </g>
+  
+  <!-- Logo mark -->
+  <g transform="translate(540, 180)">
+    <rect x="0" y="0" width="120" height="120" rx="28" fill="#C49A2A" />
+    <text x="60" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="#1A1A1A" text-anchor="middle">M</text>
+  </g>
+  
+  <!-- Title -->
+  <text x="600" y="360" font-family="Georgia, 'Times New Roman', serif" font-size="56" font-weight="600" fill="#FBFBFB" text-anchor="middle" letter-spacing="-0.5">Molino</text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="420" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="22" fill="#C49A2A" text-anchor="middle" letter-spacing="0.5">Tu mapa personal de autoconocimiento</text>
+  
+  <!-- Tagline -->
+  <text x="600" y="470" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="16" fill="#9CA3AF" text-anchor="middle">Numerología · Astrología · Ciclos · Arquetipos</text>
+  
+  <!-- Bottom accent line -->
+  <rect x="520" y="500" width="160" height="2" rx="1" fill="#C49A2A" opacity="0.4" />
+</svg>

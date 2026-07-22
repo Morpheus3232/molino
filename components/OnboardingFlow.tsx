@@ -51,7 +51,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     <div className="flex min-h-screen flex-col px-5 py-8">
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles size={20} className="text-gray-800" />
+          <Sparkles size={20} className="text-foreground" />
           <span className="font-serif text-lg font-semibold">Molino</span>
         </div>
         <div className="flex gap-1.5">
@@ -59,7 +59,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             <div
               key={i}
               className={`h-1.5 rounded-full transition-all ${
-                i === step ? "w-6 bg-gray-900" : i < step ? "w-1.5 bg-gray-400" : "w-1.5 bg-gray-200"
+                i === step ? "w-6 bg-foreground" : i < step ? "w-1.5 bg-muted" : "w-1.5 bg-border"
               }`}
             />
           ))}
@@ -75,10 +75,10 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             exit={{ opacity: 0, x: -20 }}
             className="flex-1"
           >
-            <h1 className="font-serif text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
               ¿Qué querés explorar?
             </h1>
-            <p className="text-gray-500 mb-8 text-sm">
+            <p className="text-muted mb-8 text-sm">
               Molino te ayuda a descubrir patrones personales a través de marcos simbólicos.
             </p>
 
@@ -89,8 +89,8 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                   onClick={() => setIntention(option.id)}
                   className={`flex w-full items-center gap-4 rounded-2xl p-4 text-left transition ${
                     intention === option.id
-                      ? "bg-gray-900 text-white shadow-lg"
-                      : "bg-white border border-gray-100 shadow-sm hover:border-gray-200"
+                      ? "bg-foreground text-background shadow-lg"
+                      : "bg-card border border-border shadow-sm hover:border-accent"
                   }`}
                 >
                   <span className="text-2xl">{option.icon}</span>
@@ -109,10 +109,10 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             exit={{ opacity: 0, x: -20 }}
             className="flex-1"
           >
-            <h1 className="font-serif text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
               ¿Cuándo naciste?
             </h1>
-            <p className="text-gray-500 mb-8 text-sm">
+            <p className="text-muted mb-8 text-sm">
               Tu fecha de nacimiento es el punto de partida para explorar tu identidad.
             </p>
 
@@ -122,43 +122,43 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 placeholder="Tu nombre (opcional)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-4 text-sm focus:border-gray-400 focus:outline-none shadow-sm"
+                className="w-full input"
               />
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="text-xs font-medium text-gray-400 mb-1 block">Día</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">Día</label>
                   <input
                     type="number"
                     placeholder="25"
                     value={day}
                     onChange={(e) => setDay(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-4 text-sm text-center focus:border-gray-400 focus:outline-none shadow-sm"
+                    className="w-full input text-center"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-gray-400 mb-1 block">Mes</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">Mes</label>
                   <input
                     type="number"
                     placeholder="12"
                     value={month}
                     onChange={(e) => setMonth(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-4 text-sm text-center focus:border-gray-400 focus:outline-none shadow-sm"
+                    className="w-full input text-center"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium text-gray-400 mb-1 block">Año</label>
+                  <label className="text-xs font-medium text-muted mb-1 block">Año</label>
                   <input
                     type="number"
                     placeholder="1995"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className="w-full rounded-2xl border border-gray-200 bg-white px-4 py-4 text-sm text-center focus:border-gray-400 focus:outline-none shadow-sm"
+                    className="w-full input text-center"
                   />
                 </div>
               </div>
             </div>
 
-            <p className="mt-6 text-xs text-gray-400 text-center">
+            <p className="mt-6 text-xs text-muted text-center">
               Sin registro. Sin compromiso. Solo exploración.
             </p>
           </motion.div>
@@ -178,9 +178,9 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="mt-6 rounded-2xl bg-white p-5 shadow-lg border border-black/[0.06]"
+              className="mt-6 rounded-2xl bg-card p-5 shadow-lg border border-border"
             >
-              <p className="text-sm leading-relaxed text-gray-600 mb-4">
+              <p className="text-sm leading-relaxed text-muted mb-4">
                 {archetype.description}
               </p>
               <EnergyBars bars={getEnergyBars(lifePath!)} color={archetype.color} />
@@ -190,7 +190,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="mt-4 text-center text-xs text-gray-400"
+              className="mt-4 text-center text-xs text-muted"
             >
               Esto es un marco simbólico para reflexión, no una predicción.
             </motion.p>
@@ -202,7 +202,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         {step > 0 && (
           <button
             onClick={() => setStep(step - 1)}
-            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gray-200 bg-white text-gray-600 transition hover:bg-gray-50"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-card text-muted transition hover:bg-background"
           >
             <ArrowLeft size={20} />
           </button>
@@ -213,7 +213,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
             else handleComplete();
           }}
           disabled={!canProceed()}
-          className="flex flex-1 h-12 items-center justify-center gap-2 rounded-2xl bg-gray-900 text-white font-medium transition hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex flex-1 h-12 items-center justify-center gap-2 rounded-2xl bg-foreground text-background font-medium transition hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {step === 2 ? "Explorar mi identidad" : "Continuar"}
           <ArrowRight size={18} />

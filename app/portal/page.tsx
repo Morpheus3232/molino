@@ -61,7 +61,7 @@ export default function PortalPage() {
   const dayInfo = YEAR_TYPES[(dayReduced % 9) || 9] || YEAR_TYPES[1];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#F8F9FA] to-[#EDEFF2]">
+    <div className="min-h-screen bg-background">
       <UniversityHeader />
 
       <div className="max-w-[960px] mx-auto px-4 sm:px-6 py-8 pb-24 space-y-8">
@@ -86,7 +86,7 @@ export default function PortalPage() {
 
         <FrameworksExplorer frameworks={KNOWLEDGE_BASE.frameworks} />
 
-        <div className="text-center text-xs text-[#9CA3AF]">
+        <div className="text-center text-xs text-muted">
           Sesión efímera. No se guarda información en este dispositivo.
         </div>
       </div>
