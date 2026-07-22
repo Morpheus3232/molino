@@ -6,11 +6,7 @@ import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-import Section from "@/components/ui/Section";
 import Input from "@/components/ui/Input";
-import PhilosophySection from "@/components/sections/PhilosophySection";
-import MethodologySection from "@/components/sections/MethodologySection";
-import OpenSourceSection from "@/components/sections/OpenSourceSection";
 
 function getCurrentDayNumber(): number {
   const today = new Date();
@@ -67,16 +63,10 @@ export default function Home() {
   const [demoName, setDemoName] = useState("");
   const [demoDate, setDemoDate] = useState("");
   const [demoResult, setDemoResult] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
 
   const today = new Date();
   const dayNumber = reduceToDigit(getCurrentDayNumber());
   const dayMeaning = getDayMeaning(dayNumber);
-  const dayOfWeek = today.toLocaleDateString('es-ES', { weekday: 'long' });
   const formattedDate = today.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
   const chineseYear = getChineseYearInfo(today.getFullYear());
 
@@ -104,14 +94,14 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
-      <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-12 pb-24">
-        <section id="conocimiento" className="text-center max-w-4xl mx-auto mb-16">
-          <span className="badge mb-4">Personal Intelligence</span>
+      <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-24 pb-28">
+        <section className="text-center max-w-4xl mx-auto mb-20 sm:mb-28">
+          <span className="badge mb-5">Personal Intelligence</span>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-foreground leading-tight mt-4">
             Entendé tus patrones<br/>para tomar mejores decisiones
           </h1>
-          <p className="text-muted text-base md:text-lg mt-4 max-w-2xl mx-auto leading-relaxed">
-            Molino convierte tu fecha de nacimiento y nombre en un mapa de patrones personales. Sin registro. Sin rastreo. 100% transparente.
+          <p className="text-muted text-base md:text-lg mt-5 max-w-2xl mx-auto leading-relaxed">
+            Un sistema simbólico que explora patrones de personalidad, ciclos y significado.
           </p>
           <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-muted">
             <span>🔓 Código abierto</span>
@@ -120,18 +110,23 @@ export default function Home() {
             <span aria-hidden="true">•</span>
             <span>🕊️ Sin registro</span>
           </div>
+          <div className="mt-8">
+            <Button size="lg" onClick={() => router.push("/onboarding")}>
+              Descubrir mi perfil →
+            </Button>
+          </div>
         </section>
 
-        <section className="max-w-6xl mx-auto mb-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <section className="max-w-6xl mx-auto mb-20 sm:mb-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             <div className="space-y-8">
               <Card>
-                <div className="text-center mb-4">
+                <div className="text-center mb-5">
                   <span className="badge mb-3">Demo interactiva</span>
                   <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Probá tu preview</h2>
                   <p className="text-sm text-muted mt-2">Ingresá tus datos y obtené un vistazo instantáneo a tu perfil simbólico.</p>
                 </div>
-                <form onSubmit={handleDemo} className="space-y-4">
+                <form onSubmit={handleDemo} className="space-y-5">
                   <Input label="Nombre" value={demoName} onChange={(e) => setDemoName(e.target.value)} placeholder="Ej: María Elena" required />
                   <Input label="Fecha de nacimiento" type="date" value={demoDate} onChange={(e) => setDemoDate(e.target.value)} required />
                   <Button type="submit" fullWidth>Ver mi preview</Button>
@@ -160,15 +155,15 @@ export default function Home() {
                   {demoResult ? (
                     <div className="space-y-4">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">NOMBRE</p>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">NOMBRE</p>
                         <p className="text-2xl font-serif font-bold text-foreground">{demoResult.name}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">FECHA</p>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">FECHA</p>
                         <p className="text-sm text-muted">{demoResult.birthDate}</p>
                       </div>
                       <div>
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">LIFE PATH</p>
+                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">LIFE PATH</p>
                         <p className="text-5xl font-serif font-bold" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
                       </div>
                       <div className="flex flex-wrap justify-center gap-2">
@@ -184,7 +179,7 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="py-12 text-center text-muted">
+                    <div className="py-14 text-center text-muted">
                       <p>Ingresá tus datos para ver el preview</p>
                     </div>
                   )}
@@ -197,8 +192,8 @@ export default function Home() {
           </div>
         </section>
 
-        <Section>
-          <div className="text-center mb-8">
+        <section className="max-w-6xl mx-auto mb-20">
+          <div className="text-center mb-10">
             <span className="badge mb-3">¿Qué descubrirás?</span>
             <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Un análisis basado en sistemas simbólicos públicos y accesibles</h2>
           </div>
@@ -211,17 +206,17 @@ export default function Home() {
               { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
               { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
             ].map((item) => (
-              <Card key={item.title}>
+              <Card key={item.title} hover={false}>
                 <span className="text-3xl">{item.icon}</span>
                 <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
                 <p className="text-sm text-muted mt-1">{item.desc}</p>
               </Card>
             ))}
           </div>
-        </Section>
+        </section>
 
-        <Section className="mt-8">
-          <div className="text-center mb-8">
+        <section className="max-w-6xl mx-auto mb-20">
+          <div className="text-center mb-10">
             <span className="badge mb-3">Sistemas integrados</span>
             <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Múltiples marcos de conocimiento</h2>
           </div>
@@ -242,21 +237,7 @@ export default function Home() {
               </Card>
             ))}
           </div>
-        </Section>
-
-        <Section className="mt-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-serif font-semibold text-foreground mb-4">Comenzá ahora</h2>
-            <p className="text-muted mb-6 max-w-md mx-auto">Ingresá tu nombre y fecha de nacimiento para descubrir tu perfil de Personal Intelligence.</p>
-            <Button size="lg" onClick={() => router.push("/onboarding")}>
-              Descubrir mi perfil →
-            </Button>
-          </div>
-        </Section>
-
-        <PhilosophySection />
-        <MethodologySection />
-        <OpenSourceSection />
+        </section>
       </div>
 
       <UniversityFooter />

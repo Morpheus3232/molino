@@ -8,28 +8,31 @@ export default function UniversityHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Link href="/" className="font-serif font-bold text-xl text-foreground">
+          <Link href="/" className="font-serif font-bold text-xl text-foreground tracking-tight">
             🌾 Molino
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-muted" aria-label="Navegación principal">
-            <Link href="/conocimiento" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
-              Conocimiento
+            <Link href="/profile" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">
+              Intelligence
             </Link>
-            <Link href="/#metodologia" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
-              Metodología
+            <Link href="/conocimiento" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">
+              Knowledge
             </Link>
-            <Link href="/#codigo" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
-              Código
+            <Link href="/method" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">
+              Method
             </Link>
-            <Link href="/biblioteca" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent">
-              Biblioteca
+            <Link href="/biblioteca" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">
+              Library
+            </Link>
+            <Link href="/explore" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">
+              Code
             </Link>
           </nav>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <span className="text-xs text-muted hidden sm:inline">
             🎓 Universidad Pública
           </span>
@@ -47,12 +50,13 @@ export default function UniversityHeader() {
       </div>
 
       {menuOpen && (
-        <nav className="md:hidden border-t border-gray-100 bg-white/90 backdrop-blur-sm" aria-label="Menú móvil">
+        <nav className="md:hidden border-t border-border bg-background/90 backdrop-blur-sm" aria-label="Menú móvil">
           <div className="px-4 py-3 space-y-2">
-            <Link href="/conocimiento" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Conocimiento</Link>
-            <Link href="/#metodologia" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Metodología</Link>
-            <Link href="/#codigo" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Código</Link>
-            <Link href="/biblioteca" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Biblioteca</Link>
+            <Link href="/profile" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Intelligence</Link>
+            <Link href="/conocimiento" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Knowledge</Link>
+            <Link href="/method" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Method</Link>
+            <Link href="/biblioteca" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Library</Link>
+            <Link href="/explore" className="block py-2 text-sm text-muted hover:text-foreground" onClick={() => setMenuOpen(false)}>Code</Link>
           </div>
         </nav>
       )}

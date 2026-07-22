@@ -15,11 +15,11 @@ export default function AstrologiaPage() {
       <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
         <Section>
           <Card hover={false}>
-            <div className="text-center mb-6">
-              <span className="badge mb-3">🌌 Astrología</span>
-              <h1 className="font-serif text-3xl font-bold text-foreground">El lenguaje de los astros</h1>
-              <p className="text-muted mt-2 max-w-2xl mx-auto">{astro.history}</p>
-            </div>
+        <div className="text-center mb-6">
+          <span className="badge mb-3">🌌 Astrología</span>
+          <h1 className="font-serif text-3xl font-bold text-foreground">El lenguaje de los astros</h1>
+          <p className="text-muted mt-2 max-w-2xl mx-auto">Un sistema simbólico que explora arquetipos, ciclos y patrones de personalidad.</p>
+        </div>
           </Card>
         </Section>
 

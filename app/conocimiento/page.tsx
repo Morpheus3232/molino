@@ -11,7 +11,7 @@ const systems = [
   {
     id: "numerologia",
     title: "Numerología",
-    description: "El lenguaje matemático de la personalidad y el destino.",
+    description: "El lenguaje matemático de la personalidad, los patrones y el significado.",
     href: "/numerologia",
     icon: "📚",
     color: "#D4A843",

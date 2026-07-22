@@ -9,7 +9,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 
 export const metadata: Metadata = {
   title: "Molino — Personal Intelligence",
-  description: "Entendé tu identidad, patrones, timing y alineación.",
+  description: "Un sistema simbólico que explora patrones de personalidad, ciclos y significado.",
 };
 
 export default function RootLayout({

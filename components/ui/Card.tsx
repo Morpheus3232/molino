@@ -9,12 +9,12 @@ interface CardProps {
 
 export default function Card({ children, className = "", hover = true, padding = "md" }: CardProps) {
   const paddingClasses = {
-    sm: "p-4",
+    sm: "p-5",
     md: "p-6",
     lg: "p-8",
   };
 
-  const hoverClass = hover ? "hover:shadow-md hover:border-accent/50" : "";
+  const hoverClass = hover ? "hover:shadow-lg hover:border-accent/60" : "";
 
   return (
     <div className={`card ${paddingClasses[padding]} ${hoverClass} ${className}`}>
