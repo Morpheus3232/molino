@@ -5,16 +5,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --color-ink: #0F0E17;
-  --color-paper: #FFFFFE;
-  --color-cream: #F9F8F4;
-  --color-accent: #6D4AFF;
-  --color-accent-hover: #5A3DE6;
-  --color-muted: #A7A9BE;
-  --color-success: #2CB67D;
-  --color-warning: #FF8E3C;
-  --color-border: #E4E4E8;
-
+  --color-ink: #1A1A1A;
+  --color-paper: #FBFBFB;
+  --color-cream: #F7F5F0;
+  --color-warm: #8B7355;
+  --color-accent: #D4A843;
+  --color-accent-hover: #B8946E;
+  --color-muted: #6B7280;
+  --color-border: #E5E5E5;
   --color-background: var(--color-cream);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
@@ -24,34 +22,35 @@
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
-  --color-accent-foreground: var(--color-paper);
+  --color-accent-foreground: var(--color-ink);
   --color-success-foreground: var(--color-ink);
   --color-warning-foreground: var(--color-ink);
   --color-error-foreground: var(--color-paper);
 
-  --radius-card: 1rem;
-  --radius-button: 0.75rem;
+  --radius-card: 0.75rem;
+  --radius-button: 0.5rem;
   --radius-pill: 9999px;
-  --radius-md: 0.875rem;
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
+  --radius-md: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
 
   --section-padding: 6rem;
-  --card-padding: 2rem;
+  --card-padding: 1.5rem;
 
-  --space-xs: 0.5rem;     /* 8px → 4px para gaps internos */
-  --space-sm: 1rem;       /* 16px para label→input */
-  --space-md: 1.618rem;   /* 26px para sección completa */
-  --space-lg: 2.618rem;   /* 42px para espaciado entre elementos grandes */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
 
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
 
-  --shadow-sm: 0 1px 2px 0 rgba(15, 14, 23, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(15, 14, 23, 0.06), 0 2px 4px -2px rgba(15, 14, 23, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(15, 14, 23, 0.08), 0 4px 6px -4px rgba(15, 14, 23, 0.06);
-  --shadow-xl: 0 20px 25px -5px rgba(15, 14, 23, 0.08), 0 8px 10px -6px rgba(15, 14, 23, 0.06);
+  --shadow-sm: 0 1px 2px 0 rgba(26, 26, 26, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(26, 26, 26, 0.06), 0 2px 4px -2px rgba(26, 26, 26, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(26, 26, 26, 0.08), 0 4px 6px -4px rgba(26, 26, 26, 0.06);
+  --shadow-xl: 0 20px 25px -5px rgba(26, 26, 26, 0.1), 0 8px 10px -6px rgba(26, 26, 26, 0.06);
 
   --max-width-content: 960px;
   --max-width-wide: 1200px;
@@ -62,39 +61,36 @@
   --step-4-text: 1.875rem;
   --step-5-text: 2.25rem;
 
-  --color-ink-alpha-25: rgba(15, 14, 23, 0.25);
-  --color-ink-alpha-03: rgba(15, 14, 23, 0.03);
-  --color-accent-alpha-04: rgba(109, 74, 255, 0.04);
+  --color-ink-alpha-25: rgba(26, 26, 26, 0.25);
+  --color-ink-alpha-03: rgba(26, 26, 26, 0.03);
+  --color-accent-alpha-04: rgba(212, 168, 67, 0.08);
 }
 
 .dark {
-  --color-background: #0F1115;
+  --color-background: #111827;
   --color-foreground: #F9FAFB;
   --color-muted: #9CA3AF;
   --color-muted-foreground: #CBD5E1;
-  --color-card: #16181D;
-  --color-card-border: rgba(255,255,255,0.08);
-  --color-border: #262932;
+  --color-card: #1F2937;
+  --color-card-border: #374151;
+  --color-border: #374151;
 
   --color-primary: #F9FAFB;
-  --color-primary-foreground: #0F1115;
+  --color-primary-foreground: #111827;
   --color-secondary: #9CA3AF;
-  --color-secondary-foreground: #0F1115;
+  --color-secondary-foreground: #F9FAFB;
   --color-accent: #E5B94E;
   --color-accent-hover: #D4A843;
-  --color-accent-foreground: #0F1115;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
+  --color-accent-foreground: #111827;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.35);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.35), 0 2px 4px -2px rgba(0,0,0,0.25);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.35), 0 4px 6px -4px rgba(0,0,0,0.25);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.35), 0 8px 10px -6px rgba(0,0,0,0.25);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
 
   --color-ink-alpha-25: rgba(249, 250, 251, 0.25);
   --color-ink-alpha-03: rgba(249, 250, 251, 0.03);
-  --color-accent-alpha-04: rgba(229, 185, 78, 0.04);
+  --color-accent-alpha-04: rgba(212, 168, 67, 0.08);
 }
 
 @layer base {
@@ -161,7 +157,7 @@
   input:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.18);
   }
 
   .skip-link {
@@ -181,7 +177,7 @@
   }
 
   ::selection {
-    background: rgba(109, 74, 255, 0.22);
+    background: rgba(212, 168, 67, 0.22);
     color: var(--color-foreground);
   }
 
@@ -231,6 +227,7 @@
 
   .card {
     background: var(--color-card);
+    border: 1px solid var(--color-card-border);
     border-radius: var(--radius-xl);
     padding: var(--card-padding);
     box-shadow: var(--shadow-sm);
@@ -244,6 +241,7 @@
 
   .card-static {
     background: var(--color-card);
+    border: 1px solid var(--color-card-border);
     border-radius: var(--radius-xl);
     padding: var(--card-padding);
     box-shadow: var(--shadow-sm);
@@ -251,7 +249,7 @@
 
   .input {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.75rem 1rem;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -268,7 +266,7 @@
   .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.18);
     background-color: var(--color-card);
   }
 
@@ -351,18 +349,18 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.4rem 1rem;
+    padding: 0.35rem 1rem;
     border-radius: var(--radius-pill);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 500;
     color: var(--color-accent-foreground);
-    background: rgba(109, 74, 255, 0.12);
-    border: 1px solid rgba(109, 74, 255, 0.35);
+    background: rgba(212, 168, 67, 0.1);
+    border: 1px solid rgba(212, 168, 67, 0.35);
     transition: background-color 150ms ease, border-color 150ms ease;
   }
 
   .badge:hover {
-    background: rgba(109, 74, 255, 0.18);
+    background: rgba(212, 168, 67, 0.16);
   }
 }
 

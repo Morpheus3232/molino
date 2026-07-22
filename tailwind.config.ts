@@ -29,11 +29,16 @@ const config: Config = {
         "space-sm": "var(--space-sm)",
         "space-md": "var(--space-md)",
         "space-lg": "var(--space-lg)",
+        "space-xl": "var(--space-xl)",
+        "space-2xl": "var(--space-2xl)",
       },
       borderRadius: {
         card: "var(--radius-card)",
         button: "var(--radius-button)",
         pill: "var(--radius-pill)",
+        md: "var(--radius-md)",
+        xl: "var(--radius-xl)",
+        "2xl": "var(--radius-2xl)",
       },
       colors: {
         background: "var(--color-background)",
@@ -72,6 +77,7 @@ const config: Config = {
         ink: "var(--color-ink)",
         paper: "var(--color-paper)",
         cream: "var(--color-cream)",
+        warm: "var(--color-warm)",
       },
       boxShadow: {
         sm: "var(--shadow-sm)",
