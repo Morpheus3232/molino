@@ -16,11 +16,22 @@ function safeNumber(value: unknown, fallback = 0): number {
   return Number.isFinite(n) ? Math.trunc(n) : fallback;
 }
 
+const MAP_SECTIONS = [
+  { id: "identity", label: "Identidad" },
+  { id: "patterns", label: "Patrones" },
+  { id: "moment", label: "Momento" },
+  { id: "cycles", label: "Ciclos" },
+  { id: "numbers", label: "Numerología" },
+  { id: "astrology", label: "Astrología" },
+  { id: "recommendations", label: "Recomendaciones" },
+];
+
 export default function ProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string>("identity");
 
   useEffect(() => {
     setMounted(true);
@@ -58,6 +69,12 @@ export default function ProfilePage() {
     clearSession();
     clearStoredProfile();
     router.push("/");
+  };
+
+  const scrollTo = (id: string) => {
+    setActiveSection(id);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   if (!mounted || !profile) {
@@ -101,7 +118,7 @@ export default function ProfilePage() {
 
       <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24">
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Mi mapa personal</p>
+          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Tu mapa personal</p>
           <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{name}</h1>
           <p className="text-base text-muted mt-2">{birthDate}{birthPlace ? ` · ${birthPlace}` : ""}</p>
           {archetypeDescription && (
@@ -111,9 +128,26 @@ export default function ProfilePage() {
           )}
         </div>
 
+        <div className="mb-10">
+          <nav className="flex flex-wrap gap-2" aria-label="Mapa personal">
+            {MAP_SECTIONS.map((section) => (
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => scrollTo(section.id)}
+                className={`px-3 py-1.5 rounded-full text-xs transition-colors ${
+                  activeSection === section.id ? "bg-foreground text-background" : "border border-border text-muted hover:text-foreground"
+                }`}
+              >
+                {section.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+
         <div className="space-y-10">
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi identidad</h2>
+          <section id="identity" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Identidad</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Nombre" value={name} />
               <InfoItem label="Fecha de nacimiento" value={birthDate} />
@@ -132,8 +166,8 @@ export default function ProfilePage() {
             )}
           </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mis patrones</h2>
+          <section id="patterns" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Patrones</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl border border-border bg-background">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Tendencias principales</p>
@@ -154,8 +188,8 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi momento</h2>
+          <section id="moment" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Momento</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
               <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
@@ -163,8 +197,17 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi numerología</h2>
+          <section id="cycles" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Ciclos</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
+              <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
+              <MetricCard label="Día personal" value={personalDay ? String(personalDay) : '—'} />
+            </div>
+          </section>
+
+          <section id="numbers" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Numerología</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <MetricCard label="Life Path" value={String(lifePath)} accent />
               <MetricCard label="Expresión" value={expressionNumber ? String(expressionNumber) : '—'} />
@@ -173,8 +216,8 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi astrología</h2>
+          <section id="astrology" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Astrología</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Signo solar" value={sunSign} />
               <InfoItem label="Elemento" value={sunSignElement} />
@@ -184,8 +227,8 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mis recomendaciones</h2>
+          <section id="recommendations" className="scroll-mt-24">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Recomendaciones</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl border border-border bg-background">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
@@ -217,7 +260,7 @@ export default function ProfilePage() {
           </section>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 flex flex-col sm:flex-row gap-3">
           <Button fullWidth onClick={() => router.push("/patterns")}>
             Ver análisis completo →
           </Button>

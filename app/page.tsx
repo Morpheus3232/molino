@@ -82,16 +82,17 @@ export default function Home() {
 
       <div className="mx-auto max-w-content px-4 sm:px-6">
         <section className="py-10 sm:py-14">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Molino</p>
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
             Descubrí el mapa que te hace único.
           </h1>
           <p className="mt-3 text-base text-muted max-w-2xl">
-            Molino reúne numerología, astrología y herramientas de autoconocimiento para ayudarte a explorar tu identidad, reconocer tus patrones y entender los ciclos que estás atravesando.
+            Explorá tu identidad, reconocé tus patrones y entendé los ciclos que estás atravesando.
           </p>
         </section>
 
         <section className="pb-10 sm:pb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">¿Qué podés descubrir?</h2>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Tu mapa</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-4">
             {[
               { title: "Identidad", desc: "Patrones que forman tu personalidad y tu manera de interactuar con el mundo." },
@@ -99,8 +100,8 @@ export default function Home() {
               { title: "Astrología", desc: "Elementos de tu carta y cómo se relacionan entre sí." },
               { title: "Patrones", desc: "Tendencias y características recurrentes en tu mapa." },
               { title: "Ciclos", desc: "El momento y los ciclos personales que estás atravesando." },
-              { title: "Fortalezas", desc: "Tus recursos naturales y áreas de crecimiento." },
-              { title: "Relaciones", desc: "Compatibilidad y dinámicas entre perfiles." },
+              { title: "Momento", desc: "Tu año, mes y día personal." },
+              { title: "Conexiones", desc: "Compatibilidad y dinámicas entre perfiles." },
               { title: "Recomendaciones", desc: "Sugerencias personalizadas basadas en tu mapa." },
             ].map((item) => (
               <div key={item.title} className="border-b border-border pb-3">
