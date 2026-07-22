@@ -11,27 +11,15 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-const OBJECTIVES = [
-  { id: "life", label: "Decisiones de vida" },
-  { id: "love", label: "Amor y vínculos" },
-  { id: "career", label: "Carrera y emprendimiento" },
-  { id: "business", label: "Negocios y proyectos" },
-  { id: "growth", label: "Crecimiento personal" },
-];
+type SectionId = 'identity' | 'numbers' | 'astrology' | 'cycles' | 'strengths' | 'recommendations';
 
-const ARCHETYPES: Record<number, { name: string; description: string; color: string }> = {
-  1: { name: "El Líder", description: "Naciste para liderar.", color: "#D4A843" },
-  2: { name: "El Mediador", description: "Tu energía es la del puente.", color: "#E8B4B8" },
-  3: { name: "El Comunicador", description: "Tu energía es la de la expresión.", color: "#FF8C42" },
-  4: { name: "El Constructor", description: "Tu energía es la de los cimientos.", color: "#2D5A3D" },
-  5: { name: "El Aventurero", description: "Tu energía es la del viento.", color: "#C44536" },
-  6: { name: "El Nutridor", description: "Tu energía es la del hogar.", color: "#8FBC8F" },
-  7: { name: "El Investigador", description: "Tu energía es la de la verdad.", color: "#4A5568" },
-  8: { name: "El Poderoso", description: "Tu energía es la del imperio.", color: "#6B4C7A" },
-  9: { name: "El Adaptador", description: "Tu energía es la del todo.", color: "#2E5C8A" },
-  11: { name: "El Visionario", description: "Tu energía es la del puente entre mundos.", color: "#8B5CF6" },
-  22: { name: "El Constructor Maestro", description: "Tu energía es la del arquitecto divino.", color: "#4682B4" },
-  33: { name: "El Maestro", description: "Tu energía es la del amor universal en acción.", color: "#B8860B" },
+const SECTION_LABELS: Record<SectionId, string> = {
+  identity: 'Mi identidad',
+  numbers: 'Mi numerología',
+  astrology: 'Mi astrología',
+  cycles: 'Mis ciclos',
+  strengths: 'Mis fortalezas',
+  recommendations: 'Mis recomendaciones',
 };
 
 function safeNumber(value: unknown, fallback = 0): number {
@@ -39,15 +27,19 @@ function safeNumber(value: unknown, fallback = 0): number {
   return Number.isFinite(n) ? Math.trunc(n) : fallback;
 }
 
-function getArchetype(lifePath: number) {
-  return ARCHETYPES[lifePath] || ARCHETYPES[1];
-}
-
 export default function ProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [openSections, setOpenSections] = useState<Record<SectionId, boolean>>({
+    identity: true,
+    numbers: true,
+    astrology: true,
+    cycles: true,
+    strengths: true,
+    recommendations: true,
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -87,6 +79,10 @@ export default function ProfilePage() {
     router.push("/");
   };
 
+  const toggleSection = (id: SectionId) => {
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   if (!mounted || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -96,7 +92,6 @@ export default function ProfilePage() {
   }
 
   const lifePath = safeNumber(profile.lifePath, 1);
-  const archetype = getArchetype(lifePath);
   const expressionNumber = safeNumber(profile.expressionNumber, 0);
   const soulNumber = safeNumber(profile.soulNumber, 0);
   const personalityNumber = safeNumber(profile.personalityNumber, 0);
@@ -108,17 +103,21 @@ export default function ProfilePage() {
   const element = typeof profile.element === "string" ? profile.element : "";
   const modality = typeof profile.modality === "string" ? profile.modality : "";
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-
-  const radarData = useMemo(() => {
-    const base = Math.min(lifePath * 10, 100);
-    return [
-      { subject: "Life Path", value: base },
-      { subject: "Expresión", value: Math.min((expressionNumber || lifePath) * 10, 100) },
-      { subject: "Alma", value: Math.min((soulNumber || lifePath) * 10, 100) },
-      { subject: "Personalidad", value: Math.min((personalityNumber || lifePath) * 10, 100) },
-      { subject: "Elemento", value: 50 + (lifePath % 5) * 10 },
-    ];
-  }, [lifePath, expressionNumber, soulNumber, personalityNumber]);
+  const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
+  const archetypeDescription = typeof profile.archetypeInfo?.description === "string" ? profile.archetypeInfo.description : "";
+  const archetypeColor = typeof profile.archetypeInfo?.color === "string" ? profile.archetypeInfo.color : "#D4A843";
+  const archetypeKeywords = Array.isArray(profile.archetypeInfo?.keywords) ? profile.archetypeInfo.keywords : [];
+  const archetypeStrengths = Array.isArray(profile.archetypeInfo?.strengths) ? profile.archetypeInfo.strengths : [];
+  const archetypeChallenges = Array.isArray(profile.archetypeInfo?.challenges) ? profile.archetypeInfo.challenges : [];
+  const sunSignElement = typeof profile.sunSignInfo?.element === "string" ? profile.sunSignInfo.element : "";
+  const sunSignModality = typeof profile.sunSignInfo?.modality === "string" ? profile.sunSignInfo.modality : "";
+  const chineseElement = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
+  const personalYear = safeNumber(profile.cycles?.personalYear, 0);
+  const personalMonth = safeNumber(profile.cycles?.personalMonth, 0);
+  const personalDay = safeNumber(profile.cycles?.personalDay, 0);
+  const recommendationStrengths = Array.isArray(profile.recommendations?.strengths) ? profile.recommendations.strengths : [];
+  const recommendationChallenges = Array.isArray(profile.recommendations?.challenges) ? profile.recommendations.challenges : [];
+  const practices = Array.isArray(profile.recommendations?.practices) ? profile.recommendations.practices : [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -134,100 +133,146 @@ export default function ProfilePage() {
           </Button>
         </div>
 
-        <div className="space-y-6">
-          <Card hover={false} padding="lg">
-            <div className="text-center">
-              <span className="badge mb-4">Tu perfil simbólico</span>
-              <h1 className="font-serif text-5xl font-semibold tracking-tight md:text-7xl" style={{ color: archetype.color || "#D4A843" }}>
-                {lifePath}
-              </h1>
-              <p className="mt-2 text-lg text-muted md:text-xl">Life Path</p>
-              <p className="mt-4 text-2xl font-serif font-semibold text-foreground md:text-3xl">
-                {name.toUpperCase()}
-              </p>
-              <p className="mt-2 text-sm text-muted">
-                {birthDate}
-                {birthPlace ? ` · ${birthPlace}` : ""}
-                {birthTime ? ` · ${birthTime}` : ""}
-              </p>
-              <p className="mt-4 text-base text-muted md:text-lg">{archetype.name}</p>
-              <p className="mt-1 text-sm text-muted">{archetype.description}</p>
+        <div className="mb-8">
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">Mi mapa personal</h1>
+          <p className="text-base text-muted mt-2">Tu perfil completo, generado a partir de tus datos.</p>
+        </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
-                  📚 Numerología
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
-                  🌌 Astrología
-                </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
-                  🐉 Zodiaco Chino
-                </span>
+        <div className="space-y-4">
+          <ProfileSection
+            id="identity"
+            label="Mi identidad"
+            defaultOpen
+            isOpen={openSections.identity}
+            onToggle={() => toggleSection('identity')}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoItem label="Nombre" value={name} />
+              <InfoItem label="Fecha de nacimiento" value={birthDate} />
+              {birthPlace && <InfoItem label="Lugar" value={birthPlace} />}
+              {birthTime && <InfoItem label="Hora" value={birthTime} />}
+              <InfoItem label="Life Path" value={String(lifePath)} />
+              <InfoItem label="Arquetipo" value={archetypeName} />
+            </div>
+            {archetypeDescription && (
+              <div className="mt-4 p-4 rounded-xl bg-background border border-border">
+                <p className="text-sm text-muted leading-relaxed">{archetypeDescription}</p>
               </div>
-            </div>
-          </Card>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card hover={false} padding="lg">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Life Path</p>
-              <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{lifePath}</p>
-              <p className="text-sm text-muted mt-1">{archetype.name}</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Expresión</p>
-              <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{expressionNumber || "—"}</p>
-              <p className="text-sm text-muted mt-1">Cómo te presentás</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Alma</p>
-              <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{soulNumber || "—"}</p>
-              <p className="text-sm text-muted mt-1">Tus deseos profundos</p>
-            </Card>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card hover={false} padding="lg">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Elemento</p>
-              <p className="text-2xl font-serif font-semibold mt-2 text-foreground">{element}</p>
-              <p className="text-sm text-muted mt-1">{modality}</p>
-            </Card>
-            <Card hover={false} padding="lg">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Zodiaco chino</p>
-              <p className="text-2xl font-serif font-semibold mt-2 text-foreground">{chineseZodiac}</p>
-              <p className="text-sm text-muted mt-1">{profile.chineseZodiacInfo?.element || ""} · Animal de tu año</p>
-            </Card>
-          </div>
-
-          <Card hover={false} padding="lg">
-            <div className="text-center mb-4">
-              <span className="badge mb-3">Tu radar simbólico</span>
-            </div>
-            <div className="w-full">
-              <div className="grid grid-cols-5 gap-3 text-center">
-                {radarData.map((item) => (
-                  <div key={item.subject} className="p-3 rounded-xl bg-background border border-border">
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{item.subject}</p>
-                    <p className="text-2xl font-semibold text-foreground mt-1">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-
-          <Card hover={false} padding="lg">
-            <div className="text-center">
-              <span className="badge mb-3">Contexto</span>
-              <h3 className="font-serif text-xl font-semibold text-foreground">{name}</h3>
-              <p className="text-sm text-muted mt-1">{birthDate}{birthPlace ? ` · ${birthPlace}` : ""}</p>
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {(OBJECTIVES.find((o) => o.id === profile.goal) ? [OBJECTIVES.find((o) => o.id === profile.goal)!] : []).map((obj) => (
-                  <span key={obj.id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
-                    {obj.label}
+            )}
+            {archetypeKeywords.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {archetypeKeywords.map((keyword: string) => (
+                  <span key={keyword} className="inline-flex items-center rounded-full border border-card-border bg-background px-3 py-1 text-xs text-foreground">
+                    {keyword}
                   </span>
                 ))}
               </div>
+            )}
+          </ProfileSection>
+
+          <ProfileSection
+            id="numbers"
+            label="Mi numerología"
+            isOpen={openSections.numbers}
+            onToggle={() => toggleSection('numbers')}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <MetricCard label="Life Path" value={String(lifePath)} accent />
+              <MetricCard label="Expresión" value={expressionNumber ? String(expressionNumber) : '—'} />
+              <MetricCard label="Alma" value={soulNumber ? String(soulNumber) : '—'} />
+              <MetricCard label="Personalidad" value={personalityNumber ? String(personalityNumber) : '—'} />
             </div>
-          </Card>
+            {archetypeStrengths.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas del arquetipo</p>
+                <ul className="list-disc list-inside text-sm text-muted space-y-1">
+                  {archetypeStrengths.map((item: string) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {archetypeChallenges.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos del arquetipo</p>
+                <ul className="list-disc list-inside text-sm text-muted space-y-1">
+                  {archetypeChallenges.map((item: string) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </ProfileSection>
+
+          <ProfileSection
+            id="astrology"
+            label="Mi astrología"
+            isOpen={openSections.astrology}
+            onToggle={() => toggleSection('astrology')}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoItem label="Signo solar" value={sunSign} />
+              <InfoItem label="Elemento" value={element} />
+              <InfoItem label="Modalidad" value={modality} />
+              <InfoItem label="Zodiaco chino" value={chineseZodiac} />
+              <InfoItem label="Elemento chino" value={chineseElement} />
+            </div>
+          </ProfileSection>
+
+          <ProfileSection
+            id="cycles"
+            label="Mis ciclos"
+            isOpen={openSections.cycles}
+            onToggle={() => toggleSection('cycles')}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
+              <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
+              <MetricCard label="Día personal" value={personalDay ? String(personalDay) : '—'} />
+            </div>
+          </ProfileSection>
+
+          <ProfileSection
+            id="strengths"
+            label="Mis fortalezas"
+            isOpen={openSections.strengths}
+            onToggle={() => toggleSection('strengths')}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl bg-background border border-border">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
+                <ul className="list-disc list-inside text-sm text-muted space-y-1">
+                  {recommendationStrengths.map((item: string) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="p-4 rounded-xl bg-background border border-border">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos</p>
+                <ul className="list-disc list-inside text-sm text-muted space-y-1">
+                  {recommendationChallenges.map((item: string) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </ProfileSection>
+
+          <ProfileSection
+            id="recommendations"
+            label="Mis recomendaciones"
+            isOpen={openSections.recommendations}
+            onToggle={() => toggleSection('recommendations')}
+          >
+            <div className="p-4 rounded-xl bg-background border border-border">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Prácticas sugeridas</p>
+              <ul className="list-disc list-inside text-sm text-muted space-y-1">
+                  {practices.map((item: string) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </ProfileSection>
         </div>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
@@ -241,6 +286,57 @@ export default function ProfilePage() {
       </div>
 
       <UniversityFooter />
+    </div>
+  );
+}
+
+function ProfileSection({
+  id,
+  label,
+  children,
+  defaultOpen = false,
+  isOpen,
+  onToggle,
+}: {
+  id: SectionId;
+  label: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <Card hover={false} padding="lg">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full flex items-center justify-between text-left"
+        aria-expanded={isOpen}
+      >
+        <span className="text-lg font-semibold text-foreground">{label}</span>
+        <span className="text-sm text-muted">{isOpen ? 'Ocultar' : 'Mostrar'}</span>
+      </button>
+      <div className={`mt-4 transition-all duration-300 ease-out ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+        {children}
+      </div>
+    </Card>
+  );
+}
+
+function InfoItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="p-4 rounded-xl bg-background border border-border">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
+      <p className="text-base text-foreground mt-1 font-medium">{value}</p>
+    </div>
+  );
+}
+
+function MetricCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className={`p-4 rounded-xl border text-center ${accent ? 'border-accent/40 bg-background' : 'border-border bg-background'}`}>
+      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
+      <p className={`text-3xl font-semibold mt-1 ${accent ? 'text-accent' : 'text-foreground'}`}>{value}</p>
     </div>
   );
 }

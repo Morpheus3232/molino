@@ -4,12 +4,12 @@ export interface UserProfile {
   birthDate: string;
   birthPlace: string;
   birthTime?: string;
-  goal: "life" | "love" | "career" | "business" | "growth";
+  goal: 'life' | 'love' | 'career' | 'business' | 'growth';
   interests: string[];
   onboardingStep: number;
   completedSections: string[];
-  theme: "light" | "dark";
-  language: "es" | "en";
+  theme: 'light' | 'dark';
+  language: 'es' | 'en';
   notifications: boolean;
   lifePath: number;
   sunSign: string;
@@ -17,11 +17,13 @@ export interface UserProfile {
     sign: string;
     element: string;
     modality: string;
+    symbol?: string;
   };
   chineseZodiac: string;
   chineseZodiacInfo: {
     animal: string;
     element: string;
+    emoji?: string;
   };
   element: string;
   modality: string;
@@ -30,4 +32,14 @@ export interface UserProfile {
   expressionNumber?: number;
   soulNumber?: number;
   personalityNumber?: number;
+  cycles: {
+    personalYear: number;
+    personalMonth: number;
+    personalDay: number;
+  };
+  recommendations: {
+    strengths: string[];
+    challenges: string[];
+    practices: string[];
+  };
 }

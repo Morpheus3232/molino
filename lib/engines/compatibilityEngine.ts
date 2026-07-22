@@ -1,33 +1,9 @@
 import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, getArchetypeInfo, calculateNumerologyCompatibility } from './numerologyEngine';
-import { getSunSign, getSunSignInfo, getWesternElement, getModality, calculateElementCompatibility } from './astrologyEngine';
+import { getSunSign, getSunSignInfo, getWesternElement, getModality, calculateElementCompatibility, getSunSignSymbol } from './astrologyEngine';
 import { getChineseZodiac, getChineseZodiacInfo, calculateChineseCompatibility } from './chineseZodiacEngine';
-
-export interface UserProfile {
-  id?: string;
-  name: string;
-  birthDate: string;
-  birthPlace: string;
-  birthTime?: string;
-  goal: "life" | "love" | "career" | "business" | "growth";
-  interests: string[];
-  onboardingStep: number;
-  completedSections: string[];
-  theme: "light" | "dark";
-  language: "es" | "en";
-  notifications: boolean;
-  lifePath: number;
-  expressionNumber?: number;
-  soulNumber?: number;
-  personalityNumber?: number;
-  sunSign: string;
-  sunSignInfo: any;
-  chineseZodiac: string;
-  chineseZodiacInfo: any;
-  element: string;
-  modality: string;
-  archetype: string;
-  archetypeInfo: any;
-}
+import type { UserProfile } from '@/types/user';
+export type { UserProfile } from '@/types/user';
+import { getPersonalYear, getPersonalDayForDate } from '@/lib/calculations';
 
 export interface CompatibilityScore {
   numerology: number;
@@ -56,30 +32,64 @@ export function calculateUserProfile(name: string, birthDate: string, overrides?
   const chineseZodiacInfo = getChineseZodiacInfo(birthDate);
   const archetypeInfo = getArchetypeInfo(lifePath);
 
+  const now = new Date();
+  const birthParts = birthDate.split('-').map((part) => parseInt(part, 10));
+  const birthDay = Number.isFinite(birthParts[2]) ? birthParts[2] : now.getDate();
+  const birthMonth = Number.isFinite(birthParts[1]) ? birthParts[1] : now.getMonth() + 1;
+  const birthYear = Number.isFinite(birthParts[0]) ? birthParts[0] : now.getFullYear();
+
+  const personalYear = getPersonalYear(birthDay, birthMonth, birthYear, now.getFullYear());
+  const personalMonth = getPersonalYear(birthDay, birthMonth, birthYear, now.getFullYear(), undefined, now.getMonth() + 1);
+  const personalDay = getPersonalDayForDate(birthDay, birthMonth, birthYear, now);
+
+  const baseStrength =
+    archetypeInfo.strengths?.length > 0
+      ? archetypeInfo.strengths.slice(0, 4)
+      : ['Aprendizaje', 'Flexibilidad', 'Conexión'];
+  const baseChallenge =
+    archetypeInfo.challenges?.length > 0
+      ? archetypeInfo.challenges.slice(0, 3)
+      : ['Indecisión', 'Dispersión', 'Inconstancia'];
+  const practices = [
+    'Registrá 3 logros pequeños por semana.',
+    'Dedicá 10 minutos a respirar o escribir sin filtro.',
+    'Elegí una palabra foco para el mes y revisala cada domingo.',
+  ];
+
   return {
     name,
     birthDate,
-    birthPlace: overrides?.birthPlace || "",
+    birthPlace: overrides?.birthPlace || '',
     birthTime: overrides?.birthTime,
-    goal: overrides?.goal || "life",
+    goal: overrides?.goal || 'life',
     interests: overrides?.interests || [],
     onboardingStep: overrides?.onboardingStep || 1,
     completedSections: overrides?.completedSections || [],
-    theme: overrides?.theme || "light",
-    language: overrides?.language || "es",
+    theme: overrides?.theme || 'light',
+    language: overrides?.language || 'es',
     notifications: overrides?.notifications ?? true,
     lifePath,
     expressionNumber: name ? calculateExpressionNumber(name) : undefined,
     soulNumber: name ? calculateSoulNumber(name) : undefined,
     personalityNumber: name ? calculatePersonalityNumber(name) : undefined,
     sunSign,
-    sunSignInfo,
+    sunSignInfo: { sign: sunSignInfo.sign, element: sunSignInfo.element, modality: sunSignInfo.modality, symbol: getSunSignSymbol(birthDate) },
     chineseZodiac,
     chineseZodiacInfo,
     element: sunSignInfo.element,
     modality: sunSignInfo.modality,
     archetype: archetypeInfo.name,
     archetypeInfo,
+    cycles: {
+      personalYear,
+      personalDay,
+      personalMonth,
+    },
+    recommendations: {
+      strengths: baseStrength,
+      challenges: baseChallenge,
+      practices,
+    },
   };
 }
 
