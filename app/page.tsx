@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
@@ -8,6 +8,7 @@ import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { saveSession } from "@/lib/storage/ephemeral";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function Home() {
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState(String(new Date().getFullYear() - 25));
   const [error, setError] = useState("");
+  const [checkingProfile, setCheckingProfile] = useState(true);
 
   const daysInMonth = (() => {
     const m = parseInt(month, 10);
@@ -25,6 +27,15 @@ export default function Home() {
   })();
 
   const yearOptions = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("molino-profile");
+    if (stored) {
+      router.replace("/profile");
+    } else {
+      setCheckingProfile(false);
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,55 +87,40 @@ export default function Home() {
     }
   };
 
+  if (checkingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-muted">Cargando...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
-      <div className="mx-auto max-w-content px-4 sm:px-6">
-        <section className="py-10 sm:py-14">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Molino</p>
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+      <main className="mx-auto max-w-content px-4 sm:px-6 py-10 sm:py-14">
+        <section className="text-center mb-10 sm:mb-14">
+          <h1 className="font-serif text-4xl tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Descubrí el mapa que te hace único.
           </h1>
-          <p className="mt-3 text-base text-muted max-w-2xl">
-            Explorá tu identidad, reconocé tus patrones y entendé los ciclos que estás atravesando.
+          <p className="mx-auto mt-4 max-w-2xl text-base text-muted sm:text-lg">
+            Explorá tu identidad, tus patrones y tus ciclos a través de diferentes sistemas de autoconocimiento.
           </p>
+          <p className="mx-auto mt-2 text-sm text-muted">Sin registro. Sin costo. Solo tu nombre y fecha de nacimiento.</p>
         </section>
 
-        <section className="pb-10 sm:pb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Tu mapa</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-4">
-            {[
-              { title: "Identidad", desc: "Patrones que forman tu personalidad y tu manera de interactuar con el mundo." },
-              { title: "Numerología", desc: "Números derivados de tu nombre y fecha de nacimiento." },
-              { title: "Astrología", desc: "Elementos de tu carta y cómo se relacionan entre sí." },
-              { title: "Patrones", desc: "Tendencias y características recurrentes en tu mapa." },
-              { title: "Ciclos", desc: "El momento y los ciclos personales que estás atravesando." },
-              { title: "Momento", desc: "Tu año, mes y día personal." },
-              { title: "Conexiones", desc: "Compatibilidad y dinámicas entre perfiles." },
-              { title: "Recomendaciones", desc: "Sugerencias personalizadas basadas en tu mapa." },
-            ].map((item) => (
-              <div key={item.title} className="border-b border-border pb-3">
-                <h3 className="text-sm font-medium text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted mt-1">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="pb-10 sm:pb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Creá tu mapa personal</h2>
-          <p className="text-base text-muted mb-6">Introducí tus datos para comenzar.</p>
-          <form onSubmit={handleSubmit} className="max-w-xl space-y-4">
+        <section className="mx-auto max-w-xl mb-10 sm:mb-14">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Nombre completo</label>
+              <label htmlFor="name" className="block text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Tu nombre</label>
               <input
                 id="name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl border border-border bg-background focus:border-foreground focus:ring-1 focus:ring-foreground outline-none transition-colors"
-                placeholder="Tu nombre completo"
+                className="input"
+                placeholder="Ej: María"
                 required
                 minLength={2}
                 maxLength={40}
@@ -136,7 +132,7 @@ export default function Home() {
                 <select
                   value={day}
                   onChange={(e) => setDay(e.target.value)}
-                  className="h-12 px-3 rounded-xl border border-border bg-background focus:border-foreground focus:ring-1 focus:ring-foreground outline-none transition-colors"
+                  className="input"
                   required
                   aria-label="Día"
                 >
@@ -148,7 +144,7 @@ export default function Home() {
                 <select
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}
-                  className="h-12 px-3 rounded-xl border border-border bg-background focus:border-foreground focus:ring-1 focus:ring-foreground outline-none transition-colors"
+                  className="input"
                   required
                   aria-label="Mes"
                 >
@@ -172,7 +168,7 @@ export default function Home() {
                 <select
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  className="h-12 px-3 rounded-xl border border-border bg-background focus:border-foreground focus:ring-1 focus:ring-foreground outline-none transition-colors"
+                  className="input"
                   required
                   aria-label="Año"
                 >
@@ -184,32 +180,49 @@ export default function Home() {
               </div>
             </div>
             {error && <p className="text-sm text-error">{error}</p>}
-            <button
-              type="submit"
-              className="w-full h-14 bg-foreground text-background rounded-xl font-medium transition-colors hover:bg-accent focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2"
-            >
-              Descubrir mi Mapa
-            </button>
+            <Button type="submit" fullWidth size="lg">
+              Descubrir mi mapa →
+            </Button>
           </form>
         </section>
 
-        <section className="pb-10 sm:pb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">¿Cómo funciona?</h2>
-          <ol className="list-decimal list-inside text-sm text-muted space-y-2 max-w-2xl">
-            <li>Introducís tu nombre y fecha de nacimiento.</li>
-            <li>Molino construye tu mapa personal.</li>
-            <li>Explorás tu identidad, tus números y tus ciclos.</li>
-          </ol>
+        <section className="mb-10 sm:mb-14">
+          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-6 text-center">¿Qué podés descubrir?</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+            {[
+              "Identidad",
+              "Patrones",
+              "Numerología",
+              "Astrología",
+              "Ciclos",
+              "Momento",
+            ].map((item) => (
+              <div key={item} className="border-b border-border pb-3">
+                <p className="text-sm font-medium text-foreground">{item}</p>
+              </div>
+            ))}
+          </div>
         </section>
+      </main>
 
-        <section className="pb-10 sm:pb-14">
-          <p className="text-xs text-muted max-w-3xl">
-            Molino es una herramienta de autoconocimiento y entretenimiento. Sus interpretaciones no constituyen predicciones absolutas, asesoramiento profesional ni determinan el futuro.
-          </p>
-        </section>
-      </div>
-
-      <UniversityFooter />
+      <footer className="border-t border-border">
+        <div className="mx-auto max-w-content px-4 sm:px-6 py-8">
+          <div className="text-center text-sm text-muted">🌾 Molino - Universidad Pública de Libre Acceso</div>
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-muted">
+            <span>🔓 Conocimiento libre</span>
+            <span aria-hidden="true">·</span>
+            <span>🕊️ Privacidad radical</span>
+            <span aria-hidden="true">·</span>
+            <span>📚 Transparencia total</span>
+            <span aria-hidden="true">·</span>
+            <span>🧬 Código abierto</span>
+          </div>
+          <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted">
+            <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="/conocimiento">Documentación</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
