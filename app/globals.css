@@ -32,13 +32,16 @@
   --radius-card: 1rem;
   --radius-button: 0.75rem;
   --radius-pill: 9999px;
-  --radius-sm: 0.625rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.25rem;
-  --radius-full: 9999px;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
 
   --section-padding: 6rem;
   --card-padding: 2rem;
+
+  --space-xs: 0.5rem;     /* 8px → 4px para gaps internos */
+  --space-sm: 1rem;       /* 16px para label→input */
+  --space-md: 1.618rem;   /* 26px para sección completa */
+  --space-lg: 2.618rem;   /* 42px para espaciado entre elementos grandes */
 
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
@@ -218,22 +221,19 @@
 
   .card {
     background: var(--color-card);
-    border: 1px solid var(--color-card-border);
     border-radius: var(--radius-xl);
     padding: var(--card-padding);
     box-shadow: var(--shadow-sm);
-    transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+    transition: box-shadow 300ms ease, transform 300ms ease;
   }
 
   .card:hover {
     box-shadow: var(--shadow-md);
-    border-color: var(--color-accent);
     transform: translateY(-1px);
   }
 
   .card-static {
     background: var(--color-card);
-    border: 1px solid var(--color-card-border);
     border-radius: var(--radius-xl);
     padding: var(--card-padding);
     box-shadow: var(--shadow-sm);

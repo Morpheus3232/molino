@@ -14,7 +14,7 @@ export default function Card({ children, className = "", hover = true, padding =
     lg: "p-8",
   };
 
-  const hoverClass = hover ? "hover:shadow-lg hover:border-accent/60" : "";
+  const hoverClass = hover ? "hover:shadow-lg hover:-translate-y-0.5" : "";
 
   return (
     <div className={`card ${paddingClasses[padding]} ${hoverClass} ${className}`}>

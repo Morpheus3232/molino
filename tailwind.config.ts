@@ -25,6 +25,10 @@ const config: Config = {
       spacing: {
         section: "var(--section-padding)",
         card: "var(--card-padding)",
+        "space-xs": "var(--space-xs)",
+        "space-sm": "var(--space-sm)",
+        "space-md": "var(--space-md)",
+        "space-lg": "var(--space-lg)",
       },
       borderRadius: {
         card: "var(--radius-card)",
@@ -52,6 +56,7 @@ const config: Config = {
           foreground: "var(--color-accent-foreground)",
           hover: "var(--color-accent-hover)",
         },
+        accentHover: "var(--color-accent-hover)",
         success: {
           DEFAULT: "var(--color-success)",
           foreground: "var(--color-success-foreground)",
