@@ -13,11 +13,23 @@ const config: Config = {
         serif: ["var(--font-serif)", "Playfair Display", "serif"],
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
       },
+      fontSize: {
+        xs: "var(--step-1-text)",
+        sm: "var(--step-2-text)",
+        base: "var(--step-3-text)",
+        lg: "var(--step-4-text)",
+        xl: "var(--step-5-text)",
+        "2xl": "2rem",
+        "3xl": "3rem",
+      },
+      spacing: {
+        section: "var(--section-padding)",
+        card: "var(--card-padding)",
+      },
       borderRadius: {
-        sm: "var(--radius-sm)",
-        md: "var(--radius-md)",
-        lg: "var(--radius-lg)",
-        full: "var(--radius-full)",
+        card: "var(--radius-card)",
+        button: "var(--radius-button)",
+        pill: "var(--radius-pill)",
       },
       colors: {
         background: "var(--color-background)",
@@ -38,6 +50,7 @@ const config: Config = {
         accent: {
           DEFAULT: "var(--color-accent)",
           foreground: "var(--color-accent-foreground)",
+          hover: "var(--color-accent-hover)",
         },
         success: {
           DEFAULT: "var(--color-success)",
@@ -51,11 +64,15 @@ const config: Config = {
           DEFAULT: "var(--color-error)",
           foreground: "var(--color-error-foreground)",
         },
+        ink: "var(--color-ink)",
+        paper: "var(--color-paper)",
+        cream: "var(--color-cream)",
       },
       boxShadow: {
         sm: "var(--shadow-sm)",
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
       },
       maxWidth: {
         content: "var(--max-width-content)",

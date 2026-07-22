@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, clearSession } from "@/lib/storage/ephemeral";
 import { loadProfileFromStorage, downloadProfileJson, clearStoredProfile } from "@/lib/storage/localStorage";
@@ -10,14 +10,9 @@ import { ARCHETYPES } from "@/lib/data";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import Section from "@/components/ui/Section";
-import CoreIdentity from "@/components/profile/CoreIdentity";
-import PersonalityInsights from "@/components/profile/PersonalityInsights";
-import StrengthsChallenges from "@/components/profile/StrengthsChallenges";
-import Styles from "@/components/profile/Styles";
-import RadarChart from "@/components/ui/RadarChart";
-import SynthesisCard from "@/components/profile/SynthesisCard";
 import Card from "@/components/ui/Card";
+import Section from "@/components/ui/Section";
+import RadarChart from "@/components/ui/RadarChart";
 
 const OBJECTIVES = [
   { id: "life", label: "Decisiones de vida" },
@@ -83,11 +78,20 @@ export default function ProfilePage() {
 
   const archetype = ARCHETYPES[profile.lifePath] || ARCHETYPES[1];
 
+  const radarData = useMemo(() => [
+    { subject: "Life Path", value: Math.min(profile.lifePath * 10, 100) },
+    { subject: "Expresión", value: Math.min((profile.expressionNumber || profile.lifePath) * 10, 100) },
+    { subject: "Alma", value: Math.min((profile.soulNumber || profile.lifePath) * 10, 100) },
+    { subject: "Personalidad", value: Math.min((profile.personalityNumber || profile.lifePath) * 10, 100) },
+    { subject: "Elemento", value: 50 + (profile.lifePath % 5) * 10 },
+  ], [profile]);
+
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
-      <div className="max-w-content mx-auto px-4 sm:px-6 py-10 pb-24">
-        <div className="flex items-center justify-between mb-8">
+
+      <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24">
+        <div className="mb-8 flex items-center justify-between">
           <Button variant="ghost" onClick={handleNewSession}>
             ← Nueva sesión
           </Button>
@@ -96,80 +100,94 @@ export default function ProfilePage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div className="xl:col-span-2 space-y-6">
-            <CoreIdentity profile={profile} />
+        <div className="space-y-10">
+          <Card hover={false} padding="lg">
+            <div className="text-center">
+              <span className="badge mb-4">Tu perfil simbólico</span>
+              <h1 className="font-serif text-5xl font-bold tracking-tight md:text-7xl" style={{ color: archetype.color || "#D4A843" }}>
+                {profile.lifePath}
+              </h1>
+              <p className="mt-2 text-lg text-muted md:text-xl">Life Path</p>
+              <p className="mt-4 text-2xl font-serif font-semibold text-foreground md:text-3xl">
+                {profile.name.toUpperCase()}
+              </p>
+              <p className="mt-2 text-sm text-muted">
+                {profile.birthDate}
+                {profile.birthPlace ? ` · ${profile.birthPlace}` : ""}
+                {profile.birthTime ? ` · ${profile.birthTime}` : ""}
+              </p>
+              <p className="mt-4 text-base text-muted md:text-lg">{archetype.name}</p>
+              <p className="mt-1 text-sm text-muted">{archetype.description}</p>
 
-            <Section className="mb-0">
-              <Card hover={false} padding="lg">
-                <div className="text-center mb-4">
-                  <span className="badge mb-3">Tu perfil simbólico</span>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  {[
-                    { label: "Life Path", value: profile.lifePath },
-                    { label: "Expresión", value: profile.expressionNumber ?? "—" },
-                    { label: "Alma", value: profile.soulNumber ?? "—" },
-                    { label: "Personalidad", value: profile.personalityNumber ?? "—" },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-card-border bg-card p-4 text-center">
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">N{'>'}{item.label}</p>
-                      <p className="text-3xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{item.value}</p>
-                      <p className="text-xs text-muted mt-1">{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </Card>
-            </Section>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                  📚 Numerología
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                  🌌 Astrología
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                  🐉 Zodiaco Chino
+                </span>
+              </div>
+            </div>
+          </Card>
 
-            <PersonalityInsights profile={profile} />
-            <StrengthsChallenges profile={profile} />
-            <Styles profile={profile} />
-            <SynthesisCard profile={profile} />
-          </div>
-
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card hover={false} padding="lg">
-              <div className="text-center mb-5">
-                <span className="badge mb-3">Contexto</span>
-                <h3 className="font-serif text-xl font-semibold text-foreground">{profile.name}</h3>
-                <p className="text-sm text-muted mt-1">{profile.birthDate}{profile.birthPlace ? ` • ${profile.birthPlace}` : ""}</p>
-                {profile.birthTime && (
-                  <p className="text-sm text-muted">🕒 {profile.birthTime}</p>
-                )}
-              </div>
-              <div className="space-y-3">
-                <div className="rounded-xl border border-border bg-background p-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Objetivo</p>
-                  <p className="text-sm text-foreground mt-1">{OBJECTIVES.find((o) => o.id === profile.goal)?.label || profile.goal}</p>
-                </div>
-                <div className="rounded-xl border border-border bg-background p-3">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Intereses</p>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {profile.interests.map((id) => {
-                      const item = INTERESTS.find((i) => i.id === id);
-                      return (
-                        <span key={id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-3 py-1.5 text-xs text-foreground">
-                          {item?.label}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Life Path</p>
+              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.lifePath}</p>
+              <p className="text-sm text-muted mt-1">{archetype.name}</p>
             </Card>
-
-            <RadarChart
-              title="Tu radar simbólico"
-              data={[
-                { subject: "Life Path", value: Math.min(profile.lifePath * 10, 100) },
-                { subject: "Expresión", value: Math.min((profile.expressionNumber || profile.lifePath) * 10, 100) },
-                { subject: "Alma", value: Math.min((profile.soulNumber || profile.lifePath) * 10, 100) },
-                { subject: "Personalidad", value: Math.min((profile.personalityNumber || profile.lifePath) * 10, 100) },
-                { subject: "Elemento", value: 50 + (profile.lifePath % 5) * 10 },
-              ]}
-            />
+            <Card hover={false} padding="lg">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Expresión</p>
+              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.expressionNumber ?? "—"}</p>
+              <p className="text-sm text-muted mt-1">Cómo te presentás</p>
+            </Card>
+            <Card hover={false} padding="lg">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Alma</p>
+              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.soulNumber ?? "—"}</p>
+              <p className="text-sm text-muted mt-1">Tus deseos profundos</p>
+            </Card>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card hover={false} padding="lg">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Elemento</p>
+              <p className="text-2xl font-serif font-bold mt-2 text-foreground">{profile.element}</p>
+              <p className="text-sm text-muted mt-1">{profile.modality}</p>
+            </Card>
+            <Card hover={false} padding="lg">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Zodiaco chino</p>
+              <p className="text-2xl font-serif font-bold mt-2 text-foreground">{profile.chineseZodiac}</p>
+              <p className="text-sm text-muted mt-1">{profile.chineseZodiacInfo?.element || ""} · Animal de tu año</p>
+            </Card>
+          </div>
+
+          <Card hover={false} padding="lg">
+            <div className="text-center mb-4">
+              <span className="badge mb-3">Tu radar simbólico</span>
+            </div>
+            <RadarChart
+              title=""
+              data={radarData}
+            />
+          </Card>
+
+          <Card hover={false} padding="lg">
+            <div className="text-center">
+              <span className="badge mb-3">Contexto</span>
+              <h3 className="font-serif text-xl font-semibold text-foreground">{profile.name}</h3>
+              <p className="text-sm text-muted mt-1">{profile.birthDate}{profile.birthPlace ? ` · ${profile.birthPlace}` : ""}</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                {(OBJECTIVES.find((o) => o.id === profile.goal) ? [OBJECTIVES.find((o) => o.id === profile.goal)!] : []).map((obj) => (
+                  <span key={obj.id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                    {obj.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Card>
         </div>
 
         <Section className="mt-10">
@@ -183,6 +201,7 @@ export default function ProfilePage() {
           </div>
         </Section>
       </div>
+
       <UniversityFooter />
     </div>
   );

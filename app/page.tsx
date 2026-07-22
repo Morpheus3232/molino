@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Input from "@/components/ui/Input";
+import Section from "@/components/ui/Section";
 
 function getCurrentDayNumber(): number {
   const today = new Date();
@@ -94,34 +95,39 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
-      <div className="w-full max-w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-24 pb-28">
-        <section className="text-center max-w-4xl mx-auto mb-20 sm:mb-28">
+      <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 pb-24 sm:pt-24">
+        {/* Hero limpio */}
+        <section className="mb-16 text-center sm:mb-24">
           <span className="badge mb-5">Personal Intelligence</span>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light text-foreground leading-tight mt-4">
-            Entendé tus patrones<br/>para tomar mejores decisiones
+          <h1 className="mx-auto mt-4 max-w-4xl text-4xl font-serif tracking-tight md:text-5xl lg:text-6xl">
+            Entendé tus patrones para tomar mejores decisiones
           </h1>
-          <p className="text-muted text-base md:text-lg mt-5 max-w-2xl mx-auto leading-relaxed">
+          <p className="mx-auto mt-5 max-w-2xl text-base md:text-lg">
             Un sistema simbólico que explora patrones de personalidad, ciclos y significado.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-6 text-sm text-muted">
-            <span>🔓 Código abierto</span>
-            <span aria-hidden="true">•</span>
-            <span>💯 100% gratuito</span>
-            <span aria-hidden="true">•</span>
-            <span>🕊️ Sin registro</span>
-          </div>
-          <div className="mt-8">
+          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
             <Button size="lg" onClick={() => router.push("/onboarding")}>
               Descubrir mi perfil →
             </Button>
+            <Button variant="secondary" size="lg" onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}>
+              Ver demo
+            </Button>
+          </div>
+          <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-muted">
+            <span>🔓 Código abierto</span>
+            <span className="text-border" aria-hidden="true">•</span>
+            <span>💯 100% gratuito</span>
+            <span className="text-border" aria-hidden="true">•</span>
+            <span>🕊️ Sin registro</span>
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto mb-20 sm:mb-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            <div className="space-y-8">
-              <Card>
-                <div className="text-center mb-5">
+        {/* Demo única */}
+        <section id="demo" className="mb-16 scroll-mt-24 sm:mb-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+              <Card hover={false} padding="lg">
+                <div className="mb-5">
                   <span className="badge mb-3">Demo interactiva</span>
                   <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Probá tu preview</h2>
                   <p className="text-sm text-muted mt-2">Ingresá tus datos y obtené un vistazo instantáneo a tu perfil simbólico.</p>
@@ -129,113 +135,100 @@ export default function Home() {
                 <form onSubmit={handleDemo} className="space-y-5">
                   <Input label="Nombre" value={demoName} onChange={(e) => setDemoName(e.target.value)} placeholder="Ej: María Elena" required />
                   <Input label="Fecha de nacimiento" type="date" value={demoDate} onChange={(e) => setDemoDate(e.target.value)} required />
-                  <Button type="submit" fullWidth>Ver mi preview</Button>
+                  <Button type="submit" fullWidth>Ver mi preview →</Button>
                 </form>
               </Card>
 
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { value: "621+", label: "Entidades analizadas" },
-                  { value: "4.9★", label: "Valoración media" },
-                  { value: "100%", label: "Gratuito y libre" },
-                  { value: "0", label: "Datos guardados" },
-                ].map((stat) => (
-                  <Card key={stat.label} hover={false} padding="md">
-                    <p className="text-xl font-semibold text-foreground">{stat.value}</p>
-                    <p className="text-xs text-muted mt-1">{stat.label}</p>
-                  </Card>
-                ))}
+              <div>
+                <Card hover={false} padding="lg">
+                  <div className="text-center mb-6">
+                    <span className="badge mb-3">Tu preview</span>
+                    {demoResult ? (
+                      <div className="space-y-4 text-left">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">NOMBRE</p>
+                            <p className="text-2xl font-serif font-bold text-foreground">{demoResult.name}</p>
+                          </div>
+                          <div>
+                            <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">FECHA</p>
+                            <p className="text-sm text-muted">{demoResult.birthDate}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">LIFE PATH</p>
+                          <p className="text-5xl font-serif font-bold" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                            <span>🎯</span> {demoResult.archetype}
+                          </span>
+                          <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                            <span>♈</span> {demoResult.sunSign}
+                          </span>
+                          <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                            <span>{demoResult.chineseZodiacInfo.emoji}</span> {demoResult.chineseZodiac}
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="py-14 text-center text-muted">
+                        <p>Ingresá tus datos para ver el preview</p>
+                      </div>
+                    )}
+                  </div>
+                  <Button fullWidth onClick={() => router.push("/onboarding")}>
+                    Descubrí tu perfil completo
+                  </Button>
+                </Card>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div>
-              <Card hover={false} padding="lg">
-                <div className="text-center mb-6">
-                  <span className="badge mb-3">Tu preview</span>
-                  {demoResult ? (
-                    <div className="space-y-4">
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">NOMBRE</p>
-                        <p className="text-2xl font-serif font-bold text-foreground">{demoResult.name}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">FECHA</p>
-                        <p className="text-sm text-muted">{demoResult.birthDate}</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1">LIFE PATH</p>
-                        <p className="text-5xl font-serif font-bold" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
-                      </div>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                          <span>🎯</span> {demoResult.archetype}
-                        </span>
-                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                          <span>♈</span> {demoResult.sunSign}
-                        </span>
-                        <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                          <span>{demoResult.chineseZodiacInfo.emoji}</span> {demoResult.chineseZodiac}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="py-14 text-center text-muted">
-                      <p>Ingresá tus datos para ver el preview</p>
-                    </div>
-                  )}
-                </div>
-                <Button fullWidth onClick={() => router.push("/onboarding")}>
-                  Descubrí tu perfil completo
-                </Button>
-              </Card>
+        {/* Stats contextualizados */}
+        <section className="mb-16 sm:mb-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {[
+                { value: "621+", label: "Entidades analizadas", context: "Actualizado en 2026" },
+                { value: "4.9★", label: "Valoración media", context: "Basado en feedback de usuarios" },
+                { value: "100%", label: "Gratuito y libre", context: "Sin costo ni acceso pago" },
+                { value: "0", label: "Datos guardados", context: "Sesión efímera en tu navegador" },
+              ].map((stat) => (
+                <Card key={stat.label} hover={false} padding="md">
+                  <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                  <p className="text-xs text-muted mt-1">{stat.label}</p>
+                  <p className="text-[10px] text-muted mt-0.5">{stat.context}</p>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
 
-        <section className="max-w-6xl mx-auto mb-20">
-          <div className="text-center mb-10">
-            <span className="badge mb-3">¿Qué descubrirás?</span>
-            <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Un análisis basado en sistemas simbólicos públicos y accesibles</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental y camino de vida." },
-              { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentás al mundo." },
-              { icon: "❤️", title: "Número del Alma", desc: "Tus deseos más profundos." },
-              { icon: "👤", title: "Número de Personalidad", desc: "Cómo te perciben los demás." },
-              { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
-              { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
-            ].map((item) => (
-              <Card key={item.title} hover={false}>
-                <span className="text-3xl">{item.icon}</span>
-                <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
-                <p className="text-sm text-muted mt-1">{item.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        <section className="max-w-6xl mx-auto mb-20">
-          <div className="text-center mb-10">
-            <span className="badge mb-3">Sistemas integrados</span>
-            <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Múltiples marcos de conocimiento</h2>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {[
-              { name: "Numerología", icon: "📚" },
-              { name: "Astrología", icon: "🌌" },
-              { name: "Zodiaco Chino", icon: "🐉" },
-              { name: "Tarot", icon: "🔮" },
-              { name: "Human Design", icon: "🧬" },
-              { name: "Eneagrama", icon: "🧩" },
-            ].map((system) => (
-              <Card key={system.name} hover={false} padding="md">
-                <div className="text-center">
-                  <span className="text-2xl">{system.icon}</span>
-                  <p className="text-xs font-medium text-foreground mt-2">{system.name}</p>
-                </div>
-              </Card>
-            ))}
+        {/* ¿Qué descubrirás? */}
+        <section className="mb-16 sm:mb-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-8 text-center">
+              <span className="badge mb-3">¿Qué descubrirás?</span>
+              <h2 className="text-2xl font-serif font-semibold text-foreground mt-3">Un análisis basado en sistemas simbólicos públicos y accesibles</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { icon: "🔢", title: "Número de Misión de Vida", desc: "Tu propósito fundamental y camino de vida." },
+                { icon: "📝", title: "Número de Expresión", desc: "Cómo te presentás al mundo." },
+                { icon: "❤️", title: "Número del Alma", desc: "Tus deseos más profundos." },
+                { icon: "👤", título: "Número de Personalidad", desc: "Cómo te percitan los demás." },
+                { icon: "📅", title: "Año Personal", desc: "La energía de tu año actual." },
+                { icon: "🌟", title: "Números Maestros", desc: "Identifica 11, 22 o 33." },
+              ].map((item) => (
+                <Card key={item.title} hover={false}>
+                  <span className="text-3xl">{item.icon}</span>
+                  <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
+                  <p className="text-sm text-muted mt-1">{item.desc}</p>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
       </div>
