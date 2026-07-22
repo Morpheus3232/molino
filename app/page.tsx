@@ -155,13 +155,13 @@ export default function Home() {
                       <p className="text-5xl font-semibold tracking-tight" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
+                      <span className="inline-flex items-center gap-2 bg-background rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:shadow-sm">
                         <span>🎯</span> {demoResult.archetype}
                       </span>
-                      <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
+                      <span className="inline-flex items-center gap-2 bg-background rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:shadow-sm">
                         <span>♈</span> {demoResult.sunSign}
                       </span>
-                      <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
+                      <span className="inline-flex items-center gap-2 bg-background rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:shadow-sm">
                         <span>{demoResult.chineseZodiacInfo.emoji}</span> {demoResult.chineseZodiac}
                       </span>
                     </div>
