@@ -128,7 +128,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
               <Card padding="lg">
                 <span className="badge mb-3">Demo Interactiva</span>
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mt-3 mb-2">Probá tu preview</h2>
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mt-3 mb-2">PROBA TU PREVIEW — NUEVA VERSION</h2>
                 <p className="text-base text-muted leading-relaxed mb-6">Completá el formulario para generar un análisis instantáneo de tu perfil simbólico.</p>
                 <form onSubmit={handleDemo} className="space-y-5">
                   <Input label="Nombre" value={demoName} onChange={(e) => setDemoName(e.target.value)} placeholder="Tu nombre completo" required />
