@@ -104,7 +104,7 @@ export default function ProfilePage() {
           <Card hover={false} padding="lg">
             <div className="text-center">
               <span className="badge mb-4">Tu perfil simbólico</span>
-              <h1 className="font-serif text-5xl font-bold tracking-tight md:text-7xl" style={{ color: archetype.color || "#D4A843" }}>
+              <h1 className="font-serif text-5xl font-semibold tracking-tight md:text-7xl" style={{ color: archetype.color || "#D4A843" }}>
                 {profile.lifePath}
               </h1>
               <p className="mt-2 text-lg text-muted md:text-xl">Life Path</p>
@@ -120,13 +120,13 @@ export default function ProfilePage() {
               <p className="mt-1 text-sm text-muted">{archetype.description}</p>
 
               <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
                   📚 Numerología
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
                   🌌 Astrología
                 </span>
-                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground">
+                <span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-background px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
                   🐉 Zodiaco Chino
                 </span>
               </div>
@@ -136,17 +136,17 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card hover={false} padding="lg">
               <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Life Path</p>
-              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.lifePath}</p>
+               <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.lifePath}</p>
               <p className="text-sm text-muted mt-1">{archetype.name}</p>
             </Card>
             <Card hover={false} padding="lg">
               <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Expresión</p>
-              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.expressionNumber ?? "—"}</p>
+               <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.expressionNumber ?? "—"}</p>
               <p className="text-sm text-muted mt-1">Cómo te presentás</p>
             </Card>
             <Card hover={false} padding="lg">
               <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Alma</p>
-              <p className="text-4xl font-serif font-bold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.soulNumber ?? "—"}</p>
+               <p className="text-4xl font-serif font-semibold mt-2" style={{ color: archetype.color || "#D4A843" }}>{profile.soulNumber ?? "—"}</p>
               <p className="text-sm text-muted mt-1">Tus deseos profundos</p>
             </Card>
           </div>
@@ -154,12 +154,12 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card hover={false} padding="lg">
               <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Elemento</p>
-              <p className="text-2xl font-serif font-bold mt-2 text-foreground">{profile.element}</p>
+               <p className="text-2xl font-serif font-semibold mt-2 text-foreground">{profile.element}</p>
               <p className="text-sm text-muted mt-1">{profile.modality}</p>
             </Card>
             <Card hover={false} padding="lg">
               <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">Zodiaco chino</p>
-              <p className="text-2xl font-serif font-bold mt-2 text-foreground">{profile.chineseZodiac}</p>
+               <p className="text-2xl font-serif font-semibold mt-2 text-foreground">{profile.chineseZodiac}</p>
               <p className="text-sm text-muted mt-1">{profile.chineseZodiacInfo?.element || ""} · Animal de tu año</p>
             </Card>
           </div>
@@ -181,7 +181,7 @@ export default function ProfilePage() {
               <p className="text-sm text-muted mt-1">{profile.birthDate}{profile.birthPlace ? ` · ${profile.birthPlace}` : ""}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {(OBJECTIVES.find((o) => o.id === profile.goal) ? [OBJECTIVES.find((o) => o.id === profile.goal)!] : []).map((obj) => (
-                  <span key={obj.id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                  <span key={obj.id} className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
                     {obj.label}
                   </span>
                 ))}

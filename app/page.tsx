@@ -122,59 +122,28 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Demo预览 */}
+        {/* Demo preview */}
         <section id="demo" className="mb-16 scroll-mt-24 sm:mb-24">
           <div className="mx-auto max-w-6xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-              {/* Form Card */}
-              <div className="bg-white rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+              <Card padding="lg">
                 <span className="badge mb-3">Demo Interactiva</span>
-                <h2 className="text-2xl md:text-3xl font-bold tracking-tight mt-3 mb-2">Probá tu preview</h2>
-                <p className="text-base text-muted leading-relaxed mb-8">Completá el formulario para generar un análisis instantáneo de tu perfil simbólico.</p>
-                <form onSubmit={handleDemo} className="space-y-6">
-                  <div className="space-y-2">
-                    <label htmlFor="demo-name" className="block text-sm font-semibold uppercase tracking-wide text-gray-700">Nombre</label>
-                    <input
-                      id="demo-name"
-                      type="text"
-                      value={demoName}
-                      onChange={(e) => setDemoName(e.target.value)}
-                      placeholder="Tu nombre completo"
-                      className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all duration-200"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="demo-date" className="block text-sm font-semibold uppercase tracking-wide text-gray-700">Fecha de nacimiento</label>
-                    <input
-                      id="demo-date"
-                      type="date"
-                      value={demoDate}
-                      onChange={(e) => setDemoDate(e.target.value)}
-                      className="w-full h-12 px-4 rounded-xl border border-gray-200 bg-gray-50 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition-all duration-200 [color-scheme:light]"
-                      required
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full group h-14 bg-gradient-to-r from-black to-gray-900 text-white rounded-xl font-semibold text-base hover:from-accent hover:to-accentHover transition-all duration-300 ease-out shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-lg"
-                  >
-                    <span>Ver mi preview</span>
-                    <svg className="inline-block w-4 h-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </button>
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mt-3 mb-2">Probá tu preview</h2>
+                <p className="text-base text-muted leading-relaxed mb-6">Completá el formulario para generar un análisis instantáneo de tu perfil simbólico.</p>
+                <form onSubmit={handleDemo} className="space-y-5">
+                  <Input label="Nombre" value={demoName} onChange={(e) => setDemoName(e.target.value)} placeholder="Tu nombre completo" required />
+                  <Input label="Fecha de nacimiento" type="date" value={demoDate} onChange={(e) => setDemoDate(e.target.value)} required />
+                  <Button type="submit" fullWidth size="lg">Ver mi preview →</Button>
                 </form>
-              </div>
+              </Card>
 
-              {/* Preview Card */}
-              <div className="bg-white rounded-2xl p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 flex flex-col justify-center items-center min-h-[400px]">
+              <Card padding="lg">
                 {demoResult ? (
-                  <div className="w-full space-y-6">
-                    <div className="grid grid-cols-2 gap-6">
+                  <div className="w-full space-y-5">
+                    <div className="grid grid-cols-2 gap-5">
                       <div>
                         <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">NOMBRE</p>
-                        <p className="text-2xl font-bold text-foreground mt-1">{demoResult.name}</p>
+                        <p className="text-2xl font-semibold text-foreground mt-1">{demoResult.name}</p>
                       </div>
                       <div>
                         <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">FECHA</p>
@@ -183,7 +152,7 @@ export default function Home() {
                     </div>
                     <div>
                       <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">LIFE PATH</p>
-                      <p className="text-5xl font-bold tracking-tight" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
+                      <p className="text-5xl font-semibold tracking-tight" style={{ color: demoResult.archetypeColor }}>{demoResult.lifePath}</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground transition-all duration-200 hover:border-accent hover:shadow-sm">
@@ -198,17 +167,17 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center space-y-4">
+                  <div className="text-center space-y-4 py-8">
                     <div className="w-16 h-16 mx-auto bg-accent/10 rounded-full flex items-center justify-center">
                       <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900">Tu preview aparecerá aquí</h3>
-                    <p className="text-gray-500 max-w-sm mx-auto leading-relaxed">Completá el formulario para generar un análisis instantáneo de tu perfil numérico.</p>
+                    <h3 className="text-xl font-semibold text-foreground">Tu preview aparecerá aquí</h3>
+                    <p className="text-muted max-w-sm mx-auto leading-relaxed">Completá el formulario para generar un análisis instantáneo de tu perfil numérico.</p>
                   </div>
                 )}
-              </div>
+              </Card>
             </div>
           </div>
         </section>
