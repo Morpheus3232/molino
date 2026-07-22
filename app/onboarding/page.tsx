@@ -38,6 +38,7 @@ function getCurrentYear(): number {
 export default function OnboardingPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [name, setName] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState(String(getCurrentYear() - 25));
@@ -67,7 +68,7 @@ export default function OnboardingPage() {
 
     try {
       const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
-      const calculated = calculateUserProfile("", birthDate);
+      const calculated = calculateUserProfile(name.trim(), birthDate);
       const profile: UserProfile = {
         ...calculated,
         birthPlace: "",
@@ -116,16 +117,31 @@ export default function OnboardingPage() {
       <div className="relative mx-auto flex min-h-screen max-w-[640px] flex-col justify-center px-6 py-12">
         <div className="mb-10 text-center">
           <span className="badge mb-4">Personal Intelligence</span>
-          <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
-            Descubrí tu perfil
-          </h1>
-          <p className="mt-3 text-base text-muted md:text-lg">
-            Seleccioná tu fecha de nacimiento para generar tu mapa simbólico.
-          </p>
+      <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
+        Tu identidad simbólica
+      </h1>
+      <p className="mt-3 text-base text-muted md:text-lg">
+        Poné un nombre o alias y tu fecha de nacimiento para crear tu perfil.
+      </p>
         </div>
 
         <Card hover={false} padding="lg">
           <form onSubmit={handleFinish} className="space-y-6">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Nombre o alias</p>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="input min-h-[48px]"
+                placeholder="Ej: Marian, Sol, Charly..."
+                required
+                minLength={2}
+                maxLength={40}
+                aria-label="Nombre o alias"
+              />
+            </div>
+
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-1">
                 <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
