@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -13,8 +11,6 @@ export default function UniversityHeader() {
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-muted" aria-label="Navegación principal">
             <Link href="/profile" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mi Mapa</Link>
-            <Link href="/explore" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mis Conexiones</Link>
-            <Link href="/explore" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Explorar</Link>
           </nav>
         </div>
         <div className="flex items-center gap-3">
