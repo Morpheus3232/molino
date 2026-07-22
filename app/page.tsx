@@ -83,10 +83,10 @@ export default function Home() {
       <div className="mx-auto max-w-content px-4 sm:px-6">
         <section className="py-10 sm:py-14">
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
-            Descubrí tu mapa personal
+            Descubrí el mapa que te hace único.
           </h1>
-          <p className="mt-2 text-base text-muted max-w-2xl">
-            Molino combina numerología, astrología y sistemas de autoconocimiento para ayudarte a comprender tu identidad, tus ciclos y tus patrones.
+          <p className="mt-3 text-base text-muted max-w-2xl">
+            Molino reúne numerología, astrología y herramientas de autoconocimiento para ayudarte a explorar tu identidad, reconocer tus patrones y entender los ciclos que estás atravesando.
           </p>
         </section>
 
@@ -97,9 +97,8 @@ export default function Home() {
               { title: "Identidad", desc: "Patrones que forman tu personalidad y tu manera de interactuar con el mundo." },
               { title: "Numerología", desc: "Números derivados de tu nombre y fecha de nacimiento." },
               { title: "Astrología", desc: "Elementos de tu carta y cómo se relacionan entre sí." },
-              { title: "Patrones", desc: "Tendencias y características recurrentes en tu perfil." },
+              { title: "Patrones", desc: "Tendencias y características recurrentes en tu mapa." },
               { title: "Ciclos", desc: "El momento y los ciclos personales que estás atravesando." },
-              { title: "Timing personal", desc: "Tus períodos y ciclos actuales." },
               { title: "Fortalezas", desc: "Tus recursos naturales y áreas de crecimiento." },
               { title: "Relaciones", desc: "Compatibilidad y dinámicas entre perfiles." },
               { title: "Recomendaciones", desc: "Sugerencias personalizadas basadas en tu mapa." },

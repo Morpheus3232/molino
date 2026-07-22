@@ -13,7 +13,6 @@ export default function UniversityHeader() {
           </Link>
           <nav className="hidden md:flex gap-6 text-sm text-muted" aria-label="Navegación principal">
             <Link href="/profile" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mi Mapa</Link>
-            <Link href="/timing" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mi Momento</Link>
             <Link href="/explore" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mis Conexiones</Link>
             <Link href="/explore" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Explorar</Link>
           </nav>

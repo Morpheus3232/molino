@@ -113,7 +113,7 @@ export default function ProfilePage() {
 
         <div className="space-y-10">
           <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Identidad</h2>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi identidad</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Nombre" value={name} />
               <InfoItem label="Fecha de nacimiento" value={birthDate} />
@@ -133,16 +133,10 @@ export default function ProfilePage() {
           </section>
 
           <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Numerología</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <MetricCard label="Life Path" value={String(lifePath)} accent />
-              <MetricCard label="Expresión" value={expressionNumber ? String(expressionNumber) : '—'} />
-              <MetricCard label="Alma" value={soulNumber ? String(soulNumber) : '—'} />
-              <MetricCard label="Personalidad" value={personalityNumber ? String(personalityNumber) : '—'} />
-            </div>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mis patrones</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl border border-border bg-background">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Tendencias principales</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {archetypeStrengths.map((item: string) => (
                     <li key={item}>{item}</li>
@@ -150,7 +144,7 @@ export default function ProfilePage() {
                 </ul>
               </div>
               <div className="p-4 rounded-xl border border-border bg-background">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Áreas de crecimiento</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {archetypeChallenges.map((item: string) => (
                     <li key={item}>{item}</li>
@@ -161,7 +155,26 @@ export default function ProfilePage() {
           </section>
 
           <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Astrología</h2>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi momento</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
+              <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
+              <MetricCard label="Día personal" value={personalDay ? String(personalDay) : '—'} />
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi numerología</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <MetricCard label="Life Path" value={String(lifePath)} accent />
+              <MetricCard label="Expresión" value={expressionNumber ? String(expressionNumber) : '—'} />
+              <MetricCard label="Alma" value={soulNumber ? String(soulNumber) : '—'} />
+              <MetricCard label="Personalidad" value={personalityNumber ? String(personalityNumber) : '—'} />
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mi astrología</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Signo solar" value={sunSign} />
               <InfoItem label="Elemento" value={sunSignElement} />
@@ -172,16 +185,7 @@ export default function ProfilePage() {
           </section>
 
           <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Ciclos</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
-              <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
-              <MetricCard label="Día personal" value={personalDay ? String(personalDay) : '—'} />
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Recomendaciones</h2>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Mis recomendaciones</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl border border-border bg-background">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
@@ -213,12 +217,9 @@ export default function ProfilePage() {
           </section>
         </div>
 
-        <div className="mt-10 flex flex-col sm:flex-row gap-3">
+        <div className="mt-10">
           <Button fullWidth onClick={() => router.push("/patterns")}>
-            Explorar mis patrones →
-          </Button>
-          <Button variant="secondary" fullWidth onClick={() => router.push("/timing")}>
-            Mi timing personal
+            Ver análisis completo →
           </Button>
         </div>
       </div>
