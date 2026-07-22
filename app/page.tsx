@@ -105,12 +105,16 @@ export default function Home() {
             Descubrí el mapa que te hace único.
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted sm:text-lg">
-            Explorá tu identidad, tus patrones y cómo conectás con el mundo a través de países, marcas y sistemas de autoconocimiento.
+            Tu mapa personal de autoconocimiento. Explorá tu identidad, tus patrones y tus ciclos a partir de tus propios datos.
           </p>
           <p className="mx-auto mt-2 text-sm text-muted">Sin registro. Sin costo. Solo tu nombre y fecha de nacimiento.</p>
         </section>
 
         <section className="mx-auto max-w-xl mb-10 sm:mb-14">
+          <div className="text-center mb-6">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Creá tu mapa</p>
+            <p className="text-sm text-muted">Empezá con tu nombre y fecha de nacimiento. Molino construye una primera lectura de tu mapa personal.</p>
+          </div>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Tu nombre</label>
@@ -187,82 +191,53 @@ export default function Home() {
         </section>
 
         <section className="mb-10 sm:mb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-6 text-center">¿Qué podés descubrir?</h2>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-6 text-center">TU MAPA</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              {
-                icon: "🧭",
-                title: "Identidad",
-                subtitle: "¿Quién soy?",
-                description: "Descubrí los números y arquetipos que definen tu esencia. Tu mapa empieza aquí.",
-                highlight: false,
-              },
-              {
-                icon: "🔄",
-                title: "Patrones",
-                subtitle: "¿Qué se repite en mí?",
-                description: "Reconocé las tendencias que guían tus decisiones, relaciones y forma de vivir.",
-                highlight: false,
-              },
-              {
-                icon: "🔢",
-                title: "Numerología",
-                subtitle: "¿Qué dicen los números?",
-                description: "A partir de tu nombre y fecha de nacimiento, Molino calcula tu Life Path, Expression y otros números clave que revelan tu propósito y potencial.",
-                highlight: false,
-              },
-              {
-                icon: "✨",
-                title: "Astrología",
-                subtitle: "¿Qué dicen los astros?",
-                description: "Explorá tu signo solar, tu elemento y cómo los ciclos planetarios influyen en tu identidad y en los momentos clave de tu vida.",
-                highlight: false,
-              },
-              {
-                icon: "🌍",
-                title: "Países",
-                subtitle: "¿Dónde resonás?",
-                description: "Descubrí qué países resuenan con tu mapa personal. Molino analiza cómo tu identidad se alinea con la energía y cultura de diferentes lugares del mundo.",
-                highlight: true,
-                extra: "Basado en tu Life Path, signo zodiacal, elemento y patrones de personalidad.",
-              },
-              {
-                icon: "🏷️",
-                title: "Marcas",
-                subtitle: "¿Qué marcas te representan?",
-                description: "Conocé las marcas que vibran con tu identidad. Molino conecta tu mapa personal con marcas que reflejan tu esencia, desde moda hasta tecnología.",
-                highlight: true,
-                extra: "Basado en tu arquetipo, números clave y patrones de comportamiento.",
-              },
-              {
-                icon: "🌊",
-                title: "Ciclos",
-                subtitle: "¿Cómo cambia mi experiencia?",
-                description: "Entendé las etapas que atraviesas en el tiempo: cómo evoluciona tu energía, tus decisiones y tus relaciones a lo largo del año.",
-                highlight: false,
-              },
-              {
-                icon: "⏳",
-                title: "Momento",
-                subtitle: "¿Dónde estoy ahora?",
-                description: "Descubrí tu Año, Mes y Día Personal para entender el momento exacto que estás viviendo y tomar decisiones más alineadas.",
-                highlight: false,
-              },
+              { icon: "🧭", title: "Identidad", subtitle: "Quién sos", description: "Los números y arquetipos que definen tu esencia." },
+              { icon: "🔄", title: "Patrones", subtitle: "Qué se repite", description: "Tendencias que guían tus decisiones y relaciones." },
+              { icon: "🌍", title: "Países", subtitle: "Dónde resonás", description: "Lugares que alinean con tu identidad y ciclos." },
+              { icon: "🏷️", title: "Marcas", subtitle: "Qué te representa", description: "Marcas que vibran con tu mapa personal." },
+              { icon: "🔢", title: "Numerología", subtitle: "Qué dicen los números", description: "Life Path, Expression y otros números clave." },
+              { icon: "✨", title: "Astrología", subtitle: "Qué dicen los astros", description: "Signo solar, elemento y ciclos disponibles." },
+              { icon: "🌊", title: "Ciclos", subtitle: "Cómo cambia", description: "Las etapas que atraviesas en el tiempo." },
+              { icon: "⏳", title: "Momento", subtitle: "Dónde estás", description: "Año, mes y día personal para este momento." },
             ].map((item) => (
-              <div
-                key={item.title}
-                className={`rounded-2xl border p-6 bg-background ${
-                  item.highlight ? "border-accent/40" : "border-border"
-                }`}
-              >
-                <span className="text-3xl">{item.icon}</span>
-                <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
+              <div key={item.title} className="border-b border-border pb-4">
+                <span className="text-2xl">{item.icon}</span>
+                <h3 className="text-sm font-medium text-foreground mt-2">{item.title}</h3>
                 <p className="text-xs text-accent mt-1">{item.subtitle}</p>
-                <p className="text-sm text-muted mt-2 leading-relaxed">{item.description}</p>
-                {item.extra && <p className="text-xs text-muted mt-3 leading-relaxed">{item.extra}</p>}
+                <p className="text-xs text-muted mt-1 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="mb-10 sm:mb-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-3">Cómo funciona</h2>
+              <ol className="list-decimal list-inside text-sm text-muted space-y-2">
+                <li>Introducís tu nombre y fecha de nacimiento.</li>
+                <li>Molino construye tu mapa personal.</li>
+                <li>Explorás tu identidad, tus números y tus ciclos.</li>
+              </ol>
+            </div>
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-3">Principios</h2>
+              <ul className="list-disc list-inside text-sm text-muted space-y-2">
+                <li>Gratis y sin registro.</li>
+                <li>Código abierto.</li>
+                <li>Herramienta de autoconocimiento, no predicción.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-10 sm:mb-14">
+          <p className="text-xs text-muted max-w-3xl mx-auto">
+            Molino es una herramienta de autoconocimiento y entretenimiento. Sus interpretaciones no constituyen predicciones absolutas, asesoramiento profesional ni determinan el futuro.
+          </p>
         </section>
       </main>
 

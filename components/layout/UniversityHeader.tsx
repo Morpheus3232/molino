@@ -5,14 +5,9 @@ export default function UniversityHeader() {
   return (
     <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="font-serif font-bold text-xl text-foreground tracking-tight">
-            🌾 Molino
-          </Link>
-          <nav className="hidden md:flex gap-6 text-sm text-muted" aria-label="Navegación principal">
-            <Link href="/profile" className="hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-accent rounded-full">Mi Mapa</Link>
-          </nav>
-        </div>
+        <Link href="/" className="font-serif font-bold text-xl text-foreground tracking-tight">
+          🌾 Molino
+        </Link>
         <div className="flex items-center gap-3">
           <ThemeToggle />
         </div>
