@@ -22,12 +22,9 @@ export default function Home() {
           <p className="mx-auto mt-5 max-w-2xl text-base md:text-lg text-muted">
             Molino combina numerología, astrología y sistemas de autoconocimiento para ayudarte a comprender tu identidad, tus ciclos y tus patrones.
           </p>
-          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+          <div className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:max-w-none sm:justify-center">
             <Button size="lg" onClick={() => router.push("/onboarding")}>
-              Crear mi perfil
-            </Button>
-            <Button variant="secondary" size="lg" onClick={() => document.getElementById("que-es")?.scrollIntoView({ behavior: "smooth" })}>
-              Explorar Molino
+              Descubrir mi Mapa
             </Button>
           </div>
           <div className="mx-auto mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-muted">
@@ -39,7 +36,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="que-es" className="mb-16 sm:mb-24">
+        <section className="mb-16 sm:mb-24">
           <div className="mx-auto max-w-3xl text-center">
             <span className="badge mb-3">Qué es Molino</span>
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mt-3 mb-4">Tu plataforma de autoconocimiento</h2>
@@ -133,7 +130,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight mb-3">Comenzá ahora</h2>
             <p className="text-base text-muted mb-6">Creá tu perfil y descubrí tu mapa personal en minutos.</p>
             <Button size="lg" onClick={() => router.push("/onboarding")}>
-              Crear mi perfil →
+              Descubrir mi Mapa →
             </Button>
           </div>
         </section>

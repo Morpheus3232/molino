@@ -1,26 +1,15 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getSession, clearSession } from "@/lib/storage/ephemeral";
-import { loadProfileFromStorage, downloadProfileJson, clearStoredProfile } from "@/lib/storage/localStorage";
+import { loadProfileFromStorage, clearStoredProfile } from "@/lib/storage/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-
-type SectionId = 'identity' | 'numbers' | 'astrology' | 'cycles' | 'strengths' | 'recommendations';
-
-const SECTION_LABELS: Record<SectionId, string> = {
-  identity: 'Mi identidad',
-  numbers: 'Mi numerología',
-  astrology: 'Mi astrología',
-  cycles: 'Mis ciclos',
-  strengths: 'Mis fortalezas',
-  recommendations: 'Mis recomendaciones',
-};
 
 function safeNumber(value: unknown, fallback = 0): number {
   const n = typeof value === "number" ? value : Number(value);
@@ -32,14 +21,6 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [openSections, setOpenSections] = useState<Record<SectionId, boolean>>({
-    identity: true,
-    numbers: true,
-    astrology: true,
-    cycles: true,
-    strengths: true,
-    recommendations: true,
-  });
 
   useEffect(() => {
     setMounted(true);
@@ -79,10 +60,6 @@ export default function ProfilePage() {
     router.push("/");
   };
 
-  const toggleSection = (id: SectionId) => {
-    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
   if (!mounted || !profile) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -105,7 +82,6 @@ export default function ProfilePage() {
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
   const archetypeDescription = typeof profile.archetypeInfo?.description === "string" ? profile.archetypeInfo.description : "";
-  const archetypeColor = typeof profile.archetypeInfo?.color === "string" ? profile.archetypeInfo.color : "#D4A843";
   const archetypeKeywords = Array.isArray(profile.archetypeInfo?.keywords) ? profile.archetypeInfo.keywords : [];
   const archetypeStrengths = Array.isArray(profile.archetypeInfo?.strengths) ? profile.archetypeInfo.strengths : [];
   const archetypeChallenges = Array.isArray(profile.archetypeInfo?.challenges) ? profile.archetypeInfo.challenges : [];
@@ -124,122 +100,90 @@ export default function ProfilePage() {
       <UniversityHeader />
 
       <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24">
-        <div className="mb-8 flex items-center justify-between">
-          <Button variant="ghost" onClick={handleNewSession}>
-            ← Nueva sesión
-          </Button>
-          <Button variant="ghost" onClick={() => downloadProfileJson()}>
-            Exportar JSON ↓
-          </Button>
+        <div className="mb-10">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Mi mapa personal</p>
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{name}</h1>
+          <p className="text-base text-muted mt-2">{birthDate}{birthPlace ? ` · ${birthPlace}` : ""}</p>
+          {archetypeDescription && (
+            <p className="text-sm text-muted mt-4 leading-relaxed max-w-2xl">
+              {archetypeDescription}
+            </p>
+          )}
         </div>
 
-        <div className="mb-8">
-          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">Mi mapa personal</h1>
-          <p className="text-base text-muted mt-2">Tu perfil completo, generado a partir de tus datos.</p>
-        </div>
-
-        <div className="space-y-4">
-          <ProfileSection
-            id="identity"
-            label="Mi identidad"
-            defaultOpen
-            isOpen={openSections.identity}
-            onToggle={() => toggleSection('identity')}
-          >
+        <div className="space-y-10">
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Identidad</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Nombre" value={name} />
               <InfoItem label="Fecha de nacimiento" value={birthDate} />
               {birthPlace && <InfoItem label="Lugar" value={birthPlace} />}
               {birthTime && <InfoItem label="Hora" value={birthTime} />}
-              <InfoItem label="Life Path" value={String(lifePath)} />
               <InfoItem label="Arquetipo" value={archetypeName} />
             </div>
-            {archetypeDescription && (
-              <div className="mt-4 p-4 rounded-xl bg-background border border-border">
-                <p className="text-sm text-muted leading-relaxed">{archetypeDescription}</p>
-              </div>
-            )}
             {archetypeKeywords.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {archetypeKeywords.map((keyword: string) => (
-                  <span key={keyword} className="inline-flex items-center rounded-full border border-card-border bg-background px-3 py-1 text-xs text-foreground">
+                  <span key={keyword} className="inline-flex items-center rounded-full border border-border bg-background px-3 py-1 text-xs text-foreground">
                     {keyword}
                   </span>
                 ))}
               </div>
             )}
-          </ProfileSection>
+          </section>
 
-          <ProfileSection
-            id="numbers"
-            label="Mi numerología"
-            isOpen={openSections.numbers}
-            onToggle={() => toggleSection('numbers')}
-          >
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Numerología</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <MetricCard label="Life Path" value={String(lifePath)} accent />
               <MetricCard label="Expresión" value={expressionNumber ? String(expressionNumber) : '—'} />
               <MetricCard label="Alma" value={soulNumber ? String(soulNumber) : '—'} />
               <MetricCard label="Personalidad" value={personalityNumber ? String(personalityNumber) : '—'} />
             </div>
-            {archetypeStrengths.length > 0 && (
-              <div className="mt-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas del arquetipo</p>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 rounded-xl border border-border bg-background">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {archetypeStrengths.map((item: string) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
-            )}
-            {archetypeChallenges.length > 0 && (
-              <div className="mt-4">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos del arquetipo</p>
+              <div className="p-4 rounded-xl border border-border bg-background">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {archetypeChallenges.map((item: string) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
-            )}
-          </ProfileSection>
+            </div>
+          </section>
 
-          <ProfileSection
-            id="astrology"
-            label="Mi astrología"
-            isOpen={openSections.astrology}
-            onToggle={() => toggleSection('astrology')}
-          >
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Astrología</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <InfoItem label="Signo solar" value={sunSign} />
-              <InfoItem label="Elemento" value={element} />
-              <InfoItem label="Modalidad" value={modality} />
+              <InfoItem label="Elemento" value={sunSignElement} />
+              <InfoItem label="Modalidad" value={sunSignModality} />
               <InfoItem label="Zodiaco chino" value={chineseZodiac} />
-              <InfoItem label="Elemento chino" value={chineseElement} />
+              {chineseElement && <InfoItem label="Elemento chino" value={chineseElement} />}
             </div>
-          </ProfileSection>
+          </section>
 
-          <ProfileSection
-            id="cycles"
-            label="Mis ciclos"
-            isOpen={openSections.cycles}
-            onToggle={() => toggleSection('cycles')}
-          >
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Ciclos</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <MetricCard label="Año personal" value={personalYear ? String(personalYear) : '—'} />
               <MetricCard label="Mes personal" value={personalMonth ? String(personalMonth) : '—'} />
               <MetricCard label="Día personal" value={personalDay ? String(personalDay) : '—'} />
             </div>
-          </ProfileSection>
+          </section>
 
-          <ProfileSection
-            id="strengths"
-            label="Mis fortalezas"
-            isOpen={openSections.strengths}
-            onToggle={() => toggleSection('strengths')}
-          >
+          <section>
+            <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Recomendaciones</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-background border border-border">
+              <div className="p-4 rounded-xl border border-border bg-background">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Fortalezas</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {recommendationStrengths.map((item: string) => (
@@ -247,7 +191,7 @@ export default function ProfilePage() {
                   ))}
                 </ul>
               </div>
-              <div className="p-4 rounded-xl bg-background border border-border">
+              <div className="p-4 rounded-xl border border-border bg-background">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Desafíos</p>
                 <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {recommendationChallenges.map((item: string) => (
@@ -256,23 +200,17 @@ export default function ProfilePage() {
                 </ul>
               </div>
             </div>
-          </ProfileSection>
-
-          <ProfileSection
-            id="recommendations"
-            label="Mis recomendaciones"
-            isOpen={openSections.recommendations}
-            onToggle={() => toggleSection('recommendations')}
-          >
-            <div className="p-4 rounded-xl bg-background border border-border">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Prácticas sugeridas</p>
-              <ul className="list-disc list-inside text-sm text-muted space-y-1">
+            {practices.length > 0 && (
+              <div className="mt-4 p-4 rounded-xl border border-border bg-background">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Prácticas sugeridas</p>
+                <ul className="list-disc list-inside text-sm text-muted space-y-1">
                   {practices.map((item: string) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </ProfileSection>
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
         </div>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3">
@@ -290,42 +228,9 @@ export default function ProfilePage() {
   );
 }
 
-function ProfileSection({
-  id,
-  label,
-  children,
-  defaultOpen = false,
-  isOpen,
-  onToggle,
-}: {
-  id: SectionId;
-  label: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <Card hover={false} padding="lg">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full flex items-center justify-between text-left"
-        aria-expanded={isOpen}
-      >
-        <span className="text-lg font-semibold text-foreground">{label}</span>
-        <span className="text-sm text-muted">{isOpen ? 'Ocultar' : 'Mostrar'}</span>
-      </button>
-      <div className={`mt-4 transition-all duration-300 ease-out ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-        {children}
-      </div>
-    </Card>
-  );
-}
-
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="p-4 rounded-xl bg-background border border-border">
+    <div className="p-4 rounded-xl border border-border bg-background">
       <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
       <p className="text-base text-foreground mt-1 font-medium">{value}</p>
     </div>
@@ -334,9 +239,9 @@ function InfoItem({ label, value }: { label: string; value: string }) {
 
 function MetricCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className={`p-4 rounded-xl border text-center ${accent ? 'border-accent/40 bg-background' : 'border-border bg-background'}`}>
+    <div className={`p-5 rounded-xl border text-center ${accent ? 'border-foreground/20 bg-background' : 'border-border bg-background'}`}>
       <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
-      <p className={`text-3xl font-semibold mt-1 ${accent ? 'text-accent' : 'text-foreground'}`}>{value}</p>
+      <p className={`text-3xl font-semibold mt-2 ${accent ? 'text-foreground' : 'text-foreground'}`}>{value}</p>
     </div>
   );
 }
