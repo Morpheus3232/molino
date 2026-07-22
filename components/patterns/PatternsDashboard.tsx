@@ -3,6 +3,7 @@ import { ARCHETYPES, YEAR_TYPES } from "@/lib/data";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
+import BarChart from "@/components/ui/BarChart";
 
 const SYSTEMS = [
   { id: "numerology", title: "Numerología", icon: "📚", description: "Tu Life Path, Expression, Alma y Personalidad.", href: "/numerologia" },
@@ -49,25 +50,37 @@ export default function PatternsDashboard({ profile }: { profile: UserProfile })
       </Section>
 
       <Section className="mt-8">
-        <Card hover={false} padding="lg">
-          <div className="text-center">
-            <span className="badge mb-3">Tu resumen simbólico</span>
-            <div className="flex flex-wrap justify-center gap-3 mt-4">
-              <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                <span>🎯</span> {archetype.name}
-              </span>
-              <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                <span>♈</span> {profile.sunSign}
-              </span>
-              <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                <span>{profile.chineseZodiacInfo?.emoji || "🐴"}</span> {profile.chineseZodiac}
-              </span>
-              <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
-                <span>🗓️</span> {yearMeaning.name}
-              </span>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <BarChart
+            title="Tus números"
+            data={[
+              { name: "Life Path", value: profile.lifePath },
+              { name: "Expresión", value: profile.expressionNumber || 0 },
+              { name: "Alma", value: profile.soulNumber || 0 },
+              { name: "Personalidad", value: profile.personalityNumber || 0 },
+            ]}
+          />
+
+          <Card hover={false} padding="lg">
+            <div className="text-center">
+              <span className="badge mb-3">Tu resumen simbólico</span>
+              <div className="flex flex-wrap justify-center gap-3 mt-4">
+                <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                  <span>🎯</span> {archetype.name}
+                </span>
+                <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                  <span>♈</span> {profile.sunSign}
+                </span>
+                <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                  <span>{profile.chineseZodiacInfo?.emoji || "🐴"}</span> {profile.chineseZodiac}
+                </span>
+                <span className="inline-flex items-center gap-2 bg-background border border-border rounded-full px-4 py-2 text-sm text-foreground">
+                  <span>🗓️</span> {yearMeaning.name}
+                </span>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </Section>
     </div>
   );

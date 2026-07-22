@@ -2,6 +2,7 @@ import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
+import ProgressDonut from "@/components/ui/ProgressDonut";
 
 export default function TimingDashboard({ profile }: { profile: UserProfile }) {
   const today = new Date();
@@ -34,11 +35,9 @@ export default function TimingDashboard({ profile }: { profile: UserProfile }) {
             </div>
           </Card>
           <Card hover={false} padding="lg">
-            <div className="text-center">
-              <span className="text-3xl mb-2">🌗</span>
-              <h3 className="font-semibold text-foreground">Ciclo mensual</h3>
-              <p className="text-3xl font-serif font-bold text-foreground mt-2">{monthNumber}</p>
-              <p className="text-xs text-muted mt-1">Fase {monthNumber % 9 || 9} del ciclo</p>
+            <div className="flex flex-col items-center">
+              <ProgressDonut value={monthNumber % 9 || 9} max={9} label="Ciclo mensual" />
+              <p className="text-xs text-muted mt-2">Fase {monthNumber % 9 || 9} del ciclo</p>
             </div>
           </Card>
           <Card hover={false} padding="lg">

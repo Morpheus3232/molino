@@ -14,6 +14,7 @@ import CoreIdentity from "@/components/profile/CoreIdentity";
 import PersonalityInsights from "@/components/profile/PersonalityInsights";
 import StrengthsChallenges from "@/components/profile/StrengthsChallenges";
 import Styles from "@/components/profile/Styles";
+import RadarChart from "@/components/ui/RadarChart";
 
 const OBJECTIVES = [
   { id: "life", label: "Decisiones de vida" },
@@ -91,6 +92,16 @@ export default function ProfilePage() {
         </div>
 
         <CoreIdentity profile={profile} />
+        <RadarChart
+          title="Tu perfil simbólico"
+          data={[
+            { subject: "Life Path", value: Math.min(profile.lifePath * 10, 100) },
+            { subject: "Expresión", value: Math.min((profile.expressionNumber || profile.lifePath) * 10, 100) },
+            { subject: "Alma", value: Math.min((profile.soulNumber || profile.lifePath) * 10, 100) },
+            { subject: "Personalidad", value: Math.min((profile.personalityNumber || profile.lifePath) * 10, 100) },
+            { subject: "Elemento", value: 50 + (profile.lifePath % 5) * 10 },
+          ]}
+        />
         <PersonalityInsights profile={profile} />
         <StrengthsChallenges profile={profile} />
         <Styles profile={profile} />
