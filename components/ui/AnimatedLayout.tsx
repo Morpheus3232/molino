@@ -1,27 +1,9 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
-import PageTransition from "./PageTransition";
-
 interface AnimatedLayoutProps {
   children: React.ReactNode;
 }
 
 export default function AnimatedLayout({ children }: AnimatedLayoutProps) {
-  const pathname = usePathname();
-
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={pathname}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <PageTransition>{children}</PageTransition>
-      </motion.div>
-    </AnimatePresence>
-  );
+  return <>{children}</>;
 }
