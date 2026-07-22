@@ -113,10 +113,25 @@ export default function ProfilePage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  if (!mounted || !profile) {
+  if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-muted">Cargando tu perfil...</div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-background">
+        <UniversityHeader />
+        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">Mi mapa personal</p>
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground mb-4">Todavía no creaste tu mapa</h1>
+          <p className="text-muted mb-8">Ingresá tu nombre y fecha de nacimiento para generar tu perfil.</p>
+          <Button onClick={() => router.push("/")}>Descubrir mi Mapa</Button>
+        </div>
+        <UniversityFooter />
       </div>
     );
   }

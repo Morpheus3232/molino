@@ -105,7 +105,7 @@ export default function Home() {
             Descubrí el mapa que te hace único.
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-muted sm:text-lg">
-            Explorá tu identidad, tus patrones y tus ciclos a través de diferentes sistemas de autoconocimiento.
+            Explorá tu identidad, tus patrones y cómo conectás con el mundo a través de países, marcas y sistemas de autoconocimiento.
           </p>
           <p className="mx-auto mt-2 text-sm text-muted">Sin registro. Sin costo. Solo tu nombre y fecha de nacimiento.</p>
         </section>
@@ -188,41 +188,85 @@ export default function Home() {
 
         <section className="mb-10 sm:mb-14">
           <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-6 text-center">¿Qué podés descubrir?</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              "Identidad",
-              "Patrones",
-              "Numerología",
-              "Astrología",
-              "Ciclos",
-              "Momento",
+              {
+                icon: "🧭",
+                title: "Identidad",
+                subtitle: "¿Quién soy?",
+                description: "Descubrí los números y arquetipos que definen tu esencia. Tu mapa empieza aquí.",
+                highlight: false,
+              },
+              {
+                icon: "🔄",
+                title: "Patrones",
+                subtitle: "¿Qué se repite en mí?",
+                description: "Reconocé las tendencias que guían tus decisiones, relaciones y forma de vivir.",
+                highlight: false,
+              },
+              {
+                icon: "🔢",
+                title: "Numerología",
+                subtitle: "¿Qué dicen los números?",
+                description: "A partir de tu nombre y fecha de nacimiento, Molino calcula tu Life Path, Expression y otros números clave que revelan tu propósito y potencial.",
+                highlight: false,
+              },
+              {
+                icon: "✨",
+                title: "Astrología",
+                subtitle: "¿Qué dicen los astros?",
+                description: "Explorá tu signo solar, tu elemento y cómo los ciclos planetarios influyen en tu identidad y en los momentos clave de tu vida.",
+                highlight: false,
+              },
+              {
+                icon: "🌍",
+                title: "Países",
+                subtitle: "¿Dónde resonás?",
+                description: "Descubrí qué países resuenan con tu mapa personal. Molino analiza cómo tu identidad se alinea con la energía y cultura de diferentes lugares del mundo.",
+                highlight: true,
+                extra: "Basado en tu Life Path, signo zodiacal, elemento y patrones de personalidad.",
+              },
+              {
+                icon: "🏷️",
+                title: "Marcas",
+                subtitle: "¿Qué marcas te representan?",
+                description: "Conocé las marcas que vibran con tu identidad. Molino conecta tu mapa personal con marcas que reflejan tu esencia, desde moda hasta tecnología.",
+                highlight: true,
+                extra: "Basado en tu arquetipo, números clave y patrones de comportamiento.",
+              },
+              {
+                icon: "🌊",
+                title: "Ciclos",
+                subtitle: "¿Cómo cambia mi experiencia?",
+                description: "Entendé las etapas que atraviesas en el tiempo: cómo evoluciona tu energía, tus decisiones y tus relaciones a lo largo del año.",
+                highlight: false,
+              },
+              {
+                icon: "⏳",
+                title: "Momento",
+                subtitle: "¿Dónde estoy ahora?",
+                description: "Descubrí tu Año, Mes y Día Personal para entender el momento exacto que estás viviendo y tomar decisiones más alineadas.",
+                highlight: false,
+              },
             ].map((item) => (
-              <div key={item} className="border-b border-border pb-3">
-                <p className="text-sm font-medium text-foreground">{item}</p>
+              <div
+                key={item.title}
+                className={`rounded-2xl border p-6 bg-background ${
+                  item.highlight ? "border-accent/40" : "border-border"
+                }`}
+              >
+                <span className="text-3xl">{item.icon}</span>
+                <h3 className="font-medium text-foreground mt-3">{item.title}</h3>
+                <p className="text-xs text-accent mt-1">{item.subtitle}</p>
+                <p className="text-sm text-muted mt-2 leading-relaxed">{item.description}</p>
+                {item.extra && <p className="text-xs text-muted mt-3 leading-relaxed">{item.extra}</p>}
               </div>
             ))}
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-8">
-          <div className="text-center text-sm text-muted">🌾 Molino - Universidad Pública de Libre Acceso</div>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-xs text-muted">
-            <span>🔓 Conocimiento libre</span>
-            <span aria-hidden="true">·</span>
-            <span>🕊️ Privacidad radical</span>
-            <span aria-hidden="true">·</span>
-            <span>📚 Transparencia total</span>
-            <span aria-hidden="true">·</span>
-            <span>🧬 Código abierto</span>
-          </div>
-          <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted">
-            <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="/conocimiento">Documentación</a>
-          </div>
-        </div>
-      </footer>
+      <UniversityFooter />
     </div>
   );
 }
