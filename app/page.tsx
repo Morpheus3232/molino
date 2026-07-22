@@ -191,45 +191,66 @@ export default function Home() {
         </section>
 
         <section className="mb-10 sm:mb-14">
-          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-6 text-center">TU MAPA</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: "🧭", title: "Identidad", subtitle: "Quién sos", description: "Los números y arquetipos que definen tu esencia." },
-              { icon: "🔄", title: "Patrones", subtitle: "Qué se repite", description: "Tendencias que guían tus decisiones y relaciones." },
-              { icon: "🌍", title: "Países", subtitle: "Dónde resonás", description: "Lugares que alinean con tu identidad y ciclos." },
-              { icon: "🏷️", title: "Marcas", subtitle: "Qué te representa", description: "Marcas que vibran con tu mapa personal." },
-              { icon: "🔢", title: "Numerología", subtitle: "Qué dicen los números", description: "Life Path, Expression y otros números clave." },
-              { icon: "✨", title: "Astrología", subtitle: "Qué dicen los astros", description: "Signo solar, elemento y ciclos disponibles." },
-              { icon: "🌊", title: "Ciclos", subtitle: "Cómo cambia", description: "Las etapas que atraviesas en el tiempo." },
-              { icon: "⏳", title: "Momento", subtitle: "Dónde estás", description: "Año, mes y día personal para este momento." },
-            ].map((item) => (
-              <div key={item.title} className="border-b border-border pb-4">
-                <span className="text-2xl">{item.icon}</span>
-                <h3 className="text-sm font-medium text-foreground mt-2">{item.title}</h3>
-                <p className="text-xs text-accent mt-1">{item.subtitle}</p>
-                <p className="text-xs text-muted mt-1 leading-relaxed">{item.description}</p>
+          <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-8 text-center">Tu mapa</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Core del mapa</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { icon: "🧭", title: "Identidad", subtitle: "Quién sos", description: "Los números y arquetipos que definen tu esencia." },
+                  { icon: "🔄", title: "Patrones", subtitle: "Qué se repite", description: "Tendencias que guían tus decisiones y relaciones." },
+                  { icon: "🔢", title: "Numerología", subtitle: "Qué dicen los números", description: "Life Path, Expression y otros números clave." },
+                  { icon: "✨", title: "Astrología", subtitle: "Qué dicen los astros", description: "Signo solar, elemento y ciclos disponibles." },
+                  { icon: "🌊", title: "Ciclos", subtitle: "Cómo cambia", description: "Las etapas que atraviesas en el tiempo." },
+                  { icon: "⏳", title: "Momento", subtitle: "Dónde estás", description: "Año, mes y día personal para este momento." },
+                ].map((item) => (
+                  <div key={item.title} className="border-b border-border pb-3">
+                    <span className="text-xl">{item.icon}</span>
+                    <h3 className="text-sm font-medium text-foreground mt-2">{item.title}</h3>
+                    <p className="text-xs text-accent mt-1">{item.subtitle}</p>
+                    <p className="text-xs text-muted mt-1 leading-relaxed">{item.description}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-4">Exploración</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { icon: "🌍", title: "Países", subtitle: "Dónde resonás", description: "Lugares que alinean con tu identidad y ciclos.", extra: "Basado en tu Life Path, signo zodiacal y elemento." },
+                  { icon: "🏷️", title: "Marcas", subtitle: "Qué te representa", description: "Marcas que vibran con tu mapa personal.", extra: "Basado en tu arquetipo y patrones de comportamiento." },
+                ].map((item) => (
+                  <div key={item.title} className="border-b border-border pb-3">
+                    <span className="text-xl">{item.icon}</span>
+                    <h3 className="text-sm font-medium text-foreground mt-2">{item.title}</h3>
+                    <p className="text-xs text-accent mt-1">{item.subtitle}</p>
+                    <p className="text-xs text-muted mt-1 leading-relaxed">{item.description}</p>
+                    <p className="text-xs text-muted mt-2 leading-relaxed">{item.extra}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 p-4 rounded-xl border border-dashed border-border bg-background">
+                <p className="text-xs text-muted leading-relaxed">
+                  Próximamente podrás explorar nuevas capas de tu mapa: relaciones, recomendaciones y modos avanzados de lectura.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
         <section className="mb-10 sm:mb-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            <div>
-              <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-3">Cómo funciona</h2>
-              <ol className="list-decimal list-inside text-sm text-muted space-y-2">
-                <li>Introducís tu nombre y fecha de nacimiento.</li>
-                <li>Molino construye tu mapa personal.</li>
-                <li>Explorás tu identidad, tus números y tus ciclos.</li>
-              </ol>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <div className="text-center">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">01 · Creá</p>
+              <p className="text-sm text-muted">Ingresá tu nombre y fecha de nacimiento.</p>
             </div>
-            <div>
-              <h2 className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-3">Principios</h2>
-              <ul className="list-disc list-inside text-sm text-muted space-y-2">
-                <li>Gratis y sin registro.</li>
-                <li>Código abierto.</li>
-                <li>Herramienta de autoconocimiento, no predicción.</li>
-              </ul>
+            <div className="text-center">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">02 · Descubrí</p>
+              <p className="text-sm text-muted">Molino transforma tus datos en diferentes capas de información.</p>
+            </div>
+            <div className="text-center">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">03 · Conectá</p>
+              <p className="text-sm text-muted">Explorá cómo esas capas se relacionan dentro de tu mapa.</p>
             </div>
           </div>
         </section>
@@ -241,7 +262,23 @@ export default function Home() {
         </section>
       </main>
 
-      <UniversityFooter />
+      <footer className="border-t border-border">
+        <div className="mx-auto max-w-content px-4 sm:px-6 py-8">
+          <div className="text-center text-sm text-foreground font-medium mb-2">🌾 Molino</div>
+          <div className="text-center text-xs text-muted mb-3">Tu mapa personal de autoconocimiento.</div>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted">
+            <span>Gratis</span>
+            <span aria-hidden="true">·</span>
+            <span>Sin registro</span>
+            <span aria-hidden="true">·</span>
+            <span>Código abierto</span>
+          </div>
+          <div className="mt-3 flex items-center justify-center gap-4 text-xs text-muted">
+            <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="/conocimiento">Documentación</a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
