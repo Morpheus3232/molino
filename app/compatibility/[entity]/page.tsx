@@ -9,8 +9,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { entity: string } }): Promise<Metadata> {
-  const entity = ENTITIES.find(e => e.id === params.entity);
+export async function generateMetadata({ params }: { params: Promise<{ entity: string }> }): Promise<Metadata> {
+  const { entity: entityId } = await params;
+  const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) {
     return {
       title: 'Compatibilidad no encontrada | Molino',
@@ -45,8 +46,9 @@ export async function generateMetadata({ params }: { params: { entity: string } 
   };
 }
 
-export default function CompatibilityPage({ params }: { params: { entity: string } }) {
-  const entity = ENTITIES.find(e => e.id === params.entity);
+export default async function CompatibilityPage({ params }: { params: Promise<{ entity: string }> }) {
+  const { entity: entityId } = await params;
+  const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) notFound();
 
   return <CompatibilityContent entity={entity} />;

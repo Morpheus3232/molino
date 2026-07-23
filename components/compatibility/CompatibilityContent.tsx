@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
 import CompatibilityLab from "@/components/lab/CompatibilityLab";
@@ -8,13 +9,26 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
+import type { EntityProfile } from "@/lib/data/entities";
 
 interface CompatibilityContentProps {
-  entity: any;
+  entity: EntityProfile;
 }
 
 export default function CompatibilityContent({ entity }: CompatibilityContentProps) {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+
+  const compat = useMemo(() => {
+    if (!profile) return null;
+    return calculateCompatibility(profile, {
+      lifePath: entity.symbolism.lifePath || 5,
+      sunSign: entity.symbolism.sunSign,
+      chineseZodiac: entity.symbolism.chineseZodiac,
+      archetype: entity.symbolism.archetype,
+      element: entity.symbolism.element,
+      name: entity.name,
+    });
+  }, [profile, entity]);
 
   if (loading || !mounted) {
     return (
@@ -48,15 +62,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
       </div>
     );
   }
-
-  const compat = calculateCompatibility(profile, {
-    lifePath: entity.symbolism.lifePath || 5,
-    sunSign: entity.symbolism.sunSign,
-    chineseZodiac: entity.symbolism.chineseZodiac,
-    archetype: entity.symbolism.archetype,
-    element: entity.symbolism.element,
-    name: entity.name,
-  });
 
   return (
     <div className="min-h-screen bg-background">
@@ -94,11 +99,14 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         </div>
 
         {/* Compatibility results */}
-        <CompatibilityLab 
-          user={profile} 
-          entity={entity} 
-          template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
-        />
+        {compat && (
+          <CompatibilityLab
+            user={profile}
+            entity={entity}
+            result={compat}
+            template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
+          />
+        )}
 
         {/* Disclaimer */}
         <div className="mt-8 p-4 bg-card rounded-xl border border-border text-center space-y-2">
