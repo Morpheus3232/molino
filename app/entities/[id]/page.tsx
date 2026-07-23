@@ -1,16 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { ENTITIES, EXTENDED_ENTITIES, getEntitiesByCategory } from "@/lib/data/entities";
+import { ENTITIES } from "@/lib/data/entities";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
-const allEntities = useMemo(() => [...ENTITIES, ...EXTENDED_ENTITIES], []);
-
 export default function EntityDetailPage() {
   const params = useParams();
-  const entity = allEntities.find((e) => e.id === params.id);
+  const entity = ENTITIES.find((e) => e.id === params.id);
 
   if (!entity) {
     return (

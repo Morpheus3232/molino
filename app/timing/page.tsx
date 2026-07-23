@@ -12,7 +12,7 @@ export default function TimingPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="text-muted">Redirigiendo a tu mapa...</div>
+      <div className="text-muted" role="status">Redirigiendo...</div>
     </div>
   );
 }

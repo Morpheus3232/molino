@@ -2,179 +2,37 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSession, clearSession } from "@/lib/storage/ephemeral";
-import { loadProfileFromStorage, clearStoredProfile } from "@/lib/storage/localStorage";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { motion } from "framer-motion";
+import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { ARCHETYPES } from "@/lib/data";
+import { ZODIAC_SYMBOLS, ELEMENT_COLORS, ARCHETYPE_DESCRIPTIONS } from "@/lib/data/constants";
+import { safeNumber } from "@/lib/utils/score";
+import { useProfile } from "@/lib/hooks/useProfile";
+import UniversityHeader from "@/components/layout/UniversityHeader";
+import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
+import dynamic from "next/dynamic";
+import ShareableCard from "@/components/profile/ShareableCard";
+import LoadingState from "@/components/ui/LoadingState";
 
-function safeNumber(value: unknown, fallback = 0): number {
-  const n = typeof value === "number" ? value : Number(value);
-  return Number.isFinite(n) ? Math.trunc(n) : fallback;
-}
+const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
-const ZODIAC_SYMBOLS: Record<string, string> = {
-  Aries: "♈",
-  Tauro: "♉",
-  Géminis: "♊",
-  Cáncer: "♋",
-  Leo: "♌",
-  Virgo: "♍",
-  Libra: "♎",
-  Escorpio: "♏",
-  Sagitario: "♐",
-  Capricornio: "♑",
-  Acuario: "♒",
-  Piscis: "♓",
-};
-
-const ELEMENT_COLORS: Record<string, string> = {
-  Fuego: "#C49A2A",
-  Tierra: "#2D5A3D",
-  Aire: "#6B4C7A",
-  Agua: "#2E5C8A",
-  Metal: "#7A8A99",
-  Madera: "#8FBC8F",
-};
-
-const SECTIONS = [
-  { id: "identity", label: "Identidad" },
-  { id: "patterns", label: "Patrones" },
-  { id: "moment", label: "Mi Momento" },
-  { id: "numbers", label: "Numerología" },
-  { id: "astrology", label: "Astrología" },
-] as const;
-
-const ARCHETYPE_DESCRIPTIONS: Record<number, string> = {
-  1: "Naciste para liderar con independencia y claridad. Tu camino se construye con iniciativa, originalidad y coraje.",
-  2: "Tu energía es la del puente. Desarrollás la sensibilidad, la diplomacia y la capacidad de unir mundos diferentes.",
-  3: "Tu energía es la expresión creativa. Desarrollás la comunicación, la alegría y la capacidad de inspirar a otros.",
-  4: "Tu energía es la de los cimientos. Desarrollás la confiabilidad, la organización y la capacidad de construir cosas duraderas.",
-  5: "Tu energía es la del cambio. Desarrollás la curiosidad, la adaptabilidad y la capacidad de expandir horizontes.",
-  6: "Tu energía es la del hogar y la responsabilidad. Desarrollás la protección, la armonía y el amor práctico.",
-  7: "Tu energía es la verdad interna. Desarrollás la sabiduría, la observación y la capacidad de ir más allá de lo superficial.",
-  8: "Tu energía es la del imperio. Desarrollás la estrategia, la visión y la capacidad de materializar proyectos grandes.",
-  9: "Tu energía es la del todo. Desarrollás la adaptación, la compasión y la capacidad de cerrar ciclos con sabiduría.",
-  11: "Tu energía es la del puente entre mundos. Desarrollás la intuición, la inspiración y la capacidad de transmitir ideas nuevas.",
-  22: "Tu energía es la del arquitecto divino. Desarrollás la manifestación, la organización y la capacidad de construir a gran escala.",
-  33: "Tu energía es la del amor universal en acción. Desarrollás la sanación, la compasión y la capacidad de transformar desde el corazón.",
-};
-
-function MapNode({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div className={`bg-card border border-border rounded-xl p-5 transition-all hover:border-accent hover:shadow-md ${className}`}>
-      {children}
-    </div>
-  );
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-5 flex items-center gap-2">
-      <span className="w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true" />
-      {children}
-    </h2>
-  );
-}
-
-function StatCard({ label, value, subtitle, color }: { label: string; value: string | number; subtitle?: string; color?: string }) {
-  return (
-    <MapNode>
-      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">{label}</p>
-      <p className="text-3xl sm:text-4xl font-semibold" style={{ color: color || "var(--color-foreground)" }}>
-        {value}
-      </p>
-      {subtitle && <p className="text-xs text-muted mt-1.5">{subtitle}</p>}
-    </MapNode>
-  );
-}
-
-export default function ProfilePage() {
+function ProfileContent({ profile }: { profile: UserProfile }) {
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("identity");
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    try {
-      const stored = loadProfileFromStorage();
-      if (stored) {
-        setProfile(stored as UserProfile);
-      } else {
-        const existing = getSession();
-        if (existing?.name && existing?.birthDate) {
-          const calculated = calculateUserProfile(existing.name, existing.birthDate);
-          setProfile({
-            ...calculated,
-            birthPlace: existing.birthPlace,
-            birthTime: existing.birthTime,
-            goal: (existing.goal as UserProfile["goal"]) || "life",
-            interests: existing.interests,
-            onboardingStep: existing.onboardingStep,
-            completedSections: existing.completedSections,
-            theme: existing.theme,
-            language: existing.language,
-            notifications: existing.notifications,
-          });
-        } else {
-          router.push("/");
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      router.push("/");
-    }
-  }, [router]);
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 600);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleNewSession = () => {
-    clearSession();
-    clearStoredProfile();
-    router.push("/");
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  const scrollTo = (id: string) => {
-    setActiveSection(id);
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted" role="status" aria-label="Cargando tu perfil">Cargando tu perfil...</div>
-      </div>
-    );
-  }
-
-  if (!profile) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-2.5">
-              <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
-                <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
-              </svg>
-              <span className="font-serif font-bold text-xl text-foreground tracking-tight">Molino</span>
-            </a>
-          </div>
-        </header>
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-xs uppercase tracking-[0.18em] text-accent font-medium mb-2">Mi mapa personal</p>
-          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground mb-4">Todavía no creaste tu mapa</h1>
-          <p className="text-muted mb-8">Ingresá tu nombre y fecha de nacimiento para generar tu perfil.</p>
-          <button
-            onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
-          >
-            Descubrir mi Mapa
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   const lifePath = safeNumber(profile.lifePath, 1);
   const expressionNumber = safeNumber(profile.expressionNumber, 0);
@@ -196,169 +54,301 @@ export default function ProfilePage() {
   const personalMonth = safeNumber(profile.cycles?.personalMonth, 0);
   const personalDay = safeNumber(profile.cycles?.personalDay, 0);
   const archetype = ARCHETYPES[lifePath];
-  const elementColor = ELEMENT_COLORS[element] || "#C49A2A";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+
+  const yearThemes: Record<number, string> = {
+    1: "Semillas, independencia, liderazgo.",
+    2: "Relaciones, paciencia, diplomacia.",
+    3: "Creatividad, comunicación, alegría.",
+    4: "Trabajo, estabilidad, disciplina.",
+    5: "Libertad, aventura, transformación.",
+    6: "Familia, hogar, servicio.",
+    7: "Análisis, espiritualidad, sabiduría.",
+    8: "Poder, abundancia, logros.",
+    9: "Finalización, compasión, liberación.",
+    11: "Intuición, inspiración, despertar espiritual.",
+    22: "Visión práctica, manifestación a gran escala.",
+    33: "Servicio, compasión, transformación global.",
+  };
+
+  const nextSteps = (() => {
+    const steps: string[] = [];
+    if (personalYear === 1 || personalYear === 11) {
+      steps.push("Este es un año para empezar algo nuevo. Elegí un proyecto y lanzate.");
+    } else if (personalYear === 9) {
+      steps.push("Un ciclo está cerrando. Dejá ir lo que ya no te sirve.");
+    } else if (personalYear === 7) {
+      steps.push("Un año para profundizar. Dedicate al aprendizaje y la introspección.");
+    } else {
+      steps.push("Tu año tiene energía de crecimiento. Aprovechá para avanzar.");
+    }
+    if (archetypeStrengths.length > 0) {
+      steps.push(`Tu fortaleza natural es ${archetypeStrengths[0].toLowerCase()}. Usala conscientemente esta semana.`);
+    }
+    if (archetypeChallenges.length > 0) {
+      steps.push(`Notá si aparece ${archetypeChallenges[0].toLowerCase()}. No es un defecto, es una zona de crecimiento.`);
+    }
+    return steps;
+  })();
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5">
-            <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
-              <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
-            </svg>
-            <span className="font-serif font-bold text-xl text-foreground tracking-tight">Molino</span>
-          </a>
-          <button
-            onClick={handleNewSession}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-2 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
-          >
-            Nueva sesión
-          </button>
-        </div>
-      </header>
+      <UniversityHeader />
 
-      <div className="mx-auto max-w-content px-4 sm:px-6 py-10 pb-24" id="main-content">
-        {/* HERO */}
-        <section className="mb-12 animate-fade-in-up">
-          <p className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-3">Tu mapa personal</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground">{name}</h1>
-          <p className="text-base text-muted mt-3">{birthDate}</p>
+      <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+
+        {/* ═══════════════════════════════════════════════════════════════
+            01 — IDENTIDAD
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUp} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-[11px] font-medium" style={{ color: elementColor }}>01</span>
+            <div className="w-8 h-px" style={{ backgroundColor: elementColor }} aria-hidden="true" />
+            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium">Identidad</p>
+          </div>
+
+          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[1.05]">
+            {name}
+          </h1>
+
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted">
+            <span>{birthDate}</span>
+            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
+            <span>{sunSignSymbol} {sunSign}</span>
+            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
+            <span>{chineseZodiac}</span>
+          </div>
 
           {archetype && (
-            <div className="mt-6 p-5 rounded-2xl border border-border bg-card">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu arquetipo</p>
-              <p className="font-serif text-xl sm:text-2xl font-semibold" style={{ color: elementColor }}>
+            <div className="mt-8 sm:mt-10">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu arquetipo</p>
+              <p className="font-serif text-2xl sm:text-3xl font-semibold" style={{ color: elementColor }}>
                 {archetype.name}
               </p>
               {archetype.quote && (
-                <p className="text-sm text-muted mt-2 italic">"{archetype.quote}"</p>
+                <p className="text-base sm:text-lg text-muted mt-3 italic max-w-lg">&ldquo;{archetype.quote}&rdquo;</p>
               )}
             </div>
           )}
-        </section>
 
-        {/* NAV */}
-        <nav className="mb-10 flex flex-wrap gap-2" aria-label="Secciones del mapa">
-          {SECTIONS.map((section) => (
-            <button
-              key={section.id}
-              type="button"
-              onClick={() => scrollTo(section.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs transition-all ${
-                activeSection === section.id
-                  ? "bg-foreground text-background shadow-sm"
-                  : "border border-border text-muted hover:text-foreground hover:border-foreground/20"
-              }`}
-              aria-current={activeSection === section.id ? "true" : undefined}
-            >
-              {section.label}
-            </button>
-          ))}
-        </nav>
-
-        {/* IDENTIDAD */}
-        <section id="identity" className="scroll-mt-24 mb-12">
-          <SectionLabel>Identidad</SectionLabel>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
-            <StatCard label="Life Path" value={lifePath} subtitle="Tu dirección principal" color={elementColor} />
-            <StatCard label="Expresión" value={expressionNumber || "—"} subtitle="Cómo te presentás" color={elementColor} />
-            <StatCard label="Alma" value={soulNumber || "—"} subtitle="Lo que realmente deseás" color={elementColor} />
-            <StatCard label="Personalidad" value={personalityNumber || "—"} subtitle="La imagen que proyectás" color={elementColor} />
+          {/* Identity synthesis */}
+          <div className="mt-8 sm:mt-10 max-w-2xl">
+            <p className="text-base sm:text-lg text-muted leading-relaxed">
+              {archetypeDescription}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <MapNode>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Zodiaco</p>
-              <p className="text-lg font-medium text-foreground">
-                {sunSignSymbol} {sunSign}
-              </p>
-              <p className="text-sm text-muted mt-1">Elemento: {element} · Modalidad: {modality}</p>
-            </MapNode>
-            <MapNode>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Arquetipo</p>
-              <p className="text-lg font-medium text-foreground">{archetypeName}</p>
-              <p className="text-sm text-muted mt-1">Zodiaco chino: {chineseZodiac} · {chineseElement}</p>
-            </MapNode>
-          </div>
-
-          {/* Narrative */}
-          <MapNode className="mt-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Tu identidad en contexto</p>
-            <p className="text-sm text-muted leading-relaxed">
-              Tu nombre es <span className="text-foreground font-medium">{name}</span>. Naciste el <span className="text-foreground font-medium">{birthDate}</span>.
-            </p>
-            <p className="text-sm text-muted leading-relaxed mt-2">
-              Eres un <span className="text-foreground font-medium">{archetypeName}</span>. {archetypeDescription}
-            </p>
-          </MapNode>
-        </section>
-
-        {/* PATRONES */}
-        <section id="patterns" className="scroll-mt-24 mb-12">
-          <SectionLabel>Patrones</SectionLabel>
-
-          <MapNode>
-            <div className="space-y-4">
-              {archetypeStrengths.length > 0 && (
-                <p className="text-sm text-muted leading-relaxed">
-                  Un lado muy tuyo se ve en esto: <span className="text-foreground font-medium">{archetypeStrengths.slice(0, 2).join(" y ")}</span>. Son formas naturales en las que aparecés sin esfuerzo.
+          {/* Core numbers — minimal, elegant */}
+          <div className="mt-10 sm:mt-14 flex flex-wrap gap-6 sm:gap-10">
+            {[
+              { label: "Life Path", value: lifePath },
+              { label: "Expresión", value: expressionNumber || "—" },
+              { label: "Alma", value: soulNumber || "—" },
+              { label: "Personalidad", value: personalityNumber || "—" },
+            ].map((item) => (
+              <div key={item.label} className="text-center">
+                <p className="text-3xl sm:text-4xl font-serif font-semibold" style={{ color: elementColor }}>
+                  {item.value}
                 </p>
-              )}
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mt-1">
+                  {item.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            SHAREABLE CARD
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.05)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</p>
+          </div>
+          <ShareableCard
+            name={name}
+            birthDate={birthDate}
+            lifePath={lifePath}
+            sunSign={sunSign}
+            element={element}
+            chineseZodiac={chineseZodiac}
+            archetype={archetypeName}
+            expressionNumber={expressionNumber}
+            soulNumber={soulNumber}
+            personalityNumber={personalityNumber}
+          />
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            02 — PATRONES
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-[11px] font-medium text-muted">02</span>
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Patrones</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12">
+            {/* Strengths */}
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Fortalezas</p>
+              <ul className="space-y-3">
+                {archetypeStrengths.map((item: string) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ backgroundColor: elementColor }} aria-hidden="true" />
+                    <span className="text-sm sm:text-base text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Challenges */}
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Desafíos</p>
+              <ul className="space-y-3">
+                {archetypeChallenges.map((item: string) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" aria-hidden="true" />
+                    <span className="text-sm sm:text-base text-muted">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* How you process */}
+          <div className="mt-10 sm:mt-14 max-w-2xl">
+            <p className="text-sm sm:text-base text-muted leading-relaxed">
+              Como <span className="text-foreground font-medium">{archetypeName}</span>, tu energía natural se organiza alrededor de{" "}
+              <span className="text-foreground font-medium">{archetypeStrengths.slice(0, 2).join(" y ").toLowerCase()}</span>.
               {archetypeChallenges.length > 0 && (
-                <p className="text-sm text-muted leading-relaxed">
-                  Al mismo tiempo, hay zonas que te piden más atención: <span className="text-foreground font-medium">{archetypeChallenges.slice(0, 2).join(" y ")}</span>. No son fallas, sino lugares donde podés elegir responder con más conciencia.
-                </p>
+                <> Tus zonas de crecimiento aparecen cuando operás desde <span className="text-foreground font-medium">{archetypeChallenges[0].toLowerCase()}</span>.</>
               )}
-              <p className="text-sm text-muted leading-relaxed">
-                Reconocer estos patrones no es para etiquetarte, sino para tener más opciones. Cuando veas estas tendencias, podés decidir si querés seguir por el mismo camino o probar otra forma.
+            </p>
+          </div>
+
+          {/* Radar chart */}
+          <div className="mt-10 sm:mt-14">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Tu radar simbólico</p>
+            <div className="rounded-xl border border-border bg-card p-4 sm:p-6">
+              <ProfileRadar
+                data={[
+                  { subject: "Comunicación", value: Math.min((expressionNumber || lifePath) * 10, 100) },
+                  { subject: "Motivación", value: Math.min((soulNumber || lifePath) * 10, 100) },
+                  { subject: "Imagen", value: Math.min((personalityNumber || lifePath) * 10, 100) },
+                  { subject: "Estabilidad", value: Math.min(lifePath * 10, 100) },
+                  { subject: "Intuición", value: 50 + (lifePath % 5) * 10 },
+                  { subject: "Acción", value: Math.min((lifePath + expressionNumber) * 8, 100) },
+                ]}
+                color={elementColor}
+              />
+            </div>
+          </div>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            03 — CONEXIONES
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.15)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-[11px] font-medium text-muted">03</span>
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Conexiones</h2>
+          </div>
+
+          <div className="space-y-6">
+            {/* Connection 1: Element + Life Path */}
+            {element && (
+              <div className="p-5 sm:p-6 rounded-xl border border-border bg-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: elementColor }} aria-hidden="true" />
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Elemento + Life Path</p>
+                </div>
+                <p className="text-sm sm:text-base text-muted leading-relaxed">
+                  Tu elemento <span className="text-foreground font-medium">{element}</span> y tu Life Path{" "}
+                  <span className="text-foreground font-medium">{lifePath}</span> crean una base donde{" "}
+                  {element === "Fuego" && "la pasión y la iniciativa se combinan con la dirección de tu camino."}
+                  {element === "Tierra" && "la estabilidad y la práctica se combinan con la dirección de tu camino."}
+                  {element === "Aire" && "la comunicación y la idea se combinan con la dirección de tu camino."}
+                  {element === "Agua" && "la intuición y la emoción se combinan con la dirección de tu camino."}
+                  {!["Fuego", "Tierra", "Aire", "Agua"].includes(element) && "tu energía única se combina con la dirección de tu camino."}
+                </p>
+              </div>
+            )}
+
+            {/* Connection 2: Zodiac + Expression */}
+            <div className="p-5 sm:p-6 rounded-xl border border-border bg-card">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--layer-astrology)" }} aria-hidden="true" />
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Signo solar + Expresión</p>
+              </div>
+              <p className="text-sm sm:text-base text-muted leading-relaxed">
+                Tu signo <span className="text-foreground font-medium">{sunSignSymbol} {sunSign}</span>{" "}
+                {expressionNumber && (
+                  <>con Expression <span className="text-foreground font-medium">{expressionNumber}</span> significa que te expresás a través de{" "}
+                  {expressionNumber <= 3 ? "la creatividad y la comunicación" :
+                   expressionNumber <= 6 ? "el servicio y la armonía" :
+                   expressionNumber <= 9 ? "el conocimiento y la visión global" :
+                   "una energía única que combina intuición y acción"}.</>
+                )}
+                {!expressionNumber && "influye en cómo te presentás al mundo."}
               </p>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-background">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Fortalezas</p>
-                <ul className="space-y-1.5">
-                  {archetypeStrengths.map((item: string) => (
-                    <li key={item} className="text-sm text-muted flex items-start gap-2">
-                      <span className="w-1 h-1 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+            {/* Connection 3: Chinese + Soul */}
+            <div className="p-5 sm:p-6 rounded-xl border border-border bg-card">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--layer-cycles)" }} aria-hidden="true" />
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Zodiaco chino + Alma</p>
               </div>
-              <div className="p-4 rounded-xl bg-background">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafíos</p>
-                <ul className="space-y-1.5">
-                  {archetypeChallenges.map((item: string) => (
-                    <li key={item} className="text-sm text-muted flex items-start gap-2">
-                      <span className="w-1 h-1 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="text-sm sm:text-base text-muted leading-relaxed">
+                Tu signo chino <span className="text-foreground font-medium">{chineseZodiac}</span> ({chineseElement}){" "}
+                {soulNumber && (
+                  <>con Alma <span className="text-foreground font-medium">{soulNumber}</span> revela que tus deseos más profundos se orientan hacia{" "}
+                  {soulNumber <= 3 ? "la expresión creativa y la alegría" :
+                   soulNumber <= 6 ? "el amor, la familia y la armonía" :
+                   soulNumber <= 9 ? "la sabiduría y el servicio a los demás" :
+                   "una búsqueda de significado profundo"}.</>
+                )}
+                {!soulNumber && "suma un estilo de acción a tu forma de ser."}
+              </p>
             </div>
-          </MapNode>
-        </section>
+          </div>
+        </motion.section>
 
-        {/* MI MOMENTO */}
-        <section id="moment" className="scroll-mt-24 mb-12">
-          <SectionLabel>Mi Momento</SectionLabel>
+        {/* ═══════════════════════════════════════════════════════════════
+            04 — TIMING
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-[11px] font-medium text-muted">04</span>
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Timing</h2>
+          </div>
 
+          {/* Year context */}
+          <div className="mb-8">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Año personal {personalYear}</p>
+            <p className="text-lg sm:text-xl font-serif font-semibold text-foreground">
+              {yearThemes[personalYear] || "Un año de crecimiento y aprendizaje."}
+            </p>
+          </div>
+
+          {/* Cycle bars */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { label: "Año personal", value: personalYear, desc: "El tema general de tu año" },
-              { label: "Mes personal", value: personalMonth, desc: "La energía de este mes" },
-              { label: "Día personal", value: personalDay, desc: "Tu energía hoy" },
+              { label: "Año", value: personalYear, desc: "El tema general" },
+              { label: "Mes", value: personalMonth, desc: "La energía de este mes" },
+              { label: "Día", value: personalDay, desc: "Tu energía hoy" },
             ].map((cycle) => (
-              <MapNode key={cycle.label}>
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{cycle.label}</p>
-                  <span className="text-2xl font-semibold" style={{ color: elementColor }}>{cycle.value || "—"}</span>
+              <div key={cycle.label} className="p-4 rounded-xl border border-border bg-card">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">{cycle.label}</p>
+                  <span className="text-xl font-serif font-semibold" style={{ color: elementColor }}>{cycle.value || "—"}</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-border overflow-hidden">
+                <div className="w-full h-1 rounded-full bg-border overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
@@ -368,108 +358,164 @@ export default function ProfilePage() {
                   />
                 </div>
                 <p className="text-xs text-muted mt-2">{cycle.desc}</p>
-              </MapNode>
+              </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        {/* NUMEROLOGÍA */}
-        <section id="numbers" className="scroll-mt-24 mb-12">
-          <SectionLabel>Numerología</SectionLabel>
+        {/* ═══════════════════════════════════════════════════════════════
+            05 — DECISIONES
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.25)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-[11px] font-medium text-muted">05</span>
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Decisiones</h2>
+          </div>
 
-          <MapNode>
-            <p className="text-sm text-muted mb-5">
-              Tu Life Path es <span className="text-foreground font-medium">{lifePath}</span>. Este número resume la dirección principal de tu vida.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {[
-                { label: "Expresión", value: expressionNumber, desc: "Cómo te presentás" },
-                { label: "Alma", value: soulNumber, desc: "Lo que realmente deseás" },
-                { label: "Personalidad", value: personalityNumber, desc: "La imagen que proyectás" },
-              ].map((num) => (
-                <div key={num.label} className="p-4 rounded-xl bg-background">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{num.label}</p>
-                  <p className="text-2xl font-semibold mt-1" style={{ color: elementColor }}>{num.value || "—"}</p>
-                  <p className="text-xs text-muted mt-1">{num.desc}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6">
-              <button
-                onClick={() => router.push("/numerologia")}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
-              >
-                Explorar numerología completa
-              </button>
-            </div>
-          </MapNode>
-        </section>
-
-        {/* ASTROLOGÍA */}
-        <section id="astrology" className="scroll-mt-24 mb-12">
-          <SectionLabel>Astrología</SectionLabel>
-
-          <MapNode>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-background">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Signo solar</p>
-                <p className="text-lg font-medium text-foreground">{sunSignSymbol} {sunSign}</p>
-                <p className="text-sm text-muted mt-1">Elemento: {element}</p>
-              </div>
-              <div className="p-4 rounded-xl bg-background">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Zodiaco chino</p>
-                <p className="text-lg font-medium text-foreground">{chineseZodiac}</p>
-                <p className="text-sm text-muted mt-1">Elemento: {chineseElement}</p>
-              </div>
-            </div>
-            <div className="mt-6">
-              <button
-                onClick={() => router.push("/astrologia")}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
-              >
-                Explorar astrología completa
-              </button>
-            </div>
-          </MapNode>
-        </section>
-      </div>
-
-      <footer className="border-t border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true">
-                  <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                  <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
-                </svg>
-                <span className="font-serif font-bold text-lg text-foreground tracking-tight">Molino</span>
-              </div>
-              <p className="text-sm text-muted mt-2">Tu mapa personal de autoconocimiento.</p>
-              <p className="text-xs text-muted mt-1">Gratis · Sin registro · Código abierto</p>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Principios</h4>
-              <ul className="mt-3 space-y-2 text-sm text-muted">
-                <li>Conocimiento libre</li>
-                <li>Privacidad radical</li>
-                <li>Transparencia total</li>
-                <li>Código abierto</li>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Aligned */}
+            <div className="p-5 sm:p-6 rounded-xl border border-border bg-card">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Alineado</p>
+              <ul className="space-y-2">
+                {archetypeStrengths.slice(0, 3).map((item: string) => (
+                  <li key={item} className="text-sm text-muted flex items-start gap-2">
+                    <span className="text-accent mt-0.5" aria-hidden="true">→</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
+              <p className="text-xs text-muted mt-4 leading-relaxed">
+                Estas áreas están naturalmente potenciadas por tu perfil.
+              </p>
             </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Enlaces</h4>
-              <ul className="mt-3 space-y-2 text-sm text-muted">
-                <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a></li>
-                <li><a href="/biblioteca" className="hover:text-accent transition-colors">Documentación</a></li>
+
+            {/* Tension */}
+            <div className="p-5 sm:p-6 rounded-xl border border-border bg-card">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tensión</p>
+              <ul className="space-y-2">
+                {archetypeChallenges.slice(0, 3).map((item: string) => (
+                  <li key={item} className="text-sm text-muted flex items-start gap-2">
+                    <span className="text-border mt-0.5" aria-hidden="true">→</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
+              <p className="text-xs text-muted mt-4 leading-relaxed">
+                Estas áreas te invitan a crecer y expandirte.
+              </p>
             </div>
           </div>
-          <div className="mt-10 pt-8 border-t border-border text-center text-xs text-muted">
-            <p>Molino — Universidad Pública de Libre Acceso. Todo el contenido es educativo y no constituye asesoramiento profesional.</p>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            06 — EVOLUCIÓN
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.3)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="text-[11px] font-medium text-muted">06</span>
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Evolución</h2>
           </div>
-        </div>
-      </footer>
+
+          <div className="space-y-4">
+            {nextSteps.map((step, i) => (
+              <div key={i} className="flex items-start gap-4 p-4 sm:p-5 rounded-xl border border-border bg-card">
+                <span className="text-lg font-serif font-semibold shrink-0" style={{ color: elementColor }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="text-sm sm:text-base text-muted leading-relaxed">{step}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Button variant="secondary" fullWidth onClick={() => router.push("/explore")}>
+              Explorar conocimiento
+            </Button>
+            <Button variant="secondary" fullWidth onClick={() => router.push("/compatibility/argentina")}>
+              Ver compatibilidad
+            </Button>
+          </div>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            ZODIAC SUMMARY — minimal, elegant
+            ═══════════════════════════════════════════════════════════════ */}
+        <motion.section {...fadeUpDelayed(0.35)} className="mb-16 sm:mb-24">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus sistemas</h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-5 rounded-xl border border-border bg-card text-center">
+              <p className="text-3xl mb-2">{sunSignSymbol}</p>
+              <p className="text-sm font-medium text-foreground">{sunSign}</p>
+              <p className="text-xs text-muted mt-1">Elemento: {element} · {modality}</p>
+            </div>
+            <div className="p-5 rounded-xl border border-border bg-card text-center">
+              <p className="text-3xl mb-2">🐉</p>
+              <p className="text-sm font-medium text-foreground">{chineseZodiac}</p>
+              <p className="text-xs text-muted mt-1">Elemento: {chineseElement}</p>
+            </div>
+            <div className="p-5 rounded-xl border border-border bg-card text-center">
+              <p className="text-3xl mb-2" style={{ color: elementColor }}>∞</p>
+              <p className="text-sm font-medium text-foreground">{archetypeName}</p>
+              <p className="text-xs text-muted mt-1">Life Path {lifePath}</p>
+            </div>
+          </div>
+        </motion.section>
+
+      </main>
+
+      {/* Back to top */}
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-40 p-3.5 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full bg-card border border-border shadow-lg text-muted hover:text-foreground hover:border-accent transition-all focus:outline-none focus:ring-2 focus:ring-accent/40"
+          aria-label="Volver arriba"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="18 15 12 9 6 15" />
+          </svg>
+        </button>
+      )}
+
+      <UniversityFooter />
     </div>
   );
+}
+
+export default function ProfilePage() {
+  const router = useRouter();
+  const { profile, mounted } = useProfile({ redirectIfNotFound: false });
+
+  if (!mounted) {
+    return <LoadingState message="Cargando tu perfil..." />;
+  }
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-background">
+        <UniversityHeader />
+        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Mi mapa personal</p>
+          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+            Todavía no creaste tu mapa
+          </h1>
+          <p className="text-muted mb-8 max-w-md mx-auto">
+            Ingresá tu nombre y fecha de nacimiento para generar tu perfil de Personal Intelligence.
+          </p>
+          <Button size="lg" onClick={() => router.push("/")}>
+            Crear mi perfil
+          </Button>
+        </div>
+        <UniversityFooter />
+      </div>
+    );
+  }
+
+  return <ProfileContent profile={profile} />;
 }

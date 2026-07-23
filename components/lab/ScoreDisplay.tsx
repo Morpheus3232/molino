@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { getScoreColor, getScoreLabel, getScoreBgColor } from "@/lib/utils/score";
 
 interface ScoreDisplayProps {
   score: number;

@@ -130,7 +130,7 @@ export default function AIInterpretation({
       {interpretation.poeticSummary && (
         <div className="pt-3 border-t border-card-border">
           <p className="text-sm text-muted italic text-center">
-            "{interpretation.poeticSummary}"
+            &ldquo;{interpretation.poeticSummary}&rdquo;
           </p>
         </div>
       )}

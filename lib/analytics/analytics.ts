@@ -110,7 +110,7 @@ class Analytics {
     this.track({
       type: "profile_created",
       data: {
-        lifePathNumber: profile.lifePathNumber,
+        lifePath: profile.lifePath,
         archetype: profile.archetype,
       },
     });

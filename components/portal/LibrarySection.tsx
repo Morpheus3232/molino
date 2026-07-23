@@ -38,7 +38,7 @@ export default function LibrarySection({ profile, knowledge }: LibrarySectionPro
         {recommended.map((book) => (
           <div key={book.title} className="bg-background rounded-2xl p-4 flex items-center justify-between">
             <div>
-              <p className="font-medium text-foreground">"{book.title}"</p>
+              <p className="font-medium text-foreground">&ldquo;{book.title}&rdquo;</p>
               <p className="text-xs text-muted">{book.author} · {book.topic}</p>
             </div>
             <span className="text-xs bg-card border border-border rounded-full px-3 py-1 text-muted">

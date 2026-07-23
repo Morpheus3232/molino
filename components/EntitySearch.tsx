@@ -6,6 +6,7 @@ import { getChineseAnimal, getCompatibilityScore, getCompatibilityDescription } 
 import { getEntitiesByCategory, getEntityById, EntityCategory } from "@/lib/data/entities";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { saveEntity, removeEntity } from "@/lib/auth/userService";
+import { getScoreColor, getScoreLabel, getScoreBgColor } from "@/lib/utils/score";
 
 interface EntitySearchProps {
   userBirthDate: { day: number; month: number; year: number };
@@ -76,19 +77,16 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
     setResults(found.slice(0, 20));
   }, [searchTerm, userAnimal, selectedType]);
 
-  const getScoreColor = (score: number): string => {
-    if (score >= 80) return "text-green-600 bg-green-50";
-    if (score >= 60) return "text-blue-600 bg-blue-50";
-    if (score >= 40) return "text-yellow-600 bg-yellow-50";
-    return "text-red-600 bg-red-50";
-  };
+  
 
-  const getEntityIcon = (entity: any): string => {
-    return entity.emoji || entity.flag || entity.logo || "📌";
-  };
 
   const isSaved = (entityId: string) => {
-    return session?.user.savedEntities.includes(entityId) || false;
+    return session?.user.savedEntities?.includes(entityId) || false;
+  };
+
+
+  const getEntityIcon = (entity: any) => {
+    return CATEGORY_META[entity.category as EntityCategory]?.icon || '📦';
   };
 
   const handleToggleSave = async (entityId: string) => {

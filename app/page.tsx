@@ -1,60 +1,66 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
-import { saveSession } from "@/lib/storage/ephemeral";
-import { saveProfileToStorage } from "@/lib/storage/localStorage";
+import { motion } from "framer-motion";
+import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import UniversityHeader from "@/components/layout/UniversityHeader";
+import UniversityFooter from "@/components/layout/UniversityFooter";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
+import LoadingState from "@/components/ui/LoadingState";
 
-const DEMO_PROFILE = {
+const DEMO = {
   name: "Martín",
   birthDate: "12/04/1992",
   lifePath: 7,
   sunSign: "Aries",
+  sunSymbol: "♈",
   element: "Fuego",
   modality: "Cardinal",
   chineseZodiac: "Mono",
   chineseElement: "Metal",
   archetype: "El Investigador",
+  archetypeQuote: "La verdad no teme a la pregunta.",
+  archetypeDescription: "Tu energía es la verdad interna. Desarrollás la sabiduría, la observación y la capacidad de ir más allá de lo superficial.",
   personalYear: 3,
   personalMonth: 5,
   personalDay: 9,
+  expressionNumber: 5,
+  soulNumber: 3,
+  personalityNumber: 7,
+  strengths: ["Análisis", "Sabiduría", "Observación", "Intuición"],
 };
 
-const MAP_LAYERS = [
-  { id: "identity", title: "Identidad", subtitle: "Quién sos", color: "#C49A2A" },
-  { id: "patterns", title: "Patrones", subtitle: "Qué se repite", color: "#8B7355" },
-  { id: "numerology", title: "Numerología", subtitle: "Qué dicen los números", color: "#2E5C8A" },
-  { id: "astrology", title: "Astrología", subtitle: "Qué dicen los astros", color: "#6B4C7A" },
-  { id: "cycles", title: "Ciclos", subtitle: "Cómo cambia", color: "#2D5A3D" },
-  { id: "moment", title: "Momento", subtitle: "Dónde estás", color: "#C44536" },
+const PILLARS = [
+  { num: "01", title: "Identity", subtitle: "Quién sos", description: "Tu Life Path, arquetipo y elemento fundamental." },
+  { num: "02", title: "Patterns", subtitle: "Qué se repite", description: "Fortalezas, desafíos y tendencias recurrentes." },
+  { num: "03", title: "Alignment", subtitle: "Qué encaja", description: "Afinidad con personas, lugares y conceptos." },
+  { num: "04", title: "Timing", subtitle: "Cuándo actuar", description: "Tu año, mes y día personal." },
+  { num: "05", title: "Decisions", subtitle: "Cómo elegir", description: "Herramientas para tomar decisiones con más conciencia." },
 ];
 
-const EXPLORE_LAYERS = [
-  { title: "Lugares", subtitle: "Dónde resonás", available: false },
-  { title: "Marcas", subtitle: "Qué te representa", available: false },
-  { title: "Relaciones", subtitle: "Cómo conectás", available: false },
+const LAYERS = [
+  { title: "Numerología", description: "Life Path, Expression, Alma y Personalidad.", color: "var(--element-fire)" },
+  { title: "Astrología", description: "Signo solar, elemento y modalidad.", color: "var(--layer-astrology)" },
+  { title: "Zodiaco chino", description: "Animal y elemento del ciclo lunar.", color: "var(--layer-moment)" },
+  { title: "Ciclos", description: "Año, mes y día personal.", color: "var(--layer-cycles)" },
+  { title: "Patrones", description: "Fortalezas y desafíos recurrentes.", color: "var(--layer-patterns)" },
+  { title: "Timing", description: "El momento actual y能量.", color: "var(--layer-identity)" },
+  { title: "Decisiones", description: "Cómo usar la información.", color: "var(--score-good)" },
+  { title: "Evolución", description: "Cómo cambia con el tiempo.", color: "var(--element-earth)" },
+];
+
+const QUESTIONS = [
+  "¿Por qué repito ciertos patrones?",
+  "¿Qué tipo de energía tengo en este ciclo?",
+  "¿Qué áreas de mi vida están pidiendo atención?",
+  "¿Qué momento estoy atravesando?",
+  "¿Qué decisiones puedo mirar desde otra perspectiva?",
 ];
 
 export default function Home() {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("01");
-  const [year, setYear] = useState(String(new Date().getFullYear() - 25));
-  const [error, setError] = useState("");
   const [checkingProfile, setCheckingProfile] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const daysInMonth = (() => {
-    const m = parseInt(month, 10);
-    const y = parseInt(year, 10);
-    if (!m || !y) return 31;
-    return new Date(y, m, 0).getDate();
-  })();
-
-  const yearOptions = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
 
   useEffect(() => {
     const stored = localStorage.getItem("molino.user-profile.v1");
@@ -65,466 +71,387 @@ export default function Home() {
     }
   }, [router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    const parsedDay = parseInt(day, 10);
-    const parsedMonth = parseInt(month, 10);
-    const parsedYear = parseInt(year, 10);
-
-    if (!name.trim() || !parsedDay || !parsedMonth || !parsedYear) {
-      setError("Completá tu nombre y fecha de nacimiento.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
-      const calculated = calculateUserProfile(name.trim(), birthDate);
-      const profile: UserProfile = {
-        ...calculated,
-        birthPlace: "",
-        birthTime: undefined,
-        goal: "life",
-        interests: [],
-        onboardingStep: 1,
-        completedSections: ["identity"],
-        theme: "light",
-        language: "es",
-        notifications: true,
-      };
-
-      saveSession({
-        name: profile.name,
-        birthDate: profile.birthDate,
-        birthPlace: profile.birthPlace,
-        birthTime: profile.birthTime,
-        goal: profile.goal,
-        interests: profile.interests,
-        onboardingStep: profile.onboardingStep,
-        completedSections: profile.completedSections,
-        theme: profile.theme,
-        language: profile.language,
-        notifications: profile.notifications,
-      });
-      saveProfileToStorage(profile);
-      router.push("/profile");
-    } catch (err) {
-      console.error(err);
-      setError("Hubo un error generando tu perfil. Intentá de nuevo.");
-      setIsSubmitting(false);
-    }
-  };
-
   if (checkingProfile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-muted" role="status" aria-label="Cargando">Cargando...</div>
-      </div>
-    );
+    return <LoadingState message="Cargando..." />;
   }
+
+  const elementColor = ELEMENT_COLORS[DEMO.element] || "var(--element-fire)";
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5 group">
-            <svg width="28" height="28" viewBox="0 0 64 64" className="shrink-0" aria-hidden="true">
-              <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
-            </svg>
-            <span className="font-serif font-bold text-xl text-foreground tracking-tight">Molino</span>
-          </a>
-        </div>
-      </header>
+      <UniversityHeader />
 
       <main id="main-content">
-        {/* HERO */}
-        <section className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
-          <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16 text-center relative">
-            <p className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-6 animate-fade-in">
-              Tu mapa personal de autoconocimiento
-            </p>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1] animate-fade-in-up">
-              Descubrí el mapa
-              <br />
-              <span className="text-accent">que te hace único.</span>
-            </h1>
-            <p className="mt-6 max-w-xl mx-auto text-base sm:text-lg text-muted leading-relaxed animate-fade-in-up stagger-1">
-              Molino construye tu mapa personal a partir de tu nombre y fecha de nacimiento. Una misma base simbólica para explorar identidad, patrones, numerología, astrología y ciclos.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-xs text-muted animate-fade-in-up stagger-2">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-                Gratis
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-                Sin registro
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-                Sin rastreo
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
-                Código abierto
-              </span>
-            </div>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            1. HERO
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] via-transparent to-transparent pointer-events-none" aria-hidden="true" />
+
+          <div className="mx-auto max-w-[1200px] w-full px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center relative">
+            <motion.div {...fadeUp} className="space-y-6">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <div className="w-8 h-px bg-accent" aria-hidden="true" />
+                <p className="text-[11px] uppercase tracking-[0.35em] text-accent font-medium">
+                  Personal Intelligence Platform
+                </p>
+                <div className="w-8 h-px bg-accent" aria-hidden="true" />
+              </div>
+
+              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground leading-[1.08] max-w-4xl mx-auto">
+                Conocé tu sistema personal.
+              </h1>
+
+              <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted leading-relaxed">
+                Una lectura integrada de tu identidad, patrones, ciclos y timing a partir de tus datos de nacimiento.
+              </p>
+
+              <motion.div {...fadeUpDelayed(0.15)} className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => router.push("/onboarding")}
+                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-10 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[56px]"
+                >
+                  Crear mi perfil
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.push("/explore")}
+                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-4 text-base bg-transparent text-secondary border border-border hover:border-accent hover:text-accent min-h-[56px]"
+                >
+                  Explorar conocimiento
+                </button>
+              </motion.div>
+
+              <motion.p {...fadeUpDelayed(0.2)} className="text-xs text-muted">
+                Gratis · Sin registro · Tu mapa se genera en segundos
+              </motion.p>
+            </motion.div>
           </div>
         </section>
 
-        {/* FORMULARIO */}
-        <section className="mx-auto max-w-xl px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Crear tu mapa">
-          <div className="text-center mb-8">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Comenzá a construir tu mapa</p>
-            <p className="text-sm text-muted">Ingresá tu nombre y fecha de nacimiento. Molino construye una primera lectura de tu mapa personal.</p>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-            <div>
-              <label htmlFor="name" className="block text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">
-                Tu nombre
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input"
-                placeholder="Ej: María"
-                required
-                minLength={2}
-                maxLength={40}
-                autoComplete="name"
-                aria-describedby={error ? "form-error" : undefined}
-                aria-invalid={!!error}
-              />
-            </div>
-            <div>
-              <fieldset>
-                <legend className="block text-xs uppercase tracking-[0.18em] text-muted font-medium mb-2">
-                  Fecha de nacimiento
-                </legend>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label htmlFor="birth-day" className="sr-only">Día</label>
-                    <select
-                      id="birth-day"
-                      value={day}
-                      onChange={(e) => setDay(e.target.value)}
-                      className="input"
-                      required
-                      aria-label="Día"
-                    >
-                      <option value="">Día</option>
-                      {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
-                        <option key={d} value={String(d)}>{d}</option>
-                      ))}
-                    </select>
+        {/* ═══════════════════════════════════════════════════════════════
+            2. PROFILE PREVIEW
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp}>
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Tu mapa personal</p>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
+                    Así se ve tu perfil
+                  </h2>
+                </div>
+                <span className="text-[11px] uppercase tracking-[0.15em] text-muted border border-border rounded-full px-3 py-1 self-start sm:self-auto">
+                  Ejemplo ilustrativo
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Profile card */}
+            <motion.div {...fadeUpDelayed(0.1)} className="border border-border rounded-2xl overflow-hidden bg-card">
+              {/* Header */}
+              <div className="px-6 sm:px-8 py-5 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-serif font-bold" style={{ backgroundColor: elementColor, color: "var(--color-background)" }}>
+                    {DEMO.lifePath}
                   </div>
                   <div>
-                    <label htmlFor="birth-month" className="sr-only">Mes</label>
-                    <select
-                      id="birth-month"
-                      value={month}
-                      onChange={(e) => setMonth(e.target.value)}
-                      className="input"
-                      required
-                      aria-label="Mes"
-                    >
-                      {[
-                        { value: "01", label: "Ene" },
-                        { value: "02", label: "Feb" },
-                        { value: "03", label: "Mar" },
-                        { value: "04", label: "Abr" },
-                        { value: "05", label: "May" },
-                        { value: "06", label: "Jun" },
-                        { value: "07", label: "Jul" },
-                        { value: "08", label: "Ago" },
-                        { value: "09", label: "Sep" },
-                        { value: "10", label: "Oct" },
-                        { value: "11", label: "Nov" },
-                        { value: "12", label: "Dic" },
-                      ].map((m) => (
-                        <option key={m.value} value={m.value}>{m.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="birth-year" className="sr-only">Año</label>
-                    <select
-                      id="birth-year"
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
-                      className="input"
-                      required
-                      aria-label="Año"
-                    >
-                      <option value="">Año</option>
-                      {yearOptions.map((y) => (
-                        <option key={y} value={String(y)}>{y}</option>
-                      ))}
-                    </select>
+                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-foreground">{DEMO.name}</h3>
+                    <p className="text-sm text-muted">{DEMO.birthDate} · {DEMO.sunSymbol} {DEMO.sunSign} · {DEMO.chineseZodiac}</p>
                   </div>
                 </div>
-              </fieldset>
-            </div>
-            {error && (
-              <p id="form-error" className="text-sm text-error" role="alert">
-                {error}
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed min-h-[52px]"
-            >
-              {isSubmitting ? (
-                <>
-                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Construyendo tu mapa...
-                </>
-              ) : (
-                <>Descubrir mi mapa</>
-              )}
-            </button>
-          </form>
+                <div className="text-left sm:text-right">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Arquetipo</p>
+                  <p className="text-sm font-medium" style={{ color: elementColor }}>{DEMO.archetype}</p>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 sm:px-8 py-6 sm:py-8">
+                {/* Identity reading */}
+                <div className="mb-8 p-5 rounded-xl bg-background">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu identidad</p>
+                  <p className="text-sm text-muted leading-relaxed">
+                    <span className="text-foreground font-medium">{DEMO.name}</span> es un <span className="text-foreground font-medium">{DEMO.archetype}</span>. {DEMO.archetypeDescription}
+                  </p>
+                </div>
+
+                {/* Core numbers */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                  {[
+                    { label: "Life Path", value: DEMO.lifePath },
+                    { label: "Expresión", value: DEMO.expressionNumber },
+                    { label: "Alma", value: DEMO.soulNumber },
+                    { label: "Personalidad", value: DEMO.personalityNumber },
+                  ].map((item) => (
+                    <div key={item.label} className="text-center p-4 rounded-xl bg-background">
+                      <p className="text-3xl sm:text-4xl font-serif font-semibold" style={{ color: elementColor }}>{item.value}</p>
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mt-2">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Strengths */}
+                <div className="mb-8">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
+                  <div className="flex flex-wrap gap-2">
+                    {DEMO.strengths.map((s) => (
+                      <span key={s} className="px-3 py-1.5 rounded-full text-xs font-medium border border-border bg-background text-foreground">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Cycles */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                  {[
+                    { label: "Año personal", value: DEMO.personalYear, desc: "El tema general" },
+                    { label: "Mes personal", value: DEMO.personalMonth, desc: "La energía de este mes" },
+                    { label: "Día personal", value: DEMO.personalDay, desc: "Tu energía hoy" },
+                  ].map((item) => (
+                    <div key={item.label} className="p-4 rounded-xl border border-border">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">{item.label}</p>
+                        <span className="text-xl font-serif font-semibold" style={{ color: elementColor }}>{item.value}</span>
+                      </div>
+                      <div className="w-full h-1 rounded-full bg-border overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${(item.value / 9) * 100}%`, backgroundColor: elementColor }} />
+                      </div>
+                      <p className="text-xs text-muted mt-2">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.p {...fadeUpDelayed(0.2)} className="text-center text-xs text-muted mt-6">
+              Ejemplo ilustrativo — los resultados se generan a partir de tus propios datos.
+            </motion.p>
+          </div>
         </section>
 
-        {/* CAPAS DEL MAPA */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Capas del mapa">
-          <div className="text-center mb-12">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Un mapa. Muchas capas.</p>
-            <p className="text-sm text-muted max-w-lg mx-auto leading-relaxed">
-              Tu mapa personal se construye desde una misma base simbólica. Las dimensiones no son herramientas separadas: son capas de un mismo territorio.
-            </p>
-          </div>
+        {/* ═══════════════════════════════════════════════════════════════
+            3. PERSONAL INTELLIGENCE SYSTEM
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp} className="text-center mb-12">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">El método Molino</p>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
+                Un sistema. Cinco dimensiones.
+              </h2>
+              <p className="text-sm text-muted mt-3 max-w-xl mx-auto">
+                Cada perfil se construye alrededor de cinco dimensiones que se conectan entre sí.
+              </p>
+            </motion.div>
 
-          <div className="max-w-3xl mx-auto">
-            <div className="relative">
+            <motion.div {...fadeUpDelayed(0.1)} className="relative">
+              {/* Desktop: horizontal flow */}
+              <div className="hidden lg:flex items-start justify-between gap-2">
+                {PILLARS.map((pillar, i) => (
+                  <div key={pillar.num} className="flex-1 relative">
+                    <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">{pillar.num}</div>
+                    <h3 className="font-serif text-lg font-semibold text-foreground mb-1">{pillar.title}</h3>
+                    <p className="text-sm text-muted mb-2">{pillar.subtitle}</p>
+                    <p className="text-xs text-muted leading-relaxed">{pillar.description}</p>
+                    {i < PILLARS.length - 1 && (
+                      <div className="absolute top-5 -right-4 text-border text-lg" aria-hidden="true">→</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobile: vertical flow */}
+              <div className="lg:hidden space-y-8">
+                {PILLARS.map((pillar) => (
+                  <div key={pillar.num} className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center shrink-0">
+                      <span className="text-xs font-medium text-muted">{pillar.num}</span>
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-lg font-semibold text-foreground">{pillar.title}</h3>
+                      <p className="text-sm text-muted">{pillar.subtitle}</p>
+                      <p className="text-xs text-muted mt-1 leading-relaxed">{pillar.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════════════
+            4. UN MAPA, MUCHAS CAPAS
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp} className="text-center mb-12">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Un mapa. Muchas capas.</p>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
+                Múltiples perspectivas. Un solo perfil.
+              </h2>
+            </motion.div>
+
+            <motion.div {...fadeUpDelayed(0.1)} className="relative max-w-3xl mx-auto">
               {/* Central node */}
               <div className="flex justify-center mb-8">
-                <div className="relative px-6 py-3 border border-accent/30 rounded-full bg-accent-alpha-10">
-                  <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">Tu Mapa</p>
+                <div className="px-6 py-3 rounded-full border border-accent/30 bg-accent/5">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium">Tu Mapa</p>
                 </div>
               </div>
 
               {/* Connector line */}
               <div className="hidden sm:block absolute left-1/2 top-12 bottom-0 w-px bg-border -translate-x-1/2" aria-hidden="true" />
 
-              {/* Layer grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {MAP_LAYERS.map((layer, i) => (
-                  <div
-                    key={layer.id}
-                    className={`map-node animate-fade-in-up stagger-${i + 1}`}
+              {/* Layers grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {LAYERS.map((layer, i) => (
+                  <motion.div
+                    key={layer.title}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ delay: i * 0.05, duration: 0.4, ease: "easeOut" }}
+                    className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors"
                   >
-                    <div className="flex items-start gap-3">
-                      <div
-                        className="w-2 h-2 rounded-full mt-1.5 shrink-0"
-                        style={{ backgroundColor: layer.color }}
-                        aria-hidden="true"
-                      />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{layer.title}</p>
-                        <p className="text-xs text-muted mt-0.5">{layer.subtitle}</p>
-                      </div>
+                    <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ backgroundColor: layer.color }} aria-hidden="true" />
+                    <div>
+                      <h3 className="text-sm font-medium text-foreground">{layer.title}</h3>
+                      <p className="text-xs text-muted mt-0.5">{layer.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
+            </motion.div>
 
-              {/* Exploration layers */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {EXPLORE_LAYERS.map((layer) => (
-                  <div key={layer.title} className="map-node border-dashed opacity-60">
-                    <div className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-border" aria-hidden="true" />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{layer.title}</p>
-                        <p className="text-xs text-muted mt-0.5">{layer.subtitle}</p>
-                        <p className="text-[10px] text-muted mt-1.5 uppercase tracking-wider">Próximamente</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <motion.p {...fadeUpDelayed(0.15)} className="text-center text-xs text-muted mt-8 max-w-xl mx-auto">
+              Un solo perfil. Múltiples perspectivas. Todo conectado.
+            </motion.p>
           </div>
         </section>
 
-        {/* PREGUNTAS CLAVE */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Qué podés descubrir">
-          <div className="text-center mb-10">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">¿Qué podés descubrir?</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {[
-              { question: "¿Quién soy?", answer: "Explorá tu identidad y los elementos que forman tu mapa personal." },
-              { question: "¿Qué se repite?", answer: "Descubrí patrones y tendencias que aparecen en tu perfil." },
-              { question: "¿En qué momento estoy?", answer: "Explorá tus ciclos y el momento actual de tu mapa." },
-              { question: "¿Qué puedo explorar?", answer: "Conectá tu mapa con lugares, marcas y futuras dimensiones." },
-            ].map((item) => (
-              <div key={item.question} className="border border-border rounded-2xl p-6 hover:border-accent transition-colors">
-                <p className="text-sm font-medium text-accent mb-2">{item.question}</p>
-                <p className="text-sm text-muted leading-relaxed">{item.answer}</p>
-              </div>
-            ))}
+        {/* ═══════════════════════════════════════════════════════════════
+            5. QUÉ PODÉS DESCUBRIR
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp} className="text-center mb-10">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Reflexión</p>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
+                ¿Qué podés descubrir?
+              </h2>
+            </motion.div>
+
+            <motion.div {...fadeUpDelayed(0.1)} className="space-y-4">
+              {QUESTIONS.map((q, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.08, duration: 0.4, ease: "easeOut" }}
+                  className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card"
+                >
+                  <span className="text-lg font-serif font-semibold shrink-0" style={{ color: elementColor }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm sm:text-base text-foreground">{q}</p>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </section>
 
-        {/* EJEMPLO DEMO */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Ejemplo de mapa">
-          <div className="flex items-center justify-between mb-6 max-w-3xl mx-auto">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">Así se ve un mapa</p>
-              <p className="text-sm text-muted mt-1">Una primera lectura compacta a partir de tus datos.</p>
-            </div>
-            <span className="hidden sm:inline text-[10px] text-muted border border-border rounded-full px-3 py-1">EJEMPLO</span>
-          </div>
-          <div className="border border-border rounded-2xl overflow-hidden max-w-3xl mx-auto">
-            <div className="bg-background/50 p-4 border-b border-border">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Perfil</p>
-                  <p className="text-sm text-foreground font-medium mt-1">{DEMO_PROFILE.name} · {DEMO_PROFILE.birthDate}</p>
-                </div>
-                <div className="text-left sm:text-right">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Estado</p>
-                  <p className="text-xs sm:text-sm text-foreground font-medium mt-1">Mapa generado</p>
-                </div>
+        {/* ═══════════════════════════════════════════════════════════════
+            6. DOS MANERAS DE USAR MOLINO
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp} className="text-center mb-10">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Molino</p>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
+                Dos maneras de empezar
+              </h2>
+            </motion.div>
+
+            <motion.div {...fadeUpDelayed(0.1)} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">A</p>
+                <h3 className="font-serif text-xl font-semibold text-foreground mb-2">Crear tu perfil</h3>
+                <p className="text-sm text-muted leading-relaxed mb-6">
+                  Generá tu mapa personal y explorá las capas de tu identidad, patrones y timing.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => router.push("/onboarding")}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
+                >
+                  Crear mi perfil
+                </button>
               </div>
-            </div>
-            <div className="p-4 sm:p-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
-                {[
-                  { label: "Life Path", value: String(DEMO_PROFILE.lifePath) },
-                  { label: "Signo solar", value: DEMO_PROFILE.sunSign },
-                  { label: "Elemento", value: DEMO_PROFILE.element },
-                  { label: "Arquetipo", value: DEMO_PROFILE.archetype },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-xl border border-border bg-background p-3 sm:p-4">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">{item.label}</p>
-                    <p className="text-lg sm:text-xl font-semibold text-foreground">{item.value}</p>
-                  </div>
-                ))}
+
+              <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">B</p>
+                <h3 className="font-serif text-xl font-semibold text-foreground mb-2">Explorar libremente</h3>
+                <p className="text-sm text-muted leading-relaxed mb-6">
+                  Aprendé sobre numerología, astrología, zodiaco chino y más sin crear perfil.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => router.push("/explore")}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
+                >
+                  Explorar conocimiento
+                </button>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {[
-                  { label: "Año personal", value: String(DEMO_PROFILE.personalYear) },
-                  { label: "Mes personal", value: String(DEMO_PROFILE.personalMonth) },
-                  { label: "Día personal", value: String(DEMO_PROFILE.personalDay) },
-                  { label: "Zodiaco chino", value: `${DEMO_PROFILE.chineseZodiac} · ${DEMO_PROFILE.chineseElement}` },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-xl border border-border bg-background p-3 sm:p-4">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">{item.label}</p>
-                    <p className="text-lg sm:text-xl font-semibold text-foreground">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* PROCESO */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Cómo funciona">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            {[
-              { step: "01", title: "Creá", description: "Ingresá tu nombre y fecha de nacimiento." },
-              { step: "02", title: "Descubrí", description: "Molino transforma tus datos en diferentes capas de información." },
-              { step: "03", title: "Conectá", description: "Explorá cómo esas capas forman parte de un mismo mapa personal." },
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">{item.step} · {item.title}</p>
-                <p className="text-sm text-muted leading-relaxed">{item.description}</p>
-              </div>
-            ))}
+        {/* ═══════════════════════════════════════════════════════════════
+            7. TRUST
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-12 sm:py-16 border-t border-border">
+          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
+            <motion.div {...fadeUp} className="text-center">
+              <p className="text-sm font-medium text-foreground mb-2">Autoconocimiento, no predicción.</p>
+              <p className="text-xs text-muted leading-relaxed max-w-xl mx-auto">
+                Molino combina sistemas simbólicos y herramientas de reflexión para ayudarte a explorar patrones personales. No busca predecir tu futuro ni reemplaza decisiones profesionales.
+              </p>
+            </motion.div>
           </div>
         </section>
 
-        {/* CONOCIMIENTO */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-20 sm:mb-28" aria-label="Explorá el conocimiento">
-          <div className="text-center mb-8">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">Explorá el conocimiento</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-            {[
-              { title: "Numerología", description: "Life Path, Expression, Alma y números maestros." },
-              { title: "Astrología", description: "Signos, elementos, modalidades y ciclos." },
-              { title: "Ciclos", description: "Año personal, mes personal y día personal." },
-              { title: "Arquetipos", description: "Los 9 arquetipos y los números maestros." },
-              { title: "Autoconocimiento", description: "Identidad, patrones y momento actual." },
-              { title: "Mapa personal", description: "Tu lectura integrada de todas las capas." },
-            ].map((item) => (
-              <div key={item.title} className="border border-border rounded-2xl p-4 hover:border-accent transition-colors">
-                <p className="text-xs uppercase tracking-[0.18em] text-accent font-medium mb-2">{item.title}</p>
-                <p className="text-xs text-muted leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* UNIVERSIDAD */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-10 sm:mb-14">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-xs uppercase tracking-[0.18em] text-accent font-medium mb-3">Universidad Pública de Libre Acceso</p>
-            <p className="text-sm text-muted leading-relaxed">
-              El conocimiento simbólico como patrimonio abierto. Molino es gratuito, transparente, sin registro y sin rastreo. Código abierto para quien quiera revisar, aprender o colaborar.
-            </p>
+        {/* ═══════════════════════════════════════════════════════════════
+            8. FINAL CTA
+            ═══════════════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 border-t border-border">
+          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8 text-center">
+            <motion.div {...fadeUp}>
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">
+                Tu perfil es el comienzo.
+              </h2>
+              <p className="text-sm text-muted mb-8 max-w-md mx-auto">
+                Creá tu mapa personal y explorá las conexiones entre identidad, patrones, timing y decisiones.
+              </p>
+              <button
+                type="button"
+                onClick={() => router.push("/onboarding")}
+                className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-10 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[56px]"
+              >
+                Crear mi perfil
+              </button>
+            </motion.div>
           </div>
         </section>
 
-        {/* DISCLAIMER */}
-        <section className="mx-auto max-w-content px-4 sm:px-6 mb-10 sm:mb-14">
-          <p className="text-xs text-muted max-w-3xl mx-auto text-center">
-            Molino es una herramienta de autoconocimiento y entretenimiento. Sus interpretaciones no constituyen predicciones absolutas, asesoramiento profesional ni determinan el futuro.
-          </p>
-        </section>
       </main>
 
-      <footer className="border-t border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true">
-                  <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                  <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
-                </svg>
-                <span className="font-serif font-bold text-lg text-foreground tracking-tight">Molino</span>
-              </div>
-              <p className="text-sm text-muted mt-2">Tu mapa personal de autoconocimiento.</p>
-              <p className="text-xs text-muted mt-1">Gratis · Sin registro · Código abierto</p>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Principios</h4>
-              <ul className="mt-3 space-y-2 text-sm text-muted">
-                <li>Conocimiento libre</li>
-                <li>Privacidad radical</li>
-                <li>Transparencia total</li>
-                <li>Código abierto</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-sm font-semibold text-foreground">Enlaces</h4>
-              <ul className="mt-3 space-y-2 text-sm text-muted">
-                <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">GitHub</a></li>
-                <li><a href="/conocimiento" className="hover:text-accent transition-colors">Documentación</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-10 pt-8 border-t border-border text-center text-xs text-muted">
-            <p>Molino — Universidad Pública de Libre Acceso. Todo el contenido es educativo y no constituye asesoramiento profesional.</p>
-            <p className="mt-1">El conocimiento simbólico es patrimonio de la humanidad. Compartilo libremente.</p>
-          </div>
-        </div>
-      </footer>
+      <UniversityFooter />
     </div>
   );
 }

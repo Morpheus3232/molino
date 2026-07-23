@@ -43,6 +43,8 @@ export async function generateAIInterpretation(
   }
 }
 
+// NOTE: This function must only be called from server-side (API routes)
+// It accesses process.env which should never be exposed to client-side code
 export async function generateWithOpenAI(
   user: UserProfile,
   target: any,
@@ -90,6 +92,8 @@ export async function generateWithOpenAI(
   return parseAIResponse(content);
 }
 
+// NOTE: This function must only be called from server-side (API routes)
+// It accesses process.env which should never be exposed to client-side code
 export async function generateWithClaude(
   user: UserProfile,
   target: any,

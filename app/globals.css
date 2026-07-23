@@ -66,34 +66,99 @@
   --color-ink-alpha-03: rgba(26, 26, 26, 0.03);
   --color-accent-alpha-04: rgba(196, 154, 42, 0.08);
   --color-accent-alpha-10: rgba(196, 154, 42, 0.12);
+
+  /* Element colors */
+  --element-fire: #C49A2A;
+  --element-earth: #2D5A3D;
+  --element-air: #6B4C7A;
+  --element-water: #2E5C8A;
+  --element-metal: #7A8A99;
+  --element-wood: #8FBC8F;
+
+  /* Map layer colors */
+  --layer-identity: #C49A2A;
+  --layer-patterns: #8B7355;
+  --layer-numerology: #2E5C8A;
+  --layer-astrology: #6B4C7A;
+  --layer-cycles: #2D5A3D;
+  --layer-moment: #C44536;
+
+  /* Category colors */
+  --cat-country: #C49A2A;
+  --cat-city: #4A5568;
+  --cat-brand: #6B4C7A;
+  --cat-band: #C44536;
+  --cat-movie: #2E5C8A;
+  --cat-book: #2D5A3D;
+  --cat-philosophy: #8B5CF6;
+  --cat-event: #B8860B;
+  --cat-food: #FF8C42;
+  --cat-color: #E8B4B8;
+  --cat-crystal: #4FD1C5;
+  --cat-deity: #F6AD55;
+
+  /* Score colors */
+  --score-excellent: #22C55E;
+  --score-good: #3B82F6;
+  --score-neutral: #EAB308;
+  --score-poor: #EF4444;
+
+  /* Overlay */
+  --overlay: rgba(0, 0, 0, 0.5);
+  --overlay-light: rgba(0, 0, 0, 0.3);
+
+  /* Skeleton */
+  --skeleton: #E8E5DE;
 }
 
 .dark {
-  --color-background: #111827;
-  --color-foreground: #F9FAFB;
+  --color-background: #0F1219;
+  --color-foreground: #F0EDE8;
   --color-muted: #9CA3AF;
   --color-muted-foreground: #CBD5E1;
-  --color-card: #1F2937;
-  --color-card-border: #374151;
-  --color-border: #374151;
+  --color-card: #1A1F2E;
+  --color-card-border: #2A3142;
+  --color-border: #2A3142;
 
-  --color-primary: #F9FAFB;
-  --color-primary-foreground: #111827;
+  --color-primary: #F0EDE8;
+  --color-primary-foreground: #0F1219;
   --color-secondary: #9CA3AF;
-  --color-secondary-foreground: #F9FAFB;
+  --color-secondary-foreground: #F0EDE8;
   --color-accent: #D4A843;
   --color-accent-hover: #C49A2A;
-  --color-accent-foreground: #111827;
+  --color-accent-foreground: #0F1219;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35), 0 4px 6px -4px rgba(0, 0, 0, 0.25);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
+  --color-success: #34D399;
+  --color-success-foreground: #0F1219;
+  --color-warning: #FBBF24;
+  --color-warning-foreground: #0F1219;
+  --color-error: #F87171;
+  --color-error-foreground: #0F1219;
 
-  --color-ink-alpha-25: rgba(249, 250, 251, 0.25);
-  --color-ink-alpha-03: rgba(249, 250, 251, 0.03);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+
+  --color-ink-alpha-25: rgba(240, 237, 232, 0.25);
+  --color-ink-alpha-03: rgba(240, 237, 232, 0.03);
   --color-accent-alpha-04: rgba(212, 168, 67, 0.08);
   --color-accent-alpha-10: rgba(212, 168, 67, 0.12);
+
+  /* Dark mode element colors - slightly adjusted for dark backgrounds */
+  --element-fire: #D4A843;
+  --element-earth: #34D399;
+  --element-air: #A78BFA;
+  --element-water: #60A5FA;
+  --element-metal: #9CA3AF;
+  --element-wood: #6EE7B7;
+
+  /* Dark mode overlay */
+  --overlay: rgba(0, 0, 0, 0.7);
+  --overlay-light: rgba(0, 0, 0, 0.5);
+
+  /* Dark mode skeleton */
+  --skeleton: #2A3142;
 }
 
 @layer base {
@@ -268,6 +333,7 @@
   .input {
     width: 100%;
     padding: 0.75rem 1rem;
+    min-height: 44px;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);

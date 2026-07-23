@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import Container from "@/components/ui/Container";
+
 import { analytics } from "@/lib/analytics/analytics";
 import Button from "@/components/ui/Button";
 
@@ -37,7 +37,7 @@ export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <UniversityHeader />
-      <Container maxWidth="2xl">
+      <div className="container-content">
         <div className="py-12">
           <h1 className="text-4xl font-serif text-foreground mb-2">
             Panel de análisis
@@ -105,7 +105,7 @@ export default function AnalyticsPage() {
             </Button>
           </div>
         </div>
-      </Container>
+      </div>
       <UniversityFooter />
     </div>
   );

@@ -8,6 +8,7 @@ import { ENTITIES } from "@/lib/data/entities";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { saveComparison, removeComparison } from "@/lib/auth/userService";
 import ScoreDisplay from "./ScoreDisplay";
+import { getScoreColor, getScoreLabel, getScoreBgColor } from "@/lib/utils/score";
 
 const AIInterpretation = lazy(() => import('./AIInterpretation'));
 
@@ -21,22 +22,11 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
   const result = useMemo(() => calculateCompatibility(user, entity), [user, entity]);
   const { session, refreshSession } = useAuthSession();
 
-  const getScoreColor = (score: number): string => {
-    if (score >= 80) return "text-green-600 bg-green-50";
-    if (score >= 60) return "text-blue-600 bg-blue-50";
-    if (score >= 40) return "text-yellow-600 bg-yellow-50";
-    return "text-red-600 bg-red-50";
-  };
+  
 
-  const getScoreLabel = (score: number): string => {
-    if (score >= 80) return "Excelente";
-    if (score >= 60) return "Buena";
-    if (score >= 40) return "Moderada";
-    return "Baja";
-  };
 
   const isSaved = () => {
-    return session?.user.savedComparisons.includes(entity.id) || false;
+    return session?.user.savedComparisons?.includes(entity.id) || false;
   };
 
   const handleToggleSave = async () => {

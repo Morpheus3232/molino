@@ -78,6 +78,25 @@ const config: Config = {
         paper: "var(--color-paper)",
         cream: "var(--color-cream)",
         warm: "var(--color-warm)",
+        // Element colors
+        "element-fire": "var(--element-fire)",
+        "element-earth": "var(--element-earth)",
+        "element-air": "var(--element-air)",
+        "element-water": "var(--element-water)",
+        "element-metal": "var(--element-metal)",
+        "element-wood": "var(--element-wood)",
+        // Layer colors
+        "layer-identity": "var(--layer-identity)",
+        "layer-patterns": "var(--layer-patterns)",
+        "layer-numerology": "var(--layer-numerology)",
+        "layer-astrology": "var(--layer-astrology)",
+        "layer-cycles": "var(--layer-cycles)",
+        "layer-moment": "var(--layer-moment)",
+        // Score colors
+        "score-excellent": "var(--score-excellent)",
+        "score-good": "var(--score-good)",
+        "score-neutral": "var(--score-neutral)",
+        "score-poor": "var(--score-poor)",
       },
       boxShadow: {
         sm: "var(--shadow-sm)",

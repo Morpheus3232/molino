@@ -2,25 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getSession, isSessionValid } from "@/lib/storage/ephemeral";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
-import { ENTITIES, EXTENDED_ENTITIES } from "@/lib/data/entities";
+import { ENTITIES } from "@/lib/data/entities";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { generateMatchStory } from "@/lib/engines/storyEngine";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
+import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 
-function getOrCreateProfile(): UserProfile | null {
-  const existing = getSession();
-  if (existing && isSessionValid()) {
-    return calculateUserProfile(existing.name, existing.birthDate);
-  }
-  return null;
-}
+
 
 export default function MatchPage() {
   const router = useRouter();
@@ -45,7 +39,7 @@ export default function MatchPage() {
   useEffect(() => {
     if (!profile || !entityId) return;
 
-    const allEntities = [...ENTITIES, ...EXTENDED_ENTITIES];
+    const allEntities = [...ENTITIES];
     const foundEntity = allEntities.find((e: any) => e.id === entityId);
     if (!foundEntity) {
       router.push("/explore");
@@ -86,8 +80,8 @@ export default function MatchPage() {
 
   const scoreSlices = [
     { label: "Numerología", value: result.scores.numerology || 0 },
-    { label: "Astrología", value: result.scores.astrology || 0 },
-    { label: "Zodiaco chino", value: result.scores.chinese || 0 },
+    { label: "Astrología", value: result.scores.westernAstrology || 0 },
+    { label: "Zodiaco chino", value: result.scores.chineseAstrology || 0 },
     { label: "Arquetipo", value: result.scores.archetype || 0 },
     { label: "Elemento", value: result.scores.element || 0 },
   ];

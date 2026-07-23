@@ -10,12 +10,13 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 
 export const metadata: Metadata = {
   title: {
-    default: "Molino — Tu mapa personal de autoconocimiento",
+    default: "Molino — Personal Intelligence Platform",
     template: "%s | Molino",
   },
   description:
-    "Descubrí el mapa que te hace único. Molino construye tu mapa personal a partir de tu nombre y fecha de nacimiento. Numerología, astrología, ciclos y arquetipos en una sola experiencia.",
+    "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Molino combina numerología, astrología, zodiaco chino y análisis de patrones para construir tu mapa personal de autoconocimiento.",
   keywords: [
+    "personal intelligence",
     "autoconocimiento",
     "numerología",
     "astrología",
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     "Life Path",
     "gratuito",
     "sin registro",
+    "código abierto",
   ],
   authors: [{ name: "Molino" }],
   creator: "Molino",
@@ -34,23 +36,23 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: "https://molino-alpha.vercel.app",
     siteName: "Molino",
-    title: "Molino — Tu mapa personal de autoconocimiento",
+    title: "Molino — Personal Intelligence Platform",
     description:
-      "Descubrí el mapa que te hace único. Numerología, astrología, ciclos y arquetipos conectados en una sola experiencia.",
+      "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología, zodiaco chino y análisis de patrones conectados.",
     images: [
       {
         url: "https://molino-alpha.vercel.app/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Molino — Tu mapa personal de autoconocimiento",
+        alt: "Molino — Personal Intelligence Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Tu mapa personal de autoconocimiento",
+    title: "Molino — Personal Intelligence Platform",
     description:
-      "Descubrí el mapa que te hace único. Numerología, astrología, ciclos y arquetipos conectados.",
+      "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología y análisis de patrones.",
     images: ["https://molino-alpha.vercel.app/og-image.svg"],
   },
   metadataBase: new URL("https://molino-alpha.vercel.app"),
@@ -73,7 +75,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F7F5F0" },
-    { media: "(prefers-color-scheme: dark)", color: "#111827" },
+    { media: "(prefers-color-scheme: dark)", color: "#0F1219" },
   ],
   width: "device-width",
   initialScale: 1,

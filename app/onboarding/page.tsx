@@ -6,6 +6,7 @@ import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { saveSession } from "@/lib/storage/ephemeral";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
+import { analytics } from "@/lib/analytics/analytics";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
@@ -43,10 +44,8 @@ export default function OnboardingPage() {
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState(String(getCurrentYear() - 25));
   const [error, setError] = useState("");
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     setReady(true);
   }, []);
 
@@ -96,6 +95,7 @@ export default function OnboardingPage() {
         notifications: profile.notifications,
       });
       saveProfileToStorage(profile);
+      analytics.trackProfileCreated(profile);
       router.push("/profile");
     } catch (err) {
       console.error(err);

@@ -53,7 +53,11 @@ export function saveProfileToStorage(data: StoredUserProfile["profile"]): void {
     profile: data,
     savedAt: new Date().toISOString()
   };
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch (err) {
+    console.error("Error saving profile to localStorage:", err);
+  }
 }
 
 export function loadProfileFromStorage(): StoredUserProfile["profile"] | null {

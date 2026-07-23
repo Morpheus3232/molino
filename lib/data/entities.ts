@@ -670,6 +670,3 @@ export function getEntityById(id: string): EntityProfile | undefined {
 export function getEntitiesByCategory(category: EntityCategory): EntityProfile[] {
   return ENTITIES.filter(entity => entity.category === category);
 }
-
-import { EXTENDED_ENTITIES, BOOKS, MOVIES, PHILOSOPHERS, HISTORICAL_EVENTS, CITIES, FOODS, COLORS, CRYSTALS, DEITIES, entities } from './entities.extended';
-export { EXTENDED_ENTITIES, BOOKS, MOVIES, PHILOSOPHERS, HISTORICAL_EVENTS, CITIES, FOODS, COLORS, CRYSTALS, DEITIES, entities };

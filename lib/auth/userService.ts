@@ -26,6 +26,16 @@ function getStoredSession(): AuthSession | null {
   }
 }
 
+function simpleHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return "h" + Math.abs(hash).toString(36);
+}
+
 function getStoredUsers(): Record<string, { user: User; password: string }> {
   if (typeof window === 'undefined') return {};
   const raw = localStorage.getItem(USERS_KEY);
@@ -52,7 +62,7 @@ function setStoredSession(session: AuthSession | null) {
 export async function loginUser(email: string, password: string): Promise<AuthSession | null> {
   const users = getStoredUsers();
   const entry = users[email.toLowerCase()];
-  if (!entry || entry.password !== password) {
+  if (!entry || entry.password !== simpleHash(password)) {
     return null;
   }
   const session: AuthSession = {
@@ -77,7 +87,7 @@ export async function registerUser(name: string, email: string, birthDate: strin
     savedComparisons: [],
     savedEntities: [],
   };
-  users[key] = { user, password };
+  users[key] = { user, password: simpleHash(password) };
   setStoredUsers(users);
   const session: AuthSession = {
     user,

@@ -1,105 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { loadProfileFromStorage } from "@/lib/storage/localStorage";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
-import Card from "@/components/ui/Card";
-import Section from "@/components/ui/Section";
-import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
 
 export default function DecisionsPage() {
   const router = useRouter();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [question, setQuestion] = useState("");
-  const [result, setResult] = useState<any>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = loadProfileFromStorage();
-    if (stored) {
-      const calculated = calculateUserProfile(stored.name, stored.birthDate);
-      setProfile({ ...calculated, ...stored } as UserProfile);
-    } else {
-      router.push("/");
-    }
+    router.replace("/explore");
   }, [router]);
 
-  const analyze = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!question.trim() || !profile) return;
-    const score = 60 + Math.floor(Math.random() * 35);
-    setResult({
-      question,
-      alignment: score,
-      recommendation: `Alineado con tu Life Path ${profile.lifePath} y tu arquetipo. Buen momento para avanzar.`,
-      considerations: [
-        `Revisá tu timing personal según tu elemento ${profile.element}.`,
-        `Consultá tus patrones antes de decidir.`,
-        `Evaluá el entorno según tus intereses: ${profile.interests.join(", ")}.`,
-      ],
-    });
-  };
-
-  if (!mounted || !profile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-muted">Cargando...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <UniversityHeader />
-      <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
-        <Section>
-          <div className="text-center mb-10">
-            <span className="badge mb-3">⚖️ Decision Engine</span>
-            <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Análisis de decisiones</h1>
-            <p className="text-muted mt-2 max-w-2xl mx-auto">Ingresá una decisión y obtené una lectura de alineación con tu perfil.</p>
-          </div>
-        </Section>
-
-        <Section>
-          <Card hover={false} padding="lg">
-            <form onSubmit={analyze} className="space-y-4">
-              <Input
-                label="Tu decisión"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="Ej: ¿Debo aceptar esta propuesta laboral?"
-                required
-              />
-              <Button type="submit" fullWidth>Analizar</Button>
-            </form>
-
-            {result && (
-              <div className="mt-6 space-y-4">
-                <div className="bg-background rounded-2xl p-4 border border-border">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Alineación</p>
-                  <p className="text-3xl font-serif font-bold text-foreground">{result.alignment}%</p>
-                  <p className="text-sm text-muted mt-2">{result.recommendation}</p>
-                </div>
-                <div className="bg-background rounded-2xl p-4 border border-border">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">A considerar</p>
-                  <ul className="text-sm text-muted mt-2 space-y-1 list-disc list-inside">
-                    {result.considerations.map((item: string) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
-          </Card>
-        </Section>
-      </div>
-      <UniversityFooter />
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="text-muted" role="status">Redirigiendo...</div>
     </div>
   );
 }

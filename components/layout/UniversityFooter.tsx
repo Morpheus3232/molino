@@ -14,7 +14,7 @@ export default function UniversityFooter() {
               <span className="font-serif font-bold text-lg text-foreground tracking-tight">Molino</span>
             </div>
             <p className="text-sm text-muted mt-2">
-              Universidad Pública de Libre Acceso
+              Personal Intelligence Platform
             </p>
             <p className="text-xs text-muted mt-1">
               Código Abierto · Sin Registro · Sin Rastreo
@@ -30,21 +30,21 @@ export default function UniversityFooter() {
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-foreground">Enlaces</h4>
+            <h4 className="text-sm font-semibold text-foreground">Explorar</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted">
+              <li>
+                <Link href="/explore" className="hover:text-accent transition-colors">
+                  Conocimiento
+                </Link>
+              </li>
+              <li>
+                <Link href="/biblioteca" className="hover:text-accent transition-colors">
+                  Biblioteca
+                </Link>
+              </li>
               <li>
                 <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                   GitHub
-                </Link>
-              </li>
-              <li>
-                <Link href="/biblioteca" className="hover:text-accent transition-colors">
-                  Documentación
-                </Link>
-              </li>
-              <li>
-                <Link href="/biblioteca" className="hover:text-accent transition-colors">
-                  Biblioteca Pública
                 </Link>
               </li>
             </ul>
@@ -52,7 +52,7 @@ export default function UniversityFooter() {
         </div>
         <div className="mt-10 pt-8 border-t border-border text-center text-xs text-muted">
           <p>
-            Molino — Universidad Pública de Libre Acceso.{" "}
+            Molino — Personal Intelligence Platform.{" "}
             Todo el contenido es educativo y no constituye asesoramiento profesional.
           </p>
           <p className="mt-1">
