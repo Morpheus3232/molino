@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
+import { Drawer } from "vaul";
+import { toast } from "sonner";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { CHINESE_ANIMALS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
-import { getSexagenaryYear, ANIMALS, type SexagenaryYear } from "@/lib/data/sexagenary-cycle";
+import { getSexagenaryYear, ANIMALS } from "@/lib/data/sexagenary-cycle";
 
 const WU_XING = [
   { name: "Madera", direction: "Este", season: "Primavera", quality: "Crecimiento, flexibilidad, expansión", generates: "Fuego", controlledBy: "Metal", color: "var(--element-wood)" },
@@ -36,10 +38,11 @@ export default function ZodiacoChinoExplorer() {
   const [activeTab, setActiveTab] = useState<"explorar" | "animales" | "wuxing" | "yinyang" | "historia">("explorar");
   const [selectedAnimal, setSelectedAnimal] = useState<string | null>(null);
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState<{ title: string; body: string }>({ title: "", body: "" });
 
   const currentYear = useMemo(() => getSexagenaryYear(selectedYear), [selectedYear]);
 
-  // Global year data — used across ALL tabs
   const cycleNeighbors = useMemo(() => {
     const years: { year: number; animal: string; element: string; polarity: string }[] = [];
     for (let y = selectedYear - 10; y <= selectedYear + 10; y++) {
@@ -55,51 +58,56 @@ export default function ZodiacoChinoExplorer() {
     return { current: idx + 1, total: 60, percent: Math.round(((idx + 1) / 60) * 100) };
   }, [selectedYear]);
 
-  // Find the animal for the current year in the 12-animal list
-  const currentAnimalIndex = useMemo(() => {
-    return ANIMALS.indexOf(currentYear.animal);
-  }, [currentYear]);
+  const currentAnimalIndex = useMemo(() => ANIMALS.indexOf(currentYear.animal), [currentYear]);
 
-  // Auto-select Wu Xing element when tab changes to wuxing
   const effectiveElement = useMemo(() => {
-    if (activeTab === "wuxing") {
-      return selectedElement || currentYear.element;
-    }
+    if (activeTab === "wuxing") return selectedElement || currentYear.element;
     return selectedElement;
   }, [activeTab, selectedElement, currentYear.element]);
+
+  const handleYearChange = useCallback((y: number) => {
+    setSelectedYear(y);
+    toast(`Año ${y}: ${currentYear.animal} de ${currentYear.element}`, { duration: 1500 });
+  }, [currentYear.animal, currentYear.element]);
+
+  const openWuXingDetail = useCallback((el: typeof WU_XING[0]) => {
+    const generatedBy = WU_XING.find(w => w.generates === el.name);
+    const controlledBy = WU_XING.find(w => w.controlledBy === el.name);
+    setDrawerContent({
+      title: el.name,
+      body: `Genera: ${el.generates}. Generado por: ${generatedBy?.name}. Controla: ${el.controlledBy}. Controlado por: ${controlledBy?.name}. Dirección: ${el.direction}. Estación: ${el.season}.`,
+    });
+    setDrawerOpen(true);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
-
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/")}>Inicio</span>
           <span className="mx-2">&rsaquo;</span>
           <span className="text-foreground font-medium">Zod&#237;aco Chino</span>
         </nav>
 
-        {/* HERO */}
-        <motion.section {...fadeUp} className="mb-10 sm:mb-14">
+        {/* HERO — Editorial, no cards */}
+        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Un sistema de ciclos</p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.08] max-w-4xl">
             Zod&#237;aco Chino
           </h1>
           <p className="text-lg sm:text-xl text-muted mt-4 leading-relaxed max-w-2xl">
-            Un sistema tradicional que estructura el tiempo mediante 12 animales, 5 elementos y polaridades Yin/Yang, formando un ciclo de 60 combinaciones &#250;nicas.
-          </p>
-          <p className="text-sm text-muted mt-4 max-w-xl leading-relaxed">
-            No es una ciencia. Es una tradici&#243;n cultural de m&#225;s de 2000 a&#241;os que Molino presenta como herramienta de exploraci&#243;n simb&#243;lica.
+            Un sistema tradicional que estructura el tiempo mediante 12 animales, 5 elementos y polaridades Yin/Yang.
           </p>
         </motion.section>
 
-        {/* ═══ SELECTOR GLOBAL DE A&#209;O ═══ */}
+        {/* SELECTOR GLOBAL */}
         <motion.section {...fadeUp} className="mb-8 p-6 sm:p-8 rounded-2xl border border-border bg-card">
-          <label className="block text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Seleccion&#225; un a&#241;o del ciclo</label>
+          <label className="block text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Seleccion&#225; un a&#241;o</label>
           <div className="flex items-center gap-4 mb-4">
-            <button type="button" onClick={() => setSelectedYear(y => Math.max(1924, y - 1))} className="w-10 h-10 rounded-full border border-border text-foreground hover:border-accent transition-colors flex items-center justify-center flex-shrink-0" aria-label="A&#241;o anterior">&larr;</button>
-            <input type="range" min={1924} max={2083} value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))} className="flex-1 min-w-0" aria-label="Seleccionar a&#241;o" />
-            <button type="button" onClick={() => setSelectedYear(y => Math.min(2083, y + 1))} className="w-10 h-10 rounded-full border border-border text-foreground hover:border-accent transition-colors flex items-center justify-center flex-shrink-0" aria-label="A&#241;o siguiente">&rarr;</button>
+            <button type="button" onClick={() => handleYearChange(Math.max(1924, selectedYear - 1))} className="w-10 h-10 rounded-full border border-border text-foreground hover:border-accent transition-colors flex items-center justify-center flex-shrink-0" aria-label="A&#241;o anterior">&larr;</button>
+            <input type="range" min={1924} max={2083} value={selectedYear} onChange={(e) => handleYearChange(parseInt(e.target.value))} className="flex-1 min-w-0" aria-label="Seleccionar a&#241;o" />
+            <button type="button" onClick={() => handleYearChange(Math.min(2083, selectedYear + 1))} className="w-10 h-10 rounded-full border border-border text-foreground hover:border-accent transition-colors flex items-center justify-center flex-shrink-0" aria-label="A&#241;o siguiente">&rarr;</button>
             <span className="text-3xl font-serif font-bold text-accent min-w-[80px] text-center flex-shrink-0">{selectedYear}</span>
           </div>
           <div className="flex items-center gap-3 text-xs text-muted">
@@ -111,7 +119,7 @@ export default function ZodiacoChinoExplorer() {
           </div>
         </motion.section>
 
-        {/* ═══ TABS ═══ */}
+        {/* TABS */}
         <div className="mb-10 border-b border-border">
           <div className="flex gap-1 overflow-x-auto pb-0 -mb-px">
             {TABS.map((tab) => (
@@ -122,7 +130,7 @@ export default function ZodiacoChinoExplorer() {
           </div>
         </div>
 
-        {/* ═══ TAB: EXPLORAR ═══ */}
+        {/* ═══ EXPLORAR ═══ */}
         <AnimatePresence mode="wait">
           {activeTab === "explorar" && (
             <motion.div key="explorar" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -132,17 +140,22 @@ export default function ZodiacoChinoExplorer() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Composici&#243;n del a&#241;o {selectedYear}</h2>
                 </div>
 
-                {/* Composici&#243;n visual — protagonista */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                  <div className="p-5 rounded-xl border border-border bg-card text-center">
+                {/* Year + Animal — protagonists */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  <div className="p-6 rounded-2xl border border-border bg-card text-center">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">A&#241;o</p>
-                    <p className="font-serif text-3xl font-bold text-foreground">{selectedYear}</p>
+                    <p className="font-serif text-5xl sm:text-6xl font-bold text-foreground">{selectedYear}</p>
+                    <p className="text-xs text-muted mt-2">Posici&#243;n {cyclePosition.current} de {cyclePosition.total} en el ciclo sexagenario</p>
                   </div>
-                  <div className="p-5 rounded-xl border border-border bg-card text-center">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Animal</p>
-                    <p className="font-serif text-2xl font-bold text-foreground">{currentYear.animal}</p>
-                    <p className="text-[10px] text-muted mt-1">{currentYear.branchName}</p>
+                  <div className="p-6 rounded-2xl border border-accent/20 bg-accent/[0.03] text-center">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Animal</p>
+                    <p className="font-serif text-4xl sm:text-5xl font-bold text-foreground">{currentYear.animal}</p>
+                    <p className="text-xs text-muted mt-2">{currentYear.branchName}</p>
                   </div>
+                </div>
+
+                {/* Element + Polarity — context */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="p-5 rounded-xl border border-border bg-card text-center">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Elemento</p>
                     <p className="font-serif text-2xl font-bold" style={{ color: ELEMENT_COLORS[currentYear.element] }}>{currentYear.element}</p>
@@ -155,12 +168,11 @@ export default function ZodiacoChinoExplorer() {
                   </div>
                 </div>
 
-                {/* Descripci&#243;n */}
+                {/* Description */}
                 <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
                   <p className="text-sm text-foreground leading-relaxed">
                     <strong>{selectedYear}</strong> es un a&#241;o <strong>{currentYear.polarity}</strong> del signo <strong>{currentYear.animal}</strong> con elemento <strong>{currentYear.element}</strong>.
                     {currentYear.polarity === "Yang" ? " La energ&#237;a de este a&#241;o es activa, expansiva y luminosa." : " La energ&#237;a de este a&#241;o es receptiva, contemplativa y centrada."}
-                    {' '}Se encuentra en la posici&#243;n {cyclePosition.current} del ciclo sexagenario.
                   </p>
                 </div>
 
@@ -169,7 +181,7 @@ export default function ZodiacoChinoExplorer() {
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Cerca de {selectedYear}</p>
                   <div className="flex gap-2 overflow-x-auto pb-2">
                     {cycleNeighbors.map((y) => (
-                      <button key={y.year} onClick={() => setSelectedYear(y.year)} className={`flex-shrink-0 w-16 p-3 rounded-xl text-center transition-all ${y.year === selectedYear ? "border-2 border-accent bg-accent/10" : "border border-border hover:border-accent/50"}`}>
+                      <button key={y.year} onClick={() => handleYearChange(y.year)} className={`flex-shrink-0 w-16 p-3 rounded-xl text-center transition-all ${y.year === selectedYear ? "border-2 border-accent bg-accent/10" : "border border-border hover:border-accent/50"}`}>
                         <p className="text-xs font-medium text-foreground">{y.year}</p>
                         <p className="text-lg mt-1">{CHINESE_ANIMALS.find(a => a.name === y.animal)?.emoji || "?"}</p>
                         <p className="text-[9px] text-muted mt-0.5">{y.animal}</p>
@@ -182,7 +194,7 @@ export default function ZodiacoChinoExplorer() {
           )}
         </AnimatePresence>
 
-        {/* ═══ TAB: 12 ANIMALES ═══ */}
+        {/* ═══ 12 ANIMALES ═══ */}
         <AnimatePresence mode="wait">
           {activeTab === "animales" && (
             <motion.div key="animales" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -192,9 +204,8 @@ export default function ZodiacoChinoExplorer() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los 12 animales</h2>
                 </div>
                 <p className="text-sm text-muted mb-8 max-w-2xl leading-relaxed">
-                  Cada animal representa una energ&#237;a fundamental. El a&#241;o <strong>{selectedYear}</strong> corresponde al <strong>{currentYear.animal}</strong> (posici&#243;n {currentAnimalIndex + 1} de 12).
+                  El a&#241;o <strong>{selectedYear}</strong> corresponde al <strong>{currentYear.animal}</strong> (posici&#243;n {currentAnimalIndex + 1} de 12).
                 </p>
-
                 <div className="space-y-4">
                   {CHINESE_ANIMALS.map((animal, i) => {
                     const isCurrent = animal.name === currentYear.animal;
@@ -255,7 +266,7 @@ export default function ZodiacoChinoExplorer() {
           )}
         </AnimatePresence>
 
-        {/* ═══ TAB: WU XING ═══ */}
+        {/* ═══ WU XING ═══ */}
         <AnimatePresence mode="wait">
           {activeTab === "wuxing" && (
             <motion.div key="wuxing" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -265,13 +276,8 @@ export default function ZodiacoChinoExplorer() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Wu Xing &#8212; Los 5 Elementos</h2>
                 </div>
                 <p className="text-sm text-muted mb-4 max-w-2xl leading-relaxed">
-                  El Wu Xing es un modelo de relaciones din&#225;micas. Cada elemento tiene un ciclo de generaci&#243;n y un ciclo de control.
+                  El Wu Xing es un modelo de relaciones din&#225;micas. El a&#241;o <strong>{selectedYear}</strong> tiene elemento <strong style={{ color: ELEMENT_COLORS[currentYear.element] }}>{currentYear.element}</strong>.
                 </p>
-                <p className="text-sm text-muted mb-8">
-                  El a&#241;o <strong>{selectedYear}</strong> tiene elemento <strong style={{ color: ELEMENT_COLORS[currentYear.element] }}>{currentYear.element}</strong>. Seleccion&#225; un elemento para explorar sus relaciones.
-                </p>
-
-                {/* Selector de elemento */}
                 <div className="flex flex-wrap gap-3 mb-10">
                   {WU_XING.map((el) => {
                     const isCurrentYear = el.name === currentYear.element;
@@ -284,8 +290,6 @@ export default function ZodiacoChinoExplorer() {
                     );
                   })}
                 </div>
-
-                {/* Los 5 elementos — cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                   {WU_XING.map((el) => {
                     const isCurrentYear = el.name === currentYear.element;
@@ -307,12 +311,13 @@ export default function ZodiacoChinoExplorer() {
                             <p className="text-xs"><span className="text-muted font-medium">Controlado por:</span> {WU_XING.find(w => w.controlledBy === el.name)?.name || "?"}</p>
                           </div>
                         )}
+                        <button type="button" onClick={() => openWuXingDetail(el)} className="text-xs text-accent hover:text-accent/80 transition-colors mt-3">
+                          Ver detalle &rarr;
+                        </button>
                       </div>
                     );
                   })}
                 </div>
-
-                {/* Ciclos visuales */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="p-6 rounded-xl border border-border bg-card">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Ciclo de generaci&#243;n</p>
@@ -350,7 +355,7 @@ export default function ZodiacoChinoExplorer() {
           )}
         </AnimatePresence>
 
-        {/* ═══ TAB: YIN / YANG ═══ */}
+        {/* ═══ YIN / YANG ═══ */}
         <AnimatePresence mode="wait">
           {activeTab === "yinyang" && (
             <motion.div key="yinyang" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -360,16 +365,15 @@ export default function ZodiacoChinoExplorer() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Yin / Yang</h2>
                 </div>
                 <p className="text-sm text-muted mb-8 max-w-2xl leading-relaxed">
-                  Yin y Yang no son &ldquo;bueno vs. malo&rdquo;. Son polaridades complementarias. En el zod&#237;aco chino, cada a&#241;o tiene una polaridad asignada seg&#250;n el tronco celeste. El a&#241;o <strong>{selectedYear}</strong> es <strong>{currentYear.polarity}</strong>.
+                  Yin y Yang no son &ldquo;bueno vs. malo&rdquo;. Son polaridades complementarias. El a&#241;o <strong>{selectedYear}</strong> es <strong>{currentYear.polarity}</strong>.
                 </p>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                   <div className={`p-6 rounded-xl border transition-all ${currentYear.polarity === "Yang" ? "border-accent bg-accent/[0.03]" : "border-border bg-card"}`}>
                     <div className="flex items-center gap-3 mb-3">
                       <p className="font-serif text-2xl font-semibold text-foreground">Yang (&#38470;)</p>
                       {currentYear.polarity === "Yang" && <span className="text-[9px] px-2 py-0.5 rounded-full bg-accent text-background font-medium">Tu a&#241;o</span>}
                     </div>
-                    <p className="text-sm text-muted leading-relaxed mb-3">Principio activo, expansivo, luminoso. Se asocia con el sol, el cielo y la energ&#237;a que avanza.</p>
+                    <p className="text-sm text-muted leading-relaxed mb-3">Principio activo, expansivo, luminoso.</p>
                     <div className="flex flex-wrap gap-2">
                       {["Rata", "Tigre", "Drag\u00f3n", "Caballo", "Mono", "Perro"].map(a => (
                         <span key={a} className={`text-xs px-2 py-0.5 rounded-full border ${a === currentYear.animal && currentYear.polarity === "Yang" ? "border-accent text-accent font-medium" : "border-border text-foreground"}`}>{a}</span>
@@ -381,7 +385,7 @@ export default function ZodiacoChinoExplorer() {
                       <p className="font-serif text-2xl font-semibold text-foreground">Yin (&#38471;)</p>
                       {currentYear.polarity === "Yin" && <span className="text-[9px] px-2 py-0.5 rounded-full bg-accent text-background font-medium">Tu a&#241;o</span>}
                     </div>
-                    <p className="text-sm text-muted leading-relaxed mb-3">Principio receptivo, contemplativo, centrado. Se asocia con la luna, la tierra y la energ&#237;a que se retrae.</p>
+                    <p className="text-sm text-muted leading-relaxed mb-3">Principio receptivo, contemplativo, centrado.</p>
                     <div className="flex flex-wrap gap-2">
                       {["Buey", "Conejo", "Serpiente", "Cabra", "Gallo", "Cerdo"].map(a => (
                         <span key={a} className={`text-xs px-2 py-0.5 rounded-full border ${a === currentYear.animal && currentYear.polarity === "Yin" ? "border-accent text-accent font-medium" : "border-border text-foreground"}`}>{a}</span>
@@ -394,7 +398,7 @@ export default function ZodiacoChinoExplorer() {
           )}
         </AnimatePresence>
 
-        {/* ═══ TAB: HISTORIA ═══ */}
+        {/* ═══ HISTORIA ═══ */}
         <AnimatePresence mode="wait">
           {activeTab === "historia" && (
             <motion.div key="historia" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
@@ -408,10 +412,7 @@ export default function ZodiacoChinoExplorer() {
                     El zod&#237;aco chino tiene al menos 2000 a&#241;os de antig&#252;edad. La data m&#225;s antigua proviene de tablillas de hueso oraculares de la dinast&#237;a Shang (c. 1250 a.C.).
                   </p>
                   <p className="text-sm text-foreground leading-relaxed">
-                    El sistema se codific&#243; durante la dinast&#237;a Han (206 a.C. &#8211; 220 d.C.). El ciclo sexagenario combina los 12 animales con los 10 troncos celestes, creando 60 combinaciones &#250;nicas.
-                  </p>
-                  <p className="text-sm text-foreground leading-relaxed">
-                    A diferencia de la astrolog&#237;a occidental, el zod&#237;aco chino se basa en un <strong>calendario</strong>. Es un sistema temporal, no astron&#243;mico.
+                    El sistema se codific&#243; durante la dinast&#237;a Han (206 a.C. &#8211; 220 d.C.). El ciclo sexagenario combina los 12 animales con los 10 troncos celestes.
                   </p>
                   <div className="p-5 rounded-xl border border-border bg-card">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Diferencia importante</p>
@@ -427,7 +428,7 @@ export default function ZodiacoChinoExplorer() {
                   </div>
                   <div className="space-y-3 max-w-3xl">
                     {[
-                      { title: "Chinese Zodiac", author: "Encyclopaedia Britannica", url: "https://www.britannica.com/topic/Chinese-zodiac" },
+                      { title: "Chinese Zodiac", author: "Encyclopaedia Britannica" },
                       { title: "The Handbook of Chinese Horoscopes", author: "Theodora Lau (1979), Tuttle Publishing" },
                       { title: "Chinese Astrology: A Primer", author: "Stephen Skinner (2000)" },
                       { title: "Oracle Bones", author: "Peter Hessler (2006), HarperCollins" },
@@ -436,7 +437,7 @@ export default function ZodiacoChinoExplorer() {
                         <div className="w-1.5 h-1.5 rounded-full bg-border mt-2 shrink-0" />
                         <div>
                           <p className="text-sm text-foreground">{src.title}</p>
-                          <p className="text-xs text-muted">{src.author}{src.url ? ` \u00b7 ${src.url}` : ""}</p>
+                          <p className="text-xs text-muted">{src.author}</p>
                         </div>
                       </div>
                     ))}
@@ -459,7 +460,7 @@ export default function ZodiacoChinoExplorer() {
           </button>
         </section>
 
-        {/* DISCLAIMER */}
+        {/* ═══ DISCLAIMER ═══ */}
         <section className="mt-8 space-y-4">
           <div className="p-5 rounded-xl border border-border bg-card">
             <p className="text-xs text-muted leading-relaxed">{CHINESE_ZODIAC_DISCLAIMER}</p>
@@ -471,6 +472,18 @@ export default function ZodiacoChinoExplorer() {
 
       </main>
       <UniversityFooter />
+
+      {/* Vaul Drawer */}
+      <Drawer.Root open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 bg-black/40 z-[90]" />
+          <Drawer.Content className="fixed bottom-0 left-0 right-0 z-[91] bg-card border-t border-border rounded-t-2xl max-h-[80vh] overflow-y-auto p-6 sm:p-8">
+            <div className="w-12 h-1.5 rounded-full bg-border mx-auto mb-4" />
+            <Drawer.Title className="font-serif text-xl font-semibold text-foreground mb-4">{drawerContent.title}</Drawer.Title>
+            <p className="text-sm text-muted leading-relaxed">{drawerContent.body}</p>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
     </div>
   );
 }
