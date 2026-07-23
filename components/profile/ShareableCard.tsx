@@ -125,7 +125,7 @@ export default function ShareableCard({
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Personal Intelligence</span>
+            <span className="text-[9px] text-muted">Inteligencia Personal</span>
           </div>
         </div>
       </div>

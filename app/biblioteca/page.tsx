@@ -14,6 +14,8 @@ interface Source {
   year: string;
   type: "libro" | "articulo" | "video" | "sitio";
   description: string;
+  review?: string;
+  summary?: string;
   link?: string;
   tags?: string[];
 }
@@ -26,6 +28,8 @@ const SOURCES: Source[] = [
     year: "2020",
     type: "sitio",
     description: "Sistema de numerología basado en patrones numéricos y astrología china.",
+    review: "GG33 es un enfoque contemporáneo que fusiona numerología occidental con astrología china. Grinberg argumenta que los números y los ciclos chinos están interconectados. Es una perspectiva original pero no es académica ni tiene respaldo científico.",
+    summary: "El sistema GG33 asigna un número de \"código\" basado en la fecha de nacimiento y lo cruza con el zodiaco chino. Propone 9 \"tipos\" numéricos con cualidades específicas. Lo más interesante es la idea de que los números no son estáticos sino que se mueven en ciclos.",
     link: "https://gg33.com",
     tags: ["numerología", "gg33"]
   },
@@ -36,6 +40,8 @@ const SOURCES: Source[] = [
     year: "~500 a.C.",
     type: "libro",
     description: "Sistema de numerología occidental que asigna valores numéricos a las letras.",
+    review: "La numerología pitagórica es el sistema más extendido en occidente. Aunque se atribuye a Pitágoras, los historiadores modernos no encuentran evidencia directa de que Pitágoras la practicara. Lo que sí sabemos es que su escuela filosófica valoraba los números como principios del universo.",
+    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto (A=1, B=2... I=9, J=1, etc.). Se usa para calcular Life Path, Expression, Soul y Personality Numbers. Es un sistema de interpretación simbólica, no matemática.",
     tags: ["numerología", "historia"]
   },
   {
@@ -45,6 +51,8 @@ const SOURCES: Source[] = [
     year: "1908",
     type: "libro",
     description: "Siete principios herméticos que influyen en la filosofía occidental.",
+    review: "El Kybalion pretende ser una traducción de textos herméticos antiguos, aunque los historiadores creen que fue escrito por William Walker Atkinson. Es una obra influyente en el pensamiento esotérico moderno, pero su atribución histórica es cuestionable.",
+    summary: "Enuncia siete principios: Mentalismo, Correspondencia, Vibración, Polaridad, Ritmo, Causa y Efecto, y Género. Cada principio describe una \"ley\" universal que, según el texto, gobierna la realidad.",
     tags: ["hermetismo", "filosofía"]
   },
   {
@@ -54,6 +62,8 @@ const SOURCES: Source[] = [
     year: "~2000 a.C.",
     type: "sitio",
     description: "Ciclo de 12 animales y 5 elementos basado en el calendario lunar chino.",
+    review: "El zodiaco chino es un sistema cultural genuino con raíces en la dinastía Han. A diferencia de muchas tradiciones esotéricas, tiene una documentación histórica sólida. Su uso como herramienta de personalidad es más popular que académico.",
+    summary: "El ciclo sexagenario combina 12 animales con 5 elementos (Madera, Fuego, Tierra, Metal, Agua) creando 60 combinaciones. Cada animal tiene cualidades tradicionales asignadas. El sistema se usa ampliamente en la cultura popular china.",
     link: "https://www.chinahighlights.com/travelguide/chinese-zodiac/",
     tags: ["zodiaco chino", "animales"]
   },
@@ -64,6 +74,8 @@ const SOURCES: Source[] = [
     year: "~300 a.C.",
     type: "libro",
     description: "Sistema de 12 signos basados en la posición del sol en el zodíaco.",
+    review: "La astrología tropical fue codificada por los astrólogos helenísticos (Vetiśvāra, Teodosio) a partir de la tradición babilónica. Es el sistema más utilizado en occidente. Sus críticos señalan que los signos se han desplazado ~24° desde su codificación.",
+    summary: "Asocia la posición del sol en el momento del nacimiento con 12 signos zodiacales. Cada signo tiene un elemento (Fuego, Tierra, Aire, Agua), una modalidad (Cardinal, Fijo, Mutable) y un planeta regente. Es interpretativo, no predictivo.",
     tags: ["astrología", "signos"]
   },
   {
@@ -73,6 +85,8 @@ const SOURCES: Source[] = [
     year: "~1000 a.C.",
     type: "libro",
     description: "Libro de las mutaciones. Base filosófica del zodiaco chino y la adivinación.",
+    review: "El I Ching es uno de los textos filosóficos más antiguos del mundo. Su influencia en la cultura china es comparable a la de la Biblia en occidente. Jung lo estudió extensamente y lo vinculó con la sincronicidad. No es un libro de predicción sino de reflexión.",
+    summary: "Utiliza 64 hexagramas (combinaciones de líneas Yang/Yin) para representar situaciones y transiciones. Cada hexagrama tiene un significado filosófico y se \"consulta\" mediante monedas o varillas. Su valor está en la reflexión, no en la predicción.",
     tags: ["i ching", "filosofía"]
   },
   {
@@ -82,6 +96,8 @@ const SOURCES: Source[] = [
     year: "1910",
     type: "libro",
     description: "Guía clásica de los Arcanos Mayores y Menores del Tarot.",
+    review: "Waite creó el mazo Rider-Waite-Smith, el más utilizado del mundo. Su libro explica la simbología de cada carta. Es una obra fundamental para entender el tarot moderno, aunque su enfoque es esotérico y no científico.",
+    summary: "Describe los 78 arcanos del tarot (22 mayores + 56 menores). Cada carta tiene un significado simbólico vinculado con la vida humana. El mazo de Waite es el estándar para la interpretación en occidente.",
     tags: ["tarot", "simbolismo"]
   },
   {
@@ -91,6 +107,8 @@ const SOURCES: Source[] = [
     year: "1987",
     type: "sitio",
     description: "Sistema que combina astrología, I Ching, chakras y Kabbalah.",
+    review: "Human Design fue creado por Ra Uru Hu (Alan Robert Krakower) en 1987. Combina múltiples sistemas en un marco unificado. No tiene respaldo científico y es puramente interpretativo, pero tiene una comunidad activa y un marco conceptual interno coherente.",
+    summary: "Define 5 tipos de energía (Generador, Proyector, Manifestador, Generador Manifestante, Reflector) basados en la posición de los planetas. Usa el I Ching para definir \"centros\" energéticos inspirados en los chakras.",
     link: "https://www.jovianarchive.com",
     tags: ["human design", "energía"]
   },
@@ -101,6 +119,8 @@ const SOURCES: Source[] = [
     year: "1987",
     type: "libro",
     description: "Tipología de 9 personalidades con raíces en tradiciones espirituales.",
+    review: "Riso y Hudson crearon un sistema de tipología de personalidad con 9 tipos, cada uno con miedos, deseos y patrones. Aunque tiene raíces en tradiciones espirituales, funciona mejor como herramienta de autoconocimiento que como ciencia.",
+    summary: "Los 9 tipos representan motivaciones centrales: Perfeccionista, Ayudador, Triunfador, Individualista, Investigador, Lealista, Entusiasta, Desafiador, Pacificador. Cada tipo tiene wing, línea de integración y niveles de conciencia.",
     tags: ["eneagrama", "personalidad"]
   },
   {
@@ -110,6 +130,8 @@ const SOURCES: Source[] = [
     year: "~1200",
     type: "libro",
     description: "Árbol de la vida y sistema místico judío.",
+    review: "La Kabbalah es un sistema místico judío con siglos de tradición. Su uso popular (como la \"Kabbalah\" de Madonna) tiene poco que ver con la tradición original. El Árbol de la Vida es su herramienta central para comprender la realidad.",
+    summary: "El Árbol de la Vida tiene 10 sefirot (atributos divinos) conectados por 22 caminos. Cada sefirah representa una cualidad: Keter (Corona), Chokmah (Sabiduría), Binah (Entendimiento), etc. Se usa para meditación y comprensión filosófica.",
     tags: ["kabbalah", "misticismo"]
   },
   {
@@ -119,6 +141,8 @@ const SOURCES: Source[] = [
     year: "2009",
     type: "libro",
     description: "Sistema de 64 hexagramas como dones y sombras.",
+    review: "Rudd toma los 64 hexagramas del I Ching y los vincula con el ADN y la astrología. Es un sistema creativo pero sin base científica. Su valor está en el marco reflexivo que ofrece, no en sus afirmaciones biológicas.",
+    summary: "Cada hexagrama tiene una Sombra (medio de expresión negativo), un Dón (cualidad positiva) y una Sidhi (virtud elevada). Se mapea a la fecha de nacimiento para revelar \"genes\" simbólicos.",
     tags: ["gene keys", "codigo"]
   },
   {
@@ -128,6 +152,8 @@ const SOURCES: Source[] = [
     year: "1975",
     type: "libro",
     description: "Enfoque psicológico y humanista de la astrología.",
+    review: "Arroyo fue pionero en reencuadrar la astrología como herramienta psicológica en vez de predictiva. Su enfoque es más honesto que el de la astrología popular y se acerca a lo que Molino intenta hacer: usar los sistemas como herramientas de reflexión.",
+    summary: "Explica la astrología desde una perspectiva de crecimiento personal. Los signos, planetas y aspectos se interpretan como energías psicológicas, no como destinos. Es una de las mejores introducciones al enfoque moderno de la astrología.",
     tags: ["astrología", "psicología"]
   },
   {
@@ -137,6 +163,8 @@ const SOURCES: Source[] = [
     year: "~500 a.C.",
     type: "articulo",
     description: "Sistema de numerología basado en valores numéricos de las letras del alfabeto caldeo.",
+    review: "La numerología caldea es anterior a la pitagórica. Usa un alfabeto diferente con valores distintos (A=1, B=2, I=10→1, J=10→1, etc.). Su origen es babilónico y está vinculado con la escritura cuneiforme.",
+    summary: "Asigna valores del 1 al 8 al alfabeto caldeo (sin el 9). Se usaba para interpretar nombres y fechas. Aunque menos conocida que la pitagórica, tiene una tradición histórica más antigua.",
     tags: ["numerología", "caldeo"]
   }
 ];
@@ -152,6 +180,8 @@ export default function BibliotecaPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("todos");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [expandedReview, setExpandedReview] = useState<string | null>(null);
+  const [expandedSummary, setExpandedSummary] = useState<string | null>(null);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -272,6 +302,49 @@ export default function BibliotecaPage() {
                       )}
                     </div>
                   </div>
+                  {/* Buttons */}
+                  <div className="flex gap-2 mt-3 pt-3 border-t border-border">
+                    {source.review && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedReview(expandedReview === source.id ? null : source.id)}
+                        className={`flex-1 text-left px-3 py-2 rounded-lg text-xs font-medium transition-all min-h-[36px] ${
+                          expandedReview === source.id
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"
+                        }`}
+                      >
+                        Leer Reseña
+                      </button>
+                    )}
+                    {source.summary && (
+                      <button
+                        type="button"
+                        onClick={() => setExpandedSummary(expandedSummary === source.id ? null : source.id)}
+                        className={`flex-1 text-left px-3 py-2 rounded-lg text-xs font-medium transition-all min-h-[36px] ${
+                          expandedSummary === source.id
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"
+                        }`}
+                      >
+                        Ver Resumen
+                      </button>
+                    )}
+                  </div>
+                  {/* Expandable Review */}
+                  {expandedReview === source.id && source.review && (
+                    <div className="mt-3 p-3 rounded-lg bg-background border border-border">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Reseña</p>
+                      <p className="text-xs text-muted leading-relaxed">{source.review}</p>
+                    </div>
+                  )}
+                  {/* Expandable Summary */}
+                  {expandedSummary === source.id && source.summary && (
+                    <div className="mt-3 p-3 rounded-lg bg-background border border-border">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Resumen</p>
+                      <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
+                    </div>
+                  )}
                 </Card>
               );
             })}

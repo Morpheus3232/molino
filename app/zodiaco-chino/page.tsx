@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import ZodiacoChinoContent from "./ZodiacoChinoContent";
+import ZodiacoChinoExplorer from "./ZodiacoChinoExplorer";
 
 export const metadata: Metadata = {
-  title: "Zodiaco Chino — El ciclo de los 12 animales",
-  description:
-    "Aprendé sobre el zodiaco chino: los 12 animales, los 5 elementos y las compatibilidades. Un sistema milenario que revela patrones de personalidad.",
+  title: "Zodiaco Chino — Un sistema de ciclos, animales y elementos",
+  description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años. Un sistema milenario con una profundidad que va mucho más allá de tu animal.",
   openGraph: {
     title: "Zodiaco Chino — Molino",
-    description:
-      "Aprendé sobre el zodiaco chino: los 12 animales, los 5 elementos y las compatibilidades.",
+    description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años.",
     type: "article",
   },
 };
 
 export default function ZodiacoChinoPage() {
-  return <ZodiacoChinoContent />;
+  return <ZodiacoChinoExplorer />;
 }

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
+import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -98,7 +99,7 @@ export default function TimingPage() {
 
         {/* Header */}
         <div className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Timing Personal</p>
+          <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Tu timing personal</p>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
             ¿Qué querés hacer?
           </h1>
@@ -157,13 +158,13 @@ export default function TimingPage() {
                 <div className="p-6 rounded-2xl border border-border bg-card">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Timing Score</p>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Puntuación de timing</p>
                       <p className={`text-4xl font-serif font-bold ${getScoreColor(result.timingScore)}`}>
                         {result.timingScore}/100
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-muted">Personal Day {result.personalDay}</p>
+                      <p className="text-sm text-muted">Día personal: {result.personalDay}</p>
                       <p className="text-sm text-muted">Luna {result.moonPhase}</p>
                     </div>
                   </div>
@@ -215,6 +216,15 @@ export default function TimingPage() {
                     ))}
                   </ul>
                 </div>
+
+                {/* AI Interpretation */}
+                <MolinoInterpretation
+                  profile={profile}
+                  type="timing"
+                  timing={result}
+                  label="Interpretación de Molino"
+                  description="Análisis personalizado de tu timing"
+                />
               </div>
             )}
 
@@ -244,6 +254,9 @@ export default function TimingPage() {
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Button variant="secondary" fullWidth onClick={() => router.push("/daily-energy")}>
                 Ver energía de hoy
+              </Button>
+              <Button variant="secondary" fullWidth onClick={() => router.push("/decisions")}>
+                Tomar una decisión
               </Button>
               <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
                 Ver mi perfil

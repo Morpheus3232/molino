@@ -3,6 +3,8 @@
 import { useMemo } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import CompatibilityLab from "@/components/lab/CompatibilityLab";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
@@ -29,6 +31,11 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
       name: entity.name,
     });
   }, [profile, entity]);
+
+  const dailyEnergy = useMemo(() => {
+    if (!profile) return null;
+    return calculateDailyEnergy(profile, new Date());
+  }, [profile]);
 
   if (loading || !mounted) {
     return (
@@ -106,6 +113,21 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
             result={compat}
             template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
           />
+        )}
+
+        {/* AI Interpretation */}
+        {compat && (
+          <div className="mt-6">
+            <MolinoInterpretation
+              profile={profile}
+              type="compatibility"
+              compatibility={compat}
+              dailyEnergy={dailyEnergy || undefined}
+              entity={entity}
+              label="Interpretación de Molino"
+              description="Análisis personalizado de tu compatibilidad"
+            />
+          </div>
         )}
 
         {/* Disclaimer */}

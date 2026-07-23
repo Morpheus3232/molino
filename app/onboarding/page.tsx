@@ -116,7 +116,7 @@ export default function OnboardingPage() {
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent" />
       <div className="relative mx-auto flex min-h-screen max-w-[640px] flex-col justify-center px-6 py-12">
         <div className="mb-10 text-center">
-          <span className="badge mb-4">Personal Intelligence</span>
+          <span className="badge mb-4">Inteligencia Personal</span>
       <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
         Tu identidad simbólica
       </h1>

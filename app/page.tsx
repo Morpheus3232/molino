@@ -1,453 +1,270 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
-import LoadingState from "@/components/ui/LoadingState";
 
-const DEMO = {
-  name: "Martín",
-  birthDate: "12/04/1992",
-  lifePath: 7,
-  sunSign: "Aries",
-  sunSymbol: "♈",
-  element: "Fuego",
-  modality: "Cardinal",
-  chineseZodiac: "Mono",
-  chineseElement: "Metal",
-  archetype: "El Investigador",
-  archetypeQuote: "La verdad no teme a la pregunta.",
-  archetypeDescription: "Tu energía es la verdad interna. Desarrollás la sabiduría, la observación y la capacidad de ir más allá de lo superficial.",
-  personalYear: 3,
-  personalMonth: 5,
-  personalDay: 9,
-  expressionNumber: 5,
-  soulNumber: 3,
-  personalityNumber: 7,
-  strengths: ["Análisis", "Sabiduría", "Observación", "Intuición"],
-};
-
-const PILLARS = [
-  { num: "01", title: "Identity", subtitle: "Quién sos", description: "Tu Life Path, arquetipo y elemento fundamental." },
-  { num: "02", title: "Patterns", subtitle: "Qué se repite", description: "Fortalezas, desafíos y tendencias recurrentes." },
-  { num: "03", title: "Alignment", subtitle: "Qué encaja", description: "Afinidad con personas, lugares y conceptos." },
-  { num: "04", title: "Timing", subtitle: "Cuándo actuar", description: "Tu año, mes y día personal." },
-  { num: "05", title: "Decisions", subtitle: "Cómo elegir", description: "Herramientas para tomar decisiones con más conciencia." },
+const SYSTEMS = [
+  { title: "Numerolog\u00eda", subtitle: "El lenguaje simb\u00f3lico de los n\u00fameros", description: "Tu Life Path, Expression, Alma y Personalidad revelan capas diferentes de qui\u00e9n sos.", href: "/numerologia", color: "var(--element-fire)" },
+  { title: "Astrolog\u00eda", subtitle: "El mapa del cielo de tu nacimiento", description: "Tu signo solar, los planetas y las casas forman un mapa del cielo en el momento de tu nacimiento.", href: "/astrologia", color: "var(--layer-astrology)" },
+  { title: "Zodiaco Chino", subtitle: "Animales, elementos y ciclos de 60 a\u00f1os", description: "Un sistema de 12 animales y 5 elementos que se repite cada 60 a\u00f1os. Tu animal y elemento definen tu estilo.", href: "/zodiaco-chino", color: "var(--layer-moment)" },
+  { title: "Arquetipos", subtitle: "Patrones simb\u00f3licos de personalidad", description: "Los 9 arquetipos numerol\u00f3gicos que revelan tu energ\u00eda natural y tu camino de crecimiento.", href: "/numerologia", color: "var(--layer-patterns)" },
 ];
 
-const LAYERS = [
-  { title: "Numerología", description: "Life Path, Expression, Alma y Personalidad.", color: "var(--element-fire)" },
-  { title: "Astrología", description: "Signo solar, elemento y modalidad.", color: "var(--layer-astrology)" },
-  { title: "Zodiaco chino", description: "Animal y elemento del ciclo lunar.", color: "var(--layer-moment)" },
-  { title: "Ciclos", description: "Año, mes y día personal.", color: "var(--layer-cycles)" },
-  { title: "Patrones", description: "Fortalezas y desafíos recurrentes.", color: "var(--layer-patterns)" },
-  { title: "Timing", description: "El momento actual y能量.", color: "var(--layer-identity)" },
-  { title: "Decisiones", description: "Cómo usar la información.", color: "var(--score-good)" },
-  { title: "Evolución", description: "Cómo cambia con el tiempo.", color: "var(--element-earth)" },
+const CONCEPTS = [
+  { title: "Arquetipos", description: "Los 9 arquetipos numerol\u00f3gicos y lo que revelan sobre tu energ\u00eda natural.", href: "/numerologia" },
+  { title: "Elementos", description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental.", href: "/astrologia" },
+  { title: "Ciclos", description: "Tu a\u00f1o, mes y d\u00eda personal. C\u00f3mo cambia tu energ\u00eda a lo largo del tiempo.", href: "/profile" },
+  { title: "N\u00fameros maestros", description: "11, 22, 33. N\u00fameros especiales que amplifican la energ\u00eda de tu Life Path.", href: "/numerologia" },
+  { title: "Modalidades", description: "Cardinal, Fijo, Mutable. C\u00f3mo implement\u00e1s tu energ\u00eda en el mundo.", href: "/astrologia" },
+  { title: "Compatibilidad", description: "C\u00f3mo conect\u00e1s con personas, pa\u00edses, marcas y conceptos a trav\u00e9s de tus sistemas.", href: "/compatibility/countries" },
 ];
 
-const QUESTIONS = [
-  "¿Por qué repito ciertos patrones?",
-  "¿Qué tipo de energía tengo en este ciclo?",
-  "¿Qué áreas de mi vida están pidiendo atención?",
-  "¿Qué momento estoy atravesando?",
-  "¿Qué decisiones puedo mirar desde otra perspectiva?",
+const STEPS = [
+  { number: "01", title: "Cre\u00e1 tu perfil", description: "Ingres\u00e1 tu nombre y fecha de nacimiento. Molino calcula tu mapa a partir de m\u00faltiples sistemas simb\u00f3licos." },
+  { number: "02", title: "Conoc\u00e9 tu mapa", description: "Numerolog\u00eda, astrolog\u00eda, zodiaco chino y arquetipos conectados en una sola lectura." },
+  { number: "03", title: "Explor\u00e1 tus patrones", description: "Descubr\u00ed fortalezas, zonas de atenci\u00f3n y ciclos personales." },
+  { number: "04", title: "Conect\u00e1 con el mundo", description: "Compar\u00e1 tu perfil con pa\u00edses, marcas, personas y conceptos." },
+  { number: "05", title: "Tom\u00e1 perspectiva", description: "Us\u00e1 la informaci\u00f3n como herramienta de autoconocimiento y reflexi\u00f3n." },
+];
+
+const INTELLIGENCE = [
+  { title: "Perfil", description: "Tu identidad central", href: "/profile" },
+  { title: "Timing", description: "Tu momento actual", href: "/daily-energy" },
+  { title: "Decisiones", description: "Herramienta de reflexi\u00f3n", href: "/decisions" },
+  { title: "Patrones", description: "Tus patrones dominantes", href: "/profile" },
+];
+
+const UNIVERSE = [
+  { title: "Pa\u00edses", description: "197 pa\u00edses", href: "/compatibility/countries", icon: "\ud83c\udf0d" },
+  { title: "Marcas", description: "235 marcas", href: "/compatibility/brands", icon: "\u2726" },
+  { title: "Personas", description: "Compar\u00e1 tu mapa", href: "/explore", icon: "\ud83d\udc64" },
+  { title: "Conceptos", description: "Explor\u00e1 conexiones", href: "/explore", icon: "\ud83d\udca1" },
 ];
 
 export default function Home() {
   const router = useRouter();
-  const [checkingProfile, setCheckingProfile] = useState(true);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("molino.user-profile.v1");
-    if (stored) {
-      router.replace("/profile");
-    } else {
-      setCheckingProfile(false);
-    }
-  }, [router]);
-
-  if (checkingProfile) {
-    return <LoadingState message="Cargando..." />;
-  }
-
-  const elementColor = ELEMENT_COLORS[DEMO.element] || "var(--element-fire)";
 
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
-      <main id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
-        {/* ═══════════════════════════════════════════════════════════════
-            1. HERO
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] via-transparent to-transparent pointer-events-none" aria-hidden="true" />
-
-          <div className="mx-auto max-w-[1200px] w-full px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center relative">
-            <motion.div {...fadeUp} className="space-y-6">
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="w-8 h-px bg-accent" aria-hidden="true" />
-                <p className="text-[11px] uppercase tracking-[0.35em] text-accent font-medium">
-                  Personal Intelligence Platform
-                </p>
-                <div className="w-8 h-px bg-accent" aria-hidden="true" />
-              </div>
-
-              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-foreground leading-[1.08] max-w-4xl mx-auto">
-                Conocé tu sistema personal.
-              </h1>
-
-              <p className="mx-auto max-w-2xl text-base sm:text-lg text-muted leading-relaxed">
-                Una lectura integrada de tu identidad, patrones, ciclos y timing a partir de tus datos de nacimiento.
-              </p>
-
-              <motion.div {...fadeUpDelayed(0.15)} className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => router.push("/onboarding")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-10 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[56px]"
-                >
-                  Crear mi perfil
-                </button>
-                <button
-                  type="button"
-                  onClick={() => router.push("/explore")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-4 text-base bg-transparent text-secondary border border-border hover:border-accent hover:text-accent min-h-[56px]"
-                >
-                  Explorar conocimiento
-                </button>
-              </motion.div>
-
-              <motion.p {...fadeUpDelayed(0.2)} className="text-xs text-muted">
-                Gratis · Sin registro · Tu mapa se genera en segundos
-              </motion.p>
-            </motion.div>
+        {/* 1. HERO */}
+        <motion.section {...fadeUp} className="mb-20 sm:mb-28">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Inteligencia Personal</p>
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+            Molino transforma sistemas simb\u00f3licos en una experiencia de autoconocimiento
+            <br />
+            <span className="text-muted">interactiva, transparente y profundamente personalizada.</span>
+          </h1>
+          <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
+            Numerolog\u00eda, astrolog\u00eda, zod\u00edaco chino y compatibilidad. Todo calculado, todo explicado, todo tuyo.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[48px]">
+              Crear mi perfil
+            </button>
+            <button type="button" onClick={() => router.push("/explore")} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent min-h-[48px]">
+              Explorar Molino
+            </button>
           </div>
-        </section>
+        </motion.section>
 
-        {/* ═══════════════════════════════════════════════════════════════
-            2. PROFILE PREVIEW
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp}>
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
-                <div>
-                  <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Tu mapa personal</p>
-                  <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
-                    Así se ve tu perfil
-                  </h2>
-                </div>
-                <span className="text-[11px] uppercase tracking-[0.15em] text-muted border border-border rounded-full px-3 py-1 self-start sm:self-auto">
-                  Ejemplo ilustrativo
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Profile card */}
-            <motion.div {...fadeUpDelayed(0.1)} className="border border-border rounded-2xl overflow-hidden bg-card">
-              {/* Header */}
-              <div className="px-6 sm:px-8 py-5 border-b border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-serif font-bold" style={{ backgroundColor: elementColor, color: "var(--color-background)" }}>
-                    {DEMO.lifePath}
-                  </div>
-                  <div>
-                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-foreground">{DEMO.name}</h3>
-                    <p className="text-sm text-muted">{DEMO.birthDate} · {DEMO.sunSymbol} {DEMO.sunSign} · {DEMO.chineseZodiac}</p>
-                  </div>
-                </div>
-                <div className="text-left sm:text-right">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Arquetipo</p>
-                  <p className="text-sm font-medium" style={{ color: elementColor }}>{DEMO.archetype}</p>
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="px-6 sm:px-8 py-6 sm:py-8">
-                {/* Identity reading */}
-                <div className="mb-8 p-5 rounded-xl bg-background">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu identidad</p>
-                  <p className="text-sm text-muted leading-relaxed">
-                    <span className="text-foreground font-medium">{DEMO.name}</span> es un <span className="text-foreground font-medium">{DEMO.archetype}</span>. {DEMO.archetypeDescription}
-                  </p>
-                </div>
-
-                {/* Core numbers */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
-                  {[
-                    { label: "Life Path", value: DEMO.lifePath },
-                    { label: "Expresión", value: DEMO.expressionNumber },
-                    { label: "Alma", value: DEMO.soulNumber },
-                    { label: "Personalidad", value: DEMO.personalityNumber },
-                  ].map((item) => (
-                    <div key={item.label} className="text-center p-4 rounded-xl bg-background">
-                      <p className="text-3xl sm:text-4xl font-serif font-semibold" style={{ color: elementColor }}>{item.value}</p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mt-2">{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Strengths */}
-                <div className="mb-8">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
-                  <div className="flex flex-wrap gap-2">
-                    {DEMO.strengths.map((s) => (
-                      <span key={s} className="px-3 py-1.5 rounded-full text-xs font-medium border border-border bg-background text-foreground">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Cycles */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                  {[
-                    { label: "Año personal", value: DEMO.personalYear, desc: "El tema general" },
-                    { label: "Mes personal", value: DEMO.personalMonth, desc: "La energía de este mes" },
-                    { label: "Día personal", value: DEMO.personalDay, desc: "Tu energía hoy" },
-                  ].map((item) => (
-                    <div key={item.label} className="p-4 rounded-xl border border-border">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium">{item.label}</p>
-                        <span className="text-xl font-serif font-semibold" style={{ color: elementColor }}>{item.value}</span>
-                      </div>
-                      <div className="w-full h-1 rounded-full bg-border overflow-hidden">
-                        <div className="h-full rounded-full" style={{ width: `${(item.value / 9) * 100}%`, backgroundColor: elementColor }} />
-                      </div>
-                      <p className="text-xs text-muted mt-2">{item.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.p {...fadeUpDelayed(0.2)} className="text-center text-xs text-muted mt-6">
-              Ejemplo ilustrativo — los resultados se generan a partir de tus propios datos.
-            </motion.p>
+        {/* 2. LAS GRANDES AREAS */}
+        <motion.section {...fadeUpDelayed(0.1)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Las grandes \u00e1reas de Molino</h2>
           </div>
-        </section>
 
-        {/* ═══════════════════════════════════════════════════════════════
-            3. PERSONAL INTELLIGENCE SYSTEM
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp} className="text-center mb-12">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">El método Molino</p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
-                Un sistema. Cinco dimensiones.
-              </h2>
-              <p className="text-sm text-muted mt-3 max-w-xl mx-auto">
-                Cada perfil se construye alrededor de cinco dimensiones que se conectan entre sí.
-              </p>
-            </motion.div>
-
-            <motion.div {...fadeUpDelayed(0.1)} className="relative">
-              {/* Desktop: horizontal flow */}
-              <div className="hidden lg:flex items-start justify-between gap-2">
-                {PILLARS.map((pillar, i) => (
-                  <div key={pillar.num} className="flex-1 relative">
-                    <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">{pillar.num}</div>
-                    <h3 className="font-serif text-lg font-semibold text-foreground mb-1">{pillar.title}</h3>
-                    <p className="text-sm text-muted mb-2">{pillar.subtitle}</p>
-                    <p className="text-xs text-muted leading-relaxed">{pillar.description}</p>
-                    {i < PILLARS.length - 1 && (
-                      <div className="absolute top-5 -right-4 text-border text-lg" aria-hidden="true">→</div>
-                    )}
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Inteligencia Personal */}
+            <div className="p-5 rounded-xl border border-border bg-card">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Inteligencia Personal</p>
+              <div className="space-y-2">
+                {INTELLIGENCE.map((item) => (
+                  <button key={item.title} type="button" onClick={() => router.push(item.href)} className="w-full text-left flex items-center justify-between py-2 text-sm text-foreground hover:text-accent transition-colors">
+                    <span>{item.title}</span>
+                    <span className="text-xs text-muted">{item.description}</span>
+                  </button>
                 ))}
               </div>
+            </div>
 
-              {/* Mobile: vertical flow */}
-              <div className="lg:hidden space-y-8">
-                {PILLARS.map((pillar) => (
-                  <div key={pillar.num} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center shrink-0">
-                      <span className="text-xs font-medium text-muted">{pillar.num}</span>
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-lg font-semibold text-foreground">{pillar.title}</h3>
-                      <p className="text-sm text-muted">{pillar.subtitle}</p>
-                      <p className="text-xs text-muted mt-1 leading-relaxed">{pillar.description}</p>
-                    </div>
-                  </div>
+            {/* Tu Universo */}
+            <div className="p-5 rounded-xl border border-border bg-card">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tu universo</p>
+              <div className="space-y-2">
+                {UNIVERSE.map((item) => (
+                  <button key={item.title} type="button" onClick={() => router.push(item.href)} className="w-full text-left flex items-center justify-between py-2 text-sm text-foreground hover:text-accent transition-colors">
+                    <span className="flex items-center gap-2"><span>{item.icon}</span>{item.title}</span>
+                    <span className="text-xs text-muted">{item.description}</span>
+                  </button>
                 ))}
               </div>
-            </motion.div>
-          </div>
-        </section>
+            </div>
 
-        {/* ═══════════════════════════════════════════════════════════════
-            4. UN MAPA, MUCHAS CAPAS
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[1100px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp} className="text-center mb-12">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Un mapa. Muchas capas.</p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
-                Múltiples perspectivas. Un solo perfil.
-              </h2>
-            </motion.div>
-
-            <motion.div {...fadeUpDelayed(0.1)} className="relative max-w-3xl mx-auto">
-              {/* Central node */}
-              <div className="flex justify-center mb-8">
-                <div className="px-6 py-3 rounded-full border border-accent/30 bg-accent/5">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium">Tu Mapa</p>
-                </div>
-              </div>
-
-              {/* Connector line */}
-              <div className="hidden sm:block absolute left-1/2 top-12 bottom-0 w-px bg-border -translate-x-1/2" aria-hidden="true" />
-
-              {/* Layers grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {LAYERS.map((layer, i) => (
-                  <motion.div
-                    key={layer.title}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ delay: i * 0.05, duration: 0.4, ease: "easeOut" }}
-                    className="flex items-start gap-3 p-4 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors"
-                  >
-                    <div className="w-2 h-2 rounded-full mt-1.5 shrink-0" style={{ backgroundColor: layer.color }} aria-hidden="true" />
-                    <div>
-                      <h3 className="text-sm font-medium text-foreground">{layer.title}</h3>
-                      <p className="text-xs text-muted mt-0.5">{layer.description}</p>
-                    </div>
-                  </motion.div>
+            {/* Tu Conocimiento */}
+            <div className="p-5 rounded-xl border border-border bg-card">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tu conocimiento</p>
+              <div className="space-y-2">
+                {["Numerolog\u00eda", "Astrolog\u00eda", "Zodiaco Chino", "Arquetipos", "Elementos", "Ciclos"].map((item) => (
+                  <button key={item} type="button" onClick={() => router.push("/explore")} className="w-full text-left py-2 text-sm text-foreground hover:text-accent transition-colors">
+                    {item}
+                  </button>
                 ))}
               </div>
-            </motion.div>
-
-            <motion.p {...fadeUpDelayed(0.15)} className="text-center text-xs text-muted mt-8 max-w-xl mx-auto">
-              Un solo perfil. Múltiples perspectivas. Todo conectado.
-            </motion.p>
+            </div>
           </div>
-        </section>
+        </motion.section>
 
-        {/* ═══════════════════════════════════════════════════════════════
-            5. QUÉ PODÉS DESCUBRIR
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp} className="text-center mb-10">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Reflexión</p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
-                ¿Qué podés descubrir?
-              </h2>
-            </motion.div>
-
-            <motion.div {...fadeUpDelayed(0.1)} className="space-y-4">
-              {QUESTIONS.map((q, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.08, duration: 0.4, ease: "easeOut" }}
-                  className="flex items-start gap-4 p-5 rounded-xl border border-border bg-card"
-                >
-                  <span className="text-lg font-serif font-semibold shrink-0" style={{ color: elementColor }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-sm sm:text-base text-foreground">{q}</p>
-                </motion.div>
-              ))}
-            </motion.div>
+        {/* 2.5 HERRAMIENTAS — Sin perfil, sin registro */}
+        <motion.section {...fadeUpDelayed(0.12)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Calcul\u00e1 tu identidad</h2>
           </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════
-            6. DOS MANERAS DE USAR MOLINO
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp} className="text-center mb-10">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Molino</p>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground">
-                Dos maneras de empezar
-              </h2>
-            </motion.div>
-
-            <motion.div {...fadeUpDelayed(0.1)} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">A</p>
-                <h3 className="font-serif text-xl font-semibold text-foreground mb-2">Crear tu perfil</h3>
-                <p className="text-sm text-muted leading-relaxed mb-6">
-                  Generá tu mapa personal y explorá las capas de tu identidad, patrones y timing.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => router.push("/onboarding")}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground"
-                >
-                  Crear mi perfil
-                </button>
-              </div>
-
-              <div className="p-6 sm:p-8 rounded-2xl border border-border bg-card">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-accent font-medium mb-3">B</p>
-                <h3 className="font-serif text-xl font-semibold text-foreground mb-2">Explorar libremente</h3>
-                <p className="text-sm text-muted leading-relaxed mb-6">
-                  Aprendé sobre numerología, astrología, zodiaco chino y más sin crear perfil.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => router.push("/explore")}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent"
-                >
-                  Explorar conocimiento
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════
-            7. TRUST
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-12 sm:py-16 border-t border-border">
-          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8">
-            <motion.div {...fadeUp} className="text-center">
-              <p className="text-sm font-medium text-foreground mb-2">Autoconocimiento, no predicción.</p>
-              <p className="text-xs text-muted leading-relaxed max-w-xl mx-auto">
-                Molino combina sistemas simbólicos y herramientas de reflexión para ayudarte a explorar patrones personales. No busca predecir tu futuro ni reemplaza decisiones profesionales.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════════════
-            8. FINAL CTA
-            ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 border-t border-border">
-          <div className="mx-auto max-w-[900px] w-full px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div {...fadeUp}>
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">
-                Tu perfil es el comienzo.
-              </h2>
-              <p className="text-sm text-muted mb-8 max-w-md mx-auto">
-                Creá tu mapa personal y explorá las conexiones entre identidad, patrones, timing y decisiones.
-              </p>
-              <button
-                type="button"
-                onClick={() => router.push("/onboarding")}
-                className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-10 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[56px]"
-              >
-                Crear mi perfil
+          <p className="text-sm text-muted mb-6 max-w-lg">
+            Sin registro. Sin guardar datos. Resultado inmediato.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { title: "Camino de Vida", icon: "\ud83d\udd22", href: "/herramientas/camino-de-vida", desc: "Tu n\u00famero numerol\u00f3gico" },
+              { title: "Signo Solar", icon: "\u2b50", href: "/herramientas/signo-solar", desc: "Tu signo zodiacal" },
+              { title: "Zod\u00edaco Chino", icon: "\ud83d\udc09", href: "/herramientas/zodiaco-chino", desc: "Tu animal y elemento" },
+              { title: "Compatibilidad", icon: "\u2726", href: "/herramientas/compatibilidad", desc: "Conect\u00e1 dos perfiles" },
+            ].map((tool) => (
+              <button key={tool.href} type="button" onClick={() => router.push(tool.href)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all group">
+                <p className="text-2xl mb-2">{tool.icon}</p>
+                <p className="font-serif text-base font-semibold text-foreground group-hover:text-accent transition-colors">{tool.title}</p>
+                <p className="text-xs text-muted mt-1">{tool.desc}</p>
               </button>
-            </motion.div>
+            ))}
           </div>
-        </section>
+        </motion.section>
+
+        {/* 3. COMO FUNCIONA */}
+        <motion.section {...fadeUpDelayed(0.15)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">C\u00f3mo funciona</h2>
+          </div>
+
+          <div className="space-y-8">
+            {STEPS.map((step, i) => (
+              <motion.div key={step.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.06, duration: 0.4 }} className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 py-6 border-b border-border last:border-b-0">
+                <span className="number-display text-3xl sm:text-4xl number-display-accent">{step.number}</span>
+                <div>
+                  <h3 className="font-serif text-xl sm:text-2xl font-semibold text-foreground">{step.title}</h3>
+                  <p className="text-sm text-muted mt-2 leading-relaxed max-w-lg">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* 4. LOS SISTEMAS */}
+        <motion.section {...fadeUpDelayed(0.2)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los sistemas</h2>
+          </div>
+          <div className="space-y-4">
+            {SYSTEMS.map((system, i) => (
+              <motion.button key={system.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.06, duration: 0.4 }} onClick={() => router.push(system.href)} className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card hover:border-accent hover:shadow-md transition-all group">
+                <div className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full mt-2 shrink-0" style={{ backgroundColor: system.color }} />
+                  <div className="flex-1">
+                    <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{system.title}</h3>
+                    <p className="text-sm text-muted mt-1">{system.subtitle}</p>
+                    <p className="text-sm text-muted mt-2 leading-relaxed max-w-lg">{system.description}</p>
+                  </div>
+                  <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0">Explorar &rarr;</span>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* 5. COMPATIBILIDAD */}
+        <motion.section {...fadeUpDelayed(0.25)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">&iquest;Con qu\u00e9 reson\u00e1s?</h2>
+          </div>
+          <p className="text-sm text-muted mb-6 max-w-lg">
+            Compatibiliz\u00e1 tu perfil con pa\u00edses, marcas, personas y m\u00e1s.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {[
+              { icon: "\ud83c\udf0d", label: "Pa\u00edses", description: "197 pa\u00edses", href: "/compatibility/countries" },
+              { icon: "\u2726", label: "Marcas", description: "235 marcas", href: "/compatibility/brands" },
+              { icon: "\ud83d\udc64", label: "Personas", description: "Compar\u00e1 tu mapa", href: "/explore" },
+              { icon: "\ud83c\udfac", label: "Pel\u00edculas", description: "Explor\u00e1 conexiones", href: "/explore" },
+              { icon: "\ud83c\udfb5", label: "M\u00fasica", description: "Explor\u00e1 conexiones", href: "/explore" },
+              { icon: "\ud83d\udca1", label: "Conceptos", description: "Explor\u00e1 conexiones", href: "/explore" },
+            ].map((item, i) => (
+              <motion.button key={item.label} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.04, duration: 0.4 }} onClick={() => router.push(item.href)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-accent transition-colors group">
+                <p className="text-2xl mb-2">{item.icon}</p>
+                <p className="font-serif text-base font-semibold text-foreground group-hover:text-accent transition-colors">{item.label}</p>
+                <p className="text-xs text-muted mt-1">{item.description}</p>
+              </motion.button>
+            ))}
+          </div>
+          <div className="mt-6">
+            <button type="button" onClick={() => router.push("/explore")} className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">Explorar compatibilidad &rarr;</button>
+          </div>
+        </motion.section>
+
+        {/* 6. CONOCIMIENTO */}
+        <motion.section {...fadeUpDelayed(0.3)} className="mb-20 sm:mb-28">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Conceptos clave</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {CONCEPTS.map((concept, i) => (
+              <motion.button key={concept.title} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.05, duration: 0.4 }} onClick={() => router.push(concept.href)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all group">
+                <h3 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{concept.title}</h3>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{concept.description}</p>
+              </motion.button>
+            ))}
+          </div>
+          <div className="mt-6">
+            <button type="button" onClick={() => router.push("/explore")} className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">Explorar conocimiento &rarr;</button>
+          </div>
+        </motion.section>
+
+        {/* 7. MI MAPA */}
+        <motion.section {...fadeUpDelayed(0.35)}>
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu mapa es el comienzo</h2>
+          </div>
+          <div className="flex items-center gap-3 text-sm text-muted flex-wrap">
+            <span className="font-medium text-foreground">Identidad</span>
+            <span className="text-border">&rarr;</span>
+            <span className="font-medium text-foreground">Ciclos</span>
+            <span className="text-border">&rarr;</span>
+            <span className="font-medium text-foreground">Patrones</span>
+            <span className="text-border">&rarr;</span>
+            <span className="font-medium text-foreground">Decisiones</span>
+            <span className="text-border">&rarr;</span>
+            <span className="font-medium text-foreground">Compatibilidad</span>
+          </div>
+          <div className="mt-6 flex gap-3">
+            <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]">
+              Crear mi perfil
+            </button>
+            <button type="button" onClick={() => router.push("/explore")} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-transparent text-foreground border border-border hover:border-accent hover:text-accent min-h-[44px]">
+              Explorar Molino
+            </button>
+          </div>
+        </motion.section>
 
       </main>
 

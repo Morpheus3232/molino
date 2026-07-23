@@ -10,7 +10,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif"
 
 export const metadata: Metadata = {
   title: {
-    default: "Molino — Personal Intelligence Platform",
+    default: "Molino — Inteligencia Personal",
     template: "%s | Molino",
   },
   description:
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: "https://molino-alpha.vercel.app",
     siteName: "Molino",
-    title: "Molino — Personal Intelligence Platform",
+    title: "Molino — Inteligencia Personal",
     description:
       "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología, zodiaco chino y análisis de patrones conectados.",
     images: [
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
         url: "https://molino-alpha.vercel.app/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Molino — Personal Intelligence Platform",
+        alt: "Molino — Inteligencia Personal",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Personal Intelligence Platform",
+    title: "Molino — Inteligencia Personal",
     description:
       "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología y análisis de patrones.",
     images: ["https://molino-alpha.vercel.app/og-image.svg"],

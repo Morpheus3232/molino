@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -100,7 +101,7 @@ export default function DailyEnergyPage() {
             </div>
             <div className="text-right">
               <p className="text-lg font-serif font-semibold text-foreground">{energy.theme}</p>
-              <p className="text-sm text-muted">Personal Day {energy.personalDay}</p>
+              <p className="text-sm text-muted">Día personal: {energy.personalDay}</p>
             </div>
           </div>
           <p className="text-sm text-muted leading-relaxed">{energy.description}</p>
@@ -169,10 +170,24 @@ export default function DailyEnergyPage() {
           <p className="text-sm text-foreground">{energy.elementInfluence}</p>
         </div>
 
+        {/* AI Interpretation */}
+        <div className="mb-8">
+          <MolinoInterpretation
+            profile={profile}
+            type="daily_energy"
+            dailyEnergy={energy}
+            label="Interpretación de Molino"
+            description="Análisis personalizado de tu energía del día"
+          />
+        </div>
+
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Button variant="secondary" fullWidth onClick={() => router.push("/timing")}>
             Explorar fechas
+          </Button>
+          <Button variant="secondary" fullWidth onClick={() => router.push("/decisions")}>
+            Tomar una decisión
           </Button>
           <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
             Ver mi perfil

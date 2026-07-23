@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeDecision, type DecisionCategory, type DecisionResult, CATEGORY_LABELS } from "@/lib/engines/decisionsEngine";
-import { buildMolinoContext, generateIntelligenceInterpretation, type MolinoInterpretation } from "@/lib/engines/intelligenceEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -30,33 +30,11 @@ export default function DecisionsPage() {
   const [question, setQuestion] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<DecisionCategory | null>(null);
   const [result, setResult] = useState<DecisionResult | null>(null);
-  const [interpretation, setInterpretation] = useState<MolinoInterpretation | null>(null);
-  const [isInterpreting, setIsInterpreting] = useState(false);
 
-  const handleAnalyze = useCallback(async () => {
+  const handleAnalyze = useCallback(() => {
     if (!profile || !question.trim() || !selectedCategory) return;
-
-    // Step 1: Deterministic calculation
     const analysis = analyzeDecision(profile, question.trim(), selectedCategory);
     setResult(analysis);
-
-    // Step 2: Build context and get AI interpretation
-    setIsInterpreting(true);
-    try {
-      const dailyEnergy = calculateDailyEnergy(profile, new Date());
-      const context = buildMolinoContext(profile, { dailyEnergy, decision: analysis });
-      const interp = await generateIntelligenceInterpretation({
-        type: 'decision',
-        context,
-        question: question.trim(),
-      });
-      setInterpretation(interp);
-    } catch (error) {
-      console.error('Error getting interpretation:', error);
-      // Fallback is handled by the engine
-    } finally {
-      setIsInterpreting(false);
-    }
   }, [profile, question, selectedCategory]);
 
   if (loading || !mounted) {
@@ -182,7 +160,7 @@ export default function DecisionsPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-muted">{CATEGORY_LABELS[result.category]}</p>
-                  <p className="text-xs text-muted">Personal Day {result.personalDay}</p>
+                  <p className="text-xs text-muted">Día personal: {result.personalDay}</p>
                 </div>
               </div>
               <p className="text-sm font-medium text-foreground mb-2">{result.recommendation}</p>
@@ -246,6 +224,17 @@ export default function DecisionsPage() {
               <p className="text-sm text-foreground">{result.elementInfluence}</p>
             </div>
 
+            {/* AI Interpretation */}
+            <MolinoInterpretation
+              profile={profile}
+              type="decision"
+              question={question}
+              decision={result}
+              dailyEnergy={calculateDailyEnergy(profile)}
+              label="Interpretación de Molino"
+              description="Análisis contextual de tu decisión"
+            />
+
             {/* Caveats */}
             <div className="p-4 rounded-xl border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aclaraciones</p>
@@ -253,89 +242,6 @@ export default function DecisionsPage() {
                 Este análisis se basa en sistemas simbólicos y herramientas de reflexión. No constituye asesoramiento profesional ni predicciones.
               </p>
             </div>
-
-            {/* AI Interpretation */}
-            {isInterpreting && (
-              <div className="p-6 rounded-2xl border border-border bg-card">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">Interpretación de Molino</p>
-                </div>
-                <p className="text-sm text-muted animate-pulse">Analizando tu perfil y contexto...</p>
-              </div>
-            )}
-
-            {interpretation && !isInterpreting && (
-              <div className="p-6 rounded-2xl border border-accent/20 bg-accent/5">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Interpretación de Molino</p>
-
-                {/* Summary */}
-                <div className="mb-4">
-                  <p className="text-sm text-foreground leading-relaxed">{interpretation.summary}</p>
-                </div>
-
-                {/* Alignment */}
-                {interpretation.alignment && (
-                  <div className="mb-4 p-3 rounded-lg bg-background">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Alineación</p>
-                    <p className="text-sm text-foreground">{interpretation.alignment}</p>
-                  </div>
-                )}
-
-                {/* Timing */}
-                {interpretation.timing && (
-                  <div className="mb-4 p-3 rounded-lg bg-background">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Timing</p>
-                    <p className="text-sm text-foreground">{interpretation.timing}</p>
-                  </div>
-                )}
-
-                {/* Strengths */}
-                {interpretation.strengths.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Fortalezas</p>
-                    <ul className="space-y-1">
-                      {interpretation.strengths.map((s, i) => (
-                        <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* What to Consider */}
-                {interpretation.whatToConsider.length > 0 && (
-                  <div className="mb-4">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
-                    <ul className="space-y-1">
-                      {interpretation.whatToConsider.map((c, i) => (
-                        <li key={i} className="text-sm text-muted flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
-                          {c}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Suggested Next Step */}
-                {interpretation.suggestedNextStep && (
-                  <div className="p-3 rounded-lg bg-background">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Próximo paso sugerido</p>
-                    <p className="text-sm text-foreground font-medium">{interpretation.suggestedNextStep}</p>
-                  </div>
-                )}
-
-                {/* Confidence & Limitations */}
-                <div className="mt-4 pt-4 border-t border-border">
-                  <p className="text-xs text-muted">
-                    Confianza: {interpretation.confidence} · {interpretation.limitations[0]}
-                  </p>
-                </div>
-              </div>
-            )}
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3">
