@@ -12,6 +12,7 @@ import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
+import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -38,7 +39,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Simbólica · {meta.label}
+            Afinidad Personal · {meta.label}
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {entity.emoji} {entity.name}
@@ -82,7 +83,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Simbólica · {meta.label}
+            Afinidad Personal · {meta.label}
           </p>
           <div className="flex items-center gap-4 mb-4">
             <span className="text-5xl">{entity.emoji}</span>
@@ -127,7 +128,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
                   <p className="font-serif text-3xl font-bold text-foreground">{result.userYear}</p>
-                  <p className="text-sm text-muted mt-1">{result.userAnimal}</p>
+                  <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.userAnimal)}</p>
                 </div>
                 {/* Evento de la entidad */}
                 <div>
@@ -135,7 +136,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     {primaryEvent.label}
                   </p>
                   <p className="font-serif text-3xl font-bold text-foreground">{result.entityYear}</p>
-                  <p className="text-sm text-muted mt-1">{result.entityAnimal}</p>
+                  <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.entityAnimal)}</p>
                 </div>
               </div>
 
@@ -148,7 +149,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   <span aria-hidden="true">·</span>
                   <span>{primaryEvent.date ? formatDisplayDate(primaryEvent.date) : `circa ${primaryEvent.year}`}</span>
                   <span aria-hidden="true">·</span>
-                  <span className="font-medium text-foreground">{result.entityAnimal}</span>
+                  <span className="font-medium text-foreground">{formatAnimalSimple(result.entityAnimal)}</span>
                 </div>
               </div>
 
@@ -178,7 +179,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{entity.emoji}</span>
                 <p className="text-sm font-medium text-foreground">
-                  {result.userAnimal} ↔ {result.entityAnimal}
+                  {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
                 </p>
                 <span
                   className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"

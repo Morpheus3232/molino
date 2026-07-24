@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { formatAnimalSimple, formatAnimalWithEquivalent } from "@/lib/utils/zodiacDisplay";
 
 interface AffinityShareableCardProps {
   result: AffinityResult;
@@ -125,7 +126,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
             {/* Entity animal */}
             <div className="text-center flex-1 min-w-0">
               <span className="text-4xl sm:text-5xl block mb-2">{entity.emoji}</span>
-              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{result.entityAnimal}</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.entityAnimal)}</p>
               <p className="text-[11px] text-muted mt-1 truncate">{entity.name}</p>
             </div>
 
@@ -143,7 +144,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
             {/* User animal */}
             <div className="text-center flex-1 min-w-0">
               <span className="text-4xl sm:text-5xl block mb-2">🪞</span>
-              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{result.userAnimal}</p>
+              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.userAnimal)}</p>
               <p className="text-[11px] text-muted mt-1">Vos</p>
             </div>
           </div>

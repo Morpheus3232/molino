@@ -43,7 +43,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Simbólica · {meta.plural}
+            Afinidad Personal · {meta.plural}
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {meta.icon} {meta.plural}
@@ -81,7 +81,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
             &larr; Todas las categorías
           </button>
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Simbólica · {meta.plural}
+            Afinidad Personal · {meta.plural}
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             {meta.icon} {meta.plural}

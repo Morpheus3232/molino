@@ -2,27 +2,35 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/lib/engines/compatibilityEngine";
 import { saveSession } from "@/lib/storage/ephemeral";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
 import { analytics } from "@/lib/analytics/analytics";
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
+import {
+  smoothReveal,
+  heroReveal,
+  cardReveal,
+  emojiBounce,
+  staggerApple,
+  staggerItemSmooth,
+} from "@/lib/utils/premiumMotion";
+import { formatAnimalEmoji, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 
 const MONTHS = [
-  { value: "01", label: "ENE" },
-  { value: "02", label: "FEB" },
-  { value: "03", label: "MAR" },
-  { value: "04", label: "ABR" },
-  { value: "05", label: "MAY" },
-  { value: "06", label: "JUN" },
-  { value: "07", label: "JUL" },
-  { value: "08", label: "AGO" },
-  { value: "09", label: "SEP" },
-  { value: "10", label: "OCT" },
-  { value: "11", label: "NOV" },
-  { value: "12", label: "DIC" },
+  { value: "01", label: "Ene" },
+  { value: "02", label: "Feb" },
+  { value: "03", label: "Mar" },
+  { value: "04", label: "Abr" },
+  { value: "05", label: "May" },
+  { value: "06", label: "Jun" },
+  { value: "07", label: "Jul" },
+  { value: "08", label: "Ago" },
+  { value: "09", label: "Sep" },
+  { value: "10", label: "Oct" },
+  { value: "11", label: "Nov" },
+  { value: "12", label: "Dic" },
 ];
 
 function getDaysInMonth(month: string, year: string): number {
@@ -36,14 +44,18 @@ function getCurrentYear(): number {
   return new Date().getFullYear();
 }
 
+type OnboardingStep = "date" | "reveal" | "name" | "complete";
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
+  const [step, setStep] = useState<OnboardingStep>("date");
   const [name, setName] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("01");
   const [year, setYear] = useState(String(getCurrentYear() - 25));
   const [error, setError] = useState("");
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     setReady(true);
@@ -52,7 +64,7 @@ export default function OnboardingPage() {
   const daysInMonth = getDaysInMonth(month, year);
   const yearOptions = Array.from({ length: 100 }, (_, i) => getCurrentYear() - i);
 
-  const handleFinish = async (e: React.FormEvent) => {
+  const handleDateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -67,8 +79,8 @@ export default function OnboardingPage() {
 
     try {
       const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
-      const calculated = calculateUserProfile(name.trim(), birthDate);
-      const profile: UserProfile = {
+      const calculated = calculateUserProfile("", birthDate);
+      const newProfile: UserProfile = {
         ...calculated,
         birthPlace: "",
         birthTime: undefined,
@@ -81,26 +93,73 @@ export default function OnboardingPage() {
         notifications: true,
       };
 
-      saveSession({
-        name: profile.name,
-        birthDate: profile.birthDate,
-        birthPlace: profile.birthPlace,
-        birthTime: profile.birthTime,
-        goal: profile.goal,
-        interests: profile.interests,
-        onboardingStep: profile.onboardingStep,
-        completedSections: profile.completedSections,
-        theme: profile.theme,
-        language: profile.language,
-        notifications: profile.notifications,
-      });
-      saveProfileToStorage(profile);
-      analytics.trackProfileCreated(profile);
-      router.push("/profile");
+      setProfile(newProfile);
+      setStep("reveal");
     } catch (err) {
       console.error(err);
-      setError("Hubo un error generando tu perfil. Intentá de nuevo.");
+      setError("Hubo un error. Intentá de nuevo.");
     }
+  };
+
+  const handleNameSubmit = () => {
+    if (!profile) return;
+
+    const updatedProfile: UserProfile = {
+      ...profile,
+      name: name.trim() || "Explorador",
+      expressionNumber: name.trim() ? undefined : undefined,
+      soulNumber: name.trim() ? undefined : undefined,
+      personalityNumber: name.trim() ? undefined : undefined,
+    };
+
+    // Recalculate with name if provided
+    if (name.trim()) {
+      const recalculated = calculateUserProfile(name.trim(), profile.birthDate);
+      Object.assign(updatedProfile, {
+        expressionNumber: recalculated.expressionNumber,
+        soulNumber: recalculated.soulNumber,
+        personalityNumber: recalculated.personalityNumber,
+      });
+    }
+
+    saveSession({
+      name: updatedProfile.name,
+      birthDate: updatedProfile.birthDate,
+      birthPlace: updatedProfile.birthPlace,
+      birthTime: updatedProfile.birthTime,
+      goal: updatedProfile.goal,
+      interests: updatedProfile.interests,
+      onboardingStep: updatedProfile.onboardingStep,
+      completedSections: updatedProfile.completedSections,
+      theme: updatedProfile.theme,
+      language: updatedProfile.language,
+      notifications: updatedProfile.notifications,
+    });
+    saveProfileToStorage(updatedProfile);
+    analytics.trackProfileCreated(updatedProfile);
+    setStep("complete");
+    setTimeout(() => router.push("/profile"), 1500);
+  };
+
+  const handleSkipName = () => {
+    if (!profile) return;
+    saveSession({
+      name: "Explorador",
+      birthDate: profile.birthDate,
+      birthPlace: "",
+      birthTime: undefined,
+      goal: "life",
+      interests: [],
+      onboardingStep: 1,
+      completedSections: ["identity"],
+      theme: "light",
+      language: "es",
+      notifications: true,
+    });
+    saveProfileToStorage({ ...profile, name: "Explorador" });
+    analytics.trackProfileCreated({ ...profile, name: "Explorador" });
+    setStep("complete");
+    setTimeout(() => router.push("/profile"), 1500);
   };
 
   if (!ready) {
@@ -111,93 +170,285 @@ export default function OnboardingPage() {
     );
   }
 
+  const display = profile ? getZodiacDisplay(profile.chineseZodiac) : null;
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent" />
       <div className="relative mx-auto flex min-h-screen max-w-[640px] flex-col justify-center px-6 py-12">
-        <div className="mb-10 text-center">
-          <span className="badge mb-4">Inteligencia Personal</span>
-      <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
-        Tu identidad simbólica
-      </h1>
-      <p className="mt-3 text-base text-muted md:text-lg">
-        Poné un nombre o alias y tu fecha de nacimiento para crear tu perfil.
-      </p>
-        </div>
 
-        <Card hover={false} padding="lg">
-          <form onSubmit={handleFinish} className="space-y-6">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Nombre o alias</p>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input min-h-[48px]"
-                placeholder="Ej: Marian, Sol, Charly..."
-                required
-                minLength={2}
-                maxLength={40}
-                aria-label="Nombre o alias"
-              />
-            </div>
+        <AnimatePresence mode="wait">
+          {/* ═══════════════════════════════════════════════
+              STEP 1: DATE INPUT
+              ═══════════════════════════════════════════════ */}
+          {step === "date" && (
+            <motion.div
+              key="date"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="mb-10 text-center">
+                <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
+                  Inteligencia Personal
+                </span>
+                <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
+                  Descubrí tu mapa
+                </h1>
+                <p className="mt-3 text-base text-muted md:text-lg">
+                  Solo necesitamos tu fecha de nacimiento.
+                </p>
+              </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              <div className="col-span-1">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
-                <select
-                  value={day}
-                  onChange={(e) => setDay(e.target.value)}
-                  className="input min-h-[48px]"
-                  required
-                  aria-label="Día"
-                >
-                  <option value="">Día</option>
-                  {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
-                    <option key={d} value={String(d)}>{d}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-span-1">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
-                <select
-                  value={month}
-                  onChange={(e) => setMonth(e.target.value)}
-                  className="input min-h-[48px]"
-                  required
-                  aria-label="Mes"
-                >
-                  {MONTHS.map((m) => (
-                    <option key={m.value} value={m.value}>{m.label}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="col-span-1">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
-                <select
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="input min-h-[48px]"
-                  required
-                  aria-label="Año"
-                >
-                  <option value="">Año</option>
-                  {yearOptions.map((y) => (
-                    <option key={y} value={String(y)}>{y}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
+              <div className="p-6 rounded-2xl border border-border bg-card">
+                <form onSubmit={handleDateSubmit} className="space-y-6">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
+                      <select
+                        value={day}
+                        onChange={(e) => setDay(e.target.value)}
+                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                        required
+                        aria-label="Día"
+                      >
+                        <option value="">Día</option>
+                        {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
+                          <option key={d} value={String(d)}>{d}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
+                      <select
+                        value={month}
+                        onChange={(e) => setMonth(e.target.value)}
+                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                        required
+                        aria-label="Mes"
+                      >
+                        {MONTHS.map((m) => (
+                          <option key={m.value} value={m.value}>{m.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
+                      <select
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                        required
+                        aria-label="Año"
+                      >
+                        <option value="">Año</option>
+                        {yearOptions.map((y) => (
+                          <option key={y} value={String(y)}>{y}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
 
-            {error && <p className="text-sm text-error">{error}</p>}
-            <Button type="submit" fullWidth size="lg">
-              Descubrir mi perfil →
-            </Button>
-            <p className="text-xs text-muted text-center">
-              Sesión efímera. No guardamos información personal.
-            </p>
-          </form>
-        </Card>
+                  {error && <p className="text-sm text-red-500">{error}</p>}
+
+                  <button
+                    type="submit"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                  >
+                    Descubrir mi mapa →
+                  </button>
+
+                  <p className="text-xs text-muted text-center">
+                    Sin registro. Sin guardar datos personales.
+                  </p>
+                </form>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════════════════════
+              STEP 2: REVEAL — MAPA INICIAL
+              ═══════════════════════════════════════════════ */}
+          {step === "reveal" && profile && display && (
+            <motion.div
+              key="reveal"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <div className="text-center mb-8">
+                <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
+                  Tu mapa inicial
+                </span>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                  Esto es lo que descubrimos
+                </h1>
+              </div>
+
+              {/* Animal hero */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+                className="text-center mb-8"
+              >
+                <span className="text-7xl block mb-3">{display.emoji}</span>
+                <p className="font-serif text-3xl font-bold text-foreground">{display.name}</p>
+                <p className="text-sm text-muted mt-1">Tu animal zodiacal</p>
+              </motion.div>
+
+              {/* Quick facts grid */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="grid grid-cols-2 gap-3 mb-8"
+              >
+                <div className="p-4 rounded-xl border border-border bg-card text-center">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Life Path</p>
+                  <p className="font-serif text-2xl font-bold text-foreground">{profile.lifePath}</p>
+                </div>
+                <div className="p-4 rounded-xl border border-border bg-card text-center">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Birthday</p>
+                  <p className="font-serif text-2xl font-bold text-foreground">
+                    {profile.birthDate.split("-")[2]}
+                  </p>
+                </div>
+                <div className="p-4 rounded-xl border border-border bg-card text-center">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Elemento</p>
+                  <p className="font-serif text-lg font-bold text-foreground">
+                    {profile.chineseZodiacInfo?.element ?? "—"}
+                  </p>
+                </div>
+                <div className="p-4 rounded-xl border border-border bg-card text-center">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Año Personal</p>
+                  <p className="font-serif text-2xl font-bold text-foreground">
+                    {profile.cycles?.personalYear ?? "—"}
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Summary */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="p-5 rounded-xl border border-border bg-card mb-6"
+              >
+                <p className="text-sm text-foreground leading-relaxed text-center">
+                  Tu perfil combina movimiento, exploración y transformación.
+                  Tu {display.name} aporta energía de ciclo, y tu Life Path {profile.lifePath} define tu camino principal.
+                </p>
+              </motion.div>
+
+              {/* CTA */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9, duration: 0.5 }}
+                className="space-y-3"
+              >
+                <button
+                  type="button"
+                  onClick={() => setStep("name")}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                >
+                  Profundizar mi mapa →
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSkipName}
+                  className="w-full text-sm text-muted hover:text-foreground transition-colors py-2"
+                >
+                  Entrar sin nombre por ahora
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════════════════════
+              STEP 3: NAME (OPTIONAL)
+              ═══════════════════════════════════════════════ */}
+          {step === "name" && (
+            <motion.div
+              key="name"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="mb-10 text-center">
+                <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
+                  Profundizar
+                </span>
+                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                  ¿Querés agregar tu nombre?
+                </h1>
+                <p className="text-sm text-muted">
+                  Esto desbloquea capas adicionales de identidad: números de expresión, alma y personalidad.
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl border border-border bg-card">
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Nombre o alias</p>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                      placeholder="Ej: Marian, Sol, Charly..."
+                      minLength={2}
+                      maxLength={40}
+                      aria-label="Nombre o alias"
+                      autoFocus
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleNameSubmit}
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                  >
+                    {name.trim() ? "Desbloquear capas adicionales →" : "Entrar como Explorador →"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSkipName}
+                    className="w-full text-sm text-muted hover:text-foreground transition-colors py-2"
+                  >
+                    Saltar por ahora
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ═══════════════════════════════════════════════
+              STEP 4: COMPLETE
+              ═══════════════════════════════════════════════ */}
+          {step === "complete" && (
+            <motion.div
+              key="complete"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+              className="text-center"
+            >
+              <span className="text-6xl block mb-4">✨</span>
+              <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
+                Tu mapa está listo
+              </h1>
+              <p className="text-sm text-muted">
+                Redirigiendo a tu Inteligencia Personal...
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

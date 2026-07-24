@@ -18,10 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
   const count = getEntitiesByType(type as EntityType).length;
 
   return {
-    title: `Afinidad Simbólica · ${meta.plural} | Molino`,
-    description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Simbólica de Molino.`,
+    title: `Afinidad Personal · ${meta.plural} | Molino`,
+    description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
     openGraph: {
-      title: `Afinidad Simbólica · ${meta.plural} | Molino`,
+      title: `Afinidad Personal · ${meta.plural} | Molino`,
       description: meta.description,
       type: "website",
     },

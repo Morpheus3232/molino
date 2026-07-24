@@ -14,6 +14,7 @@ import {
 } from "@/lib/engines/affinityEngine";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
@@ -51,7 +52,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Simbólica · Comparación
+            Afinidad Personal · Comparación
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
@@ -136,7 +137,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6">
               <div className="text-center">
                 <span className="text-3xl block mb-2">{entityA.emoji}</span>
-                <p className="font-serif text-xl font-bold text-foreground">{resultA.entityAnimal}</p>
+                <p className="font-serif text-xl font-bold text-foreground">{formatAnimalSimple(resultA.entityAnimal)}</p>
                 <p className="text-xs text-muted mt-1">{entityA.name}</p>
               </div>
 
@@ -152,7 +153,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               <div className="text-center">
                 <span className="text-3xl block mb-2">{entityB.emoji}</span>
-                <p className="font-serif text-xl font-bold text-foreground">{resultB.entityAnimal}</p>
+                <p className="font-serif text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
                 <p className="text-xs text-muted mt-1">{entityB.name}</p>
               </div>
             </div>
@@ -217,8 +218,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           <div className="p-6 rounded-2xl border border-border bg-card space-y-4">
             <DifferenceRow
               label="Animales"
-              valueA={`${resultA.entityAnimal} (${entityA.name})`}
-              valueB={`${resultB.entityAnimal} (${entityB.name})`}
+              valueA={`${formatAnimalSimple(resultA.entityAnimal)} (${entityA.name})`}
+              valueB={`${formatAnimalSimple(resultB.entityAnimal)} (${entityB.name})`}
             />
             <DifferenceRow
               label="Evento base"

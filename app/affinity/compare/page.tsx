@@ -80,7 +80,7 @@ function ComparePickerInner() {
             }}
             className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
           >
-            &larr; {step === "pick-b" ? "Cambiar primera entidad" : "Afinidad Simbólica"}
+            &larr; {step === "pick-b" ? "Cambiar primera entidad" : "Afinidad Personal"}
           </button>
         </motion.div>
 

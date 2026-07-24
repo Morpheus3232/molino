@@ -27,6 +27,20 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import dynamic from "next/dynamic";
 import ShareableCard from "@/components/profile/ShareableCard";
 import LoadingState from "@/components/ui/LoadingState";
+import SymbolicMapSection from "@/components/profile/SymbolicMapSection";
+import PersonalRecommendationsSection from "@/components/profile/PersonalRecommendationsSection";
+import ContrastSection from "@/components/profile/ContrastSection";
+import IdentityCard from "@/components/profile/IdentityCard";
+import EcosystemSection from "@/components/profile/EcosystemSection";
+import ChallengingSection from "@/components/profile/ChallengingSection";
+import ConvergentSection from "@/components/profile/ConvergentSection";
+import EnhancedMomentSection from "@/components/profile/EnhancedMomentSection";
+import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
+import CircleSection from "@/components/profile/CircleSection";
+import ContrastLearnSection from "@/components/profile/ContrastLearnSection";
+import DailyInsightFeed from "@/components/profile/DailyInsightFeed";
+import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 const LazyMolinoInterpretation = dynamic(() => import("@/components/ui/MolinoInterpretation"), { ssr: false });
@@ -213,7 +227,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
         <section className="py-12 sm:pt-20 pb-12 sm:pb-16">
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
             <motion.div {...fadeUp}>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu mapa</p>
+              <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Mi Inteligencia Personal</p>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
                 {/* Left: name + archetype */}
@@ -282,6 +296,24 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════
+            DAILY INSIGHT FEED
+            ═══════════════════════════════════════════════ */}
+        <DailyInsightFeed profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            MI IDENTIDAD — Card premium
+            ═══════════════════════════════════════════════ */}
+        <section className="py-12 sm:py-16 border-t border-border">
+          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+            <IdentityCard profile={profile} />
+            <PersonalScoreCard profile={profile} />
+            <KnowledgeConnections profile={profile} />
+            <ConvergentSection profile={profile} />
+            <EnhancedMomentSection profile={profile} />
           </div>
         </section>
 
@@ -682,7 +714,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
             <motion.div {...fadeUp}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu Afinidad Simbólica</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu Afinidad Personal</h2>
               </div>
               <p className="text-sm text-muted max-w-xl">
                 Descubrí qué marcas, ciudades, países, universidades, equipos y otras entidades presentan mayor afinidad simbólica con tu perfil.
@@ -750,17 +782,57 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
         </section>
 
         {/* ═══════════════════════════════════════════════
-            COMPATIBILIDAD CON EL MUNDO
+            MI MAPA SIMBÓLICO
+            ═══════════════════════════════════════════════ */}
+        <SymbolicMapSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            RECOMENDACIONES PERSONALES
+            ═══════════════════════════════════════════════ */}
+        <PersonalRecommendationsSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            MI ECOSISTEMA
+            ═══════════════════════════════════════════════ */}
+        <EcosystemSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            LO QUE CONVIENE OBSERVAR
+            ═══════════════════════════════════════════════ */}
+        <ChallengingSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            MI CÍRCULO
+            ═══════════════════════════════════════════════ */}
+        <CircleSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            MI CONTRASTE — APRENDIZAJE
+            ═══════════════════════════════════════════════ */}
+        <ContrastLearnSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            EXPLORA TUS AFINIDADES
+            ═══════════════════════════════════════════════ */}
+        <DecisionMapSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            CONTRASTES PERSONALES
+            ═══════════════════════════════════════════════ */}
+        <ContrastSection profile={profile} />
+
+        {/* ═══════════════════════════════════════════════
+            MI MAPA DEL MUNDO
             ═══════════════════════════════════════════════ */}
         <section className="py-12 sm:py-16">
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
             <motion.div {...fadeUp}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidad con el mundo</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Mi Mapa del Mundo</h2>
               </div>
               <p className="text-sm text-muted mt-2 max-w-xl">
-                Tu <span className="font-medium text-foreground">{chineseZodiac}</span> se conecta con el mundo a través de 197 países y 235 marcas.
+                Destinos y marcas que resuenan con tu perfil de <span className="font-medium text-foreground">{chineseZodiac}</span>.
               </p>
             </motion.div>
 
@@ -770,12 +842,12 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4 }}
-                onClick={() => router.push("/compatibility/countries")}
+                onClick={() => router.push("/affinity/recommendations/countries")}
                 className="text-left p-6 sm:p-8 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
               >
                 <p className="text-3xl mb-3">🌎</p>
-                <p className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Países</p>
-                <p className="text-sm text-muted mt-2 leading-relaxed">197 países. Descubrí dónde resonás.</p>
+                <p className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Destinos</p>
+                <p className="text-sm text-muted mt-2 leading-relaxed">Países y ciudades con resonancia simbólica.</p>
               </motion.button>
 
               <motion.button
@@ -783,12 +855,12 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.08, duration: 0.4 }}
-                onClick={() => router.push("/compatibility/brands")}
+                onClick={() => router.push("/affinity/recommendations/brands")}
                 className="text-left p-6 sm:p-8 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
               >
-                <p className="text-3xl mb-3">✦</p>
+                <p className="text-3xl mb-3">🏷</p>
                 <p className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Marcas</p>
-                <p className="text-sm text-muted mt-2 leading-relaxed">235 marcas en 12 categorías.</p>
+                <p className="text-sm text-muted mt-2 leading-relaxed">Marcas que resuenan con tu energía.</p>
               </motion.button>
 
               <motion.button
@@ -796,12 +868,12 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.16, duration: 0.4 }}
-                onClick={() => router.push("/explore")}
+                onClick={() => router.push("/affinity")}
                 className="text-left p-6 sm:p-8 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
               >
-                <p className="text-3xl mb-3">👤</p>
-                <p className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Personas</p>
-                <p className="text-sm text-muted mt-2 leading-relaxed">Explorá compatibilidad con personas, conceptos y más.</p>
+                <p className="text-3xl mb-3">✦</p>
+                <p className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
+                <p className="text-sm text-muted mt-2 leading-relaxed">Explorá el mapa completo de afinidades.</p>
               </motion.button>
             </div>
           </div>
