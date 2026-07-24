@@ -317,6 +317,7 @@ export function getAnimalProfile(animal: Animal): AnimalProfile {
  */
 export function getFriends(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];
+  if (!profile) return [];
   const friends: AnimalRelation[] = [];
   for (const other of profile.harmonyPartners) {
     friends.push(getRelation(animal, other));
@@ -330,6 +331,7 @@ export function getFriends(animal: Animal): AnimalRelation[] {
  */
 export function getChallenging(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];
+  if (!profile) return [];
   return profile.challengingRelations.map(other => getRelation(animal, other))
     .sort((a, b) => a.score - b.score);
 }
@@ -343,6 +345,19 @@ export function getRelationshipMap(animal: Animal): {
   neutral: AnimalRelation[];
   challenging: AnimalRelation[];
 } {
+  // Guard: return empty map for invalid animals (e.g., empty string during SSR)
+  if (!animal || !ANIMAL_PROFILES[animal]) {
+    const emptyRelation: AnimalRelation = {
+      animal: (animal || "") as Animal,
+      type: "neutral",
+      label: "sin datos",
+      description: "Sin datos disponibles.",
+      score: 50,
+      tier: 3,
+    };
+    return { same: emptyRelation, friends: [], neutral: [], challenging: [] };
+  }
+
   const same = getRelation(animal, animal);
   const friends = getFriends(animal);
   const challenging = getChallenging(animal);
