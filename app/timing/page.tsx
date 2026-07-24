@@ -62,9 +62,9 @@ export default function TimingPage() {
       <div className="min-h-screen bg-background">
         <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Timing</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu momento</p>
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
-            Timing personal
+            Tu momento personal
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para explorar el timing personalizado, primero necesitás crear tu perfil.
@@ -94,7 +94,7 @@ export default function TimingPage() {
         <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
           <span>›</span>
-          <span className="text-foreground font-medium">Timing</span>
+          <span className="text-foreground font-medium">Tu momento</span>
         </nav>
 
         {/* Header */}

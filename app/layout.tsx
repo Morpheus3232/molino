@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "arquetipos",
     "zodiaco chino",
     "ciclos personales",
-    "Life Path",
+    "Camino de Vida",
     "gratuito",
     "sin registro",
     "código abierto",

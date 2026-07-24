@@ -38,7 +38,7 @@ export default function ShareableCard({
   const archetypeData = ARCHETYPES[lifePath];
   const archetypeName = archetypeData?.name || archetype;
 
-  const shareText = `Soy ${archetypeName}. Life Path ${lifePath}. ${sunSymbol} ${sunSign}. ${chineseZodiac}. Descubrí tu mapa personal en Molino.`;
+  const shareText = `Soy ${archetypeName}. Camino de Vida ${lifePath}. ${sunSymbol} ${sunSign}. ${chineseZodiac}. Descubrí tu mapa personal en Molino.`;
 
   const handleShare = async () => {
     analytics.trackFeatureUsed("share_profile");
@@ -95,7 +95,7 @@ export default function ShareableCard({
           {/* Core numbers */}
           <div className="grid grid-cols-4 gap-3 mb-6">
             {[
-              { label: "Life Path", value: lifePath },
+              { label: "Camino de Vida", value: lifePath },
               { label: "Expresión", value: expressionNumber || "—" },
               { label: "Alma", value: soulNumber || "—" },
               { label: "Personalidad", value: personalityNumber || "—" },

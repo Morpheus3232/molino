@@ -111,7 +111,7 @@ export default function FuentesPage() {
                   <div className="w-2 h-2 rounded-full bg-muted shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-foreground">30% &mdash; Numerolog&iacute;a</p>
-                    <p className="text-xs text-muted">Relaci&oacute;n entre el Life Path del usuario y la numerolog&iacute;a de la entidad.</p>
+                    <p className="text-xs text-muted">Relaci&oacute;n entre el Camino de Vida del usuario y la numerolog&iacute;a de la entidad.</p>
                   </div>
                 </div>
               </div>

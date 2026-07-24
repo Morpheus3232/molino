@@ -175,7 +175,7 @@ export default function DecisionsPage() {
                 <p className="text-xs text-muted">Con tu perfil</p>
               </div>
               <div className="p-4 rounded-xl border border-border bg-card text-center">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Timing</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Tu momento</p>
                 <p className={`text-xl font-semibold ${getScoreColor(result.timingScore)}`}>{result.timingScore}%</p>
                 <p className="text-xs text-muted">Momento actual</p>
               </div>

@@ -86,7 +86,7 @@ export default function DailyEnergyPage() {
             {new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
           </h1>
           <p className="text-sm text-muted mt-2">
-            {profile.name} · Life Path {profile.lifePath} · {profile.sunSign}
+            {profile.name} · Camino de Vida {profile.lifePath} · {profile.sunSign}
           </p>
         </div>
 

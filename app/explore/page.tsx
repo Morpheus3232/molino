@@ -13,7 +13,7 @@ const SYSTEMS = [
     id: "numerologia",
     title: "Numerología",
     subtitle: "El lenguaje de los números",
-    description: "Cada número tiene un significado. Tu Life Path, Expression, Alma y Personalidad revelan capas diferentes de quién sos.",
+    description: "Cada n\u00famero tiene un significado. Tu Camino de Vida, Expression, Alma y Personalidad revelan capas diferentes de qui\u00e9n sos.",
     href: "/numerologia",
     color: "var(--element-fire)",
   },
@@ -58,7 +58,7 @@ const CONCEPTS = [
   },
   {
     title: "Números maestros",
-    description: "11, 22, 33. Números especiales que amplifican la energía de tu Life Path.",
+    description: "11, 22, 33. Números especiales que amplifican la energía de tu Camino de Vida.",
     href: "/numerologia",
   },
   {
@@ -237,8 +237,8 @@ export default function ExplorePage() {
             Compatibilizá tu perfil con países, marcas, bandas, películas y más.
           </p>
 
-          <Button variant="secondary" onClick={() => router.push("/compatibility/argentina")}>
-            Empezar a explorar →
+          <Button variant="secondary" onClick={() => router.push("/compatibility/countries")}>
+            Empezar a explorar &rarr;
           </Button>
         </motion.section>
 

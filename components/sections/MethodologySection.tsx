@@ -21,7 +21,7 @@ export default function MethodologySection() {
                   <details className="mt-2 text-xs text-muted">
                     <summary className="cursor-pointer hover:text-foreground">Ver fórmula</summary>
                     <code className="block mt-2 p-3 bg-background rounded-lg font-mono text-xs">
-                      Life Path = Σ(dígitos de fecha de nacimiento) → reducción a 1-9, 11, 22, 33
+                      Camino de Vida = Σ(dígitos de fecha de nacimiento) → reducción a 1-9, 11, 22, 33
                     </code>
                   </details>
                 </div>

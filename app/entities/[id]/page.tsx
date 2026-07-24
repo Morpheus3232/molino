@@ -37,7 +37,7 @@ export default function EntityDetailPage() {
 
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4">
             {[
-              { label: "Life Path", value: entity.symbolism.lifePath ?? "—" },
+              { label: "Camino de Vida", value: entity.symbolism.lifePath ?? "—" },
               { label: "Signo", value: entity.symbolism.sunSign ?? "—" },
               { label: "Zodiaco chino", value: entity.symbolism.chineseZodiac ?? "—" },
               { label: "Elemento", value: entity.symbolism.element ?? "—" },

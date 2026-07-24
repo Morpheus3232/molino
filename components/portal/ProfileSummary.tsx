@@ -18,7 +18,7 @@ export default function ProfileSummary({ profile, archetype, yearMeaning }: Prof
 
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
-          { label: "Life Path", value: profile.lifePath },
+          { label: "Camino de Vida", value: profile.lifePath },
           { label: "Expresión", value: profile.expressionNumber ?? "—" },
           { label: "Alma", value: profile.soulNumber ?? "—" },
           { label: "Personalidad", value: profile.personalityNumber ?? "—" },

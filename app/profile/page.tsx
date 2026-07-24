@@ -18,6 +18,8 @@ import {
   buildDimensions,
   buildMomentState,
 } from "@/lib/engines/synthesisEngine";
+import { getTopAffinityHighlights, TIER_META } from "@/lib/engines/affinityEngine";
+import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityHeader from "@/components/layout/UniversityHeader";
@@ -27,6 +29,7 @@ import ShareableCard from "@/components/profile/ShareableCard";
 import LoadingState from "@/components/ui/LoadingState";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
+const LazyMolinoInterpretation = dynamic(() => import("@/components/ui/MolinoInterpretation"), { ssr: false });
 
 /* ═══════════════════════════════════════════════════════════════
    IDENTITY CONSTELLATION — SVG visualization of converging systems
@@ -174,10 +177,13 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
   );
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
+  // Affinity highlights
+  const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
+
   // Constellation nodes
   const constellationNodes: SystemNode[] = useMemo(
     () => [
-      { id: "numerologia", label: "Numerología", detail: `Life Path ${lifePath}`, symbol: `${lifePath}`, color: "var(--element-fire)", angle: 0 },
+      { id: "numerologia", label: "Numerolog\u00eda", detail: `Camino de Vida ${lifePath}`, symbol: `${lifePath}`, color: "var(--element-fire)", angle: 0 },
       { id: "astrologia", label: "Astrología", detail: `${sunSignSymbol} ${sunSign}`, symbol: sunSignSymbol, color: "var(--layer-astrology)", angle: 90 },
       { id: "zodiaco", label: "Zodiaco Chino", detail: `${chineseZodiac}`, symbol: chineseZodiac.charAt(0), color: "var(--layer-moment)", angle: 180 },
       { id: "arquetipo", label: "Arquetipo", detail: archetypeName || archetype?.name || "", symbol: archetypeName?.charAt(3) || "?", color: elementColor, angle: 270 },
@@ -193,7 +199,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
     personalCode.soul,
     personalCode.personality,
   ];
-  const codeLabels = ["Life Path", "Expresión", "Alma", "Personalidad"];
+  const codeLabels = ["Camino de Vida", "Expresión", "Alma", "Personalidad"];
 
   return (
     <div className="min-h-screen bg-background">
@@ -262,7 +268,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                         </p>
                         <p className="font-serif text-xl font-semibold text-foreground">{activeNodeData.detail}</p>
                         <p className="text-xs text-muted mt-1">
-                          {activeNodeData.id === "numerologia" && `Tu Life Path ${lifePath} define tu energía principal.`}
+                          {activeNodeData.id === "numerologia" && `Tu Camino de Vida ${lifePath} define tu energ\u00eda principal.`}
                           {activeNodeData.id === "astrologia" && `${sunSign} (${element}, ${modality}) forma tu mapa celestial.`}
                           {activeNodeData.id === "zodiaco" && `Tu ${chineseZodiac} (${chineseElement}) aporta cualidades de ciclo.`}
                           {activeNodeData.id === "arquetipo" && `${archetypeName || archetype?.name} es la síntesis de tus sistemas.`}
@@ -378,18 +384,18 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
         </section>
 
         {/* ═══════════════════════════════════════════════
-            TU CÓDIGO PERSONAL
+            TU CÓDIGO PERSONAL — Dark section
             ═══════════════════════════════════════════════ */}
-        <section className="py-12 sm:py-16 border-t border-border">
+        <section className="section-dark py-16 sm:py-20">
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
             <motion.div {...fadeUp}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu código personal</h2>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-px bg-background/20" aria-hidden="true" />
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-background/60 font-medium">Tu c\u00f3digo personal</h2>
               </div>
             </motion.div>
 
-            <div className="mt-14 space-y-0">
+            <div className="space-y-0">
               {codeEntries.map((entry, i) => (
                 <motion.div
                   key={codeLabels[i]}
@@ -397,13 +403,13 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08, duration: 0.5 }}
-                  className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 py-8 border-b border-border last:border-b-0"
+                  className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 py-8 border-b border-background/10 last:border-b-0"
                 >
                   <p className="number-display text-5xl sm:text-6xl number-display-accent">{entry.number}</p>
                   <div>
-                    <p className="font-serif text-lg font-semibold text-foreground">{entry.name}</p>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mt-1">{codeLabels[i]}</p>
-                    <p className="text-sm text-muted mt-2 leading-relaxed">{entry.meaning}</p>
+                    <p className="font-serif text-lg font-semibold text-background">{entry.name}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-background/40 font-medium mt-1">{codeLabels[i]}</p>
+                    <p className="text-sm text-background/60 mt-2 leading-relaxed">{entry.meaning}</p>
                   </div>
                 </motion.div>
               ))}
@@ -551,7 +557,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                     Energía completa &rarr;
                   </button>
                   <button type="button" onClick={() => router.push("/timing")} className="text-sm font-medium text-accent hover:text-accent/80 transition-colors">
-                    Timing &rarr;
+                    Tu momento &rarr;
                   </button>
                 </div>
               </div>
@@ -593,6 +599,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.06, duration: 0.4 }}
                     onClick={() => setExpandedDimension(expandedDimension === dim.dimension ? null : dim.dimension)}
+                    aria-expanded={expandedDimension === dim.dimension}
                     className="w-full text-left py-6 border-b border-border last:border-b-0 group"
                   >
                     <div className="flex items-center justify-between">
@@ -641,7 +648,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
 
             <div className="mt-10 space-y-0">
               {[
-                { title: "Numerología", detail: `Life Path ${lifePath} · ${ARCHETYPES[lifePath]?.name || ""}`, href: "/numerologia", color: "var(--element-fire)", system: "El lenguaje de los números" },
+                { title: "Numerolog\u00eda", detail: `Camino de Vida ${lifePath} \u00b7 ${ARCHETYPES[lifePath]?.name || ""}`, href: "/numerologia", color: "var(--element-fire)", system: "El lenguaje de los n\u00fameros" },
                 { title: "Astrología", detail: `${sunSignSymbol} ${sunSign} · ${element} · ${modality}`, href: "/astrologia", color: "var(--layer-astrology)", system: "El mapa del cielo" },
                 { title: "Zodiaco Chino", detail: `${chineseZodiac} · ${chineseElement}`, href: "/zodiaco-chino", color: "var(--layer-moment)", system: "El ciclo de los animales" },
                 { title: "Arquetipos", detail: archetypeName || archetype?.name || "", href: "/numerologia", color: elementColor, system: "La síntesis de tus patrones" },
@@ -663,6 +670,81 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                   <span className="text-xs text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
                 </motion.button>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════
+            TU AFINIDAD SIMBÓLICA
+            ═══════════════════════════════════════════════ */}
+        <section className="py-12 sm:py-16 border-t border-border">
+          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+            <motion.div {...fadeUp}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu Afinidad Simbólica</h2>
+              </div>
+              <p className="text-sm text-muted max-w-xl">
+                Descubrí qué marcas, ciudades, países, universidades, equipos y otras entidades presentan mayor afinidad simbólica con tu perfil.
+              </p>
+            </motion.div>
+
+            {affinityHighlights.length > 0 && (
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {affinityHighlights.map((result, i) => {
+                  const tierMeta = TIER_META[result.tier];
+                  const typeMeta = ENTITY_TYPES[result.entity.type];
+                  return (
+                    <motion.button
+                      key={result.entity.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.08, duration: 0.4 }}
+                      onClick={() => router.push(`/affinity/${result.entity.type}/${result.entity.id}`)}
+                      className="text-left p-6 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-2xl">{result.entity.emoji}</span>
+                        <span className="font-serif text-2xl font-bold text-foreground">{result.score}</span>
+                      </div>
+                      <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+                        {result.entity.name}
+                      </p>
+                      <p className="text-xs text-muted mt-1">{typeMeta?.label}</p>
+                      <div className="flex items-center gap-2 mt-3">
+                        <span
+                          className="inline-block w-2 h-2 rounded-full shrink-0"
+                          style={{ backgroundColor: tierMeta.color }}
+                        />
+                        <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: tierMeta.color }}>
+                          {tierMeta.label}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted mt-3 leading-relaxed line-clamp-2">
+                        {result.explanation || result.summary}
+                      </p>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            )}
+
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => router.push("/affinity")}
+                className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              >
+                Explorar toda mi afinidad &rarr;
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push("/affinity/brand")}
+                className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+              >
+                Ver mi ranking completo
+              </button>
             </div>
           </div>
         </section>
@@ -809,7 +891,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
                 </div>
-                <MolinoInterpretation
+                <LazyMolinoInterpretation
                   profile={profile}
                   type="personal_profile"
                   dailyEnergy={dailyEnergy}

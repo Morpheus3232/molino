@@ -142,7 +142,7 @@ export default function CompatibilidadCalcPage() {
               </div>
               {person1 && (
                 <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
-                  {person1.animal} · {person1.sunSign} · Life Path {person1.lifePath}
+                  {person1.animal} · {person1.sunSign} · Camino de Vida {person1.lifePath}
                 </div>
               )}
             </div>
@@ -170,7 +170,7 @@ export default function CompatibilidadCalcPage() {
               </div>
               {person2 && (
                 <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
-                  {person2.animal} · {person2.sunSign} · Life Path {person2.lifePath}
+                  {person2.animal} · {person2.sunSign} · Camino de Vida {person2.lifePath}
                 </div>
               )}
             </div>

@@ -4,11 +4,11 @@ import NumerologiaContent from "./NumerologiaContent";
 export const metadata: Metadata = {
   title: "Numerología — El lenguaje de los números",
   description:
-    "Aprendé sobre numerología: Life Path, Expression, Soul, Personality, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
+    "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
   openGraph: {
     title: "Numerología — Molino",
     description:
-      "Aprendé sobre numerología: Life Path, Expression, Soul, Personality y números maestros.",
+      "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
     type: "article",
   },
 };

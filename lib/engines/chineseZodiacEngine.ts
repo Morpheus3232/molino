@@ -4,6 +4,28 @@ export function getChineseZodiac(birthDate: string): string {
   return getRealChineseZodiac(birthDate);
 }
 
+/**
+ * Calculate Chinese zodiac animal from an exact date or year-only.
+ *
+ * Priority:
+ *   1. Exact date string → uses real Chinese New Year boundary
+ *   2. Year only → fallback to YYYY-06-01 (always after CNY), marked approximate
+ *   3. Never presents a fallback as an exact historical date
+ */
+export function calculateAnimalFromDate(
+  dateStr?: string,
+  year?: number
+): { animal: string; isApproximate: boolean } {
+  if (dateStr) {
+    return { animal: getRealChineseZodiac(dateStr), isApproximate: false };
+  }
+  if (year) {
+    const fallbackDate = `${year}-06-01`;
+    return { animal: getRealChineseZodiac(fallbackDate), isApproximate: true };
+  }
+  return { animal: "", isApproximate: true };
+}
+
 export function getChineseZodiacInfo(birthDate: string): { animal: string; element: string } {
   const animal = getChineseZodiac(birthDate);
   const year = parseInt(birthDate.split('-')[0], 10);

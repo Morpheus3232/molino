@@ -101,7 +101,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         <div className="mb-6 p-4 rounded-xl bg-background border border-border">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu perfil</p>
           <p className="text-sm text-foreground">
-            <span className="font-medium">{profile.name}</span> · Life Path {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
+            <span className="font-medium">{profile.name}</span> · Camino de Vida {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
           </p>
         </div>
 

@@ -188,7 +188,7 @@ export default function EntitySearch({ userBirthDate, category = "country", onSe
                       <span>Tu animal: {userAnimal}</span>
                       <span>•</span>
                       <span>Animal de {entity.name}: {entity.symbolism.chineseZodiac}</span>
-                      {entity.symbolism.lifePath && <><span>•</span><span>Life Path: {entity.symbolism.lifePath}</span></>}
+                      {entity.symbolism.lifePath && <><span>•</span><span>Camino de Vida: {entity.symbolism.lifePath}</span></>}
                       {entity.symbolism.sunSign && <><span>•</span><span>Signo: {entity.symbolism.sunSign}</span></>}
                       {entity.context.keyThemes?.length > 0 && <><span>•</span><span>Temas: {entity.context.keyThemes.slice(0, 2).join(", ")}</span></>}
                       {entity.context.funFact && <><span>•</span><span>Dato: {entity.context.funFact}</span></>}

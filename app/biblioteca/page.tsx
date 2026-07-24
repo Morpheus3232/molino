@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import Card from "@/components/ui/Card";
-import Section from "@/components/ui/Section";
-import Button from "@/components/ui/Button";
 
 interface Source {
   id: string;
@@ -22,161 +22,109 @@ interface Source {
 
 const SOURCES: Source[] = [
   {
-    id: "gg33",
-    title: "GG33 Numerología",
-    author: "Gary Grinberg",
-    year: "2020",
-    type: "sitio",
-    description: "Sistema de numerología basado en patrones numéricos y astrología china.",
-    review: "GG33 es un enfoque contemporáneo que fusiona numerología occidental con astrología china. Grinberg argumenta que los números y los ciclos chinos están interconectados. Es una perspectiva original pero no es académica ni tiene respaldo científico.",
-    summary: "El sistema GG33 asigna un número de \"código\" basado en la fecha de nacimiento y lo cruza con el zodiaco chino. Propone 9 \"tipos\" numéricos con cualidades específicas. Lo más interesante es la idea de que los números no son estáticos sino que se mueven en ciclos.",
-    link: "https://gg33.com",
-    tags: ["numerología", "gg33"]
+    id: "gg33", title: "GG33 Numerolog\u00eda", author: "Gary Grinberg", year: "2020", type: "sitio",
+    description: "Sistema de numerolog\u00eda basado en patrones num\u00e9ricos y astrolog\u00eda china.",
+    review: "GG33 es un enfoque contempor\u00e1neo que fusiona numerolog\u00eda occidental con astrolog\u00eda china. Grinberg argumenta que los n\u00fameros y los ciclos chinos est\u00e1n interconectados.",
+    summary: "Asigna un n\u00famero de c\u00f3digo basado en la fecha de nacimiento y lo cruza con el zodiaco chino. Propone 9 tipos num\u00e9ricos con cualidades espec\u00edficas.",
+    link: "https://gg33.com", tags: ["numerolog\u00eda", "gg33"]
   },
   {
-    id: "pitagoras",
-    title: "Numerología Pitagórica",
-    author: "Pitágoras (atribuido)",
-    year: "~500 a.C.",
-    type: "libro",
-    description: "Sistema de numerología occidental que asigna valores numéricos a las letras.",
-    review: "La numerología pitagórica es el sistema más extendido en occidente. Aunque se atribuye a Pitágoras, los historiadores modernos no encuentran evidencia directa de que Pitágoras la practicara. Lo que sí sabemos es que su escuela filosófica valoraba los números como principios del universo.",
-    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto (A=1, B=2... I=9, J=1, etc.). Se usa para calcular Life Path, Expression, Soul y Personality Numbers. Es un sistema de interpretación simbólica, no matemática.",
-    tags: ["numerología", "historia"]
+    id: "pitagoras", title: "Numerolog\u00eda Pitag\u00f3rica", author: "Pit\u00e1goras (atribuido)", year: "~500 a.C.", type: "libro",
+    description: "Sistema de numerolog\u00eda occidental que asigna valores num\u00e9ricos a las letras.",
+    review: "La numerolog\u00eda pitag\u00f3rica es el sistema m\u00e1s utilizado en occidente. Aunque se atribuye a Pit\u00e1goras, los historiadores modernos no encuentran evidencia directa.",
+    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto. Se usa para calcular Camino de Vida, Expression, Soul y Personality Numbers.",
+    tags: ["numerolog\u00eda", "historia"]
   },
   {
-    id: "kybalion",
-    title: "El Kybalion",
-    author: "Tres Iniciados",
-    year: "1908",
-    type: "libro",
-    description: "Siete principios herméticos que influyen en la filosofía occidental.",
-    review: "El Kybalion pretende ser una traducción de textos herméticos antiguos, aunque los historiadores creen que fue escrito por William Walker Atkinson. Es una obra influyente en el pensamiento esotérico moderno, pero su atribución histórica es cuestionable.",
-    summary: "Enuncia siete principios: Mentalismo, Correspondencia, Vibración, Polaridad, Ritmo, Causa y Efecto, y Género. Cada principio describe una \"ley\" universal que, según el texto, gobierna la realidad.",
-    tags: ["hermetismo", "filosofía"]
+    id: "kybalion", title: "El Kybalion", author: "Tres Iniciados", year: "1908", type: "libro",
+    description: "Siete principios herm\u00e9ticos que influyen en la filosof\u00eda occidental.",
+    review: "Obra influyente en el pensamiento esot\u00e9rico moderno. Su atribuci\u00f3n hist\u00f3rica es cuestionable.",
+    summary: "Enuncia siete principios: Mentalismo, Correspondencia, Vibraci\u00f3n, Polaridad, Ritmo, Causa y Efecto, y G\u00e9nero.",
+    tags: ["hermetismo", "filosof\u00eda"]
   },
   {
-    id: "zodiaco-chino",
-    title: "Zodiaco Chino",
-    author: "Tradicional",
-    year: "~2000 a.C.",
-    type: "sitio",
+    id: "zodiaco-chino", title: "Zodiaco Chino", author: "Tradicional", year: "~2000 a.C.", type: "sitio",
     description: "Ciclo de 12 animales y 5 elementos basado en el calendario lunar chino.",
-    review: "El zodiaco chino es un sistema cultural genuino con raíces en la dinastía Han. A diferencia de muchas tradiciones esotéricas, tiene una documentación histórica sólida. Su uso como herramienta de personalidad es más popular que académico.",
-    summary: "El ciclo sexagenario combina 12 animales con 5 elementos (Madera, Fuego, Tierra, Metal, Agua) creando 60 combinaciones. Cada animal tiene cualidades tradicionales asignadas. El sistema se usa ampliamente en la cultura popular china.",
+    review: "Sistema cultural genuino con ra\u00edces en la dinast\u00eda Han. Documentaci\u00f3n hist\u00f3rica s\u00f3lida.",
+    summary: "El ciclo sexagenario combina 12 animales con 5 elementos creando 60 combinaciones.",
     link: "https://www.chinahighlights.com/travelguide/chinese-zodiac/",
     tags: ["zodiaco chino", "animales"]
   },
   {
-    id: "astrologia",
-    title: "Astrología Tropical",
-    author: "Tradicional",
-    year: "~300 a.C.",
-    type: "libro",
-    description: "Sistema de 12 signos basados en la posición del sol en el zodíaco.",
-    review: "La astrología tropical fue codificada por los astrólogos helenísticos (Vetiśvāra, Teodosio) a partir de la tradición babilónica. Es el sistema más utilizado en occidente. Sus críticos señalan que los signos se han desplazado ~24° desde su codificación.",
-    summary: "Asocia la posición del sol en el momento del nacimiento con 12 signos zodiacales. Cada signo tiene un elemento (Fuego, Tierra, Aire, Agua), una modalidad (Cardinal, Fijo, Mutable) y un planeta regente. Es interpretativo, no predictivo.",
-    tags: ["astrología", "signos"]
+    id: "astrologia", title: "Astrolog\u00eda Tropical", author: "Tradicional", year: "~300 a.C.", type: "libro",
+    description: "Sistema de 12 signos basados en la posici\u00f3n del sol en el zod\u00edaco.",
+    review: "Codificada por astr\u00f3logos helen\u00edsticos a partir de la tradici\u00f3n babil\u00f3nica. Sistema m\u00e1s utilizado en occidente.",
+    summary: "Asocia la posici\u00f3n del sol con 12 signos zodiacales. Cada signo tiene un elemento y una modalidad.",
+    tags: ["astrolog\u00eda", "signos"]
   },
   {
-    id: "i-ching",
-    title: "I Ching",
-    author: "Tradicional",
-    year: "~1000 a.C.",
-    type: "libro",
-    description: "Libro de las mutaciones. Base filosófica del zodiaco chino y la adivinación.",
-    review: "El I Ching es uno de los textos filosóficos más antiguos del mundo. Su influencia en la cultura china es comparable a la de la Biblia en occidente. Jung lo estudió extensamente y lo vinculó con la sincronicidad. No es un libro de predicción sino de reflexión.",
-    summary: "Utiliza 64 hexagramas (combinaciones de líneas Yang/Yin) para representar situaciones y transiciones. Cada hexagrama tiene un significado filosófico y se \"consulta\" mediante monedas o varillas. Su valor está en la reflexión, no en la predicción.",
-    tags: ["i ching", "filosofía"]
+    id: "i-ching", title: "I Ching", author: "Tradicional", year: "~1000 a.C.", type: "libro",
+    description: "Libro de las mutaciones. Base filos\u00f3fica del zodiaco chino y la adivinaci\u00f3n.",
+    review: "Uno de los textos filos\u00f3ficos m\u00e1s antiguos del mundo. Jung lo estudi\u00f3 extensamente.",
+    summary: "Utiliza 64 hexagramas para representar situaciones y transiciones. Su valor est\u00e1 en la reflexi\u00f3n.",
+    tags: ["i ching", "filosof\u00eda"]
   },
   {
-    id: "tarot-waite",
-    title: "The Pictorial Key to the Tarot",
-    author: "Arthur Edward Waite",
-    year: "1910",
-    type: "libro",
-    description: "Guía clásica de los Arcanos Mayores y Menores del Tarot.",
-    review: "Waite creó el mazo Rider-Waite-Smith, el más utilizado del mundo. Su libro explica la simbología de cada carta. Es una obra fundamental para entender el tarot moderno, aunque su enfoque es esotérico y no científico.",
-    summary: "Describe los 78 arcanos del tarot (22 mayores + 56 menores). Cada carta tiene un significado simbólico vinculado con la vida humana. El mazo de Waite es el estándar para la interpretación en occidente.",
+    id: "tarot-waite", title: "The Pictorial Key to the Tarot", author: "Arthur Edward Waite", year: "1910", type: "libro",
+    description: "Gu\u00eda cl\u00e1sica de los Arcanos Mayores y Menores del Tarot.",
+    review: "Waite cre\u00f3 el mazo m\u00e1s utilizado del mundo. Obra fundamental para entender el tarot moderno.",
+    summary: "Describe los 78 arcanos del tarot. Cada carta tiene un significado simb\u00f3lico vinculado con la vida humana.",
     tags: ["tarot", "simbolismo"]
   },
   {
-    id: "human-design",
-    title: "Human Design",
-    author: "Ra Uru Hu",
-    year: "1987",
-    type: "sitio",
-    description: "Sistema que combina astrología, I Ching, chakras y Kabbalah.",
-    review: "Human Design fue creado por Ra Uru Hu (Alan Robert Krakower) en 1987. Combina múltiples sistemas en un marco unificado. No tiene respaldo científico y es puramente interpretativo, pero tiene una comunidad activa y un marco conceptual interno coherente.",
-    summary: "Define 5 tipos de energía (Generador, Proyector, Manifestador, Generador Manifestante, Reflector) basados en la posición de los planetas. Usa el I Ching para definir \"centros\" energéticos inspirados en los chakras.",
+    id: "human-design", title: "Human Design", author: "Ra Uru Hu", year: "1987", type: "sitio",
+    description: "Sistema que combina astrolog\u00eda, I Ching, chakras y Kabbalah.",
+    review: "Creado en 1987. Combina m\u00faltiples sistemas. No tiene respaldo cient\u00edfico pero tiene comunidad activa.",
+    summary: "Define 5 tipos de energ\u00eda basados en la posici\u00f3n de los planetas y el I Ching.",
     link: "https://www.jovianarchive.com",
-    tags: ["human design", "energía"]
+    tags: ["human design", "energ\u00eda"]
   },
   {
-    id: "eneagrama",
-    title: "The Enneagram",
-    author: "Don Richard Riso",
-    year: "1987",
-    type: "libro",
-    description: "Tipología de 9 personalidades con raíces en tradiciones espirituales.",
-    review: "Riso y Hudson crearon un sistema de tipología de personalidad con 9 tipos, cada uno con miedos, deseos y patrones. Aunque tiene raíces en tradiciones espirituales, funciona mejor como herramienta de autoconocimiento que como ciencia.",
-    summary: "Los 9 tipos representan motivaciones centrales: Perfeccionista, Ayudador, Triunfador, Individualista, Investigador, Lealista, Entusiasta, Desafiador, Pacificador. Cada tipo tiene wing, línea de integración y niveles de conciencia.",
+    id: "eneagrama", title: "The Enneagram", author: "Don Richard Riso", year: "1987", type: "libro",
+    description: "Tipolog\u00eda de 9 personalidades con ra\u00edces en tradiciones espirituales.",
+    review: "Sistema de tipolog\u00eda con 9 tipos. Funciona mejor como herramienta de autoconocimiento que como ciencia.",
+    summary: "Los 9 tipos representan motivaciones centrales: Perfeccionista, Ayudador, Triunfador, etc.",
     tags: ["eneagrama", "personalidad"]
   },
   {
-    id: "kabbalah",
-    title: "La Kabbalah",
-    author: "Tradicional",
-    year: "~1200",
-    type: "libro",
-    description: "Árbol de la vida y sistema místico judío.",
-    review: "La Kabbalah es un sistema místico judío con siglos de tradición. Su uso popular (como la \"Kabbalah\" de Madonna) tiene poco que ver con la tradición original. El Árbol de la Vida es su herramienta central para comprender la realidad.",
-    summary: "El Árbol de la Vida tiene 10 sefirot (atributos divinos) conectados por 22 caminos. Cada sefirah representa una cualidad: Keter (Corona), Chokmah (Sabiduría), Binah (Entendimiento), etc. Se usa para meditación y comprensión filosófica.",
+    id: "kabbalah", title: "La Kabbalah", author: "Tradicional", year: "~1200", type: "libro",
+    description: "\u00c1rbol de la vida y sistema m\u00edstico jud\u00edo.",
+    review: "Sistema m\u00edstico con siglos de tradici\u00f3n. Su uso popular tiene poco que ver con la tradici\u00f3n original.",
+    summary: "El \u00c1rbol de la Vida tiene 10 sefirot conectados por 22 caminos. Se usa para meditaci\u00f3n y comprensi\u00f3n.",
     tags: ["kabbalah", "misticismo"]
   },
   {
-    id: "gene-keys",
-    title: "Gene Keys",
-    author: "Richard Rudd",
-    year: "2009",
-    type: "libro",
+    id: "gene-keys", title: "Gene Keys", author: "Richard Rudd", year: "2009", type: "libro",
     description: "Sistema de 64 hexagramas como dones y sombras.",
-    review: "Rudd toma los 64 hexagramas del I Ching y los vincula con el ADN y la astrología. Es un sistema creativo pero sin base científica. Su valor está en el marco reflexivo que ofrece, no en sus afirmaciones biológicas.",
-    summary: "Cada hexagrama tiene una Sombra (medio de expresión negativo), un Dón (cualidad positiva) y una Sidhi (virtud elevada). Se mapea a la fecha de nacimiento para revelar \"genes\" simbólicos.",
+    review: "Toma los 64 hexagramas del I Ching y los vincula con el ADN. Creativo pero sin base cient\u00edfica.",
+    summary: "Cada hexagrama tiene una Sombra, un D\u00f3n y una Sidhi. Se mapea a la fecha de nacimiento.",
     tags: ["gene keys", "codigo"]
   },
   {
-    id: "astrologia-moderna",
-    title: "Astrología Moderna",
-    author: "Stephen Arroyo",
-    year: "1975",
-    type: "libro",
-    description: "Enfoque psicológico y humanista de la astrología.",
-    review: "Arroyo fue pionero en reencuadrar la astrología como herramienta psicológica en vez de predictiva. Su enfoque es más honesto que el de la astrología popular y se acerca a lo que Molino intenta hacer: usar los sistemas como herramientas de reflexión.",
-    summary: "Explica la astrología desde una perspectiva de crecimiento personal. Los signos, planetas y aspectos se interpretan como energías psicológicas, no como destinos. Es una de las mejores introducciones al enfoque moderno de la astrología.",
-    tags: ["astrología", "psicología"]
+    id: "astrologia-moderna", title: "Astrolog\u00eda Moderna", author: "Stephen Arroyo", year: "1975", type: "libro",
+    description: "Enfoque psicol\u00f3gico y humanista de la astrolog\u00eda.",
+    review: "Pionero en reencuadrar la astrolog\u00eda como herramienta psicol\u00f3gica. Enfoque m\u00e1s honesto.",
+    summary: "Los signos, planetas y aspectos se interpretan como energ\u00edas psicol\u00f3gicas, no como destinos.",
+    tags: ["astrolog\u00eda", "psicolog\u00eda"]
   },
   {
-    id: "numerologia-caldaica",
-    title: "Numerología Caldea",
-    author: "Tradicional",
-    year: "~500 a.C.",
-    type: "articulo",
-    description: "Sistema de numerología basado en valores numéricos de las letras del alfabeto caldeo.",
-    review: "La numerología caldea es anterior a la pitagórica. Usa un alfabeto diferente con valores distintos (A=1, B=2, I=10→1, J=10→1, etc.). Su origen es babilónico y está vinculado con la escritura cuneiforme.",
-    summary: "Asigna valores del 1 al 8 al alfabeto caldeo (sin el 9). Se usaba para interpretar nombres y fechas. Aunque menos conocida que la pitagórica, tiene una tradición histórica más antigua.",
-    tags: ["numerología", "caldeo"]
+    id: "numerologia-caldaica", title: "Numerolog\u00eda Caldea", author: "Tradicional", year: "~500 a.C.", type: "articulo",
+    description: "Sistema de numerolog\u00eda basado en valores num\u00e9ricos de las letras del alfabeto caldeo.",
+    review: "Anterior a la pitag\u00f3rica. Usa un alfabeto diferente con valores distintos.",
+    summary: "Asigna valores del 1 al 8 al alfabeto caldeo. Origen babil\u00f3nico.",
+    tags: ["numerolog\u00eda", "caldeo"]
   }
 ];
 
 const TYPE_META = {
-  libro: { label: "Libro", icon: "📖", color: "#D4A843" },
-  articulo: { label: "Artículo", icon: "📄", color: "#4A5568" },
-  video: { label: "Video", icon: "🎥", color: "#6B4C7A" },
-  sitio: { label: "Sitio web", icon: "🌐", color: "#2D5A3D" },
+  libro: { label: "Libro", color: "#D4A843" },
+  articulo: { label: "Art\u00edculo", color: "#4A5568" },
+  video: { label: "Video", color: "#6B4C7A" },
+  sitio: { label: "Sitio web", color: "#2D5A3D" },
 };
 
 export default function BibliotecaPage() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("todos");
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -201,178 +149,111 @@ export default function BibliotecaPage() {
   }, [search, filter, activeTag]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <UniversityHeader />
-      <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
-        <Section className="mb-8">
-          <Card hover={false} padding="lg">
-            <div className="text-center mb-6">
-              <span className="badge mb-3">📚 Biblioteca Pública</span>
-              <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Fuentes y referencias</h1>
-              <p className="text-muted text-sm mt-2 max-w-md mx-auto">
-                Colección curada de libros, artículos y recursos que nutren el conocimiento simbólico de Molino.
-              </p>
-            </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-4">
-              <input
-                type="text"
-                placeholder="Buscar por título, autor o etiqueta..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input flex-1"
-                aria-label="Buscar fuentes"
-              />
-              <select
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="input"
-                aria-label="Filtrar por tipo"
-              >
-                <option value="todos">Todos los tipos</option>
-                <option value="libro">📖 Libros</option>
-                <option value="articulo">📄 Artículos</option>
-                <option value="video">🎥 Videos</option>
-                <option value="sitio">🌐 Sitios web</option>
-              </select>
-            </div>
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
-            <div className="flex flex-wrap gap-2 mb-4">
-              <button
-                onClick={() => setActiveTag(null)}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                  !activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-border text-muted hover:text-foreground"
-                }`}
-              >
-                Todos
-              </button>
-              {allTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                    activeTag === tag ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground"
-                  }`}
-                >
-                  #{tag}
-                </button>
-              ))}
-            </div>
-          </Card>
-        </Section>
+        {/* Hero — editorial, outside cards */}
+        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Biblioteca</p>
+          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+            Fuentes y referencias
+          </h1>
+          <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
+            Colecci&oacute;n curada de libros, art&iacute;culos y recursos que nutren el conocimiento simb&oacute;lico de Molino.
+          </p>
+        </motion.section>
 
-        <Section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filtered.map((source) => {
-              const meta = TYPE_META[source.type];
-              return (
-                <Card key={source.id} hover padding="md">
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">{meta.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <h3 className="font-semibold text-foreground truncate">{source.title}</h3>
-                        <span
-                          className="text-[10px] font-medium px-2 py-1 rounded-full flex-shrink-0"
-                          style={{ background: `${meta.color}15`, color: meta.color }}
-                        >
-                          {meta.label}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted mb-2">
-                        {source.author} · {source.year}
-                      </p>
-                      <p className="text-sm text-muted mb-3">{source.description}</p>
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {(source.tags || []).map(tag => (
-                          <span key={tag} className="text-[10px] bg-background border border-border rounded-full px-2 py-0.5 text-muted">
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                      {source.link && (
-                        <a
-                          href={source.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-accent hover:text-foreground transition-colors"
-                        >
-                          Ver fuente →
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  {/* Buttons */}
-                  <div className="flex gap-2 mt-3 pt-3 border-t border-border">
-                    {source.review && (
-                      <button
-                        type="button"
-                        onClick={() => setExpandedReview(expandedReview === source.id ? null : source.id)}
-                        className={`flex-1 text-left px-3 py-2 rounded-lg text-xs font-medium transition-all min-h-[36px] ${
-                          expandedReview === source.id
-                            ? "bg-accent text-accent-foreground"
-                            : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"
-                        }`}
-                      >
-                        Leer Reseña
-                      </button>
-                    )}
-                    {source.summary && (
-                      <button
-                        type="button"
-                        onClick={() => setExpandedSummary(expandedSummary === source.id ? null : source.id)}
-                        className={`flex-1 text-left px-3 py-2 rounded-lg text-xs font-medium transition-all min-h-[36px] ${
-                          expandedSummary === source.id
-                            ? "bg-accent text-accent-foreground"
-                            : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"
-                        }`}
-                      >
-                        Ver Resumen
-                      </button>
-                    )}
-                  </div>
-                  {/* Expandable Review */}
-                  {expandedReview === source.id && source.review && (
-                    <div className="mt-3 p-3 rounded-lg bg-background border border-border">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Reseña</p>
-                      <p className="text-xs text-muted leading-relaxed">{source.review}</p>
-                    </div>
-                  )}
-                  {/* Expandable Summary */}
-                  {expandedSummary === source.id && source.summary && (
-                    <div className="mt-3 p-3 rounded-lg bg-background border border-border">
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Resumen</p>
-                      <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
-                    </div>
-                  )}
-                </Card>
-              );
-            })}
+        {/* Search + Filters */}
+        <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
+            <input type="text" placeholder="Buscar por t&iacute;tulo, autor o etiqueta..." value={search} onChange={(e) => setSearch(e.target.value)} className="input flex-1" aria-label="Buscar fuentes" />
+            <select value={filter} onChange={(e) => setFilter(e.target.value)} className="input" aria-label="Filtrar por tipo">
+              <option value="todos">Todos los tipos</option>
+              <option value="libro">Libros</option>
+              <option value="articulo">Art&iacute;culos</option>
+              <option value="video">Videos</option>
+              <option value="sitio">Sitios web</option>
+            </select>
           </div>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => setActiveTag(null)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${!activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+              Todos
+            </button>
+            {allTags.map(tag => (
+              <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${activeTag === tag ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+                #{tag}
+              </button>
+            ))}
+          </div>
+        </motion.section>
 
-          {filtered.length === 0 && (
-            <div className="text-center py-16 text-muted">
-              <p className="text-lg">No se encontraron fuentes</p>
-              <p className="text-sm mt-2">Probá con otra búsqueda o filtro.</p>
-            </div>
-          )}
-        </Section>
+        {/* Section divider */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-8 h-px bg-border" aria-hidden="true" />
+          <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{filtered.length} fuentes</h2>
+        </div>
 
-        <Section className="mt-8">
-          <Card hover={false}>
-            <div className="text-center">
-              <p className="text-sm text-muted">
-                📢 ¿Conocés una fuente relevante?
-              </p>
-              <Button variant="secondary" className="mt-3" asChild>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                  Contribuir en GitHub
-                </a>
-              </Button>
-            </div>
-          </Card>
-        </Section>
-      </div>
+        {/* Sources grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((source, i) => {
+            const meta = TYPE_META[source.type];
+            return (
+              <motion.div key={source.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} className="p-5 rounded-xl border border-border bg-card flex flex-col">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <h3 className="font-serif text-base font-semibold text-foreground truncate">{source.title}</h3>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: `${meta.color}15`, color: meta.color }}>
+                    {meta.label}
+                  </span>
+                </div>
+                <p className="text-xs text-muted mb-2">{source.author} &middot; {source.year}</p>
+                <p className="text-sm text-muted mb-3 flex-1">{source.description}</p>
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {(source.tags || []).map(tag => (
+                    <span key={tag} className="text-[10px] bg-background border border-border rounded-full px-2 py-0.5 text-muted">#{tag}</span>
+                  ))}
+                </div>
+                {/* Buttons */}
+                <div className="flex gap-2 mt-auto pt-3 border-t border-border">
+                  {source.review && (
+                    <button type="button" onClick={() => setExpandedReview(expandedReview === source.id ? null : source.id)} className={`flex-1 text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedReview === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
+                      Leer Rese&ntilde;a
+                    </button>
+                  )}
+                  {source.summary && (
+                    <button type="button" onClick={() => setExpandedSummary(expandedSummary === source.id ? null : source.id)} className={`flex-1 text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedSummary === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
+                      Ver Resumen
+                    </button>
+                  )}
+                </div>
+                {/* Expandable content */}
+                {expandedReview === source.id && source.review && (
+                  <div className="mt-3 p-3 rounded-lg bg-background border border-border">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Rese&ntilde;a</p>
+                    <p className="text-xs text-muted leading-relaxed">{source.review}</p>
+                  </div>
+                )}
+                {expandedSummary === source.id && source.summary && (
+                  <div className="mt-3 p-3 rounded-lg bg-background border border-border">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Resumen</p>
+                    <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="text-center py-16 text-muted">
+            <p className="text-lg">No se encontraron fuentes</p>
+            <p className="text-sm mt-2">Prob&aacute; con otra b&uacute;squeda o filtro.</p>
+          </div>
+        )}
+
+      </main>
+
       <UniversityFooter />
     </div>
   );
