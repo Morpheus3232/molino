@@ -83,7 +83,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <span style={{ color: "#F5F5F5", fontSize: 32, fontWeight: 700, fontFamily: "Georgia, serif" }}>
               {entity.name}
             </span>
-            <span style={{ color: "#C49A2A", fontSize: 18, fontWeight: 600 }}>
+            <span style={{ color: "#C49A2A", fontSize: 20, fontWeight: 600 }}>
               {entityAnimal}
             </span>
           </div>

@@ -16,28 +16,29 @@ interface AffinityShareableCardProps {
 function buildShareText(result: AffinityResult): string {
   const { entity, entityAnimal, userAnimal, score, relationship } = result;
   const emoji = entity.emoji || "";
+  const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son el mismo signo. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `Soy ${userAnimal} y ${entity.name} también. Afinidad ${score}/100 — ${tierLabel}. Descubrí la tuya en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
   }
 
   if (relationship === "armonía natural") {
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen armonía natural. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} se complementan. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
   }
 
   if (relationship === "opuestos en el ciclo") {
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son opuestos en el ciclo. ${score}/100 según el zodíaco chino. Mirá qué significa en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} son opuestos que se atraen. ${score}/100 con ${emoji} ${entity.name}. Mirá qué significa en Molino ✨`;
   }
 
   if (relationship === "requiere atención") {
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen una relación que requiere atención. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${score}/100 con ${emoji} ${entity.name}. Descubrí la tuya en Molino ✨`;
   }
 
-  return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${entityAnimal} ↔ ${userAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. Descubrí la tuya en Molino ✨`;
 }
 
 /**

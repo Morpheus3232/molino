@@ -178,11 +178,14 @@ export default function AnimalContent() {
           <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Conocé tu animal</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
-              Calculá tu animal del zodiaco chino o explorá compatibilidades entre personas.
+              Calculá tu animal del zodiaco chino, descubrí tu afinidad con entidades del mundo, o explorá compatibilidades entre personas.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/herramientas/zodiaco-chino" className="text-sm font-medium text-accent hover:underline">
                 Calculá tu animal →
+              </Link>
+              <Link href="/affinity" className="text-sm font-medium text-accent hover:underline">
+                Afinidad simbólica →
               </Link>
               <Link href="/herramientas/compatibilidad" className="text-sm font-medium text-accent hover:underline">
                 Compatibilidad →

@@ -11,6 +11,7 @@ const NAV_GROUPS = [
     label: "Descubrir",
     items: [
       { href: "/explore", label: "Explorar" },
+      { href: "/affinity", label: "Afinidad Simb\u00f3lica" },
       { href: "/conocimiento/numerologia", label: "Numerolog\u00eda" },
       { href: "/conocimiento/astrologia", label: "Astrolog\u00eda" },
       { href: "/conocimiento/zodiaco-chino", label: "Zod\u00edaco Chino" },

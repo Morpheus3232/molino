@@ -2,19 +2,21 @@
 
 import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { calculateAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { getEntitiesByType } from "@/lib/data/symbolic-entities";
+import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
-import CountUp from "@/components/ui/CountUp";
+import AffinityScoreGauge from "@/components/ui/AffinityScoreGauge";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
+import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 
 interface AffinityDetailContentProps {
@@ -32,6 +34,14 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
     if (!profile) return null;
     return calculateAffinity(profile, entity);
   }, [profile, entity]);
+
+  // Discovery loop — top 3 related entities across all types (excluding current)
+  const relatedEntities = useMemo(() => {
+    if (!profile || !result) return [];
+    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
+      .filter(r => r.entity.id !== entity.id)
+      .slice(0, 3);
+  }, [profile, entity, result]);
 
   if (!mounted) return <LoadingState message="Cargando..." />;
 
@@ -53,7 +63,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <button
             type="button"
             onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             Crear mi perfil
           </button>
@@ -77,64 +87,31 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <button
             type="button"
             onClick={() => router.push(`/affinity/${type}`)}
-            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
+            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
           >
             &larr; {meta.plural}
           </button>
         </motion.div>
 
-        {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Personal · {meta.label}
-          </p>
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-5xl">{entity.emoji}</span>
-            <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
-                {entity.name}
-              </h1>
-              <p className="text-sm text-muted mt-1">{entity.country}</p>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Score hero */}
+        {/* Hero — premium reveal */}
         {result && tierMeta && (
-          <motion.section {...fadeUp} className="mb-12">
-            <div className="flex items-center gap-6 p-6 rounded-2xl border border-border bg-card">
-              <div className="text-center">
-                <CountUp
-                  target={result.score}
-                  duration={1}
-                  className="font-serif text-5xl font-bold text-foreground"
-                />
-                <div className="text-xs text-muted mt-1">/ 100</div>
-              </div>
-              <div className="h-12 w-px bg-border" aria-hidden="true" />
-              <div>
-                <div
-                  className="text-sm font-semibold uppercase tracking-wider"
-                  style={{ color: tierMeta.color }}
-                >
-                  {tierMeta.label}
-                </div>
-                <p className="text-xs text-muted mt-1 max-w-xs">{tierMeta.description}</p>
-              </div>
-            </div>
-          </motion.section>
+          <PremiumHero result={result} entity={entity} meta={meta} type={type} />
         )}
 
-        {/* Share CTA — right after score, before details */}
+        {/* Quick selector — same type entities */}
+        {result && profile && (
+          <AnimalQuickSelector profile={profile} currentEntity={entity} type={type} />
+        )}
+
+        {/* Share CTA — right after hero, before details */}
         {result && (
           <ShareInlineCTA result={result} entity={entity} />
         )}
 
         {/* Base del cálculo simbólico */}
         {result && primaryEvent && (
-          <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Base del cálculo simbólico" />
-            <div className="p-6 rounded-2xl border border-border bg-card">
+          <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-calculo">
+            <CollapsibleSection title="Base del cálculo simbólico" id="section-calculo">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Tu año */}
                 <div>
@@ -179,15 +156,14 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   </p>
                 )}
               </div>
-            </div>
+            </CollapsibleSection>
           </motion.section>
         )}
 
         {/* Relationship */}
         {result && (
-          <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Relación entre ambos animales" />
-            <div className="p-6 rounded-2xl border border-border bg-card">
+          <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-relacion">
+            <CollapsibleSection title="Relación entre ambos animales" id="section-relacion">
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{entity.emoji}</span>
                 <p className="text-sm font-medium text-foreground">
@@ -205,18 +181,17 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               {result.tradition && (
                 <p className="text-xs text-muted/70 italic">{result.tradition}</p>
               )}
-            </div>
+            </CollapsibleSection>
           </motion.section>
         )}
 
         {/* Why this affinity */}
         {result && (
-          <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="¿Por qué esta afinidad?" />
-            <div className="p-6 rounded-2xl border border-border bg-card">
+          <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-por-que">
+            <CollapsibleSection title="¿Por qué esta afinidad?" id="section-por-que">
               <p className="text-sm text-foreground leading-relaxed mb-4">{result.summary}</p>
               <p className="text-xs text-muted leading-relaxed italic">{result.methodNote}</p>
-            </div>
+            </CollapsibleSection>
           </motion.section>
         )}
 
@@ -230,7 +205,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             <button
               type="button"
               onClick={() => router.push(`/compatibility/${entity.id}`)}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
             >
               Explorar análisis avanzado
               <span aria-hidden="true">→</span>
@@ -246,7 +221,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               <button
                 type="button"
                 onClick={() => setShowOtherEvents(!showOtherEvents)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
+                className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
                 aria-expanded={showOtherEvents}
               >
                 <div>
@@ -291,28 +266,29 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Documented data */}
         <motion.section {...fadeUp} className="mb-12">
-          <SectionHeader title="Datos documentados" />
-          <div className="p-6 rounded-2xl border border-border bg-card space-y-3">
-            <DataRow label="Nombre" value={entity.name} />
-            <DataRow label="Tipo" value={meta.label} />
-            <DataRow label="País de origen" value={entity.country} />
-            {primaryEvent && (
-              <>
-                <DataRow label="Evento principal" value={primaryEvent.label} />
-                {primaryEvent.date && (
-                  <DataRow label="Fecha" value={formatDisplayDate(primaryEvent.date)} />
-                )}
-                {!primaryEvent.date && (
-                  <DataRow label="Año" value={String(primaryEvent.year)} />
-                )}
-                <DataRow label="Fuente" value={primaryEvent.source} />
-              </>
-            )}
-            <DataRow label="Temas clave" value={entity.keyThemes.join(", ")} />
-            {entity.sourceNote && (
-              <DataRow label="Nota" value={entity.sourceNote} />
-            )}
-          </div>
+          <CollapsibleSection title="Datos documentados">
+            <div className="space-y-3">
+              <DataRow label="Nombre" value={entity.name} />
+              <DataRow label="Tipo" value={meta.label} />
+              <DataRow label="País de origen" value={entity.country} />
+              {primaryEvent && (
+                <>
+                  <DataRow label="Evento principal" value={primaryEvent.label} />
+                  {primaryEvent.date && (
+                    <DataRow label="Fecha" value={formatDisplayDate(primaryEvent.date)} />
+                  )}
+                  {!primaryEvent.date && (
+                    <DataRow label="Año" value={String(primaryEvent.year)} />
+                  )}
+                  <DataRow label="Fuente" value={primaryEvent.source} />
+                </>
+              )}
+              <DataRow label="Temas clave" value={entity.keyThemes.join(", ")} />
+              {entity.sourceNote && (
+                <DataRow label="Nota" value={entity.sourceNote} />
+              )}
+            </div>
+          </CollapsibleSection>
         </motion.section>
 
         {/* Disclaimer */}
@@ -368,41 +344,49 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           );
         })()}
 
-        {/* "Descubrí algo más" recommendations */}
-        {result && (
+        {/* Discovery loop — related entities across all types */}
+        {relatedEntities.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Descubrí algo más" />
             <div className="space-y-3">
-              {/* Same animal entities */}
-              {(() => {
-                const sameAnimalEntities = getEntitiesByType(type)
-                  .filter(e => e.id !== entity.id)
-                  .slice(0, 2);
-                return sameAnimalEntities.map(e => (
-                  <button
-                    key={e.id}
-                    type="button"
-                    onClick={() => router.push(`/affinity/${type}/${e.id}`)}
-                    className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
+              {relatedEntities.map((rel) => {
+                const relTier = TIER_META[rel.tier];
+                const typeMeta = ENTITY_TYPES[rel.entity.type];
+                return (
+                  <Link
+                    key={rel.entity.id}
+                    href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
+                    className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">{e.emoji}</span>
+                      <span className="text-xl shrink-0">{rel.entity.emoji}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                          {e.name}
+                          {rel.entity.name}
                         </p>
-                        <p className="text-xs text-muted">{e.country}</p>
+                        <p className="text-xs text-muted">
+                          {typeMeta?.label ?? rel.entity.type}
+                          <span aria-hidden="true"> · </span>
+                          {rel.relationship}
+                        </p>
                       </div>
-                      <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span
+                          className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                          style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
+                        >
+                          {rel.score}
+                        </span>
+                        <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
+                      </div>
                     </div>
-                  </button>
-                ));
-              })()}
+                  </Link>
+                );
+              })}
               {/* Back to profile */}
-              <button
-                type="button"
-                onClick={() => router.push("/profile?tab=identity")}
-                className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
+              <Link
+                href="/profile?tab=identity"
+                className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-xl">✦</span>
@@ -414,7 +398,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   </div>
                   <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
                 </div>
-              </button>
+              </Link>
             </div>
           </motion.section>
         )}
@@ -425,28 +409,28 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             <button
               type="button"
               onClick={() => router.push("/conocimiento/zodiaco-chino")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Conocé el zodíaco chino →
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Comparar con otra entidad
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/${type}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
             </button>
             <button
               type="button"
               onClick={() => router.push("/affinity")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Explorar
             </button>
@@ -462,6 +446,218 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 // SUB-COMPONENTS
 // ════════════════════════════════════════════════════
 
+function PremiumHero({
+  result,
+  entity,
+  meta,
+  type,
+}: {
+  result: AffinityResult;
+  entity: SymbolicEntity;
+  meta: { label: string; plural: string; icon: string; description: string };
+  type: EntityType;
+}) {
+  const router = useRouter();
+  const reducedMotion = useReducedMotion();
+  const tierMeta = TIER_META[result.tier];
+  const explanation = buildContextualExplanation(result);
+
+  // Stagger delays (seconds)
+  const d = {
+    animals: reducedMotion ? 0 : 0,
+    gauge: reducedMotion ? 0 : 0.15,
+    tier: reducedMotion ? 0 : 0.35,
+    explanation: reducedMotion ? 0 : 0.5,
+    ctas: reducedMotion ? 0 : 0.65,
+  };
+
+  return (
+    <motion.section
+      className="mb-12"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="whileInView"
+      viewport={{ once: true, margin: "-40px" }}
+    >
+      {/* Label */}
+      <motion.div variants={staggerItem}>
+        <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
+          Afinidad Personal · {meta.label}
+        </p>
+      </motion.div>
+
+      {/* Animals facing each other — approach animation for high scores */}
+      <motion.div
+        variants={staggerItem}
+        className="flex items-end justify-center gap-6 sm:gap-10 mb-8"
+      >
+        {/* Entity — moves right for high scores */}
+        <motion.div
+          className="text-center"
+          animate={reducedMotion ? {} : { x: result.score >= 75 ? 12 : 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label={entity.name}>
+            {entity.emoji}
+          </span>
+          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+            {entity.name}
+          </p>
+          <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.entityAnimal)}</p>
+        </motion.div>
+
+        {/* VS divider — fades for high scores */}
+        <motion.div
+          className="flex flex-col items-center pb-6"
+          animate={reducedMotion ? {} : { opacity: result.score >= 75 ? 0.3 : 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/40 font-medium">vs</span>
+        </motion.div>
+
+        {/* User — moves left for high scores */}
+        <motion.div
+          className="text-center"
+          animate={reducedMotion ? {} : { x: result.score >= 75 ? -12 : 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label="Vos">
+            🪞
+          </span>
+          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+            Vos
+          </p>
+          <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.userAnimal)}</p>
+        </motion.div>
+      </motion.div>
+
+      {/* Score Gauge — centered */}
+      <motion.div variants={staggerItem} className="flex justify-center mb-6">
+        <AffinityScoreGauge score={result.score} color={tierMeta.color} size={200} />
+      </motion.div>
+
+      {/* Tier badge */}
+      <motion.div variants={staggerItem} className="flex justify-center mb-4">
+        <span
+          className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-full"
+          style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
+        >
+          {tierMeta.label}
+        </span>
+      </motion.div>
+
+      {/* Contextual explanation */}
+      <motion.div variants={staggerItem} className="text-center mb-8 px-4">
+        <p className="text-sm text-foreground leading-relaxed max-w-md mx-auto">
+          {explanation}
+        </p>
+      </motion.div>
+
+      {/* CTAs — primary Share + secondary Explore */}
+      <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3 justify-center">
+        <ShareButton result={result} entity={entity} tierMeta={tierMeta} />
+        <button
+          type="button"
+          onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
+          className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        >
+          Explorar otra entidad
+          <span aria-hidden="true">→</span>
+        </button>
+      </motion.div>
+    </motion.section>
+  );
+}
+
+function buildContextualExplanation(result: AffinityResult): string {
+  const { entity, userAnimal, entityAnimal, relationship, score } = result;
+  const eName = entity.name;
+
+  if (entityAnimal === userAnimal) {
+    return `${userAnimal} y ${entityAnimal} son el mismo signo — una conexión directa con ${eName}.`;
+  }
+  if (score >= 75) {
+    return `${userAnimal} y ${entityAnimal} tienen una fuerte resonancia simbólica según la tradición del zodíaco chino.`;
+  }
+  if (score >= 60) {
+    return `${userAnimal} y ${entityAnimal} comparten una conexión moderada que revela puntos de interés con ${eName}.`;
+  }
+  if (score >= 45) {
+    return `${userAnimal} y ${entityAnimal} son diferentes pero se enriquecen mutuamente en el ciclo del zodíaco chino.`;
+  }
+  if (score >= 30) {
+    return `La relación entre ${userAnimal} y ${entityAnimal} genera una tensión creativa según esta tradición.`;
+  }
+  return `${userAnimal} y ${entityAnimal} tienen una baja resonancia simbólica, pero no por eso menos interesante.`;
+}
+
+function ShareButton({
+  result,
+  entity,
+  tierMeta,
+}: {
+  result: AffinityResult;
+  entity: SymbolicEntity;
+  tierMeta: { label: string; color: string; description: string };
+}) {
+  const [copied, setCopied] = useState(false);
+  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
+
+  const shareText = useMemo(() => {
+    const { entityAnimal, userAnimal, score } = result;
+    const emoji = entity.emoji || "";
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} ↔ ${entityAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+  }, [result, entity]);
+
+  const handleShare = useCallback(async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Afinidad simbólica con ${entity.name} — Molino`,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch {
+        // User cancelled
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [entity, shareText, shareUrl]);
+
+  return (
+    <button
+      type="button"
+      onClick={handleShare}
+      className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+      style={{ backgroundColor: tierMeta.color, color: "#fff" }}
+      aria-label={`Compartir afinidad con ${entity.name}`}
+    >
+      {copied ? (
+        <>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Enlace copiado
+        </>
+      ) : (
+        <>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+          Compartir
+        </>
+      )}
+    </button>
+  );
+}
+
 function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: SymbolicEntity }) {
   const [copied, setCopied] = useState(false);
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
@@ -469,23 +665,24 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
   const shareText = useMemo(() => {
     const { entityAnimal, userAnimal, score, relationship } = result;
     const emoji = entity.emoji || "";
+    const tierLabel = TIER_META[result.tier].label;
 
     if (entityAnimal === userAnimal) {
-      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son el mismo signo. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+      return `Soy ${userAnimal} y ${entity.name} también. Afinidad ${score}/100 — ${tierLabel}. Descubrí la tuya en Molino ✨`;
     }
     if (relationship === "tríada compatible") {
-      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
     }
     if (relationship === "armonía natural") {
-      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen armonía natural. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal} se complementan. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
     }
     if (relationship === "opuestos en el ciclo") {
-      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son opuestos en el ciclo. ${score}/100 según el zodíaco chino. Mirá qué significa en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal} son opuestos que se atraen. ${score}/100 con ${emoji} ${entity.name}. Mirá qué significa en Molino ✨`;
     }
     if (relationship === "requiere atención") {
-      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen una relación que requiere atención. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${score}/100 con ${emoji} ${entity.name}. Descubrí la tuya en Molino ✨`;
     }
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${entityAnimal} ↔ ${userAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. Descubrí la tuya en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -532,7 +729,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
           <button
             type="button"
             onClick={handleShare}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm min-h-[40px]"
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             style={{
               backgroundColor: tierMeta.color,
               color: "#fff",
@@ -595,11 +792,11 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
   );
 }
 
-function SectionHeader({ title }: { title: string }) {
+function SectionHeader({ title, id }: { title: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-5">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+      <h2 id={id} className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
     </div>
   );
 }
@@ -618,4 +815,52 @@ function formatDisplayDate(dateStr: string): string {
   const months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
   const monthIdx = parseInt(month, 10) - 1;
   return `${parseInt(day, 10)} de ${months[monthIdx]} de ${year}`;
+}
+
+/**
+ * Collapsible section — always expanded on desktop (sm:), collapsed on mobile by default.
+ * Tap to expand on mobile. Uses CSS transitions for smooth animation.
+ */
+function CollapsibleSection({
+  title,
+  id,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  id?: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="rounded-2xl border border-border bg-card overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/20 transition-colors sm:pointer-events-none sm:cursor-default focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
+        aria-expanded={open}
+        aria-controls={id}
+      >
+        <SectionHeader title={title} id={id} />
+        <svg
+          className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ml-4 sm:hidden ${open ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+          aria-hidden="true"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div
+        className={`${open ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"} sm:max-h-none sm:opacity-100 transition-all duration-300 ease-in-out overflow-hidden`}
+      >
+        <div className="px-5 pb-5">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
 }

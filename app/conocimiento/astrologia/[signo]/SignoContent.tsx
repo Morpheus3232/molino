@@ -173,11 +173,16 @@ export default function SignoContent() {
           <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Calculá tu signo solar</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
-              Descubrí tu signo zodiacal occidental a partir de tu fecha de nacimiento.
+              Descubrí tu signo zodiacal occidental a partir de tu fecha de nacimiento, o explorá tu afinidad simbólica con entidades del mundo.
             </p>
-            <Link href="/herramientas/signo-solar" className="text-sm font-medium text-accent hover:underline">
-              Ir a la calculadora →
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/herramientas/signo-solar" className="text-sm font-medium text-accent hover:underline">
+                Ir a la calculadora →
+              </Link>
+              <Link href="/affinity" className="text-sm font-medium text-accent hover:underline">
+                Afinidad simbólica →
+              </Link>
+            </div>
           </div>
         </motion.section>
 
