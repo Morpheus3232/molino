@@ -11,7 +11,8 @@ type EventType =
   | "affinity_date_entered"
   | "affinity_result_viewed"
   | "affinity_shared"
-  | "affinity_profile_cta_clicked";
+  | "affinity_profile_cta_clicked"
+  | "affinity_recommendation_clicked";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -173,6 +174,13 @@ class Analytics {
     this.track({
       type: "affinity_profile_cta_clicked",
       data: { entityType },
+    });
+  }
+
+  trackAffinityRecommendationClicked(entityType: string, sourceEntity: string, targetEntity: string, position: number) {
+    this.track({
+      type: "affinity_recommendation_clicked",
+      data: { entityType, sourceEntity, targetEntity, position },
     });
   }
 }

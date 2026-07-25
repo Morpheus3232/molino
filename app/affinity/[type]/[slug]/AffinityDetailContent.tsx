@@ -334,13 +334,14 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Descubrí algo más" />
             <div className="space-y-3">
-              {relatedEntities.map((rel) => {
+              {relatedEntities.map((rel, idx) => {
                 const relTier = TIER_META[rel.tier];
                 const typeMeta = ENTITY_TYPES[rel.entity.type];
                 return (
                   <Link
                     key={rel.entity.id}
                     href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
+                    onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
                     className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
@@ -933,6 +934,23 @@ function QuickAffinity({
     return calculateAffinity(profile, entity);
   }, [day, month, year, entity]);
 
+  // Recommendations — top 3 across all types (excluding current)
+  const relatedEntities = useMemo(() => {
+    if (!result) return [];
+    let birthDate = "";
+    try {
+      birthDate = sessionStorage.getItem(AFFINITY_DATE_KEY) || "";
+    } catch {}
+    if (!birthDate && day && month && year) {
+      birthDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    }
+    if (!birthDate) return [];
+    const profile = calculateUserProfile("", birthDate);
+    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
+      .filter(r => r.entity.id !== entity.id)
+      .slice(0, 3);
+  }, [day, month, year, entity]);
+
   const handleSubmit = useCallback(() => {
     setError("");
     const parsedDay = parseInt(day, 10);
@@ -1094,6 +1112,50 @@ function QuickAffinity({
                 </button>
               </div>
             </motion.section>
+
+            {/* Recommendations — next discoveries */}
+            {relatedEntities.length > 0 && (
+              <motion.section {...fadeUp} className="mb-12">
+                <SectionHeader title="Seguí descubriendo" />
+                <div className="space-y-3">
+                  {relatedEntities.map((rel, idx) => {
+                    const relTier = TIER_META[rel.tier];
+                    const typeMeta = ENTITY_TYPES[rel.entity.type];
+                    return (
+                      <Link
+                        key={rel.entity.id}
+                        href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
+                        onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
+                        className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl shrink-0">{rel.entity.emoji}</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
+                              {rel.entity.name}
+                            </p>
+                            <p className="text-xs text-muted">
+                              {typeMeta?.label ?? rel.entity.type}
+                              <span aria-hidden="true"> · </span>
+                              {rel.relationship}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span
+                              className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                              style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
+                            >
+                              {rel.score}
+                            </span>
+                            <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </motion.section>
+            )}
           </>
         )}
       </main>
