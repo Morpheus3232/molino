@@ -15,6 +15,7 @@ import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import { getPrimaryEvent, resolveEventAnimal, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
+import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
 
 // ════════════════════════════════════════════════════
 // TYPES
@@ -69,71 +70,36 @@ export function getTierForScore(score: number): AffinityTier {
 // ZODIAC RELATIONSHIP
 // ════════════════════════════════════════════════════
 
-const ANIMALS = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
-
-/** Score table based on traditional Chinese zodiac relationships */
-const ZODIAC_SCORES: Record<number, number> = {
-  0: 85,   // mismo animal
-  1: 80,   // Liu He (六合) — harmonía
-  2: 50,   // neutral
-  3: 40,   // tensión
-  4: 75,   // San He (三合) — tríada
-  5: 35,   // daño (害)
-  6: 90,   // Si Hai (四害) — opuestos complementarios
-  7: 35,   // daño (害)
-  8: 40,   // tensión
-  9: 50,   // neutral
-  10: 80,  // Liu He (六合) — harmonía
-  11: 50,  // neutral
-};
-
-/** Human-readable relationship label */
-function getRelationship(diff: number, userAnimal: string, entityAnimal: string): string {
-  if (diff === 0) return "mismo animal";
-  if (diff === 6) return "opuestos complementarios";
-  if (diff === 4 || diff === 8) return "tríada compatible";
-  if (diff === 1 || diff === 10) return "armonía natural";
-  if (diff === 5 || diff === 7) return "relación desafiante";
-  if (diff === 3 || diff === 9) return "tensión creativa";
-  return "energías independientes";
+/** Get zodiac score from canonical animalRelations */
+function getZodiacScore(userAnimal: string, entityAnimal: string): number {
+  if (!userAnimal || !entityAnimal) return 50;
+  return getRelation(userAnimal as Animal, entityAnimal as Animal).score;
 }
 
-/** Detailed explanation of the relationship */
-function getExplanation(diff: number, userAnimal: string, entityAnimal: string): string {
-  if (diff === 0) {
-    return `Ambos nacieron en un año de ${userAnimal}. Según la tradición china, compartir el mismo animal indica una energía base similar: fortalezas parecidas y desafíos parejos.`;
-  }
-  if (diff === 6) {
-    return `${userAnimal} y ${entityAnimal} son opuestos en el ciclo del zodíaco chino. La tradición dice que los opuestos se atraen: cada uno tiene lo que el otro necesita.`;
-  }
-  if (diff === 4 || diff === 8) {
-    return `${userAnimal} y ${entityAnimal} pertenecen a la misma tríada (San He). Comparten un elemento oculto y una sintonía natural.`;
-  }
-  if (diff === 1 || diff === 10) {
-    return `${userAnimal} y ${entityAnimal} forman una pareja armoniosa (Liu He). Se complementan de forma natural.`;
-  }
-  if (diff === 5 || diff === 7) {
-    return `${userAnimal} y ${entityAnimal} tienen una relación desafiante. No es negativa, pero requiere conciencia y adaptación mutua.`;
-  }
-  if (diff === 3 || diff === 9) {
-    return `La tensión entre ${userAnimal} y ${entityAnimal} puede generar crecimiento. Son diferentes, pero esa diferencia puede ser productiva.`;
-  }
-  return `${userAnimal} y ${entityAnimal} tienen energías independientes. No hay una conexión fuerte en el ciclo, pero tampoco conflicto.`;
+/** Human-readable relationship label from canonical animalRelations */
+function getRelationship(_diff: number, userAnimal: string, entityAnimal: string): string {
+  if (!userAnimal || !entityAnimal) return "datos insuficientes";
+  return getRelation(userAnimal as Animal, entityAnimal as Animal).label;
+}
+
+/** Detailed explanation of the relationship from canonical animalRelations */
+function getExplanation(_diff: number, userAnimal: string, entityAnimal: string): string {
+  if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
+  return getRelation(userAnimal as Animal, entityAnimal as Animal).description;
 }
 
 /** Traditional context for the relationship */
-function getTradition(diff: number, userAnimal: string, entityAnimal: string): string | undefined {
-  if (diff === 0) {
-    return "Según la tradición, dos personas del mismo animal comparten fortalezas naturales pero también los mismos puntos ciegos.";
-  }
-  if (diff === 6) {
-    return "Los opuestos en el zodíaco chino (Si Hai) representan la tensión más productiva del ciclo: polaridades que se completan.";
-  }
-  if (diff === 4 || diff === 8) {
+function getTradition(_diff: number, userAnimal: string, entityAnimal: string): string | undefined {
+  if (!userAnimal || !entityAnimal) return undefined;
+  const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
+  if (rel.type === "triad") {
     return "Las trías San He agrupan animales por elemento oculto: Rata-Dragón-Mono (Agua), Buey-Serpiente-Gallo (Metal), Tigre-Caballo-Perro (Fuego), Conejo-Cabra-Cerdo (Madera).";
   }
-  if (diff === 1 || diff === 10) {
+  if (rel.type === "harmonious") {
     return "Los pares Liu He (六合) son combinaciones armoniosas: Rata-Buey, Tigre-Conejo, Dragón-Serpiente, Caballo-Cabra, Mono-Gallo, Perro-Cerdo.";
+  }
+  if (rel.type === "same") {
+    return "Según la tradición, dos personas del mismo animal comparten fortalezas naturales pero también los mismos puntos ciegos.";
   }
   return undefined;
 }
@@ -174,8 +140,8 @@ export function calculateAffinity(
   // Other events (editorial only, never participate in score)
   const otherEvents = entity.events.filter(e => e.id !== primaryEvent.id);
 
-  const ui = ANIMALS.indexOf(userAnimal);
-  const ei = ANIMALS.indexOf(entityAnimal);
+  const ui = ANIMALS.indexOf(userAnimal as Animal);
+  const ei = ANIMALS.indexOf(entityAnimal as Animal);
 
   // Default score if data is missing
   let score = 50;
@@ -186,7 +152,7 @@ export function calculateAffinity(
 
   if (ui !== -1 && ei !== -1) {
     diff = Math.abs(ui - ei) % 12;
-    score = ZODIAC_SCORES[diff] ?? 50;
+    score = getZodiacScore(userAnimal, entityAnimal);
     relationship = getRelationship(diff, userAnimal, entityAnimal);
     explanation = getExplanation(diff, userAnimal, entityAnimal);
     tradition = getTradition(diff, userAnimal, entityAnimal);
@@ -287,8 +253,8 @@ export interface AnimalComparison {
  * Used for entity-vs-entity comparison (not user-vs-entity).
  */
 export function calculateAnimalComparison(animalA: string, animalB: string): AnimalComparison {
-  const ui = ANIMALS.indexOf(animalA);
-  const ei = ANIMALS.indexOf(animalB);
+  const ui = ANIMALS.indexOf(animalA as Animal);
+  const ei = ANIMALS.indexOf(animalB as Animal);
 
   if (ui === -1 || ei === -1) {
     return {
@@ -302,7 +268,7 @@ export function calculateAnimalComparison(animalA: string, animalB: string): Ani
   }
 
   const diff = Math.abs(ui - ei) % 12;
-  const score = ZODIAC_SCORES[diff] ?? 50;
+  const score = getZodiacScore(animalA, animalB);
   const tier = getTierForScore(score);
   const relationship = getRelationship(diff, animalA, animalB);
   const explanation = getExplanation(diff, animalA, animalB);

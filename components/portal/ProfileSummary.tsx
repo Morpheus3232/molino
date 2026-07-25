@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 
 interface ProfileSummaryProps {
   profile: UserProfile;

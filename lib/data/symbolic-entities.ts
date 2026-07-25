@@ -377,7 +377,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   },
   {
     id: "nueva-york", name: "Nueva York", type: "city", foundingYear: 1624, country: "Estados Unidos",
-    emoji: "\ud83c\uddfd\ufe0f",
+    emoji: "\ud83d\uddfd",
     description: "Nueva York es una de las ciudades m\u00e1s ic\u00f3nicas del mundo. Su diversidad cultural y energ\u00eda constante la hacen \u00fanica.",
     keyThemes: ["Ambici\u00f3n", "Diversidad", "Inspiraci\u00f3n", "Innovaci\u00f3n"],
     sourceNote: "Fundada como Nieuw Amsterdam por colonos holandeses en 1624.",

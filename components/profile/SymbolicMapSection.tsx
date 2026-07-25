@@ -14,7 +14,7 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import {
   resolveYearCycle,
   getYearCycleHistory,

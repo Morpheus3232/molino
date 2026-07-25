@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
@@ -18,6 +19,7 @@ interface CompatibilityContentProps {
 }
 
 export default function CompatibilityContent({ entity }: CompatibilityContentProps) {
+  const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
   const compat = useMemo(() => {
@@ -61,7 +63,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <p className="text-sm text-muted mb-8 max-w-md mx-auto">
             Para ver tu compatibilidad con {entity.name}, primero necesitás crear tu perfil personal.
           </p>
-          <Button size="lg" onClick={() => window.location.href = "/"}>
+          <Button size="lg" onClick={() => router.push("/")}>
             Crear mi perfil
           </Button>
         </div>

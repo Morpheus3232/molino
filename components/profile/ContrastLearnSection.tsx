@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { formatAnimalEmoji, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
@@ -26,27 +26,11 @@ const LEARNING_INSIGHTS: Record<string, string[]> = {
   Cerdo: ["Generosidad con límites", "Optimismo realista", "Calidez estratégica"],
 };
 
-const CHALLENGING_ANIMALS: Record<string, string[]> = {
-  Rata: ["Caballo", "Cabra"],
-  Buey: ["Cabra", "Caballo"],
-  Tigre: ["Mono", "Serpiente"],
-  Conejo: ["Gallo", "Dragón"],
-  Dragón: ["Perro", "Conejo"],
-  Serpiente: ["Cerdo", "Tigre"],
-  Caballo: ["Rata", "Buey"],
-  Cabra: ["Buey", "Rata"],
-  Mono: ["Tigre", "Cerdo"],
-  Gallo: ["Conejo", "Perro"],
-  Perro: ["Dragón", "Gallo"],
-  Cerdo: ["Serpiente", "Mono"],
-};
-
 export default function ContrastLearnSection({ profile }: ContrastLearnSectionProps) {
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   const display = getZodiacDisplay(userAnimal);
   const learningPoints = LEARNING_INSIGHTS[userAnimal] ?? [];
-  const challengingAnimals = CHALLENGING_ANIMALS[userAnimal] ?? [];
 
   if (!userAnimal || relationMap.challenging.length === 0) return null;
 

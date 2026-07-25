@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import {
   buildPersonalRecommendations,
   type PersonalRecommendation,

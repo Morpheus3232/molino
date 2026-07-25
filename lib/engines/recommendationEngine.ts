@@ -81,26 +81,8 @@ export interface SymbolicMap {
 }
 
 // ════════════════════════════════════════════════════
-// SCORING
+// SCORING — Uses getRelation().score from animalRelations.ts
 // ════════════════════════════════════════════════════
-
-const RELATION_SCORES: Record<RelationType, number> = {
-  same: 95,
-  triad: 85,
-  harmonious: 80,
-  neutral: 50,
-  harm: 30,
-  clash: 25,
-};
-
-const RELATION_STARS: Record<RelationType, number> = {
-  same: 5,
-  triad: 4,
-  harmonious: 4,
-  neutral: 3,
-  harm: 2,
-  clash: 2,
-};
 
 const LEVEL_PRIORITY: Record<RecommendationLevel, number> = {
   high: 5,
@@ -141,8 +123,8 @@ export function calculateSymbolicRecommendation(
   }
 
   // Score: 50% natal + 30% temporal + 20% year bonus
-  const natalScore = RELATION_SCORES[natalRelation.type] ?? 50;
-  const temporalScore = RELATION_SCORES[temporalRelation.type] ?? 50;
+  const natalScore = natalRelation.score;
+  const temporalScore = temporalRelation.score;
   const yearBonus = yearResonance.score;
   const score = Math.round(natalScore * 0.5 + temporalScore * 0.3 + yearBonus * 0.2);
 

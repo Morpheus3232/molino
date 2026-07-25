@@ -11,6 +11,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import { CHINESE_ANIMALS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import { getSexagenaryYear, ANIMALS } from "@/lib/data/sexagenary-cycle";
+import type { Animal } from "@/lib/data/animalRelations";
 
 const WU_XING = [
   { name: "Madera", direction: "Este", season: "Primavera", quality: "Crecimiento, flexibilidad, expansión", generates: "Fuego", controlledBy: "Metal", color: "var(--element-wood)" },
@@ -58,7 +59,7 @@ export default function ZodiacoChinoExplorer() {
     return { current: idx + 1, total: 60, percent: Math.round(((idx + 1) / 60) * 100) };
   }, [selectedYear]);
 
-  const currentAnimalIndex = useMemo(() => ANIMALS.indexOf(currentYear.animal), [currentYear]);
+  const currentAnimalIndex = useMemo(() => ANIMALS.indexOf(currentYear.animal as Animal), [currentYear]);
 
   const effectiveElement = useMemo(() => {
     if (activeTab === "wuxing") return selectedElement || currentYear.element;

@@ -66,17 +66,8 @@ export interface PersonalRecommendationMap {
 }
 
 // ════════════════════════════════════════════════════
-// SCORING
+// SCORING — Uses getRelation().score from animalRelations.ts
 // ════════════════════════════════════════════════════
-
-const RELATION_SCORES: Record<RelationType, number> = {
-  same: 95,
-  triad: 85,
-  harmonious: 80,
-  neutral: 50,
-  harm: 30,
-  clash: 25,
-};
 
 const PRIORITY_META: Record<PriorityLevel, { label: string; stars: string }> = {
   5: { label: "Máxima afinidad",       stars: "★★★★★" },
@@ -159,11 +150,11 @@ function calculatePersonalRecommendation(
 
   // Natal: user vs entity
   const natalRelation = getRelation(userAnimal, entityAnimal);
-  const natalScore = RELATION_SCORES[natalRelation.type] ?? 50;
+  const natalScore = natalRelation.score;
 
   // Temporal: year vs entity
   const temporalRelation = getRelation(yearAnimal, entityAnimal);
-  const temporalScore = RELATION_SCORES[temporalRelation.type] ?? 50;
+  const temporalScore = temporalRelation.score;
 
   // Element bonus: same element = +10
   const entityElement = getElementFromAnimal(entityAnimal);

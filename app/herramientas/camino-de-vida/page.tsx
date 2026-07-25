@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
@@ -39,7 +39,6 @@ const LIFE_PATH_MEANINGS: Record<number, { meaning: string; archetype: string; d
 };
 
 export default function CaminoDeVidaPage() {
-  const router = useRouter();
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
   const [year, setYear] = useState("");
@@ -62,12 +61,12 @@ export default function CaminoDeVidaPage() {
       <UniversityHeader />
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
-        <nav className="text-xs text-muted mb-8">
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/")}>Inicio</span>
-          <span className="mx-2">&rsaquo;</span>
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/herramientas")}>Herramientas</span>
-          <span className="mx-2">&rsaquo;</span>
-          <span className="text-foreground font-medium">Camino de Vida</span>
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
+          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
+          <span className="text-foreground font-medium" aria-current="page">Camino de Vida</span>
         </nav>
 
         <motion.section {...fadeUp}>
@@ -124,40 +123,106 @@ export default function CaminoDeVidaPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="mt-12 sm:mt-16"
             >
-              <div className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+              >
                 <div className="text-center mb-8">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Tu Camino de Vida</p>
-                  <p className="number-display text-[6rem] sm:text-[8rem] leading-none" style={{ color: "var(--element-fire)" }}>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.15, duration: 0.4 }}
+                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                  >
+                    Tu Camino de Vida
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="number-display text-[6rem] sm:text-[8rem] leading-none"
+                    style={{ color: "var(--element-fire)" }}
+                  >
                     {result.lifePath}
-                  </p>
-                  <p className="font-serif text-2xl font-semibold text-foreground mt-4">{result.meaning.archetype}</p>
-                  <p className="text-sm text-muted mt-2">{result.meaning.meaning}</p>
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
+                    className="font-serif text-2xl font-semibold text-foreground mt-4"
+                  >
+                    {result.meaning.archetype}
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.4 }}
+                    className="text-sm text-muted mt-2"
+                  >
+                    {result.meaning.meaning}
+                  </motion.p>
                 </div>
-                <p className="text-sm text-muted leading-relaxed max-w-lg mx-auto text-center">
+                <motion.p
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55, duration: 0.4 }}
+                  className="text-sm text-muted leading-relaxed max-w-lg mx-auto text-center"
+                >
                   {result.meaning.description}
-                </p>
-              </div>
+                </motion.p>
+              </motion.div>
 
               {/* Disclaimer */}
-              <div className="mt-6 p-4 rounded-xl border border-border bg-card">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.35 }}
+                className="mt-6 p-4 rounded-xl border border-border bg-card"
+              >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> El Camino de Vida es una interpretaci&oacute;n simb&oacute;lica de la tradici&oacute;n numerol&oacute;gica. No constituye evidencia cient&iacute;fica ni predice el futuro. Molino lo utiliza como herramienta de reflexi&oacute;n.
                 </p>
-              </div>
+              </motion.div>
 
               {/* CTA */}
-              <div className="mt-8 text-center">
-                <p className="text-sm text-muted mb-4">Quer&eacute;s ver c&oacute;mo esto se conecta con astrolog&iacute;a y zodiaco chino?</p>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.35 }}
+                className="mt-8 text-center space-y-4"
+              >
                 <button
                   type="button"
-                  onClick={() => router.push("/onboarding")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+                  onClick={() => {
+                    const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Descubrí el tuyo en Molino.`;
+                    if (navigator.share) {
+                      navigator.share({ title: "Mi Camino de Vida — Molino", text }).catch(() => {});
+                    } else {
+                      navigator.clipboard.writeText(text).then(() => {});
+                    }
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
-                  Crear tu mapa completo
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  Compartir resultado
                 </button>
-              </div>
+                <div>
+                  <p className="text-sm text-muted mb-3">Quer&eacute;s ver c&oacute;mo esto se conecta con astrolog&iacute;a y zodiaco chino?</p>
+                  <Link
+                    href="/onboarding"
+                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"
+                  >
+                    Crear tu mapa completo
+                  </Link>
+                </div>
+              </motion.div>
             </motion.section>
           )}
         </AnimatePresence>

@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { saveSession } from "@/lib/storage/ephemeral";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
+import { markOnboardingCompleted } from "@/lib/storage/discovery";
 import { analytics } from "@/lib/analytics/analytics";
 import {
   smoothReveal,
@@ -17,6 +18,9 @@ import {
   staggerItemSmooth,
 } from "@/lib/utils/premiumMotion";
 import { formatAnimalEmoji, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { buildShareableUrl } from "@/lib/utils/profileShare";
+import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
+import { ARCHETYPES } from "@/lib/data";
 
 const MONTHS = [
   { value: "01", label: "Ene" },
@@ -136,6 +140,7 @@ export default function OnboardingPage() {
       notifications: updatedProfile.notifications,
     });
     saveProfileToStorage(updatedProfile);
+    markOnboardingCompleted();
     analytics.trackProfileCreated(updatedProfile);
     setStep("complete");
     setTimeout(() => router.push("/profile"), 1500);
@@ -143,6 +148,7 @@ export default function OnboardingPage() {
 
   const handleSkipName = () => {
     if (!profile) return;
+    const finalProfile = { ...profile, name: "Explorador" };
     saveSession({
       name: "Explorador",
       birthDate: profile.birthDate,
@@ -156,10 +162,28 @@ export default function OnboardingPage() {
       language: "es",
       notifications: true,
     });
-    saveProfileToStorage({ ...profile, name: "Explorador" });
-    analytics.trackProfileCreated({ ...profile, name: "Explorador" });
+    saveProfileToStorage(finalProfile);
+    markOnboardingCompleted();
+    analytics.trackProfileCreated(finalProfile);
     setStep("complete");
     setTimeout(() => router.push("/profile"), 1500);
+  };
+
+  const handleShareReveal = async () => {
+    if (!profile) return;
+    const shareUrl = buildShareableUrl(profile, "identity");
+    const shareText = `Descubrí mi perfil de identidad en Molino.\n¿Querés descubrir el tuyo?`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Mi perfil — ${profile.name || "Explorador"}`,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch {}
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+    }
   };
 
   if (!ready) {
@@ -171,6 +195,9 @@ export default function OnboardingPage() {
   }
 
   const display = profile ? getZodiacDisplay(profile.chineseZodiac) : null;
+  const elementColor = profile ? (ELEMENT_COLORS[profile.element] || "var(--element-fire)") : "var(--element-fire)";
+  const archetypeData = profile ? ARCHETYPES[profile.lifePath] : null;
+  const sunSymbol = profile ? (ZODIAC_SYMBOLS[profile.sunSign] || "♈") : "♈";
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
@@ -268,7 +295,7 @@ export default function OnboardingPage() {
           )}
 
           {/* ═══════════════════════════════════════════════
-              STEP 2: REVEAL — MAPA INICIAL
+              STEP 2: REVEAL — THE BIG MOMENT
               ═══════════════════════════════════════════════ */}
           {step === "reveal" && profile && display && (
             <motion.div
@@ -278,76 +305,68 @@ export default function OnboardingPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
-              <div className="text-center mb-8">
-                <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
-                  Tu mapa inicial
-                </span>
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
-                  Esto es lo que descubrimos
-                </h1>
-              </div>
-
-              {/* Animal hero */}
+              {/* Animal hero — THE reveal */}
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
+                transition={{ delay: 0.2, duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+                className="text-center mb-6"
+              >
+                <span className="text-[100px] sm:text-[120px] block mb-2 leading-none">{display.emoji}</span>
+              </motion.div>
+
+              {/* Name + identity */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
                 className="text-center mb-8"
               >
-                <span className="text-7xl block mb-3">{display.emoji}</span>
-                <p className="font-serif text-3xl font-bold text-foreground">{display.name}</p>
-                <p className="text-sm text-muted mt-1">Tu animal zodiacal</p>
-              </motion.div>
-
-              {/* Quick facts grid */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                className="grid grid-cols-2 gap-3 mb-8"
-              >
-                <div className="p-4 rounded-xl border border-border bg-card text-center">
-                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Life Path</p>
-                  <p className="font-serif text-2xl font-bold text-foreground">{profile.lifePath}</p>
-                </div>
-                <div className="p-4 rounded-xl border border-border bg-card text-center">
-                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Birthday</p>
-                  <p className="font-serif text-2xl font-bold text-foreground">
-                    {profile.birthDate.split("-")[2]}
-                  </p>
-                </div>
-                <div className="p-4 rounded-xl border border-border bg-card text-center">
-                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Elemento</p>
-                  <p className="font-serif text-lg font-bold text-foreground">
-                    {profile.chineseZodiacInfo?.element ?? "—"}
-                  </p>
-                </div>
-                <div className="p-4 rounded-xl border border-border bg-card text-center">
-                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted mb-1">Año Personal</p>
-                  <p className="font-serif text-2xl font-bold text-foreground">
-                    {profile.cycles?.personalYear ?? "—"}
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Summary */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.5 }}
-                className="p-5 rounded-xl border border-border bg-card mb-6"
-              >
-                <p className="text-sm text-foreground leading-relaxed text-center">
-                  Tu perfil combina movimiento, exploración y transformación.
-                  Tu {display.name} aporta energía de ciclo, y tu Life Path {profile.lifePath} define tu camino principal.
+                <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-2">
+                  {display.name}
+                </h1>
+                <p className="text-lg" style={{ color: elementColor }}>
+                  {display.name} de {profile.chineseZodiacInfo?.element ?? ""}
+                </p>
+                <p className="text-sm text-muted mt-2">
+                  {sunSymbol} {profile.sunSign} · Camino {profile.lifePath}
                 </p>
               </motion.div>
 
-              {/* CTA */}
+              {/* Quote */}
+              {archetypeData?.quote && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7, duration: 0.5 }}
+                  className="text-center mb-8"
+                >
+                  <p className="font-serif text-lg italic text-muted max-w-md mx-auto">
+                    &ldquo;{archetypeData.quote}&rdquo;
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Archetype badge */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9, duration: 0.5 }}
+                className="text-center mb-10"
+              >
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card">
+                  <span className="text-sm">{sunSymbol}</span>
+                  <span className="text-[11px] uppercase tracking-[0.2em] font-medium" style={{ color: elementColor }}>
+                    Tu arquetipo es {archetypeData?.name || "Explorador"}
+                  </span>
+                </span>
+              </motion.div>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1, duration: 0.5 }}
                 className="space-y-3"
               >
                 <button
@@ -355,14 +374,21 @@ export default function OnboardingPage() {
                   onClick={() => setStep("name")}
                   className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
                 >
-                  Profundizar mi mapa →
+                  Entrar a mi Molino →
                 </button>
                 <button
                   type="button"
-                  onClick={handleSkipName}
-                  className="w-full text-sm text-muted hover:text-foreground transition-colors py-2"
+                  onClick={handleShareReveal}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm border border-border bg-card hover:bg-background"
                 >
-                  Entrar sin nombre por ahora
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="18" cy="5" r="3" />
+                    <circle cx="6" cy="12" r="3" />
+                    <circle cx="18" cy="19" r="3" />
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                  </svg>
+                  Compartir mi identidad
                 </button>
               </motion.div>
             </motion.div>

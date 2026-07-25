@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getChineseAnimal, getCompatibilityScore, getCompatibilityDescription } from "@/lib/data";
+import { getCompatibilityScore, getCompatibilityDescription } from "@/lib/data";
+import { getChineseAnimal } from "@/lib/engines/chineseZodiacEngine";
 import { getEntitiesByCategory, getEntityById, EntityCategory } from "@/lib/data/entities";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { saveEntity, removeEntity } from "@/lib/auth/userService";

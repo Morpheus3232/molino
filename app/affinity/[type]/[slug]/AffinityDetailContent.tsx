@@ -13,6 +13,7 @@ import { getEntitiesByType } from "@/lib/data/symbolic-entities";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
+import CountUp from "@/components/ui/CountUp";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 
@@ -103,7 +104,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <motion.section {...fadeUp} className="mb-12">
             <div className="flex items-center gap-6 p-6 rounded-2xl border border-border bg-card">
               <div className="text-center">
-                <div className="font-serif text-5xl font-bold text-foreground">{result.score}</div>
+                <CountUp
+                  target={result.score}
+                  duration={1}
+                  className="font-serif text-5xl font-bold text-foreground"
+                />
                 <div className="text-xs text-muted mt-1">/ 100</div>
               </div>
               <div className="h-12 w-px bg-border" aria-hidden="true" />
@@ -118,6 +123,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               </div>
             </div>
           </motion.section>
+        )}
+
+        {/* Share CTA — right after score, before details */}
+        {result && (
+          <ShareInlineCTA result={result} entity={entity} />
         )}
 
         {/* Base del cálculo simbólico */}
@@ -210,12 +220,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </motion.section>
         )}
 
-        {/* Share CTA — contextual, near the WOW moment */}
-        {result && (
-          <ShareInlineCTA result={result} entity={entity} />
-        )}
-
-        {/* Link to multi-factor analysis — after share, before deep content */}
+        {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>

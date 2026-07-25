@@ -1,4 +1,4 @@
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 
 export function buildIdentitySentence(profile: UserProfile): string {
   const parts: string[] = [];

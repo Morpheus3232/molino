@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loadProfileFromStorage } from "@/lib/storage/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";

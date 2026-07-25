@@ -5,6 +5,7 @@ import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { Toaster } from "sonner";
+import MotionProvider from "@/components/ui/MotionProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -109,9 +110,11 @@ export default function RootLayout({
           Saltar al contenido principal
         </a>
         <AnalyticsProvider />
-        <AppErrorBoundary>
-          <AnimatedLayout>{children}</AnimatedLayout>
-        </AppErrorBoundary>
+        <MotionProvider>
+          <AppErrorBoundary>
+            <AnimatedLayout>{children}</AnimatedLayout>
+          </AppErrorBoundary>
+        </MotionProvider>
         <Toaster position="bottom-right" richColors />
       </body>
     </html>

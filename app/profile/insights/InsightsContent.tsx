@@ -437,42 +437,22 @@ function getDiscovery(user: Animal, year: string) {
 }
 
 function getTriadPartners(animal: string): string[] {
-  const triads: Record<string, string[]> = {
-    Rata: ["Dragón", "Mono"],
-    Buey: ["Serpiente", "Gallo"],
-    Tigre: ["Caballo", "Perro"],
-    Conejo: ["Cabra", "Cerdo"],
-    Dragón: ["Rata", "Mono"],
-    Serpiente: ["Buey", "Gallo"],
-    Caballo: ["Tigre", "Perro"],
-    Cabra: ["Conejo", "Cerdo"],
-    Mono: ["Rata", "Dragón"],
-    Gallo: ["Buey", "Serpiente"],
-    Perro: ["Tigre", "Caballo"],
-    Cerdo: ["Conejo", "Cabra"],
-  };
-  return triads[animal] ?? [];
+  const map = getRelationshipMap(animal as Animal);
+  return map.friends.filter(r => r.type === "triad").map(r => r.animal);
 }
 
 function getLiuHePartner(animal: string): string {
-  const pairs: Record<string, string> = {
-    Rata: "Buey", Buey: "Rata",
-    Tigre: "Conejo", Conejo: "Tigre",
-    Dragón: "Serpiente", Serpiente: "Dragón",
-    Caballo: "Cabra", Cabra: "Caballo",
-    Mono: "Gallo", Gallo: "Mono",
-    Perro: "Cerdo", Cerdo: "Perro",
-  };
-  return pairs[animal] ?? "";
+  const map = getRelationshipMap(animal as Animal);
+  const harmonious = map.friends.find(r => r.type === "harmonious");
+  return harmonious ? harmonious.animal : "";
 }
 
 function getRelationLabel(a: string, b: string): string {
   if (a === b) return "misma energía";
-  const triads = [["Rata","Dragón","Mono"],["Buey","Serpiente","Gallo"],["Tigre","Caballo","Perro"],["Conejo","Cabra","Cerdo"]];
-  for (const t of triads) {
-    if (t.includes(a) && t.includes(b)) return "tríada compatible";
-  }
-  const pairs: Record<string, string> = { Rata:"Buey", Tigre:"Conejo", Dragón:"Serpiente", Caballo:"Cabra", Mono:"Gallo", Perro:"Cerdo" };
-  if (pairs[a] === b || pairs[b] === a) return "armonía natural";
+  const map = getRelationshipMap(a as Animal);
+  const rel = map.friends.find(r => r.animal === b) ?? map.neutral.find(r => r.animal === b);
+  if (!rel) return "energías independientes";
+  if (rel.type === "triad") return "tríada compatible";
+  if (rel.type === "harmonious") return "armonía natural";
   return "energías independientes";
 }

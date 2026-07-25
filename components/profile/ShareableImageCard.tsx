@@ -1,0 +1,221 @@
+"use client";
+
+import { useRef, useState, useCallback } from "react";
+import { toPng } from "html-to-image";
+import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
+import { ARCHETYPES } from "@/lib/data";
+import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { analytics } from "@/lib/analytics/analytics";
+import { buildShareableUrl } from "@/lib/utils/profileShare";
+import type { UserProfile } from "@/types/user";
+
+interface ShareableImageCardProps {
+  profile: UserProfile;
+  currentTab?: string;
+}
+
+export default function ShareableImageCard({ profile, currentTab = "identity" }: ShareableImageCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [generating, setGenerating] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const { name, lifePath, sunSign, element, chineseZodiac, archetype } = profile;
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "♈";
+  const archetypeData = ARCHETYPES[lifePath];
+  const archetypeName = archetypeData?.name || archetype;
+  const zodiacDisplay = getZodiacDisplay(chineseZodiac);
+
+  const shareUrl = buildShareableUrl(profile, currentTab);
+
+  const shareText = `Descubrí mi perfil de identidad en Molino.\n¿Querés descubrir el tuyo?`;
+
+  const handleDownload = useCallback(async () => {
+    if (!cardRef.current) return;
+    setGenerating(true);
+    analytics.trackFeatureUsed("share_image_download");
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        quality: 0.95,
+        pixelRatio: 2,
+        backgroundColor: "#F3EDE3",
+      });
+      const link = document.createElement("a");
+      link.download = `molino-${name.toLowerCase().replace(/\s+/g, "-")}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Error generating image:", err);
+    } finally {
+      setGenerating(false);
+    }
+  }, [name]);
+
+  const handleShare = useCallback(async () => {
+    analytics.trackFeatureUsed("share_image_native");
+    if (navigator.share) {
+      try {
+        // Try to share with image
+        if (cardRef.current) {
+          setGenerating(true);
+          const dataUrl = await toPng(cardRef.current, {
+            quality: 0.95,
+            pixelRatio: 2,
+            backgroundColor: "#F3EDE3",
+          });
+          const res = await fetch(dataUrl);
+          const blob = await res.blob();
+          const file = new File([blob], `molino-${name.toLowerCase().replace(/\s+/g, "-")}.png`, { type: "image/png" });
+          setGenerating(false);
+
+          if (navigator.canShare?.({ files: [file] })) {
+            await navigator.share({
+              title: `Mi perfil — ${name}`,
+              text: shareText,
+              url: shareUrl,
+              files: [file],
+            });
+          } else {
+            // Fallback: share text only
+            await navigator.share({
+              title: `Mi perfil — ${name}`,
+              text: shareText,
+              url: shareUrl,
+            });
+          }
+        }
+      } catch (err) {
+        if ((err as Error).name !== "AbortError") {
+          console.error("Error sharing:", err);
+        }
+      }
+    } else {
+      // Desktop fallback: copy URL
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [name, shareText, shareUrl]);
+
+  return (
+    <div className="space-y-4">
+      {/* The visual card */}
+      <div
+        ref={cardRef}
+        className="relative overflow-hidden rounded-2xl border border-border"
+        style={{
+          maxWidth: "480px",
+          background: "linear-gradient(180deg, #F3EDE3 0%, #EDE5D8 100%)",
+        }}
+      >
+        <div className="p-8 sm:p-10">
+          {/* Molino branding */}
+          <div className="flex items-center gap-2 mb-8">
+            <svg width="20" height="20" viewBox="0 0 64 64" aria-hidden="true">
+              <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
+              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+            </svg>
+            <span className="text-xs font-medium tracking-wide" style={{ color: elementColor }}>MOLINO</span>
+          </div>
+
+          {/* Name */}
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-1" style={{ color: "#1a1a1a" }}>
+            {name.split(" ")[0]}
+          </h2>
+
+          {/* Animal + Element */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-4xl">{zodiacDisplay.emoji}</span>
+            <div>
+              <p className="font-serif text-lg font-semibold" style={{ color: elementColor }}>
+                {zodiacDisplay.name} de {element}
+              </p>
+              <p className="text-xs" style={{ color: "#666" }}>
+                {sunSymbol} {sunSign} · Camino {lifePath}
+              </p>
+            </div>
+          </div>
+
+          {/* Quote / Insight */}
+          <div className="py-6 border-t border-b" style={{ borderColor: `${elementColor}30` }}>
+            <p className="font-serif text-lg italic leading-relaxed" style={{ color: "#333" }}>
+              {archetypeData?.quote
+                ? `\u201C${archetypeData.quote}\u201D`
+                : `Tu energía combina ${element.toLowerCase()}, intuición y visión.`
+              }
+            </p>
+          </div>
+
+          {/* Archetype badge */}
+          <div className="mt-6 flex items-center gap-2">
+            <span className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: `${elementColor}15`, color: elementColor }}>
+              {archetypeName}
+            </span>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-8 pt-6 border-t" style={{ borderColor: `${elementColor}20` }}>
+            <p className="text-xs font-medium" style={{ color: elementColor }}>
+              Descubrí tu perfil en
+            </p>
+            <p className="text-sm font-semibold mt-1" style={{ color: "#1a1a1a" }}>
+              molino.app
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={handleShare}
+          disabled={generating}
+          className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+        >
+          {generating ? (
+            <>
+              <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                <path d="M12 2a10 10 0 0 1 10 10" />
+              </svg>
+              Generando...
+            </>
+          ) : copied ? (
+            <>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Enlace copiado
+            </>
+          ) : (
+            <>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+              </svg>
+              Compartir
+            </>
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDownload}
+          disabled={generating}
+          className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm border border-border bg-card hover:bg-background disabled:opacity-50"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Descargar imagen
+        </button>
+      </div>
+    </div>
+  );
+}

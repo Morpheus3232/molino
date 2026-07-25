@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 
 interface KnowledgeConnectionsProps {

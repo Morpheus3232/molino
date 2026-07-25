@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { buildPersonalTimeline, type PersonalTimeline } from "@/lib/engines/personalTimelineEngine";
 import { analyzeTiming, findBestDates, type TimingIntention } from "@/lib/engines/timingEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";

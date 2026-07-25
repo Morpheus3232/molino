@@ -4,41 +4,25 @@ import { useRef, useState } from "react";
 import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { analytics } from "@/lib/analytics/analytics";
+import { buildShareableUrl } from "@/lib/utils/profileShare";
+import type { UserProfile } from "@/types/user";
 
 interface ShareableCardProps {
-  name: string;
-  birthDate: string;
-  lifePath: number;
-  sunSign: string;
-  element: string;
-  chineseZodiac: string;
-  archetype: string;
-  expressionNumber?: number;
-  soulNumber?: number;
-  personalityNumber?: number;
+  profile: UserProfile;
 }
 
-export default function ShareableCard({
-  name,
-  birthDate,
-  lifePath,
-  sunSign,
-  element,
-  chineseZodiac,
-  archetype,
-  expressionNumber,
-  soulNumber,
-  personalityNumber,
-}: ShareableCardProps) {
+export default function ShareableCard({ profile }: ShareableCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
+  const { name, birthDate, lifePath, sunSign, element, chineseZodiac, archetype } = profile;
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
   const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "♈";
   const archetypeData = ARCHETYPES[lifePath];
   const archetypeName = archetypeData?.name || archetype;
 
-  const shareText = `Soy ${archetypeName}. Camino de Vida ${lifePath}. ${sunSymbol} ${sunSign}. ${chineseZodiac}. Descubrí tu mapa personal en Molino.`;
+  const shareUrl = buildShareableUrl(profile, "identity");
+  const shareText = `Descubrí mi perfil de identidad en Molino.\n¿Querés descubrir el tuyo?`;
 
   const handleShare = async () => {
     analytics.trackFeatureUsed("share_profile");
@@ -47,13 +31,13 @@ export default function ShareableCard({
         await navigator.share({
           title: `Mi perfil — ${name}`,
           text: shareText,
-          url: window.location.origin,
+          url: shareUrl,
         });
       } catch {
         // User cancelled
       }
     } else {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -96,9 +80,9 @@ export default function ShareableCard({
           <div className="grid grid-cols-4 gap-3 mb-6">
             {[
               { label: "Camino de Vida", value: lifePath },
-              { label: "Expresión", value: expressionNumber || "—" },
-              { label: "Alma", value: soulNumber || "—" },
-              { label: "Personalidad", value: personalityNumber || "—" },
+              { label: "Expresión", value: profile.expressionNumber || "—" },
+              { label: "Alma", value: profile.soulNumber || "—" },
+              { label: "Personalidad", value: profile.personalityNumber || "—" },
             ].map((item) => (
               <div key={item.label} className="text-center p-3 rounded-lg bg-background">
                 <p className="text-xl font-serif font-semibold" style={{ color: elementColor }}>{item.value}</p>
@@ -141,7 +125,7 @@ export default function ShareableCard({
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <polyline points="20 6 9 17 4 12" />
             </svg>
-            Copiado
+            Enlace copiado
           </>
         ) : (
           <>

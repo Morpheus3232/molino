@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { formatAnimalEmoji, formatAnimalSimple, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";

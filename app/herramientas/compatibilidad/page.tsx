@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
@@ -54,7 +54,6 @@ function getZodiacLabel(animal1: string, animal2: string): string {
 }
 
 export default function CompatibilidadCalcPage() {
-  const router = useRouter();
   const [p1, setP1] = useState({ day: "", month: "", year: "" });
   const [p2, setP2] = useState({ day: "", month: "", year: "" });
 
@@ -90,12 +89,12 @@ export default function CompatibilidadCalcPage() {
       <UniversityHeader />
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
-        <nav className="text-xs text-muted mb-8">
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/")}>Inicio</span>
-          <span className="mx-2">&rsaquo;</span>
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/herramientas")}>Herramientas</span>
-          <span className="mx-2">&rsaquo;</span>
-          <span className="text-foreground font-medium">Compatibilidad</span>
+        <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
+          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
+          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <span className="mx-2" aria-hidden="true">&rsaquo;</span>
+          <span className="text-foreground font-medium" aria-current="page">Compatibilidad</span>
         </nav>
 
         <motion.section {...fadeUp}>
@@ -176,51 +175,115 @@ export default function CompatibilidadCalcPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
               className="mt-12 sm:mt-16"
             >
-              <div className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03]">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+              >
                 <div className="text-center mb-8">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3">Compatibilidad</p>
-                  <p className="number-display text-[5rem] sm:text-[7rem] leading-none" style={{
-                    color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
-                  }}>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.15, duration: 0.4 }}
+                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                  >
+                    Compatibilidad
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="number-display text-[5rem] sm:text-[7rem] leading-none"
+                    style={{
+                      color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
+                    }}
+                  >
                     {compatibility.score}%
-                  </p>
-                  <p className="font-serif text-xl font-semibold text-foreground mt-4">{compatibility.label}</p>
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
+                    className="font-serif text-xl font-semibold text-foreground mt-4"
+                  >
+                    {compatibility.label}
+                  </motion.p>
                 </div>
 
                 {/* Desglose */}
-                <div className="max-w-lg mx-auto mb-6">
-                  <div className="p-4 rounded-xl bg-card border border-border text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                  className="max-w-lg mx-auto mb-6"
+                >
+                  <div className="p-4 rounded-xl bg-card border border-border text-center transition-colors hover:border-accent/30">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
                     <p className="text-2xl font-serif font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Explicaci&oacute;n */}
-                <div className="max-w-lg mx-auto text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.4 }}
+                  className="max-w-lg mx-auto text-center"
+                >
                   <p className="text-sm text-muted leading-relaxed">{compatibility.description}</p>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
 
               {/* Disclaimer */}
-              <div className="mt-6 p-4 rounded-xl border border-border bg-card">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65, duration: 0.35 }}
+                className="mt-6 p-4 rounded-xl border border-border bg-card"
+              >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>F&oacute;rmula:</strong> 100% relaci&oacute;n zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretaci&oacute;n simb&oacute;lica. No constituye evidencia cient&iacute;fica ni predice el resultado de una relaci&oacute;n.
                 </p>
-              </div>
+              </motion.div>
 
               {/* CTA */}
-              <div className="mt-8 text-center">
-                <p className="text-sm text-muted mb-4">Quer&eacute;s una experiencia m&aacute;s completa con tu perfil personal?</p>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.35 }}
+                className="mt-8 text-center space-y-4"
+              >
                 <button
                   type="button"
-                  onClick={() => router.push("/onboarding")}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+                  onClick={() => {
+                    const text = `Compatibilidad zodiacal: ${compatibility.score}% — ${compatibility.label}. Calculá la tuya en Molino.`;
+                    if (navigator.share) {
+                      navigator.share({ title: "Compatibilidad — Molino", text }).catch(() => {});
+                    } else {
+                      navigator.clipboard.writeText(text).then(() => {});
+                    }
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
-                  Crear tu mapa completo
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  Compartir resultado
                 </button>
-              </div>
+                <div>
+                  <p className="text-sm text-muted mb-3">Quer&eacute;s una experiencia m&aacute;s completa con tu perfil personal?</p>
+                  <Link
+                    href="/onboarding"
+                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"
+                  >
+                    Crear tu mapa completo
+                  </Link>
+                </div>
+              </motion.div>
             </motion.section>
           )}
         </AnimatePresence>

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { getAnimalProfile, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";

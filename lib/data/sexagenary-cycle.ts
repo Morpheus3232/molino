@@ -25,7 +25,7 @@ export interface SexagenaryYear {
   branchName: string;
 }
 
-const ANIMALS = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+import { ANIMALS } from "@/lib/data/animalRelations";
 const ELEMENTS = ["Madera", "Fuego", "Tierra", "Metal", "Agua"];
 const POLARITIES: ("Yin" | "Yang")[] = ["Yang", "Yin"];
 

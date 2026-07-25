@@ -1,3 +1,5 @@
+import { ANIMALS } from "@/lib/data/animalRelations";
+
 export const CHINESE_NEW_YEAR_DATES: Record<number, string> = {
   // Pre-1900 (needed for historical entities like Coca-Cola, countries, etc.)
   1886: "1886-02-03",
@@ -158,12 +160,11 @@ export const CHINESE_NEW_YEAR_DATES: Record<number, string> = {
 };
 
 export function getChineseZodiac(dateStr: string): string {
-  const animals = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
   const [yearStr] = dateStr.split("-");
   const year = parseInt(yearStr, 10);
   const newYearDate = CHINESE_NEW_YEAR_DATES[year] || `${year}-01-01`;
   const isAfterNewYear = dateStr >= newYearDate;
   const adjustedYear = isAfterNewYear ? year : year - 1;
   const index = ((adjustedYear - 1900) % 12 + 12) % 12;
-  return animals[index];
+  return ANIMALS[index];
 }

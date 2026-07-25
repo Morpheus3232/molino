@@ -10,7 +10,7 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { formatAnimalEmoji, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 

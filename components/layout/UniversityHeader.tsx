@@ -30,6 +30,7 @@ const NAV_GROUPS = [
       { href: "/timing", label: "Timing" },
       { href: "/decisions", label: "Decisiones" },
       { href: "/daily-energy", label: "Energ\u00eda diaria" },
+      { href: "/herramientas", label: "Herramientas" },
     ],
   },
 ];
@@ -87,69 +88,35 @@ export default function UniversityHeader() {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Navegaci\u00f3n principal">
-            {/* Descubrir */}
-            <div className="relative group">
-              <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${isOnHome || isGroupActive(NAV_GROUPS[0], pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                Descubrir
-              </button>
-              <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
-                <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[200px]">
-                  <Link href="/" className={`block px-4 py-2 text-sm transition-colors ${isOnHome ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">Inicio</Link>
-                  {NAV_GROUPS[0].items.map((item) => (
-                    <Link key={item.href} href={item.href} className={`block px-4 py-2 text-sm transition-colors ${pathname === item.href ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">
-                      {item.label}
-                    </Link>
-                  ))}
+            {NAV_GROUPS.map((group) => (
+              <div key={group.label} className="relative group">
+                <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${(isOnHome && group.label === "Descubrir") || isGroupActive(group, pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
+                  {group.label}
+                </button>
+                <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
+                  <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[200px]">
+                    {group.label === "Descubrir" && (
+                      <Link href="/" className={`block px-4 py-2 text-sm transition-colors ${isOnHome ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">Inicio</Link>
+                    )}
+                    {group.items.map((item) => (
+                      <Link key={item.href} href={item.href} className={`block px-4 py-2 text-sm transition-colors ${pathname === item.href ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Relacionarte */}
-            <div className="relative group">
-              <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${isGroupActive(NAV_GROUPS[1], pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                Relacionarte
-              </button>
-              <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
-                <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[180px]">
-                  {NAV_GROUPS[1].items.map((item) => (
-                    <Link key={item.href} href={item.href} className={`block px-4 py-2 text-sm transition-colors ${pathname === item.href ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Orientarte */}
-            <div className="relative group">
-              <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${isGroupActive(NAV_GROUPS[2], pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                Orientarte
-              </button>
-              <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
-                <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[200px]">
-                  {NAV_GROUPS[2].items.map((item) => (
-                    <Link key={item.href} href={item.href} className={`block px-4 py-2 text-sm transition-colors ${pathname === item.href ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Herramientas */}
-            <Link href="/herramientas" className={`px-3 py-1.5 rounded-full text-sm transition-all ${pathname.startsWith("/herramientas") ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} aria-current={pathname.startsWith("/herramientas") ? "page" : undefined}>
-              Herramientas
-            </Link>
+            ))}
 
             {/* Separator */}
             <div className="w-px h-4 bg-border mx-1" aria-hidden="true" />
 
-            {/* Mi mapa — secondary, right side */}
+            {/* Mi mapa */}
             <Link href={hasProfile ? "/profile" : "/onboarding"} className={`px-3 py-1.5 rounded-full text-sm transition-all ${pathname === "/profile" ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} aria-current={pathname === "/profile" ? "page" : undefined}>
               Mi mapa
             </Link>
 
-            {/* CTA right side */}
+            {/* CTA */}
             {hasProfile && (
               <button type="button" onClick={handleNewProfile} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-3 py-1.5 text-xs text-muted hover:text-foreground hover:bg-foreground/5 border border-border">
                 Nuevo perfil
@@ -186,28 +153,15 @@ export default function UniversityHeader() {
                 Mi mapa
               </Link>
 
-              <div className="pt-3 pb-1"><p className="px-3 text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Descubrir</p></div>
-              {NAV_GROUPS[0].items.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm transition-colors flex items-center ${pathname === item.href ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                  {item.label}
-                </Link>
-              ))}
-
-              <div className="pt-3 pb-1"><p className="px-3 text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Herramientas</p></div>
-              <Link href="/herramientas" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm font-medium transition-colors flex items-center ${pathname.startsWith("/herramientas") ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                Calcul\u00e1 tu identidad
-              </Link>
-              {NAV_GROUPS[1].items.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm transition-colors flex items-center ${pathname === item.href ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                  {item.label}
-                </Link>
-              ))}
-
-              <div className="pt-3 pb-1"><p className="px-3 text-[11px] uppercase tracking-[0.2em] text-muted font-medium">Orientarte</p></div>
-              {NAV_GROUPS[2].items.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm transition-colors flex items-center ${pathname === item.href ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                  {item.label}
-                </Link>
+              {NAV_GROUPS.map((group) => (
+                <div key={group.label}>
+                  <div className="pt-3 pb-1"><p className="px-3 text-[11px] uppercase tracking-[0.2em] text-muted font-medium">{group.label}</p></div>
+                  {group.items.map((item) => (
+                    <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm transition-colors flex items-center ${pathname === item.href ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               ))}
 
               <div className="pt-4 border-t border-border mt-2">

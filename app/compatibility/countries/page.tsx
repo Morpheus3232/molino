@@ -77,9 +77,9 @@ export default function CountriesPage() {
             <br /><span className="text-muted">con tu mapa</span>
           </h1>
           <p className="text-base text-muted mt-6 max-w-xl leading-relaxed">
-            Tu signo <span className="font-medium text-foreground">{userAnimal}</span> de <span className="font-medium text-foreground">{userElement}</span> se conecta con cada país a través de su signo del zodiaco chino.
+            Tu signo <span className="font-medium text-foreground">{userAnimal}</span> se conecta con cada país a través de la relación entre tu animal del zodíaco chino y el animal asociado a la fecha fundacional del país.
           </p>
-          <p className="text-xs text-muted/60 mt-3">Fórmula: 70% Horóscopo Chino + 30% Numerología · Interpretación simbólica — no es una predicción ni una verdad objetiva.</p>
+          <p className="text-xs text-muted/60 mt-3">Basado en la relación entre animales del zodíaco chino · Interpretación simbólica — no es una predicción ni una verdad objetiva.</p>
         </motion.section>
 
         {/* Top 10 */}
@@ -109,7 +109,7 @@ export default function CountriesPage() {
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3">
                         <div className="text-left space-y-1 pt-2 border-t border-border">
                           {r.reasons.map((reason, j) => (<p key={j} className="text-[11px] text-muted leading-relaxed">{reason}</p>))}
-                          <p className="text-[9px] text-muted/60 mt-1">Zodiac {r.zodiacScore}% · Numerología {r.numerologyScore}%</p>
+                          <p className="text-[9px] text-muted/60 mt-1">Zodiac: {r.zodiacScore}/100</p>
                         </div>
                       </motion.div>
                     )}

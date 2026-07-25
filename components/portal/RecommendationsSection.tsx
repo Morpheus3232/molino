@@ -1,6 +1,7 @@
 "use client";
 
 import { COUNTRY_DATA, BRAND_DATA, BAND_DATA, POLITICIAN_DATA, ACTOR_DATA } from "@/lib/data";
+import { getRelation, type Animal } from "@/lib/data/animalRelations";
 
 interface RecommendationItem {
   name: string;
@@ -13,14 +14,9 @@ interface RecommendationsSectionProps {
   profile: any;
 }
 
-function getCompatibilityScore(userAnimal: string, targetAnimal: string): number {
-  const animals = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
-  const userIndex = animals.indexOf(userAnimal);
-  const targetIndex = animals.indexOf(targetAnimal);
-  if (userIndex === -1 || targetIndex === -1) return 50;
-  const diff = Math.abs(userIndex - targetIndex) % 12;
-  const scores: Record<number, number> = { 0: 80, 1: 70, 2: 50, 3: 40, 4: 60, 5: 30, 6: 90, 7: 30, 8: 60, 9: 40, 10: 50, 11: 70 };
-  return scores[diff] || 50;
+function getZodiacScore(userAnimal: string, targetAnimal: string): number {
+  if (!userAnimal || !targetAnimal) return 50;
+  return getRelation(userAnimal as Animal, targetAnimal as Animal).score;
 }
 
 export default function RecommendationsSection({ profile }: RecommendationsSectionProps) {
@@ -29,7 +25,7 @@ export default function RecommendationsSection({ profile }: RecommendationsSecti
 
   const countryScores: RecommendationItem[] = Object.entries(COUNTRY_DATA)
     .map(([name, data]: [string, any]) => {
-      const score = getCompatibilityScore(userAnimal, data.animal);
+      const score = getZodiacScore(userAnimal, data.animal);
       return { name, flagOrLogo: data.flag, category: "País", score };
     })
     .sort((a, b) => b.score - a.score)
@@ -37,15 +33,15 @@ export default function RecommendationsSection({ profile }: RecommendationsSecti
 
   const brandScores: RecommendationItem[] = Object.entries(BRAND_DATA)
     .map(([name, data]: [string, any]) => {
-      const score = getCompatibilityScore(userAnimal, data.animal) + Math.floor(Math.random() * 10);
-      return { name, flagOrLogo: data.logo, category: data.category, score: Math.min(99, score) };
+      const score = getZodiacScore(userAnimal, data.animal);
+      return { name, flagOrLogo: data.logo, category: data.category, score };
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
   const bandScores: RecommendationItem[] = Object.entries(BAND_DATA)
     .map(([name, data]: [string, any]) => {
-      const score = getCompatibilityScore(userAnimal, data.animal);
+      const score = getZodiacScore(userAnimal, data.animal);
       return { name, flagOrLogo: data.logo, category: data.genre, score };
     })
     .sort((a, b) => b.score - a.score)
