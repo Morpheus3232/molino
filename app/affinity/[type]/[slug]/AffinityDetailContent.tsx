@@ -21,6 +21,7 @@ import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
+import { saveAffinityResult, hasSavedAffinity } from "@/lib/storage/localStorage";
 
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -883,6 +884,10 @@ function QuickAffinity({
   const router = useRouter();
   const reducedMotion = useReducedMotion();
   const currentYear = new Date().getFullYear();
+  const [saved, setSaved] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return hasSavedAffinity(entity.id);
+  });
 
   // Date state — initialize from sessionStorage if available
   const [day, setDay] = useState(() => {
@@ -970,6 +975,27 @@ function QuickAffinity({
     setMonth(String(parsedMonth).padStart(2, "0"));
     setYear(String(parsedYear));
   }, [day, month, year]);
+
+  const handleSave = useCallback(() => {
+    if (!result || saved) return;
+    let birthDate = "";
+    try { birthDate = sessionStorage.getItem(AFFINITY_DATE_KEY) || ""; } catch {}
+    saveAffinityResult({
+      entityId: entity.id,
+      entityType: entity.type,
+      entityName: entity.name,
+      entityEmoji: entity.emoji || "",
+      birthDate,
+      userAnimal: result.userAnimal,
+      entityAnimal: result.entityAnimal,
+      score: result.score,
+      tier: result.tier,
+      relationship: result.relationship,
+    });
+    analytics.trackAffinitySaveClicked(type, entity.id, result.score, result.tier);
+    setSaved(true);
+    toast.success("Afinidad guardada ✓");
+  }, [result, saved, entity, type]);
 
   const tierMeta = result ? TIER_META[result.tier] : null;
   const yearOptions = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -1092,24 +1118,47 @@ function QuickAffinity({
               <PremiumHero result={result} entity={entity} meta={meta} type={type} />
             )}
 
-            {/* CTA: complete profile */}
+            {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Guardá tu perfil</p>
-                <p className="text-sm text-muted leading-relaxed mb-3">
-                  Creá tu perfil para explorar más entidades sin reingresar tu fecha y desbloquear análisis completos.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    analytics.trackAffinityProfileCtaClicked(type);
-                    router.push("/onboarding");
-                  }}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
-                >
-                  Crear mi perfil
-                  <span aria-hidden="true">→</span>
-                </button>
+              <div className="p-5 rounded-2xl border border-border bg-card">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
+                    <p className="text-sm text-muted leading-relaxed">
+                      {saved
+                        ? "Tu afinidad con esta entidad está guardada."
+                        : "Guardá tu afinidad para accederla después sin reingresar tu fecha."
+                      }
+                    </p>
+                  </div>
+                  {saved ? (
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 min-h-[40px]">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      Guardada
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSave}
+                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    >
+                      Guardar mi afinidad
+                    </button>
+                  )}
+                </div>
+                {!saved && (
+                  <div className="mt-3 pt-3 border-t border-border">
+                    <button
+                      type="button"
+                      onClick={() => router.push("/onboarding")}
+                      className="text-xs text-muted hover:text-accent transition-colors"
+                    >
+                      Creá tu perfil para explorar más →
+                    </button>
+                  </div>
+                )}
               </div>
             </motion.section>
 

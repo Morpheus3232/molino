@@ -107,3 +107,68 @@ export function downloadProfileJson(filename = "molino-perfil.json"): void {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+
+// ════════════════════════════════════════════════════
+// AFFINITY SAVES — P4-A: save individual affinity results
+// ════════════════════════════════════════════════════
+
+export interface SavedAffinityResult {
+  entityId: string;
+  entityType: string;
+  entityName: string;
+  entityEmoji: string;
+  birthDate: string;
+  userAnimal: string;
+  entityAnimal: string;
+  score: number;
+  tier: string;
+  relationship: string;
+  savedAt: string;
+}
+
+interface StoredAffinitySaves {
+  version: 1;
+  saves: SavedAffinityResult[];
+}
+
+const AFFINITY_SAVES_KEY = "molino.affinity-saves.v1";
+
+export function saveAffinityResult(data: Omit<SavedAffinityResult, "savedAt">): void {
+  if (typeof window === "undefined") return;
+  try {
+    const raw = window.localStorage.getItem(AFFINITY_SAVES_KEY);
+    let existing: SavedAffinityResult[] = [];
+    if (raw) {
+      const parsed = JSON.parse(raw) as StoredAffinitySaves;
+      if (parsed.version === 1) existing = parsed.saves;
+    }
+    // Dedupe by entityId — update if already exists
+    const filtered = existing.filter(s => s.entityId !== data.entityId);
+    const entry: SavedAffinityResult = { ...data, savedAt: new Date().toISOString() };
+    const payload: StoredAffinitySaves = {
+      version: 1,
+      saves: [entry, ...filtered].slice(0, 50), // max 50 saves
+    };
+    window.localStorage.setItem(AFFINITY_SAVES_KEY, JSON.stringify(payload));
+  } catch (err) {
+    console.error("Error saving affinity result:", err);
+  }
+}
+
+export function loadAffinitySaves(): SavedAffinityResult[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(AFFINITY_SAVES_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as StoredAffinitySaves;
+    if (parsed.version !== 1) return [];
+    return parsed.saves;
+  } catch {
+    return [];
+  }
+}
+
+export function hasSavedAffinity(entityId: string): boolean {
+  if (typeof window === "undefined") return false;
+  return loadAffinitySaves().some(s => s.entityId === entityId);
+}
