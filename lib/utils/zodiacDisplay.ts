@@ -108,13 +108,4 @@ export function formatAnimalEmoji(animal: string): string {
   return getZodiacDisplay(animal).emoji;
 }
 
-/**
- * Get the animal name array for the engine (Chinese names).
- * This is a convenience — it returns the canonical Chinese names.
- * DO NOT use for display; use formatAnimalSimple() instead.
- */
-export const CANONICAL_ANIMALS = [
-  "Rata", "Buey", "Tigre", "Conejo", "Dragón",
-  "Serpiente", "Caballo", "Cabra", "Mono", "Gallo",
-  "Perro", "Cerdo",
-] as const;
+

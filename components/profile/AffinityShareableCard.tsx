@@ -11,27 +11,33 @@ interface AffinityShareableCardProps {
 /**
  * Generates the viral share text — one-liner optimized for social copy.
  * Must feel personal, be honest, and include "simbólico" + "zodíaco chino".
+ * Animal names are always clean: "Rata", "Caballo", "Dragón", etc. — no articles.
  */
 function buildShareText(result: AffinityResult): string {
   const { entity, entityAnimal, userAnimal, score, relationship } = result;
+  const emoji = entity.emoji || "";
 
   if (entityAnimal === userAnimal) {
-    return `${entity.name} y vos comparten ${entityAnimal}. ${score}/100 de afinidad simbólica según el zodíaco chino. Descubrí la tuya en Molino.`;
-  }
-
-  if (relationship === "armonía natural") {
-    return `${entityAnimal} y ${userAnimal}: armonía simbólica. ${score}/100 según el zodíaco chino. Mirá tu afinidad con ${entity.name} en Molino.`;
-  }
-
-  if (relationship === "opuestos complementarios") {
-    return `${entityAnimal} y ${userAnimal}: opuestos que se atraen. ${score}/100 de afinidad simbólica. Descubrí tu mapa en Molino.`;
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son el mismo signo. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `${entityAnimal} y ${userAnimal}: misma energía, distinta expresión. ${score}/100 según el zodíaco chino. Probá Molino.`;
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
   }
 
-  return `Afinidad simbólica con ${entity.name}: ${entityAnimal} ↔ ${userAnimal}. ${score}/100 según el zodíaco chino. Descubrila en Molino.`;
+  if (relationship === "armonía natural") {
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen armonía natural. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+  }
+
+  if (relationship === "opuestos en el ciclo") {
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son opuestos en el ciclo. ${score}/100 según el zodíaco chino. Mirá qué significa en Molino ✨`;
+  }
+
+  if (relationship === "requiere atención") {
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen una relación que requiere atención. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+  }
+
+  return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${entityAnimal} ↔ ${userAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
 }
 
 /**
@@ -80,6 +86,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
     : `circa ${event.year}`;
 
   const shareText = buildShareText(result);
+  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -87,13 +94,13 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
         await navigator.share({
           title: `Afinidad simbólica con ${entity.name} — Molino`,
           text: shareText,
-          url: window.location.origin,
+          url: shareUrl,
         });
       } catch {
         // User cancelled
       }
     } else {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }

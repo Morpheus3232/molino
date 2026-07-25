@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
+import { getEntitiesByType } from "@/lib/data/symbolic-entities";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
@@ -208,6 +210,29 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </motion.section>
         )}
 
+        {/* Share CTA — contextual, near the WOW moment */}
+        {result && (
+          <ShareInlineCTA result={result} entity={entity} />
+        )}
+
+        {/* Link to multi-factor analysis — after share, before deep content */}
+        <motion.section {...fadeUp} className="mb-12">
+          <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
+            <p className="text-sm text-muted leading-relaxed mb-3">
+              Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push(`/compatibility/${entity.id}`)}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
+            >
+              Explorar análisis avanzado
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </motion.section>
+
         {/* Other historical events — collapsible */}
         {otherEvents.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
@@ -304,9 +329,101 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </motion.section>
         )}
 
+        {/* "Sos X como Y" narrative */}
+        {result && profile && (() => {
+          const story = buildEntityConnectionStory(profile, entity);
+          if (!story) return null;
+          const relationColor = getRelationColor(story.relationType);
+          const relationIcon = getRelationIcon(story.relationType);
+          return (
+            <motion.section {...fadeUp} className="mb-12">
+              <SectionHeader title="Tu conexión" />
+              <div className="p-6 rounded-2xl border border-border bg-card">
+                <div className="flex items-start gap-4 mb-4">
+                  <span className="text-3xl shrink-0">{entity.emoji}</span>
+                  <div>
+                    <h3 className="font-serif text-xl font-semibold text-foreground mb-1">
+                      {story.headline}
+                    </h3>
+                    <p className="text-sm text-muted">{story.subtitle}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">{relationIcon}</span>
+                  <span
+                    className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    style={{ color: relationColor, backgroundColor: `${relationColor}15` }}
+                  >
+                    {story.relationLabel} · {story.relationScore}/100
+                  </span>
+                </div>
+                <p className="text-sm text-foreground leading-relaxed">{story.explanation}</p>
+              </div>
+            </motion.section>
+          );
+        })()}
+
+        {/* "Descubrí algo más" recommendations */}
+        {result && (
+          <motion.section {...fadeUp} className="mb-12">
+            <SectionHeader title="Descubrí algo más" />
+            <div className="space-y-3">
+              {/* Same animal entities */}
+              {(() => {
+                const sameAnimalEntities = getEntitiesByType(type)
+                  .filter(e => e.id !== entity.id)
+                  .slice(0, 2);
+                return sameAnimalEntities.map(e => (
+                  <button
+                    key={e.id}
+                    type="button"
+                    onClick={() => router.push(`/affinity/${type}/${e.id}`)}
+                    className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{e.emoji}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
+                          {e.name}
+                        </p>
+                        <p className="text-xs text-muted">{e.country}</p>
+                      </div>
+                      <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
+                    </div>
+                  </button>
+                ));
+              })()}
+              {/* Back to profile */}
+              <button
+                type="button"
+                onClick={() => router.push("/profile?tab=identity")}
+                className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">✦</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+                      Volvé a tu mapa
+                    </p>
+                    <p className="text-xs text-muted">Revisá tu perfil y descubrí más conexiones</p>
+                  </div>
+                  <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </button>
+            </div>
+          </motion.section>
+        )}
+
         {/* CTAs */}
         <motion.section {...fadeUp}>
           <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              type="button"
+              onClick={() => router.push("/conocimiento/zodiaco-chino")}
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px]"
+            >
+              Conocé el zodíaco chino →
+            </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
@@ -339,6 +456,109 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 // ════════════════════════════════════════════════════
 // SUB-COMPONENTS
 // ════════════════════════════════════════════════════
+
+function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: SymbolicEntity }) {
+  const [copied, setCopied] = useState(false);
+  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
+
+  const shareText = useMemo(() => {
+    const { entityAnimal, userAnimal, score, relationship } = result;
+    const emoji = entity.emoji || "";
+
+    if (entityAnimal === userAnimal) {
+      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son el mismo signo. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    }
+    if (relationship === "tríada compatible") {
+      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    }
+    if (relationship === "armonía natural") {
+      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen armonía natural. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    }
+    if (relationship === "opuestos en el ciclo") {
+      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} son opuestos en el ciclo. ${score}/100 según el zodíaco chino. Mirá qué significa en Molino ✨`;
+    }
+    if (relationship === "requiere atención") {
+      return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} y ${entityAnimal} tienen una relación que requiere atención. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    }
+    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${entityAnimal} ↔ ${userAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+  }, [result, entity]);
+
+  const handleShare = useCallback(async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `Afinidad simbólica con ${entity.name} — Molino`,
+          text: shareText,
+          url: shareUrl,
+        });
+      } catch {
+        // User cancelled
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }, [entity, shareText, shareUrl]);
+
+  const tierMeta = TIER_META[result.tier];
+  const isHighAffinity = result.score >= 75;
+
+  return (
+    <motion.section {...fadeUp} className="mb-12">
+      <div
+        className="p-6 rounded-2xl border-2 transition-colors"
+        style={{
+          borderColor: isHighAffinity ? `${tierMeta.color}30` : "var(--border)",
+          backgroundColor: isHighAffinity ? `${tierMeta.color}05` : "var(--card)",
+        }}
+      >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-foreground mb-1">
+              {isHighAffinity
+                ? `¡${entity.name} tiene una afinidad destacada con vos!`
+                : `¿Te sorprendió esta conexión con ${entity.name}?`}
+            </p>
+            <p className="text-xs text-muted">
+              Compartí tu afinidad simbólica y descubrí qué tienen los demás.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm min-h-[40px]"
+            style={{
+              backgroundColor: tierMeta.color,
+              color: "#fff",
+            }}
+            aria-label={`Compartir afinidad con ${entity.name}`}
+          >
+            {copied ? (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Enlace copiado
+              </>
+            ) : (
+              <>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="18" cy="5" r="3" />
+                  <circle cx="6" cy="12" r="3" />
+                  <circle cx="18" cy="19" r="3" />
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                </svg>
+                Compartir
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
 
 function OtherEventCard({ event }: { event: HistoricalEvent }) {
   const { animal, isApproximate } = useMemo(() => {

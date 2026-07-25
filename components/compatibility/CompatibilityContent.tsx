@@ -89,12 +89,20 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <span className="text-5xl">{entity.emoji}</span>
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">
-              Compatibilidad con {entity.name}
+              Análisis multi-factor de {entity.name}
             </h1>
             <p className="text-sm text-muted mt-1">
               {entity.category} · {entity.context.keyThemes.slice(0, 3).join(' · ')}
             </p>
           </div>
+        </div>
+
+        {/* Explanation of what this page is */}
+        <div className="mb-6 p-4 rounded-xl bg-accent/[0.05] border border-accent/20">
+          <p className="text-sm text-muted leading-relaxed">
+            Este análisis usa <strong>múltiples sistemas</strong> (numerología, astrología occidental, zodiaco chino, arquetipos) para evaluar la compatibilidad.
+            Para la <strong>afinidad principal</strong> basada solo en el zodíaco chino, visitá la página de <a href={`/affinity`} className="text-accent hover:underline">afinidad simbólica</a>.
+          </p>
         </div>
 
         {/* User context */}

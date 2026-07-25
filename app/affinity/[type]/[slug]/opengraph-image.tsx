@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getEntityById, getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
+import { getRelation, type Animal } from "@/lib/data/animalRelations";
 
 export const runtime = "edge";
 
@@ -24,9 +25,12 @@ export default async function Image({ params }: { params: Promise<{ type: string
   }
 
   const primaryEvent = getPrimaryEvent(entity);
-  const { animal } = primaryEvent
+  const { animal: entityAnimal } = primaryEvent
     ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year)
-    : { animal: "—" };
+    : { animal: "ícono" };
+
+  // Get relationship info for a generic "Descubrí" message
+  const relationLabel = "afinidad simbólica";
 
   return new ImageResponse(
     (
@@ -66,39 +70,39 @@ export default async function Image({ params }: { params: Promise<{ type: string
             color: "#C49A2A", fontSize: 12, fontWeight: 600,
             textTransform: "uppercase", letterSpacing: "0.2em",
           }}>
-            Mi afinidad simbólica
+            Afinidad simbólica
           </span>
         </div>
 
-        {/* Main content — Two animals face to face */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, marginBottom: 40, flex: 1 }}>
+        {/* Main content — Entity info + CTA */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 60, marginBottom: 40, flex: 1 }}>
 
           {/* Entity side */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 80 }}>{entity.emoji}</span>
-            <span style={{ color: "#F5F5F5", fontSize: 36, fontWeight: 700, fontFamily: "Georgia, serif" }}>
-              {animal}
-            </span>
-            <span style={{ color: "#9CA3AF", fontSize: 16, fontWeight: 500 }}>
+            <span style={{ fontSize: 96 }}>{entity.emoji}</span>
+            <span style={{ color: "#F5F5F5", fontSize: 32, fontWeight: 700, fontFamily: "Georgia, serif" }}>
               {entity.name}
             </span>
-          </div>
-
-          {/* Center — Score */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-            <span style={{ color: "#C49A2A", fontSize: 72, fontWeight: 700, fontFamily: "Georgia, serif", lineHeight: 1 }}>
-              —
+            <span style={{ color: "#C49A2A", fontSize: 18, fontWeight: 600 }}>
+              {entityAnimal}
             </span>
-            <span style={{ color: "#6B7280", fontSize: 14 }}>/100</span>
           </div>
 
-          {/* User side */}
+          {/* Center — Arrow + CTA */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+            <span style={{ color: "#C49A2A", fontSize: 48 }}>→</span>
+            <span style={{ color: "#9CA3AF", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
+              ¿Cuál es tu animal?
+            </span>
+          </div>
+
+          {/* User side — question mark */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 80 }}>🪞</span>
-            <span style={{ color: "#F5F5F5", fontSize: 36, fontWeight: 700, fontFamily: "Georgia, serif" }}>
+            <span style={{ fontSize: 96 }}>🪞</span>
+            <span style={{ color: "#F5F5F5", fontSize: 32, fontWeight: 700, fontFamily: "Georgia, serif" }}>
               ?
             </span>
-            <span style={{ color: "#9CA3AF", fontSize: 16, fontWeight: 500 }}>
+            <span style={{ color: "#9CA3AF", fontSize: 18 }}>
               Vos
             </span>
           </div>
@@ -109,7 +113,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 32, height: 2, background: "linear-gradient(90deg, #C49A2A, #D4A843)", borderRadius: 1 }} />
             <span style={{ color: "#6B7280", fontSize: 14 }}>
-              Descubrí tu afinidad simbólica en
+              Descubrí tu afinidad con {entity.name} en
             </span>
             <span style={{ color: "#F5F5F5", fontSize: 14, fontWeight: 600 }}>Molino</span>
           </div>

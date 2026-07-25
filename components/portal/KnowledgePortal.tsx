@@ -40,9 +40,9 @@ export default function KnowledgePortal({ profile, knowledge }: KnowledgePortalP
             </ul>
             <button
               onClick={() => {
-                if (subject.id === "numerologia") router.push("/numerologia");
-                else if (subject.id === "astrologia") router.push("/astrologia");
-                else if (subject.id === "chineseZodiac") router.push("/zodiaco-chino");
+                if (subject.id === "numerologia") router.push("/conocimiento/numerologia");
+                else if (subject.id === "astrologia") router.push("/conocimiento/astrologia");
+                else if (subject.id === "chineseZodiac") router.push("/conocimiento/zodiaco-chino");
               }}
               className="text-sm font-medium text-background bg-foreground px-4 py-2 rounded-full hover:bg-accent transition-colors"
             >

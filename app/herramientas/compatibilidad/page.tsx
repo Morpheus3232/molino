@@ -9,7 +9,8 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { getSunSign } from "@/lib/engines/astrologyEngine";
 import { getChineseZodiac } from "@/lib/engines/chineseZodiacEngine";
-import { getCompatibilityScore, getCompatibilityDescription } from "@/lib/data";
+import { getCompatibilityDescription } from "@/lib/data";
+import { getRelation, type Animal } from "@/lib/data/animalRelations";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -41,20 +42,16 @@ function calculatePerson(day: string, month: string, year: string): PersonData |
   };
 }
 
-const ZODIAC_COMPAT_TABLE: Record<number, { label: string; score: number }> = {
-  0: { label: "Mismo signo", score: 80 },
-  1: { label: "Adyacentes", score: 70 },
-  2: { label: "Amigos", score: 65 },
-  3: { label: "Tensi\u00f3n productiva", score: 45 },
-  4: { label: "Neutrales", score: 55 },
-  5: { label: "Desaf\u00edo", score: 35 },
-  6: { label: "Opuestos", score: 90 },
-  7: { label: "Desaf\u00edo intenso", score: 30 },
-  8: { label: "Coexistencia", score: 55 },
-  9: { label: "Aprender del otro", score: 40 },
-  10: { label: "Respeto mutuo", score: 60 },
-  11: { label: "Complementarios", score: 70 },
-};
+// Score via canonical animalRelations (getRelation) — 100% animal↔animal
+function getZodiacScore(animal1: string, animal2: string): number {
+  if (!animal1 || !animal2) return 50;
+  return getRelation(animal1 as Animal, animal2 as Animal).score;
+}
+
+function getZodiacLabel(animal1: string, animal2: string): string {
+  if (!animal1 || !animal2) return "Sin datos";
+  return getRelation(animal1 as Animal, animal2 as Animal).label;
+}
 
 export default function CompatibilidadCalcPage() {
   const router = useRouter();
@@ -73,19 +70,14 @@ export default function CompatibilidadCalcPage() {
 
   const compatibility = useMemo(() => {
     if (!person1 || !person2) return null;
-    const animals = ["Rata", "Buey", "Tigre", "Conejo", "Drag\u00f3n", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
-    const i1 = animals.indexOf(person1.animal);
-    const i2 = animals.indexOf(person2.animal);
-    const diff = Math.abs(i1 - i2) % 12;
-    const zodiacData = ZODIAC_COMPAT_TABLE[diff] || { label: "Neutral", score: 50 };
-    const numerologyScore = getCompatibilityScore(person1.animal, person2.animal);
-    const finalScore = Math.round(zodiacData.score * 0.7 + numerologyScore * 0.3);
+    const zodiacScore = getZodiacScore(person1.animal, person2.animal);
+    const label = getZodiacLabel(person1.animal, person2.animal);
+    const finalScore = zodiacScore;
 
     return {
       score: finalScore,
-      zodiacScore: zodiacData.score,
-      numerologyScore,
-      label: zodiacData.label,
+      zodiacScore,
+      label,
       description: getCompatibilityDescription(finalScore, person2.animal),
     };
   }, [person1, person2]);
@@ -112,7 +104,7 @@ export default function CompatibilidadCalcPage() {
             Compatibilidad simb&oacute;lica
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Ingres&aacute; las fechas de nacimiento de dos personas para ver c&oacute;mo se conectan seg&uacute;n el zodiaco chino y la numerolog&iacute;a. No se guardan datos.
+            Ingres&aacute; las fechas de nacimiento de dos personas para ver c&oacute;mo se conectan seg&uacute;n el zodiaco chino. No se guardan datos.
           </p>
         </motion.section>
 
@@ -198,14 +190,10 @@ export default function CompatibilidadCalcPage() {
                 </div>
 
                 {/* Desglose */}
-                <div className="max-w-lg mx-auto grid grid-cols-2 gap-4 mb-6">
+                <div className="max-w-lg mx-auto mb-6">
                   <div className="p-4 rounded-xl bg-card border border-border text-center">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
                     <p className="text-2xl font-serif font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-card border border-border text-center">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Numerolog&iacute;a</p>
-                    <p className="text-2xl font-serif font-bold" style={{ color: compatibility.numerologyScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.numerologyScore}%</p>
                   </div>
                 </div>
 
@@ -218,7 +206,7 @@ export default function CompatibilidadCalcPage() {
               {/* Disclaimer */}
               <div className="mt-6 p-4 rounded-xl border border-border bg-card">
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>F&oacute;rmula:</strong> 70% Zodiaco Chino + 30% Numerolog&iacute;a. Esta es una interpretaci&oacute;n simb&oacute;lica. No constituye evidencia cient&iacute;fica ni predice el resultado de una relaci&oacute;n.
+                  <strong>F&oacute;rmula:</strong> 100% relaci&oacute;n zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretaci&oacute;n simb&oacute;lica. No constituye evidencia cient&iacute;fica ni predice el resultado de una relaci&oacute;n.
                 </p>
               </div>
 

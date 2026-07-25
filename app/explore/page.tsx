@@ -14,7 +14,7 @@ const SYSTEMS = [
     title: "Numerología",
     subtitle: "El lenguaje de los números",
     description: "Cada n\u00famero tiene un significado. Tu Camino de Vida, Expression, Alma y Personalidad revelan capas diferentes de qui\u00e9n sos.",
-    href: "/numerologia",
+    href: "/conocimiento/numerologia",
     color: "var(--element-fire)",
   },
   {
@@ -22,7 +22,7 @@ const SYSTEMS = [
     title: "Astrología",
     subtitle: "Los astros y tu energía",
     description: "Tu signo solar, los planetas y las casas forman un mapa del cielo en el momento de tu nacimiento.",
-    href: "/astrologia",
+    href: "/conocimiento/astrologia",
     color: "var(--layer-astrology)",
   },
   {
@@ -30,7 +30,7 @@ const SYSTEMS = [
     title: "Zodiaco Chino",
     subtitle: "El ciclo de 12 animales",
     description: "Un sistema de 12 animales y 5 elementos que se repite cada 60 años. Tu animal y elemento definen tu estilo.",
-    href: "/zodiaco-chino",
+    href: "/conocimiento/zodiaco-chino",
     color: "var(--layer-moment)",
   },
 ];
@@ -39,12 +39,12 @@ const CONCEPTS = [
   {
     title: "Arquetipos",
     description: "Los 9 arquetipos numerológicos y lo que revelan sobre tu energía natural.",
-    href: "/numerologia",
+    href: "/conocimiento/numerologia",
   },
   {
     title: "Elementos",
     description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental que aparece en múltiples sistemas.",
-    href: "/astrologia",
+    href: "/conocimiento/astrologia",
   },
   {
     title: "Ciclos",
@@ -59,12 +59,12 @@ const CONCEPTS = [
   {
     title: "Números maestros",
     description: "11, 22, 33. Números especiales que amplifican la energía de tu Camino de Vida.",
-    href: "/numerologia",
+    href: "/conocimiento/numerologia",
   },
   {
     title: "Modalidades",
     description: "Cardinal, Fijo, Mutable. Cómo implementás tu energía en el mundo.",
-    href: "/astrologia",
+    href: "/conocimiento/astrologia",
   },
 ];
 

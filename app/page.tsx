@@ -7,17 +7,17 @@ import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const SYSTEMS = [
-  { title: "Numerolog\u00eda", subtitle: "El lenguaje de los n\u00fameros", description: "Tu Camino de Vida, Expression, Alma y Personalidad revelan capas diferentes de qui\u00e9n sos.", href: "/numerologia", color: "var(--element-fire)" },
-  { title: "Astrolog\u00eda", subtitle: "El mapa del cielo de tu nacimiento", description: "Tu signo solar, los planetas y las casas forman un mapa del cielo en el momento de tu nacimiento.", href: "/astrologia", color: "var(--layer-astrology)" },
-  { title: "Zodiaco Chino", subtitle: "El ciclo de 12 animales", description: "Un sistema de 12 animales y 5 elementos que se repite cada 60 a\u00f1os. Tu animal y elemento definen tu estilo.", href: "/zodiaco-chino", color: "var(--layer-moment)" },
+  { title: "Numerolog\u00eda", subtitle: "El lenguaje de los n\u00fameros", description: "Tu Camino de Vida, Expression, Alma y Personalidad revelan capas diferentes de qui\u00e9n sos.", href: "/conocimiento/numerologia", color: "var(--element-fire)" },
+  { title: "Astrolog\u00eda", subtitle: "El mapa del cielo de tu nacimiento", description: "Tu signo solar, los planetas y las casas forman un mapa del cielo en el momento de tu nacimiento.", href: "/conocimiento/astrologia", color: "var(--layer-astrology)" },
+  { title: "Zodiaco Chino", subtitle: "El ciclo de 12 animales", description: "Un sistema de 12 animales y 5 elementos que se repite cada 60 a\u00f1os. Tu animal y elemento definen tu estilo.", href: "/conocimiento/zodiaco-chino", color: "var(--layer-moment)" },
 ];
 
 const CONCEPTS = [
-  { title: "Arquetipos", description: "Los 9 arquetipos numerol\u00f3gicos y lo que revelan sobre tu energ\u00eda natural.", href: "/numerologia" },
-  { title: "Elementos", description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental.", href: "/astrologia" },
+  { title: "Arquetipos", description: "Los 9 arquetipos numerol\u00f3gicos y lo que revelan sobre tu energ\u00eda natural.", href: "/conocimiento/numerologia" },
+  { title: "Elementos", description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental.", href: "/conocimiento/astrologia" },
   { title: "Ciclos", description: "Tu a\u00f1o, mes y d\u00eda personal. C\u00f3mo cambia tu energ\u00eda a lo largo del tiempo.", href: "/profile" },
-  { title: "N\u00fameros maestros", description: "11, 22, 33. N\u00fameros especiales que amplifican la energ\u00eda de tu Camino de Vida.", href: "/numerologia" },
-  { title: "Modalidades", description: "Cardinal, Fijo, Mutable. C\u00f3mo implement\u00e1s tu energ\u00eda en el mundo.", href: "/astrologia" },
+  { title: "N\u00fameros maestros", description: "11, 22, 33. N\u00fameros especiales que amplifican la energ\u00eda de tu Camino de Vida.", href: "/conocimiento/numerologia" },
+  { title: "Modalidades", description: "Cardinal, Fijo, Mutable. C\u00f3mo implement\u00e1s tu energ\u00eda en el mundo.", href: "/conocimiento/astrologia" },
   { title: "Compatibilidad", description: "C\u00f3mo conect\u00e1s con personas, pa\u00edses, marcas y conceptos a trav\u00e9s de tus sistemas.", href: "/compatibility/countries" },
 ];
 

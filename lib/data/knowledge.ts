@@ -49,21 +49,28 @@ export const ASPECTS = [
   { name: "Oposición", angle: "180°", meaning: "Polaridad y proyección" },
 ];
 
-export const CHINESE_ANIMALS = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+/** Re-export from the canonical source of truth. */
+import { ANIMALS } from "@/lib/data/animalRelations";
+export const CHINESE_ANIMALS = ANIMALS;
 export const CHINESE_ELEMENTS = ["Metal", "Agua", "Madera", "Fuego", "Tierra"];
+/**
+ * @deprecated Legacy data — use animalRelations.ts as the single source of truth
+ * for zodiac relationships and scores. This array is only used for display in
+ * the knowledge section. Animal names corrected: "Oveja" → "Cabra".
+ */
 export const CHINESE_COMPATIBILITY = [
   ["Rata", ["Dragón", "Mono", "Rata"], ["Caballo", "Conejo"]],
   ["Buey", ["Serpiente", "Gallo", "Buey"], ["Cabra", "Perro"]],
   ["Tigre", ["Caballo", "Perro", "Tigre"], ["Serpiente", "Mono"]],
-  ["Conejo", ["Oveja", "Cerdo", "Conejo"], ["Rata", "Gallo"]],
+  ["Conejo", ["Cabra", "Cerdo", "Conejo"], ["Rata", "Gallo"]],
   ["Dragón", ["Rata", "Serpiente", "Dragón"], ["Perro", "Conejo"]],
   ["Serpiente", ["Mono", "Gallo", "Serpiente"], ["Cerdo", "Tigre"]],
-  ["Caballo", ["Tigre", "Perro", "Caballo"], ["Rata", "Oveja"]],
+  ["Caballo", ["Tigre", "Perro", "Caballo"], ["Rata", "Buey"]],
   ["Cabra", ["Conejo", "Cerdo", "Cabra"], ["Buey", "Perro"]],
   ["Mono", ["Rata", "Dragón", "Mono"], ["Tigre", "Cerdo"]],
   ["Gallo", ["Buey", "Serpiente", "Gallo"], ["Conejo", "Perro"]],
   ["Perro", ["Tigre", "Conejo", "Perro"], ["Buey", "Dragón"]],
-  ["Cerdo", ["Conejo", "Oveja", "Cerdo"], ["Serpiente", "Mono"]],
+  ["Cerdo", ["Conejo", "Cabra", "Cerdo"], ["Serpiente", "Mono"]],
 ];
 
 export const TAROT_ARCANOS = [

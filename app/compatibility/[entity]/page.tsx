@@ -14,33 +14,34 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
   const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) {
     return {
-      title: 'Compatibilidad no encontrada | Molino',
+      title: 'Análisis no encontrado | Molino',
       description: 'La entidad que buscas no existe en nuestra base de datos.',
     };
   }
 
-  const description = `Descubrí tu compatibilidad con ${entity.name}. Análisis basado en numerología, astrología y zodiaco chino. Molino — Inteligencia Personal.`;
+  const description = `Análisis profundo de compatibilidad con ${entity.name} usando numerología, astrología occidental y zodiaco chino. Molino — Inteligencia Personal.`;
 
   return {
-    title: `Compatibilidad con ${entity.name} | Molino`,
+    title: `Análisis multi-factor de ${entity.name} | Molino`,
     description,
     openGraph: {
-      title: `Compatibilidad con ${entity.name} | Molino`,
+      title: `Análisis multi-factor de ${entity.name} | Molino`,
       description,
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Compatibilidad con ${entity.name}`,
+      title: `Análisis multi-factor de ${entity.name}`,
       description,
     },
     keywords: [
       entity.name,
+      'análisis multi-factor',
       'compatibilidad',
       'numerología',
       'astrología',
       'zodiaco chino',
-      'identidad',
+      'arquetipos',
       ...entity.context.keyThemes,
     ],
   };

@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { formatAnimalEmoji, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getAnimalProfile, type Animal } from "@/lib/data/animalRelations";
@@ -58,6 +59,7 @@ const ELEMENT_TRAITS: Record<string, { color: string; description: string }> = {
 };
 
 export default function IdentityCard({ profile }: IdentityCardProps) {
+  const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
   const display = getZodiacDisplay(userAnimal);
@@ -146,8 +148,8 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 
           {/* Knowledge explorers */}
           <div className="mb-6 space-y-3">
-            <LifePathExplorerInline lifePath={lifePath} />
-            <ZodiacExplorerInline animal={userAnimal} element={element} />
+            <LifePathExplorerInline lifePath={lifePath} router={router} />
+            <ZodiacExplorerInline animal={userAnimal} element={element} router={router} />
           </div>
 
           {/* Disclaimer */}
@@ -166,39 +168,33 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 // INLINE EXPLORERS
 // ════════════════════════════════════════════════════
 
-function LifePathExplorerInline({ lifePath }: { lifePath: number }) {
-  const [expanded, setExpanded] = useState(false);
-
+function LifePathExplorerInline({ lifePath, router }: { lifePath: number; router: ReturnType<typeof useRouter> }) {
   return (
-    <div className="p-4 rounded-xl border border-border bg-background/50">
+    <button
+      type="button"
+      onClick={() => router.push("/conocimiento/numerologia")}
+      className="w-full text-left p-4 rounded-xl border border-border bg-background/50 group hover:border-accent/40 transition-colors"
+    >
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[10px] text-muted font-medium">Life Path {lifePath}</p>
           <p className="text-xs text-muted/70">Numerología pitagórica moderna</p>
         </div>
-        <button type="button" onClick={() => setExpanded(!expanded)} className="text-[10px] text-accent hover:underline">
-          {expanded ? "Ocultar" : "Conocer origen"} →
-        </button>
+        <span className="text-[10px] text-accent group-hover:translate-x-1 transition-transform">Conocer origen →</span>
       </div>
-      {expanded && (
-        <div className="mt-3 pt-3 border-t border-border">
-          <p className="text-xs text-foreground leading-relaxed">
-            Tu número {lifePath} viene de una tradición numerológica desarrollada durante el siglo XX
-            a partir de sistemas pitagóricos. El Life Path se calcula reduciendo tu fecha de nacimiento
-            a un solo dígito (o número maestro 11/22/33).
-          </p>
-        </div>
-      )}
-    </div>
+    </button>
   );
 }
 
-function ZodiacExplorerInline({ animal, element }: { animal: string; element: string }) {
-  const [expanded, setExpanded] = useState(false);
+function ZodiacExplorerInline({ animal, element, router }: { animal: string; element: string; router: ReturnType<typeof useRouter> }) {
   const display = getZodiacDisplay(animal);
 
   return (
-    <div className="p-4 rounded-xl border border-border bg-background/50">
+    <button
+      type="button"
+      onClick={() => router.push("/conocimiento/zodiaco-chino")}
+      className="w-full text-left p-4 rounded-xl border border-border bg-background/50 group hover:border-accent/40 transition-colors"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-lg">{display.emoji}</span>
@@ -207,19 +203,8 @@ function ZodiacExplorerInline({ animal, element }: { animal: string; element: st
             <p className="text-xs text-muted/70">Tradición zodiacal oriental</p>
           </div>
         </div>
-        <button type="button" onClick={() => setExpanded(!expanded)} className="text-[10px] text-accent hover:underline">
-          {expanded ? "Ocultar" : "Explorar tradición"} →
-        </button>
+        <span className="text-[10px] text-accent group-hover:translate-x-1 transition-transform">Explorar tradición →</span>
       </div>
-      {expanded && (
-        <div className="mt-3 pt-3 border-t border-border">
-          <p className="text-xs text-foreground leading-relaxed">
-            El {display.name} es el séptimo animal del zodíaco chino, un sistema de 12 animales
-            que cicla cada 12 años. En Vietnam, el Conejo es reemplazado por el Gato.
-            Tu {display.name} tiene elemento {element} según la tradición.
-          </p>
-        </div>
-      )}
-    </div>
+    </button>
   );
 }
