@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage";
 
@@ -45,25 +45,75 @@ function isGroupActive(group: typeof NAV_GROUPS[0], pathname: string): boolean {
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const hasProfile = hasStoredProfile();
+  const [hasProfile, setHasProfile] = useState(() => hasStoredProfile());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Refresh profile state on custom events
+  useEffect(() => {
+    const refresh = () => setHasProfile(hasStoredProfile());
+    window.addEventListener("molino-profile-created", refresh);
+    window.addEventListener("molino-profile-cleared", refresh);
+    return () => {
+      window.removeEventListener("molino-profile-created", refresh);
+      window.removeEventListener("molino-profile-cleared", refresh);
+    };
+  }, []);
 
   useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setMobileMenuOpen(false); setShowConfirm(false); }
+      if (e.key === "Escape") {
+        if (showConfirm) {
+          setShowConfirm(false);
+          triggerRef.current?.focus();
+        }
+        setMobileMenuOpen(false);
+      }
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
+  }, [showConfirm]);
+
+  // Focus trap for modal
+  useEffect(() => {
+    if (!showConfirm || !modalRef.current) return;
+    const modal = modalRef.current;
+    const focusable = modal.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    // Focus first element
+    first?.focus();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+
+    modal.addEventListener("keydown", handleTab);
+    return () => modal.removeEventListener("keydown", handleTab);
+  }, [showConfirm]);
 
   const handleNewProfile = useCallback(() => { setShowConfirm(true); }, []);
 
   const confirmNewProfile = useCallback(() => {
     clearStoredProfile();
     setShowConfirm(false);
+    triggerRef.current?.focus();
     window.dispatchEvent(new Event("molino-profile-cleared"));
     router.push("/");
   }, [router]);
@@ -94,7 +144,7 @@ export default function UniversityHeader() {
                 <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${(isOnHome && group.label === "Descubrir") || isGroupActive(group, pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
                   {group.label}
                 </button>
-                <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50" role="menu">
+                <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 z-50" role="menu">
                   <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[200px]">
                     {group.label === "Descubrir" && (
                       <Link href="/" className={`block px-4 py-2 text-sm transition-colors ${isOnHome ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">Inicio</Link>
@@ -119,7 +169,7 @@ export default function UniversityHeader() {
 
             {/* CTA */}
             {hasProfile && (
-              <button type="button" onClick={handleNewProfile} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-3 py-1.5 text-xs text-muted hover:text-foreground hover:bg-foreground/5 border border-border">
+              <button ref={triggerRef} type="button" onClick={handleNewProfile} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-3 py-1.5 text-xs text-muted hover:text-foreground hover:bg-foreground/5 border border-border">
                 Nuevo perfil
               </button>
             )}
@@ -183,13 +233,13 @@ export default function UniversityHeader() {
 
       {/* Confirmation modal */}
       {showConfirm && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-          <div className="absolute inset-0 bg-foreground/50" onClick={() => setShowConfirm(false)} />
+        <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+          <div className="absolute inset-0 bg-foreground/50" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} />
           <div className="relative bg-card border border-border rounded-2xl shadow-xl p-6 sm:p-8 max-w-sm mx-4 w-full">
             <h3 id="confirm-title" className="font-serif text-xl font-semibold text-foreground mb-2">Nuevo perfil</h3>
             <p className="text-sm text-muted mb-6">Se eliminar\u00e1 el perfil actual. Pod\u00e9s crear uno nuevo despu\u00e9s.</p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => setShowConfirm(false)} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5">
+              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5">
                 Cancelar
               </button>
               <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">

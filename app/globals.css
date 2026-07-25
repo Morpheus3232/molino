@@ -316,7 +316,7 @@
     color: var(--color-background);
   }
 
-  .section-dark p {
+  .section-dark p:not([class*="text-"]) {
     color: var(--color-muted);
   }
 

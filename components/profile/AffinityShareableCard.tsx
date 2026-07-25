@@ -1,8 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import { TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { formatAnimalSimple, formatAnimalWithEquivalent } from "@/lib/utils/zodiacDisplay";
+import { analytics } from "@/lib/analytics/analytics";
 
 interface AffinityShareableCardProps {
   result: AffinityResult;
@@ -19,26 +21,26 @@ function buildShareText(result: AffinityResult): string {
   const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `Soy ${userAnimal} y ${entity.name} también. Afinidad ${score}/100 — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
   }
 
   if (relationship === "armonía natural") {
-    return `${userAnimal} y ${entityAnimal} se complementan. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
   }
 
   if (relationship === "opuestos en el ciclo") {
-    return `${userAnimal} y ${entityAnimal} son opuestos que se atraen. ${score}/100 con ${emoji} ${entity.name}. Mirá qué significa en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
   }
 
   if (relationship === "requiere atención") {
-    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${score}/100 con ${emoji} ${entity.name}. Descubrí la tuya en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
   }
 
-  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. Descubrí la tuya en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
 }
 
 /**
@@ -97,13 +99,21 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           text: shareText,
           url: shareUrl,
         });
+        analytics.trackAffinityShared(entity.type, "share");
+        toast.success("Afinidad compartida");
       } catch {
-        // User cancelled
+        // User cancelled — no toast needed
       }
     } else {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        analytics.trackAffinityShared(entity.type, "clipboard");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("¡Afinidad copiada!");
+      } catch {
+        toast.error("No pudimos copiar. Intentá de nuevo.");
+      }
     }
   };
 

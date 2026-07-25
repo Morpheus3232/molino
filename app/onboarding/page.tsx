@@ -140,6 +140,7 @@ export default function OnboardingPage() {
       notifications: updatedProfile.notifications,
     });
     saveProfileToStorage(updatedProfile);
+    window.dispatchEvent(new Event("molino-profile-created"));
     markOnboardingCompleted();
     analytics.trackProfileCreated(updatedProfile);
     setStep("complete");
@@ -163,6 +164,7 @@ export default function OnboardingPage() {
       notifications: true,
     });
     saveProfileToStorage(finalProfile);
+    window.dispatchEvent(new Event("molino-profile-created"));
     markOnboardingCompleted();
     analytics.trackProfileCreated(finalProfile);
     setStep("complete");

@@ -14,5 +14,3 @@ export { getChineseZodiac as getChineseZodiacEngine, getChineseZodiacInfo, getCh
 export { getChineseZodiac as getRealChineseZodiac } from './data/chineseNewYearDates';
 export { generateAIInterpretation, generateSEOInterpretation } from './engines/aiEngine';
 export type { AIInterpretation } from './engines/aiEngine';
-export { loginUser, registerUser, getSession, logoutUser, saveComparison, removeComparison, saveEntity, removeEntity } from './auth/userService';
-export type { User, AuthSession } from './auth/userService';

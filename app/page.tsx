@@ -36,7 +36,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <UniversityHeader />
 
-      <main className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-28" id="main-content">
+      <main className="mx-auto max-w-wide px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-28" id="main-content">
 
         {/* ═══ 1. HERO ═══ */}
         <motion.section

@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
@@ -18,6 +20,11 @@ import AffinityScoreGauge from "@/components/ui/AffinityScoreGauge";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
+import { analytics } from "@/lib/analytics/analytics";
+
+const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
+const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+const MONTH_LABELS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -47,29 +54,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
-        <UniversityHeader />
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Personal · {meta.label}
-          </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-            {entity.emoji} {entity.name}
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Creá tu perfil para descubrir tu afinidad simbólica con {entity.name}.
-          </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-          >
-            Crear mi perfil
-          </button>
-        </div>
-        <UniversityFooter />
-      </div>
+      <QuickAffinity entity={entity} meta={meta} type={type} />
     );
   }
 
@@ -409,21 +394,21 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             <button
               type="button"
               onClick={() => router.push("/conocimiento/zodiaco-chino")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:border-accent/30 sm:bg-accent/[0.03]"
             >
               Conocé el zodíaco chino →
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Comparar con otra entidad
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/${type}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
             </button>
@@ -606,7 +591,7 @@ function ShareButton({
   const shareText = useMemo(() => {
     const { entityAnimal, userAnimal, score } = result;
     const emoji = entity.emoji || "";
-    return `Descubrí mi afinidad simbólica con ${emoji} ${entity.name}: ${userAnimal} ↔ ${entityAnimal}. ${score}/100 según el zodíaco chino. Descubrí la tuya en Molino ✨`;
+    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubrila en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -617,13 +602,21 @@ function ShareButton({
           text: shareText,
           url: shareUrl,
         });
+        analytics.trackAffinityShared(entity.type, "share");
+        toast.success("Afinidad compartida");
       } catch {
-        // User cancelled
+        // User cancelled — no toast needed
       }
     } else {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        analytics.trackAffinityShared(entity.type, "clipboard");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("¡Afinidad copiada!");
+      } catch {
+        toast.error("No pudimos copiar. Intentá de nuevo.");
+      }
     }
   }, [entity, shareText, shareUrl]);
 
@@ -633,7 +626,7 @@ function ShareButton({
       onClick={handleShare}
       className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       style={{ backgroundColor: tierMeta.color, color: "#fff" }}
-      aria-label={`Compartir afinidad con ${entity.name}`}
+      aria-label={`Compartí tu afinidad con ${entity.name}`}
     >
       {copied ? (
         <>
@@ -651,7 +644,7 @@ function ShareButton({
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
             <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
           </svg>
-          Compartir
+          Compartí tu afinidad
         </>
       )}
     </button>
@@ -668,21 +661,21 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
     const tierLabel = TIER_META[result.tier].label;
 
     if (entityAnimal === userAnimal) {
-      return `Soy ${userAnimal} y ${entity.name} también. Afinidad ${score}/100 — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
     }
     if (relationship === "tríada compatible") {
-      return `${userAnimal} y ${entityAnimal} comparten una tríada. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
     }
     if (relationship === "armonía natural") {
-      return `${userAnimal} y ${entityAnimal} se complementan. ${score}/100 con ${emoji} ${entity.name} — ${tierLabel}. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
     }
     if (relationship === "opuestos en el ciclo") {
-      return `${userAnimal} y ${entityAnimal} son opuestos que se atraen. ${score}/100 con ${emoji} ${entity.name}. Mirá qué significa en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
     }
     if (relationship === "requiere atención") {
-      return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${score}/100 con ${emoji} ${entity.name}. Descubrí la tuya en Molino ✨`;
+      return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
     }
-    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. Descubrí la tuya en Molino ✨`;
+    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -693,13 +686,21 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
           text: shareText,
           url: shareUrl,
         });
+        analytics.trackAffinityShared(entity.type, "share");
+        toast.success("Afinidad compartida");
       } catch {
-        // User cancelled
+        // User cancelled — no toast needed
       }
     } else {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        analytics.trackAffinityShared(entity.type, "clipboard");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        toast.success("¡Afinidad copiada!");
+      } catch {
+        toast.error("No pudimos copiar. Intentá de nuevo.");
+      }
     }
   }, [entity, shareText, shareUrl]);
 
@@ -734,7 +735,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
               backgroundColor: tierMeta.color,
               color: "#fff",
             }}
-            aria-label={`Compartir afinidad con ${entity.name}`}
+            aria-label={`Compartí tu afinidad con ${entity.name}`}
           >
             {copied ? (
               <>
@@ -752,7 +753,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
                   <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
                   <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                 </svg>
-                Compartir
+                Compartí tu afinidad
               </>
             )}
           </button>
@@ -861,6 +862,242 @@ function CollapsibleSection({
           {children}
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * QuickAffinity — P0 flow: user enters ONLY birth date, sees Affinity result immediately.
+ * No onboarding, no name, no login. Date persisted in sessionStorage across entity pages.
+ */
+function QuickAffinity({
+  entity,
+  meta,
+  type,
+}: {
+  entity: SymbolicEntity;
+  meta: { label: string; plural: string; icon: string; description: string };
+  type: EntityType;
+}) {
+  const router = useRouter();
+  const reducedMotion = useReducedMotion();
+  const currentYear = new Date().getFullYear();
+
+  // Date state — initialize from sessionStorage if available
+  const [day, setDay] = useState(() => {
+    if (typeof window === "undefined") return "";
+    try {
+      const saved = sessionStorage.getItem(AFFINITY_DATE_KEY);
+      if (saved) {
+        const parts = saved.split("-");
+        return parts[2] || "";
+      }
+    } catch {}
+    return "";
+  });
+  const [month, setMonth] = useState(() => {
+    if (typeof window === "undefined") return "01";
+    try {
+      const saved = sessionStorage.getItem(AFFINITY_DATE_KEY);
+      if (saved) {
+        const parts = saved.split("-");
+        return parts[1] || "01";
+      }
+    } catch {}
+    return "01";
+  });
+  const [year, setYear] = useState(() => {
+    if (typeof window === "undefined") return String(currentYear - 25);
+    try {
+      const saved = sessionStorage.getItem(AFFINITY_DATE_KEY);
+      if (saved) {
+        const parts = saved.split("-");
+        return parts[0] || String(currentYear - 25);
+      }
+    } catch {}
+    return String(currentYear - 25);
+  });
+  const [error, setError] = useState("");
+
+  // Calculate result from saved or entered date
+  const result = useMemo(() => {
+    let birthDate = "";
+    try {
+      birthDate = sessionStorage.getItem(AFFINITY_DATE_KEY) || "";
+    } catch {}
+    if (!birthDate && day && month && year) {
+      birthDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    }
+    if (!birthDate) return null;
+    const profile = calculateUserProfile("", birthDate);
+    return calculateAffinity(profile, entity);
+  }, [day, month, year, entity]);
+
+  const handleSubmit = useCallback(() => {
+    setError("");
+    const parsedDay = parseInt(day, 10);
+    const parsedMonth = parseInt(month, 10);
+    const parsedYear = parseInt(year, 10);
+    if (!parsedDay || !parsedMonth || !parsedYear) {
+      setError("Seleccioná día, mes y año");
+      return;
+    }
+    const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
+    try {
+      sessionStorage.setItem(AFFINITY_DATE_KEY, birthDate);
+    } catch {}
+    analytics.trackAffinityDateEntered(type);
+    // Force re-render by updating state
+    setDay(String(parsedDay));
+    setMonth(String(parsedMonth).padStart(2, "0"));
+    setYear(String(parsedYear));
+  }, [day, month, year]);
+
+  const tierMeta = result ? TIER_META[result.tier] : null;
+  const yearOptions = Array.from({ length: 100 }, (_, i) => currentYear - i);
+
+  // Has a result been calculated?
+  const hasResult = result && result.score > 0 && result.userAnimal;
+
+  // Track result viewed
+  useEffect(() => {
+    if (hasResult && result) {
+      analytics.trackAffinityResultViewed(type, result.score, result.tier);
+    }
+  }, [hasResult, result, type]);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <UniversityHeader />
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+
+        {/* Back */}
+        <motion.div {...fadeUp}>
+          <button
+            type="button"
+            onClick={() => router.push(`/affinity/${type}`)}
+            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+          >
+            &larr; {meta.plural}
+          </button>
+        </motion.div>
+
+        {/* Hero — entity info always visible */}
+        <motion.section {...fadeUp} className="mb-8">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
+            Afinidad Personal · {meta.label}
+          </p>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <span className="text-5xl">{entity.emoji}</span>
+            <div>
+              <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+                {entity.name}
+              </h1>
+              <p className="text-sm text-muted mt-1">{entity.country}</p>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Date input OR Result */}
+        {!hasResult ? (
+          /* Date input — shown when no date is saved */
+          <motion.section {...fadeUp} className="mb-12">
+            <div className="max-w-md mx-auto p-6 rounded-2xl border border-border bg-card">
+              <p className="text-sm font-medium text-foreground mb-1 text-center">
+                Ingresá tu fecha de nacimiento para descubrir tu afinidad con {entity.name}
+              </p>
+              <p className="text-xs text-muted mb-6 text-center">
+                Solo necesitamos tu fecha. No se guarda permanentemente.
+              </p>
+
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                <div>
+                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
+                  <select
+                    id="qa-day"
+                    value={day}
+                    onChange={e => setDay(e.target.value)}
+                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                  >
+                    <option value="">—</option>
+                    {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
+                  <select
+                    id="qa-month"
+                    value={month}
+                    onChange={e => setMonth(e.target.value)}
+                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                  >
+                    {MONTHS.map((m, i) => (
+                      <option key={m} value={m}>{MONTH_LABELS[i]}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
+                  <select
+                    id="qa-year"
+                    value={year}
+                    onChange={e => setYear(e.target.value)}
+                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                  >
+                    {yearOptions.map(y => (
+                      <option key={y} value={y}>{y}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {error && (
+                <p className="text-xs text-red-500 mb-3 text-center">{error}</p>
+              )}
+
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              >
+                Descubrir mi afinidad
+              </button>
+            </div>
+          </motion.section>
+        ) : (
+          /* Result — shown after date is entered */
+          <>
+            {/* PremiumHero reuses the same component from the with-profile flow */}
+            {result && tierMeta && (
+              <PremiumHero result={result} entity={entity} meta={meta} type={type} />
+            )}
+
+            {/* CTA: complete profile */}
+            <motion.section {...fadeUp} className="mb-12">
+              <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Guardá tu perfil</p>
+                <p className="text-sm text-muted leading-relaxed mb-3">
+                  Creá tu perfil para explorar más entidades sin reingresar tu fecha y desbloquear análisis completos.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    analytics.trackAffinityProfileCtaClicked(type);
+                    router.push("/onboarding");
+                  }}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+                >
+                  Crear mi perfil
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </motion.section>
+          </>
+        )}
+      </main>
+      <UniversityFooter />
     </div>
   );
 }
