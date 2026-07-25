@@ -245,23 +245,31 @@ export default function ExplorePage() {
           </div>
         </motion.section>
 
-        {/* Entity exploration — secondary */}
+        {/* Affinity — primary entity discovery */}
         <motion.section {...fadeUpDelayed(0.25)} className="mb-24 sm:mb-32">
           <div className="flex items-center gap-3 mb-10">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar entidades</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Afinidad Simb&oacute;lica</h2>
           </div>
 
           <p className="text-sm text-muted mb-6 max-w-lg">
-            Compatibilizá tu perfil con países, marcas, bandas, películas y más.
+            Descubr&iacute; qu&eacute; entidades reales resuenan con vos. Pa&iacute;ses, marcas, universidades y m&aacute;s.
           </p>
 
-          <Link
-            href="/compatibility/countries"
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
-          >
-            Empezar a explorar →
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/affinity"
+              className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+            >
+              Explorar afinidades &rarr;
+            </Link>
+            <Link
+              href="/compatibility/countries"
+              className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+            >
+              Compatibilidad
+            </Link>
+          </div>
         </motion.section>
 
       </main>

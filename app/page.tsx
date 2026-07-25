@@ -168,19 +168,19 @@ export default function Home() {
           </div>
         </motion.section>
 
-        {/* ═══ 5. COMPATIBILIDAD ═══ */}
+        {/* ═══ 5. AFINIDAD SIMBÓLICA ═══ */}
         <motion.section {...fadeUp} className="mb-24 sm:mb-32">
           <div className="flex items-center gap-3 mb-10">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">&iquest;Con qu&eacute; reson&aacute;s?</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Afinidad Simb&oacute;lica</h2>
           </div>
-          <p className="text-sm text-muted mb-8 max-w-lg">Compatibiliz&aacute; tu perfil con pa&iacute;ses, marcas, personas y m&aacute;s.</p>
+          <p className="text-sm text-muted mb-8 max-w-lg">Descubr&iacute; c&oacute;mo resuenan 31 entidades reales con tu perfil. Pa&iacute;ses, marcas, universidades, equipos y m&aacute;s.</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
-              { icon: "\ud83c\udf0d", label: "Pa\u00edses", desc: "197 pa\u00edses", href: "/compatibility/countries" },
-              { icon: "\u2726", label: "Marcas", desc: "235 marcas", href: "/compatibility/brands" },
-              { icon: "\ud83d\udc64", label: "Personas", desc: "Compar\u00e1 tu mapa", href: "/explore" },
-              { icon: "\ud83d\udca1", label: "Conceptos", desc: "Explor\u00e1 conexiones", href: "/explore" },
+              { icon: "\ud83c\udf0d", label: "Pa&iacute;ses", desc: "5 pa&iacute;ses reales", href: "/affinity/country" },
+              { icon: "\u2726", label: "Marcas", desc: "8 marcas reales", href: "/affinity/brand" },
+              { icon: "\ud83c\udfdb\ufe0f", label: "Ciudades", desc: "6 ciudades reales", href: "/affinity/city" },
+              { icon: "\ud83c\udf93", label: "Universidades", desc: "3 universidades", href: "/affinity/university" },
             ].map((item) => (
               <button key={item.label} type="button" onClick={() => router.push(item.href)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/40 hover:shadow-md transition-all duration-300 group">
                 <p className="text-2xl mb-3 group-hover:scale-110 transition-transform duration-300">{item.icon}</p>
@@ -188,6 +188,15 @@ export default function Home() {
                 <p className="text-xs text-muted mt-1.5">{item.desc}</p>
               </button>
             ))}
+          </div>
+          <div className="mt-6">
+            <button
+              type="button"
+              onClick={() => router.push("/affinity")}
+              className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px]"
+            >
+              Explorar todas las entidades &rarr;
+            </button>
           </div>
         </motion.section>
 

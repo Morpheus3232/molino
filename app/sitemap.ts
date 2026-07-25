@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { SYMBOLIC_ENTITIES, getAvailableTypes } from "@/lib/data/symbolic-entities";
 import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
@@ -14,6 +14,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/biblioteca`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/method`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
     { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+  ];
+
+  // Affinity hub + category listings
+  const affinityPages = [
+    { url: `${BASE_URL}/affinity`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    ...getAvailableTypes().map((type) => ({
+      url: `${BASE_URL}/affinity/${type}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    })),
   ];
 
   // Affinity entity detail pages (canonical URLs)
@@ -58,5 +69,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...staticPages, ...entityPages, ...compatibilityPages, ...conocimientoPages];
+  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages];
 }
