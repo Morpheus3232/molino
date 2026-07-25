@@ -72,6 +72,16 @@ class Analytics {
     this.events.push(fullEvent);
     this.saveToStorage();
     console.log("📊 Analytics:", fullEvent);
+
+    // GA4 sink — fires only if gtag is loaded (Measurement ID configured)
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      try {
+        window.gtag("event", event.type, event.data || {});
+      } catch {
+        // GA4 blocked or misconfigured — silent fail
+      }
+    }
+
     return fullEvent;
   }
 

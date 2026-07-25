@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
@@ -116,6 +117,21 @@ export default function RootLayout({
           </AppErrorBoundary>
         </MotionProvider>
         <Toaster position="bottom-right" richColors />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+            strategy="afterInteractive"
+          />
+        )}
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+          <Script id="ga4-init" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = gtag;
+gtag('js', new Date());
+gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', { page_title: document.title });`}
+          </Script>
+        )}
       </body>
     </html>
   );
