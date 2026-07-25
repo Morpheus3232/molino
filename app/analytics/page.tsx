@@ -89,6 +89,9 @@ export default function AnalyticsPage() {
           )}
 
           <div className="mt-8 flex gap-4">
+            <Button variant="secondary" onClick={() => router.push("/analytics/affinity")}>
+              Dashboard Affinity →
+            </Button>
             <Button variant="secondary" onClick={() => router.back()}>
               Volver
             </Button>
