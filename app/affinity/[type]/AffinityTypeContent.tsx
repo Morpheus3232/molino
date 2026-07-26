@@ -157,31 +157,30 @@ function EntityCard({
     <motion.button
       {...staggerItem}
       onClick={onClick}
-      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group flex items-center gap-4 sm:gap-6"
+      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
     >
-      {/* Rank */}
-      <span className="text-xs font-mono text-muted w-6 text-right shrink-0">
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      {/* Emoji + Name */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-lg">{result.entity.emoji}</span>
-          <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
-            {result.entity.name}
-          </h3>
-        </div>
-        <p className="text-xs text-muted truncate">{result.entity.country} · {result.primaryEvent.label} ({result.primaryEvent.year})</p>
+      <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
+      
+      {/* Rank + Emoji */}
+      <div className="flex flex-col items-center gap-1 shrink-0">
+        <span className="text-xs font-mono text-muted">{String(index + 1).padStart(2, "0")}</span>
+        <span className="text-2xl">{result.entity.emoji}</span>
       </div>
 
-      {/* Score */}
+      {/* Name + Context */}
+      <div className="flex-1 min-w-0">
+        <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+          {result.entity.name}
+        </h3>
+        <p className="text-xs text-muted truncate">
+          {result.entity.country} · {result.primaryEvent.label} ({result.primaryEvent.year})
+        </p>
+      </div>
+
+      {/* Score Insight */}
       <div className="text-right shrink-0">
-        <div className="font-serif text-2xl font-bold text-foreground">{result.score}</div>
-        <div
-          className="text-[10px] font-medium uppercase tracking-wider mt-0.5"
-          style={{ color: tierMeta.color }}
-        >
+        <div className="font-serif text-2xl font-bold" style={{ color: tierMeta.color }}>{result.score}</div>
+        <div className="text-[10px] font-medium uppercase tracking-wider mt-0.5" style={{ color: tierMeta.color }}>
           {tierMeta.label}
         </div>
       </div>
