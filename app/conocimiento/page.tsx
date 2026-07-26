@@ -1,18 +1,16 @@
-"use client";
+import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+export const metadata: Metadata = {
+  title: "Conocimiento",
+  description: "Explorá los sistemas de conocimiento que Molino utiliza: numerología, astrología y zodiaco chino.",
+  openGraph: {
+    title: "Conocimiento — Molino",
+    description: "Explorá los sistemas de conocimiento que Molino utiliza: numerología, astrología y zodiaco chino.",
+    type: "article",
+  },
+};
 
 export default function ConocimientoPage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/explore");
-  }, [router]);
-
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-muted" role="status">Redirigiendo...</div>
-    </div>
-  );
+  redirect("/explore");
 }

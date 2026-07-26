@@ -2,54 +2,23 @@
 
 import { useMemo, lazy, Suspense } from "react";
 import { motion } from "framer-motion";
-import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
-import { CompatibilityResult, UserProfile } from "@/lib/engines/compatibilityEngine";
-import { ENTITIES } from "@/lib/data/entities";
-import { useAuthSession } from "@/hooks/useAuthSession";
-import { saveComparison, removeComparison } from "@/lib/auth/userService";
+import type { CompatibilityResult, UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { EntityProfile } from "@/lib/data/entities";
 import ScoreDisplay from "./ScoreDisplay";
-import { getScoreColor, getScoreLabel, getScoreBgColor } from "@/lib/utils/score";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 
 const AIInterpretation = lazy(() => import('./AIInterpretation'));
 
 interface CompatibilityLabProps {
   user: UserProfile;
-  entity: any;
+  entity: EntityProfile;
+  result: CompatibilityResult;
   template?: string;
 }
 
-export default function CompatibilityLab({ user, entity, template }: CompatibilityLabProps) {
-  const result = useMemo(() => calculateCompatibility(user, entity), [user, entity]);
-  const { session, refreshSession } = useAuthSession();
-
-  
-
-
-  const isSaved = () => {
-    return session?.user.savedComparisons?.includes(entity.id) || false;
-  };
-
-  const handleToggleSave = async () => {
-    if (!session?.user.id) return;
-    if (isSaved()) {
-      await removeComparison(session.user.id, entity.id);
-    } else {
-      await saveComparison(session.user.id, entity.id);
-    }
-    refreshSession();
-  };
-
+export default function CompatibilityLab({ user, entity, result, template }: CompatibilityLabProps) {
   return (
     <div className="space-y-6">
-      <div className="text-center">
-        <h1 className="font-serif text-2xl font-bold text-foreground">
-          Compatibilidad con {entity.name}
-        </h1>
-        <p className="text-sm text-muted mt-1">
-          Análisis integrado de numerología, astrología y zodiaco chino
-        </p>
-      </div>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -59,20 +28,11 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
           <div>
             <p className="text-xs font-medium uppercase tracking-wider text-muted">Compatibilidad general</p>
             <ScoreDisplay score={result.scores.overall} label={getScoreLabel(result.scores.overall)} size="lg" />
-            <p className="text-sm text-muted">{getScoreLabel(result.scores.overall)}</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-20 h-20 rounded-full flex items-center justify-center text-2xl">
-              {entity.emoji || entity.flag || "⭐"}
+              {entity.emoji || "⭐"}
             </div>
-            {session?.user.id && (
-              <button
-                onClick={handleToggleSave}
-                className="text-2xl"
-              >
-                {isSaved() ? "❤️" : "🤍"}
-              </button>
-            )}
           </div>
         </div>
 
@@ -114,7 +74,7 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         transition={{ delay: 0.6 }}
         className="bg-card rounded-2xl shadow-lg p-5 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">💪 Fortalezas</h3>
+        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">Fortalezas</h3>
         <div className="flex flex-wrap gap-2">
           {result.strengths.map((strength, index) => (
             <span
@@ -133,7 +93,7 @@ export default function CompatibilityLab({ user, entity, template }: Compatibili
         transition={{ delay: 0.7 }}
         className="bg-card rounded-2xl shadow-lg p-5 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">⚠️ Desafíos</h3>
+        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">Desafíos</h3>
         <div className="flex flex-wrap gap-2">
           {result.challenges.map((challenge, index) => (
             <span

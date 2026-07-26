@@ -1,0 +1,176 @@
+"use client";
+
+import { Suspense, useState, useMemo, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
+import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import UniversityHeader from "@/components/layout/UniversityHeader";
+import UniversityFooter from "@/components/layout/UniversityFooter";
+import LoadingState from "@/components/ui/LoadingState";
+
+type SelectionStep = "pick-a" | "pick-b";
+
+export default function ComparePickerPage() {
+  return (
+    <Suspense fallback={<LoadingState message="Cargando..." />}>
+      <ComparePickerInner />
+    </Suspense>
+  );
+}
+
+function ComparePickerInner() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromId = searchParams.get("from");
+
+  const [step, setStep] = useState<SelectionStep>(fromId ? "pick-b" : "pick-a");
+  const [selectedA, setSelectedA] = useState<string | null>(fromId);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (fromId && SYMBOLIC_ENTITIES.find(e => e.id === fromId)) {
+      setSelectedA(fromId);
+      setStep("pick-b");
+    }
+  }, [fromId]);
+
+  const filtered = useMemo(() => {
+    const q = search.toLowerCase();
+    return SYMBOLIC_ENTITIES.filter(e => {
+      if (selectedA && e.id === selectedA) return false;
+      if (!q) return true;
+      return (
+        e.name.toLowerCase().includes(q) ||
+        e.country.toLowerCase().includes(q) ||
+        ENTITY_TYPES[e.type].label.toLowerCase().includes(q)
+      );
+    });
+  }, [search, selectedA]);
+
+  const handleSelect = (id: string) => {
+    if (step === "pick-a") {
+      setSelectedA(id);
+      setStep("pick-b");
+      setSearch("");
+    } else {
+      router.push(`/affinity/compare/${selectedA}/${id}`);
+    }
+  };
+
+  const selectedEntityA = selectedA ? SYMBOLIC_ENTITIES.find(e => e.id === selectedA) : null;
+
+  return (
+    <div className="min-h-screen bg-background">
+      <UniversityHeader />
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+
+        {/* Back */}
+        <motion.div {...fadeUp}>
+          <button
+            type="button"
+            onClick={() => {
+              if (step === "pick-b") {
+                setStep("pick-a");
+                setSelectedA(null);
+                setSearch("");
+              } else {
+                router.push("/affinity");
+              }
+            }}
+            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
+          >
+            &larr; {step === "pick-b" ? "Cambiar primera entidad" : "Afinidad Personal"}
+          </button>
+        </motion.div>
+
+        {/* Header */}
+        <motion.section {...fadeUp} className="mb-8">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
+            Comparación Simbólica
+          </p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
+            {step === "pick-a" ? "Elegí la primera entidad" : "Elegí la segunda entidad"}
+          </h1>
+          <p className="text-sm text-muted">
+            {step === "pick-a"
+              ? "Seleccioná una entidad para comparar."
+              : `Comparando con ${selectedEntityA?.name ?? ""}. Seleccioná la segunda entidad.`}
+          </p>
+        </motion.section>
+
+        {/* Selected entity preview (step B) */}
+        {step === "pick-b" && selectedEntityA && (
+          <motion.section {...fadeUp} className="mb-6">
+            <div className="flex items-center gap-3 p-4 rounded-xl border border-accent/30 bg-accent/5">
+              <span className="text-2xl">{selectedEntityA.emoji}</span>
+              <div>
+                <p className="text-sm font-medium text-foreground">{selectedEntityA.name}</p>
+                <p className="text-xs text-muted">{ENTITY_TYPES[selectedEntityA.type].label} · {selectedEntityA.country}</p>
+              </div>
+              <span className="text-xs text-accent font-medium ml-auto">Primera entidad</span>
+            </div>
+          </motion.section>
+        )}
+
+        {/* Search */}
+        <motion.div {...fadeUp} className="mb-6">
+          <input
+            type="search"
+            placeholder="Buscar entidad..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full max-w-sm px-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
+            aria-label="Buscar entidad"
+            autoFocus
+          />
+        </motion.div>
+
+        {/* Entity list */}
+        <motion.div {...fadeUp} className="space-y-2">
+          {filtered.map(entity => {
+            const typeMeta = ENTITY_TYPES[entity.type];
+            const primaryEvent = entity.events.find(e => e.primaryForAffinity) ?? entity.events[0];
+            return (
+              <button
+                key={entity.id}
+                type="button"
+                onClick={() => handleSelect(entity.id)}
+                className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent transition-all group flex items-center gap-4"
+              >
+                <span className="text-xl shrink-0">{entity.emoji}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
+                    {entity.name}
+                  </p>
+                  <p className="text-xs text-muted truncate">
+                    {typeMeta?.label} · {entity.country} · {primaryEvent?.label} ({primaryEvent?.year})
+                  </p>
+                </div>
+                <svg className="w-4 h-4 text-muted group-hover:text-accent transition-colors shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            );
+          })}
+        </motion.div>
+
+        {filtered.length === 0 && (
+          <p className="text-center text-muted py-12">No se encontraron resultados para &ldquo;{search}&rdquo;.</p>
+        )}
+
+        {/* Disclaimer */}
+        <motion.section {...fadeUp} className="mt-16">
+          <div className="p-5 rounded-xl border border-border bg-card">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-xs text-muted leading-relaxed">
+              La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
+              Molino es una plataforma educativa y de entretenimiento.
+            </p>
+          </div>
+        </motion.section>
+      </main>
+      <UniversityFooter />
+    </div>
+  );
+}

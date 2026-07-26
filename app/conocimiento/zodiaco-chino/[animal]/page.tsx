@@ -1,0 +1,59 @@
+import type { Metadata } from "next";
+import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
+import AnimalContent from "./AnimalContent";
+
+type Props = { params: Promise<{ animal: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { animal: animalId } = await params;
+  const animal = CHINESE_ANIMALS.find(a => a.name.toLowerCase() === animalId.toLowerCase());
+
+  if (!animal) {
+    return { title: "Animal no encontrado" };
+  }
+
+  return {
+    title: `${animal.emoji} ${animal.name} — Zodiaco Chino Molino`,
+    description: `${animal.meaning.slice(0, 155)}`,
+    openGraph: {
+      title: `${animal.emoji} ${animal.name} — Molino`,
+      description: `${animal.meaning.slice(0, 155)}`,
+      type: "article",
+    },
+  };
+}
+
+export default async function AnimalPage({ params }: Props) {
+  const { animal: animalId } = await params;
+  const animal = CHINESE_ANIMALS.find(a => a.name.toLowerCase() === animalId.toLowerCase());
+
+  const jsonLd = animal ? [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: `${animal.emoji} ${animal.name}`,
+      description: animal.meaning.slice(0, 200),
+      author: { "@type": "Organization", name: "Molino" },
+      publisher: { "@type": "Organization", name: "Molino" },
+      url: `https://molino-alpha.vercel.app/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`,
+      mainEntityOfPage: { "@type": "WebPage", "@id": `https://molino-alpha.vercel.app/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}` },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
+        { "@type": "ListItem", position: 2, name: "Conocimiento", item: "https://molino-alpha.vercel.app/explore" },
+        { "@type": "ListItem", position: 3, name: "Zodiaco Chino", item: "https://molino-alpha.vercel.app/conocimiento/zodiaco-chino" },
+        { "@type": "ListItem", position: 4, name: animal.name },
+      ],
+    },
+  ] : null;
+
+  return (
+    <>
+      {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
+      <AnimalContent />
+    </>
+  );
+}
