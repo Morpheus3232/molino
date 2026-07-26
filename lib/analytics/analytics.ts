@@ -73,12 +73,12 @@ class Analytics {
     this.saveToStorage();
     console.log("📊 Analytics:", fullEvent);
 
-    // GA4 sink — fires only if gtag is loaded (Measurement ID configured)
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+    // PostHog sink — fires only if posthog is loaded (Project Key configured)
+    if (typeof window !== "undefined" && typeof window.posthog === "object" && typeof window.posthog.capture === "function") {
       try {
-        window.gtag("event", event.type, event.data || {});
+        window.posthog.capture(event.type, event.data || {});
       } catch {
-        // GA4 blocked or misconfigured — silent fail
+        // PostHog blocked or misconfigured — silent fail
       }
     }
 
