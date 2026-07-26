@@ -8,10 +8,8 @@ import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import {
-  buildPersonalRecommendations,
-  hasPositiveAffinity,
-} from "@/lib/engines/personalRecommendationEngine";
+import { buildPersonalRecommendations, hasPositiveAffinity } from "@/lib/engines/personalRecommendationEngine";
+import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import {
@@ -25,6 +23,10 @@ import {
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 import { safeNumber } from "@/lib/utils/score";
+import { saveSession } from "@/lib/storage/ephemeral";
+import { saveProfileToStorage } from "@/lib/storage/localStorage";
+import { markOnboardingCompleted } from "@/lib/storage/discovery";
+import { analytics } from "@/lib/analytics/analytics";
 
 /* ═══ Helpers ═══ */
 
@@ -75,6 +77,25 @@ const ENTITY_TYPE_ICONS: Record<string, string> = {
   brand: "✦", country: "◉", city: "◎", university: "⬡", team: "△", movie: "▫", artist: "○",
 };
 
+const MONTHS = [
+  { value: "01", label: "Ene" },
+  { value: "02", label: "Feb" },
+  { value: "03", label: "Mar" },
+  { value: "04", label: "Abr" },
+  { value: "05", label: "May" },
+  { value: "06", label: "Jun" },
+  { value: "07", label: "Jul" },
+  { value: "08", label: "Ago" },
+  { value: "09", label: "Sep" },
+  { value: "10", label: "Oct" },
+  { value: "11", label: "Nov" },
+  { value: "12", label: "Dic" },
+];
+
+function getCurrentYear(): number {
+  return new Date().getFullYear();
+}
+
 /* ═══ Reusable section wrapper ═══ */
 
 function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebrow?: string; title?: string; subtitle?: string; children?: React.ReactNode; className?: string }) {
@@ -104,6 +125,157 @@ function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebr
       </div>
     </motion.section>
   );
+}
+
+/* ═══ Grupo 0: onboarding inline homepage ═══ */
+
+function OnboardingInline() {
+  const router = useRouter();
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("01");
+  const [year, setYear] = useState(String(getCurrentYear() - 25));
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const daysInMonth = useMemo(() => getDaysInMonth(month, year), [month, year]);
+  const yearOptions = useMemo(() => Array.from({ length: 100 }, (_, i) => getCurrentYear() - i), []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    const parsedDay = parseInt(day, 10);
+    const parsedMonth = parseInt(month, 10);
+    const parsedYear = parseInt(year, 10);
+
+    if (!parsedDay || !parsedMonth || !parsedYear) {
+      setError("Seleccioná día, mes y año");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
+      const calculated = calculateUserProfile("", birthDate);
+      const newProfile: UserProfile = {
+        ...calculated,
+        birthPlace: "",
+        birthTime: undefined,
+        goal: "life",
+        interests: [],
+        onboardingStep: 1,
+        completedSections: ["identity"],
+        theme: "light",
+        language: "es",
+        notifications: true,
+      };
+
+      saveSession({
+        name: newProfile.name,
+        birthDate: newProfile.birthDate,
+        birthPlace: newProfile.birthPlace,
+        birthTime: newProfile.birthTime,
+        goal: newProfile.goal,
+        interests: newProfile.interests,
+        onboardingStep: newProfile.onboardingStep,
+        completedSections: newProfile.completedSections,
+        theme: newProfile.theme,
+        language: newProfile.language,
+        notifications: newProfile.notifications,
+      });
+      saveProfileToStorage(newProfile);
+      window.dispatchEvent(new Event("molino-profile-created"));
+      markOnboardingCompleted();
+      analytics.trackProfileCreated(newProfile);
+
+      router.push("/profile");
+    } catch (err) {
+      console.error(err);
+      setError("Hubo un error. Intentá de nuevo.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Section className="-mt-4 sm:-mt-6">
+      <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
+        <div className="max-w-xl mx-auto text-center">
+          <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">Inteligencia Personal</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">Descubrí tu mapa</h2>
+          <p className="text-sm text-muted mb-6">Solo necesitamos tu fecha de nacimiento.</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
+                <select
+                  value={day}
+                  onChange={(e) => setDay(e.target.value)}
+                  className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                  required
+                  aria-label="Día"
+                >
+                  <option value="">Día</option>
+                  {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
+                    <option key={d} value={String(d)}>{d}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
+                <select
+                  value={month}
+                  onChange={(e) => setMonth(e.target.value)}
+                  className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                  required
+                  aria-label="Mes"
+                >
+                  {MONTHS.map((m) => (
+                    <option key={m.value} value={m.value}>{m.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
+                <select
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                  required
+                  aria-label="Año"
+                >
+                  <option value="">Año</option>
+                  {yearOptions.map((y) => (
+                    <option key={y} value={String(y)}>{y}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-70"
+            >
+              {loading ? "Descubriendo..." : "Descubrir mi mapa →"}
+            </button>
+
+            <p className="text-xs text-muted text-center">Sin registro. Sin guardar datos personales.</p>
+          </form>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+function getDaysInMonth(month: string, year: string): number {
+  const m = parseInt(month, 10);
+  const y = parseInt(year, 10);
+  if (!m || !y) return 31;
+  return new Date(y, m, 0).getDate();
 }
 
 /* ═══ Grupo 1: Hero + energía consolidada ═══ */
@@ -453,15 +625,14 @@ function GenericHome() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-7 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
-              Crear mi perfil
-            </button>
             <button type="button" onClick={() => router.push("/explore")} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-7 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-accent min-h-[48px]">
               Explorar Molino
             </button>
           </div>
         </div>
       </Section>
+
+      <OnboardingInline />
 
       <SymbolicCalendarSection />
       <SystemsPreview />
