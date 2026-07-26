@@ -5,12 +5,18 @@ import {
   isYearOne,
   getYearInterpretation,
   sumDigits,
+  getNumberLossPrevention,
+  getZodiacPowerPath,
+  getZodiacArchetypalTrait,
   DAY_RULES,
   ZODIAC_ARCHETYPES,
   YEAR_2026,
   NUMBER_SYMBOLISM,
   PRICE_RECOMMENDATION,
   ENEMY_YEAR_GUIDANCE,
+  NUMBER_LOSS_PREVENTION,
+  ZODIAC_POWER_PATHS,
+  ZODIAC_ARCHETYPAL_TRAITS,
 } from '@/lib/data/symbolic-rules';
 
 describe('DAY_RULES', () => {
@@ -152,5 +158,129 @@ describe('sumDigits', () => {
 
   it('single digit returns itself', () => {
     expect(sumDigits(5)).toBe(5);
+  });
+});
+
+describe('NUMBER_LOSS_PREVENTION', () => {
+  it('has all numbers 1-9', () => {
+    for (let i = 1; i <= 9; i++) {
+      expect(NUMBER_LOSS_PREVENTION[i]).toBeDefined();
+      expect(NUMBER_LOSS_PREVENTION[i].number).toBe(i);
+    }
+  });
+
+  it('has master numbers 11, 22, 33', () => {
+    expect(NUMBER_LOSS_PREVENTION[11]).toBeDefined();
+    expect(NUMBER_LOSS_PREVENTION[22]).toBeDefined();
+    expect(NUMBER_LOSS_PREVENTION[33]).toBeDefined();
+  });
+
+  it('1 should not lose enfoque', () => {
+    expect(NUMBER_LOSS_PREVENTION[1].asset).toBe('enfoque');
+  });
+
+  it('11 should not lose intuición', () => {
+    expect(NUMBER_LOSS_PREVENTION[11].asset).toBe('intuición');
+  });
+
+  it('33 should not lose influencia', () => {
+    expect(NUMBER_LOSS_PREVENTION[33].asset).toBe('influencia');
+  });
+});
+
+describe('getNumberLossPrevention', () => {
+  it('returns prevention for known number', () => {
+    const result = getNumberLossPrevention(7);
+    expect(result).not.toBeNull();
+    expect(result!.asset).toBe('foco');
+  });
+
+  it('returns null for unknown number', () => {
+    expect(getNumberLossPrevention(42)).toBeNull();
+  });
+});
+
+describe('ZODIAC_POWER_PATHS', () => {
+  it('has all 12 animals', () => {
+    expect(Object.keys(ZODIAC_POWER_PATHS)).toHaveLength(12);
+  });
+
+  it('Gato uses mental games', () => {
+    expect(ZODIAC_POWER_PATHS['Gato'].powerPath).toContain('juegos mentales');
+  });
+
+  it('Rata uses powerful friends', () => {
+    expect(ZODIAC_POWER_PATHS['Rata'].powerPath).toContain('amigos poderosos');
+  });
+
+  it('Tigre uses force', () => {
+    expect(ZODIAC_POWER_PATHS['Tigre'].powerPath).toContain('fuerza');
+  });
+
+  it('all animals have a powerPath', () => {
+    for (const [animal, data] of Object.entries(ZODIAC_POWER_PATHS)) {
+      expect(data.animal).toBe(animal);
+      expect(data.powerPath.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('getZodiacPowerPath', () => {
+  it('returns power path for known animal', () => {
+    const result = getZodiacPowerPath('Gato');
+    expect(result).not.toBeNull();
+    expect(result!.powerPath).toContain('juegos mentales');
+  });
+
+  it('returns null for unknown animal', () => {
+    expect(getZodiacPowerPath('Unicornio')).toBeNull();
+  });
+});
+
+describe('ZODIAC_ARCHETYPAL_TRAITS', () => {
+  it('has all 12 animals', () => {
+    expect(Object.keys(ZODIAC_ARCHETYPAL_TRAITS)).toHaveLength(12);
+  });
+
+  it('Gato is el fisiólogo', () => {
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Gato'].trait).toBe('el fisiólogo');
+  });
+
+  it('Mono is el más inteligente', () => {
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Mono'].trait).toBe('el más inteligente');
+  });
+
+  it('Dragón is el líder', () => {
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Dragón'].trait).toBe('el líder');
+  });
+
+  it('some animals have null trait (prepared but not invented)', () => {
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Buey'].trait).toBeNull();
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Perro'].trait).toBeNull();
+    expect(ZODIAC_ARCHETYPAL_TRAITS['Cerdo'].trait).toBeNull();
+  });
+
+  it('all entries have correct animal key', () => {
+    for (const [animal, data] of Object.entries(ZODIAC_ARCHETYPAL_TRAITS)) {
+      expect(data.animal).toBe(animal);
+    }
+  });
+});
+
+describe('getZodiacArchetypalTrait', () => {
+  it('returns trait for known animal', () => {
+    const result = getZodiacArchetypalTrait('Gato');
+    expect(result).not.toBeNull();
+    expect(result!.trait).toBe('el fisiólogo');
+  });
+
+  it('returns null trait for animal without one', () => {
+    const result = getZodiacArchetypalTrait('Buey');
+    expect(result).not.toBeNull();
+    expect(result!.trait).toBeNull();
+  });
+
+  it('returns null for unknown animal', () => {
+    expect(getZodiacArchetypalTrait('Unicornio')).toBeNull();
   });
 });

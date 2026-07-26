@@ -37,12 +37,12 @@ export const FAMOUS_BY_ANIMAL: Record<string, FamousPerson[]> = {
     { name: "Lady Gaga", animal: "Tigre", year: 1986, westernSign: "Aries", field: "Música", country: "Estados Unidos", emoji: "🎤" },
     { name: "Usain Bolt", animal: "Tigre", year: 1986, westernSign: "Leo", field: "Deportes", country: "Jamaica", emoji: "⚡" },
   ],
-  Conejo: [
-    { name: "Albert Einstein", animal: "Conejo", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
-    { name: "Angelina Jolie", animal: "Conejo", year: 1975, westernSign: "Cáncer", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
-    { name: "David Beckham", animal: "Conejo", year: 1975, westernSign: "Tauro", field: "Deportes", country: "Reino Unido", emoji: "⚽" },
-    { name: "Lionel Messi", animal: "Conejo", year: 1987, westernSign: "Cáncer", field: "Deportes", country: "Argentina", emoji: "⚽" },
-    { name: "Lana Del Rey", animal: "Conejo", year: 1985, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎵" },
+  Gato: [
+    { name: "Albert Einstein", animal: "Gato", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
+    { name: "Angelina Jolie", animal: "Gato", year: 1975, westernSign: "Cáncer", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
+    { name: "David Beckham", animal: "Gato", year: 1975, westernSign: "Tauro", field: "Deportes", country: "Reino Unido", emoji: "⚽" },
+    { name: "Lionel Messi", animal: "Gato", year: 1987, westernSign: "Cáncer", field: "Deportes", country: "Argentina", emoji: "⚽" },
+    { name: "Lana Del Rey", animal: "Gato", year: 1985, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎵" },
   ],
   Dragón: [
     { name: "Bruce Lee", animal: "Dragón", year: 1940, westernSign: "Sagitario", field: "Cine", country: "Estados Unidos", emoji: "🥋" },
@@ -113,22 +113,22 @@ export const FAMOUS_BY_SIGN: Record<string, FamousPerson[]> = {
   Tauro: [
     { name: "William Shakespeare", animal: "Rata", year: 1564, westernSign: "Aries", field: "Literatura", country: "Inglaterra", emoji: "🎭" },
     { name: "Queen Elizabeth II", animal: "Tigre", year: 1926, westernSign: "Tauro", field: "Monarquía", country: "Reino Unido", emoji: "👑" },
-    { name: "David Beckham", animal: "Conejo", year: 1975, westernSign: "Tauro", field: "Deportes", country: "Reino Unido", emoji: "⚽" },
+    { name: "David Beckham", animal: "Gato", year: 1975, westernSign: "Tauro", field: "Deportes", country: "Reino Unido", emoji: "⚽" },
     { name: "Adele", animal: "Dragón", year: 1988, westernSign: "Tauro", field: "Música", country: "Reino Unido", emoji: "🎵" },
     { name: "John F. Kennedy", animal: "Serpiente", year: 1917, westernSign: "Tauro", field: "Política", country: "Estados Unidos", emoji: "🏛" },
   ],
   Géminis: [
     { name: "Prince", animal: "Rata", year: 1958, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎶" },
     { name: "Paul McCartney", animal: "Caballo", year: 1942, westernSign: "Géminis", field: "Música", country: "Reino Unido", emoji: "🎵" },
-    { name: "Lana Del Rey", animal: "Conejo", year: 1985, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎵" },
+    { name: "Lana Del Rey", animal: "Gato", year: 1985, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎵" },
     { name: "Morgan Freeman", animal: "Cabra", year: 1937, westernSign: "Géminis", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
     { name: "Kanye West", animal: "Cabra", year: 1977, westernSign: "Géminis", field: "Música", country: "Estados Unidos", emoji: "🎵" },
   ],
   Cáncer: [
-    { name: "Albert Einstein", animal: "Conejo", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
+    { name: "Albert Einstein", animal: "Gato", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
     { name: "Tom Cruise", animal: "Tigre", year: 1962, westernSign: "Cáncer", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
-    { name: "Angelina Jolie", animal: "Conejo", year: 1975, westernSign: "Cáncer", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
-    { name: "Lionel Messi", animal: "Conejo", year: 1987, westernSign: "Cáncer", field: "Deportes", country: "Argentina", emoji: "⚽" },
+    { name: "Angelina Jolie", animal: "Gato", year: 1975, westernSign: "Cáncer", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
+    { name: "Lionel Messi", animal: "Gato", year: 1987, westernSign: "Cáncer", field: "Deportes", country: "Argentina", emoji: "⚽" },
     { name: "Henry Ford", animal: "Cerdo", year: 1863, westernSign: "Cáncer", field: "Industria", country: "Estados Unidos", emoji: "🏭" },
   ],
   Leo: [
@@ -142,7 +142,7 @@ export const FAMOUS_BY_SIGN: Record<string, FamousPerson[]> = {
     { name: "Confucius", animal: "Gallo", year: 551, westernSign: "Virgo", field: "Filosofía", country: "China", emoji: "📖" },
     { name: "Beyoncé", animal: "Gallo", year: 1981, westernSign: "Virgo", field: "Música", country: "Estados Unidos", emoji: "🎤" },
     { name: "Amy Winehouse", animal: "Cerdo", year: 1983, westernSign: "Virgo", field: "Música", country: "Reino Unido", emoji: "🎵" },
-    { name: "Michael Jackson", animal: "Conejo", year: 1958, westernSign: "Virgo", field: "Música", country: "Estados Unidos", emoji: "🎤" },
+    { name: "Michael Jackson", animal: "Gato", year: 1958, westernSign: "Virgo", field: "Música", country: "Estados Unidos", emoji: "🎤" },
     { name: "Richard Gere", animal: "Caballo", year: 1949, westernSign: "Virgo", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
   ],
   Libra: [
@@ -168,7 +168,7 @@ export const FAMOUS_BY_SIGN: Record<string, FamousPerson[]> = {
   ],
   Capricornio: [
     { name: "Isaac Newton", animal: "Tigre", year: 1643, westernSign: "Capricornio", field: "Ciencia", country: "Reino Unido", emoji: "🔬" },
-    { name: "Martin Luther King Jr.", animal: "Conejo", year: 1929, westernSign: "Capricornio", field: "Activismo", country: "Estados Unidos", emoji: "✊" },
+    { name: "Martin Luther King Jr.", animal: "Gato", year: 1929, westernSign: "Capricornio", field: "Activismo", country: "Estados Unidos", emoji: "✊" },
     { name: "Elvis Presley", animal: "Perro", year: 1935, westernSign: "Capricornio", field: "Música", country: "Estados Unidos", emoji: "🎵" },
     { name: "Denzel Washington", animal: "Caballo", year: 1954, westernSign: "Capricornio", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
     { name: "Kate Middleton", animal: "Cabra", year: 1982, westernSign: "Capricornio", field: "Monarquía", country: "Reino Unido", emoji: "👑" },
@@ -184,11 +184,11 @@ export const FAMOUS_BY_SIGN: Record<string, FamousPerson[]> = {
     { name: "Greta Thunberg", animal: "Caballo", year: 2003, westernSign: "Acuario", field: "Activismo", country: "Suecia", emoji: "🌍" },
   ],
   Piscis: [
-    { name: "Albert Einstein", animal: "Conejo", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
+    { name: "Albert Einstein", animal: "Gato", year: 1879, westernSign: "Piscis", field: "Ciencia", country: "Alemania", emoji: "🔬" },
     { name: "George Washington", animal: "Rata", year: 1732, westernSign: "Piscis", field: "Política", country: "Estados Unidos", emoji: "🏛" },
     { name: "Rihanna", animal: "Dragón", year: 1988, westernSign: "Piscis", field: "Música", country: "Barbados", emoji: "🎤" },
     { name: "Justin Bieber", animal: "Dragón", year: 1994, westernSign: "Piscis", field: "Música", country: "Canadá", emoji: "🎵" },
-    { name: "Adam Levine", animal: "Conejo", year: 1979, westernSign: "Piscis", field: "Música", country: "Estados Unidos", emoji: "🎤" },
+    { name: "Adam Levine", animal: "Gato", year: 1979, westernSign: "Piscis", field: "Música", country: "Estados Unidos", emoji: "🎤" },
   ],
 };
 

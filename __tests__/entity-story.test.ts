@@ -28,7 +28,7 @@ describe("Harmonious narrative", () => {
 });
 
 describe("Neutral narrative", () => {
-  const r = getRelation("Caballo", "Conejo");
+  const r = getRelation("Caballo", "Gato");
   test("type is 'neutral'", () => expect(r.type).toBe("neutral"));
   test("score is 50", () => expect(r.score).toBe(50));
 });

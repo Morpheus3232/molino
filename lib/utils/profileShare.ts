@@ -77,7 +77,7 @@ export function profileFromShareData(data: ShareableProfileData): Partial<UserPr
     lifePath: data.l,
     sunSign: data.s,
     element: data.e,
-    chineseZodiac: data.c,
+    chineseZodiac: data.c === "Conejo" ? "Gato" : data.c,
     archetype: data.a,
     expressionNumber: data.en,
     soulNumber: data.sn,

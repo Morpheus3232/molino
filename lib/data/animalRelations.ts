@@ -8,12 +8,12 @@
  * The existing engine may have different scores for backward compatibility.
  *
  * Vietnamese equivalents:
- *   Conejo (Chinese) = Gato (Vietnamese)
+ *   Gato (Chinese) = Gato (Vietnamese) — same name in both traditions
  *   Buey (Chinese) = Búfalo de Agua (Vietnamese)
  */
 
 export const ANIMALS = [
-  "Rata", "Buey", "Tigre", "Conejo", "Dragón",
+  "Rata", "Buey", "Tigre", "Gato", "Dragón",
   "Serpiente", "Caballo", "Cabra", "Mono", "Gallo",
   "Perro", "Cerdo",
 ] as const;
@@ -28,7 +28,7 @@ export const SAN_HE_TRIADS: { animals: [Animal, Animal, Animal]; element: string
   { animals: ["Rata", "Dragón", "Mono"], element: "Agua" },
   { animals: ["Buey", "Serpiente", "Gallo"], element: "Metal" },
   { animals: ["Tigre", "Caballo", "Perro"], element: "Fuego" },
-  { animals: ["Conejo", "Cabra", "Cerdo"], element: "Madera" },
+  { animals: ["Gato", "Cabra", "Cerdo"], element: "Madera" },
 ];
 
 // ════════════════════════════════════════════════════
@@ -37,7 +37,7 @@ export const SAN_HE_TRIADS: { animals: [Animal, Animal, Animal]; element: string
 
 export const LIU_HE_PAIRS: [Animal, Animal][] = [
   ["Rata", "Buey"],
-  ["Tigre", "Conejo"],
+  ["Tigre", "Gato"],
   ["Dragón", "Serpiente"],
   ["Caballo", "Cabra"],
   ["Mono", "Gallo"],
@@ -52,7 +52,7 @@ export const LIU_CHONG_CLASHES: [Animal, Animal][] = [
   ["Rata", "Caballo"],
   ["Buey", "Cabra"],
   ["Tigre", "Mono"],
-  ["Conejo", "Gallo"],
+  ["Gato", "Gallo"],
   ["Dragón", "Perro"],
   ["Serpiente", "Cerdo"],
 ];
@@ -65,7 +65,7 @@ export const LIU_HAI_HARMS: [Animal, Animal][] = [
   ["Rata", "Cabra"],
   ["Buey", "Caballo"],
   ["Tigre", "Serpiente"],
-  ["Conejo", "Dragón"],
+  ["Gato", "Dragón"],
   ["Mono", "Cerdo"],
   ["Gallo", "Perro"],
 ];
@@ -158,7 +158,7 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Dragón", "Mono"],
     liuHePartner: "Buey",
     challengingRelations: ["Caballo", "Cabra"],
-    neutralRelations: ["Tigre", "Conejo", "Serpiente", "Gallo", "Perro", "Cerdo"],
+    neutralRelations: ["Tigre", "Gato", "Serpiente", "Gallo", "Perro", "Cerdo"],
     traits: ["Astucia", "Adaptabilidad", "Curiosidad"],
   },
   Buey: {
@@ -167,21 +167,21 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Serpiente", "Gallo"],
     liuHePartner: "Rata",
     challengingRelations: ["Cabra", "Caballo"],
-    neutralRelations: ["Tigre", "Conejo", "Dragón", "Mono", "Perro", "Cerdo"],
+    neutralRelations: ["Tigre", "Gato", "Dragón", "Mono", "Perro", "Cerdo"],
     traits: ["Fuerza", "Determinación", "Lealtad"],
   },
   Tigre: {
     animal: "Tigre", emoji: "🐅",
     sameAnimal: "Tigre",
     harmonyPartners: ["Caballo", "Perro"],
-    liuHePartner: "Conejo",
+    liuHePartner: "Gato",
     challengingRelations: ["Mono", "Serpiente"],
     neutralRelations: ["Rata", "Buey", "Dragón", "Cabra", "Gallo", "Cerdo"],
     traits: ["Coraje", "Pasión", "Liderazgo"],
   },
-  Conejo: {
-    animal: "Conejo", emoji: "🐇",
-    sameAnimal: "Conejo",
+  Gato: {
+    animal: "Gato", emoji: "🐇",
+    sameAnimal: "Gato",
     harmonyPartners: ["Cabra", "Cerdo"],
     liuHePartner: "Tigre",
     challengingRelations: ["Gallo", "Dragón"],
@@ -193,7 +193,7 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Dragón",
     harmonyPartners: ["Rata", "Mono"],
     liuHePartner: "Serpiente",
-    challengingRelations: ["Perro", "Conejo"],
+    challengingRelations: ["Perro", "Gato"],
     neutralRelations: ["Buey", "Tigre", "Caballo", "Cabra", "Gallo", "Cerdo"],
     traits: ["Poder", "Visión", "Ambición"],
   },
@@ -203,7 +203,7 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Buey", "Gallo"],
     liuHePartner: "Dragón",
     challengingRelations: ["Cerdo", "Tigre"],
-    neutralRelations: ["Rata", "Conejo", "Caballo", "Cabra", "Mono", "Perro"],
+    neutralRelations: ["Rata", "Gato", "Caballo", "Cabra", "Mono", "Perro"],
     traits: ["Sabiduría", "Profundidad", "Magnetismo"],
   },
   Caballo: {
@@ -212,13 +212,13 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Tigre", "Perro"],
     liuHePartner: "Cabra",
     challengingRelations: ["Rata", "Buey"],
-    neutralRelations: ["Conejo", "Dragón", "Serpiente", "Mono", "Gallo", "Cerdo"],
+    neutralRelations: ["Gato", "Dragón", "Serpiente", "Mono", "Gallo", "Cerdo"],
     traits: ["Movimiento", "Independencia", "Exploración"],
   },
   Cabra: {
     animal: "Cabra", emoji: "🐐",
     sameAnimal: "Cabra",
-    harmonyPartners: ["Conejo", "Cerdo"],
+    harmonyPartners: ["Gato", "Cerdo"],
     liuHePartner: "Caballo",
     challengingRelations: ["Buey", "Rata"],
     neutralRelations: ["Tigre", "Dragón", "Serpiente", "Mono", "Gallo", "Perro"],
@@ -230,7 +230,7 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Rata", "Dragón"],
     liuHePartner: "Gallo",
     challengingRelations: ["Tigre", "Cerdo"],
-    neutralRelations: ["Buey", "Conejo", "Serpiente", "Caballo", "Cabra", "Perro"],
+    neutralRelations: ["Buey", "Gato", "Serpiente", "Caballo", "Cabra", "Perro"],
     traits: ["Ingenio", "Versatilidad", "Chispa"],
   },
   Gallo: {
@@ -238,7 +238,7 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Gallo",
     harmonyPartners: ["Buey", "Serpiente"],
     liuHePartner: "Mono",
-    challengingRelations: ["Conejo", "Perro"],
+    challengingRelations: ["Gato", "Perro"],
     neutralRelations: ["Rata", "Tigre", "Dragón", "Caballo", "Cabra", "Cerdo"],
     traits: ["Puntualidad", "Observación", "Coraje"],
   },
@@ -248,13 +248,13 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     harmonyPartners: ["Tigre", "Caballo"],
     liuHePartner: "Cerdo",
     challengingRelations: ["Dragón", "Gallo"],
-    neutralRelations: ["Rata", "Buey", "Conejo", "Serpiente", "Cabra", "Mono"],
+    neutralRelations: ["Rata", "Buey", "Gato", "Serpiente", "Cabra", "Mono"],
     traits: ["Lealtad", "Honradez", "Protección"],
   },
   Cerdo: {
     animal: "Cerdo", emoji: "🐖",
     sameAnimal: "Cerdo",
-    harmonyPartners: ["Conejo", "Cabra"],
+    harmonyPartners: ["Gato", "Cabra"],
     liuHePartner: "Perro",
     challengingRelations: ["Serpiente", "Mono"],
     neutralRelations: ["Rata", "Buey", "Tigre", "Dragón", "Caballo", "Gallo"],

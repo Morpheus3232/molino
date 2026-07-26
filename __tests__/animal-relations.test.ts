@@ -39,14 +39,14 @@ describe("Rata ↔ Caballo (critical clash pair)", () => {
 describe("Other clash pairs", () => {
   testPair("Buey", "Cabra", "clash", 30);
   testPair("Tigre", "Mono", "clash", 30);
-  testPair("Conejo", "Gallo", "clash", 30);
+  testPair("Gato", "Gallo", "clash", 30);
   testPair("Dragón", "Perro", "clash", 30);
   testPair("Serpiente", "Cerdo", "clash", 30);
 });
 
 describe("Harmonious pairs (Liu He)", () => {
   testPair("Rata", "Buey", "harmonious", 80);
-  testPair("Tigre", "Conejo", "harmonious", 80);
+  testPair("Tigre", "Gato", "harmonious", 80);
   testPair("Dragón", "Serpiente", "harmonious", 80);
   testPair("Caballo", "Cabra", "harmonious", 80);
   testPair("Mono", "Gallo", "harmonious", 80);

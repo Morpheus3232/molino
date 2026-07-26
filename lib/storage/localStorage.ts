@@ -67,6 +67,13 @@ export function loadProfileFromStorage(): StoredUserProfile["profile"] | null {
   try {
     const parsed = JSON.parse(raw) as StoredUserProfile;
     if (parsed.version !== 1) return null;
+    // Migration: Conejo → Gato (2026-07)
+    if (parsed.profile.chineseZodiac === "Conejo") {
+      parsed.profile.chineseZodiac = "Gato";
+    }
+    if (parsed.profile.chineseZodiacInfo?.animal === "Conejo") {
+      parsed.profile.chineseZodiacInfo.animal = "Gato";
+    }
     return parsed.profile;
   } catch {
     return null;

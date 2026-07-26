@@ -59,18 +59,18 @@ export const CHINESE_ELEMENTS = ["Metal", "Agua", "Madera", "Fuego", "Tierra"];
  * the knowledge section. Animal names corrected: "Oveja" → "Cabra".
  */
 export const CHINESE_COMPATIBILITY = [
-  ["Rata", ["Dragón", "Mono", "Rata"], ["Caballo", "Conejo"]],
+  ["Rata", ["Dragón", "Mono", "Rata"], ["Caballo", "Gato"]],
   ["Buey", ["Serpiente", "Gallo", "Buey"], ["Cabra", "Perro"]],
   ["Tigre", ["Caballo", "Perro", "Tigre"], ["Serpiente", "Mono"]],
-  ["Conejo", ["Cabra", "Cerdo", "Conejo"], ["Rata", "Gallo"]],
-  ["Dragón", ["Rata", "Serpiente", "Dragón"], ["Perro", "Conejo"]],
+  ["Gato", ["Cabra", "Cerdo", "Gato"], ["Rata", "Gallo"]],
+  ["Dragón", ["Rata", "Serpiente", "Dragón"], ["Perro", "Gato"]],
   ["Serpiente", ["Mono", "Gallo", "Serpiente"], ["Cerdo", "Tigre"]],
   ["Caballo", ["Tigre", "Perro", "Caballo"], ["Rata", "Buey"]],
-  ["Cabra", ["Conejo", "Cerdo", "Cabra"], ["Buey", "Perro"]],
+  ["Cabra", ["Gato", "Cerdo", "Cabra"], ["Buey", "Perro"]],
   ["Mono", ["Rata", "Dragón", "Mono"], ["Tigre", "Cerdo"]],
-  ["Gallo", ["Buey", "Serpiente", "Gallo"], ["Conejo", "Perro"]],
-  ["Perro", ["Tigre", "Conejo", "Perro"], ["Buey", "Dragón"]],
-  ["Cerdo", ["Conejo", "Cabra", "Cerdo"], ["Serpiente", "Mono"]],
+  ["Gallo", ["Buey", "Serpiente", "Gallo"], ["Gato", "Perro"]],
+  ["Perro", ["Tigre", "Gato", "Perro"], ["Buey", "Dragón"]],
+  ["Cerdo", ["Gato", "Cabra", "Cerdo"], ["Serpiente", "Mono"]],
 ];
 
 export const TAROT_ARCANOS = [

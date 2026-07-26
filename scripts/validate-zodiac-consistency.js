@@ -7,12 +7,12 @@
  * and that all scores are consistent across the codebase.
  */
 
-const ANIMALS = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+const ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
 
-const SAN_HE = [["Rata","Dragón","Mono"],["Buey","Serpiente","Gallo"],["Tigre","Caballo","Perro"],["Conejo","Cabra","Cerdo"]];
-const LIU_HE = [["Rata","Buey"],["Tigre","Conejo"],["Dragón","Serpiente"],["Caballo","Cabra"],["Mono","Gallo"],["Perro","Cerdo"]];
-const LIU_CHONG = [["Rata","Caballo"],["Buey","Cabra"],["Tigre","Mono"],["Conejo","Gallo"],["Dragón","Perro"],["Serpiente","Cerdo"]];
-const LIU_HAI = [["Rata","Cabra"],["Buey","Caballo"],["Tigre","Serpiente"],["Conejo","Dragón"],["Mono","Cerdo"],["Gallo","Perro"]];
+const SAN_HE = [["Rata","Dragón","Mono"],["Buey","Serpiente","Gallo"],["Tigre","Caballo","Perro"],["Gato","Cabra","Cerdo"]];
+const LIU_HE = [["Rata","Buey"],["Tigre","Gato"],["Dragón","Serpiente"],["Caballo","Cabra"],["Mono","Gallo"],["Perro","Cerdo"]];
+const LIU_CHONG = [["Rata","Caballo"],["Buey","Cabra"],["Tigre","Mono"],["Gato","Gallo"],["Dragón","Perro"],["Serpiente","Cerdo"]];
+const LIU_HAI = [["Rata","Cabra"],["Buey","Caballo"],["Tigre","Serpiente"],["Gato","Dragón"],["Mono","Cerdo"],["Gallo","Perro"]];
 
 const CANONICAL_SCORES = { same: 95, triad: 85, harmonious: 80, neutral: 50, harm: 25, clash: 30 };
 

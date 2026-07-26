@@ -69,7 +69,7 @@ export const COUNTRY_DATA: Record<string, any> = {
   "Italia": { year: 1861, animal: "Gallo", element: "Metal", flag: "🇮🇹" },
   "Reino Unido": { year: 1707, animal: "Cerdo", element: "Fuego", flag: "🇬🇧" },
   "Estados Unidos": { year: 1776, animal: "Mono", element: "Fuego", flag: "🇺🇸" },
-  "Canadá": { year: 1867, animal: "Conejo", element: "Fuego", flag: "🇨🇦" },
+  "Canadá": { year: 1867, animal: "Gato", element: "Fuego", flag: "🇨🇦" },
   "Australia": { year: 1901, animal: "Buey", element: "Metal", flag: "🇦🇺" },
   "China": { year: 1949, animal: "Buey", element: "Tierra", flag: "🇨🇳" },
   "Japón": { year: 660, animal: "Rata", element: "Metal", flag: "🇯🇵" },
@@ -80,7 +80,7 @@ export const COUNTRY_DATA: Record<string, any> = {
 export const BRAND_DATA: Record<string, any> = {
   "Apple": { year: 1976, animal: "Dragón", element: "Fuego", logo: "🍎", category: "Tecnología" },
   "Google": { year: 1998, animal: "Tigre", element: "Tierra", logo: "🔍", category: "Tecnología" },
-  "Microsoft": { year: 1975, animal: "Conejo", element: "Madera", logo: "💻", category: "Tecnología" },
+  "Microsoft": { year: 1975, animal: "Gato", element: "Madera", logo: "💻", category: "Tecnología" },
   "Amazon": { year: 1994, animal: "Perro", element: "Madera", logo: "📦", category: "Tecnología" },
   "Tesla": { year: 2003, animal: "Cabra", element: "Agua", logo: "⚡", category: "Automotriz" },
   "Netflix": { year: 1997, animal: "Buey", element: "Fuego", logo: "🎬", category: "Entretenimiento" },
@@ -95,7 +95,7 @@ export const BAND_DATA: Record<string, any> = {
   "The Rolling Stones": { year: 1962, animal: "Tigre", element: "Agua", logo: "🎸", genre: "Rock" },
   "Queen": { year: 1970, animal: "Perro", element: "Metal", logo: "👑", genre: "Rock" },
   "Soda Stereo": { year: 1982, animal: "Perro", element: "Agua", logo: "🌟", genre: "Rock en Español" },
-  "Nirvana": { year: 1987, animal: "Conejo", element: "Fuego", logo: "😵", genre: "Grunge" },
+  "Nirvana": { year: 1987, animal: "Gato", element: "Fuego", logo: "😵", genre: "Grunge" },
   "Metallica": { year: 1981, animal: "Gallo", element: "Metal", logo: "⚡", genre: "Metal" }
 };
 
@@ -120,7 +120,7 @@ export const POLITICIAN_DATA: Record<string, any> = {
 
 export const ACTOR_DATA: Record<string, any> = {
   "Leonardo DiCaprio": { year: 1974, animal: "Tigre", element: "Madera", logo: "🎬", country: "Estados Unidos", knownFor: "Titanic, Inception" },
-  "Brad Pitt": { year: 1963, animal: "Conejo", element: "Agua", logo: "🎬", country: "Estados Unidos", knownFor: "Fight Club" },
+  "Brad Pitt": { year: 1963, animal: "Gato", element: "Agua", logo: "🎬", country: "Estados Unidos", knownFor: "Fight Club" },
   "Tom Hanks": { year: 1956, animal: "Mono", element: "Fuego", logo: "🎬", country: "Estados Unidos", knownFor: "Forrest Gump" },
   "Will Smith": { year: 1968, animal: "Mono", element: "Tierra", logo: "🎬", country: "Estados Unidos", knownFor: "Men in Black" },
   "Ricardo Darín": { year: 1957, animal: "Gallo", element: "Fuego", logo: "🎬", country: "Argentina", knownFor: "El Secreto de sus Ojos" }
@@ -166,7 +166,7 @@ export const CELEBRITY_DATA: Record<string, any> = {
   "Taylor Swift": { year: 1989, animal: "Serpiente", element: "Tierra", logo: "🎤", category: "Música" },
   "Bad Bunny": { year: 1994, animal: "Perro", element: "Madera", logo: "🎵", category: "Música" },
   "Cristiano Ronaldo": { year: 1985, animal: "Buey", element: "Tierra", logo: "⚽", category: "Deportes" },
-  "Lionel Messi": { year: 1987, animal: "Conejo", element: "Fuego", logo: "⚽", category: "Deportes" },
+  "Lionel Messi": { year: 1987, animal: "Gato", element: "Fuego", logo: "⚽", category: "Deportes" },
   "Elon Musk": { year: 1971, animal: "Cerdo", element: "Metal", logo: "🚀", category: "Negocios" },
   "Bill Gates": { year: 1955, animal: "Cabra", element: "Madera", logo: "💻", category: "Tecnología" },
   "Oprah Winfrey": { year: 1954, animal: "Caballo", element: "Madera", logo: "📺", category: "Medios" },

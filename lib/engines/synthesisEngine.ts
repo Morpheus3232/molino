@@ -138,7 +138,7 @@ function getChineseTraits(animal: string): string[] {
     Rata: ["ingenio", "astucia", "adaptable"],
     Buey: ["fuerza", "determinación", "confiabilidad"],
     Tigre: ["valentía", "competitividad", "liderazgo"],
-    Conejo: ["elegancia", "diplomacia", "sensibilidad"],
+    Gato: ["elegancia", "diplomacia", "sensibilidad"],
     Dragón: ["ambición", "carisma", "poder"],
     Serpiente: ["sabiduría", "intuición", "misterio"],
     Caballo: ["libertad", "energia", "aventura"],
