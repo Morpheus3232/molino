@@ -255,9 +255,6 @@ export default function TimingPage() {
               <Button variant="secondary" fullWidth onClick={() => router.push("/daily-energy")}>
                 Ver energía de hoy
               </Button>
-              <Button variant="secondary" fullWidth onClick={() => router.push("/decisions")}>
-                Tomar una decisión
-              </Button>
               <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
                 Ver mi perfil
               </Button>

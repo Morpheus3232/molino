@@ -100,10 +100,10 @@ export default function CompatibilidadCalcPage() {
         <motion.section {...fadeUp}>
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
-            Compatibilidad simb&oacute;lica
+            Compatibilidad simbólica
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Ingres&aacute; las fechas de nacimiento de dos personas para ver c&oacute;mo se conectan seg&uacute;n el zodiaco chino. No se guardan datos.
+            Ingresá las fechas de nacimiento de dos personas para ver cómo se conectan según el zodiaco chino. No se guardan datos.
           </p>
         </motion.section>
 
@@ -114,8 +114,8 @@ export default function CompatibilidadCalcPage() {
             <div className="p-6 rounded-xl border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
               <div className="space-y-3">
-                <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="D&iacute;a persona 1">
-                  <option value="">D&iacute;a</option>
+                <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
+                  <option value="">Día</option>
                   {Array.from({ length: days1Valid }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
@@ -124,8 +124,8 @@ export default function CompatibilidadCalcPage() {
                   <option value="">Mes</option>
                   {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
                 </select>
-                <select value={p1.year} onChange={(e) => setP1({ ...p1, year: e.target.value })} className="input" aria-label="A&ntilde;o persona 1">
-                  <option value="">A&ntilde;o</option>
+                <select value={p1.year} onChange={(e) => setP1({ ...p1, year: e.target.value })} className="input" aria-label="Año persona 1">
+                  <option value="">Año</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
@@ -142,8 +142,8 @@ export default function CompatibilidadCalcPage() {
             <div className="p-6 rounded-xl border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
               <div className="space-y-3">
-                <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="D&iacute;a persona 2">
-                  <option value="">D&iacute;a</option>
+                <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
+                  <option value="">Día</option>
                   {Array.from({ length: days2Valid }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
@@ -152,8 +152,8 @@ export default function CompatibilidadCalcPage() {
                   <option value="">Mes</option>
                   {MONTHS.map((m) => (<option key={m.value} value={m.value}>{m.label}</option>))}
                 </select>
-                <select value={p2.year} onChange={(e) => setP2({ ...p2, year: e.target.value })} className="input" aria-label="A&ntilde;o persona 2">
-                  <option value="">A&ntilde;o</option>
+                <select value={p2.year} onChange={(e) => setP2({ ...p2, year: e.target.value })} className="input" aria-label="Año persona 2">
+                  <option value="">Año</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
@@ -227,7 +227,7 @@ export default function CompatibilidadCalcPage() {
                   </div>
                 </motion.div>
 
-                {/* Explicaci&oacute;n */}
+                {/* Explicación */}
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -246,7 +246,7 @@ export default function CompatibilidadCalcPage() {
                 className="mt-6 p-4 rounded-xl border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>F&oacute;rmula:</strong> 100% relaci&oacute;n zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretaci&oacute;n simb&oacute;lica. No constituye evidencia cient&iacute;fica ni predice el resultado de una relaci&oacute;n.
+                  <strong>Fórmula:</strong> 100% relación zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
                 </p>
               </motion.div>
 
@@ -275,7 +275,7 @@ export default function CompatibilidadCalcPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Quer&eacute;s una experiencia m&aacute;s completa con tu perfil personal?</p>
+                  <p className="text-sm text-muted mb-3">Querés una experiencia más completa con tu perfil personal?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"

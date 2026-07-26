@@ -24,17 +24,17 @@ export default function NumerologiaContent() {
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">Numerolog&iacute;a</span>
+          <span className="text-foreground font-medium" aria-current="page">Numerología</span>
         </nav>
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
-            Numerolog&iacute;a
+            Numerología
           </h1>
           <h2 className="font-serif text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
-            El lenguaje simb&oacute;lico de los n&uacute;meros y su relaci&oacute;n con la personalidad y los ciclos.
+            El lenguaje simbólico de los números y su relación con la personalidad y los ciclos.
           </h2>
         </motion.section>
 
@@ -45,20 +45,20 @@ export default function NumerologiaContent() {
           </div>
         </motion.section>
 
-        {/* &Iacute;ndice */}
+        {/* Índice */}
         <motion.section {...fadeUpDelayed(0.08)} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">&Iacute;ndice de contenidos</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Índice de contenidos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              { label: "Qu&eacute; es la numerolog&iacute;a", id: "que-es" },
-              { label: "Historia y evoluci&oacute;n", id: "historia" },
-              { label: "Numerolog&iacute;a pitag&oacute;rica", id: "pitagorica" },
-              { label: "Sistema de c&aacute;lculo", id: "calculos" },
-              { label: "Los n&uacute;meros del 1 al 9", id: "numeros" },
-              { label: "N&uacute;meros maestros", id: "maestros" },
+              { label: "Qué es la numerología", id: "que-es" },
+              { label: "Historia y evolución", id: "historia" },
+              { label: "Numerología pitagórica", id: "pitagorica" },
+              { label: "Sistema de cálculo", id: "calculos" },
+              { label: "Los números del 1 al 9", id: "numeros" },
+              { label: "Números maestros", id: "maestros" },
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
@@ -69,23 +69,23 @@ export default function NumerologiaContent() {
           </div>
         </motion.section>
 
-        {/* QU&Eacute; ES LA NUMEROLYG&Iacute;A */}
+        {/* QUÉ ES LA NUMEROLYGÍA */}
         <motion.section {...fadeUpDelayed(0.1)} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Qu&eacute; es la numerolog&iacute;a</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Qué es la numerología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
-              La numerolog&iacute;a es un sistema de creencias que asigna significados simb&oacute;licos a los n&uacute;meros. Seg&uacute;n esta tradici&oacute;n, los n&uacute;meros poseen cualidades e influencias que pueden ofrecer perspectivas sobre la personalidad, los ciclos de vida y las tendencias personales.
+              La numerología es un sistema de creencias que asigna significados simbólicos a los números. Según esta tradición, los números poseen cualidades e influencias que pueden ofrecer perspectivas sobre la personalidad, los ciclos de vida y las tendencias personales.
             </p>
             <p className="text-base text-foreground leading-relaxed">
-              <strong>Es importante aclarar:</strong> la numerolog&iacute;a no es una ciencia. No existe evidencia emp&iacute;rica que respalde la idea de que los n&uacute;meros determinen rasgos de personalidad o destinos. Lo que s&iacute; existe es una tradici&oacute;n cultural de m&aacute;s de 2500 a&ntilde;os que Molino utiliza como herramienta de reflexi&oacute;n.
+              <strong>Es importante aclarar:</strong> la numerología no es una ciencia. No existe evidencia empírica que respalde la idea de que los números determinen rasgos de personalidad o destinos. Lo que sí existe es una tradición cultural de más de 2500 años que Molino utiliza como herramienta de reflexión.
             </p>
             <div className="p-5 rounded-xl border border-border bg-card mt-6">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
-                La numerolog&iacute;a es un lenguaje simb&oacute;lico. Molino la usa como una lente de autoconocimiento, no como una m&eacute;trica objetiva.
+                La numerología es un lenguaje simbólico. Molino la usa como una lente de autoconocimiento, no como una métrica objetiva.
               </p>
             </div>
           </div>
@@ -95,47 +95,47 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.12)} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia y evoluci&oacute;n</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia y evolución</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
-              Las ra&iacute;ces de la numerolog&iacute;a se remontan a <strong>Babilonia</strong> (actual Irak), donde los astr&oacute;logos babil&oacute;nicos ya asociaban n&uacute;meros con significados cosmol&oacute;gicos hace m&aacute;s de 3000 a&ntilde;os.
+              Las raíces de la numerología se remontan a <strong>Babilonia</strong> (actual Irak), donde los astrólogos babilónicos ya asociaban números con significados cosmológicos hace más de 3000 años.
             </p>
             <p className="text-base text-foreground leading-relaxed">
-              La figura m&aacute;s asociada con la numerolog&iacute;a occidental es <strong>Pit&aacute;goras</strong> (c. 570&ndash;495 a.C.), matem&aacute;tico y fil&oacute;sofo griego. Seg&uacute;n la tradici&oacute;n, Pit&aacute;goras ense&ntilde;aba que los n&uacute;meros eran la esencia de toda la realidad. Sin embargo, los historiadores modernos distinguen entre el pitagorismo hist&oacute;rico (una escuela filos&oacute;fica-matem&aacute;tica) y la numerolog&iacute;a esot&eacute;rica moderna, que se desarroll&oacute; siglos despu&eacute;s.
+              La figura más asociada con la numerología occidental es <strong>Pitágoras</strong> (c. 570–495 a.C.), matemático y filósofo griego. Según la tradición, Pitágoras enseñaba que los números eran la esencia de toda la realidad. Sin embargo, los historiadores modernos distinguen entre el pitagorismo histórico (una escuela filosófica-matemática) y la numerología esotérica moderna, que se desarrolló siglos después.
             </p>
             <p className="text-base text-foreground leading-relaxed">
-              La numerolog&iacute;a <strong>moderna</strong> se consolid&oacute; en el siglo XX con autores como L. Dow Balliett y Florence Campbell. El sistema de correspondencia de letras y n&uacute;meros que usamos hoy fue codificado en el siglo XIX.
+              La numerología <strong>moderna</strong> se consolidó en el siglo XX con autores como L. Dow Balliett y Florence Campbell. El sistema de correspondencia de letras y números que usamos hoy fue codificado en el siglo XIX.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <div className="p-5 rounded-xl border border-border bg-card">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
                 <p className="text-sm text-muted leading-relaxed">
-                  <strong>Pitagorismo hist&oacute;rico:</strong> Escuela filos&oacute;fica que ve&iacute;a los n&uacute;meros como principios matem&aacute;ticos del universo.
+                  <strong>Pitagorismo histórico:</strong> Escuela filosófica que veía los números como principios matemáticos del universo.
                 </p>
                 <p className="text-sm text-muted leading-relaxed mt-2">
-                  <strong>Numerolog&iacute;a esot&eacute;rica:</strong> Sistema moderno que asigna significados personales y predictivos a los n&uacute;meros bas&aacute;ndose en fechas y nombres.
+                  <strong>Numerología esotérica:</strong> Sistema moderno que asigna significados personales y predictivos a los números basándose en fechas y nombres.
                 </p>
               </div>
               <div className="p-5 rounded-xl border border-border bg-card">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
                 <p className="text-sm text-muted leading-relaxed">
-                  No existe evidencia cient&iacute;fica que respalde que los n&uacute;meros determinen rasgos de personalidad. La investigaci&oacute;n en psicolog&iacute;a no ha encontrado correlaciones v&aacute;lidas entre fechas de nacimiento y caracter&iacute;sticas psicol&oacute;gicas.
+                  No existe evidencia científica que respalde que los números determinen rasgos de personalidad. La investigación en psicología no ha encontrado correlaciones válidas entre fechas de nacimiento y características psicológicas.
                 </p>
               </div>
             </div>
           </div>
         </motion.section>
 
-        {/* PITAG&Oacute;RICA */}
+        {/* PITAGÓRICA */}
         <motion.section {...fadeUpDelayed(0.14)} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Numerolog&iacute;a pitag&oacute;rica</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Numerología pitagórica</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
-              La numerolog&iacute;a pitag&oacute;rica es el sistema m&aacute;s utilizado en occidente. Asigna valores num&eacute;ricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo d&iacute;gito.
+              La numerología pitagórica es el sistema más utilizado en occidente. Asigna valores numéricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo dígito.
             </p>
             <div className="p-5 rounded-xl border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
@@ -146,16 +146,16 @@ export default function NumerologiaContent() {
               </div>
             </div>
             <p className="text-sm text-muted mt-4">
-              Nota: Este sistema fue codificado en el siglo XIX. La versi&oacute;n que usa Molino sigue esta convenci&oacute;n. Otros sistemas numerol&oacute;gicos usan tablas diferentes.
+              Nota: Este sistema fue codificado en el siglo XIX. La versión que usa Molino sigue esta convención. Otros sistemas numerológicos usan tablas diferentes.
             </p>
           </div>
         </motion.section>
 
-        {/* C&Aacute;LCULOS */}
+        {/* CÁLCULOS */}
         <motion.section {...fadeUpDelayed(0.16)} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">C&oacute;mo calcula Molino</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo calcula Molino</h2>
           </div>
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
@@ -169,14 +169,14 @@ export default function NumerologiaContent() {
           </div>
         </motion.section>
 
-        {/* N&Uacute;MEROS 1-9 */}
+        {/* NÚMEROS 1-9 */}
         <motion.section {...fadeUpDelayed(0.18)} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los n&uacute;meros del 1 al 9</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los números del 1 al 9</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
-            Cada n&uacute;mero tiene un significado tradicional en la numerolog&iacute;a. Estas interpretaciones pertenecen a la tradici&oacute;n y no representan evidencia cient&iacute;fica.
+            Cada número tiene un significado tradicional en la numerología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
           </p>
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
@@ -201,14 +201,14 @@ export default function NumerologiaContent() {
           </div>
         </motion.section>
 
-        {/* N&Uacute;MEROS MAESTROS */}
+        {/* NÚMEROS MAESTROS */}
         <motion.section {...fadeUpDelayed(0.2)} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">N&uacute;meros maestros: 11, 22 y 33</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
-            Los n&uacute;meros maestros fueron incorporados a la numerolog&iacute;a moderna. No forman parte del sistema pitag&oacute;rico original.
+            Los números maestros fueron incorporados a la numerología moderna. No forman parte del sistema pitagórico original.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
@@ -225,19 +225,19 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.22)} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y car&aacute;cter no cient&iacute;fico</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <div className="p-5 rounded-xl border border-border bg-card">
               <p className="text-sm text-foreground leading-relaxed">
-                <strong>La numerolog&iacute;a no es una ciencia.</strong> No existe evidencia emp&iacute;rica que respalde que las fechas de nacimiento o los nombres determinen rasgos de personalidad, destinos o ciclos de vida. La investigaci&oacute;n en psicolog&iacute;a y ciencias cognitivas no ha encontrado correlaciones v&aacute;lidas.
+                <strong>La numerología no es una ciencia.</strong> No existe evidencia empírica que respalde que las fechas de nacimiento o los nombres determinen rasgos de personalidad, destinos o ciclos de vida. La investigación en psicología y ciencias cognitivas no ha encontrado correlaciones válidas.
               </p>
             </div>
             <p className="text-sm text-muted leading-relaxed">
-              Molino utiliza la numerolog&iacute;a como <strong>herramienta de reflexi&oacute;n</strong>. Los significados que presentamos pertenecen a tradiciones culturales y simb&oacute;licas. Los c&aacute;lculos son deterministas y reproducibles, pero su interpretaci&oacute;n es simb&oacute;lica.
+              Molino utiliza la numerología como <strong>herramienta de reflexión</strong>. Los significados que presentamos pertenecen a tradiciones culturales y simbólicas. Los cálculos son deterministas y reproducibles, pero su interpretación es simbólica.
             </p>
             <p className="text-sm text-muted leading-relaxed">
-              Si buscas informaci&oacute;n sobre salud, relaciones o decisiones importantes, consulta a un profesional calificado. La numerolog&iacute;a no reemplaza el consejo m&eacute;dico, psicol&oacute;gico o legal.
+              Si buscas información sobre salud, relaciones o decisiones importantes, consulta a un profesional calificado. La numerología no reemplaza el consejo médico, psicológico o legal.
             </p>
           </div>
         </motion.section>
@@ -273,7 +273,7 @@ export default function NumerologiaContent() {
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-serif text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
-              Ingresá tu fecha de nacimiento y descubrí tu número de Camino de Vida, Expression y más.
+              Ingresá tu fecha de nacimiento y descubrí tu número de Camino de Vida, Expresión y más.
             </p>
             <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →

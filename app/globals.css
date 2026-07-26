@@ -28,15 +28,14 @@
   --color-error: #B91C1C;
   --color-error-foreground: var(--color-paper);
 
-  --radius-card: 0.75rem;
-  --radius-button: 9999px;
-  --radius-pill: 9999px;
-  --radius-md: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-2xl: 1rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
 
-  --section-padding: 6rem;
-  --card-padding: 1.5rem;
+  --section-padding: 7rem;
+  --card-padding: 1.75rem;
+  --grid-gap: 1.25rem;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -48,15 +47,20 @@
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
 
-  --shadow-sm: 0 1px 3px 0 rgba(26, 26, 26, 0.04), 0 1px 2px -1px rgba(26, 26, 26, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(26, 26, 26, 0.06), 0 2px 4px -2px rgba(26, 26, 26, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(26, 26, 26, 0.08), 0 4px 6px -4px rgba(26, 26, 26, 0.06);
-  --shadow-xl: 0 20px 25px -5px rgba(26, 26, 26, 0.1), 0 8px 10px -6px rgba(26, 26, 26, 0.06);
-  --shadow-glow: 0 0 40px rgba(196, 154, 42, 0.15);
-  --shadow-inner: inset 0 2px 4px 0 rgba(26, 26, 26, 0.04);
+  --tracking-tight: -0.02em;
 
-  --max-width-content: 960px;
+  --shadow-sm: 0 1px 3px 0 rgba(26, 26, 26, 0.05), 0 1px 2px -1px rgba(26, 26, 26, 0.05);
+  --shadow-md: 0 6px 12px -2px rgba(26, 26, 26, 0.08), 0 3px 6px -3px rgba(26, 26, 26, 0.06);
+  --shadow-lg: 0 12px 18px -4px rgba(26, 26, 26, 0.1), 0 5px 10px -6px rgba(26, 26, 26, 0.06);
+  --shadow-xl: 0 22px 28px -6px rgba(26, 26, 26, 0.12), 0 10px 14px -8px rgba(26, 26, 26, 0.08);
+  --shadow-glow: 0 0 50px rgba(196, 154, 42, 0.12);
+  --shadow-glow-accent: 0 0 40px rgba(212, 168, 67, 0.08);
+  --shadow-inner: inset 0 2px 4px 0 rgba(26, 26, 26, 0.05);
+
+  --max-width-content: 680px;
   --max-width-wide: 1200px;
+  --max-width-layout: 1200px;
+  --max-width-article: 680px;
 
   --step-1-text: 1rem;
   --step-2-text: 1.125rem;
@@ -120,10 +124,10 @@
   --color-background: #0F1219;
   --color-foreground: #F0EDE8;
   --color-muted: #9CA3AF;
-  --color-muted-foreground: #CBD5E1;
-  --color-card: #1A1F2E;
-  --color-card-border: #2A3142;
-  --color-border: #2A3142;
+  --color-muted-foreground: #B8BCC6;
+  --color-card: #13161F;
+  --color-card-border: #1E2330;
+  --color-border: #1E2330;
 
   --color-primary: #F0EDE8;
   --color-primary-foreground: #0F1219;
@@ -141,16 +145,19 @@
   --color-error-foreground: #0F1219;
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 12px -2px rgba(0, 0, 0, 0.35), 0 3px 6px -3px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 18px -4px rgba(0, 0, 0, 0.45), 0 5px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -8px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 50px rgba(212, 168, 67, 0.35);
+  --shadow-glow-accent: 0 0 45px rgba(212, 168, 67, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.35);
 
   --color-ink-alpha-25: rgba(240, 237, 232, 0.25);
-  --color-ink-alpha-03: rgba(240, 237, 232, 0.03);
-  --color-accent-alpha-04: rgba(212, 168, 67, 0.08);
-  --color-accent-alpha-10: rgba(212, 168, 67, 0.12);
+  --color-ink-alpha-03: rgba(240, 237, 232, 0.04);
+  --color-accent-alpha-04: rgba(212, 168, 67, 0.12);
+  --color-accent-alpha-10: rgba(212, 168, 67, 0.18);
 
-  /* Dark mode element colors - slightly adjusted for dark backgrounds */
+  /* Dark mode element colors */
   --element-fire: #D4A843;
   --element-earth: #34D399;
   --element-air: #A78BFA;

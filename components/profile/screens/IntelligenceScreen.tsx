@@ -20,7 +20,6 @@ import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import CrossLinks from "@/components/profile/CrossLinks";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
@@ -51,7 +50,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   const synthesisInsights = useMemo(() => buildSynthesisInsights(profile), [profile]);
   const patterns = useMemo(() => buildPatterns(profile), [profile]);
   const dimensions = useMemo(() => buildDimensions(profile), [profile]);
-  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile, new Date()), [profile]);
   const timing = useMemo(() => analyzeTiming(profile, new Date(), "start_project"), [profile]);
 
   return (
@@ -287,19 +285,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              onClick={() => router.push("/decisions")}
-              className="text-left p-6 rounded-2xl border border-border bg-card hover:border-accent transition-colors group"
-            >
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Decisiones</p>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">¿Qué estás decidiendo?</p>
-              <p className="text-sm text-muted mt-1 leading-relaxed">Escribí una decisión y Molino la analiza desde tu perfil, tu energía y tu momento.</p>
-            </motion.button>
-
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.08, duration: 0.5 }}
               onClick={() => router.push("/explore")}
               className="text-left p-6 rounded-2xl border border-border bg-card hover:border-accent transition-colors group"
             >
@@ -343,7 +328,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               <MolinoInterpretation
                 profile={profile}
                 type="personal_profile"
-                dailyEnergy={dailyEnergy}
                 timing={timing}
                 label="Interpretación de Molino"
                 description="Análisis integrado de tu perfil personal"

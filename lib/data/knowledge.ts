@@ -139,7 +139,7 @@ export const KNOWLEDGE_BASE = {
       { title: "Historia y orígenes", description: "Desde Babilonia hasta Pitágoras." },
       { title: "Tabla pitagórica", description: "Correspondencia letra-número." },
       { title: "Números maestros", description: "11, 22, 33: significado y poder." },
-      { title: "Cálculos básicos", description: "Life Path, Expression, Soul, Personality." },
+      { title: "Cálculos básicos", description: "Life Path, Expresión, Soul, Personality." },
     ],
   },
   astrology: {

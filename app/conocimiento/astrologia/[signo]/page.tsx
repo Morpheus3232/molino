@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${sign.symbol} ${sign.name} — Astrolog&iacute;a Molino`,
+    title: `${sign.symbol} ${sign.name} — Astrología Molino`,
     description: `${sign.meaning.slice(0, 155)}`,
     openGraph: {
       title: `${sign.symbol} ${sign.name} — Molino`,

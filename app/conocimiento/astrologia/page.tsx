@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import AstrologiaContent from "./AstrologiaContent";
 
 export const metadata: Metadata = {
-  title: "Astrolog&iacute;a — El lenguaje de los astros",
+  title: "Astrología — El lenguaje de los astros",
   description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía. Un sistema simbólico con 4000 años de historia.",
   openGraph: {
-    title: "Astrolog&iacute;a — Molino",
+    title: "Astrología — Molino",
     description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
     type: "article",
   },

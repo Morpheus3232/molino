@@ -70,12 +70,12 @@ export default function CaminoDeVidaPage() {
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerolog&iacute;a</p>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerología</p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Camino de Vida
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Calcul&aacute; tu n&uacute;mero de Camino de Vida a partir de tu fecha de nacimiento. Seg&uacute;n la tradici&oacute;n numerol&oacute;gica, este n&uacute;mero revela tu energ&iacute;a central.
+            Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número revela tu energía central.
           </p>
         </motion.section>
 
@@ -85,8 +85,8 @@ export default function CaminoDeVidaPage() {
             <div>
               <label className="block text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
               <div className="flex gap-3">
-                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="D&iacute;a">
-                  <option value="">D&iacute;a</option>
+                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
+                  <option value="">Día</option>
                   {Array.from({ length: daysInMonth }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
@@ -97,8 +97,8 @@ export default function CaminoDeVidaPage() {
                     <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
                 </select>
-                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="A&ntilde;o">
-                  <option value="">A&ntilde;o</option>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="Año">
+                  <option value="">Año</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
@@ -185,7 +185,7 @@ export default function CaminoDeVidaPage() {
                 className="mt-6 p-4 rounded-xl border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>Nota:</strong> El Camino de Vida es una interpretaci&oacute;n simb&oacute;lica de la tradici&oacute;n numerol&oacute;gica. No constituye evidencia cient&iacute;fica ni predice el futuro. Molino lo utiliza como herramienta de reflexi&oacute;n.
+                  <strong>Nota:</strong> El Camino de Vida es una interpretación simbólica de la tradición numerológica. No constituye evidencia científica ni predice el futuro. Molino lo utiliza como herramienta de reflexión.
                 </p>
               </motion.div>
 
@@ -214,7 +214,7 @@ export default function CaminoDeVidaPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Quer&eacute;s ver c&oacute;mo esto se conecta con astrolog&iacute;a y zodiaco chino?</p>
+                  <p className="text-sm text-muted mb-3">Querés ver cómo esto se conecta con astrología y zodiaco chino?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"

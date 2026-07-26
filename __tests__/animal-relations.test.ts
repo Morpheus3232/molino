@@ -67,22 +67,22 @@ describe("Same animal", () => {
   testPair("Caballo", "Caballo", "same", 95);
 });
 
-describe("Each animal has exactly 2 friends and 1 enemy", () => {
+describe("Product rule: 2 amigos (triad) + 1 enemigo (clash) por animal", () => {
   for (const animal of ANIMALS) {
-    test(`${animal} has exactly 2 triad friends`, () => {
+    test(`${animal} has exactly 2 triad harmonyPartners`, () => {
       const profile = getAnimalProfile(animal);
       expect(profile.harmonyPartners).toHaveLength(2);
     });
 
-    test(`${animal} has exactly 1 clash enemy`, () => {
-      const profile = getAnimalProfile(animal);
-      expect(profile.challengingRelations).toHaveLength(1);
-    });
-
-    test(`${animal} has a liuHe partner`, () => {
+    test(`${animal} has exactly 1 liuHe partner`, () => {
       const profile = getAnimalProfile(animal);
       expect(profile.liuHePartner).toBeTruthy();
       expect(profile.liuHePartner).not.toBe(animal);
+    });
+
+    test(`${animal} has exactly 1 challenging enemy`, () => {
+      const profile = getAnimalProfile(animal);
+      expect(profile.challengingRelations).toHaveLength(1);
     });
 
     test(`${animal} getFriends returns 3 (2 triad + 1 liuHe)`, () => {
@@ -95,6 +95,31 @@ describe("Each animal has exactly 2 friends and 1 enemy", () => {
       expect(challenging).toHaveLength(1);
     });
   }
+});
+
+describe("Gato is the canonical fourth animal (not Conejo)", () => {
+  test("ANIMALS array includes Gato at index 3", () => {
+    expect(ANIMALS[3]).toBe("Gato");
+  });
+
+  test("ANIMALS array does not include Conejo", () => {
+    expect(ANIMALS).not.toContain("Conejo");
+  });
+
+  test("Gato has correct triad partners (Cabra, Cerdo)", () => {
+    const profile = getAnimalProfile("Gato");
+    expect(profile.harmonyPartners).toEqual(["Cabra", "Cerdo"]);
+  });
+
+  test("Gato has correct liuHe partner (Tigre)", () => {
+    const profile = getAnimalProfile("Gato");
+    expect(profile.liuHePartner).toBe("Tigre");
+  });
+
+  test("Gato has correct challenging enemy (Gallo)", () => {
+    const profile = getAnimalProfile("Gato");
+    expect(profile.challengingRelations).toEqual(["Gallo"]);
+  });
 });
 
 describe("Same-animal relation has highest score", () => {

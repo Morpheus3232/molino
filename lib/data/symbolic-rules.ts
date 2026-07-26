@@ -65,6 +65,91 @@ export interface DayRule {
   watchOut: string[];
 }
 
+// ════════════════════════════════════════════════════
+// 3b. UNIVERSAL DAY ACTIVITIES — symbolic meaning of each day
+// ════════════════════════════════════════════════════
+
+export interface DayActivity {
+  day: number;
+  category: string;
+  icon: string;
+  description: string;
+  favors: string[];
+}
+
+export const DAY_ACTIVITIES: Record<number, DayActivity> = {
+  1:  { day: 1,  category: "Nuevos comienzos",  icon: "\ud83c\udf31", description: "Buen momento simb\u00f3lico para iniciar algo nuevo.", favors: ["Empezar proyectos", "Tomar decisiones", "Actuar con iniciativa"] },
+  3:  { day: 3,  category: "Comunicaci\u00f3n",     icon: "\ud83d\udcac", description: "Un d\u00eda asociado con la comunicaci\u00f3n, la expresi\u00f3n y la creatividad verbal.", favors: ["Expresar ideas", "Comunicar", "Crear contenido"] },
+  4:  { day: 4,  category: "Ley y orden",        icon: "\u2696\ufe0f",  description: "Un d\u00eda de estructura, organizaci\u00f3n y planificaci\u00f3n.", favors: ["Organizar", "Planificar", "Cumplir compromisos"] },
+  5:  { day: 5,  category: "Viajes y movimiento", icon: "\u2708\ufe0f",  description: "Un d\u00eda de movimiento, cambios y exploraci\u00f3n.", favors: ["Viajar", "Explorar", "Adaptarse"] },
+  6:  { day: 6,  category: "Hogar y familia",     icon: "\ud83c\udfe0", description: "Un d\u00eda para priorizar la familia y las personas cercanas.", favors: ["Conexi\u00f3n familiar", "Cuidar de otros", "Armon\u00eda dom\u00e9stica"] },
+  7:  { day: 7,  category: "Estudio y aprendizaje", icon: "\ud83d\udcda", description: "Un d\u00eda favorable para aprender, estudiar y profundizar.", favors: ["Estudiar", "Investigar", "Reflexionar"] },
+  8:  { day: 8,  category: "Negocios y dinero",   icon: "\ud83d\udcb0", description: "Un d\u00eda asociado con negocios, dinero, poder material y resultados.", favors: ["Negociar", "Hacer pagos", "Gestionar finanzas"] },
+  10: { day: 10, category: "Nuevos comienzos",   icon: "\ud83c\udf31", description: "Energ\u00eda de iniciaci\u00f3n y nuevos ciclos.",       favors: ["Empezar proyectos", "Definir objetivos"] },
+  11: { day: 11, category: "Intuici\u00f3n",        icon: "\ud83d\udd2e", description: "Un d\u00eda de intuici\u00f3n elevada y percepci\u00f3n sutil.", favors: ["Intuici\u00f3n", "Creatividad", "Conexi\u00f3n espiritual"] },
+  12: { day: 12, category: "Comunicaci\u00f3n",     icon: "\ud83d\udcac", description: "Energ\u00eda de expresi\u00f3n y conexi\u00f3n social.", favors: ["Hablar en p\u00fablico", "Escribir", "Conectar"] },
+  13: { day: 13, category: "Ley y orden",        icon: "\u2696\ufe0f",  description: "D\u00eda de disciplina y estructura.", favors: ["Organizar", "Cumplir normas", "Planificar"] },
+  14: { day: 14, category: "Viajes y movimiento", icon: "\u2708\ufe0f",  description: "Energ\u00eda de movimiento y cambio.", favors: ["Viajar", "Mudanzas", "Explorar"] },
+  15: { day: 15, category: "Hogar y familia",     icon: "\ud83c\udfe0", description: "Buen momento para priorizar v\u00ednculos y hogar.", favors: ["Reuniones familiares", "Cuidar el hogar", "Descansar"] },
+  16: { day: 16, category: "Estudio y aprendizaje", icon: "\ud83d\udcda", description: "D\u00eda favorable para el aprendizaje profundo.", favors: ["Estudiar", "Leer", "Investigar"] },
+  17: { day: 17, category: "Negocios y dinero",   icon: "\ud83d\udcb0", description: "Energ\u00eda material y resultados pr\u00e1cticos.", favors: ["Negocios", "Inversiones", "Decisiones financieras"] },
+  19: { day: 19, category: "Nuevos comienzos",   icon: "\ud83c\udf31", description: "Ciclo de iniciaci\u00f3n y acci\u00f3n.", favors: ["Empezar algo nuevo", "Lanzar proyectos"] },
+  21: { day: 21, category: "Comunicaci\u00f3n",     icon: "\ud83d\udcac", description: "Energ\u00eda de expresi\u00f3n y liderazgo comunicacional.", favors: ["Negociar", "Presentar", "Conectar"] },
+  22: { day: 22, category: "Ley y orden",        icon: "\u2696\ufe0f",  description: "D\u00eda de justicia, estructura y organizaci\u00f3n.", favors: ["Firmar acuerdos", "Organizar", "Planificar"] },
+  23: { day: 23, category: "Viajes y movimiento", icon: "\u2708\ufe0f",  description: "Energ\u00eda de aventura y cambios.", favors: ["Viajar", "Explorar", "Conocer lugares nuevos"] },
+  24: { day: 24, category: "Hogar y familia",     icon: "\ud83c\udfe0", description: "Momento de armon\u00eda dom\u00e9stica.", favors: ["Familia", "Hogar", "Cuidar de los tuyos"] },
+  25: { day: 25, category: "Estudio y aprendizaje", icon: "\ud83d\udcda", description: "D\u00eda de profundizaci\u00f3n y an\u00e1lisis.", favors: ["Estudiar", "Investigar", "Aprender algo nuevo"] },
+  26: { day: 26, category: "Negocios y dinero",   icon: "\ud83d\udcb0", description: "Energ\u00eda de prosperidad y materializaci\u00f3n.", favors: ["Negocios", "Finanzas", "Resultados"] },
+  28: { day: 28, category: "D\u00eda especial",     icon: "\u2b50",      description: "D\u00eda con energ\u00eda \u00fanica. Asociado con la riqueza y la prosperidad.", favors: ["Negocios importantes", "Decisiones financieras", "Rituales de prosperidad"] },
+  30: { day: 30, category: "Comunicaci\u00f3n",     icon: "\ud83d\udcac", description: "Energ\u00eda de cierre y expresi\u00f3n.", favors: ["Concluir proyectos", "Comunicar resultados", "Agradecer"] },
+  31: { day: 31, category: "Ley y orden",        icon: "\u2696\ufe0f",  description: "D\u00eda de cierre de ciclo y disciplina.", favors: ["Cerrar etapas", "Organizar", "Planificar el pr\u00f3ximo mes"] },
+};
+
+/** Get the universal day activity for a given day number */
+export function getDayActivity(day: number): DayActivity | null {
+  return DAY_ACTIVITIES[day] ?? null;
+}
+
+/** Get upcoming interesting days from today (next 7 days with rules) */
+export function getUpcomingDayActivities(fromDate: Date = new Date(), count: number = 4): DayActivity[] {
+  const results: DayActivity[] = [];
+  const seen = new Set<number>();
+  for (let i = 0; i <= 14 && results.length < count; i++) {
+    const d = new Date(fromDate);
+    d.setDate(d.getDate() + i);
+    const dayNum = d.getDate();
+    if (i === 0 || !seen.has(dayNum)) {
+      const activity = getDayActivity(dayNum);
+      if (activity) {
+        results.push(activity);
+        seen.add(dayNum);
+      }
+    }
+  }
+  return results;
+}
+
+/** Get the next upcoming day for each key category (within next 14 days) */
+export function getNextDayByCategory(fromDate: Date = new Date()): Record<string, DayActivity & { date: Date }> {
+  const results: Record<string, DayActivity & { date: Date }> = {};
+  const seenCategories = new Set<string>();
+  for (let i = 1; i <= 14; i++) {
+    const d = new Date(fromDate);
+    d.setDate(d.getDate() + i);
+    const dayNum = d.getDate();
+    const activity = getDayActivity(dayNum);
+    if (activity && !seenCategories.has(activity.category)) {
+      results[activity.category] = { ...activity, date: d };
+      seenCategories.add(activity.category);
+    }
+  }
+  return results;
+}
+
+// ════════════════════════════════════════════════════
+// 4. DAY RULES (personal day, requires profile)
+// ════════════════════════════════════════════════════
+
 export const DAY_RULES: Record<number, DayRule> = {
   1: {
     day: 1,

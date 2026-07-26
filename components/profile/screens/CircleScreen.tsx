@@ -75,36 +75,48 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             </p>
           </motion.div>
 
-          <motion.div {...staggerApple} className="mt-6">
-            <div className="flex flex-col items-center">
-              <motion.div
-                {...staggerItemSmooth}
-                className="w-20 h-20 rounded-full border-2 border-accent flex items-center justify-center mb-3"
-              >
-                <span className="text-3xl">{display.emoji}</span>
-              </motion.div>
-              <p className="font-serif text-lg font-semibold text-foreground mb-5">{display.name}</p>
-
-              <div className="grid grid-cols-3 gap-3 w-full max-w-md">
-                {relationMap.friends.map((rel) => {
-                  const relDisplay = getZodiacDisplay(rel.animal);
-                  return (
-                    <motion.div
-                      key={rel.animal}
-                      {...staggerItemSmooth}
-                      className="flex flex-col items-center p-3 rounded-xl border border-border bg-background/50"
-                    >
-                      <span className="text-2xl mb-1">{relDisplay.emoji}</span>
-                      <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
-                      <p className="text-[9px] text-muted text-center mt-0.5">
-                        {rel.type === "triad" ? "Tríada" : "Armonía"}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
+      <motion.div {...staggerApple} className="mt-6">
+        <div className="flex flex-col items-center">
+          <motion.div
+            {...staggerItemSmooth}
+            className="w-20 h-20 rounded-full border-2 border-accent flex items-center justify-center mb-3"
+          >
+            <span className="text-3xl">{display.emoji}</span>
           </motion.div>
+          <p className="font-serif text-lg font-semibold text-foreground mb-5">{display.name}</p>
+
+          <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+            {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {
+              const relDisplay = getZodiacDisplay(rel.animal);
+              return (
+                <motion.div
+                  key={rel.animal}
+                  {...staggerItemSmooth}
+                  className="flex flex-col items-center p-3 rounded-xl border border-border bg-background/50"
+                >
+                  <span className="text-2xl mb-1">{relDisplay.emoji}</span>
+                  <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
+                  <p className="text-[9px] text-muted text-center mt-0.5">Aliado</p>
+                </motion.div>
+              );
+            })}
+            {relationMap.challenging.slice(0, 1).map((rel) => {
+              const relDisplay = getZodiacDisplay(rel.animal);
+              return (
+                <motion.div
+                  key={rel.animal}
+                  {...staggerItemSmooth}
+                  className="flex flex-col items-center p-3 rounded-xl border border-border bg-background/50"
+                >
+                  <span className="text-2xl mb-1">{relDisplay.emoji}</span>
+                  <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
+                  <p className="text-[9px] text-muted text-center mt-0.5">Oposición</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.div>
 
           <motion.div {...smoothReveal} className="mt-4 text-center">
             <p className="text-xs text-muted/60 italic">

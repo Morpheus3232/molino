@@ -79,7 +79,7 @@ export default function ZodiacoChinoCalcPage() {
             Tu animal del zodiaco chino
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            El zodiaco chino es un sistema de m&aacute;s de 2000 a&ntilde;os que asigna un animal y un elemento a cada a&ntilde;o en un ciclo de 60 combinaciones. Ingres&aacute; tu fecha de nacimiento para descubrir tu lugar en este ciclo.
+            El zodiaco chino es un sistema de más de 2000 años que asigna un animal y un elemento a cada año en un ciclo de 60 combinaciones. Ingresá tu fecha de nacimiento para descubrir tu lugar en este ciclo.
           </p>
         </motion.section>
 
@@ -89,8 +89,8 @@ export default function ZodiacoChinoCalcPage() {
             <div>
               <label className="block text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
               <div className="flex gap-3">
-                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="D&iacute;a">
-                  <option value="">D&iacute;a</option>
+                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
+                  <option value="">Día</option>
                   {Array.from({ length: daysInMonth }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
@@ -101,8 +101,8 @@ export default function ZodiacoChinoCalcPage() {
                     <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
                 </select>
-                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="A&ntilde;o">
-                  <option value="">A&ntilde;o</option>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="Año">
+                  <option value="">Año</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
@@ -174,7 +174,7 @@ export default function ZodiacoChinoCalcPage() {
                   </motion.div>
                 </div>
 
-                {/* Informaci&oacute;n del animal */}
+                {/* Información del animal */}
                 {(() => {
                   const animalData = getAnimalData(result.animal);
                   return animalData ? (
@@ -199,7 +199,7 @@ export default function ZodiacoChinoCalcPage() {
                         <p className="text-sm text-muted leading-relaxed">{animalData.history}</p>
                       </motion.div>
 
-                      {/* Caracter&iacute;sticas */}
+                      {/* Características */}
                       <motion.div
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -207,7 +207,7 @@ export default function ZodiacoChinoCalcPage() {
                         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
                       >
                         <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Caracter&iacute;sticas</p>
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Características</p>
                           <p className="text-sm text-foreground">{animalData.traits.join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
@@ -215,7 +215,7 @@ export default function ZodiacoChinoCalcPage() {
                           <p className="text-sm text-foreground">{animalData.strengths.slice(0, 3).join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desaf&iacute;os</p>
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafíos</p>
                           <p className="text-sm text-foreground">{animalData.challenges.slice(0, 3).join(", ")}</p>
                         </div>
                       </motion.div>
@@ -234,14 +234,14 @@ export default function ZodiacoChinoCalcPage() {
                         </div>
                       </motion.div>
 
-                      {/* A&ntilde;os */}
+                      {/* Años */}
                       {animalIndex >= 0 && (
                         <motion.div
                           initial={{ opacity: 0, y: 12 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.75, duration: 0.4 }}
                         >
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">A&ntilde;os correspondientes</p>
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Años correspondientes</p>
                           <p className="text-sm text-foreground">{getYearRange(animalIndex)}</p>
                         </motion.div>
                       )}
@@ -271,7 +271,7 @@ export default function ZodiacoChinoCalcPage() {
                         className="p-4 rounded-xl border border-border bg-card"
                       >
                         <p className="text-xs text-muted leading-relaxed">
-                          <strong>Nota:</strong> El zodiaco chino sigue el calendario lunar. Para fechas cercanas al A&ntilde;o Nuevo chino (enero-febrero), el animal puede diferir. Molino utiliza el a&ntilde;o gregoriano como convenci&oacute;n.
+                          <strong>Nota:</strong> El zodiaco chino sigue el calendario lunar. Para fechas cercanas al Año Nuevo chino (enero-febrero), el animal puede diferir. Molino utiliza el año gregoriano como convención.
                         </p>
                       </motion.div>
                     </div>
@@ -287,7 +287,7 @@ export default function ZodiacoChinoCalcPage() {
                 className="mt-6 p-4 rounded-xl border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>Nota:</strong> El zodiaco chino es un sistema de creencias milenario. Molino lo utiliza como herramienta de reflexi&oacute;n y autoconocimiento. Las interpretaciones no constituyen evidencia cient&iacute;fica.
+                  <strong>Nota:</strong> El zodiaco chino es un sistema de creencias milenario. Molino lo utiliza como herramienta de reflexión y autoconocimiento. Las interpretaciones no constituyen evidencia científica.
                 </p>
               </motion.div>
 
@@ -316,7 +316,7 @@ export default function ZodiacoChinoCalcPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Quer&eacute;s ver c&oacute;mo tu animal se conecta con numerolog&iacute;a y astrolog&iacute;a?</p>
+                  <p className="text-sm text-muted mb-3">Querés ver cómo tu animal se conecta con numerología y astrología?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"

@@ -26,7 +26,7 @@ export default function SignoContent() {
         <UniversityHeader />
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-serif text-4xl font-semibold text-foreground">Signo no encontrado</h1>
-          <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrolog&iacute;a de Molino.</p>
+          <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrología de Molino.</p>
           <button onClick={() => router.push("/conocimiento/astrologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</button>
         </main>
         <UniversityFooter />

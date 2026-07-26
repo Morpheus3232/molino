@@ -54,7 +54,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
       icon: "🔥",
     },
     {
-      field: "Expression Number",
+      field: "Expresión Number",
       value: String(expressionNumber ?? "—"),
       origin: "Numerología del nombre",
       tradition: "Cada letra del nombre tiene un valor numérico según la tabla pitagórica.",

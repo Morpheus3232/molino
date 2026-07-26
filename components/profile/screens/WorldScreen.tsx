@@ -145,9 +145,16 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       )}
 
       {/* ═══════════════════════════════════════════════
-          TOP MARCAS — Inline, with data
+          TOP MARCAS — Inline, grouped by category
           ═══════════════════════════════════════════════ */}
-      {topBrands.length > 0 && (
+      {topBrands.length > 0 && (() => {
+        const grouped = topBrands.reduce<Record<string, PersonalRecommendation[]>>((acc, rec) => {
+          const cat = rec.entity.category || "Otros";
+          if (!acc[cat]) acc[cat] = [];
+          acc[cat].push(rec);
+          return acc;
+        }, {});
+        return (
         <section className="py-8 sm:py-12 border-t border-border">
           <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
             <motion.div {...smoothReveal}>
@@ -156,13 +163,20 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Marcas con mayor resonancia según tu energía y el ciclo actual.
+                Marcas con mayor resonancia según tu energía y el ciclo actual, organizadas por rubro.
               </p>
             </motion.div>
 
-            <div className="space-y-3">
-              {topBrands.map((rec, i) => (
-                <BrandCard key={rec.entity.id} rec={rec} index={i} />
+            <div className="space-y-8">
+              {Object.entries(grouped).map(([category, recs]) => (
+                <div key={category}>
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
+                  <div className="space-y-3">
+                    {recs.map((rec, i) => (
+                      <BrandCard key={rec.entity.id} rec={rec} index={i} />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -177,7 +191,8 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             </motion.div>
           </div>
         </section>
-      )}
+        );
+      })()}
 
       {/* ═══════════════════════════════════════════════
           EXPLORAR MÁS
