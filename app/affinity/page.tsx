@@ -6,6 +6,7 @@ import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
 import type { EntityType } from "@/lib/data/symbolic-entities";
+import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
@@ -18,6 +19,16 @@ export default function AffinityHub() {
 
   const availableTypes = getAvailableTypes();
 
+  const personalizedCounts = profile ? (() => {
+    const counts: Record<string, number> = {};
+    availableTypes.forEach(type => {
+      const entities = getEntitiesByType(type);
+      const results = calculateAllAffinity(profile, entities);
+      counts[type] = results.filter(r => r.score >= 50).length;
+    });
+    return counts;
+  })() : null;
+
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
@@ -25,7 +36,7 @@ export default function AffinityHub() {
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simb\u00f3lica</p>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
             Descubrí tus afinidades
           </h1>
@@ -56,7 +67,9 @@ export default function AffinityHub() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {availableTypes.map((type, i) => {
               const meta = ENTITY_TYPES[type];
-              const count = getEntitiesByType(type).length;
+              const totalCount = getEntitiesByType(type).length;
+              const personalCount = personalizedCounts?.[type] ?? null;
+              
               return (
                 <motion.button
                   key={type}
@@ -65,12 +78,22 @@ export default function AffinityHub() {
                   viewport={{ once: true, margin: "-20px" }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                   onClick={() => router.push(`/affinity/${type}`)}
-                  className="text-left p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group"
+                  className="text-left p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group relative overflow-hidden"
                 >
+                  <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
                   <span className="text-3xl mb-3 block">{meta.icon}</span>
                   <h3 className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                   <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
-                  <p className="text-xs text-accent mt-3 font-medium">{count} {meta.plural.toLowerCase()}</p>
+                  <div className="mt-4 pt-3 border-t border-border">
+                    {personalCount !== null ? (
+                      <>
+                        <p className="font-serif text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
+                        <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
+                      </>
+                    ) : (
+                      <p className="text-xs text-accent font-medium">{totalCount} {meta.plural.toLowerCase()}</p>
+                    )}
+                  </div>
                 </motion.button>
               );
             })}
