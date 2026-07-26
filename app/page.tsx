@@ -12,6 +12,7 @@ import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
+import { getDayRule, getYearInterpretation, YEAR_2026 } from "@/lib/data/symbolic-rules";
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 
@@ -100,6 +101,13 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
   const energyIcon = getEnergyIcon(energy.overallScore);
   const todayStr = useMemo(() => formatTodayDate(), []);
 
+  const dayRule = useMemo(() => getDayRule(energy.personalDay), [energy.personalDay]);
+  const yearInterp = useMemo(() => {
+    const currentYear = today.getFullYear();
+    return getYearInterpretation(currentYear);
+  }, [today]);
+  const is2026 = today.getFullYear() === 2026;
+
   const careers: string[] = useMemo(() => archetype.careers || [], [archetype]);
 
   return (
@@ -170,6 +178,48 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
             </span>
           </div>
         </div>
+
+        {/* Day rule — HOY FAVORECE / OBSERVÁ */}
+        {dayRule && (
+          <div className="mt-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
+              Hoy es un d&iacute;a {dayRule.theme.toLowerCase()}
+            </p>
+            <p className="text-sm text-foreground leading-relaxed mb-3">
+              {dayRule.interpretation}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <div className="flex-1 min-w-[140px]">
+                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Hoy favorece</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {dayRule.favors.map((f) => (
+                    <span key={f} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{f}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="flex-1 min-w-[140px]">
+                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Hoy conviene observar</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {dayRule.watchOut.map((w) => (
+                    <span key={w} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted font-medium border border-border">{w}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Year context — 2026 */}
+        {is2026 && yearInterp && (
+          <div className="mt-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
+              Contexto del a&ntilde;o
+            </p>
+            <p className="text-sm text-foreground leading-relaxed">
+              {YEAR_2026.interpretation}
+            </p>
+          </div>
+        )}
       </motion.section>
 
       {/* ═══ 2. LO QUE MÁS RESUENA CON VOS ═══ */}
