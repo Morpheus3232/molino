@@ -27,6 +27,7 @@ export interface UserProfile {
   };
   element: string;
   modality: string;
+  luckyNumber: number;
   archetype: string;
   archetypeInfo: any;
   expressionNumber?: number;

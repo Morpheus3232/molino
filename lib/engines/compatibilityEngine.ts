@@ -3,7 +3,7 @@ import { getSunSign, getSunSignInfo, getWesternElement, getModality, calculateEl
 import { getChineseZodiac, getChineseZodiacInfo, calculateChineseCompatibility } from './chineseZodiacEngine';
 import type { UserProfile } from '@/types/user';
 export type { UserProfile } from '@/types/user';
-import { getPersonalYear, getPersonalDayForDate } from '@/lib/calculations';
+import { getPersonalYear, getPersonalDayForDate, calculateLuckyNumber } from '@/lib/calculations';
 
 export interface CompatibilityScore {
   numerology: number;
@@ -78,6 +78,7 @@ export function calculateUserProfile(name: string, birthDate: string, overrides?
     chineseZodiacInfo,
     element: sunSignInfo.element,
     modality: sunSignInfo.modality,
+    luckyNumber: calculateLuckyNumber(birthMonth, birthYear),
     archetype: archetypeInfo.name,
     archetypeInfo,
     cycles: {

@@ -25,6 +25,7 @@ const TEST_PROFILE: UserProfile = {
   chineseZodiacInfo: { animal: "Caballo", element: "Fuego", emoji: "🐴" },
   element: "Agua",
   modality: "Mutable",
+  luckyNumber: 39,
   archetype: "El Visionario",
   archetypeInfo: { name: "El Visionario", color: "#4A6FA5", description: "", quote: "", keywords: [], strengths: [], challenges: [] },
   expressionNumber: 3,
