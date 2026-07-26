@@ -53,7 +53,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               Las energías que te rodean
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-              Aliados, contrastes y personas que comparten tu energía de{" "}
+              Aliados, opuestos y personas que comparten tu energía de{" "}
               <span className="font-medium text-foreground">{display.name}</span>.
             </p>
           </motion.div>
@@ -177,7 +177,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Energías de contraste</h2>
+                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Energías opuestas</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Estos animales presentan mayor tensión con tu <span className="font-medium text-foreground">{display.name}</span>. No son &ldquo;malos&rdquo;, son oportunidades de aprendizaje.

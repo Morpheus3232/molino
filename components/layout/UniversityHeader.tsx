@@ -8,16 +8,6 @@ import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage
 
 const NAV_GROUPS = [
   {
-    label: "Descubrir",
-    items: [
-      { href: "/affinity", label: "Afinidad Simb\u00f3lica" },
-      { href: "/conocimiento/numerologia", label: "Numerolog\u00eda" },
-      { href: "/conocimiento/astrologia", label: "Astrolog\u00eda" },
-      { href: "/conocimiento/zodiaco-chino", label: "Zod\u00edaco Chino" },
-      { href: "/conocimiento/fuentes", label: "Fuentes" },
-    ],
-  },
-  {
     label: "Orientarte",
     items: [
       { href: "/timing", label: "Timing" },
@@ -135,7 +125,7 @@ export default function UniversityHeader() {
           <nav className="hidden lg:flex items-center gap-1" aria-label="Navegaci\u00f3n principal">
             {NAV_GROUPS.map((group) => (
               <div key={group.label} className="relative group">
-                <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${(isOnHome && group.label === "Descubrir") || isGroupActive(group, pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
+                <button type="button" className={`px-3 py-1.5 rounded-full text-sm transition-all ${isGroupActive(group, pathname) ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
                   {group.label}
                 </button>
                 <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 z-50" role="menu">

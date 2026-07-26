@@ -244,17 +244,17 @@ function buildExplanation(
 ): string {
   switch (natalType) {
     case "same":
-      return `${entityName} comparte tu mismo signo. Energía de sintonía natural según la tradición.`;
+      return `${entityName} comparte tu misma energía base.`;
     case "triad":
-      return `${entityName} pertenece al círculo de apoyo tradicional de ${user}. Tríada compatible.`;
+      return `${entityName} conecta con tu perfil a través de una relación simbólica secundaria.`;
     case "harmonious":
-      return `${entityName} es la pareja armoniosa natural de ${user} según la tradición (Liu He).`;
+      return `${entityName} es una energía complementaria según la tradición.`;
     case "clash":
-      return `${entityName} representa una relación de mayor adaptación simbólica para ${user}.`;
+      return `${entityName} es una energía opuesta a la tuya.`;
     case "harm":
-      return `${entityName} tiene una relación de atención con ${user} según la tradición (Liu Hai).`;
+      return `${entityName} tiene una relación de mayor atención según la tradición.`;
     default:
-      return `${entityName} y ${user} no tienen una relación especial. Energías independientes.`;
+      return `${entityName} y ${user} no tienen una relación especial.`;
   }
 }
 

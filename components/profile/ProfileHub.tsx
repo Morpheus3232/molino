@@ -61,7 +61,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       tab: "circle",
       icon: "⬡",
       label: "Tu Círculo",
-      description: "Aliados, contrastes y personas que comparten tu energía",
+      description: "Aliados, opuestos y personas que comparten tu energía",
       preview: `Tus aliados: ${display.name} se conecta con Tigre, Perro y Cabra`,
       color: "var(--layer-cycles)",
     },

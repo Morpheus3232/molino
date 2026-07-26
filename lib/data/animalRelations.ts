@@ -157,8 +157,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Rata",
     harmonyPartners: ["Dragón", "Mono"],
     liuHePartner: "Buey",
-    challengingRelations: ["Caballo", "Cabra"],
-    neutralRelations: ["Tigre", "Gato", "Serpiente", "Gallo", "Perro", "Cerdo"],
+    challengingRelations: ["Caballo"],
+    neutralRelations: ["Tigre", "Gato", "Serpiente", "Gallo", "Perro", "Cerdo", "Cabra"],
     traits: ["Astucia", "Adaptabilidad", "Curiosidad"],
   },
   Buey: {
@@ -166,8 +166,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Buey",
     harmonyPartners: ["Serpiente", "Gallo"],
     liuHePartner: "Rata",
-    challengingRelations: ["Cabra", "Caballo"],
-    neutralRelations: ["Tigre", "Gato", "Dragón", "Mono", "Perro", "Cerdo"],
+    challengingRelations: ["Cabra"],
+    neutralRelations: ["Tigre", "Gato", "Dragón", "Mono", "Perro", "Cerdo", "Caballo"],
     traits: ["Fuerza", "Determinación", "Lealtad"],
   },
   Tigre: {
@@ -175,17 +175,17 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Tigre",
     harmonyPartners: ["Caballo", "Perro"],
     liuHePartner: "Gato",
-    challengingRelations: ["Mono", "Serpiente"],
-    neutralRelations: ["Rata", "Buey", "Dragón", "Cabra", "Gallo", "Cerdo"],
+    challengingRelations: ["Mono"],
+    neutralRelations: ["Rata", "Buey", "Dragón", "Cabra", "Gallo", "Cerdo", "Serpiente"],
     traits: ["Coraje", "Pasión", "Liderazgo"],
   },
   Gato: {
-    animal: "Gato", emoji: "🐇",
+    animal: "Gato", emoji: "🐱",
     sameAnimal: "Gato",
     harmonyPartners: ["Cabra", "Cerdo"],
     liuHePartner: "Tigre",
-    challengingRelations: ["Gallo", "Dragón"],
-    neutralRelations: ["Rata", "Buey", "Serpiente", "Caballo", "Mono", "Perro"],
+    challengingRelations: ["Gallo"],
+    neutralRelations: ["Rata", "Buey", "Serpiente", "Caballo", "Mono", "Perro", "Dragón"],
     traits: ["Elegancia", "Suavidad", "Intuición"],
   },
   Dragón: {
@@ -193,8 +193,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Dragón",
     harmonyPartners: ["Rata", "Mono"],
     liuHePartner: "Serpiente",
-    challengingRelations: ["Perro", "Gato"],
-    neutralRelations: ["Buey", "Tigre", "Caballo", "Cabra", "Gallo", "Cerdo"],
+    challengingRelations: ["Perro"],
+    neutralRelations: ["Buey", "Tigre", "Caballo", "Cabra", "Gallo", "Cerdo", "Gato"],
     traits: ["Poder", "Visión", "Ambición"],
   },
   Serpiente: {
@@ -202,8 +202,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Serpiente",
     harmonyPartners: ["Buey", "Gallo"],
     liuHePartner: "Dragón",
-    challengingRelations: ["Cerdo", "Tigre"],
-    neutralRelations: ["Rata", "Gato", "Caballo", "Cabra", "Mono", "Perro"],
+    challengingRelations: ["Cerdo"],
+    neutralRelations: ["Rata", "Gato", "Caballo", "Cabra", "Mono", "Perro", "Tigre"],
     traits: ["Sabiduría", "Profundidad", "Magnetismo"],
   },
   Caballo: {
@@ -211,8 +211,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Caballo",
     harmonyPartners: ["Tigre", "Perro"],
     liuHePartner: "Cabra",
-    challengingRelations: ["Rata", "Buey"],
-    neutralRelations: ["Gato", "Dragón", "Serpiente", "Mono", "Gallo", "Cerdo"],
+    challengingRelations: ["Rata"],
+    neutralRelations: ["Gato", "Dragón", "Serpiente", "Mono", "Gallo", "Cerdo", "Buey"],
     traits: ["Movimiento", "Independencia", "Exploración"],
   },
   Cabra: {
@@ -220,8 +220,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Cabra",
     harmonyPartners: ["Gato", "Cerdo"],
     liuHePartner: "Caballo",
-    challengingRelations: ["Buey", "Rata"],
-    neutralRelations: ["Tigre", "Dragón", "Serpiente", "Mono", "Gallo", "Perro"],
+    challengingRelations: ["Buey"],
+    neutralRelations: ["Tigre", "Dragón", "Serpiente", "Mono", "Gallo", "Perro", "Rata"],
     traits: ["Creatividad", "Armonía", "Sensibilidad"],
   },
   Mono: {
@@ -229,8 +229,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Mono",
     harmonyPartners: ["Rata", "Dragón"],
     liuHePartner: "Gallo",
-    challengingRelations: ["Tigre", "Cerdo"],
-    neutralRelations: ["Buey", "Gato", "Serpiente", "Caballo", "Cabra", "Perro"],
+    challengingRelations: ["Tigre"],
+    neutralRelations: ["Buey", "Gato", "Serpiente", "Caballo", "Cabra", "Perro", "Cerdo"],
     traits: ["Ingenio", "Versatilidad", "Chispa"],
   },
   Gallo: {
@@ -238,8 +238,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Gallo",
     harmonyPartners: ["Buey", "Serpiente"],
     liuHePartner: "Mono",
-    challengingRelations: ["Gato", "Perro"],
-    neutralRelations: ["Rata", "Tigre", "Dragón", "Caballo", "Cabra", "Cerdo"],
+    challengingRelations: ["Gato"],
+    neutralRelations: ["Rata", "Tigre", "Dragón", "Caballo", "Cabra", "Cerdo", "Perro"],
     traits: ["Puntualidad", "Observación", "Coraje"],
   },
   Perro: {
@@ -247,8 +247,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Perro",
     harmonyPartners: ["Tigre", "Caballo"],
     liuHePartner: "Cerdo",
-    challengingRelations: ["Dragón", "Gallo"],
-    neutralRelations: ["Rata", "Buey", "Gato", "Serpiente", "Cabra", "Mono"],
+    challengingRelations: ["Dragón"],
+    neutralRelations: ["Rata", "Buey", "Gato", "Serpiente", "Cabra", "Mono", "Gallo"],
     traits: ["Lealtad", "Honradez", "Protección"],
   },
   Cerdo: {
@@ -256,8 +256,8 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
     sameAnimal: "Cerdo",
     harmonyPartners: ["Gato", "Cabra"],
     liuHePartner: "Perro",
-    challengingRelations: ["Serpiente", "Mono"],
-    neutralRelations: ["Rata", "Buey", "Tigre", "Dragón", "Caballo", "Gallo"],
+    challengingRelations: ["Serpiente"],
+    neutralRelations: ["Rata", "Buey", "Tigre", "Dragón", "Caballo", "Gallo", "Mono"],
     traits: ["Generosidad", "Optimismo", "Calidez"],
   },
 };
@@ -268,11 +268,11 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
 
 const RELATION_LABELS: Record<RelationType, string> = {
   same: "mismo animal",
-  triad: "tríada compatible",
+  triad: "tríada",
   harmonious: "armonía natural",
   neutral: "energías independientes",
-  clash: "opuestos en el ciclo",
-  harm: "requiere atención",
+  clash: "energías opuestas",
+  harm: "energías opuestas",
 };
 
 // ════════════════════════════════════════════════════
@@ -288,7 +288,7 @@ export function getRelation(a: Animal, b: Animal): AnimalRelation {
       animal: b,
       type: "same",
       label: "mismo animal",
-      description: `Compartís la misma energía base con ${b}.`,
+      description: `${b} comparte tu misma energía base.`,
       ...RELATION_SCORES.same,
     };
   }
@@ -388,16 +388,16 @@ function getRelationDescription(type: RelationType, a: string, b: string): strin
   switch (type) {
     case "triad": {
       const triad = SAN_HE_TRIADS.find(t => t.animals.includes(a as Animal) && t.animals.includes(b as Animal));
-      return `${a} y ${b} comparten el elemento oculto ${triad?.element ?? ""} en la tradición del zodíaco chino. Energías que se potencian mutuamente.`;
+      return `${a} y ${b} comparten el elemento oculto ${triad?.element ?? ""}. Energías que se potencian mutuamente.`;
     }
     case "harmonious":
-      return `${a} y ${b} forman una pareja armoniosa (Liu He). Se complementan de forma natural según la tradición.`;
+      return `${a} y ${b} forman una pareja armoniosa. Se complementan de forma natural según la tradición.`;
     case "clash":
-      return `${a} y ${b} son opuestos directos en el ciclo (Liu Chong). Según esta tradición, requiere más consciencia y estrategia en la interacción.`;
+      return `${a} y ${b} son energías opuestas en el ciclo. Requiere más consciencia y estrategia.`;
     case "harm":
-      return `${a} y ${b} tienen una relación de mayor atención (Liu Hai). La tradición sugiere actuar con cuidado y planificación.`;
+      return `${a} y ${b} tienen una relación de mayor atención. La tradición sugiere actuar con cuidado.`;
     case "neutral":
-      return `${a} y ${b} no tienen una relación especial en el ciclo del zodíaco chino. Energías independientes.`;
+      return `${a} y ${b} no tienen una relación especial. Energías independientes.`;
     default:
       return "";
   }

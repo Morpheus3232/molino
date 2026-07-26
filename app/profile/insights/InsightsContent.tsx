@@ -298,7 +298,7 @@ export default function InsightsContent() {
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-2xl border border-border bg-card">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Contrastes</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Opuestos</span>
               </div>
 
               <p className="text-xs text-muted mb-4 leading-relaxed">
@@ -452,7 +452,7 @@ function getRelationLabel(a: string, b: string): string {
   const map = getRelationshipMap(a as Animal);
   const rel = map.friends.find(r => r.animal === b) ?? map.neutral.find(r => r.animal === b);
   if (!rel) return "energías independientes";
-  if (rel.type === "triad") return "tríada compatible";
+  if (rel.type === "triad") return "tríada";
   if (rel.type === "harmonious") return "armonía natural";
   return "energías independientes";
 }
