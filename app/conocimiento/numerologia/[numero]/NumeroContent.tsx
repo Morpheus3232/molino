@@ -40,7 +40,7 @@ export default function NumeroContent() {
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
@@ -88,7 +88,7 @@ export default function NumeroContent() {
         {/* Fortalezas y Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-5 rounded-xl border border-border bg-card">
+            <div className="p-5 rounded-xl border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-2">
                 {num.strengths.map(s => (
@@ -99,7 +99,7 @@ export default function NumeroContent() {
                 ))}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card">
+            <div className="p-5 rounded-xl border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {num.challenges.map(c => (
@@ -113,22 +113,15 @@ export default function NumeroContent() {
           </div>
         </motion.section>
 
-        {/* Interpretación */}
+        {/* Interpretación + Ejemplo consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Interpretación de Molino</h2>
           </div>
-          <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.interpretation}</p>
-        </motion.section>
-
-        {/* Ejemplo */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Ejemplo práctico</h2>
-          </div>
-          <div className="p-5 rounded-xl border border-border bg-card">
+          <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-6">{num.interpretation}</p>
+          <div className="p-5 rounded-xl border border-border bg-card/60">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Ejemplo práctico</p>
             <p className="text-sm text-foreground leading-relaxed">{num.example}</p>
           </div>
         </motion.section>
@@ -142,73 +135,25 @@ export default function NumeroContent() {
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
         </motion.section>
 
-        {/* Aviso científico */}
+        {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Aviso importante</p>
+          <div className="p-5 rounded-xl border border-border bg-card/60">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{num.scientificNote}</p>
-          </div>
-        </motion.section>
-
-        {/* Fuentes */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes</h2>
-          </div>
-          <p className="text-xs text-muted">Encyclopaedia Britannica, Stanford Encyclopedia of Philosophy, Internet Encyclopedia of Philosophy.</p>
-        </motion.section>
-
-        {/* Compartir */}
-        <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-xl border border-border bg-card">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Compartir</p>
-                <p className="text-sm text-muted">Compartí este contenido con alguien que le interese la numerología.</p>
-              </div>
-              <button
-                type="button"
-                onClick={async () => {
-                  const url = typeof window !== "undefined" ? window.location.href : "";
-                  if (navigator.share) {
-                    try { await navigator.share({ title: document.title, url }); } catch {}
-                  } else {
-                    await navigator.clipboard.writeText(url);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }
-                }}
-                className="shrink-0 text-sm font-medium text-accent hover:underline"
-              >
-                {copied ? "Copiado ✓" : "Copiar enlace"}
-              </button>
-            </div>
+            <p className="text-xs text-muted leading-relaxed mt-3">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
         </motion.section>
 
         {/* Herramienta relacionada */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Calculá tu mapa numérico</p>
+          <div className="p-5 rounded-xl border border-border bg-card/60">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Calculá tu mapa numérico</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
-              Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad. O explorá tu afinidad simbólica con entidades del mundo.
+              Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
-                Ir a la calculadora →
-              </Link>
-              <Link href="/affinity" className="text-sm font-medium text-accent hover:underline">
-                Afinidad simbólica →
-              </Link>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Disclaimer */}
-        <motion.section {...fadeUp} className="mb-12">
-          <div className="p-4 rounded-xl border border-border bg-card">
-            <p className="text-xs text-muted leading-relaxed">{NUMEROLOGY_DISCLAIMER}</p>
+            <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
+              Ir a la calculadora →
+            </Link>
           </div>
         </motion.section>
 

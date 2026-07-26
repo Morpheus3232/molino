@@ -131,13 +131,13 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               {/* Precision indicator */}
               <div className="mt-4">
                 {primaryEvent.date ? (
-                  <p className="text-xs text-muted/70 flex items-center gap-1.5">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400 shrink-0" />
+                  <p className="text-xs text-muted flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-success shrink-0" />
                     Calculado con fecha exacta
                   </p>
                 ) : (
-                  <p className="text-xs text-muted/70 flex items-center gap-1.5">
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0" />
+                  <p className="text-xs text-muted flex items-center gap-1.5">
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-warning shrink-0" />
                     Calculado desde el año disponible
                   </p>
                 )}
@@ -165,7 +165,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               <div className="h-px bg-border my-4" />
               <p className="text-sm text-foreground leading-relaxed mb-3">{result.explanation}</p>
               {result.tradition && (
-                <p className="text-xs text-muted/70 italic">{result.tradition}</p>
+                <p className="text-xs text-muted italic">{result.tradition}</p>
               )}
             </CollapsibleSection>
           </motion.section>
@@ -370,22 +370,6 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   </Link>
                 );
               })}
-              {/* Back to profile */}
-              <Link
-                href="/profile?tab=identity"
-                className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">✦</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
-                      Volvé a tu mapa
-                    </p>
-                    <p className="text-xs text-muted">Revisá tu perfil y descubrí más conexiones</p>
-                  </div>
-                  <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-              </Link>
             </div>
           </motion.section>
         )}
@@ -402,24 +386,10 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             </button>
             <button
               type="button"
-              onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            >
-              Comparar con otra entidad
-            </button>
-            <button
-              type="button"
               onClick={() => router.push(`/affinity/${type}`)}
               className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push("/affinity")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            >
-              Explorar
             </button>
           </div>
         </motion.section>
@@ -542,7 +512,6 @@ function PremiumHero({
 
       {/* CTAs — primary Share + secondary Explore */}
       <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3 justify-center">
-        <ShareButton result={result} entity={entity} tierMeta={tierMeta} />
         <button
           type="button"
           onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
