@@ -99,6 +99,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                   Camino {lifePath}
                 </span>
                 <span className="px-3 py-1 rounded-lg bg-background text-xs font-medium text-foreground">
+                  Suerte {profile.luckyNumber}
+                </span>
+                <span className="px-3 py-1 rounded-lg bg-background text-xs font-medium text-foreground">
                   {userYear}
                 </span>
               </div>
