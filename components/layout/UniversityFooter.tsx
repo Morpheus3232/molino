@@ -14,10 +14,10 @@ export default function UniversityFooter() {
               <span className="font-serif font-bold text-lg text-foreground tracking-tight">Molino</span>
             </div>
             <p className="text-sm text-muted mt-2">
-              Personal Intelligence Platform
+              Inteligencia Personal
             </p>
             <p className="text-xs text-muted mt-1">
-              Código Abierto · Sin Registro · Sin Rastreo
+              Código abierto · Sin registro · Sin rastreo
             </p>
           </div>
           <div>
@@ -33,8 +33,18 @@ export default function UniversityFooter() {
             <h4 className="text-sm font-semibold text-foreground">Explorar</h4>
             <ul className="mt-3 space-y-2 text-sm text-muted">
               <li>
+                <Link href="/" className="hover:text-accent transition-colors">
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link href="/profile" className="hover:text-accent transition-colors">
+                  Mi mapa
+                </Link>
+              </li>
+              <li>
                 <Link href="/explore" className="hover:text-accent transition-colors">
-                  Conocimiento
+                  Explorar
                 </Link>
               </li>
               <li>
@@ -42,17 +52,12 @@ export default function UniversityFooter() {
                   Biblioteca
                 </Link>
               </li>
-              <li>
-                <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
-                  GitHub
-                </Link>
-              </li>
             </ul>
           </div>
         </div>
         <div className="mt-10 pt-8 border-t border-border text-center text-xs text-muted">
           <p>
-            Molino — Personal Intelligence Platform.{" "}
+            Molino — Inteligencia Personal.{" "}
             Todo el contenido es educativo y no constituye asesoramiento profesional.
           </p>
           <p className="mt-1">

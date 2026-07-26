@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ENTITIES } from "@/lib/data/entities";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import { generateMatchStory } from "@/lib/engines/storyEngine";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";

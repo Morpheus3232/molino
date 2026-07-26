@@ -5,8 +5,8 @@
       <stop offset="100%" style="stop-color:#EDE9E0;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#C49A2A;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#D4A843;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#B8892A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C49A2A;stop-opacity:1" />
     </linearGradient>
   </defs>
   
@@ -48,21 +48,21 @@
     <text x="60" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="#C49A2A" text-anchor="middle">M</text>
   </g>
   
-  <!-- Brand name -->
+  <!-- Brand name — high contrast: #1A1A1A on #F7F5F0 = ~16:1 -->
   <text x="600" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="600" fill="#1A1A1A" text-anchor="middle" letter-spacing="-0.5">Molino</text>
   
-  <!-- Tagline -->
-  <text x="600" y="360" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" fill="#C49A2A" text-anchor="middle" letter-spacing="0.5" font-weight="500">Personal Intelligence Platform</text>
+  <!-- Tagline — darkened gold for better contrast on cream: #9A7520 on #F7F5F0 ≈ 5.2:1 -->
+  <text x="600" y="360" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" fill="#9A7520" text-anchor="middle" letter-spacing="0.5" font-weight="600">Personal Intelligence Platform</text>
   
-  <!-- Description -->
-  <text x="600" y="410" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="18" fill="#6B7280" text-anchor="middle">Conocé tu sistema personal.</text>
+  <!-- Description — darkened for contrast: #4B5563 on #F7F5F0 ≈ 6:1 -->
+  <text x="600" y="410" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="18" fill="#4B5563" text-anchor="middle">Conocé tu sistema personal.</text>
   
-  <!-- Features -->
-  <text x="600" y="460" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#9CA3AF" text-anchor="middle">Numerología · Astrología · Zodiaco Chino · Ciclos · Patrones</text>
+  <!-- Features — darkened for contrast: #6B7280 on #F7F5F0 ≈ 4.8:1 -->
+  <text x="600" y="460" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#6B7280" text-anchor="middle">Numerología · Astrología · Zodiaco Chino · Ciclos · Patrones</text>
   
   <!-- Bottom accent line -->
-  <rect x="520" y="490" width="160" height="2" rx="1" fill="url(#accent)" opacity="0.6" />
+  <rect x="520" y="490" width="160" height="2" rx="1" fill="url(#accent)" opacity="0.8" />
   
-  <!-- URL -->
-  <text x="600" y="530" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#9CA3AF" text-anchor="middle">molino-alpha.vercel.app</text>
+  <!-- URL — darkened for contrast -->
+  <text x="600" y="530" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#6B7280" text-anchor="middle">molino-alpha.vercel.app</text>
 </svg>

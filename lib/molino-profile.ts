@@ -1,4 +1,5 @@
 import { OnboardingData } from "./types/molino-types";
+import { ANIMALS } from "./data/animalRelations";
 
 export interface MolinoProfile {
   name: string;
@@ -28,11 +29,6 @@ const zodiacRanges: { sign: string; emoji: string; start: [number, number]; end:
   { sign: "Capricornio", emoji: "♑", start: [12, 22], end: [1, 19] },
   { sign: "Acuario", emoji: "♒", start: [1, 20], end: [2, 18] },
   { sign: "Piscis", emoji: "♓", start: [2, 19], end: [3, 20] },
-];
-
-const chineseZodiacAnimals = [
-  "Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente",
-  "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo",
 ];
 
 const chineseElements = ["Madera", "Fuego", "Tierra", "Metal", "Agua"];
@@ -82,7 +78,7 @@ function getZodiacSign(dateStr: string): { sign: string; emoji: string } {
 
 function getChineseZodiac(dateStr: string): { animal: string; element: string } {
   const year = new Date(dateStr).getFullYear();
-  const animal = chineseZodiacAnimals[(year - 4) % 12];
+  const animal = ANIMALS[(year - 4) % 12];
   const element = chineseElements[Math.floor(((year - 4) % 10) / 2)];
   return { animal, element };
 }

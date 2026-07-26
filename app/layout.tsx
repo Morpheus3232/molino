@@ -1,16 +1,19 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
+import { Toaster } from "sonner";
+import MotionProvider from "@/components/ui/MotionProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
 
 export const metadata: Metadata = {
   title: {
-    default: "Molino — Personal Intelligence Platform",
+    default: "Molino — Inteligencia Personal",
     template: "%s | Molino",
   },
   description:
@@ -24,7 +27,7 @@ export const metadata: Metadata = {
     "arquetipos",
     "zodiaco chino",
     "ciclos personales",
-    "Life Path",
+    "Camino de Vida",
     "gratuito",
     "sin registro",
     "código abierto",
@@ -36,7 +39,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: "https://molino-alpha.vercel.app",
     siteName: "Molino",
-    title: "Molino — Personal Intelligence Platform",
+    title: "Molino — Inteligencia Personal",
     description:
       "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología, zodiaco chino y análisis de patrones conectados.",
     images: [
@@ -44,13 +47,13 @@ export const metadata: Metadata = {
         url: "https://molino-alpha.vercel.app/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "Molino — Personal Intelligence Platform",
+        alt: "Molino — Inteligencia Personal",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Personal Intelligence Platform",
+    title: "Molino — Inteligencia Personal",
     description:
       "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología y análisis de patrones.",
     images: ["https://molino-alpha.vercel.app/og-image.svg"],
@@ -86,9 +89,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const webSiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Molino",
+    url: "https://molino-alpha.vercel.app",
+    description: "Inteligencia Personal: numerología, astrología, zodiaco chino y análisis de patrones.",
+  };
+
   return (
     <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
       <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
@@ -99,9 +111,29 @@ export default function RootLayout({
           Saltar al contenido principal
         </a>
         <AnalyticsProvider />
-        <AppErrorBoundary>
-          <AnimatedLayout>{children}</AnimatedLayout>
-        </AppErrorBoundary>
+        <MotionProvider>
+          <AppErrorBoundary>
+            <AnimatedLayout>{children}</AnimatedLayout>
+          </AppErrorBoundary>
+        </MotionProvider>
+        <Toaster position="bottom-right" richColors />
+        {process.env.NEXT_PUBLIC_POSTHOG_KEY && (
+          <>
+            <Script
+              src="https://eu.i.posthog.com/static/array.js"
+              strategy="afterInteractive"
+            />
+            <Script id="posthog-init" strategy="afterInteractive">
+              {`window.posthog && window.posthog.init('${process.env.NEXT_PUBLIC_POSTHOG_KEY}', {
+                api_host: 'https://eu.i.posthog.com',
+                cookieless_mode: 'always',
+                capture_pageview: false,
+                capture_pageleave: false,
+                autocapture: false
+              });`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

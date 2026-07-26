@@ -4,13 +4,17 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: false,
   images: {
-    domains: ['molino.app'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'molino.app',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  swcMinify: true,
   compress: true,
   output: 'standalone',
   experimental: {
@@ -29,10 +33,6 @@ const nextConfig = {
           {
             key: 'X-Frame-Options',
             value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
           },
           {
             key: 'Referrer-Policy',

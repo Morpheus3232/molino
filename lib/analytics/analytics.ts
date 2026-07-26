@@ -7,7 +7,13 @@ type EventType =
   | "feature_used"
   | "ai_query"
   | "decision_made"
-  | "export_profile";
+  | "export_profile"
+  | "affinity_date_entered"
+  | "affinity_result_viewed"
+  | "affinity_shared"
+  | "affinity_profile_cta_clicked"
+  | "affinity_recommendation_clicked"
+  | "affinity_save_clicked";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -66,6 +72,16 @@ class Analytics {
     this.events.push(fullEvent);
     this.saveToStorage();
     console.log("📊 Analytics:", fullEvent);
+
+    // PostHog sink — fires only if posthog is loaded (Project Key configured)
+    if (typeof window !== "undefined" && typeof window.posthog === "object" && typeof window.posthog.capture === "function") {
+      try {
+        window.posthog.capture(event.type, event.data || {});
+      } catch {
+        // PostHog blocked or misconfigured — silent fail
+      }
+    }
+
     return fullEvent;
   }
 
@@ -141,6 +157,48 @@ class Analytics {
     this.track({
       type: "decision_made",
       data: { decision },
+    });
+  }
+
+  trackAffinityDateEntered(entityType: string) {
+    this.track({
+      type: "affinity_date_entered",
+      data: { entityType },
+    });
+  }
+
+  trackAffinityResultViewed(entityType: string, score: number, tier: string) {
+    this.track({
+      type: "affinity_result_viewed",
+      data: { entityType, score, tier },
+    });
+  }
+
+  trackAffinityShared(entityType: string, method: "share" | "clipboard") {
+    this.track({
+      type: "affinity_shared",
+      data: { entityType, method },
+    });
+  }
+
+  trackAffinityProfileCtaClicked(entityType: string) {
+    this.track({
+      type: "affinity_profile_cta_clicked",
+      data: { entityType },
+    });
+  }
+
+  trackAffinityRecommendationClicked(entityType: string, sourceEntity: string, targetEntity: string, position: number) {
+    this.track({
+      type: "affinity_recommendation_clicked",
+      data: { entityType, sourceEntity, targetEntity, position },
+    });
+  }
+
+  trackAffinitySaveClicked(entityType: string, entityId: string, score: number, tier: string) {
+    this.track({
+      type: "affinity_save_clicked",
+      data: { entityType, entityId, score, tier },
     });
   }
 }

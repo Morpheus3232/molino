@@ -126,20 +126,11 @@ export const ACTOR_DATA: Record<string, any> = {
   "Ricardo Darín": { year: 1957, animal: "Gallo", element: "Fuego", logo: "🎬", country: "Argentina", knownFor: "El Secreto de sus Ojos" }
 };
 
-export function getChineseAnimal(year: number): string {
-  const animals = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
-  const index = (year - 1900) % 12;
-  return animals[index >= 0 ? index : index + 12];
-}
-
 export function getCompatibilityScore(userAnimal: string, targetAnimal: string): number {
-  const animals = ["Rata", "Buey", "Tigre", "Conejo", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
-  const userIndex = animals.indexOf(userAnimal);
-  const targetIndex = animals.indexOf(targetAnimal);
-  if (userIndex === -1 || targetIndex === -1) return 50;
-  const diff = Math.abs(userIndex - targetIndex) % 12;
-  const scores: Record<number, number> = { 0: 80, 1: 70, 2: 50, 3: 40, 4: 60, 5: 30, 6: 90, 7: 30, 8: 60, 9: 40, 10: 50, 11: 70 };
-  return scores[diff] || 50;
+  if (!userAnimal || !targetAnimal) return 50;
+  // Lazy import to avoid circular dependency
+  const animalRelations = require("@/lib/data/animalRelations") as typeof import("@/lib/data/animalRelations");
+  return animalRelations.getRelation(userAnimal as any, targetAnimal as any).score;
 }
 
 export function getCompatibilityDescription(score: number, animal: string): string {

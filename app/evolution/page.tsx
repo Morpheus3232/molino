@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loadProfileFromStorage } from "@/lib/storage/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import type { UserProfile } from "@/lib/engines/compatibilityEngine";
+import type { UserProfile } from "@/types/user";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";
@@ -78,7 +78,7 @@ export default function EvolutionPage() {
           <div className="text-center mb-10">
             <span className="badge mb-3">📈 Evolution</span>
             <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Historial y evolución</h1>
-            <p className="text-muted mt-2 max-w-2xl mx-auto">Registro de tus sesiones, insights y avances en tu proceso de Personal Intelligence.</p>
+            <p className="text-muted mt-2 max-w-2xl mx-auto">Registro de tus sesiones, insights y avances en tu proceso de Inteligencia Personal.</p>
           </div>
         </Section>
 

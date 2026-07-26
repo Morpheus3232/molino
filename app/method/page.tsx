@@ -27,28 +27,28 @@ export default function MethodPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Life Path</h3>
+                <h3 className="font-semibold text-foreground mb-2">Camino de Vida (Camino de Vida)</h3>
                 <p className="text-sm text-muted leading-relaxed">
                   Se reduce la fecha de nacimiento completa a un solo dígito, excepto cuando se obtiene 11, 22 o 33,
                   considerados números maestros. No interpreta el “futuro”: describe tendencias y patrones dominantes.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Expression Number</h3>
+                <h3 className="font-semibold text-foreground mb-2">Número de Expresión</h3>
                 <p className="text-sm text-muted leading-relaxed">
                   Se asignan valores a las letras del nombre completo, se suman y se reducen. Refleja la energía que la persona
                   proyecta, no una identidad fija ni un destino cerrado.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Soul Number</h3>
+                <h3 className="font-semibold text-foreground mb-2">Número del Alma</h3>
                 <p className="text-sm text-muted leading-relaxed">
                   Usa solo las vocales del nombre completo. Se interpreta como motivación interna y deseos centrales,
                   sin determinar comportamientos ni resultados concretos.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Personality Number</h3>
+                <h3 className="font-semibold text-foreground mb-2">Número de Personalidad</h3>
                 <p className="text-sm text-muted leading-relaxed">
                   Usa solo las consonantes. Representa la imagen pública y las primeras impresiones, no una caracterización
                   definitiva de la persona.

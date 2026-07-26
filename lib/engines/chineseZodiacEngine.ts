@@ -1,7 +1,30 @@
 import { getChineseZodiac as getRealChineseZodiac } from '../data/chineseNewYearDates';
+import { ANIMALS, getRelation, type Animal } from '../data/animalRelations';
 
 export function getChineseZodiac(birthDate: string): string {
   return getRealChineseZodiac(birthDate);
+}
+
+/**
+ * Calculate Chinese zodiac animal from an exact date or year-only.
+ *
+ * Priority:
+ *   1. Exact date string → uses real Chinese New Year boundary
+ *   2. Year only → fallback to YYYY-06-01 (always after CNY), marked approximate
+ *   3. Never presents a fallback as an exact historical date
+ */
+export function calculateAnimalFromDate(
+  dateStr?: string,
+  year?: number
+): { animal: string; isApproximate: boolean } {
+  if (dateStr) {
+    return { animal: getRealChineseZodiac(dateStr), isApproximate: false };
+  }
+  if (year) {
+    const fallbackDate = `${year}-06-01`;
+    return { animal: getRealChineseZodiac(fallbackDate), isApproximate: true };
+  }
+  return { animal: "", isApproximate: true };
 }
 
 export function getChineseZodiacInfo(birthDate: string): { animal: string; element: string } {
@@ -18,17 +41,11 @@ export function getChineseElement(year: number): string {
 }
 
 export function getChineseAnimal(year: number): string {
-  const animals = ['Rata', 'Buey', 'Tigre', 'Conejo', 'Dragón', 'Serpiente', 'Caballo', 'Cabra', 'Mono', 'Gallo', 'Perro', 'Cerdo'];
   const index = (year - 1900) % 12;
-  return animals[index >= 0 ? index : index + 12];
+  return ANIMALS[index >= 0 ? index : index + 12];
 }
 
 export function calculateChineseCompatibility(userAnimal: string, targetAnimal: string): number {
-  const animals = ['Rata', 'Buey', 'Tigre', 'Conejo', 'Dragón', 'Serpiente', 'Caballo', 'Cabra', 'Mono', 'Gallo', 'Perro', 'Cerdo'];
-  const userIndex = animals.indexOf(userAnimal);
-  const targetIndex = animals.indexOf(targetAnimal);
-  if (userIndex === -1 || targetIndex === -1) return 50;
-  const diff = Math.abs(userIndex - targetIndex) % 12;
-  const scores: Record<number, number> = { 0: 80, 1: 70, 2: 50, 3: 40, 4: 60, 5: 30, 6: 90, 7: 30, 8: 60, 9: 40, 10: 50, 11: 70 };
-  return scores[diff] || 50;
+  if (!userAnimal || !targetAnimal) return 50;
+  return getRelation(userAnimal as Animal, targetAnimal as Animal).score;
 }
