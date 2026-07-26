@@ -19,6 +19,7 @@ import {
   type Animal,
   type RelationType,
 } from "@/lib/data/animalRelations";
+import { SAN_HE_TRIADS } from "@/lib/data/animalRelations";
 import {
   getCurrentYearAnimal,
   calculateYearResonance,
@@ -205,9 +206,13 @@ function calculatePersonalRecommendation(
 function scoreToPriority(score: number): PriorityLevel {
   if (score >= 85) return 5;
   if (score >= 70) return 4;
-  if (score >= 45) return 3;
-  if (score >= 30) return 2;
+  if (score >= 60) return 3;
+  if (score >= 40) return 2;
   return 1;
+}
+
+export function hasPositiveAffinity(priority: PriorityLevel): boolean {
+  return priority >= 3;
 }
 
 /** Get element from animal (simplified mapping) */
@@ -242,20 +247,38 @@ function buildExplanation(
   natalType: RelationType,
   entityName: string,
 ): string {
+  const userElement = getElementFromAnimal(user);
+  const entityElement = getElementFromAnimal(entity);
+  const sharedElement = userElement && entityElement && userElement === entityElement;
+  const sharedTriad = getTriadInfo(user, entity);
+
   switch (natalType) {
     case "same":
-      return `${entityName} comparte tu misma energía base.`;
+      return `${entityName} comparte tu misma energía base (${user}).`;
     case "triad":
-      return `${entityName} conecta con tu perfil a través de una relación simbólica secundaria.`;
+      return sharedTriad
+        ? `${entityName} y ${user} comparten la tríada ${sharedTriad} (${getElementFromAnimal(entity) ?? ""}). Eso creates una resonancia estructural, no solo superficial.`
+        : `${entityName} conecta con tu perfil por tríada zodiacal: comparten elemento oculto, lo que genera una afinidad indirecta pero consistente.`;
     case "harmonious":
-      return `${entityName} es una energía complementaria según la tradición.`;
+      return `${entityName} es una energía complementaria (Liu He). Se suman sin competir.`;
+    case "neutral":
+      return `${entityName} no tiene una relación especial con ${user}. No hay impedimento, pero tampoco hay atracción simbólica.`;
     case "clash":
-      return `${entityName} es una energía opuesta a la tuya.`;
+      return `${entityName} es una energía opuesta (Liu Chong). Puede generar tensión o, al contrario, atracción por diferencia.`;
     case "harm":
-      return `${entityName} tiene una relación de mayor atención según la tradición.`;
+      return `${entityName} tiene una relación de mayor atención (Liu Hai). Conecta por contraste, no por afinidad.`;
     default:
       return `${entityName} y ${user} no tienen una relación especial.`;
   }
+}
+
+function getTriadInfo(a: Animal, b: Animal): string | null {
+  for (const triad of SAN_HE_TRIADS) {
+    if (triad.animals.includes(a) && triad.animals.includes(b)) {
+      return triad.element;
+    }
+  }
+  return null;
 }
 
 // ════════════════════════════════════════════════════
