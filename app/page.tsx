@@ -191,7 +191,45 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </div>
       </motion.section>
 
-      {/* ═══ 2. LO QUE MÁS RESUENA CON VOS ═══ */}
+      {/* ═══ 2. TUS DECISIONES ═══ */}
+      <motion.section {...fadeUp} className="mb-20 sm:mb-28">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-8 h-px bg-border" aria-hidden="true" />
+          <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
+            Tus decisiones
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => router.push("/timing")}
+            className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/30 transition-all group"
+          >
+            <p className="text-2xl mb-2">{"\u23f0"}</p>
+            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+              Timing personal
+            </p>
+            <p className="text-xs text-muted mt-1">
+              Consult&aacute; cu&aacute;ndo es el mejor momento para actuar.
+            </p>
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/decisions")}
+            className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/30 transition-all group"
+          >
+            <p className="text-2xl mb-2">{"\ud83c\udfaf"}</p>
+            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+              An&aacute;lisis de decisiones
+            </p>
+            <p className="text-xs text-muted mt-1">
+              Evalu&aacute; tus opciones con el contexto simb&oacute;lico del d&iacute;a.
+            </p>
+          </button>
+        </div>
+      </motion.section>
+
+      {/* ═══ 3. LO QUE M&Aacute;S RESUENA CON VOS ═══ */}
       {topResonances.length > 0 && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-3 mb-8">
@@ -244,7 +282,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </motion.section>
       )}
 
-      {/* ═══ 3. PODRÍA RESONAR CON VOS — 3 carreras ═══ */}
+      {/* ═══ 4. PODRÍA RESONAR CON VOS — 3 carreras ═══ */}
       {careers.length > 0 && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-3 mb-8">
@@ -281,7 +319,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </motion.section>
       )}
 
-      {/* ═══ 4. TU NÚMERO DE LA SUERTE ═══ */}
+      {/* ═══ 5. TU N&Uacute;MERO DE LA SUERTE ═══ */}
       {luckyNumber != null && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div className="p-5 sm:p-6 rounded-2xl border border-border bg-card">
@@ -303,7 +341,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </motion.section>
       )}
 
-      {/* ═══ 5. TU PRÓXIMO DESCUBRIMIENTO ═══ */}
+      {/* ═══ 6. TU PR&Oacute;XIMO DESCUBRIMIENTO ═══ */}
       {discovery && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div

@@ -350,7 +350,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
         <CrossLinks
           links={[
             { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onNavigate("world") },
-            { label: "¿Quién comparte tu energía?", description: "Aliados, contrastes y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
+            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
             { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
           ]}
         />

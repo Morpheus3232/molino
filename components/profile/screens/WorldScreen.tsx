@@ -228,7 +228,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       {onNavigate && (
         <CrossLinks
           links={[
-            { label: "¿Quién comparte tu energía?", description: "Aliados, contrastes y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
+            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
             { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
             { label: "Volvé a tu identidad", description: "Revisá tu perfil base y arquetipo.", onClick: () => onNavigate("identity") },
           ]}

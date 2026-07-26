@@ -6,7 +6,7 @@
  */
 
 import { describe, test, expect } from "vitest";
-import { getRelation, type Animal } from "@/lib/data/animalRelations";
+import { getRelation, getAnimalProfile, getFriends, getChallenging, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 
 function testPair(a: Animal, b: Animal, expectedType: string, expectedScore: number) {
   const forward = getRelation(a, b);
@@ -65,4 +65,48 @@ describe("Triad pairs (San He)", () => {
 describe("Same animal", () => {
   testPair("Rata", "Rata", "same", 95);
   testPair("Caballo", "Caballo", "same", 95);
+});
+
+describe("Each animal has exactly 2 friends and 1 enemy", () => {
+  for (const animal of ANIMALS) {
+    test(`${animal} has exactly 2 triad friends`, () => {
+      const profile = getAnimalProfile(animal);
+      expect(profile.harmonyPartners).toHaveLength(2);
+    });
+
+    test(`${animal} has exactly 1 clash enemy`, () => {
+      const profile = getAnimalProfile(animal);
+      expect(profile.challengingRelations).toHaveLength(1);
+    });
+
+    test(`${animal} has a liuHe partner`, () => {
+      const profile = getAnimalProfile(animal);
+      expect(profile.liuHePartner).toBeTruthy();
+      expect(profile.liuHePartner).not.toBe(animal);
+    });
+
+    test(`${animal} getFriends returns 3 (2 triad + 1 liuHe)`, () => {
+      const friends = getFriends(animal as Animal);
+      expect(friends).toHaveLength(3);
+    });
+
+    test(`${animal} getChallenging returns 1`, () => {
+      const challenging = getChallenging(animal as Animal);
+      expect(challenging).toHaveLength(1);
+    });
+  }
+});
+
+describe("Same-animal relation has highest score", () => {
+  test("same animal score (95) > triad (85)", () => {
+    expect(getRelation("Rata", "Rata").score).toBeGreaterThan(getRelation("Rata", "Dragón").score);
+  });
+
+  test("same animal score (95) > harmonious (80)", () => {
+    expect(getRelation("Rata", "Rata").score).toBeGreaterThan(getRelation("Rata", "Buey").score);
+  });
+
+  test("same animal score (95) > neutral (50)", () => {
+    expect(getRelation("Rata", "Rata").score).toBeGreaterThan(getRelation("Rata", "Tigre").score);
+  });
 });

@@ -75,7 +75,7 @@ export function buildEntityConnectionStory(
       break;
     case "triad":
       headline = `${entity.name} y vos comparten una energía especial`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} forman una tríada compatible`;
+      subtitle = `${userDisplay.name} y ${entityDisplay.name} comparten un elemento oculto`;
       isPositive = true;
       break;
     case "harmonious":
@@ -89,12 +89,12 @@ export function buildEntityConnectionStory(
       isPositive = true;
       break;
     case "clash":
-      headline = `${entity.name} representa un contraste con tu energía`;
+      headline = `${entity.name} es una energía opuesta a la tuya`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} son opuestos en el ciclo`;
       isPositive = false;
       break;
     case "harm":
-      headline = `${entity.name} es una relación que requiere atención`;
+      headline = `${entity.name} es una energía que requiere atención`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} tienen una tensión según la tradición`;
       isPositive = false;
       break;

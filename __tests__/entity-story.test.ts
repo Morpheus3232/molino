@@ -17,7 +17,7 @@ describe("Triad narrative", () => {
   const r = getRelation("Caballo", "Tigre");
   test("type is 'triad'", () => expect(r.type).toBe("triad"));
   test("score is 85", () => expect(r.score).toBe(85));
-  test("label is 'tríada compatible'", () => expect(r.label).toBe("tríada compatible"));
+  test("label is 'tríada'", () => expect(r.label).toBe("tríada"));
 });
 
 describe("Harmonious narrative", () => {
@@ -37,14 +37,14 @@ describe("Clash narrative", () => {
   const r = getRelation("Caballo", "Rata");
   test("type is 'clash'", () => expect(r.type).toBe("clash"));
   test("score is 30", () => expect(r.score).toBe(30));
-  test("label is 'opuestos en el ciclo'", () => expect(r.label).toBe("opuestos en el ciclo"));
+  test("label is 'energías opuestas'", () => expect(r.label).toBe("energías opuestas"));
 });
 
 describe("Harm narrative", () => {
   const r = getRelation("Caballo", "Buey");
   test("type is 'harm'", () => expect(r.type).toBe("harm"));
   test("score is 25", () => expect(r.score).toBe(25));
-  test("label is 'requiere atención'", () => expect(r.label).toBe("requiere atención"));
+  test("label is 'energías opuestas'", () => expect(r.label).toBe("energías opuestas"));
 });
 
 describe("Symmetry", () => {
