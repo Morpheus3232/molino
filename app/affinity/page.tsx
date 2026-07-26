@@ -32,7 +32,7 @@ export default function AffinityHub() {
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
-      <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
@@ -77,10 +77,10 @@ export default function AffinityHub() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-20px" }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
-                  onClick={() => router.push(`/affinity/${type}`)}
-                  className="text-left p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group relative overflow-hidden"
-                >
-                  <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
+                    onClick={() => router.push(`/affinity/${type}`)}
+                    className="text-left p-6 rounded-xl border border-border bg-card/60 hover:border-accent transition-all group relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
                   <span className="text-3xl mb-3 block">{meta.icon}</span>
                   <h3 className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                   <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
@@ -99,29 +99,6 @@ export default function AffinityHub() {
             })}
           </div>
         </section>
-
-        {/* Disclaimer */}
-        <div className="mt-16 p-5 rounded-xl border border-border bg-card">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Metodología y transparencia</p>
-          <p className="text-xs text-muted leading-relaxed">
-            Las afinidades se calculan a partir del zodíaco chino, comparando el animal del usuario con el del evento histórico principal de cada entidad.
-            Todos los cálculos son determinísticos y transparentes.
-            Molino es una plataforma educativa y de entretenimiento. Estas interpretaciones no constituyen predicciones científicas.
-          </p>
-        </div>
-
-        {/* Compare CTA */}
-        <div className="mt-8">
-          <button
-            type="button"
-            onClick={() => router.push("/affinity/compare")}
-            className="w-full text-left p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group"
-          >
-            <span className="text-3xl mb-3 block">\u2694\ufe0f</span>
-            <h3 className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">Comparar dos entidades</h3>
-            <p className="text-sm text-muted mt-2 leading-relaxed">Elegí dos entidades y descubrí la relación simbólica entre ellas.</p>
-          </button>
-        </div>
       </main>
       <UniversityFooter />
     </div>

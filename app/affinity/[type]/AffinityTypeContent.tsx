@@ -40,7 +40,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
     return (
       <div className="min-h-screen bg-background">
         <UniversityHeader />
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Afinidad Personal · {meta.plural}
@@ -69,7 +69,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
   return (
     <div className="min-h-screen bg-background">
       <UniversityHeader />
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
@@ -121,19 +121,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
             />
           ))}
         </motion.div>
-
-        {filtered.length === 0 && results.length > 0 && (
-          <p className="text-center text-muted py-12">No se encontraron resultados para &quot;{search}&quot;.</p>
-        )}
-
-        {/* Disclaimer */}
-        <div className="mt-16 p-5 rounded-xl border border-border bg-card">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Metodología y transparencia</p>
-          <p className="text-xs text-muted leading-relaxed">
-            Las afinidades se calculan a partir del zodíaco chino, comparando el animal del usuario con el del evento histórico principal de cada entidad.
-            Todos los cálculos son determinísticos y transparentes. Molino es una plataforma educativa y de entretenimiento. Estas interpretaciones no constituyen predicciones científicas.
-          </p>
-        </div>
       </main>
       <UniversityFooter />
     </div>
@@ -157,7 +144,7 @@ function EntityCard({
     <motion.button
       {...staggerItem}
       onClick={onClick}
-      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
+      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card/60 hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
       
