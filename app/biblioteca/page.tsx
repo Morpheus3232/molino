@@ -128,8 +128,7 @@ export default function BibliotecaPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("todos");
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [expandedReview, setExpandedReview] = useState<string | null>(null);
-  const [expandedSummary, setExpandedSummary] = useState<string | null>(null);
+  const [expandedDescription, setExpandedDescription] = useState<string | null>(null);
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
@@ -214,30 +213,29 @@ export default function BibliotecaPage() {
                     <span key={tag} className="text-[10px] bg-background border border-border rounded-full px-2 py-0.5 text-muted">#{tag}</span>
                   ))}
                 </div>
-                {/* Buttons */}
-                <div className="flex gap-2 mt-auto pt-3 border-t border-border">
-                  {source.review && (
-                    <button type="button" onClick={() => setExpandedReview(expandedReview === source.id ? null : source.id)} className={`flex-1 text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedReview === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
-                      Leer Rese&ntilde;a
+                {/* Button */}
+                {(source.review || source.summary) && (
+                  <div className="mt-auto pt-3 border-t border-border">
+                    <button type="button" onClick={() => setExpandedDescription(expandedDescription === source.id ? null : source.id)} className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedDescription === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
+                      Descripci&oacute;n
                     </button>
-                  )}
-                  {source.summary && (
-                    <button type="button" onClick={() => setExpandedSummary(expandedSummary === source.id ? null : source.id)} className={`flex-1 text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedSummary === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
-                      Ver Resumen
-                    </button>
-                  )}
-                </div>
-                {/* Expandable content */}
-                {expandedReview === source.id && source.review && (
-                  <div className="mt-3 p-3 rounded-lg bg-background border border-border">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Rese&ntilde;a</p>
-                    <p className="text-xs text-muted leading-relaxed">{source.review}</p>
                   </div>
                 )}
-                {expandedSummary === source.id && source.summary && (
-                  <div className="mt-3 p-3 rounded-lg bg-background border border-border">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Resumen</p>
-                    <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
+                {/* Expandable content */}
+                {expandedDescription === source.id && (source.review || source.summary) && (
+                  <div className="mt-3 p-3 rounded-lg bg-background border border-border space-y-3">
+                    {source.summary && (
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">M&eacute;todo</p>
+                        <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
+                      </div>
+                    )}
+                    {source.review && (
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Rese&ntilde;a</p>
+                        <p className="text-xs text-muted leading-relaxed">{source.review}</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </motion.div>
