@@ -158,6 +158,79 @@ export const ZODIAC_ARCHETYPES: Record<string, ZodiacArchetype> = {
 };
 
 // ════════════════════════════════════════════════════
+// 7. NUMBER LOSS PREVENTION — What each number should not lose
+// ════════════════════════════════════════════════════
+
+export interface NumberLossPrevention {
+  number: number;
+  asset: string;
+  sentence: string;
+}
+
+export const NUMBER_LOSS_PREVENTION: Record<number, NumberLossPrevention> = {
+  1:  { number: 1,  asset: "enfoque",     sentence: "Tu n\u00famero debe cuidar especialmente su enfoque." },
+  2:  { number: 2,  asset: "paz",         sentence: "Tu n\u00famero debe cuidar especialmente su paz." },
+  3:  { number: 3,  asset: "voz",         sentence: "Tu n\u00famero debe cuidar especialmente su voz." },
+  4:  { number: 4,  asset: "disciplina",  sentence: "Tu n\u00famero debe cuidar especialmente su disciplina." },
+  5:  { number: 5,  asset: "libertad",    sentence: "Tu n\u00famero debe cuidar especialmente su libertad." },
+  6:  { number: 6,  asset: "tiempo",      sentence: "Tu n\u00famero debe cuidar especialmente su tiempo." },
+  7:  { number: 7,  asset: "foco",        sentence: "Tu n\u00famero debe cuidar especialmente su foco." },
+  8:  { number: 8,  asset: "poder",       sentence: "Tu n\u00famero debe cuidar especialmente su poder." },
+  9:  { number: 9,  asset: "experiencia", sentence: "Tu n\u00famero debe cuidar especialmente su experiencia." },
+  11: { number: 11, asset: "intuici\u00f3n",  sentence: "Tu n\u00famero debe cuidar especialmente su intuici\u00f3n." },
+  22: { number: 22, asset: "visi\u00f3n",     sentence: "Tu n\u00famero debe cuidar especialmente su visi\u00f3n." },
+  33: { number: 33, asset: "influencia",  sentence: "Tu n\u00famero debe cuidar especialmente su influencia." },
+};
+
+// ════════════════════════════════════════════════════
+// 8. ZODIAC POWER PATHS — How each animal gains power
+// ════════════════════════════════════════════════════
+
+export interface ZodiacPowerPath {
+  animal: string;
+  powerPath: string;
+}
+
+export const ZODIAC_POWER_PATHS: Record<string, ZodiacPowerPath> = {
+  Rata:      { animal: "Rata",      powerPath: "a trav\u00e9s de amigos poderosos" },
+  Buey:      { animal: "Buey",      powerPath: "siendo lento y constante" },
+  Tigre:     { animal: "Tigre",     powerPath: "mediante la fuerza" },
+  Gato:      { animal: "Gato",      powerPath: "mediante juegos mentales" },
+  Drag\u00f3n:  { animal: "Drag\u00f3n",  powerPath: "mediante la transmutaci\u00f3n" },
+  Mono:      { animal: "Mono",      powerPath: "mediante ingenio y versatilidad" },
+  Serpiente: { animal: "Serpiente", powerPath: "mediante la sabidur\u00eda" },
+  Caballo:   { animal: "Caballo",   powerPath: "yendo en contra de las masas" },
+  Cabra:     { animal: "Cabra",     powerPath: "mediante la amabilidad" },
+  Gallo:     { animal: "Gallo",     powerPath: "mediante la acci\u00f3n masiva" },
+  Perro:     { animal: "Perro",     powerPath: "vendiendo su historia" },
+  Cerdo:     { animal: "Cerdo",     powerPath: "mediante la pol\u00edtica" },
+};
+
+// ════════════════════════════════════════════════════
+// 9. ZODIAC ARCHETYPAL TRITS — Core archetype per animal
+// ════════════════════════════════════════════════════
+
+export interface ZodiacArchetypalTrait {
+  animal: string;
+  trait: string | null;
+}
+
+export const ZODIAC_ARCHETYPAL_TRAITS: Record<string, ZodiacArchetypalTrait> = {
+  Mono:      { animal: "Mono",      trait: "el m\u00e1s inteligente" },
+  Serpiente: { animal: "Serpiente", trait: "la sabidur\u00eda" },
+  Cabra:     { animal: "Cabra",     trait: "la m\u00e1s bella" },
+  Tigre:     { animal: "Tigre",     trait: "el m\u00e1s atl\u00e9tico" },
+  Gallo:     { animal: "Gallo",     trait: "el m\u00e1s leal" },
+  Caballo:   { animal: "Caballo",   trait: "el rebelde" },
+  Rata:      { animal: "Rata",      trait: "los manipuladores" },
+  Gato:      { animal: "Gato",      trait: "el fisi\u00f3logo" },
+  Drag\u00f3n:  { animal: "Drag\u00f3n",  trait: "el l\u00edder" },
+  Buey:      { animal: "Buey",      trait: null },
+  Perro:     { animal: "Perro",     trait: null },
+  Cerdo:     { animal: "Cerdo",     trait: null },
+};
+
+// ════════════════════════════════════════════════════
 // HELPER FUNCTIONS
 // ════════════════════════════════════════════════════
 
@@ -214,4 +287,19 @@ export function sumDigits(n: number): number {
     sum = String(sum).split("").map(Number).reduce((a, b) => a + b, 0);
   }
   return sum;
+}
+
+/** Get what a number should not lose */
+export function getNumberLossPrevention(number: number): NumberLossPrevention | null {
+  return NUMBER_LOSS_PREVENTION[number] ?? null;
+}
+
+/** Get the power path for a Chinese zodiac animal */
+export function getZodiacPowerPath(animal: string): ZodiacPowerPath | null {
+  return ZODIAC_POWER_PATHS[animal] ?? null;
+}
+
+/** Get the archetypal trait for a Chinese zodiac animal */
+export function getZodiacArchetypalTrait(animal: string): ZodiacArchetypalTrait | null {
+  return ZODIAC_ARCHETYPAL_TRAITS[animal] ?? null;
 }

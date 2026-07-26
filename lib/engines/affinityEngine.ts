@@ -93,10 +93,10 @@ function getTradition(_diff: number, userAnimal: string, entityAnimal: string): 
   if (!userAnimal || !entityAnimal) return undefined;
   const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
   if (rel.type === "triad") {
-    return "Las trías San He agrupan animales por elemento oculto: Rata-Dragón-Mono (Agua), Buey-Serpiente-Gallo (Metal), Tigre-Caballo-Perro (Fuego), Conejo-Cabra-Cerdo (Madera).";
+    return "Las trías San He agrupan animales por elemento oculto: Rata-Dragón-Mono (Agua), Buey-Serpiente-Gallo (Metal), Tigre-Caballo-Perro (Fuego), Gato-Cabra-Cerdo (Madera).";
   }
   if (rel.type === "harmonious") {
-    return "Los pares Liu He (六合) son combinaciones armoniosas: Rata-Buey, Tigre-Conejo, Dragón-Serpiente, Caballo-Cabra, Mono-Gallo, Perro-Cerdo.";
+    return "Los pares Liu He (六合) son combinaciones armoniosas: Rata-Buey, Tigre-Gato, Dragón-Serpiente, Caballo-Cabra, Mono-Gallo, Perro-Cerdo.";
   }
   if (rel.type === "same") {
     return "Según la tradición, dos personas del mismo animal comparten fortalezas naturales pero también los mismos puntos ciegos.";

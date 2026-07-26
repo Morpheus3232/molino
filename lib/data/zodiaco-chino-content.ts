@@ -29,7 +29,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Inteligente", "Astuta", "Vers\u00e1til", "Sociable", "Resourceful"],
     strengths: ["Ingenio y astucia", "Capacidad de adaptaci\u00f3n", "Sociabilidad", "Observaci\u00f3n", "Resourcefulness"],
     challenges: ["Tendencia a la avaricia", "Dificultad para confiar", "Impaciencia", "Cr\u00edtica excesiva", "Duplicidad percibida"],
-    compatibility: { friendly: ["Drag\u00f3n", "Mono", "Buey"], challenging: ["Caballo", "Conejo"] },
+    compatibility: { friendly: ["Drag\u00f3n", "Mono", "Buey"], challenging: ["Caballo", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Creativo e idealista" },
       { element: "Fuego", modifier: "Energ\u00e9tico y carism\u00e1tico" },
@@ -49,7 +49,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Dedicado", "Fuerte", "Determinado", "Paciente", "Confi"],
     strengths: ["Determinaci\u00f3n inquebrantable", "Confiabilidad", "Paciencia", "Fuerza f\u00edsica y mental", "Lealtad"],
     challenges: ["Terquedad", "Rigidez", "Dificultad para adaptarse", "Resentimiento", "Trabajo excesivo"],
-    compatibility: { friendly: ["Serpiente", "Gallo", "Rata"], challenging: ["Cabra", "Conejo"] },
+    compatibility: { friendly: ["Serpiente", "Gallo", "Rata"], challenging: ["Cabra", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Rebelde y visionario" },
       { element: "Fuego", modifier: "Aventurero y optimista" },
@@ -81,11 +81,11 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     sourceIds: ["britannica-chinese-zodiac", "smith-chinese-astrology"],
   },
   {
-    name: "Conejo",
+    name: "Gato",
     emoji: "\ud83d\udc30",
     years: "1927, 1939, 1951, 1963, 1975, 1987, 1999, 2011, 2023",
-    meaning: "El Conejo representa elegancia, diplomacia y sensibilidad. Es s\u00edmbolo de paz y fortuna en la cultura china.",
-    history: "El Conejo es uno de los animales m\u00e1s apreciados en el zodiaco chino. Se asocia con la luna y la elegancia.",
+    meaning: "El Gato representa elegancia, diplomacia y sensibilidad. Es s\u00edmbolo de paz y fortuna en la cultura china.",
+    history: "El Gato es uno de los animales m\u00e1s apreciados en el zodiaco chino. Se asocia con la luna y la elegancia.",
     traits: ["Elegante", "Diplom\u00e1tico", "Sensible", "Pac\u00edfico", "Astuto"],
     strengths: ["Elegancia", "Diplomacia", "Sensibilidad art\u00edstica", "Paciencia", "Buena intuici\u00f3n"],
     challenges: ["Cautela excesiva", "Indecisi\u00f3n", "Resentimiento silencioso", "Evitaci\u00f3n de conflicto", "Inseguridad"],
@@ -97,7 +97,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
       { element: "Metal", modifier: "Determinado y noble" },
       { element: "Agua", modifier: "Intuitivo y adaptable" },
     ],
-    scientificNote: "Las caracter\u00edsticas del Conejo en el zodiaco chino son interpretaciones culturales sin base cient\u00edfica.",
+    scientificNote: "Las caracter\u00edsticas del Gato en el zodiaco chino son interpretaciones culturales sin base cient\u00edfica.",
     sourceIds: ["britannica-chinese-zodiac", "smith-chinese-astrology"],
   },
   {
@@ -109,7 +109,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Ambicioso", "Carism\u00e1tico", "Energ\u00e9tico", "Confiado", "L\u00edder"],
     strengths: ["Carisma extraordinario", "Ambici\u00f3n", "Energ\u00eda ilimitada", "Confianza", "Liderazgo visionario"],
     challenges: ["Intolerancia", "Exigencia", "Impaciencia", "Arrogancia", "Dificultad para escuchar"],
-    compatibility: { friendly: ["Rata", "Serpiente", "Mono"], challenging: ["Perro", "Conejo"] },
+    compatibility: { friendly: ["Rata", "Serpiente", "Mono"], challenging: ["Perro", "Gato"] },
     elements: [
       { element: "Madera", modifier: "Visionario y generoso" },
       { element: "Fuego", modifier: "En\u00e9rgico y apasionado" },
@@ -149,7 +149,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Libre", "En\u00e9rgico", "Aventurero", "Sociable", "Impulsivo"],
     strengths: ["Libertad de esp\u00edritu", "Energ\u00eda contagiosa", "Entusiasmo", "Versatilidad", "Lealtad"],
     challenges: ["Inquietud", "Impaciencia", "Dificultad para comprometerse", "Inconsistencia", "Egocentrismo"],
-    compatibility: { friendly: ["Tigre", "Perro", "Cabra"], challenging: ["Rata", "Conejo"] },
+    compatibility: { friendly: ["Tigre", "Perro", "Cabra"], challenging: ["Rata", "Gato"] },
     elements: [
       { element: "Madera", modifier: "En\u00e9rgico y carism\u00e1tico" },
       { element: "Fuego", modifier: "Apasionado y\u00a0entusiasta" },
@@ -169,7 +169,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Creativa", "Sensible", "Pac\u00edfica", "Art\u00edstica", "Generosa"],
     strengths: ["Creatividad", "Sensibilidad est\u00e9tica", "Empat\u00eda", "Paciencia", "Imaginaci\u00f3n"],
     challenges: ["Indecisi\u00f3n", "Dependencia", "Pessimismo", "Inseguridad", "Evitaci\u00f3n"],
-    compatibility: { friendly: ["Conejo", "Cerdo", "Caballo"], challenging: ["Buey", "Perro"] },
+    compatibility: { friendly: ["Gato", "Cerdo", "Caballo"], challenging: ["Buey", "Perro"] },
     elements: [
       { element: "Madera", modifier: "Generoso y compasivo" },
       { element: "Fuego", modifier: "Art\u00edstico y en\u00e9rgico" },
@@ -209,7 +209,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Observador", "Valiente", "Puntual", "Honesto", "Organizado"],
     strengths: ["Observaci\u00f3n aguda", "Puntualidad", "Coraje", "Organizaci\u00f3n", "Honestidad"],
     challenges: ["Cr\u00edtica excesiva", "Vanidad", "Dureza", "Crueldad percibida", "Testarudez"],
-    compatibility: { friendly: ["Buey", "Serpiente", "Mono"], challenging: ["Conejo", "Perro"] },
+    compatibility: { friendly: ["Buey", "Serpiente", "Mono"], challenging: ["Gato", "Perro"] },
     elements: [
       { element: "Madera", modifier: "Creativo y expansivo" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0carism\u00e1tico" },
@@ -229,7 +229,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Leal", "Honesto", "Protector", "Confiable", "Compasivo"],
     strengths: ["Lealtad incondicional", "Honestidad", "Protecci\u00f3n", "Confianza", "Empat\u00eda"],
     challenges: ["Ansiedad", "C\u00e1nomo", "Cr\u00edtica", "Terquedad moral", "Preocupaci\u00f3n excesiva"],
-    compatibility: { friendly: ["Tigre", "Conejo", "Caballo"], challenging: ["Drag\u00f3n", "Gallo"] },
+    compatibility: { friendly: ["Tigre", "Gato", "Caballo"], challenging: ["Drag\u00f3n", "Gallo"] },
     elements: [
       { element: "Madera", modifier: "Compasivo y\u00a0generoso" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0carism\u00e1tico" },
@@ -249,7 +249,7 @@ export const CHINESE_ANIMALS: ChineseAnimal[] = [
     traits: ["Generoso", "Compasivo", "Optimista", "Diligente", "Pac\u00edfico"],
     strengths: ["Generosidad", "Compasi\u00f3n", "Optimismo", "Diligencia", "Tolerancia"],
     challenges: ["Ingenuidad", "Autoindulgencia", "Dificultad para decir no", "Exceso de confianza", "Pereza percibida"],
-    compatibility: { friendly: ["Conejo", "Cabra", "Buey"], challenging: ["Serpiente", "Mono"] },
+    compatibility: { friendly: ["Gato", "Cabra", "Buey"], challenging: ["Serpiente", "Mono"] },
     elements: [
       { element: "Madera", modifier: "Generoso y compasivo" },
       { element: "Fuego", modifier: "En\u00e9rgico y\u00a0apasionado" },

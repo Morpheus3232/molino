@@ -12,7 +12,7 @@ import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
-import { getDayRule, getYearInterpretation, YEAR_2026 } from "@/lib/data/symbolic-rules";
+import { getDayRule, YEAR_2026 } from "@/lib/data/symbolic-rules";
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 
@@ -88,7 +88,6 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
   const today = useMemo(() => new Date(), []);
 
   const energy = useMemo(() => calculateDailyEnergy(profile, today), [profile, today]);
-  const timing = useMemo(() => analyzeTiming(profile, today, "other"), [profile, today]);
   const recMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
 
   const topResonances: PersonalRecommendation[] = useMemo(() => {
@@ -102,17 +101,13 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
   const todayStr = useMemo(() => formatTodayDate(), []);
 
   const dayRule = useMemo(() => getDayRule(energy.personalDay), [energy.personalDay]);
-  const yearInterp = useMemo(() => {
-    const currentYear = today.getFullYear();
-    return getYearInterpretation(currentYear);
-  }, [today]);
   const is2026 = today.getFullYear() === 2026;
-
-  const careers: string[] = useMemo(() => archetype.careers || [], [archetype]);
+  const careers: string[] = useMemo(() => (archetype.careers || []).slice(0, 3), [archetype]);
+  const luckyNumber = profile.luckyNumber;
 
   return (
     <>
-      {/* ═══ 1. TU ENERGÍA DE HOY + TIMING ═══ */}
+      {/* ═══ 1. TU ENERGÍA DE HOY — Card unificada ═══ */}
       <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -130,7 +125,8 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
           className="p-6 sm:p-8 rounded-2xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
           onClick={() => router.push("/daily-energy")}
         >
-          <div className="flex items-start gap-5">
+          {/* Score + theme */}
+          <div className="flex items-start gap-5 mb-5">
             <span className="text-3xl shrink-0">{energyIcon}</span>
             <div className="flex-1 min-w-0">
               <p className="font-serif text-xl sm:text-2xl font-semibold text-foreground mb-2">
@@ -143,83 +139,56 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
                 <span className={`text-2xl font-serif font-bold ${getScoreColor(energy.overallScore)}`}>
                   {energy.overallScore}/100
                 </span>
-                <span className="text-xs text-muted">&middot; {energy.theme}</span>
+                <span className="text-xs text-muted">&middot; D&iacute;a personal {energy.personalDay} &middot; {energy.theme}</span>
               </div>
             </div>
-            <span className="text-sm text-accent shrink-0 hidden sm:block mt-2">
-              Conoc&eacute; tu momento &rarr;
-            </span>
           </div>
-        </div>
 
-        {/* Timing integration */}
-        <div
-          className="mt-3 p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
-          onClick={() => router.push("/timing")}
-        >
-          <div className="flex items-center gap-4">
-            <span className="text-xl shrink-0">{"\u23f0"}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
-                Tu momento
+          {/* Day rule — favorece / evitá */}
+          {dayRule && (
+            <div className="border-t border-border pt-4 mb-4">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
+                Hoy es un d&iacute;a {dayRule.theme.toLowerCase()}
               </p>
-              <p className="text-sm text-foreground">
-                {timing.theme || "Momento neutral"} &middot;{" "}
-                <span className={`font-semibold ${getScoreColor(timing.timingScore)}`}>
-                  {timing.timingScore}/100
-                </span>
+              <p className="text-sm text-foreground leading-relaxed mb-3">
+                {dayRule.interpretation}
               </p>
-              {timing.recommendedWindow && (
-                <p className="text-xs text-muted mt-1">{timing.recommendedWindow}</p>
-              )}
-            </div>
-            <span className="text-xs text-accent shrink-0 hidden sm:block">
-              Timing &rarr;
-            </span>
-          </div>
-        </div>
-
-        {/* Day rule — HOY FAVORECE / OBSERVÁ */}
-        {dayRule && (
-          <div className="mt-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
-              Hoy es un d&iacute;a {dayRule.theme.toLowerCase()}
-            </p>
-            <p className="text-sm text-foreground leading-relaxed mb-3">
-              {dayRule.interpretation}
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <div className="flex-1 min-w-[140px]">
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Hoy favorece</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {dayRule.favors.map((f) => (
-                    <span key={f} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{f}</span>
-                  ))}
+              <div className="flex flex-wrap gap-4">
+                <div className="flex-1 min-w-[140px]">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Hoy favorece</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {dayRule.favors.map((f) => (
+                      <span key={f} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent font-medium">{f}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="flex-1 min-w-[140px]">
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Hoy conviene observar</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {dayRule.watchOut.map((w) => (
-                    <span key={w} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted font-medium border border-border">{w}</span>
-                  ))}
+                <div className="flex-1 min-w-[140px]">
+                  <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1.5">Evit&aacute;</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {dayRule.watchOut.map((w) => (
+                      <span key={w} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted font-medium border border-border">{w}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Year context — 2026 */}
-        {is2026 && yearInterp && (
-          <div className="mt-3 p-4 sm:p-5 rounded-xl border border-border bg-card">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
-              Contexto del a&ntilde;o
-            </p>
-            <p className="text-sm text-foreground leading-relaxed">
-              {YEAR_2026.interpretation}
-            </p>
+          {/* Year context — subtle line */}
+          {is2026 && (
+            <div className="border-t border-border pt-4">
+              <p className="text-xs text-muted leading-relaxed">
+                {YEAR_2026.advice}
+              </p>
+            </div>
+          )}
+
+          {/* CTA */}
+          <div className="flex items-center gap-2 mt-4 text-sm font-medium text-accent">
+            <span>Conoc&eacute; tu momento</span>
+            <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
           </div>
-        )}
+        </div>
       </motion.section>
 
       {/* ═══ 2. LO QUE MÁS RESUENA CON VOS ═══ */}
@@ -252,7 +221,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
                       {rec.entity.name}
                     </p>
                     <p className="text-xs text-muted/70 leading-relaxed">
-                      {rec.explanation}
+                      {rec.entity.name} resuena especialmente con tu energ&iacute;a de {display.name}.
                     </p>
                   </div>
                   <span className="text-xs text-accent shrink-0 hidden sm:block mt-1 group-hover:translate-x-1 transition-transform">
@@ -275,7 +244,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </motion.section>
       )}
 
-      {/* ═══ 3. PODRÍA RESONAR CON VOS — Áreas de estudio ═══ */}
+      {/* ═══ 3. PODRÍA RESONAR CON VOS — 3 carreras ═══ */}
       {careers.length > 0 && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-3 mb-8">
@@ -289,7 +258,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
             &Aacute;reas que podr&iacute;an conectarse con tus patrones simb&oacute;licos. {archetype.name} &mdash; {archetype.description}
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {careers.map((career) => (
               <div
                 key={career}
@@ -312,7 +281,29 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </motion.section>
       )}
 
-      {/* ═══ 4. TU PRÓXIMO DESCUBRIMIENTO ═══ */}
+      {/* ═══ 4. TU NÚMERO DE LA SUERTE ═══ */}
+      {luckyNumber != null && (
+        <motion.section {...fadeUp} className="mb-20 sm:mb-28">
+          <div className="p-5 sm:p-6 rounded-2xl border border-border bg-card">
+            <div className="flex items-center gap-4">
+              <span className="text-3xl shrink-0">{"\ud83c\udf40"}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
+                  Tu n&uacute;mero de la suerte
+                </p>
+                <p className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
+                  {luckyNumber}
+                </p>
+                <p className="text-xs text-muted mt-1">
+                  Tu n&uacute;mero simb&oacute;lico personal, calculado desde tu fecha de nacimiento.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
+      {/* ═══ 5. TU PRÓXIMO DESCUBRIMIENTO ═══ */}
       {discovery && (
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
           <div

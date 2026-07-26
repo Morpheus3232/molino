@@ -136,7 +136,7 @@ describe("Scoring consistency — key relationships are correct", () => {
 
   test("harmonious (Liu He) = 80", () => {
     expect(getRelation("Rata", "Buey").score).toBe(80);
-    expect(getRelation("Tigre", "Conejo").score).toBe(80);
+    expect(getRelation("Tigre", "Gato").score).toBe(80);
     expect(getRelation("Caballo", "Cabra").score).toBe(80);
   });
 
@@ -154,7 +154,7 @@ describe("Scoring consistency — key relationships are correct", () => {
 
   test("neutral = 50", () => {
     expect(getRelation("Rata", "Tigre").score).toBe(50);
-    expect(getRelation("Rata", "Conejo").score).toBe(50);
+    expect(getRelation("Rata", "Gato").score).toBe(50);
     expect(getRelation("Rata", "Serpiente").score).toBe(50);
   });
 });

@@ -123,7 +123,7 @@ function getChineseZodiacPerspective(profile: UserProfile): SystemPerspective {
     "Rata": { keywords: ["ingenio", "astucia", "versatilidad"], detail: "Tu Rata aporta ingenio y capacidad de adaptación. Buscás resolver problemas con creatividad." },
     "Buey": { keywords: ["fuerza", "determinación", "confiabilidad"], detail: "Tu Buey aporta determinación inquebrantable. Construís con paciencia y consistencia." },
     "Tigre": { keywords: ["valentía", "liderazgo", "energía"], detail: "Tu Tigre aporta coraje y presencia. Actuás con fuerza y carisma natural." },
-    "Conejo": { keywords: ["elegancia", "diplomacia", "sensibilidad"], detail: "Tu Conejo aporta elegancia y sensibilidad artística. Buscás armonía en todo." },
+    "Gato": { keywords: ["elegancia", "diplomacia", "sensibilidad"], detail: "Tu Gato aporta elegancia y sensibilidad artística. Buscás armonía en todo." },
     "Dragón": { keywords: ["ambición", "carisma", "poder"], detail: "Tu Dragón aporta fuerza imperial y visión. Tenés energía para lograr cosas grandes." },
     "Serpiente": { keywords: ["sabiduría", "intuición", "misterio"], detail: "Tu Serpiente aporta sabiduría profunda. Vés más allá de lo superficial." },
     "Caballo": { keywords: ["libertad", "energía", "aventura"], detail: "Tu Caballo aporta libertad de espíritu y energía contagiosa. Necesitás movimiento." },

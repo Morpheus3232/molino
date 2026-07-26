@@ -46,7 +46,7 @@ const ANIMAL_TRAITS: Record<string, string> = {
   Rata: "movimiento, astucia y adaptabilidad",
   Buey: "fuerza, determinación y constancia",
   Tigre: "coraje, pasión y liderazgo",
-  Conejo: "elegancia, sensibilidad e intuición",
+  Gato: "elegancia, sensibilidad e intuición",
   Dragón: "poder, visión y ambición",
   Serpiente: "sabiduría, profundidad y magnetismo",
   Caballo: "movimiento, independencia y exploración",

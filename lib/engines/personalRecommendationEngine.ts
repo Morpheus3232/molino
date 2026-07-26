@@ -216,7 +216,7 @@ function getElementFromAnimal(animal: string): string | null {
     Rata: "Agua", Dragón: "Agua", Mono: "Agua",
     Buey: "Metal", Serpiente: "Metal", Gallo: "Metal",
     Tigre: "Fuego", Caballo: "Fuego", Perro: "Fuego",
-    Conejo: "Madera", Cabra: "Madera", Cerdo: "Madera",
+    Gato: "Madera", Cabra: "Madera", Cerdo: "Madera",
   };
   return elementMap[animal] ?? null;
 }

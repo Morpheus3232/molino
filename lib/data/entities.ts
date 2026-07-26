@@ -146,7 +146,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'Canadá',
     category: 'country',
     emoji: '🇨🇦',
-    symbolism: { lifePath: 2, sunSign: 'Cáncer', chineseZodiac: 'Conejo', element: 'Agua', archetype: 'El Mediador' },
+    symbolism: { lifePath: 2, sunSign: 'Cáncer', chineseZodiac: 'Gato', element: 'Agua', archetype: 'El Mediador' },
     context: { description: 'Naturaleza salvaje y sociedad multicultural.', keyThemes: ['Naturaleza', 'Multiculturalismo', 'Paz', 'Amabilidad'], funFact: 'Tiene más lagos que el resto del mundo combinado.' }
   },
   {
@@ -338,7 +338,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'Microsoft',
     category: 'brand',
     emoji: '💻',
-    symbolism: { lifePath: 4, sunSign: 'Capricornio', chineseZodiac: 'Conejo', element: 'Tierra', archetype: 'El Constructor' },
+    symbolism: { lifePath: 4, sunSign: 'Capricornio', chineseZodiac: 'Gato', element: 'Tierra', archetype: 'El Constructor' },
     context: { description: 'Software, productividad y empoderamiento digital.', keyThemes: ['Productividad', 'Tecnología', 'Accesibilidad', 'Poder'], funFact: 'El primer sistema operativo se llamó QDOS.' }
   },
   {

@@ -2,7 +2,7 @@
  * Zodiac Display Utilities
  *
  * Format zodiac animal names for user-facing display.
- * Handles cultural equivalents (e.g., Rabbit = Cat in Vietnamese zodiac).
+ * Handles cultural equivalents (e.g., Gato in both Chinese and Vietnamese zodiac).
  *
  * DOES NOT modify any calculations, scores, or engine logic.
  * Presentation layer only.
@@ -23,7 +23,7 @@ const ANIMAL_DISPLAY: Record<string, AnimalDisplay> = {
   Rata:     { chinese: "Rata",     emoji: "🐀", vietnamese: "Rata",     vietnameseEmoji: "🐀" },
   Buey:     { chinese: "Buey",     emoji: "🐂", vietnamese: "Búfalo Agua", vietnameseEmoji: "🐃" },
   Tigre:    { chinese: "Tigre",    emoji: "🐅", vietnamese: "Gato",     vietnameseEmoji: "🐱" },
-  Conejo:   { chinese: "Conejo",   emoji: "🐇", vietnamese: "Gato",     vietnameseEmoji: "🐱" },
+  Gato:     { chinese: "Gato",     emoji: "🐱", vietnamese: "Gato",     vietnameseEmoji: "🐱" },
   Dragón:   { chinese: "Dragón",   emoji: "🐉", vietnamese: "Dragón",   vietnameseEmoji: "🐉" },
   Serpiente:{ chinese: "Serpiente",emoji: "🐍", vietnamese: "Serpiente",vietnameseEmoji: "🐍" },
   Caballo:  { chinese: "Caballo",  emoji: "🐎", vietnamese: "Caballo",  vietnameseEmoji: "🐎" },
@@ -39,11 +39,11 @@ const ANIMAL_DISPLAY: Record<string, AnimalDisplay> = {
 // ════════════════════════════════════════════════════
 
 export interface ZodiacDisplayResult {
-  /** Chinese name: "Conejo" */
+  /** Chinese name: "Gato" */
   name: string;
-  /** Emoji: "🐇" */
+  /** Emoji: "🐱" */
   emoji: string;
-  /** Full display: "🐇 Conejo" */
+  /** Full display: "🐱 Gato" */
   display: string;
   /** Vietnamese equivalent name (if different): "Gato" */
   vietnameseName?: string;
@@ -84,7 +84,7 @@ export function getZodiacDisplay(animal: string): ZodiacDisplayResult {
 
 /**
  * Format animal for simple display (no equivalent shown).
- * "🐇 Conejo"
+ * "🐱 Gato"
  */
 export function formatAnimalSimple(animal: string): string {
   return getZodiacDisplay(animal).display;
@@ -92,7 +92,7 @@ export function formatAnimalSimple(animal: string): string {
 
 /**
  * Format animal with cultural equivalent (when space allows).
- * "🐇 Conejo · 🐱 Gato en Vietnam"
+ * "🐱 Gato"
  */
 export function formatAnimalWithEquivalent(animal: string): string {
   const d = getZodiacDisplay(animal);
