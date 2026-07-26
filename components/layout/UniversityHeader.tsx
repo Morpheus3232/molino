@@ -10,7 +10,6 @@ const NAV_GROUPS = [
   {
     label: "Descubrir",
     items: [
-      { href: "/explore", label: "Explorar" },
       { href: "/affinity", label: "Afinidad Simb\u00f3lica" },
       { href: "/conocimiento/numerologia", label: "Numerolog\u00eda" },
       { href: "/conocimiento/astrologia", label: "Astrolog\u00eda" },
@@ -19,18 +18,13 @@ const NAV_GROUPS = [
     ],
   },
   {
-    label: "Relacionarte",
-    items: [
-      { href: "/compatibility/countries", label: "Pa\u00edses" },
-      { href: "/compatibility/brands", label: "Marcas" },
-    ],
-  },
-  {
     label: "Orientarte",
     items: [
       { href: "/timing", label: "Timing" },
       { href: "/decisions", label: "Decisiones" },
       { href: "/daily-energy", label: "Energ\u00eda diaria" },
+      { href: "/compatibility/countries", label: "Pa\u00edses" },
+      { href: "/compatibility/brands", label: "Marcas" },
       { href: "/herramientas", label: "Herramientas" },
     ],
   },
@@ -146,9 +140,6 @@ export default function UniversityHeader() {
                 </button>
                 <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 z-50" role="menu">
                   <div className="bg-card border border-border rounded-xl shadow-lg py-1 min-w-[200px]">
-                    {group.label === "Descubrir" && (
-                      <Link href="/" className={`block px-4 py-2 text-sm transition-colors ${isOnHome ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">Inicio</Link>
-                    )}
                     {group.items.map((item) => (
                       <Link key={item.href} href={item.href} className={`block px-4 py-2 text-sm transition-colors ${pathname === item.href ? "text-foreground bg-foreground/5" : "text-muted hover:text-foreground hover:bg-foreground/5"}`} role="menuitem">
                         {item.label}
@@ -197,9 +188,6 @@ export default function UniversityHeader() {
         {mobileMenuOpen && (
           <div id="mobile-menu" className="lg:hidden border-t border-border bg-background" role="navigation" aria-label="Men\u00fa m\u00f3vil">
             <nav className="px-4 py-3 space-y-1">
-              <Link href="/" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm transition-colors flex items-center ${isOnHome ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
-                Inicio
-              </Link>
               <Link href={hasProfile ? "/profile" : "/onboarding"} onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-3 min-h-[44px] rounded-lg text-sm font-medium transition-colors flex items-center ${pathname === "/profile" ? "bg-foreground text-background" : "text-muted hover:text-foreground hover:bg-foreground/5"}`}>
                 Mi mapa
               </Link>

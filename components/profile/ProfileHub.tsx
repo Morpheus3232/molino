@@ -119,7 +119,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
         if (!discovery.hasCompletedOnboarding) return null;
         const topRec = recommendationMap.recommendations[0];
         if (!topRec) return null;
-        const entityDisplay = getZodiacDisplay(topRec.entityAnimal);
         return (
           <section className="py-4 sm:py-6">
             <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
@@ -135,7 +134,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Tu próximo descubrimiento</p>
                     <p className="text-sm text-foreground">
-                      {topRec.entity.name} tiene una conexión {topRec.natalRelation} con tu {display.name}.
+                      {topRec.entity.name} resuena especialmente con tu energía.
                     </p>
                   </div>
                   <span className="text-xs text-accent group-hover:translate-x-1 transition-transform shrink-0">→</span>

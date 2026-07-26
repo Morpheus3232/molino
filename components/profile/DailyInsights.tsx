@@ -167,12 +167,11 @@ export default function DailyInsights({ profile, onNavigate }: DailyInsightsProp
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-px bg-accent" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium">Hoy en Molino</h2>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-accent/10 text-accent text-[9px] font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              Nuevo hoy
-            </span>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium">Tu energía de hoy</h2>
           </div>
+          <p className="text-sm text-muted mb-4">
+            {new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })}
+          </p>
         </motion.div>
 
         <motion.div {...staggerApple} className="space-y-3">
