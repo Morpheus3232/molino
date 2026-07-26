@@ -75,25 +75,31 @@ export const pageEnter = {
   transition: { duration: 0.3, ease: "easeOut" as const },
 };
 
-// Modal backdrop
-export const modalBackdrop = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-  transition: { duration: 0.2 },
+// Stagger section reveal (use on section wrapper)
+export const staggerSection = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
+  viewport: { once: true, margin: "-60px" },
 };
 
-// Modal content (slide up from bottom)
-export const modalContent = {
-  initial: { y: "100%" },
-  animate: { y: 0 },
-  exit: { y: "100%" },
-  transition: { type: "spring" as const, damping: 30, stiffness: 300 },
+// Stagger item for cards inside a section
+export const staggerCard = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: "easeOut" as const },
+};
+
+// Number badge reveal (scale + fade)
+export const numberReveal = {
+  initial: { opacity: 0, scale: 0.8 },
+  whileInView: { opacity: 1, scale: 1 },
+  viewport: { once: true, margin: "-40px" },
+  transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 
 // Hover lift (for cards)
 export const hoverLift = {
-  whileHover: { y: -2 },
+  whileHover: { y: -4 },
   transition: { duration: 0.2, ease: "easeOut" as const },
 };
 

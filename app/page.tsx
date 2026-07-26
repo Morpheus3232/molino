@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUp, staggerSection, staggerCard, numberReveal, hoverLift, hoverScale } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
@@ -69,11 +69,13 @@ const MONTHS = [
   { value: "12", label: "Dic" },
 ];
 
+const YEAR_OPTIONS = Array.from({ length: 100 }, (_, i) => getCurrentYear() - i);
+
 function getCurrentYear(): number {
   return new Date().getFullYear();
 }
 
-function getDaysInMonth(month: string, year: string): number {
+const getDaysInMonth = (month: string, year: string): number => {
   const m = parseInt(month, 10);
   const y = parseInt(year, 10);
   if (!m || !y) return 31;
@@ -186,7 +188,7 @@ function HeroWithForm() {
       <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           {/* Value prop */}
-          <div>
+          <motion.div {...fadeUp}>
             <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Inteligencia Personal</p>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
               Descubrí tu mapa
@@ -197,69 +199,93 @@ function HeroWithForm() {
             <p className="text-xs text-muted">
               Sin registro. Sin guardar datos personales.
             </p>
-          </div>
+          </motion.div>
 
           {/* Form */}
-          <div className="rounded-2xl border border-border bg-background/50 p-5 sm:p-6">
-            <form onSubmit={handleSubmit} className="space-y-4">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }} className="rounded-2xl border border-border bg-background/50 p-5 sm:p-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
-                  <select
-                    value={day}
-                    onChange={(e) => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                    required
-                    aria-label="Día"
-                  >
-                    <option value="">Día</option>
-                    {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
-                      <option key={d} value={String(d)}>{d}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      required
+                      aria-label="Día"
+                    >
+                      <option value="">Día</option>
+                      {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
+                        <option key={d} value={String(d)}>{d}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
-                  <select
-                    value={month}
-                    onChange={(e) => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                    required
-                    aria-label="Mes"
-                  >
-                    {MONTHS.map((m) => (
-                      <option key={m.value} value={m.value}>{m.label}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={month}
+                      onChange={(e) => setMonth(e.target.value)}
+                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      required
+                      aria-label="Mes"
+                    >
+                      {MONTHS.map((m) => (
+                        <option key={m.value} value={m.value}>{m.label}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
                 <div>
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
-                  <select
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                    required
-                    aria-label="Año"
-                  >
-                    <option value="">Año</option>
-                    {yearOptions.map((y) => (
-                      <option key={y} value={String(y)}>{y}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <select
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      required
+                      aria-label="Año"
+                    >
+                      <option value="">Año</option>
+                      {yearOptions.map((y) => (
+                        <option key={y} value={String(y)}>{y}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && (
+                <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-sm text-red-500">
+                  {error}
+                </motion.p>
+              )}
 
-              <button
+              <motion.button
+                {...hoverScale}
                 type="submit"
-                disabled={loading}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-70"
+                disabled={loading || !day || !month || !year}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {loading ? "Descubriendo..." : "Descubrir mi mapa →"}
-              </button>
+              </motion.button>
+
+              {!(day && month && year) && (
+                <p className="text-[11px] text-muted text-center">Completá los 3 campos para continuar</p>
+              )}
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Section>
@@ -268,6 +294,37 @@ function HeroWithForm() {
 
 /* ═══ Grupo 1: Los tres sistemas ═══ */
 
+function SystemIcon({ type }: { type: string }) {
+  if (type === "numerologia") {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 sm:w-12 sm:h-12" aria-hidden="true">
+        <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="1.2" className="text-accent/40" />
+        <path d="M24 14v10l7 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="text-accent" />
+        <circle cx="24" cy="24" r="2" fill="currentColor" className="text-accent" />
+      </svg>
+    );
+  }
+  if (type === "astrologia") {
+    return (
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 sm:w-12 sm:h-12" aria-hidden="true">
+        <circle cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="1.2" className="text-accent/40" />
+        <circle cx="18" cy="18" r="2" fill="currentColor" className="text-accent" />
+        <circle cx="30" cy="20" r="1.5" fill="currentColor" className="text-accent" />
+        <circle cx="22" cy="30" r="2" fill="currentColor" className="text-accent" />
+        <path d="M18 18l12-2M30 20l-8 10M22 30l6-12" stroke="currentColor" strokeWidth="1.2" className="text-accent/70" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10 sm:w-12 sm:h-12" aria-hidden="true">
+      <path d="M24 6c8 10 8 26 0 36" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="text-accent" />
+      <path d="M16 14c4 4 6 10 6 16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" className="text-accent/60" />
+      <path d="M32 14c-4 4-6 10-6 16" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" className="text-accent/60" />
+      <circle cx="24" cy="38" r="2" fill="currentColor" className="text-accent" />
+    </svg>
+  );
+}
+
 function SystemsPreview() {
   const router = useRouter();
   return (
@@ -275,29 +332,46 @@ function SystemsPreview() {
       eyebrow="Los tres sistemas"
       title="Una misma persona. Tres formas de observarla."
       subtitle="Numerología, astrología y zodiaco chino combinados en una misma lectura."
+      className="relative overflow-hidden"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+        aria-hidden="true"
+      />
+      <motion.div {...staggerSection} className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
         {[
-          { num: "01", title: "Numerología", desc: "El lenguaje de los números", href: "/conocimiento/numerologia", accent: "var(--element-fire)" },
-          { num: "02", title: "Astrología", desc: "El mapa del cielo de tu nacimiento", href: "/conocimiento/astrologia", accent: "var(--layer-astrology)" },
-          { num: "03", title: "Zodiaco Chino", desc: "Los ciclos de la energía", href: "/conocimiento/zodiaco-chino", accent: "var(--layer-moment)" },
+          { num: "01", title: "Numerología", desc: "El lenguaje de los números", href: "/conocimiento/numerologia", accent: "var(--element-fire)", type: "numerologia" },
+          { num: "02", title: "Astrología", desc: "El mapa del cielo de tu nacimiento", href: "/conocimiento/astrologia", accent: "var(--layer-astrology)", type: "astrologia" },
+          { num: "03", title: "Zodiaco Chino", desc: "Los ciclos de la energía", href: "/conocimiento/zodiaco-chino", accent: "var(--layer-moment)", type: "zodiaco-chino" },
         ].map((item) => (
-          <button
+          <motion.button
             key={item.num}
+            {...staggerCard}
+            {...hoverLift}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group relative text-left rounded-2xl border border-border bg-card/60 p-6 sm:p-8 transition-all duration-300 hover:border-foreground/20 hover:shadow-lg"
+            className="group relative text-left rounded-2xl border border-border bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:border-foreground/20 hover:shadow-xl"
           >
-            <span className="text-[10px] font-mono tracking-[0.25em] text-muted">{item.num}</span>
-            <p className="mt-4 font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{item.title}</p>
+            <div className="flex items-center justify-between mb-5">
+              <motion.span {...numberReveal} className="text-[10px] font-mono tracking-[0.25em] text-muted">
+                {item.num}
+              </motion.span>
+              <span className="text-accent/90">{SystemIcon({ type: item.type })}</span>
+            </div>
+            <p className="font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
             <p className="mt-2 text-sm text-muted leading-relaxed">{item.desc}</p>
             <span className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-accent">
               Explorar
-              <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+              <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
             </span>
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
     </Section>
   );
 }
@@ -317,23 +391,26 @@ function Journey() {
       eyebrow="Cómo funciona"
       title="Un recorrido en cinco pasos"
       subtitle="De tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones."
+      className="relative"
     >
-      <div className="relative">
-        <div className="absolute left-3 sm:left-4 top-3 bottom-3 w-px bg-border/70" aria-hidden="true" />
-        <div className="space-y-8 sm:space-y-10">
-          {items.map((item) => (
-            <div key={item.num} className="relative grid grid-cols-[auto_1fr] gap-6 sm:gap-10">
-              <div className="relative z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-background text-[11px] font-mono tracking-[0.2em] text-muted">
-                {item.num}
-              </div>
-              <div className="pb-1">
-                <p className="font-serif text-base sm:text-lg font-semibold text-foreground">{item.title}</p>
-                <p className="mt-1 text-sm text-muted leading-relaxed">{item.desc}</p>
-              </div>
+      <div className="absolute left-3 sm:left-4 top-3 bottom-3 w-px bg-border/70" aria-hidden="true" />
+      <motion.div {...staggerSection} className="space-y-8 sm:space-y-10">
+        {items.map((item) => (
+          <motion.div
+            key={item.num}
+            {...staggerCard}
+            className="relative grid grid-cols-[auto_1fr] gap-6 sm:gap-10"
+          >
+            <motion.div {...numberReveal} className="relative z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-background text-[11px] font-mono tracking-[0.2em] text-muted">
+              {item.num}
+            </motion.div>
+            <div className="pb-1">
+              <p className="font-serif text-base sm:text-lg font-semibold text-foreground">{item.title}</p>
+              <p className="mt-1 text-sm text-muted leading-relaxed">{item.desc}</p>
             </div>
-          ))}
-        </div>
-      </div>
+          </motion.div>
+        ))}
+      </motion.div>
     </Section>
   );
 }
@@ -392,23 +469,35 @@ function ConceptsIndex() {
     <Section
       eyebrow="Conceptos clave"
       title="Una guía para seguir leyendo"
+      className="relative overflow-hidden"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+        aria-hidden="true"
+      />
+      <motion.div {...staggerSection} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {concepts.map((concept) => (
-          <button
+          <motion.button
             key={concept.title}
+            {...staggerCard}
+            {...hoverLift}
             type="button"
             onClick={() => router.push(concept.href)}
-            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-300 hover:border-foreground/15 hover:bg-card"
+            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-200 ease-out hover:border-foreground/15 hover:bg-card"
           >
-            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{concept.title}</p>
-            <span className="mt-2 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors">
+            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
+            <span className="mt-2 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors duration-200">
               Explorar
-              <span className="ml-1.5 transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+              <span className="ml-1.5 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
             </span>
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
     </Section>
   );
 }
@@ -420,15 +509,24 @@ function FinalCTA() {
 
   return (
     <Section className="pb-10">
-      <div className="rounded-3xl border border-border bg-card/60 p-8 sm:p-10 lg:p-12 text-center">
+      <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.04] to-background p-8 sm:p-10 lg:p-12 text-center">
+        <div
+          className="absolute inset-0 -z-10 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(212,168,67,0.25) 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+          aria-hidden="true"
+        />
         <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
         <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
           Identidad, mundo, círculo e inteligencia en un solo lugar.
         </p>
-        <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
+        <motion.button {...hoverScale} type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
           Crear mi perfil
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </Section>
   );
 }
@@ -486,7 +584,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
   return (
     <>
       <Section className="-mb-4 sm:-mb-6">
-        <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
+        <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu mapa personal</p>
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
             {name ? `Bienvenido/a, ${name}` : `Sos ${display.name}`}
@@ -495,11 +593,11 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
             {display.emoji} {display.name} · {element} · {archetype.name}
           </p>
           <div className="mt-5">
-            <button type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 hover:shadow-md">
+            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
               Ver mi perfil completo
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
       </Section>
 
       <SystemsPreview />
@@ -508,15 +606,24 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
       <ConceptsIndex />
 
       <Section className="pb-10">
-        <div className="rounded-3xl border border-border bg-card/60 p-8 sm:p-10 lg:p-12 text-center">
+        <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.04] to-background p-8 sm:p-10 lg:p-12 text-center">
+          <div
+            className="absolute inset-0 -z-10 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(212,168,67,0.25) 1px, transparent 0)",
+              backgroundSize: "24px 24px",
+            }}
+            aria-hidden="true"
+          />
           <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver el detalle completo?</p>
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
             Identidad, mundo, círculo e inteligencia en un solo lugar.
           </p>
-          <button type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 hover:shadow-md">
+          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
             Ver mi perfil completo
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </Section>
     </>
   );
