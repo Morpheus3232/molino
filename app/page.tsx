@@ -8,7 +8,10 @@ import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
+import {
+  buildPersonalRecommendations,
+  hasPositiveAffinity,
+} from "@/lib/engines/personalRecommendationEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import {
@@ -299,19 +302,20 @@ function DiscoveryUnified({ profile }: { profile: UserProfile }) {
   const userAnimal = (profile.chineseZodiac ?? "") as string;
   const display = getZodiacDisplay(userAnimal);
   const recMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
+  const positiveRecs = useMemo(() => recMap.recommendations.filter(r => hasPositiveAffinity(r.priority)), [recMap]);
 
   const topResonances: PersonalRecommendation[] = useMemo(() => {
-    const sameAnimalFirst = recMap.recommendations
+    const sameAnimalFirst = positiveRecs
       .filter(r => r.entityAnimal === userAnimal)
       .slice(0, 3);
     if (sameAnimalFirst.length >= 3) return sameAnimalFirst;
-    const others = recMap.recommendations
-      .filter(r => r.entityAnimal !== userAnimal && r.totalScore >= 45)
+    const others = positiveRecs
+      .filter(r => r.entityAnimal !== userAnimal)
       .slice(0, 3 - sameAnimalFirst.length);
     return [...sameAnimalFirst, ...others];
-  }, [recMap, userAnimal]);
+  }, [positiveRecs, userAnimal]);
 
-  const discovery = recMap.recommendations[1] ?? null;
+  const discovery = positiveRecs[1] ?? null;
   const luckyNumber = profile.luckyNumber;
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];

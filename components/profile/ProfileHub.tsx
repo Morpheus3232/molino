@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
+import { buildPersonalRecommendations, hasPositiveAffinity } from "@/lib/engines/personalRecommendationEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { getRelationshipMap, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -76,17 +76,18 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const name = typeof profile.name === "string" ? profile.name : "";
 
   const recommendationMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
+  const positiveRecs = useMemo(() => recommendationMap.recommendations.filter(r => hasPositiveAffinity(r.priority)), [recommendationMap]);
   const topResonances = useMemo(() => {
-    return recommendationMap.recommendations
+    return positiveRecs
       .filter(r => r.entityAnimal === userAnimal)
       .slice(0, 3);
-  }, [recommendationMap, userAnimal]);
+  }, [positiveRecs, userAnimal]);
 
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 2);
 
   const discovery = loadDiscoveryState();
-  const topRec = discovery.hasCompletedOnboarding ? recommendationMap.recommendations[0] : null;
+  const topRec = discovery.hasCompletedOnboarding ? positiveRecs[0] : null;
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
   const intelligenceScore = dailyEnergy.overallScore;

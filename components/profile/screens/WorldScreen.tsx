@@ -11,6 +11,7 @@ import { formatAnimalSimple, getZodiacDisplay } from "@/lib/utils/zodiacDisplay"
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import {
   buildPersonalRecommendations,
+  hasPositiveAffinity,
   type PersonalRecommendation,
 } from "@/lib/engines/personalRecommendationEngine";
 import CrossLinks from "@/components/profile/CrossLinks";
@@ -28,13 +29,17 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
   const map = useMemo(() => buildPersonalRecommendations(profile), [profile]);
 
-  // Get top 10 countries and top 10 brands
+  // Get top 10 countries and top 10 brands with positive affinity only
   const topCountries = useMemo(
-    () => (map.byCategory["country"] ?? []).slice(0, 10),
+    () => (map.byCategory["country"] ?? [])
+      .filter(r => hasPositiveAffinity(r.priority))
+      .slice(0, 10),
     [map]
   );
   const topBrands = useMemo(
-    () => (map.byCategory["brand"] ?? []).slice(0, 10),
+    () => (map.byCategory["brand"] ?? [])
+      .filter(r => hasPositiveAffinity(r.priority))
+      .slice(0, 10),
     [map]
   );
 

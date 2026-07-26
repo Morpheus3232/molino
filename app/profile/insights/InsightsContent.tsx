@@ -19,6 +19,7 @@ import {
 } from "@/lib/data/animalRelations";
 import {
   buildPersonalRecommendations,
+  hasPositiveAffinity,
   type PersonalRecommendation,
 } from "@/lib/engines/personalRecommendationEngine";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -93,7 +94,10 @@ export default function InsightsContent() {
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   const recommendations = useMemo(() => {
     if (!profile) return [];
-    return buildPersonalRecommendations(profile).recommendations.slice(0, 5);
+    return buildPersonalRecommendations(profile)
+      .recommendations
+      .filter(r => hasPositiveAffinity(r.priority))
+      .slice(0, 5);
   }, [profile]);
   const profile_ = useMemo(() => userAnimal ? getAnimalProfile(userAnimal) : null, [userAnimal]);
 
