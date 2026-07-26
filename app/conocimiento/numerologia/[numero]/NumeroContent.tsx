@@ -23,9 +23,9 @@ export default function NumeroContent() {
       <div className="min-h-screen bg-background">
         <UniversityHeader />
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
-          <h1 className="font-serif text-4xl font-semibold text-foreground">N&uacute;mero no encontrado</h1>
-          <p className="text-muted mt-4">El n&uacute;mero {numId} no existe en la base de numerolog&iacute;a de Molino.</p>
-          <button onClick={() => router.push("/conocimiento/numerologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Numerolog&iacute;a</button>
+          <h1 className="font-serif text-4xl font-semibold text-foreground">Número no encontrado</h1>
+          <p className="text-muted mt-4">El número {numId} no existe en la base de numerología de Molino.</p>
+          <button onClick={() => router.push("/conocimiento/numerologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Numerología</button>
         </main>
         <UniversityFooter />
       </div>
@@ -46,9 +46,9 @@ export default function NumeroContent() {
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/conocimiento/numerologia" className="hover:text-accent transition-colors">Numerolog&iacute;a</Link>
+          <Link href="/conocimiento/numerologia" className="hover:text-accent transition-colors">Numerología</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <span className="text-foreground font-medium" aria-current="page">N&uacute;mero {num.number}</span>
+          <span className="text-foreground font-medium" aria-current="page">Número {num.number}</span>
         </nav>
 
         {/* Hero */}
@@ -85,7 +85,7 @@ export default function NumeroContent() {
           <p className="text-sm text-muted leading-relaxed max-w-3xl">{num.symbolism}</p>
         </motion.section>
 
-        {/* Fortalezas y Desaf&iacute;os */}
+        {/* Fortalezas y Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="p-5 rounded-xl border border-border bg-card">
@@ -100,7 +100,7 @@ export default function NumeroContent() {
               </ul>
             </div>
             <div className="p-5 rounded-xl border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desaf&iacute;os</p>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {num.challenges.map(c => (
                   <li key={c} className="text-sm text-foreground flex items-start gap-2">
@@ -113,11 +113,11 @@ export default function NumeroContent() {
           </div>
         </motion.section>
 
-        {/* Interpretaci&oacute;n */}
+        {/* Interpretación */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Interpretaci&oacute;n de Molino</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Interpretación de Molino</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.interpretation}</p>
         </motion.section>
@@ -126,23 +126,23 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Ejemplo pr&aacute;ctico</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Ejemplo práctico</h2>
           </div>
           <div className="p-5 rounded-xl border border-border bg-card">
             <p className="text-sm text-foreground leading-relaxed">{num.example}</p>
           </div>
         </motion.section>
 
-        {/* Relaci&oacute;n con otros */}
+        {/* Relación con otros */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Relaci&oacute;n con otros n&uacute;meros</h2>
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Relación con otros números</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
         </motion.section>
 
-        {/* Aviso cient&iacute;fico */}
+        {/* Aviso científico */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Aviso importante</p>
@@ -192,7 +192,7 @@ export default function NumeroContent() {
           <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Calculá tu mapa numérico</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
-              Descubrí todos tus números: Camino de Vida, Expression, Alma y Personalidad. O explorá tu afinidad simbólica con entidades del mundo.
+              Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad. O explorá tu afinidad simbólica con entidades del mundo.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
@@ -212,16 +212,16 @@ export default function NumeroContent() {
           </div>
         </motion.section>
 
-        {/* Navegaci&oacute;n entre n&uacute;meros */}
+        {/* Navegación entre números */}
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
             <button onClick={() => router.push(`/conocimiento/numerologia/numero-${prev.number}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              &larr; N&uacute;mero {prev.number} &mdash; {prev.title}
+              &larr; Número {prev.number} — {prev.title}
             </button>
           ) : <div />}
           {next ? (
             <button onClick={() => router.push(`/conocimiento/numerologia/numero-${next.number}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
-              {next.number} &mdash; {next.title} &rarr;
+              {next.number} — {next.title} &rarr;
             </button>
           ) : <div />}
         </motion.section>

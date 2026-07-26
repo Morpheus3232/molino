@@ -22,9 +22,14 @@ const config: Config = {
         "2xl": "2rem",
         "3xl": "3rem",
       },
+      letterSpacing: {
+        tight: "var(--tracking-tight)",
+        label: ".2em",
+      },
       spacing: {
         section: "var(--section-padding)",
         card: "var(--card-padding)",
+        "grid-gap": "var(--grid-gap)",
         "space-xs": "var(--space-xs)",
         "space-sm": "var(--space-sm)",
         "space-md": "var(--space-md)",
@@ -33,12 +38,10 @@ const config: Config = {
         "space-2xl": "var(--space-2xl)",
       },
       borderRadius: {
-        card: "var(--radius-card)",
-        button: "var(--radius-button)",
-        pill: "var(--radius-pill)",
+        sm: "var(--radius-sm)",
         md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
         xl: "var(--radius-xl)",
-        "2xl": "var(--radius-2xl)",
       },
       colors: {
         background: "var(--color-background)",
@@ -103,10 +106,18 @@ const config: Config = {
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
         xl: "var(--shadow-xl)",
+        "glow": "var(--shadow-glow)",
+        "glow-accent": "var(--shadow-glow-accent)",
+        inner: "var(--shadow-inner)",
       },
       maxWidth: {
         content: "var(--max-width-content)",
         wide: "var(--max-width-wide)",
+        layout: "var(--max-width-layout)",
+        article: "var(--max-width-article)",
+      },
+      screens: {
+        xs: "475px",
       },
     },
   },

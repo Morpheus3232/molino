@@ -9,14 +9,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const num = NUMBERS.find(n => n.number === parseInt(numId));
 
   if (!num) {
-    return { title: "N&uacute;mero no encontrado" };
+    return { title: "Número no encontrado" };
   }
 
   return {
-    title: `N&uacute;mero ${num.number} ${num.title} — Numerolog&iacute;a Molino`,
+    title: `Número ${num.number} ${num.title} — Numerología Molino`,
     description: `${num.meaning.slice(0, 155)}`,
     openGraph: {
-      title: `N&uacute;mero ${num.number} ${num.title} — Molino`,
+      title: `Número ${num.number} ${num.title} — Molino`,
       description: `${num.meaning.slice(0, 155)}`,
       type: "article",
     },

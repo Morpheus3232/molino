@@ -14,16 +14,133 @@ import {
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
-// ════════════════════════════════════════════════════
-// KNOWLEDGE TREE DATA
-// ════════════════════════════════════════════════════
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+const IconBase: React.FC<IconProps> = ({ className, ...props }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" {...props} />
+);
+
+const IconKnowledge = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 2l7 4v5c0 5.5-3.8 10-7 12-3.2-2-7-6.5-7-12V6l7-4z" />
+  </IconBase>
+);
+const IconNumbers = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 8v8" />
+    <path d="M8 12h8" />
+  </IconBase>
+);
+const IconLetters = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M4 7V4h16v3" />
+    <path d="M12 4v16" />
+    <path d="M8 20h8" />
+  </IconBase>
+);
+const IconStars = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 2v4M12 18v4M2 12h4M18 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" />
+  </IconBase>
+);
+const IconCycle = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 4a8 8 0 1 1 0 16" />
+    <path d="M12 4v8l4 2" />
+  </IconBase>
+);
+const IconBook = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M4 4h16v16H4z" />
+    <path d="M4 4l8 8 8-8" />
+  </IconBase>
+);
+const IconHand = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M18 11V6a2 2 0 0 0-4 0v1" />
+    <path d="M14 10V4a2 2 0 0 0-4 0v2" />
+    <path d="M10 10.5V5a2 2 0 0 0-4 0v9" />
+    <path d="M18 11a2 2 0 0 1 2 2v2a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6v-2a2 2 0 0 1 2-2" />
+  </IconBase>
+);
+const IconGraduation = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M22 10v6M2 10l10-7 10 7-10 7L2 10z" />
+    <path d="M6 12v5c0 2 6 4 6 4s6-2 6-4v-5" />
+  </IconBase>
+);
+const IconComputer = (props: IconProps) => (
+  <IconBase {...props}>
+    <rect x="2" y="3" width="20" height="14" rx="2" />
+    <path d="M8 21h8M12 17v4" />
+  </IconBase>
+);
+const IconTarget = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="3" />
+  </IconBase>
+);
+const IconRepeat = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M17 2l4 4-4 4" />
+    <path d="M3 11v-1a4 4 0 0 1 4-4h13" />
+    <path d="M7 22l-4-4 4-4" />
+    <path d="M21 13v1a4 4 0 0 1-4 4H4" />
+  </IconBase>
+);
+const IconSparkle = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="m12 3-1.9 5.8-5.8 1.9 5.8 1.9L12 21l1.9-5.8 5.8-1.9-5.8-1.9z" />
+  </IconBase>
+);
+const IconClock = (props: IconProps) => (
+  <IconBase {...props}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
+  </IconBase>
+);
+const IconMap = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 2l9 4.5-9 4.5-9-4.5L12 2z" />
+    <path d="M3 15l9 4.5 9-4.5" />
+    <path d="M3 10.5l9 4.5 9-4.5" />
+  </IconBase>
+);
+const IconFlame = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M12 2c1 3-2 5-2 8 0 2.5 2 4 2 4s2-1.5 2-4c0-3-3-5-2-8z" />
+    <path d="M10 18c0 1 1.5 2 2 2s2-1 2-2" />
+  </IconBase>
+);
+
+const ICON_MAP: Record<string, React.FC<IconProps>> = {
+  babilonia: IconKnowledge,
+  pitagoras: IconNumbers,
+  guematia: IconLetters,
+  helenistica: IconStars,
+  "zodiaco-chino": IconCycle,
+  balliett: IconBook,
+  cheiro: IconHand,
+  jordan: IconGraduation,
+  mccants: IconComputer,
+  molino: IconFlame,
+  identidad: IconTarget,
+  ciclos: IconRepeat,
+  entidades: IconSparkle,
+  explorar: IconMap,
+  numerologia: IconNumbers,
+  astrologia: IconStars,
+  filosofia: IconBook,
+};
 
 const KNOWLEDGE_TREE = [
   {
     id: "babilonia",
     era: "~3000 a.C.",
     title: "Babilonia",
-    icon: "🏛",
+    icon: "knowledge",
     origin: "Mesopotamia (actual Irak)",
     idea: "Los babilonios observaron los ciclos celestes y los conectaron con la vida terrestre.",
     influence: ["Astronomía", "Ciclos planetarios", "Simbolismo celestial"],
@@ -33,7 +150,7 @@ const KNOWLEDGE_TREE = [
     id: "pitagoras",
     era: "~570 a.C.",
     title: "Pitágoras",
-    icon: "🔢",
+    icon: "numbers",
     origin: "Grecia antigua",
     idea: "\"Todo es número\" — el universo tiene patrones matemáticos.",
     influence: ["Numerología", "Tetraktys", "Música de las esferas"],
@@ -43,7 +160,7 @@ const KNOWLEDGE_TREE = [
     id: "guematia",
     era: "~300 a.C.",
     title: "Guematría y Cábala",
-    icon: "✡",
+    icon: "letters",
     origin: "Tradición hebrea",
     idea: "Cada letra tiene un valor numérico. El nombre revela la esencia.",
     influence: ["Valores numéricos", "Conexiones simbólicas", "Significado del nombre"],
@@ -53,7 +170,7 @@ const KNOWLEDGE_TREE = [
     id: "helenistica",
     era: "Siglo I d.C.",
     title: "Astrología helenística",
-    icon: "⭐",
+    icon: "stars",
     origin: "Roma/Egipto",
     idea: "Fusión de babilónica + filosofía griega: signos, casas, aspectos.",
     influence: ["Signos zodiacales", "Casas astrológicas", "Aspectos planetarios"],
@@ -63,7 +180,7 @@ const KNOWLEDGE_TREE = [
     id: "zodiaco-chino",
     era: "Siglo V",
     title: "Zodíaco chino",
-    icon: "🐉",
+    icon: "cycle",
     origin: "China imperial",
     idea: "12 animales, ciclos de 60 años, elementos Yin/Yang.",
     influence: ["12 animales", "Ciclos de 60 años", "Elementos"],
@@ -73,7 +190,7 @@ const KNOWLEDGE_TREE = [
     id: "balliett",
     era: "~1905",
     title: "L. Dow Balliett",
-    icon: "📖",
+    icon: "book",
     origin: "Estados Unidos",
     idea: "Popularizó la numerología moderna. Introdujo el Life Path como concepto central.",
     influence: ["Life Path", "Números maestros", "Interpretación moderna"],
@@ -83,7 +200,7 @@ const KNOWLEDGE_TREE = [
     id: "cheiro",
     era: "~1920",
     title: "Cheiro y Florence Campbell",
-    icon: "✋",
+    icon: "hand",
     origin: "Irlanda/EE.UU.",
     idea: "Popularización masiva de la numerología y la quiromancia.",
     influence: ["Numerología popular", "Acessibilidad", "Cultura pop"],
@@ -93,7 +210,7 @@ const KNOWLEDGE_TREE = [
     id: "jordan",
     era: "~1960",
     title: "Juno Jordan",
-    icon: "🎓",
+    icon: "graduation",
     origin: "Estados Unidos",
     idea: "Formalizó la escuela de numerología pitagórica moderna.",
     influence: ["Escuela pitagórica", "Análisis profundo", "Compatibilidad"],
@@ -103,7 +220,7 @@ const KNOWLEDGE_TREE = [
     id: "mccants",
     era: "~2000",
     title: "Glynis McCants",
-    icon: "💻",
+    icon: "computer",
     origin: "Estados Unidos",
     idea: "Numerología para la era digital. Ciclos personales y compatibilidad.",
     influence: ["Ciclos personales", "Compatibilidad digital", "Aplicaciones modernas"],
@@ -113,7 +230,7 @@ const KNOWLEDGE_TREE = [
     id: "molino",
     era: "Hoy",
     title: "Molino",
-    icon: "🪨",
+    icon: "flame",
     origin: "Plataforma global",
     idea: "Inteligencia Personal: combina tradiciones históricas en una experiencia interactiva.",
     influence: ["Numerología", "Astrología", "Zodíaco chino", "IA", "Recomendaciones"],
@@ -129,28 +246,28 @@ const HOW_IT_WORKS = [
   {
     step: 1,
     title: "Tu identidad",
-    icon: "🎯",
+    icon: "target",
     items: ["Fecha de nacimiento", "Nombre", "Número principal", "Animal zodiacal"],
     description: "Molino calcula tus patrones base a partir de datos que ya tenés.",
   },
   {
     step: 2,
     title: "Tus ciclos",
-    icon: "🔄",
+    icon: "repeat",
     items: ["Años personales", "Ciclos zodiacales", "Momento actual"],
     description: "Cada año tiene una energía diferente según tu perfil.",
   },
   {
     step: 3,
     title: "Tus afinidades",
-    icon: "💫",
+    icon: "sparkle",
     items: ["Marcas", "Lugares", "Personas", "Actividades"],
     description: "Entidades que resuenan con tu patrón simbólico.",
   },
   {
     step: 4,
     title: "Tu momento actual",
-    icon: "⏰",
+    icon: "clock",
     items: ["Contexto temporal", "Recomendaciones", "Descubrimientos"],
     description: "Qué explorar ahora según tus ciclos.",
   },
@@ -164,28 +281,28 @@ const COURSES = [
   {
     id: "intro",
     title: "Introducción a la Inteligencia Personal",
-    icon: "🎯",
+    icon: "target",
     lessons: 5,
     description: "Los conceptos fundamentales detrás de tu mapa personal.",
   },
   {
     id: "numerologia",
     title: "Numerología: de Pitágoras al presente",
-    icon: "🔢",
+    icon: "numbers",
     lessons: 8,
     description: "La historia completa de cómo los números se convirtieron en herramienta de autoconocimiento.",
   },
   {
     id: "zodiaco",
     title: "Zodíaco oriental y ciclos",
-    icon: "🐉",
+    icon: "cycle",
     lessons: 6,
     description: "Los 12 animales, los elementos y los ciclos de 60 años.",
   },
   {
     id: "mapa",
     title: "Cómo leer tu mapa personal",
-    icon: "🗺",
+    icon: "map",
     lessons: 4,
     description: "Guía práctica para interpretar tu Inteligencia Personal.",
   },

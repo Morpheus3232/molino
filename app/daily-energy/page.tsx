@@ -11,6 +11,18 @@ import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
 
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+const IconBase: React.FC<IconProps> = ({ className, ...props }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true" {...props} />
+);
+
+const IconMoon = (props: IconProps) => (
+  <IconBase {...props}>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </IconBase>
+);
+
 export default function DailyEnergyPage() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
@@ -91,25 +103,29 @@ export default function DailyEnergyPage() {
         </div>
 
         {/* Energy Score */}
-        <div className="mb-8 p-6 rounded-2xl border border-border bg-card">
-          <div className="flex items-center justify-between mb-4">
+        <div className="card-hero mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Energía del día</p>
-              <p className="text-4xl font-serif font-bold" style={{ color: energy.overallScore >= 75 ? "var(--score-excellent)" : energy.overallScore >= 55 ? "var(--score-good)" : energy.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
-                {energy.overallScore}/100
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Energía del día</p>
+              <p className="text-5xl sm:text-6xl font-serif font-bold tracking-tight" style={{ color: energy.overallScore >= 75 ? "var(--score-excellent)" : energy.overallScore >= 55 ? "var(--score-good)" : energy.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
+                {energy.overallScore}<span className="text-3xl sm:text-4xl text-muted font-sans font-medium">/100</span>
               </p>
             </div>
-            <div className="text-right">
-              <p className="text-lg font-serif font-semibold text-foreground">{energy.theme}</p>
+            <div className="sm:text-right">
+              <p className="text-xl sm:text-2xl font-serif font-semibold text-foreground">{energy.theme}</p>
               <p className="text-sm text-muted">Día personal: {energy.personalDay}</p>
             </div>
           </div>
-          <p className="text-sm text-muted leading-relaxed">{energy.description}</p>
+          <p className="text-sm text-muted leading-relaxed max-w-2xl">{energy.description}</p>
         </div>
 
         {/* Moon Phase */}
         <div className="mb-8 p-4 rounded-xl border border-border bg-card flex items-center gap-4">
-          <span className="text-3xl">{energy.moonPhase.emoji}</span>
+          <span className="text-3xl">
+            <svg viewBox="0 0 24 24" className="w-8 h-8 text-accent" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
           <div>
             <p className="text-sm font-medium text-foreground">Luna {energy.moonPhase.phase}</p>
             <p className="text-xs text-muted">{energy.moonPhase.description}</p>
@@ -145,9 +161,9 @@ export default function DailyEnergyPage() {
         {/* Area Scores */}
         <div className="mb-8">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Áreas relevantes</p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {Object.entries(energy.areas).map(([key, area]) => (
-              <div key={key} className={`p-4 rounded-xl border border-border ${getScoreBg(area.score)}`}>
+              <div key={key} className={`card-list`}>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1 capitalize">
                   {key === 'work' ? 'Trabajo' : key === 'relationships' ? 'Relaciones' : key === 'creativity' ? 'Creatividad' : 'Decisiones'}
                 </p>
@@ -183,15 +199,8 @@ export default function DailyEnergyPage() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="secondary" fullWidth onClick={() => router.push("/timing")}>
-            Explorar fechas
-          </Button>
-          <Button variant="secondary" fullWidth onClick={() => router.push("/decisions")}>
-            Tomar una decisión
-          </Button>
-          <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
-            Ver mi perfil
-          </Button>
+          <Button variant="primary" fullWidth onClick={() => router.push("/timing")} className="transition-all duration-200 hover:shadow-md">Explorar fechas</Button>
+          <Button variant="secondary" fullWidth onClick={() => router.push("/profile")} className="transition-all duration-200 hover:shadow-md">Ver mi perfil</Button>
         </div>
       </main>
 

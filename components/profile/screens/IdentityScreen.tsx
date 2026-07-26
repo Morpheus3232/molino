@@ -6,17 +6,14 @@ import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import {
   buildPersonalCode,
   buildDimensions,
-  buildMomentState,
 } from "@/lib/engines/synthesisEngine";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import IdentityCard from "@/components/profile/IdentityCard";
 import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
 import ConvergentSection from "@/components/profile/ConvergentSection";
-import EnhancedMomentSection from "@/components/profile/EnhancedMomentSection";
 import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
@@ -47,13 +44,8 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
   const archetype = ARCHETYPES[lifePath];
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
-  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile, new Date()), [profile]);
   const personalCode = useMemo(() => buildPersonalCode(profile), [profile]);
   const dimensions = useMemo(() => buildDimensions(profile), [profile]);
-  const momentState = useMemo(
-    () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
-    [profile, dailyEnergy]
-  );
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
@@ -176,53 +168,6 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       </section>
 
       {/* ═══════════════════════════════════════════════
-          MOMENTUM — Big score number
-          ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
-              <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu momento</h2>
-            </div>
-          </motion.div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            <div className="lg:col-span-7">
-              <div className="flex items-end gap-4 mb-2">
-                <p className="number-display text-[5rem] sm:text-[7rem] leading-none" style={{
-                  color: momentState.energyScore >= 75 ? "var(--score-excellent)" : momentState.energyScore >= 55 ? "var(--score-good)" : "var(--score-neutral)"
-                }}>
-                  {momentState.energyScore}
-                </p>
-                <div className="pb-3">
-                  <p className="font-serif text-xl font-semibold text-foreground">{momentState.energyTheme}</p>
-                  <p className="text-sm text-muted">Foco: {momentState.focus}</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted leading-relaxed mt-4 max-w-xl">{momentState.narrative}</p>
-            </div>
-
-            <div className="lg:col-span-5 lg:border-l lg:border-border lg:pl-12">
-              <div className="space-y-4">
-                {[
-                  { label: "Año personal", value: `Año ${safeNumber(profile.cycles?.personalYear, 0)} · ${momentState.cycleName}` },
-                  { label: "Mes", value: `Mes ${safeNumber(profile.cycles?.personalMonth, 0)}` },
-                  { label: "Día", value: `Día ${safeNumber(profile.cycles?.personalDay, 0)} · ${dailyEnergy.theme}` },
-                  { label: "Luna", value: `${dailyEnergy.moonPhase.phase} ${dailyEnergy.moonPhase.emoji}` },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">{item.label}</p>
-                    <p className="font-serif text-base text-foreground">{item.value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════
           TUS 4 SISTEMAS — Visual pills
           ═══════════════════════════════════════════════ */}
       <section className="py-8 sm:py-12 border-t border-border">
@@ -320,7 +265,6 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
           CONVERGENCIA + DIMENSIONES
           ═══════════════════════════════════════════════ */}
       <ConvergentSection profile={profile} />
-      <EnhancedMomentSection profile={profile} />
 
       {/* Cards at bottom */}
       <section className="py-8 sm:py-12 border-t border-border">

@@ -156,7 +156,7 @@ function ComparePickerInner() {
         </motion.div>
 
         {filtered.length === 0 && (
-          <p className="text-center text-muted py-12">No se encontraron resultados para &ldquo;{search}&rdquo;.</p>
+          <p className="text-center text-muted py-12">No se encontraron resultados para &quot;{search}&quot;.</p>
         )}
 
         {/* Disclaimer */}

@@ -32,7 +32,7 @@ const SOURCES: Source[] = [
     id: "pitagoras", title: "Numerolog\u00eda Pitag\u00f3rica", author: "Pit\u00e1goras (atribuido)", year: "~500 a.C.", type: "libro",
     description: "Sistema de numerolog\u00eda occidental que asigna valores num\u00e9ricos a las letras.",
     review: "La numerolog\u00eda pitag\u00f3rica es el sistema m\u00e1s utilizado en occidente. Aunque se atribuye a Pit\u00e1goras, los historiadores modernos no encuentran evidencia directa.",
-    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto. Se usa para calcular Camino de Vida, Expression, Soul y Personality Numbers.",
+    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto. Se usa para calcular Camino de Vida, Expresión, Alma y Personalidad.",
     tags: ["numerolog\u00eda", "historia"]
   },
   {
@@ -160,18 +160,18 @@ export default function BibliotecaPage() {
             Fuentes y referencias
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
-            Colecci&oacute;n curada de libros, art&iacute;culos y recursos que nutren el conocimiento simb&oacute;lico de Molino.
+            Colección curada de libros, artículos y recursos que nutren el conocimiento simbólico de Molino.
           </p>
         </motion.section>
 
         {/* Search + Filters */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
-            <input type="text" placeholder="Buscar por t&iacute;tulo, autor o etiqueta..." value={search} onChange={(e) => setSearch(e.target.value)} className="input flex-1" aria-label="Buscar fuentes" />
+            <input type="text" placeholder="Buscar por título, autor o etiqueta..." value={search} onChange={(e) => setSearch(e.target.value)} className="input flex-1" aria-label="Buscar fuentes" />
             <select value={filter} onChange={(e) => setFilter(e.target.value)} className="input" aria-label="Filtrar por tipo">
               <option value="todos">Todos los tipos</option>
               <option value="libro">Libros</option>
-              <option value="articulo">Art&iacute;culos</option>
+              <option value="articulo">Artículos</option>
               <option value="video">Videos</option>
               <option value="sitio">Sitios web</option>
             </select>
@@ -206,7 +206,7 @@ export default function BibliotecaPage() {
                     {meta.label}
                   </span>
                 </div>
-                <p className="text-xs text-muted mb-2">{source.author} &middot; {source.year}</p>
+                <p className="text-xs text-muted mb-2">{source.author} · {source.year}</p>
                 <p className="text-sm text-muted mb-3 flex-1">{source.description}</p>
                 <div className="flex flex-wrap gap-1 mb-3">
                   {(source.tags || []).map(tag => (
@@ -217,7 +217,7 @@ export default function BibliotecaPage() {
                 {(source.review || source.summary) && (
                   <div className="mt-auto pt-3 border-t border-border">
                     <button type="button" onClick={() => setExpandedDescription(expandedDescription === source.id ? null : source.id)} className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedDescription === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
-                      Descripci&oacute;n
+                      Descripción
                     </button>
                   </div>
                 )}
@@ -226,13 +226,13 @@ export default function BibliotecaPage() {
                   <div className="mt-3 p-3 rounded-lg bg-background border border-border space-y-3">
                     {source.summary && (
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">M&eacute;todo</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Método</p>
                         <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
                       </div>
                     )}
                     {source.review && (
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Rese&ntilde;a</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Reseña</p>
                         <p className="text-xs text-muted leading-relaxed">{source.review}</p>
                       </div>
                     )}
@@ -246,7 +246,7 @@ export default function BibliotecaPage() {
         {filtered.length === 0 && (
           <div className="text-center py-16 text-muted">
             <p className="text-lg">No se encontraron fuentes</p>
-            <p className="text-sm mt-2">Prob&aacute; con otra b&uacute;squeda o filtro.</p>
+            <p className="text-sm mt-2">Probá con otra búsqueda o filtro.</p>
           </div>
         )}
 

@@ -56,12 +56,12 @@ export default function SignoSolarPage() {
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Astrolog&iacute;a</p>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Astrología</p>
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Signo Solar
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Tu signo zodiacal solar est&aacute; determinado por la posici&oacute;n del sol en el cielo en el momento de tu nacimiento. Cada signo tiene un elemento, una modalidad y cualidades asociadas.
+            Tu signo zodiacal solar está determinado por la posición del sol en el cielo en el momento de tu nacimiento. Cada signo tiene un elemento, una modalidad y cualidades asociadas.
           </p>
         </motion.section>
 
@@ -71,8 +71,8 @@ export default function SignoSolarPage() {
             <div>
               <label className="block text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
               <div className="flex gap-3">
-                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="D&iacute;a">
-                  <option value="">D&iacute;a</option>
+                <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
+                  <option value="">Día</option>
                   {Array.from({ length: daysInMonth }, (_, i) => (
                     <option key={i + 1} value={String(i + 1).padStart(2, "0")}>{i + 1}</option>
                   ))}
@@ -83,8 +83,8 @@ export default function SignoSolarPage() {
                     <option key={m.value} value={m.value}>{m.label}</option>
                   ))}
                 </select>
-                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="A&ntilde;o">
-                  <option value="">A&ntilde;o</option>
+                <select value={year} onChange={(e) => setYear(e.target.value)} className="input flex-1" aria-label="Año">
+                  <option value="">Año</option>
                   {Array.from({ length: 100 }, (_, i) => 2010 - i).map((y) => (
                     <option key={y} value={String(y)}>{y}</option>
                   ))}
@@ -167,7 +167,7 @@ export default function SignoSolarPage() {
                       <p className="text-sm text-muted leading-relaxed text-center mb-4">{signData.keywords.join(" \u00b7 ")}</p>
                       <div className="p-4 rounded-xl bg-card border border-border">
                         <p className="text-sm text-foreground leading-relaxed">
-                          Seg&uacute;n la tradici&oacute;n astrol&oacute;gica, {result.sign} es un signo {result.modality.toLowerCase()} de elemento {result.element.toLowerCase()}. {result.sign === "Aries" ? "Se asocia con el inicio, la iniciativa y la energ&iacute;a pionera." : result.sign === "Tauro" ? "Se asocia con la estabilidad, la sensualidad y la connection con la tierra." : result.sign === "G\u00e9minis" ? "Se asocia con la dualidad, la comunicaci&oacute;n y la curiosidad intelectual." : result.sign === "C\u00e1ncer" ? "Se asocia con las emociones, el hogar y la protecci\u00f3n." : result.sign === "Leo" ? "Se asocia con la creatividad, el liderazgo y la expresi\u00f3n personal." : result.sign === "Virgo" ? "Se asocia con el an\u00e1lisis, la precisi\u00f3n y el servicio." : result.sign === "Libra" ? "Se asocia con el equilibrio, la armon\u00eda y la justicia." : result.sign === "Escorpio" ? "Se asocia con la transformaci\u00f3n, la intensidad y lo oculto." : result.sign === "Sagitario" ? "Se asocia con la expansi\u00f3n, la filosof\u00eda y la aventura." : result.sign === "Capricornio" ? "Se asocia con la ambici\u00f3n, la disciplina y la estructura." : result.sign === "Acuario" ? "Se asocia con la innovaci\u00f3n, la humanidad y la originalidad." : "Se asocia con la intuici\u00f3n, la espiritualidad y la compasi\u00f3n."}
+                          Según la tradición astrológica, {result.sign} es un signo {result.modality.toLowerCase()} de elemento {result.element.toLowerCase()}. {result.sign === "Aries" ? "Se asocia con el inicio, la iniciativa y la energía pionera." : result.sign === "Tauro" ? "Se asocia con la estabilidad, la sensualidad y la conexión con la tierra." : result.sign === "G\u00e9minis" ? "Se asocia con la dualidad, la comunicación y la curiosidad intelectual." : result.sign === "C\u00e1ncer" ? "Se asocia con las emociones, el hogar y la protecci\u00f3n." : result.sign === "Leo" ? "Se asocia con la creatividad, el liderazgo y la expresi\u00f3n personal." : result.sign === "Virgo" ? "Se asocia con el an\u00e1lisis, la precisi\u00f3n y el servicio." : result.sign === "Libra" ? "Se asocia con el equilibrio, la armon\u00eda y la justicia." : result.sign === "Escorpio" ? "Se asocia con la transformaci\u00f3n, la intensidad y lo oculto." : result.sign === "Sagitario" ? "Se asocia con la expansi\u00f3n, la filosof\u00eda y la aventura." : result.sign === "Capricornio" ? "Se asocia con la ambici\u00f3n, la disciplina y la estructura." : result.sign === "Acuario" ? "Se asocia con la innovaci\u00f3n, la humanidad y la originalidad." : "Se asocia con la intuici\u00f3n, la espiritualidad y la compasi\u00f3n."}
                         </p>
                       </div>
                     </motion.div>
@@ -183,7 +183,7 @@ export default function SignoSolarPage() {
                 className="mt-6 p-4 rounded-xl border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>Nota:</strong> La astrolog&iacute;a es un sistema de creencias con m&aacute;s de 4000 a&ntilde;os de historia. Estas interpretaciones pertenecen a la tradici&oacute;n astrol&oacute;gica y no representan evidencia cient&iacute;fica.
+                  <strong>Nota:</strong> La astrología es un sistema de creencias con más de 4000 años de historia. Estas interpretaciones pertenecen a la tradición astrológica y no representan evidencia científica.
                 </p>
               </motion.div>
 
@@ -212,7 +212,7 @@ export default function SignoSolarPage() {
                   Compartir resultado
                 </button>
                 <div>
-                  <p className="text-sm text-muted mb-3">Quer&eacute;s ver c&oacute;mo tu signo se conecta con numerolog&iacute;a y zodiaco chino?</p>
+                  <p className="text-sm text-muted mb-3">Querés ver cómo tu signo se conecta con numerología y zodiaco chino?</p>
                   <Link
                     href="/onboarding"
                     className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-lg min-h-[44px]"

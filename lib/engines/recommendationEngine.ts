@@ -278,10 +278,10 @@ function buildExplanation(
 
   if (level === "high") {
     if (natalType === "same") {
-      return `${entity} comparte tu mismo signo. Energía de sintonía natural según la tradición.`;
+      return `${entity} comparte tu misma energía base.`;
     }
     if (natalType === "triad") {
-      return `${entity} pertenece al círculo de apoyo tradicional de ${user}. Tríada compatible.`;
+      return `${entity} conecta con tu perfil a través de una relación simbólica secundaria.`;
     }
     if (natalType === "harmonious") {
       return `${entity} es la pareja armoniosa natural de ${user} según la tradición (Liu He).`;
@@ -324,13 +324,13 @@ function buildCopy(
     case "same":
       return {
         title: "Alta resonancia simbólica",
-        explanation: `${entityName} comparte tu mismo animal. Según la tradición, una energía similar genera sintonía natural.`,
+        explanation: `${entityName} comparte tu misma energía base.`,
         actionSuggestion: `${entityName} puede ser una referencia alineada con tu energía simbólica.`,
       };
     case "triad":
       return {
-        title: "Tríada compatible",
-        explanation: `${userAnimal} y ${entityAnimal} pertenecen a la misma tríada (San He). Comparten un elemento oculto.`,
+        title: "Tríada",
+        explanation: `${userAnimal} y ${entityAnimal} comparten un elemento oculto en la tradición.`,
         actionSuggestion: `Una relación que la tradición presenta como favorable.`,
       };
     case "harmonious":

@@ -116,7 +116,7 @@ export default function OnboardingPage() {
       personalityNumber: name.trim() ? undefined : undefined,
     };
 
-    // Recalculate with name if provided
+    // Recalcular con nombre si se proporciona
     if (name.trim()) {
       const recalculated = calculateUserProfile(name.trim(), profile.birthDate);
       Object.assign(updatedProfile, {
@@ -314,7 +314,13 @@ export default function OnboardingPage() {
                 transition={{ delay: 0.2, duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
                 className="text-center mb-6"
               >
-                <span className="text-[100px] sm:text-[120px] block mb-2 leading-none">{display.emoji}</span>
+                <span className="inline-flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-border bg-card mb-2">
+                  <svg viewBox="0 0 24 24" className="w-10 h-10 sm:w-12 sm:h-12 text-accent" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M8 12h8" />
+                    <path d="M12 8v8" />
+                  </svg>
+                </span>
               </motion.div>
 
               {/* Name + identity */}
@@ -467,7 +473,9 @@ export default function OnboardingPage() {
               transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
               className="text-center"
             >
-              <span className="text-6xl block mb-4">✨</span>
+              <svg className="w-10 h-10 text-accent mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="m12 3-1.9 5.8-5.8 1.9 5.8 1.9L12 21l1.9-5.8 5.8-1.9-5.8-1.9z" />
+              </svg>
               <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
                 Tu mapa está listo
               </h1>

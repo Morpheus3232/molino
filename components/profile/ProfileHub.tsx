@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { getRelationshipMap, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
+import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import type { ProfileTab } from "./ProfileTabs";
-import DailyInsights from "./DailyInsights";
 import { loadDiscoveryState } from "@/lib/storage/discovery";
 
 interface ProfileHubProps {
@@ -18,62 +19,78 @@ interface ProfileHubProps {
   onEnter: (tab: ProfileTab) => void;
 }
 
-interface DoorData {
-  tab: ProfileTab;
-  icon: string;
-  label: string;
-  description: string;
-  preview: string;
-  color: string;
+const ENTITY_TYPE_ICONS: Record<string, string> = {
+  brand: "✧", country: "🌍", city: "🏛️",
+  university: "🎓", team: "⚽", movie: "🎬", artist: "🎤",
+};
+
+const CARD_BASE = "p-5 sm:p-6 rounded-2xl border border-border bg-card relative overflow-hidden hover:border-accent/30 transition-colors";
+const CARD_INSIGHT = "font-serif text-xl sm:text-2xl font-semibold text-accent leading-tight mb-1";
+
+/* ════════════════════════════════════════════════
+   HUB CARDS
+   ════════════════════════════════════════════════ */
+
+function InsightCard({
+  eyebrow,
+  insight,
+  context,
+  accentColor = "var(--element-fire)",
+  onCta,
+  ctaLabel = "Explorar →",
+  children,
+}: {
+  eyebrow: string;
+  insight: React.ReactNode;
+  context?: React.ReactNode;
+  accentColor?: string;
+  onCta?: () => void;
+  ctaLabel?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <motion.section className={CARD_BASE}>
+      <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl" style={{ backgroundColor: accentColor }} />
+      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">{eyebrow}</p>
+      <p className={CARD_INSIGHT}>{insight}</p>
+      <div className="text-xs text-muted mb-4">{context}</div>
+      {children}
+      {onCta && (
+        <button type="button" onClick={onCta} className="text-xs font-medium text-accent hover:underline">
+          {ctaLabel}
+        </button>
+      )}
+    </motion.section>
+  );
 }
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const router = useRouter();
-  const userAnimal = (profile.chineseZodiac ?? "") as string;
+  const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
   const element = typeof profile.element === "string" ? profile.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const lifePath = safeNumber(profile.lifePath, 1);
+  const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
   const name = typeof profile.name === "string" ? profile.name : "";
 
-  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile, new Date()), [profile]);
   const recommendationMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
-  const totalRecs = recommendationMap.recommendations.length;
+  const topResonances = useMemo(() => {
+    return recommendationMap.recommendations
+      .filter(r => r.entityAnimal === userAnimal)
+      .slice(0, 3);
+  }, [recommendationMap, userAnimal]);
 
-  const doors: DoorData[] = useMemo(() => [
-    {
-      tab: "identity",
-      icon: display.emoji,
-      label: "Tu Identidad",
-      description: "Quién sos según tus sistemas simbólicos",
-      preview: archetypeName ? `Tu arquetipo es ${archetypeName}` : `${display.name} de ${profile.chineseZodiacInfo?.element ?? ""}`,
-      color: elementColor,
-    },
-    {
-      tab: "world",
-      icon: "🌎",
-      label: "Tu Mundo",
-      description: "Marcas, destinos y entidades que resuenan con vos",
-      preview: `${totalRecs} entidades conectan con tu perfil de ${display.name}`,
-      color: "var(--element-earth)",
-    },
-    {
-      tab: "circle",
-      icon: "⬡",
-      label: "Tu Círculo",
-      description: "Aliados, opuestos y personas que comparten tu energía",
-      preview: `Tus aliados: ${display.name} se conecta con Tigre, Perro y Cabra`,
-      color: "var(--layer-cycles)",
-    },
-    {
-      tab: "intelligence",
-      icon: "◆",
-      label: "Tu Inteligencia",
-      description: "Síntesis, patrones, dimensiones y conexiones profundas",
-      preview: `Tu momento: ${dailyEnergy.overallScore}/100 — ${dailyEnergy.theme}`,
-      color: "var(--layer-numerology)",
-    },
-  ], [display, archetypeName, profile.chineseZodiacInfo?.element, totalRecs, dailyEnergy, elementColor]);
+  const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
+  const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 2);
+
+  const discovery = loadDiscoveryState();
+  const topRec = discovery.hasCompletedOnboarding ? recommendationMap.recommendations[0] : null;
+
+  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
+  const intelligenceScore = dailyEnergy.overallScore;
+  const intelligenceLabel = dailyEnergy.theme;
 
   return (
     <div className="min-h-screen bg-[#F3EDE3]">
@@ -90,114 +107,123 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               {name}
             </h1>
             <p className="mt-3 text-base sm:text-lg text-muted">
-              {display.name} de {profile.chineseZodiacInfo?.element ?? ""} · {profile.sunSign}
+              {display.name} de {profile.chineseZodiacInfo?.element ?? ""} &middot; {profile.sunSign}
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Subtitle */}
-      <section className="pb-6">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6 text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-sm text-muted max-w-md mx-auto"
-          >
-            Descubrí las diferentes dimensiones de tu mapa personal.
-          </motion.p>
-        </div>
-      </section>
+      <div className="mx-auto max-w-[1100px] px-4 sm:px-6 space-y-6 pb-16 sm:pb-24">
+        {/* ═══ TU IDENTIDAD ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+        >
+          <InsightCard
+            eyebrow="Tu Identidad"
+            insight={`Tu arquetipo es ${archetypeName}`}
+            context="Según tus sistemas simbólicos"
+            accentColor={elementColor}
+            onCta={() => onEnter("identity")}
+          />
+        </motion.div>
 
-      {/* Daily Insights — "Hoy en Molino" */}
-      <DailyInsights profile={profile} onNavigate={onEnter} />
-
-      {/* "Tu próximo descubrimiento" — subtle recommendation */}
-      {(() => {
-        const discovery = loadDiscoveryState();
-        if (!discovery.hasCompletedOnboarding) return null;
-        const topRec = recommendationMap.recommendations[0];
-        if (!topRec) return null;
-        return (
-          <section className="py-4 sm:py-6">
-            <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
-                onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl shrink-0">{topRec.entity.emoji || "✦"}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Tu próximo descubrimiento</p>
-                    <p className="text-sm text-foreground">
-                      {topRec.entity.name} resuena especialmente con tu energía.
-                    </p>
+        {/* ═══ TU CÍRCULO ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <InsightCard
+            eyebrow="Tu Círculo"
+            insight={
+              sameFriends.length > 0 ? (
+                <>Tus aliados: {sameFriends.map((f, i) => (
+                  <span key={f.animal}>
+                    {i > 0 && ", "}
+                    <span className="text-accent">{f.animal}</span>
+                  </span>
+                ))}</>
+              ) : (
+                "Tus aliados definen tu círculo"
+              )
+            }
+            context={
+              <div className="space-y-2">
+                <span>Relaciones del ciclo chino</span>
+                {sameFriends.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {sameFriends.map((f) => (
+                      <span key={f.animal} className="px-2.5 py-1 rounded-full bg-accent/10 text-accent text-[10px] font-medium">
+                        {f.animal}
+                      </span>
+                    ))}
                   </div>
-                  <span className="text-xs text-accent group-hover:translate-x-1 transition-transform shrink-0">→</span>
+                )}
+              </div>
+            }
+            accentColor={elementColor}
+            onCta={() => onEnter("circle")}
+          />
+        </motion.div>
+
+        {/* ═══ TU MUNDO ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <InsightCard
+            eyebrow="Tu Mundo"
+            insight={`${recommendationMap.recommendations.filter(r => r.entityAnimal === userAnimal).length} entidades conectan con tu perfil de ${display.name}`}
+            context="Marcas, historias y referentes que resuenan"
+            accentColor={elementColor}
+            onCta={() => onEnter("world")}
+          />
+        </motion.div>
+
+        {/* ═══ TU INTELIGENCIA ═══ */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          <InsightCard
+            eyebrow="Tu Inteligencia"
+            insight={`Tu momento: ${intelligenceScore}/100 — ${intelligenceLabel}`}
+            context={
+              <div className="space-y-2">
+                <div className="h-2 rounded-full bg-muted/20 overflow-hidden">
+                  <div className="h-full rounded-full bg-accent" style={{ width: `${intelligenceScore}%` }} />
                 </div>
-              </motion.div>
+                <span>Estado actual de tu mapa simbólico</span>
+              </div>
+            }
+            accentColor={elementColor}
+            onCta={() => onEnter("intelligence")}
+          />
+        </motion.div>
+
+        {/* ═══ PRÓXIMO DESCUBRIMIENTO ═══ */}
+        {topRec && (
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="p-5 sm:p-6 rounded-2xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
+            onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-xl shrink-0">{topRec.entity.emoji || "◆"}</span>
+              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">Tu próximo descubrimiento</p>
             </div>
-          </section>
-        );
-      })()}
-
-      {/* 4 Doors Grid */}
-      <section className="pb-16 sm:pb-24">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-            {doors.map((door, i) => (
-              <motion.button
-                key={door.tab}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                onClick={() => onEnter(door.tab)}
-                className="group relative text-left p-6 sm:p-8 rounded-2xl border border-border bg-card hover:border-accent/40 transition-all duration-300 overflow-hidden"
-              >
-                {/* Color accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-2xl" style={{ backgroundColor: door.color }} />
-
-                {/* Icon */}
-                <span className="text-3xl sm:text-4xl block mb-4">{door.icon}</span>
-
-                {/* Title */}
-                <h2 className="font-serif text-xl sm:text-2xl font-semibold text-foreground mb-2 group-hover:text-accent transition-colors">
-                  {door.label}
-                </h2>
-
-                {/* Description */}
-                <p className="text-sm text-muted mb-4 leading-relaxed">
-                  {door.description}
-                </p>
-
-                {/* Preview datum */}
-                <div className="p-3 rounded-xl bg-background/50 mb-5">
-                  <p className="text-xs text-muted leading-relaxed">{door.preview}</p>
-                </div>
-
-                {/* CTA */}
-                <div className="flex items-center gap-2 text-sm font-medium text-accent group-hover:gap-3 transition-all">
-                  <span>Explorar</span>
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer minimal */}
-      <section className="pb-12">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6 text-center">
-          <p className="text-[11px] text-muted/50">
-            Molino — Inteligencia Personal. Todo el contenido es educativo.
-          </p>
-        </div>
-      </section>
+            <p className="text-sm text-foreground leading-relaxed">
+              {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
+            </p>
+          </motion.section>
+        )}
+      </div>
     </div>
   );
 }

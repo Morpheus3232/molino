@@ -76,6 +76,7 @@ export interface SymbolicEntity {
   emoji?: string;
   description: string;
   keyThemes: string[];
+  category?: string;
   /** Documented historical events. At least one must have primaryForAffinity=true. */
   events: HistoricalEvent[];
   sourceNote?: string;

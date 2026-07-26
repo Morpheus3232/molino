@@ -954,7 +954,7 @@ function QuickAffinity({
     return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
       .filter(r => r.entity.id !== entity.id)
       .slice(0, 3);
-  }, [day, month, year, entity]);
+  }, [day, month, year, entity, calculateUserProfile, calculateAllAffinity, SYMBOLIC_ENTITIES]);
 
   const handleSubmit = useCallback(() => {
     setError("");
@@ -974,7 +974,7 @@ function QuickAffinity({
     setDay(String(parsedDay));
     setMonth(String(parsedMonth).padStart(2, "0"));
     setYear(String(parsedYear));
-  }, [day, month, year]);
+  }, [day, month, year, type]);
 
   const handleSave = useCallback(() => {
     if (!result || saved) return;
