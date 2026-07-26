@@ -1,16 +1,16 @@
 export const ZODIAC_SIGNS = [
-  { name: "Aries", element: "Fuego", modality: "Cardinal", dates: "21 mar - 19 abr", symbol: "♈", keywords: ["Independiente", "Energético", "Valiente"] },
-  { name: "Tauro", element: "Tierra", modality: "Fijo", dates: "20 abr - 20 may", symbol: "♉", keywords: ["Paciente", "Práctico", "Determinado"] },
-  { name: "Géminis", element: "Aire", modality: "Mutable", dates: "21 may - 20 jun", symbol: "♊", keywords: ["Curioso", "Comunicativo", "Versátil"] },
-  { name: "Cáncer", element: "Agua", modality: "Cardinal", dates: "21 jun - 22 jul", symbol: "♋", keywords: ["Sensible", "Protector", "Emocional"] },
-  { name: "Leo", element: "Fuego", modality: "Fijo", dates: "23 jul - 22 ago", symbol: "♌", keywords: ["Creativo", "Líder", "Generoso"] },
-  { name: "Virgo", element: "Tierra", modality: "Mutable", dates: "23 ago - 22 sep", symbol: "♍", keywords: ["Analítico", "Detallista", "Servicial"] },
-  { name: "Libra", element: "Aire", modality: "Cardinal", dates: "23 sep - 22 oct", symbol: "♎", keywords: ["Diplomático", "Armonioso", "Justo"] },
-  { name: "Escorpio", element: "Agua", modality: "Fijo", dates: "23 oct - 21 nov", symbol: "♏", keywords: ["Intenso", "Transformador", "Misterioso"] },
-  { name: "Sagitario", element: "Fuego", modality: "Mutable", dates: "22 nov - 21 dic", symbol: "♐", keywords: ["Aventurero", "Optimista", "Filósofo"] },
-  { name: "Capricornio", element: "Tierra", modality: "Cardinal", dates: "22 dic - 19 ene", symbol: "♑", keywords: ["Ambicioso", "Responsable", "Disciplinado"] },
-  { name: "Acuario", element: "Aire", modality: "Fijo", dates: "20 ene - 18 feb", symbol: "♒", keywords: ["Innovador", "Independiente", "Humanitario"] },
-  { name: "Piscis", element: "Agua", modality: "Mutable", dates: "19 feb - 20 mar", symbol: "♓", keywords: ["Sensíble", "Intuitivo", "Creativo"] },
+  { name: "Aries", element: "Fuego", modality: "Cardinal", dates: "21 mar - 19 abr", symbol: "♈", keywords: ["Independiente", "Energético", "Valiente"], archetype: "El Pionero", archetypeEn: "The Pioneer" },
+  { name: "Tauro", element: "Tierra", modality: "Fijo", dates: "20 abr - 20 may", symbol: "♉", keywords: ["Paciente", "Práctico", "Determinado"], archetype: "El Constructor", archetypeEn: "The Builder" },
+  { name: "Géminis", element: "Aire", modality: "Mutable", dates: "21 may - 20 jun", symbol: "♊", keywords: ["Curioso", "Comunicativo", "Versátil"], archetype: "El Narrador", archetypeEn: "The Storyteller" },
+  { name: "Cáncer", element: "Agua", modality: "Cardinal", dates: "21 jun - 22 jul", symbol: "♋", keywords: ["Sensible", "Protector", "Emocional"], archetype: "El Sanador", archetypeEn: "The Healer" },
+  { name: "Leo", element: "Fuego", modality: "Fijo", dates: "23 jul - 22 ago", symbol: "♌", keywords: ["Creativo", "Líder", "Generoso"], archetype: "La Estrella", archetypeEn: "The Star" },
+  { name: "Virgo", element: "Tierra", modality: "Mutable", dates: "23 ago - 22 sep", symbol: "♍", keywords: ["Analítico", "Detallista", "Servicial"], archetype: "El Organizador", archetypeEn: "The Organizer" },
+  { name: "Libra", element: "Aire", modality: "Cardinal", dates: "23 sep - 22 oct", symbol: "♎", keywords: ["Diplomático", "Armonioso", "Justo"], archetype: "El Pacificador", archetypeEn: "The Peacemaker" },
+  { name: "Escorpio", element: "Agua", modality: "Fijo", dates: "23 oct - 21 nov", symbol: "♏", keywords: ["Intenso", "Transformador", "Misterioso"], archetype: "El Investigador", archetypeEn: "The Investigator" },
+  { name: "Sagitario", element: "Fuego", modality: "Mutable", dates: "22 nov - 21 dic", symbol: "♐", keywords: ["Aventurero", "Optimista", "Filósofo"], archetype: "El Aventurero", archetypeEn: "The Adventurer" },
+  { name: "Capricornio", element: "Tierra", modality: "Cardinal", dates: "22 dic - 19 ene", symbol: "♑", keywords: ["Ambicioso", "Responsable", "Disciplinado"], archetype: "El que consigue", archetypeEn: "The Achiever" },
+  { name: "Acuario", element: "Aire", modality: "Fijo", dates: "20 ene - 18 feb", symbol: "♒", keywords: ["Innovador", "Independiente", "Humanitario"], archetype: "El Visionario", archetypeEn: "The Visionary" },
+  { name: "Piscis", element: "Agua", modality: "Mutable", dates: "19 feb - 20 mar", symbol: "♓", keywords: ["Sensíble", "Intuitivo", "Creativo"], archetype: "El Poeta", archetypeEn: "The Poet" },
 ];
 
 export const PLANETS = [
