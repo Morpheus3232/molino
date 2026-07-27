@@ -562,7 +562,7 @@ function ShareButton({
   const shareText = useMemo(() => {
     const { entityAnimal, userAnimal, score } = result;
     const emoji = entity.emoji || "";
-    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubrila en Molino ✨`;
+    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubríla en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -632,7 +632,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
     const tierLabel = TIER_META[result.tier].label;
 
     if (entityAnimal === userAnimal) {
-      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
     }
     if (relationship === "tríada compatible") {
       return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
@@ -646,7 +646,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
     if (relationship === "requiere atención") {
       return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
     }
-    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {

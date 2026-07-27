@@ -126,7 +126,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
   }, [recommendationMap]);
 
   return (
-    <div className="relative min-h-screen bg-[#F3EDE3]">
+    <div className="relative min-h-screen bg-background">
       <Grainient
         timeSpeed={0.12}
         contrast={1.15}
