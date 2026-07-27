@@ -8,7 +8,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1900, country: "Estados Unidos", emoji: "🇺🇸",
     description: "Fundada en 1776, una república federal que combina innovación, diversidad y poder blando en el escenario global.",
     keyThemes: ["Innovación", "Diversidad", "Libertad", "Poder"],
-    events: [{ id: "usa-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1900, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "usa-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1776, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 4 de julio de 1776.",
   },
   {
@@ -16,7 +16,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1912, country: "Israel", emoji: "🇮🇱",
     description: "Proclamado en 1948, un estado que combina resiliencia, innovación tecnológica y una profunda herencia cultural milenaria.",
     keyThemes: ["Resiliencia", "Innovación", "Tradición", "Estrategia"],
-    events: [{ id: "israel-indep", type: "independencia-declarada", label: "Declaración del Estado de Israel", year: 1912, confidence: "exacta", primaryForAffinity: true, description: "Declaración del Estado de Israel", source: "Documentación histórica" }],
+    events: [{ id: "israel-indep", type: "independencia-declarada", label: "Declaración del Estado de Israel", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Declaración del Estado de Israel", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 14 de mayo de 1948.",
   },
   {
@@ -24,7 +24,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1924, country: "Países Bajos", emoji: "🇳🇱",
     description: "Fundada en 1581, una república mercantil que prosperó gracias al comercio marítimo, la tolerancia y la gestión hidráulica.",
     keyThemes: ["Comercio", "Tolerancia", "Ingeniería", "Liberalismo"],
-    events: [{ id: "nl-acta", type: "independencia-declarada", label: "Acta de Abjuración", year: 1924, confidence: "exacta", primaryForAffinity: true, description: "Acta de Abjuración", source: "Documentación histórica" }],
+    events: [{ id: "nl-acta", type: "independencia-declarada", label: "Acta de Abjuración", year: 1581, confidence: "exacta", primaryForAffinity: true, description: "Acta de Abjuración", source: "Documentación histórica" }],
     sourceNote: "Acta de Abjuración el 26 de julio de 1581.",
   },
   {
@@ -32,7 +32,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1936, country: "Taiwán", emoji: "🇹🇼",
     description: "Establecida en 1912, una democracia vibrante que ha sabido adaptarse y prosperar frente a desafíos geopolíticos constantes.",
     keyThemes: ["Democracia", "Adaptabilidad", "Tecnología", "Resiliencia"],
-    events: [{ id: "taiwan-founding", type: "fundacion", label: "Fundación de la República de China", year: 1936, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República de China", source: "Documentación histórica" }],
+    events: [{ id: "taiwan-founding", type: "fundacion", label: "Fundación de la República de China", year: 1912, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República de China", source: "Documentación histórica" }],
     sourceNote: "Fundación de la República de China el 1 de enero de 1912.",
   },
   {
@@ -40,7 +40,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1948, country: "Singapur", emoji: "🇸🇬",
     description: "Independizada en 1965, una ciudad-estado que transformó su geografía limitada en un centro financiero y tecnológico global.",
     keyThemes: ["Eficiencia", "Innovación", "Multiculturalismo", "Visión"],
-    events: [{ id: "sg-indep", type: "independencia-declarada", label: "Independencia de Singapur", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Singapur", source: "Documentación histórica" }],
+    events: [{ id: "sg-indep", type: "independencia-declarada", label: "Independencia de Singapur", year: 1965, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Singapur", source: "Documentación histórica" }],
     sourceNote: "Independencia el 9 de agosto de 1965.",
   },
   // BUEY
@@ -49,7 +49,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1901, country: "Alemania", emoji: "🇩🇪",
     description: "Unificada en 1871, una potencia industrial que ha demostrado una capacidad constante de reconstrucción y liderazgo europeo.",
     keyThemes: ["Industria", "Disciplina", "Precisión", "Estabilidad"],
-    events: [{ id: "de-unificacion", type: "fundacion", label: "Unificación Alemana", year: 1901, confidence: "exacta", primaryForAffinity: true, description: "Unificación Alemana", source: "Documentación histórica" }],
+    events: [{ id: "de-unificacion", type: "fundacion", label: "Unificación Alemana", year: 1871, confidence: "exacta", primaryForAffinity: true, description: "Unificación Alemana", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Imperio Alemán el 18 de enero de 1871.",
   },
   {
@@ -57,7 +57,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1913, country: "Japón", emoji: "🇯🇵",
     description: "Reconstituida en 1947, una nación que fusiona su rica tradición con una capacidad industrial y tecnológica de primer orden mundial.",
     keyThemes: ["Tradición", "Disciplina", "Innovación", "Armonía"],
-    events: [{ id: "jp-constitucion", type: "fundacion", label: "Constitución de la Posguerra", year: 1913, confidence: "exacta", primaryForAffinity: true, description: "Constitución de la Posguerra", source: "Documentación histórica" }],
+    events: [{ id: "jp-constitucion", type: "fundacion", label: "Constitución de la Posguerra", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Constitución de la Posguerra", source: "Documentación histórica" }],
     sourceNote: "Constitución del 3 de mayo de 1947.",
   },
   {
@@ -65,7 +65,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1925, country: "Suiza", emoji: "🇨🇭",
     description: "Constituida en 1848, una confederación conocida por su neutralidad perpetua, estabilidad política y excelencia bancaria.",
     keyThemes: ["Neutralidad", "Estabilidad", "Precisión", "Diplomacia"],
-    events: [{ id: "ch-constitucion", type: "fundacion", label: "Constitución Federal Suiza", year: 1925, confidence: "exacta", primaryForAffinity: true, description: "Constitución Federal Suiza", source: "Documentación histórica" }],
+    events: [{ id: "ch-constitucion", type: "fundacion", label: "Constitución Federal Suiza", year: 1848, confidence: "exacta", primaryForAffinity: true, description: "Constitución Federal Suiza", source: "Documentación histórica" }],
     sourceNote: "Constitución Federal del 12 de septiembre de 1848.",
   },
   {
@@ -73,7 +73,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1937, country: "Canadá", emoji: "🇨🇦",
     description: "Confederada en 1867, una monarquía constitucional que ha construido una sociedad multicultural, pacífica y próspera.",
     keyThemes: ["Multiculturalismo", "Paz", "Naturaleza", "Estabilidad"],
-    events: [{ id: "ca-confederacion", type: "fundacion", label: "Confederación Canadiense", year: 1937, confidence: "exacta", primaryForAffinity: true, description: "Confederación Canadiense", source: "Documentación histórica" }],
+    events: [{ id: "ca-confederacion", type: "fundacion", label: "Confederación Canadiense", year: 1867, confidence: "exacta", primaryForAffinity: true, description: "Confederación Canadiense", source: "Documentación histórica" }],
     sourceNote: "Acta de la América del Norte Británica el 1 de julio de 1867.",
   },
   {
@@ -81,7 +81,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1949, country: "Corea del Sur", emoji: "🇰🇷",
     description: "Fundada en 1948, un milagro económico que pasó de la devastación a ser una potencia tecnológica y cultural global en décadas.",
     keyThemes: ["Industria", "Tecnología", "Disciplina", "Progreso"],
-    events: [{ id: "kr-fundacion", type: "fundacion", label: "Fundación de la República de Corea", year: 1949, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República de Corea", source: "Documentación histórica" }],
+    events: [{ id: "kr-fundacion", type: "fundacion", label: "Fundación de la República de Corea", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República de Corea", source: "Documentación histórica" }],
     sourceNote: "Establecimiento de la República el 15 de agosto de 1948.",
   },
   // TIGRE
@@ -90,7 +90,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1902, country: "México", emoji: "🇲🇽",
     description: "Iniciada su independencia en 1810, una nación vibrante que fusiona civilizaciones ancestrales con un espíritu revolucionario inagotable.",
     keyThemes: ["Revolución", "Pasión", "Identidad", "Resistencia"],
-    events: [{ id: "mx-indep", type: "independencia-declarada", label: "Grito de Independencia", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "Grito de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "mx-indep", type: "independencia-declarada", label: "Grito de Independencia", year: 1810, confidence: "exacta", primaryForAffinity: true, description: "Grito de Independencia", source: "Documentación histórica" }],
     sourceNote: "Grito de Dolores el 16 de septiembre de 1810.",
   },
   {
@@ -98,7 +98,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1914, country: "Brasil", emoji: "🇧🇷",
     description: "Independizada en 1822, una potencia tropical de proporciones continentales con una energía cultural y económica arrolladora.",
     keyThemes: ["Energía", "Diversidad", "Naturaleza", "Pasión"],
-    events: [{ id: "br-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1914, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "br-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1822, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Grito de Ipiranga el 7 de septiembre de 1822.",
   },
   {
@@ -106,7 +106,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1926, country: "India", emoji: "🇮🇳",
     description: "Independizada en 1947, la democracia más grande del mundo que combina una civilización milenaria con un ascenso imparable.",
     keyThemes: ["Democracia", "Diversidad", "Espiritualidad", "Crecimiento"],
-    events: [{ id: "in-indep", type: "independencia-declarada", label: "Independencia de la India", year: 1926, confidence: "exacta", primaryForAffinity: true, description: "Independencia de la India", source: "Documentación histórica" }],
+    events: [{ id: "in-indep", type: "independencia-declarada", label: "Independencia de la India", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Independencia de la India", source: "Documentación histórica" }],
     sourceNote: "Independencia el 15 de agosto de 1947.",
   },
   {
@@ -114,7 +114,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1938, country: "Colombia", emoji: "🇨🇴",
     description: "Independizada en 1810, una tierra de extraordinaria biodiversidad y un pueblo resiliente que supera adversidades con vitalidad.",
     keyThemes: ["Biodiversidad", "Resiliencia", "Pasión", "Creatividad"],
-    events: [{ id: "co-indep", type: "independencia-declarada", label: "Grito de Independencia", year: 1938, confidence: "exacta", primaryForAffinity: true, description: "Grito de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "co-indep", type: "independencia-declarada", label: "Grito de Independencia", year: 1810, confidence: "exacta", primaryForAffinity: true, description: "Grito de Independencia", source: "Documentación histórica" }],
     sourceNote: "Grito de Independencia el 20 de julio de 1810.",
   },
   {
@@ -122,7 +122,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1950, country: "Nigeria", emoji: "🇳🇬",
     description: "Independizada en 1960, el gigante africano que canaliza su enorme población y recursos en un motor cultural y económico continental.",
     keyThemes: ["Potencia", "Diversidad", "Empresa", "Cultura"],
-    events: [{ id: "ng-indep", type: "independencia-declarada", label: "Independencia de Nigeria", year: 1950, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Nigeria", source: "Documentación histórica" }],
+    events: [{ id: "ng-indep", type: "independencia-declarada", label: "Independencia de Nigeria", year: 1960, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Nigeria", source: "Documentación histórica" }],
     sourceNote: "Independencia el 1 de octubre de 1960.",
   },
   // GATO
@@ -131,7 +131,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1903, country: "Francia", emoji: "🇫🇷",
     description: "Revolucionada en 1789, una república que ha moldeado la política, el arte y el pensamiento moderno con su ideal universalista.",
     keyThemes: ["Elegancia", "República", "Cultura", "Vanguardia"],
-    events: [{ id: "fr-revolucion", type: "fundacion", label: "Revolución Francesa", year: 1903, confidence: "exacta", primaryForAffinity: true, description: "Revolución Francesa", source: "Documentación histórica" }],
+    events: [{ id: "fr-revolucion", type: "fundacion", label: "Revolución Francesa", year: 1789, confidence: "exacta", primaryForAffinity: true, description: "Revolución Francesa", source: "Documentación histórica" }],
     sourceNote: "Toma de la Bastilla el 14 de julio de 1789.",
   },
   {
@@ -139,7 +139,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1915, country: "Italia", emoji: "🇮🇹",
     description: "Unificada en 1861, una república que heredó el Imperio Romano y hoy es cuna del arte, la moda y la buena mesa.",
     keyThemes: ["Arte", "Moda", "Gastronomía", "Elegancia"],
-    events: [{ id: "it-unificacion", type: "fundacion", label: "Unificación Italiana", year: 1915, confidence: "exacta", primaryForAffinity: true, description: "Unificación Italiana", source: "Documentación histórica" }],
+    events: [{ id: "it-unificacion", type: "fundacion", label: "Unificación Italiana", year: 1861, confidence: "exacta", primaryForAffinity: true, description: "Unificación Italiana", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Reino de Italia el 17 de marzo de 1861.",
   },
   {
@@ -147,7 +147,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1927, country: "Marruecos", emoji: "🇲🇦",
     description: "Independizada en 1956, un reino que entrelaza su herencia árabe, bereber y andalusí con una diplomacia moderna y sofisticada.",
     keyThemes: ["Diplomacia", "Tradición", "Artesanía", "Tolerancia"],
-    events: [{ id: "ma-indep", type: "independencia-declarada", label: "Independencia de Marruecos", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Marruecos", source: "Documentación histórica" }],
+    events: [{ id: "ma-indep", type: "independencia-declarada", label: "Independencia de Marruecos", year: 1956, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Marruecos", source: "Documentación histórica" }],
     sourceNote: "Independencia el 2 de marzo de 1956.",
   },
   {
@@ -155,7 +155,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1939, country: "Tailandia", emoji: "🇹🇭",
     description: "Fundado el reino en 1782, un país que preservó su independencia combinando una monarquía venerada con una elegancia cultural única.",
     keyThemes: ["Elegancia", "Cortesía", "Espiritualidad", "Exotismo"],
-    events: [{ id: "th-dinastia", type: "fundacion", label: "Fundación de la Dinastía Chakri", year: 1939, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la Dinastía Chakri", source: "Documentación histórica" }],
+    events: [{ id: "th-dinastia", type: "fundacion", label: "Fundación de la Dinastía Chakri", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la Dinastía Chakri", source: "Documentación histórica" }],
     sourceNote: "Fundación de Bangkok el 6 de abril de 1782.",
   },
   {
@@ -163,7 +163,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1951, country: "Kenia", emoji: "🇰🇪",
     description: "Independizada en 1963, una nación que canaliza su majestuosa naturaleza y diversidad étnica en un liderazgo regional diplomático.",
     keyThemes: ["Naturaleza", "Diplomacia", "Diversidad", "Safari"],
-    events: [{ id: "ke-indep", type: "independencia-declarada", label: "Independencia de Kenia", year: 1951, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Kenia", source: "Documentación histórica" }],
+    events: [{ id: "ke-indep", type: "independencia-declarada", label: "Independencia de Kenia", year: 1963, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Kenia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 12 de diciembre de 1963.",
   },
   // DRAGÓN
@@ -172,7 +172,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1904, country: "China", emoji: "🇨🇳",
     description: "Proclamada en 1949, una civilización milenaria que resurgió como superpotencia global con una ambición industrial y geopolítica sin precedentes.",
     keyThemes: ["Poder", "Ambición", "Tradición", "Expansión"],
-    events: [{ id: "cn-proclamacion", type: "fundacion", label: "Proclamación de la República Popular", year: 1904, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de la República Popular", source: "Documentación histórica" }],
+    events: [{ id: "cn-proclamacion", type: "fundacion", label: "Proclamación de la República Popular", year: 1949, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de la República Popular", source: "Documentación histórica" }],
     sourceNote: "Proclamación el 1 de octubre de 1949.",
   },
   {
@@ -180,7 +180,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1916, country: "Rusia", emoji: "🇷🇺",
     description: "Surgida en 1991, una potencia euroasiática que heredó el legado soviético y mantiene una influencia geopolítica formidable.",
     keyThemes: ["Poder", "Geopolítica", "Resiliencia", "Inmensidad"],
-    events: [{ id: "ru-federacion", type: "fundacion", label: "Disolución de la URSS", year: 1916, confidence: "exacta", primaryForAffinity: true, description: "Disolución de la URSS", source: "Documentación histórica" }],
+    events: [{ id: "ru-federacion", type: "fundacion", label: "Disolución de la URSS", year: 1991, confidence: "exacta", primaryForAffinity: true, description: "Disolución de la URSS", source: "Documentación histórica" }],
     sourceNote: "Disolución de la URSS el 25 de diciembre de 1991.",
   },
   {
@@ -188,7 +188,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1928, country: "Reino Unido", emoji: "🇬🇧",
     description: "Unificado en 1707, una monarquía parlamentaria que expandió su lengua y leyes por el mundo entero a través de su imperio.",
     keyThemes: ["Imperio", "Parlamento", "Tradición", "Influencia"],
-    events: [{ id: "gb-union", type: "fundacion", label: "Acts of Union", year: 1928, confidence: "exacta", primaryForAffinity: true, description: "Acts of Union", source: "Documentación histórica" }],
+    events: [{ id: "gb-union", type: "fundacion", label: "Acts of Union", year: 1707, confidence: "exacta", primaryForAffinity: true, description: "Acts of Union", source: "Documentación histórica" }],
     sourceNote: "Acts of Union el 1 de mayo de 1707.",
   },
   {
@@ -196,7 +196,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1940, country: "Emiratos Árabes Unidos", emoji: "🇦🇪",
     description: "Fundada en 1971, una federación que transformó el desierto en un centro global de lujo, finanzas y ambición arquitectónica.",
     keyThemes: ["Lujo", "Ambición", "Futurismo", "Comercio"],
-    events: [{ id: "ae-federacion", type: "fundacion", label: "Independencia y Federación", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Independencia y Federación", source: "Documentación histórica" }],
+    events: [{ id: "ae-federacion", type: "fundacion", label: "Independencia y Federación", year: 1971, confidence: "exacta", primaryForAffinity: true, description: "Independencia y Federación", source: "Documentación histórica" }],
     sourceNote: "Independencia el 2 de diciembre de 1971.",
   },
   {
@@ -204,7 +204,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1952, country: "Turquía", emoji: "🇹🇷",
     description: "Proclamada en 1923, una república que modernizó su herencia otomana para convertirse en un puente geopolítico entre continentes.",
     keyThemes: ["Puente", "Modernización", "Poder", "Historia"],
-    events: [{ id: "tr-republica", type: "fundacion", label: "Proclamación de la República", year: 1952, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de la República", source: "Documentación histórica" }],
+    events: [{ id: "tr-republica", type: "fundacion", label: "Proclamación de la República", year: 1923, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de la República", source: "Documentación histórica" }],
     sourceNote: "Proclamación de la República el 29 de octubre de 1923.",
   },
   // SERPIENTE
@@ -213,7 +213,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1905, country: "Egipto", emoji: "🇪🇬",
     description: "Independizada en 1922, cuna de una de las civilizaciones más antiguas que sigue ejerciendo un liderazgo cultural y político en el mundo árabe.",
     keyThemes: ["Sabiduría", "Historia", "Misterio", "Liderazgo"],
-    events: [{ id: "eg-indep", type: "independencia-declarada", label: "Independencia de Egipto", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Egipto", source: "Documentación histórica" }],
+    events: [{ id: "eg-indep", type: "independencia-declarada", label: "Independencia de Egipto", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Egipto", source: "Documentación histórica" }],
     sourceNote: "Independencia el 28 de febrero de 1922.",
   },
   {
@@ -221,7 +221,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1917, country: "Grecia", emoji: "🇬🇷",
     description: "Independizada en 1821, la cuna de la democracia y la filosofía occidental que renació del Imperio Otomano con su legado clásico intacto.",
     keyThemes: ["Filosofía", "Democracia", "Sabiduría", "Mito"],
-    events: [{ id: "gr-indep", type: "independencia-declarada", label: "Guerra de Independencia Griega", year: 1917, confidence: "exacta", primaryForAffinity: true, description: "Guerra de Independencia Griega", source: "Documentación histórica" }],
+    events: [{ id: "gr-indep", type: "independencia-declarada", label: "Guerra de Independencia Griega", year: 1821, confidence: "exacta", primaryForAffinity: true, description: "Guerra de Independencia Griega", source: "Documentación histórica" }],
     sourceNote: "Declaración de independencia el 25 de marzo de 1821.",
   },
   {
@@ -229,7 +229,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1929, country: "Perú", emoji: "🇵🇪",
     description: "Independizada en 1821, heredera del Imperio Inca que combina una sabiduría ancestral con una biodiversidad y gastronomía extraordinarias.",
     keyThemes: ["Herencia", "Biodiversidad", "Gastronomía", "Misterio"],
-    events: [{ id: "pe-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1929, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "pe-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1821, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 28 de julio de 1821.",
   },
   {
@@ -237,7 +237,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1941, country: "Irán", emoji: "🇮🇷",
     description: "Revolucionada en 1979, una teocracia que se erige sobre una civilización persa milenaria con una geopolítica estratégica y compleja.",
     keyThemes: ["Persia", "Geopolítica", "Estrategia", "Espiritualidad"],
-    events: [{ id: "ir-revolucion", type: "fundacion", label: "Revolución Islámica", year: 1941, confidence: "exacta", primaryForAffinity: true, description: "Revolución Islámica", source: "Documentación histórica" }],
+    events: [{ id: "ir-revolucion", type: "fundacion", label: "Revolución Islámica", year: 1979, confidence: "exacta", primaryForAffinity: true, description: "Revolución Islámica", source: "Documentación histórica" }],
     sourceNote: "Revolución Islámica en febrero de 1979.",
   },
   {
@@ -245,7 +245,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1953, country: "Arabia Saudita", emoji: "🇸🇦",
     description: "Unificada en 1932, un reino que combina su autoridad religiosa islámica con una estrategia petrolera y una modernización acelerada.",
     keyThemes: ["Petróleo", "Estrategia", "Tradición", "Autoridad"],
-    events: [{ id: "sa-unificacion", type: "fundacion", label: "Unificación del Reino", year: 1953, confidence: "exacta", primaryForAffinity: true, description: "Unificación del Reino", source: "Documentación histórica" }],
+    events: [{ id: "sa-unificacion", type: "fundacion", label: "Unificación del Reino", year: 1932, confidence: "exacta", primaryForAffinity: true, description: "Unificación del Reino", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Reino el 23 de septiembre de 1932.",
   },
   // CABALLO
@@ -254,7 +254,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1906, country: "Argentina", emoji: "🇦🇷",
     description: "Independizada en 1816, una nación de llanuras infinitas y pasión desbordante que cabalga entre la nostalgia y su potencial inmenso.",
     keyThemes: ["Pasión", "Libertad", "Tango", "Inmensidad"],
-    events: [{ id: "ar-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1906, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "ar-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1816, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 9 de julio de 1816.",
   },
   {
@@ -262,7 +262,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1918, country: "Australia", emoji: "🇦🇺",
     description: "Federada en 1901, una nación insular que combina una naturaleza indómita con un espíritu aventurero y una economía resiliente.",
     keyThemes: ["Aventura", "Naturaleza", "Libertad", "Resiliencia"],
-    events: [{ id: "au-federacion", type: "fundacion", label: "Federación Australiana", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Federación Australiana", source: "Documentación histórica" }],
+    events: [{ id: "au-federacion", type: "fundacion", label: "Federación Australiana", year: 1901, confidence: "exacta", primaryForAffinity: true, description: "Federación Australiana", source: "Documentación histórica" }],
     sourceNote: "Federación el 1 de enero de 1901.",
   },
   {
@@ -270,7 +270,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1930, country: "Mongolia", emoji: "🇲🇳",
     description: "Independizada en 1921, una nación de jinetes nómadas que preserva su espíritu libre en las vastas estepas de Asia Central.",
     keyThemes: ["Libertad", "Nomadismo", "Estepa", "Tradición"],
-    events: [{ id: "mn-indep", type: "independencia-declarada", label: "Independencia de Mongolia", year: 1930, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Mongolia", source: "Documentación histórica" }],
+    events: [{ id: "mn-indep", type: "independencia-declarada", label: "Independencia de Mongolia", year: 1921, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Mongolia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 11 de julio de 1921.",
   },
   {
@@ -278,7 +278,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1942, country: "Cuba", emoji: "🇨🇺",
     description: "Independizada en 1902, una isla caribeña de espíritu rebelde y vibrante cultura que ha bailado al ritmo de su propia historia revolucionaria.",
     keyThemes: ["Rebeldía", "Ritmo", "Pasión", "Resistencia"],
-    events: [{ id: "cu-indep", type: "independencia-declarada", label: "Independencia de Cuba", year: 1942, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Cuba", source: "Documentación histórica" }],
+    events: [{ id: "cu-indep", type: "independencia-declarada", label: "Independencia de Cuba", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Cuba", source: "Documentación histórica" }],
     sourceNote: "Independencia el 20 de mayo de 1902.",
   },
   {
@@ -286,7 +286,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1954, country: "Jamaica", emoji: "🇯🇲",
     description: "Independizada en 1962, una isla cuyo espíritu libre y ritmo contagioso conquistaron el mundo a través del reggae y la velocidad.",
     keyThemes: ["Libertad", "Música", "Velocidad", "Caribe"],
-    events: [{ id: "jm-indep", type: "independencia-declarada", label: "Independencia de Jamaica", year: 1954, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Jamaica", source: "Documentación histórica" }],
+    events: [{ id: "jm-indep", type: "independencia-declarada", label: "Independencia de Jamaica", year: 1962, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Jamaica", source: "Documentación histórica" }],
     sourceNote: "Independencia el 6 de agosto de 1962.",
   },
   // CABRA
@@ -295,7 +295,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1907, country: "España", emoji: "🇪🇸",
     description: "Constituida en 1978, una monarquía parlamentaria donde la creatividad, el arte y la pasión se entrelazan con siglos de historia diversa.",
     keyThemes: ["Arte", "Pasión", "Creatividad", "Diversidad"],
-    events: [{ id: "es-constitucion", type: "fundacion", label: "Constitución Española", year: 1907, confidence: "exacta", primaryForAffinity: true, description: "Constitución Española", source: "Documentación histórica" }],
+    events: [{ id: "es-constitucion", type: "fundacion", label: "Constitución Española", year: 1978, confidence: "exacta", primaryForAffinity: true, description: "Constitución Española", source: "Documentación histórica" }],
     sourceNote: "Constitución del 6 de diciembre de 1978.",
   },
   {
@@ -303,7 +303,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1919, country: "Portugal", emoji: "🇵🇹",
     description: "Fundado en 1143, el reino más antiguo de Europa que forjó un imperio marítimo global con una melancolía poética y creativa.",
     keyThemes: ["Navegación", "Fado", "Creatividad", "Añoranza"],
-    events: [{ id: "pt-fundacion", type: "fundacion", label: "Tratado de Zamora", year: 1919, confidence: "exacta", primaryForAffinity: true, description: "Tratado de Zamora", source: "Documentación histórica" }],
+    events: [{ id: "pt-fundacion", type: "fundacion", label: "Tratado de Zamora", year: 1143, confidence: "exacta", primaryForAffinity: true, description: "Tratado de Zamora", source: "Documentación histórica" }],
     sourceNote: "Tratado de Zamora en 1143.",
   },
   {
@@ -311,7 +311,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1931, country: "Vietnam", emoji: "🇻🇳",
     description: "Declarada su independencia en 1945, una nación de resiliencia creativa que transformó la adversidad en un dinamismo económico imparable.",
     keyThemes: ["Resiliencia", "Creatividad", "Tradición", "Renacimiento"],
-    events: [{ id: "vn-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1931, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "vn-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1945, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración el 2 de septiembre de 1945.",
   },
   {
@@ -319,7 +319,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1943, country: "Austria", emoji: "🇦🇹",
     description: "Reconstituida en 1955, una república alpina que canalizó su herencia imperial en una potencia cultural, musical y artística europea.",
     keyThemes: ["Música", "Arte", "Elegancia", "Creatividad"],
-    events: [{ id: "at-neutralidad", type: "fundacion", label: "Declaración de Neutralidad", year: 1943, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Neutralidad", source: "Documentación histórica" }],
+    events: [{ id: "at-neutralidad", type: "fundacion", label: "Declaración de Neutralidad", year: 1955, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Neutralidad", source: "Documentación histórica" }],
     sourceNote: "Tratado de Estado el 15 de mayo de 1955.",
   },
   {
@@ -327,7 +327,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1955, country: "Bélgica", emoji: "🇧🇪",
     description: "Independizada en 1830, un crisol de culturas germánica y latina que es sede de la diplomacia europea y cuna del surrealismo.",
     keyThemes: ["Surrealismo", "Diplomacia", "Diversidad", "Creatividad"],
-    events: [{ id: "be-indep", type: "independencia-declarada", label: "Independencia de Bélgica", year: 1955, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bélgica", source: "Documentación histórica" }],
+    events: [{ id: "be-indep", type: "independencia-declarada", label: "Independencia de Bélgica", year: 1830, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bélgica", source: "Documentación histórica" }],
     sourceNote: "Independencia el 4 de octubre de 1830.",
   },
   // MONO
@@ -336,7 +336,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1908, country: "Suecia", emoji: "🇸🇪",
     description: "Unificada en 1523, una monarquía constitucional que combina innovación tecnológica con un modelo de bienestar social ejemplar.",
     keyThemes: ["Innovación", "Diseño", "Bienestar", "Ingenio"],
-    events: [{ id: "se-indep", type: "independencia-declarada", label: "Independencia de la Unión de Kalmar", year: 1908, confidence: "exacta", primaryForAffinity: true, description: "Independencia de la Unión de Kalmar", source: "Documentación histórica" }],
+    events: [{ id: "se-indep", type: "independencia-declarada", label: "Independencia de la Unión de Kalmar", year: 1523, confidence: "exacta", primaryForAffinity: true, description: "Independencia de la Unión de Kalmar", source: "Documentación histórica" }],
     sourceNote: "Elección de Gustavo Vasa el 6 de junio de 1523.",
   },
   {
@@ -344,7 +344,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1920, country: "Finlandia", emoji: "🇫🇮",
     description: "Independizada en 1917, una república nórdica que combina ingeniería de precisión, innovación educativa y una conexión única con la naturaleza.",
     keyThemes: ["Ingenio", "Educación", "Diseño", "Naturaleza"],
-    events: [{ id: "fi-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1920, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "fi-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1917, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración el 6 de diciembre de 1917.",
   },
   {
@@ -352,7 +352,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1932, country: "Dinamarca", emoji: "🇩🇰",
     description: "Constituida en 1849, una monarquía constitucional que combina un diseño funcionalista con una sociedad igualitaria e innovadora.",
     keyThemes: ["Diseño", "Hygge", "Innovación", "Sostenibilidad"],
-    events: [{ id: "dk-constitucion", type: "fundacion", label: "Constitución de Dinamarca", year: 1932, confidence: "exacta", primaryForAffinity: true, description: "Constitución de Dinamarca", source: "Documentación histórica" }],
+    events: [{ id: "dk-constitucion", type: "fundacion", label: "Constitución de Dinamarca", year: 1849, confidence: "exacta", primaryForAffinity: true, description: "Constitución de Dinamarca", source: "Documentación histórica" }],
     sourceNote: "Constitución el 5 de junio de 1849.",
   },
   {
@@ -360,7 +360,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1944, country: "Chile", emoji: "🇨🇱",
     description: "Independizada en 1818, una república que ha demostrado una notable capacidad de reinventarse combinando estabilidad e innovación en el Cono Sur.",
     keyThemes: ["Innovación", "Estabilidad", "Resiliencia", "Naturaleza"],
-    events: [{ id: "cl-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1944, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "cl-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1818, confidence: "exacta", primaryForAffinity: true, description: "Declaración de Independencia", source: "Documentación histórica" }],
     sourceNote: "Declaración el 12 de febrero de 1818.",
   },
   {
@@ -368,7 +368,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1956, country: "Hungría", emoji: "🇭🇺",
     description: "Constituida en 1918, una nación que ha producido inventores y mentes brillantes desproporcionadamente numerosas para su tamaño.",
     keyThemes: ["Inventiva", "Ciencia", "Ingenio", "Cultura"],
-    events: [{ id: "hu-republica", type: "fundacion", label: "Fundación de la República", year: 1956, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República", source: "Documentación histórica" }],
+    events: [{ id: "hu-republica", type: "fundacion", label: "Fundación de la República", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la República", source: "Documentación histórica" }],
     sourceNote: "Proclamación de la República el 16 de noviembre de 1918.",
   },
   // GALLO
@@ -377,7 +377,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1909, country: "Polonia", emoji: "🇵🇱",
     description: "Reconstituida en 1918, una nación que ha resistido invasiones y particiones manteniendo su identidad, organización y espíritu indomable.",
     keyThemes: ["Organización", "Resistencia", "Identidad", "Disciplina"],
-    events: [{ id: "pl-indep", type: "independencia-declarada", label: "Independencia de Polonia", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Polonia", source: "Documentación histórica" }],
+    events: [{ id: "pl-indep", type: "independencia-declarada", label: "Independencia de Polonia", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Polonia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 11 de noviembre de 1918.",
   },
   {
@@ -385,7 +385,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1921, country: "República Checa", emoji: "🇨🇿",
     description: "Fundada en 1993, una república centroeuropea conocida por su precisión industrial, su pragmatismo y su rica herencia arquitectónica.",
     keyThemes: ["Precisión", "Pragmatismo", "Cultura", "Industria"],
-    events: [{ id: "cz-fundacion", type: "fundacion", label: "Disolución de Checoslovaquia", year: 1921, confidence: "exacta", primaryForAffinity: true, description: "Disolución de Checoslovaquia", source: "Documentación histórica" }],
+    events: [{ id: "cz-fundacion", type: "fundacion", label: "Disolución de Checoslovaquia", year: 1993, confidence: "exacta", primaryForAffinity: true, description: "Disolución de Checoslovaquia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 1 de enero de 1993.",
   },
   {
@@ -393,7 +393,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1933, country: "Noruega", emoji: "🇳🇴",
     description: "Independizada en 1905, una monarquía constitucional que ha organizado su riqueza petrolera con una previsión y disciplina ejemplares.",
     keyThemes: ["Disciplina", "Previsión", "Naturaleza", "Bienestar"],
-    events: [{ id: "no-indep", type: "independencia-declarada", label: "Disolución de la Unión con Suecia", year: 1933, confidence: "exacta", primaryForAffinity: true, description: "Disolución de la Unión con Suecia", source: "Documentación histórica" }],
+    events: [{ id: "no-indep", type: "independencia-declarada", label: "Disolución de la Unión con Suecia", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Disolución de la Unión con Suecia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 7 de junio de 1905.",
   },
   {
@@ -401,7 +401,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1945, country: "Rumania", emoji: "🇷🇴",
     description: "Independizada en 1877, una nación latina en el este de Europa que combina una organización militar histórica con un folclore vibrante.",
     keyThemes: ["Organización", "Latín", "Tradición", "Resiliencia"],
-    events: [{ id: "ro-indep", type: "independencia-declarada", label: "Independencia de Rumania", year: 1945, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Rumania", source: "Documentación histórica" }],
+    events: [{ id: "ro-indep", type: "independencia-declarada", label: "Independencia de Rumania", year: 1877, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Rumania", source: "Documentación histórica" }],
     sourceNote: "Independencia el 9 de mayo de 1877.",
   },
   {
@@ -409,7 +409,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1957, country: "Bulgaria", emoji: "🇧🇬",
     description: "Independizada en 1908, una nación balcánica con un alfabeto propio y una tradición agrícola que valora la puntualidad y el orden.",
     keyThemes: ["Orden", "Tradición", "Cultura", "Agricultura"],
-    events: [{ id: "bg-indep", type: "independencia-declarada", label: "Independencia de Bulgaria", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bulgaria", source: "Documentación histórica" }],
+    events: [{ id: "bg-indep", type: "independencia-declarada", label: "Independencia de Bulgaria", year: 1908, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bulgaria", source: "Documentación histórica" }],
     sourceNote: "Independencia el 5 de octubre de 1908.",
   },
   // PERRO
@@ -418,7 +418,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1910, country: "Costa Rica", emoji: "🇨🇷",
     description: "Independizada en 1821, una república que abolió su ejército en 1949 para invertir en educación, naturaleza y justicia social.",
     keyThemes: ["Paz", "Justicia", "Naturaleza", "Educación"],
-    events: [{ id: "cr-indep", type: "independencia-declarada", label: "Independencia de Costa Rica", year: 1910, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Costa Rica", source: "Documentación histórica" }],
+    events: [{ id: "cr-indep", type: "independencia-declarada", label: "Independencia de Costa Rica", year: 1821, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Costa Rica", source: "Documentación histórica" }],
     sourceNote: "Independencia el 15 de septiembre de 1821.",
   },
   {
@@ -426,7 +426,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1922, country: "Uruguay", emoji: "🇺🇾",
     description: "Constituida en 1828, una república pequeña pero ejemplar en estabilidad democrática, libertades civiles y justicia social en América Latina.",
     keyThemes: ["Justicia", "Estabilidad", "Libertad", "Igualdad"],
-    events: [{ id: "uy-indep", type: "independencia-declarada", label: "Convención Preliminar de Paz", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "Convención Preliminar de Paz", source: "Documentación histórica" }],
+    events: [{ id: "uy-indep", type: "independencia-declarada", label: "Convención Preliminar de Paz", year: 1828, confidence: "exacta", primaryForAffinity: true, description: "Convención Preliminar de Paz", source: "Documentación histórica" }],
     sourceNote: "Convención Preliminar de Paz el 27 de agosto de 1828.",
   },
   {
@@ -434,7 +434,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1934, country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "Fundada en 1840, una nación insular que ha priorizado la justicia social, los derechos indígenas y la protección ambiental como pilares nacionales.",
     keyThemes: ["Justicia", "Naturaleza", "Derechos", "Paz"],
-    events: [{ id: "nz-tratado", type: "fundacion", label: "Tratado de Waitangi", year: 1934, confidence: "exacta", primaryForAffinity: true, description: "Tratado de Waitangi", source: "Documentación histórica" }],
+    events: [{ id: "nz-tratado", type: "fundacion", label: "Tratado de Waitangi", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Tratado de Waitangi", source: "Documentación histórica" }],
     sourceNote: "Tratado de Waitangi el 6 de febrero de 1840.",
   },
   {
@@ -442,7 +442,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1946, country: "Panamá", emoji: "🇵🇦",
     description: "Independizada en 1903, una nación que une dos océanos y dos Américas con un canal que es símbolo de justicia y soberanía recuperada.",
     keyThemes: ["Conexión", "Soberanía", "Justicia", "Comercio"],
-    events: [{ id: "pa-indep", type: "independencia-declarada", label: "Independencia de Panamá", year: 1946, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Panamá", source: "Documentación histórica" }],
+    events: [{ id: "pa-indep", type: "independencia-declarada", label: "Independencia de Panamá", year: 1903, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Panamá", source: "Documentación histórica" }],
     sourceNote: "Independencia el 3 de noviembre de 1903.",
   },
   {
@@ -450,7 +450,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1958, country: "Irlanda", emoji: "🇮🇪",
     description: "Establecida en 1922, una república que superó siglos de lucha por la justicia para convertirse en un faro de literatura, música y progreso.",
     keyThemes: ["Justicia", "Literatura", "Música", "Resiliencia"],
-    events: [{ id: "ie-indep", type: "independencia-declarada", label: "Estado Libre Irlandés", year: 1958, confidence: "exacta", primaryForAffinity: true, description: "Estado Libre Irlandés", source: "Documentación histórica" }],
+    events: [{ id: "ie-indep", type: "independencia-declarada", label: "Estado Libre Irlandés", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "Estado Libre Irlandés", source: "Documentación histórica" }],
     sourceNote: "Estado Libre Irlandés el 6 de diciembre de 1922.",
   },
   // CERDO
@@ -459,7 +459,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1911, country: "Filipinas", emoji: "🇵🇭",
     description: "Independizada en 1946, un archipiélago de sonrisas y hospitalidad where la calidez humana y la resiliencia definen su carácter nacional.",
     keyThemes: ["Hospitalidad", "Calidez", "Resiliencia", "Alegría"],
-    events: [{ id: "ph-indep", type: "independencia-declarada", label: "Independencia de Filipinas", year: 1911, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Filipinas", source: "Documentación histórica" }],
+    events: [{ id: "ph-indep", type: "independencia-declarada", label: "Independencia de Filipinas", year: 1946, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Filipinas", source: "Documentación histórica" }],
     sourceNote: "Independencia el 4 de julio de 1946.",
   },
   {
@@ -467,7 +467,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1923, country: "Indonesia", emoji: "🇮🇩",
     description: "Proclamada en 1945, el mayor archipiélago del mundo donde el espíritu comunitario y la generosidad son pilares de su diversidad cultural.",
     keyThemes: ["Diversidad", "Comunidad", "Generosidad", "Espiritualidad"],
-    events: [{ id: "id-indep", type: "independencia-declarada", label: "Proclamación de Independencia", year: 1923, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de Independencia", source: "Documentación histórica" }],
+    events: [{ id: "id-indep", type: "independencia-declarada", label: "Proclamación de Independencia", year: 1945, confidence: "exacta", primaryForAffinity: true, description: "Proclamación de Independencia", source: "Documentación histórica" }],
     sourceNote: "Proclamación el 17 de agosto de 1945.",
   },
   {
@@ -475,7 +475,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1935, country: "Malasia", emoji: "🇲🇾",
     description: "Independizada en 1957, una federación multicultural donde la calidez de su gente y su generosidad contrastan con su pujante modernidad.",
     keyThemes: ["Generosidad", "Multiculturalismo", "Calidez", "Progreso"],
-    events: [{ id: "my-indep", type: "independencia-declarada", label: "Independencia de Malasia", year: 1935, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Malasia", source: "Documentación histórica" }],
+    events: [{ id: "my-indep", type: "independencia-declarada", label: "Independencia de Malasia", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Malasia", source: "Documentación histórica" }],
     sourceNote: "Independencia el 31 de agosto de 1957.",
   },
   {
@@ -483,7 +483,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1947, country: "Bangladesh", emoji: "🇧🇩",
     description: "Independizado en 1971, un delta fértil donde la generosidad de su pueblo y su espíritu comunitario impulsan un crecimiento notable.",
     keyThemes: ["Generosidad", "Comunidad", "Resiliencia", "Crecimiento"],
-    events: [{ id: "bd-indep", type: "independencia-declarada", label: "Independencia de Bangladesh", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bangladesh", source: "Documentación histórica" }],
+    events: [{ id: "bd-indep", type: "independencia-declarada", label: "Independencia de Bangladesh", year: 1971, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Bangladesh", source: "Documentación histórica" }],
     sourceNote: "Independencia el 16 de diciembre de 1971.",
   },
   {
@@ -491,7 +491,7 @@ export const COUNTRIES_60: SymbolicEntity[] = [
     foundingYear: 1959, country: "Ghana", emoji: "🇬🇭",
     description: "Independizada en 1957, la primera nación africana subsahariana en liberarse del colonialismo, conocida por su calidez y estabilidad democrática.",
     keyThemes: ["Calidez", "Libertad", "Hospitalidad", "Estabilidad"],
-    events: [{ id: "gh-indep", type: "independencia-declarada", label: "Independencia de Ghana", year: 1959, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Ghana", source: "Documentación histórica" }],
+    events: [{ id: "gh-indep", type: "independencia-declarada", label: "Independencia de Ghana", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Independencia de Ghana", source: "Documentación histórica" }],
     sourceNote: "Independencia el 6 de marzo de 1957.",
   },
 ];
