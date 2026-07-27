@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { fadeUp, staggerSection, staggerCard, numberReveal, hoverLift, hoverScale } from "@/lib/utils/motion";
+import { fadeUp, hoverScale, numberReveal } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
@@ -30,6 +30,7 @@ import { saveSession } from "@/lib/storage/ephemeral";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
 import { markOnboardingCompleted } from "@/lib/storage/discovery";
 import { analytics } from "@/lib/analytics/analytics";
+import Grainient from "@/components/Grainient";
 
 /* ═══ Helpers ═══ */
 
@@ -82,11 +83,28 @@ const getDaysInMonth = (month: string, year: string): number => {
   return new Date(y, m, 0).getDate();
 }
 
+const scrollReveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.5, ease: "easeOut" as const },
+};
+
+const staggerContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+};
+
 /* ═══ Reusable section wrapper ═══ */
 
 function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebrow?: string; title?: string; subtitle?: string; children?: React.ReactNode; className?: string }) {
   return (
-    <motion.section {...fadeUp} className={`mb-16 sm:mb-24 ${className}`}>
+    <motion.section {...scrollReveal} className={`mb-16 sm:mb-24 ${className}`}>
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
         {(eyebrow || title) && (
           <div className="mb-8 sm:mb-10">
@@ -188,7 +206,7 @@ function HeroWithForm() {
       <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           {/* Value prop */}
-          <motion.div {...fadeUp}>
+          <div>
             <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Inteligencia Personal</p>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
               Descubrí tu mapa
@@ -197,9 +215,9 @@ function HeroWithForm() {
               Una síntesis de numerología, astrología y zodiaco chino para entender tus patrones, ciclos y conexiones.
             </p>
             <p className="text-xs text-muted">
-              Sin registro. Sin guardar datos personales.
+              Sin servidor. Sin cuentas.
             </p>
-          </motion.div>
+          </div>
 
           {/* Form */}
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }} className="rounded-2xl border border-border bg-background/50 p-5 sm:p-6">
@@ -209,9 +227,11 @@ function HeroWithForm() {
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
                   <div className="relative">
                     <select
+                      id="birth-day"
+                      name="day"
                       value={day}
                       onChange={(e) => setDay(e.target.value)}
-                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
                       required
                       aria-label="Día"
                     >
@@ -229,9 +249,11 @@ function HeroWithForm() {
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
                   <div className="relative">
                     <select
+                      id="birth-month"
+                      name="month"
                       value={month}
                       onChange={(e) => setMonth(e.target.value)}
-                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
                       required
                       aria-label="Mes"
                     >
@@ -248,9 +270,11 @@ function HeroWithForm() {
                   <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
                   <div className="relative">
                     <select
+                      id="birth-year"
+                      name="year"
                       value={year}
                       onChange={(e) => setYear(e.target.value)}
-                      className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
                       required
                       aria-label="Año"
                     >
@@ -273,10 +297,9 @@ function HeroWithForm() {
               )}
 
               <motion.button
-                {...hoverScale}
                 type="submit"
                 disabled={loading || !day || !month || !year}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:hover:bg-muted disabled:hover:text-muted-foreground"
               >
                 {loading ? "Descubriendo..." : "Descubrir mi mapa →"}
               </motion.button>
@@ -332,18 +355,9 @@ function SystemsPreview() {
       eyebrow="Los tres sistemas"
       title="Una misma persona. Tres formas de observarla."
       subtitle="Numerología, astrología y zodiaco chino combinados en una misma lectura."
-      className="relative overflow-hidden"
+      className="relative overflow-hidden bg-ink text-paper"
     >
-      <div
-        className="absolute inset-0 -z-10 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0)",
-          backgroundSize: "24px 24px",
-        }}
-        aria-hidden="true"
-      />
-      <motion.div {...staggerSection} className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+      <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
         {[
           { num: "01", title: "Numerología", desc: "El lenguaje de los números", href: "/conocimiento/numerologia", accent: "var(--element-fire)", type: "numerologia" },
           { num: "02", title: "Astrología", desc: "El mapa del cielo de tu nacimiento", href: "/conocimiento/astrologia", accent: "var(--layer-astrology)", type: "astrologia" },
@@ -351,20 +365,19 @@ function SystemsPreview() {
         ].map((item) => (
           <motion.button
             key={item.num}
-            {...staggerCard}
-            {...hoverLift}
+            variants={staggerItem}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group relative text-left rounded-2xl border border-border bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:border-foreground/20 hover:shadow-xl"
+            className="group relative text-left rounded-2xl border border-paper/20 bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-paper/40 hover:shadow-sm"
           >
             <div className="flex items-center justify-between mb-5">
-              <motion.span {...numberReveal} className="text-[10px] font-mono tracking-[0.25em] text-muted">
+              <motion.span {...numberReveal} className="text-[10px] font-mono tracking-[0.25em] text-paper/60">
                 {item.num}
               </motion.span>
               <span className="text-accent/90">{SystemIcon({ type: item.type })}</span>
             </div>
-            <p className="font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
-            <p className="mt-2 text-sm text-muted leading-relaxed">{item.desc}</p>
+            <p className="font-serif text-lg sm:text-xl font-semibold text-paper group-hover:text-accent transition-colors duration-200">{item.title}</p>
+            <p className="mt-2 text-sm text-paper/70 leading-relaxed">{item.desc}</p>
             <span className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-accent">
               Explorar
               <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
@@ -394,11 +407,11 @@ function Journey() {
       className="relative"
     >
       <div className="absolute left-3 sm:left-4 top-3 bottom-3 w-px bg-border/70" aria-hidden="true" />
-      <motion.div {...staggerSection} className="space-y-8 sm:space-y-10">
+      <motion.div variants={staggerContainer} className="space-y-8 sm:space-y-10">
         {items.map((item) => (
           <motion.div
             key={item.num}
-            {...staggerCard}
+            variants={staggerItem}
             className="relative grid grid-cols-[auto_1fr] gap-6 sm:gap-10"
           >
             <motion.div {...numberReveal} className="relative z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-background text-[11px] font-mono tracking-[0.2em] text-muted">
@@ -419,11 +432,13 @@ function Journey() {
 
 function ToolsAndDiscovery() {
   const router = useRouter();
-  const quickLinks = [
+  const calculatorLinks = [
     { title: "Camino de Vida", desc: "Tu número numerológico", href: "/herramientas/camino-de-vida" },
     { title: "Signo Solar", desc: "Tu signo zodiacal", href: "/herramientas/signo-solar" },
     { title: "Zodíaco Chino", desc: "Tu animal y elemento", href: "/herramientas/zodiaco-chino" },
     { title: "Compatibilidad", desc: "Conectá dos perfiles", href: "/herramientas/compatibilidad" },
+  ];
+  const explorationLinks = [
     { title: "Países", desc: "Afinidad simbólica por país", href: "/affinity/country" },
     { title: "Marcas", desc: "Marcas que resuenan con tu perfil", href: "/affinity/brand" },
     { title: "Universidades", desc: "Instituciones por afinidad", href: "/affinity/university" },
@@ -436,19 +451,38 @@ function ToolsAndDiscovery() {
       title="Herramientas y afinidades"
       subtitle="Accesos directos para seguir investigando tu perfil."
     >
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {quickLinks.map((item) => (
-          <button
+      <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Calculá al instante</p>
+      <motion.div variants={staggerContainer} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        {calculatorLinks.map((item) => (
+          <motion.button
             key={item.href}
+            variants={staggerItem}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group text-left rounded-2xl border border-border bg-card/60 p-4 sm:p-5 transition-all duration-300 hover:border-foreground/15 hover:shadow-lg"
+            className="group relative text-left rounded-2xl border border-border bg-card/60 p-4 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:shadow-sm"
           >
-            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors">{item.title}</p>
+            <span className="absolute top-3 right-3 text-accent" aria-hidden="true">⚡</span>
+            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
             <p className="mt-1.5 text-xs text-muted leading-relaxed">{item.desc}</p>
-          </button>
+          </motion.button>
         ))}
-      </div>
+      </motion.div>
+
+      <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Explorá conexiones</p>
+      <motion.div variants={staggerContainer} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {explorationLinks.map((item) => (
+          <motion.button
+            key={item.href}
+            variants={staggerItem}
+            type="button"
+            onClick={() => router.push(item.href)}
+            className="group text-left rounded-2xl border border-border bg-card/40 p-4 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:bg-card hover:shadow-sm"
+          >
+            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
+            <p className="mt-1.5 text-xs text-muted leading-relaxed">{item.desc}</p>
+          </motion.button>
+        ))}
+      </motion.div>
     </Section>
   );
 }
@@ -480,15 +514,14 @@ function ConceptsIndex() {
         }}
         aria-hidden="true"
       />
-      <motion.div {...staggerSection} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {concepts.map((concept) => (
           <motion.button
             key={concept.title}
-            {...staggerCard}
-            {...hoverLift}
+            variants={staggerItem}
             type="button"
             onClick={() => router.push(concept.href)}
-            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-200 ease-out hover:border-foreground/15 hover:bg-card"
+            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:bg-card hover:shadow-sm"
           >
             <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
             <span className="mt-2 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors duration-200">
@@ -509,7 +542,7 @@ function FinalCTA() {
 
   return (
     <Section className="pb-10">
-      <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.04] to-background p-8 sm:p-10 lg:p-12 text-center">
+      <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-cream p-8 sm:p-10 lg:p-12 text-center">
         <div
           className="absolute inset-0 -z-10 opacity-[0.35]"
           style={{
@@ -526,7 +559,7 @@ function FinalCTA() {
         <motion.button {...hoverScale} type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
           Crear mi perfil
         </motion.button>
-      </motion.div>
+      </div>
     </Section>
   );
 }
@@ -543,12 +576,26 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12 pt-10 sm:pt-16 pb-28" id="main-content">
-        {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}
-      </main>
-      <UniversityFooter />
+    <div className="min-h-screen relative">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.06]" aria-hidden="true">
+        <Grainient
+          timeSpeed={0.05}
+          contrast={1.02}
+          grainAmount={0.02}
+          zoom={1.0}
+          warpAmplitude={8}
+          color1="#F5C77E"
+          color2="#1A1A1A"
+          color3="#8C7355"
+        />
+      </div>
+      <div className="relative z-10">
+        <UniversityHeader />
+        <main className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12 pt-10 sm:pt-16 pb-28" id="main-content">
+          {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}
+        </main>
+        <UniversityFooter />
+      </div>
     </div>
   );
 }
@@ -593,7 +640,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
             {display.emoji} {display.name} · {element} · {archetype.name}
           </p>
           <div className="mt-5">
-            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
+            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
               Ver mi perfil completo
             </motion.button>
           </div>
@@ -620,7 +667,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
             Identidad, mundo, círculo e inteligencia en un solo lugar.
           </p>
-          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
+          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
             Ver mi perfil completo
           </motion.button>
         </motion.div>

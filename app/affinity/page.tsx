@@ -53,7 +53,7 @@ export default function AffinityHub() {
               <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]">
                 Crear tu perfil para afinidad personalizada
               </button>
-              <p className="text-xs text-muted mt-2">Sin registro. Sin guardar datos.</p>
+              <p className="text-xs text-muted mt-2">Sin servidor. Sin cuentas.</p>
             </div>
           )}
         </motion.section>

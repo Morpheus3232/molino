@@ -13,7 +13,7 @@ export default function UniversityFooter() {
               <span className="font-serif text-xl font-semibold tracking-tight text-foreground">Molino</span>
             </div>
             <p className="text-base text-muted mt-3">Inteligencia Personal</p>
-            <p className="text-sm text-muted mt-2">Código abierto · Sin registro · Sin rastreo</p>
+            <p className="text-sm text-muted mt-2">Código abierto · Sin servidor · Privacidad radical</p>
           </div>
 
           <div className="md:col-span-3 md:col-start-7">
