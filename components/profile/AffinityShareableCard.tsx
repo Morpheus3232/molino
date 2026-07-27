@@ -192,19 +192,19 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               <span>{eventDate}</span>
             </div>
             {event.confidence === "exacta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700 dark:text-green-400">
-                <span className="w-1 h-1 rounded-full bg-green-600 dark:bg-green-400" />
+              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+                <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {event.confidence === "alta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700 dark:text-green-400">
-                <span className="w-1 h-1 rounded-full bg-green-600 dark:bg-green-400" />
+              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+                <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600 dark:text-amber-400">
+              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600">
                 <span className="w-1 h-1 rounded-full bg-amber-500" />
                 Fecha aproximada
               </span>
