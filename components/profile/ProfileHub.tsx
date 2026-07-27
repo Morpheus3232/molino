@@ -211,7 +211,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu Mundo</p>
             {topCountries.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Países que resuenan</p>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Países</p>
                 <div className="space-y-1.5">
                   {topCountries.map((r) => (
                     <div key={r.entity.id} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/5 transition-colors">
@@ -225,7 +225,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
             )}
             {topCities.length > 0 && (
               <div className="mb-3">
-                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Ciudades que resuenan</p>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Ciudades</p>
                 <div className="space-y-1.5">
                   {topCities.map((r) => (
                     <div key={r.entity.id} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/5 transition-colors">
@@ -239,7 +239,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
             )}
             {topBrands.length > 0 && (
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Marcas que resuenan</p>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Marcas</p>
                 <div className="space-y-1.5">
                   {topBrands.map((r) => (
                     <div key={r.entity.id} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/5 transition-colors">
@@ -253,7 +253,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
             )}
             {topAutoBrands.length > 0 && (
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Autos que resuenan</p>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Autos</p>
                 <div className="space-y-1.5">
                   {topAutoBrands.map((r) => (
                     <div key={r.entity.id} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/5 transition-colors">
