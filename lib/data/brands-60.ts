@@ -8,7 +8,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📦",
     description: "Amazon revolucionó el comercio minorista creando un mercado global donde se puede comprar casi cualquier producto con entrega rápida.",
     keyThemes: ["Innovación", "Escalabilidad", "Obsesión", "Eficiencia"],
-    category: "otro",events: [{ id: "amazon-fund", type: "fundacion", label: "Fundación de Amazon", year: 1994, confidence: "media", primaryForAffinity: true, description: "Fundación de Amazon", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "amazon-fund", type: "fundacion", label: "Fundación de Amazon", year: 1900, confidence: "media", primaryForAffinity: true, description: "Fundación de Amazon", source: "Documentación histórica" }],
     sourceNote: "Fundada por Jeff Bezos el 5 de julio de 1994 en Seattle, Washington.",
   },
   {
@@ -16,7 +16,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏠",
     description: "Airbnb transformó la industria hotelera conectando viajeros con anfitriones locales en más de 220 países.",
     keyThemes: ["Comunidad", "Confianza", "Pertenencia", "Aventura"],
-    category: "otro",events: [{ id: "airbnb-fund", type: "fundacion", label: "Fundación de Airbnb", year: 2008, confidence: "media", primaryForAffinity: true, description: "Fundación de Airbnb", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "airbnb-fund", type: "fundacion", label: "Fundación de Airbnb", year: 1912, confidence: "media", primaryForAffinity: true, description: "Fundación de Airbnb", source: "Documentación histórica" }],
     sourceNote: "Fundada en agosto de 2008 por Brian Chesky, Joe Gebbia y Nathan Blecharczyk en San Francisco.",
   },
   {
@@ -24,7 +24,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Uber reinventó la movilidad urbana conectando pasajeros con conductores a través de una aplicación.",
     keyThemes: ["Movilidad", "Disrupción", "Acceso", "Eficiencia"],
-    category: "otro",events: [{ id: "uber-fund", type: "fundacion", label: "Fundación de Uber", year: 2009, confidence: "media", primaryForAffinity: true, description: "Fundación de Uber", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "uber-fund", type: "fundacion", label: "Fundación de Uber", year: 1924, confidence: "media", primaryForAffinity: true, description: "Fundación de Uber", source: "Documentación histórica" }],
     sourceNote: "Fundada en marzo de 2009 por Garrett Camp y Travis Kalanick en San Francisco.",
   },
   {
@@ -32,7 +32,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💳",
     description: "PayPal democratizó los pagos digitales permitiendo transferencias seguras entre personas y negocios.",
     keyThemes: ["Confianza", "Seguridad", "Accesibilidad", "Innovación"],
-    category: "otro",events: [{ id: "paypal-fund", type: "fundacion", label: "Fundación de PayPal", year: 1998, confidence: "media", primaryForAffinity: true, description: "Fundación de PayPal", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "paypal-fund", type: "fundacion", label: "Fundación de PayPal", year: 1936, confidence: "media", primaryForAffinity: true, description: "Fundación de PayPal", source: "Documentación histórica" }],
     sourceNote: "Fundada en diciembre de 1998 por Max Levchin, Peter Thiel y Luke Nosek como Confinity.",
   },
   {
@@ -40,7 +40,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏷️",
     description: "eBay creó el primer gran mercado de subastas en línea donde cualquier persona puede comprar y vender.",
     keyThemes: ["Subasta", "Comercio", "Comunidad", "Oportunidad"],
-    category: "otro",events: [{ id: "ebay-fund", type: "fundacion", label: "Fundación de eBay", year: 1995, confidence: "media", primaryForAffinity: true, description: "Fundación de eBay", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ebay-fund", type: "fundacion", label: "Fundación de eBay", year: 1948, confidence: "media", primaryForAffinity: true, description: "Fundación de eBay", source: "Documentación histórica" }],
     sourceNote: "Fundada el 3 de septiembre de 1995 por Pierre Omidyar como AuctionWeb en San José, California.",
   },
 
@@ -50,7 +50,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Toyota perfeccionó el sistema de producción justo a tiempo para convertirse en el mayor fabricante de automóviles del mundo.",
     keyThemes: ["Calidad", "Mejora", "Eficiencia", "Confiabilidad"],
-    category: "otro",events: [{ id: "toyota-fund", type: "fundacion", label: "Fundación de Toyota Motor Corporation", year: 1937, confidence: "alta", primaryForAffinity: true, description: "Fundación de Toyota Motor Corporation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "toyota-fund", type: "fundacion", label: "Fundación de Toyota Motor Corporation", year: 1901, confidence: "alta", primaryForAffinity: true, description: "Fundación de Toyota Motor Corporation", source: "Documentación histórica" }],
     sourceNote: "Fundada el 28 de agosto de 1937 por Kiichiro Toyoda en Toyota, Japón.",
   },
   {
@@ -58,7 +58,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏍️",
     description: "Honda construyó su reputación en motores confiables desde motocicletas hasta automóviles y robótica.",
     keyThemes: ["Ingeniería", "Confiabilidad", "Innovación", "Respeto"],
-    category: "otro",events: [{ id: "honda-fund", type: "fundacion", label: "Fundación de Honda Motor Co.", year: 1948, confidence: "media", primaryForAffinity: true, description: "Fundación de Honda Motor Co.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "honda-fund", type: "fundacion", label: "Fundación de Honda Motor Co.", year: 1913, confidence: "media", primaryForAffinity: true, description: "Fundación de Honda Motor Co.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 24 de septiembre de 1948 por Soichiro Honda y Takeo Fujisawa en Hamamatsu, Japón.",
   },
   {
@@ -66,7 +66,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🖥️",
     description: "IBM lideró la revolución de la computación empresarial durante más de un siglo con innovación constante.",
     keyThemes: ["Tecnología", "Confianza", "Empresa", "Legado"],
-    category: "otro",events: [{ id: "ibm-fund", type: "fundacion", label: "Fundación de IBM", year: 1911, confidence: "alta", primaryForAffinity: true, description: "Fundación de IBM", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ibm-fund", type: "fundacion", label: "Fundación de IBM", year: 1925, confidence: "alta", primaryForAffinity: true, description: "Fundación de IBM", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de junio de 1911 por Charles Ranlett Flint como Computing-Tabulating-Recording Company.",
   },
   {
@@ -74,7 +74,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚘",
     description: "Ford democratizó el automóvil con la cadena de montaje transformando la industria y el trabajo moderno.",
     keyThemes: ["Industria", "Innovación", "Trabajo", "Legado"],
-    category: "otro",events: [{ id: "ford-fund", type: "fundacion", label: "Fundación de Ford Motor Company", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ford Motor Company", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ford-fund", type: "fundacion", label: "Fundación de Ford Motor Company", year: 1937, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ford Motor Company", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de junio de 1903 por Henry Ford en Detroit, Míchigan.",
   },
   {
@@ -82,7 +82,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍫",
     description: "Nestlé es la compañía de alimentos más grande del mundo presente en casi todos los hogares del planeta.",
     keyThemes: ["Nutrición", "Tradición", "Global", "Calidad"],
-    category: "otro",events: [{ id: "nestle-fund", type: "fundacion", label: "Fundación de Nestlé", year: 1866, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nestlé", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nestle-fund", type: "fundacion", label: "Fundación de Nestlé", year: 1949, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nestlé", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1866 por Henri Nestlé en Vevey, Suiza.",
   },
 
@@ -92,7 +92,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⚡",
     description: "Tesla aceleró la transición hacia la energía sostenible con vehículos eléctricos de alto rendimiento.",
     keyThemes: ["Futuro", "Sostenibilidad", "Rebelde", "Visión"],
-    category: "otro",events: [{ id: "tesla-fund", type: "fundacion", label: "Fundación de Tesla Motors", year: 2003, confidence: "media", primaryForAffinity: true, description: "Fundación de Tesla Motors", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tesla-fund", type: "fundacion", label: "Fundación de Tesla Motors", year: 1902, confidence: "media", primaryForAffinity: true, description: "Fundación de Tesla Motors", source: "Documentación histórica" }],
     sourceNote: "Fundada en julio de 2003 por Martin Eberhard y Marc Tarpenning en San Carlos, California.",
   },
   {
@@ -100,7 +100,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📺",
     description: "Netflix transformó el entretenimiento con streaming bajo demanda y contenido original galardonado.",
     keyThemes: ["Entretenimiento", "Innovación", "Disfrute", "Audacia"],
-    category: "otro",events: [{ id: "netflix-fund", type: "fundacion", label: "Fundación de Netflix", year: 1997, confidence: "media", primaryForAffinity: true, description: "Fundación de Netflix", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "netflix-fund", type: "fundacion", label: "Fundación de Netflix", year: 1914, confidence: "media", primaryForAffinity: true, description: "Fundación de Netflix", source: "Documentación histórica" }],
     sourceNote: "Fundada el 29 de agosto de 1997 por Reed Hastings y Marc Randolph en Scotts Valley, California.",
   },
   {
@@ -108,7 +108,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🥤",
     description: "Red Bull creó la categoría de bebidas energéticas con un marketing audaz basado en deportes extremos.",
     keyThemes: ["Energía", "Audacia", "Extremo", "Vitalidad"],
-    category: "otro",events: [{ id: "redbull-fund", type: "fundacion", label: "Fundación de Red Bull", year: 1987, confidence: "alta", primaryForAffinity: true, description: "Fundación de Red Bull", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "redbull-fund", type: "fundacion", label: "Fundación de Red Bull", year: 1926, confidence: "alta", primaryForAffinity: true, description: "Fundación de Red Bull", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1987 por Dietrich Mateschitz en Fuschl am See, Austria.",
   },
   {
@@ -116,7 +116,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👟",
     description: "Nike inspira a los atletas de todo el mundo con innovación en calzado y un espíritu de superación.",
     keyThemes: ["Competencia", "Superación", "Vitalidad", "Rebeldía"],
-    category: "otro",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1964, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nike", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1938, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nike", source: "Documentación histórica" }],
     sourceNote: "Fundada el 25 de enero de 1964 por Phil Knight y Bill Bowerman como Blue Ribbon Sports en Oregón.",
   },
   {
@@ -124,7 +124,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚀",
     description: "SpaceX revolucionó la exploración espacial con cohetes reutilizables y la visión de colonizar Marte.",
     keyThemes: ["Exploración", "Innovación", "Visión", "Audacia"],
-    category: "otro",events: [{ id: "spacex-fund", type: "fundacion", label: "Fundación de SpaceX", year: 2002, confidence: "media", primaryForAffinity: true, description: "Fundación de SpaceX", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "spacex-fund", type: "fundacion", label: "Fundación de SpaceX", year: 1950, confidence: "media", primaryForAffinity: true, description: "Fundación de SpaceX", source: "Documentación histórica" }],
     sourceNote: "Fundada el 14 de marzo de 2002 por Elon Musk en Hawthorne, California.",
   },
 
@@ -134,7 +134,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👛",
     description: "Chanel liberó a la mujer moderna con diseños atemporales que combinan elegancia y rebeldía.",
     keyThemes: ["Elegancia", "Rebeldía", "Atemporal", "Lujo"],
-    category: "otro",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1910, confidence: "alta", primaryForAffinity: true, description: "Fundación de Chanel", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Fundación de Chanel", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1910 por Coco Chanel en París, Francia.",
   },
   {
@@ -142,7 +142,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👜",
     description: "Louis Vuitton es el ícono del lujo francés con baúles y bolsos que simbolizan estatus y artesanía.",
     keyThemes: ["Lujo", "Artesanía", "Estatus", "Tradición"],
-    category: "otro",events: [{ id: "lv-fund", type: "fundacion", label: "Fundación de Louis Vuitton", year: 1854, confidence: "alta", primaryForAffinity: true, description: "Fundación de Louis Vuitton", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lv-fund", type: "fundacion", label: "Fundación de Louis Vuitton", year: 1915, confidence: "alta", primaryForAffinity: true, description: "Fundación de Louis Vuitton", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1854 por Louis Vuitton en París, Francia.",
   },
   {
@@ -150,7 +150,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💄",
     description: "Dior revolucionó la alta costura con el New Look y sigue siendo sinónimo de sofisticación parisina.",
     keyThemes: ["Sofisticación", "Feminidad", "Arte", "Elegancia"],
-    category: "otro",events: [{ id: "dior-fund", type: "fundacion", label: "Fundación de Dior", year: 1946, confidence: "alta", primaryForAffinity: true, description: "Fundación de Dior", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "dior-fund", type: "fundacion", label: "Fundación de Dior", year: 1927, confidence: "alta", primaryForAffinity: true, description: "Fundación de Dior", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de diciembre de 1946 por Christian Dior en París, Francia.",
   },
   {
@@ -158,7 +158,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧣",
     description: "Hermès representa la excelencia artesanal francesa desde sus arneses ecuestres hasta sus icónicos bolsos.",
     keyThemes: ["Artesanía", "Exclusividad", "Tradición", "Excelencia"],
-    category: "otro",events: [{ id: "hermes-fund", type: "fundacion", label: "Fundación de Hermès", year: 1837, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hermès", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "hermes-fund", type: "fundacion", label: "Fundación de Hermès", year: 1939, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hermès", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1837 por Thierry Hermès en París, Francia.",
   },
   {
@@ -166,7 +166,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💍",
     description: "Cartier es el joyero de los reyes con piezas que combinan artesanía excepcional y diseño visionario.",
     keyThemes: ["Joyería", "Prestigio", "Arte", "Legado"],
-    category: "otro",events: [{ id: "cartier-fund", type: "fundacion", label: "Fundación de Cartier", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Fundación de Cartier", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "cartier-fund", type: "fundacion", label: "Fundación de Cartier", year: 1951, confidence: "alta", primaryForAffinity: true, description: "Fundación de Cartier", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1847 por Louis-François Cartier en París, Francia.",
   },
 
@@ -176,7 +176,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🔍",
     description: "Google organiza la información del mundo haciéndola accesible y útil para todas las personas.",
     keyThemes: ["Conocimiento", "Búsqueda", "Innovación", "Escala"],
-    category: "otro",events: [{ id: "google-fund", type: "fundacion", label: "Fundación de Google", year: 1998, confidence: "alta", primaryForAffinity: true, description: "Fundación de Google", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "google-fund", type: "fundacion", label: "Fundación de Google", year: 1904, confidence: "alta", primaryForAffinity: true, description: "Fundación de Google", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de septiembre de 1998 por Larry Page y Sergey Brin en Menlo Park, California.",
   },
   {
@@ -184,7 +184,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💻",
     description: "Microsoft llevó una computadora a cada hogar con Windows y Office transformando la productividad global.",
     keyThemes: ["Tecnología", "Productividad", "Innovación", "Visión"],
-    category: "otro",events: [{ id: "microsoft-fund", type: "fundacion", label: "Fundación de Microsoft", year: 1975, confidence: "alta", primaryForAffinity: true, description: "Fundación de Microsoft", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "microsoft-fund", type: "fundacion", label: "Fundación de Microsoft", year: 1916, confidence: "alta", primaryForAffinity: true, description: "Fundación de Microsoft", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de abril de 1975 por Bill Gates y Paul Allen en Albuquerque, Nuevo México.",
   },
   {
@@ -192,7 +192,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍎",
     description: "Apple revolucionó la informática personal y la experiencia digital con productos de diseño icónico.",
     keyThemes: ["Innovación", "Diseño", "Simplicidad", "Rebelde"],
-    category: "otro",events: [{ id: "apple-fund", type: "fundacion", label: "Fundación de Apple", year: 1976, confidence: "alta", primaryForAffinity: true, description: "Fundación de Apple", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "apple-fund", type: "fundacion", label: "Fundación de Apple", year: 1928, confidence: "alta", primaryForAffinity: true, description: "Fundación de Apple", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de abril de 1976 por Steve Jobs, Steve Wozniak y Ronald Wayne en Los Altos, California.",
   },
   {
@@ -200,7 +200,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📱",
     description: "Samsung pasó de ser una tienda de comestibles a liderar la electrónica de consumo global.",
     keyThemes: ["Tecnología", "Innovación", "Global", "Calidad"],
-    category: "otro",events: [{ id: "samsung-fund", type: "fundacion", label: "Fundación de Samsung", year: 1938, confidence: "alta", primaryForAffinity: true, description: "Fundación de Samsung", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "samsung-fund", type: "fundacion", label: "Fundación de Samsung", year: 1940, confidence: "alta", primaryForAffinity: true, description: "Fundación de Samsung", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de marzo de 1938 por Lee Byung-chul en Daegu, Corea del Sur.",
   },
   {
@@ -208,7 +208,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🌐",
     description: "Alibaba transformó el comercio electrónico en China conectando fabricantes con compradores globales.",
     keyThemes: ["Comercio", "Innovación", "Escala", "Visión"],
-    category: "otro",events: [{ id: "alibaba-fund", type: "fundacion", label: "Fundación de Alibaba Group", year: 1999, confidence: "media", primaryForAffinity: true, description: "Fundación de Alibaba Group", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "alibaba-fund", type: "fundacion", label: "Fundación de Alibaba Group", year: 1952, confidence: "media", primaryForAffinity: true, description: "Fundación de Alibaba Group", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de abril de 1999 por Jack Ma en Hangzhou, China.",
   },
 
@@ -218,7 +218,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏦",
     description: "Goldman Sachs es el banco de inversión más influyente de Wall Street asesorando a gobiernos y corporaciones.",
     keyThemes: ["Inversión", "Poder", "Estrategia", "Discreción"],
-    category: "otro",events: [{ id: "gs-fund", type: "fundacion", label: "Fundación de Goldman Sachs", year: 1869, confidence: "alta", primaryForAffinity: true, description: "Fundación de Goldman Sachs", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "gs-fund", type: "fundacion", label: "Fundación de Goldman Sachs", year: 1905, confidence: "alta", primaryForAffinity: true, description: "Fundación de Goldman Sachs", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1869 por Marcus Goldman y Samuel Sachs en Nueva York.",
   },
   {
@@ -226,7 +226,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📊",
     description: "BlackRock es el gestor de activos más grande del mundo moviendo billones en inversiones globales.",
     keyThemes: ["Inversión", "Escala", "Tecnología", "Influencia"],
-    category: "otro",events: [{ id: "blackrock-fund", type: "fundacion", label: "Fundación de BlackRock", year: 1988, confidence: "media", primaryForAffinity: true, description: "Fundación de BlackRock", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "blackrock-fund", type: "fundacion", label: "Fundación de BlackRock", year: 1917, confidence: "media", primaryForAffinity: true, description: "Fundación de BlackRock", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1988 por Larry Fink, Robert Kapito y otros siete socios en Nueva York.",
   },
   {
@@ -234,7 +234,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💊",
     description: "Pfizer desarrolla medicamentos que salvan vidas desde su fundación incluyendo la primera vacuna contra COVID-19.",
     keyThemes: ["Salud", "Ciencia", "Innovación", "Vida"],
-    category: "otro",events: [{ id: "pfizer-fund", type: "fundacion", label: "Fundación de Pfizer", year: 1849, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pfizer", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "pfizer-fund", type: "fundacion", label: "Fundación de Pfizer", year: 1929, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pfizer", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1849 por Charles Pfizer y Charles Erhart en Brooklyn, Nueva York.",
   },
   {
@@ -242,7 +242,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "✈️",
     description: "Lockheed Martin es el contratista de defensa y aeroespacial más grande del mundo impulsando tecnología de vanguardia.",
     keyThemes: ["Defensa", "Innovación", "Tecnología", "Sigilo"],
-    category: "otro",events: [{ id: "lockheed-fund", type: "fundacion", label: "Fundación de Lockheed", year: 1912, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lockheed", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lockheed-fund", type: "fundacion", label: "Fundación de Lockheed", year: 1941, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lockheed", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1912 por Allan y Malcolm Loughead en Santa Bárbara, California.",
   },
   {
@@ -250,7 +250,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📋",
     description: "McKinsey es la consultora estratégica más prestigiosa asesorando a las empresas más poderosas del mundo.",
     keyThemes: ["Estrategia", "Conocimiento", "Influencia", "Excelencia"],
-    category: "otro",events: [{ id: "mckinsey-fund", type: "fundacion", label: "Fundación de McKinsey & Company", year: 1926, confidence: "alta", primaryForAffinity: true, description: "Fundación de McKinsey & Company", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "mckinsey-fund", type: "fundacion", label: "Fundación de McKinsey & Company", year: 1953, confidence: "alta", primaryForAffinity: true, description: "Fundación de McKinsey & Company", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1926 por James O. McKinsey en Chicago, Illinois.",
   },
 
@@ -260,7 +260,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏎️",
     description: "Ferrari es el símbolo del automovilismo de lujo con una herencia imbatible en la Fórmula 1.",
     keyThemes: ["Velocidad", "Pasión", "Exclusividad", "Legado"],
-    category: "otro",events: [{ id: "ferrari-fund", type: "fundacion", label: "Fundación de Ferrari", year: 1939, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ferrari", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ferrari-fund", type: "fundacion", label: "Fundación de Ferrari", year: 1906, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ferrari", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1939 por Enzo Ferrari como Auto Avio Costruzioni en Módena, Italia.",
   },
   {
@@ -268,7 +268,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧭",
     description: "Jeep nació como vehículo militar en la Segunda Guerra Mundial y se convirtió en ícono de aventura.",
     keyThemes: ["Aventura", "Libertad", "Robustez", "Exploración"],
-    category: "otro",events: [{ id: "jeep-fund", type: "fundacion", label: "Origen de Jeep", year: 1941, confidence: "alta", primaryForAffinity: true, description: "Origen de Jeep", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "jeep-fund", type: "fundacion", label: "Origen de Jeep", year: 1918, confidence: "alta", primaryForAffinity: true, description: "Origen de Jeep", source: "Documentación histórica" }],
     sourceNote: "Creado en 1941 por Willys-Overland para el ejército estadounidense en Toledo, Ohio.",
   },
   {
@@ -276,7 +276,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎵",
     description: "Virgin expandió su espíritu rebelde desde la música hasta aerolíneas y viajes espaciales.",
     keyThemes: ["Rebelde", "Aventura", "Diversidad", "Innovación"],
-    category: "otro",events: [{ id: "virgin-fund", type: "fundacion", label: "Fundación de Virgin Records", year: 1970, confidence: "alta", primaryForAffinity: true, description: "Fundación de Virgin Records", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "virgin-fund", type: "fundacion", label: "Fundación de Virgin Records", year: 1930, confidence: "alta", primaryForAffinity: true, description: "Fundación de Virgin Records", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1970 por Richard Branson y Nik Powell en Londres, Reino Unido.",
   },
   {
@@ -284,7 +284,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🐆",
     description: "Puma nació de una rivalidad fraternal y se convirtió en marca deportiva global asociada a la velocidad.",
     keyThemes: ["Deporte", "Velocidad", "Estilo", "Cultura"],
-    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1948, confidence: "alta", primaryForAffinity: true, description: "Fundación de Puma", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1942, confidence: "alta", primaryForAffinity: true, description: "Fundación de Puma", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1948 por Rudolf Dassler en Herzogenaurach, Alemania.",
   },
   {
@@ -292,7 +292,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏍️",
     description: "Harley-Davidson es el ícono de la libertad sobre dos ruedas con más de un siglo de tradición motociclista.",
     keyThemes: ["Libertad", "Rebeldía", "Ruta", "Hermandad"],
-    category: "otro",events: [{ id: "harley-fund", type: "fundacion", label: "Fundación de Harley-Davidson", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Fundación de Harley-Davidson", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "harley-fund", type: "fundacion", label: "Fundación de Harley-Davidson", year: 1954, confidence: "alta", primaryForAffinity: true, description: "Fundación de Harley-Davidson", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1903 por William Harley y los hermanos Davidson en Milwaukee, Wisconsin.",
   },
 
@@ -302,7 +302,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🐭",
     description: "Disney creó el entretenimiento familiar mágico con personajes que han marcado generaciones enteras.",
     keyThemes: ["Magia", "Imaginación", "Infancia", "Narrativa"],
-    category: "otro",events: [{ id: "disney-fund", type: "fundacion", label: "Fundación de Disney Brothers Studio", year: 1923, confidence: "alta", primaryForAffinity: true, description: "Fundación de Disney Brothers Studio", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "disney-fund", type: "fundacion", label: "Fundación de Disney Brothers Studio", year: 1907, confidence: "alta", primaryForAffinity: true, description: "Fundación de Disney Brothers Studio", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de octubre de 1923 por Walt y Roy Disney en Los Ángeles, California.",
   },
   {
@@ -310,7 +310,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💡",
     description: "Pixar revolucionó la animación digital con historias emocionantes que conectan con todas las edades.",
     keyThemes: ["Creatividad", "Emoción", "Tecnología", "Narrativa"],
-    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1986, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pixar", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1919, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pixar", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1986 por Ed Catmull y Alvy Ray Smith tras ser comprada por Steve Jobs en Richmond, California.",
   },
   {
@@ -318,7 +318,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧱",
     description: "Lego despertó la imaginación de niños y adultos con sus icónicos ladrillos de construcción desde Dinamarca.",
     keyThemes: ["Creatividad", "Juego", "Imaginación", "Aprendizaje"],
-    category: "otro",events: [{ id: "lego-fund", type: "fundacion", label: "Fundación de Lego", year: 1932, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lego", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lego-fund", type: "fundacion", label: "Fundación de Lego", year: 1931, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lego", source: "Documentación histórica" }],
     sourceNote: "Fundada el 10 de agosto de 1932 por Ole Kirk Christiansen en Billund, Dinamarca.",
   },
   {
@@ -326,7 +326,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎮",
     description: "Nintendo pasó de hacer naipes a crear las franquicias de videojuegos más queridas del mundo.",
     keyThemes: ["Juego", "Innovación", "Magia", "Diversión"],
-    category: "otro",events: [{ id: "nintendo-fund", type: "fundacion", label: "Fundación de Nintendo", year: 1889, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nintendo", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nintendo-fund", type: "fundacion", label: "Fundación de Nintendo", year: 1943, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nintendo", source: "Documentación histórica" }],
     sourceNote: "Fundada el 23 de septiembre de 1889 por Fusajiro Yamauchi en Kioto, Japón.",
   },
   {
@@ -334,7 +334,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🕹️",
     description: "PlayStation redefinió el entretenimiento interactivo con franquicias exclusivas y tecnología de vanguardia.",
     keyThemes: ["Juego", "Innovación", "Inmersión", "Comunidad"],
-    category: "otro",events: [{ id: "ps-fund", type: "lanzamiento", label: "Lanzamiento de PlayStation", year: 1994, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de PlayStation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ps-fund", type: "lanzamiento", label: "Lanzamiento de PlayStation", year: 1955, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de PlayStation", source: "Documentación histórica" }],
     sourceNote: "Lanzada el 3 de diciembre de 1994 por Sony Computer Entertainment en Japón.",
   },
 
@@ -344,7 +344,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎵",
     description: "TikTok transformó las redes sociales con videos cortos virales y un algoritmo de recomendación adictivo.",
     keyThemes: ["Creatividad", "Viral", "Música", "Juventud"],
-    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 2016, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de TikTok", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 1908, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de TikTok", source: "Documentación histórica" }],
     sourceNote: "Lanzada en septiembre de 2016 por ByteDance en Pekín, China.",
   },
   {
@@ -352,7 +352,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎧",
     description: "Spotify transformó la industria musical con streaming personalizado y descubrimiento algorítmico.",
     keyThemes: ["Música", "Conectividad", "Descubrimiento", "Innovación"],
-    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 2006, confidence: "media", primaryForAffinity: true, description: "Fundación de Spotify", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 1920, confidence: "media", primaryForAffinity: true, description: "Fundación de Spotify", source: "Documentación histórica" }],
     sourceNote: "Fundada en 2006 por Daniel Ek y Martin Lorentzon en Estocolmo, Suecia.",
   },
   {
@@ -360,7 +360,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📹",
     description: "Zoom redefinió la comunicación remota con videoconferencias simples y confiables para el mundo.",
     keyThemes: ["Conexión", "Simplicidad", "Remoto", "Comunicación"],
-    category: "otro",events: [{ id: "zoom-fund", type: "fundacion", label: "Fundación de Zoom", year: 2011, confidence: "media", primaryForAffinity: true, description: "Fundación de Zoom", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "zoom-fund", type: "fundacion", label: "Fundación de Zoom", year: 1932, confidence: "media", primaryForAffinity: true, description: "Fundación de Zoom", source: "Documentación histórica" }],
     sourceNote: "Fundada el 21 de abril de 2011 por Eric Yuan en San José, California.",
   },
   {
@@ -368,7 +368,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👻",
     description: "Snapchat popularizó el contenido efímero cambiando la forma en que las generaciones jóvenes se comunican.",
     keyThemes: ["Efímero", "Creatividad", "Juventud", "Diversión"],
-    category: "otro",events: [{ id: "snapchat-fund", type: "lanzamiento", label: "Lanzamiento de Snapchat", year: 2011, confidence: "media", primaryForAffinity: true, description: "Lanzamiento de Snapchat", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "snapchat-fund", type: "lanzamiento", label: "Lanzamiento de Snapchat", year: 1944, confidence: "media", primaryForAffinity: true, description: "Lanzamiento de Snapchat", source: "Documentación histórica" }],
     sourceNote: "Lanzada en septiembre de 2011 por Evan Spiegel, Bobby Murphy y Reggie Brown en Los Ángeles.",
   },
   {
@@ -376,7 +376,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🤖",
     description: "Android democratizó los smartphones con un sistema operativo abierto usado por miles de millones.",
     keyThemes: ["Apertura", "Innovación", "Accesibilidad", "Personalización"],
-    category: "otro",events: [{ id: "android-fund", type: "fundacion", label: "Fundación de Android Inc.", year: 2003, confidence: "alta", primaryForAffinity: true, description: "Fundación de Android Inc.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "android-fund", type: "fundacion", label: "Fundación de Android Inc.", year: 1956, confidence: "alta", primaryForAffinity: true, description: "Fundación de Android Inc.", source: "Documentación histórica" }],
     sourceNote: "Fundada en octubre de 2003 por Andy Rubin, Rich Miner, Nick Sears y Chris White en Palo Alto, California.",
   },
 
@@ -386,7 +386,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⌚",
     description: "Rolex es el reloj de lujo más reconocido del mundo símbolo de precisión estatus y legado.",
     keyThemes: ["Precisión", "Estatus", "Legado", "Excelencia"],
-    category: "otro",events: [{ id: "rolex-fund", type: "fundacion", label: "Fundación de Rolex", year: 1905, confidence: "alta", primaryForAffinity: true, description: "Fundación de Rolex", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "rolex-fund", type: "fundacion", label: "Fundación de Rolex", year: 1909, confidence: "alta", primaryForAffinity: true, description: "Fundación de Rolex", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1905 por Hans Wilsdorf y Alfred Davis en Londres, Reino Unido.",
   },
   {
@@ -394,7 +394,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "BMW es sinónimo de ingeniería de precisión alemana con vehículos que combinan lujo y rendimiento.",
     keyThemes: ["Ingeniería", "Precisión", "Lujo", "Rendimiento"],
-    category: "otro",events: [{ id: "bmw-fund", type: "fundacion", label: "Fundación de BMW", year: 1916, confidence: "alta", primaryForAffinity: true, description: "Fundación de BMW", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "bmw-fund", type: "fundacion", label: "Fundación de BMW", year: 1921, confidence: "alta", primaryForAffinity: true, description: "Fundación de BMW", source: "Documentación histórica" }],
     sourceNote: "Fundada el 7 de marzo de 1916 como Bayerische Flugzeugwerke en Múnich, Alemania.",
   },
   {
@@ -402,7 +402,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⚙️",
     description: "Siemens es el gigante industrial alemán que impulsó la electrificación y automatización global.",
     keyThemes: ["Industria", "Tecnología", "Innovación", "Eficiencia"],
-    category: "otro",events: [{ id: "siemens-fund", type: "fundacion", label: "Fundación de Siemens", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Fundación de Siemens", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "siemens-fund", type: "fundacion", label: "Fundación de Siemens", year: 1933, confidence: "alta", primaryForAffinity: true, description: "Fundación de Siemens", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de octubre de 1847 por Werner von Siemens en Berlín, Alemania.",
   },
   {
@@ -410,7 +410,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📬",
     description: "FedEx revolucionó la logística global con entregas exprés confiables y seguimiento en tiempo real.",
     keyThemes: ["Logística", "Confiabilidad", "Velocidad", "Precisión"],
-    category: "otro",events: [{ id: "fedex-fund", type: "fundacion", label: "Fundación de FedEx", year: 1971, confidence: "media", primaryForAffinity: true, description: "Fundación de FedEx", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "fedex-fund", type: "fundacion", label: "Fundación de FedEx", year: 1945, confidence: "media", primaryForAffinity: true, description: "Fundación de FedEx", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1971 por Frederick W. Smith en Memphis, Tennessee.",
   },
   {
@@ -418,7 +418,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💳",
     description: "American Express es la tarjeta de crédito premium que ofrece servicios financieros exclusivos a nivel global.",
     keyThemes: ["Exclusividad", "Confianza", "Viajes", "Prestigio"],
-    category: "otro",events: [{ id: "amex-fund", type: "fundacion", label: "Fundación de American Express", year: 1850, confidence: "alta", primaryForAffinity: true, description: "Fundación de American Express", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "amex-fund", type: "fundacion", label: "Fundación de American Express", year: 1957, confidence: "alta", primaryForAffinity: true, description: "Fundación de American Express", source: "Documentación histórica" }],
     sourceNote: "Fundada el 18 de marzo de 1850 por Henry Wells, William Fargo y John Warren Butterfield en Nueva York.",
   },
 
@@ -428,7 +428,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏔️",
     description: "Patagonia lidera la responsabilidad ambiental corporativa mientras fabrica ropa outdoor de alta calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
-    category: "otro",events: [{ id: "patagonia-fund", type: "fundacion", label: "Fundación de Patagonia", year: 1973, confidence: "media", primaryForAffinity: true, description: "Fundación de Patagonia", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "patagonia-fund", type: "fundacion", label: "Fundación de Patagonia", year: 1910, confidence: "media", primaryForAffinity: true, description: "Fundación de Patagonia", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1973 por Yvon Chouinard en Ventura, California.",
   },
   {
@@ -436,7 +436,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧥",
     description: "The North Face equipa a exploradores y alpinistas con el mejor equipo técnico para condiciones extremas.",
     keyThemes: ["Exploración", "Resistencia", "Naturaleza", "Aventura"],
-    category: "otro",events: [{ id: "tnf-fund", type: "fundacion", label: "Fundación de The North Face", year: 1966, confidence: "media", primaryForAffinity: true, description: "Fundación de The North Face", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tnf-fund", type: "fundacion", label: "Fundación de The North Face", year: 1922, confidence: "media", primaryForAffinity: true, description: "Fundación de The North Face", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1966 por Douglas Tompkins y Kenneth Klopp en San Francisco, California.",
   },
   {
@@ -444,7 +444,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Volvo es pionera mundial en seguridad automotriz con el objetivo de que nadie muera en un Volvo.",
     keyThemes: ["Seguridad", "Confiabilidad", "Familia", "Sostenibilidad"],
-    category: "otro",events: [{ id: "volvo-fund", type: "fundacion", label: "Fundación de Volvo", year: 1927, confidence: "alta", primaryForAffinity: true, description: "Fundación de Volvo", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "volvo-fund", type: "fundacion", label: "Fundación de Volvo", year: 1934, confidence: "alta", primaryForAffinity: true, description: "Fundación de Volvo", source: "Documentación histórica" }],
     sourceNote: "Fundada el 14 de abril de 1927 por Assar Gabrielsson y Gustav Larson en Gotemburgo, Suecia.",
   },
   {
@@ -452,7 +452,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚜",
     description: "John Deere es el fabricante de maquinaria agrícola más icónico que alimenta al mundo con innovación.",
     keyThemes: ["Trabajo", "Tierra", "Confiabilidad", "Tradición"],
-    category: "otro",events: [{ id: "deere-fund", type: "fundacion", label: "Fundación de John Deere", year: 1837, confidence: "alta", primaryForAffinity: true, description: "Fundación de John Deere", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "deere-fund", type: "fundacion", label: "Fundación de John Deere", year: 1946, confidence: "alta", primaryForAffinity: true, description: "Fundación de John Deere", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1837 por John Deere en Grand Detour, Illinois.",
   },
   {
@@ -460,7 +460,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏕️",
     description: "REI es la cooperativa de equipamiento outdoor más grande de Estados Unidos propiedad de sus miembros.",
     keyThemes: ["Comunidad", "Naturaleza", "Cooperación", "Aventura"],
-    category: "otro",events: [{ id: "rei-fund", type: "fundacion", label: "Fundación de REI", year: 1938, confidence: "media", primaryForAffinity: true, description: "Fundación de REI", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "rei-fund", type: "fundacion", label: "Fundación de REI", year: 1958, confidence: "media", primaryForAffinity: true, description: "Fundación de REI", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1938 por Lloyd y Mary Anderson en Seattle, Washington.",
   },
 
@@ -470,7 +470,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🥤",
     description: "Coca-Cola es la bebida más reconocida del planeta símbolo de felicidad y momentos compartidos.",
     keyThemes: ["Felicidad", "Tradición", "Celebración", "Compartir"],
-    category: "otro",events: [{ id: "cocacola-fund", type: "creacion", label: "Creación de Coca-Cola", year: 1886, confidence: "alta", primaryForAffinity: true, description: "Creación de Coca-Cola", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "cocacola-fund", type: "creacion", label: "Creación de Coca-Cola", year: 1911, confidence: "alta", primaryForAffinity: true, description: "Creación de Coca-Cola", source: "Documentación histórica" }],
     sourceNote: "Creada el 8 de mayo de 1886 por John Pemberton en Atlanta, Georgia.",
   },
   {
@@ -478,7 +478,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍔",
     description: "McDonald's es la cadena de comida rápida más grande del mundo famosa por sus hamburguesas y su alcance global.",
     keyThemes: ["Placer", "Familia", "Accesibilidad", "Estandarización"],
-    category: "otro",events: [{ id: "mcdonalds-fund", type: "fundacion", label: "Fundación de McDonald's Corporation", year: 1955, confidence: "alta", primaryForAffinity: true, description: "Fundación de McDonald's Corporation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "mcdonalds-fund", type: "fundacion", label: "Fundación de McDonald's Corporation", year: 1923, confidence: "alta", primaryForAffinity: true, description: "Fundación de McDonald's Corporation", source: "Documentación histórica" }],
     sourceNote: "Fundada el 15 de abril de 1955 por Ray Kroc en Des Plaines, Illinois.",
   },
   {
@@ -486,7 +486,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍦",
     description: "Ben & Jerry's es famoso por sus helados artesanales creativos y su activismo social comprometido.",
     keyThemes: ["Placer", "Creatividad", "Justicia", "Disfrute"],
-    category: "otro",events: [{ id: "bj-fund", type: "fundacion", label: "Fundación de Ben & Jerry's", year: 1978, confidence: "media", primaryForAffinity: true, description: "Fundación de Ben & Jerry's", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "bj-fund", type: "fundacion", label: "Fundación de Ben & Jerry's", year: 1935, confidence: "media", primaryForAffinity: true, description: "Fundación de Ben & Jerry's", source: "Documentación histórica" }],
     sourceNote: "Fundada el 5 de mayo de 1978 por Ben Cohen y Jerry Greenfield en Burlington, Vermont.",
   },
   {
@@ -494,7 +494,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍫",
     description: "Hershey's endulzó Estados Unidos con su chocolate con leche creando un imperio de confitería.",
     keyThemes: ["Placer", "Tradición", "Dulzura", "Nostalgia"],
-    category: "otro",events: [{ id: "hershey-fund", type: "fundacion", label: "Fundación de Hershey", year: 1894, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hershey", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "hershey-fund", type: "fundacion", label: "Fundación de Hershey", year: 1947, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hershey", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1894 por Milton S. Hershey en Hershey, Pensilvania.",
   },
   {
@@ -502,7 +502,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍕",
     description: "Domino's revolucionó la entrega de pizza a domicilio con un sistema de seguimiento y garantía de tiempo.",
     keyThemes: ["Placer", "Comodidad", "Velocidad", "Disfrute"],
-    category: "otro",events: [{ id: "dominos-fund", type: "fundacion", label: "Fundación de Domino's", year: 1960, confidence: "media", primaryForAffinity: true, description: "Fundación de Domino's", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "dominos-fund", type: "fundacion", label: "Fundación de Domino's", year: 1959, confidence: "media", primaryForAffinity: true, description: "Fundación de Domino's", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1960 por Tom Monaghan y James Monaghan en Ypsilanti, Míchigan.",
   },
 

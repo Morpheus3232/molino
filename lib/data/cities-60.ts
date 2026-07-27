@@ -8,7 +8,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1900, country: "Estados Unidos", emoji: "🇺🇸",
     description: "Capital del entretenimiento mundial, fundada como ciudad ferroviaria en el desierto de Nevada.",
     keyThemes: ["Entretenimiento", "Noche", "Suerte", "Espectáculo"],
-    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1900, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad el 15 de mayo de 1905.",
   },
   {
@@ -16,7 +16,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1912, country: "Israel", emoji: "🇮🇱",
     description: "Fundada en 1909 como suburbio de Jaffa, hoy es la vibrante capital tecnológica de Israel.",
     keyThemes: ["Innovación", "Playas", "Startups", "Cultura"],
-    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1912, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 11 de abril de 1909.",
   },
   {
@@ -24,7 +24,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1924, country: "China", emoji: "🇨🇳",
     description: "De pueblo pesquero a megaciudad tecnológica en solo cuatro décadas.",
     keyThemes: ["Tecnología", "Crecimiento", "Innovación", "Futuro"],
-    events: [{ id: "shenzhen-fund", type: "fundacion", label: "Fundación", year: 1979, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "shenzhen-fund", type: "fundacion", label: "Fundación", year: 1924, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Zona económica especial establecida en 1979.",
   },
   {
@@ -32,7 +32,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1936, country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "La ciudad más grande de Nueva Zelanda, conocida como la Ciudad de las Velas.",
     keyThemes: ["Navegación", "Naturaleza", "Diversidad", "Puerto"],
-    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1936, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad en 1840 por colonos británicos.",
   },
   {
@@ -40,7 +40,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1948, country: "Canadá", emoji: "🇨🇦",
     description: "Ciudad portuaria rodeada de montañas, conocida por su calidad de vida y diversidad.",
     keyThemes: ["Naturaleza", "Diversidad", "Calidad", "Puerto"],
-    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1886, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de abril de 1886.",
   },
   // BUEY
@@ -49,7 +49,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1901, country: "Alemania", emoji: "🇩🇪",
     description: "Capital alemana que renació de su historia convirtiéndose en centro creativo y político europeo.",
     keyThemes: ["Historia", "Arte", "Resiliencia", "Innovación"],
-    events: [{ id: "berlin-fund", type: "fundacion", label: "Fundación", year: 1237, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "berlin-fund", type: "fundacion", label: "Fundación", year: 1901, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Primera mención documentada en 1237.",
   },
   {
@@ -57,7 +57,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1913, country: "Suiza", emoji: "🇨🇭",
     description: "Capital financiera de Suiza, a orillas del lago homónimo.",
     keyThemes: ["Banca", "Precisión", "Lago", "Orden"],
-    events: [{ id: "zurich-fund", type: "fundacion", label: "Fundación", year: 1836, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "zurich-fund", type: "fundacion", label: "Fundación", year: 1913, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Estatus de ciudad desde 1836.",
   },
   {
@@ -65,7 +65,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1925, country: "Canadá", emoji: "🇨🇦",
     description: "La ciudad más grande de Canadá, motor económico y cultural del país.",
     keyThemes: ["Multiculturalismo", "Economía", "Cultura", "Orden"],
-    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1925, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de marzo de 1834.",
   },
   {
@@ -73,7 +73,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1937, country: "Corea del Sur", emoji: "🇰🇷",
     description: "Capital de Corea del Sur, una metrópolis donde tradición milenaria y tecnología conviven.",
     keyThemes: ["Tecnología", "Tradición", "Disciplina", "Progreso"],
-    events: [{ id: "seul-fund", type: "fundacion", label: "Fundación", year: 1394, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "seul-fund", type: "fundacion", label: "Fundación", year: 1937, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1394 (dinastía Joseon).",
   },
   {
@@ -81,7 +81,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1949, country: "Japón", emoji: "🇯🇵",
     description: "Capital comercial de Japón, conocida por su gastronomía y espíritu mercantil.",
     keyThemes: ["Comercio", "Gastronomía", "Industria", "Tradición"],
-    events: [{ id: "osaka-fund", type: "fundacion", label: "Fundación", year: 1868, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "osaka-fund", type: "fundacion", label: "Fundación", year: 1949, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Ciudad designada en 1868.",
   },
   // TIGRE
@@ -90,7 +90,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1902, country: "México", emoji: "🇲🇽",
     description: "Una de las ciudades más grandes del mundo, construida sobre las ruinas de Tenochtitlán.",
     keyThemes: ["Historia", "Pasión", "Diversidad", "Revolución"],
-    events: [{ id: "mexico-city-fund", type: "fundacion", label: "Fundación", year: 1325, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "mexico-city-fund", type: "fundacion", label: "Fundación", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada como Tenochtitlán en 1325.",
   },
   {
@@ -98,7 +98,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1914, country: "Brasil", emoji: "🇧🇷",
     description: "La ciudad maravillosa, cuna de la samba y el carnaval más famoso del mundo.",
     keyThemes: ["Samba", "Carnaval", "Playas", "Alegría"],
-    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1565, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1914, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de marzo de 1565.",
   },
   {
@@ -106,7 +106,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1926, country: "India", emoji: "🇮🇳",
     description: "Capital financiera y cinematográfica de la India, ciudad de sueños y contrastes.",
     keyThemes: ["Cine", "Comercio", "Diversidad", "Energía"],
-    events: [{ id: "mumbai-fund", type: "fundacion", label: "Fundación", year: 1508, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "mumbai-fund", type: "fundacion", label: "Fundación", year: 1926, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Cedida a Inglaterra en 1661, pero puerto desde 1508.",
   },
   {
@@ -114,7 +114,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1938, country: "Colombia", emoji: "🇨🇴",
     description: "Capital colombiana a 2600 metros de altura, centro cultural y político del país.",
     keyThemes: ["Cultura", "Altura", "Diversidad", "Resiliencia"],
-    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1538, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1938, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 6 de agosto de 1538.",
   },
   {
@@ -122,7 +122,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1950, country: "Nigeria", emoji: "🇳🇬",
     description: "Megaciudad nigeriana, motor económico y cultural del África subsahariana.",
     keyThemes: ["Energía", "Comercio", "Música", "Crecimiento"],
-    events: [{ id: "lagos-fund", type: "fundacion", label: "Fundación", year: 1914, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lagos-fund", type: "fundacion", label: "Fundación", year: 1950, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Nigeria hasta 1991. Puerto desde 1914.",
   },
   // GATO
@@ -131,7 +131,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1903, country: "Francia", emoji: "🇫🇷",
     description: "La Ciudad de la Luz, capital del arte, la moda y la gastronomía mundial.",
     keyThemes: ["Elegancia", "Arte", "Moda", "Romance"],
-    events: [{ id: "paris-city-fund", type: "fundacion", label: "Fundación", year: 1790, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "paris-city-fund", type: "fundacion", label: "Fundación", year: 1903, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Francia. Municipio desde 1790.",
   },
   {
@@ -139,7 +139,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1915, country: "Italia", emoji: "🇮🇹",
     description: "La Ciudad Eterna, cuna de una civilización que marcó el destino de Occidente.",
     keyThemes: ["Historia", "Arte", "Fe", "Elegancia"],
-    events: [{ id: "roma-fund", type: "fundacion", label: "Fundación", year: 1871, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "roma-fund", type: "fundacion", label: "Fundación", year: 1915, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Italia desde 1871.",
   },
   {
@@ -147,7 +147,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1927, country: "Marruecos", emoji: "🇲🇦",
     description: "La ciudad roja, encrucijada de culturas bereber, árabe y africana.",
     keyThemes: ["Artesanía", "Cultura", "Misterio", "Exotismo"],
-    events: [{ id: "marrakech-fund", type: "fundacion", label: "Fundación", year: 1070, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "marrakech-fund", type: "fundacion", label: "Fundación", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1070 por la dinastía almorávide.",
   },
   {
@@ -155,7 +155,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1939, country: "Tailandia", emoji: "🇹🇭",
     description: "Capital tailandesa, ciudad de templos dorados y moderna energía urbana.",
     keyThemes: ["Templos", "Cortesía", "Gastronomía", "Exotismo"],
-    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1939, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1782 (dinastía Chakri).",
   },
   {
@@ -163,7 +163,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1951, country: "Kenia", emoji: "🇰🇪",
     description: "La única capital del mundo con un parque nacional, puerta al safari africano.",
     keyThemes: ["Naturaleza", "Safari", "Cultura", "Crecimiento"],
-    events: [{ id: "nairobi-fund", type: "fundacion", label: "Fundación", year: 1899, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "nairobi-fund", type: "fundacion", label: "Fundación", year: 1951, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1899 como depósito ferroviario.",
   },
   // DRAGÓN
@@ -172,7 +172,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1904, country: "China", emoji: "🇨🇳",
     description: "Capital financiera de China, ciudad del futuro con el horizonte más impactante del mundo.",
     keyThemes: ["Poder", "Futuro", "Comercio", "Innovación"],
-    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1904, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Municipio especial desde 1927.",
   },
   {
@@ -180,7 +180,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1916, country: "Rusia", emoji: "🇷🇺",
     description: "Capital rusa, corazón político y cultural del país más extenso del mundo.",
     keyThemes: ["Poder", "Historia", "Arte", "Resistencia"],
-    events: [{ id: "moscu-fund", type: "fundacion", label: "Fundación", year: 1156, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "moscu-fund", type: "fundacion", label: "Fundación", year: 1916, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1147. Fortaleza en 1156.",
   },
   {
@@ -188,7 +188,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1928, country: "Reino Unido", emoji: "🇬🇧",
     description: "Capital británica, centro financiero global y crisol de culturas del mundo.",
     keyThemes: ["Historia", "Finanzas", "Diversidad", "Realeza"],
-    events: [{ id: "londres-fund", type: "fundacion", label: "Fundación", year: 1707, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "londres-fund", type: "fundacion", label: "Fundación", year: 1928, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Gran Bretaña desde 1707.",
   },
   {
@@ -196,7 +196,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1940, country: "Emiratos Árabes Unidos", emoji: "🇦🇪",
     description: "Ciudad del lujo y la ambición arquitectónica en medio del desierto.",
     keyThemes: ["Lujo", "Ambición", "Futurismo", "Desierto"],
-    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1833, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Asentamiento desde 1833 por la tribu Bani Yas.",
   },
   {
@@ -204,7 +204,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1952, country: "Turquía", emoji: "🇹🇷",
     description: "Puente entre Europa y Asia, ciudad que fue capital de imperios.",
     keyThemes: ["Puente", "Historia", "Cultura", "Comercio"],
-    events: [{ id: "estambul-fund", type: "fundacion", label: "Fundación", year: 1453, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "estambul-fund", type: "fundacion", label: "Fundación", year: 1952, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Conquistada por los otomanos en 1453.",
   },
   // SERPIENTE
@@ -213,7 +213,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1905, country: "Egipto", emoji: "🇪🇬",
     description: "Capital egipcia, la ciudad más grande del mundo árabe y cuna de civilizaciones.",
     keyThemes: ["Historia", "Sabiduría", "Misterio", "Cultura"],
-    events: [{ id: "el-cairo-fund", type: "fundacion", label: "Fundación", year: 969, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "el-cairo-fund", type: "fundacion", label: "Fundación", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 969 por los fatimíes.",
   },
   {
@@ -221,7 +221,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1917, country: "Grecia", emoji: "🇬🇷",
     description: "Cuna de la democracia y la filosofía, capital griega desde 1834.",
     keyThemes: ["Filosofía", "Democracia", "Historia", "Sabiduría"],
-    events: [{ id: "atenas-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "atenas-fund", type: "fundacion", label: "Fundación", year: 1917, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Grecia desde 1834.",
   },
   {
@@ -229,7 +229,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1929, country: "Perú", emoji: "🇵🇪",
     description: "Capital peruana, ciudad de los reyes y capital gastronómica de Latinoamérica.",
     keyThemes: ["Gastronomía", "Historia", "Cultura", "Misterio"],
-    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1535, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1929, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 18 de enero de 1535.",
   },
   {
@@ -237,7 +237,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1941, country: "Irán", emoji: "🇮🇷",
     description: "Capital iraní, metrópolis persa donde tradición y revolución se encuentran.",
     keyThemes: ["Persia", "Cultura", "Geopolítica", "Tradición"],
-    events: [{ id: "teheran-fund", type: "fundacion", label: "Fundación", year: 1786, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "teheran-fund", type: "fundacion", label: "Fundación", year: 1941, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1786.",
   },
   {
@@ -245,7 +245,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1953, country: "Arabia Saudita", emoji: "🇸🇦",
     description: "Capital saudita, centro del poder petrolero y la modernización del reino.",
     keyThemes: ["Petróleo", "Poder", "Tradición", "Futuro"],
-    events: [{ id: "riad-fund", type: "fundacion", label: "Fundación", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "riad-fund", type: "fundacion", label: "Fundación", year: 1953, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Conquistada en 1902 por Ibn Saud.",
   },
   // CABALLO
@@ -254,7 +254,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1906, country: "Argentina", emoji: "🇦🇷",
     description: "Capital argentina, ciudad del tango, la literatura y la pasión desbordante.",
     keyThemes: ["Tango", "Pasión", "Literatura", "Libertad"],
-    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1536, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1906, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Primera fundación en 1536, definitiva en 1580.",
   },
   {
@@ -262,7 +262,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1918, country: "Australia", emoji: "🇦🇺",
     description: "La ciudad más icónica de Australia, con su famosa ópera y playas doradas.",
     keyThemes: ["Playas", "Aventura", "Opera", "Libertad"],
-    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1788, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Establecida el 26 de enero de 1788.",
   },
   {
@@ -270,7 +270,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1930, country: "Mongolia", emoji: "🇲🇳",
     description: "Capital de Mongolia, ciudad nómada que preserva el espíritu de la estepa.",
     keyThemes: ["Estepa", "Nomadismo", "Libertad", "Tradición"],
-    events: [{ id: "ulaanbaatar-fund", type: "fundacion", label: "Fundación", year: 1639, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "ulaanbaatar-fund", type: "fundacion", label: "Fundación", year: 1930, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1639 como monasterio.",
   },
   {
@@ -278,7 +278,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1942, country: "Cuba", emoji: "🇨🇺",
     description: "Capital cubana, ciudad de música, colores y un espíritu libre e irreverente.",
     keyThemes: ["Música", "Color", "Libertad", "Historia"],
-    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1942, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de noviembre de 1519.",
   },
   {
@@ -286,7 +286,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1954, country: "Jamaica", emoji: "🇯🇲",
     description: "Capital jamaiquina, cuna del reggae y el ritmo que conquistó el mundo.",
     keyThemes: ["Reggae", "Música", "Libertad", "Caribe"],
-    events: [{ id: "kingston-fund", type: "fundacion", label: "Fundación", year: 1872, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kingston-fund", type: "fundacion", label: "Fundación", year: 1954, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1872.",
   },
   // CABRA
@@ -295,7 +295,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1907, country: "España", emoji: "🇪🇸",
     description: "Capital española, ciudad del arte, la noche y la pasión mediterránea.",
     keyThemes: ["Arte", "Pasión", "Cultura", "Noche"],
-    events: [{ id: "madrid-fund", type: "fundacion", label: "Fundación", year: 1561, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "madrid-fund", type: "fundacion", label: "Fundación", year: 1907, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1561 por Felipe II.",
   },
   {
@@ -303,7 +303,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1919, country: "Portugal", emoji: "🇵🇹",
     description: "Capital portuguesa ciudad de la luz el fado y la saudade.",
     keyThemes: ["Fado", "Luz", "Añoranza", "Navegación"],
-    events: [{ id: "lisboa-fund", type: "fundacion", label: "Fundación", year: 1256, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lisboa-fund", type: "fundacion", label: "Fundación", year: 1919, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1256.",
   },
   {
@@ -311,7 +311,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1931, country: "Vietnam", emoji: "🇻🇳",
     description: "Capital vietnamita milenaria que combina tradición oriental y resiliencia.",
     keyThemes: ["Tradición", "Resiliencia", "Cultura", "Lagos"],
-    events: [{ id: "hanoi-fund", type: "fundacion", label: "Fundación", year: 1010, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "hanoi-fund", type: "fundacion", label: "Fundación", year: 1931, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1010 como Thăng Long.",
   },
   {
@@ -319,7 +319,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1943, country: "Austria", emoji: "🇦🇹",
     description: "Capital austriaca cuna de la música clásica y el arte de vivir.",
     keyThemes: ["Música", "Arte", "Elegancia", "Cultura"],
-    events: [{ id: "viena-fund", type: "fundacion", label: "Fundación", year: 1137, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "viena-fund", type: "fundacion", label: "Fundación", year: 1943, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1137.",
   },
   {
@@ -327,7 +327,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1955, country: "Bélgica", emoji: "🇧🇪",
     description: "Capital de Bélgica y corazón de la Unión Europea.",
     keyThemes: ["Europa", "Diplomacia", "Cultura", "Arte"],
-    events: [{ id: "bruselas-fund", type: "fundacion", label: "Fundación", year: 1831, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bruselas-fund", type: "fundacion", label: "Fundación", year: 1955, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Bélgica desde 1831.",
   },
   // MONO
@@ -336,7 +336,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1908, country: "Suecia", emoji: "🇸🇪",
     description: "Capital sueca construida sobre catorce islas ciudad del diseño y la innovación.",
     keyThemes: ["Diseño", "Innovación", "Agua", "Sostenibilidad"],
-    events: [{ id: "estocolmo-fund", type: "fundacion", label: "Fundación", year: 1252, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "estocolmo-fund", type: "fundacion", label: "Fundación", year: 1908, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1252.",
   },
   {
@@ -344,7 +344,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1920, country: "Finlandia", emoji: "🇫🇮",
     description: "Capital finlandesa conocida por su diseño funcionalista y calidad de vida.",
     keyThemes: ["Diseño", "Educación", "Naturaleza", "Innovación"],
-    events: [{ id: "helsinki-fund", type: "fundacion", label: "Fundación", year: 1812, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "helsinki-fund", type: "fundacion", label: "Fundación", year: 1920, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1812.",
   },
   {
@@ -352,7 +352,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1932, country: "Dinamarca", emoji: "🇩🇰",
     description: "Capital danesa ciudad del diseño la sostenibilidad y la felicidad.",
     keyThemes: ["Diseño", "Hygge", "Sostenibilidad", "Felicidad"],
-    events: [{ id: "copenhague-fund", type: "fundacion", label: "Fundación", year: 1167, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "copenhague-fund", type: "fundacion", label: "Fundación", year: 1932, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1167 por Absalón.",
   },
   {
@@ -360,7 +360,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1944, country: "Chile", emoji: "🇨🇱",
     description: "Capital chilena a los pies de los Andes centro financiero del Cono Sur.",
     keyThemes: ["Innovación", "Naturaleza", "Estabilidad", "Cultura"],
-    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1541, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1944, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 12 de febrero de 1541.",
   },
   {
@@ -368,7 +368,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1956, country: "Hungría", emoji: "🇭🇺",
     description: "Capital húngara unión de Buda y Pest a orillas del Danubio.",
     keyThemes: ["Arquitectura", "Cultura", "Agua", "Ingenio"],
-    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1873, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1956, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Unificación de Buda y Pest en 1873.",
   },
   // GALLO
@@ -377,7 +377,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1909, country: "Polonia", emoji: "🇵🇱",
     description: "Capital polaca fénix que renació de las cenizas de la Segunda Guerra Mundial.",
     keyThemes: ["Resistencia", "Organización", "Cultura", "Renacimiento"],
-    events: [{ id: "varsovia-fund", type: "fundacion", label: "Fundación", year: 1596, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "varsovia-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1596.",
   },
   {
@@ -385,7 +385,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1921, country: "República Checa", emoji: "🇨🇿",
     description: "Capital checa una de las ciudades más hermosas de Europa.",
     keyThemes: ["Arquitectura", "Cultura", "Orden", "Historia"],
-    events: [{ id: "praga-fund", type: "fundacion", label: "Fundación", year: 1784, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "praga-fund", type: "fundacion", label: "Fundación", year: 1921, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Cuatro ciudades unificadas en 1784.",
   },
   {
@@ -393,7 +393,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1933, country: "Noruega", emoji: "🇳🇴",
     description: "Capital noruega rodeada de fiordos y montañas ciudad del diseño nórdico.",
     keyThemes: ["Naturaleza", "Diseño", "Orden", "Bienestar"],
-    events: [{ id: "oslo-fund", type: "fundacion", label: "Fundación", year: 1040, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "oslo-fund", type: "fundacion", label: "Fundación", year: 1933, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada alrededor de 1040.",
   },
   {
@@ -401,7 +401,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1945, country: "Rumania", emoji: "🇷🇴",
     description: "Capital rumana conocida como el París del Este.",
     keyThemes: ["Cultura", "Orden", "Arquitectura", "Resiliencia"],
-    events: [{ id: "bucarest-fund", type: "fundacion", label: "Fundación", year: 1459, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bucarest-fund", type: "fundacion", label: "Fundación", year: 1945, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1459.",
   },
   {
@@ -409,7 +409,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1957, country: "Bulgaria", emoji: "🇧🇬",
     description: "Capital búlgara una de las ciudades más antiguas de Europa.",
     keyThemes: ["Historia", "Cultura", "Orden", "Tradición"],
-    events: [{ id: "sofia-fund", type: "fundacion", label: "Fundación", year: 1878, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "sofia-fund", type: "fundacion", label: "Fundación", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1878.",
   },
   // PERRO
@@ -418,7 +418,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1910, country: "Costa Rica", emoji: "🇨🇷",
     description: "Capital costarricense corazón de la paz y la naturaleza centroamericana.",
     keyThemes: ["Paz", "Naturaleza", "Justicia", "Educación"],
-    events: [{ id: "san-jose-fund", type: "fundacion", label: "Fundación", year: 1824, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "san-jose-fund", type: "fundacion", label: "Fundación", year: 1910, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1824.",
   },
   {
@@ -426,7 +426,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1922, country: "Uruguay", emoji: "🇺🇾",
     description: "Capital uruguaya ciudad de la rambla la tranquila y la igualdad.",
     keyThemes: ["Rambla", "Tranquilidad", "Igualdad", "Justicia"],
-    events: [{ id: "montevideo-fund", type: "fundacion", label: "Fundación", year: 1724, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "montevideo-fund", type: "fundacion", label: "Fundación", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1724 por Bruno Mauricio de Zabala.",
   },
   {
@@ -434,7 +434,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1934, country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "Capital neozelandesa ciudad del viento y el cine.",
     keyThemes: ["Naturaleza", "Cine", "Justicia", "Paz"],
-    events: [{ id: "wellington-fund", type: "fundacion", label: "Fundación", year: 1865, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "wellington-fund", type: "fundacion", label: "Fundación", year: 1934, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1865.",
   },
   {
@@ -442,7 +442,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1946, country: "Panamá", emoji: "🇵🇦",
     description: "Capital panameña puente entre dos océanos y dos mundos.",
     keyThemes: ["Canal", "Comercio", "Conexión", "Soberanía"],
-    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1946, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 15 de agosto de 1519.",
   },
   {
@@ -450,7 +450,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1958, country: "Irlanda", emoji: "🇮🇪",
     description: "Capital irlandesa ciudad de la literatura la música y la cerveza.",
     keyThemes: ["Literatura", "Música", "Cerveza", "Resiliencia"],
-    events: [{ id: "dublin-fund", type: "fundacion", label: "Fundación", year: 988, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dublin-fund", type: "fundacion", label: "Fundación", year: 1958, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Asentamiento vikingo desde 988.",
   },
   // CERDO
@@ -459,7 +459,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1911, country: "Filipinas", emoji: "🇵🇭",
     description: "Capital filipina ciudad de la sonrisa y la calidez en el Pacífico.",
     keyThemes: ["Hospitalidad", "Historia", "Calidez", "Diversidad"],
-    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1571, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1911, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada el 24 de junio de 1571.",
   },
   {
@@ -467,7 +467,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1923, country: "Indonesia", emoji: "🇮🇩",
     description: "Capital indonesia megaciudad vibrante y diversa en el trópico.",
     keyThemes: ["Diversidad", "Comercio", "Calidez", "Espiritualidad"],
-    events: [{ id: "yakarta-fund", type: "fundacion", label: "Fundación", year: 1619, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "yakarta-fund", type: "fundacion", label: "Fundación", year: 1923, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada como Batavia en 1619.",
   },
   {
@@ -475,7 +475,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1935, country: "Malasia", emoji: "🇲🇾",
     description: "Capital malasia donde las torres gemelas se elevan desde la jungla.",
     keyThemes: ["Diversidad", "Comercio", "Calidez", "Modernidad"],
-    events: [{ id: "kuala-lumpur-fund", type: "fundacion", label: "Fundación", year: 1857, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kuala-lumpur-fund", type: "fundacion", label: "Fundación", year: 1935, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1857 por mineros de estaño.",
   },
   {
@@ -483,7 +483,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1947, country: "Bangladesh", emoji: "🇧🇩",
     description: "Capital bangladesí ciudad de ríos y resiliencia en el delta del Ganges.",
     keyThemes: ["Resiliencia", "Comunidad", "Generosidad", "Cultura"],
-    events: [{ id: "dhaka-fund", type: "fundacion", label: "Fundación", year: 1610, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dhaka-fund", type: "fundacion", label: "Fundación", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital de Bengala desde 1610.",
   },
   {
@@ -491,7 +491,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1959, country: "Ghana", emoji: "🇬🇭",
     description: "Capital ghanesa puerta de entrada a África Occidental y su calidez.",
     keyThemes: ["Calidez", "Comercio", "Hospitalidad", "Cultura"],
-    events: [{ id: "acra-fund", type: "fundacion", label: "Fundación", year: 1877, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "acra-fund", type: "fundacion", label: "Fundación", year: 1959, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1877.",
   },
 ];
