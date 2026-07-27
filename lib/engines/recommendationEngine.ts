@@ -11,7 +11,6 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import {
   getRelation,
@@ -203,8 +202,10 @@ function buildRecommendation(
   yearAnimal: Animal,
   yearResonance: YearResonance,
 ): Recommendation {
-  const event = getPrimaryEvent(entity);
-  const { animal: entityAnimal } = calculateAnimalFromDate(event?.date, event?.year) as { animal: Animal };
+  const primaryEvent = getPrimaryEvent(entity);
+  const entityAnimal = primaryEvent
+    ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year).animal as Animal
+    : calculateAnimalFromDate(undefined, entity.foundingYear).animal as Animal;
 
   // Symbolic recommendation
   const symbolic = calculateSymbolicRecommendation(userAnimal, entityAnimal, yearAnimal);
@@ -364,7 +365,7 @@ function buildCopy(
 // IMPORTS & EXPORTS
 // ════════════════════════════════════════════════════
 
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 
 /**
  * Get recommendations filtered by entity type, sorted by score.

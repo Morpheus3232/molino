@@ -152,11 +152,11 @@ export const COUNTRIES_60: SymbolicEntity[] = [
   },
   {
     id: "tailandia", name: "Tailandia", type: "country",
-    foundingYear: 1939, country: "Tailandia", emoji: "🇹🇭",
-    description: "Fundado el reino en 1782, un país que preservó su independencia combinando una monarquía venerada con una elegancia cultural única.",
+    foundingYear: 1238, country: "Tailandia", emoji: "🇹🇭",
+    description: "Fundado el Reino de Sukhothai en 1238, un país que preservó su independencia combinando una monarquía venerada con una elegancia cultural única.",
     keyThemes: ["Elegancia", "Cortesía", "Espiritualidad", "Exotismo"],
-    events: [{ id: "th-dinastia", type: "fundacion", label: "Fundación de la Dinastía Chakri", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "Fundación de la Dinastía Chakri", source: "Documentación histórica" }],
-    sourceNote: "Fundación de Bangkok el 6 de abril de 1782.",
+    events: [{ id: "th-sukhothai", type: "fundacion", label: "Fundación del Reino de Sukhothai", year: 1238, confidence: "exacta", primaryForAffinity: true, description: "Fundación del Reino de Sukhothai", source: "Documentación histórica" }],
+    sourceNote: "Fundación del Reino de Sukhothai en 1238.",
   },
   {
     id: "kenia", name: "Kenia", type: "country",

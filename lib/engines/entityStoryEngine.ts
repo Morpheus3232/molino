@@ -6,10 +6,9 @@
  */
 
 import type { UserProfile } from "@/types/user";
-import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, type SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getRelation, type Animal, type RelationType } from "@/lib/data/animalRelations";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
-import { getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 
 export interface EntityConnectionStory {
@@ -48,11 +47,10 @@ export function buildEntityConnectionStory(
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   if (!userAnimal) return null;
 
-  // Get entity's zodiac animal from its primary event
-  const event = getPrimaryEvent(entity);
-  if (!event) return null;
-
-  const entityAnimalResult = calculateAnimalFromDate(event?.date, event?.year);
+  const primaryEvent = getPrimaryEvent(entity);
+  const entityAnimalResult = primaryEvent
+    ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year)
+    : calculateAnimalFromDate(undefined, entity.foundingYear);
   const entityAnimal = (entityAnimalResult?.animal ?? "") as Animal;
   if (!entityAnimal) return null;
 

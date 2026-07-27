@@ -81,7 +81,7 @@ export default function UniversityHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8 h-16 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background text-base font-semibold tracking-tight">
               M
