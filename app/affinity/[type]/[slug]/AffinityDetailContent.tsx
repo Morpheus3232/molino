@@ -1101,7 +1101,7 @@ function QuickAffinity({
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerSection, staggerCard, numberReveal, hoverLift, hoverScale } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Grainient from "@/components/Grainient";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import {
@@ -86,7 +87,7 @@ const getDaysInMonth = (month: string, year: string): number => {
 
 function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebrow?: string; title?: string; subtitle?: string; children?: React.ReactNode; className?: string }) {
   return (
-    <motion.section {...fadeUp} className={`mb-16 sm:mb-24 ${className}`}>
+    <motion.section {...fadeUp} className={`mb-20 sm:mb-32 ${className}`}>
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
         {(eyebrow || title) && (
           <div className="mb-8 sm:mb-10">
@@ -184,17 +185,17 @@ function HeroWithForm() {
   };
 
   return (
-    <Section className="-mt-4 sm:-mt-6">
-      <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
+    <Section className="-mt-4 sm:-mt-6 py-16 sm:py-20 lg:py-24">
+      <div className="rounded-3xl border border-border bg-card/60 p-8 sm:p-10 lg:p-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           {/* Value prop */}
           <motion.div {...fadeUp}>
             <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Inteligencia Personal</p>
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[0.95] mb-6">
               Descubrí tu mapa
             </h1>
-            <p className="text-sm sm:text-base text-muted max-w-xl leading-relaxed mb-6">
-              Una síntesis de numerología, astrología y zodiaco chino para entender tus patrones, ciclos y conexiones.
+            <p className="text-lg sm:text-xl text-muted max-w-xl leading-relaxed mb-8">
+              Tu mapa personal revela quién sos a partir de tu fecha de nacimiento.
             </p>
             <p className="text-xs text-muted">
               Sin registro. Sin guardar datos personales.
@@ -202,7 +203,7 @@ function HeroWithForm() {
           </motion.div>
 
           {/* Form */}
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }} className="rounded-2xl border border-border bg-background/50 p-5 sm:p-6">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }} className="rounded-2xl border border-border bg-card/80 backdrop-blur-sm p-5 sm:p-6">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-3 gap-3">
                 <div>
@@ -211,6 +212,8 @@ function HeroWithForm() {
                     <select
                       value={day}
                       onChange={(e) => setDay(e.target.value)}
+                      id="birth-day"
+                      name="day"
                       className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
                       required
                       aria-label="Día"
@@ -231,6 +234,8 @@ function HeroWithForm() {
                     <select
                       value={month}
                       onChange={(e) => setMonth(e.target.value)}
+                      id="birth-month"
+                      name="month"
                       className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
                       required
                       aria-label="Mes"
@@ -250,6 +255,8 @@ function HeroWithForm() {
                     <select
                       value={year}
                       onChange={(e) => setYear(e.target.value)}
+                      id="birth-year"
+                      name="year"
                       className="w-full appearance-none px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px] font-serif transition-all duration-200 ease-out"
                       required
                       aria-label="Año"
@@ -276,7 +283,7 @@ function HeroWithForm() {
                 {...hoverScale}
                 type="submit"
                 disabled={loading || !day || !month || !year}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-10 py-5 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px] disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {loading ? "Descubriendo..." : "Descubrir mi mapa →"}
               </motion.button>
@@ -355,7 +362,7 @@ function SystemsPreview() {
             {...hoverLift}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group relative text-left rounded-2xl border border-border bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:border-foreground/20 hover:shadow-xl"
+            className="group relative text-left rounded-2xl border border-border bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:border-foreground/20 hover:shadow-xl h-full"
           >
             <div className="flex items-center justify-between mb-5">
               <motion.span {...numberReveal} className="text-[10px] font-mono tracking-[0.25em] text-muted">
@@ -365,7 +372,7 @@ function SystemsPreview() {
             </div>
             <p className="font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
             <p className="mt-2 text-sm text-muted leading-relaxed">{item.desc}</p>
-            <span className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-accent">
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-muted group-hover:text-foreground transition-colors">
               Explorar
               <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
             </span>
@@ -390,7 +397,7 @@ function Journey() {
     <Section
       eyebrow="Cómo funciona"
       title="Un recorrido en cinco pasos"
-      subtitle="De tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones."
+      subtitle="De los datos de tu nacimiento a una lectura integrada de identidad, patrones y relaciones."
       className="relative"
     >
       <div className="absolute left-3 sm:left-4 top-3 bottom-3 w-px bg-border/70" aria-hidden="true" />
@@ -401,7 +408,7 @@ function Journey() {
             {...staggerCard}
             className="relative grid grid-cols-[auto_1fr] gap-6 sm:gap-10"
           >
-            <motion.div {...numberReveal} className="relative z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-background text-[11px] font-mono tracking-[0.2em] text-muted">
+            <motion.div {...numberReveal} className="relative z-10 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-accent text-accent-foreground text-lg font-bold shadow-md">
               {item.num}
             </motion.div>
             <div className="pb-1">
@@ -419,13 +426,16 @@ function Journey() {
 
 function ToolsAndDiscovery() {
   const router = useRouter();
-  const quickLinks = [
+  const primaryTools = [
     { title: "Camino de Vida", desc: "Tu número numerológico", href: "/herramientas/camino-de-vida" },
     { title: "Signo Solar", desc: "Tu signo zodiacal", href: "/herramientas/signo-solar" },
     { title: "Zodíaco Chino", desc: "Tu animal y elemento", href: "/herramientas/zodiaco-chino" },
     { title: "Compatibilidad", desc: "Conectá dos perfiles", href: "/herramientas/compatibilidad" },
-    { title: "Países", desc: "Afinidad simbólica por país", href: "/affinity/country" },
-    { title: "Marcas", desc: "Marcas que resuenan con tu perfil", href: "/affinity/brand" },
+  ];
+  const secondaryTools = [
+    { title: "Número de la Suerte", desc: "Tu número personal", href: "/conocimiento/numerologia" },
+    { title: "Países", desc: "Afinidad simbólica", href: "/affinity/country" },
+    { title: "Marcas", desc: "Marcas que resuenan", href: "/affinity/brand" },
     { title: "Universidades", desc: "Instituciones por afinidad", href: "/affinity/university" },
     { title: "Ciudades", desc: "Destinos por zodiaco", href: "/affinity/city" },
   ];
@@ -436,16 +446,29 @@ function ToolsAndDiscovery() {
       title="Herramientas y afinidades"
       subtitle="Accesos directos para seguir investigando tu perfil."
     >
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {quickLinks.map((item) => (
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6">
+        {primaryTools.map((item) => (
           <button
             key={item.href}
             type="button"
             onClick={() => router.push(item.href)}
-            className="group text-left rounded-2xl border border-border bg-card/60 p-4 sm:p-5 transition-all duration-300 hover:border-foreground/15 hover:shadow-lg"
+            className="group text-left rounded-2xl border border-accent/15 bg-card/80 p-5 sm:p-6 transition-all duration-300 hover:border-accent/30 hover:shadow-lg h-full"
           >
             <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors">{item.title}</p>
             <p className="mt-1.5 text-xs text-muted leading-relaxed">{item.desc}</p>
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3">
+        {secondaryTools.map((item) => (
+          <button
+            key={item.href}
+            type="button"
+            onClick={() => router.push(item.href)}
+            className="group text-left rounded-xl border border-border bg-card/40 p-3 sm:p-4 transition-all duration-200 hover:border-foreground/15 hover:bg-card/60 h-full"
+          >
+            <p className="text-xs font-serif font-semibold text-foreground group-hover:text-accent transition-colors">{item.title}</p>
+            <p className="mt-1 text-[11px] text-muted leading-relaxed">{item.desc}</p>
           </button>
         ))}
       </div>
@@ -488,9 +511,9 @@ function ConceptsIndex() {
             {...hoverLift}
             type="button"
             onClick={() => router.push(concept.href)}
-            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-200 ease-out hover:border-foreground/15 hover:bg-card"
+            className="group text-left rounded-2xl border border-border bg-card/60 p-4 sm:p-5 transition-all duration-200 ease-out hover:border-foreground/15 hover:bg-card h-full"
           >
-            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
+            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
             <span className="mt-2 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors duration-200">
               Explorar
               <span className="ml-1.5 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
@@ -502,51 +525,24 @@ function ConceptsIndex() {
   );
 }
 
-/* ═══ Grupo 5: CTA final único ═══ */
-
-function FinalCTA() {
-  const router = useRouter();
-
-  return (
-    <Section className="pb-10">
-      <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.04] to-background p-8 sm:p-10 lg:p-12 text-center">
-        <div
-          className="absolute inset-0 -z-10 opacity-[0.35]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(212,168,67,0.25) 1px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-          aria-hidden="true"
-        />
-        <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
-        <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
-          Identidad, mundo, círculo e inteligencia en un solo lugar.
-        </p>
-        <motion.button {...hoverScale} type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
-          Crear mi perfil
-        </motion.button>
-      </motion.div>
-    </Section>
-  );
-}
-
 /* ═══ Main ═══ */
 
 export default function Home() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setProfile(getOrCreateProfile());
-  }, []);
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
+      <Grainient
+        timeSpeed={0.12}
+        contrast={1.15}
+        grainAmount={0.06}
+        grainScale={2.5}
+        zoom={1.3}
+        warpAmplitude={35}
+        warpFrequency={4}
+        blendSoftness={0.08}
+      />
       <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12 pt-10 sm:pt-16 pb-28" id="main-content">
-        {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}
+        <GenericHome />
       </main>
       <UniversityFooter />
     </div>
@@ -566,7 +562,6 @@ function GenericHome() {
       <Journey />
       <ToolsAndDiscovery />
       <ConceptsIndex />
-      <FinalCTA />
     </>
   );
 }
@@ -593,13 +588,13 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
             {display.emoji} {display.name} · {element} · {archetype.name}
           </p>
           <div className="mt-5">
-            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
+            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-10 py-5 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px]">
               Ver mi perfil completo
             </motion.button>
           </div>
         </motion.div>
       </Section>
-
+      
       <SystemsPreview />
       <Journey />
       <ToolsAndDiscovery />
@@ -620,7 +615,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
             Identidad, mundo, círculo e inteligencia en un solo lugar.
           </p>
-          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-md">
+          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-10 py-5 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px]">
             Ver mi perfil completo
           </motion.button>
         </motion.div>
