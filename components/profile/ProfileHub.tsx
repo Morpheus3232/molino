@@ -1,19 +1,17 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { buildPersonalRecommendations, hasPositiveAffinity } from "@/lib/engines/personalRecommendationEngine";
-import { getRelationshipMap } from "@/lib/data/animalRelations";
+import { buildPersonalRecommendations } from "@/lib/engines/personalRecommendationEngine";
+import { getRelationshipMap, ANIMALS } from "@/lib/data/animalRelations";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { buildPersonalCode } from "@/lib/engines/synthesisEngine";
 import { safeNumber } from "@/lib/utils/score";
 import type { ProfileTab } from "./ProfileTabs";
-import { ANIMALS } from "@/lib/data/animalRelations";
 
 function getAnimalYears(animal: string, start = 1900, end = 2030): number[] {
   const index = ANIMALS.indexOf(animal as any);
@@ -32,7 +30,6 @@ interface ProfileHubProps {
 }
 
 export default function ProfileHub({ profile }: ProfileHubProps) {
-  const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as string;
   const display = getZodiacDisplay(userAnimal);
   const element = typeof profile.element === "string" ? profile.element : "";
@@ -56,10 +53,10 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
     { value: `${ZODIAC_SYMBOLS[sunSign] || "\u2648"} ${sunSign}`, label: "Signo Solar", icon: "☀" },
     { value: display.name, label: "Animal Chino", icon: display.emoji },
     { value: element, label: "Elemento", icon: "🌿" },
+    { value: `${profile.luckyNumber}`, label: "Nº de la Suerte", icon: "🍀" },
   ];
 
   const recommendationMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
-  const positiveRecs = useMemo(() => recommendationMap.recommendations.filter(r => hasPositiveAffinity(r.priority)), [recommendationMap]);
 
   const topCountries = useMemo(
     () => (recommendationMap.byCategory.country ?? [])
@@ -88,9 +85,6 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
 
   const relationMap = useMemo(() => getRelationshipMap(userAnimal as any), [userAnimal]);
   const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 5);
-
-  const discovery = loadDiscoveryState();
-  const topRec = discovery.hasCompletedOnboarding ? positiveRecs[0] : null;
 
   const userYear = parseInt(birthDate?.split("-")[0] || "0", 10);
   const sameAnimalFamous = useMemo(
@@ -271,24 +265,7 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
           </motion.div>
         </div>
 
-        {/* ═══ NEXT DISCOVERY ═══ */}
-        {topRec && (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="p-5 sm:p-6 rounded-2xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
-            onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-xl shrink-0">{topRec.entity.emoji || "◆"}</span>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">Tu próximo descubrimiento</p>
-            </div>
-            <p className="text-sm text-foreground leading-relaxed">
-              {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
-            </p>
-          </motion.div>
-        )}
+
       </div>
     </div>
   );
