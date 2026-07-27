@@ -26,7 +26,7 @@ interface ProfileTabsProps {
 export default function ProfileTabs({ active, onChange }: ProfileTabsProps) {
   return (
     <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
-      <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <nav className="flex gap-0 overflow-x-auto scrollbar-hide" role="tablist" aria-label="Secciones del perfil">
           {TABS.map((tab) => {
             const isActive = active === tab.id;
