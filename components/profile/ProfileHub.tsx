@@ -69,7 +69,13 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
   );
   const topBrands = useMemo(
     () => (recommendationMap.byCategory.brand ?? [])
-      .filter(r => r.entityAnimal === userAnimal)
+      .filter(r => r.entityAnimal === userAnimal && r.entity.category !== "autos")
+      .slice(0, 5),
+    [recommendationMap, userAnimal]
+  );
+  const topAutoBrands = useMemo(
+    () => (recommendationMap.byCategory.brand ?? [])
+      .filter(r => r.entityAnimal === userAnimal && r.entity.category === "autos")
       .slice(0, 5),
     [recommendationMap, userAnimal]
   );
@@ -245,7 +251,21 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
                 </div>
               </div>
             )}
-            {topCountries.length === 0 && topCities.length === 0 && topBrands.length === 0 && (
+            {topAutoBrands.length > 0 && (
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.15em] text-accent font-medium mb-2">Autos que resuenan</p>
+                <div className="space-y-1.5">
+                  {topAutoBrands.map((r) => (
+                    <div key={r.entity.id} className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/5 transition-colors">
+                      <span className="text-base shrink-0">{r.entity.emoji || "🚗"}</span>
+                      <p className="text-sm font-medium text-foreground flex-1">{r.entity.name}</p>
+                      <span className="text-[11px] font-semibold text-accent">{r.totalScore}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {topCountries.length === 0 && topCities.length === 0 && topBrands.length === 0 && topAutoBrands.length === 0 && (
               <p className="text-sm text-muted">Todavía no hay conexiones calculadas.</p>
             )}
           </motion.div>
