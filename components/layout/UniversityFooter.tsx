@@ -6,7 +6,7 @@ export default function UniversityFooter() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 py-16 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-y-0">
           <div className="md:col-span-5 md:pr-12">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-background text-foreground">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white text-foreground border border-border">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
                 <line x1="12" y1="3" x2="12" y2="12" />
                 <line x1="4" y1="7" x2="20" y2="7" />

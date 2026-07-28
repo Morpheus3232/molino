@@ -94,7 +94,12 @@ export default function UniversityHeader() {
       >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background">
+            <motion.span
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-foreground border border-border"
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+            >
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
                 <line x1="12" y1="3" x2="12" y2="12" />
                 <line x1="4" y1="7" x2="20" y2="7" />
@@ -102,7 +107,7 @@ export default function UniversityHeader() {
                 <path d="M7 22h10" />
                 <path d="M9 12l3-4 3 4" />
               </svg>
-            </span>
+            </motion.span>
           </Link>
 
           <div className="flex items-center gap-3">
