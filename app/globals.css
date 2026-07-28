@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #1A1A1A;
-  --color-paper: #FBFBFB;
-  --color-cream: #F7F5F0;
-  --color-warm: #8B7355;
-  --color-accent: #C49A2A;
-  --color-accent-hover: #B8946E;
+  --color-ink: #0A0A0A;
+  --color-paper: #FFFFFF;
+  --color-cream: #F8FAFC;
+  --color-warm: #3B82F6;
+  --color-accent: #0066FF;
+  --color-accent-hover: #0052CC;
   --color-muted: #6B7280;
-  --color-border: #E8E5DE;
-  --color-background: var(--color-cream);
+  --color-border: #E5E7EB;
+  --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
   --color-card: var(--color-paper);
@@ -20,12 +20,12 @@
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
-  --color-accent-foreground: var(--color-ink);
-  --color-success: #2D5A3D;
-  --color-success-foreground: var(--color-ink);
-  --color-warning: #C49A2A;
-  --color-warning-foreground: var(--color-ink);
-  --color-error: #B91C1C;
+  --color-accent-foreground: var(--color-paper);
+  --color-success: #059669;
+  --color-success-foreground: var(--color-paper);
+  --color-warning: #0066FF;
+  --color-warning-foreground: var(--color-paper);
+  --color-error: #DC2626;
   --color-error-foreground: var(--color-paper);
 
   --radius-sm: 0.5rem;
@@ -49,13 +49,13 @@
 
   --tracking-tight: -0.02em;
 
-  --shadow-sm: 0 1px 3px 0 rgba(26, 26, 26, 0.05), 0 1px 2px -1px rgba(26, 26, 26, 0.05);
-  --shadow-md: 0 6px 12px -2px rgba(26, 26, 26, 0.08), 0 3px 6px -3px rgba(26, 26, 26, 0.06);
-  --shadow-lg: 0 12px 18px -4px rgba(26, 26, 26, 0.1), 0 5px 10px -6px rgba(26, 26, 26, 0.06);
-  --shadow-xl: 0 22px 28px -6px rgba(26, 26, 26, 0.12), 0 10px 14px -8px rgba(26, 26, 26, 0.08);
-  --shadow-glow: 0 0 50px rgba(196, 154, 42, 0.12);
-  --shadow-glow-accent: 0 0 40px rgba(212, 168, 67, 0.08);
-  --shadow-inner: inset 0 2px 4px 0 rgba(26, 26, 26, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 30px rgba(0, 102, 255, 0.08);
+  --shadow-glow-accent: 0 0 24px rgba(0, 102, 255, 0.05);
+  --shadow-inner: inset 0 1px 2px 0 rgba(0, 0, 0, 0.04);
 
   --max-width-content: 680px;
   --max-width-wide: 1200px;
@@ -71,40 +71,40 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(26, 26, 26, 0.25);
-  --color-ink-alpha-03: rgba(26, 26, 26, 0.03);
-  --color-accent-alpha-04: rgba(196, 154, 42, 0.08);
-  --color-accent-alpha-10: rgba(196, 154, 42, 0.12);
+  --color-ink-alpha-25: rgba(10, 10, 10, 0.25);
+  --color-ink-alpha-03: rgba(10, 10, 10, 0.03);
+  --color-accent-alpha-04: rgba(0, 102, 255, 0.08);
+  --color-accent-alpha-10: rgba(0, 102, 255, 0.12);
 
   /* Element colors */
-  --element-fire: #C49A2A;
-  --element-earth: #2D5A3D;
-  --element-air: #6B4C7A;
-  --element-water: #2E5C8A;
-  --element-metal: #7A8A99;
-  --element-wood: #8FBC8F;
+  --element-fire: #0066FF;
+  --element-earth: #059669;
+  --element-air: #7C3AED;
+  --element-water: #0284C7;
+  --element-metal: #6B7280;
+  --element-wood: #10B981;
 
   /* Map layer colors */
-  --layer-identity: #C49A2A;
-  --layer-patterns: #8B7355;
-  --layer-numerology: #2E5C8A;
-  --layer-astrology: #6B4C7A;
-  --layer-cycles: #2D5A3D;
-  --layer-moment: #C44536;
+  --layer-identity: #0066FF;
+  --layer-patterns: #3B82F6;
+  --layer-numerology: #2563EB;
+  --layer-astrology: #7C3AED;
+  --layer-cycles: #059669;
+  --layer-moment: #DC2626;
 
   /* Category colors */
-  --cat-country: #C49A2A;
-  --cat-city: #4A5568;
-  --cat-brand: #6B4C7A;
-  --cat-band: #C44536;
-  --cat-movie: #2E5C8A;
-  --cat-book: #2D5A3D;
-  --cat-philosophy: #8B5CF6;
-  --cat-event: #B8860B;
-  --cat-food: #FF8C42;
-  --cat-color: #E8B4B8;
-  --cat-crystal: #4FD1C5;
-  --cat-deity: #F6AD55;
+  --cat-country: #0066FF;
+  --cat-city: #4B5563;
+  --cat-brand: #7C3AED;
+  --cat-band: #DC2626;
+  --cat-movie: #2563EB;
+  --cat-book: #059669;
+  --cat-philosophy: #7C3AED;
+  --cat-event: #0066FF;
+  --cat-food: #EA580C;
+  --cat-color: #EC4899;
+  --cat-crystal: #14B8A6;
+  --cat-deity: #F59E0B;
 
   /* Score colors */
   --score-excellent: #22C55E;
@@ -117,7 +117,7 @@
   --overlay-light: rgba(0, 0, 0, 0.3);
 
   /* Skeleton */
-  --skeleton: #E8E5DE;
+  --skeleton: #E5E7EB;
 }
 
 @layer base {
@@ -189,7 +189,7 @@
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(196, 154, 42, 0.18);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.18);
   }
 
   .skip-link {
@@ -211,7 +211,7 @@
   }
 
   ::selection {
-    background: rgba(196, 154, 42, 0.22);
+    background: rgba(0, 102, 255, 0.18);
     color: var(--color-foreground);
   }
 
@@ -411,7 +411,7 @@
   .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(196, 154, 42, 0.18);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.18);
     background-color: var(--color-card);
   }
 
@@ -500,12 +500,12 @@
     font-weight: 500;
     color: var(--color-accent-foreground);
     background: var(--color-accent-alpha-10);
-    border: 1px solid rgba(196, 154, 42, 0.25);
+    border: 1px solid rgba(0, 102, 255, 0.25);
     transition: background-color 150ms ease, border-color 150ms ease;
   }
 
   .badge:hover {
-    background: rgba(196, 154, 42, 0.18);
+    background: rgba(0, 102, 255, 0.18);
   }
 
   .map-node {
@@ -560,6 +560,34 @@
   .stagger-4 { animation-delay: 0.2s; }
   .stagger-5 { animation-delay: 0.25s; }
   .stagger-6 { animation-delay: 0.3s; }
+
+  .section-spacing {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-spacing {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-spacing {
+      padding-top: 10rem;
+      padding-bottom: 10rem;
+    }
+  }
+
+  .card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
 }
 
 @keyframes fadeIn {

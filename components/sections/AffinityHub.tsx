@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { IconLock } from "@/components/ui/Icons";
 import { useFavorites } from "@/lib/hooks/useFavorites";
+import { useProfile } from "@/lib/hooks/useProfile";
+import { useState, useMemo } from "react";
 import { fadeUp } from "@/lib/utils/motion";
+import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { calculateAffinity, type AffinityTier } from "@/lib/engines/affinityEngine";
+import type { UserProfile } from "@/types/user";
 
-type AffinityTier = "all" | "resonancia-alta" | "afinidad-media" | "complementarios" | "desafiante";
-
-const TIER_LABELS: Record<AffinityTier, string> = {
+const TIER_LABELS: Record<string, string> = {
   all: "Todas",
   "resonancia-alta": "Alta",
   "afinidad-media": "Media",
@@ -17,40 +18,79 @@ const TIER_LABELS: Record<AffinityTier, string> = {
   desafiante: "Desafiantes",
 };
 
+const TIER_STYLES: Record<string, { bg: string; border: string; accent: string; icon: string }> = {
+  all: { bg: "bg-card/60", border: "border-border", accent: "text-accent", icon: "✦" },
+  "resonancia-alta": { bg: "bg-[#E8F0FE]", border: "border-blue-200", accent: "text-blue-700", icon: "★" },
+  "afinidad-media": { bg: "bg-[#E8F5E9]", border: "border-green-200", accent: "text-green-700", icon: "●" },
+  complementarios: { bg: "bg-[#E3F2FD]", border: "border-indigo-200", accent: "text-indigo-700", icon: "◆" },
+  desafiante: { bg: "bg-[#FCE4EC]", border: "border-pink-200", accent: "text-pink-700", icon: "▲" },
+};
+
+const ENTITY_CATEGORIES = [
+  { label: "Países", type: "country" as const, href: "/affinity/country", desc: "Descubrí con qué países resuena tu energía" },
+  { label: "Ciudades", type: "city" as const, href: "/affinity/city", desc: "Destinos alineados con tu perfil" },
+  { label: "Marcas", type: "brand" as const, href: "/affinity/brand", desc: "Marcas que vibran en tu misma frecuencia" },
+  { label: "Universidades", type: "university" as const, href: "/affinity/university", desc: "Instituciones que potencian tu crecimiento" },
+];
+
+function getBestTierForCategory(profile: UserProfile, type: string): { tier: AffinityTier; score: number } {
+  const entities = SYMBOLIC_ENTITIES.filter((e) => e.type === type);
+  if (entities.length === 0 || !profile) {
+    return { tier: "complementarios" as AffinityTier, score: 50 };
+  }
+  const results = entities
+    .map((e) => calculateAffinity(profile, e))
+    .sort((a, b) => b.score - a.score);
+  return { tier: results[0]?.tier || "complementarios", score: results[0]?.score || 50 };
+}
+
 export default function AffinityHub() {
-  const { toggleFavorite } = useFavorites();
   const router = useRouter();
-  const [filter, setFilter] = useState<AffinityTier>("all");
-  const spokes = [
-    { label: "Países", href: "/affinity/country", desc: "Descubrí con qué países resuena tu energía", tier: "all" as AffinityTier },
-    { label: "Ciudades", href: "/affinity/city", desc: "Destinos alineados con tu perfil", tier: "all" as AffinityTier },
-    { label: "Marcas", href: "/affinity/brand", desc: "Marcas que vibran en tu misma frecuencia", tier: "all" as AffinityTier },
-  ];
-  const filteredSpokes = useMemo(
-    () => (filter === "all" ? spokes : spokes.filter(s => s.tier === filter)),
-    [spokes, filter]
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { profile } = useProfile();
+  const [filter, setFilter] = useState<string>("all");
+
+  const categories = useMemo(() => {
+    if (!profile) {
+      return ENTITY_CATEGORIES.map((c) => ({ ...c, tier: "complementarios" as AffinityTier, score: 50 }));
+    }
+    return ENTITY_CATEGORIES.map((c) => {
+      const { tier, score } = getBestTierForCategory(profile, c.type);
+      return { ...c, tier, score };
+    });
+  }, [profile]);
+
+  const filteredCategories = useMemo(
+    () => (filter === "all" ? categories : categories.filter((c) => c.tier === filter)),
+    [categories, filter]
   );
 
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-[#EFEBE1]">
+    <section className="py-20 sm:py-24 lg:py-28 bg-white">
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
         <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Conexiones</p>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Conexiones</p>
           <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0]">
             ¿Con qué resonás?
           </h2>
         </motion.div>
 
-        <div className="flex gap-2 flex-wrap mb-6">
-          {(Object.keys(TIER_LABELS) as AffinityTier[]).map(tier => (
+        {!profile && (
+          <motion.p {...fadeUp} className="text-sm text-muted mb-6">
+            Creá tu perfil para descubrir tus conexiones personales.
+          </motion.p>
+        )}
+
+        <div className="flex gap-2 flex-wrap mb-8">
+          {Object.keys(TIER_LABELS).map((tier) => (
             <button
               key={tier}
               type="button"
               onClick={() => setFilter(tier)}
-              className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 ${
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 filter === tier
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-white/50 text-foreground/70 hover:bg-white/80"
+                  ? "bg-accent text-white shadow-lg"
+                  : "bg-white/70 text-muted hover:bg-white/90 hover:shadow-md border border-border"
               }`}
             >
               {TIER_LABELS[tier]}
@@ -58,61 +98,39 @@ export default function AffinityHub() {
           ))}
         </div>
 
-        <div className="relative">
-          <svg
-            className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none select-none"
-            viewBox="0 0 1000 400"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ color: "var(--color-border)" }}
-            opacity="0.25"
-          >
-            <line x1="260" y1="200" x2="520" y2="72" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 6" />
-            <line x1="260" y1="200" x2="520" y2="200" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 6" />
-            <line x1="260" y1="200" x2="520" y2="328" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 6" />
-          </svg>
-
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-6 relative z-10">
-            <div className="shrink-0">
-              <div className="w-48 h-48 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-full bg-foreground flex flex-col items-center justify-center shadow-xl gap-1">
-                <span className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-background tracking-tight leading-none">Tu</span>
-                <span className="font-serif text-base sm:text-lg font-normal text-background/50 tracking-widest uppercase">centro</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
+          {filteredCategories.map((cat, i) => (
+            <motion.button
+              key={cat.type}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.06 }}
+              type="button"
+              onClick={() => router.push(cat.href)}
+              className="group text-left py-6 border-b border-neutral-200/60 hover:border-accent transition-colors"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+                  {cat.label}
+                </span>
+                <span className={`text-[10px] font-mono ${TIER_STYLES[cat.tier]?.accent || "text-muted"}`}>
+                  {TIER_LABELS[cat.tier] || cat.tier}
+                </span>
               </div>
-            </div>
-
-            <div className="flex-1 w-full max-w-2xl mx-auto lg:mx-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                {filteredSpokes.map((spoke) => (
-                  <button
-                    key={spoke.label}
-                    type="button"
-                    onClick={() => router.push(spoke.href)}
-                    className="group text-left rounded-2xl border border-border bg-card/60 p-7 sm:p-8 transition-all duration-300 hover:border-accent/30 hover:shadow-lg h-full"
-                  >
-                    <p className="font-serif text-xl sm:text-2xl font-semibold text-background group-hover:text-accent transition-colors mb-3">{spoke.label}</p>
-                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">{spoke.desc}</p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-background/40 group-hover:text-background/70 transition-colors">
-                        <IconLock className="w-3 h-3" />
-                        Requiere perfil
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); toggleFavorite(spoke.label); }}
-                        className="text-background/30 hover:text-accent transition-colors duration-200"
-                        aria-label={`Guardar ${spoke.label} en favoritos`}
-                      >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
-                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </button>
-                ))}
-              </div>
-              <p className="mt-8 text-sm text-muted/50 text-center lg:text-left">Creá tu perfil para descubrir tus conexiones personales.</p>
-            </div>
-          </div>
+              <p className="text-sm text-muted leading-relaxed">{cat.desc}</p>
+              {profile && (
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="h-1 flex-1 rounded-full bg-neutral-200 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-accent transition-all duration-500"
+                      style={{ width: `${cat.score}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] font-mono text-muted">{cat.score}%</span>
+                </div>
+              )}
+            </motion.button>
+          ))}
         </div>
       </div>
     </section>

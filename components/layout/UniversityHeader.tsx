@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage";
 
 export default function UniversityHeader() {
@@ -11,8 +12,14 @@ export default function UniversityHeader() {
   const [hasProfile, setHasProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 50);
+  });
 
   useEffect(() => {
     setHasProfile(hasStoredProfile());
@@ -80,11 +87,21 @@ export default function UniversityHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-xl">
+      <motion.header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "bg-white/80 backdrop-blur-sm shadow-sm" : "bg-transparent"
+        }`}
+      >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group" aria-label="Molino — Ir al inicio">
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background text-base font-semibold tracking-tight">
-              M
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
+                <path d="M12 2v20" />
+                <path d="M12 6c-4 0-6 2-6 6 4 0 6-2 6-6z" />
+                <path d="M12 6c4 0 6 2 6 6-4 0-6-2-6-6z" />
+                <path d="M12 18c-4 0-6-2-6-6 4 0 6 2 6 6z" />
+                <path d="M12 18c4 0 6-2 6-6-4 0-6 2-6 6z" />
+              </svg>
             </span>
             <span className="font-serif text-xl font-semibold tracking-tight text-foreground">
               Molino
@@ -121,7 +138,7 @@ export default function UniversityHeader() {
             </Link>
           </div>
         )}
-      </header>
+      </motion.header>
 
       {showConfirm && (
         <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
