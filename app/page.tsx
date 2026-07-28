@@ -35,7 +35,7 @@ function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebr
               </p>
             )}
             {title && (
-              <h2 className="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+              <h2 className="font-heading uppercase text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
                 {title}
               </h2>
             )}
@@ -59,8 +59,8 @@ function FinalCTA() {
 
   return (
     <Section className="!pt-12 !pb-20">
-      <div className="relative overflow-hidden rounded-3xl p-8 sm:p-10 lg:p-12 text-center bg-cream">
-        <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
+      <div className="relative p-8 sm:p-10 lg:p-12 text-center bg-card">
+        <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
         <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
           Identidad, mundo, círculo e inteligencia en un solo lugar.
         </p>
@@ -125,23 +125,6 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
 
   return (
     <>
-      <Section className="-mb-4 sm:-mb-6">
-        <motion.div {...fadeUp} className="py-8 sm:py-10">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu mapa personal</p>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
-            {name ? `Bienvenido/a, ${name}` : `Sos ${display.name}`}
-          </h1>
-          <p className="text-sm sm:text-base text-muted max-w-xl leading-relaxed">
-            {display.emoji} {display.name} · {element} · {archetype.name}
-          </p>
-          <div className="mt-5">
-            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
-              Ver mi perfil completo
-            </motion.button>
-          </div>
-        </motion.div>
-      </Section>
-
       <SystemsPreview />
       <Journey />
       <ToolsAndDiscovery />
@@ -149,11 +132,11 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
 
       <Section className="!pt-12 !pb-20">
         <motion.div {...fadeUp} className="p-8 sm:p-10 lg:p-12 text-center">
-          <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver el detalle completo?</p>
+          <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver el detalle completo?</p>
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
             Identidad, mundo, círculo e inteligencia en un solo lugar.
           </p>
-          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
+          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px]">
             Ver mi perfil completo
           </motion.button>
         </motion.div>

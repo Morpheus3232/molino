@@ -69,5 +69,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages];
+  // Guía pages
+  const guiaPages = [
+    { url: `${BASE_URL}/guia`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/guia/camino-de-vida-7`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+  ];
+
+  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages];
 }

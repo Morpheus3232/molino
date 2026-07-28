@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
+import { Inter, Playfair_Display, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
@@ -11,8 +11,9 @@ import MotionProvider from "@/components/ui/MotionProvider";
 import Prism from "@/components/effects/Prism";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif-accent" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-heading" });
 
 export const metadata: Metadata = {
   title: {
@@ -98,7 +99,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable}`}>
+    <html lang="es" className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

@@ -217,7 +217,7 @@ export interface GoldenCardProps extends HTMLAttributes<HTMLDivElement> {
 
 export const GoldenCard = forwardRef<HTMLDivElement, GoldenCardProps>(
   ({ children, ratio = 1.618, elevated = false, animated = true, delay = 0, className, ...props }, ref) => {
-    const cardClasses = `golden-card relative overflow-hidden rounded-2xl bg-card ${elevated ? "shadow-xl hover:shadow-2xl" : "shadow-sm hover:shadow-md"} transition-shadow duration-500 ${className || ""}`;
+    const cardClasses = `golden-card relative bg-card ${className || ""}`;
 
     if (animated) {
       return (
@@ -225,7 +225,6 @@ export const GoldenCard = forwardRef<HTMLDivElement, GoldenCardProps>(
           ref={ref}
           className={cardClasses}
           style={{
-            aspectRatio: `${ratio}`,
             ...props.style,
           }}
           initial={{ opacity: 0, y: 20 }}
@@ -243,7 +242,6 @@ export const GoldenCard = forwardRef<HTMLDivElement, GoldenCardProps>(
         ref={ref}
         className={cardClasses}
         style={{
-          aspectRatio: `${ratio}`,
           ...props.style,
         }}
         {...props}

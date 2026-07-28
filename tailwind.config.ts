@@ -9,7 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["var(--font-serif)", "Playfair Display", "serif"],
+        heading: ["var(--font-heading)", "Space Grotesk", "sans-serif"],
+        serif: ["var(--font-serif-accent)", "Playfair Display", "serif"],
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },

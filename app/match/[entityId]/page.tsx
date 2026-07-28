@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ENTITIES } from "@/lib/data/entities";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
@@ -26,6 +26,20 @@ export default function MatchPage() {
   const [result, setResult] = useState<any>(null);
   const [story, setStory] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const overallScore = result?.scores?.overall ?? 0;
+  const handleShare = useCallback(() => {
+    const url = `${window.location.origin}/match/${entityId}?score=${overallScore}`;
+    if (navigator.share) {
+      navigator.share({
+        title: `Compatibilidad con ${entity.name}: ${overallScore}%`,
+        text: `Descubrí mi compatibilidad con ${entity.name}: ${overallScore}% de resonancia`,
+        url,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url);
+    }
+  }, [entityId, entity, overallScore]);
 
   useEffect(() => {
     const current = getOrCreateProfile();
@@ -169,8 +183,11 @@ export default function MatchPage() {
             <Button fullWidth onClick={() => router.push("/explore")}>
               Explorar más compatibilidades →
             </Button>
-            <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
+            <Button fullWidth onClick={() => router.push("/profile")}>
               Ver mi perfil
+            </Button>
+            <Button variant="secondary" fullWidth onClick={handleShare}>
+              Compartir resultado
             </Button>
           </div>
         </Section>

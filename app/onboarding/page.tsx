@@ -207,7 +207,7 @@ export default function OnboardingPage() {
                 <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
                   Inteligencia Personal
                 </span>
-                <h1 className="font-serif text-4xl font-bold text-foreground md:text-5xl">
+                <h1 className="font-heading uppercase text-4xl font-semibold text-foreground md:text-5xl">
                   Descubrí tu mapa
                 </h1>
                 <p className="mt-3 text-base text-muted md:text-lg">
@@ -215,8 +215,8 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
-               <div className="p-6 rounded-2xl border border-border bg-card">
-                 <form onSubmit={handleDateSubmit} className="space-y-6">
+               <div>
+                 <form onSubmit={handleDateSubmit} className="space-y-8">
                    <DatePicker
                      day={day}
                      month={month}
@@ -232,7 +232,7 @@ export default function OnboardingPage() {
 
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                    className="w-full inline-flex items-center justify-center gap-2 font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
                   >
                     Descubrir mi mapa →
                   </button>
@@ -240,6 +240,14 @@ export default function OnboardingPage() {
                   <p className="text-xs text-muted text-center">
                     Sin servidor. Sin cuentas.
                   </p>
+
+                  <div className="flex items-center justify-center gap-3 text-[11px] text-muted/60 font-mono tracking-wider">
+                    <span>3 sistemas</span>
+                    <span className="w-px h-3 bg-border" />
+                    <span>13 fuentes</span>
+                    <span className="w-px h-3 bg-border" />
+                    <span>0 servidores</span>
+                  </div>
                 </form>
               </div>
             </motion.div>
@@ -279,7 +287,7 @@ export default function OnboardingPage() {
                 transition={{ delay: 0.5, duration: 0.6 }}
                 className="text-center mb-8"
               >
-                <h1 className="font-serif text-4xl sm:text-5xl font-bold text-foreground mb-2">
+                <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold text-foreground mb-2">
                   {display.name}
                 </h1>
                 <p className="text-lg" style={{ color: elementColor }}>
@@ -329,14 +337,14 @@ export default function OnboardingPage() {
                 <button
                   type="button"
                   onClick={() => setStep("name")}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                  className="w-full inline-flex items-center justify-center gap-2 font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
                 >
                   Entrar a mi Molino →
                 </button>
                 <button
                   type="button"
                   onClick={handleShareReveal}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm border border-border bg-card hover:bg-background"
+                  className="w-full inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm border border-border bg-card hover:bg-background"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="18" cy="5" r="3" />
@@ -366,7 +374,7 @@ export default function OnboardingPage() {
                 <span className="inline-block px-3 py-1 rounded-full bg-accent/10 text-accent text-[10px] uppercase tracking-[0.2em] font-medium mb-4">
                   Profundizar
                 </span>
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
+                <h1 className="font-heading uppercase text-3xl sm:text-4xl font-semibold text-foreground mb-2">
                   ¿Querés agregar tu nombre?
                 </h1>
                 <p className="text-sm text-muted">
@@ -374,7 +382,7 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border border-border bg-card">
+              <div>
                 <div className="space-y-4">
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Nombre o alias</p>
@@ -382,7 +390,7 @@ export default function OnboardingPage() {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
+                      className="w-full px-4 py-3 border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
                       placeholder="Ej: Marian, Sol, Charly..."
                       minLength={2}
                       maxLength={40}
@@ -394,7 +402,7 @@ export default function OnboardingPage() {
                   <button
                     type="button"
                     onClick={handleNameSubmit}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                    className="w-full inline-flex items-center justify-center gap-2 font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
                   >
                     {name.trim() ? "Desbloquear capas adicionales →" : "Entrar como Explorador →"}
                   </button>
@@ -425,7 +433,7 @@ export default function OnboardingPage() {
               <svg className="w-10 h-10 text-accent mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m12 3-1.9 5.8-5.8 1.9 5.8 1.9L12 21l1.9-5.8 5.8-1.9-5.8-1.9z" />
               </svg>
-              <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
+              <h1 className="font-heading text-3xl font-semibold text-foreground mb-2">
                 Tu mapa está listo
               </h1>
               <p className="text-sm text-muted">
