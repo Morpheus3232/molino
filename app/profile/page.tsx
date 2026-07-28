@@ -87,13 +87,13 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
       <main id="main-content">
         {/* Hub back navigation — visible when inside a screen */}
         {activeTab && (
-          <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
-            <div className="mx-auto max-w-[1100px] px-4 sm:px-6 flex items-center gap-4 h-12">
-              <button
-                type="button"
-                onClick={handleBackToHub}
-                className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg"
-              >
+          <div className="sticky top-0 z-30 bg-background border-b border-accent/10">
+            <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 flex items-center gap-4 h-12">
+                <button
+                  type="button"
+                  onClick={handleBackToHub}
+                  className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
+                >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
@@ -141,10 +141,10 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
           >
             <div className="mx-auto max-w-[600px]">
                <button
-                 type="button"
-                 onClick={handleGuidedNext}
-                 className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
-               >
+                  type="button"
+                  onClick={handleGuidedNext}
+                  className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                >
                 {GUIDED_CTA[activeTab].text}
               </button>
             </div>
@@ -176,23 +176,23 @@ function ProfilePageInner() {
     return (
       <div className="min-h-screen bg-background">
         <UniversityHeader />
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Mi mapa personal</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-            Todavía no creaste tu mapa
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Ingresá tu nombre y fecha de nacimiento para generar tu perfil de Inteligencia Personal.
-          </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
-          >
-            Crear mi perfil
-          </button>
-        </div>
+          <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+            <div className="w-8 h-0.5 bg-accent mx-auto mb-8" />
+            <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Mi mapa personal</p>
+            <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+              Todavía no creaste tu mapa
+            </h1>
+            <p className="text-muted mb-8 max-w-md mx-auto">
+              Ingresá tu nombre y fecha de nacimiento para generar tu perfil de Inteligencia Personal.
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push("/")}
+              className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+            >
+              Crear mi perfil
+            </button>
+          </div>
         <UniversityFooter />
       </div>
     );

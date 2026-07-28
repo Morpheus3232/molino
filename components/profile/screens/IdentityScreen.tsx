@@ -114,7 +114,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center"
           >
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[1.05]">
+            <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.05]">
               {name}
             </h1>
             <p className="mt-3 text-base sm:text-lg text-muted">

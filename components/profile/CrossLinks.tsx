@@ -34,7 +34,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.3 }}
               onClick={link.onClick}
-              className="text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+              className="text-left p-4 border border-border hover:border-accent/30 transition-colors group"
             >
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{link.label}</p>
               <p className="text-xs text-muted mt-1 leading-relaxed">{link.description}</p>
