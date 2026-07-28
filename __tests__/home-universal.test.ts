@@ -19,6 +19,6 @@ describe("Home page — universal access without profile", () => {
     expect(source).toContain("ConceptsIndex");
     expect(source).toContain("FinalCTA");
     expect(source).toContain("Descubrí tu mapa");
-    expect(source).toContain("Sin registro. Sin guardar datos personales.");
+    expect(source).toContain("Sin servidor. Sin cuentas.");
   });
 });

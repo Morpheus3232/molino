@@ -62,8 +62,9 @@ export default function NumerologiaContent() {
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
-              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-lg hover:bg-foreground/5">
+              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-lg hover:bg-foreground/5 inline-flex items-center gap-1">
                 {item.label}
+                <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </button>
             ))}
           </div>
@@ -181,7 +182,7 @@ export default function NumerologiaContent() {
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
               <motion.div key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.04, duration: 0.4 }}>
-                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all group">
+                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
                   <div className="flex items-start gap-5">
                     <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
                     <div className="flex-1 min-w-0">
@@ -193,7 +194,10 @@ export default function NumerologiaContent() {
                         ))}
                       </div>
                     </div>
-                    <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:block">Ver &rarr;</span>
+                     <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:inline-flex items-center gap-1">
+                       Ver
+                       <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                     </span>
                   </div>
                 </button>
               </motion.div>
@@ -212,7 +216,7 @@ export default function NumerologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
-              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-5 rounded-xl border border-accent/20 bg-accent/[0.03] hover:border-accent/50 transition-all group">
+              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-5 rounded-xl border border-accent/20 bg-accent/[0.03] hover:border-accent/50 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
                 <p className="text-3xl font-serif font-bold text-accent mb-2">{num.number}</p>
                 <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
                 <p className="text-sm text-muted mt-2 leading-relaxed">{num.meaning}</p>

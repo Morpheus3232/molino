@@ -8,6 +8,7 @@ import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
+import Prism from "@/components/effects/Prism";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
@@ -105,6 +106,22 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
+        <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
+          <Prism
+            animationType="rotate"
+            timeScale={0.15}
+            height={3.5}
+            baseWidth={5.5}
+            scale={3.6}
+            hueShift={0}
+            colorFrequency={0.5}
+            noise={0.15}
+            glow={0.3}
+            bloom={0.3}
+            transparent={true}
+            suspendWhenOffscreen={false}
+          />
+        </div>
         <a href="#main-content" className="skip-link">
           Saltar al contenido principal
         </a>

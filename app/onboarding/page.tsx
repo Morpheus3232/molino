@@ -238,7 +238,7 @@ export default function OnboardingPage() {
                   </button>
 
                   <p className="text-xs text-muted text-center">
-                    Sin registro. Sin guardar datos personales.
+                    Sin servidor. Sin cuentas.
                   </p>
                 </form>
               </div>

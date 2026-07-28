@@ -106,7 +106,7 @@ export default function UniversityHeader() {
                 ref={triggerRef}
                 type="button"
                 onClick={handleNewProfile}
-                className="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors"
+                className="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
               >
                 Nuevo perfil
               </button>
@@ -130,10 +130,10 @@ export default function UniversityHeader() {
             <h3 id="confirm-title" className="font-serif text-xl font-semibold text-foreground mb-2">Nuevo perfil</h3>
             <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5">
+              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">
                 Cancelar
               </button>
-              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">
                 Crear nuevo
               </button>
             </div>

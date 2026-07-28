@@ -71,10 +71,13 @@ export default function ZodiacoChinoContent() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {CHINESE_ANIMALS.map((animal, i) => (
-              <motion.button key={animal.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-accent transition-all group">
+              <motion.button key={animal.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`)} className="text-left p-4 rounded-xl border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
                 <p className="text-2xl mb-1">{animal.emoji}</p>
                 <h3 className="font-serif text-base font-semibold text-foreground group-hover:text-accent transition-colors">{animal.name}</h3>
-                <p className="text-[10px] text-muted mt-1">{animal.traits.slice(0, 3).join(", ")}</p>
+                 <p className="text-[10px] text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
+                   {animal.traits.slice(0, 3).join(", ")}
+                   <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                 </p>
               </motion.button>
             ))}
           </div>
