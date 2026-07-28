@@ -121,7 +121,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                   {...staggerItemSmooth}
                   className="flex items-center gap-3 p-3 rounded-xl bg-background/50"
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#2D5A3D]/10 flex items-center justify-center text-[10px] text-[#2D5A3D] font-medium shrink-0">
+                  <span className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center text-[10px] text-success font-medium shrink-0">
                     {i + 1}
                   </span>
                   <span className="text-sm text-foreground">{s}</span>

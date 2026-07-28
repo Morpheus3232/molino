@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
-import ThemeToggle from "@/components/ThemeToggle";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage";
 
 export default function UniversityHeader() {
@@ -82,7 +81,7 @@ export default function UniversityHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1200px] px-5 sm:px-8 h-16 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background text-base font-semibold tracking-tight">
               M
@@ -93,13 +92,15 @@ export default function UniversityHeader() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <Link
-              href={hasProfile ? "/profile" : "/onboarding"}
-              className={`hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 ${pathname === "/profile" ? "text-foreground" : "text-muted hover:text-foreground"}`}
-              aria-current={pathname === "/profile" ? "page" : undefined}
-            >
-              Mi mapa
-            </Link>
+            {hasProfile && (
+              <Link
+                href="/profile"
+                className="hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm transition-colors text-muted hover:text-foreground"
+                aria-current={pathname === "/profile" ? "page" : undefined}
+              >
+                Mi mapa
+              </Link>
+            )}
             {hasProfile ? (
               <button
                 ref={triggerRef}
@@ -109,26 +110,17 @@ export default function UniversityHeader() {
               >
                 Nuevo perfil
               </button>
-            ) : (
-              <Link
-                href="/onboarding"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
-              >
-                Crear mi perfil
-              </Link>
-            )}
-            <div className="hidden lg:block ml-1">
-              <ThemeToggle />
-            </div>
+            ) : null}
           </div>
         </div>
 
-        <div className="lg:hidden px-5 sm:px-8 pb-3 flex items-center justify-between">
-          <Link href={hasProfile ? "/profile" : "/onboarding"} className="text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg">
-            Mi mapa
-          </Link>
-          <ThemeToggle />
-        </div>
+        {hasProfile && (
+          <div className="lg:hidden px-5 sm:px-8 pb-3">
+            <Link href="/profile" className="text-sm text-muted hover:text-foreground transition-colors">
+              Mi mapa
+            </Link>
+          </div>
+        )}
       </header>
 
       {showConfirm && (

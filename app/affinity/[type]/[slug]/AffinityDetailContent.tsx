@@ -562,7 +562,7 @@ function ShareButton({
   const shareText = useMemo(() => {
     const { entityAnimal, userAnimal, score } = result;
     const emoji = entity.emoji || "";
-    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubrila en Molino ✨`;
+    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubríla en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -632,7 +632,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
     const tierLabel = TIER_META[result.tier].label;
 
     if (entityAnimal === userAnimal) {
-      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
     }
     if (relationship === "tríada compatible") {
       return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
@@ -646,7 +646,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
     if (relationship === "requiere atención") {
       return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
     }
-    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
   }, [result, entity]);
 
   const handleShare = useCallback(async () => {
@@ -1101,7 +1101,7 @@ function QuickAffinity({
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>

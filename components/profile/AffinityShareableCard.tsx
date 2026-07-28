@@ -21,7 +21,7 @@ function buildShareText(result: AffinityResult): string {
   const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
@@ -40,7 +40,7 @@ function buildShareText(result: AffinityResult): string {
     return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
   }
 
-  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrilo en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
 }
 
 /**
@@ -192,19 +192,19 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               <span>{eventDate}</span>
             </div>
             {event.confidence === "exacta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700 dark:text-green-400">
-                <span className="w-1 h-1 rounded-full bg-green-600 dark:bg-green-400" />
+              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+                <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {event.confidence === "alta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700 dark:text-green-400">
-                <span className="w-1 h-1 rounded-full bg-green-600 dark:bg-green-400" />
+              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+                <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600 dark:text-amber-400">
+              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600">
                 <span className="w-1 h-1 rounded-full bg-amber-500" />
                 Fecha aproximada
               </span>
