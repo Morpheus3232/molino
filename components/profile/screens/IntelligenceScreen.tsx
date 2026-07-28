@@ -84,7 +84,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             </div>
           </motion.div>
 
-          <div className="mt-8 space-y-8">
+          <div className="mt-8 space-y-6">
             {synthesisInsights.map((insight, i) => (
               <motion.div
                 key={i}
@@ -92,10 +92,17 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.5 }}
-                className="py-6 border-b border-border last:border-b-0"
+                className="py-5 border-b border-accent/10 last:border-b-0"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <p className="text-[10px] uppercase tracking-[0.25em] font-medium" style={{
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="w-1.5 h-1.5" style={{
+                    backgroundColor: insight.type === "identity" ? elementColor :
+                           insight.type === "tension" ? "var(--layer-moment)" :
+                           insight.type === "strength" ? "var(--score-excellent)" :
+                           insight.type === "attention" ? "var(--score-neutral)" :
+                           "var(--score-good)"
+                  }} />
+                  <p className="font-heading uppercase text-[10px] tracking-[0.25em]" style={{
                     color: insight.type === "identity" ? elementColor :
                            insight.type === "tension" ? "var(--layer-moment)" :
                            insight.type === "strength" ? "var(--score-excellent)" :
@@ -105,10 +112,10 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                     {insight.title}
                   </p>
                 </div>
-                <p className="text-base sm:text-lg text-foreground leading-relaxed">{insight.text}</p>
-                <div className="flex flex-wrap gap-2 mt-3">
+                <p className="text-sm text-foreground/80 leading-relaxed">{insight.text}</p>
+                <div className="flex flex-wrap gap-1.5 mt-2">
                   {insight.sources.map((src) => (
-                    <span key={src} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-1 rounded-full border border-border">
+                    <span key={src} className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted px-2 py-0.5 border border-border">
                       {src}
                     </span>
                   ))}
@@ -129,7 +136,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             </div>
           </motion.div>
 
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-px bg-border">
             {patterns.map((pattern, i) => (
               <motion.div
                 key={i}
@@ -137,19 +144,19 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="relative"
+                className="p-8 sm:p-10 bg-background"
               >
-                <p className="number-display text-5xl sm:text-6xl text-muted/10 leading-none mb-3">
+                <p className="font-heading uppercase text-[10px] tracking-[0.25em] text-muted/40 mb-4">
                   {String(i + 1).padStart(2, "0")}
                 </p>
-                <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-2">{pattern.label}</p>
-                <p className="font-serif text-xl sm:text-2xl font-semibold mb-2" style={{ color: elementColor }}>
+                <p className="text-[10px] uppercase tracking-[0.25em] font-medium text-muted mb-2">{pattern.label}</p>
+                <p className="font-heading uppercase text-xl sm:text-2xl font-semibold mb-3" style={{ color: elementColor }}>
                   {pattern.keyword}
                 </p>
-                <p className="text-sm text-muted leading-relaxed mb-3">{pattern.description}</p>
+                <p className="text-sm text-muted leading-relaxed mb-4">{pattern.description}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {pattern.sources.map((src) => (
-                    <span key={src} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-full border border-border">
+                    <span key={src} className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted px-2 py-0.5 border border-border">
                       {src}
                     </span>
                   ))}
@@ -190,27 +197,28 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                   transition={{ delay: i * 0.06, duration: 0.4 }}
                   onClick={() => setExpandedDimension(expandedDimension === dim.dimension ? null : dim.dimension)}
                   aria-expanded={expandedDimension === dim.dimension}
-                  className="w-full text-left py-5 border-b border-border last:border-b-0 group"
+                  className="w-full text-left py-4 border-b border-accent/10 last:border-b-0 group"
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
-                      <p className="text-xs text-muted mt-1">{dim.influences.join(" + ")}</p>
+                      <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
+                      <p className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-serif text-2xl font-semibold" style={{ color: elementColor }}>{dim.value}</p>
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-muted">/ 100</p>
+                      <p className="text-lg font-semibold" style={{ color: elementColor }}>{dim.value}</p>
+                      <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted">/ 100</p>
                     </div>
                   </div>
                   <AnimatePresence>
                     {expandedDimension === dim.dimension && (
                       <motion.div
+                        key="expanded"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <p className="text-sm text-muted mt-3 leading-relaxed">{dim.explanation}</p>
+                        <p className="text-sm text-muted mt-3 leading-relaxed border-t border-accent/10 pt-3">{dim.explanation}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -248,14 +256,14 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
                 onClick={() => router.push(sys.href)}
-                className="w-full flex items-center gap-5 py-6 border-b border-border last:border-b-0 text-left group hover:pl-4 transition-all"
+                className="w-full flex items-center gap-4 py-5 border-b border-accent/10 last:border-b-0 text-left group hover:pl-3 transition-all"
               >
-                <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: sys.color }} />
-                <div className="flex-1">
-                  <p className="font-serif text-lg sm:text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{sys.title}</p>
-                  <p className="text-sm text-muted mt-1">{sys.detail}</p>
+                <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: sys.color }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{sys.title}</p>
+                  <p className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted mt-0.5">{sys.detail}</p>
                 </div>
-                <span className="text-xs text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
+                <span className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
               </motion.button>
             ))}
           </div>
@@ -279,17 +287,17 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             </div>
           </motion.div>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
             <motion.button
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               onClick={() => router.push("/explore")}
-              className="text-left p-6 rounded-2xl border border-border bg-card hover:border-accent transition-colors group"
+              className="text-left p-6 bg-background hover:bg-black/[0.02] transition-colors group"
             >
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Conexiones</p>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">¿Con qué resonás?</p>
+              <p className="font-heading uppercase text-[10px] tracking-[0.2em] text-muted mb-2">Conexiones</p>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Con qué resonás?</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">Explorá compatibilidad con personas, países, marcas y conceptos.</p>
             </motion.button>
 
@@ -299,10 +307,10 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               viewport={{ once: true }}
               transition={{ delay: 0.16, duration: 0.5 }}
               onClick={() => router.push("/academy")}
-              className="text-left p-6 rounded-2xl border border-border bg-card hover:border-accent transition-colors group"
+              className="text-left p-6 bg-background hover:bg-black/[0.02] transition-colors group"
             >
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Conocimiento</p>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">¿Querés entender el sistema?</p>
+              <p className="font-heading uppercase text-[10px] tracking-[0.2em] text-muted mb-2">Conocimiento</p>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Querés entender el sistema?</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">Explorá numerología, astrología, zodiaco chino y más.</p>
             </motion.button>
           </div>

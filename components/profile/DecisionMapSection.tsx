@@ -58,26 +58,26 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
         </motion.div>
 
         {/* Category cards */}
-        <motion.div {...staggerApple} className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <motion.div {...staggerApple} className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {decisionResults.map((cat, i) => (
             <motion.button
               key={cat.id}
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
               onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              className={`text-left p-5 rounded-xl border transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 ${
+              className={`text-left p-5 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-black/[0.02] ${
                 selectedCategory === cat.id
-                  ? "border-accent bg-accent/5"
-                  : "border-border bg-card hover:border-accent/50 hover:-translate-y-[2px] hover:shadow-sm"
+                  ? "bg-accent/5 border-accent/30"
+                  : ""
               }`}
             >
               <div className="flex items-start gap-3">
                 <span className="text-2xl shrink-0">{cat.emoji}</span>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-sm font-semibold text-foreground">{cat.title}</h3>
+                    <h3 className="text-sm font-medium text-foreground">{cat.title}</h3>
                     <span
-                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      className="font-heading uppercase text-[9px] tracking-[0.1em] px-1.5 py-0.5"
                       style={{
                         color: cat.result.overallScore >= 70 ? "#2D5A3D" : cat.result.overallScore >= 50 ? "#D4A843" : "#B45309",
                         backgroundColor: cat.result.overallScore >= 70 ? "rgba(45,90,61,0.1)" : cat.result.overallScore >= 50 ? "rgba(212,168,67,0.1)" : "rgba(180,83,9,0.1)",
@@ -86,7 +86,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                       {cat.result.overallScore}/100
                     </span>
                   </div>
-                  <p className="text-[10px] text-muted/70 leading-relaxed">{cat.result.recommendation}</p>
+                  <p className="text-sm text-muted/70 leading-relaxed">{cat.result.recommendation}</p>
                 </div>
               </div>
             </motion.button>
@@ -128,7 +128,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
   const scoreColor = result.overallScore >= 70 ? "#2D5A3D" : result.overallScore >= 50 ? "#D4A843" : "#B45309";
 
   return (
-    <div className="mt-4 p-6 rounded-2xl border border-border bg-card">
+    <div className="mt-4 p-6 border border-accent/10">
       {/* Score breakdown */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <ScoreMiniCard label="Alineación" score={result.alignmentScore} icon="🎯" />
@@ -138,27 +138,27 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Overall */}
       <div className="text-center mb-6">
-        <p className="font-serif text-3xl font-bold" style={{ color: scoreColor }}>
+        <p className="text-3xl font-semibold" style={{ color: scoreColor }}>
           {result.overallScore}/100
         </p>
-        <p className="text-xs text-muted mt-1">Score general</p>
+        <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-1">Score general</p>
       </div>
 
       {/* Explanation */}
       <div className="mb-5">
-        <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">Análisis</p>
+        <p className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Análisis</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
         <div className="mb-5">
-          <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">A considerar</p>
+          <p className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
               <div key={i} className="flex items-start gap-2">
                 <span className="text-[10px] text-accent mt-0.5">•</span>
-                <p className="text-xs text-foreground leading-relaxed">{c}</p>
+                <p className="text-sm text-foreground leading-relaxed">{c}</p>
               </div>
             ))}
           </div>
@@ -168,12 +168,12 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
         <div className="mb-5">
-          <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-2">Próximos pasos</p>
+          <p className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-[10px] text-muted mt-0.5">{i + 1}.</span>
-                <p className="text-xs text-foreground leading-relaxed">{s}</p>
+                <span className="text-sm text-muted mt-0.5">{i + 1}.</span>
+                <p className="text-sm text-foreground leading-relaxed">{s}</p>
               </div>
             ))}
           </div>
@@ -181,8 +181,8 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       )}
 
       {/* Element influence */}
-      <div className="p-3 rounded-lg bg-background/50 mb-4">
-        <p className="text-[10px] text-muted/70">
+      <div className="p-3 bg-black/[0.02] mb-4">
+        <p className="text-sm text-muted/70">
           Tu elemento {profile.element} {result.elementInfluence}.
         </p>
       </div>
@@ -194,7 +194,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
             const cat = DECISION_CATEGORIES.find(c => c.id === result.category);
             if (cat) router.push(cat.route);
           }}
-          className="w-full text-center text-xs text-accent hover:underline font-medium inline-flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg"
+          className="w-full text-center text-xs text-accent hover:underline font-medium inline-flex items-center justify-center gap-1"
         >
           Explorar {result.category}
           <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
@@ -206,10 +206,10 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 function ScoreMiniCard({ label, score, icon }: { label: string; score: number; icon: string }) {
   const color = score >= 70 ? "#2D5A3D" : score >= 50 ? "#D4A843" : "#B45309";
   return (
-    <div className="p-3 rounded-xl bg-background/50 text-center">
+    <div className="p-3 border border-accent/10 text-center">
       <span className="text-lg block mb-1">{icon}</span>
-      <p className="font-serif text-lg font-bold" style={{ color }}>{score}</p>
-      <p className="text-[9px] text-muted">{label}</p>
+      <p className="text-lg font-semibold" style={{ color }}>{score}</p>
+      <p className="font-heading uppercase text-[9px] tracking-[0.1em] text-muted">{label}</p>
     </div>
   );
 }

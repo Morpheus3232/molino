@@ -79,7 +79,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
               </div>
             </motion.div>
-            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-border">
               {affinityHighlights.map((result, i) => {
                 const tierMeta = TIER_META[result.tier];
                 return (
@@ -88,22 +88,22 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                     {...staggerItemSmooth}
                     transition={{ ...staggerDelay, delay: i * 0.08 }}
                     onClick={() => router.push(`/affinity/${result.entity.type}/${result.entity.id}`)}
-                    className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+                    className="text-left p-5 bg-background hover:bg-black/[0.02] transition-colors group"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-2xl">{result.entity.emoji}</span>
-                      <span className="font-serif text-2xl font-bold text-foreground">{result.score}</span>
+                      <span className="text-lg font-semibold text-foreground">{result.score}</span>
                     </div>
-                    <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+                    <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                       {result.entity.name}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="inline-block w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: tierMeta.color }} />
-                      <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: tierMeta.color }}>
+                      <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: tierMeta.color }} />
+                      <span className="font-heading uppercase text-[9px] tracking-wider" style={{ color: tierMeta.color }}>
                         {tierMeta.label}
                       </span>
                     </div>
-                    <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-2">
+                    <p className="text-sm text-muted mt-2 leading-relaxed line-clamp-2">
                       {result.explanation || result.summary}
                     </p>
                   </motion.button>
@@ -210,34 +210,34 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
             </div>
           </motion.div>
-          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-border">
             <motion.button
               {...staggerItemSmooth}
               onClick={() => router.push("/affinity")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+              className="text-left p-5 bg-background hover:bg-black/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">✦</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
               <p className="text-sm text-muted mt-1">Explorá el mapa completo de afinidades.</p>
             </motion.button>
             <motion.button
               {...staggerItemSmooth}
               transition={{ ...staggerDelay, delay: 0.08 }}
               onClick={() => router.push("/explore")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+              className="text-left p-5 bg-background hover:bg-black/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">🔍</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Explorar compatibilidad</p>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Explorar compatibilidad</p>
               <p className="text-sm text-muted mt-1">Buscá personas, países y conceptos.</p>
             </motion.button>
             <motion.button
               {...staggerItemSmooth}
               transition={{ ...staggerDelay, delay: 0.16 }}
               onClick={() => router.push("/academy")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+              className="text-left p-5 bg-background hover:bg-black/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">📚</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Aprender más</p>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Aprender más</p>
               <p className="text-sm text-muted mt-1">Numerología, astrología y zodiaco chino.</p>
             </motion.button>
           </motion.div>
@@ -274,7 +274,7 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-4 sm:p-5 border-b border-accent/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
@@ -283,30 +283,30 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
               {rec.entity.name}
             </h4>
-            <span className="font-serif text-lg font-bold text-foreground">{rec.totalScore}</span>
+            <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
           </div>
-          <p className="text-xs text-muted mb-2">
+          <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
           </p>
 
           {/* Historical fact — separated */}
           {event && (
-            <div className="p-2.5 rounded-lg bg-background mb-2">
-              <p className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Dato histórico</p>
-              <p className="text-xs text-foreground leading-relaxed">
+            <div className="p-3 bg-black/[0.02] mb-2">
+              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
+              <p className="text-sm text-foreground leading-relaxed">
                 {rec.entity.description}
               </p>
-              <p className="text-[10px] text-muted mt-1">
+              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
                 {event.label} ({event.year}) · {event.confidence === "exacta" ? "Fecha exacta" : event.confidence === "alta" ? "Alta precisión" : "Aproximado"}
               </p>
             </div>
           )}
 
           {/* Why it appears — symbolic */}
-          <p className="text-xs text-muted/70 leading-relaxed italic">
+          <p className="text-sm text-muted/70 leading-relaxed italic">
             {rec.explanation}
           </p>
         </div>
@@ -327,7 +327,7 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-4 sm:p-5 border-b border-accent/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
@@ -336,28 +336,28 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
               {rec.entity.name}
             </h4>
-            <span className="font-serif text-lg font-bold text-foreground">{rec.totalScore}</span>
+            <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
           </div>
-          <p className="text-xs text-muted mb-2">
+          <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
           </p>
 
           {event && (
-            <div className="p-2.5 rounded-lg bg-background mb-2">
-              <p className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Dato histórico</p>
-              <p className="text-xs text-foreground leading-relaxed">
+            <div className="p-3 bg-black/[0.02] mb-2">
+              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
+              <p className="text-sm text-foreground leading-relaxed">
                 {rec.entity.description}
               </p>
-              <p className="text-[10px] text-muted mt-1">
+              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
                 {event.label} ({event.year})
               </p>
             </div>
           )}
 
-          <p className="text-xs text-muted/70 leading-relaxed italic">
+          <p className="text-sm text-muted/70 leading-relaxed italic">
             {rec.explanation}
           </p>
         </div>
