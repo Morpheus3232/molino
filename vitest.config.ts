@@ -9,4 +9,7 @@ export default {
       '@': __dirname,
     },
   },
+  test: {
+    environment: 'node',
+  },
 };

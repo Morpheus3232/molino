@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import { Share2 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { buildPersonalRecommendations, type PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
@@ -11,6 +12,8 @@ import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { buildPersonalCode } from "@/lib/engines/synthesisEngine";
 import { safeNumber } from "@/lib/utils/score";
+import { generateProfileHash, storeSharedProfile } from "@/lib/profile/hash";
+import { toast } from "sonner";
 import Grainient from "@/components/Grainient";
 
 function getAnimalDecades(animal: string, start = 1900, end = 2030): string[] {
@@ -125,6 +128,29 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
     ];
   }, [recommendationMap]);
 
+  const handleShareProfile = async () => {
+    try {
+      const hash = await generateProfileHash(profile);
+      storeSharedProfile(profile, hash);
+      const url = `${typeof window !== "undefined" ? window.location.origin : ""}/perfil/${hash}`;
+
+      if (navigator.share) {
+        await navigator.share({
+          title: `${name} — Mi mapa en Molino`,
+          text: "Descubrí mi mapa personal en Molino",
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        toast.success("Link copiado", {
+          description: "Compartí tu perfil con quien quieras",
+        });
+      }
+    } catch {
+      toast.error("No se pudo compartir el perfil");
+    }
+  };
+
   return (
     <div className="relative min-h-screen bg-background">
       <Grainient
@@ -150,9 +176,20 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
                 transition={{ duration: 0.7 }}
                 className="lg:col-span-7"
               >
-                <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-5">
-                  Mi Mapa Personal
-                </p>
+                <div className="flex items-center gap-3 mb-5">
+                  <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium">
+                    Mi Mapa Personal
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleShareProfile}
+                    className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-muted/50 hover:text-accent transition-colors font-medium"
+                    aria-label="Compartir perfil"
+                  >
+                    <Share2 className="h-3 w-3" />
+                    Compartir
+                  </button>
+                </div>
                 <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
                   {name}
                 </h1>

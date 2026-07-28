@@ -5,6 +5,7 @@ import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 
@@ -109,6 +110,7 @@ export default function RootLayout({
         </a>
         <AnalyticsProvider />
         <MotionProvider>
+          <ScrollProgress />
           <AppErrorBoundary>
             <AnimatedLayout>{children}</AnimatedLayout>
           </AppErrorBoundary>
