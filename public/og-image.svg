@@ -1,68 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F7F5F0;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#EDE9E0;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#B8892A;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#C49A2A;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bg)" />
-  
-  <!-- Subtle decorative elements -->
-  <g opacity="0.06" fill="#C49A2A">
-    <circle cx="100" cy="80" r="2" />
-    <circle cx="200" cy="120" r="1.5" />
-    <circle cx="150" cy="200" r="1" />
-    <circle cx="300" cy="60" r="2.5" />
-    <circle cx="350" cy="180" r="1.5" />
-    <circle cx="900" cy="100" r="2" />
-    <circle cx="1000" cy="150" r="1.5" />
-    <circle cx="1100" cy="80" r="1" />
-    <circle cx="1050" cy="220" r="2" />
-    <circle cx="950" cy="280" r="1.5" />
-    <circle cx="800" cy="500" r="2" />
-    <circle cx="1000" cy="520" r="1.5" />
-    <circle cx="1100" cy="480" r="1" />
-    <circle cx="200" cy="500" r="2" />
-    <circle cx="300" cy="550" r="1.5" />
-    <circle cx="100" cy="480" r="1" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <g stroke="#1A1A1A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" transform="translate(540,190) scale(2.5)">
+    <path d="M20 58 L16 26 L48 26 L44 58 Z" />
+    <path d="M14 26 L32 12 L50 26 Z" />
+    <path d="M28 58 L28 44 Q28 40 32 40 Q36 40 36 44 L36 58" />
+    <circle cx="32" cy="33" r="2.5" />
+    <line x1="0" y1="13" x2="64" y2="13" />
+    <line x1="32" y1="-8" x2="32" y2="32" />
+    <line x1="0" y1="8" x2="64" y2="8" stroke-width="3" />
+    <line x1="0" y1="18" x2="64" y2="18" stroke-width="3" />
+    <line x1="25" y1="-8" x2="25" y2="32" stroke-width="3" />
+    <line x1="39" y1="-8" x2="39" y2="32" stroke-width="3" />
   </g>
-  
-  <!-- Subtle connecting lines -->
-  <g opacity="0.04" stroke="#C49A2A" stroke-width="0.5" fill="none">
-    <line x1="100" y1="80" x2="200" y2="120" />
-    <line x1="200" y1="120" x2="150" y2="200" />
-    <line x1="900" y1="100" x2="1000" y2="150" />
-    <line x1="1000" y1="150" x2="1050" y2="220" />
-    <line x1="800" y1="500" x2="950" y2="280" />
-  </g>
-  
-  <!-- Logo mark -->
-  <g transform="translate(540, 140)">
-    <rect x="0" y="0" width="120" height="120" rx="28" fill="#1A1A1A" />
-    <text x="60" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700" fill="#C49A2A" text-anchor="middle">M</text>
-  </g>
-  
-  <!-- Brand name — high contrast: #1A1A1A on #F7F5F0 = ~16:1 -->
-  <text x="600" y="310" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="600" fill="#1A1A1A" text-anchor="middle" letter-spacing="-0.5">Molino</text>
-  
-  <!-- Tagline — darkened gold for better contrast on cream: #9A7520 on #F7F5F0 ≈ 5.2:1 -->
-  <text x="600" y="360" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" fill="#9A7520" text-anchor="middle" letter-spacing="0.5" font-weight="600">Personal Intelligence Platform</text>
-  
-  <!-- Description — darkened for contrast: #4B5563 on #F7F5F0 ≈ 6:1 -->
-  <text x="600" y="410" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="18" fill="#4B5563" text-anchor="middle">Conocé tu sistema personal.</text>
-  
-  <!-- Features — darkened for contrast: #6B7280 on #F7F5F0 ≈ 4.8:1 -->
-  <text x="600" y="460" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#6B7280" text-anchor="middle">Numerología · Astrología · Zodiaco Chino · Ciclos · Patrones</text>
-  
-  <!-- Bottom accent line -->
-  <rect x="520" y="490" width="160" height="2" rx="1" fill="url(#accent)" opacity="0.8" />
-  
-  <!-- URL — darkened for contrast -->
-  <text x="600" y="530" font-family="'Inter', -apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#6B7280" text-anchor="middle">molino-alpha.vercel.app</text>
+  <text x="600" y="520" font-family="Space Grotesk, sans-serif" font-size="28" font-weight="600" fill="#666666" text-anchor="middle" letter-spacing="4">INTELIGENCIA PERSONAL</text>
 </svg>

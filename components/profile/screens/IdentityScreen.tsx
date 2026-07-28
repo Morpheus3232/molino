@@ -16,6 +16,7 @@ import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
 import ConvergentSection from "@/components/profile/ConvergentSection";
 import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import CrossLinks from "@/components/profile/CrossLinks";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
@@ -50,6 +51,17 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
 
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
   const userYear = parseInt(birthDate?.split("-")[0] || "0", 10);
+
+  // Famous people sharing the user's energy
+  const famousByAnimal = useMemo(() => getFamousByAnimal(chineseZodiac, userYear), [chineseZodiac, userYear]);
+  const matchingFamous = useMemo(() => {
+    // Prefer people matching BOTH animal AND sign
+    const both = famousByAnimal.filter(p => p.westernSign === sunSign);
+    if (both.length > 0) return both[0];
+    // Fall back to just animal match
+    if (famousByAnimal.length > 0) return famousByAnimal[0];
+    return null;
+  }, [famousByAnimal, sunSign]);
 
   // Format date: "1990-03-15" → "15 de marzo de 1990"
   const MONTH_NAMES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -162,6 +174,27 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               {archetype.quote && (
                 <p className="text-sm text-muted mt-3 italic max-w-md mx-auto">&ldquo;{archetype.quote}&rdquo;</p>
               )}
+            </motion.div>
+          )}
+
+          {/* Famous person — "compartís energía con..." */}
+          {matchingFamous && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1 }}
+              className="mt-6 text-center"
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-3 border border-accent/10">
+                <span className="text-xl">{matchingFamous.emoji}</span>
+                <div className="text-left">
+                  <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted">Compartís tu energía con</p>
+                  <p className="text-sm font-medium text-foreground">{matchingFamous.name}</p>
+                  <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted/60">
+                    {matchingFamous.field} · {matchingFamous.country}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           )}
         </div>

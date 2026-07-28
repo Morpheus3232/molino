@@ -146,7 +146,7 @@ export default function CountriesPage() {
           <div className="space-y-0">
             {filtered.map((r, i) => (
               <motion.div key={r.name} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-10px" }} transition={{ duration: 0.2 }}>
-                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-foreground/[0.02] transition-colors px-2 rounded-lg">
+                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-neutral-900/[0.02] transition-colors px-2 rounded-lg">
                   <div className="flex items-center gap-4">
                     <span className="text-2xl">{r.meta.flag}</span>
                     <div className="flex-1 min-w-0">
