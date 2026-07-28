@@ -93,18 +93,15 @@ export default function UniversityHeader() {
         }`}
       >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group" aria-label="Molino — Ir al inicio">
+          <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-foreground text-background">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
-                <path d="M12 2v20" />
-                <path d="M12 6c-4 0-6 2-6 6 4 0 6-2 6-6z" />
-                <path d="M12 6c4 0 6 2 6 6-4 0-6-2-6-6z" />
-                <path d="M12 18c-4 0-6-2-6-6 4 0 6 2 6 6z" />
-                <path d="M12 18c4 0 6-2 6-6-4 0-6 2-6 6z" />
+                <polygon points="9,22 15,22 13,11 11,11" />
+                <polygon points="12,4 9,11 15,11" />
+                <line x1="12" y1="4" x2="12" y2="1" />
+                <line x1="17" y1="8" x2="20" y2="6" />
+                <line x1="7" y1="8" x2="4" y2="6" />
               </svg>
-            </span>
-            <span className="font-serif text-xl font-semibold tracking-tight text-foreground">
-              Molino
             </span>
           </Link>
 

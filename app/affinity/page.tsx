@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
@@ -13,9 +15,17 @@ import LoadingState from "@/components/ui/LoadingState";
 
 export default function AffinityHub() {
   const router = useRouter();
-  const { profile, mounted } = useProfile({ redirectIfNotFound: false });
+  const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
-  if (!mounted) return <LoadingState message="Cargando..." />;
+  useEffect(() => {
+    if (mounted && !loading && !profile) {
+      toast("Creá tu perfil primero para ver tus afinidades");
+      router.push("/onboarding");
+    }
+  }, [mounted, loading, profile, router]);
+
+  if (!mounted || loading) return <LoadingState message="Cargando..." />;
+  if (!profile) return <LoadingState message="Redirigiendo..." />;
 
   const availableTypes = getAvailableTypes();
 
@@ -37,7 +47,7 @@ export default function AffinityHub() {
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
+          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
             Descubrí tus afinidades
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
@@ -82,12 +92,12 @@ export default function AffinityHub() {
                   >
                     <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
                   <span className="text-3xl mb-3 block">{meta.icon}</span>
-                  <h3 className="font-serif text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
+                  <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                   <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
                   <div className="mt-4 pt-3 border-t border-border">
                     {personalCount !== null ? (
                       <>
-                        <p className="font-serif text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
+                        <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
                         <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
                       </>
                     ) : (

@@ -31,6 +31,27 @@ const jsonLd = [
       { "@type": "ListItem", position: 3, name: "Zodiaco Chino" },
     ],
   },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "¿Qué es el zodiaco chino?",
+        acceptedAnswer: { "@type": "Answer", text: "El zodiaco chino es un sistema milenario que clasifica a las personas en 12 animales según su año de nacimiento. Cada animal tiene características de personalidad específicas y se combina con 5 elementos." },
+      },
+      {
+        "@type": "Question",
+        name: "¿Cómo sé cuál es mi animal del zodiaco chino?",
+        acceptedAnswer: { "@type": "Answer", text: "Tu animal del zodiaco chino se determina por tu año de nacimiento según el calendario lunar chino. A diferencia del zodiaco occidental, el ciclo es anual (12 animales × 5 elementos = ciclo de 60 años)." },
+      },
+      {
+        "@type": "Question",
+        name: "¿La compatibilidad del zodiaco chino es confiable?",
+        acceptedAnswer: { "@type": "Answer", text: "La compatibilidad del zodiaco chino es un sistema simbólico tradicional, no una predicción científica. Se basa en la relación entre los 12 animales (por ejemplo, Rata y Dragón tienen alta afinidad). Su valor es orientativo y cultural." },
+      },
+    ],
+  },
 ];
 
 export default function ZodiacoChinoPage() {

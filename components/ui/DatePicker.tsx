@@ -30,7 +30,7 @@ function WheelPicker({ label, values, selected, onSelect }: PickerColumn) {
       <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-xl border border-border bg-card"
+        className="relative w-full overflow-hidden border border-border bg-card"
         style={{ maxHeight: "160px" }}
       >
         <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-11 bg-gradient-to-b from-card/90 via-card to-card/90 pointer-events-none z-10" />
@@ -46,9 +46,9 @@ function WheelPicker({ label, values, selected, onSelect }: PickerColumn) {
                 key={v.value}
                 type="button"
                 onClick={() => onSelect(v.value)}
-                className={`w-full text-center py-2.5 rounded-lg transition-colors duration-150 ${
+                className={`w-full text-center py-2.5 transition-colors duration-150 ${
                   v.value === selected
-                    ? "font-serif text-base sm:text-lg font-semibold text-foreground bg-accent/10"
+                    ? "font-heading text-base sm:text-lg font-semibold text-foreground bg-accent/10"
                     : "text-sm text-muted/50 hover:text-muted"
                 }`}
               >

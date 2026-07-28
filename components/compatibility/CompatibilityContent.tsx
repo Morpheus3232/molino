@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
@@ -38,6 +38,21 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
     if (!profile) return null;
     return calculateDailyEnergy(profile, new Date());
   }, [profile]);
+
+  const handleShare = useCallback(() => {
+    const url = `${window.location.origin}/compatibility/${entity.id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: `Compatibilidad con ${entity.name}`,
+        text: `Descubrí tu compatibilidad con ${entity.name} en Molino`,
+        url,
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        alert("Link copiado al portapapeles");
+      }).catch(() => {});
+    }
+  }, [entity]);
 
   if (loading || !mounted) {
     return (
@@ -148,6 +163,22 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <p className="text-xs text-muted/70">
             Análisis basado en numerología, astrología occidental, zodiaco chino y arquetipos.
           </p>
+        </div>
+
+        {/* Share */}
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-none"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            Compartir resultado
+          </button>
         </div>
       </main>
 

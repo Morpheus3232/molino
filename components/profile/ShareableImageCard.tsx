@@ -37,7 +37,8 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
     try {
       const dataUrl = await toPng(cardRef.current, {
         quality: 0.95,
-        pixelRatio: 2,
+        pixelRatio: 3,
+        cacheBust: true,
         backgroundColor: "#F3EDE3",
       });
       const link = document.createElement("a");
@@ -55,18 +56,17 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
     analytics.trackFeatureUsed("share_image_native");
     if (navigator.share) {
       try {
-        // Try to share with image
         if (cardRef.current) {
           setGenerating(true);
           const dataUrl = await toPng(cardRef.current, {
             quality: 0.95,
-            pixelRatio: 2,
+            pixelRatio: 3,
+            cacheBust: true,
             backgroundColor: "#F3EDE3",
           });
           const res = await fetch(dataUrl);
           const blob = await res.blob();
           const file = new File([blob], `molino-${name.toLowerCase().replace(/\s+/g, "-")}.png`, { type: "image/png" });
-          setGenerating(false);
 
           if (navigator.canShare?.({ files: [file] })) {
             await navigator.share({
@@ -76,22 +76,29 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
               files: [file],
             });
           } else {
-            // Fallback: share text only
             await navigator.share({
               title: `Mi perfil — ${name}`,
               text: shareText,
               url: shareUrl,
             });
           }
+        } else {
+          await navigator.share({
+            title: `Mi perfil — ${name}`,
+            text: shareText,
+            url: shareUrl,
+          });
         }
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
           console.error("Error sharing:", err);
         }
+      } finally {
+        setGenerating(false);
       }
     } else {
-      // Desktop fallback: copy URL
       await navigator.clipboard.writeText(shareUrl);
+      analytics.trackFeatureUsed("share_image_clipboard");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -106,16 +113,19 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
         style={{
           maxWidth: "480px",
           background: "linear-gradient(180deg, #F3EDE3 0%, #EDE5D8 100%)",
+          fontFamily: "Georgia, 'Times New Roman', serif",
         }}
       >
         <div className="p-8 sm:p-10">
           {/* Molino branding */}
           <div className="flex items-center gap-2 mb-8">
-            <svg width="20" height="20" viewBox="0 0 64 64" aria-hidden="true">
-              <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={elementColor} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polygon points="9,22 15,22 13,11 11,11" />
+              <polygon points="12,4 9,11 15,11" />
+              <line x1="12" y1="4" x2="12" y2="1" />
+              <line x1="17" y1="8" x2="20" y2="6" />
+              <line x1="7" y1="8" x2="4" y2="6" />
             </svg>
-            <span className="text-xs font-medium tracking-wide" style={{ color: elementColor }}>MOLINO</span>
           </div>
 
           {/* Name */}
