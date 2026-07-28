@@ -85,7 +85,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       id="panel-identity"
       role="tabpanel"
       aria-labelledby="tab-identity"
-      className="bg-[#F3EDE3]"
+      className="bg-background"
     >
       {/* ═══════════════════════════════════════════════
           REVEAL HERO — The big moment
@@ -94,7 +94,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
         {/* Ambient gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-accent/[0.03] via-transparent to-transparent pointer-events-none" />
 
-        <div className="relative mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16">
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-12 sm:pb-16">
           {/* Animal emoji — THE reveal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
@@ -171,7 +171,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
           TUS 4 SISTEMAS — Visual pills
           ═══════════════════════════════════════════════ */}
       <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
@@ -229,7 +229,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
           CÓDIGO PERSONAL — Card grid
           ═══════════════════════════════════════════════ */}
       <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
@@ -268,7 +268,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
 
       {/* Cards at bottom */}
       <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <IdentityCard profile={profile} />
           <PersonalScoreCard profile={profile} />
           <KnowledgeConnections profile={profile} />
@@ -277,7 +277,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
 
       {/* Share */}
       <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-px bg-border" aria-hidden="true" />

@@ -13,7 +13,7 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent, resolveEventAnimal, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
 
@@ -108,13 +108,11 @@ function getTradition(_diff: number, userAnimal: string, entityAnimal: string): 
 // EVENT ANIMAL RESOLUTION
 // ════════════════════════════════════════════════════
 
-/**
- * Resolve the Chinese zodiac animal for a historical event.
- * Uses real Chinese New Year dates when available (1886-2040).
- * Falls back to year-only calculation for dates outside the table.
- */
-function resolveEntityAnimal(event: HistoricalEvent): { animal: string; isApproximate: boolean } {
-  return calculateAnimalFromDate(event.date, event.year);
+function resolveEntityAnimal(entity: SymbolicEntity): { animal: string; isApproximate: boolean } {
+  const primaryEvent = getPrimaryEvent(entity);
+  return primaryEvent
+    ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year)
+    : calculateAnimalFromDate(undefined, entity.foundingYear);
 }
 
 // ════════════════════════════════════════════════════
@@ -134,8 +132,7 @@ export function calculateAffinity(
     return buildFallbackResult(profile, entity, "Entidad sin evento histórico primario.");
   }
 
-  // Resolve entity animal from the primary event's date
-  const { animal: entityAnimal, isApproximate } = resolveEntityAnimal(primaryEvent);
+  const { animal: entityAnimal, isApproximate } = resolveEntityAnimal(entity);
 
   // Other events (editorial only, never participate in score)
   const otherEvents = entity.events.filter(e => e.id !== primaryEvent.id);

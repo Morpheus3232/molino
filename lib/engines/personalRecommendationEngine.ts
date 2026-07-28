@@ -11,8 +11,7 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent } from "@/lib/data/symbolic-entities";
-import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
+import { calculateAnimalFromDate, getChineseElement } from "@/lib/engines/chineseZodiacEngine";
 import {
   getRelation,
   getAnimalProfile,
@@ -146,8 +145,10 @@ function calculatePersonalRecommendation(
   userElement?: string,
   lifePath?: number,
 ): PersonalRecommendation {
-  const event = getPrimaryEvent(entity);
-  const { animal: entityAnimal } = calculateAnimalFromDate(event?.date, event?.year) as { animal: Animal };
+  const primaryEvent = getPrimaryEvent(entity);
+  const entityAnimal = primaryEvent
+    ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year).animal as Animal
+    : calculateAnimalFromDate(undefined, entity.foundingYear).animal as Animal;
 
   // Natal: user vs entity
   const natalRelation = getRelation(userAnimal, entityAnimal);
@@ -157,14 +158,16 @@ function calculatePersonalRecommendation(
   const temporalRelation = getRelation(yearAnimal, entityAnimal);
   const temporalScore = temporalRelation.score;
 
-  // Element bonus: same element = +10
+  // Element: animal match (+20) + founding year element resonance (+20)
   const entityElement = getElementFromAnimal(entityAnimal);
-  const elementBonus = (userElement && entityElement && userElement === entityElement) ? 10 : 0;
-  const elementScore = 50 + elementBonus;
+  const animalElementBonus = (userElement && entityElement && userElement === entityElement) ? 20 : 0;
+  const userBirthElement = getChineseElement(userYear);
+  const foundingElement = getChineseElement(entity.foundingYear);
+  const foundingElementBonus = (userBirthElement === foundingElement) ? 20 : 0;
+  const elementScore = 40 + animalElementBonus + foundingElementBonus;
 
-  // Numerology bonus: life path resonance
-  const numerologyBonus = getNumerologyBonus(lifePath, entity.type);
-  const numerologyScore = 50 + numerologyBonus;
+  // Numerology: entity founding year digit harmony with user life path
+  const numerologyScore = getEntityNumerologyScore(lifePath, entity.foundingYear);
 
   // Total: 40/30/20/10
   const totalScore = Math.round(
@@ -226,19 +229,15 @@ function getElementFromAnimal(animal: string): string | null {
   return elementMap[animal] ?? null;
 }
 
-/** Numerology bonus based on life path and entity type */
-function getNumerologyBonus(lifePath: number | undefined, entityType: string): number {
-  if (!lifePath) return 0;
-  // Life paths 1, 3, 5, 7, 9 resonate more with creative/expressive entities
-  // Life paths 2, 4, 6, 8 resonate more with stable/structured entities
-  const creativePaths = [1, 3, 5, 7, 9];
-  const stablePaths = [2, 4, 6, 8];
-  const creativeTypes = ["movie", "artist", "city"];
-  const stableTypes = ["brand", "country", "university", "team"];
-
-  if (creativePaths.includes(lifePath) && creativeTypes.includes(entityType)) return 5;
-  if (stablePaths.includes(lifePath) && stableTypes.includes(entityType)) return 5;
-  return 0;
+/** Numerology score: 40 base + digit harmony (0–20) based on founding year's proximity to user life path */
+function getEntityNumerologyScore(lifePath: number | undefined, foundingYear: number): number {
+  if (!lifePath) return 40;
+  const digits = String(foundingYear).split('').map(Number).reduce((a, b) => a + b, 0);
+  const entityLifePath = ((digits - 1) % 9) + 1;
+  const diff = Math.abs(entityLifePath - lifePath);
+  const harmony = Math.max(0, 10 - diff);
+  const bonus = Math.round(harmony / 10 * 20);
+  return 40 + bonus;
 }
 
 function buildExplanation(
@@ -285,7 +284,7 @@ function getTriadInfo(a: Animal, b: Animal): string | null {
 // IMPORTS
 // ════════════════════════════════════════════════════
 
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 
 /**
  * Get recommendations filtered by category.

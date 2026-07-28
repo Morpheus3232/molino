@@ -56,9 +56,9 @@ export default function AIInterpretation({
     return (
       <div className="space-y-3 p-4 bg-background rounded-xl border border-card-border">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
-          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-2/3"></div>
         </div>
         <p className="text-xs text-muted text-center">Generando interpretación con IA...</p>
       </div>
@@ -67,8 +67,8 @@ export default function AIInterpretation({
 
   if (error) {
     return (
-      <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800">
-        <p className="text-sm text-yellow-700 dark:text-yellow-400">{error}</p>
+      <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+        <p className="text-sm text-yellow-700">{error}</p>
       </div>
     );
   }

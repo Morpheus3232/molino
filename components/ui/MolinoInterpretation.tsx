@@ -339,12 +339,12 @@ export default function MolinoInterpretation({
 
       {/* Error state (only show if no interpretation at all) */}
       {error && !interpretation && (
-        <div className="p-4 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
-          <p className="text-sm text-yellow-700 dark:text-yellow-400 mb-2">{error}</p>
+        <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
+          <p className="text-sm text-yellow-700 mb-2">{error}</p>
           <button
             type="button"
             onClick={() => getAIInterpretation(true)}
-            className="text-xs text-yellow-800 dark:text-yellow-300 underline hover:no-underline"
+            className="text-xs text-yellow-800 underline hover:no-underline"
           >
             Reintentar
           </button>

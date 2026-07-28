@@ -36,8 +36,8 @@ export function getChineseZodiacInfo(birthDate: string): { animal: string; eleme
 
 export function getChineseElement(year: number): string {
   const elements = ['Metal', 'Agua', 'Madera', 'Fuego', 'Tierra'];
-  const index = Math.floor(((year - 1900) % 10) / 2);
-  return elements[index >= 0 && index < 5 ? index : 0];
+  const index = Math.floor((((year - 1900) % 10) + 10) % 10 / 2);
+  return elements[index];
 }
 
 export function getChineseAnimal(year: number): string {

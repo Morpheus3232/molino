@@ -53,7 +53,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
     >
       {/* Hero */}
       <section className="py-12 sm:pt-16 pb-8">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
             <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Tu Mundo</p>
             <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
@@ -72,7 +72,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           ═══════════════════════════════════════════════ */}
       {affinityHighlights.length > 0 && (
         <section className="py-6 sm:py-8">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
@@ -119,7 +119,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           ═══════════════════════════════════════════════ */}
       {topCountries.length > 0 && (
         <section className="py-8 sm:py-12 border-t border-border">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
@@ -161,7 +161,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
         }, {});
         return (
         <section className="py-8 sm:py-12 border-t border-border">
-          <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-border" aria-hidden="true" />
@@ -203,7 +203,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           EXPLORAR MÁS
           ═══════════════════════════════════════════════ */}
       <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
