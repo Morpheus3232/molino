@@ -14,6 +14,7 @@ import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { generateProfileHash, storeSharedProfile } from "@/lib/profile/hash";
 import { toast } from "sonner";
+import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/storage/discovery";
 import CrossLinks from "./CrossLinks";
@@ -107,34 +108,75 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="relative py-20 sm:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent pointer-events-none" />
+      <section className="relative py-24 sm:py-32 overflow-hidden">
+        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
         <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Mi mapa personal</p>
-            <div className="flex items-center gap-4 mb-3">
-              <span className="text-4xl sm:text-5xl">{display.emoji}</span>
-              <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
-                {name}
-              </h1>
-            </div>
-            <p className="text-base sm:text-lg text-muted">
-              {display.name} de {profile.chineseZodiacInfo?.element ?? ""} · {profile.sunSign} · Camino {lifePath}
-            </p>
-            <button
+          <div className="flex flex-col items-center text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-8"
+            >
+              Mi mapa personal
+            </motion.p>
+
+            <motion.div
+              initial="initial"
+              animate="animate"
+              variants={emojiBounce}
+              className="relative mb-6"
+            >
+              <div
+                className="absolute inset-0 scale-[2] blur-3xl opacity-20 rounded-full"
+                style={{ backgroundColor: elementColor }}
+              />
+              <motion.span
+                className="relative block text-7xl sm:text-8xl lg:text-9xl leading-none select-none"
+                role="img"
+                aria-label={display.name}
+                whileHover="animate"
+                variants={hoverEmoji}
+              >
+                {display.emoji}
+              </motion.span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.05]"
+            >
+              {name}
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="mt-4 text-base sm:text-lg text-muted flex items-center gap-2 flex-wrap justify-center"
+            >
+              <span>{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
+              <span className="w-1 h-1 rounded-full bg-muted/40" />
+              <span>{profile.sunSign}</span>
+              <span className="w-1 h-1 rounded-full bg-muted/40" />
+              <span>Camino {lifePath}</span>
+            </motion.p>
+
+            <motion.button
               type="button"
               onClick={handleShareProfile}
-              className="mt-4 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-muted/50 hover:text-accent transition-colors font-medium"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
+              className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] font-medium text-muted hover:text-foreground border border-border hover:border-foreground/30 transition-all"
               aria-label="Compartir perfil"
             >
               <Share2 className="h-3 w-3" />
               Compartir
-            </button>
-          </motion.div>
+            </motion.button>
+          </div>
         </div>
       </section>
 

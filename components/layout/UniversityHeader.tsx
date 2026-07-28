@@ -94,20 +94,24 @@ export default function UniversityHeader() {
       >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
-            <motion.span
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-foreground border border-border"
-              initial={{ rotate: 0 }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
-                <line x1="12" y1="3" x2="12" y2="12" />
-                <line x1="4" y1="7" x2="20" y2="7" />
-                <path d="M9 12v10h6V12" />
-                <path d="M7 22h10" />
-                <path d="M9 12l3-4 3 4" />
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white text-foreground border border-border">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+                <g stroke="currentColor">
+                  <path d="M8 12v10h8V12" />
+                  <path d="M6 22h12" />
+                  <path d="M12 17l3-4-3-4-3 4z" />
+                </g>
+                <motion.g
+                  style={{ transformOrigin: "12px 7.5px" }}
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
+                >
+                  <line x1="12" y1="2" x2="12" y2="12" />
+                  <line x1="4" y1="7" x2="20" y2="7" />
+                </motion.g>
               </svg>
-            </motion.span>
+            </span>
           </Link>
 
           <div className="flex items-center gap-3">
