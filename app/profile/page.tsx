@@ -114,7 +114,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ProfileHub profile={profile} />
+              <ProfileHub profile={profile} onEnter={handleEnter} />
             </motion.div>
           ) : (
             <motion.div
