@@ -1,65 +1,25 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useCallback } from "react";
 
-type PickerColumn = {
-  label: string;
-  values: { value: string; label: string }[];
-  selected: string;
-  onSelect: (value: string) => void;
-};
+const MONTHS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+];
 
-function WheelPicker({ label, values, selected, onSelect }: PickerColumn) {
-  const [highlight, setHighlight] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+function formatDateInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  const parts: string[] = [];
+  if (digits.length > 0) parts.push(digits.slice(0, 2));
+  if (digits.length > 2) parts.push(digits.slice(2, 4));
+  if (digits.length > 4) parts.push(digits.slice(4, 8));
+  return parts.join(" / ");
+}
 
-  const handleScroll = useCallback(() => {
-    if (!containerRef.current) return;
-    const el = containerRef.current;
-    const itemHeight = el.children[0]?.clientHeight || 44;
-    const scrollTop = el.scrollTop;
-    const index = Math.round(scrollTop / itemHeight);
-    if (values[index] && values[index].value !== selected) {
-      onSelect(values[index].value);
-    }
-  }, [values, selected, onSelect]);
-
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium">{label}</p>
-      <div
-        ref={containerRef}
-        className="relative w-full overflow-hidden border border-border bg-card"
-        style={{ maxHeight: "160px" }}
-      >
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-11 bg-gradient-to-b from-card/90 via-card to-card/90 pointer-events-none z-10" />
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-border/50 pointer-events-none z-10" />
-        <div
-          className="overflow-y-auto scrollbar-hide"
-          style={{ maxHeight: "160px" }}
-          onScroll={handleScroll}
-        >
-          <div className="p-1 space-y-1">
-            {values.map((v) => (
-              <button
-                key={v.value}
-                type="button"
-                onClick={() => onSelect(v.value)}
-                className={`w-full text-center py-2.5 transition-colors duration-150 ${
-                  v.value === selected
-                    ? "font-heading text-base sm:text-lg font-semibold text-foreground bg-accent/10"
-                    : "text-sm text-muted/50 hover:text-muted"
-                }`}
-              >
-                {v.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+function isValidDay(d: number, month: number, year: number): boolean {
+  if (d < 1 || d > 31) return false;
+  if (!month || !year) return true;
+  return d <= new Date(year, month, 0).getDate();
 }
 
 interface DatePickerProps {
@@ -69,50 +29,68 @@ interface DatePickerProps {
   onDayChange: (value: string) => void;
   onMonthChange: (value: string) => void;
   onYearChange: (value: string) => void;
-  daysInMonth: number;
-  currentYear: number;
 }
 
 export default function DatePicker({
-  day,
-  month,
-  year,
-  onDayChange,
-  onMonthChange,
-  onYearChange,
-  daysInMonth,
-  currentYear,
+  day, month, year,
+  onDayChange, onMonthChange, onYearChange,
 }: DatePickerProps) {
-  const months = [
-    { value: "01", label: "Ene" },
-    { value: "02", label: "Feb" },
-    { value: "03", label: "Mar" },
-    { value: "04", label: "Abr" },
-    { value: "05", label: "May" },
-    { value: "06", label: "Jun" },
-    { value: "07", label: "Jul" },
-    { value: "08", label: "Ago" },
-    { value: "09", label: "Sep" },
-    { value: "10", label: "Oct" },
-    { value: "11", label: "Nov" },
-    { value: "12", label: "Dic" },
-  ];
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [focused, setFocused] = useState(false);
 
-  const dayValues = Array.from({ length: daysInMonth }, (_, i) => ({
-    value: String(i + 1),
-    label: String(i + 1),
-  }));
+  const rawValue = `${day}${month}${year}`;
+  const displayValue = rawValue === "0100" ? "" : formatDateInput(rawValue);
 
-  const yearValues = Array.from({ length: 100 }, (_, i) => ({
-    value: String(currentYear - i),
-    label: String(currentYear - i),
-  }));
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const digits = e.target.value.replace(/\D/g, "").slice(0, 8);
+    const d = digits.slice(0, 2);
+    const m = digits.slice(2, 4);
+    const y = digits.slice(4, 8);
+
+    if (d) onDayChange(d.replace(/^0+/, ""));
+    else onDayChange("");
+
+    if (m) onMonthChange(m);
+    else onMonthChange("");
+
+    if (y) onYearChange(y);
+    else onYearChange("");
+  }, [onDayChange, onMonthChange, onYearChange]);
+
+  const dayNum = parseInt(day, 10);
+  const monthNum = parseInt(month, 10);
+  const yearNum = parseInt(year, 10);
+  const valid = (!day || (dayNum >= 1 && dayNum <= 31)) &&
+                (!month || (monthNum >= 1 && monthNum <= 12)) &&
+                (!year || yearNum >= 1900);
+  const complete = day && month && year;
+  const monthName = monthNum >= 1 && monthNum <= 12 ? MONTHS[monthNum - 1] : "";
 
   return (
-    <div className="grid grid-cols-3 gap-3">
-      <WheelPicker label="Día" values={dayValues} selected={day} onSelect={onDayChange} />
-      <WheelPicker label="Mes" values={months} selected={month} onSelect={onMonthChange} />
-      <WheelPicker label="Año" values={yearValues} selected={year} onSelect={onYearChange} />
+    <div className="space-y-3">
+      <div
+        className={`relative border transition-colors ${focused ? "border-accent" : "border-border"} ${!valid && focused ? "border-red-400" : ""}`}
+      >
+        <input
+          ref={inputRef}
+          type="text"
+          inputMode="numeric"
+          value={displayValue}
+          onChange={handleChange}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          placeholder="DD / MM / AAAA"
+          className="w-full bg-transparent text-center font-heading text-xl sm:text-2xl font-semibold tracking-widest text-foreground px-4 py-5 focus:outline-none placeholder:text-muted/30"
+          aria-label="Fecha de nacimiento"
+          autoComplete="bday"
+        />
+      </div>
+
+      {complete && monthName && (
+        <p className="text-center text-xs text-muted/60 font-mono tracking-wider">
+          {day} de {monthName} de {year}
+        </p>
+      )}
     </div>
   );
 }
