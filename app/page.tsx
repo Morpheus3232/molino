@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { fadeUp, staggerSection, staggerCard, numberReveal, hoverLift, hoverScale } from "@/lib/utils/motion";
+import { fadeUp, hoverScale, numberReveal } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import Grainient from "@/components/Grainient";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import {
@@ -28,22 +26,11 @@ import {
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 import { safeNumber } from "@/lib/utils/score";
-import DatePicker from "@/components/ui/DatePicker";
 import { saveSession } from "@/lib/storage/ephemeral";
-import { useFavorites } from "@/lib/hooks/useFavorites";
-import { IconLock } from "@/components/ui/Icons";
 import { saveProfileToStorage } from "@/lib/storage/localStorage";
 import { markOnboardingCompleted } from "@/lib/storage/discovery";
 import { analytics } from "@/lib/analytics/analytics";
-
-const AffinityHub = dynamic(() => import("@/components/sections/AffinityHub"), {
-  ssr: true,
-  loading: () => <div className="py-20 sm:py-24 lg:py-28 bg-[#EFEBE1]"><div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12"><div className="animate-pulse space-y-4"><div className="h-10 bg-neutral-200 rounded w-32" /><div className="h-12 bg-neutral-200 rounded w-64" /></div></div></div>,
-});
-const ConceptsIndex = dynamic(() => import("@/components/sections/ConceptsIndex"), {
-  ssr: true,
-  loading: () => <div className="py-20 sm:py-24 lg:py-28 bg-foreground"><div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12"><div className="animate-pulse space-y-4"><div className="h-10 bg-neutral-800 rounded w-32" /><div className="h-12 bg-neutral-800 rounded w-80" /></div></div></div>,
-});
+import Grainient from "@/components/Grainient";
 
 /* ═══ Helpers ═══ */
 
@@ -65,7 +52,7 @@ const IconBase: React.FC<IconProps> = ({ className, ...props }) => (
 );
 
 const ENTITY_TYPE_ICONS: Record<string, string> = {
-  brand: "\u2726", country: "\u25C9", city: "\u25CE", university: "\u2B21", team: "\u25B3", movie: "\u25AB", artist: "\u25CB",
+  brand: "✦", country: "◉", city: "◎", university: "⬡", team: "△", movie: "▫", artist: "○",
 };
 
 const MONTHS = [
@@ -96,9 +83,55 @@ const getDaysInMonth = (month: string, year: string): number => {
   return new Date(y, m, 0).getDate();
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   HERO — editorial, full presence, discovery ritual
-   ═══════════════════════════════════════════════════════════════ */
+const scrollReveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.5, ease: "easeOut" as const },
+};
+
+const staggerContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+};
+
+/* ═══ Reusable section wrapper ═══ */
+
+function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebrow?: string; title?: string; subtitle?: string; children?: React.ReactNode; className?: string }) {
+  return (
+    <motion.section {...scrollReveal} className={`mb-16 sm:mb-24 ${className}`}>
+      <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
+        {(eyebrow || title) && (
+          <div className="mb-8 sm:mb-10">
+            {eyebrow && (
+              <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="mt-3 text-sm sm:text-base text-muted max-w-2xl leading-relaxed">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        )}
+        {children}
+      </div>
+    </motion.section>
+  );
+}
+
+/* ═══ Grupo 0: Hero + onboarding inline ═══ */
 
 function HeroWithForm() {
   const router = useRouter();
@@ -108,11 +141,8 @@ function HeroWithForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-   const daysInMonth = useMemo(() => getDaysInMonth(month, year), [month, year]);
-
-   const displayDay = day || "18";
-  const displayMonth = month ? MONTHS.find(m => m.value === month)?.label || "ABR" : "ABR";
-  const displayYear = year || "1990";
+  const daysInMonth = useMemo(() => getDaysInMonth(month, year), [month, year]);
+  const yearOptions = useMemo(() => Array.from({ length: 100 }, (_, i) => getCurrentYear() - i), []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,7 +154,7 @@ function HeroWithForm() {
     const parsedYear = parseInt(year, 10);
 
     if (!parsedDay || !parsedMonth || !parsedYear) {
-      setError("Seleccion\u00E1 d\u00EDa, mes y a\u00F1o");
+      setError("Seleccioná día, mes y año");
       setLoading(false);
       return;
     }
@@ -166,55 +196,99 @@ function HeroWithForm() {
       router.push("/profile");
     } catch (err) {
       console.error(err);
-      setError("Hubo un error. Intent\u00E1 de nuevo.");
+      setError("Hubo un error. Intentá de nuevo.");
       setLoading(false);
     }
   };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center bg-background overflow-hidden">
-       <div className="absolute inset-0 overflow-hidden select-none pointer-events-none" aria-hidden="true">
-         <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[clamp(6rem,18vw,18rem)] font-serif font-bold leading-none tracking-tighter text-foreground/[0.03] select-none text-right pr-5 sm:pr-8 lg:pr-12 z-0">
-           {displayDay}<br/>{displayMonth}<br/>{displayYear}
-         </div>
-       </div>
+    <Section className="-mt-4 sm:-mt-6">
+      <div className="rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
+          {/* Value prop */}
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Inteligencia Personal</p>
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
+              Descubrí tu mapa
+            </h1>
+            <p className="text-sm sm:text-base text-muted max-w-xl leading-relaxed mb-6">
+              Una síntesis de numerología, astrología y zodiaco chino para entender tus patrones, ciclos y conexiones.
+            </p>
+            <p className="text-xs text-muted">
+              Sin servidor. Sin cuentas.
+            </p>
+          </div>
 
-       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 w-full py-20 sm:py-28 lg:py-32 relative z-10">
-        <motion.div {...fadeUp} className="max-w-4xl mb-14 sm:mb-20">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-6">Inteligencia Personal</p>
-          <h1 className="font-serif text-7xl sm:text-8xl lg:text-9xl xl:text-[9rem] font-medium tracking-tight text-foreground leading-[0.8] mb-6">
-            Tu mapa<br/>personal
-          </h1>
-          <p className="text-xl sm:text-2xl text-muted max-w-2xl leading-relaxed mb-3">
-            Tres sistemas. Una lectura sobre vos.
-          </p>
-          <p className="text-base sm:text-lg text-muted/60">
-            Numerología · Astrología · Zodiaco Chino
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
-          className="max-w-3xl"
-        >
-          <div className="rounded-2xl border border-border/60 bg-card/70 backdrop-blur-sm p-8 sm:p-10">
-            <p className="font-serif text-xl sm:text-2xl font-semibold text-foreground mb-2">¿Cuándo naciste?</p>
-            <p className="text-sm text-muted/60 mb-6">Tu fecha de nacimiento contiene más información de la que imaginás.</p>
-             <form onSubmit={handleSubmit} className="space-y-5">
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                 <DatePicker
-                   day={day}
-                   month={month}
-                   year={year}
-                   onDayChange={setDay}
-                   onMonthChange={setMonth}
-                   onYearChange={setYear}
-                   daysInMonth={daysInMonth}
-                   currentYear={getCurrentYear()}
-                 />
-               </div>
+          {/* Form */}
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }} className="rounded-2xl border border-border bg-background/50 p-5 sm:p-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
+                  <div className="relative">
+                    <select
+                      id="birth-day"
+                      name="day"
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
+                      required
+                      aria-label="Día"
+                    >
+                      <option value="">Día</option>
+                      {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
+                        <option key={d} value={String(d)}>{d}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
+                  <div className="relative">
+                    <select
+                      id="birth-month"
+                      name="month"
+                      value={month}
+                      onChange={(e) => setMonth(e.target.value)}
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
+                      required
+                      aria-label="Mes"
+                    >
+                      {MONTHS.map((m) => (
+                        <option key={m.value} value={m.value}>{m.label}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
+                  <div className="relative">
+                    <select
+                      id="birth-year"
+                      name="year"
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                      className="w-full appearance-none h-12 px-3 rounded-xl border border-border bg-background text-foreground text-sm font-serif focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ease-out"
+                      required
+                      aria-label="Año"
+                    >
+                      <option value="">Año</option>
+                      {yearOptions.map((y) => (
+                        <option key={y} value={String(y)}>{y}</option>
+                      ))}
+                    </select>
+                    <svg className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
 
               {error && (
                 <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-sm text-red-500">
@@ -223,26 +297,25 @@ function HeroWithForm() {
               )}
 
               <motion.button
-                {...hoverScale}
                 type="submit"
                 disabled={loading || !day || !month || !year}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-10 py-5 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px] disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:hover:bg-muted disabled:hover:text-muted-foreground"
               >
-                {loading ? "Descubriendo..." : "Descubrir mi mapa \u2192"}
+                {loading ? "Descubriendo..." : "Descubrir mi mapa →"}
               </motion.button>
 
-              <p className="text-[11px] text-muted/40 text-center">Sin registro · Sin guardar datos · Sin rastreo</p>
+              {!(day && month && year) && (
+                <p className="text-[11px] text-muted text-center">Completá los 3 campos para continuar</p>
+              )}
             </form>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </section>
+    </Section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION 2 — Los tres sistemas (editorial dark)
-   ═══════════════════════════════════════════════════════════════ */
+/* ═══ Grupo 1: Los tres sistemas ═══ */
 
 function SystemIcon({ type }: { type: string }) {
   if (type === "numerologia") {
@@ -277,53 +350,46 @@ function SystemIcon({ type }: { type: string }) {
 
 function SystemsPreview() {
   const router = useRouter();
-  const systems = [
-    { num: "01", title: "Numerología", desc: "Los números. Tu estructura interior.", href: "/conocimiento/numerologia", type: "numerologia" },
-    { num: "02", title: "Astrología", desc: "El cielo. Tu momento de nacimiento.", href: "/conocimiento/astrologia", type: "astrologia" },
-    { num: "03", title: "Zodiaco Chino", desc: "Los ciclos. Tu energía en el tiempo.", href: "/conocimiento/zodiaco-chino", type: "zodiaco-chino" },
-  ];
-   return (
-     <section className="py-20 sm:py-24 lg:py-28 bg-foreground text-background">
-       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
-         <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Los tres sistemas</p>
-           <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0] text-background">
-             Una misma persona.<br/>Tres formas de observarla.
-           </h2>
-         </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border/10">
-          {systems.map((item, i) => (
-            <motion.button
-              key={item.num}
-              {...fadeUp}
-              transition={{ delay: i * 0.1 }}
-              type="button"
-              onClick={() => router.push(item.href)}
-              className="group relative text-left p-8 sm:p-10 lg:p-14 bg-foreground hover:bg-foreground/95 transition-colors duration-500"
-            >
-              <span className="block font-serif text-[8rem] sm:text-[10rem] lg:text-[12rem] font-bold leading-none tracking-tighter text-background/[0.04] mb-8 select-none">
+  return (
+    <Section
+      eyebrow="Los tres sistemas"
+      title="Una misma persona. Tres formas de observarla."
+      subtitle="Numerología, astrología y zodiaco chino combinados en una misma lectura."
+      className="relative overflow-hidden bg-ink text-paper"
+    >
+      <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+        {[
+          { num: "01", title: "Numerología", desc: "El lenguaje de los números", href: "/conocimiento/numerologia", accent: "var(--element-fire)", type: "numerologia" },
+          { num: "02", title: "Astrología", desc: "El mapa del cielo de tu nacimiento", href: "/conocimiento/astrologia", accent: "var(--layer-astrology)", type: "astrologia" },
+          { num: "03", title: "Zodiaco Chino", desc: "Los ciclos de la energía", href: "/conocimiento/zodiaco-chino", accent: "var(--layer-moment)", type: "zodiaco-chino" },
+        ].map((item) => (
+          <motion.button
+            key={item.num}
+            variants={staggerItem}
+            type="button"
+            onClick={() => router.push(item.href)}
+            className="group relative text-left rounded-2xl border border-paper/20 bg-card/60 p-6 sm:p-8 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-paper/40 hover:shadow-sm"
+          >
+            <div className="flex items-center justify-between mb-5">
+              <motion.span {...numberReveal} className="text-[10px] font-mono tracking-[0.25em] text-paper/60">
                 {item.num}
-              </span>
-              <div className="relative z-10">
-                <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-background mb-3 group-hover:text-accent transition-colors duration-300">{item.title}</h3>
-                <p className="text-base sm:text-lg text-background/60 leading-relaxed max-w-xs">{item.desc}</p>
-                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-background/40 group-hover:text-background/80 transition-colors duration-300">
-                  Explorar
-                  <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">{">"}</span>
-                </span>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-      </div>
-    </section>
+              </motion.span>
+              <span className="text-accent/90">{SystemIcon({ type: item.type })}</span>
+            </div>
+            <p className="font-serif text-lg sm:text-xl font-semibold text-paper group-hover:text-accent transition-colors duration-200">{item.title}</p>
+            <p className="mt-2 text-sm text-paper/70 leading-relaxed">{item.desc}</p>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-accent">
+              Explorar
+              <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+            </span>
+          </motion.button>
+        ))}
+      </motion.div>
+    </Section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION 3 — Journey horizontal timeline
-   ═══════════════════════════════════════════════════════════════ */
+/* ═══ Grupo 2: Cómo funciona ═══ */
 
 function Journey() {
   const items = [
@@ -334,168 +400,202 @@ function Journey() {
     { num: "05", title: "Reflexioná", desc: "Tomá perspectiva" },
   ];
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-[#F7F5EF]">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
-        <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Cómo funciona</p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0]">
-            Un recorrido en cinco pasos
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-0 items-start">
-            {items.map((item, i) => (
-              <motion.div
-                key={item.num}
-                {...fadeUp}
-                transition={{ delay: i * 0.08 }}
-                className="flex flex-col items-center text-center px-2 md:px-6 relative"
-              >
-                {i < items.length - 1 && (
-                  <div className="hidden md:block absolute top-6 left-full w-full h-px bg-border/50 -translate-x-1/2" aria-hidden="true" />
-                )}
-                <span className="font-serif text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold text-accent/15 mb-3 select-none leading-none">{item.num}</span>
-                <p className="font-serif text-xl sm:text-2xl md:text-2xl lg:text-3xl font-semibold text-foreground mb-2">{item.title}</p>
-                <p className="text-sm sm:text-base text-muted leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-      </div>
-    </section>
+    <Section
+      eyebrow="Cómo funciona"
+      title="Un recorrido en cinco pasos"
+      subtitle="De tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones."
+      className="relative"
+    >
+      <div className="absolute left-3 sm:left-4 top-3 bottom-3 w-px bg-border/70" aria-hidden="true" />
+      <motion.div variants={staggerContainer} className="space-y-8 sm:space-y-10">
+        {items.map((item) => (
+          <motion.div
+            key={item.num}
+            variants={staggerItem}
+            className="relative grid grid-cols-[auto_1fr] gap-6 sm:gap-10"
+          >
+            <motion.div {...numberReveal} className="relative z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-border bg-background text-[11px] font-mono tracking-[0.2em] text-muted">
+              {item.num}
+            </motion.div>
+            <div className="pb-1">
+              <p className="font-serif text-base sm:text-lg font-semibold text-foreground">{item.title}</p>
+              <p className="mt-1 text-sm text-muted leading-relaxed">{item.desc}</p>
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+    </Section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION 5 — Tools regrouped
-   ═══════════════════════════════════════════════════════════════ */
+/* ═══ Grupo 3: Herramientas + descubrimiento compacto ═══ */
 
 function ToolsAndDiscovery() {
   const router = useRouter();
-  const { toggleFavorite } = useFavorites();
-  const groups = [
-    {
-      label: "Tu Identidad",
-      items: [
-        { title: "Camino de Vida", desc: "Tu estructura interior", href: "/herramientas/camino-de-vida" },
-        { title: "Signo Solar", desc: "Tu signo zodiacal", href: "/herramientas/signo-solar" },
-        { title: "Zodiaco Chino", desc: "Tu animal y elemento", href: "/herramientas/zodiaco-chino" },
-        { title: "Número de la Suerte", desc: "Tu número personal", href: "/conocimiento/numerologia" },
-      ],
-    },
-    {
-      label: "Tus Relaciones",
-      items: [
-        { title: "Compatibilidad", desc: "Conectá dos perfiles", href: "/herramientas/compatibilidad" },
-      ],
-    },
-    {
-      label: "Tu Mundo",
-      items: [
-        { title: "Países", desc: "Afinidad simbólica", href: "/affinity/country" },
-        { title: "Ciudades", desc: "Destinos por zodiaco", href: "/affinity/city" },
-        { title: "Marcas", desc: "Marcas que resuenan", href: "/affinity/brand" },
-        { title: "Universidades", desc: "Instituciones por afinidad", href: "/affinity/university" },
-      ],
-    },
+  const calculatorLinks = [
+    { title: "Camino de Vida", desc: "Tu número numerológico", href: "/herramientas/camino-de-vida" },
+    { title: "Signo Solar", desc: "Tu signo zodiacal", href: "/herramientas/signo-solar" },
+    { title: "Zodíaco Chino", desc: "Tu animal y elemento", href: "/herramientas/zodiaco-chino" },
+    { title: "Compatibilidad", desc: "Conectá dos perfiles", href: "/herramientas/compatibilidad" },
+  ];
+  const explorationLinks = [
+    { title: "Países", desc: "Afinidad simbólica por país", href: "/affinity/country" },
+    { title: "Marcas", desc: "Marcas que resuenan con tu perfil", href: "/affinity/brand" },
+    { title: "Universidades", desc: "Instituciones por afinidad", href: "/affinity/university" },
+    { title: "Ciudades", desc: "Destinos por zodiaco", href: "/affinity/city" },
   ];
 
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-foreground text-background">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
-        <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Explorá</p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0] text-background">
-            Más allá de tu mapa
-          </h2>
-        </motion.div>
-
-         <div className="space-y-14 lg:space-y-20">
-          {groups.map((group, groupIndex) => (
-            <div key={group.label}>
-              <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-background mb-6">
-                {group.label}
-              </h3>
-               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-                {group.items.map((item) => (
-                  <button
-                    key={item.href}
-                    type="button"
-                    onClick={() => router.push(item.href)}
-                    className={`group text-left rounded-xl border transition-all duration-300 hover:shadow-md h-full ${
-                      groupIndex === 0
-                        ? "border-accent/20 bg-accent/5 p-6 sm:p-7 hover:border-accent/40"
-                        : "border-border/30 bg-card/60 p-6 sm:p-7 hover:border-accent/30 hover:shadow-md"
-                    }`}
-                  >
-                    <p className={`font-serif text-lg sm:text-xl font-semibold mb-2 transition-colors duration-300 ${
-                      groupIndex === 0 ? "text-background" : "text-background group-hover:text-accent"
-                    }`}>{item.title}</p>
-                    <p className="text-sm text-background/50 leading-relaxed">{item.desc}</p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-background/30 group-hover:text-background/60 transition-colors">
-                        <IconLock className="w-3 h-3" />
-                        Requiere perfil
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); toggleFavorite(item.title); }}
-                        className="text-background/30 hover:text-accent transition-colors duration-200"
-                        aria-label={`Guardar ${item.title} en favoritos`}
-                      >
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5" aria-hidden="true">
-                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-16 text-center">
-          <p className="font-serif text-lg sm:text-xl font-normal text-muted/80 mb-2">
-            Todo el contenido está protegido.
-          </p>
-          <p className="text-sm text-muted/50 mb-8">
-            Creá tu perfil para desbloquear todas las herramientas.
-          </p>
-          <button
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center gap-3 px-10 py-4 text-base font-medium rounded-full bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 transition-all duration-300"
+    <Section
+      eyebrow="Explorá"
+      title="Herramientas y afinidades"
+      subtitle="Accesos directos para seguir investigando tu perfil."
+    >
+      <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Calculá al instante</p>
+      <motion.div variants={staggerContainer} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        {calculatorLinks.map((item) => (
+          <motion.button
+            key={item.href}
+            variants={staggerItem}
+            type="button"
+            onClick={() => router.push(item.href)}
+            className="group relative text-left rounded-2xl border border-border bg-card/60 p-4 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:shadow-sm"
           >
-            Crear mi perfil
-            <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-          </button>
-        </div>
-      </div>
-    </section>
+            <span className="absolute top-3 right-3 text-accent" aria-hidden="true">⚡</span>
+            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
+            <p className="mt-1.5 text-xs text-muted leading-relaxed">{item.desc}</p>
+          </motion.button>
+        ))}
+      </motion.div>
+
+      <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Explorá conexiones</p>
+      <motion.div variants={staggerContainer} className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {explorationLinks.map((item) => (
+          <motion.button
+            key={item.href}
+            variants={staggerItem}
+            type="button"
+            onClick={() => router.push(item.href)}
+            className="group text-left rounded-2xl border border-border bg-card/40 p-4 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:bg-card hover:shadow-sm"
+          >
+            <p className="text-sm font-serif font-semibold text-foreground group-hover:text-accent transition-colors duration-200">{item.title}</p>
+            <p className="mt-1.5 text-xs text-muted leading-relaxed">{item.desc}</p>
+          </motion.button>
+        ))}
+      </motion.div>
+    </Section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN
-   ═══════════════════════════════════════════════════════════════ */
+/* ═══ Grupo 4: Conceptos clave ═══ */
+
+function ConceptsIndex() {
+  const router = useRouter();
+  const concepts = [
+    { title: "Arquetipos", href: "/conocimiento/numerologia" },
+    { title: "Elementos", href: "/conocimiento/astrologia" },
+    { title: "Ciclos", href: "/profile" },
+    { title: "Números maestros", href: "/conocimiento/numerologia" },
+    { title: "Modalidades", href: "/conocimiento/astrologia" },
+    { title: "Compatibilidad", href: "/compatibility/countries" },
+  ];
+  return (
+    <Section
+      eyebrow="Conceptos clave"
+      title="Una guía para seguir leyendo"
+      className="relative overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 -z-10 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, var(--color-border) 1px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+        aria-hidden="true"
+      />
+      <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        {concepts.map((concept) => (
+          <motion.button
+            key={concept.title}
+            variants={staggerItem}
+            type="button"
+            onClick={() => router.push(concept.href)}
+            className="group text-left rounded-2xl border border-border bg-card/40 px-5 py-4 sm:px-6 sm:py-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:bg-card hover:shadow-sm"
+          >
+            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
+            <span className="mt-2 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors duration-200">
+              Explorar
+              <span className="ml-1.5 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+            </span>
+          </motion.button>
+        ))}
+      </motion.div>
+    </Section>
+  );
+}
+
+/* ═══ Grupo 5: CTA final único ═══ */
+
+function FinalCTA() {
+  const router = useRouter();
+
+  return (
+    <Section className="pb-10">
+      <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-cream p-8 sm:p-10 lg:p-12 text-center">
+        <div
+          className="absolute inset-0 -z-10 opacity-[0.35]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(212,168,67,0.25) 1px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+          aria-hidden="true"
+        />
+        <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
+        <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
+          Identidad, mundo, círculo e inteligencia en un solo lugar.
+        </p>
+        <motion.button {...hoverScale} type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
+          Crear mi perfil
+        </motion.button>
+      </div>
+    </Section>
+  );
+}
+
+/* ═══ Main ═══ */
 
 export default function Home() {
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setProfile(getOrCreateProfile());
+  }, []);
+
   return (
     <div className="min-h-screen relative">
-      <Grainient
-        timeSpeed={0.12}
-        contrast={1.15}
-        grainAmount={0.06}
-        grainScale={2.5}
-        zoom={1.3}
-        warpAmplitude={35}
-        warpFrequency={4}
-        blendSoftness={0.08}
-      />
-      <UniversityHeader />
-      <main className="pb-32" id="main-content">
-        <GenericHome />
-      </main>
-      <UniversityFooter />
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.06]" aria-hidden="true">
+        <Grainient
+          timeSpeed={0.05}
+          contrast={1.02}
+          grainAmount={0.02}
+          zoom={1.0}
+          warpAmplitude={8}
+          color1="#F5C77E"
+          color2="#1A1A1A"
+          color3="#8C7355"
+        />
+      </div>
+      <div className="relative z-10">
+        <UniversityHeader />
+        <main className="mx-auto max-w-[1200px] px-5 sm:px-8 lg:px-12 pt-10 sm:pt-16 pb-28" id="main-content">
+          {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}
+        </main>
+        <UniversityFooter />
+      </div>
     </div>
   );
 }
@@ -503,14 +603,17 @@ export default function Home() {
 /* ═══ Generic home (no profile) ═══ */
 
 function GenericHome() {
+  const router = useRouter();
+
   return (
     <>
       <HeroWithForm />
+
       <SystemsPreview />
       <Journey />
-      <AffinityHub />
       <ToolsAndDiscovery />
       <ConceptsIndex />
+      <FinalCTA />
     </>
   );
 }
@@ -527,46 +630,48 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
 
   return (
     <>
-      <section className="py-20 sm:py-28 lg:py-36 bg-background">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-          <motion.div {...fadeUp}>
-            <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-5">Tu mapa personal</p>
-            <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-medium tracking-tight text-foreground leading-[0.85] mb-6">
-              {name ? `Bienvenido/a, ${name}` : `Sos ${display.name}`}
-            </h1>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-base sm:text-lg text-muted mb-8">
-              <span>{display.name}</span>
-              <span className="text-border/40">·</span>
-              <span>{element}</span>
-              <span className="text-border/40">·</span>
-              <span>{archetype.name}</span>
-            </div>
-            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-10 py-5 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px]">
-              Ver mi perfil completo \u2192
+      <Section className="-mb-4 sm:-mb-6">
+        <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-border bg-card/60 p-6 sm:p-8 lg:p-10">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu mapa personal</p>
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
+            {name ? `Bienvenido/a, ${name}` : `Sos ${display.name}`}
+          </h1>
+          <p className="text-sm sm:text-base text-muted max-w-xl leading-relaxed">
+            {display.emoji} {display.name} · {element} · {archetype.name}
+          </p>
+          <div className="mt-5">
+            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
+              Ver mi perfil completo
             </motion.button>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </motion.div>
+      </Section>
 
       <SystemsPreview />
       <Journey />
-      <AffinityHub />
       <ToolsAndDiscovery />
       <ConceptsIndex />
 
-      <section className="py-24 sm:py-32 bg-background border-t border-border/20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-          <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto">
-            <p className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground mb-4 leading-[1.1]">¿Querés ver el detalle completo?</p>
-            <p className="text-base sm:text-lg text-muted max-w-lg mx-auto mb-10 leading-relaxed">
-              Identidad, mundo, círculo e inteligencia en un solo lugar.
-            </p>
-            <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-12 py-6 text-lg bg-accent text-accent-foreground shadow-md hover:shadow-lg hover:brightness-110 min-h-[64px]">
-              Ver mi perfil completo \u2192
-            </motion.button>
-          </motion.div>
-        </div>
-      </section>
+      <Section className="pb-10">
+        <motion.div {...fadeUp} className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-b from-accent/[0.04] to-background p-8 sm:p-10 lg:p-12 text-center">
+          <div
+            className="absolute inset-0 -z-10 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, rgba(212,168,67,0.25) 1px, transparent 0)",
+              backgroundSize: "24px 24px",
+            }}
+            aria-hidden="true"
+          />
+          <p className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver el detalle completo?</p>
+          <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
+            Identidad, mundo, círculo e inteligencia en un solo lugar.
+          </p>
+          <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="btn-primary transition-all duration-200 ease-out hover:shadow-sm">
+            Ver mi perfil completo
+          </motion.button>
+        </motion.div>
+      </Section>
     </>
   );
 }

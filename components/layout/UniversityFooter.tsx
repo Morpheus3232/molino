@@ -18,7 +18,7 @@ export default function UniversityFooter() {
             <p className="text-sm text-background/50 mt-1 max-w-xs leading-relaxed">
               Conocéte. Entendéte. Orientáte.
             </p>
-            <p className="text-xs text-background/40 mt-8 max-w-xs leading-relaxed">Código abierto · Sin registro · Sin rastreo · Privacidad radical</p>
+            <p className="text-xs text-background/40 mt-8 max-w-xs leading-relaxed">Código abierto · Sin servidor · Privacidad radical</p>
           </div>
 
           <div className="md:col-span-3 md:col-start-8">

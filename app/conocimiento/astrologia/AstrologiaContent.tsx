@@ -136,13 +136,16 @@ export default function AstrologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {ZODIAC_SIGNS.map((sign, i) => (
-              <motion.button key={sign.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all group">
+              <motion.button key={sign.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">{sign.symbol}</span>
                   <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{sign.name}</h3>
                 </div>
                 <p className="text-xs text-muted">{sign.dates}</p>
-                <p className="text-xs text-muted mt-1">{sign.element} · {sign.modality}</p>
+                <p className="text-xs text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
+                  {sign.element} · {sign.modality}
+                  <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                </p>
               </motion.button>
             ))}
           </div>
