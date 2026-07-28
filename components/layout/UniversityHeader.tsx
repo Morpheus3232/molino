@@ -9,13 +9,14 @@ import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const [hasProfile, setHasProfile] = useState(() => hasStoredProfile());
+  const [hasProfile, setHasProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setHasProfile(hasStoredProfile());
     const refresh = () => setHasProfile(hasStoredProfile());
     window.addEventListener("molino-profile-created", refresh);
     window.addEventListener("molino-profile-cleared", refresh);
@@ -94,7 +95,7 @@ export default function UniversityHeader() {
           <div className="flex items-center gap-3">
             <Link
               href={hasProfile ? "/profile" : "/onboarding"}
-              className={`hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm transition-colors ${pathname === "/profile" ? "text-foreground" : "text-muted hover:text-foreground"}`}
+              className={`hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 ${pathname === "/profile" ? "text-foreground" : "text-muted hover:text-foreground"}`}
               aria-current={pathname === "/profile" ? "page" : undefined}
             >
               Mi mapa
@@ -104,14 +105,14 @@ export default function UniversityHeader() {
                 ref={triggerRef}
                 type="button"
                 onClick={handleNewProfile}
-                className="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors"
+                className="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
               >
                 Nuevo perfil
               </button>
             ) : (
               <Link
                 href="/onboarding"
-                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
               >
                 Crear mi perfil
               </Link>
@@ -123,7 +124,7 @@ export default function UniversityHeader() {
         </div>
 
         <div className="lg:hidden px-5 sm:px-8 pb-3 flex items-center justify-between">
-          <Link href={hasProfile ? "/profile" : "/onboarding"} className="text-sm text-muted hover:text-foreground transition-colors">
+          <Link href={hasProfile ? "/profile" : "/onboarding"} className="text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg">
             Mi mapa
           </Link>
           <ThemeToggle />
@@ -137,10 +138,10 @@ export default function UniversityHeader() {
             <h3 id="confirm-title" className="font-serif text-xl font-semibold text-foreground mb-2">Nuevo perfil</h3>
             <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5">
+              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-foreground/5 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">
                 Cancelar
               </button>
-              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground">
+              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">
                 Crear nuevo
               </button>
             </div>

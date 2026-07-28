@@ -228,7 +228,7 @@ export default function InsightsContent() {
                     viewport={{ once: true }}
                     transition={{ delay: staggerDelay(i, 0.1), duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                     onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-                    className="w-full text-left p-4 rounded-xl bg-background/50 hover:bg-background transition-colors group flex items-center gap-4"
+                    className="w-full text-left p-4 rounded-xl bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     <span className="text-2xl shrink-0">{rec.entity.emoji}</span>
                     <div className="flex-1 min-w-0">
