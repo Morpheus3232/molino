@@ -13,6 +13,7 @@ import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/storage/discovery";
+import CrossLinks from "./CrossLinks";
 
 interface ProfileHubProps {
   profile: UserProfile;
@@ -24,7 +25,7 @@ const ENTITY_TYPE_ICONS: Record<string, string> = {
   university: "🎓", team: "⚽", movie: "🎬", artist: "🎤",
 };
 
-const CARD_BASE = "p-5 sm:p-6 rounded-2xl border border-border bg-card relative overflow-hidden hover:border-accent/30 transition-colors";
+const CARD_BASE = "p-5 sm:p-6 rounded-2xl border border-border bg-card relative overflow-hidden hover:border-accent/30 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm";
 const CARD_INSIGHT = "font-serif text-xl sm:text-2xl font-semibold text-accent leading-tight mb-1";
 
 /* ════════════════════════════════════════════════
@@ -56,8 +57,9 @@ function InsightCard({
       <div className="text-xs text-muted mb-4">{context}</div>
       {children}
       {onCta && (
-        <button type="button" onClick={onCta} className="text-xs font-medium text-accent hover:underline">
+        <button type="button" onClick={onCta} className="text-xs font-medium text-accent hover:underline inline-flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg">
           {ctaLabel}
+          <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
         </button>
       )}
     </motion.section>
@@ -94,9 +96,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const intelligenceLabel = dailyEnergy.theme;
 
   return (
-    <div className="min-h-screen bg-[#F3EDE3]">
+    <div className="min-h-screen bg-background">
       {/* Hero */}
-      <section className="pt-16 sm:pt-24 pb-8">
+      <section className="pt-16 sm:pt-24 pb-8 bg-cream">
         <div className="mx-auto max-w-[1100px] px-4 sm:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -206,13 +208,13 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           />
         </motion.div>
 
-        {/* ═══ PRÓXIMO DESCUBRIMIENTO ═══ */}
+        {/* ╕ PRÓXIMO DESCUBRIMIENTO ╕ */}
         {topRec && (
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="p-5 sm:p-6 rounded-2xl border border-border bg-card hover:border-accent/30 transition-all cursor-pointer"
+            className="p-5 sm:p-6 rounded-2xl border border-border bg-card hover:border-accent/30 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm cursor-pointer"
             onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
           >
             <div className="flex items-center gap-3 mb-2">
@@ -225,6 +227,19 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           </motion.section>
         )}
       </div>
+
+      {/* Cross-links con fondo alterno */}
+      {onEnter && (
+        <div className="bg-cream">
+          <CrossLinks
+            links={[
+              { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onEnter("world") },
+              { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onEnter("circle") },
+              { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onEnter("intelligence") },
+            ]}
+          />
+        </div>
+      )}
     </div>
   );
 }

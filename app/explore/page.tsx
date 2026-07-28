@@ -133,10 +133,10 @@ export default function ExplorePage() {
           </div>
         </motion.section>
 
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-28 sm:mb-36">
+        <motion.section {...fadeUpDelayed(0.1)} className="mb-28 sm:mb-36 bg-ink text-paper -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 py-12 sm:py-16 rounded-3xl">
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
+            <div className="w-8 h-px bg-paper/30" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-paper/80 font-medium">
               Los tres sistemas
             </h2>
           </div>
@@ -147,11 +147,10 @@ export default function ExplorePage() {
                 key={system.id}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -2 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: i * 0.08, duration: 0.5, ease: "easeOut" }}
                 onClick={() => router.push(system.href)}
-                className="card-hero group text-left transition-all duration-200 hover:shadow-lg"
+                className="card-hero group text-left rounded-2xl border border-paper/20 bg-ink/60 p-5 sm:p-6 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-paper/40 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/60 focus:ring-offset-2"
               >
                 <div className="flex items-start gap-4">
                   <div
@@ -160,13 +159,13 @@ export default function ExplorePage() {
                     aria-hidden="true"
                   />
                   <div className="flex-1">
-                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors">
+                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-paper group-hover:text-accent transition-colors">
                       {system.title}
                     </h3>
                     <p className="text-sm text-accent/80 font-medium mt-1">
                       {system.subtitle}
                     </p>
-                    <p className="text-sm text-muted mt-3 leading-relaxed">
+                    <p className="text-sm text-paper/70 mt-3 leading-relaxed">
                       {system.description}
                     </p>
                   </div>
@@ -176,7 +175,7 @@ export default function ExplorePage() {
           </div>
         </motion.section>
 
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-28 sm:mb-36">
+        <motion.section {...fadeUpDelayed(0.15)} className="mb-28 sm:mb-36 bg-cream -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 py-12 sm:py-16 rounded-3xl">
           <div className="flex items-center gap-3 mb-10">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
@@ -203,7 +202,7 @@ export default function ExplorePage() {
               <button
                 type="button"
                 onClick={() => setSearchTerm("")}
-                className="text-sm font-medium text-accent hover:underline"
+                className="text-sm font-medium text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg"
               >
                 Limpiar búsqueda
               </button>
@@ -218,7 +217,7 @@ export default function ExplorePage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ delay: i * 0.05, duration: 0.4, ease: "easeOut" }}
                   onClick={() => router.push(concept.href)}
-                  className="card-list text-left"
+                  className="card-list group text-left rounded-xl border border-border bg-card/40 p-4 sm:p-5 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:border-foreground/15 hover:bg-card hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                 >
                   <h3 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                     {concept.title}
@@ -232,22 +231,22 @@ export default function ExplorePage() {
           )}
         </motion.section>
 
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-28 sm:mb-36">
+        <motion.section {...fadeUpDelayed(0.2)} className="mb-28 sm:mb-36 bg-ink text-paper -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 py-12 sm:py-16 rounded-3xl">
           <div className="flex items-center gap-3 mb-10">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
+            <div className="w-8 h-px bg-paper/30" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-paper/80 font-medium">
               Fuentes
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             {SOURCES.map((source) => (
-              <div key={source.title} className="card-list">
-                <p className="text-sm font-medium text-foreground">
+              <div key={source.title} className="card-list bg-paper/5 border-paper/10 text-paper">
+                <p className="text-sm font-medium text-paper">
                   {source.title}
                 </p>
-                <p className="text-xs text-muted mt-1">{source.author}</p>
-                <p className="text-xs text-muted mt-2 leading-relaxed">
+                <p className="text-xs text-paper/70 mt-1">{source.author}</p>
+                <p className="text-xs text-paper/60 mt-2 leading-relaxed">
                   {source.description}
                 </p>
               </div>
@@ -255,13 +254,13 @@ export default function ExplorePage() {
           </div>
 
           <div className="mt-8">
-            <Link href="/biblioteca" className="btn-secondary transition-all duration-200 hover:shadow-md">
+            <Link href="/biblioteca" className="btn-secondary transition-all duration-200 ease-out hover:shadow-sm border-paper/30 text-paper hover:text-paper hover:border-paper/60 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">
               Ver biblioteca completa
             </Link>
           </div>
         </motion.section>
 
-        <motion.section {...fadeUpDelayed(0.25)} className="mb-28 sm:mb-36">
+        <motion.section {...fadeUpDelayed(0.25)} className="mb-28 sm:mb-36 bg-gradient-to-b from-accent/[0.06] to-background -mx-5 sm:-mx-8 lg:-mx-12 px-5 sm:px-8 lg:px-12 py-12 sm:py-16 rounded-3xl">
           <div className="flex items-center gap-3 mb-10">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
@@ -274,8 +273,8 @@ export default function ExplorePage() {
           </p>
 
           <div className="flex flex-wrap gap-3">
-            <Link href="/affinity" className="btn-primary transition-all duration-200 hover:shadow-md">Explorar afinidades</Link>
-            <Link href="/compatibility/countries" className="btn-secondary transition-all duration-200 hover:shadow-md">Compatibilidad</Link>
+            <Link href="/affinity" className="btn-primary transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Explorar afinidades</Link>
+            <Link href="/compatibility/countries" className="btn-secondary transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Compatibilidad</Link>
           </div>
         </motion.section>
       </main>

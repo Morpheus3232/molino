@@ -92,7 +92,7 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
               <button
                 type="button"
                 onClick={handleBackToHub}
-                className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
+                className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <polyline points="15 18 9 12 15 6" />
@@ -140,11 +140,11 @@ function ProfileContent({ profile }: { profile: UserProfile }) {
             className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/95 backdrop-blur-xl border-t border-border"
           >
             <div className="mx-auto max-w-[600px]">
-              <button
-                type="button"
-                onClick={handleGuidedNext}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-              >
+               <button
+                 type="button"
+                 onClick={handleGuidedNext}
+                 className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-4 text-base bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[52px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+               >
                 {GUIDED_CTA[activeTab].text}
               </button>
             </div>
@@ -188,7 +188,7 @@ function ProfilePageInner() {
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
           >
             Crear mi perfil
           </button>

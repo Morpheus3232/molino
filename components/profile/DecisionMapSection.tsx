@@ -65,10 +65,10 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
               onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              className={`text-left p-5 rounded-xl border transition-all ${
+              className={`text-left p-5 rounded-xl border transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 ${
                 selectedCategory === cat.id
                   ? "border-accent bg-accent/5"
-                  : "border-border bg-card hover:border-accent/50"
+                  : "border-border bg-card hover:border-accent/50 hover:-translate-y-[2px] hover:shadow-sm"
               }`}
             >
               <div className="flex items-start gap-3">
@@ -188,16 +188,17 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       </div>
 
       {/* CTA */}
-      <button
-        type="button"
-        onClick={() => {
-          const cat = DECISION_CATEGORIES.find(c => c.id === result.category);
-          if (cat) router.push(cat.route);
-        }}
-        className="w-full text-center text-xs text-accent hover:underline font-medium"
-      >
-        Explorar {result.category} →
-      </button>
+        <button
+          type="button"
+          onClick={() => {
+            const cat = DECISION_CATEGORIES.find(c => c.id === result.category);
+            if (cat) router.push(cat.route);
+          }}
+          className="w-full text-center text-xs text-accent hover:underline font-medium inline-flex items-center justify-center gap-1 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2 rounded-lg"
+        >
+          Explorar {result.category}
+          <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+        </button>
     </div>
   );
 }

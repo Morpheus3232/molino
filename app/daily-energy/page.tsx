@@ -120,7 +120,7 @@ export default function DailyEnergyPage() {
         </div>
 
         {/* Moon Phase */}
-        <div className="mb-8 p-4 rounded-xl border border-border bg-card flex items-center gap-4">
+        <div className="mb-8 p-4 rounded-xl border border-border bg-card flex items-center gap-4 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
           <span className="text-3xl">
             <svg viewBox="0 0 24 24" className="w-8 h-8 text-accent" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
@@ -134,7 +134,7 @@ export default function DailyEnergyPage() {
 
         {/* Strengths and Cautions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="p-4 rounded-xl border border-border bg-card">
+          <div className="p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
             <ul className="space-y-2">
               {energy.strengths.map((s, i) => (
@@ -145,7 +145,7 @@ export default function DailyEnergyPage() {
               ))}
             </ul>
           </div>
-          <div className="p-4 rounded-xl border border-border bg-card">
+          <div className="p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Precauciones</p>
             <ul className="space-y-2">
               {energy.cautions.map((c, i) => (
@@ -163,7 +163,7 @@ export default function DailyEnergyPage() {
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Áreas relevantes</p>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {Object.entries(energy.areas).map(([key, area]) => (
-              <div key={key} className={`card-list`}>
+              <div key={key} className={`card-list p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm`}>
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1 capitalize">
                   {key === 'work' ? 'Trabajo' : key === 'relationships' ? 'Relaciones' : key === 'creativity' ? 'Creatividad' : 'Decisiones'}
                 </p>
@@ -175,13 +175,13 @@ export default function DailyEnergyPage() {
         </div>
 
         {/* Explanation */}
-        <div className="mb-8 p-5 rounded-xl border border-border bg-card">
+        <div className="mb-8 p-5 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
           <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Interpretación</p>
           <p className="text-sm text-muted leading-relaxed">{energy.explanation}</p>
         </div>
 
         {/* Element Influence */}
-        <div className="mb-8 p-4 rounded-xl border border-border bg-card">
+        <div className="mb-8 p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Influencia de tu elemento</p>
           <p className="text-sm text-foreground">{energy.elementInfluence}</p>
         </div>
@@ -199,8 +199,8 @@ export default function DailyEnergyPage() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="primary" fullWidth onClick={() => router.push("/timing")} className="transition-all duration-200 hover:shadow-md">Explorar fechas</Button>
-          <Button variant="secondary" fullWidth onClick={() => router.push("/profile")} className="transition-all duration-200 hover:shadow-md">Ver mi perfil</Button>
+          <Button variant="primary" fullWidth onClick={() => router.push("/timing")} className="transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Explorar fechas</Button>
+          <Button variant="secondary" fullWidth onClick={() => router.push("/profile")} className="transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Ver mi perfil</Button>
         </div>
       </main>
 
