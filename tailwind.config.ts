@@ -11,6 +11,7 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-serif)", "Playfair Display", "serif"],
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       fontSize: {
         xs: "var(--step-1-text)",

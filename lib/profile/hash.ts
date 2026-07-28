@@ -1,4 +1,5 @@
 import type { UserProfile } from "@/types/user";
+import { getPersonalNumber } from "@/lib/numerology/personal";
 
 async function sha256Hex(message: string): Promise<string> {
   const data = new TextEncoder().encode(message);
@@ -8,10 +9,16 @@ async function sha256Hex(message: string): Promise<string> {
 }
 
 export async function generateProfileHash(profile: UserProfile): Promise<string> {
+  const birthParts = profile.birthDate?.split("-") || [];
+  const personalNumber = birthParts.length === 3
+    ? getPersonalNumber(parseInt(birthParts[2], 10), parseInt(birthParts[1], 10), parseInt(birthParts[0], 10))
+    : 0;
+
   const data = JSON.stringify({
     birthDate: profile.birthDate,
     name: profile.name,
     chineseZodiac: profile.chineseZodiac,
+    personalNumber,
   });
   return sha256Hex(data);
 }
