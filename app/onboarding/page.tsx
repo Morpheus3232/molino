@@ -11,31 +11,18 @@ import { markOnboardingCompleted } from "@/lib/storage/discovery";
 import { analytics } from "@/lib/analytics/analytics";
 import DatePicker from "@/components/ui/DatePicker";
 
-function getDaysInMonth(month: string, year: string): number {
-  const m = parseInt(month, 10);
-  const y = parseInt(year, 10);
-  if (!m || !y) return 31;
-  return new Date(y, m, 0).getDate();
-}
-
-function getCurrentYear(): number {
-  return new Date().getFullYear();
-}
-
 export default function OnboardingPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [day, setDay] = useState("");
-  const [month, setMonth] = useState("01");
-  const [year, setYear] = useState(String(getCurrentYear() - 25));
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     setReady(true);
   }, []);
-
-  const daysInMonth = getDaysInMonth(month, year);
 
   const finishOnboarding = useCallback((profile: UserProfile) => {
     saveSession({
@@ -140,8 +127,6 @@ export default function OnboardingPage() {
                     onDayChange={setDay}
                     onMonthChange={setMonth}
                     onYearChange={setYear}
-                    daysInMonth={daysInMonth}
-                    currentYear={getCurrentYear()}
                   />
 
                   {error && <p className="text-sm text-red-500">{error}</p>}
