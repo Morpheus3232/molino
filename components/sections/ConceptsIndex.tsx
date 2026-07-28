@@ -2,15 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Sparkles, RefreshCw, Flame, Search, X } from "lucide-react";
+import { Sparkles, RefreshCw, Flame } from "lucide-react";
 import { useFavorites } from "@/lib/hooks/useFavorites";
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { fadeUp } from "@/lib/utils/motion";
 
 function ConceptsIndex() {
   const router = useRouter();
   const { toggleFavorite, isFavorite } = useFavorites();
-  const [searchTerm, setSearchTerm] = useState("");
 
   const entries = useMemo(() => [
     { title: "Arquetipos", desc: "Los patrones universales que moldean tu personalidad", href: "/conocimiento/numerologia", icon: Sparkles, tier: "fundamental", length: "long" },
@@ -23,16 +22,6 @@ function ConceptsIndex() {
     { title: "Patrones", desc: "Los temas recurrentes en tu historia personal", href: "/patterns", icon: RefreshCw, tier: "profundo", length: "medium" },
     { title: "Momentum", desc: "La energía disponible en tu ciclo actual", href: "/timing", icon: Flame, tier: "dinamico", length: "short" },
   ], []);
-
-  const filteredConcepts = useMemo(() => {
-    if (!searchTerm.trim()) return entries;
-    const term = searchTerm.toLowerCase().trim();
-    return entries.filter(e =>
-      e.title.toLowerCase().includes(term) ||
-      e.desc.toLowerCase().includes(term) ||
-      e.tier.toLowerCase().includes(term)
-    );
-  }, [entries, searchTerm]);
 
   return (
     <section className="py-20 sm:py-24 lg:py-28 bg-background text-foreground">
@@ -47,36 +36,10 @@ function ConceptsIndex() {
           </p>
         </motion.div>
 
-        <div className="mb-8">
-          <div className="relative max-w-md sm:max-w-lg">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-            <input
-              type="text"
-              placeholder="Buscar en la Biblioteca..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-12 py-3.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent transition-colors text-base"
-            />
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-foreground/70"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            )}
-          </div>
-          {searchTerm && (
-            <p className="text-sm text-neutral-500 mt-3">
-              {filteredConcepts.length} resultado{filteredConcepts.length !== 1 ? "s" : ""}
-            </p>
-          )}
-        </div>
-
         <div className="flex flex-wrap border-t border-accent/10">
-          {filteredConcepts.map((entry, i) => {
-            const itemsInLastRow = filteredConcepts.length % 3 || 3;
-            const isLastRow = i >= filteredConcepts.length - itemsInLastRow;
+          {entries.map((entry, i) => {
+            const itemsInLastRow = entries.length % 3 || 3;
+            const isLastRow = i >= entries.length - itemsInLastRow;
             return (
               <motion.button
                 key={entry.title}
@@ -112,12 +75,6 @@ function ConceptsIndex() {
             );
           })}
         </div>
-
-        {filteredConcepts.length === 0 && (
-          <motion.div {...fadeUp} className="text-center py-16">
-            <p className="text-muted">{`No se encontraron conceptos para "${searchTerm}"`}</p>
-          </motion.div>
-        )}
 
         <motion.div {...fadeUp} transition={{ delay: 0.3 }} className="text-center pt-8">
           <button
