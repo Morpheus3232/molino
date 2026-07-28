@@ -112,7 +112,7 @@ export default function HeroNew() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.15 }}
-                className="font-mono text-[11px] text-muted/50 mt-3 tracking-tight"
+                className="font-mono text-sm text-muted/70 mt-4 tracking-tight"
               >
                 {breakdownStr}
               </motion.p>
@@ -120,7 +120,7 @@ export default function HeroNew() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="text-lg md:text-xl text-muted mt-2 max-w-sm"
+                className="text-lg md:text-xl text-muted mt-3 max-w-sm"
               >
                 {reflection.title}
               </motion.p>

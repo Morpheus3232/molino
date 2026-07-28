@@ -151,18 +151,27 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               {name}
             </motion.h1>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mt-4 text-base sm:text-lg text-muted flex items-center gap-2 flex-wrap justify-center"
+              className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
             >
-              <span>{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
-              <span className="w-1 h-1 rounded-full bg-muted/40" />
-              <span>{profile.sunSign}</span>
-              <span className="w-1 h-1 rounded-full bg-muted/40" />
-              <span>Camino {lifePath}</span>
-            </motion.p>
+              <div className="flex items-center gap-2">
+                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Animal</span>
+                <span className="text-base text-muted font-medium">{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
+              </div>
+              <span className="hidden sm:inline text-muted/30">|</span>
+              <div className="flex items-center gap-2">
+                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Signo</span>
+                <span className="text-base text-muted font-medium">{profile.sunSign}</span>
+              </div>
+              <span className="hidden sm:inline text-muted/30">|</span>
+              <div className="flex items-center gap-2">
+                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Camino</span>
+                <span className="text-base text-muted font-medium">{lifePath}</span>
+              </div>
+            </motion.div>
 
             <motion.button
               type="button"
