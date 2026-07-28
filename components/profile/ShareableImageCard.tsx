@@ -119,12 +119,12 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
         <div className="p-8 sm:p-10">
           {/* Molino branding */}
           <div className="flex items-center gap-2 mb-8">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={elementColor} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polygon points="9,22 15,22 13,11 11,11" />
-              <polygon points="12,4 9,11 15,11" />
-              <line x1="12" y1="4" x2="12" y2="1" />
-              <line x1="17" y1="8" x2="20" y2="6" />
-              <line x1="7" y1="8" x2="4" y2="6" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={elementColor} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="12" y1="3" x2="12" y2="12" />
+              <line x1="4" y1="7" x2="20" y2="7" />
+              <path d="M9 12v10h6V12" />
+              <path d="M7 22h10" />
+              <path d="M9 12l3-4 3 4" />
             </svg>
           </div>
 
