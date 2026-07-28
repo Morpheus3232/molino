@@ -62,7 +62,7 @@ export default function NumerologiaContent() {
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
-              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-lg hover:bg-foreground/5 inline-flex items-center gap-1">
+              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-lg hover:bg-accent/5 inline-flex items-center gap-1">
                 {item.label}
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </button>

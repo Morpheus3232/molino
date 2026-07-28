@@ -2,19 +2,22 @@ import Link from "next/link";
 
 export default function UniversityFooter() {
   return (
-    <footer className="border-t border-white/15 bg-foreground text-background">
+    <footer className="border-t border-white/15 bg-[#1a1a1a] text-background">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 py-16 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-y-0">
           <div className="md:col-span-5 md:pr-12">
             <span className="inline-flex h-11 w-11 items-center justify-center bg-white text-foreground border border-border">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-                <g stroke="currentColor">
-                  <path d="M8 12v10h8V12" />
-                  <path d="M6 22h12" />
-                  <path d="M12 17l3-4-3-4-3 4z" />
-                </g>
-                <line x1="12" y1="2" x2="12" y2="12" />
-                <line x1="4" y1="7" x2="20" y2="7" />
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+                <path d="M10 30 L8 14 L24 14 L22 30 Z" />
+                <path d="M7 14 L16 7 L25 14 Z" />
+                <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
+                <circle cx="16" cy="17.5" r="1.1" />
+                <line x1="0" y1="7" x2="32" y2="7" />
+                <line x1="16" y1="-3" x2="16" y2="17" />
+                <line x1="0" y1="4.5" x2="32" y2="4.5" strokeWidth="0.5" />
+                <line x1="0" y1="9.5" x2="32" y2="9.5" strokeWidth="0.5" />
+                <line x1="13" y1="-3" x2="13" y2="17" strokeWidth="0.5" />
+                <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
               </svg>
             </span>
             <p className="font-heading uppercase text-sm text-background mt-4 tracking-wide">

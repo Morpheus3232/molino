@@ -162,10 +162,10 @@ export default function OnboardingPage() {
             >
               <div className="flex flex-col items-center justify-center gap-8">
                 <motion.svg
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 32 32"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.6"
+                  strokeWidth="1.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   className="w-24 h-24 text-foreground"
@@ -178,11 +178,18 @@ export default function OnboardingPage() {
                     repeat: 0,
                   }}
                 >
-                  <line x1="12" y1="3" x2="12" y2="12" />
-                  <line x1="4" y1="7" x2="20" y2="7" />
-                  <path d="M9 12v10h6V12" />
-                  <path d="M7 22h10" />
-                  <path d="M9 12l3-4 3 4" />
+                  <path d="M10 30 L8 14 L24 14 L22 30 Z" />
+                  <path d="M7 14 L16 7 L25 14 Z" />
+                  <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
+                  <circle cx="16" cy="17.5" r="1.1" />
+                  <g style={{ transformOrigin: "16px 7px" }}>
+                    <line x1="0" y1="7" x2="32" y2="7" />
+                    <line x1="16" y1="-3" x2="16" y2="17" />
+                    <line x1="0" y1="4.5" x2="32" y2="4.5" strokeWidth="0.5" />
+                    <line x1="0" y1="9.5" x2="32" y2="9.5" strokeWidth="0.5" />
+                    <line x1="13" y1="-3" x2="13" y2="17" strokeWidth="0.5" />
+                    <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
+                  </g>
                 </motion.svg>
                 <p className="font-heading uppercase text-sm tracking-[0.2em] text-muted">
                   Leyendo tu mapa...

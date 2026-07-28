@@ -204,7 +204,7 @@ export default function ExplorePage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/affinity"
-              className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-foreground text-background hover:bg-accent hover:text-accent-foreground transition-colors min-h-[44px]"
+              className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-accent text-white hover:bg-accent/90 transition-colors min-h-[44px]"
             >
               Explorar afinidades
             </Link>

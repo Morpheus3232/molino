@@ -98,7 +98,7 @@ export default function ToolsAndDiscovery() {
           <button
             type="button"
             onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center gap-2 px-8 py-3 bg-foreground text-background text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-colors"
           >
             Ingresá tu fecha de nacimiento →
           </button>
