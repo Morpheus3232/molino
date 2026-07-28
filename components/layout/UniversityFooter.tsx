@@ -23,39 +23,39 @@ export default function UniversityFooter() {
             <p className="font-heading uppercase text-sm text-background mt-4 tracking-wide">
               Inteligencia Personal
             </p>
-            <p className="text-sm text-background/80 mt-2 max-w-xs leading-relaxed">
+            <p className="text-sm text-background mt-2 max-w-xs leading-relaxed">
               Conocéte. Entendéte. Orientáte.
             </p>
           </div>
 
           <div className="md:col-span-3 md:col-start-7">
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-background/80 font-medium mb-5">
+            <h4 className="text-[11px] uppercase tracking-[0.25em] text-background font-medium mb-5">
               Explorar
             </h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-sm text-background/80 hover:text-background transition-colors">Inicio</Link>
+                <Link href="/" className="text-sm text-background hover:text-background/70 transition-colors">Inicio</Link>
               </li>
               <li>
-                <Link href="/profile" className="text-sm text-background/80 hover:text-background transition-colors">Mi mapa</Link>
+                <Link href="/profile" className="text-sm text-background hover:text-background/70 transition-colors">Mi mapa</Link>
               </li>
               <li>
-                <Link href="/explore" className="text-sm text-background/80 hover:text-background transition-colors">Explorar</Link>
+                <Link href="/explore" className="text-sm text-background hover:text-background/70 transition-colors">Explorar</Link>
               </li>
               <li>
-                <Link href="/biblioteca" className="text-sm text-background/80 hover:text-background transition-colors">Biblioteca</Link>
+                <Link href="/biblioteca" className="text-sm text-background hover:text-background/70 transition-colors">Biblioteca</Link>
               </li>
               <li>
-                <Link href="/guia" className="text-sm text-background/80 hover:text-background transition-colors">Guía</Link>
+                <Link href="/guia" className="text-sm text-background hover:text-background/70 transition-colors">Guía</Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-background/80 font-medium mb-5">
+            <h4 className="text-[11px] uppercase tracking-[0.25em] text-background font-medium mb-5">
               Principios
             </h4>
-            <ul className="space-y-3 text-sm text-background/80">
+            <ul className="space-y-3 text-sm text-background">
               <li>Conocimiento libre</li>
               <li>Transparencia total</li>
               <li>Sin tracking ni cookies</li>
@@ -63,7 +63,7 @@ export default function UniversityFooter() {
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-background/80">
+        <div className="mt-14 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-background">
           <p>Molino — Inteligencia Personal</p>
           <p>Contenido educativo y simbólico. Compartilo libremente.</p>
         </div>

@@ -161,7 +161,7 @@ export default function OnboardingPage() {
               className="text-center"
             >
               <div className="flex flex-col items-center justify-center gap-8">
-                <motion.svg
+                <svg
                   viewBox="0 0 32 32"
                   fill="none"
                   stroke="currentColor"
@@ -170,27 +170,29 @@ export default function OnboardingPage() {
                   strokeLinejoin="round"
                   className="w-24 h-24 text-foreground"
                   aria-hidden="true"
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 720 }}
-                  transition={{
-                    duration: 2.5,
-                    ease: [0.05, 0.7, 0.1, 1],
-                    repeat: 0,
-                  }}
                 >
                   <path d="M10 30 L8 14 L24 14 L22 30 Z" />
                   <path d="M7 14 L16 7 L25 14 Z" />
                   <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
                   <circle cx="16" cy="17.5" r="1.1" />
-                  <g style={{ transformOrigin: "16px 7px" }}>
+                  <motion.g
+                    style={{ transformOrigin: "16px 7px" }}
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 720 }}
+                    transition={{
+                      duration: 2.5,
+                      ease: [0.05, 0.7, 0.1, 1],
+                      repeat: 0,
+                    }}
+                  >
                     <line x1="0" y1="7" x2="32" y2="7" />
                     <line x1="16" y1="-3" x2="16" y2="17" />
                     <line x1="0" y1="4.5" x2="32" y2="4.5" strokeWidth="0.5" />
                     <line x1="0" y1="9.5" x2="32" y2="9.5" strokeWidth="0.5" />
                     <line x1="13" y1="-3" x2="13" y2="17" strokeWidth="0.5" />
                     <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
-                  </g>
-                </motion.svg>
+                  </motion.g>
+                </svg>
                 <p className="font-heading uppercase text-sm tracking-[0.2em] text-muted">
                   Leyendo tu mapa...
                 </p>
