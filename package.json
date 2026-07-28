@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stop": "lsof -ti :3000 | xargs kill"
+    "stop": "lsof -ti :3000 | xargs kill",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",

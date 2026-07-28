@@ -21,21 +21,7 @@ import { formatAnimalEmoji, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { buildShareableUrl } from "@/lib/utils/profileShare";
 import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
-
-const MONTHS = [
-  { value: "01", label: "Ene" },
-  { value: "02", label: "Feb" },
-  { value: "03", label: "Mar" },
-  { value: "04", label: "Abr" },
-  { value: "05", label: "May" },
-  { value: "06", label: "Jun" },
-  { value: "07", label: "Jul" },
-  { value: "08", label: "Ago" },
-  { value: "09", label: "Sep" },
-  { value: "10", label: "Oct" },
-  { value: "11", label: "Nov" },
-  { value: "12", label: "Dic" },
-];
+import DatePicker from "@/components/ui/DatePicker";
 
 function getDaysInMonth(month: string, year: string): number {
   const m = parseInt(month, 10);
@@ -66,7 +52,6 @@ export default function OnboardingPage() {
   }, []);
 
   const daysInMonth = getDaysInMonth(month, year);
-  const yearOptions = Array.from({ length: 100 }, (_, i) => getCurrentYear() - i);
 
   const handleDateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -230,56 +215,20 @@ export default function OnboardingPage() {
                 </p>
               </div>
 
-              <div className="p-6 rounded-2xl border border-border bg-card">
-                <form onSubmit={handleDateSubmit} className="space-y-6">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Día</p>
-                      <select
-                        value={day}
-                        onChange={(e) => setDay(e.target.value)}
-                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                        required
-                        aria-label="Día"
-                      >
-                        <option value="">Día</option>
-                        {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
-                          <option key={d} value={String(d)}>{d}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Mes</p>
-                      <select
-                        value={month}
-                        onChange={(e) => setMonth(e.target.value)}
-                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                        required
-                        aria-label="Mes"
-                      >
-                        {MONTHS.map((m) => (
-                          <option key={m.value} value={m.value}>{m.label}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-2">Año</p>
-                      <select
-                        value={year}
-                        onChange={(e) => setYear(e.target.value)}
-                        className="w-full px-3 py-3 rounded-xl border border-border bg-background text-foreground text-sm focus:outline-none focus:border-accent min-h-[48px]"
-                        required
-                        aria-label="Año"
-                      >
-                        <option value="">Año</option>
-                        {yearOptions.map((y) => (
-                          <option key={y} value={String(y)}>{y}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
+               <div className="p-6 rounded-2xl border border-border bg-card">
+                 <form onSubmit={handleDateSubmit} className="space-y-6">
+                   <DatePicker
+                     day={day}
+                     month={month}
+                     year={year}
+                     onDayChange={setDay}
+                     onMonthChange={setMonth}
+                     onYearChange={setYear}
+                     daysInMonth={daysInMonth}
+                     currentYear={getCurrentYear()}
+                   />
 
-                  {error && <p className="text-sm text-red-500">{error}</p>}
+                   {error && <p className="text-sm text-red-500">{error}</p>}
 
                   <button
                     type="submit"

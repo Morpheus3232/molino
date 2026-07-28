@@ -574,7 +574,10 @@ function ShareButton({
           url: shareUrl,
         });
         analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida");
+        toast.success("Afinidad compartida", {
+          description: "Link copiado al portapapeles",
+          duration: 3000,
+        });
       } catch {
         // User cancelled — no toast needed
       }
@@ -584,7 +587,10 @@ function ShareButton({
         analytics.trackAffinityShared(entity.type, "clipboard");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!");
+        toast.success("¡Afinidad copiada!", {
+          description: "Compartí la afinidad con quien quieras",
+          duration: 3000,
+        });
       } catch {
         toast.error("No pudimos copiar. Intentá de nuevo.");
       }
@@ -658,7 +664,10 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
           url: shareUrl,
         });
         analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida");
+        toast.success("Afinidad compartida", {
+          description: "Link copiado al portapapeles",
+          duration: 3000,
+        });
       } catch {
         // User cancelled — no toast needed
       }
@@ -668,12 +677,15 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
         analytics.trackAffinityShared(entity.type, "clipboard");
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!");
+        toast.success("¡Afinidad copiada!", {
+          description: "Compartí la afinidad con quien quieras",
+          duration: 3000,
+        });
       } catch {
         toast.error("No pudimos copiar. Intentá de nuevo.");
       }
     }
-  }, [entity, shareText, shareUrl]);
+  }, [result, entity]);
 
   const tierMeta = TIER_META[result.tier];
   const isHighAffinity = result.score >= 75;
@@ -909,6 +921,7 @@ function QuickAffinity({
   }, [day, month, year, entity]);
 
   // Recommendations — top 3 across all types (excluding current)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const relatedEntities = useMemo(() => {
     if (!result) return [];
     let birthDate = "";
@@ -923,7 +936,7 @@ function QuickAffinity({
     return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
       .filter(r => r.entity.id !== entity.id)
       .slice(0, 3);
-  }, [day, month, year, entity, calculateUserProfile, calculateAllAffinity, SYMBOLIC_ENTITIES]);
+  }, [day, month, year, entity, result]);
 
   const handleSubmit = useCallback(() => {
     setError("");
@@ -963,7 +976,10 @@ function QuickAffinity({
     });
     analytics.trackAffinitySaveClicked(type, entity.id, result.score, result.tier);
     setSaved(true);
-    toast.success("Afinidad guardada ✓");
+    toast.success("Afinidad guardada ✓", {
+      description: "Encontrala en tus conexiones personales",
+      duration: 4000,
+    });
   }, [result, saved, entity, type]);
 
   const tierMeta = result ? TIER_META[result.tier] : null;
