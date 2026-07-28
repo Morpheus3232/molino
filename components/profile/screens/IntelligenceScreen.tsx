@@ -64,7 +64,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
             <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Tu Inteligencia</p>
-            <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+            <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
               Tu mapa profundo
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
