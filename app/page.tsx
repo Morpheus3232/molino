@@ -15,16 +15,7 @@ import HeroNew from "@/components/sections/HeroNew";
 import SystemsPreview from "@/components/sections/SystemsPreview";
 import Journey from "@/components/sections/Journey";
 import ToolsAndDiscovery from "@/components/sections/ToolsAndDiscovery";
-
-const staggerContainer = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-};
-
-const staggerItem = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
-};
+import ConceptsIndex from "@/components/sections/ConceptsIndex";
 
 function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebrow?: string; title?: string; subtitle?: string; children?: React.ReactNode; className?: string }) {
   return (
@@ -58,43 +49,6 @@ function Section({ eyebrow, title, subtitle, children, className = "" }: { eyebr
         {children}
       </div>
     </motion.section>
-  );
-}
-
-/* ═══ Grupo 4: Conceptos clave ═══ */
-
-function ConceptsIndex() {
-  const router = useRouter();
-  const concepts = [
-    { title: "Arquetipos", href: "/conocimiento/numerologia" },
-    { title: "Elementos", href: "/conocimiento/astrologia" },
-    { title: "Ciclos", href: "/profile" },
-    { title: "Números maestros", href: "/conocimiento/numerologia" },
-    { title: "Modalidades", href: "/conocimiento/astrologia" },
-    { title: "Compatibilidad", href: "/compatibility/countries" },
-  ];
-  return (
-    <Section
-      eyebrow="Conceptos clave"
-      title="Una guía para seguir leyendo"
-    >
-      <motion.div variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-        {concepts.map((concept) => (
-          <motion.button
-            key={concept.title}
-            variants={staggerItem}
-            type="button"
-            onClick={() => router.push(concept.href)}
-            className="group text-left py-5 border-b border-neutral-200/60 hover:border-accent transition-colors"
-          >
-            <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors duration-200">{concept.title}</p>
-            <span className="mt-1 inline-flex items-center text-xs text-muted group-hover:text-foreground transition-colors duration-200">
-              Explorar <span className="ml-1 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-            </span>
-          </motion.button>
-        ))}
-      </motion.div>
-    </Section>
   );
 }
 
