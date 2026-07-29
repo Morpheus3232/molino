@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { Hash, Sun, Moon } from "lucide-react";
 
 const systems = [
-  { icon: Hash, title: "Numerología", subtitle: "Los números", description: "Tu estructura interior" },
-  { icon: Sun, title: "Astrología", subtitle: "El cielo", description: "Tu momento de nacimiento" },
-  { icon: Moon, title: "Zodíaco Chino", subtitle: "Los ciclos", description: "Tu energía en el tiempo" },
+  { icon: Hash, title: "Numerología", subtitle: "Los números", description: "Tu estructura interior", href: "/conocimiento/numerologia" },
+  { icon: Sun, title: "Astrología", subtitle: "El cielo", description: "Tu momento de nacimiento", href: "/conocimiento/astrologia" },
+  { icon: Moon, title: "Zodíaco Chino", subtitle: "Los ciclos", description: "Tu energía en el tiempo", href: "/conocimiento/zodiaco-chino" },
 ];
 
 const colBorder = "border-accent/10";
@@ -45,26 +45,17 @@ export default function SystemsPreview() {
               <system.icon className="w-8 h-8 text-accent mb-5" />
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">{system.subtitle}</p>
               <h3 className="font-heading uppercase text-xl sm:text-2xl font-semibold text-foreground mb-3">{system.title}</h3>
-              <p className="text-sm sm:text-base text-muted leading-relaxed flex-1">{system.description}</p>
+              <p className="text-sm sm:text-base text-muted leading-relaxed flex-1 mb-6">{system.description}</p>
+              <button
+                type="button"
+                onClick={() => router.push(system.href)}
+                className="text-sm font-medium text-accent hover:text-accent/80 flex items-center gap-1 transition-colors"
+              >
+                Saber más →
+              </button>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-          className="text-center pt-12"
-        >
-          <button
-            type="button"
-            onClick={() => router.push("/explore")}
-            className="inline-flex items-center gap-2 px-8 py-3 bg-accent text-white font-medium rounded-none hover:bg-accent/90 transition-colors"
-          >
-            Explorar sistemas →
-          </button>
-        </motion.div>
       </div>
     </section>
   );

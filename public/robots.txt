@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://molino-alpha.vercel.app/sitemap.xml

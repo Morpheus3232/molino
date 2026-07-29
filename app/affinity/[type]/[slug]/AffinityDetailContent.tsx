@@ -21,7 +21,7 @@ import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
-import { saveAffinityResult, hasSavedAffinity } from "@/lib/storage/localStorage";
+import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage";
 
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -685,7 +685,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
         toast.error("No pudimos copiar. Intentá de nuevo.");
       }
     }
-  }, [result, entity]);
+  }, [shareText, shareUrl, entity]);
 
   const tierMeta = TIER_META[result.tier];
   const isHighAffinity = result.score >= 75;

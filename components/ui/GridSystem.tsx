@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, type HTMLAttributes, type ReactNode, useRef, useEffect, useState } from "react";
+import React, { forwardRef, type HTMLAttributes, type ReactNode, useRef, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 
 export const PHI = 1.618;
@@ -31,17 +31,7 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
     const [layout, setLayout] = useState<number[]>(Array(columns).fill(0));
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-      if (!containerRef.current || !animated) return;
-
-      const observer = new ResizeObserver(() => {
-        calculateLayout();
-      });
-      observer.observe(containerRef.current);
-      return () => observer.disconnect();
-    }, [animated, columns]);
-
-    const calculateLayout = () => {
+    const calculateLayout = useCallback(() => {
       const container = containerRef.current;
       if (!container) return;
 
@@ -58,7 +48,17 @@ export const Masonry = forwardRef<HTMLDivElement, MasonryProps>(
       });
 
       setLayout(gaps);
-    };
+    }, [columns, columnGap, rowGap, minColumnWidth]);
+
+    useEffect(() => {
+      if (!containerRef.current || !animated) return;
+
+      const observer = new ResizeObserver(() => {
+        calculateLayout();
+      });
+      observer.observe(containerRef.current);
+      return () => observer.disconnect();
+    }, [animated, columns, calculateLayout]);
 
     const columnStyles = (index: number) => ({
       display: "flex",

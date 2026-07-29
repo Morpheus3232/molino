@@ -21,7 +21,7 @@ export default function UniversityFooter() {
               </svg>
             </span>
             <p className="font-heading uppercase text-sm text-background mt-4 tracking-wide">
-              Inteligencia Personal
+              Mapa Personal de Autoconocimiento
             </p>
             <p className="text-sm text-background mt-2 max-w-xs leading-relaxed">
               Conocéte. Entendéte. Orientáte.
@@ -56,16 +56,20 @@ export default function UniversityFooter() {
               Principios
             </h4>
             <ul className="space-y-3 text-sm text-background">
-              <li>Conocimiento libre</li>
-              <li>Transparencia total</li>
-              <li>Sin tracking ni cookies</li>
+              <li><Link href="/filosofia#conocimiento-libre" className="hover:text-background/70 transition-colors">Conocimiento libre</Link></li>
+              <li><Link href="/filosofia#privacidad-radical" className="hover:text-background/70 transition-colors">Privacidad radical</Link></li>
+              <li><Link href="/filosofia#transparencia-total" className="hover:text-background/70 transition-colors">Transparencia total</Link></li>
+              <li><Link href="/filosofia#codigo-abierto" className="hover:text-background/70 transition-colors">Código abierto</Link></li>
+              <li><Link href="/filosofia#sin-tracking" className="hover:text-background/70 transition-colors">Sin tracking ni cookies</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="mt-14 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-background">
-          <p>Molino — Inteligencia Personal</p>
-          <p>Contenido educativo y simbólico. Compartilo libremente.</p>
+          <p>Molino — Mapa Personal de Autoconocimiento</p>
+          <p className="text-center sm:text-right">
+            Contenido educativo y simbólico. Compartilo libremente.
+          </p>
         </div>
       </div>
     </footer>
