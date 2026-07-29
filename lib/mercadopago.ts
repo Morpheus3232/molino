@@ -1,12 +1,12 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
-import { createHash } from 'crypto';
+import { createHmac } from 'crypto';
 
 export const mpClient = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
 });
 
 export function hashProfile(name: string, birthDate: string): string {
-  return createHash('sha256')
+  return createHmac('sha256', process.env.MP_WEBHOOK_SECRET || 'dev-secret')
     .update(`${name.toLowerCase().trim()}|${birthDate}`)
     .digest('hex')
     .slice(0, 16);
@@ -107,8 +107,8 @@ export function verifyWebhookSignature(signature: string | null, body: string): 
     const hash = parts.find(p => p.startsWith('v1='))?.split('=')[1] || '';
 
     const manifest = `id:;request-id:;ts:${ts};` + body;
-    const expected = createHash('sha256')
-      .update(manifest + process.env.MP_WEBHOOK_SECRET)
+    const expected = createHmac('sha256', process.env.MP_WEBHOOK_SECRET)
+      .update(manifest)
       .digest('hex');
 
     return hash === expected;

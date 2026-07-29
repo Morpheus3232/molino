@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import PaymentBrick from '@/components/payment/PaymentBrick';
 
 interface PremiumGateProps {
@@ -10,55 +10,92 @@ interface PremiumGateProps {
 
 type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked';
 
+const POLL_INTERVAL = 5000;
+
 export default function PremiumGate({ profileHash, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
   const [paymentId, setPaymentId] = useState<string>('');
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
-    const isPremium = localStorage.getItem(`molino_premium_${profileHash}`);
-    if (isPremium === 'true') {
-      setState('unlocked');
+  const checkServer = useCallback(async (): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/mp/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ profileHash }),
+      });
+      const data = await res.json();
+      return data.premium === true;
+    } catch {
+      return false;
     }
   }, [profileHash]);
+
+  const unlock = useCallback(() => {
+    localStorage.setItem(`molino_premium_${profileHash}`, 'true');
+    setState('unlocked');
+  }, [profileHash]);
+
+  useEffect(() => {
+    const cached = localStorage.getItem(`molino_premium_${profileHash}`);
+    if (cached === 'true') {
+      checkServer().then(valid => {
+        if (valid) {
+          unlock();
+        } else {
+          localStorage.removeItem(`molino_premium_${profileHash}`);
+        }
+      });
+    }
+  }, [profileHash, checkServer, unlock]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const pStatus = params.get('payment_status');
     const pid = params.get('payment_id');
-    const hash = params.get('profile_hash');
 
-    if (pStatus === 'approved' && pid && (hash === profileHash || !hash)) {
-      localStorage.setItem(`molino_premium_${profileHash}`, 'true');
-      setState('unlocked');
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }, [profileHash]);
+    if (pStatus === 'approved' && pid) {
+      setPaymentId(pid);
+      setState('verifying');
 
-  const handlePaymentApproved = (pid: string) => {
-    setPaymentId(pid);
-    setState('verifying');
-    setTimeout(async () => {
-      const res = await fetch('/api/mp/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId: pid }),
+      checkServer().then(isPremium => {
+        if (isPremium) {
+          unlock();
+          window.history.replaceState({}, '', window.location.pathname);
+        }
       });
-      const data = await res.json();
-      if (data.verified) {
-        localStorage.setItem(`molino_premium_${profileHash}`, 'true');
-        setState('unlocked');
-      }
-    }, 2000);
-  };
+    }
+  }, [profileHash, checkServer, unlock]);
 
-  const handlePaymentPending = (pid: string) => {
+  useEffect(() => {
+    if (state !== 'verifying') return;
+
+    pollRef.current = setInterval(async () => {
+      const isPremium = await checkServer();
+      if (isPremium) {
+        if (pollRef.current) clearInterval(pollRef.current);
+        unlock();
+      }
+    }, POLL_INTERVAL);
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [state, checkServer, unlock]);
+
+  const handlePaymentApproved = useCallback((pid: string) => {
     setPaymentId(pid);
     setState('verifying');
-  };
+  }, []);
 
-  const handlePaymentRejected = () => {
+  const handlePaymentPending = useCallback((pid: string) => {
+    setPaymentId(pid);
+    setState('verifying');
+  }, []);
+
+  const handlePaymentRejected = useCallback(() => {
     setState('locked');
-  };
+  }, []);
 
   if (state === 'unlocked') {
     return <>{children}</>;
@@ -111,15 +148,12 @@ export default function PremiumGate({ profileHash, children }: PremiumGateProps)
     );
   }
 
-  // ✅ FIX: min-h movido al PADRE, z-index agregado al OVERLAY
   return (
     <div className="relative min-h-[600px]">
-      {/* Contenido difuminado */}
       <div className="blur-[3px] select-none pointer-events-none opacity-50">
         {children}
       </div>
 
-      {/* ✅ FIX: Agregado z-10 para stacking context correcto */}
       <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-lg">
         <div className="text-center p-8 max-w-lg bg-gradient-to-br from-purple-900/90 to-black/90 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl">
           <div className="mb-4">

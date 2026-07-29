@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, verifyWebhookSignature } from '@/lib/mercadopago';
+import { grantPremiumAccess } from '@/lib/kv';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
       data: data.data,
     });
 
-    if (data.type === 'payment' && data.data?.id) {
+    if (data.type === 'payment' && data.action === 'payment.created' && data.data?.id) {
       const paymentId = String(data.data.id);
       const payment = await getPaymentStatus(paymentId);
 
@@ -30,6 +31,27 @@ export async function POST(req: NextRequest) {
         amount: payment.transaction_amount,
         metadata: payment.metadata,
       });
+
+      if (payment.status === 'approved') {
+        const profileHash = payment.metadata?.profile_hash;
+        if (profileHash) {
+          await grantPremiumAccess(profileHash, paymentId);
+          console.log(`[MP Webhook] Premium granted for ${profileHash}`);
+        }
+      }
+    }
+
+    // Also handle direct payment notifications
+    if (data.type === 'payment' && data.data?.id) {
+      const paymentId = String(data.data.id);
+      const payment = await getPaymentStatus(paymentId);
+
+      if (payment.status === 'approved') {
+        const profileHash = payment.metadata?.profile_hash;
+        if (profileHash) {
+          await grantPremiumAccess(profileHash, paymentId);
+        }
+      }
     }
 
     return NextResponse.json({ received: true });
