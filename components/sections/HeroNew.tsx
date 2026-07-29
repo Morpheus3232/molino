@@ -123,16 +123,17 @@ export default function HeroNew() {
                 >
                   Cada día tiene un número. Tu fecha de nacimiento revela el tuyo.
                 </motion.p>
-                <motion.button
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
-                  type="button"
-                  onClick={() => router.push("/onboarding")}
-                  className="btn-accent inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm font-bold tracking-wider uppercase"
-                >
-                  DESCUBRIR MI MAPA →
-                </motion.button>
+              <motion.button
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+                type="button"
+                onClick={() => router.push("/onboarding")}
+                aria-label="Descubrir mi mapa personal: ir al onboarding"
+                className="btn-accent inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm font-bold tracking-wider uppercase"
+              >
+                DESCUBRIR MI MAPA →
+              </motion.button>
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
