@@ -52,9 +52,15 @@ export default function HeroNew() {
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const yyyy = String(today.getFullYear());
-  const allDigits = (dd + mm + yyyy).split("").map(Number);
-  const rawSum = allDigits.reduce((a, b) => a + b, 0);
-  const breakdownStr = allDigits.join(" + ") + " = " + rawSum + (rawSum !== number ? " → " + number : "");
+
+  let breakdownStr: string;
+  if (number === 28) {
+    breakdownStr = `${dd} (día) + ${mm} + ${yyyy} = 28`;
+  } else {
+    const allDigits = (dd + mm + yyyy).split("").map(Number);
+    const rawSum = allDigits.reduce((a, b) => a + b, 0);
+    breakdownStr = allDigits.join(" + ") + " = " + rawSum + (rawSum !== number ? " → " + number : "");
+  }
 
   const dateStr = today
     .toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })
@@ -137,6 +143,16 @@ export default function HeroNew() {
               >
                 {reflection.text}
               </motion.p>
+              {reflection.recommendation && (
+                <motion.p
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  className="text-sm md:text-base text-muted/80 leading-relaxed mt-5 italic"
+                >
+                  {reflection.recommendation}
+                </motion.p>
+              )}
               <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}

@@ -1,10 +1,14 @@
+const SACRED_NUMBERS = [11, 22, 28, 33];
+
 export function getDailyNumber(date: Date): number {
   const d = date.getDate();
   const m = date.getMonth() + 1;
   const y = date.getFullYear();
 
+  if (d === 28) return 28;
+
   let sum = d + m + y;
-  while (sum > 9 && ![11, 22, 33].includes(sum)) {
+  while (sum > 9 && !SACRED_NUMBERS.includes(sum)) {
     sum = sum
       .toString()
       .split("")
@@ -16,6 +20,7 @@ export function getDailyNumber(date: Date): number {
 export interface Reflection {
   title: string;
   text: string;
+  recommendation?: string;
 }
 
 export const REFLECTIONS: Record<number, Reflection> = {
@@ -31,6 +36,11 @@ export const REFLECTIONS: Record<number, Reflection> = {
   11: { title: "Maestro", text: "Tu intuición ilumina el camino. Confiá en tu visión." },
   22: { title: "Constructor", text: "Podés hacer realidad cualquier sueño. El momento es ahora." },
   33: { title: "Guía", text: "Tu misión es elevar a los demás. El amor universal te guía." },
+  28: {
+    title: "Riqueza, iniciativa y autoridad",
+    text: "Es un gran día para salir adelante con autoridad y tomar decisiones como el dueño de tu camino.",
+    recommendation: "Tomá iniciativa en dirección a tus decisiones económicas. Hacé que las cosas pasen sin esperar permiso para hacerlo.",
+  },
 };
 
 const REFLECTION_VARIATIONS: Record<number, string[]> = {
@@ -94,9 +104,18 @@ const REFLECTION_VARIATIONS: Record<number, string[]> = {
     "Tu compasión transforma todo lo que toca.",
     "Elevá a los demás y te elevarás con ellos.",
   ],
+  28: [
+    "Tomá iniciativa en dirección a tus decisiones económicas. Hacé que las cosas pasen sin esperar permiso para hacerlo.",
+    "El 28 es un día de autoridad silenciosa. Actuá con determinación sin pedir disculpas.",
+    "La riqueza no es solo dinero: es la energía de avanzar sin dudar. Hoy es tu día.",
+  ],
 };
 
 export function getDailyReflection(number: number, date: Date): Reflection {
+  if (number === 28) {
+    return REFLECTIONS[28];
+  }
+
   const dayOfYear = Math.floor(
     (date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000
   );
