@@ -73,9 +73,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 
   return (
     <motion.section {...heroReveal} className="mb-8">
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="relative overflow-hidden rounded-none border border-ink/10 bg-background">
         {/* Accent bar */}
-        <div className="h-1.5" style={{ backgroundColor: elementData.color }} />
+        <div className="h-1" style={{ backgroundColor: elementData.color }} />
 
         <div className="p-6 sm:p-8">
           {/* Header */}
@@ -87,21 +87,21 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
           <div className="flex flex-col sm:flex-row items-center gap-6 mb-8">
             <motion.div {...emojiBounce} className="text-center shrink-0">
               <span className="text-7xl sm:text-8xl block mb-2">{display.emoji}</span>
-              <p className="font-serif text-3xl sm:text-4xl font-bold text-foreground">{display.name}</p>
+              <p className="font-display text-3xl sm:text-4xl text-foreground">{display.name}</p>
             </motion.div>
 
             <div className="flex-1 text-center sm:text-left">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-3">
-                <span className="px-3 py-1 rounded-lg text-xs font-medium" style={{ backgroundColor: `${elementData.color}12`, color: elementData.color }}>
+                <span className="px-3 py-1 rounded-none text-xs font-medium" style={{ backgroundColor: `${elementData.color}12`, color: elementData.color }}>
                   {element}
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-background text-xs font-medium text-foreground">
+                <span className="px-3 py-1 rounded-none bg-background text-xs font-medium text-foreground">
                   Camino {lifePath}
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-background text-xs font-medium text-foreground">
+                <span className="px-3 py-1 rounded-none bg-background text-xs font-medium text-foreground">
                   Suerte {profile.luckyNumber}
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-background text-xs font-medium text-foreground">
+                <span className="px-3 py-1 rounded-none bg-background text-xs font-medium text-foreground">
                   {userYear}
                 </span>
               </div>
@@ -119,9 +119,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                 <motion.div
                   key={s}
                   {...staggerItemSmooth}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-background/50"
+                  className="flex items-center gap-3 p-3 rounded-none bg-background/50"
                 >
-                  <span className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center text-[10px] text-success font-medium shrink-0">
+                  <span className="w-6 h-6 rounded-none bg-success/10 flex items-center justify-center text-[10px] text-success font-medium shrink-0">
                     {i + 1}
                   </span>
                   <span className="text-sm text-foreground">{s}</span>
@@ -138,9 +138,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                 <motion.div
                   key={g}
                   {...staggerItemSmooth}
-                  className="flex items-center gap-3 p-3 rounded-xl bg-background/50"
+                  className="flex items-center gap-3 p-3 rounded-none bg-background/50"
                 >
-                  <span className="w-6 h-6 rounded-full bg-[#B45309]/10 flex items-center justify-center text-[10px] text-[#B45309] font-medium shrink-0">
+                  <span className="w-6 h-6 rounded-none bg-[#B45309]/10 flex items-center justify-center text-[10px] text-[#B45309] font-medium shrink-0">
                     {i + 1}
                   </span>
                   <span className="text-sm text-foreground">{g}</span>
@@ -156,7 +156,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
           </div>
 
           {/* Disclaimer */}
-          <div className="pt-4 border-t border-border">
+          <div className="pt-4 border-t border-ink/10">
             <p className="text-[10px] text-muted/50 italic">
               No determina tu personalidad. Es una interpretación cultural basada en tradiciones simbólicas.
             </p>
@@ -176,7 +176,7 @@ function LifePathExplorerInline({ lifePath, router }: { lifePath: number; router
     <button
       type="button"
       onClick={() => router.push("/conocimiento/numerologia")}
-      className="w-full text-left p-4 rounded-xl border border-border bg-background/50 group hover:border-accent/40 transition-colors"
+      className="w-full text-left p-4 rounded-none border border-ink/10 bg-background/50 group hover:border-ink/20 transition-colors"
     >
       <div className="flex items-center justify-between">
         <div>
@@ -196,7 +196,7 @@ function ZodiacExplorerInline({ animal, element, router }: { animal: string; ele
     <button
       type="button"
       onClick={() => router.push("/conocimiento/zodiaco-chino")}
-      className="w-full text-left p-4 rounded-xl border border-border bg-background/50 group hover:border-accent/40 transition-colors"
+      className="w-full text-left p-4 rounded-none border border-ink/10 bg-background/50 group hover:border-ink/20 transition-colors"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

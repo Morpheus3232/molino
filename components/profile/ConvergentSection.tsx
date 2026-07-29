@@ -21,13 +21,13 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
   const levelStyle = LEVEL_STYLES[convergence.convergenceLevel];
 
   return (
-    <section className="py-12 sm:py-16 border-t border-border">
+    <section className="py-12 sm:py-16 border-t border-ink/10">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
 
         {/* Header */}
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cuando todos tus patrones se encuentran</h2>
           </div>
         </motion.div>
@@ -37,7 +37,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
           {/* Main convergence card */}
           <motion.div
             {...staggerItemSmooth}
-            className="p-6 rounded-2xl border border-border bg-card"
+            className="p-6 rounded-none border border-ink/10 bg-background"
           >
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">{levelStyle.icon}</span>
@@ -62,13 +62,13 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
                 key={layer.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.3 }}
-                className="p-4 rounded-xl border border-border bg-background/50"
+                className="p-4 rounded-none border border-ink/10 bg-background/50"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">{layer.emoji}</span>
                   <span className="text-xs font-medium text-foreground">{layer.name}</span>
                 </div>
-                <p className="font-serif text-xl font-bold text-foreground">{layer.value}</p>
+                <p className="font-display text-xl font-bold text-foreground">{layer.value}</p>
                 <p className="text-[10px] text-muted mt-1">{layer.description}</p>
               </motion.div>
             ))}

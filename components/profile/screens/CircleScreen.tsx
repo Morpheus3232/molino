@@ -48,8 +48,8 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       <section className="py-12 sm:pt-16 pb-8">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Tu Círculo</p>
-            <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-3">Tu Círculo</p>
+            <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
               Las energías que te rodean
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -63,11 +63,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       {/* ═══════════════════════════════════════════════
           CÍRCULO DE ALIADOS — Animal relationships
           ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus aliados zodiacales</h2>
             </div>
             <p className="text-sm text-muted max-w-xl leading-relaxed">
@@ -79,11 +79,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
         <div className="flex flex-col items-center">
           <motion.div
             {...staggerItemSmooth}
-            className="w-20 h-20 rounded-full border-2 border-accent flex items-center justify-center mb-3"
+            className="w-20 h-20 rounded-none border-2 border-ink/20 flex items-center justify-center mb-3"
           >
             <span className="text-3xl">{display.emoji}</span>
           </motion.div>
-          <p className="font-serif text-lg font-semibold text-foreground mb-5">{display.name}</p>
+          <p className="font-display text-lg font-semibold text-foreground mb-5">{display.name}</p>
 
           <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
             {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {
@@ -92,7 +92,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 <motion.div
                   key={rel.animal}
                   {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-xl border border-border bg-background/50"
+                  className="flex flex-col items-center p-3 rounded-none border border-ink/10 bg-background/50"
                 >
                   <span className="text-2xl mb-1">{relDisplay.emoji}</span>
                   <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
@@ -106,7 +106,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 <motion.div
                   key={rel.animal}
                   {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-xl border border-border bg-background/50"
+                  className="flex flex-col items-center p-3 rounded-none border border-ink/10 bg-background/50"
                 >
                   <span className="text-2xl mb-1">{relDisplay.emoji}</span>
                   <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
@@ -130,11 +130,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           FAMOSOS DEL MISMO ANIMAL — People like you
           ═══════════════════════════════════════════════ */}
       {sameAnimalFamous.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-border">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
                   Famosos {display.name}
                 </h2>
@@ -157,11 +157,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           CÍRCULO OCCIDENTAL — Same Western sign
           ═══════════════════════════════════════════════ */}
       {sameSignFamous.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-border">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
                   Círculo Occidental — {userSunSign}
                 </h2>
@@ -184,11 +184,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           CONTRASTES — Challenging animals
           ═══════════════════════════════════════════════ */}
       {relationMap.challenging.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-border">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Energías opuestas</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
@@ -203,7 +203,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                   <motion.div
                     key={rel.animal}
                     {...staggerItemSmooth}
-                    className="p-4 rounded-xl border border-border bg-card text-center"
+                    className="p-4 rounded-none border border-ink/10 bg-background text-center"
                   >
                     <span className="text-2xl block mb-1">{relDisplay.emoji}</span>
                     <p className="text-sm font-medium text-foreground">{relDisplay.name}</p>
@@ -217,10 +217,10 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       )}
 
       {/* Disclaimer */}
-      <section className="py-8 border-t border-border">
+      <section className="py-8 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="p-4 rounded-xl border border-accent/20 bg-accent/[0.03]">
+            <div className="p-4 rounded-none border border-accent/20 bg-accent/[0.03]">
               <p className="text-xs text-muted leading-relaxed">
                 Las relaciones zodiacales se basan en tradiciones culturales del zodíaco chino.
                 Son interpretaciones simbólicas, no predicciones. Cada relación es una oportunidad de aprendizaje.
@@ -259,12 +259,12 @@ function FamousPersonCard({ person, index, userAnimal, router }: { person: Famou
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
-      className="p-4 rounded-xl border border-border bg-card"
+      className="p-4 rounded-none border border-ink/10 bg-background"
     >
       <div className="flex items-start gap-3">
         <span className="text-2xl shrink-0">{person.emoji}</span>
         <div className="flex-1 min-w-0">
-          <p className="font-serif text-base font-semibold text-foreground truncate">{person.name}</p>
+          <p className="font-display text-base font-semibold text-foreground truncate">{person.name}</p>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-sm">{animalDisplay.emoji}</span>
             <p className="text-xs text-muted">{person.animal} · {person.year}</p>

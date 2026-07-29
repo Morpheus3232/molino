@@ -21,7 +21,7 @@ interface ProfileHubProps {
   onEnter?: (tab: ProfileTab) => void;
 }
 
-const colBorder = "border-accent/10";
+const colBorder = "border-ink/10";
 const cellPad = "p-8 sm:p-10 lg:p-12";
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
@@ -89,7 +89,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-8"
+              className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-8"
             >
               Mi mapa personal
             </motion.p>
@@ -119,7 +119,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.05]"
+              className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]"
             >
               {name}
             </motion.h1>
@@ -131,17 +131,17 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
             >
               <div className="flex items-center gap-2">
-                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Animal</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Animal</span>
                 <span className="text-base text-muted font-medium">{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
               </div>
               <span className="hidden sm:inline text-muted/30">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Signo</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Signo</span>
                 <span className="text-base text-muted font-medium">{profile.sunSign}</span>
               </div>
               <span className="hidden sm:inline text-muted/30">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Camino</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Camino</span>
                 <span className="text-base text-muted font-medium">{lifePath}</span>
               </div>
           </motion.div>
@@ -150,7 +150,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
     </section>
 
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pb-20 sm:pb-24">
-        <div className="flex flex-wrap border-t border-accent/10">
+        <div className="flex flex-wrap border-t border-ink/10">
           {sections.map((section, i) => (
             <motion.div
               key={section.key}
@@ -159,9 +159,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               transition={{ delay: 0.1 * i, duration: 0.5 }}
               className={`w-full md:w-1/2 flex flex-col ${i % 2 === 0 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
             >
-              <div className={`flex-1 ${cellPad} ${section.key === "identity" ? "bg-accent/[0.02]" : ""}`}>
-                <p className={`text-[11px] uppercase tracking-[0.25em] font-medium mb-3 ${section.key === "identity" ? "text-accent" : "text-muted"}`}>{section.eyebrow}</p>
-                <p className={`font-heading uppercase font-semibold text-foreground mb-2 ${section.key === "identity" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
+              <div className={`flex-1 ${cellPad} ${section.key === "identity" ? "bg-ink/[0.02]" : ""}`}>
+                <p className={`text-[11px] uppercase tracking-[0.25em] font-medium mb-3 ${section.key === "identity" ? "text-ink" : "text-muted"}`}>{section.eyebrow}</p>
+                <p className={`font-display uppercase text-foreground mb-2 ${section.key === "identity" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
                   {section.title}
                 </p>
                 <p className="text-sm text-muted">{section.subtitle}</p>
@@ -172,7 +172,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                   <button
                     type="button"
                     onClick={() => onEnter(section.key)}
-                    className={`mt-4 text-xs font-medium transition-colors inline-flex items-center gap-1 ${section.key === "identity" ? "text-foreground hover:text-accent border border-border px-3 py-1.5" : "text-accent hover:text-accent/80"}`}
+                    className={`mt-4 text-xs font-medium transition-colors inline-flex items-center gap-1 ${section.key === "identity" ? "text-foreground hover:text-accent border border-ink/10 px-3 py-1.5" : "text-accent hover:text-accent/80"}`}
                   >
                     Explorar →
                   </button>
@@ -187,14 +187,14 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
-            className="border-b border-accent/10"
+            className="border-b border-ink/10"
           >
             <button
               type="button"
               onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
               className="w-full text-left px-5 sm:px-8 py-6 sm:py-8 group"
             >
-              <p className="text-[11px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Tu próximo descubrimiento</p>
+              <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
               <p className="text-sm text-foreground group-hover:text-accent transition-colors">
                 {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
               </p>
