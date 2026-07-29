@@ -133,7 +133,7 @@ export default function ProfileClient({ serverProfile, initialTab }: ProfileClie
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
-  if (!mounted) {
+  if (!mounted && !profile) {
     return <LoadingState message="Cargando tu mapa..." />;
   }
 
