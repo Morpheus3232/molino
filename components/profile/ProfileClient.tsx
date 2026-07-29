@@ -17,6 +17,7 @@ import CircleScreen from "@/components/profile/screens/CircleScreen";
 import IntelligenceScreen from "@/components/profile/screens/IntelligenceScreen";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
+import PremiumGate from "@/components/profile/PremiumGate";
 
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
@@ -174,6 +175,8 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     );
   }
 
+  const profileHash = profile.birthDate;
+
   return (
     <div className="min-h-screen bg-background">
       <main id="main-content">
@@ -221,9 +224,21 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               transition={{ duration: 0.2 }}
             >
               {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "world" && <WorldScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "circle" && <CircleScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "intelligence" && <IntelligenceScreen profile={profile} onNavigate={handleEnter} />}
+              {activeTab === "world" && (
+                <PremiumGate profileHash={profileHash}>
+                  <WorldScreen profile={profile} onNavigate={handleEnter} />
+                </PremiumGate>
+              )}
+              {activeTab === "circle" && (
+                <PremiumGate profileHash={profileHash}>
+                  <CircleScreen profile={profile} onNavigate={handleEnter} />
+                </PremiumGate>
+              )}
+              {activeTab === "intelligence" && (
+                <PremiumGate profileHash={profileHash}>
+                  <IntelligenceScreen profile={profile} onNavigate={handleEnter} />
+                </PremiumGate>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
