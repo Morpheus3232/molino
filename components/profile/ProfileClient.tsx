@@ -142,11 +142,11 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       <div className="min-h-screen bg-background">
         <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <div className="w-8 h-0.5 bg-accent mx-auto mb-8" />
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Mi mapa personal</p>
+          <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
+          <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-4">Mi mapa personal</p>
           {futureDateError ? (
             <>
-              <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
                 Fecha inválida
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -155,7 +155,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             </>
           ) : (
             <>
-              <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
                 Todavía no creaste tu mapa
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
@@ -166,7 +166,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+            className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-accent text-white hover:bg-accent/90 min-h-[52px]"
           >
             Crear mi mapa
           </button>
@@ -182,7 +182,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
       <main id="main-content">
         {activeTab && (
-          <div className="sticky top-0 z-30 bg-background border-b border-accent/10">
+          <div className="sticky top-0 z-30 bg-background border-b border-ink/10">
             <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 flex items-center gap-4 h-12">
               <button
                 type="button"
@@ -236,13 +236,13 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/95 backdrop-blur-xl border-t border-border"
+            className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/95 backdrop-blur-xl border-t border-ink/10"
           >
             <div className="mx-auto max-w-[600px]">
               <button
                 type="button"
                 onClick={handleGuidedNext}
-                className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[52px]"
+                className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-accent text-white hover:bg-accent/90 min-h-[52px]"
               >
                 {GUIDED_CTA[activeTab].text}
               </button>

@@ -126,7 +126,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-center"
           >
-            <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.05]">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
               {name}
             </h1>
             <p className="mt-3 text-base sm:text-lg text-muted">
@@ -147,12 +147,12 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                className="relative p-4 sm:p-5 border border-border text-center overflow-hidden"
+                className="relative p-4 sm:p-5 border border-ink/10 text-center overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: card.color }} />
                 <span className="text-2xl block mb-2">{card.icon}</span>
-                <p className="font-heading text-lg sm:text-xl font-semibold text-foreground">{card.value}</p>
-                <p className="font-heading uppercase text-[9px] tracking-[0.18em] text-muted mt-1">{card.label}</p>
+                <p className="font-display text-lg sm:text-xl text-foreground">{card.value}</p>
+                <p className="uppercase text-[9px] tracking-[0.18em] text-muted mt-1">{card.label}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -165,9 +165,9 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               transition={{ duration: 0.5, delay: 0.8 }}
               className="mt-8 text-center"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/[0.06] border border-accent/20">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-ink/[0.03] border border-ink/20">
                 <span className="text-sm">{sunSignSymbol}</span>
-                <p className="font-heading uppercase text-[10px] tracking-[0.2em] text-accent">
+                <p className="uppercase text-[10px] tracking-[0.2em] text-accent">
                   Tu arquetipo es {archetype.name}
                 </p>
               </div>
@@ -185,12 +185,12 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               transition={{ duration: 0.5, delay: 1 }}
               className="mt-6 text-center"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-3 border border-accent/10">
+              <div className="inline-flex items-center gap-3 px-4 py-3 border border-ink/10">
                 <span className="text-xl">{matchingFamous.emoji}</span>
                 <div className="text-left">
-                  <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted">Compartís tu energía con</p>
+                  <p className="uppercase text-[9px] tracking-[0.15em] text-muted">Compartís tu energía con</p>
                   <p className="text-sm font-medium text-foreground">{matchingFamous.name}</p>
-                  <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted/60">
+                  <p className="uppercase text-[9px] tracking-[0.15em] text-muted/60">
                     {matchingFamous.field} · {matchingFamous.country}
                   </p>
                 </div>
@@ -203,16 +203,16 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       {/* ═══════════════════════════════════════════════
           TUS 4 SISTEMAS — Visual pills
           ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus sistemas</h2>
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10">
             {identityProfile.perspectives.map((persp, i) => (
               <motion.div
                 key={persp.system}
@@ -224,7 +224,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               >
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-xl">{persp.icon}</span>
-                  <p className="font-heading uppercase text-[10px] tracking-[0.2em]" style={{ color: persp.color }}>
+                  <p className="uppercase text-[10px] tracking-[0.2em]" style={{ color: persp.color }}>
                     {persp.systemLabel}
                   </p>
                 </div>
@@ -244,11 +244,11 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Dónde coinciden</p>
               <div className="space-y-2">
                 {identityProfile.convergences.slice(0, 3).map((conv, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 border border-accent/10">
+                  <div key={i} className="flex items-start gap-3 p-3 border border-ink/10">
                     <div className="w-1.5 h-1.5 bg-accent mt-1.5 shrink-0" />
                     <div>
                       <p className="text-sm font-medium text-foreground">{conv.theme}</p>
-                      <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-0.5">{conv.systems.join(" + ")}</p>
+                      <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-0.5">{conv.systems.join(" + ")}</p>
                     </div>
                   </div>
                 ))}
@@ -261,16 +261,16 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       {/* ═══════════════════════════════════════════════
           CÓDIGO PERSONAL — Card grid
           ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu código personal</h2>
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10">
             {codeEntries.map((entry, i) => (
               <motion.div
                 key={codeLabels[i]}
@@ -283,7 +283,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
                 <div className="flex items-start gap-4">
                   <p className="text-4xl sm:text-5xl font-semibold text-accent shrink-0">{entry.number}</p>
                   <div className="min-w-0">
-                    <p className="font-heading uppercase text-[10px] tracking-[0.2em] text-muted">{codeLabels[i]}</p>
+                    <p className="uppercase text-[10px] tracking-[0.2em] text-muted">{codeLabels[i]}</p>
                     <p className="text-sm font-medium text-foreground mt-1">{entry.name}</p>
                     <p className="text-sm text-muted leading-relaxed mt-1">{entry.meaning}</p>
                   </div>
@@ -300,7 +300,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       <ConvergentSection profile={profile} />
 
       {/* Cards at bottom */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <IdentityCard profile={profile} />
           <PersonalScoreCard profile={profile} />
@@ -309,11 +309,11 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       </section>
 
       {/* Share */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</h2>
             </div>
             <p className="text-sm text-muted mb-6">Esto merece ser compartido.</p>

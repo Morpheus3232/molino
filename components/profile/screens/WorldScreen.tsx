@@ -55,8 +55,8 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       <section className="py-12 sm:pt-16 pb-8">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Tu Mundo</p>
-            <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-3">Tu Mundo</p>
+            <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
               Descubrí qué resuena con vos
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -75,11 +75,11 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
               </div>
             </motion.div>
-            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-border">
+            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
               {affinityHighlights.map((result, i) => {
                 const tierMeta = TIER_META[result.tier];
                 return (
@@ -99,7 +99,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: tierMeta.color }} />
-                      <span className="font-heading uppercase text-[9px] tracking-wider" style={{ color: tierMeta.color }}>
+                      <span className="uppercase text-[9px] tracking-wider" style={{ color: tierMeta.color }}>
                         {tierMeta.label}
                       </span>
                     </div>
@@ -118,11 +118,11 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           TOP PAÍSES — Inline, with data
           ═══════════════════════════════════════════════ */}
       {topCountries.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-border">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Países que resuenan con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
@@ -160,11 +160,11 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           return acc;
         }, {});
         return (
-        <section className="py-8 sm:py-12 border-t border-border">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
@@ -202,15 +202,15 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       {/* ═══════════════════════════════════════════════
           EXPLORAR MÁS
           ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
+      <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
             </div>
           </motion.div>
-          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-border">
+          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
             <motion.button
               {...staggerItemSmooth}
               onClick={() => router.push("/affinity")}
@@ -274,7 +274,7 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 border-b border-accent/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
+      className="w-full text-left p-4 sm:p-5 border-b border-ink/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
@@ -288,18 +288,18 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
             </h4>
             <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
           </div>
-          <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
+          <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
           </p>
 
           {/* Historical fact — separated */}
           {event && (
             <div className="p-3 bg-black/[0.02] mb-2">
-              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
+              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
               <p className="text-sm text-foreground leading-relaxed">
                 {rec.entity.description}
               </p>
-              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
+              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
                 {event.label} ({event.year}) · {event.confidence === "exacta" ? "Fecha exacta" : event.confidence === "alta" ? "Alta precisión" : "Aproximado"}
               </p>
             </div>
@@ -327,7 +327,7 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 border-b border-accent/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
+      className="w-full text-left p-4 sm:p-5 border-b border-ink/10 last:border-b-0 hover:bg-black/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
@@ -341,17 +341,17 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
             </h4>
             <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
           </div>
-          <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
+          <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
           </p>
 
           {event && (
             <div className="p-3 bg-black/[0.02] mb-2">
-              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
+              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
               <p className="text-sm text-foreground leading-relaxed">
                 {rec.entity.description}
               </p>
-              <p className="font-heading uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
+              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
                 {event.label} ({event.year})
               </p>
             </div>

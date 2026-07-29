@@ -155,8 +155,8 @@ export default function BibliotecaContent() {
 
         {/* Hero — editorial, outside cards */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Biblioteca</p>
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca</p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Fuentes y referencias
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
@@ -175,15 +175,15 @@ export default function BibliotecaContent() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Buscar por título, autor, descripción o etiqueta…"
-                className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+                className="w-full px-4 py-2.5 rounded-none border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ink/20 focus:border-transparent transition-all"
               />
             </div>
             <div className="flex flex-wrap gap-2 sm:flex-1 sm:justify-end">
-              <button onClick={() => setActiveTag(null)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${!activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+              <button onClick={() => setActiveTag(null)} className={`px-3 py-1.5 rounded-none text-xs font-medium transition-all ${!activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-ink/10 text-muted hover:text-foreground"}`}>
                 Todos
               </button>
               {allTags.map(tag => (
-                <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${activeTag === tag ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+                <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-3 py-1.5 rounded-none text-xs font-medium transition-all ${activeTag === tag ? "bg-ink text-paper" : "bg-background border border-ink/10 text-muted hover:text-foreground"}`}>
                   #{tag}
                 </button>
               ))}
@@ -193,7 +193,7 @@ export default function BibliotecaContent() {
 
         {/* Section divider */}
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-8 h-px bg-border" aria-hidden="true" />
+          <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
           <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{filtered.length} fuentes</h2>
         </div>
 
@@ -202,10 +202,10 @@ export default function BibliotecaContent() {
           {filtered.map((source, i) => {
             const meta = TYPE_META[source.type];
             return (
-              <motion.div key={source.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} className="p-5 rounded-xl border border-border bg-card flex flex-col">
+              <motion.div key={source.id} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} className="p-5 rounded-none border border-ink/10 bg-background flex flex-col">
                 <div className="flex items-center justify-between gap-2 mb-1">
-                  <h3 className="font-serif text-base font-semibold text-foreground truncate">{source.title}</h3>
-                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-full flex-shrink-0" style={{ background: `${meta.color}15`, color: meta.color }}>
+                  <h3 className="font-display text-base text-foreground truncate">{source.title}</h3>
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded-none flex-shrink-0" style={{ background: `${meta.color}15`, color: meta.color }}>
                     {meta.label}
                   </span>
                 </div>
@@ -213,29 +213,29 @@ export default function BibliotecaContent() {
                 <p className="text-sm text-muted mb-3 flex-1">{source.description}</p>
                 <div className="flex flex-wrap gap-1 mb-3">
                   {(source.tags || []).map(tag => (
-                    <span key={tag} className="text-[10px] bg-background border border-border rounded-full px-2 py-0.5 text-muted">#{tag}</span>
+                    <span key={tag} className="text-[10px] bg-background border border-ink/10 rounded-none px-2 py-0.5 text-muted">#{tag}</span>
                   ))}
                 </div>
                 {/* Button */}
                 {(source.review || source.summary) && (
-                  <div className="mt-auto pt-3 border-t border-border">
-                    <button type="button" onClick={() => setExpandedDescription(expandedDescription === source.id ? null : source.id)} className={`w-full text-left px-3 py-2.5 rounded-lg text-xs font-medium transition-all min-h-[40px] ${expandedDescription === source.id ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground hover:border-accent"}`}>
+                  <div className="mt-auto pt-3 border-t border-ink/10">
+                    <button type="button" onClick={() => setExpandedDescription(expandedDescription === source.id ? null : source.id)} className={`w-full text-left px-3 py-2.5 rounded-none text-xs font-medium transition-all min-h-[40px] ${expandedDescription === source.id ? "bg-ink text-paper" : "bg-background border border-ink/10 text-muted hover:text-foreground hover:border-ink/30"}`}>
                       Descripción
                     </button>
                   </div>
                 )}
                 {/* Expandable content */}
                 {expandedDescription === source.id && (source.review || source.summary) && (
-                  <div className="mt-3 p-3 rounded-lg bg-background border border-border space-y-3">
+                  <div className="mt-3 p-3 rounded-none bg-background border border-ink/10 space-y-3">
                     {source.summary && (
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Método</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Método</p>
                         <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
                       </div>
                     )}
                     {source.review && (
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">Reseña</p>
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Reseña</p>
                         <p className="text-xs text-muted leading-relaxed">{source.review}</p>
                       </div>
                     )}

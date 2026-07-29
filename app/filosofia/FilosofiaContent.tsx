@@ -73,8 +73,8 @@ export default function FilosofiaContent() {
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-24">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Filosofía</p>
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-4">Filosofía</p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Principios y fundamentos
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
@@ -86,7 +86,7 @@ export default function FilosofiaContent() {
         {/* Principles */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-heading uppercase text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Cinco principios innegociables
             </h2>
             <p className="text-muted max-w-xl">
@@ -101,9 +101,9 @@ export default function FilosofiaContent() {
                 role="listitem"
                 id={principle.id}
                 {...staggerItem}
-                className="group p-6 rounded-xl border border-border bg-card/50 hover:border-accent/50 hover:bg-card transition-all duration-300"
+                className="group p-6 rounded-none border border-ink/10 bg-background/50 hover:border-ink/20 hover:bg-background transition-all duration-300"
               >
-                <h3 className="font-heading uppercase text-lg font-semibold text-foreground mb-3 group-hover:text-accent transition-colors">
+                <h3 className="font-display uppercase text-lg text-foreground mb-3 group-hover:text-accent transition-colors">
                   {principle.title}
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
@@ -117,7 +117,7 @@ export default function FilosofiaContent() {
         {/* Pillars */}
         <motion.section {...fadeUpDelayed(0.1)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-heading uppercase text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Pilares metodológicos
             </h2>
             <p className="text-muted max-w-xl">
@@ -131,9 +131,9 @@ export default function FilosofiaContent() {
                 key={pillar.title}
                 role="listitem"
                 {...staggerItem}
-                className="p-6 rounded-xl border border-border bg-card/30"
+                className="p-6 rounded-none border border-ink/10 bg-background/30"
               >
-                <h3 className="font-heading uppercase text-lg font-semibold text-foreground mb-2">
+                <h3 className="font-display uppercase text-lg text-foreground mb-2">
                   {pillar.title}
                 </h3>
                 <p className="text-sm text-muted leading-relaxed">
@@ -147,7 +147,7 @@ export default function FilosofiaContent() {
         {/* Influences */}
         <motion.section {...fadeUpDelayed(0.15)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-heading uppercase text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Tradiciones que nos nutren
             </h2>
             <p className="text-muted max-w-xl">
@@ -163,7 +163,7 @@ export default function FilosofiaContent() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.03, duration: 0.3 }}
-                className="px-4 py-2 rounded-full border border-border bg-background text-sm text-muted hover:border-accent/50 hover:text-foreground transition-colors"
+                className="px-4 py-2 rounded-none border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
               >
                 {influence}
               </motion.span>

@@ -54,7 +54,7 @@ export default function SymbolicMapShareableCard({
       {/* The card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-2xl border border-border bg-card max-w-full"
+        className="relative overflow-hidden rounded-2xl border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
         {/* Accent bar */}
@@ -136,7 +136,7 @@ export default function SymbolicMapShareableCard({
           </p>
 
           {/* Footer */}
-          <div className="pt-4 border-t border-border flex items-center justify-between">
+          <div className="pt-4 border-t border-ink/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
                 <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
@@ -153,7 +153,7 @@ export default function SymbolicMapShareableCard({
       <button
         type="button"
         onClick={handleShare}
-        className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+        className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-white min-h-[44px]"
       >
         {copied ? (
           <>
