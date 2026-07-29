@@ -3,18 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #000000;
+  --color-ink: #0F0F10;
   --color-paper: #FFFFFF;
-  --color-cream: #F5F5F5;
-  --color-warm: #0000FF;
-  --color-accent: #0000FF;
-  --color-accent-hover: #0000CC;
-  --color-muted: #666666;
-  --color-border: #CCCCCC;
+  --color-paper-alt: #F5F5F0;
+  --color-accent: #1E3AFF;
+  --color-accent-hover: #0026E6;
+  --color-muted: #8A8A8A;
+  --color-border: #D4D4D4;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: #F5F5F5;
+  --color-card: #F5F5F0;
   --color-card-border: var(--color-border);
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
@@ -23,7 +22,7 @@
   --color-accent-foreground: var(--color-paper);
   --color-success: #059669;
   --color-success-foreground: var(--color-paper);
-  --color-warning: #0000FF;
+  --color-warning: #1E3AFF;
   --color-warning-foreground: var(--color-paper);
   --color-error: #DC2626;
   --color-error-foreground: var(--color-paper);
@@ -33,9 +32,9 @@
   --radius-lg: 0;
   --radius-xl: 0;
 
-  --section-padding: 7rem;
+  --section-padding: 10rem;
   --card-padding: 1.75rem;
-  --grid-gap: 1.25rem;
+  --grid-gap: 0;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -45,22 +44,23 @@
   --space-2xl: 3rem;
 
   /* ═══════════════════════════════════════════════════════════════
-     TIPOGRAFÍA
+     TIPOGRAFÍA — Brutalist Editorial
      ═══════════════════════════════════════════════════════════════
+     --font-display (Archivo Black): títulos enormes, número del día,
+       secciones hero. Condensada, black weight, mayúsculas. Es la
+       tipografía signature de Molino.
      --font-sans (Inter): cuerpo de texto, párrafos, UI general.
-     --font-heading (Space Grotesk): headlines h1-h3, badges, elementos
-       de alto impacto visual. Es la tipografía dominante del sistema.
-     --font-serif-accent (Playfair Display): uso EXCLUSIVO y limitado
-       para el número gigante del hero "Número del día" y títulos de
-       identidad numerológica (Camino de Vida). No usar en otros lugares
-       sin aprobación de diseño deliberada.
-     --font-mono (JetBrains Mono): datos técnicos, números, código.
+     --font-heading (Space Grotesk): subtítulos, badges, elementos
+       de alto impacto secundarios.
+     --font-mono (JetBrains Mono): datos técnicos, números, breakdown,
+       labels tipo micro-tag.
      ═══════════════════════════════════════════════════════════════ */
+  --font-display: 'Archivo Black', sans-serif;
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
-  --font-serif-accent: 'Playfair Display', serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  --tracking-tight: -0.03em;
+  --tracking-tight: -0.02em;
 
   --shadow-sm: none;
   --shadow-md: none;
@@ -71,8 +71,8 @@
   --shadow-inner: none;
 
   --max-width-content: 680px;
-  --max-width-wide: 1200px;
-  --max-width-layout: 1200px;
+  --max-width-wide: 1280px;
+  --max-width-layout: 1280px;
   --max-width-article: 680px;
 
   --step-1-text: 1rem;
@@ -84,13 +84,13 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(0, 0, 0, 0.25);
-  --color-ink-alpha-03: rgba(0, 0, 0, 0.03);
-  --color-accent-alpha-04: rgba(0, 0, 255, 0.08);
-  --color-accent-alpha-10: rgba(0, 0, 255, 0.12);
+  --color-ink-alpha-25: rgba(15, 15, 16, 0.25);
+  --color-ink-alpha-03: rgba(15, 15, 16, 0.03);
+  --color-accent-alpha-04: rgba(30, 58, 255, 0.08);
+  --color-accent-alpha-10: rgba(30, 58, 255, 0.12);
 
   /* Element colors */
-  --element-fire: #0000FF;
+  --element-fire: #1E3AFF;
   --element-earth: #059669;
   --element-air: #7C3AED;
   --element-water: #0284C7;
@@ -98,7 +98,7 @@
   --element-wood: #10B981;
 
   /* Map layer colors */
-  --layer-identity: #0000FF;
+  --layer-identity: #1E3AFF;
   --layer-patterns: #3B82F6;
   --layer-numerology: #2563EB;
   --layer-astrology: #7C3AED;
@@ -106,14 +106,14 @@
   --layer-moment: #DC2626;
 
   /* Category colors */
-  --cat-country: #0000FF;
+  --cat-country: #1E3AFF;
   --cat-city: #4B5563;
   --cat-brand: #7C3AED;
   --cat-band: #DC2626;
   --cat-movie: #2563EB;
   --cat-book: #059669;
   --cat-philosophy: #7C3AED;
-  --cat-event: #0000FF;
+  --cat-event: #1E3AFF;
   --cat-food: #EA580C;
   --cat-color: #EC4899;
   --cat-crystal: #14B8A6;
@@ -126,8 +126,8 @@
   --score-poor: #EF4444;
 
   /* Overlay */
-  --overlay: rgba(0, 0, 0, 0.5);
-  --overlay-light: rgba(0, 0, 0, 0.3);
+  --overlay: rgba(15, 15, 16, 0.5);
+  --overlay-light: rgba(15, 15, 16, 0.3);
 
   /* Skeleton */
   --skeleton: #E5E7EB;
@@ -137,16 +137,15 @@
 .dark {
   --color-ink: #FFFFFF;
   --color-paper: #0a0a0f;
-  --color-cream: #1a1a2e;
-  --color-warm: #60a5fa;
-  --color-accent: #60a5fa;
-  --color-accent-hover: #93c5fd;
-  --color-muted: #9ca3af;
-  --color-border: #374151;
+  --color-paper-alt: #121214;
+  --color-accent: #1E3AFF;
+  --color-accent-hover: #4A6BFF;
+  --color-muted: #8A8A8A;
+  --color-border: #2A2A2E;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: #1a1a2e;
+  --color-card: #121214;
   --color-card-border: var(--color-border);
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
@@ -155,23 +154,23 @@
   --color-accent-foreground: var(--color-paper);
   --color-success: #34d399;
   --color-success-foreground: var(--color-paper);
-  --color-warning: #60a5fa;
+  --color-warning: #1E3AFF;
   --color-warning-foreground: var(--color-paper);
   --color-error: #f87171;
   --color-error-foreground: var(--color-paper);
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.3);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3);
-  --shadow-glow: 0 0 30px -5px rgb(96 165 250 / 0.4);
-  --shadow-glow-accent: 0 0 40px -10px rgb(96 165 250 / 0.5);
-  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-glow: none;
+  --shadow-glow-accent: none;
+  --shadow-inner: none;
 
   --color-ink-alpha-25: rgba(255, 255, 255, 0.25);
   --color-ink-alpha-03: rgba(255, 255, 255, 0.03);
-  --color-accent-alpha-04: rgba(96, 165, 250, 0.08);
-  --color-accent-alpha-10: rgba(96, 165, 250, 0.12);
+  --color-accent-alpha-04: rgba(30, 58, 255, 0.12);
+  --color-accent-alpha-10: rgba(30, 58, 255, 0.18);
 
   --skeleton: #374151;
   --overlay: rgba(0, 0, 0, 0.7);
@@ -204,18 +203,18 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-heading);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: 400;
     line-height: 1.0;
     color: var(--color-foreground);
-    letter-spacing: -0.03em;
+    letter-spacing: var(--tracking-tight);
     text-transform: uppercase;
   }
 
-  h1 { font-size: var(--step-5-text); }
-  h2 { font-size: var(--step-4-text); }
-  h3 { font-size: var(--step-3-text); }
-  h4 { font-size: var(--step-2-text); }
+  h1 { font-size: var(--step-6-text); }
+  h2 { font-size: var(--step-5-text); }
+  h3 { font-size: var(--step-4-text); }
+  h4 { font-size: var(--step-3-text); }
 
   p {
     color: var(--color-muted);
@@ -251,7 +250,7 @@
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(30, 58, 255, 0.18);
   }
 
   .skip-link {
@@ -273,7 +272,7 @@
   }
 
   ::selection {
-    background: rgba(0, 0, 255, 0.18);
+    background: rgba(30, 58, 255, 0.18);
     color: var(--color-foreground);
   }
 
@@ -318,33 +317,28 @@
 
 @layer components {
   /* ═══════════════════════════════════════════════════════════════
-     EDITORIAL SECTION SYSTEM — varied visual treatments
+     BRUTALIST EDITORIAL SECTION SYSTEM
      ═══════════════════════════════════════════════════════════════ */
 
   .section-editorial {
-    padding: 5rem 0;
+    padding: 6rem 0;
   }
 
   .section-editorial-lg {
-    padding: 7rem 0;
+    padding: 10rem 0;
   }
 
   .section-dark {
-    background: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
   .section-dark p:not([class*="text-"]) {
     color: var(--color-muted);
   }
 
-  .section-ink {
-    background: var(--color-ink);
-    color: var(--color-paper);
-  }
-
-  .section-cream {
-    background: var(--color-cream);
+  .section-paper-alt {
+    background: var(--color-paper-alt);
   }
 
   .section-full-bleed {
@@ -353,11 +347,11 @@
     margin-right: calc(-50vw + 50%);
   }
 
-  /* Editorial number — large typographic presence */
+  /* Display number — signature element */
   .number-display {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 0.9;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.85;
     letter-spacing: -0.04em;
     color: var(--color-foreground);
   }
@@ -366,13 +360,24 @@
     color: var(--color-accent);
   }
 
-  /* Editorial label */
-  .label-editorial {
+  /* Micro label — utility tags in caps */
+  .label-micro {
+    font-family: var(--font-mono);
     font-size: 0.625rem;
     font-weight: 500;
     letter-spacing: 0.25em;
     text-transform: uppercase;
     color: var(--color-muted);
+  }
+
+  /* Section eyebrow */
+  .eyebrow-brutalist {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   /* Editorial body text */
@@ -383,16 +388,16 @@
     max-width: 40rem;
   }
 
+  /* Accent block — solid color fill */
+  .accent-block {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+
   /* Accent line — used for visual separators */
   .line-accent {
     width: 3rem;
     height: 1px;
-    background: var(--color-accent);
-  }
-
-  .line-accent-lg {
-    width: 4rem;
-    height: 2px;
     background: var(--color-accent);
   }
 
@@ -429,12 +434,6 @@
   .card-static {
     background: var(--color-card);
     border: 1px solid var(--color-card-border);
-    padding: var(--card-padding);
-  }
-
-  .card-glow {
-    background: var(--color-card);
-    border: 1px solid var(--color-accent);
     padding: var(--card-padding);
   }
 
@@ -475,10 +474,12 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.7rem 1.4rem;
+    padding: 0.75rem 1.5rem;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     transition: all 200ms ease;
     cursor: pointer;
     border: none;
@@ -487,16 +488,12 @@
   }
 
   .btn:hover {
-    opacity: 0.85;
-  }
-
-  .btn:active {
-    opacity: 0.7;
+    opacity: 0.9;
   }
 
   .btn-primary {
-    background: var(--color-primary);
-    color: var(--color-primary-foreground);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
   .btn-primary:hover {
@@ -504,16 +501,13 @@
     color: var(--color-accent-foreground);
   }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--color-secondary-foreground);
-    border: 1px solid var(--color-card-border);
+  .btn-accent {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
   }
 
-  .btn-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-foreground);
-    background: var(--color-accent-alpha-04);
+  .btn-accent:hover {
+    opacity: 0.9;
   }
 
   .btn-ghost {

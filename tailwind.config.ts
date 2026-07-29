@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
+        display: ["var(--font-display)", "Archivo Black", "sans-serif"],
         heading: ["var(--font-heading)", "Space Grotesk", "sans-serif"],
-        serif: ["var(--font-serif-accent)", "Playfair Display", "serif"],
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
@@ -80,8 +80,7 @@ const config: Config = {
         },
         ink: "var(--color-ink)",
         paper: "var(--color-paper)",
-        cream: "var(--color-cream)",
-        warm: "var(--color-warm)",
+        "paper-alt": "var(--color-paper-alt)",
         // Element colors
         "element-fire": "var(--element-fire)",
         "element-earth": "var(--element-earth)",

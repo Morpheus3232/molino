@@ -5,65 +5,75 @@ import { motion } from "framer-motion";
 import { Sparkles, RefreshCw, Flame } from "lucide-react";
 import { useFavorites } from "@/lib/hooks/useFavorites";
 import { useMemo } from "react";
-import { fadeUp } from "@/lib/utils/motion";
 
 function ConceptsIndex() {
   const router = useRouter();
   const { toggleFavorite, isFavorite } = useFavorites();
 
   const entries = useMemo(() => [
-    { title: "Arquetipos", desc: "Los patrones universales que moldean tu personalidad", href: "/conocimiento/numerologia", icon: Sparkles, tier: "fundamental", length: "long" },
-    { title: "Ciclos", desc: "Los ritmos temporales que guían tu año personal", href: "/profile", icon: RefreshCw, tier: "temporal", length: "medium" },
-    { title: "Elementos", desc: "Las energías primarias que componen tu naturaleza", href: "/conocimiento/astrologia", icon: Flame, tier: "fundamental", length: "medium" },
-    { title: "Números Maestros", desc: "Las frecuencias elevadas de tu mapa numérico", href: "/conocimiento/numerologia", icon: Sparkles, tier: "avanzado", length: "short" },
-    { title: "Modalidades", desc: "Los tres modos de expresión de tu energía", href: "/conocimiento/astrologia", icon: RefreshCw, tier: "estructural", length: "short" },
-    { title: "Compatibilidad", desc: "Cómo interactúan tus patrones con otros", href: "/compatibility/countries", icon: Flame, tier: "relacional", length: "long" },
-    { title: "Síntesis", desc: "La lectura integrada de todos tus sistemas", href: "/synthesis", icon: Sparkles, tier: "integral", length: "medium" },
-    { title: "Patrones", desc: "Los temas recurrentes en tu historia personal", href: "/patterns", icon: RefreshCw, tier: "profundo", length: "medium" },
-    { title: "Momentum", desc: "La energía disponible en tu ciclo actual", href: "/timing", icon: Flame, tier: "dinamico", length: "short" },
+    { title: "ARQUETIPOS", desc: "Los patrones universales que moldean tu personalidad", href: "/conocimiento/numerologia", icon: Sparkles, tier: "FUNDAMENTAL" },
+    { title: "CICLOS", desc: "Los ritmos temporales que guían tu año personal", href: "/profile", icon: RefreshCw, tier: "TEMPORAL" },
+    { title: "ELEMENTOS", desc: "Las energías primarias que componen tu naturaleza", href: "/conocimiento/astrologia", icon: Flame, tier: "FUNDAMENTAL" },
+    { title: "NÚMEROS MAESTROS", desc: "Las frecuencias elevadas de tu mapa numérico", href: "/conocimiento/numerologia", icon: Sparkles, tier: "AVANZADO" },
+    { title: "MODALIDADES", desc: "Los tres modos de expresión de tu energía", href: "/conocimiento/astrologia", icon: RefreshCw, tier: "ESTRUCTURAL" },
+    { title: "COMPATIBILIDAD", desc: "Cómo interactúan tus patrones con otros", href: "/compatibility/countries", icon: Flame, tier: "RELACIONAL" },
+    { title: "SÍNTESIS", desc: "La lectura integrada de todos tus sistemas", href: "/synthesis", icon: Sparkles, tier: "INTEGRAL" },
+    { title: "PATRONES", desc: "Los temas recurrentes en tu historia personal", href: "/patterns", icon: RefreshCw, tier: "PROFUNDO" },
+    { title: "MOMENTUM", desc: "La energía disponible en tu ciclo actual", href: "/timing", icon: Flame, tier: "DINÁMICO" },
   ], []);
 
+  const cellPad = "p-8 sm:p-10 lg:p-14";
+
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-background text-foreground">
+    <section className="bg-background text-foreground">
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
-        <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">La Biblioteca</p>
-          <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0] text-foreground">
-            Una guía para entender el lenguaje detrás de tu mapa.
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className={`${cellPad} px-0`}
+        >
+          <p className="eyebrow-brutalist mb-4">LA BIBLIOTECA</p>
+          <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+            UNA GUÍA PARA ENTENDER
+            <br />
+            EL LENGUAJE DETRÁS DE TU MAPA.
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
-            Conceptos clave, explicados en profundidad. Busca, filtra y descubre.
+          <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
+            Conceptos clave, explicados en profundidad. Buscá, filtrá y descubrí.
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap border-t border-accent/10">
+        {/* 3-column grid */}
+        <div className="flex flex-wrap border-t border-ink/10">
           {entries.map((entry, i) => {
-            const itemsInLastRow = entries.length % 3 || 3;
-            const isLastRow = i >= entries.length - itemsInLastRow;
+            const isLastRow = i >= entries.length - 3;
             return (
               <motion.button
                 key={entry.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
                 type="button"
                 onClick={() => router.push(entry.href)}
-                className={`group w-full md:w-1/3 p-8 sm:p-10 lg:p-12 flex flex-col text-left bg-background hover:bg-accent/5 transition-all duration-500 ${!isLastRow ? "border-b" : ""} ${i % 3 !== 2 ? "md:border-r" : ""} border-accent/10`}
+                className={`group w-full md:w-1/3 ${cellPad} flex flex-col text-left bg-background hover:bg-accent/5 transition-all duration-500 ${!isLastRow ? "border-b border-ink/10" : ""} ${i % 3 !== 2 ? "md:border-r border-ink/10" : ""}`}
               >
-                <entry.icon className="w-6 h-6 text-accent mb-5" />
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">{entry.tier}</p>
-                <h3 className="font-heading uppercase text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground mb-3 leading-tight">{entry.title}</h3>
-                <p className="text-base sm:text-lg text-muted leading-relaxed mb-6 flex-1">{entry.desc}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-accent/10">
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-accent group-hover:opacity-80 transition-opacity duration-200">
-                    Explorar
+                <entry.icon className="w-6 h-6 text-accent mb-6" />
+                <p className="font-mono text-[10px] font-semibold tracking-[0.2em] text-accent mb-4">{entry.tier}</p>
+                <h3 className="font-display text-3xl sm:text-4xl text-foreground mb-4 leading-tight">{entry.title}</h3>
+                <p className="text-sm sm:text-base text-muted leading-relaxed mb-8 flex-1">{entry.desc}</p>
+                <div className="flex items-center justify-between pt-5 border-t border-ink/10">
+                  <span className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-accent group-hover:opacity-80 transition-opacity">
+                    EXPLORAR
                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
                   </span>
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); toggleFavorite(entry.title); }}
-                    className={`text-accent/70 hover:text-accent transition-colors duration-200 ${isFavorite(entry.title) ? "text-accent" : ""}`}
+                    className={`text-accent/50 hover:text-accent transition-colors ${isFavorite(entry.title) ? "text-accent" : ""}`}
                     aria-label={`Guardar ${entry.title} en favoritos`}
                   >
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden="true">
@@ -76,15 +86,24 @@ function ConceptsIndex() {
           })}
         </div>
 
-        <motion.div {...fadeUp} transition={{ delay: 0.3 }} className="text-center pt-8">
-          <button
-            type="button"
-            onClick={() => router.push("/biblioteca")}
-            className="group inline-flex items-center gap-3 text-sm font-medium text-accent/70 hover:text-accent transition-colors duration-200"
-          >
-            Ver toda la biblioteca
-            <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-          </button>
+        {/* View all CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="border-t border-ink/10"
+        >
+          <div className="py-8 px-0 text-center">
+            <button
+              type="button"
+              onClick={() => router.push("/biblioteca")}
+              className="group inline-flex items-center gap-3 text-xs font-mono tracking-wider text-accent/80 hover:text-accent transition-colors"
+            >
+              VER TODA LA BIBLIOTECA
+              <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>
