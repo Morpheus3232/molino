@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import Prism from "@/components/effects/Prism";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { SITE_URL } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-display" });
@@ -43,30 +44,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_AR",
-    url: "https://molino-alpha.vercel.app",
+    url: SITE_URL,
     siteName: "Molino",
     title: "Molino — Mapa Personal de Autoconocimiento",
     description:
       "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto y gratuito.",
-    images: [
-      {
-        url: "https://molino-alpha.vercel.app/og-image.svg",
-        width: 1200,
-        height: 630,
-        alt: "Molino — Mapa Personal de Autoconocimiento",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Molino — Mapa Personal de Autoconocimiento",
     description:
       "Descubrí tu mapa personal de autoconocimiento. Numerología, astrología y zodíaco chino sin registro ni cookies.",
-    images: ["https://molino-alpha.vercel.app/og-image.svg"],
   },
-  metadataBase: new URL("https://molino-alpha.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
-    canonical: "https://molino-alpha.vercel.app",
+    canonical: SITE_URL,
   },
   robots: {
     index: true,
@@ -92,18 +84,40 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const webSiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Molino",
-    url: "https://molino-alpha.vercel.app",
-    description: "Mapa Personal de Autoconocimiento: numerología, astrología, zodiaco chino y análisis de patrones.",
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Molino",
+      url: SITE_URL,
+      description: "Mapa Personal de Autoconocimiento: numerología, astrología, zodiaco chino y análisis de patrones.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Molino",
+      url: SITE_URL,
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Web",
+      description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      author: {
+        "@type": "Organization",
+        name: "Molino",
+      },
+    },
+  ];
 
   return (
     <html lang="es-AR" suppressHydrationWarning className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
       <head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
+        {jsonLd.map((schema, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        ))}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />

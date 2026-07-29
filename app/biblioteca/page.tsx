@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import BibliotecaContent from "./BibliotecaContent";
 
 export const metadata: Metadata = {
@@ -19,14 +20,14 @@ const jsonLd = [
     description: "Colección curada de libros, artículos y recursos sobre sistemas simbólicos de autoconocimiento.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
-    url: "https://molino-alpha.vercel.app/biblioteca",
-    mainEntityOfPage: { "@type": "WebPage", "@id": "https://molino-alpha.vercel.app/biblioteca" },
+    url: siteUrl("/biblioteca"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl("/biblioteca") },
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
       { "@type": "ListItem", position: 2, name: "Biblioteca" },
     ],
   },

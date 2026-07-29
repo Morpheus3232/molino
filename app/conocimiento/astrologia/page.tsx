@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import AstrologiaContent from "./AstrologiaContent";
 
 export const metadata: Metadata = {
@@ -19,15 +20,15 @@ const jsonLd = [
     description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
-    url: "https://molino-alpha.vercel.app/conocimiento/astrologia",
-    mainEntityOfPage: { "@type": "WebPage", "@id": "https://molino-alpha.vercel.app/conocimiento/astrologia" },
+    url: siteUrl("/conocimiento/astrologia"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl("/conocimiento/astrologia") },
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Conocimiento", item: "https://molino-alpha.vercel.app/explore" },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Conocimiento", item: siteUrl("/explore") },
       { "@type": "ListItem", position: 3, name: "Astrología" },
     ],
   },

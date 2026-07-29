@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
 import SignoContent from "./SignoContent";
 
@@ -39,16 +40,16 @@ export default async function SignoPage({ params }: Props) {
       description: sign.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },
-      url: `https://molino-alpha.vercel.app/conocimiento/astrologia/${normalize(sign.name)}`,
-      mainEntityOfPage: { "@type": "WebPage", "@id": `https://molino-alpha.vercel.app/conocimiento/astrologia/${normalize(sign.name)}` },
+      url: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
+      mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`) },
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
-        { "@type": "ListItem", position: 2, name: "Conocimiento", item: "https://molino-alpha.vercel.app/explore" },
-        { "@type": "ListItem", position: 3, name: "Astrología", item: "https://molino-alpha.vercel.app/conocimiento/astrologia" },
+        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Conocimiento", item: siteUrl("/explore") },
+        { "@type": "ListItem", position: 3, name: "Astrología", item: siteUrl("/conocimiento/astrologia") },
         { "@type": "ListItem", position: 4, name: sign.name },
       ],
     },
