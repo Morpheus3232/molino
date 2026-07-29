@@ -182,10 +182,10 @@ export default function UniversityHeader() {
               </button>
             ) : (
               <Link
-                href="/"
+                href="/onboarding"
                 className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
               >
-                Crear mi mapa
+                Descubrir mi mapa
               </Link>
             )}
 
@@ -247,11 +247,11 @@ export default function UniversityHeader() {
               </>
             ) : (
               <Link
-                href="/"
+                href="/onboarding"
                 className="block px-3 py-2 rounded-lg text-sm font-medium text-center bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Crear mi mapa
+                Descubrir mi mapa
               </Link>
             )}
           </nav>
