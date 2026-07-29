@@ -111,13 +111,16 @@ export default function PremiumGate({ profileHash, children }: PremiumGateProps)
     );
   }
 
+  // ✅ FIX: min-h movido al PADRE, z-index agregado al OVERLAY
   return (
-    <div className="relative">
+    <div className="relative min-h-[600px]">
+      {/* Contenido difuminado */}
       <div className="blur-[3px] select-none pointer-events-none opacity-50">
         {children}
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center min-h-[600px]">
+      {/* ✅ FIX: Agregado z-10 para stacking context correcto */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-lg">
         <div className="text-center p-8 max-w-lg bg-gradient-to-br from-purple-900/90 to-black/90 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl">
           <div className="mb-4">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-purple-600/20 text-purple-400 text-sm font-semibold rounded-full border border-purple-600/40">

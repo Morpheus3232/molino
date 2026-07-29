@@ -76,8 +76,10 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabFromUrl = initialTab || searchParams.get("tab");
+  const paymentApproved = searchParams.get("payment_status") === "approved";
+  const initialActiveTab = paymentApproved ? "world" : tabFromUrl;
   const [activeTab, setActiveTab] = useState<ProfileTab | null>(
-    VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
+    VALID_TABS.includes(initialActiveTab as ProfileTab) ? (initialActiveTab as ProfileTab) : null
   );
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
