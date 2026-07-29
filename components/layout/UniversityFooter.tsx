@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { footerColumns } from "@/lib/data/navigation";
 
 export default function UniversityFooter() {
   return (
@@ -28,41 +29,27 @@ export default function UniversityFooter() {
             </p>
           </div>
 
-          <div className="md:col-span-3 md:col-start-7">
-            <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
-              EXPLORAR
-            </h4>
-            <ul className="space-y-4">
-              <li>
-                <Link href="/" className="text-sm text-white/80 hover:text-white transition-colors font-medium">INICIO</Link>
-              </li>
-              <li>
-                <Link href="/profile" className="text-sm text-white/80 hover:text-white transition-colors font-medium">MI MAPA</Link>
-              </li>
-              <li>
-                <Link href="/explore" className="text-sm text-white/80 hover:text-white transition-colors font-medium">EXPLORAR</Link>
-              </li>
-              <li>
-                <Link href="/biblioteca" className="text-sm text-white/80 hover:text-white transition-colors font-medium">BIBLIOTECA</Link>
-              </li>
-              <li>
-                <Link href="/guia" className="text-sm text-white/80 hover:text-white transition-colors font-medium">GUÍA</Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-2">
-            <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
-              PRINCIPIOS
-            </h4>
-            <ul className="space-y-4">
-              <li><Link href="/filosofia#conocimiento-libre" className="text-sm text-white/80 hover:text-white transition-colors font-medium">CONOCIMIENTO LIBRE</Link></li>
-              <li><Link href="/filosofia#privacidad-radical" className="text-sm text-white/80 hover:text-white transition-colors font-medium">PRIVACIDAD RADICAL</Link></li>
-              <li><Link href="/filosofia#transparencia-total" className="text-sm text-white/80 hover:text-white transition-colors font-medium">TRANSPARENCIA TOTAL</Link></li>
-              <li><Link href="/filosofia#codigo-abierto" className="text-sm text-white/80 hover:text-white transition-colors font-medium">CÓDIGO ABIERTO</Link></li>
-              <li><Link href="/filosofia#sin-tracking" className="text-sm text-white/80 hover:text-white transition-colors font-medium">SIN TRACKING</Link></li>
-            </ul>
-          </div>
+          {footerColumns.map((col) => (
+            <div key={col.title} className={col.title === "EXPLORAR" ? "md:col-span-3 md:col-start-7" : "md:col-span-2"}>
+              <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
+                {col.title}
+              </h4>
+              <ul className="space-y-4">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      className="text-sm text-white/80 hover:text-white transition-colors font-medium"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">

@@ -20,9 +20,9 @@ describe("Product consistency — Molino", () => {
   test("UniversidadHeader navLinks do not contain 'Descubrir'", () => {
     const fs = require("fs");
     const path = require("path");
-    const headerPath = path.resolve(__dirname, "..", "components", "layout", "UniversityHeader.tsx");
-    const source = fs.readFileSync(headerPath, "utf8");
-    const navSection = source.match(/const navLinks = \[([^\]]+)\]/);
+    const navPath = path.resolve(__dirname, "..", "lib", "data", "navigation.ts");
+    const source = fs.readFileSync(navPath, "utf8");
+    const navSection = source.match(/export const headerNavLinks: NavLink\[\] = \[([^\]]+)\]/);
     expect(navSection).toBeTruthy();
     expect(navSection![1]).not.toContain("Descubrir");
   });
