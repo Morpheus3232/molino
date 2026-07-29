@@ -1,95 +1,44 @@
-import { createHash } from 'crypto';
-
-const TOKEN_SECRET = process.env.MP_WEBHOOK_SECRET || 'dev-secret';
-
-const kvPromise = (async () => {
+async function getKvClient() {
   try {
     const mod = await import('@vercel/kv');
     return mod.kv;
   } catch {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('KV client unavailable in production — cannot grant or verify access');
+    }
     return null;
   }
-})();
-
-const devFallback = new Map<string, { profileHash: string; paymentId: string; timestamp: number }>();
-
-async function getKvClient(): Promise<typeof import('@vercel/kv')['kv'] | null> {
-  return kvPromise;
 }
 
 export async function grantPremiumAccess(profileHash: string, paymentId: string): Promise<void> {
-  const key = `premium:${profileHash}`;
-  const value = { profileHash, paymentId, timestamp: Date.now() };
-
   const kv = await getKvClient();
-  if (kv) {
-    await kv.set(key, JSON.stringify(value));
-  } else {
-    devFallback.set(key, value);
-  }
-}
+  if (!kv) return;
 
-export async function revokePremiumAccess(profileHash: string): Promise<void> {
-  const key = `premium:${profileHash}`;
-
-  const kv = await getKvClient();
-  if (kv) {
-    await kv.del(key);
-  } else {
-    devFallback.delete(key);
-  }
+  const data = { profileHash, paymentId, timestamp: Date.now() };
+  await kv.set(`premium:${profileHash}`, JSON.stringify(data));
 }
 
 export async function hasPremiumAccess(profileHash: string): Promise<boolean> {
-  const key = `premium:${profileHash}`;
-
   const kv = await getKvClient();
-  if (kv) {
-    const raw = await kv.get(key);
-    return raw !== null;
-  }
+  if (!kv) return false;
 
-  return devFallback.has(key);
+  const raw = await kv.get(`premium:${profileHash}`);
+  return raw !== null;
 }
 
-export async function getPaymentIdForProfile(profileHash: string): Promise<string | null> {
-  const key = `premium:${profileHash}`;
-
+export async function markPaymentProcessed(paymentId: string): Promise<boolean> {
   const kv = await getKvClient();
-  if (kv) {
-    const raw: any = await kv.get(key);
-    if (!raw) return null;
-    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
-    return parsed.paymentId ?? null;
-  }
+  if (!kv) return false;
 
-  return devFallback.get(key)?.paymentId ?? null;
+  const key = `processed:payment:${paymentId}`;
+  const set = await kv.set(key, '1', { nx: true, ex: 86400 });
+  return set === 'OK';
 }
 
-export function createSignedToken(profileHash: string): string {
-  const payload = JSON.stringify({ h: profileHash, t: Date.now() });
-  const sig = createHash('sha256')
-    .update(payload + TOKEN_SECRET)
-    .digest('hex')
-    .slice(0, 16);
-  return Buffer.from(`${sig}.${payload}`).toString('base64url');
-}
+export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
+  const kv = await getKvClient();
+  if (!kv) return false;
 
-export function verifySignedToken(token: string): string | null {
-  try {
-    const decoded = Buffer.from(token, 'base64url').toString('utf-8');
-    const dot = decoded.indexOf('.');
-    if (dot === -1) return null;
-    const sig = decoded.slice(0, dot);
-    const payload = decoded.slice(dot + 1);
-    const expected = createHash('sha256')
-      .update(payload + TOKEN_SECRET)
-      .digest('hex')
-      .slice(0, 16);
-    if (sig !== expected) return null;
-    const data = JSON.parse(payload);
-    return data.h ?? null;
-  } catch {
-    return null;
-  }
+  const raw = await kv.get(`processed:payment:${paymentId}`);
+  return raw !== null;
 }

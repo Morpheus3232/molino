@@ -8,7 +8,8 @@ if (typeof window !== 'undefined') {
 }
 
 interface PaymentBrickProps {
-  profileHash: string;
+  name: string;
+  birthDate: string;
   currencyId?: string;
   onPaymentApproved: (paymentId: string) => void;
   onPaymentPending: (paymentId: string) => void;
@@ -17,7 +18,8 @@ interface PaymentBrickProps {
 }
 
 export default function PaymentBrick({
-  profileHash,
+  name,
+  birthDate,
   currencyId = 'USD',
   onPaymentApproved,
   onPaymentPending,
@@ -34,7 +36,7 @@ export default function PaymentBrick({
         const res = await fetch('/api/mp/preference', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ profileHash, currencyId }),
+          body: JSON.stringify({ name, birthDate, currencyId }),
         });
 
         if (!res.ok) {
@@ -54,7 +56,7 @@ export default function PaymentBrick({
     }
 
     fetchPreference();
-  }, [profileHash, currencyId, onError]);
+  }, [name, birthDate, currencyId, onError]);
 
   const handleSubmit = async (formData: any) => {
     try {
@@ -62,7 +64,8 @@ export default function PaymentBrick({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          profileHash,
+          name,
+          birthDate,
           paymentData: formData,
         }),
       });
@@ -87,15 +90,6 @@ export default function PaymentBrick({
       onError(error);
       throw error;
     }
-  };
-
-  const handleReady = () => {
-    setLoading(false);
-  };
-
-  const handleError = (error: any) => {
-    console.error('[PaymentBrick] Brick error:', error);
-    onError(error);
   };
 
   if (loading) {
@@ -133,8 +127,8 @@ export default function PaymentBrick({
           preferenceId,
         }}
         onSubmit={handleSubmit}
-        onReady={handleReady}
-        onError={handleError}
+        onReady={() => {}}
+        onError={onError}
         customization={{
           visual: {
             style: {

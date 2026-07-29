@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { processPayment } from '@/lib/mercadopago';
+import { processPayment, hashProfile } from '@/lib/mercadopago';
 
 export async function POST(req: NextRequest) {
   try {
-    const { profileHash, paymentData } = await req.json();
+    const { name, birthDate, paymentData } = await req.json();
 
-    if (!profileHash || !paymentData) {
+    if (!name || !birthDate || !paymentData) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
+        { error: 'name, birthDate, and paymentData are required' },
+        { status: 400 },
       );
     }
 
+    const profileHash = hashProfile(name, birthDate);
     const result = await processPayment({ profileHash, paymentData });
 
     return NextResponse.json(result);
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
         status: 'rejected',
         detail: error instanceof Error ? error.message : 'Unknown error',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,17 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hasPremiumAccess } from '@/lib/kv';
+import { hashProfile } from '@/lib/mercadopago';
 
 export async function POST(req: NextRequest) {
   try {
-    const { profileHash } = await req.json();
+    const { name, birthDate } = await req.json();
 
-    if (!profileHash) {
+    if (!name || !birthDate) {
       return NextResponse.json(
-        { error: 'profileHash is required' },
-        { status: 400 }
+        { error: 'name and birthDate are required' },
+        { status: 400 },
       );
     }
 
+    const profileHash = hashProfile(name, birthDate);
     const premium = await hasPremiumAccess(profileHash);
 
     return NextResponse.json({ premium });
@@ -19,7 +21,7 @@ export async function POST(req: NextRequest) {
     console.error('[MP Check] Error:', error);
     return NextResponse.json(
       { error: 'Check failed', premium: false },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
