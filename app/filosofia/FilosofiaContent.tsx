@@ -1,9 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem } from "@/lib/utils/motion";
+import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+
+const PRINCIPLE_ICONS: Record<string, string> = {
+  "conocimiento-libre": "01",
+  "privacidad-radical": "02",
+  "transparencia-total": "03",
+  "codigo-abierto": "04",
+  "sin-tracking": "05",
+};
 
 const principles = [
   {
@@ -52,17 +60,20 @@ const pillars = [
   },
 ];
 
-const influences = [
+const ancientTraditions = [
   "Numerología pitagórica y caldea",
   "Astrología tropical helenística y moderna",
   "Zodíaco chino (ciclo sexagenario, 12 animales, 5 elementos)",
   "I Ching y los 64 hexagramas",
-  "Eneagrama de la personalidad",
-  "Human Design (Ra Uru Hu / Jovian Archive)",
-  "Gene Keys (Richard Rudd)",
   "Kabbalah y Árbol de la Vida",
   "Tarot de Marsella y Rider-Waite",
   "Psicología arquetípica (Jung, Hillman)",
+  "Eneagrama de la personalidad",
+];
+
+const contemporarySystems = [
+  { name: "Human Design", author: "Ra Uru Hu", year: "1987" },
+  { name: "Gene Keys", author: "Richard Rudd", year: "2009" },
 ];
 
 export default function FilosofiaContent() {
@@ -94,21 +105,28 @@ export default function FilosofiaContent() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Principios de Molino">
+          <div className="grid md:grid-cols-2 gap-4" role="list" aria-label="Principios de Molino">
             {principles.map((principle, i) => (
               <motion.article
                 key={principle.id}
                 role="listitem"
                 id={principle.id}
                 {...staggerItem}
-                className="group p-6 rounded-none border border-ink/10 bg-background/50 hover:border-ink/20 hover:bg-background transition-all duration-300"
+                className="group p-6 border border-ink/10 bg-background hover:bg-ink/[0.02] hover:border-ink/20 transition-all duration-300"
               >
-                <h3 className="font-display uppercase text-lg text-foreground mb-3 group-hover:text-accent transition-colors">
-                  {principle.title}
-                </h3>
-                <p className="text-sm text-muted leading-relaxed">
-                  {principle.description}
-                </p>
+                <div className="flex items-start gap-4">
+                  <span className="font-mono text-xs font-semibold tracking-wider text-accent shrink-0 mt-0.5">
+                    {PRINCIPLE_ICONS[principle.id]}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
+                      {principle.title}
+                    </h3>
+                    <p className="text-sm text-muted leading-relaxed">
+                      {principle.description}
+                    </p>
+                  </div>
+                </div>
               </motion.article>
             ))}
           </div>
@@ -125,26 +143,33 @@ export default function FilosofiaContent() {
             </p>
           </div>
 
-          <div className="space-y-6" role="list" aria-label="Pilares metodológicos">
+          <div className="space-y-px bg-ink/10" role="list" aria-label="Pilares metodológicos">
             {pillars.map((pillar, i) => (
               <motion.div
                 key={pillar.title}
                 role="listitem"
                 {...staggerItem}
-                className="p-6 rounded-none border border-ink/10 bg-background/30"
+                className="p-6 sm:p-8 bg-background"
               >
-                <h3 className="font-display uppercase text-lg text-foreground mb-2">
-                  {pillar.title}
-                </h3>
-                <p className="text-sm text-muted leading-relaxed">
-                  {pillar.description}
-                </p>
+                <div className="flex items-start gap-4">
+                  <span className="font-mono text-xs font-semibold tracking-wider text-muted/40 shrink-0 mt-0.5">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg text-foreground mb-2">
+                      {pillar.title}
+                    </h3>
+                    <p className="text-sm text-muted leading-relaxed">
+                      {pillar.description}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </motion.section>
 
-        {/* Influences */}
+        {/* Traditions */}
         <motion.section {...fadeUpDelayed(0.15)} className="mb-20">
           <div className="mb-10">
             <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
@@ -155,21 +180,94 @@ export default function FilosofiaContent() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-3" role="list" aria-label="Tradiciones e influencias">
-            {influences.map((influence, i) => (
-              <motion.span
-                key={influence}
-                role="listitem"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.03, duration: 0.3 }}
-                className="px-4 py-2 rounded-none border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
+          {/* Ancient traditions */}
+          <div className="mb-10">
+            <span className="inline-block font-mono text-[10px] font-semibold tracking-[0.2em] uppercase text-accent mb-4 px-3 py-1 border border-accent/20">
+              Tradición ancestral
+            </span>
+            <div className="flex flex-wrap gap-3" role="list" aria-label="Tradiciones ancestrales">
+              {ancientTraditions.map((influence, i) => (
+                <motion.span
+                  key={influence}
+                  role="listitem"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.03, duration: 0.3 }}
+                  className="px-4 py-2 border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
+                >
+                  {influence}
+                </motion.span>
+              ))}
+            </div>
+          </div>
+
+          {/* Contemporary systems */}
+          <div>
+            <span className="inline-block font-mono text-[10px] font-semibold tracking-[0.2em] uppercase text-ink/50 mb-4 px-3 py-1 border border-ink/10">
+              Sistema contemporáneo
+            </span>
+            <div className="flex flex-wrap gap-3" role="list" aria-label="Sistemas contemporáneos">
+              {contemporarySystems.map((sys, i) => (
+                <motion.span
+                  key={sys.name}
+                  role="listitem"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.03 + 0.24, duration: 0.3 }}
+                  className="px-4 py-2 border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
+                >
+                  {sys.name} <span className="text-muted/50">({sys.author}, {sys.year})</span>
+                </motion.span>
+              ))}
+            </div>
+          </div>
+        </motion.section>
+
+        {/* FAQ / Qué NO es Molino */}
+        <motion.section {...fadeUpDelayed(0.2)} className="mb-20">
+          <div className="mb-10">
+            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
+              Qué NO es Molino
+            </h2>
+            <p className="text-muted max-w-xl">
+              Para usar esta herramienta con claridad, es importante entender sus límites.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-px bg-ink/10">
+            {[
+              {
+                q: "No es una predicción",
+                a: "Molino no predice el futuro. Los sistemas simbólicos ofrecen patrones para la reflexión, no destinos escritos. Tu agencia y tus decisiones son siempre tuyas.",
+              },
+              {
+                q: "No es ciencia",
+                a: "La astrología, la numerología y el zodíaco chino son sistemas simbólicos con coherencia interna, no disciplinas científicas. No reemplazan el consejo médico, psicológico ni legal.",
+              },
+              {
+                q: "No es terapia",
+                a: "Molino es una herramienta de autoconocimiento, no un sustituto de la terapia profesional. Si estás pasando por un momento difícil, buscá apoyo profesional calificado.",
+              },
+              {
+                q: "No vende nada",
+                a: "No hay suscripciones, premium, ni versiones pagas. No recolectamos datos personales, no tenemos newsletter, no te enviamos notificaciones. El producto ES la página que estás viendo.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.q}
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06, duration: 0.3 }}
+                className="p-6 sm:p-8 bg-background"
               >
-                {influence}
-              </motion.span>
+                <h3 className="font-display text-base text-foreground mb-2">{item.q}</h3>
+                <p className="text-sm text-muted leading-relaxed">{item.a}</p>
+              </motion.div>
             ))}
           </div>
         </motion.section>
+
       </main>
 
       <UniversityFooter />
