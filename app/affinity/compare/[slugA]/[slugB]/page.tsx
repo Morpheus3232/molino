@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import { getEntityById } from "@/lib/data/symbolic-entities";
 import CompareContent from "./CompareContent";
 
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slugA: st
       type: "website",
       images: [
         {
-          url: "https://molino-alpha.vercel.app/og-image.svg",
+          url: "/og-image.svg",
           width: 1200,
           height: 630,
           alt: `${entityA.name} vs ${entityB.name} — Afinidad Personal`,

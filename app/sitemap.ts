@@ -4,8 +4,9 @@ import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://molino-alpha.vercel.app";
+const BASE_URL = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [

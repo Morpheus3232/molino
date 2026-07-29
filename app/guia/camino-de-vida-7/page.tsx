@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import GuiaContent from "./GuiaContent";
 
 export const metadata: Metadata = {
@@ -21,15 +22,15 @@ const jsonLd = [
     publisher: { "@type": "Organization", name: "Molino" },
     datePublished: "2025-01-01",
     dateModified: "2025-07-28",
-    url: "https://molino-alpha.vercel.app/guia/camino-de-vida-7",
-    mainEntityOfPage: { "@type": "WebPage", "@id": "https://molino-alpha.vercel.app/guia/camino-de-vida-7" },
+    url: siteUrl("/guia/camino-de-vida-7"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl("/guia/camino-de-vida-7") },
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Guía", item: "https://molino-alpha.vercel.app/guia" },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Guía", item: siteUrl("/guia") },
       { "@type": "ListItem", position: 3, name: "Camino de Vida 7" },
     ],
   },

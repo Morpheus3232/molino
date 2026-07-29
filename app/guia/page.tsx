@@ -4,6 +4,16 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Guía",
   description: "Artículos, tutoriales y guías completas sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
+  openGraph: {
+    title: "Guía — Molino",
+    description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Guía — Molino",
+    description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
+  },
 };
 
 const articles = [

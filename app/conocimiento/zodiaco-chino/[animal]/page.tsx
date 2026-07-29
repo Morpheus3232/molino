@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import AnimalContent from "./AnimalContent";
 
@@ -35,16 +36,16 @@ export default async function AnimalPage({ params }: Props) {
       description: animal.meaning.slice(0, 200),
       author: { "@type": "Organization", name: "Molino" },
       publisher: { "@type": "Organization", name: "Molino" },
-      url: `https://molino-alpha.vercel.app/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`,
-      mainEntityOfPage: { "@type": "WebPage", "@id": `https://molino-alpha.vercel.app/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}` },
+      url: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
+      mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`) },
     },
     {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
-        { "@type": "ListItem", position: 2, name: "Conocimiento", item: "https://molino-alpha.vercel.app/explore" },
-        { "@type": "ListItem", position: 3, name: "Zodiaco Chino", item: "https://molino-alpha.vercel.app/conocimiento/zodiaco-chino" },
+        { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Conocimiento", item: siteUrl("/explore") },
+        { "@type": "ListItem", position: 3, name: "Zodiaco Chino", item: siteUrl("/conocimiento/zodiaco-chino") },
         { "@type": "ListItem", position: 4, name: animal.name },
       ],
     },
