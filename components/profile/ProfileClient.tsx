@@ -18,7 +18,6 @@ import CircleScreen from "@/components/profile/screens/CircleScreen";
 import IntelligenceScreen from "@/components/profile/screens/IntelligenceScreen";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
-import DownloadProfileButton from "@/components/profile/DownloadProfileButton";
 
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
@@ -216,9 +215,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               transition={{ duration: 0.2 }}
             >
               <ProfileHub profile={profile} onEnter={handleEnter} />
-              <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pt-8 pb-24">
-                <DownloadProfileButton elementId="profile-hub" filename="mi-mapa-molino" />
-              </div>
             </motion.div>
           ) : (
             <motion.div
