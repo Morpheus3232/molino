@@ -135,7 +135,7 @@ export default function ScrollDatePicker({ value, onChange }: ScrollDatePickerPr
   const monthNum = parseInt(month) || 1;
   const daysInMonth = getDaysInMonth(monthNum, yearNum);
   const days = useMemo(() => range(1, daysInMonth), [daysInMonth]);
-  const years = useMemo(() => range(1900, new Date().getFullYear()), []);
+  const years = useMemo(() => range(1940, new Date().getFullYear()), []);
 
   const monthIndex = monthNum - 1;
   const monthValue = MONTHS_SHORT[monthIndex] || "ENE";
