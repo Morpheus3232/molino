@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ChevronRight, Hash, Sun, Moon, ArrowRight, Loader2 } from "lucide-react";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import ScrollDatePicker from "@/components/ui/ScrollDatePicker";
 import { analytics } from "@/lib/analytics/analytics";
@@ -83,7 +82,6 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
 
       <main className="mx-auto max-w-2xl px-4 sm:px-6 py-12 sm:py-20 lg:py-28" id="main-content">
         {/* Progress Bar */}

@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { KNOWLEDGE_BASE } from "@/lib/data/knowledge";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 export default function NumerologiaContent() {
@@ -13,7 +12,6 @@ export default function NumerologiaContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}

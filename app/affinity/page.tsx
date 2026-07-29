@@ -9,7 +9,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 
@@ -41,7 +40,6 @@ export default function AffinityHub() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}

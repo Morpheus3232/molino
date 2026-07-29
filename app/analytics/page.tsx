@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 import { analytics } from "@/lib/analytics/analytics";
@@ -36,7 +35,6 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <UniversityHeader />
       <div className="container-content">
         <div className="py-12">
           <h1 className="text-4xl font-serif text-foreground mb-2">

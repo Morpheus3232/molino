@@ -7,7 +7,6 @@ import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import CompatibilityLab from "@/components/lab/CompatibilityLab";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
@@ -57,7 +56,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
   if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <LoadingState message="Cargando compatibilidad..." />
         <UniversityFooter />
       </div>
@@ -67,7 +65,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-12 text-center">
           <div className="mb-6">
             <span className="text-5xl">{entity.emoji}</span>
@@ -89,8 +86,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-
       <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">

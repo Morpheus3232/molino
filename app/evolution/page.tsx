@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/types/user";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
@@ -72,7 +71,6 @@ export default function EvolutionPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <UniversityHeader />
       <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
         <Section>
           <div className="text-center mb-10">

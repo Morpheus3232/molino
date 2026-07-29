@@ -6,7 +6,6 @@ import { ENTITIES } from "@/lib/data/entities";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/types/user";
 import { generateMatchStory } from "@/lib/engines/storyEngine";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -102,7 +101,6 @@ export default function MatchPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <UniversityHeader />
       <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
         <div className="mb-6">
           <Button variant="ghost" onClick={() => router.push("/explore")}>

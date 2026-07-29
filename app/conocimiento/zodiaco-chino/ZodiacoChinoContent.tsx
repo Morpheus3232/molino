@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { CHINESE_ANIMALS, CHINESE_ELEMENTS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
@@ -14,7 +13,6 @@ export default function ZodiacoChinoContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>

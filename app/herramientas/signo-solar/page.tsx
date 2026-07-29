@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getSunSign, getSunSignInfo, getSunSignSymbol } from "@/lib/engines/astrologyEngine";
 import { ZODIAC_SIGNS } from "@/lib/data/knowledge";
@@ -44,7 +43,6 @@ export default function SignoSolarPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">

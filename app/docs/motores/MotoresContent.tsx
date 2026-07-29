@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
 import { Code, Calculator, Globe, BookOpen, Hash, Sun, Moon } from "lucide-react";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const engines = [
@@ -106,7 +105,6 @@ export default function MotoresContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
 
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}

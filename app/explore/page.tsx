@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const SYSTEMS = [
@@ -65,7 +64,6 @@ export default function ExplorePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <UniversityHeader />
 
       <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-28" id="main-content">
 

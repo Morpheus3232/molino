@@ -8,7 +8,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 
@@ -39,7 +38,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
@@ -68,7 +66,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}

@@ -8,7 +8,6 @@ import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/loca
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/session/discovery";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
@@ -140,7 +139,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-4">Mi mapa personal</p>
@@ -178,8 +176,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-
       <main id="main-content">
         {activeTab && (
           <div className="sticky top-0 z-30 bg-background border-b border-ink/10">
