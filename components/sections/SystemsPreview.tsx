@@ -69,14 +69,15 @@ export default function SystemsPreview() {
                 <p className="text-sm sm:text-base text-muted leading-relaxed mb-8">
                   {system.description}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => router.push(system.href)}
-                  className="group inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-accent hover:text-accent/80 transition-colors"
-                >
-                  LEER MÁS
-                  <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-                </button>
+            <button
+              type="button"
+              onClick={() => router.push(system.href)}
+              aria-label={`Leer más sobre ${system.title}`}
+              className="group inline-flex items-center gap-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-accent hover:text-accent/80 transition-colors"
+            >
+              LEER MÁS
+              <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
+            </button>
               </div>
             </motion.div>
           ))}

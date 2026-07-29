@@ -43,6 +43,7 @@ function FinalCTA() {
             <button
               type="button"
               onClick={() => router.push("/onboarding")}
+              aria-label="Descubrir mi mapa personal: ir al onboarding"
               className="btn bg-white text-accent hover:bg-white/90 font-bold text-sm tracking-wider uppercase px-10 py-4"
             >
               DESCUBRIR MI MAPA →

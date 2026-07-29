@@ -55,7 +55,10 @@ export default function Journey() {
               <p className="font-display text-4xl sm:text-5xl lg:text-6xl text-accent mb-3 sm:mb-4 leading-none">{step.number}</p>
               <h3 className="font-display text-lg sm:text-xl lg:text-2xl text-foreground mb-2 sm:mb-3 leading-tight">{step.title}</h3>
               <p className="text-sm text-muted leading-relaxed flex-1">{step.description}</p>
-              <span className="inline-flex items-center gap-1 text-xs font-mono tracking-wider text-accent mt-4 sm:mt-6 opacity-0 group-hover:opacity-100 transition-opacity">
+              <span
+                className="inline-flex items-center gap-1 text-xs font-mono tracking-wider text-accent mt-4 sm:mt-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                aria-label={step.title === "DESCUBRÍ" ? "Empezar ahora: ir al onboarding" : `Ver más sobre ${step.title.toLowerCase()}`}
+              >
                 {step.title === "DESCUBRÍ" ? "EMPEZÁ AHORA" : "VER MÁS"} →
               </span>
             </motion.button>

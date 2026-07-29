@@ -24,9 +24,10 @@ interface ScrollColumnProps {
   values: string[];
   value: string;
   onChange: (v: string) => void;
+  ariaLabel?: string;
 }
 
-function ScrollColumn({ values, value, onChange }: ScrollColumnProps) {
+function ScrollColumn({ values, value, onChange, ariaLabel }: ScrollColumnProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const rafRef = useRef<number | null>(null);
@@ -56,6 +57,33 @@ function ScrollColumn({ values, value, onChange }: ScrollColumnProps) {
     });
   }, [values, onChange, value]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!ref.current) return;
+    const idx = values.indexOf(value);
+    let targetIdx = idx;
+    switch (e.key) {
+      case "ArrowUp":
+        e.preventDefault();
+        targetIdx = Math.max(0, idx - 1);
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        targetIdx = Math.min(values.length - 1, idx + 1);
+        break;
+      case "Home":
+        e.preventDefault();
+        targetIdx = 0;
+        break;
+      case "End":
+        e.preventDefault();
+        targetIdx = values.length - 1;
+        break;
+      default:
+        return;
+    }
+    ref.current.scrollTo({ top: targetIdx * ITEM_HEIGHT, behavior: "smooth" });
+  }, [values, value]);
+
   const padding = Math.floor(VISIBLE_ITEMS / 2) * ITEM_HEIGHT;
   const height = VISIBLE_ITEMS * ITEM_HEIGHT;
 
@@ -67,6 +95,7 @@ function ScrollColumn({ values, value, onChange }: ScrollColumnProps) {
       <div
         ref={ref}
         onScroll={handleScroll}
+        onKeyDown={handleKeyDown}
         className="h-full overflow-y-auto snap-y snap-mandatory"
         style={{
           scrollbarWidth: "none",
@@ -75,6 +104,7 @@ function ScrollColumn({ values, value, onChange }: ScrollColumnProps) {
         }}
         tabIndex={0}
         role="listbox"
+        aria-label={ariaLabel || "Seleccionar"}
       >
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
         <div style={{ paddingTop: padding, paddingBottom: padding }}>
@@ -172,13 +202,14 @@ export default function ScrollDatePicker({ value, onChange }: ScrollDatePickerPr
   return (
     <div>
       <div className="flex gap-0 items-stretch">
-        <ScrollColumn values={days} value={day} onChange={handleDayChange} />
+        <ScrollColumn values={days} value={day} onChange={handleDayChange} ariaLabel="Seleccionar día" />
         <ScrollColumn
           values={MONTHS_SHORT}
           value={monthValue}
           onChange={handleMonthChange}
+          ariaLabel="Seleccionar mes"
         />
-        <ScrollColumn values={years} value={year} onChange={handleYearChange} />
+        <ScrollColumn values={years} value={year} onChange={handleYearChange} ariaLabel="Seleccionar año" />
       </div>
       <div className="flex justify-between mt-2 px-2">
         <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
