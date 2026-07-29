@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPaymentStatus } from '@/lib/mercadopago';
-import { hasPremiumAccess, grantPremiumAccess } from '@/lib/kv';
+import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
+import { hasPremiumAccess } from '@/lib/kv';
 
 export async function POST(req: NextRequest) {
   try {
-    const { paymentId, profileHash } = await req.json();
+    const { paymentId, name, birthDate } = await req.json();
 
     if (!paymentId) {
       return NextResponse.json(
         { error: 'paymentId is required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // First check KV (source of truth)
-    if (profileHash) {
+    if (name && birthDate) {
+      const profileHash = hashProfile(name, birthDate);
       const inKv = await hasPremiumAccess(profileHash);
       if (inKv) {
         return NextResponse.json({
@@ -25,30 +25,31 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Fallback: verify against MP API directly
     const payment = await getPaymentStatus(paymentId);
 
-    const verified = payment.status === 'approved';
+    const validation = validatePayment(payment);
 
-    // Persist to KV if approved (catches edge cases webhook missed)
-    if (verified && profileHash) {
-      await grantPremiumAccess(profileHash, paymentId);
+    if (!validation.valid) {
+      return NextResponse.json({
+        verified: false,
+        reason: validation.reason,
+        status: payment.status,
+        source: 'mp-api',
+      });
     }
 
     return NextResponse.json({
-      verified,
-      source: verified ? 'mp-api' : 'none',
+      verified: true,
+      source: 'mp-api',
       status: payment.status,
       status_detail: payment.status_detail,
-      payment_method_id: payment.payment_method_id,
       transaction_amount: payment.transaction_amount,
-      metadata: payment.metadata,
     });
   } catch (error) {
     console.error('[MP Verify] Error:', error);
     return NextResponse.json(
       { error: 'Verification failed' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

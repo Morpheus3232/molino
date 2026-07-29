@@ -1,43 +1,67 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
-import { createHmac } from 'crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 
-export const mpClient = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN!,
-});
+function getRequiredEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return value;
+}
+
+const ACCESS_TOKEN = getRequiredEnv('MP_ACCESS_TOKEN');
+const WEBHOOK_SECRET = getRequiredEnv('MP_WEBHOOK_SECRET');
+const PRODUCT_PRICE_USD = 9;
+const PRODUCT_PRICE_ARS = 8100;
+const PRODUCT_CURRENCY_USD = 'USD';
+const PRODUCT_CURRENCY_ARS = 'ARS';
+const PRODUCT_ID = 'molino_premium';
+
+export const mpClient = new MercadoPagoConfig({ accessToken: ACCESS_TOKEN });
 
 export function hashProfile(name: string, birthDate: string): string {
-  return createHmac('sha256', process.env.MP_WEBHOOK_SECRET || 'dev-secret')
+  return createHmac('sha256', WEBHOOK_SECRET)
     .update(`${name.toLowerCase().trim()}|${birthDate}`)
     .digest('hex')
     .slice(0, 16);
 }
 
-export async function createPreference(profileHash: string, currencyId = 'USD') {
+export function requireSecrets(): void {
+  getRequiredEnv('MP_ACCESS_TOKEN');
+  getRequiredEnv('MP_WEBHOOK_SECRET');
+}
+
+export async function createPreference(profileHash: string, name: string, currencyId = 'USD') {
   const preference = new Preference(mpClient);
 
+  const price = currencyId === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
+
   const item = {
-    id: `molino_premium_${profileHash}`,
+    id: `${PRODUCT_ID}_${profileHash}`,
     title: 'Molino — Mapa Personal Completo',
     quantity: 1,
-    unit_price: currencyId === 'USD' ? 9 : 8100,
+    unit_price: price,
     currency_id: currencyId,
     description: 'Acceso completo: numerología profunda, afinidad geográfica, compatibilidad y timing.',
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
   const response = await preference.create({
     body: {
       items: [item],
       back_urls: {
-        success: `${baseUrl}/profile?payment_status=approved&profile_hash=${profileHash}`,
-        failure: `${baseUrl}/profile?payment_status=failed&profile_hash=${profileHash}`,
-        pending: `${baseUrl}/profile?payment_status=pending&profile_hash=${profileHash}`,
+        success: `${baseUrl}/profile?payment_status=approved`,
+        failure: `${baseUrl}/profile?payment_status=failed`,
+        pending: `${baseUrl}/profile?payment_status=pending`,
       },
       auto_return: 'approved',
+      notification_url: `${baseUrl}/api/mp/webhook`,
       metadata: {
         profile_hash: profileHash,
-        product: 'molino_premium',
+        product: PRODUCT_ID,
         version: 'bricks_v1',
+        customer_name: name,
       },
       statement_descriptor: 'MOLINO',
     },
@@ -55,13 +79,50 @@ export async function getPaymentStatus(paymentId: string) {
   const response = await payment.get({ id: Number(paymentId) });
 
   return {
-    status: response.status,
+    status: (response.status ?? 'unknown') as string,
     status_detail: response.status_detail,
     payment_method_id: response.payment_method_id,
-    transaction_amount: response.transaction_amount,
+    transaction_amount: response.transaction_amount as number,
+    currency_id: (response.currency_id ?? 'USD') as string,
     date_approved: response.date_approved,
-    metadata: response.metadata,
+    metadata: response.metadata as Record<string, unknown> | undefined,
+    external_reference: response.external_reference as string | undefined,
   };
+}
+
+export interface PaymentValidation {
+  valid: boolean;
+  reason?: string;
+}
+
+export function validatePayment(payment: {
+  status: string;
+  transaction_amount: number;
+  currency_id: string;
+  metadata?: Record<string, unknown> | null;
+}): PaymentValidation {
+  if (payment.status !== 'approved') {
+    return { valid: false, reason: `Payment status is '${payment.status}', expected 'approved'` };
+  }
+
+  const expectedAmount = payment.currency_id === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
+  if (payment.transaction_amount !== expectedAmount) {
+    return {
+      valid: false,
+      reason: `Amount mismatch: got ${payment.transaction_amount} ${payment.currency_id}, expected ${expectedAmount}`,
+    };
+  }
+
+  if (payment.currency_id !== PRODUCT_CURRENCY_USD && payment.currency_id !== PRODUCT_CURRENCY_ARS) {
+    return { valid: false, reason: `Unexpected currency: ${payment.currency_id}` };
+  }
+
+  const product = payment.metadata?.product as string | undefined;
+  if (product !== PRODUCT_ID) {
+    return { valid: false, reason: `Product mismatch: got '${product ?? 'undefined'}', expected '${PRODUCT_ID}'` };
+  }
+
+  return { valid: true };
 }
 
 export async function processPayment({
@@ -86,7 +147,7 @@ export async function processPayment({
       description: 'Molino — Mapa Personal Completo',
       metadata: {
         profile_hash: profileHash,
-        product: 'molino_premium',
+        product: PRODUCT_ID,
       },
     },
   });
@@ -98,20 +159,29 @@ export async function processPayment({
   };
 }
 
-export function verifyWebhookSignature(signature: string | null, body: string): boolean {
-  if (!signature || !process.env.MP_WEBHOOK_SECRET) return false;
+export function verifyWebhookSignature(
+  signature: string | null,
+  requestId: string | null,
+  dataId: string | null,
+  body: string,
+): boolean {
+  if (!signature || !requestId || !dataId || !WEBHOOK_SECRET) return false;
 
   try {
     const parts = signature.split(',');
-    const ts = parts.find(p => p.startsWith('ts='))?.split('=')[1] || '';
-    const hash = parts.find(p => p.startsWith('v1='))?.split('=')[1] || '';
+    const ts = parts.find(p => p.startsWith('ts='))?.split('=')[1];
+    const hash = parts.find(p => p.startsWith('v1='))?.split('=')[1];
 
-    const manifest = `id:;request-id:;ts:${ts};` + body;
-    const expected = createHmac('sha256', process.env.MP_WEBHOOK_SECRET)
+    if (!ts || !hash) return false;
+
+    const manifest = `id:${dataId};request-id:${requestId};ts:${ts};`;
+    const expected = createHmac('sha256', WEBHOOK_SECRET)
       .update(manifest)
       .digest('hex');
 
-    return hash === expected;
+    if (expected.length !== hash.length) return false;
+
+    return timingSafeEqual(Buffer.from(expected), Buffer.from(hash));
   } catch {
     return false;
   }

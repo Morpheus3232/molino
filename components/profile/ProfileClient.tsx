@@ -76,10 +76,8 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabFromUrl = initialTab || searchParams.get("tab");
-  const paymentApproved = searchParams.get("payment_status") === "approved";
-  const initialActiveTab = paymentApproved ? "world" : tabFromUrl;
   const [activeTab, setActiveTab] = useState<ProfileTab | null>(
-    VALID_TABS.includes(initialActiveTab as ProfileTab) ? (initialActiveTab as ProfileTab) : null
+    VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
   );
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
@@ -177,7 +175,8 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     );
   }
 
-  const profileHash = profile.birthDate;
+  const profileName = profile.name;
+  const profileBirthDate = profile.birthDate;
 
   return (
     <div className="min-h-screen bg-background">
@@ -227,17 +226,17 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             >
               {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
               {activeTab === "world" && (
-                <PremiumGate profileHash={profileHash}>
+                <PremiumGate name={profileName} birthDate={profileBirthDate}>
                   <WorldScreen profile={profile} onNavigate={handleEnter} />
                 </PremiumGate>
               )}
               {activeTab === "circle" && (
-                <PremiumGate profileHash={profileHash}>
+                <PremiumGate name={profileName} birthDate={profileBirthDate}>
                   <CircleScreen profile={profile} onNavigate={handleEnter} />
                 </PremiumGate>
               )}
               {activeTab === "intelligence" && (
-                <PremiumGate profileHash={profileHash}>
+                <PremiumGate name={profileName} birthDate={profileBirthDate}>
                   <IntelligenceScreen profile={profile} onNavigate={handleEnter} />
                 </PremiumGate>
               )}

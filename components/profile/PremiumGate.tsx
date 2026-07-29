@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import PaymentBrick from '@/components/payment/PaymentBrick';
 
 interface PremiumGateProps {
-  profileHash: string;
+  name: string;
+  birthDate: string;
   children: React.ReactNode;
 }
 
@@ -12,9 +13,8 @@ type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked';
 
 const POLL_INTERVAL = 5000;
 
-export default function PremiumGate({ profileHash, children }: PremiumGateProps) {
+export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
-  const [paymentId, setPaymentId] = useState<string>('');
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const checkServer = useCallback(async (): Promise<boolean> => {
@@ -22,74 +22,42 @@ export default function PremiumGate({ profileHash, children }: PremiumGateProps)
       const res = await fetch('/api/mp/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ profileHash }),
+        body: JSON.stringify({ name, birthDate }),
       });
       const data = await res.json();
       return data.premium === true;
     } catch {
       return false;
     }
-  }, [profileHash]);
-
-  const unlock = useCallback(() => {
-    localStorage.setItem(`molino_premium_${profileHash}`, 'true');
-    setState('unlocked');
-  }, [profileHash]);
+  }, [name, birthDate]);
 
   useEffect(() => {
-    const cached = localStorage.getItem(`molino_premium_${profileHash}`);
-    if (cached === 'true') {
-      checkServer().then(valid => {
-        if (valid) {
-          unlock();
-        } else {
-          localStorage.removeItem(`molino_premium_${profileHash}`);
-        }
-      });
-    }
-  }, [profileHash, checkServer, unlock]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const pStatus = params.get('payment_status');
-    const pid = params.get('payment_id');
-
-    if (pStatus === 'approved' && pid) {
-      setPaymentId(pid);
-      setState('verifying');
-
-      checkServer().then(isPremium => {
-        if (isPremium) {
-          unlock();
-          window.history.replaceState({}, '', window.location.pathname);
-        }
-      });
-    }
-  }, [profileHash, checkServer, unlock]);
+    checkServer().then(premium => {
+      if (premium) setState('unlocked');
+    });
+  }, [checkServer]);
 
   useEffect(() => {
     if (state !== 'verifying') return;
 
     pollRef.current = setInterval(async () => {
-      const isPremium = await checkServer();
-      if (isPremium) {
+      const premium = await checkServer();
+      if (premium) {
         if (pollRef.current) clearInterval(pollRef.current);
-        unlock();
+        setState('unlocked');
       }
     }, POLL_INTERVAL);
 
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
-  }, [state, checkServer, unlock]);
+  }, [state, checkServer]);
 
-  const handlePaymentApproved = useCallback((pid: string) => {
-    setPaymentId(pid);
+  const handlePaymentApproved = useCallback(() => {
     setState('verifying');
   }, []);
 
-  const handlePaymentPending = useCallback((pid: string) => {
-    setPaymentId(pid);
+  const handlePaymentPending = useCallback(() => {
     setState('verifying');
   }, []);
 
@@ -120,7 +88,8 @@ export default function PremiumGate({ profileHash, children }: PremiumGateProps)
         </div>
 
         <PaymentBrick
-          profileHash={profileHash}
+          name={name}
+          birthDate={birthDate}
           currencyId="USD"
           onPaymentApproved={handlePaymentApproved}
           onPaymentPending={handlePaymentPending}
