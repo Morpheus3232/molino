@@ -45,7 +45,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  delete globalThis.localStorage;
+  (globalThis as any).localStorage = undefined;
 });
 
 describe("generateProfileHash", () => {

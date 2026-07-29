@@ -62,14 +62,14 @@ export default function HeroNew() {
     .replace(/\//g, ".");
 
   const colBorder = "border-accent/10";
-  const cellPad = "p-6 sm:p-10 lg:p-12";
+  const cellPad = "p-8 sm:p-10 lg:p-12";
 
   return (
     <section className="relative min-h-screen flex items-center bg-background pt-20 overflow-hidden">
       <div className="relative mx-auto max-w-8xl w-full px-5 sm:px-8 lg:px-12">
         <div className="flex flex-wrap border-t border-accent/10">
           <div className={`w-full lg:w-2/5 ${cellPad} flex flex-col justify-between lg:border-r ${colBorder} border-b ${colBorder} relative`}>
-            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.12]">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-[0.08]">
               <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="w-full h-full">
                 <g stroke="currentColor" strokeWidth="0.06" fill="none" className="text-accent">
                   {CONSTELLATION.filter(e => e.type === "line").map((e, i) => (
@@ -113,7 +113,7 @@ export default function HeroNew() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="font-serif text-[clamp(7rem,28vw,30rem)] leading-[0.7] tracking-tight text-foreground"
+                className="font-bold text-[clamp(7rem,28vw,30rem)] leading-[0.7] tracking-tight text-foreground"
               >
                 {number}
               </motion.h1>
@@ -151,7 +151,7 @@ export default function HeroNew() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-sm md:text-base text-muted leading-relaxed mt-5 italic max-w-prose"
+                  className="text-sm md:text-base text-muted/80 leading-relaxed mt-5 italic"
                 >
                   {reflection.recommendation}
                 </motion.p>
@@ -193,7 +193,7 @@ export default function HeroNew() {
             </div>
           </div>
 
-          <div className={`w-full lg:w-1/5 ${cellPad} flex flex-row justify-between items-start gap-4 lg:flex-col lg:justify-center lg:items-stretch lg:gap-8 border-b ${colBorder}`}>
+          <div className={`w-full lg:w-1/5 ${cellPad} flex flex-col justify-center gap-8 border-b ${colBorder}`}>
             {ESTADISTICAS.map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -201,7 +201,7 @@ export default function HeroNew() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
               >
-                <p className="text-xl md:text-3xl lg:text-4xl font-bold text-accent leading-none mb-1">{stat.valor}</p>
+                <p className="text-3xl md:text-4xl font-bold text-accent leading-none mb-1">{stat.valor}</p>
                 <p className="text-xs text-muted font-mono tracking-wide leading-relaxed">{stat.label}</p>
               </motion.div>
             ))}
