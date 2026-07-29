@@ -131,7 +131,7 @@ export default function PaymentBrick({
     <div className="payment-brick-container">
       <Payment
         initialization={{
-          amount: currencyId === 'USD' ? 9 : 8100,
+          amount: currencyId === 'USD' ? 8 : 8100,
           preferenceId,
         }}
         onSubmit={handleSubmit}
