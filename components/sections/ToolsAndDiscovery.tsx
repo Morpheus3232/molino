@@ -6,56 +6,62 @@ import { Compass, Clover, Heart, Sun, Zap, Globe, Building2, Tag } from "lucide-
 
 const categories = [
   {
-    title: "Tu Identidad",
+    micro: "IDENTIDAD",
+    title: "TU IDENTIDAD",
     tools: [
-      { name: "Camino de Vida", icon: Compass },
-      { name: "Número de la Suerte", icon: Clover },
+      { name: "CAMINO DE VIDA", icon: Compass, href: "/herramientas/camino-de-vida" },
+      { name: "NÚMERO DE LA SUERTE", icon: Clover, href: "/onboarding" },
     ],
   },
   {
-    title: "Tus Relaciones",
+    micro: "RELACIONES",
+    title: "TUS RELACIONES",
     tools: [
-      { name: "Compatibilidad", icon: Heart },
-      { name: "Signo Solar", icon: Sun },
-      { name: "Zodíaco Chino", icon: Zap },
+      { name: "COMPATIBILIDAD", icon: Heart, href: "/herramientas/compatibilidad" },
+      { name: "SIGNO SOLAR", icon: Sun, href: "/herramientas/signo-solar" },
+      { name: "ZODÍACO CHINO", icon: Zap, href: "/herramientas/zodiaco-chino" },
     ],
   },
   {
-    title: "Explorá Conexiones",
+    micro: "CONEXIONES",
+    title: "EXPLORÁ CONEXIONES",
     tools: [
-      { name: "Países", icon: Globe },
-      { name: "Ciudades", icon: Building2 },
-      { name: "Marcas", icon: Tag },
+      { name: "PAÍSES", icon: Globe, href: "/compatibility/countries" },
+      { name: "CIUDADES", icon: Building2, href: "/compatibility/countries" },
+      { name: "MARCAS", icon: Tag, href: "/compatibility/brands" },
     ],
   },
 ];
 
-const colBorder = "border-accent/10";
-const cellPad = "p-8 sm:p-10 lg:p-12";
+const cellPad = "p-8 sm:p-10 lg:p-14";
 
 export default function ToolsAndDiscovery() {
   const router = useRouter();
 
   return (
-    <section className="py-20 sm:py-24 bg-background">
+    <section className="section-paper-alt">
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-12 sm:mb-16"
+          className={`${cellPad} px-0`}
         >
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Herramientas y afinidades</p>
-          <h2 className="font-heading uppercase text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
-            Explorá tu perfil
+          <p className="eyebrow-brutalist mb-4">HERRAMIENTAS Y AFINIDADES</p>
+          <h2 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+            EXPLORÁ
+            <br />
+            TU PERFIL.
           </h2>
-          <p className="text-sm sm:text-base text-muted mt-4 max-w-2xl leading-relaxed">
+          <p className="text-sm sm:text-base text-muted mt-4 max-w-xl leading-relaxed">
             Ingresá tu fecha de nacimiento y descubrí cómo resuena tu energía con cada sistema.
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap">
+        {/* Three-column grid */}
+        <div className="flex flex-wrap border-t border-ink/10">
           {categories.map((cat, ci) => (
             <motion.div
               key={cat.title}
@@ -63,23 +69,28 @@ export default function ToolsAndDiscovery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: ci * 0.1 }}
-              className={`w-full md:w-1/3 flex flex-col ${ci > 0 ? "md:border-l border-accent/10" : ""} border-b md:border-b-0 border-accent/10`}
+              className={`w-full md:w-1/3 flex flex-col ${ci > 0 ? "md:border-l border-ink/10" : ""} border-b md:border-b-0 border-ink/10`}
             >
               <div className={`flex-1 ${cellPad}`}>
-                <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">{cat.title}</p>
-                <div className="space-y-1">
+                <p className="font-mono text-xs text-accent font-semibold tracking-[0.25em] mb-6">
+                  {cat.micro}
+                </p>
+                <h3 className="font-display text-4xl sm:text-5xl text-foreground leading-[0.9] mb-8">
+                  {cat.title}
+                </h3>
+                <div className="space-y-0">
                   {cat.tools.map((tool) => (
                     <button
                       key={tool.name}
                       type="button"
-                      onClick={() => router.push("/onboarding")}
-                      className="group w-full flex items-center gap-3 px-3 py-3 -mx-3 rounded-none hover:bg-accent/5 transition-colors"
+                      onClick={() => router.push(tool.href)}
+                      className="group w-full flex items-center gap-4 py-4 border-t border-ink/10 hover:bg-accent/5 transition-colors px-2 -mx-2"
                     >
                       <tool.icon className="w-4 h-4 text-muted group-hover:text-accent transition-colors shrink-0" />
-                      <span className="text-sm text-foreground group-hover:text-accent transition-colors">
+                      <span className="text-sm text-foreground font-medium tracking-wide group-hover:text-accent transition-colors">
                         {tool.name}
                       </span>
-                      <span className="ml-auto text-xs text-muted/40 group-hover:text-accent transition-colors">→</span>
+                      <span className="ml-auto text-xs text-muted/50 group-hover:text-accent transition-colors">→</span>
                     </button>
                   ))}
                 </div>
@@ -88,20 +99,26 @@ export default function ToolsAndDiscovery() {
           ))}
         </div>
 
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-12 text-center"
+          className="border-t border-ink/10"
         >
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center gap-2 px-8 py-3 bg-accent text-white text-sm font-medium hover:bg-accent/90 transition-colors"
-          >
-            Ingresá tu fecha de nacimiento →
-          </button>
+          <div className="accent-block py-6 px-8 sm:px-10 lg:px-14 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-white text-sm font-bold tracking-wide uppercase">
+              ¿Listo para descubrir tu mapa?
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push("/onboarding")}
+              className="btn bg-white text-accent hover:bg-white/90 font-bold text-sm tracking-wider uppercase px-8 py-3"
+            >
+              INGRESÁ TU FECHA →
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>

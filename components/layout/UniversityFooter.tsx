@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function UniversityFooter() {
   return (
-    <footer className="border-t border-border bg-neutral-950 text-white">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 py-16 sm:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-y-0">
+    <footer className="bg-ink text-white">
+      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-20 sm:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0">
           <div className="md:col-span-5 md:pr-12">
-            <span className="inline-flex h-11 w-11 items-center justify-center bg-background text-foreground border border-border">
+            <span className="inline-flex h-11 w-11 items-center justify-center bg-white/10 border border-white/20">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
                 <path d="M10 30 L8 14 L24 14 L22 30 Z" />
                 <path d="M7 14 L16 7 L25 14 Z" />
@@ -20,55 +20,55 @@ export default function UniversityFooter() {
                 <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
               </svg>
             </span>
-            <p className="font-heading uppercase text-sm text-white mt-4 tracking-wide">
-              Mapa Personal de Autoconocimiento
+            <p className="font-display text-lg text-white mt-5 uppercase tracking-wide">
+              MOLINO
             </p>
-            <p className="text-sm text-white mt-2 max-w-xs leading-relaxed">
-              Conocéte. Entendéte. Orientáte.
+            <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">
+              Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
             </p>
           </div>
 
           <div className="md:col-span-3 md:col-start-7">
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-white font-medium mb-5">
-              Explorar
+            <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
+              EXPLORAR
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               <li>
-                <Link href="/" className="text-sm text-white hover:text-white/70 transition-colors">Inicio</Link>
+                <Link href="/" className="text-sm text-white/80 hover:text-white transition-colors font-medium">INICIO</Link>
               </li>
               <li>
-                <Link href="/profile" className="text-sm text-white hover:text-white/70 transition-colors">Mi mapa</Link>
+                <Link href="/profile" className="text-sm text-white/80 hover:text-white transition-colors font-medium">MI MAPA</Link>
               </li>
               <li>
-                <Link href="/explore" className="text-sm text-white hover:text-white/70 transition-colors">Explorar</Link>
+                <Link href="/explore" className="text-sm text-white/80 hover:text-white transition-colors font-medium">EXPLORAR</Link>
               </li>
               <li>
-                <Link href="/biblioteca" className="text-sm text-white hover:text-white/70 transition-colors">Biblioteca</Link>
+                <Link href="/biblioteca" className="text-sm text-white/80 hover:text-white transition-colors font-medium">BIBLIOTECA</Link>
               </li>
               <li>
-                <Link href="/guia" className="text-sm text-white hover:text-white/70 transition-colors">Guía</Link>
+                <Link href="/guia" className="text-sm text-white/80 hover:text-white transition-colors font-medium">GUÍA</Link>
               </li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-white font-medium mb-5">
-              Principios
+            <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
+              PRINCIPIOS
             </h4>
-            <ul className="space-y-3 text-sm text-white">
-              <li><Link href="/filosofia#conocimiento-libre" className="hover:text-white/70 transition-colors">Conocimiento libre</Link></li>
-              <li><Link href="/filosofia#privacidad-radical" className="hover:text-white/70 transition-colors">Privacidad radical</Link></li>
-              <li><Link href="/filosofia#transparencia-total" className="hover:text-white/70 transition-colors">Transparencia total</Link></li>
-              <li><Link href="/filosofia#codigo-abierto" className="hover:text-white/70 transition-colors">Código abierto</Link></li>
-              <li><Link href="/filosofia#sin-tracking" className="hover:text-white/70 transition-colors">Sin tracking ni cookies</Link></li>
+            <ul className="space-y-4">
+              <li><Link href="/filosofia#conocimiento-libre" className="text-sm text-white/80 hover:text-white transition-colors font-medium">CONOCIMIENTO LIBRE</Link></li>
+              <li><Link href="/filosofia#privacidad-radical" className="text-sm text-white/80 hover:text-white transition-colors font-medium">PRIVACIDAD RADICAL</Link></li>
+              <li><Link href="/filosofia#transparencia-total" className="text-sm text-white/80 hover:text-white transition-colors font-medium">TRANSPARENCIA TOTAL</Link></li>
+              <li><Link href="/filosofia#codigo-abierto" className="text-sm text-white/80 hover:text-white transition-colors font-medium">CÓDIGO ABIERTO</Link></li>
+              <li><Link href="/filosofia#sin-tracking" className="text-sm text-white/80 hover:text-white transition-colors font-medium">SIN TRACKING</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-14 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white">
-          <p>Molino — Mapa Personal de Autoconocimiento</p>
-          <p className="text-center sm:text-right">
-            Contenido educativo y simbólico. Compartilo libremente.
+        <div className="mt-16 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/40 font-mono tracking-wider">MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO</p>
+          <p className="text-xs text-white/40 font-mono tracking-wider">
+            CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
           </p>
         </div>
       </div>

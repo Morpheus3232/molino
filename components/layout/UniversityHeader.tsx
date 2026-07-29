@@ -27,10 +27,10 @@ export default function UniversityHeader() {
   }, [currentTheme, setTheme]);
 
   const navLinks = [
-    { href: "/", label: "Inicio" },
-    { href: "/biblioteca", label: "Biblioteca" },
-    { href: "/filosofia", label: "Filosofía" },
-    { href: "https://github.com", label: "GitHub", external: true },
+    { href: "/", label: "INICIO" },
+    { href: "/biblioteca", label: "BIBLIOTECA" },
+    { href: "/filosofia", label: "FILOSOFÍA" },
+    { href: "https://github.com", label: "GITHUB", external: true },
   ];
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -105,12 +105,12 @@ export default function UniversityHeader() {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-background/80 backdrop-blur-sm shadow-sm border-b border-border" : "bg-transparent"
+          scrolled ? "bg-background/90 backdrop-blur-sm border-b border-ink/10" : "bg-transparent"
         }`}
       >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
-            <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-border">
+            <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
                 <path d="M10 30 L8 14 L24 14 L22 30 Z" />
                 <path d="M7 14 L16 7 L25 14 Z" />
@@ -134,14 +134,14 @@ export default function UniversityHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className={`text-sm font-medium transition-colors hover:text-accent ${
+                className={`text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
                   pathname === link.href ? "text-foreground" : "text-muted"
                 }`}
                 aria-current={pathname === link.href ? "page" : undefined}
@@ -156,7 +156,7 @@ export default function UniversityHeader() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-muted transition-colors"
+              className="p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
               aria-label={currentTheme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
             >
               {currentTheme === "dark" ? <Sun className="w-5 h-5" aria-hidden="true" /> : <Moon className="w-5 h-5" aria-hidden="true" />}
@@ -165,10 +165,10 @@ export default function UniversityHeader() {
             {hasProfile && (
               <Link
                 href="/profile"
-                className="hidden sm:inline-flex items-center rounded-full px-4 py-2 text-sm transition-colors text-muted hover:text-foreground"
+                className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
                 aria-current={pathname === "/profile" ? "page" : undefined}
               >
-                Mi mapa
+                MI MAPA
               </Link>
             )}
             {hasProfile ? (
@@ -176,23 +176,23 @@ export default function UniversityHeader() {
                 ref={triggerRef}
                 type="button"
                 onClick={handleNewProfile}
-                className="inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-medium text-muted hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                className="inline-flex items-center justify-center border border-ink/10 px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
               >
-                Nuevo perfil
+                NUEVO PERFIL
               </button>
             ) : (
               <Link
                 href="/onboarding"
-                className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="btn-accent inline-flex items-center justify-center px-5 py-2 text-xs font-bold tracking-wider uppercase"
               >
-                Descubrir mi mapa
+                DESCUBRIR MI MAPA
               </Link>
             )}
 
             {/* Mobile menu toggle */}
             <button
               type="button"
-              className="lg:hidden p-2 rounded-lg text-muted hover:text-foreground hover:bg-muted transition-colors"
+              className="lg:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -206,7 +206,7 @@ export default function UniversityHeader() {
         {/* Mobile Navigation */}
         <motion.div
           id="mobile-menu"
-          className="lg:hidden overflow-hidden border-t border-border bg-background"
+          className="lg:hidden overflow-hidden border-t border-ink/10 bg-background"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: mobileMenuOpen ? 1 : 0, height: mobileMenuOpen ? "auto" : 0 }}
           transition={{ duration: 0.2 }}
@@ -218,8 +218,8 @@ export default function UniversityHeader() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-muted"
+                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
+                  pathname === link.href ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
                 }`}
                 aria-current={pathname === link.href ? "page" : undefined}
                 onClick={() => setMobileMenuOpen(false)}
@@ -227,31 +227,31 @@ export default function UniversityHeader() {
                 {link.label}
               </Link>
             ))}
-            <hr className="border-border my-2" />
+            <hr className="border-ink/10 my-2" />
             {hasProfile ? (
               <>
                 <Link
                   href="/profile"
-                  className="block px-3 py-2 rounded-lg text-sm font-medium text-muted hover:text-foreground hover:bg-muted transition-colors"
+                  className="block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Mi mapa
+                  MI MAPA
                 </Link>
                 <button
                   type="button"
                   onClick={handleNewProfile}
-                  className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-muted hover:text-foreground hover:bg-muted transition-colors"
+                  className="w-full text-left px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
                 >
-                  Nuevo perfil
+                  NUEVO PERFIL
                 </button>
               </>
             ) : (
               <Link
                 href="/onboarding"
-                className="block px-3 py-2 rounded-lg text-sm font-medium text-center bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                className="block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-center bg-accent text-white hover:bg-accent/90 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Descubrir mi mapa
+                DESCUBRIR MI MAPA
               </Link>
             )}
           </nav>
@@ -260,16 +260,16 @@ export default function UniversityHeader() {
 
       {showConfirm && (
         <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-          <div className="absolute inset-0 bg-neutral-900/50" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} />
-          <div className="relative bg-card border border-border p-6 sm:p-8 max-w-sm mx-4 w-full">
-            <h3 id="confirm-title" className="font-heading uppercase text-sm tracking-[0.2em] text-foreground mb-2">Nuevo perfil</h3>
+          <div className="absolute inset-0 bg-ink/50" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} />
+          <div className="relative bg-background border border-ink/10 p-8 sm:p-10 max-w-sm mx-4 w-full">
+            <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">NUEVO PERFIL</h3>
             <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-muted">
-                Cancelar
+              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-mono font-semibold tracking-wider uppercase bg-transparent text-foreground border border-ink/10 hover:bg-ink/5 transition-colors">
+                CANCELAR
               </button>
-              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground">
-                Crear nuevo
+              <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-mono font-semibold tracking-wider uppercase bg-accent text-white hover:bg-accent/90 transition-colors">
+                CREAR NUEVO
               </button>
             </div>
           </div>
