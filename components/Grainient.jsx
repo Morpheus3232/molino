@@ -231,7 +231,7 @@ const Grainient = ({
       ctxMap.delete(container);
       try { container.removeChild(canvas); } catch { /* ignore */ }
     };
-  }, []);
+  }, [color1, color2, color3]);
 
   useEffect(() => {
     const container = containerRef.current;

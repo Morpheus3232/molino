@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { loadProfileFromStorage } from "@/lib/storage/localStorage";
+import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import type { UserProfile } from "@/types/user";
 import UniversityHeader from "@/components/layout/UniversityHeader";

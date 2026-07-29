@@ -13,9 +13,9 @@ test.describe("QA — Molino Homepage", () => {
       const dayPicker = page.locator('[aria-label="Day"]');
       const monthPicker = page.locator('[aria-label="Month"]');
       const yearPicker = page.locator('[aria-label="Year"]');
-      await expect(dayPicker first()).toBeVisible();
-      await expect(monthPicker first()).toBeVisible();
-      await expect(yearPicker first()).toBeVisible();
+      await expect(dayPicker.first()).toBeVisible();
+      await expect(monthPicker.first()).toBeVisible();
+      await expect(yearPicker.first()).toBeVisible();
     });
 
     test("DatePicker day adjusts for month length (April = 30 days)", async ({ page }) => {

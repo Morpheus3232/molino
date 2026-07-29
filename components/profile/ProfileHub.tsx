@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Share2 } from "lucide-react";
@@ -16,8 +16,10 @@ import { generateProfileHash, storeSharedProfile } from "@/lib/profile/hash";
 import { toast } from "sonner";
 import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
-import { loadDiscoveryState } from "@/lib/storage/discovery";
+import { loadDiscoveryState } from "@/lib/session/discovery";
 import CrossLinks from "./CrossLinks";
+import EphemeralWarning from "./EphemeralWarning";
+import DownloadProfileButton from "./DownloadProfileButton";
 
 interface ProfileHubProps {
   profile: UserProfile;
@@ -105,9 +107,15 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       detail: "",
     },
   ];
+  const [showEphemeralWarning, setShowEphemeralWarning] = useState(true);
 
   return (
     <div className="min-h-screen bg-white">
+      {showEphemeralWarning && (
+        <EphemeralWarning
+          onDismiss={() => setShowEphemeralWarning(false)}
+        />
+      )}
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
         <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
@@ -241,6 +249,10 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             </button>
           </motion.div>
         )}
+
+        <div className="pt-8">
+          <DownloadProfileButton elementId="profile-hub" filename="mi-mapa-molino" />
+        </div>
       </div>
 
       {onEnter && (

@@ -62,3 +62,39 @@ export function isSessionValid(): boolean {
   const age = Date.now() - session.timestamp;
   return age < 30 * 60 * 1000;
 }
+
+const ONBOARDING_KEY = "molino.onboarding.v1";
+
+interface OnboardingData {
+  day: string;
+  month: string;
+  year: string;
+  dateValue: string;
+  dateOfBirth?: string;
+}
+
+export function saveOnboardingData(data: OnboardingData): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(ONBOARDING_KEY, JSON.stringify(data));
+  }
+}
+
+export function loadOnboardingData(): OnboardingData | null {
+  if (typeof window !== "undefined") {
+    const stored = localStorage.getItem(ONBOARDING_KEY);
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch {
+        return null;
+      }
+    }
+  }
+  return null;
+}
+
+export function clearOnboardingData(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(ONBOARDING_KEY);
+  }
+}

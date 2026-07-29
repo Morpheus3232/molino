@@ -21,6 +21,15 @@ const nextConfig = {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
   staticPageGenerationTimeout: 120,
+  async redirects() {
+    return [
+      {
+        source: '/principios',
+        destination: '/filosofia',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

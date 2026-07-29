@@ -126,6 +126,7 @@ const TYPE_META = {
 export default function BibliotecaContent() {
   const router = useRouter();
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [expandedDescription, setExpandedDescription] = useState<string | null>(null);
 
   const allTags = useMemo(() => {
@@ -136,11 +137,15 @@ export default function BibliotecaContent() {
 
   const filtered = useMemo(() => {
     return SOURCES.filter(s => {
-      const matchFilter = true;
       const matchTag = !activeTag || (s.tags || []).includes(activeTag);
-      return matchFilter && matchTag;
+      const matchSearch = !searchQuery ||
+        s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        s.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchTag && matchSearch;
     });
-  }, [activeTag]);
+  }, [activeTag, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -159,17 +164,30 @@ export default function BibliotecaContent() {
           </p>
         </motion.section>
 
-        {/* Tag filter */}
+        {/* Tag filter + Search */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
-          <div className="flex flex-wrap gap-2">
-            <button onClick={() => setActiveTag(null)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${!activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
-              Todos
-            </button>
-            {allTags.map(tag => (
-              <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${activeTag === tag ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
-                #{tag}
+          <div className="flex flex-col sm:flex-row gap-3 mb-6">
+            <div className="flex-1">
+              <label htmlFor="biblioteca-search" className="sr-only">Buscar en la biblioteca</label>
+              <input
+                id="biblioteca-search"
+                type="search"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Buscar por título, autor, descripción o etiqueta…"
+                className="w-full px-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition-all"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 sm:flex-1 sm:justify-end">
+              <button onClick={() => setActiveTag(null)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${!activeTag ? "bg-primary text-primary-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+                Todos
               </button>
-            ))}
+              {allTags.map(tag => (
+                <button key={tag} onClick={() => setActiveTag(activeTag === tag ? null : tag)} className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${activeTag === tag ? "bg-accent text-accent-foreground" : "bg-background border border-border text-muted hover:text-foreground"}`}>
+                  #{tag}
+                </button>
+              ))}
+            </div>
           </div>
         </motion.section>
 

@@ -4,11 +4,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { hasStoredProfile, clearStoredProfile } from "@/lib/storage/localStorage";
+import { useTheme } from "next-themes";
+import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [hasProfile, setHasProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -16,6 +19,19 @@ export default function UniversityHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
+
+  const currentTheme = theme === "system" ? resolvedTheme : theme;
+
+  const toggleTheme = useCallback(() => {
+    setTheme(currentTheme === "dark" ? "light" : "dark");
+  }, [currentTheme, setTheme]);
+
+  const navLinks = [
+    { href: "/", label: "Inicio" },
+    { href: "/biblioteca", label: "Biblioteca" },
+    { href: "/filosofia", label: "Filosofía" },
+    { href: "https://github.com", label: "GitHub", external: true },
+  ];
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
@@ -89,12 +105,12 @@ export default function UniversityHeader() {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/80 backdrop-blur-sm shadow-sm" : "bg-transparent"
+          scrolled ? "bg-background/80 backdrop-blur-sm shadow-sm border-b border-border" : "bg-transparent"
         }`}
       >
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
-            <span className="inline-flex h-10 w-10 items-center justify-center bg-white text-foreground border border-border">
+            <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-border">
               <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
                 <path d="M10 30 L8 14 L24 14 L22 30 Z" />
                 <path d="M7 14 L16 7 L25 14 Z" />
@@ -117,7 +133,35 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-6" aria-label="Navegación principal">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className={`text-sm font-medium transition-colors hover:text-accent ${
+                  pathname === link.href ? "text-foreground" : "text-muted"
+                }`}
+                aria-current={pathname === link.href ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
           <div className="flex items-center gap-3">
+            {/* Theme toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-muted transition-colors"
+              aria-label={currentTheme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
+            >
+              {currentTheme === "dark" ? <Sun className="w-5 h-5" aria-hidden="true" /> : <Moon className="w-5 h-5" aria-hidden="true" />}
+            </button>
+
             {hasProfile && (
               <Link
                 href="/profile"
@@ -136,17 +180,82 @@ export default function UniversityHeader() {
               >
                 Nuevo perfil
               </button>
-            ) : null}
+            ) : (
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                Crear mi mapa
+              </Link>
+            )}
+
+            {/* Mobile menu toggle */}
+            <button
+              type="button"
+              className="lg:hidden p-2 rounded-lg text-muted hover:text-foreground hover:bg-muted transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
         </div>
 
-        {hasProfile && (
-          <div className="lg:hidden px-5 sm:px-8 pb-3">
-            <Link href="/profile" className="text-sm text-muted hover:text-foreground transition-colors">
-              Mi mapa
-            </Link>
-          </div>
-        )}
+        {/* Mobile Navigation */}
+        <motion.div
+          id="mobile-menu"
+          className="lg:hidden overflow-hidden border-t border-border bg-background"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: mobileMenuOpen ? 1 : 0, height: mobileMenuOpen ? "auto" : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <nav className="px-5 py-4 space-y-3" aria-label="Navegación móvil">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
+                className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  pathname === link.href ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-muted"
+                }`}
+                aria-current={pathname === link.href ? "page" : undefined}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <hr className="border-border my-2" />
+            {hasProfile ? (
+              <>
+                <Link
+                  href="/profile"
+                  className="block px-3 py-2 rounded-lg text-sm font-medium text-muted hover:text-foreground hover:bg-muted transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Mi mapa
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleNewProfile}
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-muted hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  Nuevo perfil
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/"
+                className="block px-3 py-2 rounded-lg text-sm font-medium text-center bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Crear mi mapa
+              </Link>
+            )}
+          </nav>
+        </motion.div>
       </motion.header>
 
       {showConfirm && (
@@ -156,7 +265,7 @@ export default function UniversityHeader() {
             <h3 id="confirm-title" className="font-heading uppercase text-sm tracking-[0.2em] text-foreground mb-2">Nuevo perfil</h3>
             <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
             <div className="flex gap-3">
-              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-neutral-900/5">
+              <button type="button" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1 inline-flex items-center justify-center gap-2 font-medium transition-all px-4 py-3 text-sm bg-transparent text-foreground border border-border hover:bg-muted">
                 Cancelar
               </button>
               <button type="button" onClick={confirmNewProfile} className="flex-1 inline-flex items-center justify-center gap-2 font-medium transition-all px-4 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground">
