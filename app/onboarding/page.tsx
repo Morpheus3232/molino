@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, ChevronRight, Hash, Sun, Moon, ArrowRight, Loader2 } from "lucide-react";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import ScrollDatePicker from "@/components/ui/ScrollDatePicker";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, loadOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 
@@ -24,11 +25,11 @@ const ENGINES_PREVIEW = [
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [dateValue, setDateValue] = useState("");
+  const [dateValue, setDateValue] = useState("1990-01-01");
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setDateValue(e.target.value);
+  const handleDateChange = useCallback((value: string) => {
+    setDateValue(value);
   }, []);
 
   const isDateValid = dateValue && /^\d{4}-\d{2}-\d{2}$/.test(dateValue);
@@ -165,34 +166,13 @@ export default function OnboardingPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="max-w-xs mx-auto"
+                className="mx-auto max-w-sm"
               >
-                <label htmlFor="dob" className="block text-sm font-medium text-foreground mb-2">
-                  Fecha de nacimiento
-                </label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground/50" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="16" y1="2" x2="16" y2="6"/>
-                      <line x1="8" y1="2" x2="8" y2="6"/>
-                      <line x1="3" y1="10" x2="21" y2="10"/>
-                    </svg>
-                  </div>
-                  <input
-                    id="dob"
-                    type="date"
-                    value={dateValue}
-                    onChange={handleDateChange}
-                    max={new Date().toISOString().split("T")[0]}
-                    min="1900-01-01"
-                    className="w-full pl-12 pr-6 py-4 text-center font-heading text-xl sm:text-2xl font-semibold tracking-wider text-foreground bg-background border-2 border-border rounded-xl focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all placeholder:text-muted-foreground/30"
-                    autoComplete="bday"
-                    required
-                    aria-describedby="date-hint"
-                  />
-                </div>
-                <p id="date-hint" className="mt-3 text-sm text-muted-foreground">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/50 text-center mb-6">
+                  Seleccioná tu fecha de nacimiento
+                </p>
+                <ScrollDatePicker value={dateValue} onChange={handleDateChange} />
+                <p className="mt-6 text-sm text-muted-foreground text-center">
                   Tu fecha nunca sale de tu navegador.
                 </p>
               </motion.div>
