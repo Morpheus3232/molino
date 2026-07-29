@@ -13,6 +13,7 @@ interface PremiumGateProps {
 type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked';
 
 const POLL_INTERVAL = 5000;
+const POLL_MAX_ATTEMPTS = 24; // 2 minutos máximo
 
 export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
@@ -20,7 +21,9 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   const [recoverPaymentId, setRecoverPaymentId] = useState('');
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
+  const [pollTimedOut, setPollTimedOut] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const pollAttemptsRef = useRef(0);
 
   const checkServer = useCallback(async (): Promise<boolean> => {
     try {
@@ -50,7 +53,18 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   useEffect(() => {
     if (state !== 'verifying') return;
 
+    pollAttemptsRef.current = 0;
+    setPollTimedOut(false);
+
     pollRef.current = setInterval(async () => {
+      pollAttemptsRef.current += 1;
+
+      if (pollAttemptsRef.current >= POLL_MAX_ATTEMPTS) {
+        if (pollRef.current) clearInterval(pollRef.current);
+        setPollTimedOut(true);
+        return;
+      }
+
       const premium = await checkServer();
       if (premium) {
         if (pollRef.current) clearInterval(pollRef.current);
@@ -69,7 +83,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     setState('verifying');
   }, []);
 
-  const handlePaymentPending = useCallback(() => {
+  const handlePaymentPending = useCallback((_paymentId?: string) => {
     setState('verifying');
   }, []);
 
@@ -149,9 +163,28 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   if (state === 'verifying') {
     return (
       <div className="max-w-xl mx-auto my-8 text-center py-16">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mx-auto mb-6"></div>
-        <h3 className="text-xl font-semibold text-white mb-2">Verificando tu pago...</h3>
-        <p className="text-gray-400">Esto solo toma unos segundos</p>
+        {!pollTimedOut ? (
+          <>
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mx-auto mb-6"></div>
+            <h3 className="text-xl font-semibold text-white mb-2">Verificando tu pago...</h3>
+            <p className="text-gray-400">Esto solo toma unos segundos</p>
+          </>
+        ) : (
+          <>
+            <div className="text-4xl mb-4">⏱</div>
+            <h3 className="text-xl font-semibold text-white mb-2">El pago está siendo procesado</h3>
+            <p className="text-gray-400 mb-6">
+              Mercado Pago confirmará tu pago en breve. Si ya ves el cargo en tu cuenta,
+              ingresá tu ID de pago para recuperar el acceso ahora.
+            </p>
+            <button
+              onClick={() => { setShowRecover(true); setState('locked'); }}
+              className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-colors"
+            >
+              Recuperar acceso con mi ID de pago
+            </button>
+          </>
+        )}
       </div>
     );
   }
