@@ -6,8 +6,8 @@ import { UserPlus, Compass, Sparkles, Globe, BookOpen } from "lucide-react";
 import Section from "@/components/ui/Section";
 
 const steps = [
-  { number: "01", title: "Descubrí", description: "Creá tu perfil con tu fecha de nacimiento.", cta: "Empezá ahora", href: "/onboarding", icon: UserPlus },
-  { number: "02", title: "Entendé", description: "Conocé tu mapa de numerología, zodíaco y astrología.", cta: "Conocé tu perfil", href: "/profile", icon: Compass },
+  { number: "01", title: "Descubrí", description: "Creá tu mapa con tu fecha de nacimiento.", cta: "Empezá ahora", href: "/onboarding", icon: UserPlus },
+  { number: "02", title: "Entendé", description: "Conocé tu mapa de numerología, zodíaco y astrología.", cta: "Conocé tu mapa", href: "/profile", icon: Compass },
   { number: "03", title: "Explorá", description: "Descubrí patrones, ciclos y sincronías ocultas.", cta: "Empezá la exploración", href: "/explore", icon: Sparkles },
   { number: "04", title: "Conectá", description: "Compará tu perfil con países, ciudades y marcas.", cta: "Encontrá conexiones", href: "/affinity", icon: Globe },
   { number: "05", title: "Reflexioná", description: "Tomá perspectiva con tu lectura completa.", cta: "Descubrí más", href: "/biblioteca", icon: BookOpen },
@@ -17,7 +17,7 @@ export default function Journey() {
   const router = useRouter();
 
   return (
-    <Section>
+    <Section className="bg-background">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
         Un recorrido en cinco pasos
       </h2>
@@ -67,7 +67,7 @@ export default function Journey() {
             onClick={() => router.push(step.href)}
             className="group w-full text-left py-7 pl-10 border-l-2 border-dashed border-accent/20 hover:border-accent transition-colors relative"
           >
-            <span className="absolute -left-4 w-8 h-8 bg-white flex items-center justify-center">
+            <span className="absolute -left-4 w-8 h-8 bg-background flex items-center justify-center">
               <step.icon className="w-5 h-5 text-accent" />
             </span>
             <p className="font-mono text-3xl text-accent font-bold mb-1">

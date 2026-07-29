@@ -37,7 +37,7 @@ export default function ToolsAndDiscovery() {
   const router = useRouter();
 
   return (
-    <section className="py-20 sm:py-24 bg-white">
+    <section className="py-20 sm:py-24 bg-background">
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -55,7 +55,7 @@ export default function ToolsAndDiscovery() {
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap border-t border-accent/10">
+        <div className="flex flex-wrap">
           {categories.map((cat, ci) => (
             <motion.div
               key={cat.title}
@@ -63,7 +63,7 @@ export default function ToolsAndDiscovery() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: ci * 0.1 }}
-              className={`w-full md:w-1/3 flex flex-col ${ci < 2 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
+              className={`w-full md:w-1/3 flex flex-col ${ci > 0 ? "md:border-l border-accent/10" : ""} border-b md:border-b-0 border-accent/10`}
             >
               <div className={`flex-1 ${cellPad}`}>
                 <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">{cat.title}</p>
@@ -73,7 +73,7 @@ export default function ToolsAndDiscovery() {
                       key={tool.name}
                       type="button"
                       onClick={() => router.push("/onboarding")}
-                      className="w-full flex items-center gap-3 px-0 py-3 border-b border-accent/10 last:border-0 group"
+                      className="group w-full flex items-center gap-3 px-3 py-3 -mx-3 rounded-none hover:bg-accent/5 transition-colors"
                     >
                       <tool.icon className="w-4 h-4 text-muted group-hover:text-accent transition-colors shrink-0" />
                       <span className="text-sm text-foreground group-hover:text-accent transition-colors">
@@ -93,7 +93,7 @@ export default function ToolsAndDiscovery() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 text-center"
+          className="mt-12 text-center"
         >
           <button
             type="button"

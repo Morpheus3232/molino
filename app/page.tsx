@@ -60,12 +60,12 @@ function FinalCTA() {
   return (
     <Section className="!pt-12 !pb-20">
       <div className="relative p-8 sm:p-10 lg:p-12 text-center bg-card">
-        <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para ver tu perfil completo?</p>
+        <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Listo para descubrir tu mapa personal?</p>
         <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
           Identidad, mundo, círculo e inteligencia en un solo lugar.
         </p>
         <motion.button {...hoverScale} type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 ease-out px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px]">
-          Crear mi perfil
+          Descubrir mi mapa
         </motion.button>
       </div>
     </Section>
@@ -84,7 +84,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
         <UniversityHeader />
         <HeroNew />
@@ -132,12 +132,12 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
 
       <Section className="!pt-12 !pb-20">
         <motion.div {...fadeUp} className="p-8 sm:p-10 lg:p-12 text-center">
-          <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver el detalle completo?</p>
+          <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-3">¿Querés ver tu mapa completo?</p>
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-8">
             Identidad, mundo, círculo e inteligencia en un solo lugar.
           </p>
           <motion.button {...hoverScale} type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px]">
-            Ver mi perfil completo
+            Ver mi mapa completo
           </motion.button>
         </motion.div>
       </Section>

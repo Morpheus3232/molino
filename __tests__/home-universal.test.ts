@@ -18,7 +18,7 @@ test("home includes onboarding form and conversion sections", () => {
     expect(source).toContain("ToolsAndDiscovery");
     expect(source).toContain("ConceptsIndex");
     expect(source).toContain("FinalCTA");
-    expect(source).toContain("Crear mi perfil");
+    expect(source).toContain("Descubrir mi mapa");
     expect(source).toContain("Identidad, mundo, círculo e inteligencia");
   });
 });

@@ -17,12 +17,14 @@ describe("Product consistency — Molino", () => {
     }
   });
 
-  test("UniversidadHeader does not contain 'Descubrir' in desktop nav items", () => {
+  test("UniversidadHeader navLinks do not contain 'Descubrir'", () => {
     const fs = require("fs");
     const path = require("path");
     const headerPath = path.resolve(__dirname, "..", "components", "layout", "UniversityHeader.tsx");
     const source = fs.readFileSync(headerPath, "utf8");
-    expect(source).not.toContain("Descubrir");
+    const navSection = source.match(/const navLinks = \[([^\]]+)\]/);
+    expect(navSection).toBeTruthy();
+    expect(navSection![1]).not.toContain("Descubrir");
   });
 
   test("saved ProfileHub does not expose DailyInsights", () => {

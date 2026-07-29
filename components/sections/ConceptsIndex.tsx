@@ -49,7 +49,7 @@ function ConceptsIndex() {
                 transition={{ duration: 0.5, delay: i * 0.06 }}
                 type="button"
                 onClick={() => router.push(entry.href)}
-                className={`group w-full md:w-1/3 p-8 sm:p-10 lg:p-12 flex flex-col text-left bg-background hover:bg-black/[0.02] transition-all duration-500 ${!isLastRow ? "border-b" : ""} ${i % 3 !== 2 ? "md:border-r" : ""} border-accent/10`}
+                className={`group w-full md:w-1/3 p-8 sm:p-10 lg:p-12 flex flex-col text-left bg-background hover:bg-accent/5 transition-all duration-500 ${!isLastRow ? "border-b" : ""} ${i % 3 !== 2 ? "md:border-r" : ""} border-accent/10`}
               >
                 <entry.icon className="w-6 h-6 text-accent mb-5" />
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">{entry.tier}</p>
