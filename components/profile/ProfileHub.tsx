@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Share2 } from "lucide-react";
@@ -18,7 +18,6 @@ import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
 import CrossLinks from "./CrossLinks";
-import EphemeralWarning from "./EphemeralWarning";
 import DownloadProfileButton from "./DownloadProfileButton";
 
 interface ProfileHubProps {
@@ -107,15 +106,8 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       detail: "",
     },
   ];
-  const [showEphemeralWarning, setShowEphemeralWarning] = useState(true);
-
   return (
     <div className="min-h-screen bg-white">
-      {showEphemeralWarning && (
-        <EphemeralWarning
-          onDismiss={() => setShowEphemeralWarning(false)}
-        />
-      )}
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
         <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
@@ -207,9 +199,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               transition={{ delay: 0.1 * i, duration: 0.5 }}
               className={`w-full md:w-1/2 flex flex-col ${i % 2 === 0 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
             >
-              <div className={`flex-1 ${cellPad}`}>
-                <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-3">{section.eyebrow}</p>
-                <p className="font-heading uppercase text-lg sm:text-xl font-semibold text-foreground mb-2">
+              <div className={`flex-1 ${cellPad} ${section.key === "identity" ? "bg-accent/[0.02]" : ""}`}>
+                <p className={`text-[11px] uppercase tracking-[0.25em] font-medium mb-3 ${section.key === "identity" ? "text-accent" : "text-muted"}`}>{section.eyebrow}</p>
+                <p className={`font-heading uppercase font-semibold text-foreground mb-2 ${section.key === "identity" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
                   {section.title}
                 </p>
                 <p className="text-sm text-muted">{section.subtitle}</p>
@@ -220,7 +212,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                   <button
                     type="button"
                     onClick={() => onEnter(section.key)}
-                    className="mt-4 text-xs font-medium text-accent hover:text-accent/80 transition-colors inline-flex items-center gap-1"
+                    className={`mt-4 text-xs font-medium transition-colors inline-flex items-center gap-1 ${section.key === "identity" ? "text-foreground hover:text-accent border border-border px-3 py-1.5" : "text-accent hover:text-accent/80"}`}
                   >
                     Explorar →
                   </button>

@@ -23,6 +23,7 @@ import DownloadProfileButton from "@/components/profile/DownloadProfileButton";
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
   initialTab: string | null;
+  futureDateError?: boolean;
 }
 
 const VALID_TABS: ProfileTab[] = ["identity", "world", "circle", "intelligence"];
@@ -72,7 +73,7 @@ function buildFromLocal(): UserProfile | null {
   return null;
 }
 
-export default function ProfileClient({ serverProfile, initialTab }: ProfileClientProps) {
+export default function ProfileClient({ serverProfile, initialTab, futureDateError }: ProfileClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabFromUrl = initialTab || searchParams.get("tab");
@@ -133,7 +134,7 @@ export default function ProfileClient({ serverProfile, initialTab }: ProfileClie
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
-  if (!mounted && !profile) {
+  if (!mounted && !profile && !futureDateError) {
     return <LoadingState message="Cargando tu mapa..." />;
   }
 
@@ -144,12 +145,25 @@ export default function ProfileClient({ serverProfile, initialTab }: ProfileClie
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-0.5 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Mi mapa personal</p>
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-            Todavía no creaste tu mapa
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Ingresá tu fecha de nacimiento para generar tu mapa personal de autoconocimiento.
-          </p>
+          {futureDateError ? (
+            <>
+              <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+                Fecha inválida
+              </h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">
+                La fecha de nacimiento no puede ser futura. Ingresá una fecha válida para generar tu mapa.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="font-heading uppercase text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+                Todavía no creaste tu mapa
+              </h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">
+                Ingresá tu fecha de nacimiento para generar tu mapa personal de autoconocimiento.
+              </p>
+            </>
+          )}
           <button
             type="button"
             onClick={() => router.push("/")}
