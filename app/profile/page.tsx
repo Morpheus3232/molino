@@ -85,6 +85,12 @@ export default async function ProfilePage({ searchParams }: Props) {
   }
 
   if (!profile && dob && /^\d{4}-\d{2}-\d{2}$/.test(dob)) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const birthDate = new Date(dob + "T00:00:00");
+    if (birthDate > today) {
+      return <ProfileClient serverProfile={null} initialTab={tab} futureDateError={true} />;
+    }
     try {
       const calculated = calculateUserProfile("Visitante", dob);
       profile = buildProfile(calculated, "Visitante", dob);
