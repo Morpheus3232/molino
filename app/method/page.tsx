@@ -1,6 +1,5 @@
 "use client";
 
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
@@ -8,7 +7,6 @@ import Section from "@/components/ui/Section";
 export default function MethodPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <UniversityHeader />
       <div className="max-w-content mx-auto px-4 sm:px-6 py-8 pb-24">
         <Section>
           <div className="text-center mb-10">

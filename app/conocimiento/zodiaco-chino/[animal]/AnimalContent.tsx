@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { CHINESE_ANIMALS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 
@@ -19,7 +18,6 @@ export default function AnimalContent() {
   if (!animal) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-serif text-4xl font-semibold text-foreground">Animal no encontrado</h1>
           <p className="text-muted mt-4">El animal &quot;{animalId}&quot; no existe en la base del zodiaco chino de Molino.</p>
@@ -36,7 +34,6 @@ export default function AnimalContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>

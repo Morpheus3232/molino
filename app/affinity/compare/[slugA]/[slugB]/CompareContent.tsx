@@ -15,7 +15,6 @@ import {
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 
@@ -48,7 +47,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
@@ -83,7 +81,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}

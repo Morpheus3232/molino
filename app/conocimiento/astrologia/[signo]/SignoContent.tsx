@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 
@@ -23,7 +22,6 @@ export default function SignoContent() {
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-serif text-4xl font-semibold text-foreground">Signo no encontrado</h1>
           <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrología de Molino.</p>
@@ -40,7 +38,6 @@ export default function SignoContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>

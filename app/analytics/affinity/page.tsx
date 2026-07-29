@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { analytics } from "@/lib/analytics/analytics";
 
@@ -136,7 +135,6 @@ export default function AffinityAnalyticsPage() {
   if (!loaded || !analyticsData) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <p className="text-muted">Cargando datos de Affinity...</p>
         </div>
@@ -150,7 +148,6 @@ export default function AffinityAnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         <div className="mb-8">

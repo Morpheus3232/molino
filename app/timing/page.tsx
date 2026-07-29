@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
@@ -50,7 +49,6 @@ export default function TimingPage() {
   if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <LoadingState message="Cargando timing..." />
         <UniversityFooter />
       </div>
@@ -60,7 +58,6 @@ export default function TimingPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu momento</p>
           <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
@@ -87,8 +84,6 @@ export default function TimingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-
       <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">

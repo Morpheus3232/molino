@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -69,7 +68,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
-        <UniversityHeader />
         <HeroNew />
         <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
           {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}

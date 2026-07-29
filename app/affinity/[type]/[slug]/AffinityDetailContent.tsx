@@ -13,7 +13,6 @@ import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import AffinityScoreGauge from "@/components/ui/AffinityScoreGauge";
@@ -65,7 +64,6 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
@@ -997,7 +995,6 @@ function QuickAffinity({
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}

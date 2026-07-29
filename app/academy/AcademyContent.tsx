@@ -11,7 +11,6 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -394,7 +393,6 @@ export default function AcademyContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* ═══════════════════════════════════════════════

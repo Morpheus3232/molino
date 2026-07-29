@@ -9,7 +9,6 @@ import { getRecommendationsByType, type Recommendation } from "@/lib/engines/rec
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { YEAR_CYCLE_META } from "@/lib/engines/yearCycleEngine";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
@@ -34,7 +33,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
@@ -70,7 +68,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}

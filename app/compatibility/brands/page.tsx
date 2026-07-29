@@ -7,7 +7,6 @@ import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllBrandCompatibility, type CompatibilityResult } from "@/lib/engines/compatibilityScoreEngine";
 import { getBrandCategories } from "@/lib/data/brands";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 
@@ -48,7 +47,6 @@ export default function BrandsPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">Marcas que resuenan con tu mapa</h1>
@@ -65,7 +63,6 @@ export default function BrandsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Hero */}

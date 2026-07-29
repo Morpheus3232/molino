@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 interface Source {
@@ -147,7 +146,7 @@ const SOURCES: Source[] = [
     year: "1908",
     type: "libro",
     category: "filosofia",
-    era: "moderno",
+    era: "ancestral",
     description: "Siete principios herméticos que influyen en la filosofía occidental.",
     review: "Obra influyente en el pensamiento esotérico moderno. Su atribución histórica es cuestionable.",
     summary: "Enuncia siete principios: Mentalismo, Correspondencia, Vibración, Polaridad, Ritmo, Causa y Efecto, y Género.",
@@ -173,7 +172,7 @@ const SOURCES: Source[] = [
     year: "1910",
     type: "libro",
     category: "tarot",
-    era: "moderno",
+    era: "ancestral",
     description: "Guía clásica de los Arcanos Mayores y Menores del Tarot.",
     review: "Waite creó el mazo más utilizado del mundo. Obra fundamental para entender el tarot moderno.",
     summary: "Describe los 78 arcanos del tarot. Cada carta tiene un significado simbólico vinculado con la vida humana.",
@@ -186,7 +185,7 @@ const SOURCES: Source[] = [
     year: "1889",
     type: "libro",
     category: "tarot",
-    era: "moderno",
+    era: "ancestral",
     description: "Tratado esotérico que vincula el tarot con la cábala, la numerología y la alquimia.",
     review: "Papus sistematizó las correspondencias entre el tarot y otros sistemas simbólicos, creando una obra de referencia para el tarot esotérico.",
     summary: "Establece las correspondencias entre los 22 Arcanos Mayores y las letras hebreas, los caminos del Árbol de la Vida y los signos zodiacales.",
@@ -199,7 +198,7 @@ const SOURCES: Source[] = [
     year: "1987",
     type: "libro",
     category: "personalidad",
-    era: "moderno",
+    era: "ancestral",
     description: "Tipología de 9 personalidades con raíces en tradiciones espirituales.",
     review: "Sistema de tipología con 9 tipos. Funciona mejor como herramienta de autoconocimiento que como ciencia.",
     summary: "Los 9 tipos representan motivaciones centrales: Perfeccionista, Ayudador, Triunfador, etc.",
@@ -280,7 +279,6 @@ export default function BibliotecaContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
 
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}

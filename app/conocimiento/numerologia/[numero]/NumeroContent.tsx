@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
@@ -21,7 +20,6 @@ export default function NumeroContent() {
   if (!num) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-serif text-4xl font-semibold text-foreground">Número no encontrado</h1>
           <p className="text-muted mt-4">El número {numId} no existe en la base de numerología de Molino.</p>
@@ -39,7 +37,6 @@ export default function NumeroContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
