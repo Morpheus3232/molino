@@ -29,8 +29,14 @@ export default function PaymentBrick({
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [brickError, setBrickError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setBrickError(null);
+    setPreferenceId(null);
+
     async function fetchPreference() {
       try {
         const res = await fetch('/api/mp/preference', {
@@ -45,18 +51,23 @@ export default function PaymentBrick({
         }
 
         const data = await res.json();
-        setPreferenceId(data.preferenceId);
-        setLoading(false);
+        if (!cancelled) {
+          setPreferenceId(data.preferenceId);
+          setLoading(false);
+        }
       } catch (error) {
         console.error('[PaymentBrick] Preference error:', error);
-        setBrickError(error instanceof Error ? error.message : 'Error cargando');
-        onError(error);
-        setLoading(false);
+        if (!cancelled) {
+          setBrickError(error instanceof Error ? error.message : 'Error cargando');
+          onError(error);
+          setLoading(false);
+        }
       }
     }
 
     fetchPreference();
-  }, [name, birthDate, currencyId, onError]);
+    return () => { cancelled = true; };
+  }, [name, birthDate, currencyId, onError, retryCount]);
 
   const handleSubmit = async (formData: any) => {
     try {
@@ -107,10 +118,7 @@ export default function PaymentBrick({
         <p className="text-red-400 mb-4">No se pudieron cargar los métodos de pago.</p>
         <p className="text-xs text-gray-400 mb-4">{brickError}</p>
         <button
-          onClick={() => {
-            setLoading(true);
-            setBrickError(null);
-          }}
+          onClick={() => setRetryCount(c => c + 1)}
           className="text-purple-400 underline text-sm hover:text-purple-300"
         >
           Reintentar
