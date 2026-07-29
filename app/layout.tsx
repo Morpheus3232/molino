@@ -140,12 +140,12 @@ export default function RootLayout({
           {process.env.NEXT_PUBLIC_POSTHOG_KEY && (
             <>
               <Script
-                src="https://eu.i.posthog.com/static/array.js"
+                src={`${process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"}/static/array.js`}
                 strategy="afterInteractive"
               />
               <Script id="posthog-init" strategy="afterInteractive">
                 {`window.posthog && window.posthog.init('${process.env.NEXT_PUBLIC_POSTHOG_KEY}', {
-                  api_host: 'https://eu.i.posthog.com',
+                  api_host: '${process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"}',
                   cookieless_mode: 'always',
                   capture_pageview: false,
                   capture_pageleave: false,
