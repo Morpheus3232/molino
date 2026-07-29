@@ -9,7 +9,7 @@ function getRequiredEnv(name: string): string {
   return value;
 }
 
-const PRODUCT_PRICE_USD = 9;
+const PRODUCT_PRICE_USD = 8;
 const PRODUCT_PRICE_ARS = 8100;
 const PRODUCT_CURRENCY_USD = 'USD';
 const PRODUCT_CURRENCY_ARS = 'ARS';
