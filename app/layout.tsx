@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Inter, Archivo_Black, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
@@ -12,6 +11,7 @@ import MotionProvider from "@/components/ui/MotionProvider";
 import Prism from "@/components/effects/Prism";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SITE_URL } from "@/lib/seo";
+import { PostHogProvider } from "./providers/PostHogProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-display" });
@@ -125,51 +125,36 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
-            <Prism
-              animationType="rotate"
-              timeScale={0.15}
-              height={3.5}
-              baseWidth={5.5}
-              scale={3.6}
-              hueShift={0}
-              colorFrequency={0.5}
-              noise={0.15}
-              glow={0.3}
-              bloom={0.3}
-              transparent={true}
-              suspendWhenOffscreen={false}
-            />
-          </div>
-          <a href="#main-content" className="skip-link">
-            Saltar al contenido principal
-          </a>
-          <AnalyticsProvider />
-          <MotionProvider>
-            <ScrollProgress />
-            <UniversityHeader />
-            <AppErrorBoundary>
-              <AnimatedLayout>{children}</AnimatedLayout>
-            </AppErrorBoundary>
-          </MotionProvider>
-          <Toaster position="bottom-right" richColors />
-          {process.env.NEXT_PUBLIC_POSTHOG_KEY && (
-            <>
-              <Script
-                src={`${process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"}/static/array.js`}
-                strategy="afterInteractive"
+          <PostHogProvider>
+            <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
+              <Prism
+                animationType="rotate"
+                timeScale={0.15}
+                height={3.5}
+                baseWidth={5.5}
+                scale={3.6}
+                hueShift={0}
+                colorFrequency={0.5}
+                noise={0.15}
+                glow={0.3}
+                bloom={0.3}
+                transparent={true}
+                suspendWhenOffscreen={false}
               />
-              <Script id="posthog-init" strategy="afterInteractive">
-                {`window.posthog && window.posthog.init('${process.env.NEXT_PUBLIC_POSTHOG_KEY}', {
-                  api_host: '${process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"}',
-                  cookieless_mode: 'always',
-                  capture_pageview: false,
-                  capture_pageleave: false,
-                  autocapture: false
-                });`}
-              </Script>
-            </>
-          )}
+            </div>
+            <a href="#main-content" className="skip-link">
+              Saltar al contenido principal
+            </a>
+            <AnalyticsProvider />
+            <MotionProvider>
+              <ScrollProgress />
+              <UniversityHeader />
+              <AppErrorBoundary>
+                <AnimatedLayout>{children}</AnimatedLayout>
+              </AppErrorBoundary>
+            </MotionProvider>
+            <Toaster position="bottom-right" richColors />
+          </PostHogProvider>
         </ThemeProvider>
       </body>
     </html>

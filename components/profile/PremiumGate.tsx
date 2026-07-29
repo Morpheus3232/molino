@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import PaymentBrick from '@/components/payment/PaymentBrick';
+import { analytics } from '@/lib/analytics/analytics';
 
 interface PremiumGateProps {
   name: string;
@@ -15,6 +16,10 @@ const POLL_INTERVAL = 5000;
 
 export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
+  const [showRecover, setShowRecover] = useState(false);
+  const [recoverPaymentId, setRecoverPaymentId] = useState('');
+  const [recoverError, setRecoverError] = useState<string | null>(null);
+  const [isRecovering, setIsRecovering] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const checkServer = useCallback(async (): Promise<boolean> => {
@@ -33,7 +38,12 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
   useEffect(() => {
     checkServer().then(premium => {
-      if (premium) setState('unlocked');
+      if (premium) {
+        setState('unlocked');
+        analytics.trackPremiumUnlocked();
+      } else {
+        analytics.trackPaywallViewed();
+      }
     });
   }, [checkServer]);
 
@@ -45,6 +55,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       if (premium) {
         if (pollRef.current) clearInterval(pollRef.current);
         setState('unlocked');
+        analytics.trackPremiumUnlocked();
       }
     }, POLL_INTERVAL);
 
@@ -53,7 +64,8 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     };
   }, [state, checkServer]);
 
-  const handlePaymentApproved = useCallback(() => {
+  const handlePaymentApproved = useCallback((paymentId: string) => {
+    analytics.trackPaymentApproved(paymentId);
     setState('verifying');
   }, []);
 
@@ -64,6 +76,33 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   const handlePaymentRejected = useCallback(() => {
     setState('locked');
   }, []);
+
+  const handleRecover = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recoverPaymentId.trim()) return;
+
+    setIsRecovering(true);
+    setRecoverError(null);
+
+    try {
+      const res = await fetch('/api/mp/recover', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate }),
+      });
+      const data = await res.json();
+      if (res.ok && data.verified) {
+        setState('unlocked');
+        analytics.trackPremiumUnlocked();
+      } else {
+        setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
+      }
+    } catch {
+      setRecoverError('Error al intentar recuperar la compra');
+    } finally {
+      setIsRecovering(false);
+    }
+  };
 
   if (state === 'unlocked') {
     return <>{children}</>;
@@ -161,7 +200,10 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
           </ul>
 
           <button
-            onClick={() => setState('paying')}
+            onClick={() => {
+              analytics.trackCheckoutStarted('USD');
+              setState('paying');
+            }}
             className="w-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-purple-500/20"
           >
             Desbloquear Mapa Completo
@@ -177,6 +219,36 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
             <span>•</span>
             <span>Mercado Pago</span>
           </div>
+
+          {!showRecover ? (
+            <button
+              onClick={() => setShowRecover(true)}
+              className="mt-4 text-xs text-purple-400 hover:text-purple-300 underline block mx-auto"
+            >
+              ¿Ya compraste tu mapa? Recuperar acceso con tu ID de pago
+            </button>
+          ) : (
+            <form onSubmit={handleRecover} className="mt-4 p-4 bg-black/40 border border-purple-500/20 rounded-lg text-left">
+              <label className="block text-xs text-gray-300 mb-1">Ingresá tu ID de pago de Mercado Pago:</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={recoverPaymentId}
+                  onChange={e => setRecoverPaymentId(e.target.value)}
+                  placeholder="Ej: 123456789"
+                  className="flex-1 px-3 py-1.5 text-xs bg-slate-900 border border-gray-700 rounded text-white focus:outline-none focus:border-purple-500"
+                />
+                <button
+                  type="submit"
+                  disabled={isRecovering}
+                  className="px-3 py-1.5 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded font-medium disabled:opacity-50"
+                >
+                  {isRecovering ? 'Verificando...' : 'Recuperar'}
+                </button>
+              </div>
+              {recoverError && <p className="text-[11px] text-red-400 mt-2">{recoverError}</p>}
+            </form>
+          )}
         </div>
       </div>
     </div>

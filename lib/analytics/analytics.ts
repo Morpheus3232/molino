@@ -1,5 +1,7 @@
 "use client";
 
+import posthog from 'posthog-js'
+
 type EventType =
   | "page_view"
   | "profile_created"
@@ -13,7 +15,11 @@ type EventType =
   | "affinity_shared"
   | "affinity_profile_cta_clicked"
   | "affinity_recommendation_clicked"
-  | "affinity_save_clicked";
+  | "affinity_save_clicked"
+  | "paywall_viewed"
+  | "checkout_started"
+  | "payment_approved"
+  | "premium_unlocked";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -74,9 +80,9 @@ class Analytics {
     console.log("📊 Analytics:", fullEvent);
 
     // PostHog sink — fires only if posthog is loaded (Project Key configured)
-    if (typeof window !== "undefined" && typeof window.posthog === "object" && typeof window.posthog.capture === "function") {
+    if (posthog && typeof posthog.capture === "function") {
       try {
-        window.posthog.capture(event.type, event.data || {});
+        posthog.capture(event.type, event.data || {});
       } catch {
         // PostHog blocked or misconfigured — silent fail
       }
@@ -199,6 +205,33 @@ class Analytics {
     this.track({
       type: "affinity_save_clicked",
       data: { entityType, entityId, score, tier },
+    });
+  }
+
+  trackPaywallViewed(section?: string) {
+    this.track({
+      type: "paywall_viewed",
+      data: { section },
+    });
+  }
+
+  trackCheckoutStarted(currencyId: string) {
+    this.track({
+      type: "checkout_started",
+      data: { currencyId, amount: currencyId === "USD" ? 9 : 8100 },
+    });
+  }
+
+  trackPaymentApproved(paymentId: string) {
+    this.track({
+      type: "payment_approved",
+      data: { paymentId },
+    });
+  }
+
+  trackPremiumUnlocked() {
+    this.track({
+      type: "premium_unlocked",
     });
   }
 }

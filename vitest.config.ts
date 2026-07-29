@@ -11,6 +11,7 @@ export default {
   },
   test: {
     environment: 'node',
+    include: ['**/__tests__/**/*.test.ts', '**/*.test.ts'],
     exclude: ['**/e2e/**', '**/node_modules/**'],
   },
 };

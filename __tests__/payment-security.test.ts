@@ -45,6 +45,12 @@ describe('Payment flow security', () => {
       const h2 = hashProfile('JUAN PEREZ', '1990-01-15');
       expect(h1).toBe(h2);
     });
+
+    test('ignores diacritics, accents and multiple internal spaces', () => {
+      const h1 = hashProfile('Nicolás   Pérez', '1990-01-15');
+      const h2 = hashProfile('nicolas perez', '1990-01-15');
+      expect(h1).toBe(h2);
+    });
   });
 
   describe('validatePayment', () => {
@@ -133,6 +139,19 @@ describe('Payment flow security', () => {
 
     test('returns function type', () => {
       expect(typeof verifyWebhookSignature).toBe('function');
+    });
+
+    test('valid signature passes even with spaces around parameters', () => {
+      const crypto = require('crypto');
+      const ts = '1700000000';
+      const dataId = '12345';
+      const requestId = 'req-abc';
+      const manifest = `id:${dataId};request-id:${requestId};ts:${ts};`;
+      const hash = crypto.createHmac('sha256', 'test-webhook-secret').update(manifest).digest('hex');
+      const signature = `ts=${ts}, v1=${hash}`;
+
+      const isValid = verifyWebhookSignature(signature, requestId, dataId, '{}');
+      expect(isValid).toBe(true);
     });
   });
 

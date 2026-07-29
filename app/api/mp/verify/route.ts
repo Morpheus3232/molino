@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
-import { hasPremiumAccess } from '@/lib/kv';
+import { hasPremiumAccess, grantPremiumAccess } from '@/lib/kv';
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,6 +36,14 @@ export async function POST(req: NextRequest) {
         status: payment.status,
         source: 'mp-api',
       });
+    }
+
+    const targetHash =
+      (payment.metadata?.profile_hash as string | undefined) ||
+      (name && birthDate ? hashProfile(name, birthDate) : undefined);
+
+    if (targetHash) {
+      await grantPremiumAccess(targetHash, String(paymentId));
     }
 
     return NextResponse.json({

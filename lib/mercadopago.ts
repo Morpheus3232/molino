@@ -9,19 +9,35 @@ function getRequiredEnv(name: string): string {
   return value;
 }
 
-const ACCESS_TOKEN = getRequiredEnv('MP_ACCESS_TOKEN');
-const WEBHOOK_SECRET = getRequiredEnv('MP_WEBHOOK_SECRET');
 const PRODUCT_PRICE_USD = 9;
 const PRODUCT_PRICE_ARS = 8100;
 const PRODUCT_CURRENCY_USD = 'USD';
 const PRODUCT_CURRENCY_ARS = 'ARS';
 const PRODUCT_ID = 'molino_premium';
 
-export const mpClient = new MercadoPagoConfig({ accessToken: ACCESS_TOKEN });
+export function getMpClient(): MercadoPagoConfig {
+  const accessToken = process.env.MP_ACCESS_TOKEN || getRequiredEnv('MP_ACCESS_TOKEN');
+  return new MercadoPagoConfig({ accessToken });
+}
+
+export function getWebhookSecret(): string {
+  return process.env.MP_WEBHOOK_SECRET || getRequiredEnv('MP_WEBHOOK_SECRET');
+}
+
+export function normalizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 export function hashProfile(name: string, birthDate: string): string {
-  return createHmac('sha256', WEBHOOK_SECRET)
-    .update(`${name.toLowerCase().trim()}|${birthDate}`)
+  const secret = getWebhookSecret();
+  const normalizedName = normalizeName(name);
+  return createHmac('sha256', secret)
+    .update(`${normalizedName}|${birthDate}`)
     .digest('hex')
     .slice(0, 16);
 }
@@ -32,7 +48,7 @@ export function requireSecrets(): void {
 }
 
 export async function createPreference(profileHash: string, name: string, currencyId = 'USD') {
-  const preference = new Preference(mpClient);
+  const preference = new Preference(getMpClient());
 
   const price = currencyId === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
 
@@ -75,7 +91,7 @@ export async function createPreference(profileHash: string, name: string, curren
 }
 
 export async function getPaymentStatus(paymentId: string) {
-  const payment = new Payment(mpClient);
+  const payment = new Payment(getMpClient());
   const response = await payment.get({ id: Number(paymentId) });
 
   return {
@@ -105,16 +121,16 @@ export function validatePayment(payment: {
     return { valid: false, reason: `Payment status is '${payment.status}', expected 'approved'` };
   }
 
+  if (payment.currency_id !== PRODUCT_CURRENCY_USD && payment.currency_id !== PRODUCT_CURRENCY_ARS) {
+    return { valid: false, reason: `Unexpected currency: ${payment.currency_id}` };
+  }
+
   const expectedAmount = payment.currency_id === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
   if (payment.transaction_amount !== expectedAmount) {
     return {
       valid: false,
       reason: `Amount mismatch: got ${payment.transaction_amount} ${payment.currency_id}, expected ${expectedAmount}`,
     };
-  }
-
-  if (payment.currency_id !== PRODUCT_CURRENCY_USD && payment.currency_id !== PRODUCT_CURRENCY_ARS) {
-    return { valid: false, reason: `Unexpected currency: ${payment.currency_id}` };
   }
 
   const product = payment.metadata?.product as string | undefined;
@@ -139,7 +155,7 @@ export async function processPayment({
     payer: { email: string };
   };
 }) {
-  const payment = new Payment(mpClient);
+  const payment = new Payment(getMpClient());
 
   const response = await payment.create({
     body: {
@@ -165,17 +181,24 @@ export function verifyWebhookSignature(
   dataId: string | null,
   body: string,
 ): boolean {
-  if (!signature || !requestId || !dataId || !WEBHOOK_SECRET) return false;
+  if (!signature || !requestId || !dataId) return false;
+
+  let secret: string;
+  try {
+    secret = getWebhookSecret();
+  } catch {
+    return false;
+  }
 
   try {
     const parts = signature.split(',');
-    const ts = parts.find(p => p.startsWith('ts='))?.split('=')[1];
-    const hash = parts.find(p => p.startsWith('v1='))?.split('=')[1];
+    const ts = parts.find(p => p.trim().startsWith('ts='))?.split('=')[1]?.trim();
+    const hash = parts.find(p => p.trim().startsWith('v1='))?.split('=')[1]?.trim();
 
     if (!ts || !hash) return false;
 
     const manifest = `id:${dataId};request-id:${requestId};ts:${ts};`;
-    const expected = createHmac('sha256', WEBHOOK_SECRET)
+    const expected = createHmac('sha256', secret)
       .update(manifest)
       .digest('hex');
 
