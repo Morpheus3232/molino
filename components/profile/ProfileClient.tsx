@@ -80,7 +80,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   const [activeTab, setActiveTab] = useState<ProfileTab | null>(
     VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
   );
-  const [showEphemeralWarning, setShowEphemeralWarning] = useState(true);
+  const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
 
