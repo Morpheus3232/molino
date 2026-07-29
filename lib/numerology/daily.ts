@@ -1,13 +1,15 @@
 const SACRED_NUMBERS = [11, 22, 28, 33];
 
 export function getDailyNumber(date: Date): number {
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  const y = date.getFullYear();
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = String(date.getFullYear());
+  const digits = dd + mm + yyyy;
 
-  if (d === 28) return 28;
+  let sum = digits
+    .split("")
+    .reduce((acc, digit) => acc + parseInt(digit, 10), 0);
 
-  let sum = d + m + y;
   while (sum > 9 && !SACRED_NUMBERS.includes(sum)) {
     sum = sum
       .toString()
