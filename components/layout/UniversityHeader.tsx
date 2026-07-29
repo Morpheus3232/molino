@@ -7,6 +7,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useTheme } from "next-themes";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { headerNavLinks } from "@/lib/data/navigation";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
@@ -26,12 +27,7 @@ export default function UniversityHeader() {
     setTheme(currentTheme === "dark" ? "light" : "dark");
   }, [currentTheme, setTheme]);
 
-  const navLinks = [
-    { href: "/", label: "INICIO" },
-    { href: "/biblioteca", label: "BIBLIOTECA" },
-    { href: "/filosofia", label: "FILOSOFÍA" },
-    { href: "https://github.com", label: "GITHUB", external: true },
-  ];
+  const navLinks = headerNavLinks;
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
