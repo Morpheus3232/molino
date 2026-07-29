@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Share2 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { buildPersonalRecommendations, hasPositiveAffinity } from "@/lib/engines/personalRecommendationEngine";
@@ -12,13 +11,10 @@ import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import { generateProfileHash, storeSharedProfile } from "@/lib/profile/hash";
-import { toast } from "sonner";
 import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
 import CrossLinks from "./CrossLinks";
-import DownloadProfileButton from "./DownloadProfileButton";
 
 interface ProfileHubProps {
   profile: UserProfile;
@@ -50,29 +46,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
   const intelligenceScore = dailyEnergy.overallScore;
   const intelligenceLabel = dailyEnergy.theme;
-
-  const handleShareProfile = async () => {
-    try {
-      const hash = await generateProfileHash(profile);
-      storeSharedProfile(profile, hash);
-      const url = `${typeof window !== "undefined" ? window.location.origin : ""}/perfil/${hash}`;
-
-      if (navigator.share) {
-        await navigator.share({
-          title: `${name} — Mi mapa en Molino`,
-          text: "Descubrí mi mapa personal en Molino",
-          url,
-        });
-      } else {
-        await navigator.clipboard.writeText(url);
-        toast.success("Link copiado", {
-          description: "Compartí tu perfil con quien quieras",
-        });
-      }
-    } catch {
-      toast.error("No se pudo compartir el perfil");
-    }
-  };
 
   const sections = [
     {
@@ -171,23 +144,10 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                 <span className="font-heading uppercase text-[10px] tracking-[0.15em] text-muted/50">Camino</span>
                 <span className="text-base text-muted font-medium">{lifePath}</span>
               </div>
-            </motion.div>
-
-            <motion.button
-              type="button"
-              onClick={handleShareProfile}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 }}
-              className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 text-[11px] uppercase tracking-[0.2em] font-medium text-muted hover:text-foreground border border-border hover:border-foreground/30 transition-all"
-              aria-label="Compartir perfil"
-            >
-              <Share2 className="h-3 w-3" />
-              Compartir
-            </motion.button>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
 
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pb-20 sm:pb-24">
         <div className="flex flex-wrap border-t border-accent/10">
@@ -241,10 +201,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             </button>
           </motion.div>
         )}
-
-        <div className="pt-8">
-          <DownloadProfileButton elementId="profile-hub" filename="mi-mapa-molino" />
-        </div>
       </div>
 
       {onEnter && (
