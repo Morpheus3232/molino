@@ -243,6 +243,10 @@
     outline-offset: 2px;
   }
 
+  input[type="date"] {
+    color-scheme: light dark;
+  }
+
   input:focus-visible,
   select:focus-visible {
     outline: none;
