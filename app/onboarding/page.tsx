@@ -167,7 +167,7 @@ export default function OnboardingPage() {
                 transition={{ duration: 0.4, delay: 0.2 }}
                 className="max-w-xs mx-auto"
               >
-                <label htmlFor="dob" className="sr-only">
+                <label htmlFor="dob" className="block text-sm font-medium text-foreground mb-2">
                   Fecha de nacimiento
                 </label>
                 <input
