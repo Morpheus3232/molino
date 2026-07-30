@@ -8,6 +8,8 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllCountryCompatibility, type CompatibilityResult } from "@/lib/engines/compatibilityScoreEngine";
 import { getContinents } from "@/lib/data/countries";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
+import SearchInput from "@/components/ui/SearchInput";
 import LoadingState from "@/components/ui/LoadingState";
 
 export default function CountriesPage() {
@@ -51,7 +53,7 @@ export default function CountriesPage() {
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">Países que resuenan con tu mapa</h1>
           <p className="text-muted mb-8 max-w-md mx-auto">Creá tu perfil para descubrir con qué países resonás más.</p>
-          <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]">Crear mi perfil</button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
@@ -124,7 +126,7 @@ export default function CountriesPage() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar todos los países</h2>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar país..." className="input flex-1 max-w-sm" aria-label="Buscar país" />
+            <SearchInput value={search} onValueChange={setSearch} placeholder="Buscar país..." label="Buscar país" className="flex-1 max-w-sm" />
             <select value={continent} onChange={(e) => setContinent(e.target.value)} className="input max-w-[200px]" aria-label="Continente">
               <option value="all">Todos</option>
               {continents.map(c => (<option key={c} value={c}>{c}</option>))}

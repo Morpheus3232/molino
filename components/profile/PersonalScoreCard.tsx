@@ -78,7 +78,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
   return (
     <motion.section {...smoothReveal} className="mb-8">
       <div className="p-6 rounded-none border border-ink/10 bg-background">
-        <div className="flex items-center gap-2 mb-5">
+        <div className="flex items-center gap-2 mb-6">
           <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Indicadores simbólicos</span>
         </div>
 

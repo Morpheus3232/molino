@@ -65,7 +65,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
               onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              className={`text-left p-5 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-ink/[0.02] ${
+              className={`text-left p-6 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-ink/[0.02] ${
                 selectedCategory === cat.id
                   ? "bg-ink/[0.03] border-ink/20"
                   : ""
@@ -145,14 +145,14 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       </div>
 
       {/* Explanation */}
-      <div className="mb-5">
+      <div className="mb-6">
         <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Análisis</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
-        <div className="mb-5">
+        <div className="mb-6">
           <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
@@ -167,7 +167,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
-        <div className="mb-5">
+        <div className="mb-6">
           <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (

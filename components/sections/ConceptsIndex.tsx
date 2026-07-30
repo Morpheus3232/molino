@@ -65,7 +65,7 @@ function ConceptsIndex() {
                 <p className="font-mono text-[10px] font-semibold tracking-[0.2em] text-accent mb-4">{entry.tier}</p>
                 <h3 className="font-display text-3xl sm:text-4xl text-foreground mb-4 leading-tight">{entry.title}</h3>
                 <p className="text-sm sm:text-base text-muted leading-relaxed mb-8 flex-1">{entry.desc}</p>
-                <div className="flex items-center justify-between pt-5 border-t border-ink/10">
+                <div className="flex items-center justify-between pt-6 border-t border-ink/10">
                   <span className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-accent group-hover:opacity-80 transition-opacity">
                     EXPLORAR
                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>

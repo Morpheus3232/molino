@@ -9,8 +9,10 @@ import { calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engi
 import { getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import EmptyState from "@/components/ui/EmptyState";
+import SearchInput from "@/components/ui/SearchInput";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -50,13 +52,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para descubrir qué {meta.plural.toLowerCase()} resuenan con tu identidad simbólica.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
@@ -96,13 +92,12 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
         {/* Search */}
         {results.length > 3 && (
           <div className="mb-8">
-            <input
-              type="search"
-              placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
+            <SearchInput
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full max-w-sm px-4 py-3 rounded-none border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
-              aria-label={`Buscar ${meta.plural.toLowerCase()}`}
+              onValueChange={setSearch}
+              placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
+              label={`Buscar ${meta.plural.toLowerCase()}`}
+              className="max-w-sm"
             />
           </div>
         )}
@@ -151,7 +146,7 @@ function EntityCard({
     <motion.button
       {...staggerItem}
       onClick={onClick}
-      className="w-full text-left p-5 sm:p-6 rounded-none border border-border bg-card/60 hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
+      className="w-full text-left p-6 sm:p-6 rounded-none border border-border bg-card hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
       

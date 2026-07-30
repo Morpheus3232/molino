@@ -192,7 +192,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             <button
               type="button"
               onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
-              className="w-full text-left px-5 sm:px-8 py-6 sm:py-8 group"
+              className="w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
             >
               <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
               <p className="text-sm text-foreground group-hover:text-accent transition-colors">

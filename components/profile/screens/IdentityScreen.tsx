@@ -114,7 +114,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
             transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-center mb-6"
           >
-            <span className="inline-block text-[100px] sm:text-[120px] leading-none drop-shadow-sm" role="img" aria-label={chineseZodiac}>
+            <span className="inline-block text-[100px] sm:text-[120px] leading-none drop-" role="img" aria-label={chineseZodiac}>
               {zodiacDisplay.emoji}
             </span>
           </motion.div>
@@ -147,7 +147,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                className="relative p-4 sm:p-5 border border-ink/10 text-center overflow-hidden"
+                className="relative p-4 sm:p-6 border border-ink/10 text-center overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: card.color }} />
                 <span className="text-2xl block mb-2">{card.icon}</span>
@@ -206,7 +206,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus sistemas</h2>
             </div>
@@ -220,7 +220,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="p-5 bg-background"
+                className="p-6 bg-background"
               >
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-xl">{persp.icon}</span>
@@ -264,7 +264,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu código personal</h2>
             </div>
@@ -278,7 +278,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="p-5 bg-background"
+                className="p-6 bg-background"
               >
                 <div className="flex items-start gap-4">
                   <p className="text-4xl sm:text-5xl font-semibold text-accent shrink-0">{entry.number}</p>
@@ -312,7 +312,7 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</h2>
             </div>

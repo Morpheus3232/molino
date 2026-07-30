@@ -111,7 +111,7 @@ export default function ZodiacoChinoCalcPage() {
               type="button"
               onClick={handleCalculate}
               disabled={!isValid}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Calcular mi animal
             </button>
@@ -166,7 +166,7 @@ export default function ZodiacoChinoCalcPage() {
                     transition={{ delay: 0.5, duration: 0.35 }}
                     className="flex items-center justify-center gap-3 mt-4"
                   >
-                    <span className="px-4 py-1.5 rounded-full text-sm font-medium border border-border transition-colors hover:border-accent/40" style={{ borderColor: ELEMENT_COLORS[result.element] || "var(--element-fire)", color: ELEMENT_COLORS[result.element] || "var(--element-fire)" }}>
+                    <span className="px-4 py-1.5 rounded-none text-sm font-medium border border-border transition-colors hover:border-accent/40" style={{ borderColor: ELEMENT_COLORS[result.element] || "var(--element-fire)", color: ELEMENT_COLORS[result.element] || "var(--element-fire)" }}>
                       {result.element}
                     </span>
                   </motion.div>
@@ -227,7 +227,7 @@ export default function ZodiacoChinoCalcPage() {
                         <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Compatibilidades tradicionales</p>
                         <div className="flex flex-wrap gap-2">
                           {animalData.compatibility.friendly.map(f => (
-                            <span key={f} className="text-sm px-3 py-1 rounded-full border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>
+                            <span key={f} className="text-sm px-3 py-1 rounded-none border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>
                           ))}
                         </div>
                       </motion.div>
@@ -253,7 +253,7 @@ export default function ZodiacoChinoCalcPage() {
                         <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Los 5 elementos</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {animalData.elements.map((el) => (
-                            <div key={el.element} className="p-3 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
+                            <div key={el.element} className="p-4 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
                               <p className="text-sm font-medium text-foreground">{result.animal} de {el.element}</p>
                               <p className="text-xs text-muted mt-1">{el.modifier}</p>
                             </div>
@@ -306,7 +306,7 @@ export default function ZodiacoChinoCalcPage() {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -317,7 +317,7 @@ export default function ZodiacoChinoCalcPage() {
                   <p className="text-sm text-muted mb-3">Querés ver cómo tu animal se conecta con numerología y astrología?</p>
                   <Link
                     href="/onboarding"
-                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     Crear tu mapa completo
                   </Link>

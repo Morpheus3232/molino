@@ -36,7 +36,7 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
       {/* Insight principal */}
-      <div className="p-5 rounded-none bg-background border border-border">
+      <div className="p-6 rounded-none bg-background border border-border">
         <div className="h-4 bg-border/50 rounded w-3/4 mb-3" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-5/6" />
@@ -160,7 +160,7 @@ export default function MolinoInterpretation({
         </div>
         <div className="flex items-center gap-2">
           {isUsingAI && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-full border border-accent/20">
+            <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-none border border-accent/20">
               IA
             </span>
           )}
@@ -168,7 +168,7 @@ export default function MolinoInterpretation({
             <button
               type="button"
               onClick={() => getAIInterpretation(true)}
-              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-foreground font-medium px-2 py-0.5 rounded-full border border-border hover:border-foreground/20 transition-colors"
+              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-foreground font-medium px-2 py-0.5 rounded-none border border-border hover:border-foreground/20 transition-colors"
               aria-label="Regenerar interpretación"
             >
               Regenerar
@@ -207,7 +207,7 @@ export default function MolinoInterpretation({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
-              className="p-5 rounded-none bg-background border border-border"
+              className="p-6 rounded-none bg-background border border-border"
             >
               <p className="text-sm text-foreground leading-relaxed">{interpretation.summary}</p>
             </motion.div>
@@ -292,7 +292,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
-                className="p-5 rounded-none bg-accent/5 border border-accent/20"
+                className="p-6 rounded-none bg-accent/5 border border-accent/20"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
                   {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}

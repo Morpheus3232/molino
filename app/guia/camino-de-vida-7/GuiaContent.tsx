@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function GuiaContent() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[700px] px-5 sm:px-8 py-16 sm:py-28" id="main-content">
+      <main className="mx-auto max-w-[700px] px-6 sm:px-8 py-16 sm:py-28" id="main-content">
         <nav className="mb-12">
           <Link href="/guia" className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium hover:text-accent/80 transition-colors">
             ← volver a la guía

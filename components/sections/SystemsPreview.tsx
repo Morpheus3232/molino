@@ -63,7 +63,7 @@ export default function SystemsPreview() {
                 <p className="font-mono text-xs text-accent font-semibold tracking-[0.25em] mb-6">
                   {system.micro}
                 </p>
-                <h3 className="font-display text-4xl sm:text-5xl text-foreground leading-[0.9] mb-5">
+                <h3 className="font-display text-4xl sm:text-5xl text-foreground leading-[0.9] mb-6">
                   {system.title}
                 </h3>
                 <p className="text-sm sm:text-base text-muted leading-relaxed mb-8">
