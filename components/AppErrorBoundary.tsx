@@ -57,14 +57,14 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
               <button
                 type="button"
                 onClick={this.handleRetry}
-                className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground"
               >
                 Intentar nuevamente
               </button>
               <button
                 type="button"
                 onClick={this.handleGoHome}
-                className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-foreground"
+                className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-transparent text-secondary border border-border hover:border-accent hover:text-foreground"
               >
                 Volver al inicio
               </button>

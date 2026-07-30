@@ -87,7 +87,7 @@ export default function AffinityHub() {
               key={tier}
               type="button"
               onClick={() => setFilter(tier)}
-              className={`px-4 py-1.5 rounded-none text-xs font-medium transition-all duration-300 ${
+              className={`px-4 py-1.5 rounded-sm text-xs font-medium transition-all duration-300 ${
                 filter === tier
                   ? "bg-accent text-white"
                   : "bg-white/70 text-muted hover:bg-white/90 border border-border"

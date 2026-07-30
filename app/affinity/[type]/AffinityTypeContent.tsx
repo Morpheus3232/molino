@@ -146,7 +146,7 @@ function EntityCard({
     <motion.button
       {...staggerItem}
       onClick={onClick}
-      className="w-full text-left p-6 sm:p-6 rounded-none border border-border bg-card hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
+      className="w-full text-left p-6 sm:p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
       

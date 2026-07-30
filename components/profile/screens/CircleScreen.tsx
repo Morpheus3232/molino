@@ -79,7 +79,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
         <div className="flex flex-col items-center">
           <motion.div
             {...staggerItemSmooth}
-            className="w-20 h-20 rounded-none border-2 border-ink/20 flex items-center justify-center mb-3"
+            className="w-20 h-20 rounded-md border-2 border-ink/20 flex items-center justify-center mb-3"
           >
             <span className="text-3xl">{display.emoji}</span>
           </motion.div>
@@ -92,7 +92,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 <motion.div
                   key={rel.animal}
                   {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-none border border-ink/10 bg-background/50"
+                  className="flex flex-col items-center p-3 rounded-md border border-ink/10 bg-background/50"
                 >
                   <span className="text-2xl mb-1">{relDisplay.emoji}</span>
                   <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
@@ -106,7 +106,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 <motion.div
                   key={rel.animal}
                   {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-none border border-ink/10 bg-background/50"
+                  className="flex flex-col items-center p-3 rounded-md border border-ink/10 bg-background/50"
                 >
                   <span className="text-2xl mb-1">{relDisplay.emoji}</span>
                   <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
@@ -203,7 +203,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                   <motion.div
                     key={rel.animal}
                     {...staggerItemSmooth}
-                    className="p-4 rounded-none border border-ink/10 bg-background text-center"
+                    className="p-4 rounded-md border border-ink/10 bg-background text-center"
                   >
                     <span className="text-2xl block mb-1">{relDisplay.emoji}</span>
                     <p className="text-sm font-medium text-foreground">{relDisplay.name}</p>
@@ -220,7 +220,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       <section className="py-8 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="p-4 rounded-none border border-accent/20 bg-accent/[0.03]">
+            <div className="p-4 rounded-md border border-accent/20 bg-accent/[0.03]">
               <p className="text-xs text-muted leading-relaxed">
                 Las relaciones zodiacales se basan en tradiciones culturales del zodíaco chino.
                 Son interpretaciones simbólicas, no predicciones. Cada relación es una oportunidad de aprendizaje.
@@ -259,7 +259,7 @@ function FamousPersonCard({ person, index, userAnimal, router }: { person: Famou
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
-      className="p-4 rounded-none border border-ink/10 bg-background"
+      className="p-4 rounded-md border border-ink/10 bg-background"
     >
       <div className="flex items-start gap-3">
         <span className="text-2xl shrink-0">{person.emoji}</span>

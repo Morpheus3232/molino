@@ -120,7 +120,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         </div>
 
         {/* Explanation of what this page is */}
-        <div className="mb-6 p-4 rounded-none bg-accent/[0.05] border border-accent/20">
+        <div className="mb-6 p-4 rounded-md bg-accent/[0.05] border border-accent/20">
           <p className="text-sm text-muted leading-relaxed">
             Este análisis usa <strong>múltiples sistemas</strong> (numerología, astrología occidental, zodiaco chino, arquetipos) para evaluar la compatibilidad.
             Para la <strong>afinidad principal</strong> basada solo en el zodíaco chino, visitá la página de <a href={`/affinity`} className="text-accent hover:underline">afinidad simbólica</a>.
@@ -128,7 +128,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         </div>
 
         {/* User context */}
-        <div className="mb-6 p-4 rounded-none bg-background border border-border">
+        <div className="mb-6 p-4 rounded-md bg-background border border-border shadow-sm">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu perfil</p>
           <p className="text-sm text-foreground">
             <span className="font-medium">{profile.name}</span> · Camino de Vida {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
@@ -148,11 +148,11 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         {/* Narrative */}
         {story && (
           <div className="mt-6">
-            <div className="rounded-none border border-border bg-card p-6">
+            <div className="rounded-md border border-border bg-card shadow-sm p-6">
               <span className="badge mb-3">Narrativa de conexión</span>
               <p className="text-lg leading-relaxed text-foreground mb-4">{story.narrative}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-none bg-background p-4 border border-border">
+                <div className="rounded-md bg-background p-4 border border-border">
                   <p className="text-sm font-medium text-foreground mb-2">Puntos de conexión</p>
                   <ul className="text-sm text-muted space-y-2">
                     {story.connections.map((conn, i) => (
@@ -163,7 +163,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-none bg-background p-4 border border-border">
+                <div className="rounded-md bg-background p-4 border border-border">
                   <p className="text-sm font-medium text-foreground mb-2">Áreas de crecimiento</p>
                   <ul className="text-sm text-muted space-y-2">
                     {story.challenges.map((challenge, i) => (
@@ -195,7 +195,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-card rounded-none border border-border text-center space-y-2">
+        <div className="mt-8 p-4 bg-card rounded-md border border-border text-center space-y-2">
           <p className="text-xs text-muted">
             Resultado para <span className="font-medium">{profile.name}</span> con {entity.name}
           </p>
@@ -209,7 +209,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <button
             type="button"
             onClick={handleShare}
-            className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-none"
+            className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-md"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
               <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />

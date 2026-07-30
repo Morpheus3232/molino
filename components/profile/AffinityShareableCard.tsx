@@ -122,7 +122,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
       {/* The card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-none border border-ink/10 bg-card max-w-full"
+        className="relative overflow-hidden rounded-md border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
         {/* Accent bar */}
@@ -170,7 +170,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           {/* Relationship badge — clean, readable */}
           <div className="text-center mb-6">
             <span
-              className="text-[11px] font-medium uppercase tracking-wider px-4 py-1.5 rounded-none"
+              className="text-[11px] font-medium uppercase tracking-wider px-4 py-1.5 rounded-sm"
               style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
             >
               {tierMeta.label} · {result.relationship}
@@ -218,7 +218,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           </div>
 
           {/* Transparency block — minimal */}
-          <div className="p-3 rounded-none bg-background/50 mb-6">
+          <div className="p-3 rounded-md bg-background/50 mb-6">
             <p className="text-[9px] text-muted leading-relaxed text-center">
               Basado en: fecha de nacimiento · fecha histórica de la entidad · tradición del zodíaco chino
             </p>

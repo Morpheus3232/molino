@@ -122,7 +122,7 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-md border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
@@ -174,7 +174,7 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.35 }}
-                className="mt-6 p-4 rounded-none border border-border bg-card"
+                className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> El Camino de Vida es una interpretación simbólica de la tradición numerológica. No constituye evidencia científica ni predice el futuro. Molino lo utiliza como herramienta de reflexión.
@@ -198,7 +198,7 @@ export default function CaminoDeVidaPage() {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -209,7 +209,7 @@ export default function CaminoDeVidaPage() {
                   <p className="text-sm text-muted mb-3">Querés ver cómo esto se conecta con astrología y zodiaco chino?</p>
                   <Link
                     href="/onboarding"
-                    className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     Crear tu mapa completo
                   </Link>
