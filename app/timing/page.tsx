@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -20,6 +22,13 @@ const INTENTIONS: { id: TimingIntention; label: string; icon: string }[] = [
   { id: "publish_something", label: "Publicar algo", icon: "📤" },
   { id: "other", label: "Otro", icon: "✨" },
 ];
+
+const getScoreColor = (score: number) => {
+  if (score >= 75) return "text-green-600";
+  if (score >= 55) return "text-blue-600";
+  if (score >= 40) return "text-yellow-600";
+  return "text-red-600";
+};
 
 export default function TimingPage() {
   const router = useRouter();
@@ -58,75 +67,68 @@ export default function TimingPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu momento</p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
+        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+          <p className="eyebrow-brutalist mb-4">Tu momento</p>
+          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu momento personal
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para explorar el timing personalizado, primero necesitás crear tu perfil.
           </p>
-          <Button size="lg" onClick={() => router.push("/")}>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="btn-accent"
+          >
             Crear mi perfil
-          </Button>
+          </button>
         </div>
         <UniversityFooter />
       </div>
     );
   }
 
-  const getScoreColor = (score: number) => {
-    if (score >= 75) return "text-green-600";
-    if (score >= 55) return "text-blue-600";
-    if (score >= 40) return "text-yellow-600";
-    return "text-red-600";
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-          <span>›</span>
-          <span className="text-foreground font-medium">Tu momento</span>
-        </nav>
+      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+        <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">Tu momento</span>
+          </nav>
 
-        {/* Header */}
-        <div className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Tu timing personal</p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground">
+          <p className="eyebrow-brutalist mb-4">Tu timing personal</p>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
             ¿Qué querés hacer?
           </h1>
-          <p className="text-sm text-muted mt-2">
-            Seleccioná una intención y analizá el mejor momento para actuar.
-          </p>
-        </div>
+          <p className="text-sm text-muted mt-4">Seleccioná una intención y analizá el mejor momento para actuar.</p>
+        </motion.div>
 
-        {/* Intention Selection */}
         {!selectedIntention && (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-            {INTENTIONS.map((intention) => (
-              <button
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10">
+            {INTENTIONS.map((intention, i) => (
+              <motion.button
                 key={intention.id}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
                 onClick={() => setSelectedIntention(intention.id)}
-                className="p-4 rounded-xl border border-border bg-card hover:border-accent transition-all text-left"
+                className="bg-background p-8 sm:p-10 lg:p-14 text-left hover:bg-accent/5 transition-colors group"
               >
-                <span className="text-2xl mb-2 block">{intention.icon}</span>
-                <p className="text-sm font-medium text-foreground">{intention.label}</p>
-              </button>
+                <span className="text-3xl block mb-4">{intention.icon}</span>
+                <p className="font-display text-xl text-foreground group-hover:text-accent transition-colors">{intention.label}</p>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         )}
 
-        {/* Date Selection and Results */}
         {selectedIntention && (
           <>
-            <div className="mb-8 p-4 rounded-xl border border-border bg-card">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="border border-ink/10 p-6">
               <div className="flex items-center justify-between mb-4">
-                <p className="text-sm font-medium text-foreground">
-                  {INTENTION_LABELS[selectedIntention]}
-                </p>
+                <p className="font-display text-lg text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
                 <button
                   onClick={() => { setSelectedIntention(null); setShowResults(false); }}
                   className="text-xs text-muted hover:text-foreground transition-colors"
@@ -135,125 +137,127 @@ export default function TimingPage() {
                 </button>
               </div>
               <div className="flex items-center gap-4">
-                <label htmlFor="target-date" className="text-sm text-muted">Fecha:</label>
+                <label htmlFor="target-date" className="label-micro">Fecha:</label>
                 <input
                   id="target-date"
                   type="date"
                   value={selectedDate}
                   onChange={(e) => { setSelectedDate(e.target.value); setShowResults(true); }}
-                  className="input max-w-xs"
+                  className="w-full max-w-xs px-3 py-2 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
-            </div>
+            </motion.div>
 
-            {/* Results */}
             {result && showResults && (
-              <div className="space-y-6">
-                {/* Timing Score */}
-                <div className="p-6 rounded-2xl border border-border bg-card">
-                  <div className="flex items-center justify-between mb-4">
+              <div className="space-y-px bg-ink/10 mt-6">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Puntuación de timing</p>
-                      <p className={`text-4xl font-serif font-bold ${getScoreColor(result.timingScore)}`}>
-                        {result.timingScore}/100
+                      <p className="label-micro mb-1">Puntuación de timing</p>
+                      <p className={`text-5xl sm:text-6xl font-display font-bold tracking-tight ${getScoreColor(result.timingScore)}`}>
+                        {result.timingScore}<span className="text-3xl text-muted font-sans font-medium">/100</span>
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="sm:text-right">
                       <p className="text-sm text-muted">Día personal: {result.personalDay}</p>
                       <p className="text-sm text-muted">Luna {result.moonPhase}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted leading-relaxed">{result.explanation}</p>
-                </div>
+                  <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.explanation}</p>
+                </motion.div>
 
-                {/* Favorable Dimensions */}
                 {result.favorableDimensions.length > 0 && (
-                  <div className="p-5 rounded-xl border border-border bg-card">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Dimensiones favorables</p>
-                    <ul className="space-y-2">
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                    <p className="eyebrow-brutalist mb-4">Dimensiones favorables</p>
+                    <ul className="space-y-3">
                       {result.favorableDimensions.map((dim, i) => (
-                        <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                        <li key={i} className="text-sm text-foreground flex items-start gap-3">
                           <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
                           {dim}
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Challenging Dimensions */}
                 {result.challengingDimensions.length > 0 && (
-                  <div className="p-5 rounded-xl border border-border bg-card">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Dimensiones desafiantes</p>
-                    <ul className="space-y-2">
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                    <p className="eyebrow-brutalist mb-4">Dimensiones desafiantes</p>
+                    <ul className="space-y-3">
                       {result.challengingDimensions.map((dim, i) => (
-                        <li key={i} className="text-sm text-muted flex items-start gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
+                        <li key={i} className="text-sm text-muted flex items-start gap-3">
+                          <span className="w-1.5 h-1.5 rounded-full bg-ink/20 mt-1.5 shrink-0" aria-hidden="true" />
                           {dim}
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </motion.div>
                 )}
 
-                {/* Recommended Window */}
-                <div className="p-5 rounded-xl border border-border bg-card">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Recomendación</p>
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                  <p className="eyebrow-brutalist mb-4">Recomendación</p>
                   <p className="text-sm text-foreground leading-relaxed">{result.recommendedWindow}</p>
-                </div>
+                </motion.div>
 
-                {/* Caveats */}
-                <div className="p-4 rounded-xl border border-border bg-card">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aclaraciones</p>
-                  <ul className="space-y-1">
-                    {result.caveats.map((caveat, i) => (
-                      <li key={i} className="text-xs text-muted">• {caveat}</li>
-                    ))}
-                  </ul>
-                </div>
+                {result.caveats.length > 0 && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }} className="bg-background p-6">
+                    <p className="label-micro mb-2">Aclaraciones</p>
+                    <ul className="space-y-1">
+                      {result.caveats.map((caveat, i) => (
+                        <li key={i} className="text-xs text-muted">• {caveat}</li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
 
-                {/* AI Interpretation */}
-                <MolinoInterpretation
-                  profile={profile}
-                  type="timing"
-                  timing={result}
-                  label="Interpretación de Molino"
-                  description="Análisis personalizado de tu timing"
-                />
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                  <MolinoInterpretation
+                    profile={profile}
+                    type="timing"
+                    timing={result}
+                    label="Interpretación de Molino"
+                    description="Análisis personalizado de tu timing"
+                  />
+                </motion.div>
               </div>
             )}
 
-            {/* Best Dates */}
             {bestDates.length > 0 && (
-              <div className="mt-8">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-4">Mejores fechas (próximos 14 días)</p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.45 }} className="mt-8">
+                <p className="eyebrow-brutalist mb-6">Mejores fechas (próximos 14 días)</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
                   {bestDates.map((date, i) => (
-                    <div key={i} className="p-4 rounded-xl border border-border bg-card">
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: i * 0.06 }}
+                      className="bg-background p-6"
+                    >
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-sm font-medium text-foreground">
+                        <p className="font-display text-base text-foreground">
                           {new Date(date.date + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
                         </p>
-                        <span className={`text-sm font-semibold ${getScoreColor(date.timingScore)}`}>
+                        <span className={`text-lg font-semibold ${getScoreColor(date.timingScore)}`}>
                           {date.timingScore}%
                         </span>
                       </div>
-                      <p className="text-xs text-muted">{date.theme}</p>
-                    </div>
+                      <p className="text-sm text-muted">{date.theme}</p>
+                    </motion.div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             )}
 
-            {/* CTAs */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.5 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
               <Button variant="secondary" fullWidth onClick={() => router.push("/daily-energy")}>
                 Ver energía de hoy
               </Button>
               <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
                 Ver mi perfil
               </Button>
-            </div>
+            </motion.div>
           </>
         )}
       </main>

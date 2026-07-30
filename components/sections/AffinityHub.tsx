@@ -66,7 +66,7 @@ export default function AffinityHub() {
   );
 
   return (
-    <section className="py-20 sm:py-24 lg:py-28 bg-white">
+    <section className="py-20 sm:py-24 lg:py-28 bg-background">
       <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
         <motion.div {...fadeUp} className="mb-10 sm:mb-14">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Conexiones</p>
