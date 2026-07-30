@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { getDailyNumber, getDailyReflection } from "@/lib/numerology/daily";
 
 const ESTADISTICAS = [
@@ -16,147 +18,101 @@ export default function HeroNew() {
   const number = getDailyNumber(today);
   const reflection = getDailyReflection(number, today);
 
-  const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
-  const yyyy = String(today.getFullYear());
-
-  const allDigits = (dd + mm + yyyy).split("").map(Number);
-  const rawSum = allDigits.reduce((a, b) => a + b, 0);
-  const breakdownStr = allDigits.join(" + ") + " = " + rawSum + (rawSum !== number ? " → " + number : "");
-
   const dateStr = today
     .toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })
     .replace(/\//g, ".");
 
-  const colBorder = "border-ink/10";
-  const cellPad = "p-8 sm:p-10 lg:p-14";
+  const cellPad = "p-8 lg:p-12";
 
   return (
-    <section className="relative min-h-screen flex items-center bg-background pt-16 overflow-hidden">
-      <div className="relative mx-auto max-w-8xl w-full px-5 sm:px-8 lg:px-12">
-        {/* Header eyebrow — full width */}
+    <section className="relative flex flex-col justify-center bg-background pt-16 overflow-hidden">
+      <div className="relative mx-auto max-w-8xl w-full px-4 sm:px-8 lg:px-12">
         <div className="border-t border-ink/10">
-          <div className={`${cellPad} border-b border-ink/10`}>
+          {/* Eyebrow */}
+          <div className={`${cellPad} pb-6 lg:pb-8 border-b border-ink/10`}>
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               className="eyebrow-brutalist"
             >
-              NÚMERO DEL DÍA
+              MAPA PERSONAL DE AUTOCONOCIMIENTO
             </motion.div>
-            <motion.p
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.05 }}
-              className="label-micro mt-2"
-            >
-              UN NÚMERO POR DÍA · UN MAPA PARA CONOCERTE
-            </motion.p>
           </div>
 
-          {/* Main content: 2-column grid */}
-          <div className="flex flex-wrap">
-            {/* Left: Number (signature) — 3/5 */}
-            <div className={`w-full lg:w-3/5 ${cellPad} flex flex-col justify-center lg:border-r border-ink/10 border-b lg:border-b-0 border-ink/10`}>
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="font-display text-[clamp(6rem,22vw,28rem)] leading-[0.8] tracking-tight text-foreground"
-              >
-                {number}
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.15 }}
-                className="font-mono text-sm text-muted mt-6 tracking-tight"
-              >
-                {breakdownStr}
-              </motion.p>
-            </div>
+          {/* Headline block — el titular es el foco, no el número */}
+          <div className={`${cellPad} border-b border-ink/10`}>
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="font-display text-[clamp(2.75rem,8vw,7rem)] leading-[0.88] tracking-tight text-foreground max-w-5xl"
+            >
+              CONOCÉTE.
+              <br />
+              ENTENDÉTE.
+              <br />
+              <span className="text-accent">ORIENTÁTE.</span>
+            </motion.h1>
 
-            {/* Right: Reflection + CTA — 2/5 */}
-            <div className={`w-full lg:w-2/5 ${cellPad} flex flex-col justify-between`}>
-              <div>
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.25 }}
-                  className="text-lg md:text-xl text-foreground font-semibold leading-tight mb-4"
-                >
-                  {reflection.title}
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.28 }}
-                  className="text-sm md:text-base text-muted leading-relaxed"
-                >
-                  {reflection.text}
-                </motion.p>
-                {reflection.recommendation && (
-                  <motion.p
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.32 }}
-                    className="text-sm md:text-base text-muted/80 leading-relaxed mt-5 italic"
-                  >
-                    {reflection.recommendation}
-                  </motion.p>
-                )}
-              </div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="text-base md:text-lg text-muted leading-relaxed max-w-lg mt-8"
+            >
+              Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Gratis, sin registro, sin datos guardados.
+            </motion.p>
 
-              <div className="mt-10">
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 0.6, delay: 0.35 }}
-                  className="w-12 h-0.5 bg-accent origin-left mb-5"
-                />
-                <motion.p
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.37 }}
-                  className="text-sm text-muted leading-relaxed mb-6 max-w-sm"
-                >
-                  Cada día tiene un número. Tu fecha de nacimiento revela el tuyo.
-                </motion.p>
-              <motion.button
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.25 }}
+              className="mt-8"
+            >
+              <button
                 type="button"
                 onClick={() => router.push("/onboarding")}
                 aria-label="Descubrir mi mapa personal: ir al onboarding"
                 className="btn-accent inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm font-bold tracking-wider uppercase"
               >
-                DESCUBRIR MI MAPA →
-              </motion.button>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 0.5 }}
-                  className="label-micro mt-4"
-                >
-                  {dateStr} · NUMEROLOGÍA
-                </motion.p>
-              </div>
-            </div>
+                DESCUBRIR MI MAPA
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </motion.div>
           </div>
 
-          {/* Stats bar — full width with border-t */}
-          <div className="flex flex-wrap border-t border-ink/10">
+          {/* Número del día — ahora es soporte, no protagonista */}
+          <Link
+            href="/daily-energy"
+            className="group flex flex-wrap border-b border-ink/10 transition-colors hover:bg-ink/[0.02]"
+          >
+            <div className={`w-full sm:w-auto sm:min-w-[10rem] ${cellPad} py-6 sm:border-r border-ink/10 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1`}>
+              <span className="label-micro">NÚMERO DEL DÍA</span>
+              <span className="font-display text-5xl leading-none text-foreground">{number}</span>
+            </div>
+            <div className={`flex-1 ${cellPad} py-6 flex items-center justify-between gap-4 min-w-[16rem]`}>
+              <div>
+                <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{reflection.title}</p>
+                <p className="text-sm text-muted mt-1 line-clamp-1 max-w-md">{reflection.text}</p>
+              </div>
+              <span className="label-micro shrink-0 text-accent group-hover:translate-x-1 transition-transform hidden sm:inline-flex items-center gap-1">
+                VER HOY <ArrowRight className="w-3 h-3" aria-hidden="true" />
+              </span>
+            </div>
+          </Link>
+
+          {/* Stats bar */}
+          <div className="flex flex-wrap">
             {ESTADISTICAS.map((stat, i) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
+                transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
                 className={`flex-1 ${cellPad} ${i < ESTADISTICAS.length - 1 ? "border-r border-ink/10" : ""} border-b sm:border-b-0 border-ink/10`}
               >
-                <p className="font-display text-4xl md:text-5xl text-accent leading-none mb-1">{stat.valor}</p>
+                <p className="font-display text-3xl md:text-4xl text-accent leading-none mb-1">{stat.valor}</p>
                 <p className="label-micro">{stat.label}</p>
               </motion.div>
             ))}

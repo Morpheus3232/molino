@@ -97,7 +97,7 @@ export default function CompatibilidadCalcPage() {
 
         <motion.section {...fadeUp}>
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Compatibilidad simbólica
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -109,7 +109,7 @@ export default function CompatibilidadCalcPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Persona 1 */}
-            <div className="p-6 rounded-xl border border-border bg-card">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
               <div className="space-y-3">
                 <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
@@ -130,14 +130,14 @@ export default function CompatibilidadCalcPage() {
                 </select>
               </div>
               {person1 && (
-                <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-none bg-background text-sm text-muted">
                   {person1.animal} · {person1.sunSign} · Camino de Vida {person1.lifePath}
                 </div>
               )}
             </div>
 
             {/* Persona 2 */}
-            <div className="p-6 rounded-xl border border-border bg-card">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
               <div className="space-y-3">
                 <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
@@ -158,7 +158,7 @@ export default function CompatibilidadCalcPage() {
                 </select>
               </div>
               {person2 && (
-                <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-none bg-background text-sm text-muted">
                   {person2.animal} · {person2.sunSign} · Camino de Vida {person2.lifePath}
                 </div>
               )}
@@ -180,7 +180,7 @@ export default function CompatibilidadCalcPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
@@ -206,7 +206,7 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-xl font-semibold text-foreground mt-4"
+                    className="font-heading text-xl font-semibold text-foreground mt-4"
                   >
                     {compatibility.label}
                   </motion.p>
@@ -219,9 +219,9 @@ export default function CompatibilidadCalcPage() {
                   transition={{ delay: 0.5, duration: 0.4 }}
                   className="max-w-lg mx-auto mb-6"
                 >
-                  <div className="p-4 rounded-xl bg-card border border-border text-center transition-colors hover:border-accent/30">
+                  <div className="p-4 rounded-none bg-card border border-border text-center transition-colors hover:border-accent/30">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
-                    <p className="text-2xl font-serif font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
+                    <p className="text-2xl font-heading font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
                   </div>
                 </motion.div>
 
@@ -241,7 +241,7 @@ export default function CompatibilidadCalcPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-none border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Fórmula:</strong> 100% relación zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.

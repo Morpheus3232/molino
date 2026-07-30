@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${sign.symbol} ${sign.name} — Astrología Molino`,
+    title: `${sign.symbol} ${sign.name} — Astrología`,
     description: `${sign.meaning.slice(0, 155)}`,
     alternates: {
       canonical: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),

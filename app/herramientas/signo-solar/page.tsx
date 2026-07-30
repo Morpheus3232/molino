@@ -55,7 +55,7 @@ export default function SignoSolarPage() {
 
         <motion.section {...fadeUp}>
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Astrología</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Signo Solar
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -114,7 +114,7 @@ export default function SignoSolarPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
@@ -137,7 +137,7 @@ export default function SignoSolarPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-3xl font-semibold text-foreground"
+                    className="font-heading text-3xl font-semibold text-foreground"
                   >
                     {result.sign}
                   </motion.p>
@@ -163,7 +163,7 @@ export default function SignoSolarPage() {
                       className="max-w-lg mx-auto"
                     >
                       <p className="text-sm text-muted leading-relaxed text-center mb-4">{signData.keywords.join(" \u00b7 ")}</p>
-                      <div className="p-4 rounded-xl bg-card border border-border">
+                      <div className="p-4 rounded-none bg-card border border-border">
                         <p className="text-sm text-foreground leading-relaxed">
                           Según la tradición astrológica, {result.sign} es un signo {result.modality.toLowerCase()} de elemento {result.element.toLowerCase()}. {result.sign === "Aries" ? "Se asocia con el inicio, la iniciativa y la energía pionera." : result.sign === "Tauro" ? "Se asocia con la estabilidad, la sensualidad y la conexión con la tierra." : result.sign === "G\u00e9minis" ? "Se asocia con la dualidad, la comunicación y la curiosidad intelectual." : result.sign === "C\u00e1ncer" ? "Se asocia con las emociones, el hogar y la protecci\u00f3n." : result.sign === "Leo" ? "Se asocia con la creatividad, el liderazgo y la expresi\u00f3n personal." : result.sign === "Virgo" ? "Se asocia con el an\u00e1lisis, la precisi\u00f3n y el servicio." : result.sign === "Libra" ? "Se asocia con el equilibrio, la armon\u00eda y la justicia." : result.sign === "Escorpio" ? "Se asocia con la transformaci\u00f3n, la intensidad y lo oculto." : result.sign === "Sagitario" ? "Se asocia con la expansi\u00f3n, la filosof\u00eda y la aventura." : result.sign === "Capricornio" ? "Se asocia con la ambici\u00f3n, la disciplina y la estructura." : result.sign === "Acuario" ? "Se asocia con la innovaci\u00f3n, la humanidad y la originalidad." : "Se asocia con la intuici\u00f3n, la espiritualidad y la compasi\u00f3n."}
                         </p>
@@ -178,7 +178,7 @@ export default function SignoSolarPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-none border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> La astrología es un sistema de creencias con más de 4000 años de historia. Estas interpretaciones pertenecen a la tradición astrológica y no representan evidencia científica.

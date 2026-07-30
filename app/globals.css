@@ -15,6 +15,7 @@
   --color-muted-foreground: var(--color-muted);
   --color-card: #F5F5F0;
   --color-card-border: var(--color-border);
+  --color-surface-elevated: #FFFFFF;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
@@ -32,28 +33,45 @@
   --radius-lg: 0;
   --radius-xl: 0;
 
-  --section-padding: 10rem;
-  --card-padding: 1.75rem;
+  --section-padding: 4rem;
+  --card-padding: 1.5rem;
   --grid-gap: 0;
 
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
+  /*
+   * Spacing scale — fixed tokens. No values between these without justification.
+   *
+   *   xs:   8px  (0.5rem)  →  p-2
+   *   sm:  12px  (0.75rem) →  p-3
+   *   md:  16px  (1rem)    →  p-4
+   *   lg:  24px  (1.5rem)  →  p-6
+   *   xl:  32px  (2rem)    →  p-8
+   *   2xl: 48px  (3rem)    →  p-12
+   *   3xl: 64px  (4rem)    →  p-16
+   *   4xl: 96px  (6rem)    →  p-24
+   *   5xl: 128px (8rem)    →  p-32
+   */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
 
   /* ═══════════════════════════════════════════════════════════════
-     TIPOGRAFÍA — Brutalist Editorial
+     TIPOGRAFÍA — Escala cerrada
      ═══════════════════════════════════════════════════════════════
-     --font-display (Archivo Black): títulos enormes, número del día,
-       secciones hero. Condensada, black weight, mayúsculas. Es la
-       tipografía signature de Molino.
-     --font-sans (Inter): cuerpo de texto, párrafos, UI general.
-     --font-heading (Space Grotesk): subtítulos, badges, elementos
-       de alto impacto secundarios.
-     --font-mono (JetBrains Mono): datos técnicos, números, breakdown,
-       labels tipo micro-tag.
+     Display  (--step-8, 4.5rem, 72px)  →  font-display, lh 0.85
+     H1       (--step-6, 3rem,   48px)  →  font-display, lh 0.9
+     H2       (--step-5, 2.25rem, 36px) →  font-display, lh 1.0
+     H3       (--step-4, 1.75rem, 28px) →  font-heading, lh 1.1
+     H4       (--step-3, 1.375rem,22px) →  font-heading, lh 1.2
+     Body L   (--step-2, 1.125rem, 18px) → font-sans,    lh 1.6
+     Body     (--step-1, 1rem,    16px) →  font-sans,    lh 1.6
+     Caption  (0.875rem, 14px)          →  font-sans,    lh 1.5
+     Overline (0.7rem,   11px)          →  font-mono,    lh 1.0
      ═══════════════════════════════════════════════════════════════ */
   --font-display: 'Archivo Black', sans-serif;
   --font-sans: 'Inter', sans-serif;
@@ -71,9 +89,10 @@
   --shadow-inner: none;
 
   --max-width-content: 680px;
-  --max-width-wide: 1280px;
-  --max-width-layout: 1280px;
-  --max-width-article: 680px;
+  --max-input: 480px;
+  --max-card: 384px;
+  --max-wide: 1280px;
+  --max-layout: 1280px;
 
   --step-1-text: 1rem;
   --step-2-text: 1.125rem;
@@ -147,6 +166,7 @@
   --color-muted-foreground: var(--color-muted);
   --color-card: #121214;
   --color-card-border: var(--color-border);
+  --color-surface-elevated: #1a1a1e;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
@@ -524,6 +544,21 @@
   .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  .btn-accent:disabled,
+  .btn-primary:disabled,
+  .btn-ghost:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn:focus-visible,
+  .btn-accent:focus-visible,
+  .btn-primary:focus-visible,
+  .btn-ghost:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
   .section {

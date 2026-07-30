@@ -11,14 +11,14 @@ const steps = [
   { number: "05", title: "REFLEXIONÁ", description: "Tomá perspectiva con tu lectura completa de todos los sistemas.", href: "/biblioteca" },
 ];
 
-const cellPad = "p-8 sm:p-10 lg:p-14";
+const cellPad = "p-8 lg:p-12";
 
 export default function Journey() {
   const router = useRouter();
 
   return (
     <section className="bg-background">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}

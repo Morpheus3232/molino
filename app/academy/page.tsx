@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import AcademyContent from "./AcademyContent";
 
 export const metadata: Metadata = {
-  title: "La Academia | Inteligencia Personal — Molino",
+  title: "La Academia | Inteligencia Personal",
   description: "Descubrí la historia de las tradiciones simbólicas: desde Babilonia y Pitágoras hasta el zodíaco chino moderno.",
   alternates: {
     canonical: siteUrl("/academy"),

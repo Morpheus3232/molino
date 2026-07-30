@@ -152,7 +152,7 @@ export default function AffinityAnalyticsPage() {
 
         <div className="mb-8">
           <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Analytics</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-2">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-2">
             Affinity Experiment
           </h1>
           <p className="text-sm text-muted">
@@ -172,8 +172,8 @@ export default function AffinityAnalyticsPage() {
               ["recommendation_clicked", counts.recommendation_clicked],
               ["save_clicked", counts.save_clicked],
             ] as const).map(([key, value]) => (
-              <div key={key} className="p-4 rounded-xl border border-border bg-card text-center">
-                <div className="font-serif text-2xl font-bold text-foreground">{value}</div>
+              <div key={key} className="p-4 rounded-none border border-border bg-card text-center">
+                <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
                 <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">{EVENT_LABELS[`affinity_${key === "profile_cta" ? "profile_cta_clicked" : key === "date_entered" ? "date_entered" : key === "result_viewed" ? "result_viewed" : key === "shared" ? "shared" : key === "recommendation_clicked" ? "recommendation_clicked" : "save_clicked"}` as EventType]}</div>
               </div>
             ))}
@@ -203,8 +203,8 @@ export default function AffinityAnalyticsPage() {
               ["recommendation_clicked", userCounts.recommendation_clicked],
               ["save_clicked", userCounts.save_clicked],
             ] as const).map(([key, value]) => (
-              <div key={key} className="p-4 rounded-xl border border-border bg-card text-center">
-                <div className="font-serif text-2xl font-bold text-foreground">{value}</div>
+              <div key={key} className="p-4 rounded-none border border-border bg-card text-center">
+                <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
                 <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">usuarios</div>
               </div>
             ))}
@@ -265,10 +265,10 @@ export default function AffinityAnalyticsPage() {
 
 function RatioCard({ label, value, desc }: { label: string; value: string; desc: string }) {
   return (
-    <div className="p-4 rounded-xl border border-border bg-card text-center">
-      <div className="font-serif text-2xl font-bold text-foreground">{value}</div>
+    <div className="p-4 rounded-none border border-border bg-card text-center">
+      <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
       <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">{label}</div>
-      <div className="text-[10px] text-muted/60 mt-0.5">{desc}</div>
+      <div className="text-[10px] text-muted mt-0.5">{desc}</div>
     </div>
   );
 }

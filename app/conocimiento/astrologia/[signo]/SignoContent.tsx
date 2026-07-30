@@ -23,7 +23,7 @@ export default function SignoContent() {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
-          <h1 className="font-serif text-4xl font-semibold text-foreground">Signo no encontrado</h1>
+          <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
           <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrología de Molino.</p>
           <button onClick={() => router.push("/conocimiento/astrologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</button>
         </main>
@@ -52,7 +52,7 @@ export default function SignoContent() {
           <div className="flex items-center gap-4 mb-4">
             <span className="text-5xl">{sign.symbol}</span>
             <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-foreground leading-[1.1]">{sign.name}</h1>
+              <h1 className="font-heading text-4xl sm:text-5xl font-semibold text-foreground leading-[1.1]">{sign.name}</h1>
               <p className="text-sm text-muted mt-1">{sign.dates}</p>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default function SignoContent() {
         {/* Fortalezas y Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-5 rounded-none border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-2">
                 {sign.strengths.map(s => (
@@ -92,7 +92,7 @@ export default function SignoContent() {
                 ))}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-5 rounded-none border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {sign.challenges.map(c => (
@@ -110,7 +110,7 @@ export default function SignoContent() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-border bg-card/60">
+            <div className="p-4 rounded-none border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
@@ -118,7 +118,7 @@ export default function SignoContent() {
                 ))}
               </div>
             </div>
-            <div className="p-4 rounded-xl border border-border bg-card/60">
+            <div className="p-4 rounded-none border border-border bg-card/60">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
@@ -131,7 +131,7 @@ export default function SignoContent() {
 
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-5 rounded-xl border border-border bg-card/60">
+          <div className="p-5 rounded-none border border-border bg-card/60">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>

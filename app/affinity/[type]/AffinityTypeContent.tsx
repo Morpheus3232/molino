@@ -10,6 +10,7 @@ import { getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
+import EmptyState from "@/components/ui/EmptyState";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -43,7 +44,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Afinidad Personal · {meta.plural}
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {meta.icon} {meta.plural}
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
@@ -80,7 +81,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Afinidad Personal · {meta.plural}
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             {meta.icon} {meta.plural}
             <br />
             <span className="text-muted">que resuenan con vos</span>
@@ -100,24 +101,33 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
               placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full max-w-sm px-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
+              className="w-full max-w-sm px-4 py-3 rounded-none border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
               aria-label={`Buscar ${meta.plural.toLowerCase()}`}
             />
           </div>
         )}
 
         {/* Results */}
-        <motion.div {...staggerContainer} className="space-y-3">
-          {filtered.map((result, i) => (
-            <EntityCard
-              key={result.entity.id}
-              result={result}
-              index={i}
-              type={type}
-              onClick={() => router.push(`/affinity/${type}/${result.entity.id}`)}
-            />
-          ))}
-        </motion.div>
+        {filtered.length === 0 ? (
+          <EmptyState
+            title="Sin resultados"
+            description={`No se encontraron ${meta.plural.toLowerCase()} para "${search}".`}
+            actionLabel="Limpiar búsqueda"
+            onAction={() => setSearch("")}
+          />
+        ) : (
+          <motion.div {...staggerContainer} className="space-y-3">
+            {filtered.map((result, i) => (
+              <EntityCard
+                key={result.entity.id}
+                result={result}
+                index={i}
+                type={type}
+                onClick={() => router.push(`/affinity/${type}/${result.entity.id}`)}
+              />
+            ))}
+          </motion.div>
+        )}
       </main>
       <UniversityFooter />
     </div>
@@ -141,7 +151,7 @@ function EntityCard({
     <motion.button
       {...staggerItem}
       onClick={onClick}
-      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card/60 hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
+      className="w-full text-left p-5 sm:p-6 rounded-none border border-border bg-card/60 hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
       
@@ -153,7 +163,7 @@ function EntityCard({
 
       {/* Name + Context */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+        <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
           {result.entity.name}
         </h3>
         <p className="text-xs text-muted truncate">
@@ -163,7 +173,7 @@ function EntityCard({
 
       {/* Score Insight */}
       <div className="text-right shrink-0">
-        <div className="font-serif text-2xl font-bold" style={{ color: tierMeta.color }}>{result.score}</div>
+        <div className="font-heading text-2xl font-bold" style={{ color: tierMeta.color }}>{result.score}</div>
         <div className="text-[10px] font-medium uppercase tracking-wider mt-0.5" style={{ color: tierMeta.color }}>
           {tierMeta.label}
         </div>

@@ -90,13 +90,13 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
                 <span className="text-xs text-muted">{ind.value}%</span>
               </div>
               <AnimatedBar value={ind.value} color={ind.color} delay={i * 0.1} />
-              <p className="text-[10px] text-muted/60 mt-1">{ind.description}</p>
+              <p className="text-[10px] text-muted mt-1">{ind.description}</p>
             </motion.div>
           ))}
         </motion.div>
 
         <div className="mt-4 pt-3 border-t border-ink/10">
-          <p className="text-[10px] text-muted/50 italic">
+          <p className="text-[10px] text-muted italic">
             Indicadores simbólicos basados en tradiciones culturales. No constituyen medición científica.
           </p>
         </div>

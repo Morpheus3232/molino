@@ -53,7 +53,7 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
             <Link
               key={entity.id}
               href={`/affinity/${entity.type}/${entity.id}`}
-              className={`snap-start shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-all min-h-[40px] ${
+              className={`snap-start shrink-0 flex items-center gap-2 px-3 py-2 rounded-none border text-sm transition-all min-h-[40px] ${
                 isCurrent
                   ? "border-accent bg-accent/10 text-foreground"
                   : "border-border bg-card text-muted hover:border-accent/40 hover:text-foreground"

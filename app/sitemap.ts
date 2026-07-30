@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/filosofia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/docs/motores`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/daily-energy`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.8 },
   ];
 
   // Affinity hub + category listings
@@ -76,6 +77,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const guiaPages = [
     { url: `${BASE_URL}/guia`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
     { url: `${BASE_URL}/guia/camino-de-vida-7`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/guia/numeros-maestros`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/guia/compatibilidad-astrologica`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
   ];
 
   return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages];

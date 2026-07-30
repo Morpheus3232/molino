@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function GuiaContent() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[700px] px-5 sm:px-8 py-20 sm:py-28" id="main-content">
+      <main className="mx-auto max-w-[700px] px-5 sm:px-8 py-16 sm:py-28" id="main-content">
         <nav className="mb-12">
           <Link href="/guia" className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium hover:text-accent/80 transition-colors">
             ← volver a la guía
@@ -13,16 +13,16 @@ export default function GuiaContent() {
         </nav>
 
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Camino de Vida</p>
-        <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
+        <h1 className="font-heading text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
           7
         </h1>
-        <p className="font-serif text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">
+        <p className="font-heading text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">
           El buscador de la verdad
         </p>
 
         <div className="space-y-10 text-base sm:text-lg text-foreground/80 leading-relaxed">
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               Significado
             </h2>
             <p>
@@ -34,7 +34,7 @@ export default function GuiaContent() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               Personalidad
             </h2>
             <p>
@@ -46,7 +46,7 @@ export default function GuiaContent() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               Fortalezas
             </h2>
             <ul className="space-y-3">
@@ -70,7 +70,7 @@ export default function GuiaContent() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               Desafíos
             </h2>
             <ul className="space-y-3">
@@ -94,7 +94,7 @@ export default function GuiaContent() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               En relaciones
             </h2>
             <p>
@@ -106,7 +106,7 @@ export default function GuiaContent() {
           </section>
 
           <section>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground mb-4 leading-tight">
               Camino de crecimiento
             </h2>
             <p>

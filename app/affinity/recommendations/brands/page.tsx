@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
 
 export const metadata: Metadata = {
-  title: "Marcas alineadas | Afinidad Personal — Molino",
+  title: "Marcas alineadas | Afinidad Personal",
   description: "Descubrí qué marcas resuenan con tu perfil simbólico según el zodíaco chino.",
   alternates: {
     canonical: siteUrl("/affinity/recommendations/brands"),

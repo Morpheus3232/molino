@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import MethodContent from "./MethodContent";
 
 export const metadata: Metadata = {
-  title: "Method — Cómo funciona Molino",
+  title: "Method — Cómo funciona",
   description: "Transparencia total: cómo se calculan los números, las limitaciones de cada sistema simbólico y las fuentes en las que se basa Molino.",
   alternates: {
     canonical: siteUrl("/method"),

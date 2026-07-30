@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import EmptyState from "@/components/ui/EmptyState";
 
 interface Source {
   id: string;
@@ -341,7 +342,7 @@ export default function BibliotecaContent() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
                     {CATEGORY_LABELS[catKey]}
                   </h2>
-                  <span className="font-mono text-[10px] text-muted/40">{sources.length}</span>
+                  <span className="font-mono text-[10px] text-muted">{sources.length}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -439,10 +440,10 @@ export default function BibliotecaContent() {
             );
           })
         ) : (
-          <div className="text-center py-16 text-muted">
-            <p className="text-lg">No se encontraron fuentes</p>
-            <p className="text-sm mt-2">Probá con otro filtro.</p>
-          </div>
+          <EmptyState
+            title="No se encontraron fuentes"
+            description="Probá con otro filtro."
+          />
         )}
       </main>
 

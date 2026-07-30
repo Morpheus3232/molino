@@ -49,7 +49,7 @@ export default function BrandsPage() {
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">Marcas que resuenan con tu mapa</h1>
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">Marcas que resuenan con tu mapa</h1>
           <p className="text-muted mb-8 max-w-md mx-auto">Creá tu perfil para descubrir con qué marcas resonás más.</p>
           <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]">Crear mi perfil</button>
         </div>
@@ -69,14 +69,14 @@ export default function BrandsPage() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <button type="button" onClick={() => router.push("/profile")} className="text-sm text-muted hover:text-accent transition-colors mb-6 inline-flex items-center gap-2">&larr; Volver a mi mapa</button>
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Compatibilidad · Marcas</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Marcas que resuenan
             <br /><span className="text-muted">con tu mapa</span>
           </h1>
           <p className="text-base text-muted mt-6 max-w-xl leading-relaxed">
             Tu signo <span className="font-medium text-foreground">{userAnimal}</span> se conecta con cada marca a través de la relación entre tu animal del zodiaco chino y el animal asociado al año de fundación de la marca.
           </p>
-          <p className="text-xs text-muted/60 mt-3">Basado en la relación entre animales del zodíaco chino · Interpretación simbólica — no es una predicción ni una verdad objetiva.</p>
+          <p className="text-xs text-muted mt-3">Basado en la relación entre animales del zodíaco chino · Interpretación simbólica — no es una predicción ni una verdad objetiva.</p>
         </motion.section>
 
         {/* Top 10 */}
@@ -95,18 +95,18 @@ export default function BrandsPage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.04, duration: 0.35 }}
                   onClick={() => setExpandedItem(expandedItem === `top-${r.name}` ? null : `top-${r.name}`)}
-                  className="p-4 rounded-xl border border-border bg-card text-center hover:border-accent/50 transition-colors group"
+                  className="p-4 rounded-none border border-border bg-card text-center hover:border-accent/50 transition-colors group"
                 >
                   <p className="text-2xl mb-1">{r.meta.logo}</p>
-                  <p className="font-serif text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
-                  <p className="text-xl font-serif font-bold mt-1" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
+                  <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
+                  <p className="text-xl font-heading font-bold mt-1" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
                   <p className="text-[8px] uppercase tracking-[0.15em] text-muted">{r.targetAnimal} · {r.meta.category}</p>
                   <AnimatePresence>
                     {expandedItem === `top-${r.name}` && (
                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3">
                         <div className="text-left space-y-1 pt-2 border-t border-border">
                           {r.reasons.map((reason, j) => (<p key={j} className="text-[11px] text-muted leading-relaxed">{reason}</p>))}
-                          <p className="text-[9px] text-muted/60 mt-1">Zodiac: {r.zodiacScore}/100</p>
+                          <p className="text-[9px] text-muted mt-1">Zodiac: {r.zodiacScore}/100</p>
                         </div>
                       </motion.div>
                     )}
@@ -143,15 +143,15 @@ export default function BrandsPage() {
           <div className="space-y-0">
             {filtered.map((r, i) => (
               <motion.div key={r.name} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-10px" }} transition={{ duration: 0.2 }}>
-                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-neutral-900/[0.02] transition-colors px-2 rounded-lg">
+                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-neutral-900/[0.02] transition-colors px-2 rounded-none">
                   <div className="flex items-center gap-4">
                     <span className="text-2xl">{r.meta.logo}</span>
                     <div className="flex-1 min-w-0">
-                      <p className="font-serif text-base font-semibold text-foreground">{r.name}</p>
+                      <p className="font-heading text-base font-semibold text-foreground">{r.name}</p>
                       <p className="text-xs text-muted">{r.meta.category} · {r.meta.country} · {r.targetAnimal} de {r.targetElement} · Fundada {r.meta.year}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-lg font-serif font-bold" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
+                      <p className="text-lg font-heading font-bold" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
                     </div>
                   </div>
                 </button>
@@ -164,7 +164,7 @@ export default function BrandsPage() {
                         <div className="flex flex-wrap gap-3 mt-3 text-xs text-muted">
                           <span>Tu signo: {userAnimal}</span><span>·</span><span>Marca: {r.targetAnimal} de {r.targetElement}</span><span>·</span><span>Fundada: {r.meta.year}</span>
                         </div>
-                        <p className="text-[10px] text-muted/50">Zodiac: {r.zodiacScore}/100 · Numerología: {r.numerologyScore}/100 · Final: {r.score}/100</p>
+                        <p className="text-[10px] text-muted">Zodiac: {r.zodiacScore}/100 · Numerología: {r.numerologyScore}/100 · Final: {r.score}/100</p>
                       </div>
                     </motion.div>
                   )}

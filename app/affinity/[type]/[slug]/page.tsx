@@ -19,16 +19,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ type: string; slug: string }> }): Promise<Metadata> {
   const { type, slug } = await params;
   if (!VALID_TYPES.includes(type as EntityType)) {
-    return { title: "No encontrada | Molino" };
+    return { title: "No encontrada" };
   }
   const entity = getEntityById(slug);
   if (!entity) {
-    return { title: "Entidad no encontrada | Molino" };
+    return { title: "Entidad no encontrada" };
   }
   const meta = ENTITY_TYPES[type as EntityType];
 
   return {
-    title: `Mi afinidad simbólica con ${entity.name} | Molino`,
+    title: `Mi afinidad simbólica con ${entity.name}`,
     description: `Mi afinidad simbólica con ${entity.name}: ${entity.emoji} según el zodíaco chino. Descubrí tu mapa de afinidades en Molino.`,
     alternates: {
       canonical: siteUrl(`/affinity/${type}/${slug}`),

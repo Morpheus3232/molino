@@ -79,7 +79,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <div className="mb-6">
             <span className="text-5xl">{entity.emoji}</span>
           </div>
-          <h1 className="font-serif text-3xl font-semibold text-foreground mb-4">
+          <h1 className="font-heading text-3xl font-semibold text-foreground mb-4">
             Compatibilidad con {entity.name}
           </h1>
           <p className="text-sm text-muted mb-8 max-w-md mx-auto">
@@ -110,7 +110,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         <div className="flex items-center gap-4 mb-8">
           <span className="text-5xl">{entity.emoji}</span>
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-foreground">
+            <h1 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
               Análisis multi-factor de {entity.name}
             </h1>
             <p className="text-sm text-muted mt-1">
@@ -120,7 +120,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         </div>
 
         {/* Explanation of what this page is */}
-        <div className="mb-6 p-4 rounded-xl bg-accent/[0.05] border border-accent/20">
+        <div className="mb-6 p-4 rounded-none bg-accent/[0.05] border border-accent/20">
           <p className="text-sm text-muted leading-relaxed">
             Este análisis usa <strong>múltiples sistemas</strong> (numerología, astrología occidental, zodiaco chino, arquetipos) para evaluar la compatibilidad.
             Para la <strong>afinidad principal</strong> basada solo en el zodíaco chino, visitá la página de <a href={`/affinity`} className="text-accent hover:underline">afinidad simbólica</a>.
@@ -128,7 +128,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         </div>
 
         {/* User context */}
-        <div className="mb-6 p-4 rounded-xl bg-background border border-border">
+        <div className="mb-6 p-4 rounded-none bg-background border border-border">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu perfil</p>
           <p className="text-sm text-foreground">
             <span className="font-medium">{profile.name}</span> · Camino de Vida {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
@@ -148,11 +148,11 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         {/* Narrative */}
         {story && (
           <div className="mt-6">
-            <div className="rounded-xl border border-border bg-card p-6">
+            <div className="rounded-none border border-border bg-card p-6">
               <span className="badge mb-3">Narrativa de conexión</span>
               <p className="text-lg leading-relaxed text-foreground mb-4">{story.narrative}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="rounded-xl bg-background p-4 border border-border">
+                <div className="rounded-none bg-background p-4 border border-border">
                   <p className="text-sm font-medium text-foreground mb-2">Puntos de conexión</p>
                   <ul className="text-sm text-muted space-y-2">
                     {story.connections.map((conn, i) => (
@@ -163,7 +163,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                     ))}
                   </ul>
                 </div>
-                <div className="rounded-xl bg-background p-4 border border-border">
+                <div className="rounded-none bg-background p-4 border border-border">
                   <p className="text-sm font-medium text-foreground mb-2">Áreas de crecimiento</p>
                   <ul className="text-sm text-muted space-y-2">
                     {story.challenges.map((challenge, i) => (
@@ -195,11 +195,11 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
         )}
 
         {/* Disclaimer */}
-        <div className="mt-8 p-4 bg-card rounded-xl border border-border text-center space-y-2">
+        <div className="mt-8 p-4 bg-card rounded-none border border-border text-center space-y-2">
           <p className="text-xs text-muted">
             Resultado para <span className="font-medium">{profile.name}</span> con {entity.name}
           </p>
-          <p className="text-xs text-muted/70">
+          <p className="text-xs text-muted">
             Análisis basado en numerología, astrología occidental, zodiaco chino y arquetipos.
           </p>
         </div>

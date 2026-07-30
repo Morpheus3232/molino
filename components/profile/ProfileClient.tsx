@@ -183,7 +183,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       <main id="main-content">
         {activeTab && (
           <div className="sticky top-0 z-30 bg-background border-b border-ink/10">
-            <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 flex items-center gap-4 h-12">
+            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 flex items-center gap-4 h-12">
               <button
                 type="button"
                 onClick={handleBackToHub}
@@ -200,7 +200,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
         )}
 
         {!activeTab && showEphemeralWarning && (
-          <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-4">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4">
             <EphemeralWarning onDismiss={dismissEphemeralWarning} />
           </div>
         )}

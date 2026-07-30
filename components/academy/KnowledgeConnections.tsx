@@ -89,7 +89,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
               key={source.field}
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
-              className="p-4 rounded-xl border border-border bg-card"
+              className="p-4 rounded-none border border-border bg-card"
             >
               <div className="flex items-start gap-3">
                 <span className="text-lg shrink-0">{source.icon}</span>
@@ -100,7 +100,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
                     <span className="text-sm font-semibold text-foreground">{source.value}</span>
                   </div>
                   <p className="text-[10px] text-accent mb-1">{source.origin}</p>
-                  <p className="text-[10px] text-muted/70 leading-relaxed">{source.tradition}</p>
+                  <p className="text-[10px] text-muted leading-relaxed">{source.tradition}</p>
                 </div>
               </div>
             </motion.div>

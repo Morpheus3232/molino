@@ -49,7 +49,7 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
               <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
               <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
             </svg>
-            <h2 className="font-serif text-2xl font-semibold text-foreground mb-2">Algo salió mal</h2>
+            <h2 className="font-heading text-2xl font-semibold text-foreground mb-2">Algo salió mal</h2>
             <p className="text-sm text-muted mb-6">
               Ocurrió un error inesperado al cargar el mapa. Podés volver a intentarlo o regresar al inicio.
             </p>

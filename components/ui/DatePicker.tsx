@@ -80,14 +80,14 @@ export default function DatePicker({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="DD / MM / AAAA"
-          className="w-full bg-transparent text-center font-heading text-xl sm:text-2xl font-semibold tracking-widest text-foreground px-4 py-5 focus:outline-none placeholder:text-muted/30"
+          className="w-full bg-transparent text-center font-heading text-xl sm:text-2xl font-semibold tracking-widest text-foreground px-4 py-5 focus:outline-none placeholder:text-muted"
           aria-label="Fecha de nacimiento"
           autoComplete="bday"
         />
       </div>
 
       {complete && monthName && (
-        <p className="text-center text-xs text-muted/60 font-mono tracking-wider">
+        <p className="text-center text-xs text-muted font-mono tracking-wider">
           {day} de {monthName} de {year}
         </p>
       )}

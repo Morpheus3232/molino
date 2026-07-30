@@ -155,7 +155,7 @@ export default function AffinityScoreGauge({ score, color, size = 200 }: Affinit
           y={cy - 4}
           textAnchor="middle"
           dominantBaseline="central"
-          className="font-serif"
+          className="font-heading"
           style={{
             fontSize: "42px",
             fontWeight: 700,
