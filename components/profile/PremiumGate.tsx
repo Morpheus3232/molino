@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PaymentBrick from '@/components/payment/PaymentBrick';
 import { analytics } from '@/lib/analytics/analytics';
 
 interface PremiumGateProps {
@@ -23,6 +22,24 @@ const cardVariants = {
   exit: { opacity: 0, scale: 0.95, y: -10, transition: { duration: 0.15 } },
 };
 
+function getSearchParam(key: string): string | null {
+  if (typeof window === 'undefined') return null;
+  const params = new URLSearchParams(window.location.search);
+  return params.get(key);
+}
+
+function cleanUrlParams() {
+  if (typeof window === 'undefined') return;
+  const url = new URL(window.location.href);
+  url.searchParams.delete('payment_status');
+  url.searchParams.delete('payment_id');
+  url.searchParams.delete('collection_id');
+  url.searchParams.delete('collection_status');
+  url.searchParams.delete('external_reference');
+  url.searchParams.delete('preference_id');
+  window.history.replaceState({}, '', url.pathname + url.search);
+}
+
 export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
   const [payError, setPayError] = useState<string | null>(null);
@@ -31,6 +48,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
 
@@ -49,6 +67,35 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   }, [name, birthDate]);
 
   useEffect(() => {
+    const paymentStatus = getSearchParam('payment_status');
+    const paymentId = getSearchParam('payment_id') || getSearchParam('collection_id');
+
+    if (paymentStatus === 'approved' && paymentId) {
+      setState('verifying');
+
+      fetch('/api/mp/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId, name, birthDate }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.verified) {
+            setState('unlocked');
+            analytics.trackPremiumUnlocked();
+            cleanUrlParams();
+          } else {
+            setPayError(data.reason || 'No se pudo verificar el pago');
+            setState('pay_error');
+          }
+        })
+        .catch(() => {
+          setPayError('Error al verificar el pago');
+          setState('pay_error');
+        });
+      return;
+    }
+
     checkServer().then(premium => {
       if (premium) {
         setState('unlocked');
@@ -57,7 +104,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
         analytics.trackPaywallViewed();
       }
     });
-  }, [checkServer]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (state !== 'verifying') return;
@@ -87,24 +134,32 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     };
   }, [state, checkServer]);
 
-  const handlePaymentApproved = useCallback((paymentId: string) => {
-    analytics.trackPaymentApproved(paymentId);
-    setState('verifying');
-  }, []);
+  const handleCheckout = async () => {
+    analytics.trackCheckoutStarted('USD');
+    setCheckoutLoading(true);
+    setPayError(null);
 
-  const handlePaymentPending = useCallback((_paymentId?: string) => {
-    setState('verifying');
-  }, []);
+    try {
+      const res = await fetch('/api/mp/preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, birthDate, currencyId: 'USD' }),
+      });
 
-  const handlePaymentRejected = useCallback(() => {
-    setState('locked');
-  }, []);
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Error al crear el pago');
+      }
 
-  const handlePayError = useCallback((error: unknown) => {
-    const msg = error instanceof Error ? error.message : 'No se pudo cargar el checkout.';
-    setPayError(msg);
-    setState('pay_error');
-  }, []);
+      const data = await res.json();
+      window.location.href = data.initPoint;
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : 'Error al iniciar el pago';
+      setPayError(msg);
+      setCheckoutLoading(false);
+      setState('pay_error');
+    }
+  };
 
   const handleRecover = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,7 +188,6 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     }
   };
 
-  // ─── UNLOCKED ────────────────────────────────────────────────────────────────
   if (state === 'unlocked') {
     return <>{children}</>;
   }
@@ -289,7 +343,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 animate="visible"
                 exit="exit"
               >
-                <div className="text-center mb-6">
+                <div className="text-center mb-8">
                   <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-600/20 text-violet-400 text-xs font-semibold rounded-full border border-violet-500/30 mb-3">
                     <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
                     PAGO SEGURO · MERCADO PAGO
@@ -298,15 +352,26 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   <p className="text-gray-400 text-sm">Pago único · Acceso permanente</p>
                 </div>
 
-                <PaymentBrick
-                  name={name}
-                  birthDate={birthDate}
-                  currencyId="USD"
-                  onPaymentApproved={handlePaymentApproved}
-                  onPaymentPending={handlePaymentPending}
-                  onPaymentRejected={handlePaymentRejected}
-                  onError={handlePayError}
-                />
+                {checkoutLoading ? (
+                  <div className="flex flex-col items-center justify-center py-16 gap-3">
+                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-purple-600 border-t-transparent" />
+                    <p className="text-sm text-gray-400">Redirigiendo a Mercado Pago...</p>
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <p className="text-gray-300 mb-6 max-w-md mx-auto">
+                      Vas a ser redirigido a Mercado Pago para completar el pago de forma segura.
+                      Cuando termines, volvés automaticamente para ver tu mapa completo.
+                    </p>
+                    <button
+                      onClick={handleCheckout}
+                      className="w-full py-3.5 rounded-xl font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}
+                    >
+                      Ir a pagar ${PRICE_USD} USD
+                    </button>
+                  </div>
+                )}
 
                 <button
                   onClick={() => setState('locked')}
@@ -337,12 +402,16 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                       <line x1="9" y1="9" x2="15" y2="15" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">No se pudo cargar el checkout</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">No se pudo iniciar el pago</h3>
                   <p className="text-sm text-gray-400 mb-1">{payError}</p>
-                  <p className="text-xs text-gray-500 mb-6">Puede ser un problema temporal con Mercado Pago.</p>
+                  <p className="text-xs text-gray-500 mb-6">Puede ser un problema temporal. Intentá de nuevo.</p>
                   <div className="flex flex-col gap-3 max-w-xs mx-auto">
                     <button
-                      onClick={() => { setPayError(null); setState('paying'); }}
+                      onClick={() => {
+                        setPayError(null);
+                        setCheckoutLoading(false);
+                        setState('paying');
+                      }}
                       className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-sm font-medium transition-colors"
                     >
                       Reintentar
@@ -380,10 +449,9 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   ) : (
                     <>
                       <div className="text-4xl mb-5">⏱</div>
-                      <h3 className="text-lg font-semibold text-white mb-2">El pago está siendo procesado</h3>
+                      <h3 className="text-lg font-semibold text-white mb-2">Todavía no vemos el pago</h3>
                       <p className="text-gray-400 text-sm mb-6">
-                        Mercado Pago confirmará en breve. Si ya ves el cargo,
-                        toca abajo para recuperar el acceso.
+                        Si ya completaste el pago, ingresá el ID en &ldquo;Recuperar acceso&rdquo; desde el mapa.
                       </p>
                       <button
                         onClick={() => setState('locked')}
