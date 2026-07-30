@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeDecision, CATEGORY_LABELS, type DecisionCategory, type DecisionResult } from "@/lib/engines/decisionsEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -11,6 +13,13 @@ import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
 
 const CATEGORIES = Object.entries(CATEGORY_LABELS) as [DecisionCategory, string][];
+
+const getScoreColor = (score: number) => {
+  if (score >= 75) return "text-green-600";
+  if (score >= 55) return "text-blue-600";
+  if (score >= 40) return "text-yellow-600";
+  return "text-red-600";
+};
 
 export default function DecisionsPage() {
   const router = useRouter();
@@ -25,20 +34,6 @@ export default function DecisionsPage() {
     return analyzeDecision(profile, question.trim(), category);
   }, [submitted, profile, question, category]);
 
-  const getScoreColor = (score: number) => {
-    if (score >= 75) return "text-green-600";
-    if (score >= 55) return "text-blue-600";
-    if (score >= 40) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getScoreBg = (score: number) => {
-    if (score >= 75) return "bg-green-50";
-    if (score >= 55) return "bg-blue-50";
-    if (score >= 40) return "bg-yellow-50";
-    return "bg-red-50";
-  };
-
   if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background">
@@ -51,18 +46,22 @@ export default function DecisionsPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Motor de Decisiones</p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
+        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+          <p className="eyebrow-brutalist mb-4">Motor de Decisiones</p>
+          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu brújula personal
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Analizá cualquier decisión con la sabiduría de tu numerología, signo solar y energía del día.
             Primero necesitás crear tu perfil personal.
           </p>
-          <Button size="lg" onClick={() => router.push("/")}>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="btn-accent"
+          >
             Crear mi perfil
-          </Button>
+          </button>
         </div>
         <UniversityFooter />
       </div>
@@ -72,105 +71,100 @@ export default function DecisionsPage() {
   if (result) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
-          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-            <span>›</span>
-            <Link href="/decisions" className="hover:text-foreground transition-colors">Decisiones</Link>
-            <span>›</span>
-            <span className="text-foreground font-medium">Resultado</span>
-          </nav>
+        <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+          <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+            <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+              <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+              <span>›</span>
+              <Link href="/decisions" className="hover:text-foreground transition-colors">Decisiones</Link>
+              <span>›</span>
+              <span className="text-foreground font-medium">Resultado</span>
+            </nav>
 
-          <div className="mb-8">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Motor de Decisiones</p>
-            <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
+            <p className="eyebrow-brutalist mb-4">Motor de Decisiones</p>
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground tracking-tight">
               {result.question}
             </h1>
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted mt-4">
               {profile.name} · {CATEGORY_LABELS[result.category]} · Camino de Vida {profile.lifePath}
             </p>
-          </div>
+          </motion.div>
 
-          {/* Overall Score */}
-          <div className="card-hero mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Alineación general</p>
-                <p className="text-5xl sm:text-6xl font-serif font-bold tracking-tight" style={{ color: result.overallScore >= 75 ? "var(--score-excellent)" : result.overallScore >= 55 ? "var(--score-good)" : result.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
-                  {result.overallScore}<span className="text-3xl sm:text-4xl text-muted font-sans font-medium">/100</span>
-                </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+            <div className="border border-ink/10 p-8 sm:p-10 lg:p-14">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+                <div>
+                  <p className="label-micro mb-1">Alineación general</p>
+                  <p className="text-5xl sm:text-6xl font-display font-bold tracking-tight" style={{ color: result.overallScore >= 75 ? "var(--score-excellent)" : result.overallScore >= 55 ? "var(--score-good)" : result.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
+                    {result.overallScore}<span className="text-3xl sm:text-4xl text-muted font-sans font-medium">/100</span>
+                  </p>
+                </div>
+                <div className="sm:text-right">
+                  <p className="text-xl font-serif font-semibold text-foreground">{result.recommendation}</p>
+                </div>
               </div>
-              <div className="sm:text-right">
-                <p className="text-lg font-serif font-semibold text-foreground">{result.recommendation}</p>
-              </div>
+              <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.reasoning}</p>
             </div>
-            <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.reasoning}</p>
-          </div>
+          </motion.div>
 
-          {/* Sub-scores */}
-          <div className="grid grid-cols-3 gap-3 mb-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-6 grid grid-cols-3 gap-px bg-ink/10">
             {[
               { label: "Alineación", score: result.alignmentScore },
               { label: "Timing", score: result.timingScore },
               { label: "Energía", score: result.energyScore },
             ].map(sub => (
-              <div key={sub.label} className={`p-4 rounded-xl border border-border ${getScoreBg(sub.score)} transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm`}>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">{sub.label}</p>
-                <p className={`text-xl font-semibold ${getScoreColor(sub.score)}`}>{sub.score}%</p>
+              <div key={sub.label} className="bg-background p-6 text-center">
+                <p className="label-micro mb-2">{sub.label}</p>
+                <p className={`text-3xl font-display font-bold ${getScoreColor(sub.score)}`}>{sub.score}%</p>
               </div>
             ))}
-          </div>
+          </motion.div>
 
-          {/* Considerations */}
-          <div className="mb-8 p-5 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Consideraciones</p>
-            <ul className="space-y-2">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14">
+            <p className="eyebrow-brutalist mb-4">Consideraciones</p>
+            <ul className="space-y-3">
               {result.considerations.map((c, i) => (
-                <li key={i} className="text-sm text-foreground flex items-start gap-2">
+                <li key={i} className="text-sm text-foreground flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
                   {c}
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Next Steps */}
-          <div className="mb-8 p-5 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Próximos pasos</p>
-            <ul className="space-y-2">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14">
+            <p className="eyebrow-brutalist mb-4">Próximos pasos</p>
+            <ul className="space-y-3">
               {result.nextSteps.map((s, i) => (
-                <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-card-foreground/20 mt-1.5 shrink-0" aria-hidden="true" />
+                <li key={i} className="text-sm text-foreground flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-ink/20 mt-1.5 shrink-0" aria-hidden="true" />
                   {s}
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Context */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-            <div className="p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Día personal</p>
-              <p className="text-lg font-semibold text-foreground">{result.personalDay}</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-px bg-ink/10">
+            <div className="bg-background p-6">
+              <p className="label-micro mb-2">Día personal</p>
+              <p className="text-xl font-display font-bold text-foreground">{result.personalDay}</p>
             </div>
-            <div className="p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Año personal</p>
-              <p className="text-lg font-semibold text-foreground">{result.personalYear}</p>
+            <div className="bg-background p-6">
+              <p className="label-micro mb-2">Año personal</p>
+              <p className="text-xl font-display font-bold text-foreground">{result.personalYear}</p>
             </div>
-            <div className="p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Fase lunar</p>
-              <p className="text-lg font-semibold text-foreground">{result.moonPhase}</p>
+            <div className="bg-background p-6">
+              <p className="label-micro mb-2">Fase lunar</p>
+              <p className="text-xl font-display font-bold text-foreground">{result.moonPhase}</p>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Element Influence */}
-          <div className="mb-8 p-4 rounded-xl border border-border bg-card transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Influencia de tu elemento</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }} className="mt-6 border border-ink/10 p-6">
+            <p className="label-micro mb-2">Influencia de tu elemento</p>
             <p className="text-sm text-foreground">{result.elementInfluence}</p>
-          </div>
+          </motion.div>
 
-          {/* AI Interpretation */}
-          <div className="mb-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-6">
             <MolinoInterpretation
               profile={profile}
               type="decision"
@@ -178,13 +172,12 @@ export default function DecisionsPage() {
               label="Interpretación de Molino"
               description="Análisis personalizado de tu decisión"
             />
-          </div>
+          </motion.div>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button variant="primary" fullWidth onClick={() => { setSubmitted(false); setQuestion(""); }} className="transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Consultar otra decisión</Button>
-            <Button variant="secondary" fullWidth onClick={() => router.push("/profile")} className="transition-all duration-200 ease-out hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2">Ver mi perfil</Button>
-          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.45 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
+            <Button variant="primary" fullWidth onClick={() => { setSubmitted(false); setQuestion(""); }}>Consultar otra decisión</Button>
+            <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>Ver mi perfil</Button>
+          </motion.div>
         </main>
         <UniversityFooter />
       </div>
@@ -193,30 +186,30 @@ export default function DecisionsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
-        <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-          <span>›</span>
-          <span className="text-foreground font-medium">Decisiones</span>
-        </nav>
+      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+        <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">Decisiones</span>
+          </nav>
 
-        <div className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Motor de Decisiones</p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mb-2">
+          <p className="eyebrow-brutalist mb-4">Motor de Decisiones</p>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
             Consultá tu brújula
           </h1>
-          <p className="text-sm text-muted max-w-xl">
+          <p className="text-sm text-muted mt-4 max-w-xl">
             {profile.name} · Camino de Vida {profile.lifePath} · {profile.sunSign}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-lg mb-12">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
           <form
             onSubmit={(e) => { e.preventDefault(); if (question.trim()) setSubmitted(true); }}
-            className="space-y-5"
+            className="max-w-lg space-y-6"
           >
             <div>
-              <label htmlFor="question" className="block text-sm font-medium text-foreground mb-2">
+              <label htmlFor="question" className="label-micro block mb-2">
                 ¿Qué decisión querés analizar?
               </label>
               <textarea
@@ -225,19 +218,19 @@ export default function DecisionsPage() {
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ej: ¿Es buen momento para cambiar de trabajo?"
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl border border-border bg-card text-foreground text-sm placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 resize-none transition-colors"
+                className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-none"
               />
             </div>
 
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-foreground mb-2">
+              <label htmlFor="category" className="label-micro block mb-2">
                 Categoría
               </label>
               <select
                 id="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value as DecisionCategory)}
-                className="w-full px-4 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent/40 transition-colors"
+                className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
               >
                 {CATEGORIES.map(([value, label]) => (
                   <option key={value} value={value}>{label}</option>
@@ -245,24 +238,26 @@ export default function DecisionsPage() {
               </select>
             </div>
 
-            <Button type="submit" variant="primary" fullWidth disabled={!question.trim()}>
+            <button type="submit" disabled={!question.trim()} className="btn-accent w-full">
               Analizar decisión
-            </Button>
+            </button>
           </form>
-        </div>
+        </motion.div>
 
-        <div className="p-5 rounded-xl border border-border bg-card">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">¿Cómo funciona?</p>
-          <p className="text-sm text-muted leading-relaxed">
-            El Motor de Decisiones combina tu numerología (Life Path, día y año personal), tu signo solar, tu elemento, la fase lunar y la energía del día para ofrecerte una perspectiva única sobre cualquier decisión. Todo es determinístico y se calcula localmente — no guardamos ninguna pregunta ni resultado.
-          </p>
-        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="border-t border-ink/10 pt-8 sm:pt-10 lg:pt-14 mt-8">
+          <div className="border border-ink/10 p-8 sm:p-10 lg:p-14">
+            <p className="eyebrow-brutalist mb-4">¿Cómo funciona?</p>
+            <p className="text-sm text-muted leading-relaxed">
+              El Motor de Decisiones combina tu numerología (Life Path, día y año personal), tu signo solar, tu elemento, la fase lunar y la energía del día para ofrecerte una perspectiva única sobre cualquier decisión. Todo es determinístico y se calcula localmente — no guardamos ninguna pregunta ni resultado.
+            </p>
+          </div>
+        </motion.div>
 
-        <div className="mt-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 border-t border-ink/10 pt-6">
           <Button variant="ghost" fullWidth onClick={() => router.push("/profile")}>
             Ver mi perfil
           </Button>
-        </div>
+        </motion.div>
       </main>
       <UniversityFooter />
     </div>

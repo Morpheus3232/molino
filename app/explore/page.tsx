@@ -50,7 +50,7 @@ const SOURCES = [
 ];
 
 const colBorder = "border-ink/10";
-const cellPad = "p-8 sm:p-10 lg:p-12";
+const cellPad = "p-8 sm:p-10 lg:p-14";
 
 export default function ExplorePage() {
   const router = useRouter();
@@ -63,13 +63,13 @@ export default function ExplorePage() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
 
       <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-28" id="main-content">
 
         {/* ═══ HERO ═══ */}
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-4">
+          <p className="label-micro mb-4">
             Explorar
           </p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05] max-w-3xl">

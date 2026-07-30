@@ -22,7 +22,7 @@ interface ProfileHubProps {
 }
 
 const colBorder = "border-ink/10";
-const cellPad = "p-8 sm:p-10 lg:p-12";
+const cellPad = "p-8 sm:p-10 lg:p-14";
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const router = useRouter();
@@ -80,7 +80,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
     },
   ];
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
         <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
@@ -89,7 +89,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-8"
+              className="label-micro mb-8"
             >
               Mi mapa personal
             </motion.p>

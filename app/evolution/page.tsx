@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import Card from "@/components/ui/Card";
-import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
@@ -64,17 +64,21 @@ export default function EvolutionPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Evolución</p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
+        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+          <p className="eyebrow-brutalist mb-4">Evolución</p>
+          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Historial y evolución
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para registrar tu evolución, primero necesitás crear tu perfil personal.
           </p>
-          <Button size="lg" onClick={() => router.push("/")}>
+          <button
+            type="button"
+            onClick={() => router.push("/")}
+            className="btn-accent"
+          >
             Crear mi perfil
-          </Button>
+          </button>
         </div>
         <UniversityFooter />
       </div>
@@ -83,60 +87,71 @@ export default function EvolutionPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
-        <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-          <span>›</span>
-          <span className="text-foreground font-medium">Evolución</span>
-        </nav>
+      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+        <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">Evolución</span>
+          </nav>
 
-        <div className="text-center mb-10">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-2">Evolución</p>
-          <h1 className="font-serif text-3xl font-bold text-foreground">Historial y evolución</h1>
-          <p className="text-muted mt-2 max-w-2xl mx-auto">Registro de tus sesiones, insights y avances en tu proceso de Inteligencia Personal.</p>
-        </div>
+          <p className="eyebrow-brutalist mb-4">Evolución</p>
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+            Historial y evolución
+          </h1>
+          <p className="text-sm text-muted mt-4 max-w-2xl">Registro de tus sesiones, insights y avances en tu proceso de Inteligencia Personal.</p>
+        </motion.div>
 
-        <Section>
-          <div className="space-y-4">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+          <div className="space-y-px bg-ink/10">
             {history.length === 0 ? (
-              <div className="text-center py-8">
+              <div className="bg-background py-16 text-center">
                 <p className="text-muted">Todavía no hay registros. Agregá tu primer milestone.</p>
               </div>
             ) : (
-              history.map((item) => (
-                <Card key={item.date + item.title} hover={false} padding="md">
+              history.map((item, i) => (
+                <motion.div
+                  key={item.date + item.title}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: i * 0.04 }}
+                  className="bg-background p-8 sm:p-10 lg:p-14 border-b border-ink/10 last:border-b-0"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-xs text-muted">{item.date}</p>
-                      <h3 className="font-semibold text-foreground mt-1">{item.title}</h3>
-                      <p className="text-sm text-muted mt-1">{item.detail}</p>
+                      <p className="label-micro mb-2">{item.date}</p>
+                      <h3 className="font-display text-xl text-foreground">{item.title}</h3>
+                      <p className="text-sm text-muted mt-2">{item.detail}</p>
                     </div>
                   </div>
-                </Card>
+                </motion.div>
               ))
             )}
           </div>
-        </Section>
+        </motion.div>
 
-        <Section className="mt-8">
-          <Card hover={false}>
-            <div className="text-center">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Evolución continua</p>
-              <h2 className="font-serif text-xl font-semibold text-foreground">Próximamente</h2>
-              <p className="text-sm text-muted mt-2">Podrás ver métricas, streaks y logros de tu proceso.</p>
-              <Button className="mt-4" onClick={addMilestone}>Agregar milestone</Button>
-            </div>
-          </Card>
-        </Section>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14 text-center">
+          <p className="eyebrow-brutalist mb-4">Evolución continua</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-foreground">Próximamente</h2>
+          <p className="text-sm text-muted mt-3 max-w-md mx-auto">Podrás ver métricas, streaks y logros de tu proceso.</p>
+          <button
+            type="button"
+            onClick={addMilestone}
+            className="btn-accent mt-6"
+          >
+            Agregar milestone
+          </button>
+        </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-3 mt-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
           <Button variant="primary" fullWidth onClick={() => router.push("/daily-energy")}>
             Energía de hoy →
           </Button>
           <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
             Ver mi perfil
           </Button>
-        </div>
+        </motion.div>
       </main>
 
       <UniversityFooter />
