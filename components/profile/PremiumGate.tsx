@@ -47,6 +47,10 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   const [recoverPaymentId, setRecoverPaymentId] = useState('');
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
+  const [showCoupon, setShowCoupon] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -188,6 +192,33 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     }
   };
 
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponCode.trim()) return;
+
+    setIsApplyingCoupon(true);
+    setCouponError(null);
+
+    try {
+      const res = await fetch('/api/mp/coupon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coupon: couponCode.trim(), name, birthDate }),
+      });
+      const data = await res.json();
+      if (res.ok && data.valid) {
+        setState('unlocked');
+        analytics.trackPremiumUnlocked();
+      } else {
+        setCouponError(data.reason || 'Código inválido');
+      }
+    } catch {
+      setCouponError('Error al aplicar el cupón');
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
   if (state === 'unlocked') {
     return <>{children}</>;
   }
@@ -284,7 +315,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                       <span>Sin suscripción</span>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-white/8">
+                    <div className="mt-5 pt-4 border-t border-white/8 space-y-3">
                       {!showRecover ? (
                         <button
                           onClick={() => setShowRecover(true)}
@@ -313,6 +344,40 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                           </div>
                           {recoverError && (
                             <p className="text-[11px] text-red-400">{recoverError}</p>
+                          )}
+                        </form>
+                      )}
+
+                      <div className="border-t border-white/5" />
+
+                      {!showCoupon ? (
+                        <button
+                          onClick={() => setShowCoupon(true)}
+                          className="w-full text-center text-xs text-gray-500 hover:text-violet-400 transition-colors"
+                        >
+                          Tengo un cupón →
+                        </button>
+                      ) : (
+                        <form onSubmit={handleApplyCoupon} className="space-y-2">
+                          <label className="block text-xs text-gray-400">Código de cupón:</label>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={couponCode}
+                              onChange={e => setCouponCode(e.target.value)}
+                              placeholder="Ingresá tu código"
+                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
+                            />
+                            <button
+                              type="submit"
+                              disabled={isApplyingCoupon}
+                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-medium disabled:opacity-50 transition-colors"
+                            >
+                              {isApplyingCoupon ? '…' : 'OK'}
+                            </button>
+                          </div>
+                          {couponError && (
+                            <p className="text-[11px] text-red-400">{couponError}</p>
                           )}
                         </form>
                       )}
