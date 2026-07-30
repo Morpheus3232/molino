@@ -234,7 +234,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
   // ─── LOCKED (paywall) ────────────────────────────────────────────────────────
   return (
-    <div className="relative min-h-[520px]">
+    <div className="relative min-h-[480px] max-h-[80vh] overflow-hidden rounded-xl">
       {/* Blurred preview */}
       <div className="blur-[4px] select-none pointer-events-none opacity-40 saturate-50">
         {children}
