@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import LoadingState from "@/components/ui/LoadingState";
 
 export default function AlignmentPage() {
   const router = useRouter();
@@ -10,9 +11,5 @@ export default function AlignmentPage() {
     router.replace("/profile");
   }, [router]);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-muted" role="status">Redirigiendo...</div>
-    </div>
-  );
+  return <LoadingState message="Redirigiendo..." fullScreen />;
 }

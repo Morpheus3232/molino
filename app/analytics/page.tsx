@@ -37,7 +37,7 @@ export default function AnalyticsPage() {
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container-content">
         <div className="py-12">
-          <h1 className="text-4xl font-serif text-foreground mb-2">
+          <h1 className="text-4xl font-heading text-foreground mb-2">
             Panel de análisis
           </h1>
           <p className="text-muted mb-8">
@@ -48,10 +48,10 @@ export default function AnalyticsPage() {
             {cards.map((card) => (
               <div
                 key={card.label}
-                className="bg-card rounded-2xl border border-card-border p-4 text-center"
+                className="bg-card rounded-none border border-card-border p-4 text-center"
               >
                 <div className="text-2xl mb-1">{card.icon}</div>
-                <div className="text-2xl font-serif text-foreground">
+                <div className="text-2xl font-heading text-foreground">
                   {card.value}
                 </div>
                 <div className="text-xs text-muted mt-1">
@@ -62,8 +62,8 @@ export default function AnalyticsPage() {
           </div>
 
           {featureEntries.length > 0 && (
-            <div className="bg-card rounded-2xl border border-card-border p-6">
-              <h2 className="text-lg font-serif text-foreground mb-4">
+            <div className="bg-card rounded-none border border-card-border p-6">
+              <h2 className="text-lg font-heading text-foreground mb-4">
                 Características más usadas
               </h2>
               <div className="space-y-2">

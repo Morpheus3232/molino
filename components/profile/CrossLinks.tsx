@@ -17,9 +17,9 @@ interface CrossLinksProps {
 export default function CrossLinks({ title = "Seguí explorando", links }: CrossLinksProps) {
   return (
     <section className="py-8 sm:py-12 border-t border-ink/10">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...smoothReveal}>
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
           </div>

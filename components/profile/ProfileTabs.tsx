@@ -26,7 +26,7 @@ interface ProfileTabsProps {
 export default function ProfileTabs({ active, onChange }: ProfileTabsProps) {
   return (
     <div className="sticky top-0 z-30 bg-background border-b border-ink/10">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <nav className="flex gap-0 overflow-x-auto scrollbar-hide" role="tablist" aria-label="Secciones del perfil">
           {TABS.map((tab) => {
             const isActive = active === tab.id;
@@ -38,7 +38,7 @@ export default function ProfileTabs({ active, onChange }: ProfileTabsProps) {
                 aria-selected={isActive}
                 aria-controls={`panel-${tab.id}`}
                 onClick={() => onChange(tab.id)}
-                className="relative flex items-center gap-2 px-4 sm:px-5 py-3.5 text-sm font-medium transition-colors whitespace-nowrap min-h-[48px]"
+                className="relative flex items-center gap-2 px-4 sm:px-6 py-3.5 text-sm font-medium transition-colors whitespace-nowrap min-h-[48px]"
                 style={{ color: isActive ? "var(--color-foreground)" : "var(--color-muted)" }}
               >
                 <span className="text-xs font-mono">{tab.icon}</span>

@@ -11,6 +11,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
+import { getScoreColor } from "@/lib/utils/score";
 
 const INTENTIONS: { id: TimingIntention; label: string; icon: string }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: "🚀" },
@@ -22,13 +23,6 @@ const INTENTIONS: { id: TimingIntention; label: string; icon: string }[] = [
   { id: "publish_something", label: "Publicar algo", icon: "📤" },
   { id: "other", label: "Otro", icon: "✨" },
 ];
-
-const getScoreColor = (score: number) => {
-  if (score >= 75) return "text-green-600";
-  if (score >= 55) return "text-blue-600";
-  if (score >= 40) return "text-yellow-600";
-  return "text-red-600";
-};
 
 export default function TimingPage() {
   const router = useRouter();
@@ -67,7 +61,7 @@ export default function TimingPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
           <p className="eyebrow-brutalist mb-4">Tu momento</p>
           <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu momento personal
@@ -75,13 +69,9 @@ export default function TimingPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para explorar el timing personalizado, primero necesitás crear tu perfil.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -90,7 +80,7 @@ export default function TimingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
@@ -115,7 +105,7 @@ export default function TimingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
                 onClick={() => setSelectedIntention(intention.id)}
-                className="bg-background p-8 sm:p-10 lg:p-14 text-left hover:bg-accent/5 transition-colors group"
+                className="bg-background p-8 lg:p-12 text-left hover:bg-accent/5 transition-colors group"
               >
                 <span className="text-3xl block mb-4">{intention.icon}</span>
                 <p className="font-display text-xl text-foreground group-hover:text-accent transition-colors">{intention.label}</p>
@@ -150,8 +140,8 @@ export default function TimingPage() {
 
             {result && showResults && (
               <div className="space-y-px bg-ink/10 mt-6">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 sm:p-10 lg:p-14">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 lg:p-12">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <div>
                       <p className="label-micro mb-1">Puntuación de timing</p>
                       <p className={`text-5xl sm:text-6xl font-display font-bold tracking-tight ${getScoreColor(result.timingScore)}`}>
@@ -167,7 +157,7 @@ export default function TimingPage() {
                 </motion.div>
 
                 {result.favorableDimensions.length > 0 && (
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="bg-background p-8 lg:p-12">
                     <p className="eyebrow-brutalist mb-4">Dimensiones favorables</p>
                     <ul className="space-y-3">
                       {result.favorableDimensions.map((dim, i) => (
@@ -181,7 +171,7 @@ export default function TimingPage() {
                 )}
 
                 {result.challengingDimensions.length > 0 && (
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="bg-background p-8 lg:p-12">
                     <p className="eyebrow-brutalist mb-4">Dimensiones desafiantes</p>
                     <ul className="space-y-3">
                       {result.challengingDimensions.map((dim, i) => (
@@ -194,7 +184,7 @@ export default function TimingPage() {
                   </motion.div>
                 )}
 
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-background p-8 lg:p-12">
                   <p className="eyebrow-brutalist mb-4">Recomendación</p>
                   <p className="text-sm text-foreground leading-relaxed">{result.recommendedWindow}</p>
                 </motion.div>
@@ -210,7 +200,7 @@ export default function TimingPage() {
                   </motion.div>
                 )}
 
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="bg-background p-8 sm:p-10 lg:p-14">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="bg-background p-8 lg:p-12">
                   <MolinoInterpretation
                     profile={profile}
                     type="timing"

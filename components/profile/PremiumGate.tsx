@@ -235,7 +235,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
         >
-          <div className="relative min-h-[480px] max-h-[80vh] overflow-hidden rounded-xl">
+          <div className="relative min-h-[480px] max-h-[80vh] overflow-hidden rounded-none">
             <div className="blur-[4px] select-none pointer-events-none opacity-40 saturate-50 min-h-[480px]">
               {children}
             </div>
@@ -248,7 +248,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 className="w-full max-w-sm"
               >
                 <div
-                  className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                  className="relative rounded-none overflow-hidden border border-white/10 shadow-2xl"
                   style={{ background: 'linear-gradient(145deg, #0f0c29 0%, #1a1040 50%, #0d0d1a 100%)' }}
                 >
                   <div
@@ -257,8 +257,8 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   />
 
                   <div className="relative p-7">
-                    <div className="flex justify-center mb-5">
-                      <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-violet-600/25 text-violet-300 border border-violet-500/40">
+                    <div className="flex justify-center mb-6">
+                      <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-none text-xs font-bold tracking-wider uppercase bg-violet-600/25 text-violet-300 border border-violet-500/40">
                         <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
                         Premium
                       </span>
@@ -268,7 +268,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                       Desbloqueá tu<br />Mapa Completo
                     </h3>
 
-                    <div className="flex items-baseline justify-center gap-1 mt-4 mb-5">
+                    <div className="flex items-baseline justify-center gap-1 mt-4 mb-6">
                       <span className="text-4xl font-black text-violet-300">${PRICE_USD}</span>
                       <span className="text-base font-semibold text-gray-400">USD</span>
                       <span className="ml-2 text-xs text-gray-500 bg-white/5 border border-white/10 rounded-md px-2 py-0.5">pago único</span>
@@ -298,7 +298,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                         analytics.trackCheckoutStarted('USD');
                         setState('paying');
                       }}
-                      className="w-full py-3.5 rounded-xl font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full py-3.5 rounded-none font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                       style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}
                     >
                       Desbloquear por ${PRICE_USD} USD
@@ -317,7 +317,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                       <span>Sin suscripción</span>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-white/8 space-y-3">
+                    <div className="mt-6 pt-4 border-t border-white/8 space-y-3">
                       {!showRecover ? (
                         <button
                           onClick={() => setShowRecover(true)}
@@ -334,12 +334,12 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                               value={recoverPaymentId}
                               onChange={e => setRecoverPaymentId(e.target.value)}
                               placeholder="Ej: 123456789"
-                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
+                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-none text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
                             />
                             <button
                               type="submit"
                               disabled={isRecovering}
-                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-medium disabled:opacity-50 transition-colors"
+                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-none font-medium disabled:opacity-50 transition-colors"
                             >
                               {isRecovering ? '…' : 'OK'}
                             </button>
@@ -368,12 +368,12 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                               value={couponCode}
                               onChange={e => setCouponCode(e.target.value)}
                               placeholder="Ingresá tu código"
-                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
+                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-none text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
                             />
                             <button
                               type="submit"
                               disabled={isApplyingCoupon}
-                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-medium disabled:opacity-50 transition-colors"
+                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-none font-medium disabled:opacity-50 transition-colors"
                             >
                               {isApplyingCoupon ? '…' : 'OK'}
                             </button>
@@ -411,7 +411,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 exit="exit"
               >
                 <div className="text-center mb-8">
-                  <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-600/20 text-violet-400 text-xs font-semibold rounded-full border border-violet-500/30 mb-3">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-600/20 text-violet-400 text-xs font-semibold rounded-none border border-violet-500/30 mb-3">
                     <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
                     PAGO SEGURO · MERCADO PAGO
                   </span>
@@ -432,7 +432,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                     </p>
                     <button
                       onClick={handleCheckout}
-                      className="w-full py-3.5 rounded-xl font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full py-3.5 rounded-none font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
                       style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}
                     >
                       Ir a pagar ${PRICE_USD} USD
@@ -442,7 +442,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
                 <button
                   onClick={() => setState('locked')}
-                  className="mt-5 mx-auto flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+                  className="mt-6 mx-auto flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 transition-colors"
                 >
                   <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <polyline points="15 18 9 12 15 6" />
@@ -461,8 +461,8 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 exit="exit"
                 className="max-w-md mx-auto"
               >
-                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-2xl border border-white/10">
-                  <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-5">
+                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-none border border-white/10">
+                  <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-6">
                     <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <circle cx="12" cy="12" r="10" />
                       <line x1="15" y1="9" x2="9" y2="15" />
@@ -479,7 +479,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                         setCheckoutLoading(false);
                         setState('paying');
                       }}
-                      className="px-5 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-sm font-medium transition-colors"
+                      className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-none text-sm font-medium transition-colors"
                     >
                       Reintentar
                     </button>
@@ -503,7 +503,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 exit="exit"
                 className="max-w-md mx-auto"
               >
-                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-2xl border border-white/10">
+                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-none border border-white/10">
                   {!pollTimedOut ? (
                     <>
                       <div className="relative w-16 h-16 mx-auto mb-6">
@@ -515,14 +515,14 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                     </>
                   ) : (
                     <>
-                      <div className="text-4xl mb-5">⏱</div>
+                      <div className="text-4xl mb-6">⏱</div>
                       <h3 className="text-lg font-semibold text-white mb-2">Todavía no vemos el pago</h3>
                       <p className="text-gray-400 text-sm mb-6">
                         Si ya completaste el pago, ingresá el ID en &ldquo;Recuperar acceso&rdquo; desde el mapa.
                       </p>
                       <button
                         onClick={() => setState('locked')}
-                        className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-none text-sm font-medium transition-colors"
                       >
                         Recuperar acceso
                       </button>

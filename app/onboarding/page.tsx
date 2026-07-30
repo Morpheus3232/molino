@@ -104,7 +104,7 @@ export default function OnboardingPage() {
             type="button"
             onClick={handleGenerate}
             disabled={!isDateValid || isGenerating}
-            className="inline-flex items-center justify-center gap-2 font-semibold px-10 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[56px] disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-lg"
+            className="inline-flex items-center justify-center gap-2 font-semibold px-10 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[56px] disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-none"
           >
             {isGenerating ? (
               <>
@@ -126,7 +126,7 @@ export default function OnboardingPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.35 }}
         >
-          <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground/40 text-center mb-4">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground text-center mb-4">
             Qué vamos a analizar
           </p>
           <div className="space-y-2" role="list" aria-label="Motores de análisis">
@@ -137,9 +137,9 @@ export default function OnboardingPage() {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 + i * 0.07 }}
-                className="flex items-center gap-3 p-3.5 rounded-lg border border-border bg-card"
+                className="flex items-center gap-3 p-3.5 rounded-none border border-border bg-card"
               >
-                <div className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-accent/10 text-accent flex-shrink-0">
+                <div className="inline-flex items-center justify-center w-9 h-9 rounded-none bg-accent/10 text-accent flex-shrink-0">
                   <engine.icon className="w-4 h-4" aria-hidden="true" />
                 </div>
                 <div>
@@ -149,7 +149,7 @@ export default function OnboardingPage() {
               </motion.div>
             ))}
           </div>
-          <p className="mt-6 text-xs text-muted-foreground/50 text-center">
+          <p className="mt-6 text-xs text-muted-foreground text-center">
             Tu fecha nunca sale de tu navegador.
           </p>
         </motion.div>

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Número ${num.number} ${num.title} — Numerología Molino`,
+    title: `Número ${num.number} ${num.title} — Numerología`,
     description: `${num.meaning.slice(0, 155)}`,
     alternates: {
       canonical: siteUrl(`/conocimiento/numerologia/${num.number}`),

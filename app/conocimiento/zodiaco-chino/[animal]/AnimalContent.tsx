@@ -19,7 +19,7 @@ export default function AnimalContent() {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
-          <h1 className="font-serif text-4xl font-semibold text-foreground">Animal no encontrado</h1>
+          <h1 className="font-heading text-4xl font-semibold text-foreground">Animal no encontrado</h1>
           <p className="text-muted mt-4">El animal &quot;{animalId}&quot; no existe en la base del zodiaco chino de Molino.</p>
           <button onClick={() => router.push("/conocimiento/zodiaco-chino")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver al Zodiaco Chino</button>
         </main>
@@ -48,14 +48,14 @@ export default function AnimalContent() {
           <div className="flex items-center gap-4 mb-4">
             <span className="text-5xl">{animal.emoji}</span>
             <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-foreground leading-[1.1]">{animal.name}</h1>
+              <h1 className="font-heading text-4xl sm:text-5xl font-semibold text-foreground leading-[1.1]">{animal.name}</h1>
               <p className="text-sm text-muted mt-1">{animal.years}</p>
             </div>
           </div>
           {animal.traits.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-4">
               {animal.traits.slice(0, 4).map((tag) => (
-                <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-full border border-border bg-card/60">{tag}</span>
+                <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-none border border-border bg-card">{tag}</span>
               ))}
             </div>
           )}
@@ -82,25 +82,25 @@ export default function AnimalContent() {
         {/* Características, Fortalezas, Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Características</p>
               <ul className="space-y-1.5">
                 {animal.traits.map(t => <li key={t} className="text-sm text-foreground">{t}</li>)}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-1.5">
                 {animal.strengths.map(s => <li key={s} className="text-sm text-foreground">{s}</li>)}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-1.5">
                 {animal.challenges.map(c => <li key={c} className="text-sm text-foreground">{c}</li>)}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card/60">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Elemento</p>
               <p className="text-sm text-foreground">{animal.elements[0]?.element ?? "—"}</p>
             </div>
@@ -114,13 +114,13 @@ export default function AnimalContent() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-border bg-card/60">
+            <div className="p-4 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.friendly.map(f => <span key={f} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{f}</span>)}
               </div>
             </div>
-            <div className="p-4 rounded-xl border border-border bg-card/60">
+            <div className="p-4 rounded-none border border-border bg-card">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.challenging.map(c => <span key={c} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{c}</span>)}
@@ -137,7 +137,7 @@ export default function AnimalContent() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {animal.elements.map((el) => (
-              <div key={el.element} className="p-4 rounded-xl border border-border bg-card">
+              <div key={el.element} className="p-4 rounded-none border border-border bg-card">
                 <p className="text-sm font-medium text-foreground">{animal.name} de {el.element}</p>
                 <p className="text-xs text-muted mt-1">{el.modifier}</p>
               </div>
@@ -147,7 +147,7 @@ export default function AnimalContent() {
 
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-5 rounded-xl border border-border bg-card/60">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{animal.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{CHINESE_ZODIAC_DISCLAIMER}</p>
@@ -156,7 +156,7 @@ export default function AnimalContent() {
 
         {/* Herramienta relacionada */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-xl border border-border bg-card/60">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Conocé tu animal</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Calculá tu animal del zodiaco chino y descubrí tu afinidad con entidades del mundo.

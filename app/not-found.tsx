@@ -12,7 +12,7 @@ export default function NotFound() {
         <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-6">
           Error 404
         </p>
-        <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[1.0] mb-6">
+        <h1 className="font-heading text-5xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[1.0] mb-6">
           No encontramos esta página
         </h1>
         <p className="text-base sm:text-lg text-muted leading-relaxed mb-10 max-w-md mx-auto">

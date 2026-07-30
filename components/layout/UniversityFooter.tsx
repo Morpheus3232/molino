@@ -3,8 +3,8 @@ import { footerColumns } from "@/lib/data/navigation";
 
 export default function UniversityFooter() {
   return (
-    <footer className="bg-ink text-white">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-20 sm:py-24">
+    <footer className="bg-[#0F0F10] text-white">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-16 sm:py-24">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0">
           <div className="md:col-span-5 md:pr-12">
             <span className="inline-flex h-11 w-11 items-center justify-center bg-white/10 border border-white/20">
@@ -21,7 +21,7 @@ export default function UniversityFooter() {
                 <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
               </svg>
             </span>
-            <p className="font-display text-lg text-white mt-5 uppercase tracking-wide">
+            <p className="font-display text-lg text-white mt-6 uppercase tracking-wide">
               MOLINO
             </p>
             <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">
@@ -53,8 +53,8 @@ export default function UniversityFooter() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/40 font-mono tracking-wider">MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO</p>
-          <p className="text-xs text-white/40 font-mono tracking-wider">
+          <p className="text-xs text-white/70 font-mono tracking-wider">MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO</p>
+          <p className="text-xs text-white/70 font-mono tracking-wider">
             CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
           </p>
         </div>

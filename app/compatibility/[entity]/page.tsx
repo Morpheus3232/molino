@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
   const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) {
     return {
-      title: 'Análisis no encontrado | Molino',
+      title: 'Análisis no encontrado',
       description: 'La entidad que buscas no existe en nuestra base de datos.',
     };
   }
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
   const description = `Análisis profundo de compatibilidad con ${entity.name} usando numerología, astrología occidental y zodiaco chino. Molino — Inteligencia Personal.`;
 
   return {
-    title: `Análisis multi-factor de ${entity.name} | Molino`,
+    title: `Análisis multi-factor de ${entity.name}`,
     description,
     alternates: {
       canonical: siteUrl(`/compatibility/${entityId}`),

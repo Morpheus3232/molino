@@ -9,11 +9,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slugA: st
   const entityA = getEntityById(slugA);
   const entityB = getEntityById(slugB);
   if (!entityA || !entityB) {
-    return { title: "Comparación no encontrada | Molino" };
+    return { title: "Comparación no encontrada" };
   }
 
   return {
-    title: `${entityA.name} vs ${entityB.name} | Afinidad Personal — Molino`,
+    title: `${entityA.name} vs ${entityB.name} | Afinidad Personal`,
     description: `¿Cómo se conectan ${entityA.name} y ${entityB.name} según el zodíaco chino? Comparación simbólica en Molino.`,
     alternates: {
       canonical: siteUrl(`/affinity/compare/${slugA}/${slugB}`),

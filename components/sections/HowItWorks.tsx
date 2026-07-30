@@ -36,7 +36,7 @@ export default function HowItWorks() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section aria-labelledby="how-it-works-heading" className="py-20 md:py-28 lg:py-32 px-4">
+    <section aria-labelledby="how-it-works-heading" className="py-16 md:py-28 lg:py-32 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
           <h2 id="how-it-works-heading" className="text-3xl md:text-4xl lg:text-5xl font-display font-bold tracking-tight mb-6">
@@ -56,17 +56,17 @@ export default function HowItWorks() {
             <motion.article
               key={step.number}
               role="listitem"
-              className="group relative p-6 md:p-8 bg-card border border-border rounded-2xl transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+              className="group relative p-6 md:p-8 bg-card border border-border rounded-none transition-all duration-300 hover:border-accent/50"
               initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
               animate={prefersReducedMotion ? false : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <div className="absolute top-4 right-4 text-muted-foreground/30 font-mono text-2xl font-bold">
+              <div className="absolute top-4 right-4 text-muted-foreground font-mono text-2xl font-bold">
                 {step.number}
               </div>
 
               <div className="relative z-10">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent mb-6 group-hover:bg-accent group-hover:text-background transition-colors">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-none bg-accent/10 text-accent mb-6 group-hover:bg-accent group-hover:text-background transition-colors">
                   <step.icon className="w-6 h-6" aria-hidden="true" />
                 </div>
 
@@ -89,7 +89,7 @@ export default function HowItWorks() {
                 </motion.button>
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-none" />
             </motion.article>
           ))}
         </div>

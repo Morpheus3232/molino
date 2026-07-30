@@ -46,7 +46,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
     >
       {/* Hero */}
       <section className="py-12 sm:pt-16 pb-8">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
             <p className="label-micro mb-3">Tu Círculo</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
@@ -64,7 +64,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           CÍRCULO DE ALIADOS — Animal relationships
           ═══════════════════════════════════════════════ */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
@@ -83,7 +83,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           >
             <span className="text-3xl">{display.emoji}</span>
           </motion.div>
-          <p className="font-display text-lg font-semibold text-foreground mb-5">{display.name}</p>
+          <p className="font-display text-lg font-semibold text-foreground mb-6">{display.name}</p>
 
           <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
             {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {
@@ -119,7 +119,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       </motion.div>
 
           <motion.div {...smoothReveal} className="mt-4 text-center">
-            <p className="text-xs text-muted/60 italic">
+            <p className="text-xs text-muted italic">
               Signos tradicionalmente asociados con mayor armonía y sintonía.
             </p>
           </motion.div>
@@ -131,7 +131,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           ═══════════════════════════════════════════════ */}
       {sameAnimalFamous.length > 0 && (
         <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
@@ -158,7 +158,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           ═══════════════════════════════════════════════ */}
       {sameSignFamous.length > 0 && (
         <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
@@ -185,7 +185,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           ═══════════════════════════════════════════════ */}
       {relationMap.challenging.length > 0 && (
         <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
@@ -218,7 +218,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
 
       {/* Disclaimer */}
       <section className="py-8 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
             <div className="p-4 rounded-none border border-accent/20 bg-accent/[0.03]">
               <p className="text-xs text-muted leading-relaxed">

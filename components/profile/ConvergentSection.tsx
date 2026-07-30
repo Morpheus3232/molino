@@ -22,7 +22,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
 
   return (
     <section className="py-12 sm:py-16 border-t border-ink/10">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
 
         {/* Header */}
         <motion.div {...smoothReveal}>

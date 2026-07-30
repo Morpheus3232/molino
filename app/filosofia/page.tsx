@@ -3,7 +3,7 @@ import { SITE_URL, siteUrl } from "@/lib/seo";
 import FilosofiaContent from "./FilosofiaContent";
 
 export const metadata: Metadata = {
-  title: "Filosofía — Molino",
+  title: "Filosofía",
   description: "La filosofía detrás de Molino: autoconocimiento sin dogmas, código abierto, privacidad radical y síntesis de tradiciones simbólicas milenarias.",
   alternates: {
     canonical: siteUrl("/filosofia"),

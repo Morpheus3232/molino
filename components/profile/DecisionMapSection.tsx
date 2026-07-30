@@ -44,7 +44,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
   return (
     <section className="py-12 sm:py-16 border-t border-ink/10">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
 
         {/* Header */}
         <motion.div {...smoothReveal}>
@@ -65,7 +65,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
               onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              className={`text-left p-5 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-ink/[0.02] ${
+              className={`text-left p-6 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-ink/[0.02] ${
                 selectedCategory === cat.id
                   ? "bg-ink/[0.03] border-ink/20"
                   : ""
@@ -86,7 +86,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                       {cat.result.overallScore}/100
                     </span>
                   </div>
-                  <p className="text-sm text-muted/70 leading-relaxed">{cat.result.recommendation}</p>
+                  <p className="text-sm text-muted leading-relaxed">{cat.result.recommendation}</p>
                 </div>
               </div>
             </motion.button>
@@ -110,7 +110,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* Disclaimer */}
         <motion.div {...smoothReveal} className="mt-6">
-          <p className="text-[10px] text-muted/50 text-center italic">
+          <p className="text-[10px] text-muted text-center italic">
             Herramienta de reflexión personal basada en tradiciones culturales. No constituye predicción científica.
           </p>
         </motion.div>
@@ -145,14 +145,14 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       </div>
 
       {/* Explanation */}
-      <div className="mb-5">
+      <div className="mb-6">
         <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Análisis</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
-        <div className="mb-5">
+        <div className="mb-6">
           <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
@@ -167,7 +167,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
-        <div className="mb-5">
+        <div className="mb-6">
           <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (
@@ -182,7 +182,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Element influence */}
       <div className="p-3 bg-ink/[0.02] mb-4">
-        <p className="text-sm text-muted/70">
+        <p className="text-sm text-muted">
           Tu elemento {profile.element} {result.elementInfluence}.
         </p>
       </div>

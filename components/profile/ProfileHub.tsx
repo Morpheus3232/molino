@@ -22,7 +22,7 @@ interface ProfileHubProps {
 }
 
 const colBorder = "border-ink/10";
-const cellPad = "p-8 sm:p-10 lg:p-14";
+const cellPad = "p-8 lg:p-12";
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const router = useRouter();
@@ -83,7 +83,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
     <div className="min-h-screen bg-background">
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
-        <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex flex-col items-center text-center">
             <motion.p
               initial={{ opacity: 0, y: 8 }}
@@ -131,17 +131,17 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
             >
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Animal</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Animal</span>
                 <span className="text-base text-muted font-medium">{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
               </div>
-              <span className="hidden sm:inline text-muted/30">|</span>
+              <span className="hidden sm:inline text-muted">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Signo</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Signo</span>
                 <span className="text-base text-muted font-medium">{profile.sunSign}</span>
               </div>
-              <span className="hidden sm:inline text-muted/30">|</span>
+              <span className="hidden sm:inline text-muted">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted/50">Camino</span>
+                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Camino</span>
                 <span className="text-base text-muted font-medium">{lifePath}</span>
               </div>
           </motion.div>
@@ -149,7 +149,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       </div>
     </section>
 
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pb-20 sm:pb-24">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-20 sm:pb-24">
         <div className="flex flex-wrap border-t border-ink/10">
           {sections.map((section, i) => (
             <motion.div
@@ -166,7 +166,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                 </p>
                 <p className="text-sm text-muted">{section.subtitle}</p>
                 {section.detail && (
-                  <p className="text-xs text-muted/60 mt-2">{section.detail}</p>
+                  <p className="text-xs text-muted mt-2">{section.detail}</p>
                 )}
                 {onEnter && (
                   <button
@@ -192,7 +192,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             <button
               type="button"
               onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
-              className="w-full text-left px-5 sm:px-8 py-6 sm:py-8 group"
+              className="w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
             >
               <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
               <p className="text-sm text-foreground group-hover:text-accent transition-colors">

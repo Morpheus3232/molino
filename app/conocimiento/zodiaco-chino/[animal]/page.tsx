@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${animal.emoji} ${animal.name} — Zodiaco Chino Molino`,
+    title: `${animal.emoji} ${animal.name} — Zodiaco Chino`,
     description: `${animal.meaning.slice(0, 155)}`,
     alternates: {
       canonical: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),

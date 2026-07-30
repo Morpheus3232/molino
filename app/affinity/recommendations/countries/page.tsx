@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
 
 export const metadata: Metadata = {
-  title: "Destinos compatibles | Afinidad Personal — Molino",
+  title: "Destinos compatibles | Afinidad Personal",
   description: "Descubrí qué destinos resuenan con tu perfil simbólico según el zodíaco chino.",
   alternates: {
     canonical: siteUrl("/affinity/recommendations/countries"),

@@ -30,7 +30,7 @@ const articles = [
 export default function GuiaPage() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <div className="border-t border-ink/10 py-10 sm:py-16">
           <p className="eyebrow-brutalist mb-6">Guía</p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">

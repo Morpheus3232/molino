@@ -53,7 +53,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     : "";
 
   return {
-    title: hasData ? `Mapa de ${name} | Molino` : "Tu Mapa Personal | Molino",
+    title: hasData ? `Mapa de ${name}` : "Tu Mapa Personal",
     description: hasData
       ? `Mapa personal de autoconocimiento de ${name}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
       : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
