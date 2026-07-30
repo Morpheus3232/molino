@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { siteUrl } from '@/lib/seo';
 import { ENTITIES } from '@/lib/data/entities';
 import CompatibilityContent from '@/components/compatibility/CompatibilityContent';
 
@@ -24,10 +25,14 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
   return {
     title: `Análisis multi-factor de ${entity.name} | Molino`,
     description,
+    alternates: {
+      canonical: siteUrl(`/compatibility/${entityId}`),
+    },
     openGraph: {
       title: `Análisis multi-factor de ${entity.name} | Molino`,
       description,
       type: 'website',
+      url: siteUrl(`/compatibility/${entityId}`),
     },
     twitter: {
       card: 'summary_large_image',

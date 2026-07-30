@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/seo";
 import { ENTITY_TYPES, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
 import AffinityTypeContent from "./AffinityTypeContent";
 
@@ -20,10 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
   return {
     title: `Afinidad Personal · ${meta.plural} | Molino`,
     description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
+    alternates: {
+      canonical: siteUrl(`/affinity/${type}`),
+    },
     openGraph: {
       title: `Afinidad Personal · ${meta.plural} | Molino`,
       description: meta.description,
       type: "website",
+      url: siteUrl(`/affinity/${type}`),
     },
   };
 }

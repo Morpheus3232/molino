@@ -5,10 +5,14 @@ import FuentesContent from "./FuentesContent";
 export const metadata: Metadata = {
   title: "Fuentes y metodología",
   description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino. Transparencia académica y rigor.",
+  alternates: {
+    canonical: siteUrl("/conocimiento/fuentes"),
+  },
   openGraph: {
     title: "Fuentes y metodología — Molino",
     description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
     type: "article",
+    url: siteUrl("/conocimiento/fuentes"),
   },
 };
 

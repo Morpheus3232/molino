@@ -16,10 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${animal.emoji} ${animal.name} — Zodiaco Chino Molino`,
     description: `${animal.meaning.slice(0, 155)}`,
+    alternates: {
+      canonical: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
+    },
     openGraph: {
       title: `${animal.emoji} ${animal.name} — Molino`,
       description: `${animal.meaning.slice(0, 155)}`,
       type: "article",
+      url: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
     },
   };
 }

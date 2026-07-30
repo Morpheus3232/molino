@@ -5,10 +5,14 @@ import FilosofiaContent from "./FilosofiaContent";
 export const metadata: Metadata = {
   title: "Filosofía — Molino",
   description: "La filosofía detrás de Molino: autoconocimiento sin dogmas, código abierto, privacidad radical y síntesis de tradiciones simbólicas milenarias.",
+  alternates: {
+    canonical: siteUrl("/filosofia"),
+  },
   openGraph: {
     title: "Filosofía — Molino",
     description: "Autoconocimiento sin dogmas, código abierto, privacidad radical. La síntesis de tradiciones simbólicas milenarias en una herramienta moderna.",
     type: "article",
+    url: siteUrl("/filosofia"),
   },
 };
 

@@ -5,10 +5,14 @@ import BibliotecaContent from "./BibliotecaContent";
 export const metadata: Metadata = {
   title: "Biblioteca — Fuentes y referencias",
   description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, tarot, kabbalah y más sistemas simbólicos.",
+  alternates: {
+    canonical: siteUrl("/biblioteca"),
+  },
   openGraph: {
     title: "Biblioteca — Molino",
     description: "Fuentes y referencias sobre numerología, astrología, zodiaco chino y otros sistemas simbólicos.",
     type: "article",
+    url: siteUrl("/biblioteca"),
   },
 };
 

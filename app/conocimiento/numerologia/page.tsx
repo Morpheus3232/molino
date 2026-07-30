@@ -5,10 +5,14 @@ import NumerologiaContent from "./NumerologiaContent";
 export const metadata: Metadata = {
   title: "Numerología — El lenguaje simbólico de los números",
   description: "Aprendé sobre numerología: Camino de Vida, Expresión, Alma, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
+  alternates: {
+    canonical: siteUrl("/conocimiento/numerologia"),
+  },
   openGraph: {
     title: "Numerología — Molino",
     description: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
     type: "article",
+    url: siteUrl("/conocimiento/numerologia"),
   },
 };
 
