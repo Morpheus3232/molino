@@ -40,7 +40,10 @@ export default function OnboardingPage() {
     try {
       const [year, month, day] = dateValue.split("-");
       saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
-      analytics.track({ type: "onboarding_completed", data: { date: dateValue } });
+      // No mandamos la fecha real al tracker: /filosofia promete que la
+      // fecha de nacimiento no se asocia a analytics. Solo registramos que
+      // el onboarding se completó.
+      analytics.track({ type: "onboarding_completed" });
       clearOnboardingData();
       router.push(`/profile?dob=${dateValue}`);
     } catch (error) {

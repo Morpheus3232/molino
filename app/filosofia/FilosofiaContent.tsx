@@ -35,8 +35,8 @@ const principles = [
   },
   {
     id: "sin-tracking",
-    title: "Sin tracking",
-    description: "Ni analytics, ni píxeles de Facebook, ni Google Analytics, ni fingerprinting. Tu visita no genera datos para terceros. El único \"tracking\" es el que vos decidís hacer sobre tu propia vida.",
+    title: "Sin tracking invasivo",
+    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. Medimos lo mínimo para saber si Molino te sirve —qué páginas se visitan, sin nombre ni fecha de nacimiento asociada— y nunca lo vendemos ni lo compartimos con terceros con fines publicitarios.",
   },
 ];
 
