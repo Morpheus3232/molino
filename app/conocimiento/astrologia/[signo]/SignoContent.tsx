@@ -58,7 +58,7 @@ export default function SignoContent() {
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {[sign.element, sign.modality, sign.polarity, sign.rulingPlanet].map((tag) => (
-              <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-none border border-border bg-card">{tag}</span>
+              <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border bg-card shadow-sm">{tag}</span>
             ))}
           </div>
         </motion.section>
@@ -84,7 +84,7 @@ export default function SignoContent() {
         {/* Fortalezas y Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-2">
                 {sign.strengths.map(s => (
@@ -92,7 +92,7 @@ export default function SignoContent() {
                 ))}
               </ul>
             </div>
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {sign.challenges.map(c => (
@@ -110,7 +110,7 @@ export default function SignoContent() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-none border border-border bg-card">
+            <div className="p-4 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
@@ -118,7 +118,7 @@ export default function SignoContent() {
                 ))}
               </div>
             </div>
-            <div className="p-4 rounded-none border border-border bg-card">
+            <div className="p-4 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
@@ -131,7 +131,7 @@ export default function SignoContent() {
 
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>

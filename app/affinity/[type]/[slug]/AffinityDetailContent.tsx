@@ -154,7 +154,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
                 </p>
                 <span
-                  className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-none"
+                  className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                   style={{ color: tierMeta?.color, backgroundColor: `${tierMeta?.color}15` }}
                 >
                   {result.relationship}
@@ -181,7 +181,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-6 rounded-none border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
@@ -201,7 +201,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {otherEvents.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Otros eventos históricos" />
-            <div className="rounded-none border border-border bg-card overflow-hidden">
+            <div className="rounded-md border border-border bg-card shadow-sm overflow-hidden">
               <button
                 type="button"
                 onClick={() => setShowOtherEvents(!showOtherEvents)}
@@ -277,7 +277,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
@@ -303,7 +303,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           return (
             <motion.section {...fadeUp} className="mb-12">
               <SectionHeader title="Tu conexión" />
-              <div className="p-6 rounded-none border border-border bg-card">
+              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <div className="flex items-start gap-4 mb-4">
                   <span className="text-3xl shrink-0">{entity.emoji}</span>
                   <div>
@@ -316,7 +316,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-lg">{relationIcon}</span>
                   <span
-                    className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-none"
+                    className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                     style={{ color: relationColor, backgroundColor: `${relationColor}15` }}
                   >
                     {story.relationLabel} · {story.relationScore}/100
@@ -341,7 +341,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     key={rel.entity.id}
                     href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                     onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                    className="block w-full text-left p-4 rounded-none border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="block w-full text-left p-4 rounded-md border border-border bg-card shadow-sm hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -357,7 +357,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span
-                          className="text-xs font-semibold px-2 py-0.5 rounded-none"
+                          className="text-xs font-semibold px-2 py-0.5 rounded-sm"
                           style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                         >
                           {rel.score}
@@ -378,14 +378,14 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             <button
               type="button"
               onClick={() => router.push("/conocimiento/zodiaco-chino")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:border-accent/30 sm:bg-accent/[0.03]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:border-accent/30 sm:bg-accent/[0.03]"
             >
               Conocé el zodíaco chino →
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/${type}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
             </button>
@@ -494,7 +494,7 @@ function PremiumHero({
       {/* Tier badge */}
       <motion.div variants={staggerItem} className="flex justify-center mb-4">
         <span
-          className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-none"
+          className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-sm"
           style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
         >
           {tierMeta.label}
@@ -513,7 +513,7 @@ function PremiumHero({
         <button
           type="button"
           onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-          className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           Explorar otra entidad
           <span aria-hidden="true">→</span>
@@ -599,7 +599,7 @@ function ShareButton({
     <button
       type="button"
       onClick={handleShare}
-      className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+      className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
       style={{ backgroundColor: tierMeta.color, color: "#fff" }}
       aria-label={`Compartí tu afinidad con ${entity.name}`}
     >
@@ -691,7 +691,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
   return (
     <motion.section {...fadeUp} className="mb-12">
       <div
-        className="p-6 rounded-none border-2 transition-colors"
+        className="p-6 rounded-md border-2 transition-colors"
         style={{
           borderColor: isHighAffinity ? `${tierMeta.color}30` : "var(--border)",
           backgroundColor: isHighAffinity ? `${tierMeta.color}05` : "var(--card)",
@@ -711,7 +711,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
           <button
             type="button"
             onClick={handleShare}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-2.5 text-sm min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             style={{
               backgroundColor: tierMeta.color,
               color: "#fff",
@@ -753,7 +753,7 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
   }, [event]);
 
   return (
-    <div className="p-4 rounded-none bg-muted/30 border border-border/50">
+    <div className="p-4 rounded-md bg-muted/30 border border-border/50">
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-foreground">{event.label}</span>
@@ -816,7 +816,7 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-none border border-border bg-card overflow-hidden">
+    <div className="rounded-md border border-border bg-card shadow-sm overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -1028,7 +1028,7 @@ function QuickAffinity({
         {!hasResult ? (
           /* Date input — shown when no date is saved */
           <motion.section {...fadeUp} className="mb-12">
-            <div className="max-w-md mx-auto p-6 rounded-none border border-border bg-card">
+            <div className="max-w-md mx-auto p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-sm font-medium text-foreground mb-1 text-center">
                 Ingresá tu fecha de nacimiento para descubrir tu afinidad con {entity.name}
               </p>
@@ -1043,7 +1043,7 @@ function QuickAffinity({
                     id="qa-day"
                     value={day}
                     onChange={e => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
@@ -1057,7 +1057,7 @@ function QuickAffinity({
                     id="qa-month"
                     value={month}
                     onChange={e => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={m}>{MONTH_LABELS[i]}</option>
@@ -1070,7 +1070,7 @@ function QuickAffinity({
                     id="qa-year"
                     value={year}
                     onChange={e => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
@@ -1086,7 +1086,7 @@ function QuickAffinity({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
                 Descubrir mi afinidad
               </button>
@@ -1102,7 +1102,7 @@ function QuickAffinity({
 
             {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-6 rounded-none border border-border bg-card">
+              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
@@ -1114,7 +1114,7 @@ function QuickAffinity({
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-none font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
@@ -1124,7 +1124,7 @@ function QuickAffinity({
                     <button
                       type="button"
                       onClick={handleSave}
-                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
                       Guardar mi afinidad
                     </button>
@@ -1157,7 +1157,7 @@ function QuickAffinity({
                         key={rel.entity.id}
                         href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                         onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                        className="block w-full text-left p-4 rounded-none border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        className="block w-full text-left p-4 rounded-md border border-border bg-card shadow-sm hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -1173,7 +1173,7 @@ function QuickAffinity({
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             <span
-                              className="text-xs font-semibold px-2 py-0.5 rounded-none"
+                              className="text-xs font-semibold px-2 py-0.5 rounded-sm"
                               style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                             >
                               {rel.score}

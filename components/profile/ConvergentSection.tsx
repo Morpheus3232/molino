@@ -37,7 +37,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
           {/* Main convergence card */}
           <motion.div
             {...staggerItemSmooth}
-            className="p-6 rounded-none border border-ink/10 bg-background"
+            className="p-6 rounded-md border border-ink/10 bg-background"
           >
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">{levelStyle.icon}</span>
@@ -62,7 +62,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
                 key={layer.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.3 }}
-                className="p-4 rounded-none border border-ink/10 bg-background/50"
+                className="p-4 rounded-md border border-ink/10 bg-background/50"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-lg">{layer.emoji}</span>

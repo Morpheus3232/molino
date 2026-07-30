@@ -38,7 +38,7 @@ export default function NumerologiaContent() {
 
         {/* Disclaimer */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-6 rounded-none border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
             <p className="text-sm text-muted leading-relaxed">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
         </motion.section>
@@ -60,7 +60,7 @@ export default function NumerologiaContent() {
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
-              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-none hover:bg-accent/5 inline-flex items-center gap-1">
+              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-accent/5 inline-flex items-center gap-1">
                 {item.label}
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </button>
@@ -81,7 +81,7 @@ export default function NumerologiaContent() {
             <p className="text-base text-foreground leading-relaxed">
               <strong>Es importante aclarar:</strong> la numerología no es una ciencia. No existe evidencia empírica que respalde la idea de que los números determinen rasgos de personalidad o destinos. Lo que sí existe es una tradición cultural de más de 2500 años que Molino utiliza como herramienta de reflexión.
             </p>
-            <div className="p-6 rounded-none border border-border bg-card mt-6">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm mt-6">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
                 La numerología es un lenguaje simbólico. Molino la usa como una lente de autoconocimiento, no como una métrica objetiva.
@@ -107,7 +107,7 @@ export default function NumerologiaContent() {
               La numerología <strong>moderna</strong> se consolidó en el siglo XX con autores como L. Dow Balliett y Florence Campbell. El sistema de correspondencia de letras y números que usamos hoy fue codificado en el siglo XIX.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-              <div className="p-6 rounded-none border border-border bg-card">
+              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
                 <p className="text-sm text-muted leading-relaxed">
                   <strong>Pitagorismo histórico:</strong> Escuela filosófica que veía los números como principios matemáticos del universo.
@@ -116,7 +116,7 @@ export default function NumerologiaContent() {
                   <strong>Numerología esotérica:</strong> Sistema moderno que asigna significados personales y predictivos a los números basándose en fechas y nombres.
                 </p>
               </div>
-              <div className="p-6 rounded-none border border-border bg-card">
+              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
                 <p className="text-sm text-muted leading-relaxed">
                   No existe evidencia científica que respalde que los números determinen rasgos de personalidad. La investigación en psicología no ha encontrado correlaciones válidas entre fechas de nacimiento y características psicológicas.
@@ -136,7 +136,7 @@ export default function NumerologiaContent() {
             <p className="text-base text-foreground leading-relaxed">
               La numerología pitagórica es el sistema más utilizado en occidente. Asigna valores numéricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo dígito.
             </p>
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-foreground">
                 {["A=1", "B=2", "C=3", "D=4", "E=5", "F=6", "G=7", "H=8", "I=9", "J=1", "K=2", "L=3", "M=4", "N=5", "O=6", "P=7", "Q=8", "R=9", "S=1", "T=2", "U=3", "V=4", "W=5", "X=6", "Y=7", "Z=8"].map((v) => (
@@ -158,10 +158,10 @@ export default function NumerologiaContent() {
           </div>
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
-              <div key={calc.title} className="p-6 rounded-none border border-border bg-card">
+              <div key={calc.title} className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{calc.title}</h3>
                 <p className="text-sm text-muted leading-relaxed mb-3">{calc.description}</p>
-                <div className="p-3 rounded-none bg-background text-sm text-foreground font-mono mb-3">{calc.formula}</div>
+                <div className="p-3 rounded-md bg-background text-sm text-foreground font-mono mb-3">{calc.formula}</div>
                 <p className="text-xs text-muted italic">{calc.caveat}</p>
               </div>
             ))}
@@ -180,7 +180,7 @@ export default function NumerologiaContent() {
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
               <motion.div key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.04, duration: 0.4 }}>
-                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-6 rounded-none border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] group">
+                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] group">
                   <div className="flex items-start gap-6">
                     <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
                     <div className="flex-1 min-w-0">
@@ -188,7 +188,7 @@ export default function NumerologiaContent() {
                       <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
                       <div className="flex flex-wrap gap-1.5 mt-3">
                         {num.keywords.map((kw) => (
-                          <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-none border border-border">{kw}</span>
+                          <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
                         ))}
                       </div>
                     </div>
@@ -214,7 +214,7 @@ export default function NumerologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
-              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-6 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/50 transition-all duration-200 ease-out hover:-translate-y-[2px] group">
+              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-6 rounded-md border border-accent/20 bg-accent/[0.03] hover:border-accent/50 transition-all duration-200 ease-out hover:-translate-y-[2px] group">
                 <p className="text-3xl font-heading font-bold text-accent mb-2">{num.number}</p>
                 <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
                 <p className="text-sm text-muted mt-2 leading-relaxed">{num.meaning}</p>
@@ -230,7 +230,7 @@ export default function NumerologiaContent() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
           </div>
           <div className="max-w-3xl space-y-4">
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-sm text-foreground leading-relaxed">
                 <strong>La numerología no es una ciencia.</strong> No existe evidencia empírica que respalde que las fechas de nacimiento o los nombres determinen rasgos de personalidad, destinos o ciclos de vida. La investigación en psicología y ciencias cognitivas no ha encontrado correlaciones válidas.
               </p>
@@ -271,7 +271,7 @@ export default function NumerologiaContent() {
 
         {/* Herramientas relacionadas */}
         <motion.section {...fadeUpDelayed(0.24)} className="mb-12">
-          <div className="p-6 rounded-none border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
@@ -285,7 +285,7 @@ export default function NumerologiaContent() {
 
         {/* Disclaimer final */}
         <motion.section {...fadeUpDelayed(0.26)}>
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
         </motion.section>
