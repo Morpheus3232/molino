@@ -218,7 +218,7 @@ class Analytics {
   trackCheckoutStarted(currencyId: string) {
     this.track({
       type: "checkout_started",
-      data: { currencyId, amount: currencyId === "USD" ? 9 : 8100 },
+      data: { currencyId, amount: currencyId === "USD" ? 8 : 8100 },
     });
   }
 

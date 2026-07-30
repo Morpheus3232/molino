@@ -56,7 +56,7 @@ describe('Payment flow security', () => {
   describe('validatePayment', () => {
     const validPayment = {
       status: 'approved',
-      transaction_amount: 9,
+      transaction_amount: 8,
       currency_id: 'USD',
       metadata: { product: 'molino_premium' },
     };
@@ -84,7 +84,7 @@ describe('Payment flow security', () => {
     });
 
     test('wrong currency fails', () => {
-      const result = validatePayment({ ...validPayment, currency_id: 'EUR', transaction_amount: 9 });
+      const result = validatePayment({ ...validPayment, currency_id: 'EUR', transaction_amount: 8 });
       expect(result.valid).toBe(false);
       expect(result.reason).toContain('currency');
     });
@@ -103,7 +103,7 @@ describe('Payment flow security', () => {
     test('accepts valid USD payment', () => {
       const result = validatePayment({
         status: 'approved',
-        transaction_amount: 9,
+        transaction_amount: 8,
         currency_id: 'USD',
         metadata: { product: 'molino_premium' },
       });
