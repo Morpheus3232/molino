@@ -2,7 +2,7 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "accent" | "secondary" | "ghost" | "inverse";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   asChild?: boolean;
@@ -25,8 +25,10 @@ export default function Button({
 
   const variants = {
     primary: "bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground",
+    accent: "bg-accent text-accent-foreground hover:opacity-90",
     secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent",
     ghost: "bg-transparent text-muted hover:text-foreground",
+    inverse: "bg-white text-accent hover:bg-white/90",
   };
 
   const sizes = {

@@ -73,13 +73,9 @@ export default function EvolutionPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para registrar tu evolución, primero necesitás crear tu perfil personal.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -137,13 +133,9 @@ export default function EvolutionPage() {
           <p className="eyebrow-brutalist mb-4">Evolución continua</p>
           <h2 className="font-display text-3xl sm:text-4xl text-foreground">Próximamente</h2>
           <p className="text-sm text-muted mt-3 max-w-md mx-auto">Podrás ver métricas, streaks y logros de tu proceso.</p>
-          <button
-            type="button"
-            onClick={addMilestone}
-            className="btn-accent mt-6"
-          >
+          <Button variant="primary" onClick={addMilestone} className="mt-6">
             Agregar milestone
-          </button>
+          </Button>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">

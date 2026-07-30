@@ -1,7 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import Button from "@/components/ui/Button";
 import { Compass, Clover, Heart, Sun, Zap, Globe, Building2, Tag } from "lucide-react";
 
 const categories = [
@@ -36,8 +37,6 @@ const categories = [
 const cellPad = "p-8 lg:p-12";
 
 export default function ToolsAndDiscovery() {
-  const router = useRouter();
-
   return (
     <section className="section-paper-alt">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -80,10 +79,9 @@ export default function ToolsAndDiscovery() {
                 </h3>
                 <div className="space-y-0">
                   {cat.tools.map((tool) => (
-                    <button
+                    <Link
                       key={tool.name}
-                      type="button"
-                      onClick={() => router.push(tool.href)}
+                      href={tool.href}
                       className="group w-full flex items-center gap-4 py-4 border-t border-ink/10 hover:bg-accent/5 transition-colors px-2 -mx-2"
                     >
                       <tool.icon className="w-4 h-4 text-muted group-hover:text-accent transition-colors shrink-0" />
@@ -91,7 +89,7 @@ export default function ToolsAndDiscovery() {
                         {tool.name}
                       </span>
                       <span className="ml-auto text-xs text-muted group-hover:text-accent transition-colors">→</span>
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -111,13 +109,9 @@ export default function ToolsAndDiscovery() {
             <p className="text-white text-sm font-bold tracking-wide uppercase">
               ¿Listo para descubrir tu mapa?
             </p>
-            <button
-              type="button"
-              onClick={() => router.push("/onboarding")}
-              className="btn bg-white text-accent hover:bg-white/90 font-bold text-sm tracking-wider uppercase px-8 py-3"
-            >
-              INGRESÁ TU FECHA →
-            </button>
+            <Button asChild variant="inverse">
+              <Link href="/onboarding">INGRESÁ TU FECHA →</Link>
+            </Button>
           </div>
         </motion.div>
       </div>

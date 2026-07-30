@@ -85,7 +85,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
           <p className="text-sm text-muted mb-8 max-w-md mx-auto">
             Para ver tu compatibilidad con {entity.name}, primero necesitás crear tu perfil personal.
           </p>
-          <Button size="lg" onClick={() => router.push("/")}>
+          <Button size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
           </Button>
         </div>

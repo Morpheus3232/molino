@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { getDailyNumber, getDailyReflection } from "@/lib/numerology/daily";
+import Button from "@/components/ui/Button";
 
 const ESTADISTICAS = [
   { valor: "3", label: "SISTEMAS SIMBÓLICOS" },
@@ -17,10 +18,6 @@ export default function HeroNew() {
   const today = new Date();
   const number = getDailyNumber(today);
   const reflection = getDailyReflection(number, today);
-
-  const dateStr = today
-    .toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "numeric" })
-    .replace(/\//g, ".");
 
   const cellPad = "p-8 lg:p-12";
 
@@ -70,15 +67,16 @@ export default function HeroNew() {
               transition={{ duration: 0.4, delay: 0.25 }}
               className="mt-8"
             >
-              <button
-                type="button"
+              <Button
+                variant="accent"
+                size="lg"
                 onClick={() => router.push("/onboarding")}
                 aria-label="Descubrir mi mapa personal: ir al onboarding"
-                className="btn-accent inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 text-sm font-bold tracking-wider uppercase"
+                className="w-full sm:w-auto"
               >
                 DESCUBRIR MI MAPA
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </button>
+              </Button>
             </motion.div>
           </div>
 

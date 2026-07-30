@@ -69,13 +69,9 @@ export default function TimingPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para explorar el timing personalizado, primero necesitás crear tu perfil.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
