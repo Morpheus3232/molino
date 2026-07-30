@@ -22,6 +22,8 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { href: "/", label: "INICIO" },
       { href: "/profile", label: "MI MAPA" },
+      { href: "/daily-energy", label: "ENERGÍA DE HOY" },
+      { href: "/evolution", label: "MI EVOLUCIÓN" },
       { href: "/decisions", label: "DECISIONES" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },

@@ -159,13 +159,22 @@ export default function UniversityHeader() {
             </button>
 
             {hasProfile && (
-              <Link
-                href="/profile"
-                className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
-                aria-current={pathname === "/profile" ? "page" : undefined}
-              >
-                MI MAPA
-              </Link>
+              <>
+                <Link
+                  href="/daily-energy"
+                  className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
+                  aria-current={pathname === "/daily-energy" ? "page" : undefined}
+                >
+                  HOY
+                </Link>
+                <Link
+                  href="/profile"
+                  className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
+                  aria-current={pathname === "/profile" ? "page" : undefined}
+                >
+                  MI MAPA
+                </Link>
+              </>
             )}
             {hasProfile ? (
               <button
@@ -226,6 +235,13 @@ export default function UniversityHeader() {
             <hr className="border-ink/10 my-2" />
             {hasProfile ? (
               <>
+                <Link
+                  href="/daily-energy"
+                  className="block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  HOY
+                </Link>
                 <Link
                   href="/profile"
                   className="block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"

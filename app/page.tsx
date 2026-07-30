@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
@@ -103,12 +105,47 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
   const name = typeof profile.name === "string" ? profile.name : "";
   const element = typeof profile.element === "string" ? profile.element : "";
 
+  const energy = useMemo(() => calculateDailyEnergy(profile, new Date()), [profile]);
+
+  const getScoreColor = (s: number) => {
+    if (s >= 75) return "text-green-500";
+    if (s >= 55) return "text-blue-500";
+    if (s >= 40) return "text-yellow-500";
+    return "text-red-500";
+  };
+
   return (
     <>
       <SystemsPreview />
       <Journey />
       <ToolsAndDiscovery />
       <ConceptsIndex />
+
+      {energy && (
+        <section className="bg-background">
+          <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+            <motion.div {...fadeUp} className="border-t border-ink/10 py-16 sm:py-20">
+              <div className="text-center mb-8">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu energía de hoy</p>
+                <Link
+                  href="/daily-energy"
+                  className="group inline-flex items-center gap-3"
+                >
+                  <span className={`text-5xl sm:text-6xl font-serif font-bold tracking-tight ${getScoreColor(energy.overallScore)}`}>
+                    {energy.overallScore}
+                    <span className="text-2xl sm:text-3xl text-muted font-sans font-medium">/100</span>
+                  </span>
+                  <span className="text-xs font-mono tracking-wider text-muted group-hover:text-accent transition-colors">
+                    VER DETALLE →
+                  </span>
+                </Link>
+                <p className="text-lg font-serif text-foreground mt-4">{energy.theme}</p>
+                <p className="text-sm text-muted mt-2 max-w-lg mx-auto">{energy.description}</p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       <section className="bg-background">
         <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
