@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { generateMatchStory, type MatchStory } from "@/lib/engines/storyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import CompatibilityLab from "@/components/lab/CompatibilityLab";
 import UniversityFooter from "@/components/layout/UniversityFooter";
@@ -37,6 +38,15 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
     if (!profile) return null;
     return calculateDailyEnergy(profile, new Date());
   }, [profile]);
+
+  const story: MatchStory | null = useMemo(() => {
+    if (!profile || !compat) return null;
+    try {
+      return generateMatchStory(profile, entity, compat.scores.overall);
+    } catch {
+      return null;
+    }
+  }, [profile, entity, compat]);
 
   const handleShare = useCallback(() => {
     const url = `${window.location.origin}/compatibility/${entity.id}`;
@@ -133,6 +143,40 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
             result={compat}
             template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
           />
+        )}
+
+        {/* Narrative */}
+        {story && (
+          <div className="mt-6">
+            <div className="rounded-xl border border-border bg-card p-6">
+              <span className="badge mb-3">Narrativa de conexión</span>
+              <p className="text-lg leading-relaxed text-foreground mb-4">{story.narrative}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="rounded-xl bg-background p-4 border border-border">
+                  <p className="text-sm font-medium text-foreground mb-2">Puntos de conexión</p>
+                  <ul className="text-sm text-muted space-y-2">
+                    {story.connections.map((conn, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-green-500 mt-0.5">✓</span>
+                        <span>{conn}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="rounded-xl bg-background p-4 border border-border">
+                  <p className="text-sm font-medium text-foreground mb-2">Áreas de crecimiento</p>
+                  <ul className="text-sm text-muted space-y-2">
+                    {story.challenges.map((challenge, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="text-yellow-500 mt-0.5">⟳</span>
+                        <span>{challenge}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* AI Interpretation */}
