@@ -42,7 +42,10 @@ export default function SystemsPreview() {
     <section className="section-full-bleed bg-ink text-paper relative overflow-hidden">
       {/* Textura de fondo: decorativa. Recostada en la esquina y a baja opacidad
           para que no compita con el titular. */}
-      <div className="pointer-events-none absolute -right-40 -top-40 w-[34rem] h-[34rem] text-paper/[0.045]">
+      <div
+        className="pointer-events-none absolute -right-40 -top-40 w-[34rem] h-[34rem] text-paper"
+        style={{ opacity: 0.045 }}
+      >
         <Halftone variant="spiral" resolution={30} className="w-full h-full" />
       </div>
 

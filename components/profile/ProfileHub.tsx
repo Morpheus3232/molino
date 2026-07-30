@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -25,7 +25,6 @@ const colBorder = "border-ink/10";
 const cellPad = "p-8 lg:p-12";
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
-  const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
   const element = typeof profile.element === "string" ? profile.element : "";
@@ -119,7 +118,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]"
+              className="font-display text-[clamp(2.75rem,9vw,7rem)] tracking-tight text-foreground leading-[0.9] uppercase"
             >
               {name}
             </motion.h1>
@@ -159,9 +158,26 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               transition={{ delay: 0.1 * i, duration: 0.5 }}
               className={`w-full md:w-1/2 flex flex-col ${i % 2 === 0 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
             >
-              <div className={`flex-1 ${cellPad} ${section.key === "identity" ? "bg-ink/[0.02]" : ""}`}>
-                <p className={`text-[11px] uppercase tracking-[0.25em] font-medium mb-3 ${section.key === "identity" ? "text-ink" : "text-muted"}`}>{section.eyebrow}</p>
-                <p className={`font-display uppercase text-foreground mb-2 ${section.key === "identity" ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}>
+              <button
+                type="button"
+                onClick={() => onEnter?.(section.key)}
+                disabled={!onEnter}
+                className={`group flex-1 text-left ${cellPad} transition-colors ${
+                  section.key === "identity" ? "bg-accent/[0.04] hover:bg-accent/[0.07]" : "hover:bg-ink/[0.03]"
+                }`}
+              >
+                <p
+                  className={`font-mono text-[0.7rem] font-semibold uppercase tracking-[0.25em] mb-4 ${
+                    section.key === "identity" ? "text-accent" : "text-muted"
+                  }`}
+                >
+                  {section.eyebrow}
+                </p>
+                <p
+                  className={`font-display uppercase text-foreground mb-3 leading-[0.95] group-hover:text-accent transition-colors ${
+                    section.key === "identity" ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
+                  }`}
+                >
                   {section.title}
                 </p>
                 <p className="text-sm text-muted">{section.subtitle}</p>
@@ -169,15 +185,12 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                   <p className="text-xs text-muted mt-2">{section.detail}</p>
                 )}
                 {onEnter && (
-                  <button
-                    type="button"
-                    onClick={() => onEnter(section.key)}
-                    className={`mt-4 text-xs font-medium transition-colors inline-flex items-center gap-1 ${section.key === "identity" ? "text-foreground hover:text-accent border border-ink/10 px-3 py-1.5" : "text-accent hover:text-accent/80"}`}
-                  >
-                    Explorar →
-                  </button>
+                  <span className="mt-5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-accent inline-flex items-center gap-2">
+                    Explorar
+                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
+                  </span>
                 )}
-              </div>
+              </button>
             </motion.div>
           ))}
         </div>
@@ -189,16 +202,15 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             transition={{ delay: 0.5, duration: 0.5 }}
             className="border-b border-ink/10"
           >
-            <button
-              type="button"
-              onClick={() => router.push(`/affinity/${topRec.entity.type}/${topRec.entity.id}`)}
-              className="w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
+            <Link
+              href={`/affinity/${topRec.entity.type}/${topRec.entity.id}`}
+              className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
             >
-              <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
               <p className="text-sm text-foreground group-hover:text-accent transition-colors">
                 {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
               </p>
-            </button>
+            </Link>
           </motion.div>
         )}
       </div>
