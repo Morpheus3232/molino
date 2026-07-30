@@ -100,7 +100,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                 {/* Tu año */}
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
-                  <p className="font-serif text-3xl font-bold text-foreground">{result.userYear}</p>
+                  <p className="font-heading text-3xl font-bold text-foreground">{result.userYear}</p>
                   <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.userAnimal)}</p>
                 </div>
                 {/* Evento de la entidad */}
@@ -108,7 +108,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
                     {primaryEvent.label}
                   </p>
-                  <p className="font-serif text-3xl font-bold text-foreground">{result.entityYear}</p>
+                  <p className="font-heading text-3xl font-bold text-foreground">{result.entityYear}</p>
                   <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.entityAnimal)}</p>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
+          <div className="p-5 rounded-none border border-accent/20 bg-accent/[0.03]">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
@@ -201,7 +201,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {otherEvents.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Otros eventos históricos" />
-            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <div className="rounded-none border border-border bg-card overflow-hidden">
               <button
                 type="button"
                 onClick={() => setShowOtherEvents(!showOtherEvents)}
@@ -277,7 +277,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-2xl border border-border bg-card">
+          <div className="p-5 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
@@ -303,11 +303,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           return (
             <motion.section {...fadeUp} className="mb-12">
               <SectionHeader title="Tu conexión" />
-              <div className="p-6 rounded-2xl border border-border bg-card">
+              <div className="p-6 rounded-none border border-border bg-card">
                 <div className="flex items-start gap-4 mb-4">
                   <span className="text-3xl shrink-0">{entity.emoji}</span>
                   <div>
-                    <h3 className="font-serif text-xl font-semibold text-foreground mb-1">
+                    <h3 className="font-heading text-xl font-semibold text-foreground mb-1">
                       {story.headline}
                     </h3>
                     <p className="text-sm text-muted">{story.subtitle}</p>
@@ -341,7 +341,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     key={rel.entity.id}
                     href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                     onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                    className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="block w-full text-left p-4 rounded-none border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -455,7 +455,7 @@ function PremiumHero({
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label={entity.name}>
             {entity.emoji}
           </span>
-          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+          <p className="font-heading text-lg sm:text-xl font-semibold text-foreground leading-tight">
             {entity.name}
           </p>
           <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.entityAnimal)}</p>
@@ -467,7 +467,7 @@ function PremiumHero({
           animate={reducedMotion ? {} : { opacity: result.score >= 75 ? 0.3 : 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/40 font-medium">vs</span>
+          <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">vs</span>
         </motion.div>
 
         {/* User — moves left for high scores */}
@@ -479,7 +479,7 @@ function PremiumHero({
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label="Vos">
             🪞
           </span>
-          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+          <p className="font-heading text-lg sm:text-xl font-semibold text-foreground leading-tight">
             Vos
           </p>
           <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.userAnimal)}</p>
@@ -691,7 +691,7 @@ function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: Sy
   return (
     <motion.section {...fadeUp} className="mb-12">
       <div
-        className="p-6 rounded-2xl border-2 transition-colors"
+        className="p-6 rounded-none border-2 transition-colors"
         style={{
           borderColor: isHighAffinity ? `${tierMeta.color}30` : "var(--border)",
           backgroundColor: isHighAffinity ? `${tierMeta.color}05` : "var(--card)",
@@ -753,7 +753,7 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
   }, [event]);
 
   return (
-    <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+    <div className="p-4 rounded-none bg-muted/30 border border-border/50">
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-foreground">{event.label}</span>
@@ -765,9 +765,9 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
       </div>
       <p className="text-xs text-muted leading-relaxed">{event.description}</p>
       <div className="flex items-center gap-3 mt-2">
-        <p className="text-[10px] text-muted/60">Fuente: {event.source}</p>
+        <p className="text-[10px] text-muted">Fuente: {event.source}</p>
         {isApproximate && (
-          <p className="text-[10px] text-muted/60">· Año aproximado</p>
+          <p className="text-[10px] text-muted">· Año aproximado</p>
         )}
       </div>
     </div>
@@ -816,7 +816,7 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden">
+    <div className="rounded-none border border-border bg-card overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -1016,7 +1016,7 @@ function QuickAffinity({
           <div className="flex items-center justify-center gap-4 mb-4">
             <span className="text-5xl">{entity.emoji}</span>
             <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
                 {entity.name}
               </h1>
               <p className="text-sm text-muted mt-1">{entity.country}</p>
@@ -1028,7 +1028,7 @@ function QuickAffinity({
         {!hasResult ? (
           /* Date input — shown when no date is saved */
           <motion.section {...fadeUp} className="mb-12">
-            <div className="max-w-md mx-auto p-6 rounded-2xl border border-border bg-card">
+            <div className="max-w-md mx-auto p-6 rounded-none border border-border bg-card">
               <p className="text-sm font-medium text-foreground mb-1 text-center">
                 Ingresá tu fecha de nacimiento para descubrir tu afinidad con {entity.name}
               </p>
@@ -1043,7 +1043,7 @@ function QuickAffinity({
                     id="qa-day"
                     value={day}
                     onChange={e => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
@@ -1057,7 +1057,7 @@ function QuickAffinity({
                     id="qa-month"
                     value={month}
                     onChange={e => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={m}>{MONTH_LABELS[i]}</option>
@@ -1070,7 +1070,7 @@ function QuickAffinity({
                     id="qa-year"
                     value={year}
                     onChange={e => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-none border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
@@ -1102,7 +1102,7 @@ function QuickAffinity({
 
             {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-5 rounded-2xl border border-border bg-card">
+              <div className="p-5 rounded-none border border-border bg-card">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
                     <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
@@ -1157,7 +1157,7 @@ function QuickAffinity({
                         key={rel.entity.id}
                         href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                         onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                        className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        className="block w-full text-left p-4 rounded-none border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xl shrink-0">{rel.entity.emoji}</span>

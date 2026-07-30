@@ -125,7 +125,7 @@ function ScrollColumn({ values, value, onChange, ariaLabel }: ScrollColumnProps)
                   className={`font-heading text-center transition-all duration-150 ${
                     isSelected
                       ? "text-xl font-semibold text-foreground"
-                      : "text-sm text-muted-foreground/30"
+                      : "text-sm text-muted-foreground"
                   }`}
                 >
                   {v}
@@ -136,7 +136,7 @@ function ScrollColumn({ values, value, onChange, ariaLabel }: ScrollColumnProps)
         </div>
       </div>
       <div
-        className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-[44px] rounded-xl bg-accent/10 border border-accent/20 pointer-events-none z-10"
+        className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-[44px] rounded-none bg-accent/10 border border-accent/20 pointer-events-none z-10"
         aria-hidden="true"
       />
     </div>
@@ -212,13 +212,13 @@ export default function ScrollDatePicker({ value, onChange }: ScrollDatePickerPr
         <ScrollColumn values={years} value={year} onChange={handleYearChange} ariaLabel="Seleccionar año" />
       </div>
       <div className="flex justify-between mt-2 px-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           Día
         </span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           Mes
         </span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
           Año
         </span>
       </div>

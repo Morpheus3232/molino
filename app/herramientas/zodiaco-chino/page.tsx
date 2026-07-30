@@ -73,7 +73,7 @@ export default function ZodiacoChinoCalcPage() {
 
         <motion.section {...fadeUp}>
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Zodiaco Chino</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Tu animal del zodiaco chino
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -133,7 +133,7 @@ export default function ZodiacoChinoCalcPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-12 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-12 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-10">
                   <motion.p
@@ -156,7 +156,7 @@ export default function ZodiacoChinoCalcPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-4xl sm:text-5xl font-semibold text-foreground"
+                    className="font-heading text-4xl sm:text-5xl font-semibold text-foreground"
                   >
                     {result.animal}
                   </motion.h2>
@@ -204,15 +204,15 @@ export default function ZodiacoChinoCalcPage() {
                         transition={{ delay: 0.65, duration: 0.4 }}
                         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
                       >
-                        <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
+                        <div className="p-4 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
                           <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Características</p>
                           <p className="text-sm text-foreground">{animalData.traits.join(", ")}</p>
                         </div>
-                        <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
+                        <div className="p-4 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
                           <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Fortalezas</p>
                           <p className="text-sm text-foreground">{animalData.strengths.slice(0, 3).join(", ")}</p>
                         </div>
-                        <div className="p-4 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
+                        <div className="p-4 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
                           <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafíos</p>
                           <p className="text-sm text-foreground">{animalData.challenges.slice(0, 3).join(", ")}</p>
                         </div>
@@ -253,7 +253,7 @@ export default function ZodiacoChinoCalcPage() {
                         <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Los 5 elementos</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {animalData.elements.map((el) => (
-                            <div key={el.element} className="p-3 rounded-xl border border-border bg-card transition-colors hover:border-accent/30">
+                            <div key={el.element} className="p-3 rounded-none border border-border bg-card transition-colors hover:border-accent/30">
                               <p className="text-sm font-medium text-foreground">{result.animal} de {el.element}</p>
                               <p className="text-xs text-muted mt-1">{el.modifier}</p>
                             </div>
@@ -266,7 +266,7 @@ export default function ZodiacoChinoCalcPage() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.85, duration: 0.4 }}
-                        className="p-4 rounded-xl border border-border bg-card"
+                        className="p-4 rounded-none border border-border bg-card"
                       >
                         <p className="text-xs text-muted leading-relaxed">
                           <strong>Nota:</strong> El zodiaco chino sigue el calendario lunar. Para fechas cercanas al Año Nuevo chino (enero-febrero), el animal puede diferir. Molino utiliza el año gregoriano como convención.
@@ -282,7 +282,7 @@ export default function ZodiacoChinoCalcPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-none border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> El zodiaco chino es un sistema de creencias milenario. Molino lo utiliza como herramienta de reflexión y autoconocimiento. Las interpretaciones no constituyen evidencia científica.

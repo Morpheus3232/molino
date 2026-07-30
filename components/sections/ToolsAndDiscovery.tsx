@@ -33,14 +33,14 @@ const categories = [
   },
 ];
 
-const cellPad = "p-8 sm:p-10 lg:p-14";
+const cellPad = "p-8 lg:p-12";
 
 export default function ToolsAndDiscovery() {
   const router = useRouter();
 
   return (
     <section className="section-paper-alt">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -90,7 +90,7 @@ export default function ToolsAndDiscovery() {
                       <span className="text-sm text-foreground font-medium tracking-wide group-hover:text-accent transition-colors">
                         {tool.name}
                       </span>
-                      <span className="ml-auto text-xs text-muted/50 group-hover:text-accent transition-colors">→</span>
+                      <span className="ml-auto text-xs text-muted group-hover:text-accent transition-colors">→</span>
                     </button>
                   ))}
                 </div>

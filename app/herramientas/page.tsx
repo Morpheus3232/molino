@@ -53,7 +53,7 @@ export default function HerramientasPage() {
 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Herramientas</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Calcul\u00e1 tu identidad
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
@@ -72,7 +72,7 @@ export default function HerramientasPage() {
             >
               <Link
                 href={tool.href}
-                className="block w-full text-left p-6 sm:p-8 rounded-xl border border-border bg-card hover:border-accent/50 hover:shadow-sm hover:-translate-y-[2px] transition-all duration-200 ease-out group focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                className="block w-full text-left p-6 sm:p-8 rounded-none border border-border bg-card hover:border-accent/50 hover:shadow-sm hover:-translate-y-[2px] transition-all duration-200 ease-out group focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
               >
                 <div className="flex items-start gap-5">
                   <span className="text-3xl shrink-0 transition-transform duration-200 group-hover:scale-110">{tool.icon}</span>
@@ -80,7 +80,7 @@ export default function HerramientasPage() {
                     <p className="text-[10px] uppercase tracking-[0.2em] font-medium mb-1" style={{ color: tool.color }}>
                       {tool.subtitle}
                     </p>
-                    <h2 className="font-serif text-xl sm:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">
+                    <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">
                       {tool.title}
                     </h2>
                     <p className="text-sm text-muted mt-2 leading-relaxed max-w-lg">

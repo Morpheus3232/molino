@@ -12,7 +12,7 @@ interface SkeletonProps {
 export function Skeleton({ className = "", width, height, rounded = false }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse bg-[var(--skeleton)] ${rounded ? "rounded-lg" : ""} ${className}`}
+      className={`animate-pulse bg-[var(--skeleton)] ${rounded ? "rounded-none" : ""} ${className}`}
       style={{ width, height }}
     />
   );
@@ -20,7 +20,7 @@ export function Skeleton({ className = "", width, height, rounded = false }: Ske
 
 export function SkeletonCard() {
   return (
-    <div className="animate-pulse space-y-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-8">
+    <div className="animate-pulse space-y-3 rounded-none border border-[var(--color-border)] bg-[var(--color-card)] p-8">
       <Skeleton height="2rem" width="40%" rounded />
       <Skeleton height="1rem" width="80%" />
       <Skeleton height="0.75rem" width="60%" />
@@ -31,8 +31,8 @@ export function SkeletonCard() {
 
 export function SkeletonSection() {
   return (
-    <div className="py-20 sm:py-24 lg:py-28">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+    <div className="py-16 sm:py-24 lg:py-28">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <Skeleton height="1rem" width="15%" className="mb-5" rounded />
         <Skeleton height="3.5rem" width="60%" className="mb-4" rounded />
         <Skeleton height="1rem" width="45%" className="mb-10" />

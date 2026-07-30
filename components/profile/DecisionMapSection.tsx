@@ -44,7 +44,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
   return (
     <section className="py-12 sm:py-16 border-t border-ink/10">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
 
         {/* Header */}
         <motion.div {...smoothReveal}>
@@ -86,7 +86,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                       {cat.result.overallScore}/100
                     </span>
                   </div>
-                  <p className="text-sm text-muted/70 leading-relaxed">{cat.result.recommendation}</p>
+                  <p className="text-sm text-muted leading-relaxed">{cat.result.recommendation}</p>
                 </div>
               </div>
             </motion.button>
@@ -110,7 +110,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* Disclaimer */}
         <motion.div {...smoothReveal} className="mt-6">
-          <p className="text-[10px] text-muted/50 text-center italic">
+          <p className="text-[10px] text-muted text-center italic">
             Herramienta de reflexión personal basada en tradiciones culturales. No constituye predicción científica.
           </p>
         </motion.div>
@@ -182,7 +182,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Element influence */}
       <div className="p-3 bg-ink/[0.02] mb-4">
-        <p className="text-sm text-muted/70">
+        <p className="text-sm text-muted">
           Tu elemento {profile.element} {result.elementInfluence}.
         </p>
       </div>

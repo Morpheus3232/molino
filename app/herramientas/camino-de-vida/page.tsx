@@ -69,7 +69,7 @@ export default function CaminoDeVidaPage() {
 
         <motion.section {...fadeUp}>
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerología</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Camino de Vida
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -128,7 +128,7 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-none border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
@@ -152,7 +152,7 @@ export default function CaminoDeVidaPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-2xl font-semibold text-foreground mt-4"
+                    className="font-heading text-2xl font-semibold text-foreground mt-4"
                   >
                     {result.meaning.archetype}
                   </motion.p>
@@ -180,7 +180,7 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-none border border-border bg-card"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> El Camino de Vida es una interpretación simbólica de la tradición numerológica. No constituye evidencia científica ni predice el futuro. Molino lo utiliza como herramienta de reflexión.
