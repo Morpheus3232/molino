@@ -36,21 +36,21 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-4 animate-pulse">
       {/* Insight principal */}
-      <div className="p-5 rounded-xl bg-background border border-border">
+      <div className="p-6 rounded-none bg-background border border-border">
         <div className="h-4 bg-border/50 rounded w-3/4 mb-3" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-5/6" />
       </div>
 
       {/* Qué significa */}
-      <div className="p-4 rounded-xl bg-background border border-border">
+      <div className="p-4 rounded-none bg-background border border-border">
         <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-4/5" />
       </div>
 
       {/* Por qué importa */}
-      <div className="p-4 rounded-xl bg-background border border-border">
+      <div className="p-4 rounded-none bg-background border border-border">
         <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-3/4" />
@@ -160,7 +160,7 @@ export default function MolinoInterpretation({
         </div>
         <div className="flex items-center gap-2">
           {isUsingAI && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-full border border-accent/20">
+            <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-none border border-accent/20">
               IA
             </span>
           )}
@@ -168,7 +168,7 @@ export default function MolinoInterpretation({
             <button
               type="button"
               onClick={() => getAIInterpretation(true)}
-              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-foreground font-medium px-2 py-0.5 rounded-full border border-border hover:border-foreground/20 transition-colors"
+              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-foreground font-medium px-2 py-0.5 rounded-none border border-border hover:border-foreground/20 transition-colors"
               aria-label="Regenerar interpretación"
             >
               Regenerar
@@ -207,7 +207,7 @@ export default function MolinoInterpretation({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
-              className="p-5 rounded-xl bg-background border border-border"
+              className="p-6 rounded-none bg-background border border-border"
             >
               <p className="text-sm text-foreground leading-relaxed">{interpretation.summary}</p>
             </motion.div>
@@ -218,7 +218,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
-                className="p-4 rounded-xl bg-background border border-border"
+                className="p-4 rounded-none bg-background border border-border"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
@@ -233,7 +233,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
-                className="p-4 rounded-xl bg-background border border-border"
+                className="p-4 rounded-none bg-background border border-border"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
@@ -248,7 +248,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
-                className="p-4 rounded-xl bg-background border border-border"
+                className="p-4 rounded-none bg-background border border-border"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
                   {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
@@ -270,7 +270,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="p-4 rounded-xl bg-background border border-border"
+                className="p-4 rounded-none bg-background border border-border"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">
                   {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
@@ -292,7 +292,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
-                className="p-5 rounded-xl bg-accent/5 border border-accent/20"
+                className="p-6 rounded-none bg-accent/5 border border-accent/20"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
                   {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
@@ -307,7 +307,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.4 }}
-                className="p-4 rounded-xl bg-background border border-border"
+                className="p-4 rounded-none bg-background border border-border"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
                 <ul className="space-y-1.5">
@@ -339,7 +339,7 @@ export default function MolinoInterpretation({
 
       {/* Error state (only show if no interpretation at all) */}
       {error && !interpretation && (
-        <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
+        <div className="p-4 rounded-none bg-yellow-50 border border-yellow-200">
           <p className="text-sm text-yellow-700 mb-2">{error}</p>
           <button
             type="button"
@@ -353,7 +353,7 @@ export default function MolinoInterpretation({
 
       {/* Subtle error when AI failed but local fallback exists */}
       {error && interpretation && (
-        <p className="text-[10px] text-muted/60 text-right">
+        <p className="text-[10px] text-muted text-right">
           Interpretación local · AI no disponible
         </p>
       )}

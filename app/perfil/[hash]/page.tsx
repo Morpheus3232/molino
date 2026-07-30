@@ -32,7 +32,7 @@ export default function SharedProfilePage() {
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Perfil no encontrado</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             Este perfil compartido no existe
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">

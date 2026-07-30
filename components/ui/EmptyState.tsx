@@ -17,7 +17,7 @@ export default function EmptyState({ title, description, actionLabel, onAction }
           <path d="M12 16h.01" />
         </svg>
       </div>
-      <h3 className="font-serif text-lg font-semibold text-foreground mb-2">{title}</h3>
+      <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-sm text-muted max-w-sm mx-auto mb-6">{description}</p>
       {actionLabel && onAction && (
         <Button variant="secondary" onClick={onAction}>

@@ -109,7 +109,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
       {/* The visual card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-2xl border border-ink/10"
+        className="relative overflow-hidden rounded-none border border-ink/10"
         style={{
           maxWidth: "480px",
           background: "linear-gradient(180deg, #F3EDE3 0%, #EDE5D8 100%)",
@@ -134,7 +134,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
           </div>
 
           {/* Name */}
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-1" style={{ color: "#1a1a1a" }}>
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-1" style={{ color: "#1a1a1a" }}>
             {name.split(" ")[0]}
           </h2>
 
@@ -142,7 +142,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
           <div className="flex items-center gap-3 mb-6">
             <span className="text-4xl">{zodiacDisplay.emoji}</span>
             <div>
-              <p className="font-serif text-lg font-semibold" style={{ color: elementColor }}>
+              <p className="font-heading text-lg font-semibold" style={{ color: elementColor }}>
                 {zodiacDisplay.name} de {element}
               </p>
               <p className="text-xs" style={{ color: "#666" }}>
@@ -153,7 +153,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
 
           {/* Quote / Insight */}
           <div className="py-6 border-t border-b" style={{ borderColor: `${elementColor}30` }}>
-            <p className="font-serif text-lg italic leading-relaxed" style={{ color: "#333" }}>
+            <p className="font-heading text-lg italic leading-relaxed" style={{ color: "#333" }}>
               {archetypeData?.quote
                 ? `\u201C${archetypeData.quote}\u201D`
                 : `Tu energía combina ${element.toLowerCase()}, intuición y visión.`
@@ -163,7 +163,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
 
           {/* Archetype badge */}
           <div className="mt-6 flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: `${elementColor}15`, color: elementColor }}>
+            <span className="px-3 py-1 rounded-none text-xs font-medium" style={{ backgroundColor: `${elementColor}15`, color: elementColor }}>
               {archetypeName}
             </span>
           </div>
@@ -186,7 +186,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
           type="button"
           onClick={handleShare}
           disabled={generating}
-          className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-accent text-white hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-3 text-sm bg-accent text-white hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
         >
           {generating ? (
             <>
@@ -221,7 +221,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
           type="button"
           onClick={handleDownload}
           disabled={generating}
-          className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm border border-ink/10 bg-card hover:bg-background disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-3 text-sm border border-ink/10 bg-card hover:bg-background disabled:opacity-50"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

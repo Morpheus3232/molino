@@ -10,16 +10,10 @@ import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
+import { getScoreColor } from "@/lib/utils/score";
 import Link from "next/link";
 
 const CATEGORIES = Object.entries(CATEGORY_LABELS) as [DecisionCategory, string][];
-
-const getScoreColor = (score: number) => {
-  if (score >= 75) return "text-green-600";
-  if (score >= 55) return "text-blue-600";
-  if (score >= 40) return "text-yellow-600";
-  return "text-red-600";
-};
 
 export default function DecisionsPage() {
   const router = useRouter();
@@ -46,7 +40,7 @@ export default function DecisionsPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
           <p className="eyebrow-brutalist mb-4">Motor de Decisiones</p>
           <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu brújula personal
@@ -55,13 +49,9 @@ export default function DecisionsPage() {
             Analizá cualquier decisión con la sabiduría de tu numerología, signo solar y energía del día.
             Primero necesitás crear tu perfil personal.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -71,7 +61,7 @@ export default function DecisionsPage() {
   if (result) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
           <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
             <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
               <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
@@ -91,8 +81,8 @@ export default function DecisionsPage() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-            <div className="border border-ink/10 p-8 sm:p-10 lg:p-14">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+            <div className="border border-ink/10 p-8 lg:p-12">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 <div>
                   <p className="label-micro mb-1">Alineación general</p>
                   <p className="text-5xl sm:text-6xl font-display font-bold tracking-tight" style={{ color: result.overallScore >= 75 ? "var(--score-excellent)" : result.overallScore >= 55 ? "var(--score-good)" : result.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
@@ -100,7 +90,7 @@ export default function DecisionsPage() {
                   </p>
                 </div>
                 <div className="sm:text-right">
-                  <p className="text-xl font-serif font-semibold text-foreground">{result.recommendation}</p>
+                  <p className="text-xl font-heading font-semibold text-foreground">{result.recommendation}</p>
                 </div>
               </div>
               <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.reasoning}</p>
@@ -120,7 +110,7 @@ export default function DecisionsPage() {
             ))}
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
             <p className="eyebrow-brutalist mb-4">Consideraciones</p>
             <ul className="space-y-3">
               {result.considerations.map((c, i) => (
@@ -132,7 +122,7 @@ export default function DecisionsPage() {
             </ul>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
             <p className="eyebrow-brutalist mb-4">Próximos pasos</p>
             <ul className="space-y-3">
               {result.nextSteps.map((s, i) => (
@@ -186,7 +176,7 @@ export default function DecisionsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
@@ -238,14 +228,14 @@ export default function DecisionsPage() {
               </select>
             </div>
 
-            <button type="submit" disabled={!question.trim()} className="btn-accent w-full">
+            <Button type="submit" variant="primary" fullWidth disabled={!question.trim()}>
               Analizar decisión
-            </button>
+            </Button>
           </form>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="border-t border-ink/10 pt-8 sm:pt-10 lg:pt-14 mt-8">
-          <div className="border border-ink/10 p-8 sm:p-10 lg:p-14">
+          <div className="border border-ink/10 p-8 lg:p-12">
             <p className="eyebrow-brutalist mb-4">¿Cómo funciona?</p>
             <p className="text-sm text-muted leading-relaxed">
               El Motor de Decisiones combina tu numerología (Life Path, día y año personal), tu signo solar, tu elemento, la fase lunar y la energía del día para ofrecerte una perspectiva única sobre cualquier decisión. Todo es determinístico y se calcula localmente — no guardamos ninguna pregunta ni resultado.

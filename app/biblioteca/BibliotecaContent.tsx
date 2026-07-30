@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import EmptyState from "@/components/ui/EmptyState";
+import SearchInput from "@/components/ui/SearchInput";
+import Chip from "@/components/ui/Chip";
 
 interface Source {
   id: string;
@@ -296,35 +299,26 @@ export default function BibliotecaContent() {
         <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <div className="flex-1">
-              <label htmlFor="biblioteca-search" className="sr-only">Buscar en la biblioteca</label>
-              <input
+              <SearchInput
                 id="biblioteca-search"
-                type="search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onValueChange={setSearchQuery}
                 placeholder="Buscar por título, autor, descripción o etiqueta…"
-                className="w-full px-4 py-2.5 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-ink/20 focus:border-transparent transition-all"
+                label="Buscar en la biblioteca"
               />
             </div>
             <div className="flex flex-wrap gap-2 sm:flex-1 sm:justify-end">
-              <button
-                onClick={() => setActiveTag(null)}
-                className={`px-3 py-1.5 font-mono text-[10px] font-semibold tracking-wider uppercase transition-all ${
-                  !activeTag ? "bg-ink text-paper" : "bg-background border border-ink/10 text-muted hover:text-foreground"
-                }`}
-              >
+              <Chip selected={!activeTag} onClick={() => setActiveTag(null)}>
                 Todas
-              </button>
+              </Chip>
               {allTags.map((tag) => (
-                <button
+                <Chip
                   key={tag}
+                  selected={activeTag === tag}
                   onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-                  className={`px-3 py-1.5 font-mono text-[10px] font-semibold tracking-wider uppercase transition-all ${
-                    activeTag === tag ? "bg-ink text-paper" : "bg-background border border-ink/10 text-muted hover:text-foreground"
-                  }`}
                 >
                   #{tag}
-                </button>
+                </Chip>
               ))}
             </div>
           </div>
@@ -341,7 +335,7 @@ export default function BibliotecaContent() {
                   <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
                     {CATEGORY_LABELS[catKey]}
                   </h2>
-                  <span className="font-mono text-[10px] text-muted/40">{sources.length}</span>
+                  <span className="font-mono text-[10px] text-muted">{sources.length}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -354,7 +348,7 @@ export default function BibliotecaContent() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20px" }}
                         transition={{ delay: i * 0.03, duration: 0.35 }}
-                        className="p-5 border border-ink/10 bg-background flex flex-col"
+                        className="p-6 border border-ink/10 bg-background flex flex-col"
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
                           <h3 className="font-display text-sm text-foreground">{source.title}</h3>
@@ -439,10 +433,10 @@ export default function BibliotecaContent() {
             );
           })
         ) : (
-          <div className="text-center py-16 text-muted">
-            <p className="text-lg">No se encontraron fuentes</p>
-            <p className="text-sm mt-2">Probá con otro filtro.</p>
-          </div>
+          <EmptyState
+            title="No se encontraron fuentes"
+            description="Probá con otro filtro."
+          />
         )}
       </main>
 

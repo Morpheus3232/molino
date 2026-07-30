@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
+  title: "Decisiones",
   robots: { index: false },
   alternates: { canonical: siteUrl("/decisions") },
 };

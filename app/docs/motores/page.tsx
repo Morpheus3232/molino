@@ -3,7 +3,7 @@ import { SITE_URL, siteUrl } from "@/lib/seo";
 import MotoresContent from "./MotoresContent";
 
 export const metadata: Metadata = {
-  title: "Motores y fórmulas — Molino",
+  title: "Motores y fórmulas",
   description: "Documentación técnica de los motores de cálculo: fórmulas de numerología (Camino de Vida, Expresión), astronomía de precisión (Swiss Ephemeris) y calendario chino (ciclo sexagenario).",
   alternates: {
     canonical: siteUrl("/docs/motores"),

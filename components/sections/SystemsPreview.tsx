@@ -24,14 +24,14 @@ const systems = [
   },
 ];
 
-const cellPad = "p-8 sm:p-10 lg:p-14";
+const cellPad = "p-8 lg:p-12";
 
 export default function SystemsPreview() {
   const router = useRouter();
 
   return (
     <section className="section-paper-alt">
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -63,7 +63,7 @@ export default function SystemsPreview() {
                 <p className="font-mono text-xs text-accent font-semibold tracking-[0.25em] mb-6">
                   {system.micro}
                 </p>
-                <h3 className="font-display text-4xl sm:text-5xl text-foreground leading-[0.9] mb-5">
+                <h3 className="font-display text-4xl sm:text-5xl text-foreground leading-[0.9] mb-6">
                   {system.title}
                 </h3>
                 <p className="text-sm sm:text-base text-muted leading-relaxed mb-8">

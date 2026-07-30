@@ -13,13 +13,13 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ type: string }> }): Promise<Metadata> {
   const { type } = await params;
   if (!VALID_TYPES.includes(type as EntityType)) {
-    return { title: "Categoría no encontrada | Molino" };
+    return { title: "Categoría no encontrada" };
   }
   const meta = ENTITY_TYPES[type as EntityType];
   const count = getEntitiesByType(type as EntityType).length;
 
   return {
-    title: `Afinidad Personal · ${meta.plural} | Molino`,
+    title: `Afinidad Personal · ${meta.plural}`,
     description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
     alternates: {
       canonical: siteUrl(`/affinity/${type}`),

@@ -22,7 +22,7 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
+        className="bg-card rounded-none p-6 border border-border"
       >
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -37,34 +37,34 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-xl bg-background p-3">
+          <div className="rounded-none bg-background p-3">
             <p className="text-xs text-muted mb-1">Numerología</p>
-            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.numerology)}`}>
+            <div className={`inline-block px-2 py-1 rounded-none text-xs font-bold ${getScoreColor(result.scores.numerology)}`}>
               {result.scores.numerology}%
             </div>
           </div>
-          <div className="rounded-xl bg-background p-3">
+          <div className="rounded-none bg-background p-3">
             <p className="text-xs text-muted mb-1">Astrología occidental</p>
-            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.westernAstrology)}`}>
+            <div className={`inline-block px-2 py-1 rounded-none text-xs font-bold ${getScoreColor(result.scores.westernAstrology)}`}>
               {result.scores.westernAstrology}%
             </div>
           </div>
-          <div className="rounded-xl bg-background p-3">
+          <div className="rounded-none bg-background p-3">
             <p className="text-xs text-muted mb-1">Zodiaco chino</p>
-            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.chineseAstrology)}`}>
+            <div className={`inline-block px-2 py-1 rounded-none text-xs font-bold ${getScoreColor(result.scores.chineseAstrology)}`}>
               {result.scores.chineseAstrology}%
             </div>
           </div>
-          <div className="rounded-xl bg-background p-3">
+          <div className="rounded-none bg-background p-3">
             <p className="text-xs text-muted mb-1">Elementos</p>
-            <div className={`inline-block px-2 py-1 rounded-full text-xs font-bold ${getScoreColor(result.scores.element)}`}>
+            <div className={`inline-block px-2 py-1 rounded-none text-xs font-bold ${getScoreColor(result.scores.element)}`}>
               {result.scores.element}%
             </div>
           </div>
         </div>
       </motion.div>
 
-      <Suspense fallback={<div className="animate-pulse h-32 bg-background rounded-xl" />}>
+      <Suspense fallback={<div className="animate-pulse h-32 bg-background rounded-none" />}>
         <AIInterpretation user={user} target={entity} result={result} template={template} />
       </Suspense>
 
@@ -72,14 +72,14 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
+        className="bg-card rounded-none p-6 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">Fortalezas</h3>
+        <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Fortalezas</h3>
         <div className="flex flex-wrap gap-2">
           {result.strengths.map((strength, index) => (
             <span
               key={index}
-              className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700"
+              className="px-3 py-1 rounded-none text-xs font-medium bg-green-50 text-green-700"
             >
               {strength}
             </span>
@@ -91,14 +91,14 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="bg-card rounded-2xl shadow-lg p-5 border border-border"
+        className="bg-card rounded-none p-6 border border-border"
       >
-        <h3 className="font-serif text-lg font-semibold text-foreground mb-3">Desafíos</h3>
+        <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Desafíos</h3>
         <div className="flex flex-wrap gap-2">
           {result.challenges.map((challenge, index) => (
             <span
               key={index}
-              className="px-3 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700"
+              className="px-3 py-1 rounded-none text-xs font-medium bg-yellow-50 text-yellow-700"
             >
               {challenge}
             </span>

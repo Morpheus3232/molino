@@ -16,6 +16,7 @@ import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 
 interface CompareContentProps {
@@ -52,26 +53,39 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Afinidad Personal · Comparación
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para descubrir la comparación simbólica entre {entityA.name} y {entityB.name}.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
     );
   }
 
-  if (!resultA || !resultB || !entityComparison) return null;
+  if (!resultA || !resultB || !entityComparison) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+          <div className="w-8 h-2 bg-accent mx-auto mb-8" />
+          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
+            Afinidad Personal · Comparación
+          </p>
+          <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
+            No se pudo calcular la comparación
+          </h1>
+          <p className="text-muted mb-8 max-w-md mx-auto">
+            Ocurrió un error al calcular la afinidad entre {entityA.name} y {entityB.name}. Intentá de nuevo.
+          </p>
+          <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>Volver a comparar</Button>
+        </div>
+        <UniversityFooter />
+      </div>
+    );
+  }
 
   const tierA = TIER_META[resultA.tier];
   const tierB = TIER_META[resultB.tier];
@@ -99,7 +113,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Comparación Simbólica
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3 line-clamp-2">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3 line-clamp-2">
             <span className="inline-block max-w-[45%] truncate align-bottom">{entityA.emoji} {entityA.name}</span>
             <span className="text-muted mx-2 sm:mx-3">vs</span>
             <span className="inline-block max-w-[45%] truncate align-bottom">{entityB.emoji} {entityB.name}</span>
@@ -129,18 +143,18 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
         {/* Entity vs Entity comparison */}
         <motion.section {...fadeUp} className="mb-12">
           <SectionHeader title="Relación entre ambos" />
-          <div className="p-6 rounded-2xl border border-border bg-card">
+          <div className="p-6 rounded-none border border-border bg-card">
             {/* Animals face to face */}
             <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6">
               <div className="text-center">
                 <span className="text-3xl block mb-2">{entityA.emoji}</span>
-                <p className="font-serif text-xl font-bold text-foreground">{formatAnimalSimple(resultA.entityAnimal)}</p>
+                <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultA.entityAnimal)}</p>
                 <p className="text-xs text-muted mt-1">{entityA.name}</p>
               </div>
 
               <div className="flex flex-col items-center">
                 <span
-                  className="font-serif text-3xl font-bold"
+                  className="font-heading text-3xl font-bold"
                   style={{ color: compTier.color }}
                 >
                   {entityComparison.score}
@@ -150,15 +164,15 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               <div className="text-center">
                 <span className="text-3xl block mb-2">{entityB.emoji}</span>
-                <p className="font-serif text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
+                <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
                 <p className="text-xs text-muted mt-1">{entityB.name}</p>
               </div>
             </div>
 
             {/* Relationship label */}
-            <div className="text-center mb-5">
+            <div className="text-center mb-6">
               <span
-                className="text-[10px] font-medium uppercase tracking-wider px-3 py-1 rounded-full"
+                className="text-[10px] font-medium uppercase tracking-wider px-3 py-1 rounded-none"
                 style={{ color: compTier.color, backgroundColor: `${compTier.color}15` }}
               >
                 {entityComparison.relationship}
@@ -172,7 +186,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {entityComparison.explanation}
             </p>
             {entityComparison.tradition && (
-              <p className="text-xs text-muted/70 italic">{entityComparison.tradition}</p>
+              <p className="text-xs text-muted italic">{entityComparison.tradition}</p>
             )}
           </div>
         </motion.section>
@@ -212,7 +226,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
         {/* Symbolic differences */}
         <motion.section {...fadeUp} className="mb-12">
           <SectionHeader title="Diferencias simbólicas" />
-          <div className="p-6 rounded-2xl border border-border bg-card space-y-4">
+          <div className="p-6 rounded-none border border-border bg-card space-y-4">
             <DifferenceRow
               label="Animales"
               valueA={`${formatAnimalSimple(resultA.entityAnimal)} (${entityA.name})`}
@@ -243,7 +257,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-2xl border border-border bg-card">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
@@ -258,21 +272,21 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             <button
               type="button"
               onClick={() => router.push(`/affinity/${entityA.type}/${entityA.id}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
             >
               Ver {entityA.name}
             </button>
             <button
               type="button"
               onClick={() => router.push(`/affinity/${entityB.type}/${entityB.id}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px]"
             >
               Ver {entityB.name}
             </button>
             <button
               type="button"
               onClick={() => router.push("/affinity")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
             >
               Explorar más
             </button>
@@ -300,11 +314,11 @@ function EntityBaseCard({
   typeLabel: string;
 }) {
   return (
-    <div className="p-5 rounded-xl border border-border bg-card">
+    <div className="p-6 rounded-none border border-border bg-card">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-2xl">{entity.emoji}</span>
         <div>
-          <p className="font-serif text-lg font-semibold text-foreground">{entity.name}</p>
+          <p className="font-heading text-lg font-semibold text-foreground">{entity.name}</p>
           <p className="text-xs text-muted">{typeLabel} · {entity.country}</p>
         </div>
       </div>
@@ -355,13 +369,13 @@ function PersonalCard({
   relationship: string;
 }) {
   return (
-    <div className="p-5 rounded-xl border border-border bg-card">
+    <div className="p-6 rounded-none border border-border bg-card">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-lg shrink-0">{emoji ?? "·"}</span>
           <span className="text-sm font-medium text-foreground truncate">{entityName}</span>
         </div>
-        <span className="font-serif text-xl font-bold shrink-0" style={{ color: tierMeta.color }}>
+        <span className="font-heading text-xl font-bold shrink-0" style={{ color: tierMeta.color }}>
           {score}
         </span>
       </div>
@@ -395,7 +409,7 @@ function DifferenceRow({
 
 function SectionHeader({ title }: { title: string }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
+    <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
       <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
     </div>

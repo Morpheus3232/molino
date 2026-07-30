@@ -150,7 +150,7 @@ export default function FilosofiaContent() {
                 className="p-6 sm:p-8 bg-background"
               >
                 <div className="flex items-start gap-4">
-                  <span className="font-mono text-xs font-semibold tracking-wider text-muted/40 shrink-0 mt-0.5">
+                  <span className="font-mono text-xs font-semibold tracking-wider text-muted shrink-0 mt-0.5">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
@@ -214,7 +214,7 @@ export default function FilosofiaContent() {
                   transition={{ delay: i * 0.03 + 0.24, duration: 0.3 }}
                   className="px-4 py-2 border border-ink/10 bg-background text-sm text-muted hover:border-ink/20 hover:text-foreground transition-colors"
                 >
-                  {sys.name} <span className="text-muted/50">({sys.author}, {sys.year})</span>
+                  {sys.name} <span className="text-muted">({sys.author}, {sys.year})</span>
                 </motion.span>
               ))}
             </div>

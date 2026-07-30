@@ -10,8 +10,10 @@ import type { EntityType } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { YEAR_CYCLE_META } from "@/lib/engines/yearCycleEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
+import EmptyState from "@/components/ui/EmptyState";
 
 interface RecommendationContentProps {
   entityType: EntityType;
@@ -38,19 +40,13 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Recomendaciones Simbólicas
           </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
             {title}
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para descubrir recomendaciones personalizadas.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
@@ -86,7 +82,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Recomendaciones Simbólicas · {meta?.plural ?? entityType}
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
+          <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
             {title}
           </h1>
           <p className="text-sm text-muted">
@@ -142,9 +138,17 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           />
         )}
 
+        {/* Empty state */}
+        {tripleResonance.length === 0 && aligned.length === 0 && compatible.length === 0 && strategic.length === 0 && (
+          <EmptyState
+            title="Sin recomendaciones"
+            description="No encontramos recomendaciones para esta entidad con tu perfil actual."
+          />
+        )}
+
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-12">
-          <div className="p-5 rounded-2xl border border-border bg-card">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
@@ -208,7 +212,7 @@ function RecommendationCard({
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-6 rounded-none border border-border bg-card hover:border-accent/50 transition-all group"
     >
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
@@ -220,30 +224,30 @@ function RecommendationCard({
         {/* Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+            <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#2D5A3D]/10 text-[#2D5A3D]">
+              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-none bg-success/10 text-success dark:text-success">
                 Triple
               </span>
             )}
           </div>
           <p className="text-xs text-muted mb-1">{rec.title}</p>
-          <p className="text-xs text-muted/70 leading-relaxed line-clamp-2">{rec.explanation}</p>
+          <p className="text-xs text-muted leading-relaxed line-clamp-2">{rec.explanation}</p>
         </div>
 
         {/* Score + stars */}
         <div className="text-right shrink-0">
-          <p className="font-serif text-xl font-bold text-foreground">{rec.totalScore}</p>
-          <p className="text-xs mt-0.5" style={{ color: getScoreColor(rec.totalScore) }}>{stars}</p>
+          <p className="font-heading text-xl font-bold text-foreground">{rec.totalScore}</p>
+          <p className="text-xs mt-0.5" style={{ color: getScoreHexColor(rec.totalScore) }}>{stars}</p>
         </div>
       </div>
     </motion.button>
   );
 }
 
-function getScoreColor(score: number): string {
+function getScoreHexColor(score: number): string {
   if (score >= 85) return "#2D5A3D";
   if (score >= 70) return "#4A6FA5";
   if (score >= 50) return "#D4A843";

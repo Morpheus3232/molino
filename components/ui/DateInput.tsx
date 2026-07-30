@@ -156,12 +156,12 @@ export default function DateInput({ value, onChange }: DateInputProps) {
 
   const baseInput =
     "w-full bg-transparent text-center font-heading font-semibold text-foreground " +
-    "placeholder:text-muted-foreground/30 focus:outline-none tabular-nums";
+    "placeholder:text-muted-foreground focus:outline-none tabular-nums";
 
   return (
     <div className="mx-auto max-w-xs">
       <div
-        className="flex items-center gap-0 rounded-xl border border-border bg-card px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-all"
+        className="flex items-center gap-0 rounded-none border border-border bg-card px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-all"
         role="group"
         aria-label="Fecha de nacimiento"
       >
@@ -183,7 +183,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           autoComplete="off"
         />
 
-        <span className="text-2xl sm:text-3xl text-muted-foreground/40 font-light select-none px-0.5">/</span>
+        <span className="text-2xl sm:text-3xl text-muted-foreground font-light select-none px-0.5">/</span>
 
         {/* Month */}
         <input
@@ -203,7 +203,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           autoComplete="off"
         />
 
-        <span className="text-2xl sm:text-3xl text-muted-foreground/40 font-light select-none px-0.5">/</span>
+        <span className="text-2xl sm:text-3xl text-muted-foreground font-light select-none px-0.5">/</span>
 
         {/* Year */}
         <input
@@ -225,7 +225,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
       </div>
 
       {/* Labels */}
-      <div className="flex items-center mt-2 px-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground/40">
+      <div className="flex items-center mt-2 px-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         <span className="w-16 sm:w-20 text-center">Día</span>
         <span className="px-2 opacity-0">/</span>
         <span className="w-16 sm:w-20 text-center">Mes</span>

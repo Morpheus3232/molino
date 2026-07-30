@@ -9,7 +9,8 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import LoadingState from "@/components/ui/LoadingState";
+import { Skeleton, SkeletonCardGrid } from "@/components/ui/Skeleton";
+import { getScoreColor } from "@/lib/utils/score";
 import Link from "next/link";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -34,9 +35,17 @@ export default function DailyEnergyPage() {
   }, [profile]);
 
   if (loading || !mounted) {
+    // Skeleton en vez de spinner: la estructura de esta pagina es conocida,
+    // asi que anticiparla reduce la sensacion de espera.
     return (
       <div className="min-h-screen bg-background">
-        <LoadingState message="Calculando tu energía diaria..." />
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+          <p className="sr-only" role="status">Calculando tu energía diaria...</p>
+          <Skeleton height="0.75rem" width="12rem" className="mb-6" />
+          <Skeleton height="4rem" width="60%" className="mb-4" />
+          <Skeleton height="1rem" width="40%" className="mb-12" />
+          <SkeletonCardGrid count={3} />
+        </div>
         <UniversityFooter />
       </div>
     );
@@ -45,7 +54,7 @@ export default function DailyEnergyPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 py-24 text-center">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
           <p className="eyebrow-brutalist mb-4">Energía Diaria</p>
           <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu energía de hoy
@@ -53,13 +62,9 @@ export default function DailyEnergyPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para ver tu energía diaria, primero necesitás crear tu perfil personal.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -68,23 +73,9 @@ export default function DailyEnergyPage() {
 
   if (!energy) return null;
 
-  const getScoreColor = (score: number) => {
-    if (score >= 75) return "text-green-600";
-    if (score >= 55) return "text-blue-600";
-    if (score >= 40) return "text-yellow-600";
-    return "text-red-600";
-  };
-
-  const getScoreBg = (score: number) => {
-    if (score >= 75) return "bg-green-50";
-    if (score >= 55) return "bg-blue-50";
-    if (score >= 40) return "bg-yellow-50";
-    return "bg-red-50";
-  };
-
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-28" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
@@ -102,8 +93,8 @@ export default function DailyEnergyPage() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-          <div className="border border-ink/10 p-8 sm:p-10 lg:p-14">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+          <div className="border border-ink/10 p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <p className="label-micro mb-1">Energía del día</p>
                 <p className="text-5xl sm:text-6xl font-display font-bold tracking-tight" style={{ color: energy.overallScore >= 75 ? "var(--score-excellent)" : energy.overallScore >= 55 ? "var(--score-good)" : energy.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>
@@ -111,7 +102,7 @@ export default function DailyEnergyPage() {
                 </p>
               </div>
               <div className="sm:text-right">
-                <p className="text-xl sm:text-2xl font-serif font-semibold text-foreground">{energy.theme}</p>
+                <p className="text-xl sm:text-2xl font-heading font-semibold text-foreground">{energy.theme}</p>
                 <p className="text-sm text-muted">Día personal: {energy.personalDay}</p>
               </div>
             </div>
@@ -134,7 +125,7 @@ export default function DailyEnergyPage() {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10">
-          <div className="bg-background p-8 sm:p-10 lg:p-14">
+          <div className="bg-background p-8 lg:p-12">
             <p className="eyebrow-brutalist mb-6">Fortalezas</p>
             <ul className="space-y-3">
               {energy.strengths.map((s, i) => (
@@ -145,7 +136,7 @@ export default function DailyEnergyPage() {
               ))}
             </ul>
           </div>
-          <div className="bg-background p-8 sm:p-10 lg:p-14">
+          <div className="bg-background p-8 lg:p-12">
             <p className="eyebrow-brutalist mb-6">Precauciones</p>
             <ul className="space-y-3">
               {energy.cautions.map((c, i) => (
@@ -173,7 +164,7 @@ export default function DailyEnergyPage() {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 border border-ink/10 p-8 sm:p-10 lg:p-14">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
           <p className="eyebrow-brutalist mb-4">Interpretación</p>
           <p className="text-sm text-muted leading-relaxed">{energy.explanation}</p>
         </motion.div>

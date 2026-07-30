@@ -11,7 +11,7 @@ export default function MethodContent() {
         <Section>
           <div className="text-center mb-10">
             <span className="badge mb-3">📐 Method</span>
-            <h1 className="font-serif text-3xl font-bold text-foreground mt-3">Cómo funciona Molino</h1>
+            <h1 className="font-heading text-3xl font-bold text-foreground mt-3">Cómo funciona Molino</h1>
             <p className="text-muted mt-2 max-w-2xl mx-auto">
               Transparencia total: cómo se calculan los números, las limitaciones de cada sistema y las fuentes en las que se basa.
             </p>

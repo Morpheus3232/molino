@@ -6,6 +6,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import EmptyState from "@/components/ui/EmptyState";
+import SearchInput from "@/components/ui/SearchInput";
 
 const SYSTEMS = [
   {
@@ -50,7 +52,7 @@ const SOURCES = [
 ];
 
 const colBorder = "border-ink/10";
-const cellPad = "p-8 sm:p-10 lg:p-14";
+const cellPad = "p-8 lg:p-12";
 
 export default function ExplorePage() {
   const router = useRouter();
@@ -65,7 +67,7 @@ export default function ExplorePage() {
   return (
     <div className="min-h-screen bg-background">
 
-      <main className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-28" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
 
         {/* ═══ HERO ═══ */}
         <motion.section {...fadeUp} className="mb-20 sm:mb-28">
@@ -75,7 +77,7 @@ export default function ExplorePage() {
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05] max-w-3xl">
             El universo de tu conocimiento
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
+          <p className="mt-6 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
             Molino combina múltiples sistemas simbólicos para construir tu mapa personal.
             Explorá cada sistema para entender cómo funciona.
           </p>
@@ -121,29 +123,22 @@ export default function ExplorePage() {
           </div>
 
           <div className="mb-8">
-            <input
-              type="text"
+            <SearchInput
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onValueChange={setSearchTerm}
               placeholder="Buscar concepto..."
-              className="w-full max-w-md border border-ink/10 bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-muted/40 focus:outline-none focus:border-ink/40"
-              aria-label="Buscar concepto"
+              label="Buscar concepto"
+              className="max-w-md"
             />
           </div>
 
           {filteredConcepts.length === 0 ? (
-            <div className="py-12 text-center border border-dashed border-ink/10">
-              <p className="text-sm text-muted mb-3">
-                No se encontraron conceptos para &quot;{searchTerm}&quot;.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSearchTerm("")}
-                className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
-              >
-                Limpiar búsqueda
-              </button>
-            </div>
+            <EmptyState
+              title="No se encontraron conceptos"
+              description={`No se encontraron conceptos para "${searchTerm}".`}
+              actionLabel="Limpiar búsqueda"
+              onAction={() => setSearchTerm("")}
+            />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-ink/10">
               {filteredConcepts.map((concept, i) => (
@@ -154,7 +149,7 @@ export default function ExplorePage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                   onClick={() => router.push(concept.href)}
-                  className={`text-left px-5 sm:px-8 py-5 sm:py-6 border-b border-ink/10 ${(i % 3) < 2 ? "sm:border-r border-ink/10" : ""} group`}
+                  className={`text-left px-6 sm:px-8 py-6 sm:py-6 border-b border-ink/10 ${(i % 3) < 2 ? "sm:border-r border-ink/10" : ""} group`}
                 >
                   <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                     {concept.title}
@@ -176,10 +171,10 @@ export default function ExplorePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 border-t border-ink/10">
             {SOURCES.map((source, i) => (
-              <div key={source.title} className={`px-5 sm:px-8 py-6 sm:py-8 border-b border-ink/10 ${i < 2 ? "md:border-r border-ink/10" : ""}`}>
+              <div key={source.title} className={`px-6 sm:px-8 py-6 sm:py-8 border-b border-ink/10 ${i < 2 ? "md:border-r border-ink/10" : ""}`}>
                 <p className="text-sm font-medium text-foreground">{source.title}</p>
                 <p className="text-xs text-muted mt-1">{source.author}</p>
-                <p className="text-xs text-muted/60 mt-2 leading-relaxed">{source.description}</p>
+                <p className="text-xs text-muted mt-2 leading-relaxed">{source.description}</p>
               </div>
             ))}
           </div>

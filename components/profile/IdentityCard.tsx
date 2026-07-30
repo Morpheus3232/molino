@@ -140,7 +140,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                   {...staggerItemSmooth}
                   className="flex items-center gap-3 p-3 rounded-none bg-background/50"
                 >
-                  <span className="w-6 h-6 rounded-none bg-[#B45309]/10 flex items-center justify-center text-[10px] text-[#B45309] font-medium shrink-0">
+                  <span className="w-6 h-6 rounded-none bg-accent/10 flex items-center justify-center text-[10px] text-accent font-medium shrink-0">
                     {i + 1}
                   </span>
                   <span className="text-sm text-foreground">{g}</span>
@@ -157,7 +157,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 
           {/* Disclaimer */}
           <div className="pt-4 border-t border-ink/10">
-            <p className="text-[10px] text-muted/50 italic">
+            <p className="text-[10px] text-muted italic">
               No determina tu personalidad. Es una interpretación cultural basada en tradiciones simbólicas.
             </p>
           </div>
@@ -181,7 +181,7 @@ function LifePathExplorerInline({ lifePath, router }: { lifePath: number; router
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[10px] text-muted font-medium">Life Path {lifePath}</p>
-          <p className="text-xs text-muted/70">Numerología pitagórica moderna</p>
+          <p className="text-xs text-muted">Numerología pitagórica moderna</p>
         </div>
         <span className="text-[10px] text-accent group-hover:translate-x-1 transition-transform">Conocer origen →</span>
       </div>
@@ -203,7 +203,7 @@ function ZodiacExplorerInline({ animal, element, router }: { animal: string; ele
           <span className="text-lg">{display.emoji}</span>
           <div>
             <p className="text-[10px] text-muted font-medium">{display.name} · {element}</p>
-            <p className="text-xs text-muted/70">Tradición zodiacal oriental</p>
+            <p className="text-xs text-muted">Tradición zodiacal oriental</p>
           </div>
         </div>
         <span className="text-[10px] text-accent group-hover:translate-x-1 transition-transform">Explorar tradición →</span>

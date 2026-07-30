@@ -61,7 +61,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
     >
       {/* Hero */}
       <section className="py-12 sm:pt-16 pb-8">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
             <p className="label-micro mb-3">Tu Inteligencia</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
@@ -76,7 +76,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* Tus Dimensiones */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
             <div>
               <motion.div {...smoothReveal}>
@@ -138,9 +138,9 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* Tus Patrones */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus patrones</h2>
             </div>
@@ -156,7 +156,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 className="p-8 sm:p-10 bg-background"
               >
-                <p className="uppercase text-[10px] tracking-[0.25em] text-muted/40 mb-4">
+                <p className="uppercase text-[10px] tracking-[0.25em] text-muted mb-4">
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <p className="text-[10px] uppercase tracking-[0.25em] font-medium text-muted mb-2">{pattern.label}</p>
@@ -179,7 +179,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* La Síntesis */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
             <div>
               <motion.div {...smoothReveal}>
@@ -241,9 +241,9 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* Tus Sistemas */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus sistemas</h2>
             </div>
@@ -266,7 +266,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.4 }}
                 onClick={() => router.push(sys.href)}
-                className="w-full flex items-center gap-4 py-5 border-b border-ink/10 last:border-b-0 text-left group hover:pl-3 transition-all"
+                className="w-full flex items-center gap-4 py-6 border-b border-ink/10 last:border-b-0 text-left group hover:pl-3 transition-all"
               >
                 <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: sys.color }} />
                 <div className="flex-1 min-w-0">
@@ -282,16 +282,16 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* Explora tus Afinidades */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <DecisionMapSection profile={profile} />
         </div>
       </section>
 
       {/* Tu Próximo Movimiento */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu próximo movimiento</h2>
             </div>
@@ -304,7 +304,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               onClick={() => router.push("/explore")}
-              className="text-left p-6 bg-background hover:bg-black/[0.02] transition-colors group"
+              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
               <p className="uppercase text-[10px] tracking-[0.2em] text-muted mb-2">Conexiones</p>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Con qué resonás?</p>
@@ -317,7 +317,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               viewport={{ once: true }}
               transition={{ delay: 0.16, duration: 0.5 }}
               onClick={() => router.push("/academy")}
-              className="text-left p-6 bg-background hover:bg-black/[0.02] transition-colors group"
+              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
               <p className="uppercase text-[10px] tracking-[0.2em] text-muted mb-2">Conocimiento</p>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Querés entender el sistema?</p>
@@ -329,17 +329,17 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
       {/* Compartir + Interpretación */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
             <div>
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</h2>
               </div>
               <ShareableImageCard profile={profile} currentTab="intelligence" />
             </div>
             <div>
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
               </div>
