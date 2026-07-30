@@ -360,7 +360,7 @@ function KnowledgeNode({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-5 rounded-none border border-border bg-background/50 space-y-3">
+            <div className="mt-4 p-6 rounded-none border border-border bg-background/50 space-y-3">
               <div>
                 <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Origen</p>
                 <p className="text-xs text-foreground">{node.origin}</p>
@@ -369,7 +369,7 @@ function KnowledgeNode({
                 <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
-                    <span key={inf} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent">
+                    <span key={inf} className="text-[10px] px-2 py-0.5 rounded-none bg-accent/10 text-accent">
                       {inf}
                     </span>
                   ))}
@@ -453,7 +453,7 @@ export default function AcademyContent() {
                 key={step.step}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.1), duration: 0.4 }}
-                className="p-5 rounded-none border border-border bg-card"
+                className="p-6 rounded-none border border-border bg-card"
               >
                 <div className="flex items-start gap-4">
                   <span className="text-2xl shrink-0">{step.icon}</span>
@@ -465,7 +465,7 @@ export default function AcademyContent() {
                     <p className="text-xs text-muted leading-relaxed mb-2">{step.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {step.items.map((item) => (
-                        <span key={item} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted">
+                        <span key={item} className="text-[10px] px-2 py-0.5 rounded-none bg-background text-muted">
                           {item}
                         </span>
                       ))}
@@ -492,7 +492,7 @@ export default function AcademyContent() {
                 key={course.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.4 }}
-                className="p-5 rounded-none border border-border bg-card hover:border-accent/50 transition-colors cursor-pointer group"
+                className="p-6 rounded-none border border-border bg-card hover:border-accent/50 transition-colors cursor-pointer group"
                 onClick={() => {}}
               >
                 <span className="text-2xl block mb-3">{course.icon}</span>
@@ -533,7 +533,7 @@ export default function AcademyContent() {
             <button
               type="button"
               onClick={() => router.push("/profile")}
-              className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
             >
               Ver mi Inteligencia Personal
             </button>

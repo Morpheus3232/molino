@@ -56,7 +56,7 @@ export default function HowItWorks() {
             <motion.article
               key={step.number}
               role="listitem"
-              className="group relative p-6 md:p-8 bg-card border border-border rounded-none transition-all duration-300 hover:border-accent/50 hover:shadow-lg"
+              className="group relative p-6 md:p-8 bg-card border border-border rounded-none transition-all duration-300 hover:border-accent/50"
               initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
               animate={prefersReducedMotion ? false : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}

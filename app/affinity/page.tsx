@@ -58,7 +58,7 @@ export default function AffinityHub() {
           )}
           {!profile && (
             <div className="mt-6">
-              <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]">
+              <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]">
                 Crear tu perfil para afinidad personalizada
               </button>
               <p className="text-xs text-muted mt-2">Sin servidor. Sin cuentas.</p>
@@ -86,7 +86,7 @@ export default function AffinityHub() {
                   viewport={{ once: true, margin: "-20px" }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
                     onClick={() => router.push(`/affinity/${type}`)}
-                    className="text-left p-6 rounded-none border border-border bg-card/60 hover:border-accent transition-all group relative overflow-hidden"
+                    className="text-left p-6 rounded-none border border-border bg-card hover:border-accent transition-all group relative overflow-hidden"
                   >
                     <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
                   <span className="text-3xl mb-3 block">{meta.icon}</span>

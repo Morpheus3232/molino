@@ -19,7 +19,7 @@ const TIER_LABELS: Record<string, string> = {
 };
 
 const TIER_STYLES: Record<string, { bg: string; border: string; accent: string; icon: string }> = {
-  all: { bg: "bg-card/60", border: "border-border", accent: "text-accent", icon: "✦" },
+  all: { bg: "bg-card", border: "border-border", accent: "text-accent", icon: "✦" },
   "resonancia-alta": { bg: "bg-[#E8F0FE]", border: "border-blue-200", accent: "text-blue-700", icon: "★" },
   "afinidad-media": { bg: "bg-[#E8F5E9]", border: "border-green-200", accent: "text-green-700", icon: "●" },
   complementarios: { bg: "bg-[#E3F2FD]", border: "border-indigo-200", accent: "text-indigo-700", icon: "◆" },
@@ -69,7 +69,7 @@ export default function AffinityHub() {
     <section className="py-16 sm:py-24 lg:py-28 bg-background">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...fadeUp} className="mb-10 sm:mb-14">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-5">Conexiones</p>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-6">Conexiones</p>
           <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.0]">
             ¿Con qué resonás?
           </h2>
@@ -87,10 +87,10 @@ export default function AffinityHub() {
               key={tier}
               type="button"
               onClick={() => setFilter(tier)}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+              className={`px-4 py-1.5 rounded-none text-xs font-medium transition-all duration-300 ${
                 filter === tier
-                  ? "bg-accent text-white shadow-lg"
-                  : "bg-white/70 text-muted hover:bg-white/90 hover:shadow-md border border-border"
+                  ? "bg-accent text-white"
+                  : "bg-white/70 text-muted hover:bg-white/90 border border-border"
               }`}
             >
               {TIER_LABELS[tier]}

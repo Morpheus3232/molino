@@ -145,7 +145,7 @@ export default function TimingPage() {
             {result && showResults && (
               <div className="space-y-px bg-ink/10 mt-6">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 lg:p-12">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <div>
                       <p className="label-micro mb-1">Puntuación de timing</p>
                       <p className={`text-5xl sm:text-6xl font-display font-bold tracking-tight ${getScoreColor(result.timingScore)}`}>

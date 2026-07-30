@@ -140,7 +140,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           </div>
 
           {/* Main result — Animals face to face, visual hierarchy */}
-          <div className="flex items-center justify-center gap-3 sm:gap-5 mb-5 overflow-hidden">
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-6 overflow-hidden">
             {/* Entity animal */}
             <div className="text-center flex-1 min-w-0">
               <span className="text-4xl sm:text-5xl block mb-2">{entity.emoji}</span>
@@ -170,7 +170,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           {/* Relationship badge — clean, readable */}
           <div className="text-center mb-6">
             <span
-              className="text-[11px] font-medium uppercase tracking-wider px-4 py-1.5 rounded-full"
+              className="text-[11px] font-medium uppercase tracking-wider px-4 py-1.5 rounded-none"
               style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
             >
               {tierMeta.label} · {result.relationship}
@@ -218,7 +218,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           </div>
 
           {/* Transparency block — minimal */}
-          <div className="p-3 rounded-none bg-background/50 mb-5">
+          <div className="p-3 rounded-none bg-background/50 mb-6">
             <p className="text-[9px] text-muted leading-relaxed text-center">
               Basado en: fecha de nacimiento · fecha histórica de la entidad · tradición del zodíaco chino
             </p>

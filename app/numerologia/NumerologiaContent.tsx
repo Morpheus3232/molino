@@ -30,11 +30,11 @@ export default function NumerologiaContent() {
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Metodología</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-5 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-sm font-medium text-foreground">Pitagórico</p>
               <p className="text-sm text-muted mt-2 leading-relaxed">{num.methods.pythagorean}</p>
             </div>
-            <div className="p-5 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-none border border-border bg-card">
               <p className="text-sm font-medium text-foreground">Caldeo</p>
               <p className="text-sm text-muted mt-2 leading-relaxed">{num.methods.chaldean}</p>
             </div>
@@ -68,7 +68,7 @@ export default function NumerologiaContent() {
           </div>
           <div className="space-y-3">
             {(num.topics || []).map((topic: any) => (
-              <div key={topic.title} className="flex gap-4 rounded-none border border-border bg-card p-5">
+              <div key={topic.title} className="flex gap-4 rounded-none border border-border bg-card p-6">
                 <span className="text-accent mt-0.5" aria-hidden="true">•</span>
                 <div>
                   <p className="text-sm font-medium text-foreground">{topic.title}</p>
@@ -81,7 +81,7 @@ export default function NumerologiaContent() {
 
         {/* CTA */}
         <motion.section {...fadeUp} className="text-center">
-          <button type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-8 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[48px]">
+          <button type="button" onClick={() => router.push("/profile")} className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-8 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px]">
             Volver a mi perfil
           </button>
         </motion.section>

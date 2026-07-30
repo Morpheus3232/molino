@@ -10,6 +10,7 @@ import type { EntityType } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { YEAR_CYCLE_META } from "@/lib/engines/yearCycleEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
 import EmptyState from "@/components/ui/EmptyState";
@@ -45,13 +46,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para descubrir recomendaciones personalizadas.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
@@ -153,7 +148,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-12">
-          <div className="p-5 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
@@ -217,7 +212,7 @@ function RecommendationCard({
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-5 rounded-none border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-6 rounded-none border border-border bg-card hover:border-accent/50 transition-all group"
     >
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
@@ -233,7 +228,7 @@ function RecommendationCard({
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-success/10 text-success dark:text-success">
+              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-none bg-success/10 text-success dark:text-success">
                 Triple
               </span>
             )}

@@ -107,7 +107,7 @@ export default function CaminoDeVidaPage() {
               type="button"
               onClick={handleCalculate}
               disabled={!isValid}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Calcular Camino de Vida
             </button>
@@ -204,7 +204,7 @@ export default function CaminoDeVidaPage() {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-none font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -215,7 +215,7 @@ export default function CaminoDeVidaPage() {
                   <p className="text-sm text-muted mb-3">Querés ver cómo esto se conecta con astrología y zodiaco chino?</p>
                   <Link
                     href="/onboarding"
-                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     Crear tu mapa completo
                   </Link>

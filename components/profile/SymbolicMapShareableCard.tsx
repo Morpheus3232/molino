@@ -80,7 +80,7 @@ export default function SymbolicMapShareableCard({
 
           {/* Allies */}
           {friends.length > 0 && (
-            <div className="mb-5">
+            <div className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
               <div className="flex flex-wrap gap-2">
                 {friends.map((rel) => (
@@ -95,7 +95,7 @@ export default function SymbolicMapShareableCard({
 
           {/* Challenging */}
           {challenging.length > 0 && (
-            <div className="mb-5">
+            <div className="mb-6">
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
               <div className="flex flex-wrap gap-2">
                 {challenging.map((rel) => (
@@ -109,7 +109,7 @@ export default function SymbolicMapShareableCard({
           )}
 
           {/* Year resonance */}
-          <div className="p-4 rounded-none bg-background mb-5">
+          <div className="p-4 rounded-none bg-background mb-6">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{formatAnimalEmoji(yearAnimal)}</span>
               <div className="flex-1">

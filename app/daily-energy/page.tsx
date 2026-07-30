@@ -90,7 +90,7 @@ export default function DailyEnergyPage() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
           <div className="border border-ink/10 p-8 lg:p-12">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
                 <p className="label-micro mb-1">Energía del día</p>
                 <p className="text-5xl sm:text-6xl font-display font-bold tracking-tight" style={{ color: energy.overallScore >= 75 ? "var(--score-excellent)" : energy.overallScore >= 55 ? "var(--score-good)" : energy.overallScore >= 40 ? "var(--score-neutral)" : "var(--score-poor)" }}>

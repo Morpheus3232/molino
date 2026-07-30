@@ -8,6 +8,7 @@ import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import EmptyState from "@/components/ui/EmptyState";
+import SearchInput from "@/components/ui/SearchInput";
 
 type SelectionStep = "pick-a" | "pick-b";
 
@@ -114,13 +115,12 @@ function ComparePickerInner() {
 
         {/* Search */}
         <motion.div {...fadeUp} className="mb-6">
-          <input
-            type="search"
-            placeholder="Buscar entidad..."
+          <SearchInput
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full max-w-sm px-4 py-3 rounded-none border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
-            aria-label="Buscar entidad"
+            onValueChange={setSearch}
+            placeholder="Buscar entidad..."
+            label="Buscar entidad"
+            className="max-w-sm"
             autoFocus
           />
         </motion.div>
@@ -165,7 +165,7 @@ function ComparePickerInner() {
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-16">
-          <div className="p-5 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-none border border-border bg-card">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.

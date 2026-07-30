@@ -83,7 +83,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           >
             <span className="text-3xl">{display.emoji}</span>
           </motion.div>
-          <p className="font-display text-lg font-semibold text-foreground mb-5">{display.name}</p>
+          <p className="font-display text-lg font-semibold text-foreground mb-6">{display.name}</p>
 
           <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
             {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {

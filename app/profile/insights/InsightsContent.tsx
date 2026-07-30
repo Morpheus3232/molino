@@ -39,6 +39,7 @@ import {
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import CountUp from "@/components/ui/CountUp";
 
@@ -116,13 +117,7 @@ export default function InsightsContent() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para acceder a tu inteligencia personal diaria.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
         <UniversityFooter />
       </div>
@@ -172,7 +167,7 @@ export default function InsightsContent() {
                 <div className="flex-1 text-center sm:text-left">
                   <div className="flex items-center gap-2 justify-center sm:justify-start mb-3">
                     <span
-                      className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full"
+                      className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-none"
                       style={{ color: yearResonance.color, backgroundColor: `${yearResonance.color}12` }}
                     >
                       {yearResonance.label}
@@ -192,7 +187,7 @@ export default function InsightsContent() {
               </div>
 
               {/* Year context */}
-              <div className="mt-5 pt-4 border-t border-border flex items-center gap-3">
+              <div className="mt-6 pt-4 border-t border-border flex items-center gap-3">
                 <span className="text-xl">{formatAnimalEmoji(yearCycle.yearAnimal)}</span>
                 <div className="flex-1">
                   <p className="text-xs font-medium text-foreground">{yearCycle.year} — Año del {yearCycle.yearAnimal}</p>
@@ -225,7 +220,7 @@ export default function InsightsContent() {
                     viewport={{ once: true }}
                     transition={{ delay: staggerDelay(i, 0.1), duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                     onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-                    className="w-full text-left p-4 rounded-none bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="w-full text-left p-4 rounded-none bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     <span className="text-2xl shrink-0">{rec.entity.emoji}</span>
                     <div className="flex-1 min-w-0">
@@ -332,12 +327,12 @@ export default function InsightsContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-none border border-border bg-card">
-            <div className="flex items-center gap-2 mb-5">
+            <div className="flex items-center gap-2 mb-6">
               <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</span>
             </div>
 
             {/* Progress bar */}
-            <div className="mb-5">
+            <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-muted">Perfil completado</span>
                 <span className="text-xs font-medium text-foreground">
@@ -375,7 +370,7 @@ export default function InsightsContent() {
           <button
             type="button"
             onClick={() => router.push("/profile")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+            className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
           >
             Ver mi mapa completo
           </button>

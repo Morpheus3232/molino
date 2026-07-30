@@ -33,7 +33,7 @@ export function SkeletonSection() {
   return (
     <div className="py-16 sm:py-24 lg:py-28">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <Skeleton height="1rem" width="15%" className="mb-5" rounded />
+        <Skeleton height="1rem" width="15%" className="mb-6" rounded />
         <Skeleton height="3.5rem" width="60%" className="mb-4" rounded />
         <Skeleton height="1rem" width="45%" className="mb-10" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -221,7 +221,7 @@ export default function UniversityHeader() {
           animate={{ opacity: mobileMenuOpen ? 1 : 0, height: mobileMenuOpen ? "auto" : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <nav className="px-5 py-4 space-y-3" aria-label="Navegación móvil">
+          <nav className="px-6 py-4 space-y-3" aria-label="Navegación móvil">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

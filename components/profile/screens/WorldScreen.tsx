@@ -74,7 +74,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
         <section className="py-6 sm:py-8">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
                 <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
               </div>
@@ -88,7 +88,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                     {...staggerItemSmooth}
                     transition={{ ...staggerDelay, delay: i * 0.08 }}
                     onClick={() => router.push(`/affinity/${result.entity.type}/${result.entity.id}`)}
-                    className="text-left p-5 bg-background hover:bg-ink/[0.02] transition-colors group"
+                    className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-2xl">{result.entity.emoji}</span>
@@ -205,7 +205,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
               <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
             </div>
@@ -214,7 +214,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.button
               {...staggerItemSmooth}
               onClick={() => router.push("/affinity")}
-              className="text-left p-5 bg-background hover:bg-ink/[0.02] transition-colors group"
+              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">✦</span>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
@@ -224,7 +224,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
               {...staggerItemSmooth}
               transition={{ ...staggerDelay, delay: 0.08 }}
               onClick={() => router.push("/explore")}
-              className="text-left p-5 bg-background hover:bg-ink/[0.02] transition-colors group"
+              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">🔍</span>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Explorar compatibilidad</p>
@@ -234,7 +234,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
               {...staggerItemSmooth}
               transition={{ ...staggerDelay, delay: 0.16 }}
               onClick={() => router.push("/academy")}
-              className="text-left p-5 bg-background hover:bg-ink/[0.02] transition-colors group"
+              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
               <span className="text-xl block mb-2">📚</span>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Aprender más</p>
@@ -274,7 +274,7 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
+      className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
@@ -327,7 +327,7 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
+      className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">

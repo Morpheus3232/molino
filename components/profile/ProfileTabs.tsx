@@ -38,7 +38,7 @@ export default function ProfileTabs({ active, onChange }: ProfileTabsProps) {
                 aria-selected={isActive}
                 aria-controls={`panel-${tab.id}`}
                 onClick={() => onChange(tab.id)}
-                className="relative flex items-center gap-2 px-4 sm:px-5 py-3.5 text-sm font-medium transition-colors whitespace-nowrap min-h-[48px]"
+                className="relative flex items-center gap-2 px-4 sm:px-6 py-3.5 text-sm font-medium transition-colors whitespace-nowrap min-h-[48px]"
                 style={{ color: isActive ? "var(--color-foreground)" : "var(--color-muted)" }}
               >
                 <span className="text-xs font-mono">{tab.icon}</span>

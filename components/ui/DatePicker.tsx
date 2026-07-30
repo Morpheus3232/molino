@@ -80,7 +80,7 @@ export default function DatePicker({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="DD / MM / AAAA"
-          className="w-full bg-transparent text-center font-heading text-xl sm:text-2xl font-semibold tracking-widest text-foreground px-4 py-5 focus:outline-none placeholder:text-muted"
+          className="w-full bg-transparent text-center font-heading text-xl sm:text-2xl font-semibold tracking-widest text-foreground px-4 py-6 focus:outline-none placeholder:text-muted"
           aria-label="Fecha de nacimiento"
           autoComplete="bday"
         />
