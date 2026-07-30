@@ -2,10 +2,12 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { Hash, Sun, Moon, ArrowRight, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Hash, Sun, Moon, ArrowRight } from "lucide-react";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import DateInput from "@/components/ui/DateInput";
+import Button from "@/components/ui/Button";
+import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 
@@ -93,6 +95,12 @@ export default function OnboardingPage() {
           <DateInput value={dateValue} onChange={handleDateChange} />
         </motion.div>
 
+        {/* Adelanto de dimensiones: se despliega solo, en cuanto la fecha
+            es valida. Todo el calculo pasa en el navegador. */}
+        <AnimatePresence>
+          {isDateValid && <DimensionsPreview key={dateValue} birthDate={dateValue} />}
+        </AnimatePresence>
+
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -100,24 +108,22 @@ export default function OnboardingPage() {
           transition={{ duration: 0.4, delay: 0.2 }}
           className="flex justify-center mb-12"
         >
-          <button
-            type="button"
+          <Button
+            variant="accent"
+            size="lg"
             onClick={handleGenerate}
-            disabled={!isDateValid || isGenerating}
-            className="inline-flex items-center justify-center gap-2 font-semibold px-10 py-4 text-base bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[56px] disabled:opacity-40 disabled:cursor-not-allowed transition-all rounded-none"
+            disabled={!isDateValid}
+            loading={isGenerating}
           >
             {isGenerating ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
-                Generando tu mapa...
-              </>
+              "Generando tu mapa..."
             ) : (
               <>
                 Ver mi mapa
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </>
             )}
-          </button>
+          </Button>
         </motion.div>
 
         {/* Engines preview — info block, not a step */}
@@ -137,9 +143,9 @@ export default function OnboardingPage() {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 + i * 0.07 }}
-                className="flex items-center gap-3 p-3.5 rounded-none border border-border bg-card"
+                className="flex items-center gap-3 p-3.5 rounded-md border border-border bg-card shadow-sm"
               >
-                <div className="inline-flex items-center justify-center w-9 h-9 rounded-none bg-accent/10 text-accent flex-shrink-0">
+                <div className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-accent/10 text-accent flex-shrink-0">
                   <engine.icon className="w-4 h-4" aria-hidden="true" />
                 </div>
                 <div>

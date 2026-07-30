@@ -12,7 +12,7 @@ interface SkeletonProps {
 export function Skeleton({ className = "", width, height, rounded = false }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse bg-[var(--skeleton)] ${rounded ? "rounded-none" : ""} ${className}`}
+      className={`animate-pulse bg-[var(--skeleton)] ${rounded ? "rounded-sm" : ""} ${className}`}
       style={{ width, height }}
     />
   );
@@ -20,7 +20,7 @@ export function Skeleton({ className = "", width, height, rounded = false }: Ske
 
 export function SkeletonCard() {
   return (
-    <div className="animate-pulse space-y-3 rounded-none border border-[var(--color-border)] bg-[var(--color-card)] p-8">
+    <div className="animate-pulse space-y-3 rounded-md border border-[var(--color-border)] bg-[var(--color-card)] p-8">
       <Skeleton height="2rem" width="40%" rounded />
       <Skeleton height="1rem" width="80%" />
       <Skeleton height="0.75rem" width="60%" />

@@ -56,7 +56,7 @@ export default function DownloadProfileButton({ elementId, filename = "mi-mapa-m
       onClick={handleDownload}
       disabled={isDownloading}
       whileTap={{ scale: 0.98 }}
-      className="inline-flex items-center gap-2 px-4 py-2 rounded-none border border-ink/10 bg-background text-sm font-medium text-foreground hover:border-ink/20 hover:text-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-ink/10 bg-background text-sm font-medium text-foreground hover:border-ink/20 hover:text-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       aria-label={isDownloading ? "Generando imagen..." : "Descargar mapa como imagen"}
     >
       {isDownloading ? (

@@ -54,7 +54,7 @@ export default function SymbolicMapShareableCard({
       {/* The card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-none border border-ink/10 bg-card max-w-full"
+        className="relative overflow-hidden rounded-md border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
         {/* Accent bar */}
@@ -84,7 +84,7 @@ export default function SymbolicMapShareableCard({
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
               <div className="flex flex-wrap gap-2">
                 {friends.map((rel) => (
-                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-none bg-background">
+                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
                     <span className="text-sm">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
                   </div>
@@ -99,7 +99,7 @@ export default function SymbolicMapShareableCard({
               <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
               <div className="flex flex-wrap gap-2">
                 {challenging.map((rel) => (
-                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-none bg-background">
+                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
                     <span className="text-sm">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
                   </div>
@@ -109,7 +109,7 @@ export default function SymbolicMapShareableCard({
           )}
 
           {/* Year resonance */}
-          <div className="p-4 rounded-none bg-background mb-6">
+          <div className="p-4 rounded-md bg-background mb-6">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{formatAnimalEmoji(yearAnimal)}</span>
               <div className="flex-1">

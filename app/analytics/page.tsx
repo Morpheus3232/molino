@@ -48,7 +48,7 @@ export default function AnalyticsPage() {
             {cards.map((card) => (
               <div
                 key={card.label}
-                className="bg-card rounded-none border border-card-border p-4 text-center"
+                className="bg-card rounded-md border border-card-border p-4 text-center"
               >
                 <div className="text-2xl mb-1">{card.icon}</div>
                 <div className="text-2xl font-heading text-foreground">
@@ -62,7 +62,7 @@ export default function AnalyticsPage() {
           </div>
 
           {featureEntries.length > 0 && (
-            <div className="bg-card rounded-none border border-card-border p-6">
+            <div className="bg-card rounded-md border border-card-border p-6">
               <h2 className="text-lg font-heading text-foreground mb-4">
                 Características más usadas
               </h2>
