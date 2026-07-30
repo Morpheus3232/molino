@@ -48,7 +48,7 @@ export function SkeletonSection() {
 
 export function SkeletonCardGrid({ count = 3 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8" key={count}>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       {Array.from({ length: count }, (_, i) => (
         <SkeletonCard key={i} />
       ))}

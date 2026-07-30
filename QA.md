@@ -10,18 +10,21 @@ Antes de lanzar, realizar una auditoría final.
 
 | Verificación | Estado | Notas |
 |---|---|---|
-| ¿Hay un solo lenguaje de espaciados? | | Verificar que todos los componentes usen los tokens de spacing definidos en DESIGN_SYSTEM.md |
-| ¿Los radios son consistentes? | | Verificar border-radius: 4px (sm), 8px (md), 12px (lg), 16px (xl) |
-| ¿La tipografía sigue la escala? | | Verificar font-size/line-height según la escala definida |
-| ¿Los colores respetan los tokens? | | Verificar que no se usan colores hardcoded, solo variables CSS |
+| ¿Hay un solo lenguaje de espaciados? | ✅ | Escala cerrada. 98 usos de la escala `5` (20px), que no existía en los tokens, normalizados a `6` (24px). Verificado: 0 ocurrencias restantes. |
+| ¿Los radios son consistentes? | ✅ | Todo `rounded-none`. 71 pills y botones migrados desde `rounded-full`; los 42 dots y spinners circulares se conservan a propósito. |
+| ¿La tipografía sigue la escala? | ✅ | `font-display` / `font-heading` / `font-sans` / `font-mono` según DESIGN_SYSTEM.md. `font-serif` eliminado (no había fuente serif cargada). |
+| ¿Los colores respetan los tokens? | ✅ | `bg-card/60` → `bg-card`; eliminados los modificadores de opacidad sobre texto atenuado. Quedan hex fijos solo en las tarjetas exportables como imagen, que es intencional. |
+| ¿Las sombras existen? | ✅ | No. `tailwind.config.ts` mapea `boxShadow` a los tokens `--shadow-*`, todos en `none`. Las 45 clases `shadow-*` que no producían efecto fueron eliminadas. |
 
 ### Componentes
 
 | Verificación | Estado | Notas |
 |---|---|---|
-| ¿El mismo botón se comporta igual en todas las páginas? | | Verificar Button.tsx en todos los contextos |
-| ¿Las tarjetas mantienen la misma estructura? | | Verificar Card.tsx: padding, shadow, border-radius consistentes |
-| ¿Los estados de carga y error son coherentes? | | Verificar Loading, Error, Empty states en todos los componentes |
+| ¿El mismo botón se comporta igual en todas las páginas? | ✅ | Un solo sistema: componente `Button` con variantes primary/accent/secondary/ghost/inverse. Las clases globales `btn-*` ya no se usan (0 ocurrencias). |
+| ¿Las tarjetas mantienen la misma estructura? | ✅ | `Card` con padding none/sm/md/lg. El hover usaba `shadow` (que es `none`), así que no producía efecto; ahora se expresa con el borde. |
+| ¿Los estados de carga y error son coherentes? | ⚠️ | `LoadingState` en 17 lugares y skeleton en `/daily-energy`. Falta skeleton en `/profile`. |
+| ¿Hay componentes compartidos para patrones repetidos? | ✅ | `SearchInput` (unifica 6 buscadores inline), `Chip`, `Badge`, `Breadcrumbs`, `EmptyState`. |
+| ¿Hay código muerto? | ✅ | Eliminados `Grid`, `GridSystem`, `Masonry`, `DatePicker`, `ScrollDatePicker` (0 referencias cada uno). |
 
 ### Experiencia
 
@@ -43,6 +46,21 @@ Antes de lanzar, realizar una auditoría final.
 | Navegación con teclado | | Tab order, focus states, skip links |
 | Accesibilidad | | ARIA labels, alt text, semantic HTML |
 | Rendimiento | | Lighthouse > 90 en todas las métricas |
+
+
+### Resultados verificados (última pasada)
+
+| Verificación | Estado | Notas |
+|---|---|---|
+| Build | ✅ | `next build` OK, 457 páginas generadas. `tsc --noEmit` limpio. |
+| Modo claro | ✅ | Verificado en navegador sobre el build de producción. |
+| Modo oscuro | ✅ | Verificado: buscador, chips y estado seleccionado legibles. |
+| Contraste WCAG AA | ✅ | El token `--color-muted` (#6B6B6B) da 5.33:1 sobre blanco. Eliminados 52 usos con opacidad que caían a 2.4–3.5:1, y los `text-white/40` del footer (3.82:1). |
+| Navegación con teclado | ✅ | CTAs y herramientas migrados de `<button onClick>` a `<a href>`: abribles en pestaña nueva, indexables y accesibles. `focus-visible` en todos los interactivos. |
+| Accesibilidad | ⚠️ | `SearchInput` exige `label`; `Chip` usa `aria-pressed`. Falta pasada con axe-core. |
+| Títulos SEO | ✅ | Corregido "Molino" duplicado en ~20 páginas. `/daily-energy` tiene metadata y canonical. |
+| Rendimiento (Lighthouse > 90) | ⬜ | Sin medir. |
+| Testeo en dispositivos reales | ⬜ | Sin hacer. |
 
 ---
 

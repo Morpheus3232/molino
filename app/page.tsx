@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -12,6 +11,7 @@ import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
 import { safeNumber, getScoreColor } from "@/lib/utils/score";
+import Button from "@/components/ui/Button";
 import HeroNew from "@/components/sections/HeroNew";
 import SystemsPreview from "@/components/sections/SystemsPreview";
 import Journey from "@/components/sections/Journey";
@@ -21,8 +21,6 @@ import ConceptsIndex from "@/components/sections/ConceptsIndex";
 /* ═══ CTA final ═══ */
 
 function FinalCTA() {
-  const router = useRouter();
-
   return (
     <section className="bg-background">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -42,14 +40,11 @@ function FinalCTA() {
             <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
               Identidad, mundo, círculo e inteligencia en un solo lugar.
             </p>
-            <button
-              type="button"
-              onClick={() => router.push("/onboarding")}
-              aria-label="Descubrir mi mapa personal: ir al onboarding"
-              className="btn bg-white text-accent hover:bg-white/90 font-bold text-sm tracking-wider uppercase px-10 py-4"
-            >
-              DESCUBRIR MI MAPA →
-            </button>
+            <Button asChild variant="inverse" size="lg">
+              <Link href="/onboarding" aria-label="Descubrir mi mapa personal: ir al onboarding">
+                DESCUBRIR MI MAPA →
+              </Link>
+            </Button>
           </div>
         </motion.div>
       </div>
@@ -98,7 +93,6 @@ function GenericHome() {
 /* ═══ Personalized home (with profile) ═══ */
 
 function PersonalizedHome({ profile }: { profile: UserProfile }) {
-  const router = useRouter();
   const display = getZodiacDisplay(profile.chineseZodiac ?? "");
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
@@ -155,13 +149,9 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
               <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
                 Identidad, mundo, círculo e inteligencia en un solo lugar.
               </p>
-              <button
-                type="button"
-                onClick={() => router.push("/profile")}
-                className="btn bg-white text-accent hover:bg-white/90 font-bold text-sm tracking-wider uppercase px-10 py-4"
-              >
-                VER MI MAPA COMPLETO →
-              </button>
+              <Button asChild variant="inverse" size="lg">
+                <Link href="/profile">VER MI MAPA COMPLETO →</Link>
+              </Button>
             </div>
           </motion.div>
         </div>

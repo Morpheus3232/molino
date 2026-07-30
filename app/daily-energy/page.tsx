@@ -9,7 +9,7 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import LoadingState from "@/components/ui/LoadingState";
+import { Skeleton, SkeletonCardGrid } from "@/components/ui/Skeleton";
 import { getScoreColor } from "@/lib/utils/score";
 import Link from "next/link";
 
@@ -35,9 +35,17 @@ export default function DailyEnergyPage() {
   }, [profile]);
 
   if (loading || !mounted) {
+    // Skeleton en vez de spinner: la estructura de esta pagina es conocida,
+    // asi que anticiparla reduce la sensacion de espera.
     return (
       <div className="min-h-screen bg-background">
-        <LoadingState message="Calculando tu energía diaria..." />
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+          <p className="sr-only" role="status">Calculando tu energía diaria...</p>
+          <Skeleton height="0.75rem" width="12rem" className="mb-6" />
+          <Skeleton height="4rem" width="60%" className="mb-4" />
+          <Skeleton height="1rem" width="40%" className="mb-12" />
+          <SkeletonCardGrid count={3} />
+        </div>
         <UniversityFooter />
       </div>
     );
@@ -54,13 +62,9 @@ export default function DailyEnergyPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Para ver tu energía diaria, primero necesitás crear tu perfil personal.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>

@@ -49,13 +49,9 @@ export default function DecisionsPage() {
             Analizá cualquier decisión con la sabiduría de tu numerología, signo solar y energía del día.
             Primero necesitás crear tu perfil personal.
           </p>
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="btn-accent"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -232,9 +228,9 @@ export default function DecisionsPage() {
               </select>
             </div>
 
-            <button type="submit" disabled={!question.trim()} className="btn-accent w-full">
+            <Button type="submit" variant="primary" fullWidth disabled={!question.trim()}>
               Analizar decisión
-            </button>
+            </Button>
           </form>
         </motion.div>
 

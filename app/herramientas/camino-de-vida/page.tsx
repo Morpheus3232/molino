@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { ARCHETYPES } from "@/lib/data";
 import { getCompatibilityDescription } from "@/lib/data";
@@ -103,14 +104,7 @@ export default function CaminoDeVidaPage() {
                 </select>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={handleCalculate}
-              disabled={!isValid}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              Calcular Camino de Vida
-            </button>
+            <Button variant="primary" fullWidth onClick={handleCalculate} disabled={!isValid}>Calcular Camino de Vida</Button>
           </div>
         </motion.section>
 
