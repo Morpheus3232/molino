@@ -5,10 +5,14 @@ import MotoresContent from "./MotoresContent";
 export const metadata: Metadata = {
   title: "Motores y fórmulas — Molino",
   description: "Documentación técnica de los motores de cálculo: fórmulas de numerología (Camino de Vida, Expresión), astronomía de precisión (Swiss Ephemeris) y calendario chino (ciclo sexagenario).",
+  alternates: {
+    canonical: siteUrl("/docs/motores"),
+  },
   openGraph: {
     title: "Motores y fórmulas — Molino",
     description: "Fórmulas y algoritmos detrás de Molino: numerología, astrología de precisión, zodíaco chino. Código abierto y auditable.",
     type: "article",
+    url: siteUrl("/docs/motores"),
   },
 };
 

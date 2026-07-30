@@ -30,18 +30,17 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
   return {
     title: `Mi afinidad simbólica con ${entity.name} | Molino`,
     description: `Mi afinidad simbólica con ${entity.name}: ${entity.emoji} según el zodíaco chino. Descubrí tu mapa de afinidades en Molino.`,
+    alternates: {
+      canonical: siteUrl(`/affinity/${type}/${slug}`),
+    },
     openGraph: {
       title: `Mi afinidad simbólica con ${entity.name} | Molino`,
       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
       type: "website",
-      images: [
-        {
-          url: "/og-image.svg",
-          width: 1200,
-          height: 630,
-          alt: `Afinidad simbólica con ${entity.name} — Molino`,
-        },
-      ],
+      url: siteUrl(`/affinity/${type}/${slug}`),
+      // Sin `images`: hereda el opengraph-image.tsx dinámico de la raíz
+      // (PNG 1200x630 real). El og-image.svg viejo no renderiza en la
+      // mayoría de los previews (WhatsApp, Twitter/X, LinkedIn no leen SVG).
     },
     twitter: {
       card: "summary_large_image",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { decodeProfileData } from "@/lib/utils/profileShare";
 import ProfileClient from "@/components/profile/ProfileClient";
@@ -56,6 +57,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     description: hasData
       ? `Mapa personal de autoconocimiento de ${name}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
       : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
+    // Un perfil con datos (?dob= o ?data=) es contenido personal de una
+    // sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
+    // sí con los de otros usuarios. Solo la landing "vacía" es indexable.
+    ...(hasData
+      ? { robots: { index: false, follow: true } }
+      : { alternates: { canonical: siteUrl("/profile") } }),
     openGraph: {
       title: hasData ? `Mapa de ${name} — Molino` : "Tu Mapa Personal — Molino",
       description: hasData

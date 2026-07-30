@@ -16,10 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Número ${num.number} ${num.title} — Numerología Molino`,
     description: `${num.meaning.slice(0, 155)}`,
+    alternates: {
+      canonical: siteUrl(`/conocimiento/numerologia/${num.number}`),
+    },
     openGraph: {
       title: `Número ${num.number} ${num.title} — Molino`,
       description: `${num.meaning.slice(0, 155)}`,
       type: "article",
+      url: siteUrl(`/conocimiento/numerologia/${num.number}`),
     },
   };
 }

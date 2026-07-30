@@ -20,10 +20,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${sign.symbol} ${sign.name} — Astrología Molino`,
     description: `${sign.meaning.slice(0, 155)}`,
+    alternates: {
+      canonical: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
+    },
     openGraph: {
       title: `${sign.symbol} ${sign.name} — Molino`,
       description: `${sign.meaning.slice(0, 155)}`,
       type: "article",
+      url: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
     },
   };
 }
