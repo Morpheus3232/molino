@@ -24,12 +24,12 @@ function AnimatedBar({ value, color, delay = 0 }: { value: number; color: string
   const isInView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <div ref={ref} className="h-2 rounded-none bg-muted/20 overflow-hidden w-full">
+    <div ref={ref} className="h-2 rounded-md bg-muted/20 overflow-hidden w-full">
       <motion.div
         initial={{ width: 0 }}
         animate={isInView ? { width: `${value}%` } : { width: 0 }}
         transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="h-full rounded-none"
+        className="h-full rounded-sm"
         style={{ backgroundColor: color }}
       />
     </div>
@@ -77,7 +77,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
 
   return (
     <motion.section {...smoothReveal} className="mb-8">
-      <div className="p-6 rounded-none border border-ink/10 bg-background">
+      <div className="p-6 rounded-md border border-ink/10 bg-background">
         <div className="flex items-center gap-2 mb-6">
           <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Indicadores simbólicos</span>
         </div>

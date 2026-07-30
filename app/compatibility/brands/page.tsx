@@ -97,7 +97,7 @@ export default function BrandsPage() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.04, duration: 0.35 }}
                   onClick={() => setExpandedItem(expandedItem === `top-${r.name}` ? null : `top-${r.name}`)}
-                  className="p-4 rounded-none border border-border bg-card text-center hover:border-accent/50 transition-colors group"
+                  className="p-4 rounded-md border border-border bg-card shadow-sm text-center hover:border-accent/50 transition-colors group"
                 >
                   <p className="text-2xl mb-1">{r.meta.logo}</p>
                   <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
@@ -145,7 +145,7 @@ export default function BrandsPage() {
           <div className="space-y-0">
             {filtered.map((r, i) => (
               <motion.div key={r.name} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, margin: "-10px" }} transition={{ duration: 0.2 }}>
-                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-neutral-900/[0.02] transition-colors px-2 rounded-none">
+                <button type="button" onClick={() => setExpandedItem(expandedItem === r.name ? null : r.name)} className="w-full text-left py-4 border-b border-border hover:bg-neutral-900/[0.02] transition-colors px-2 rounded-md">
                   <div className="flex items-center gap-4">
                     <span className="text-2xl">{r.meta.logo}</span>
                     <div className="flex-1 min-w-0">

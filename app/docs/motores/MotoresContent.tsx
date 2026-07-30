@@ -133,7 +133,7 @@ export default function MotoresContent() {
             >
               {/* Engine header */}
               <div className="flex items-start gap-4">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-none bg-accent/10 text-accent flex-shrink-0 mt-1">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-md bg-accent/10 text-accent flex-shrink-0 mt-1">
                   <engine.icon className="w-7 h-7" aria-hidden="true" />
                 </div>
                 <div>
@@ -146,7 +146,7 @@ export default function MotoresContent() {
 
               {/* Formulas table */}
               <div className="overflow-x-auto">
-                <table className="w-full text-left border border-border rounded-none overflow-hidden">
+                <table className="w-full text-left border border-border rounded-lg overflow-hidden">
                   <thead>
                     <tr className="bg-muted/50 border-b border-border">
                       <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-muted">Fórmula</th>
@@ -167,7 +167,7 @@ export default function MotoresContent() {
               </div>
 
               {/* Code example */}
-              <div className="rounded-none border border-border overflow-hidden bg-muted/30">
+              <div className="rounded-md border border-border overflow-hidden bg-muted/30">
                 <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/50">
                   <Code className="w-4 h-4 text-muted" aria-hidden="true" />
                   <span className="font-mono text-xs text-muted uppercase tracking-wider">TypeScript — Implementación de referencia</span>
@@ -179,7 +179,7 @@ export default function MotoresContent() {
               <div className="flex flex-wrap gap-3 pt-2">
                 <a
                   href={`/conocimiento/${engine.slug}`}
-                  className="inline-flex items-center gap-1 px-4 py-2 rounded-none border border-border bg-background text-sm font-medium hover:border-accent hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background shadow-sm text-sm font-medium hover:border-accent hover:text-accent transition-colors"
                 >
                   <Globe className="w-4 h-4" aria-hidden="true" />
                   Ver en Conocimiento
@@ -188,7 +188,7 @@ export default function MotoresContent() {
                   href={`https://github.com/molino/molino/tree/main/lib/engines/${engine.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-4 py-2 rounded-none border border-border bg-background text-sm font-medium hover:border-accent hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-md border border-border bg-background shadow-sm text-sm font-medium hover:border-accent hover:text-accent transition-colors"
                 >
                   <BookOpen className="w-4 h-4" aria-hidden="true" />
                   Código fuente

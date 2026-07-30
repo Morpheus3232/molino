@@ -34,7 +34,7 @@ export default function SearchInput({
         onChange={(e) => onValueChange(e.target.value)}
         placeholder={placeholder}
         aria-label={label}
-        className="w-full min-h-[44px] pl-11 pr-11 py-3 rounded-none border border-border bg-card text-sm text-foreground placeholder:text-muted transition-colors focus:outline-none focus:border-accent [&::-webkit-search-cancel-button]:hidden"
+        className="w-full min-h-[44px] pl-11 pr-11 py-3 rounded-md border border-border bg-card text-sm text-foreground placeholder:text-muted shadow-sm transition-all duration-200 focus:outline-none focus:border-accent focus:shadow-md [&::-webkit-search-cancel-button]:hidden"
         {...props}
       />
       {value && (
@@ -42,7 +42,7 @@ export default function SearchInput({
           type="button"
           onClick={() => onValueChange("")}
           aria-label={`Limpiar ${label.toLowerCase()}`}
-          className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-7 h-7 text-muted transition-colors hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center justify-center w-7 h-7 rounded-sm text-muted transition-colors hover:text-foreground hover:bg-ink/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <X className="w-4 h-4" aria-hidden="true" />
         </button>

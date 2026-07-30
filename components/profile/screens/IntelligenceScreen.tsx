@@ -177,68 +177,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         </div>
       </section>
 
-      {/* La Síntesis */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-            <div>
-              <motion.div {...smoothReveal}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus dimensiones</h2>
-                </div>
-                <p className="text-sm text-muted mb-4">Una síntesis simbólica de tu perfil, no una medición científica.</p>
-              </motion.div>
-              <div className="mt-6">
-                <ProfileRadar
-                  data={dimensions.map((d) => ({ subject: d.dimension, value: d.value }))}
-                  color={elementColor}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-0">
-              {dimensions.map((dim, i) => (
-                <motion.button
-                  key={dim.dimension}
-                  initial={{ opacity: 0, x: 12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06, duration: 0.4 }}
-                  onClick={() => setExpandedDimension(expandedDimension === dim.dimension ? null : dim.dimension)}
-                  aria-expanded={expandedDimension === dim.dimension}
-                  className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
-                      <p className="uppercase text-[10px] tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-semibold" style={{ color: elementColor }}>{dim.value}</p>
-                      <p className="uppercase text-[9px] tracking-[0.15em] text-muted">/ 100</p>
-                    </div>
-                  </div>
-                  <AnimatePresence>
-                    {expandedDimension === dim.dimension && (
-                      <motion.div
-                        key="expanded"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden"
-                      >
-                        <p className="text-sm text-muted mt-3 leading-relaxed border-t border-ink/10 pt-3">{dim.explanation}</p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Tus Sistemas */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">

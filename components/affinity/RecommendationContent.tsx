@@ -148,7 +148,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-12">
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
@@ -212,7 +212,7 @@ function RecommendationCard({
       viewport={{ once: true }}
       transition={{ duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-6 rounded-none border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent/50 transition-all group"
     >
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
@@ -228,7 +228,7 @@ function RecommendationCard({
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-none bg-success/10 text-success dark:text-success">
+              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm bg-success/10 text-success dark:text-success">
                 Triple
               </span>
             )}

@@ -56,7 +56,7 @@ export default function HowItWorks() {
             <motion.article
               key={step.number}
               role="listitem"
-              className="group relative p-6 md:p-8 bg-card border border-border rounded-none transition-all duration-300 hover:border-accent/50"
+              className="group relative p-6 md:p-8 bg-card border border-border rounded-md transition-all duration-300 hover:border-accent/50"
               initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
               animate={prefersReducedMotion ? false : { opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -66,7 +66,7 @@ export default function HowItWorks() {
               </div>
 
               <div className="relative z-10">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-none bg-accent/10 text-accent mb-6 group-hover:bg-accent group-hover:text-background transition-colors">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-md bg-accent/10 text-accent mb-6 group-hover:bg-accent group-hover:text-background transition-colors">
                   <step.icon className="w-6 h-6" aria-hidden="true" />
                 </div>
 
@@ -89,7 +89,7 @@ export default function HowItWorks() {
                 </motion.button>
               </div>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-md" />
             </motion.article>
           ))}
         </div>

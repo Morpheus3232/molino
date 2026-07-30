@@ -151,7 +151,7 @@ export default function InsightsContent() {
             BLOQUE 1: HOY EN TU PERFIL
             ═══════════════════════════════════════════════ */}
         <motion.section {...heroReveal} className="mb-8">
-          <div className="relative overflow-hidden rounded-none border border-border bg-card">
+          <div className="relative overflow-hidden rounded-md border border-border bg-card shadow-sm">
             <div className="h-1.5" style={{ backgroundColor: elementColor }} />
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
@@ -167,7 +167,7 @@ export default function InsightsContent() {
                 <div className="flex-1 text-center sm:text-left">
                   <div className="flex items-center gap-2 justify-center sm:justify-start mb-3">
                     <span
-                      className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-none"
+                      className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-sm"
                       style={{ color: yearResonance.color, backgroundColor: `${yearResonance.color}12` }}
                     >
                       {yearResonance.label}
@@ -206,7 +206,7 @@ export default function InsightsContent() {
             ═══════════════════════════════════════════════ */}
         {recommendations.length > 0 && (
           <motion.section {...cardReveal} className="mb-8">
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</span>
               </div>
@@ -220,7 +220,7 @@ export default function InsightsContent() {
                     viewport={{ once: true }}
                     transition={{ delay: staggerDelay(i, 0.1), duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                     onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-                    className="w-full text-left p-4 rounded-none bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="w-full text-left p-4 rounded-md bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     <span className="text-2xl shrink-0">{rec.entity.emoji}</span>
                     <div className="flex-1 min-w-0">
@@ -252,7 +252,7 @@ export default function InsightsContent() {
             BLOQUE 3: DESCUBRIMIENTOS
             ═══════════════════════════════════════════════ */}
         <motion.section {...cardReveal} className="mb-8">
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</span>
             </div>
@@ -261,14 +261,14 @@ export default function InsightsContent() {
               {...staggerApple}
               className="space-y-3"
             >
-              <motion.div {...staggerItemSmooth} className="p-4 rounded-none bg-background/50">
+              <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="font-medium">{discovery.title}</span>
                 </p>
                 <p className="text-[10px] text-muted mt-1">{discovery.detail}</p>
               </motion.div>
 
-              <motion.div {...staggerItemSmooth} className="p-4 rounded-none bg-background/50">
+              <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
                   Encontramos <span className="font-medium">{recommendations.length} entidades</span> compatibles con tu perfil.
                 </p>
@@ -276,7 +276,7 @@ export default function InsightsContent() {
               </motion.div>
 
               {yearResonance.type === "alignment" && (
-                <motion.div {...staggerItemSmooth} className="p-4 rounded-none bg-background/50">
+                <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
                   <p className="text-sm text-foreground leading-relaxed">
                     <span className="font-medium">Tu ciclo actual coincide con tu animal natal.</span>
                   </p>
@@ -292,7 +292,7 @@ export default function InsightsContent() {
             ═══════════════════════════════════════════════ */}
         {relationMap.challenging.length > 0 && (
           <motion.section {...cardReveal} className="mb-8">
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Opuestos</span>
               </div>
@@ -310,7 +310,7 @@ export default function InsightsContent() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: staggerDelay(i, 0.08), duration: 0.3 }}
-                    className="flex items-center gap-2 px-3 py-2 rounded-none bg-background/50"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md bg-background/50"
                   >
                     <span className="text-lg">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
@@ -326,7 +326,7 @@ export default function InsightsContent() {
             BLOQUE 5: PROGRESO PERSONAL
             ═══════════════════════════════════════════════ */}
         <motion.section {...cardReveal} className="mb-8">
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</span>
             </div>
@@ -370,7 +370,7 @@ export default function InsightsContent() {
           <button
             type="button"
             onClick={() => router.push("/profile")}
-            className="inline-flex items-center justify-center gap-2 rounded-none font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+            className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
           >
             Ver mi mapa completo
           </button>
@@ -406,7 +406,7 @@ function ProgressMilestone({
       type="button"
       onClick={onClick}
       disabled={!onClick}
-      className={`w-full flex items-center gap-3 p-2.5 rounded-none transition-colors ${
+      className={`w-full flex items-center gap-3 p-2.5 rounded-md transition-colors ${
         done ? "bg-background/30" : "bg-background/50 hover:bg-background/80"
       } ${onClick ? "cursor-pointer" : "cursor-default"}`}
     >

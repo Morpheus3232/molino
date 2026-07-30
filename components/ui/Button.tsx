@@ -20,15 +20,15 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-none font-heading uppercase tracking-wider font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed group";
+  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none group";
   const isDisabled = disabled || loading;
 
   const variants = {
-    primary: "bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground",
-    accent: "bg-accent text-accent-foreground hover:opacity-90",
-    secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent",
+    primary: "bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground hover:shadow-md hover:-translate-y-px active:translate-y-0",
+    accent: "bg-accent text-accent-foreground shadow-sm hover:opacity-95 hover:shadow-glow-accent hover:-translate-y-px active:translate-y-0",
+    secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent hover:shadow-sm",
     ghost: "bg-transparent text-muted hover:text-foreground",
-    inverse: "bg-white text-accent hover:bg-white/90",
+    inverse: "bg-white text-accent shadow-sm hover:bg-white/95 hover:shadow-md hover:-translate-y-px active:translate-y-0",
   };
 
   const sizes = {

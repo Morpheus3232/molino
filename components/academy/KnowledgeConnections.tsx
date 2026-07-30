@@ -89,7 +89,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
               key={source.field}
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
-              className="p-4 rounded-none border border-border bg-card"
+              className="p-4 rounded-md border border-border bg-card shadow-sm"
             >
               <div className="flex items-start gap-3">
                 <span className="text-lg shrink-0">{source.icon}</span>

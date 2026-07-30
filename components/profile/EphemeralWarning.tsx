@@ -14,7 +14,7 @@ export default function EphemeralWarning({ onDismiss }: EphemeralWarningProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.98 }}
       transition={{ duration: 0.2 }}
-      className="relative p-4 rounded-none bg-amber-50 border border-amber-200 dark:bg-amber-900/30 dark:border-amber-800"
+      className="relative p-4 rounded-md bg-amber-50 border border-amber-200 dark:bg-amber-900/30 dark:border-amber-800"
       role="alert"
     >
       <div className="flex items-start gap-3">
@@ -37,7 +37,7 @@ export default function EphemeralWarning({ onDismiss }: EphemeralWarningProps) {
         <button
           type="button"
           onClick={onDismiss}
-          className="flex-shrink-0 p-1 text-amber-500 hover:text-amber-700 dark:hover:text-amber-300 transition-colors rounded-none hover:bg-amber-100 dark:hover:bg-amber-800/50"
+          className="flex-shrink-0 p-1 text-amber-500 hover:text-amber-700 dark:hover:text-amber-300 transition-colors rounded-md hover:bg-amber-100 dark:hover:bg-amber-800/50"
           aria-label="Descartar aviso"
         >
           <X className="w-5 h-5" aria-hidden="true" />

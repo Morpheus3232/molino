@@ -57,7 +57,7 @@ export default function FuentesContent() {
 
         {/* Disclaimer */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-6 rounded-none border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
             <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
         </motion.section>
@@ -77,7 +77,7 @@ export default function FuentesContent() {
               { title: "5. Compatibilidad", text: "Basado en la relación entre animales del zodíaco chino. Las puntuaciones son deterministas y explicables." },
               { title: "6. Sin predicciones", text: "Molino no predice el futuro. Ofrece herramientas de reflexión basadas en sistemas simbólicos." },
             ].map((item) => (
-              <div key={item.title} className="p-6 rounded-none border border-border bg-card">
+              <div key={item.title} className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <h3 className="text-sm font-medium text-foreground mb-2">{item.title}</h3>
                 <p className="text-xs text-muted leading-relaxed">{item.text}</p>
               </div>
@@ -95,7 +95,7 @@ export default function FuentesContent() {
             <p className="text-sm text-foreground leading-relaxed">
               La compatibilidad de Molino utiliza <strong>70% zodiaco chino + 30% numerología</strong> como fórmula base. Esto es una propuesta de Molino, no una convención universal.
             </p>
-            <div className="p-6 rounded-none border border-border bg-card">
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fórmula</p>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ export default function FuentesContent() {
                         )}
                         <p className="text-xs text-muted mt-1 italic">{src.relevance}</p>
                       </div>
-                      <span className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-none border border-border shrink-0">
+                      <span className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border shrink-0">
                         {TYPE_LABELS[src.type] || src.type}
                       </span>
                     </div>
@@ -157,7 +157,7 @@ export default function FuentesContent() {
 
         {/* Disclaimer final */}
         <motion.section {...fadeUpDelayed(0.25)}>
-          <div className="p-6 rounded-none border border-border bg-card">
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
         </motion.section>
