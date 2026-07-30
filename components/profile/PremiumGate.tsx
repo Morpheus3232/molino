@@ -16,6 +16,8 @@ const POLL_INTERVAL = 5000;
 const POLL_MAX_ATTEMPTS = 24;
 const PRICE_USD = 8;
 
+const PREMIUM_ENABLED = false;
+
 const cardVariants = {
   hidden: { opacity: 0, scale: 0.95, y: 10 },
   visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.2 } },
@@ -219,7 +221,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     }
   };
 
-  if (state === 'unlocked') {
+  if (!PREMIUM_ENABLED || state === 'unlocked') {
     return <>{children}</>;
   }
 
