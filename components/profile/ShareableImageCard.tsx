@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
@@ -13,6 +13,13 @@ interface ShareableImageCardProps {
   currentTab?: string;
 }
 
+/**
+ * Pieza editorial compartible.
+ *
+ * Un fragmento del perfil tratado como una pequeña pieza editorial
+ * personalizada: marca, número protagonista, sistemas y un cierre.
+ * PNG vía html-to-image + share nativo + portapapeles.
+ */
 export default function ShareableImageCard({ profile, currentTab = "identity" }: ShareableImageCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
@@ -20,27 +27,33 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
 
   const { name, lifePath, sunSign, element, chineseZodiac, archetype } = profile;
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
-  const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "♈";
+  const chineseElement = profile.chineseZodiacInfo?.element || "";
   const archetypeData = ARCHETYPES[lifePath];
   const archetypeName = archetypeData?.name || archetype;
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
+  const firstName = name.split(" ")[0] || name;
 
   const shareUrl = buildShareableUrl(profile, currentTab);
 
   const shareText = `Descubrí mi perfil de identidad en Molino.\n¿Querés descubrir el tuyo?`;
+
+  const renderPng = useCallback(async (): Promise<string> => {
+    if (!cardRef.current) return "";
+    const { toPng } = await import("html-to-image");
+    return toPng(cardRef.current, {
+      quality: 0.95,
+      pixelRatio: 3,
+      cacheBust: true,
+      backgroundColor: "#F3EDE3",
+    });
+  }, []);
 
   const handleDownload = useCallback(async () => {
     if (!cardRef.current) return;
     setGenerating(true);
     analytics.trackFeatureUsed("share_image_download");
     try {
-      const { toPng } = await import("html-to-image");
-      const dataUrl = await toPng(cardRef.current, {
-        quality: 0.95,
-        pixelRatio: 3,
-        cacheBust: true,
-        backgroundColor: "#F3EDE3",
-      });
+      const dataUrl = await renderPng();
       const link = document.createElement("a");
       link.download = `molino-${name.toLowerCase().replace(/\s+/g, "-")}.png`;
       link.href = dataUrl;
@@ -50,7 +63,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
     } finally {
       setGenerating(false);
     }
-  }, [name]);
+  }, [name, renderPng]);
 
   const handleShare = useCallback(async () => {
     analytics.trackFeatureUsed("share_image_native");
@@ -58,13 +71,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
       try {
         if (cardRef.current) {
           setGenerating(true);
-          const { toPng } = await import("html-to-image");
-          const dataUrl = await toPng(cardRef.current, {
-            quality: 0.95,
-            pixelRatio: 3,
-            cacheBust: true,
-            backgroundColor: "#F3EDE3",
-          });
+          const dataUrl = await renderPng();
           const res = await fetch(dataUrl);
           const blob = await res.blob();
           const file = new File([blob], `molino-${name.toLowerCase().replace(/\s+/g, "-")}.png`, { type: "image/png" });
@@ -103,58 +110,83 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-  }, [name, shareText, shareUrl]);
+  }, [name, shareText, shareUrl, renderPng]);
+
+  const rule = "1px solid rgba(15, 15, 16, 0.14)";
+  const muted = "#6B6560";
+  const ink = "#1A1A1A";
 
   return (
     <div className="space-y-4">
       {/* The visual card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-lg border border-ink/10"
-        style={{
-          maxWidth: "480px",
-          background: "linear-gradient(180deg, #F3EDE3 0%, #EDE5D8 100%)",
-          fontFamily: "Georgia, 'Times New Roman', serif",
-        }}
+        className="relative overflow-hidden"
+        style={{ maxWidth: "520px", background: "#F3EDE3" }}
       >
-        <div className="p-8 sm:p-10">
-          {/* Molino branding */}
-          <div className="flex items-center gap-2 mb-8">
-            <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke={elementColor} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M10 30 L8 14 L24 14 L22 30 Z" />
-              <path d="M7 14 L16 7 L25 14 Z" />
-              <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
-              <circle cx="16" cy="17.5" r="1.1" />
-              <line x1="0" y1="7" x2="32" y2="7" />
-              <line x1="16" y1="-3" x2="16" y2="17" />
-              <line x1="0" y1="4.5" x2="32" y2="4.5" strokeWidth="0.5" />
-              <line x1="0" y1="9.5" x2="32" y2="9.5" strokeWidth="0.5" />
-              <line x1="13" y1="-3" x2="13" y2="17" strokeWidth="0.5" />
-              <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
-            </svg>
+        <div className="p-9 sm:p-11">
+          {/* Branding */}
+          <div
+            className="flex items-center justify-between mb-9"
+            style={{ borderBottom: rule, paddingBottom: "18px" }}
+          >
+            <div className="flex items-center gap-3">
+              <svg width="22" height="22" viewBox="0 0 32 32" fill="none" stroke={ink} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M10 30 L8 14 L24 14 L22 30 Z" />
+                <path d="M7 14 L16 7 L25 14 Z" />
+                <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
+                <circle cx="16" cy="17.5" r="1.1" />
+                <line x1="0" y1="7" x2="32" y2="7" />
+                <line x1="16" y1="-3" x2="16" y2="17" />
+              </svg>
+              <span className="font-mono text-xs uppercase tracking-[0.3em]" style={{ color: ink }}>
+                Molino
+              </span>
+            </div>
+            <span className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: muted }}>
+              Mi perfil
+            </span>
           </div>
 
-          {/* Name */}
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-1" style={{ color: "#1a1a1a" }}>
-            {name.split(" ")[0]}
-          </h2>
+          {/* Identity — sistemas en overline, nombre en display */}
+          <div className="mb-9">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
+              {sunSign} · {element} · {zodiacDisplay.name} de {chineseElement}
+            </p>
+            <h2
+              className="font-display uppercase leading-[0.9] tracking-tight"
+              style={{ color: ink, fontSize: "clamp(38px, 9vw, 48px)" }}
+            >
+              {firstName}
+            </h2>
+          </div>
 
-          {/* Animal + Element */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-4xl">{zodiacDisplay.emoji}</span>
+          {/* Número protagonista */}
+          <div
+            className="flex items-end justify-between py-7"
+            style={{ borderTop: rule, borderBottom: rule }}
+          >
             <div>
-              <p className="font-heading text-lg font-semibold" style={{ color: elementColor }}>
-                {zodiacDisplay.name} de {element}
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-1" style={{ color: muted }}>
+                Camino de vida
               </p>
-              <p className="text-xs" style={{ color: "#666" }}>
-                {sunSymbol} {sunSign} · Camino {lifePath}
+              <p className="font-display leading-none tracking-tight" style={{ color: elementColor, fontSize: "76px" }}>
+                {lifePath}
+              </p>
+            </div>
+            <div className="text-right pb-1.5">
+              <p className="font-heading text-lg font-semibold" style={{ color: ink }}>
+                {archetypeName}
+              </p>
+              <p className="font-mono text-[11px] uppercase tracking-[0.15em] mt-1" style={{ color: muted }}>
+                {zodiacDisplay.name} · {chineseElement}
               </p>
             </div>
           </div>
 
-          {/* Quote / Insight */}
-          <div className="py-6 border-t border-b" style={{ borderColor: `${elementColor}30` }}>
-            <p className="font-heading text-lg italic leading-relaxed" style={{ color: "#333" }}>
+          {/* Lectura */}
+          <div className="pt-7">
+            <p className="font-heading italic leading-relaxed" style={{ color: "#333333", fontSize: "17px" }}>
               {archetypeData?.quote
                 ? `\u201C${archetypeData.quote}\u201D`
                 : `Tu energía combina ${element.toLowerCase()}, intuición y visión.`
@@ -162,21 +194,22 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
             </p>
           </div>
 
-          {/* Archetype badge */}
-          <div className="mt-6 flex items-center gap-2">
-            <span className="px-3 py-1 rounded-sm text-xs font-medium" style={{ backgroundColor: `${elementColor}15`, color: elementColor }}>
-              {archetypeName}
+          {/* Cierre */}
+          <div
+            className="mt-8 flex items-end justify-between pt-5"
+            style={{ borderTop: rule }}
+          >
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: elementColor }}>
+                Descubrí tu perfil
+              </p>
+              <p className="font-heading text-base font-semibold mt-1" style={{ color: ink }}>
+                molino.app
+              </p>
+            </div>
+            <span className="font-display text-2xl leading-none" style={{ color: elementColor }} aria-hidden="true">
+              →
             </span>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-8 pt-6 border-t" style={{ borderColor: `${elementColor}20` }}>
-            <p className="text-xs font-medium" style={{ color: elementColor }}>
-              Descubrí tu perfil en
-            </p>
-            <p className="text-sm font-semibold mt-1" style={{ color: "#1a1a1a" }}>
-              molino.app
-            </p>
           </div>
         </div>
       </div>
