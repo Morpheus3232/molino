@@ -32,7 +32,10 @@ function ConceptsIndex() {
 
   return (
     <section className="section-full-bleed bg-accent text-paper relative overflow-hidden">
-      <div className="pointer-events-none absolute -left-40 bottom-0 w-[32rem] h-[32rem] text-paper/[0.07]">
+      <div
+        className="pointer-events-none absolute -left-40 bottom-0 w-[32rem] h-[32rem] text-paper"
+        style={{ opacity: 0.07 }}
+      >
         <Halftone variant="wave" resolution={28} className="w-full h-full" />
       </div>
 

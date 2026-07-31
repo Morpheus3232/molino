@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
-import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
+import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getRelationshipMap, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { getFamousByAnimal, getFamousBySign, type FamousPerson } from "@/lib/data/famousPeople";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import EditorialSection from "@/components/ui/EditorialSection";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface CircleScreenProps {
@@ -17,7 +18,6 @@ interface CircleScreenProps {
 }
 
 export default function CircleScreen({ profile, onNavigate }: CircleScreenProps) {
-  const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const userSunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
   const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
@@ -47,11 +47,15 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       <section className="py-12 sm:pt-16 pb-8">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
-            <p className="label-micro mb-3">Tu Círculo</p>
-            <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
-              Las energías que te rodean
+            <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-6">
+              TU CÍRCULO
+            </p>
+            <h1 className="font-display text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.9] tracking-tight text-foreground">
+              LAS ENERGÍAS
+              <br />
+              QUE TE RODEAN.
             </h1>
-            <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
+            <p className="text-base lg:text-lg text-muted mt-8 max-w-xl leading-relaxed">
               Aliados, opuestos y personas que comparten tu energía de{" "}
               <span className="font-medium text-foreground">{display.name}</span>.
             </p>
@@ -60,159 +64,137 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
       </section>
 
       {/* ═══════════════════════════════════════════════
-          CÍRCULO DE ALIADOS — Animal relationships
+          CÍRCULO DE ALIADOS — negro full-bleed
           ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus aliados zodiacales</h2>
-            </div>
-            <p className="text-sm text-muted max-w-xl leading-relaxed">
-              Estos animales tienen mayor armonía con tu <span className="font-medium text-foreground">{display.name}</span> según la tradición.
-            </p>
-          </motion.div>
-
-      <motion.div {...staggerApple} className="mt-6">
-        <div className="flex flex-col items-center">
-          <motion.div
-            {...staggerItemSmooth}
-            className="w-20 h-20 rounded-md border-2 border-ink/20 flex items-center justify-center mb-3"
-          >
-            <span className="text-3xl">{display.emoji}</span>
-          </motion.div>
-          <p className="font-display text-lg font-semibold text-foreground mb-6">{display.name}</p>
-
-          <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
-            {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {
-              const relDisplay = getZodiacDisplay(rel.animal);
-              return (
-                <motion.div
-                  key={rel.animal}
-                  {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-md border border-ink/10 bg-background/50"
-                >
-                  <span className="text-2xl mb-1">{relDisplay.emoji}</span>
-                  <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
-                  <p className="text-[9px] text-muted text-center mt-0.5">Aliado</p>
-                </motion.div>
-              );
-            })}
-            {relationMap.challenging.slice(0, 1).map((rel) => {
-              const relDisplay = getZodiacDisplay(rel.animal);
-              return (
-                <motion.div
-                  key={rel.animal}
-                  {...staggerItemSmooth}
-                  className="flex flex-col items-center p-3 rounded-md border border-ink/10 bg-background/50"
-                >
-                  <span className="text-2xl mb-1">{relDisplay.emoji}</span>
-                  <p className="text-xs font-medium text-foreground text-center">{relDisplay.name}</p>
-                  <p className="text-[9px] text-muted text-center mt-0.5">Oposición</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </motion.div>
-
-          <motion.div {...smoothReveal} className="mt-4 text-center">
-            <p className="text-xs text-muted italic">
-              Signos tradicionalmente asociados con mayor armonía y sintonía.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════
-          FAMOSOS DEL MISMO ANIMAL — People like you
-          ═══════════════════════════════════════════════ */}
-      {sameAnimalFamous.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <motion.div {...smoothReveal}>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
-                  Famosos {display.name}
-                </h2>
-              </div>
-              <p className="text-sm text-muted mb-6 max-w-xl">
-                Personas nacidas en el mismo animal zodiacal chino, aunque sean de otros años.
-              </p>
+      <EditorialSection
+        tone="ink"
+        eyebrow="TUS ALIADOS ZODIACALES"
+        title={<>QUIÉN TIENE<br />ARMONÍA CON VOS.</>}
+        intro={
+          <>
+            Estos animales tienen mayor armonía con tu{" "}
+            <span className="text-paper font-medium">{display.name}</span> según la tradición.
+          </>
+        }
+        texture="circle"
+      >
+        <motion.div {...staggerApple} className="pt-10">
+          <div className="flex flex-col items-center">
+            <motion.div
+              {...staggerItemSmooth}
+              className="w-20 h-20 rounded-md border-2 border-accent flex items-center justify-center mb-3"
+            >
+              <span className="text-3xl">{display.emoji}</span>
             </motion.div>
+            <p className="font-display text-lg text-paper mb-8">{display.name}</p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {sameAnimalFamous.map((person, i) => (
-                <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} router={router} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ═══════════════════════════════════════════════
-          CÍRCULO OCCIDENTAL — Same Western sign
-          ═══════════════════════════════════════════════ */}
-      {sameSignFamous.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <motion.div {...smoothReveal}>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
-                  Círculo Occidental — {userSunSign}
-                </h2>
-              </div>
-              <p className="text-sm text-muted mb-6 max-w-xl">
-                Personas del mismo signo zodiacal occidental.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {sameSignFamous.map((person, i) => (
-                <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} router={router} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ═══════════════════════════════════════════════
-          CONTRASTES — Challenging animals
-          ═══════════════════════════════════════════════ */}
-      {relationMap.challenging.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
-          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <motion.div {...smoothReveal}>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Energías opuestas</h2>
-              </div>
-              <p className="text-sm text-muted mb-6 max-w-xl">
-                Estos animales presentan mayor tensión con tu <span className="font-medium text-foreground">{display.name}</span>. No son &ldquo;malos&rdquo;, son oportunidades de aprendizaje.
-              </p>
-            </motion.div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {relationMap.challenging.map((rel) => {
+            <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+              {relationMap.friends.filter(f => f.type === 'triad').slice(0, 2).map((rel) => {
                 const relDisplay = getZodiacDisplay(rel.animal);
                 return (
                   <motion.div
                     key={rel.animal}
                     {...staggerItemSmooth}
-                    className="p-4 rounded-md border border-ink/10 bg-background text-center"
+                    className="flex flex-col items-center p-4 rounded-md border border-paper/15 bg-paper/[0.03]"
                   >
-                    <span className="text-2xl block mb-1">{relDisplay.emoji}</span>
-                    <p className="text-sm font-medium text-foreground">{relDisplay.name}</p>
-                    <p className="text-[9px] text-muted mt-0.5">Contraste</p>
+                    <span className="text-2xl mb-1">{relDisplay.emoji}</span>
+                    <p className="text-xs font-medium text-paper text-center">{relDisplay.name}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-accent text-center mt-1">Aliado</p>
+                  </motion.div>
+                );
+              })}
+              {relationMap.challenging.slice(0, 1).map((rel) => {
+                const relDisplay = getZodiacDisplay(rel.animal);
+                return (
+                  <motion.div
+                    key={rel.animal}
+                    {...staggerItemSmooth}
+                    className="flex flex-col items-center p-4 rounded-md border border-paper/15 bg-paper/[0.03]"
+                  >
+                    <span className="text-2xl mb-1">{relDisplay.emoji}</span>
+                    <p className="text-xs font-medium text-paper text-center">{relDisplay.name}</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-paper/50 text-center mt-1">Oposición</p>
                   </motion.div>
                 );
               })}
             </div>
           </div>
-        </section>
+
+          <p className="text-xs text-paper/50 italic text-center mt-8">
+            Signos tradicionalmente asociados con mayor armonía y sintonía.
+          </p>
+        </motion.div>
+      </EditorialSection>
+
+      {/* ═══════════════════════════════════════════════
+          FAMOSOS DEL MISMO ANIMAL
+          ═══════════════════════════════════════════════ */}
+      {sameAnimalFamous.length > 0 && (
+        <EditorialSection
+          eyebrow="GENTE COMO VOS"
+          title={<>FAMOSOS<br />{display.name.toUpperCase()}.</>}
+          intro="Personas nacidas en el mismo animal zodiacal chino, aunque sean de otros años."
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-8">
+            {sameAnimalFamous.map((person, i) => (
+              <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} />
+            ))}
+          </div>
+        </EditorialSection>
+      )}
+
+      {/* ═══════════════════════════════════════════════
+          CÍRCULO OCCIDENTAL — azul full-bleed
+          ═══════════════════════════════════════════════ */}
+      {sameSignFamous.length > 0 && (
+        <EditorialSection
+          tone="accent"
+          eyebrow="CÍRCULO OCCIDENTAL"
+          title={<>MISMO SIGNO,<br />{userSunSign.toUpperCase()}.</>}
+          intro="Personas del mismo signo zodiacal occidental."
+          texture="wave"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-8">
+            {sameSignFamous.map((person, i) => (
+              <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} inverse />
+            ))}
+          </div>
+        </EditorialSection>
+      )}
+
+      {/* ═══════════════════════════════════════════════
+          CONTRASTES
+          ═══════════════════════════════════════════════ */}
+      {relationMap.challenging.length > 0 && (
+        <EditorialSection
+          tone="paperAlt"
+          eyebrow="ENERGÍAS OPUESTAS"
+          title="TENSIÓN QUE ENSEÑA."
+          intro={
+            <>
+              Estos animales presentan mayor tensión con tu{" "}
+              <span className="text-foreground font-medium">{display.name}</span>. No son
+              &ldquo;malos&rdquo;, son oportunidades de aprendizaje.
+            </>
+          }
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-8">
+            {relationMap.challenging.map((rel) => {
+              const relDisplay = getZodiacDisplay(rel.animal);
+              return (
+                <motion.div
+                  key={rel.animal}
+                  {...staggerItemSmooth}
+                  className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
+                >
+                  <span className="text-2xl block mb-1">{relDisplay.emoji}</span>
+                  <p className="text-sm font-medium text-foreground">{relDisplay.name}</p>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-muted mt-1">Contraste</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </EditorialSection>
       )}
 
       {/* Disclaimer */}
@@ -236,7 +218,18 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
    FAMOUS PERSON CARD
    ════════════════════════════════════════════════════ */
 
-function FamousPersonCard({ person, index, userAnimal, router }: { person: FamousPerson; index: number; userAnimal: Animal; router: ReturnType<typeof useRouter> }) {
+function FamousPersonCard({
+  person,
+  index,
+  userAnimal,
+  inverse = false,
+}: {
+  person: FamousPerson;
+  index: number;
+  userAnimal: Animal;
+  /** Tarjeta sobre fondo de color (accent): texto claro. */
+  inverse?: boolean;
+}) {
   const animalDisplay = getZodiacDisplay(person.animal);
   const relation = getRelation(userAnimal, person.animal as Animal);
   const isChallenging = relation.type === "clash" || relation.type === "harm";
@@ -247,26 +240,31 @@ function FamousPersonCard({ person, index, userAnimal, router }: { person: Famou
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
-      className="p-4 rounded-md border border-ink/10 bg-background"
+      className={
+        inverse
+          ? "p-4 rounded-md border border-paper/20 bg-paper/[0.06]"
+          : "p-4 rounded-md border border-border bg-card shadow-sm"
+      }
     >
       <div className="flex items-start gap-3">
         <span className="text-2xl shrink-0">{person.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <p className="font-display text-base font-semibold text-foreground truncate">{person.name}</p>
+        <div className={`flex-1 min-w-0 ${inverse ? "text-paper" : ""}`}>
+          <p className={`font-display text-base font-semibold truncate ${inverse ? "text-paper" : "text-foreground"}`}>
+            {person.name}
+          </p>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-sm">{animalDisplay.emoji}</span>
-            <p className="text-xs text-muted">{person.animal} · {person.year}</p>
+            <p className={`text-xs ${inverse ? "text-paper/70" : "text-muted"}`}>{person.animal} · {person.year}</p>
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-[10px] text-muted">{person.field} · {person.country}</span>
+            <span className={`text-[10px] ${inverse ? "text-paper/60" : "text-muted"}`}>{person.field} · {person.country}</span>
           </div>
-          <button
-            type="button"
-            onClick={() => router.push(`/conocimiento/zodiaco-chino/${person.animal.toLowerCase()}`)}
-            className="mt-2 text-[10px] text-accent hover:underline"
+          <Link
+            href={`/conocimiento/zodiaco-chino/${person.animal.toLowerCase()}`}
+            className={`mt-2 inline-block text-[10px] hover:underline ${inverse ? "text-paper" : "text-accent"}`}
           >
             {isChallenging ? `Explorar contraste con ${person.animal}` : `Explorar afinidad con ${person.animal}`} →
-          </button>
+          </Link>
         </div>
       </div>
     </motion.div>
