@@ -14,7 +14,6 @@ import {
   hasPositiveAffinity,
   type PersonalRecommendation,
 } from "@/lib/engines/personalRecommendationEngine";
-import CrossLinks from "@/components/profile/CrossLinks";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface WorldScreenProps {
@@ -243,17 +242,6 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           </motion.div>
         </div>
       </section>
-
-      {/* Cross-links */}
-      {onNavigate && (
-        <CrossLinks
-          links={[
-            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
-            { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
-            { label: "Volvé a tu identidad", description: "Revisá tu perfil base y arquetipo.", onClick: () => onNavigate("identity") },
-          ]}
-        />
-      )}
     </div>
   );
 }
