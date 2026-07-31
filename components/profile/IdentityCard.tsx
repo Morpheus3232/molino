@@ -64,7 +64,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Fortalezas */}
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-2">
               Fortalezas
             </p>
             <div className="mt-6">
@@ -88,7 +88,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 
           {/* Áreas a cuidar */}
           <div>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-semibold mb-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-semibold mb-2">
               Áreas a cuidar
             </p>
             <div className="mt-6">
@@ -111,7 +111,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
           </div>
         </div>
 
-        <p className="mt-10 text-[10px] text-muted italic max-w-xl">
+        <p className="mt-10 text-xs text-muted italic max-w-xl">
           No determina tu personalidad. Es una interpretación cultural basada en tradiciones simbólicas.
         </p>
       </div>

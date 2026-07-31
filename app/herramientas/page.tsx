@@ -99,7 +99,7 @@ export default function HerramientasPage() {
         <motion.section {...fadeUpDelayed(0.15)} className="mt-16 sm:mt-20 text-center">
           <div className="w-8 h-px bg-border mx-auto mb-6" />
           <p className="text-sm text-muted max-w-md mx-auto">
-            Estas herramientas son gratuitas y no guardan tus datos. Si quer\u00e9s una experiencia completa y personalizada, cre\u00e1 tu perfil en Molino.
+            Estas herramientas son gratuitas y no guardan tus datos. Tu perfil explora tus principales patrones sin costo; la síntesis integral que los conecta es una capa Premium opcional.
           </p>
           <Link
             href="/onboarding"

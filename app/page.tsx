@@ -121,7 +121,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...fadeUp} className="border-t border-ink/10 py-16">
               <div className="text-center mb-8">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu energía de hoy</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu energía de hoy</p>
                 <Link
                   href="/daily-energy"
                   className="group inline-flex items-center gap-3"

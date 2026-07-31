@@ -16,7 +16,7 @@ const principles = [
   {
     id: "conocimiento-libre",
     title: "Conocimiento libre",
-    description: "La información sobre uno mismo no debería tener dueño. Molino pone a tu disposición sistemas simbólicos milenarios sin barreras de pago, suscripciones ni muros académicos. Lo que descubras sobre ti es tuyo, punto.",
+    description: "La información sobre uno mismo no debería tener dueño. Tu mapa, tus patrones y las tradiciones simbólicas están abiertos para explorarlos libremente, sin registro ni barreras académicas. Lo que descubras sobre ti es tuyo, punto. Para quien quiere ir más profundo, existe una capa opcional de síntesis integral.",
   },
   {
     id: "privacidad-radical",
@@ -31,7 +31,7 @@ const principles = [
   {
     id: "codigo-abierto",
     title: "Código abierto",
-    description: "Molino es software libre (MIT). Cualquiera puede inspeccionar, copiar, modificar y distribuir el código. No hay vendor lock-in, no hay API de pago, no hay funciones premium ocultas. El proyecto vive en GitHub y acepta contribuciones.",
+    description: "Molino es software libre (MIT). Cualquiera puede inspeccionar, copiar, modificar y distribuir el código. No hay vendor lock-in ni APIs de pago ocultas; el producto se sostiene con una capa Premium opcional, transparente. El proyecto vive en GitHub y acepta contribuciones.",
   },
   {
     id: "sin-tracking",
@@ -247,8 +247,8 @@ export default function FilosofiaContent() {
                 a: "Molino es una herramienta de autoconocimiento, no un sustituto de la terapia profesional. Si estás pasando por un momento difícil, buscá apoyo profesional calificado.",
               },
               {
-                q: "No vende nada",
-                a: "No hay suscripciones, premium, ni versiones pagas. No recolectamos datos personales, no tenemos newsletter, no te enviamos notificaciones. El producto ES la página que estás viendo.",
+                q: "No es un producto gratuito en su totalidad",
+                a: "Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral —la lectura que conecta todos tus sistemas— es una capa Premium opcional de $8 USD, pago único y acceso permanente. No hay suscripciones ni versiones por mes.",
               },
             ].map((item, i) => (
               <motion.div

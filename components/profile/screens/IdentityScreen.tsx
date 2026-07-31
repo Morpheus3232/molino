@@ -135,7 +135,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               {lifePath}
             </span>
             <div className="sm:text-right">
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-3">Tu arquetipo</p>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-3">Tu arquetipo</p>
               <p className="font-display text-3xl sm:text-5xl uppercase text-foreground tracking-tight">
                 # {archetype?.name}
               </p>
@@ -167,7 +167,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.65 }}
-              className="mt-14 font-mono text-[10px] uppercase tracking-[0.2em] text-muted"
+              className="mt-14 font-mono text-xs uppercase tracking-[0.2em] text-muted"
             >
               Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
             </motion.p>
@@ -213,7 +213,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               transition={{ delay: 0.05 * (i + 1), duration: 0.4 }}
               className="flex items-baseline justify-between gap-4 py-5 border-b border-ink/10 last:border-b-0"
             >
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
               <div className="flex items-baseline gap-3">
                 {row.number ? (
                   <>
@@ -252,7 +252,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
                 <span className="font-mono text-xs text-paper/40">{String(i + 1).padStart(2, "0")}</span>
                 <span className="w-8 h-px shrink-0" style={{ backgroundColor: persp.color }} aria-hidden="true" />
                 <span
-                  className="font-mono text-[10px] uppercase tracking-[0.25em] font-semibold"
+                  className="font-mono text-xs uppercase tracking-[0.25em] font-semibold"
                   style={{ color: persp.color }}
                 >
                   {persp.systemLabel}
