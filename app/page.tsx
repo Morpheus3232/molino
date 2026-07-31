@@ -17,6 +17,13 @@ import SystemsPreview from "@/components/sections/SystemsPreview";
 import Journey from "@/components/sections/Journey";
 import ToolsAndDiscovery from "@/components/sections/ToolsAndDiscovery";
 import ConceptsIndex from "@/components/sections/ConceptsIndex";
+import DecisionEntryPrompt from "@/components/sections/DecisionEntryPrompt";
+
+// Feature flag — paso 1 del roadmap de PRODUCT-BREAKTHROUGH.md (sección 19,
+// "Semanas 1-2"). Controla si la home de un usuario NUEVO (sin perfil
+// guardado) muestra la pregunta de entrada "¿Qué te trae por acá hoy?" antes
+// del contenido genérico de siempre. En false, la home no cambia en nada.
+const DECISION_FIRST_HOME_ENABLED = false;
 
 /* ═══ CTA final ═══ */
 
@@ -81,6 +88,7 @@ export default function Home() {
 function GenericHome() {
   return (
     <>
+      {DECISION_FIRST_HOME_ENABLED && <DecisionEntryPrompt />}
       <SystemsPreview />
       <Journey />
       <ToolsAndDiscovery />
