@@ -17,7 +17,7 @@ const POLL_INTERVAL = 5000;
 const POLL_MAX_ATTEMPTS = 24;
 const PRICE_USD = 8;
 
-const PREMIUM_ENABLED = false;
+const PREMIUM_ENABLED = process.env.NEXT_PUBLIC_PREMIUM_ENABLED === 'true';
 
 const blockVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -244,11 +244,22 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
             </h3>
 
             <p className="text-sm text-muted leading-relaxed mb-6 max-w-xl">
-              Numerología, astrología y zodíaco chino cruzados en una sola lectura: qué significan tus
-              patrones juntos, por qué tu momento actual importa y qué te sugiere para lo que sigue.
+              Tu síntesis completa reúne tus sistemas en una sola lectura: qué patrones se alinean, qué tensiones aparecen y qué importa en tu momento actual.
             </p>
 
+            <div className="mb-6">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">QUÉ VAS A LEER</p>
+              <ul className="space-y-2 text-sm text-muted leading-relaxed">
+                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Cómo se conectan tus sistemas en una misma lectura.</li>
+                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Qué patrones se refuerzan y cuáles generan tensión.</li>
+                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Qué significa tu momento actual dentro de tu mapa.</li>
+                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Una recomendación personalizada para orientarte.</li>
+              </ul>
+            </div>
+
             <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <p className="text-sm font-medium text-foreground mb-2 sm:mb-0">Tu síntesis completa — $8 USD</p>
+              <p className="text-xs text-muted">Pago único · acceso permanente</p>
               <Button
                 variant="accent"
                 size="lg"
@@ -259,7 +270,6 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
               >
                 Ver mi síntesis completa
               </Button>
-              <p className="text-xs text-muted">${PRICE_USD} USD · pago único · Mercado Pago</p>
             </div>
 
             <div className="mt-6 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-6 gap-y-3">
