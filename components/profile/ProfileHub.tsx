@@ -14,6 +14,7 @@ import { safeNumber } from "@/lib/utils/score";
 import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
+import AffinityTeaser from "./AffinityTeaser";
 
 interface ProfileHubProps {
   profile: UserProfile;
@@ -146,6 +147,8 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
         </div>
       </div>
     </section>
+
+      <AffinityTeaser profile={profile} />
 
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-20 sm:pb-24">
         <div className="flex flex-wrap border-t border-ink/10">
