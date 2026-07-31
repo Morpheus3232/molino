@@ -87,12 +87,20 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <AnimalQuickSelector profile={profile} currentEntity={entity} type={type} />
         )}
 
-        {/* Share CTA — right after hero, before details */}
-        {result && (
-          <ShareInlineCTA result={result} entity={entity} />
-        )}
+         {/* Share CTA — right after hero, before details */}
+         {result && (
+           <ShareInlineCTA result={result} entity={entity} />
+         )}
 
-        {/* Base del cálculo simbólico */}
+         {/* Compartir esta afinidad — visible without scrolling */}
+         {result && (
+           <motion.section {...fadeUp} className="mb-12">
+             <SectionHeader title="Compartí esta afinidad" />
+             <AffinityShareableCard result={result} />
+           </motion.section>
+         )}
+
+         {/* Base del cálculo simbólico */}
         {result && primaryEvent && (
           <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-calculo">
             <CollapsibleSection title="Base del cálculo simbólico" id="section-calculo">
@@ -286,15 +294,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </div>
         </motion.section>
 
-        {/* Shareable card */}
-        {result && (
-          <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Compartir" />
-            <AffinityShareableCard result={result} />
-          </motion.section>
-        )}
-
-        {/* "Sos X como Y" narrative */}
+         {/* "Sos X como Y" narrative */}
         {result && profile && (() => {
           const story = buildEntityConnectionStory(profile, entity);
           if (!story) return null;
