@@ -237,32 +237,45 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
           exit="exit"
         >
           <div className="max-w-2xl">
-            <p className="label-micro mb-3">Premium · Pago único</p>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-8 h-px bg-accent" aria-hidden="true" />
+              <p className="label-micro text-accent font-semibold">Premium · Pago único</p>
+            </div>
 
-            <h3 className="font-heading text-xl sm:text-2xl font-semibold text-foreground leading-snug mb-4">
-              Ya conocés tus piezas. Ahora entendé cómo se conectan.
+            <h3 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-snug mb-4">
+              Ya conocés tus piezas.
+              <br className="hidden sm:block" />
+              Ahora entendé cómo se conectan.
             </h3>
 
-            <p className="text-sm text-muted leading-relaxed mb-6 max-w-xl">
+            <p className="text-base text-muted leading-relaxed mb-10 max-w-xl">
               Tu síntesis completa reúne tus sistemas en una sola lectura: qué patrones se alinean, qué tensiones aparecen y qué importa en tu momento actual.
             </p>
 
-            <div className="mb-6">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">QUÉ VAS A LEER</p>
-              <ul className="space-y-2 text-sm text-muted leading-relaxed">
-                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Cómo se conectan tus sistemas en una misma lectura.</li>
-                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Qué patrones se refuerzan y cuáles generan tensión.</li>
-                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Qué significa tu momento actual dentro de tu mapa.</li>
-                <li className="flex items-start gap-2"><span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />Una recomendación personalizada para orientarte.</li>
+            <div className="border-t border-ink/10 pt-8 mb-10">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-5">QUÉ VAS A LEER</p>
+              <ul className="space-y-3 text-sm text-foreground/90 leading-relaxed">
+                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Cómo convergen tus sistemas.</li>
+                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué tensiones aparecen entre ellos.</li>
+                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué significa tu momento actual.</li>
+                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Una recomendación personalizada.</li>
               </ul>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <p className="text-sm font-medium text-foreground mb-2 sm:mb-0">Tu síntesis completa — $8 USD</p>
-              <p className="text-xs text-muted">Pago único · acceso permanente</p>
+            <div className="border-t border-ink/10 pt-10">
+              <p className="label-micro mb-4 text-muted">Tu síntesis completa</p>
+
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="font-display text-6xl sm:text-7xl leading-none tracking-tight text-foreground">${PRICE_USD}</span>
+                <span className="font-heading text-xl font-semibold text-foreground uppercase tracking-wider">USD</span>
+              </div>
+
+              <p className="text-sm text-muted mb-8">Pago único · acceso permanente</p>
+
               <Button
                 variant="accent"
                 size="lg"
+                className="w-full sm:w-auto"
                 onClick={() => {
                   analytics.trackCheckoutStarted('USD');
                   setState('paying');
@@ -272,14 +285,14 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
               </Button>
             </div>
 
-            <div className="mt-6 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-6 gap-y-3">
+            <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
               {!showRecover ? (
                 <button
                   type="button"
                   onClick={() => setShowRecover(true)}
                   className="text-left text-xs text-muted hover:text-accent transition-colors"
                 >
-                  ¿Ya compraste? Recuperar acceso →
+                  Recuperar acceso
                 </button>
               ) : (
                 <form onSubmit={handleRecover} className="space-y-2 max-w-xs">
@@ -312,7 +325,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   onClick={() => setShowCoupon(true)}
                   className="text-left text-xs text-muted hover:text-accent transition-colors"
                 >
-                  Tengo un cupón →
+                  Tengo un cupón
                 </button>
               ) : (
                 <form onSubmit={handleApplyCoupon} className="space-y-2 max-w-xs">

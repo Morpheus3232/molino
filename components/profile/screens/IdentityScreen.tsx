@@ -1,52 +1,39 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
-import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
 import {
   buildPersonalCode,
-  buildDimensions,
 } from "@/lib/engines/synthesisEngine";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
-import IdentityCard from "@/components/profile/IdentityCard";
-import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
-import ConvergentSection from "@/components/profile/ConvergentSection";
-import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
-import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import EditorialSection from "@/components/ui/EditorialSection";
+import ConvergentSection from "@/components/profile/ConvergentSection";
+import IdentityCard from "@/components/profile/IdentityCard";
+import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
+import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
-import EditorialSection from "@/components/ui/EditorialSection";
-import dynamic from "next/dynamic";
-
-const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
 interface IdentityScreenProps {
   profile: UserProfile;
   onNavigate?: (tab: ProfileTab) => void;
 }
 
-export default function IdentityScreen({ profile, onNavigate }: IdentityScreenProps) {
-  const [activeNode, setActiveNode] = useState<string | null>(null);
-
+export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const lifePath = safeNumber(profile.lifePath, 1);
   const name = typeof profile.name === "string" ? profile.name : "";
   const birthDate = typeof profile.birthDate === "string" ? profile.birthDate : "";
   const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
-  const sunSignSymbol = ZODIAC_SYMBOLS[sunSign] || "\u2648";
-  const element = typeof profile.element === "string" ? profile.element : "";
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const chineseElement = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
-  const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
   const archetype = ARCHETYPES[lifePath];
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
   const personalCode = useMemo(() => buildPersonalCode(profile), [profile]);
-  const dimensions = useMemo(() => buildDimensions(profile), [profile]);
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
@@ -55,10 +42,8 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
   // Famous people sharing the user's energy
   const famousByAnimal = useMemo(() => getFamousByAnimal(chineseZodiac, userYear), [chineseZodiac, userYear]);
   const matchingFamous = useMemo(() => {
-    // Prefer people matching BOTH animal AND sign
     const both = famousByAnimal.filter(p => p.westernSign === sunSign);
     if (both.length > 0) return both[0];
-    // Fall back to just animal match
     if (famousByAnimal.length > 0) return famousByAnimal[0];
     return null;
   }, [famousByAnimal, sunSign]);
@@ -76,20 +61,15 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
     return `${day} de ${MONTH_NAMES[month - 1]} de ${year}`;
   })();
 
-  const codeEntries = [
-    personalCode.lifePath,
-    personalCode.expression,
-    personalCode.soul,
-    personalCode.personality,
-  ];
-  const codeLabels = ["Camino de Vida", "Expresión", "Alma", "Personalidad"];
+  const synthesisLine = archetype
+    ? `Tu Camino de Vida ${lifePath} te marca como ${archetype.name.toLowerCase()} (${archetype.keywords.slice(0, 3).join(", ").toLowerCase()}).`
+    : `Tu Camino de Vida ${lifePath} define el eje de tu recorrido.`;
 
-  // Identity cards data
-  const identityCards = [
-    { label: "Camino de Vida", value: `${lifePath}`, icon: "🔢", color: "var(--element-fire)" },
-    { label: "Signo Solar", value: `${sunSignSymbol} ${sunSign}`, icon: "☀", color: "var(--layer-astrology)" },
-    { label: "Animal Chino", value: `${zodiacDisplay.name}`, icon: zodiacDisplay.emoji, color: "var(--layer-moment)" },
-    { label: "Elemento", value: `${element}`, icon: "🌿", color: elementColor },
+  // TU CÓDIGO — rows for the name-derived numbers ("—" when no name)
+  const codeRows = [
+    { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode.expression.name },
+    { label: "Alma", number: profile.soulNumber ?? null, name: personalCode.soul.name },
+    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode.personality.name },
   ];
 
   return (
@@ -100,122 +80,165 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
       className="bg-background"
     >
       {/* ═══════════════════════════════════════════════
-          REVEAL HERO — The big moment
+          1 · APERTURA — el comienzo de la lectura
           ═══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-12 sm:pb-16">
+      <section className="relative overflow-hidden border-b border-ink/10">
+        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent text-center mb-6"
+            className="label-micro text-accent font-semibold mb-8"
           >
-            MI MAPA PERSONAL
+            Mi identidad
           </motion.p>
 
-          {/* Animal emoji — THE reveal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="text-center mb-6"
-          >
-            <span className="inline-block text-[110px] sm:text-[140px] leading-none" role="img" aria-label={chineseZodiac}>
-              {zodiacDisplay.emoji}
-            </span>
-          </motion.div>
+          {name && (
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-heading text-sm sm:text-base uppercase tracking-[0.3em] text-muted mb-3"
+            >
+              {name}
+            </motion.p>
+          )}
 
-          {/* Name */}
-          <motion.div
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-center"
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="font-display text-[clamp(2.5rem,8vw,6.5rem)] leading-[0.9] tracking-tight text-foreground uppercase"
           >
-            <h1 className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.9] tracking-tight text-foreground uppercase">
-              {name}
-            </h1>
-            <p className="mt-4 text-base sm:text-lg text-muted">
-              {formattedDate} · {zodiacDisplay.name} de {chineseElement}
-            </p>
-          </motion.div>
+            {formattedDate}
+          </motion.h1>
 
-          {/* Identity cards — visual, not text */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="label-micro text-muted mt-6"
+          >
+            {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()} · CAMINO {lifePath}
+          </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3"
+            className="mt-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 sm:gap-12"
           >
-            {identityCards.map((card, i) => (
-              <motion.div
-                key={card.label}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
-                className="relative p-4 sm:p-6 rounded-md border border-border bg-card shadow-sm text-center overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: card.color }} />
-                <span className="text-2xl block mb-2">{card.icon}</span>
-                <p className="font-display text-lg sm:text-xl text-foreground">{card.value}</p>
-                <p className="font-mono uppercase text-[9px] tracking-[0.18em] text-muted mt-1">{card.label}</p>
-              </motion.div>
-            ))}
+            <span
+              className="font-display text-[clamp(7rem,24vw,15rem)] leading-none tracking-tight text-accent"
+              aria-hidden="true"
+            >
+              {lifePath}
+            </span>
+            <div className="sm:text-right">
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-3">Tu arquetipo</p>
+              <p className="font-display text-3xl sm:text-5xl uppercase text-foreground tracking-tight">
+                # {archetype?.name}
+              </p>
+            </div>
           </motion.div>
 
-          {/* Archetype — the synthesis */}
-          {archetype && (
-            <motion.div
+          {archetype?.quote && (
+            <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="mt-8 text-center"
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="mt-12 text-lg sm:text-xl italic text-foreground leading-relaxed max-w-2xl"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-accent/[0.06] border border-accent/20">
-                <span className="text-sm">{sunSignSymbol}</span>
-                <p className="font-mono uppercase text-[10px] tracking-[0.2em] text-accent">
-                  Tu arquetipo es {archetype.name}
-                </p>
-              </div>
-              {archetype.quote && (
-                <p className="text-sm text-muted mt-3 italic max-w-md mx-auto">&ldquo;{archetype.quote}&rdquo;</p>
-              )}
-            </motion.div>
+              &ldquo;{archetype.quote}&rdquo;
+            </motion.p>
           )}
 
-          {/* Famous person — "compartís energía con..." */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.55 }}
+            className="mt-6 text-sm text-muted leading-relaxed max-w-xl"
+          >
+            {synthesisLine}
+          </motion.p>
+
           {matchingFamous && (
-            <motion.div
+            <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1 }}
-              className="mt-6 text-center"
+              transition={{ duration: 0.5, delay: 0.65 }}
+              className="mt-14 font-mono text-[10px] uppercase tracking-[0.2em] text-muted"
             >
-              <div className="inline-flex items-center gap-3 px-4 py-3 rounded-md border border-border bg-card shadow-sm">
-                <span className="text-xl">{matchingFamous.emoji}</span>
-                <div className="text-left">
-                  <p className="font-mono uppercase text-[9px] tracking-[0.15em] text-muted">Compartís tu energía con</p>
-                  <p className="text-sm font-medium text-foreground">{matchingFamous.name}</p>
-                  <p className="font-mono uppercase text-[9px] tracking-[0.15em] text-muted">
-                    {matchingFamous.field} · {matchingFamous.country}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
+            </motion.p>
           )}
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════
-          TUS 4 SISTEMAS — negro full-bleed
+          2 · TU CÓDIGO — el número protagonista
+          ═══════════════════════════════════════════════ */}
+      <EditorialSection
+        eyebrow="TU CÓDIGO PERSONAL"
+        title={<>LOS NÚMEROS<br />QUE TE DEFINEN.</>}
+      >
+        <div className="pt-4">
+          {/* Camino de Vida — protagonista */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.5 }}
+            className="flex items-start gap-6 sm:gap-10 pb-10 border-b border-ink/10"
+          >
+            <span className="font-display text-[clamp(4rem,14vw,7rem)] leading-none tracking-tight text-accent shrink-0">
+              {personalCode.lifePath.number}
+            </span>
+            <div className="pt-2">
+              <p className="label-micro text-muted mb-2">Camino de Vida</p>
+              <p className="font-heading text-xl sm:text-2xl font-semibold text-foreground mb-2">
+                {personalCode.lifePath.name}
+              </p>
+              <p className="text-sm text-muted leading-relaxed max-w-lg">{personalCode.lifePath.meaning}</p>
+            </div>
+          </motion.div>
+
+          {/* Expresión · Alma · Personalidad — filas */}
+          {codeRows.map((row, i) => (
+            <motion.div
+              key={row.label}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: 0.05 * (i + 1), duration: 0.4 }}
+              className="flex items-baseline justify-between gap-4 py-5 border-b border-ink/10 last:border-b-0"
+            >
+              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
+              <div className="flex items-baseline gap-3">
+                {row.number ? (
+                  <>
+                    <span className="font-display text-2xl text-foreground">{row.number}</span>
+                    <span className="text-xs text-muted">{row.name}</span>
+                  </>
+                ) : (
+                  <span className="text-lg text-muted">—</span>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </EditorialSection>
+
+      {/* ═══════════════════════════════════════════════
+          3 · LAS TRES LECTURAS — capítulos de la lectura
           ═══════════════════════════════════════════════ */}
       <EditorialSection
         tone="ink"
-        eyebrow="TUS SISTEMAS"
-        title={<>CUATRO LECTURAS.<br />UNA MISMA PERSONA.</>}
+        eyebrow="LAS TRES LECTURAS"
+        title={<>TRES SISTEMAS.<br />UNA MISMA PERSONA.</>}
         texture="circle"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-paper/15 pt-px">
+        <div className="pt-2">
           {identityProfile.perspectives.map((persp, i) => (
             <motion.div
               key={persp.system}
@@ -223,94 +246,50 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="p-8 lg:p-10 bg-ink"
+              className="py-10 lg:py-12 border-b border-paper/15 last:border-b-0"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-xl">{persp.icon}</span>
-                <p className="font-mono uppercase text-[10px] tracking-[0.2em]" style={{ color: persp.color }}>
+              <div className="flex items-center gap-4 mb-5">
+                <span className="font-mono text-xs text-paper/40">{String(i + 1).padStart(2, "0")}</span>
+                <span className="w-8 h-px shrink-0" style={{ backgroundColor: persp.color }} aria-hidden="true" />
+                <span
+                  className="font-mono text-[10px] uppercase tracking-[0.25em] font-semibold"
+                  style={{ color: persp.color }}
+                >
                   {persp.systemLabel}
-                </p>
+                </span>
               </div>
-              <p className="text-base font-medium text-paper">
-                {persp.headline}
-              </p>
-              <p className="text-sm text-paper/60 leading-relaxed mt-2 line-clamp-2">
-                {persp.detail}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Convergences — brief */}
-        {identityProfile.convergences.length > 0 && (
-          <motion.div {...smoothReveal} className="p-8 lg:p-10 pt-8">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">
-              DÓNDE COINCIDEN
-            </p>
-            <div className="space-y-2">
-              {identityProfile.convergences.slice(0, 3).map((conv, i) => (
-                <div key={i} className="flex items-start gap-3 p-4 rounded-md border border-paper/15 bg-paper/[0.03]">
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium text-paper">{conv.theme}</p>
-                    <p className="font-mono uppercase text-[9px] tracking-[0.15em] text-paper/50 mt-0.5">
-                      {conv.systems.join(" + ")}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </EditorialSection>
-
-      {/* ═══════════════════════════════════════════════
-          CÓDIGO PERSONAL — Card grid
-          ═══════════════════════════════════════════════ */}
-      <EditorialSection
-        eyebrow="TU CÓDIGO PERSONAL"
-        title={<>LOS NÚMEROS<br />QUE TE DEFINEN.</>}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10 pt-px">
-          {codeEntries.map((entry, i) => (
-            <motion.div
-              key={codeLabels[i]}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="p-8 lg:p-10 bg-background"
-            >
-              <div className="flex items-start gap-4">
-                <p className="font-display text-4xl sm:text-5xl text-accent shrink-0">{entry.number}</p>
-                <div className="min-w-0">
-                  <p className="font-mono uppercase text-[10px] tracking-[0.2em] text-muted">{codeLabels[i]}</p>
-                  <p className="text-sm font-medium text-foreground mt-1">{entry.name}</p>
-                  <p className="text-sm text-muted leading-relaxed mt-1">{entry.meaning}</p>
-                </div>
-              </div>
+              <p className="font-heading text-xl sm:text-2xl font-semibold text-paper mb-3">{persp.headline}</p>
+              <p className="text-sm text-paper/70 leading-relaxed max-w-2xl">{persp.detail}</p>
             </motion.div>
           ))}
         </div>
       </EditorialSection>
 
       {/* ═══════════════════════════════════════════════
-          CONVERGENCIA + DIMENSIONES
+          4 · CONVERGENCIA
           ═══════════════════════════════════════════════ */}
       <ConvergentSection profile={profile} />
 
-      {/* Cards at bottom */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <IdentityCard profile={profile} />
-          <PersonalScoreCard profile={profile} />
-          <KnowledgeConnections profile={profile} />
-        </div>
-      </section>
+      {/* ═══════════════════════════════════════════════
+          5 · FORTALEZAS / ÁREAS A CUIDAR
+          ═══════════════════════════════════════════════ */}
+      <IdentityCard profile={profile} />
 
-      {/* Share */}
+      {/* ═══════════════════════════════════════════════
+          6 · EVIDENCIA SIMBÓLICA
+          ═══════════════════════════════════════════════ */}
+      <PersonalScoreCard profile={profile} />
+
+      {/* ═══════════════════════════════════════════════
+          7 · FUENTES DEL CONOCIMIENTO
+          ═══════════════════════════════════════════════ */}
+      <KnowledgeConnections profile={profile} />
+
+      {/* ═══════════════════════════════════════════════
+          8 · COMPARTIR — cierre de la lectura
+          ═══════════════════════════════════════════════ */}
       <EditorialSection tone="paperAlt" eyebrow="COMPARTIR" title="ESTO MERECE SER COMPARTIDO.">
-        <div className="pt-8">
+        <div className="pt-10">
           <ShareableImageCard profile={profile} currentTab="identity" />
         </div>
       </EditorialSection>

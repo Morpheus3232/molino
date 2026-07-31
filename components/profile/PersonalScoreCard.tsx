@@ -1,12 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
-import { getAnimalProfile, type Animal } from "@/lib/data/animalRelations";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import EditorialSection from "@/components/ui/EditorialSection";
 
 interface PersonalScoreCardProps {
   profile: UserProfile;
@@ -19,33 +16,13 @@ interface ScoreIndicator {
   description: string;
 }
 
-function AnimatedBar({ value, color, delay = 0 }: { value: number; color: string; delay?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-40px" });
-
-  return (
-    <div ref={ref} className="h-2 rounded-md bg-muted/20 overflow-hidden w-full">
-      <motion.div
-        initial={{ width: 0 }}
-        animate={isInView ? { width: `${value}%` } : { width: 0 }}
-        transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="h-full rounded-sm"
-        style={{ backgroundColor: color }}
-      />
-    </div>
-  );
-}
-
 export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
-  const userAnimal = (profile.chineseZodiac ?? "") as Animal;
+  const userAnimal = (profile.chineseZodiac ?? "") as string;
   const lifePath = profile.lifePath;
-  const element = profile.chineseZodiacInfo?.element ?? "Fuego";
-  const animalProfile = useMemo(() => userAnimal ? getAnimalProfile(userAnimal) : null, [userAnimal]);
 
   const indicators = useMemo(() => {
     const yangAnimals = ["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Perro"];
     const isYang = yangAnimals.includes(userAnimal);
-    const elementScore = ELEMENT_SCORES[element] ?? 50;
 
     return [
       {
@@ -73,42 +50,40 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
         description: "Apertura a nuevas experiencias",
       },
     ];
-  }, [userAnimal, lifePath, element]);
+  }, [userAnimal, lifePath]);
 
   return (
-    <motion.section {...smoothReveal} className="mb-8">
-      <div className="p-6 rounded-md border border-ink/10 bg-background">
-        <div className="flex items-center gap-2 mb-6">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Indicadores simbólicos</span>
-        </div>
+    <EditorialSection
+      tone="paperAlt"
+      eyebrow="INDICADORES SIMBÓLICOS"
+      title={<>CÓMO SE EXPRESA<br />TU ENERGÍA.</>}
+    >
+      <div className="pt-4">
+        {indicators.map((ind, i) => (
+          <motion.div
+            key={ind.label}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: i * 0.06, duration: 0.4 }}
+            className="py-6 border-b border-ink/10 last:border-b-0"
+          >
+            <div className="flex items-baseline justify-between gap-6 mb-2">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-semibold">
+                {ind.label}
+              </span>
+              <span className="font-display text-4xl sm:text-5xl leading-none tracking-tight" style={{ color: ind.color }}>
+                {ind.value}%
+              </span>
+            </div>
+            <p className="text-sm text-muted">{ind.description}</p>
+          </motion.div>
+        ))}
 
-        <motion.div {...staggerApple} className="space-y-4">
-          {indicators.map((ind, i) => (
-            <motion.div key={ind.label} {...staggerItemSmooth} transition={{ delay: staggerDelay(i, 0.08) }}>
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs font-medium text-foreground">{ind.label}</span>
-                <span className="text-xs text-muted">{ind.value}%</span>
-              </div>
-              <AnimatedBar value={ind.value} color={ind.color} delay={i * 0.1} />
-              <p className="text-[10px] text-muted mt-1">{ind.description}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <div className="mt-4 pt-3 border-t border-ink/10">
-          <p className="text-[10px] text-muted italic">
-            Indicadores simbólicos basados en tradiciones culturales. No constituyen medición científica.
-          </p>
-        </div>
+        <p className="mt-8 text-[10px] text-muted italic">
+          Indicadores simbólicos basados en tradiciones culturales. No constituyen medición científica.
+        </p>
       </div>
-    </motion.section>
+    </EditorialSection>
   );
 }
-
-const ELEMENT_SCORES: Record<string, number> = {
-  Fuego: 75,
-  Agua: 65,
-  Tierra: 60,
-  Madera: 70,
-  Metal: 65,
-};
