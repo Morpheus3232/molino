@@ -14,7 +14,6 @@ import { safeNumber } from "@/lib/utils/score";
 import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
-import CrossLinks from "./CrossLinks";
 
 interface ProfileHubProps {
   profile: UserProfile;
@@ -202,18 +201,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           </motion.div>
         )}
       </div>
-
-      {onEnter && (
-        <div>
-          <CrossLinks
-            links={[
-              { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onEnter("world") },
-              { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onEnter("circle") },
-              { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onEnter("intelligence") },
-            ]}
-          />
-        </div>
-      )}
     </div>
   );
 }
