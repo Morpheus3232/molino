@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analytics } from '@/lib/analytics/analytics';
+import Button from '@/components/ui/Button';
 
 interface PremiumGateProps {
   name: string;
@@ -18,10 +19,10 @@ const PRICE_USD = 8;
 
 const PREMIUM_ENABLED = false;
 
-const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 10 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.2 } },
-  exit: { opacity: 0, scale: 0.95, y: -10, transition: { duration: 0.15 } },
+const blockVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" as const } },
+  exit: { opacity: 0, y: -12, transition: { duration: 0.2, ease: "easeOut" as const } },
 };
 
 function getSearchParam(key: string): string | null {
@@ -230,163 +231,103 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       {state === 'locked' && (
         <motion.div
           key="locked"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2 }}
+          variants={blockVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
         >
-          <div className="relative min-h-[480px] max-h-[80vh] overflow-hidden rounded-lg">
-            <div className="blur-[4px] select-none pointer-events-none opacity-40 saturate-50 min-h-[480px]">
-              {children}
+          <div className="max-w-2xl">
+            <p className="label-micro mb-3">Premium · Pago único</p>
+
+            <h3 className="font-heading text-xl sm:text-2xl font-semibold text-foreground leading-snug mb-4">
+              Ya conocés tus piezas. Ahora entendé cómo se conectan.
+            </h3>
+
+            <p className="text-sm text-muted leading-relaxed mb-6 max-w-xl">
+              Numerología, astrología y zodíaco chino cruzados en una sola lectura: qué significan tus
+              patrones juntos, por qué tu momento actual importa y qué te sugiere para lo que sigue.
+            </p>
+
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <Button
+                variant="accent"
+                size="lg"
+                onClick={() => {
+                  analytics.trackCheckoutStarted('USD');
+                  setState('paying');
+                }}
+              >
+                Ver mi síntesis completa
+              </Button>
+              <p className="text-xs text-muted">${PRICE_USD} USD · pago único · Mercado Pago</p>
             </div>
 
-            <div className="absolute inset-0 z-10 flex items-center justify-center p-4">
-              <motion.div
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                className="w-full max-w-sm"
-              >
-                <div
-                  className="relative rounded-lg overflow-hidden border border-white/10 shadow-2xl"
-                  style={{ background: 'linear-gradient(145deg, #0f0c29 0%, #1a1040 50%, #0d0d1a 100%)' }}
+            <div className="mt-6 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-6 gap-y-3">
+              {!showRecover ? (
+                <button
+                  type="button"
+                  onClick={() => setShowRecover(true)}
+                  className="text-left text-xs text-muted hover:text-accent transition-colors"
                 >
-                  <div
-                    className="absolute -top-20 left-1/2 -translate-x-1/2 w-64 h-40 rounded-full blur-3xl opacity-30 pointer-events-none"
-                    style={{ background: 'radial-gradient(ellipse, #7c3aed 0%, transparent 70%)' }}
-                  />
-
-                  <div className="relative p-7">
-                    <div className="flex justify-center mb-6">
-                      <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm text-xs font-bold tracking-wider uppercase bg-violet-600/25 text-violet-300 border border-violet-500/40">
-                        <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-pulse" />
-                        Premium
-                      </span>
-                    </div>
-
-                    <h3 className="text-center text-[22px] font-bold text-white leading-tight mb-2">
-                      Desbloqueá tu<br />Mapa Completo
-                    </h3>
-
-                    <div className="flex items-baseline justify-center gap-1 mt-4 mb-6">
-                      <span className="text-4xl font-black text-violet-300">${PRICE_USD}</span>
-                      <span className="text-base font-semibold text-gray-400">USD</span>
-                      <span className="ml-2 text-xs text-gray-500 bg-white/5 border border-white/10 rounded-md px-2 py-0.5">pago único</span>
-                    </div>
-
-                    <ul className="space-y-2.5 mb-6 text-sm text-gray-300">
-                      {[
-                        'Numerología completa y profunda',
-                        'Afinidad con países y ciudades',
-                        'Compatibilidad personal ilimitada',
-                        'Timing y energía diaria',
-                        'Recomendaciones personalizadas',
-                      ].map(feat => (
-                        <li key={feat} className="flex items-center gap-2.5">
-                          <span className="flex-shrink-0 w-4 h-4 rounded-full bg-violet-600/30 border border-violet-500/40 flex items-center justify-center">
-                            <svg className="w-2.5 h-2.5 text-violet-400" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          </span>
-                          {feat}
-                        </li>
-                      ))}
-                    </ul>
-
+                  ¿Ya compraste? Recuperar acceso →
+                </button>
+              ) : (
+                <form onSubmit={handleRecover} className="space-y-2 max-w-xs">
+                  <label className="text-xs text-muted block">ID de pago de Mercado Pago:</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={recoverPaymentId}
+                      onChange={e => setRecoverPaymentId(e.target.value)}
+                      placeholder="Ej: 123456789"
+                      className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                    />
                     <button
-                      onClick={() => {
-                        analytics.trackCheckoutStarted('USD');
-                        setState('paying');
-                      }}
-                      className="w-full py-3.5 rounded-md font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}
+                      type="submit"
+                      disabled={isRecovering}
+                      className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
                     >
-                      Desbloquear por ${PRICE_USD} USD
+                      {isRecovering ? '…' : 'OK'}
                     </button>
-
-                    <div className="flex items-center justify-center gap-3 mt-3.5 text-[11px] text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                        Pago seguro
-                      </span>
-                      <span className="text-gray-700">·</span>
-                      <span>Mercado Pago</span>
-                      <span className="text-gray-700">·</span>
-                      <span>Sin suscripción</span>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-white/8 space-y-3">
-                      {!showRecover ? (
-                        <button
-                          onClick={() => setShowRecover(true)}
-                          className="w-full text-center text-xs text-gray-500 hover:text-violet-400 transition-colors"
-                        >
-                          ¿Ya compraste? Recuperar acceso →
-                        </button>
-                      ) : (
-                        <form onSubmit={handleRecover} className="space-y-2">
-                          <label className="block text-xs text-gray-400">ID de pago de Mercado Pago:</label>
-                          <div className="flex gap-2">
-                            <input
-                              type="text"
-                              value={recoverPaymentId}
-                              onChange={e => setRecoverPaymentId(e.target.value)}
-                              placeholder="Ej: 123456789"
-                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
-                            />
-                            <button
-                              type="submit"
-                              disabled={isRecovering}
-                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-md font-medium disabled:opacity-50 transition-colors"
-                            >
-                              {isRecovering ? '…' : 'OK'}
-                            </button>
-                          </div>
-                          {recoverError && (
-                            <p className="text-[11px] text-red-400">{recoverError}</p>
-                          )}
-                        </form>
-                      )}
-
-                      <div className="border-t border-white/5" />
-
-                      {!showCoupon ? (
-                        <button
-                          onClick={() => setShowCoupon(true)}
-                          className="w-full text-center text-xs text-gray-500 hover:text-violet-400 transition-colors"
-                        >
-                          Tengo un cupón →
-                        </button>
-                      ) : (
-                        <form onSubmit={handleApplyCoupon} className="space-y-2">
-                          <label className="block text-xs text-gray-400">Código de cupón:</label>
-                          <div className="flex gap-2">
-                            <input
-                              type="text"
-                              value={couponCode}
-                              onChange={e => setCouponCode(e.target.value)}
-                              placeholder="Ingresá tu código"
-                              className="flex-1 px-3 py-1.5 text-xs bg-white/5 border border-white/10 rounded-md text-white placeholder-gray-600 focus:outline-none focus:border-violet-500 transition-colors"
-                            />
-                            <button
-                              type="submit"
-                              disabled={isApplyingCoupon}
-                              className="px-3 py-1.5 text-xs bg-violet-600 hover:bg-violet-700 text-white rounded-md font-medium disabled:opacity-50 transition-colors"
-                            >
-                              {isApplyingCoupon ? '…' : 'OK'}
-                            </button>
-                          </div>
-                          {couponError && (
-                            <p className="text-[11px] text-red-400">{couponError}</p>
-                          )}
-                        </form>
-                      )}
-                    </div>
                   </div>
-                </div>
-              </motion.div>
+                  {recoverError && (
+                    <p className="text-xs text-red-600">{recoverError}</p>
+                  )}
+                </form>
+              )}
+
+              {!showCoupon ? (
+                <button
+                  type="button"
+                  onClick={() => setShowCoupon(true)}
+                  className="text-left text-xs text-muted hover:text-accent transition-colors"
+                >
+                  Tengo un cupón →
+                </button>
+              ) : (
+                <form onSubmit={handleApplyCoupon} className="space-y-2 max-w-xs">
+                  <label className="text-xs text-muted block">Código de cupón:</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={e => setCouponCode(e.target.value)}
+                      placeholder="Ingresá tu código"
+                      className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                    />
+                    <button
+                      type="submit"
+                      disabled={isApplyingCoupon}
+                      className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
+                    >
+                      {isApplyingCoupon ? '…' : 'OK'}
+                    </button>
+                  </div>
+                  {couponError && (
+                    <p className="text-xs text-red-600">{couponError}</p>
+                  )}
+                </form>
+              )}
             </div>
           </div>
         </motion.div>
@@ -395,140 +336,92 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       {(state === 'paying' || state === 'pay_error' || state === 'verifying') && (
         <motion.div
           key="payment-flow"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.2 }}
-          className="w-full max-w-2xl mx-auto my-8 px-4"
+          variants={blockVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="max-w-md"
         >
           <AnimatePresence mode="wait">
             {state === 'paying' && (
-              <motion.div
-                key="paying"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-              >
-                <div className="text-center mb-8">
-                  <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-600/20 text-violet-400 text-xs font-semibold rounded-md border border-violet-500/30 mb-3">
-                    <span className="w-1.5 h-1.5 bg-violet-400 rounded-full animate-pulse" />
-                    PAGO SEGURO · MERCADO PAGO
-                  </span>
-                  <h2 className="text-2xl font-bold text-white mb-1">Molino Premium</h2>
-                  <p className="text-gray-400 text-sm">Pago único · Acceso permanente</p>
-                </div>
+              <motion.div key="paying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+                <p className="label-micro mb-3">Pago seguro · Mercado Pago</p>
+                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Tu síntesis completa</h3>
+                <p className="text-sm text-muted mb-6">Pago único · Acceso permanente</p>
 
                 {checkoutLoading ? (
-                  <div className="flex flex-col items-center justify-center py-16 gap-3">
-                    <div className="animate-spin rounded-full h-12 w-12 border-2 border-purple-600 border-t-transparent" />
-                    <p className="text-sm text-gray-400">Redirigiendo a Mercado Pago...</p>
+                  <div className="flex flex-col items-center py-12 gap-3">
+                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                    <p className="text-sm text-muted">Redirigiendo a Mercado Pago...</p>
                   </div>
                 ) : (
-                  <div className="text-center">
-                    <p className="text-gray-300 mb-6 max-w-md mx-auto">
+                  <div>
+                    <p className="text-sm text-muted leading-relaxed mb-6">
                       Vas a ser redirigido a Mercado Pago para completar el pago de forma segura.
-                      Cuando termines, volvés automaticamente para ver tu mapa completo.
+                      Cuando termines, volvés automáticamente para ver tu síntesis.
                     </p>
-                    <button
-                      onClick={handleCheckout}
-                      className="w-full py-3.5 rounded-md font-bold text-white text-base transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 4px 24px rgba(124,58,237,0.35)' }}
-                    >
+                    <Button variant="accent" size="lg" onClick={handleCheckout}>
                       Ir a pagar ${PRICE_USD} USD
-                    </button>
+                    </Button>
                   </div>
                 )}
 
                 <button
+                  type="button"
                   onClick={() => setState('locked')}
-                  className="mt-6 mx-auto flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 transition-colors"
+                  className="mt-6 text-sm text-muted hover:text-foreground transition-colors"
                 >
-                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <polyline points="15 18 9 12 15 6" />
-                  </svg>
-                  Volver
+                  ← Volver
                 </button>
               </motion.div>
             )}
 
             {state === 'pay_error' && (
-              <motion.div
-                key="pay_error"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="max-w-md mx-auto"
-              >
-                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-md border border-white/10">
-                  <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="15" y1="9" x2="9" y2="15" />
-                      <line x1="9" y1="9" x2="15" y2="15" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">No se pudo iniciar el pago</h3>
-                  <p className="text-sm text-gray-400 mb-1">{payError}</p>
-                  <p className="text-xs text-gray-500 mb-6">Puede ser un problema temporal. Intentá de nuevo.</p>
-                  <div className="flex flex-col gap-3 max-w-xs mx-auto">
-                    <button
-                      onClick={() => {
-                        setPayError(null);
-                        setCheckoutLoading(false);
-                        setState('paying');
-                      }}
-                      className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors"
-                    >
-                      Reintentar
-                    </button>
-                    <button
-                      onClick={() => setState('locked')}
-                      className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
-                    >
-                      Volver
-                    </button>
-                  </div>
+              <motion.div key="pay_error" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+                <p className="label-micro mb-3 text-red-600">No se pudo iniciar el pago</p>
+                <p className="text-sm text-muted mb-1">{payError}</p>
+                <p className="text-xs text-muted mb-6">Puede ser un problema temporal. Intentá de nuevo.</p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    variant="accent"
+                    onClick={() => {
+                      setPayError(null);
+                      setCheckoutLoading(false);
+                      setState('paying');
+                    }}
+                  >
+                    Reintentar
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => setState('locked')}
+                    className="text-sm text-muted hover:text-foreground transition-colors"
+                  >
+                    Volver
+                  </button>
                 </div>
               </motion.div>
             )}
 
             {state === 'verifying' && (
-              <motion.div
-                key="verifying"
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="max-w-md mx-auto"
-              >
-                <div className="text-center py-8 px-6 bg-[#0f0c29]/80 backdrop-blur-xl rounded-md border border-white/10">
-                  {!pollTimedOut ? (
-                    <>
-                      <div className="relative w-16 h-16 mx-auto mb-6">
-                        <div className="absolute inset-0 rounded-full border-4 border-violet-600/20" />
-                        <div className="absolute inset-0 rounded-full border-4 border-violet-600 border-t-transparent animate-spin" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-white mb-2">Verificando tu pago…</h3>
-                      <p className="text-gray-400 text-sm">Esto solo toma unos segundos</p>
-                    </>
-                  ) : (
-                    <>
-                      <div className="text-4xl mb-6">⏱</div>
-                      <h3 className="text-lg font-semibold text-white mb-2">Todavía no vemos el pago</h3>
-                      <p className="text-gray-400 text-sm mb-6">
-                        Si ya completaste el pago, ingresá el ID en &ldquo;Recuperar acceso&rdquo; desde el mapa.
-                      </p>
-                      <button
-                        onClick={() => setState('locked')}
-                        className="px-6 py-2.5 bg-violet-600 hover:bg-violet-700 text-white rounded-md text-sm font-medium transition-colors"
-                      >
-                        Recuperar acceso
-                      </button>
-                    </>
-                  )}
-                </div>
+              <motion.div key="verifying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+                {!pollTimedOut ? (
+                  <>
+                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-6" />
+                    <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
+                    <p className="text-sm text-muted">Esto solo toma unos segundos.</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="label-micro mb-3">Todavía no vemos el pago</p>
+                    <p className="text-sm text-muted leading-relaxed mb-6">
+                      Si ya completaste el pago, ingresá el ID en "Recuperar acceso" desde tu mapa.
+                    </p>
+                    <Button variant="accent" onClick={() => setState('locked')}>
+                      Recuperar acceso
+                    </Button>
+                  </>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
