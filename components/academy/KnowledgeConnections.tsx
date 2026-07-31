@@ -79,7 +79,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
             className="py-6 border-b border-ink/10 last:border-b-0"
           >
             <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-2">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-accent font-semibold">
+              <span className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
                 {source.origin}
               </span>
               <span className="font-mono text-xs text-muted">

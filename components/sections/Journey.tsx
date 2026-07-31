@@ -63,7 +63,7 @@ export default function Journey() {
                   {step.description}
                 </p>
 
-                <span className="md:col-span-2 md:text-right inline-flex md:justify-end items-center gap-2 font-mono text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-accent">
+                <span className="md:col-span-2 md:text-right inline-flex md:justify-end items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent">
                   {step.cta}
                   <span
                     className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"

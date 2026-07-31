@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Molino",
   },
   description:
-    "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto y gratuito.",
+    "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto, con una capa Premium opcional.",
   keywords: [
     "autoconocimiento",
     "numerología",
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     "zodiaco chino",
     "ciclos personales",
     "Camino de Vida",
-    "gratuito",
     "sin registro",
     "código abierto",
     "sin cookies",
@@ -47,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "Molino",
     title: "Molino — Mapa Personal de Autoconocimiento",
     description:
-      "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto y gratuito.",
+      "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto, con una capa Premium opcional.",
   },
   twitter: {
     card: "summary_large_image",
@@ -101,8 +100,9 @@ export default function RootLayout({
       description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
       offers: {
         "@type": "Offer",
-        price: "0",
+        price: "8",
         priceCurrency: "USD",
+        description: "Premium — síntesis completa. Pago único, acceso permanente.",
       },
       author: {
         "@type": "Organization",

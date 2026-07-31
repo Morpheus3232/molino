@@ -69,7 +69,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
             className="py-6 border-b border-ink/10 last:border-b-0"
           >
             <div className="flex items-baseline justify-between gap-6 mb-2">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-semibold">
+              <span className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">
                 {ind.label}
               </span>
               <span className="font-display text-4xl sm:text-5xl leading-none tracking-tight" style={{ color: ind.color }}>
@@ -80,7 +80,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
           </motion.div>
         ))}
 
-        <p className="mt-8 text-[10px] text-muted italic">
+        <p className="mt-8 text-xs text-muted italic">
           Indicadores simbólicos basados en tradiciones culturales. No constituyen medición científica.
         </p>
       </div>

@@ -38,7 +38,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
             >
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{link.label}</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">{link.description}</p>
-              <p className="font-mono uppercase text-[10px] tracking-[0.15em] text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              <p className="font-mono uppercase text-xs tracking-[0.15em] text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                 Explorar
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </p>

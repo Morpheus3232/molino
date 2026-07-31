@@ -113,7 +113,7 @@ export default function AffinityHub() {
                 <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                   {cat.label}
                 </span>
-                <span className={`text-[10px] font-mono ${TIER_STYLES[cat.tier]?.accent || "text-muted"}`}>
+                <span className={`text-xs font-mono ${TIER_STYLES[cat.tier]?.accent || "text-muted"}`}>
                   {TIER_LABELS[cat.tier] || cat.tier}
                 </span>
               </div>
@@ -126,7 +126,7 @@ export default function AffinityHub() {
                       style={{ width: `${cat.score}%` }}
                     />
                   </div>
-                  <span className="text-[10px] font-mono text-muted">{cat.score}%</span>
+                  <span className="text-xs font-mono text-muted">{cat.score}%</span>
                 </div>
               )}
             </motion.button>

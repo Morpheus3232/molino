@@ -93,17 +93,17 @@ export default function SystemsPreview() {
                   {system.index}
                 </span>
 
-                <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-accent mb-4">
+                <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase text-accent mb-4">
                   {system.micro}
                 </p>
                 <h3 className="font-display text-3xl lg:text-4xl leading-[0.92] text-paper mb-6">
                   {system.title}
                 </h3>
-                <p className="text-sm lg:text-base text-paper/60 leading-relaxed mb-10">
+                <p className="text-base lg:text-lg text-paper/80 leading-relaxed mb-10">
                   {system.description}
                 </p>
 
-                <span className="mt-auto inline-flex items-center gap-2 font-mono text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-paper">
+                <span className="mt-auto inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper">
                   LEER MÁS
                   <span
                     className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"

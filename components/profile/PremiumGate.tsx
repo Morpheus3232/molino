@@ -253,7 +253,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
             </p>
 
             <div className="border-t border-ink/10 pt-8 mb-10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-5">QUÉ VAS A LEER</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">QUÉ VAS A LEER</p>
               <ul className="space-y-3 text-sm text-foreground/90 leading-relaxed">
                 <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Cómo convergen tus sistemas.</li>
                 <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué tensiones aparecen entre ellos.</li>

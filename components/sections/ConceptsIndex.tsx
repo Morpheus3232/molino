@@ -47,7 +47,7 @@ function ConceptsIndex() {
           transition={{ duration: 0.5 }}
           className="pt-20 pb-12 lg:pt-28 lg:pb-16"
         >
-          <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-paper/70 mb-6">
+          <p className="font-mono text-sm font-semibold tracking-[0.25em] uppercase text-paper mb-6">
             LA BIBLIOTECA
           </p>
           <h2 className="font-display text-[clamp(2.5rem,6.5vw,5.5rem)] leading-[0.88] tracking-tight text-paper max-w-4xl">
@@ -55,7 +55,7 @@ function ConceptsIndex() {
             <br />
             DETRÁS DE TU MAPA.
           </h2>
-          <p className="text-base lg:text-lg text-paper/70 mt-8 max-w-xl leading-relaxed">
+          <p className="text-lg lg:text-xl text-paper/90 mt-8 max-w-xl leading-relaxed">
             Conceptos clave, explicados en profundidad.
           </p>
         </motion.div>
@@ -80,14 +80,14 @@ function ConceptsIndex() {
                   href={entry.href}
                   className={`group flex h-full flex-col ${cellPad} transition-colors hover:bg-paper/[0.08]`}
                 >
-                  <p className="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-paper/60 mb-4">
+                  <p className="font-mono text-xs font-semibold tracking-[0.2em] text-paper/80 mb-4">
                     {entry.tier}
                   </p>
                   <h3 className="font-display text-2xl lg:text-3xl text-paper mb-4 leading-[0.95]">
                     {entry.title}
                   </h3>
-                  <p className="text-sm text-paper/70 leading-relaxed mb-8 flex-1">{entry.desc}</p>
-                  <span className="inline-flex items-center gap-2 font-mono text-[0.7rem] font-semibold tracking-[0.2em] uppercase text-paper pt-6 border-t border-paper/20">
+                  <p className="text-base text-paper/85 leading-relaxed mb-8 flex-1">{entry.desc}</p>
+                  <span className="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper pt-6 border-t border-paper/20">
                     EXPLORAR
                     <span
                       className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1"
@@ -104,7 +104,7 @@ function ConceptsIndex() {
                   aria-pressed={isFavorite(entry.title)}
                   aria-label={`Guardar ${entry.title} en favoritos`}
                   className={`absolute top-8 right-8 lg:top-12 lg:right-12 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-paper ${
-                    isFavorite(entry.title) ? "text-paper" : "text-paper/40 hover:text-paper"
+                    isFavorite(entry.title) ? "text-paper" : "text-paper/60 hover:text-paper"
                   }`}
                 >
                   <svg

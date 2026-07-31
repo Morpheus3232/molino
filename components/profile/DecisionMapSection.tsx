@@ -77,7 +77,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-sm font-medium text-foreground">{cat.title}</h3>
                     <span
-                      className="  uppercase text-[9px] tracking-[0.1em] px-1.5 py-0.5"
+                      className="  uppercase text-[11px] tracking-[0.1em] px-1.5 py-0.5"
                       style={{
                         color: cat.result.overallScore >= 70 ? "#2D5A3D" : cat.result.overallScore >= 50 ? "#D4A843" : "#B45309",
                         backgroundColor: cat.result.overallScore >= 70 ? "rgba(45,90,61,0.1)" : cat.result.overallScore >= 50 ? "rgba(212,168,67,0.1)" : "rgba(180,83,9,0.1)",
@@ -110,7 +110,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* Disclaimer */}
         <motion.div {...smoothReveal} className="mt-6">
-          <p className="text-[10px] text-muted text-center italic">
+          <p className="text-xs text-muted text-center italic">
             Herramienta de reflexión personal basada en tradiciones culturales. No constituye predicción científica.
           </p>
         </motion.div>
@@ -141,23 +141,23 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
         <p className="text-3xl font-semibold" style={{ color: scoreColor }}>
           {result.overallScore}/100
         </p>
-        <p className="  uppercase text-[9px] tracking-[0.15em] text-muted mt-1">Score general</p>
+        <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mt-1">Score general</p>
       </div>
 
       {/* Explanation */}
       <div className="mb-6">
-        <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Análisis</p>
+        <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">Análisis</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
         <div className="mb-6">
-          <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">A considerar</p>
+          <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
               <div key={i} className="flex items-start gap-2">
-                <span className="text-[10px] text-accent mt-0.5">•</span>
+                <span className="text-xs text-accent mt-0.5">•</span>
                 <p className="text-sm text-foreground leading-relaxed">{c}</p>
               </div>
             ))}
@@ -168,7 +168,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
         <div className="mb-6">
-          <p className="  uppercase text-[10px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
+          <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -209,7 +209,7 @@ function ScoreMiniCard({ label, score, icon }: { label: string; score: number; i
     <div className="p-3 border border-ink/10 text-center">
       <span className="text-lg block mb-1">{icon}</span>
       <p className="text-lg font-semibold" style={{ color }}>{score}</p>
-      <p className="  uppercase text-[9px] tracking-[0.1em] text-muted">{label}</p>
+      <p className="  uppercase text-[11px] tracking-[0.1em] text-muted">{label}</p>
     </div>
   );
 }
