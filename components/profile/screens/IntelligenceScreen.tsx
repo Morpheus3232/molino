@@ -18,6 +18,7 @@ import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import ReadingNumber from "@/components/ui/ReadingNumber";
+import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
@@ -286,14 +287,16 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
           </div>
-          <MolinoInterpretation
-            profile={profile}
-            type="personal_profile"
-            dailyEnergy={dailyEnergy}
-            timing={timing ?? undefined}
-            label="Interpretación de Molino"
-            description="Análisis integrado de tu perfil personal"
-          />
+          <PremiumGate name={name} birthDate={birthDate}>
+            <MolinoInterpretation
+              profile={profile}
+              type="personal_profile"
+              dailyEnergy={dailyEnergy}
+              timing={timing ?? undefined}
+              label="Interpretación de Molino"
+              description="Análisis integrado de tu perfil personal"
+            />
+          </PremiumGate>
         </div>
       </section>
 

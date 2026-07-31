@@ -14,7 +14,6 @@ import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
 import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
-import PremiumGate from "@/components/profile/PremiumGate";
 
 const IdentityScreen = dynamic(() => import("@/components/profile/screens/IdentityScreen"), {
   loading: () => <LoadingState fullScreen={false} />,
@@ -179,9 +178,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     );
   }
 
-  const profileName = profile.name;
-  const profileBirthDate = profile.birthDate;
-
   return (
     <div className="min-h-screen bg-background">
       <main id="main-content">
@@ -215,21 +211,9 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               transition={{ duration: 0.2 }}
             >
               {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "world" && (
-                <PremiumGate name={profileName} birthDate={profileBirthDate}>
-                  <WorldScreen profile={profile} onNavigate={handleEnter} />
-                </PremiumGate>
-              )}
-              {activeTab === "circle" && (
-                <PremiumGate name={profileName} birthDate={profileBirthDate}>
-                  <CircleScreen profile={profile} onNavigate={handleEnter} />
-                </PremiumGate>
-              )}
-              {activeTab === "intelligence" && (
-                <PremiumGate name={profileName} birthDate={profileBirthDate}>
-                  <IntelligenceScreen profile={profile} onNavigate={handleEnter} />
-                </PremiumGate>
-              )}
+              {activeTab === "world" && <WorldScreen profile={profile} onNavigate={handleEnter} />}
+              {activeTab === "circle" && <CircleScreen profile={profile} onNavigate={handleEnter} />}
+              {activeTab === "intelligence" && <IntelligenceScreen profile={profile} onNavigate={handleEnter} />}
             </motion.div>
           )}
         </AnimatePresence>
