@@ -201,18 +201,33 @@ PRINCIPIOS:
 - Si un dato no está disponible, lo decís explícitamente.`;
 
   switch (type) {
-    case 'personal_profile':
+    case 'personal_profile': {
+      const dailyEnergy = context.dailyEnergy;
+      const timingCtx = context.timing;
       return `${rolePrompt}
 
 ${baseContext}
+${dailyEnergy ? `MOMENTO ACTUAL:
+- Score de energía de hoy: ${dailyEnergy.overallScore}/100
+- Tema del día: ${dailyEnergy.theme}` : ''}
+${timingCtx ? `TIMING (para la intención "${timingCtx.intention}" que el usuario eligió):
+- Score: ${timingCtx.timingScore}/100
+- Explicación: ${timingCtx.explanation}` : ''}
 
-TAREA: Interpretá el perfil personal completo del usuario.
+TAREA: Interpretá el perfil personal completo del usuario dentro de su mapa simbólico.
+
+IMPORTANTE:
+- El campo "timing" de tu respuesta debe explicar POR QUÉ el momento actual importa dentro
+  de la identidad del usuario (archetype, elemento) — no repitas el tema del año/día
+  personal como si fuera la novedad, eso ya se le mostró en otra sección.
+- Si no hay MOMENTO ACTUAL disponible, no inventes un score ni un tema.
+- Si no hay TIMING disponible, no menciones ninguna intención ni recomendación de timing.
 
 Generá una respuesta JSON con:
 {
   "summary": "Síntesis del perfil en 2-3 oraciones",
   "alignment": "Cómo los elementos del perfil se conectan entre sí",
-  "timing": "Qué sugieren los ciclos actuales",
+  "timing": "Por qué el momento actual importa dentro de la identidad del usuario",
   "strengths": ["fortaleza 1", "fortaleza 2", "fortaleza 3"],
   "tensions": ["tensión 1", "tensión 2"],
   "whatToConsider": ["consideración 1", "consideración 2"],
@@ -220,6 +235,7 @@ Generá una respuesta JSON con:
   "confidence": "Alta/Media/Baja - basado en los datos disponibles",
   "limitations": ["limitación 1"]
 }`;
+    }
 
     case 'daily_energy':
       const energy = context.dailyEnergy;
@@ -435,7 +451,9 @@ export async function generateIntelligenceInterpretation(
       summary: interpretation.narrative || '',
       alignment: interpretation.detailedInsights?.[0] || '',
       timing: interpretation.detailedInsights?.[1] || '',
-      strengths: interpretation.recommendations?.slice(0, 3) || [],
+      // recommendations[0] ya se usa en suggestedNextStep — strengths toma el resto
+      // para no repetir literalmente el mismo texto en dos bloques distintos.
+      strengths: interpretation.recommendations?.slice(1, 4) || [],
       tensions: interpretation.reflectionQuestions?.slice(0, 2) || [],
       whatToConsider: interpretation.detailedInsights?.slice(2, 5) || [],
       suggestedNextStep: interpretation.recommendations?.[0] || '',
@@ -468,12 +486,19 @@ export function generateFallbackInterpretation(
   let suggestedNextStep = '';
 
   switch (type) {
-    case 'personal_profile':
+    case 'personal_profile': {
+      const dailyEnergy = context.dailyEnergy;
       summary = `${userProfile.name} tiene un Life Path ${userProfile.lifePath} como ${userProfile.archetype}. Su elemento ${userProfile.element} y signo ${userProfile.sunSign} crean una personalidad única.`;
       alignment = `Los elementos de tu perfil se conectan a través de tu energía de ${userProfile.element} y tu enfoque de ${userProfile.archetype}.`;
-      timing = `Tu año personal (${cycles.personalYear}) indica ${yearTheme}. Tu día personal (${cycles.personalDay}) sugiere ${dayTheme}.`;
+      // Si hay energía del día real, explicamos por qué ese momento importa
+      // para esta identidad — el tema de año/día y la mecánica elemento→potencia/modula
+      // ya se comunican en Moment Insight, así que acá evitamos repetirlas literalmente.
+      timing = dailyEnergy
+        ? `El tono de ${dailyEnergy.theme.toLowerCase()} (${dailyEnergy.overallScore}/100) puede ser especialmente relevante para tu forma de desenvolverte desde tu ${userProfile.archetype}.`
+        : `Tu año personal (${cycles.personalYear}) indica ${yearTheme}. Tu día personal (${cycles.personalDay}) sugiere ${dayTheme}.`;
       suggestedNextStep = 'Explorá las diferentes capas de tu perfil para entender cómo se conectan.';
       break;
+    }
 
     case 'daily_energy':
       summary = `Hoy es un día de ${dayTheme}. Tu energía está orientada hacia la acción y la reflexión.`;

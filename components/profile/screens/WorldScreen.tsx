@@ -5,15 +5,10 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
-import { getTopAffinityHighlights, TIER_META } from "@/lib/engines/affinityEngine";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import { getTopAffinityHighlights, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { ENTITY_TYPES, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { formatAnimalSimple, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import {
-  buildPersonalRecommendations,
-  hasPositiveAffinity,
-  type PersonalRecommendation,
-} from "@/lib/engines/personalRecommendationEngine";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface WorldScreenProps {
@@ -26,20 +21,21 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const userAnimal = (profile.chineseZodiac ?? "") as string;
 
   const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
-  const map = useMemo(() => buildPersonalRecommendations(profile), [profile]);
 
-  // Get top 10 countries and top 10 brands with positive affinity only
+  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente
+  // que usa toda la superficie /affinity/*. "Positiva" = tier afinidad-media
+  // o mejor, el mismo umbral (score >= 60) que ya define getTierForScore.
   const topCountries = useMemo(
-    () => (map.byCategory["country"] ?? [])
-      .filter(r => hasPositiveAffinity(r.priority))
+    () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
+      .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 10),
-    [map]
+    [profile]
   );
   const topBrands = useMemo(
-    () => (map.byCategory["brand"] ?? [])
-      .filter(r => hasPositiveAffinity(r.priority))
+    () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
+      .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 10),
-    [map]
+    [profile]
   );
 
   const userDisplay = getZodiacDisplay(userAnimal);
@@ -152,7 +148,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           TOP MARCAS — Inline, grouped by category
           ═══════════════════════════════════════════════ */}
       {topBrands.length > 0 && (() => {
-        const grouped = topBrands.reduce<Record<string, PersonalRecommendation[]>>((acc, rec) => {
+        const grouped = topBrands.reduce<Record<string, AffinityResult[]>>((acc, rec) => {
           const cat = rec.entity.category || "Otros";
           if (!acc[cat]) acc[cat] = [];
           acc[cat].push(rec);
@@ -250,7 +246,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
    SUB-COMPONENTS
    ════════════════════════════════════════════════════ */
 
-function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: number }) {
+function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
   const router = useRouter();
   const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
   const animalDisplay = getZodiacDisplay(rec.entityAnimal);
@@ -274,7 +270,7 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
             <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
               {rec.entity.name}
             </h4>
-            <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
+            <span className="text-sm font-semibold text-muted">{rec.score}</span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
@@ -303,7 +299,7 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
   );
 }
 
-function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number }) {
+function BrandCard({ rec, index }: { rec: AffinityResult; index: number }) {
   const router = useRouter();
   const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
   const animalDisplay = getZodiacDisplay(rec.entityAnimal);
@@ -327,7 +323,7 @@ function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number 
             <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
               {rec.entity.name}
             </h4>
-            <span className="text-sm font-semibold text-muted">{rec.totalScore}</span>
+            <span className="text-sm font-semibold text-muted">{rec.score}</span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}

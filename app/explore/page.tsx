@@ -23,7 +23,7 @@ const SYSTEMS = [
     title: "Astrología",
     subtitle: "Los astros y tu energía",
     description:
-      "Tu signo solar, los planetas y las casas forman un mapa del cielo en el momento de tu nacimiento.",
+      "Tu signo solar y su elemento revelan cómo te mostrás al mundo y qué te mueve.",
     href: "/conocimiento/astrologia",
   },
   {
