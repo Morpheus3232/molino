@@ -15,7 +15,7 @@ import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
-import AffinityScoreGauge from "@/components/ui/AffinityScoreGauge";
+import ReadingNumber from "@/components/ui/ReadingNumber";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
@@ -486,19 +486,15 @@ function PremiumHero({
         </motion.div>
       </motion.div>
 
-      {/* Score Gauge — centered */}
-      <motion.div variants={staggerItem} className="flex justify-center mb-6">
-        <AffinityScoreGauge score={result.score} color={tierMeta.color} size={200} />
-      </motion.div>
-
-      {/* Tier badge */}
-      <motion.div variants={staggerItem} className="flex justify-center mb-4">
-        <span
-          className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-sm"
-          style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
-        >
-          {tierMeta.label}
-        </span>
+      {/* Score — número editorial, sin gauge ni badge */}
+      <motion.div variants={staggerItem} className="flex justify-center mb-6 text-center">
+        <ReadingNumber
+          value={result.score}
+          label={`Afinidad · ${meta.label}`}
+          color={tierMeta.color}
+          context={tierMeta.label}
+          size="xl"
+        />
       </motion.div>
 
       {/* Contextual explanation */}

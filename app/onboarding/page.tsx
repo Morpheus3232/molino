@@ -13,8 +13,8 @@ import { saveOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral
 
 const ENGINES_PREVIEW = [
   { icon: Hash, title: "Numerología", details: "Camino de Vida, Expresión, Alma, Personalidad" },
-  { icon: Sun, title: "Astrología", details: "Signo Solar, Lunar, Ascendente, Casas" },
-  { icon: Moon, title: "Zodíaco Chino", details: "Animal, Elemento, Pilares, Ciclo Sexagenario" },
+  { icon: Sun, title: "Astrología", details: "Signo Solar, Elemento, Modalidad" },
+  { icon: Moon, title: "Zodíaco Chino", details: "Animal, Elemento, Ciclo de 12 años" },
 ];
 
 export default function OnboardingPage() {
@@ -73,7 +73,7 @@ export default function OnboardingPage() {
           transition={{ duration: 0.4 }}
           className="text-center mb-10"
         >
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">
+          <p className="eyebrow-brutalist mb-3">
             Mapa personal de autoconocimiento
           </p>
           <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
@@ -132,10 +132,10 @@ export default function OnboardingPage() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.35 }}
         >
-          <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground text-center mb-4">
+          <p className="label-micro text-center mb-4">
             Qué vamos a analizar
           </p>
-          <div className="space-y-2" role="list" aria-label="Motores de análisis">
+          <div role="list" aria-label="Motores de análisis">
             {ENGINES_PREVIEW.map((engine, i) => (
               <motion.div
                 key={engine.title}
@@ -143,11 +143,9 @@ export default function OnboardingPage() {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: 0.4 + i * 0.07 }}
-                className="flex items-center gap-3 p-3.5 rounded-md border border-border bg-card shadow-sm"
+                className="flex items-center gap-3 py-3.5 border-b border-ink/10 last:border-b-0"
               >
-                <div className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-accent/10 text-accent flex-shrink-0">
-                  <engine.icon className="w-4 h-4" aria-hidden="true" />
-                </div>
+                <engine.icon className="w-4 h-4 text-accent flex-shrink-0" aria-hidden="true" />
                 <div>
                   <p className="font-heading uppercase text-sm font-semibold text-foreground">{engine.title}</p>
                   <p className="text-xs text-muted-foreground">{engine.details}</p>

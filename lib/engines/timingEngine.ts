@@ -231,14 +231,15 @@ function getChallengingDimensions(
 
 function getElementTimingInfluence(element: string, personalDay: number): string {
   const influences: Record<string, string> = {
-    Fuego: "Tu elemento aporta iniciativa y pasión. Potenciá tu energía natural.",
-    Tierra: "Tu elemento aporta estabilidad y prakticidad. Construí sobre bases sólidas.",
-    Aire: "Tu elemento aporta claridad mental y comunicación. Compartí ideas.",
-    Agua: "Tu elemento aporta intuición y empatía. Escuchá tu instinto.",
-    Metal: "Tu elemento aporta determinación y enfoque. Sí sé lo que importa.",
-    Madera: "Tu elemento aporta crecimiento y expansión. Abríte a nuevas posibilidades.",
+    Fuego: "aporta iniciativa y pasión. Potenciá tu energía natural.",
+    Tierra: "aporta estabilidad y prakticidad. Construí sobre bases sólidas.",
+    Aire: "aporta claridad mental y comunicación. Compartí ideas.",
+    Agua: "aporta intuición y empatía. Escuchá tu instinto.",
+    Metal: "aporta determinación y enfoque. Sabé lo que importa.",
+    Madera: "aporta crecimiento y expansión. Abríte a nuevas posibilidades.",
   };
-  return influences[element] || "Tu energía es única. Conocétela y usala a tu favor.";
+  const influence = influences[element] || "es única. Conocétela y usala a tu favor.";
+  return `Tu elemento ${element} ${influence}`;
 }
 
 function generateTimingExplanation(
@@ -264,7 +265,7 @@ function generateTimingExplanation(
 
   explanation += `Tu personal day (${personalDay}) aporta cualidades de ${getDayQuality(personalDay)}. `;
   explanation += `La fase lunar ${moonPhase.toLowerCase()} ${getMoonInfluence(moonPhase)}. `;
-  explanation += `Tu elemento ${profile.element} ${getElementTimingInfluence(profile.element, personalDay).toLowerCase()}`;
+  explanation += getElementTimingInfluence(profile.element, personalDay);
 
   return explanation;
 }

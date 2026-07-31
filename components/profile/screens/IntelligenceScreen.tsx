@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -12,14 +12,18 @@ import {
   buildSynthesisInsights,
   buildPatterns,
   buildDimensions,
+  buildMomentState,
 } from "@/lib/engines/synthesisEngine";
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
+import ReadingNumber from "@/components/ui/ReadingNumber";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
-import { analyzeTiming } from "@/lib/engines/timingEngine";
+import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
+import { loadTimingIntention } from "@/lib/session/timingIntention";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
@@ -49,7 +53,25 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   const synthesisInsights = useMemo(() => buildSynthesisInsights(profile), [profile]);
   const patterns = useMemo(() => buildPatterns(profile), [profile]);
   const dimensions = useMemo(() => buildDimensions(profile), [profile]);
-  const timing = useMemo(() => analyzeTiming(profile, new Date(), "start_project"), [profile]);
+
+  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
+  const momentState = useMemo(
+    () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
+    [profile, dailyEnergy]
+  );
+
+  // Lectura diferida a post-mount: loadTimingIntention() toca localStorage,
+  // que no existe en el render de servidor. Leerla durante el render
+  // produciria un mismatch de hidratacion entre servidor y cliente.
+  const [savedIntention, setSavedIntention] = useState<TimingIntention | null>(null);
+  useEffect(() => {
+    setSavedIntention(loadTimingIntention());
+  }, []);
+
+  const timing = useMemo(
+    () => (savedIntention ? analyzeTiming(profile, new Date(), savedIntention) : null),
+    [profile, savedIntention]
+  );
 
   return (
     <div
@@ -111,7 +133,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                       <p className="uppercase text-[10px] tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-semibold" style={{ color: elementColor }}>{dim.value}</p>
+                      <p className="text-base font-medium" style={{ color: elementColor }}>{dim.value}</p>
                       <p className="uppercase text-[9px] tracking-[0.15em] text-muted">/ 100</p>
                     </div>
                   </div>
@@ -145,24 +167,26 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             </div>
           </motion.div>
 
-          <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-px bg-ink/10">
+          <div className="space-y-0">
             {patterns.map((pattern, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="p-8 sm:p-10 bg-background"
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+                className="py-6 border-b border-ink/10 last:border-b-0"
               >
-                <p className="uppercase text-[10px] tracking-[0.25em] text-muted mb-4">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <p className="text-[10px] uppercase tracking-[0.25em] font-medium text-muted mb-2">{pattern.label}</p>
-                <p className="font-display text-xl sm:text-2xl mb-3" style={{ color: elementColor }}>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="uppercase text-[10px] tracking-[0.25em] text-muted">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.25em] font-medium text-muted">{pattern.label}</span>
+                </div>
+                <p className="font-display text-lg sm:text-xl mb-2" style={{ color: elementColor }}>
                   {pattern.keyword}
                 </p>
-                <p className="text-sm text-muted leading-relaxed mb-4">{pattern.description}</p>
+                <p className="text-sm text-muted leading-relaxed mb-3 max-w-2xl">{pattern.description}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {pattern.sources.map((src) => (
                     <span key={src} className="uppercase text-[9px] tracking-[0.15em] text-muted px-2 py-0.5 border border-ink/10">
@@ -224,6 +248,55 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         </div>
       </section>
 
+      {/* Tu momento */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <motion.div {...smoothReveal}>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+              <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu momento</h2>
+            </div>
+          </motion.div>
+          <div className="border border-ink/10 p-8 lg:p-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <ReadingNumber
+                value={momentState.energyScore}
+                label="Energía de hoy"
+                color={elementColor}
+                size="lg"
+              />
+              <div className="sm:text-right">
+                <p className="text-lg font-heading font-semibold text-foreground">{momentState.energyTheme}</p>
+                <p className="text-sm text-muted">{momentState.cycleName}</p>
+              </div>
+            </div>
+            <p className="text-sm text-foreground leading-relaxed">{momentState.narrative}</p>
+            <div className="flex items-center gap-3 mt-6 pt-6 border-t border-ink/10">
+              <span className="uppercase text-[10px] tracking-[0.15em] text-muted">Foco de hoy</span>
+              <span className="text-sm font-medium text-foreground">{momentState.focus}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tu interpretación */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
+          </div>
+          <MolinoInterpretation
+            profile={profile}
+            type="personal_profile"
+            dailyEnergy={dailyEnergy}
+            timing={timing ?? undefined}
+            label="Interpretación de Molino"
+            description="Análisis integrado de tu perfil personal"
+          />
+        </div>
+      </section>
+
       {/* Tu Próximo Movimiento */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -264,31 +337,14 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         </div>
       </section>
 
-      {/* Compartir + Interpretación */}
+      {/* Compartir */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</h2>
-              </div>
-              <ShareableImageCard profile={profile} currentTab="intelligence" />
-            </div>
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
-              </div>
-              <MolinoInterpretation
-                profile={profile}
-                type="personal_profile"
-                timing={timing}
-                label="Interpretación de Molino"
-                description="Análisis integrado de tu perfil personal"
-              />
-            </div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compartir</h2>
           </div>
+          <ShareableImageCard profile={profile} currentTab="intelligence" />
         </div>
       </section>
     </div>

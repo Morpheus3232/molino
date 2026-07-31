@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
+import { saveTimingIntention } from "@/lib/session/timingIntention";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
+import ReadingNumber from "@/components/ui/ReadingNumber";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
-import { getScoreColor } from "@/lib/utils/score";
+import { getScoreLabel } from "@/lib/utils/score";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
 
 const INTENTIONS: { id: TimingIntention; label: string; icon: string }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: "🚀" },
@@ -40,6 +43,8 @@ export default function TimingPage() {
     const date = new Date(selectedDate + 'T12:00:00');
     return analyzeTiming(profile, date, selectedIntention);
   }, [profile, selectedIntention, selectedDate]);
+
+  const elementColor = profile ? ELEMENT_COLORS[profile.element] || "var(--color-accent)" : "var(--color-accent)";
 
   const bestDates = useMemo(() => {
     if (!profile || !selectedIntention) return [];
@@ -104,7 +109,7 @@ export default function TimingPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
-                onClick={() => setSelectedIntention(intention.id)}
+                onClick={() => { setSelectedIntention(intention.id); saveTimingIntention(intention.id); }}
                 className="bg-background p-8 lg:p-12 text-left hover:bg-accent/5 transition-colors group"
               >
                 <span className="text-3xl block mb-4">{intention.icon}</span>
@@ -118,10 +123,15 @@ export default function TimingPage() {
           <>
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="border border-ink/10 p-6">
               <div className="flex items-center justify-between mb-4">
-                <p className="font-display text-lg text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl" aria-hidden="true">
+                    {INTENTIONS.find((i) => i.id === selectedIntention)?.icon}
+                  </span>
+                  <p className="font-display text-2xl text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
+                </div>
                 <button
                   onClick={() => { setSelectedIntention(null); setShowResults(false); }}
-                  className="text-xs text-muted hover:text-foreground transition-colors"
+                  className="text-xs text-muted hover:text-foreground transition-colors shrink-0"
                 >
                   Cambiar intención
                 </button>
@@ -142,12 +152,13 @@ export default function TimingPage() {
               <div className="space-y-px bg-ink/10 mt-6">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 lg:p-12">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                    <div>
-                      <p className="label-micro mb-1">Puntuación de timing</p>
-                      <p className={`text-5xl sm:text-6xl font-display font-bold tracking-tight ${getScoreColor(result.timingScore)}`}>
-                        {result.timingScore}<span className="text-3xl text-muted font-sans font-medium">/100</span>
-                      </p>
-                    </div>
+                    <ReadingNumber
+                      value={result.timingScore}
+                      label="Puntuación de timing"
+                      color={elementColor}
+                      context={getScoreLabel(result.timingScore)}
+                      size="xl"
+                    />
                     <div className="sm:text-right">
                       <p className="text-sm text-muted">Día personal: {result.personalDay}</p>
                       <p className="text-sm text-muted">Luna {result.moonPhase}</p>
@@ -229,7 +240,7 @@ export default function TimingPage() {
                         <p className="font-display text-base text-foreground">
                           {new Date(date.date + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
                         </p>
-                        <span className={`text-lg font-semibold ${getScoreColor(date.timingScore)}`}>
+                        <span className="text-lg font-semibold" style={{ color: elementColor }}>
                           {date.timingScore}%
                         </span>
                       </div>

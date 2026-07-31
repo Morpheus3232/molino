@@ -14,7 +14,7 @@ import {
 import type { UserProfile } from "@/types/user";
 import type { CompatibilityResult } from "@/lib/engines/compatibilityEngine";
 import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
-import type { TimingResult } from "@/lib/engines/timingEngine";
+import { INTENTION_LABELS, type TimingResult } from "@/lib/engines/timingEngine";
 import type { DecisionResult } from "@/lib/engines/decisionsEngine";
 import type { EntityProfile } from "@/lib/data/entities";
 
@@ -34,23 +34,23 @@ interface MolinoInterpretationProps {
 
 function LoadingSkeleton() {
   return (
-    <div className="space-y-4 animate-pulse">
+    <div className="animate-pulse">
       {/* Insight principal */}
-      <div className="p-6 rounded-md bg-background border border-border shadow-sm">
-        <div className="h-4 bg-border/50 rounded w-3/4 mb-3" />
+      <div className="pb-4">
+        <div className="h-5 bg-border/50 rounded w-3/4 mb-3" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-5/6" />
       </div>
 
       {/* Qué significa */}
-      <div className="p-4 rounded-md bg-background border border-border shadow-sm">
+      <div className="pt-4 border-t border-ink/10">
         <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-4/5" />
       </div>
 
       {/* Por qué importa */}
-      <div className="p-4 rounded-md bg-background border border-border shadow-sm">
+      <div className="pt-4 mt-4 border-t border-ink/10">
         <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-3/4" />
@@ -69,6 +69,7 @@ function LoadingSkeleton() {
  * 1. INSIGHT PRINCIPAL (summary)
  * 2. Qué significa (alignment)
  * 3. Por qué importa (timing/strengths)
+ * 3.5. Timing para [intención] — solo si se pasó un TimingResult real
  * 4. Recomendación práctica (suggestedNextStep)
  * 5. Próximo paso (whatToConsider)
  */
@@ -168,7 +169,7 @@ export default function MolinoInterpretation({
             <button
               type="button"
               onClick={() => getAIInterpretation(true)}
-              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-foreground font-medium px-2 py-0.5 rounded-md border border-border hover:border-foreground/20 transition-colors"
+              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors"
               aria-label="Regenerar interpretación"
             >
               Regenerar
@@ -200,16 +201,15 @@ export default function MolinoInterpretation({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="space-y-3"
           >
-            {/* 1. INSIGHT PRINCIPAL */}
+            {/* 1. INSIGHT PRINCIPAL — lede editorial, sin caja */}
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.4 }}
-              className="p-6 rounded-md bg-background border border-border shadow-sm"
+              className="pb-5"
             >
-              <p className="text-sm text-foreground leading-relaxed">{interpretation.summary}</p>
+              <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed">{interpretation.summary}</p>
             </motion.div>
 
             {/* 2. Qué significa */}
@@ -218,7 +218,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
-                className="p-4 rounded-md bg-background border border-border shadow-sm"
+                className="py-4 border-t border-ink/10"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
@@ -233,12 +233,27 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
-                className="p-4 rounded-md bg-background border border-border shadow-sm"
+                className="py-4 border-t border-ink/10"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{interpretation.timing}</p>
+              </motion.div>
+            )}
+
+            {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
+            {timing && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.4 }}
+                className="py-4 border-t border-ink/10"
+              >
+                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                  Timing para {INTENTION_LABELS[timing.intention]}
+                </p>
+                <p className="text-sm text-foreground leading-relaxed">{timing.explanation}</p>
               </motion.div>
             )}
 
@@ -248,7 +263,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
-                className="p-4 rounded-md bg-background border border-border shadow-sm"
+                className="py-4 border-t border-ink/10"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
                   {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
@@ -270,7 +285,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.4 }}
-                className="p-4 rounded-md bg-background border border-border shadow-sm"
+                className="py-4 border-t border-ink/10"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">
                   {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
@@ -286,18 +301,20 @@ export default function MolinoInterpretation({
               </motion.div>
             )}
 
-            {/* 4. Recomendación práctica */}
+            {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
             {interpretation.suggestedNextStep && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.4 }}
-                className="p-6 rounded-md bg-accent/5 border border-accent/20"
+                className="py-4 mt-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
-                  {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
-                </p>
-                <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
+                <div className="border-l-2 border-accent pl-4 sm:pl-6">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
+                    {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
+                  </p>
+                  <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
+                </div>
               </motion.div>
             )}
 
@@ -307,7 +324,7 @@ export default function MolinoInterpretation({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7, duration: 0.4 }}
-                className="p-4 rounded-md bg-background border border-border shadow-sm"
+                className="py-4 border-t border-ink/10"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
                 <ul className="space-y-1.5">
@@ -326,7 +343,7 @@ export default function MolinoInterpretation({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 0.4 }}
-              className="pt-3 border-t border-border"
+              className="pt-3 mt-4 border-t border-ink/10"
             >
               <p className="text-xs text-muted">
                 Confianza: {interpretation.confidence}
