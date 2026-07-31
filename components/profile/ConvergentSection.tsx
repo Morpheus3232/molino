@@ -3,71 +3,76 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
-import { buildConvergence, type Convergence } from "@/lib/engines/convergentEngine";
-import { staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { buildConvergence } from "@/lib/engines/convergentEngine";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 interface ConvergentSectionProps {
   profile: UserProfile;
 }
 
-const LEVEL_STYLES: Record<string, { color: string; icon: string }> = {
-  strong: { color: "#2D5A3D", icon: "🔥" },
-  moderate: { color: "#4A6FA5", icon: "🌊" },
-  low: { color: "#D4A843", icon: "🌿" },
-};
-
 export default function ConvergentSection({ profile }: ConvergentSectionProps) {
   const convergence = useMemo(() => buildConvergence(profile), [profile]);
-  const levelStyle = LEVEL_STYLES[convergence.convergenceLevel];
 
   return (
     <EditorialSection
+      tone="paperAlt"
       eyebrow="CONVERGENCIA"
       title={<>CUANDO TODOS TUS<br />PATRONES SE ENCUENTRAN.</>}
     >
-      {/* Convergence level card */}
-      <motion.div {...staggerApple} className="pt-8 space-y-4">
-        {/* Main convergence card */}
+      <div className="pt-4">
+        {/* El número — evidencia principal */}
         <motion.div
-          {...staggerItemSmooth}
-          className="p-6 lg:p-8 rounded-md border border-border bg-card shadow-sm"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5 }}
+          className="flex items-baseline gap-3 mb-6"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">{levelStyle.icon}</span>
-            <div>
-              <p className="text-sm font-semibold" style={{ color: levelStyle.color }}>
-                {convergence.message}
-              </p>
-              <p className="text-xs text-muted">
-                {convergence.convergentCount} de {convergence.totalLayers} capas convergentes
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-foreground leading-relaxed">
-            {convergence.insight}
-          </p>
+          <span className="font-display text-[clamp(5rem,18vw,10rem)] leading-[0.85] tracking-tight text-accent">
+            {convergence.convergentCount}
+          </span>
+          <span className="font-display text-2xl sm:text-3xl text-ink/30 leading-none">
+            / {convergence.totalLayers}
+          </span>
         </motion.div>
 
-        {/* Layer cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="label-micro text-muted mb-5"
+        >
+          Capas alineadas
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-lg text-foreground leading-relaxed max-w-2xl"
+        >
+          {convergence.insight}
+        </motion.p>
+
+        {/* Capas como evidencia — filas, sin tarjetas */}
+        <div className="mt-12">
           {convergence.layers.map((layer, i) => (
             <motion.div
               key={layer.id}
-              {...staggerItemSmooth}
-              transition={{ delay: staggerDelay(i, 0.08), duration: 0.3 }}
-              className="p-4 rounded-md border border-border bg-card/60 shadow-sm"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: i * 0.06, duration: 0.4 }}
+              className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/10 last:border-b-0"
             >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-lg">{layer.emoji}</span>
-                <span className="text-xs font-medium text-foreground">{layer.name}</span>
-              </div>
-              <p className="font-display text-xl font-bold text-foreground">{layer.value}</p>
-              <p className="text-[10px] text-muted mt-1">{layer.description}</p>
+              <span className="text-sm text-muted">{layer.name}</span>
+              <span className="font-display text-lg text-foreground">{layer.value}</span>
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
     </EditorialSection>
   );
 }

@@ -100,7 +100,7 @@ export default async function ProfilePage({ searchParams }: Props) {
     }
     try {
       const calculated = calculateUserProfile("", dob);
-      profile = buildProfile(calculated, "Visitante", dob);
+      profile = buildProfile(calculated, "", dob);
     } catch {}
   }
 
