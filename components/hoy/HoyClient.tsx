@@ -444,29 +444,6 @@ export default function HoyClient() {
             description="Análisis personalizado de tu día"
           />
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3"
-        >
-          <Button
-            variant="secondary"
-            fullWidth
-            onClick={() => router.push("/decisions")}
-          >
-            Analizar una decisión
-          </Button>
-          <Button
-            variant="ghost"
-            fullWidth
-            onClick={() => router.push("/profile")}
-          >
-            Ver mi mapa
-          </Button>
-        </motion.div>
       </main>
 
       <UniversityFooter />
