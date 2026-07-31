@@ -58,7 +58,7 @@ export default function HeroNew() {
               transition={{ duration: 0.5, delay: 0.15 }}
               className="text-base md:text-lg text-muted leading-relaxed max-w-lg mt-8"
             >
-              Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Gratis, sin registro, sin datos guardados.
+              Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Sin registro, sin datos guardados.
             </motion.p>
 
             <motion.div

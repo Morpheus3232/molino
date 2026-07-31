@@ -34,7 +34,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;
-  let name = "Visitante";
+  let name = "";
   let birthDate = dob || "";
 
   if (dataParam) {
@@ -99,7 +99,7 @@ export default async function ProfilePage({ searchParams }: Props) {
       return <ProfileClient serverProfile={null} initialTab={tab} futureDateError={true} />;
     }
     try {
-      const calculated = calculateUserProfile("Visitante", dob);
+      const calculated = calculateUserProfile("", dob);
       profile = buildProfile(calculated, "Visitante", dob);
     } catch {}
   }
