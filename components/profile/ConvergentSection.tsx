@@ -1,15 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
-import { buildConvergence } from "@/lib/engines/convergentEngine";
+import { fetchConvergence, type ConvergenceResult } from "@/lib/api/client";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 interface ConvergentSectionProps {
   profile: UserProfile;
 }
+
+const CONVERGENCE_CACHE = new Map<string, ConvergenceResult>();
 
 const SYSTEM_COLORS: Record<string, string> = {
   Numerología: "var(--element-fire)",
@@ -28,7 +30,51 @@ const SYSTEM_COLORS: Record<string, string> = {
  */
 export default function ConvergentSection({ profile }: ConvergentSectionProps) {
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
-  const convergence = useMemo(() => buildConvergence(profile), [profile]);
+
+  const cacheKey = `${profile.birthDate || ''}:${profile.name || ''}`;
+  const [convergence, setConvergence] = useState<ConvergenceResult | null>(
+    CONVERGENCE_CACHE.get(cacheKey) || null
+  );
+
+  useEffect(() => {
+    if (CONVERGENCE_CACHE.has(cacheKey)) {
+      setConvergence(CONVERGENCE_CACHE.get(cacheKey) || null);
+      return;
+    }
+
+    let cancelled = false;
+    fetchConvergence(profile.birthDate || '', profile.name || '')
+      .then((data) => {
+        if (!cancelled) {
+          CONVERGENCE_CACHE.set(cacheKey, data.convergence);
+          setConvergence(data.convergence);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("ConvergentSection: error fetching convergence:", err);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cacheKey]);
+
+  if (!convergence) {
+    return (
+      <EditorialSection
+        tone="paperAlt"
+        eyebrow="CONVERGENCIA"
+        title={<>TRES LECTURAS.<br />UNA MISMA DIRECCIÓN.</>}
+        intro="Distintos sistemas pueden llegar al mismo punto sobre tu perfil. Cuando lo hacen, ese punto vale la pena mirarlo."
+      >
+        <div className="pt-4">
+          <p className="text-sm text-muted">Calculando convergencia...</p>
+        </div>
+      </EditorialSection>
+    );
+  }
 
   return (
     <EditorialSection

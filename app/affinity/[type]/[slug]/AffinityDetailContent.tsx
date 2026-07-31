@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";

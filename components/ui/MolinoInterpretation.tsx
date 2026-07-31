@@ -2,14 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  buildMolinoContext,
-  generateIntelligenceInterpretation,
-  generateFallbackInterpretation,
-  type MolinoContext,
-  type InterpretationType,
-  type InterpretationRequest,
-  type MolinoInterpretation,
+import type {
+  InterpretationType,
+  MolinoInterpretation,
 } from "@/lib/engines/intelligenceEngine";
 import type { UserProfile } from "@/types/user";
 import type { CompatibilityResult } from "@/lib/engines/compatibilityEngine";
@@ -61,17 +56,17 @@ function LoadingSkeleton() {
 
 /**
  * Unified interpretation component for Molino.
- * 
+ *
  * Shows local fallback interpretation immediately, then attempts to get
  * AI interpretation when available. Falls back gracefully to local data.
- * 
+ *
  * Hierarchy:
  * 1. INSIGHT PRINCIPAL (summary)
  * 2. Qué significa (alignment)
  * 3. Por qué importa (timing/strengths)
  * 3.5. Timing para [intención] — solo si se pasó un TimingResult real
  * 4. Recomendación práctica (suggestedNextStep)
- * 5. Próximo paso (whatToConsider)
+ * 5. Qué considerar (whatToConsider)
  */
 export default function MolinoInterpretation({
   profile,
@@ -86,67 +81,79 @@ export default function MolinoInterpretation({
   label = "Interpretación de Molino",
   description,
 }: MolinoInterpretationProps) {
-  const [localInterpretation, setLocalInterpretation] = useState<MolinoInterpretation | null>(null);
+  const [fallbackInterpretation, setFallbackInterpretation] = useState<MolinoInterpretation | null>(null);
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretation | null>(null);
   const [isInterpreting, setIsInterpreting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasAttemptedAI, setHasAttemptedAI] = useState(false);
 
-  // Build context from available data
-  const context: MolinoContext = buildMolinoContext(profile, {
+  const fetchInterpretation = useCallback(async () => {
+    if (hasAttemptedAI) return;
+    setIsInterpreting(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/intelligence/interpret', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type,
+          dob: profile.birthDate,
+          name: profile.name,
+          dailyEnergy,
+          timing,
+          compatibility,
+          entity,
+          decision,
+          question,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      setFallbackInterpretation(data.fallback || null);
+      if (data.ai) {
+        setAiInterpretation(data.ai);
+      } else if (data.error) {
+        setError(data.error);
+      }
+      setHasAttemptedAI(true);
+    } catch (err) {
+      console.error("Error getting interpretation:", err);
+      setError("No se pudo obtener la interpretación. Mostrando datos locales.");
+      setHasAttemptedAI(true);
+    } finally {
+      setIsInterpreting(false);
+    }
+  }, [
+    type,
+    profile.birthDate,
+    profile.name,
     dailyEnergy,
     timing,
     compatibility,
     entity,
     decision,
-  });
+    question,
+    hasAttemptedAI,
+  ]);
 
-  // Generate local fallback interpretation immediately
-  useEffect(() => {
-    if (showFallbackImmediately && !localInterpretation) {
-      const fallback = generateFallbackInterpretation({
-        type,
-        context,
-        question,
-      });
-      setLocalInterpretation(fallback);
-    }
-  }, [type, context, question, showFallbackImmediately]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Get AI interpretation
-  const getAIInterpretation = useCallback(async (retry = false) => {
-    if (isInterpreting) return;
-    setIsInterpreting(true);
-    setError(null);
-    if (retry) setAiInterpretation(null);
-
-    try {
-      const request: InterpretationRequest = {
-        type,
-        context,
-        question,
-      };
-      const interp = await generateIntelligenceInterpretation(request);
-      setAiInterpretation(interp);
-      setHasAttemptedAI(true);
-    } catch (err) {
-      console.error("Error getting AI interpretation:", err);
-      setError("No se pudo obtener la interpretación de IA. Mostrando datos locales.");
-      setHasAttemptedAI(true);
-    } finally {
-      setIsInterpreting(false);
-    }
-  }, [type, context, question, isInterpreting]);
-
-  // Auto-fetch AI interpretation on mount
   useEffect(() => {
     if (!hasAttemptedAI) {
-      getAIInterpretation();
+      fetchInterpretation();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetchInterpretation, hasAttemptedAI]);
 
-  // Use AI interpretation if available, otherwise fallback
-  const interpretation = aiInterpretation || localInterpretation;
+  const handleRegenerate = useCallback(() => {
+    setAiInterpretation(null);
+    fetchInterpretation();
+  }, [fetchInterpretation]);
+
+  const interpretation = aiInterpretation || fallbackInterpretation;
   const isUsingAI = !!aiInterpretation;
 
   return (
@@ -168,7 +175,7 @@ export default function MolinoInterpretation({
           {hasAttemptedAI && !isInterpreting && (
             <button
               type="button"
-              onClick={() => getAIInterpretation(true)}
+              onClick={handleRegenerate}
               className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors"
               aria-label="Regenerar interpretación"
             >
@@ -360,7 +367,7 @@ export default function MolinoInterpretation({
           <p className="text-sm text-yellow-700 mb-2">{error}</p>
           <button
             type="button"
-            onClick={() => getAIInterpretation(true)}
+            onClick={handleRegenerate}
             className="text-xs text-yellow-800 underline hover:no-underline"
           >
             Reintentar

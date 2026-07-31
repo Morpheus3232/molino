@@ -40,6 +40,9 @@ function cleanUrlParams() {
   url.searchParams.delete('collection_status');
   url.searchParams.delete('external_reference');
   url.searchParams.delete('preference_id');
+  url.searchParams.delete('payment_method');
+  url.searchParams.delete('token');
+  url.searchParams.delete('PayerID');
   window.history.replaceState({}, '', url.pathname + url.search);
 }
 
@@ -56,6 +59,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutMethod, setCheckoutMethod] = useState<'mercadopago' | 'paypal' | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
 
@@ -75,7 +79,36 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
   useEffect(() => {
     const paymentStatus = getSearchParam('payment_status');
+    const paymentMethod = getSearchParam('payment_method');
+    const paypalOrderId = getSearchParam('token');
     const paymentId = getSearchParam('payment_id') || getSearchParam('collection_id');
+
+    if (paymentStatus === 'approved' && paymentMethod === 'paypal' && paypalOrderId) {
+      setState('verifying');
+
+      fetch('/api/paypal/capture-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: paypalOrderId, name, birthDate }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.verified) {
+            setState('unlocked');
+            analytics.trackPaymentApproved(paypalOrderId, 'paypal');
+            analytics.trackPremiumUnlocked();
+            cleanUrlParams();
+          } else {
+            setPayError(data.reason || 'No se pudo confirmar el pago de PayPal');
+            setState('pay_error');
+          }
+        })
+        .catch(() => {
+          setPayError('Error al confirmar el pago de PayPal');
+          setState('pay_error');
+        });
+      return;
+    }
 
     if (paymentStatus === 'approved' && paymentId) {
       setState('verifying');
@@ -141,12 +174,31 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     };
   }, [state, checkServer]);
 
-  const handleCheckout = async () => {
-    analytics.trackCheckoutStarted('USD');
+  const handleCheckout = async (method: 'mercadopago' | 'paypal') => {
+    analytics.trackCheckoutStarted('USD', method);
+    setCheckoutMethod(method);
     setCheckoutLoading(true);
     setPayError(null);
+    setState('paying');
 
     try {
+      if (method === 'paypal') {
+        const res = await fetch('/api/paypal/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, birthDate }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Error al crear el pago');
+        }
+
+        const data = await res.json();
+        window.location.href = data.approveUrl;
+        return;
+      }
+
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -176,12 +228,22 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     setRecoverError(null);
 
     try {
-      const res = await fetch('/api/mp/recover', {
+      let res = await fetch('/api/mp/recover', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate }),
       });
-      const data = await res.json();
+      let data = await res.json();
+
+      if (!res.ok && data && !data.verified) {
+        res = await fetch('/api/paypal/recover', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate }),
+        });
+        data = await res.json();
+      }
+
       if (res.ok && data.verified) {
         setState('unlocked');
         analytics.trackPremiumUnlocked();
@@ -272,17 +334,33 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
               <p className="text-sm text-muted mb-8">Pago único · acceso permanente</p>
 
-              <Button
-                variant="accent"
-                size="lg"
-                className="w-full sm:w-auto"
-                onClick={() => {
-                  analytics.trackCheckoutStarted('USD');
-                  setState('paying');
-                }}
-              >
-                Ver mi síntesis completa
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  variant="accent"
+                  size="lg"
+                  fullWidth
+                  onClick={() => handleCheckout('mercadopago')}
+                >
+                  Pagar con Mercado Pago
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-4 my-6" aria-hidden="true">
+                <span className="h-px flex-1 bg-ink/10" />
+                <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
+                <span className="h-px flex-1 bg-ink/10" />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  fullWidth
+                  onClick={() => handleCheckout('paypal')}
+                >
+                  Pagar con PayPal
+                </Button>
+              </div>
             </div>
 
             <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
@@ -296,7 +374,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 </button>
               ) : (
                 <form onSubmit={handleRecover} className="space-y-2 max-w-xs">
-                  <label className="text-xs text-muted block">ID de pago de Mercado Pago:</label>
+                  <label className="text-xs text-muted block">ID de pago (Mercado Pago o PayPal):</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
@@ -368,22 +446,28 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
           <AnimatePresence mode="wait">
             {state === 'paying' && (
               <motion.div key="paying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-                <p className="label-micro mb-3">Pago seguro · Mercado Pago</p>
+                <p className="label-micro mb-3">Pago seguro · {checkoutMethod === 'paypal' ? 'PayPal' : 'Mercado Pago'}</p>
                 <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Tu síntesis completa</h3>
                 <p className="text-sm text-muted mb-6">Pago único · Acceso permanente</p>
 
                 {checkoutLoading ? (
                   <div className="flex flex-col items-center py-12 gap-3">
                     <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
-                    <p className="text-sm text-muted">Redirigiendo a Mercado Pago...</p>
+                    <p className="text-sm text-muted">
+                      Redirigiendo a {checkoutMethod === 'paypal' ? 'PayPal' : 'Mercado Pago'}...
+                    </p>
                   </div>
                 ) : (
                   <div>
                     <p className="text-sm text-muted leading-relaxed mb-6">
-                      Vas a ser redirigido a Mercado Pago para completar el pago de forma segura.
+                      Vas a ser redirigido para completar el pago de forma segura.
                       Cuando termines, volvés automáticamente para ver tu síntesis.
                     </p>
-                    <Button variant="accent" size="lg" onClick={handleCheckout}>
+                    <Button
+                      variant="accent"
+                      size="lg"
+                      onClick={() => handleCheckout(checkoutMethod ?? 'mercadopago')}
+                    >
                       Ir a pagar ${PRICE_USD} USD
                     </Button>
                   </div>
