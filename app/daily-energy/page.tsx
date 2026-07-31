@@ -71,7 +71,25 @@ export default function DailyEnergyPage() {
     );
   }
 
-  if (!energy) return null;
+  if (!energy) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
+          <p className="eyebrow-brutalist mb-4">Energía Diaria</p>
+          <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
+            No pudimos calcular tu energía de hoy
+          </h1>
+          <p className="text-muted mb-8 max-w-md mx-auto">
+            Puede ser un problema temporal con tu perfil guardado. Probá recargar la página o revisar tu mapa.
+          </p>
+          <Button variant="primary" size="lg" onClick={() => router.push("/profile")}>
+            Ver mi perfil
+          </Button>
+        </div>
+        <UniversityFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
