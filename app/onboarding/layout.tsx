@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Descubrí tu Mapa Personal",
   description:
-    "Ingresá tu fecha de nacimiento y descubrí tu perfil de Inteligencia Personal. Gratis, sin registro. Explorá tu identidad simbólica en Molino.",
+    "Ingresá tu fecha de nacimiento y descubrí tu perfil de Inteligencia Personal. Sin registro, sin datos guardados. Explorá tu identidad simbólica en Molino.",
   openGraph: {
     title: "Descubrí tu Mapa Personal | Molino",
     description:
