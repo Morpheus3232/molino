@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
 import { getSession } from "@/lib/session/ephemeral";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/session/discovery";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";

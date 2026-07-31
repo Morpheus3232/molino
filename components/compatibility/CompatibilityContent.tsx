@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import { fetchCompatibility } from "@/lib/api/client";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { generateMatchStory, type MatchStory } from "@/lib/engines/storyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -22,16 +22,26 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
-  const compat = useMemo(() => {
-    if (!profile) return null;
-    return calculateCompatibility(profile, {
+  const [compat, setCompat] = useState<any>(null);
+
+  useEffect(() => {
+    if (!profile) return;
+    let cancelled = false;
+    fetchCompatibility(profile.birthDate, {
       lifePath: entity.symbolism.lifePath || 5,
       sunSign: entity.symbolism.sunSign,
       chineseZodiac: entity.symbolism.chineseZodiac,
       archetype: entity.symbolism.archetype,
       element: entity.symbolism.element,
       name: entity.name,
-    });
+    })
+      .then((data) => {
+        if (!cancelled) setCompat(data);
+      })
+      .catch((err) => {
+        if (!cancelled) console.error("Compatibility error:", err);
+      });
+    return () => { cancelled = true; };
   }, [profile, entity]);
 
   const dailyEnergy = useMemo(() => {

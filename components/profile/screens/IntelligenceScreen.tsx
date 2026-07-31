@@ -8,16 +8,7 @@ import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
-import {
-  buildSynthesisInsights,
-  buildPatterns,
-  buildDimensions,
-} from "@/lib/engines/synthesisEngine";
-import {
-  buildMolinoContext,
-  generateFallbackInterpretation,
-  type InterpretationRequest,
-} from "@/lib/engines/intelligenceEngine";
+import { fetchSynthesis, fetchInterpretation, type SynthesisResult, type MolinoInterpretationResult } from "@/lib/api/client";
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -56,15 +47,10 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   const archetype = ARCHETYPES[lifePath];
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
-  const synthesisInsights = useMemo(() => buildSynthesisInsights(profile), [profile]);
-  const patterns = useMemo(() => buildPatterns(profile), [profile]);
-  const dimensions = useMemo(() => buildDimensions(profile), [profile]);
-
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
 
   // Lectura diferida a post-mount: loadTimingIntention() toca localStorage,
-  // que no existe en el render de servidor. Leerla durante el render
-  // produciria un mismatch de hidratacion entre servidor y cliente.
+  // que no existe en el render de servidor.
   const [savedIntention, setSavedIntention] = useState<TimingIntention | null>(null);
   useEffect(() => {
     setSavedIntention(loadTimingIntention());
@@ -77,11 +63,40 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
   const [showPremiumGate, setShowPremiumGate] = useState(false);
 
-  const previewInterpretation = useMemo(() => {
-    const context = buildMolinoContext(profile, { dailyEnergy, timing: timing ?? undefined });
-    const request: InterpretationRequest = { type: 'personal_profile', context };
-    return generateFallbackInterpretation(request);
-  }, [profile, dailyEnergy, timing]);
+  const [synthesisData, setSynthesisData] = useState<SynthesisResult | null>(null);
+  const [previewInterpretation, setPreviewInterpretation] = useState<MolinoInterpretationResult | null>(null);
+  const [synthesisError, setSynthesisError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!birthDate) return;
+    let cancelled = false;
+    fetchSynthesis(birthDate, name, true)
+      .then((data) => {
+        if (!cancelled) {
+          setSynthesisData(data);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) setSynthesisError(err.message);
+      });
+    return () => { cancelled = true; };
+  }, [birthDate, name]);
+
+  useEffect(() => {
+    if (!dailyEnergy || !timing || !birthDate) return;
+    let cancelled = false;
+    fetchInterpretation("personal_profile", birthDate, name, { dailyEnergy, timing })
+      .then((data) => {
+        if (!cancelled) setPreviewInterpretation(data.fallback || null);
+      })
+      .catch((err) => {
+        if (!cancelled) console.error("Interpretation error:", err);
+      });
+    return () => { cancelled = true; };
+  }, [birthDate, name, dailyEnergy, timing]);
+
+  const dimensions = synthesisData?.dimensions || [];
+  const patterns = synthesisData?.patterns || [];
 
   return (
     <div
@@ -271,18 +286,24 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
           </div>
           {!showPremiumGate ? (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              <div className="space-y-4 pb-4">
-                <p className="font-heading text-lg text-foreground leading-relaxed">{previewInterpretation.summary}</p>
-                <div className="pt-4 border-t border-ink/10">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
-                  <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.alignment}</p>
-                </div>
-                <div className="pt-4 border-t border-ink/10">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
-                  <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.timing}</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted mb-4">Una lectura que conecta lo que tus números, tu cielo y tus ciclos dicen en conjunto.</p>
+              {previewInterpretation ? (
+                <>
+                  <div className="space-y-4 pb-4">
+                    <p className="font-heading text-lg text-foreground leading-relaxed">{previewInterpretation.summary}</p>
+                    <div className="pt-4 border-t border-ink/10">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
+                      <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.alignment}</p>
+                    </div>
+                    <div className="pt-4 border-t border-ink/10">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
+                      <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.timing}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted mb-4">Una lectura que conecta lo que tus números, tu cielo y tus ciclos dicen en conjunto.</p>
+                </>
+              ) : (
+                <p className="text-sm text-muted mb-4">Cargando interpretación...</p>
+              )}
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 mb-6">
                 <span className="font-display text-3xl sm:text-4xl tracking-tight text-foreground">$8 USD</span>
                 <span className="text-sm text-muted">Pago único · acceso permanente</span>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { decodeProfileData } from "@/lib/utils/profileShare";
 import ProfileClient from "@/components/profile/ProfileClient";
 import type { UserProfile } from "@/types/user";

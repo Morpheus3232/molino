@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { UserProfile } from "@/types/user";
 import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import type { TimingResult } from "@/lib/engines/timingEngine";
-import { buildMomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation } from "@/lib/utils/orientation";
+import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 interface MomentOrientationProps {
@@ -14,34 +14,80 @@ interface MomentOrientationProps {
   timing?: TimingResult | null;
 }
 
+const MOMENT_CACHE = new Map<string, SynthesisResult["momentState"]>();
+
 /**
- * TU MOMENTO / ORIENTACIÓN.
+ * TU MOMENTO / ORIENTACI&#211;N.
  *
- * Una sola respuesta editorial: qué conviene tener en cuenta ahora. Reutiliza
- * la energía diaria, el estado de momento y el timing que Molino ya calcula.
+ * Una sola respuesta editorial: qu&#233; conviene tener en cuenta ahora. Reutiliza
+ * la energ&#237;a diaria, el estado de momento y el timing que Molino ya calcula.
  */
 export default function MomentOrientation({ profile, dailyEnergy, timing }: MomentOrientationProps) {
-  const momentState = useMemo(
-    () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
-    [profile, dailyEnergy]
+  const cacheKey = `${profile.birthDate || ""}:${profile.name || ""}`;
+  const [momentState, setMomentState] = useState<SynthesisResult["momentState"] | null>(
+    MOMENT_CACHE.get(cacheKey) || null
   );
+
+  useEffect(() => {
+    if (MOMENT_CACHE.has(cacheKey)) {
+      setMomentState(MOMENT_CACHE.get(cacheKey) || null);
+      return;
+    }
+
+    let cancelled = false;
+    fetchSynthesis(profile.birthDate || "", profile.name || "", true)
+      .then((data) => {
+        if (!cancelled && data.momentState) {
+          MOMENT_CACHE.set(cacheKey, data.momentState);
+          setMomentState(data.momentState);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("MomentOrientation: error fetching moment state:", err);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cacheKey]);
+
   const orientation = useMemo(
-    () => buildOrientation(dailyEnergy, momentState, timing),
+    () =>
+      momentState
+        ? buildOrientation(dailyEnergy, momentState, timing)
+        : buildOrientation(dailyEnergy, undefined as any, timing),
     [dailyEnergy, momentState, timing]
   );
+
+  if (!momentState) {
+    return (
+      <EditorialSection
+        tone="ink"
+        eyebrow="TU MOMENTO"
+        title={<>Cargando...</>}
+        intro="Calculando tu momento actual..."
+      >
+        <div className="pt-4">
+          <p className="text-sm text-muted">Un momento mientras preparamos tu orientaci&#243;n.</p>
+        </div>
+      </EditorialSection>
+    );
+  }
 
   return (
     <EditorialSection
       tone="ink"
       eyebrow="TU MOMENTO"
-      title={<>{orientation.dateLabel.toUpperCase()}</>}
+      title={<> {orientation.dateLabel.toUpperCase()}</>}
       intro={orientation.theme}
     >
       <div className="pt-4">
         <p className="text-base text-paper/75 leading-relaxed max-w-2xl">{orientation.expression}</p>
 
         <div className="mt-10 border-l-2 border-accent pl-5 sm:pl-8">
-          <p className="label-micro text-accent font-semibold mb-2">ORIENTACIÓN</p>
+          <p className="label-micro text-accent font-semibold mb-2">ORIENTACI&#211;N</p>
           <p className="font-heading text-xl sm:text-2xl text-paper leading-relaxed max-w-2xl">
             {orientation.orientation}
           </p>

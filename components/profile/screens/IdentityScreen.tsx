@@ -1,14 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import {
-  buildPersonalCode,
-} from "@/lib/engines/synthesisEngine";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
+import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { calculateLuckyNumber } from "@/lib/calculations";
@@ -21,6 +19,8 @@ import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import CalculationProof from "@/components/shared/CalculationProof";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
+
+const PERSONAL_CODE_CACHE = new Map<string, SynthesisResult["personalCode"]>();
 
 interface IdentityScreenProps {
   profile: UserProfile;
@@ -36,7 +36,36 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const chineseElement = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
   const archetype = ARCHETYPES[lifePath];
 
-  const personalCode = useMemo(() => buildPersonalCode(profile), [profile]);
+  const cacheKey = `${profile.birthDate || ""}:${profile.name || ""}`;
+  const [personalCode, setPersonalCode] = useState<SynthesisResult["personalCode"] | null>(
+    PERSONAL_CODE_CACHE.get(cacheKey) || null
+  );
+
+  useEffect(() => {
+    if (PERSONAL_CODE_CACHE.has(cacheKey)) {
+      setPersonalCode(PERSONAL_CODE_CACHE.get(cacheKey) || null);
+      return;
+    }
+
+    let cancelled = false;
+    fetchSynthesis(profile.birthDate || "", profile.name || "")
+      .then((data) => {
+        if (!cancelled) {
+          PERSONAL_CODE_CACHE.set(cacheKey, data.personalCode);
+          setPersonalCode(data.personalCode);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("IdentityScreen: error fetching personal code:", err);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cacheKey]);
+
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
   const birthParts = useMemo(() => {
@@ -91,11 +120,26 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
     ? `Tu Camino de Vida ${lifePath} te marca como ${archetype.name.toLowerCase()} (${archetype.keywords.slice(0, 3).join(", ").toLowerCase()}).`
     : `Tu Camino de Vida ${lifePath} define el eje de tu recorrido.`;
 
+  if (!personalCode) {
+    return (
+      <div
+        id="panel-identity"
+        role="tabpanel"
+        aria-labelledby="tab-identity"
+        className="bg-background"
+      >
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
+          <p className="text-sm text-muted">Calculando tu código personal...</p>
+        </div>
+      </div>
+    );
+  }
+
   // TU CÓDIGO — rows for the name-derived numbers ("—" when no name)
   const codeRows = [
-    { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode.expression.name },
-    { label: "Alma", number: profile.soulNumber ?? null, name: personalCode.soul.name },
-    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode.personality.name },
+    { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode?.expression?.name || "" },
+    { label: "Alma", number: profile.soulNumber ?? null, name: personalCode?.soul?.name || "" },
+    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode?.personality?.name || "" },
   ];
 
   return (

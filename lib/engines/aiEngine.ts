@@ -1,4 +1,4 @@
-import { CompatibilityResult, UserProfile } from './compatibilityEngine';
+import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
 
 export interface AIInterpretation {
   narrative: string;

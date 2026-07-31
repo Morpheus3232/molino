@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
-import { buildDateDimensions } from "@/lib/engines/synthesisEngine";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
+import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
@@ -14,6 +14,8 @@ interface DimensionsPreviewProps {
   /** Fecha en formato YYYY-MM-DD. Debe estar ya validada. */
   birthDate: string;
 }
+
+const DIMENSIONS_PREVIEW_CACHE = new Map<string, SynthesisResult['dimensions']>();
 
 /**
  * Adelanto de "Tus dimensiones" en el onboarding: en cuanto la fecha es
@@ -23,20 +25,76 @@ interface DimensionsPreviewProps {
  */
 export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [dimensions, setDimensions] = useState<SynthesisResult['dimensions'] | null>(
+    DIMENSIONS_PREVIEW_CACHE.get(birthDate) || null
+  );
 
-  const { dimensions, elementColor } = useMemo(() => {
-    const profile = calculateUserProfile("", birthDate);
-    const element = typeof profile.element === "string" ? profile.element : "";
-    return {
-      dimensions: buildDateDimensions(profile),
-      elementColor: ELEMENT_COLORS[element as keyof typeof ELEMENT_COLORS] ?? "var(--color-accent)",
+  const profile = useMemo(() => calculateUserProfile("", birthDate), [birthDate]);
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const elementColor = ELEMENT_COLORS[element as keyof typeof ELEMENT_COLORS] ?? "var(--color-accent)";
+
+  useEffect(() => {
+    if (DIMENSIONS_PREVIEW_CACHE.has(birthDate)) {
+      setDimensions(DIMENSIONS_PREVIEW_CACHE.get(birthDate) || null);
+      return;
+    }
+
+    let cancelled = false;
+    fetchSynthesis(birthDate, "")
+      .then((data) => {
+        if (!cancelled) {
+          const dims = data.dimensions;
+          DIMENSIONS_PREVIEW_CACHE.set(birthDate, dims);
+          setDimensions(dims);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error("DimensionsPreview: error fetching synthesis:", err);
+        }
+      });
+
+    return () => {
+      cancelled = true;
     };
   }, [birthDate]);
 
   const radarData = useMemo(
-    () => dimensions.map((d) => ({ subject: d.dimension, value: d.value })),
+    () => (dimensions || []).map((d) => ({ subject: d.dimension, value: d.value })),
     [dimensions]
   );
+
+  if (!dimensions) {
+    return (
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="mb-10"
+        aria-labelledby="dimensions-preview-heading"
+      >
+        <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
+          <div className="px-6 pt-6 pb-2 text-center">
+            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-accent mb-2">
+              Adelanto
+            </p>
+            <h2
+              id="dimensions-preview-heading"
+              className="font-display text-2xl sm:text-3xl tracking-tight text-foreground"
+            >
+              TUS DIMENSIONES
+            </h2>
+            <p className="text-sm text-muted mt-2">
+              Una síntesis simbólica, no una medición científica.
+            </p>
+          </div>
+          <div className="p-6 text-center">
+            <p className="text-sm text-muted">Calculando dimensiones...</p>
+          </div>
+        </div>
+      </motion.section>
+    );
+  }
 
   return (
     <motion.section

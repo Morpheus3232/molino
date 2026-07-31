@@ -1,0 +1,660 @@
+From 3caf6dcba64d4e0dcf1b8b2a9b1b5244a02e5fe3 Mon Sep 17 00:00:00 2001
+From: Molino Dev <dev@molino.app>
+Date: Thu, 30 Jul 2026 07:12:28 +0000
+Subject: [PATCH 1/3] fix(seo): re-aplicar alternates.canonical en 22 paginas
+ sobre el estado real de origin/main
+
+El fix de canonical se habia hecho en una sesion anterior pero nunca
+se pusheo a GitHub -- mientras tanto el trabajo siguio en paralelo
+directo sobre el repo (OpenCode) desde el mismo punto de partida, asi
+que el bug seguia intacto en el remoto real. Se realinea la copia
+local a origin/main (git reset --hard) y se re-aplica el fix sobre
+ese estado actualizado.
+
+22 paginas corregidas: 14 con export const metadata estatico
+(filosofia, guia, guia/camino-de-vida-7, biblioteca, profile/insights,
+method, affinity/recommendations/{brands,countries}, academy,
+docs/motores, conocimiento/{zodiaco-chino,astrologia,numerologia,fuentes})
+y 8 con generateMetadata dinamico (profile, compatibility/[entity],
+affinity/[type], affinity/[type]/[slug], affinity/compare/[slugA]/[slugB],
+conocimiento/{zodiaco-chino,astrologia,numerologia}/[detalle]).
+
+De paso: profile/page.tsx con robots noindex para perfiles con datos
+personales (?dob= o ?data=), y og-image.svg viejo reemplazado por el
+PNG dinamico de opengraph-image.tsx en affinity/[type]/[slug] y
+affinity/compare/*.
+
+Trabajo previo respaldado en la rama backup-sandbox-work antes de
+resetear main a origin/main.
+
+608/608 tests OK, typecheck limpio.
+---
+ app/academy/page.tsx                             |  5 +++++
+ app/affinity/[type]/[slug]/page.tsx              | 15 +++++++--------
+ app/affinity/[type]/page.tsx                     |  5 +++++
+ app/affinity/compare/[slugA]/[slugB]/page.tsx    | 13 +++++--------
+ app/affinity/recommendations/brands/page.tsx     |  5 +++++
+ app/affinity/recommendations/countries/page.tsx  |  5 +++++
+ app/biblioteca/page.tsx                          |  4 ++++
+ app/compatibility/[entity]/page.tsx              |  5 +++++
+ app/conocimiento/astrologia/[signo]/page.tsx     |  4 ++++
+ app/conocimiento/astrologia/page.tsx             |  4 ++++
+ app/conocimiento/fuentes/page.tsx                |  4 ++++
+ app/conocimiento/numerologia/[numero]/page.tsx   |  4 ++++
+ app/conocimiento/numerologia/page.tsx            |  4 ++++
+ app/conocimiento/zodiaco-chino/[animal]/page.tsx |  4 ++++
+ app/conocimiento/zodiaco-chino/page.tsx          |  4 ++++
+ app/docs/motores/page.tsx                        |  4 ++++
+ app/filosofia/page.tsx                           |  4 ++++
+ app/guia/camino-de-vida-7/page.tsx               |  4 ++++
+ app/guia/page.tsx                                |  5 +++++
+ app/method/page.tsx                              |  5 +++++
+ app/profile/insights/page.tsx                    |  5 +++++
+ app/profile/page.tsx                             |  7 +++++++
+ 22 files changed, 103 insertions(+), 16 deletions(-)
+
+diff --git a/app/academy/page.tsx b/app/academy/page.tsx
+index e022006..819e2e0 100644
+--- a/app/academy/page.tsx
++++ b/app/academy/page.tsx
+@@ -1,13 +1,18 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import AcademyContent from "./AcademyContent";
+ 
+ export const metadata: Metadata = {
+   title: "La Academia | Inteligencia Personal — Molino",
+   description: "Descubrí la historia de las tradiciones simbólicas: desde Babilonia y Pitágoras hasta el zodíaco chino moderno.",
++  alternates: {
++    canonical: siteUrl("/academy"),
++  },
+   openGraph: {
+     title: "La Academia — Molino",
+     description: "La historia de las tradiciones simbólicas que alimentan la Inteligencia Personal.",
+     type: "website",
++    url: siteUrl("/academy"),
+   },
+ };
+ 
+diff --git a/app/affinity/[type]/[slug]/page.tsx b/app/affinity/[type]/[slug]/page.tsx
+index 91e7449..277859c 100644
+--- a/app/affinity/[type]/[slug]/page.tsx
++++ b/app/affinity/[type]/[slug]/page.tsx
+@@ -30,18 +30,17 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
+   return {
+     title: `Mi afinidad simbólica con ${entity.name} | Molino`,
+     description: `Mi afinidad simbólica con ${entity.name}: ${entity.emoji} según el zodíaco chino. Descubrí tu mapa de afinidades en Molino.`,
++    alternates: {
++      canonical: siteUrl(`/affinity/${type}/${slug}`),
++    },
+     openGraph: {
+       title: `Mi afinidad simbólica con ${entity.name} | Molino`,
+       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
+       type: "website",
+-      images: [
+-        {
+-          url: "/og-image.svg",
+-          width: 1200,
+-          height: 630,
+-          alt: `Afinidad simbólica con ${entity.name} — Molino`,
+-        },
+-      ],
++      url: siteUrl(`/affinity/${type}/${slug}`),
++      // Sin `images`: hereda el opengraph-image.tsx dinámico de la raíz
++      // (PNG 1200x630 real). El og-image.svg viejo no renderiza en la
++      // mayoría de los previews (WhatsApp, Twitter/X, LinkedIn no leen SVG).
+     },
+     twitter: {
+       card: "summary_large_image",
+diff --git a/app/affinity/[type]/page.tsx b/app/affinity/[type]/page.tsx
+index 04fd18b..a535d01 100644
+--- a/app/affinity/[type]/page.tsx
++++ b/app/affinity/[type]/page.tsx
+@@ -1,5 +1,6 @@
+ import { notFound } from "next/navigation";
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import { ENTITY_TYPES, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
+ import AffinityTypeContent from "./AffinityTypeContent";
+ 
+@@ -20,10 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
+   return {
+     title: `Afinidad Personal · ${meta.plural} | Molino`,
+     description: `${meta.description}. ${count} ${meta.plural.toLowerCase()} reales analizadas con el sistema de Afinidad Personal de Molino.`,
++    alternates: {
++      canonical: siteUrl(`/affinity/${type}`),
++    },
+     openGraph: {
+       title: `Afinidad Personal · ${meta.plural} | Molino`,
+       description: meta.description,
+       type: "website",
++      url: siteUrl(`/affinity/${type}`),
+     },
+   };
+ }
+diff --git a/app/affinity/compare/[slugA]/[slugB]/page.tsx b/app/affinity/compare/[slugA]/[slugB]/page.tsx
+index d2c1c63..831a8f5 100644
+--- a/app/affinity/compare/[slugA]/[slugB]/page.tsx
++++ b/app/affinity/compare/[slugA]/[slugB]/page.tsx
+@@ -15,18 +15,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slugA: st
+   return {
+     title: `${entityA.name} vs ${entityB.name} | Afinidad Personal — Molino`,
+     description: `¿Cómo se conectan ${entityA.name} y ${entityB.name} según el zodíaco chino? Comparación simbólica en Molino.`,
++    alternates: {
++      canonical: siteUrl(`/affinity/compare/${slugA}/${slugB}`),
++    },
+     openGraph: {
+       title: `${entityA.name} vs ${entityB.name} — Afinidad Personal`,
+       description: `Comparación simbólica entre ${entityA.name} y ${entityB.name} según el zodíaco chino.`,
+       type: "website",
+-      images: [
+-        {
+-          url: "/og-image.svg",
+-          width: 1200,
+-          height: 630,
+-          alt: `${entityA.name} vs ${entityB.name} — Afinidad Personal`,
+-        },
+-      ],
++      url: siteUrl(`/affinity/compare/${slugA}/${slugB}`),
++      // Sin `images`: hereda el opengraph-image.tsx dinámico (PNG real).
+     },
+     twitter: {
+       card: "summary_large_image",
+diff --git a/app/affinity/recommendations/brands/page.tsx b/app/affinity/recommendations/brands/page.tsx
+index 7dc8b23..c501ab4 100644
+--- a/app/affinity/recommendations/brands/page.tsx
++++ b/app/affinity/recommendations/brands/page.tsx
+@@ -1,13 +1,18 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import RecommendationContent from "@/components/affinity/RecommendationContent";
+ 
+ export const metadata: Metadata = {
+   title: "Marcas alineadas | Afinidad Personal — Molino",
+   description: "Descubrí qué marcas resuenan con tu perfil simbólico según el zodíaco chino.",
++  alternates: {
++    canonical: siteUrl("/affinity/recommendations/brands"),
++  },
+   openGraph: {
+     title: "Marcas alineadas contigo | Molino",
+     description: "Recomendaciones simbólicas de marcas según el zodíaco chino.",
+     type: "website",
++    url: siteUrl("/affinity/recommendations/brands"),
+   },
+ };
+ 
+diff --git a/app/affinity/recommendations/countries/page.tsx b/app/affinity/recommendations/countries/page.tsx
+index abedbc6..4302183 100644
+--- a/app/affinity/recommendations/countries/page.tsx
++++ b/app/affinity/recommendations/countries/page.tsx
+@@ -1,13 +1,18 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import RecommendationContent from "@/components/affinity/RecommendationContent";
+ 
+ export const metadata: Metadata = {
+   title: "Destinos compatibles | Afinidad Personal — Molino",
+   description: "Descubrí qué destinos resuenan con tu perfil simbólico según el zodíaco chino.",
++  alternates: {
++    canonical: siteUrl("/affinity/recommendations/countries"),
++  },
+   openGraph: {
+     title: "Destinos compatibles contigo | Molino",
+     description: "Recomendaciones simbólicas de destinos según el zodíaco chino.",
+     type: "website",
++    url: siteUrl("/affinity/recommendations/countries"),
+   },
+ };
+ 
+diff --git a/app/biblioteca/page.tsx b/app/biblioteca/page.tsx
+index 89b2cfd..36f4f28 100644
+--- a/app/biblioteca/page.tsx
++++ b/app/biblioteca/page.tsx
+@@ -5,10 +5,14 @@ import BibliotecaContent from "./BibliotecaContent";
+ export const metadata: Metadata = {
+   title: "Biblioteca — Fuentes y referencias",
+   description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, tarot, kabbalah y más sistemas simbólicos.",
++  alternates: {
++    canonical: siteUrl("/biblioteca"),
++  },
+   openGraph: {
+     title: "Biblioteca — Molino",
+     description: "Fuentes y referencias sobre numerología, astrología, zodiaco chino y otros sistemas simbólicos.",
+     type: "article",
++    url: siteUrl("/biblioteca"),
+   },
+ };
+ 
+diff --git a/app/compatibility/[entity]/page.tsx b/app/compatibility/[entity]/page.tsx
+index 0a91ec2..b5ebd13 100644
+--- a/app/compatibility/[entity]/page.tsx
++++ b/app/compatibility/[entity]/page.tsx
+@@ -1,5 +1,6 @@
+ import { notFound } from 'next/navigation';
+ import { Metadata } from 'next';
++import { siteUrl } from '@/lib/seo';
+ import { ENTITIES } from '@/lib/data/entities';
+ import CompatibilityContent from '@/components/compatibility/CompatibilityContent';
+ 
+@@ -24,10 +25,14 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
+   return {
+     title: `Análisis multi-factor de ${entity.name} | Molino`,
+     description,
++    alternates: {
++      canonical: siteUrl(`/compatibility/${entityId}`),
++    },
+     openGraph: {
+       title: `Análisis multi-factor de ${entity.name} | Molino`,
+       description,
+       type: 'website',
++      url: siteUrl(`/compatibility/${entityId}`),
+     },
+     twitter: {
+       card: 'summary_large_image',
+diff --git a/app/conocimiento/astrologia/[signo]/page.tsx b/app/conocimiento/astrologia/[signo]/page.tsx
+index 3c01bd7..8981fc1 100644
+--- a/app/conocimiento/astrologia/[signo]/page.tsx
++++ b/app/conocimiento/astrologia/[signo]/page.tsx
+@@ -20,10 +20,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
+   return {
+     title: `${sign.symbol} ${sign.name} — Astrología Molino`,
+     description: `${sign.meaning.slice(0, 155)}`,
++    alternates: {
++      canonical: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
++    },
+     openGraph: {
+       title: `${sign.symbol} ${sign.name} — Molino`,
+       description: `${sign.meaning.slice(0, 155)}`,
+       type: "article",
++      url: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
+     },
+   };
+ }
+diff --git a/app/conocimiento/astrologia/page.tsx b/app/conocimiento/astrologia/page.tsx
+index 733dc1b..a47578c 100644
+--- a/app/conocimiento/astrologia/page.tsx
++++ b/app/conocimiento/astrologia/page.tsx
+@@ -5,10 +5,14 @@ import AstrologiaContent from "./AstrologiaContent";
+ export const metadata: Metadata = {
+   title: "Astrología — El lenguaje de los astros",
+   description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía. Un sistema simbólico con 4000 años de historia.",
++  alternates: {
++    canonical: siteUrl("/conocimiento/astrologia"),
++  },
+   openGraph: {
+     title: "Astrología — Molino",
+     description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
+     type: "article",
++    url: siteUrl("/conocimiento/astrologia"),
+   },
+ };
+ 
+diff --git a/app/conocimiento/fuentes/page.tsx b/app/conocimiento/fuentes/page.tsx
+index 1594e9f..96d3c0b 100644
+--- a/app/conocimiento/fuentes/page.tsx
++++ b/app/conocimiento/fuentes/page.tsx
+@@ -5,10 +5,14 @@ import FuentesContent from "./FuentesContent";
+ export const metadata: Metadata = {
+   title: "Fuentes y metodología",
+   description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino. Transparencia académica y rigor.",
++  alternates: {
++    canonical: siteUrl("/conocimiento/fuentes"),
++  },
+   openGraph: {
+     title: "Fuentes y metodología — Molino",
+     description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
+     type: "article",
++    url: siteUrl("/conocimiento/fuentes"),
+   },
+ };
+ 
+diff --git a/app/conocimiento/numerologia/[numero]/page.tsx b/app/conocimiento/numerologia/[numero]/page.tsx
+index 195b34b..c6dee3a 100644
+--- a/app/conocimiento/numerologia/[numero]/page.tsx
++++ b/app/conocimiento/numerologia/[numero]/page.tsx
+@@ -16,10 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
+   return {
+     title: `Número ${num.number} ${num.title} — Numerología Molino`,
+     description: `${num.meaning.slice(0, 155)}`,
++    alternates: {
++      canonical: siteUrl(`/conocimiento/numerologia/${num.number}`),
++    },
+     openGraph: {
+       title: `Número ${num.number} ${num.title} — Molino`,
+       description: `${num.meaning.slice(0, 155)}`,
+       type: "article",
++      url: siteUrl(`/conocimiento/numerologia/${num.number}`),
+     },
+   };
+ }
+diff --git a/app/conocimiento/numerologia/page.tsx b/app/conocimiento/numerologia/page.tsx
+index 0be3adc..96ffdff 100644
+--- a/app/conocimiento/numerologia/page.tsx
++++ b/app/conocimiento/numerologia/page.tsx
+@@ -5,10 +5,14 @@ import NumerologiaContent from "./NumerologiaContent";
+ export const metadata: Metadata = {
+   title: "Numerología — El lenguaje simbólico de los números",
+   description: "Aprendé sobre numerología: Camino de Vida, Expresión, Alma, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
++  alternates: {
++    canonical: siteUrl("/conocimiento/numerologia"),
++  },
+   openGraph: {
+     title: "Numerología — Molino",
+     description: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
+     type: "article",
++    url: siteUrl("/conocimiento/numerologia"),
+   },
+ };
+ 
+diff --git a/app/conocimiento/zodiaco-chino/[animal]/page.tsx b/app/conocimiento/zodiaco-chino/[animal]/page.tsx
+index d48ab53..f049987 100644
+--- a/app/conocimiento/zodiaco-chino/[animal]/page.tsx
++++ b/app/conocimiento/zodiaco-chino/[animal]/page.tsx
+@@ -16,10 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
+   return {
+     title: `${animal.emoji} ${animal.name} — Zodiaco Chino Molino`,
+     description: `${animal.meaning.slice(0, 155)}`,
++    alternates: {
++      canonical: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
++    },
+     openGraph: {
+       title: `${animal.emoji} ${animal.name} — Molino`,
+       description: `${animal.meaning.slice(0, 155)}`,
+       type: "article",
++      url: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
+     },
+   };
+ }
+diff --git a/app/conocimiento/zodiaco-chino/page.tsx b/app/conocimiento/zodiaco-chino/page.tsx
+index 4800306..0cb64c9 100644
+--- a/app/conocimiento/zodiaco-chino/page.tsx
++++ b/app/conocimiento/zodiaco-chino/page.tsx
+@@ -5,10 +5,14 @@ import ZodiacoChinoContent from "./ZodiacoChinoContent";
+ export const metadata: Metadata = {
+   title: "Zodiaco Chino — Los 12 animales, los 5 elementos",
+   description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años. Un sistema milenario con una profundidad que va mucho más allá de tu animal.",
++  alternates: {
++    canonical: siteUrl("/conocimiento/zodiaco-chino"),
++  },
+   openGraph: {
+     title: "Zodiaco Chino — Molino",
+     description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años.",
+     type: "article",
++    url: siteUrl("/conocimiento/zodiaco-chino"),
+   },
+ };
+ 
+diff --git a/app/docs/motores/page.tsx b/app/docs/motores/page.tsx
+index cd4471b..a07954c 100644
+--- a/app/docs/motores/page.tsx
++++ b/app/docs/motores/page.tsx
+@@ -5,10 +5,14 @@ import MotoresContent from "./MotoresContent";
+ export const metadata: Metadata = {
+   title: "Motores y fórmulas — Molino",
+   description: "Documentación técnica de los motores de cálculo: fórmulas de numerología (Camino de Vida, Expresión), astronomía de precisión (Swiss Ephemeris) y calendario chino (ciclo sexagenario).",
++  alternates: {
++    canonical: siteUrl("/docs/motores"),
++  },
+   openGraph: {
+     title: "Motores y fórmulas — Molino",
+     description: "Fórmulas y algoritmos detrás de Molino: numerología, astrología de precisión, zodíaco chino. Código abierto y auditable.",
+     type: "article",
++    url: siteUrl("/docs/motores"),
+   },
+ };
+ 
+diff --git a/app/filosofia/page.tsx b/app/filosofia/page.tsx
+index 30e082f..b4d3fe3 100644
+--- a/app/filosofia/page.tsx
++++ b/app/filosofia/page.tsx
+@@ -5,10 +5,14 @@ import FilosofiaContent from "./FilosofiaContent";
+ export const metadata: Metadata = {
+   title: "Filosofía — Molino",
+   description: "La filosofía detrás de Molino: autoconocimiento sin dogmas, código abierto, privacidad radical y síntesis de tradiciones simbólicas milenarias.",
++  alternates: {
++    canonical: siteUrl("/filosofia"),
++  },
+   openGraph: {
+     title: "Filosofía — Molino",
+     description: "Autoconocimiento sin dogmas, código abierto, privacidad radical. La síntesis de tradiciones simbólicas milenarias en una herramienta moderna.",
+     type: "article",
++    url: siteUrl("/filosofia"),
+   },
+ };
+ 
+diff --git a/app/guia/camino-de-vida-7/page.tsx b/app/guia/camino-de-vida-7/page.tsx
+index 4dbf400..b862391 100644
+--- a/app/guia/camino-de-vida-7/page.tsx
++++ b/app/guia/camino-de-vida-7/page.tsx
+@@ -5,10 +5,14 @@ import GuiaContent from "./GuiaContent";
+ export const metadata: Metadata = {
+   title: "Camino de Vida 7 — El buscador de la verdad",
+   description: "Guía completa del Camino de Vida 7 en numerología: significado, personalidad, fortalezas, desafíos, relaciones y crecimiento personal.",
++  alternates: {
++    canonical: siteUrl("/guia/camino-de-vida-7"),
++  },
+   openGraph: {
+     title: "Camino de Vida 7 — El buscador de la verdad | Guía | Molino",
+     description: "Significado, personalidad y camino de crecimiento del número 7 en numerología.",
+     type: "article",
++    url: siteUrl("/guia/camino-de-vida-7"),
+   },
+ };
+ 
+diff --git a/app/guia/page.tsx b/app/guia/page.tsx
+index 9d549b6..ae94c0a 100644
+--- a/app/guia/page.tsx
++++ b/app/guia/page.tsx
+@@ -1,13 +1,18 @@
+ import Link from "next/link";
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ 
+ export const metadata: Metadata = {
+   title: "Guía",
+   description: "Artículos, tutoriales y guías completas sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
++  alternates: {
++    canonical: siteUrl("/guia"),
++  },
+   openGraph: {
+     title: "Guía — Molino",
+     description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
+     type: "website",
++    url: siteUrl("/guia"),
+   },
+   twitter: {
+     card: "summary_large_image",
+diff --git a/app/method/page.tsx b/app/method/page.tsx
+index 00efcb6..b54043c 100644
+--- a/app/method/page.tsx
++++ b/app/method/page.tsx
+@@ -1,13 +1,18 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import MethodContent from "./MethodContent";
+ 
+ export const metadata: Metadata = {
+   title: "Method — Cómo funciona Molino",
+   description: "Transparencia total: cómo se calculan los números, las limitaciones de cada sistema simbólico y las fuentes en las que se basa Molino.",
++  alternates: {
++    canonical: siteUrl("/method"),
++  },
+   openGraph: {
+     title: "Method — Molino",
+     description: "Transparencia total: cómo se calculan los números, las limitaciones de cada sistema y las fuentes en las que se basa.",
+     type: "article",
++    url: siteUrl("/method"),
+   },
+ };
+ 
+diff --git a/app/profile/insights/page.tsx b/app/profile/insights/page.tsx
+index 9611e4b..a2419ee 100644
+--- a/app/profile/insights/page.tsx
++++ b/app/profile/insights/page.tsx
+@@ -1,4 +1,5 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import InsightsContent from "./InsightsContent";
+ 
+ export const dynamic = "force-dynamic";
+@@ -6,10 +7,14 @@ export const dynamic = "force-dynamic";
+ export const metadata: Metadata = {
+   title: "Mi Inteligencia Personal | Molino",
+   description: "Tu feed personalizado de exploración simbólica. Patrones, recomendaciones y descubrimientos según el zodíaco chino.",
++  alternates: {
++    canonical: siteUrl("/profile/insights"),
++  },
+   openGraph: {
+     title: "Mi Inteligencia Personal — Molino",
+     description: "Exploración personal basada en tradiciones culturales del zodíaco chino.",
+     type: "website",
++    url: siteUrl("/profile/insights"),
+   },
+ };
+ 
+diff --git a/app/profile/page.tsx b/app/profile/page.tsx
+index 5892007..ce6e98a 100644
+--- a/app/profile/page.tsx
++++ b/app/profile/page.tsx
+@@ -1,4 +1,5 @@
+ import type { Metadata } from "next";
++import { siteUrl } from "@/lib/seo";
+ import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+ import { decodeProfileData } from "@/lib/utils/profileShare";
+ import ProfileClient from "@/components/profile/ProfileClient";
+@@ -56,6 +57,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
+     description: hasData
+       ? `Mapa personal de autoconocimiento de ${name}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
+       : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
++    // Un perfil con datos (?dob= o ?data=) es contenido personal de una
++    // sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
++    // sí con los de otros usuarios. Solo la landing "vacía" es indexable.
++    ...(hasData
++      ? { robots: { index: false, follow: true } }
++      : { alternates: { canonical: siteUrl("/profile") } }),
+     openGraph: {
+       title: hasData ? `Mapa de ${name} — Molino` : "Tu Mapa Personal — Molino",
+       description: hasData
+-- 
+2.43.0
+
+
+From 3221a55f94bff88e6a3b885094e9422860742ed9 Mon Sep 17 00:00:00 2001
+From: Molino Dev <dev@molino.app>
+Date: Thu, 30 Jul 2026 07:13:50 +0000
+Subject: [PATCH 2/3] =?UTF-8?q?fix(privacidad):=20re-aplicar=20fixes=20de?=
+ =?UTF-8?q?=20analytics=20sobre=20el=20onboarding=20redise=C3=B1ado?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+El onboarding se reescribio por completo en el trabajo paralelo
+(1-step flow, remove ScrollDatePicker) y sin querer reintrodujo el
+mismo problema: el evento onboarding_completed volvia a mandar la
+fecha de nacimiento completa en el payload. Se saca -- el evento
+ahora no lleva datos personales.
+
+app/filosofia/FilosofiaContent.tsx: mismo fix de la sesion anterior,
+tampoco se habia pusheado -- el copy de 'Sin tracking' seguia
+prometiendo 'ni analytics... tu visita no genera datos' cuando el
+proyecto si tiene un tracker propio + PostHog opcional (ahora vía
+posthog-js real, visto en app/providers/PostHogProvider.tsx, sigue
+siendo condicional a NEXT_PUBLIC_POSTHOG_KEY con cookieless_mode y
+autocapture:false). Nuevo copy describe lo que realmente pasa.
+
+Se revisaron ademas todos los demas analytics.track del proyecto
+(afinidad, paywall, compartir perfil) -- todos usan helpers tipados
+con parametros acotados (score, tier, moneda), ninguno lleva fecha
+de nacimiento ni nombre.
+
+608/608 tests OK, typecheck limpio.
+---
+ app/filosofia/FilosofiaContent.tsx | 4 ++--
+ app/onboarding/page.tsx            | 5 ++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/app/filosofia/FilosofiaContent.tsx b/app/filosofia/FilosofiaContent.tsx
+index de633cc..cab0bf4 100644
+--- a/app/filosofia/FilosofiaContent.tsx
++++ b/app/filosofia/FilosofiaContent.tsx
+@@ -35,8 +35,8 @@ const principles = [
+   },
+   {
+     id: "sin-tracking",
+-    title: "Sin tracking",
+-    description: "Ni analytics, ni píxeles de Facebook, ni Google Analytics, ni fingerprinting. Tu visita no genera datos para terceros. El único \"tracking\" es el que vos decidís hacer sobre tu propia vida.",
++    title: "Sin tracking invasivo",
++    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. Medimos lo mínimo para saber si Molino te sirve —qué páginas se visitan, sin nombre ni fecha de nacimiento asociada— y nunca lo vendemos ni lo compartimos con terceros con fines publicitarios.",
+   },
+ ];
+ 
+diff --git a/app/onboarding/page.tsx b/app/onboarding/page.tsx
+index 1b45b3b..6cdefa1 100644
+--- a/app/onboarding/page.tsx
++++ b/app/onboarding/page.tsx
+@@ -40,7 +40,10 @@ export default function OnboardingPage() {
+     try {
+       const [year, month, day] = dateValue.split("-");
+       saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
+-      analytics.track({ type: "onboarding_completed", data: { date: dateValue } });
++      // No mandamos la fecha real al tracker: /filosofia promete que la
++      // fecha de nacimiento no se asocia a analytics. Solo registramos que
++      // el onboarding se completó.
++      analytics.track({ type: "onboarding_completed" });
+       clearOnboardingData();
+       router.push(`/profile?dob=${dateValue}`);
+     } catch (error) {
+-- 
+2.43.0
+
+
+From d8d57732f4db408488da1d34d9351dcc3bbc540b Mon Sep 17 00:00:00 2001
+From: Molino Dev <dev@molino.app>
+Date: Thu, 30 Jul 2026 07:14:30 +0000
+Subject: [PATCH 3/3] docs: re-documentar bug conocido en lib/profile/hash.ts
+
+Mismo comentario de la sesion anterior, tampoco se habia pusheado.
+storeSharedProfile/decodeProfileHash siguen leyendo y escribiendo el
+mismo localStorage -- confirmado de nuevo que la ruta /perfil/[hash]
+sigue sin estar conectada a ningun boton de la UI (grep no encuentra
+ningun uso fuera de este archivo y sus tests), asi que no hay usuarios
+afectados. Se deja documentado para que no se cablee sin resolver el
+problema de storage antes.
+
+608/608 tests OK, typecheck limpio.
+---
+ lib/profile/hash.ts | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/lib/profile/hash.ts b/lib/profile/hash.ts
+index 8fd2500..87f6497 100644
+--- a/lib/profile/hash.ts
++++ b/lib/profile/hash.ts
+@@ -1,6 +1,24 @@
+ import type { UserProfile } from "@/types/user";
+ import { getPersonalNumber } from "@/lib/numerology/personal";
+ 
++/**
++ * ⚠️ NO CONECTADO A LA UI TODAVÍA — y con un bug conocido si se conecta tal cual.
++ *
++ * `storeSharedProfile` guarda el perfil en el localStorage del navegador que
++ * generó el hash. `decodeProfileHash` lee de ESE MISMO localStorage. Como
++ * localStorage no es compartido entre navegadores/dispositivos, un link
++ * `/perfil/[hash]` compartido con otra persona no funciona: su navegador
++ * nunca tuvo esa entrada guardada.
++ *
++ * El mecanismo de "compartir perfil" que SÍ funciona hoy en producción es
++ * lib/utils/profileShare.ts (buildShareableUrl), que codifica el perfil
++ * completo en la URL (base64url) en vez de depender de un storage local.
++ *
++ * Si en el futuro se quiere usar la ruta /perfil/[hash] con URLs cortas,
++ * hace falta un backend real que guarde hash -> perfil (ej. la misma KV que
++ * ya usamos para el paywall en lib/kv.ts), no localStorage.
++ */
++
+ async function sha256Hex(message: string): Promise<string> {
+   const data = new TextEncoder().encode(message);
+   const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+-- 
+2.43.0
+

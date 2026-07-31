@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllAffinity, calculateAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
