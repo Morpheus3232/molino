@@ -166,52 +166,6 @@
   --skeleton: #E5E7EB;
 }
 
-/* Dark mode variables */
-.dark {
-  --color-ink: #FFFFFF;
-  --color-paper: #0a0a0f;
-  --color-paper-alt: #121214;
-  --color-accent: #1E3AFF;
-  --color-accent-hover: #4A6BFF;
-  --color-muted: #8A8A8A;
-  --color-border: #2A2A2E;
-  --color-background: var(--color-paper);
-  --color-foreground: var(--color-ink);
-  --color-muted-foreground: var(--color-muted);
-  --color-card: #121214;
-  --color-card-border: var(--color-border);
-  --color-surface-elevated: #1a1a1e;
-  --color-primary: var(--color-ink);
-  --color-primary-foreground: var(--color-paper);
-  --color-secondary: var(--color-muted);
-  --color-secondary-foreground: var(--color-ink);
-  --color-accent-foreground: var(--color-paper);
-  --color-success: #34d399;
-  --color-success-foreground: var(--color-paper);
-  --color-warning: #1E3AFF;
-  --color-warning-foreground: var(--color-paper);
-  --color-error: #f87171;
-  --color-error-foreground: var(--color-paper);
-
-  /* En oscuro la sombra sola no separa: hace falta mas opacidad. */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.55);
-  --shadow-xl: 0 16px 44px rgba(0, 0, 0, 0.6);
-  --shadow-glow: none;
-  --shadow-glow-accent: 0 4px 20px rgba(30, 58, 255, 0.45);
-  --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-
-  --color-ink-alpha-25: rgba(255, 255, 255, 0.25);
-  --color-ink-alpha-03: rgba(255, 255, 255, 0.03);
-  --color-accent-alpha-04: rgba(30, 58, 255, 0.12);
-  --color-accent-alpha-10: rgba(30, 58, 255, 0.18);
-
-  --skeleton: #374151;
-  --overlay: rgba(0, 0, 0, 0.7);
-  --overlay-light: rgba(0, 0, 0, 0.5);
-}
-
 @layer base {
   * {
     box-sizing: border-box;
@@ -278,7 +232,7 @@
   }
 
   input[type="date"] {
-    color-scheme: light dark;
+    color-scheme: light;
   }
 
   input:focus-visible,

@@ -228,7 +228,7 @@ function RecommendationCard({
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm bg-success/10 text-success dark:text-success">
+              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm bg-success/10 text-success">
                 Triple
               </span>
             )}

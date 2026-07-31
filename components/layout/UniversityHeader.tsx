@@ -4,16 +4,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { useTheme } from "next-themes";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { headerNavLinks } from "@/lib/data/navigation";
 import Button from "@/components/ui/Button";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
-  const { theme, setTheme, resolvedTheme } = useTheme();
   const [hasProfile, setHasProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -21,12 +19,6 @@ export default function UniversityHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
-
-  const currentTheme = theme === "system" ? resolvedTheme : theme;
-
-  const toggleTheme = useCallback(() => {
-    setTheme(currentTheme === "dark" ? "light" : "dark");
-  }, [currentTheme, setTheme]);
 
   const navLinks = headerNavLinks;
 
@@ -149,16 +141,6 @@ export default function UniversityHeader() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Theme toggle */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
-              aria-label={currentTheme === "dark" ? "Activar modo claro" : "Activar modo oscuro"}
-            >
-              {currentTheme === "dark" ? <Sun className="w-5 h-5" aria-hidden="true" /> : <Moon className="w-5 h-5" aria-hidden="true" />}
-            </button>
-
             {hasProfile && (
               <>
                 <Link

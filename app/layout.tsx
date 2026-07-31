@@ -9,7 +9,6 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import Prism from "@/components/effects/Prism";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SITE_URL } from "@/lib/seo";
 import { PostHogProvider } from "./providers/PostHogProvider";
 
@@ -124,38 +123,36 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <PostHogProvider>
-            <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
-              <Prism
-                animationType="rotate"
-                timeScale={0.15}
-                height={3.5}
-                baseWidth={5.5}
-                scale={3.6}
-                hueShift={0}
-                colorFrequency={0.5}
-                noise={0.15}
-                glow={0.3}
-                bloom={0.3}
-                transparent={true}
-                suspendWhenOffscreen={false}
-              />
-            </div>
-            <a href="#main-content" className="skip-link">
-              Saltar al contenido principal
-            </a>
-            <AnalyticsProvider />
-            <MotionProvider>
-              <ScrollProgress />
-              <UniversityHeader />
-              <AppErrorBoundary>
-                <AnimatedLayout>{children}</AnimatedLayout>
-              </AppErrorBoundary>
-            </MotionProvider>
-            <Toaster position="bottom-right" richColors />
-          </PostHogProvider>
-        </ThemeProvider>
+        <PostHogProvider>
+          <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
+            <Prism
+              animationType="rotate"
+              timeScale={0.15}
+              height={3.5}
+              baseWidth={5.5}
+              scale={3.6}
+              hueShift={0}
+              colorFrequency={0.5}
+              noise={0.15}
+              glow={0.3}
+              bloom={0.3}
+              transparent={true}
+              suspendWhenOffscreen={false}
+            />
+          </div>
+          <a href="#main-content" className="skip-link">
+            Saltar al contenido principal
+          </a>
+          <AnalyticsProvider />
+          <MotionProvider>
+            <ScrollProgress />
+            <UniversityHeader />
+            <AppErrorBoundary>
+              <AnimatedLayout>{children}</AnimatedLayout>
+            </AppErrorBoundary>
+          </MotionProvider>
+          <Toaster position="bottom-right" richColors />
+        </PostHogProvider>
       </body>
     </html>
   );
