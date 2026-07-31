@@ -9,7 +9,6 @@ import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay"
 import { getRelationshipMap, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { getFamousByAnimal, getFamousBySign, type FamousPerson } from "@/lib/data/famousPeople";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import CrossLinks from "@/components/profile/CrossLinks";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface CircleScreenProps {
@@ -229,17 +228,6 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           </motion.div>
         </div>
       </section>
-
-      {/* Cross-links */}
-      {onNavigate && (
-        <CrossLinks
-          links={[
-            { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onNavigate("world") },
-            { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
-            { label: "Volvé a tu identidad", description: "Revisá tu perfil base y arquetipo.", onClick: () => onNavigate("identity") },
-          ]}
-        />
-      )}
     </div>
   );
 }
