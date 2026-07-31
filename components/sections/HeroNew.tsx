@@ -45,11 +45,11 @@ export default function HeroNew() {
               transition={{ duration: 0.5, delay: 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="font-display text-[clamp(2.75rem,8vw,7rem)] leading-[0.88] tracking-tight text-foreground max-w-5xl"
             >
-              CONOCÉTE.
+              CONOCETE.
               <br />
-              ENTENDÉTE.
+              ENTENDETE.
               <br />
-              <span className="text-accent">ORIENTÁTE.</span>
+              <span className="text-accent">ORIENTATE.</span>
             </motion.h1>
 
             <motion.p
