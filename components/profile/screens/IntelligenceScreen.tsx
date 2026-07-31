@@ -12,7 +12,6 @@ import {
   buildSynthesisInsights,
   buildPatterns,
   buildDimensions,
-  buildMomentState,
 } from "@/lib/engines/synthesisEngine";
 import {
   buildMolinoContext,
@@ -22,9 +21,9 @@ import {
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
-import ReadingNumber from "@/components/ui/ReadingNumber";
 import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import MomentOrientation from "@/components/profile/MomentOrientation";
 import Button from "@/components/ui/Button";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
@@ -62,10 +61,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   const dimensions = useMemo(() => buildDimensions(profile), [profile]);
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
-  const momentState = useMemo(
-    () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
-    [profile, dailyEnergy]
-  );
 
   // Lectura diferida a post-mount: loadTimingIntention() toca localStorage,
   // que no existe en el render de servidor. Leerla durante el render
@@ -264,36 +259,8 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         </div>
       </section>
 
-      {/* Tu momento */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tu momento</h2>
-            </div>
-          </motion.div>
-          <div className="border border-ink/10 p-8 lg:p-12">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-              <ReadingNumber
-                value={momentState.energyScore}
-                label="Energía de hoy"
-                color={elementColor}
-                size="lg"
-              />
-              <div className="sm:text-right">
-                <p className="text-lg font-heading font-semibold text-foreground">{momentState.energyTheme}</p>
-                <p className="text-sm text-muted">{momentState.cycleName}</p>
-              </div>
-            </div>
-            <p className="text-sm text-foreground leading-relaxed">{momentState.narrative}</p>
-            <div className="flex items-center gap-3 mt-6 pt-6 border-t border-ink/10">
-              <span className="uppercase text-[11px] tracking-[0.15em] text-muted">Foco de hoy</span>
-              <span className="text-sm font-medium text-foreground">{momentState.focus}</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Tu momento / Orientación */}
+      <MomentOrientation profile={profile} dailyEnergy={dailyEnergy} timing={timing} />
 
       {/* Tu interpretación */}
       <section className="py-8 sm:py-12 border-t border-ink/10">

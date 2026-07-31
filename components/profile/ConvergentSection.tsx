@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
+import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
 import EditorialSection from "@/components/ui/EditorialSection";
 
@@ -10,68 +11,105 @@ interface ConvergentSectionProps {
   profile: UserProfile;
 }
 
+const SYSTEM_COLORS: Record<string, string> = {
+  Numerología: "var(--element-fire)",
+  Astrología: "var(--layer-astrology)",
+  "Zodiaco Chino": "var(--layer-moment)",
+};
+
+/**
+ * Convergencia cualitativa.
+ *
+ * Reutiliza los ConvergencePoint[] que ya calcula buildIdentityProfile
+ * (perspectivesEngine): cuándo distintos sistemas apuntan a una misma
+ * dirección. Sin scores, sin porcentajes: solo el tema, los sistemas y la
+ * explicación. Las capas numéricas de convergentEngine quedan como evidencia
+ * discreta debajo.
+ */
 export default function ConvergentSection({ profile }: ConvergentSectionProps) {
+  const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
   const convergence = useMemo(() => buildConvergence(profile), [profile]);
 
   return (
     <EditorialSection
       tone="paperAlt"
       eyebrow="CONVERGENCIA"
-      title={<>CUANDO TODOS TUS<br />PATRONES SE ENCUENTRAN.</>}
+      title={<>TRES LECTURAS.<br />UNA MISMA DIRECCIÓN.</>}
+      intro="Distintos sistemas pueden llegar al mismo punto sobre tu perfil. Cuando lo hacen, ese punto vale la pena mirarlo."
     >
       <div className="pt-4">
-        {/* El número — evidencia principal */}
+        {/* Puntos de convergencia — cualitativos, explicables */}
+        {identityProfile.convergences.map((conv, i) => (
+          <motion.div
+            key={`${conv.theme}-${i}`}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: i * 0.08, duration: 0.5 }}
+            className="py-10 lg:py-12 border-b border-ink/10"
+          >
+            <div className="flex items-center gap-4 mb-5">
+              <span className="font-mono text-xs text-muted">{String(i + 1).padStart(2, "0")}</span>
+              <span className="w-8 h-px bg-ink/15 shrink-0" aria-hidden="true" />
+              <span className="label-micro text-accent font-semibold">CONVERGENCIA</span>
+            </div>
+
+            <p className="font-display text-2xl sm:text-4xl tracking-tight text-foreground leading-[1.05] mb-5 uppercase">
+              {conv.theme}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {conv.systems.map((sys) => (
+                <span
+                  key={sys}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 border border-ink/10 bg-background"
+                >
+                  <span
+                    className="w-1.5 h-1.5 shrink-0"
+                    style={{ backgroundColor: SYSTEM_COLORS[sys] || "var(--ink)" }}
+                    aria-hidden="true"
+                  />
+                  <span className="text-xs uppercase tracking-[0.15em] font-medium text-foreground">
+                    {sys}
+                  </span>
+                </span>
+              ))}
+            </div>
+
+            <p className="text-base text-muted leading-relaxed max-w-2xl">{conv.explanation}</p>
+          </motion.div>
+        ))}
+
+        {/* Evidencia — las capas que alimentan la lectura */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5 }}
-          className="flex items-baseline gap-3 mb-6"
+          transition={{ duration: 0.4 }}
+          className="pt-10 lg:pt-12"
         >
-          <span className="font-display text-[clamp(5rem,18vw,10rem)] leading-[0.85] tracking-tight text-accent">
-            {convergence.convergentCount}
-          </span>
-          <span className="font-display text-2xl sm:text-3xl text-ink/30 leading-none">
-            / {convergence.totalLayers}
-          </span>
+          <p className="label-micro text-muted mb-6">
+            TUS CAPAS · {convergence.convergentCount} DE {convergence.totalLayers} ALINEADAS
+          </p>
+          <div>
+            {convergence.layers.map((layer, i) => (
+              <motion.div
+                key={layer.id}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
+                className="flex items-baseline justify-between gap-4 py-3.5 border-b border-ink/10 last:border-b-0"
+              >
+                <span className="text-sm text-muted">{layer.name}</span>
+                <span className="font-display text-lg text-foreground">{layer.value}</span>
+              </motion.div>
+            ))}
+          </div>
+          <p className="mt-6 text-xs text-muted italic leading-relaxed max-w-xl">
+            La lectura conecta sistemas simbólicos; no es una medición ni una predicción.
+          </p>
         </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="label-micro text-muted mb-5"
-        >
-          Capas alineadas
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lg text-foreground leading-relaxed max-w-2xl"
-        >
-          {convergence.insight}
-        </motion.p>
-
-        {/* Capas como evidencia — filas, sin tarjetas */}
-        <div className="mt-12">
-          {convergence.layers.map((layer, i) => (
-            <motion.div
-              key={layer.id}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.06, duration: 0.4 }}
-              className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/10 last:border-b-0"
-            >
-              <span className="text-sm text-muted">{layer.name}</span>
-              <span className="font-display text-lg text-foreground">{layer.value}</span>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </EditorialSection>
   );

@@ -11,12 +11,15 @@ import {
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
+import { calculateLuckyNumber } from "@/lib/calculations";
+import { buildLifePathProof, buildLuckyNumberProof } from "@/lib/calculations/proof";
 import EditorialSection from "@/components/ui/EditorialSection";
 import ConvergentSection from "@/components/profile/ConvergentSection";
 import IdentityCard from "@/components/profile/IdentityCard";
 import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
 import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
+import CalculationProof from "@/components/shared/CalculationProof";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface IdentityScreenProps {
@@ -35,6 +38,29 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
 
   const personalCode = useMemo(() => buildPersonalCode(profile), [profile]);
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
+
+  const birthParts = useMemo(() => {
+    const parts = (birthDate || "").split("-");
+    if (parts.length !== 3) return null;
+    const day = parseInt(parts[2], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[0], 10);
+    if (!day || !month || !year) return null;
+    return { day, month, year };
+  }, [birthDate]);
+
+  const lifePathProof = useMemo(
+    () => (birthParts ? buildLifePathProof(birthParts.day, birthParts.month, birthParts.year) : null),
+    [birthParts]
+  );
+  const luckyNumber = useMemo(
+    () => (birthParts ? calculateLuckyNumber(birthParts.month, birthParts.year) : profile.luckyNumber ?? 0),
+    [birthParts, profile.luckyNumber]
+  );
+  const luckyProof = useMemo(
+    () => (birthParts ? buildLuckyNumberProof(birthParts.month, birthParts.year) : null),
+    [birthParts]
+  );
 
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
   const userYear = parseInt(birthDate?.split("-")[0] || "0", 10);
@@ -200,7 +226,38 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
                 {personalCode.lifePath.name}
               </p>
               <p className="text-sm text-muted leading-relaxed max-w-lg">{personalCode.lifePath.meaning}</p>
+              {lifePathProof && (
+                <CalculationProof label="Camino de Vida" data={lifePathProof} className="mt-6" />
+              )}
             </div>
+          </motion.div>
+
+          {/* Número de la Suerte — derivado de la fecha, no del nombre */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.4 }}
+            className="border-b border-ink/10"
+          >
+            <div className="flex items-baseline justify-between gap-4 py-5">
+              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
+                Número de la Suerte
+              </span>
+              <div className="flex items-baseline gap-3">
+                {luckyNumber ? (
+                  <>
+                    <span className="font-display text-2xl text-foreground">{luckyNumber}</span>
+                    <span className="text-xs text-muted">de tu fecha</span>
+                  </>
+                ) : (
+                  <span className="text-lg text-muted">—</span>
+                )}
+              </div>
+            </div>
+            {luckyProof && (
+              <CalculationProof label="Número de la Suerte" data={luckyProof} className="pb-6" />
+            )}
           </motion.div>
 
           {/* Expresión · Alma · Personalidad — filas */}
