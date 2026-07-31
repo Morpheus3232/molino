@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
-import { toPng } from "html-to-image";
 import { ELEMENT_COLORS, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -35,6 +34,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
     setGenerating(true);
     analytics.trackFeatureUsed("share_image_download");
     try {
+      const { toPng } = await import("html-to-image");
       const dataUrl = await toPng(cardRef.current, {
         quality: 0.95,
         pixelRatio: 3,
@@ -58,6 +58,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
       try {
         if (cardRef.current) {
           setGenerating(true);
+          const { toPng } = await import("html-to-image");
           const dataUrl = await toPng(cardRef.current, {
             quality: 0.95,
             pixelRatio: 3,
