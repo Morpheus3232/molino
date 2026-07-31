@@ -180,7 +180,7 @@ function LifePathExplorerInline({ lifePath, router }: { lifePath: number; router
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] text-muted font-medium">Life Path {lifePath}</p>
+          <p className="text-[10px] text-muted font-medium">Camino de Vida {lifePath} (tu número guía)</p>
           <p className="text-xs text-muted">Numerología pitagórica moderna</p>
         </div>
         <span className="text-[10px] text-accent group-hover:translate-x-1 transition-transform">Conocer origen →</span>
