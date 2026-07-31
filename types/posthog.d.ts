@@ -1,5 +1,3 @@
-/* eslint-disable no-var */
-
 /**
  * PostHog — type declarations for window.posthog.
  * Only loaded when NEXT_PUBLIC_POSTHOG_KEY is configured.

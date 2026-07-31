@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default {
+const config = {
   resolve: {
     alias: {
       '@': __dirname,
@@ -15,3 +15,5 @@ export default {
     exclude: ['**/e2e/**', '**/node_modules/**'],
   },
 };
+
+export default config;
