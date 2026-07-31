@@ -14,12 +14,18 @@ import {
   buildDimensions,
   buildMomentState,
 } from "@/lib/engines/synthesisEngine";
+import {
+  buildMolinoContext,
+  generateFallbackInterpretation,
+  type InterpretationRequest,
+} from "@/lib/engines/intelligenceEngine";
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import Button from "@/components/ui/Button";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
@@ -74,6 +80,14 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
     [profile, savedIntention]
   );
 
+  const [showPremiumGate, setShowPremiumGate] = useState(false);
+
+  const previewInterpretation = useMemo(() => {
+    const context = buildMolinoContext(profile, { dailyEnergy, timing: timing ?? undefined });
+    const request: InterpretationRequest = { type: 'personal_profile', context };
+    return generateFallbackInterpretation(request);
+  }, [profile, dailyEnergy, timing]);
+
   return (
     <div
       id="panel-intelligence"
@@ -92,6 +106,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
               Síntesis, patrones, dimensiones y las conexiones que Molino detecta entre tus sistemas.
             </p>
+            <p className="text-sm text-muted mt-3">La síntesis integral que conecta tus sistemas forma parte de Premium.</p>
           </motion.div>
         </div>
       </section>
@@ -287,16 +302,41 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tu interpretación</h2>
           </div>
-          <PremiumGate name={name} birthDate={birthDate}>
-            <MolinoInterpretation
-              profile={profile}
-              type="personal_profile"
-              dailyEnergy={dailyEnergy}
-              timing={timing ?? undefined}
-              label="Interpretación de Molino"
-              description="Análisis integrado de tu perfil personal"
-            />
-          </PremiumGate>
+          {!showPremiumGate ? (
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+              <div className="space-y-4 pb-4">
+                <p className="font-heading text-lg text-foreground leading-relaxed">{previewInterpretation.summary}</p>
+                <div className="pt-4 border-t border-ink/10">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
+                  <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.alignment}</p>
+                </div>
+                <div className="pt-4 border-t border-ink/10">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
+                  <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.timing}</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted mb-4">Una lectura que conecta lo que tus números, tu cielo y tus ciclos dicen en conjunto.</p>
+              <Button
+                variant="accent"
+                size="lg"
+                onClick={() => setShowPremiumGate(true)}
+                className="w-full sm:w-auto"
+              >
+                Leer la síntesis completa
+              </Button>
+            </motion.div>
+          ) : (
+            <PremiumGate name={name} birthDate={birthDate}>
+              <MolinoInterpretation
+                profile={profile}
+                type="personal_profile"
+                dailyEnergy={dailyEnergy}
+                timing={timing ?? undefined}
+                label="Interpretación de Molino"
+                description="Análisis integrado de tu perfil personal"
+              />
+            </PremiumGate>
+          )}
         </div>
       </section>
 
