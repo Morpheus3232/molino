@@ -51,7 +51,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       key: "identity" as ProfileTab,
       eyebrow: "Tu Identidad",
       title: `Tu arquetipo es ${archetype.name}`,
-      subtitle: `Camino de Vida ${lifePath} · ${display.name} de ${profile.chineseZodiacInfo?.element ?? ""}`,
+      subtitle: `Camino de Vida ${lifePath} (tu número guía) · ${display.name} de ${profile.chineseZodiacInfo?.element ?? ""}`,
       detail: `${profile.sunSign} · ${profile.chineseZodiac}`,
     },
     {
