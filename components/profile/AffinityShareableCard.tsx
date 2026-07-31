@@ -131,10 +131,10 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
         <div className="p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-1">
+            <p className="label-micro mb-1">
               Mi afinidad simbólica
             </p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted">
+            <p className="label-micro">
               Según el zodíaco chino
             </p>
           </div>
@@ -156,7 +156,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               >
                 {result.score}
               </span>
-              <span className="text-[10px] text-muted mt-1">/100</span>
+              <span className="text-[11px] text-muted mt-1">/100</span>
             </div>
 
             {/* User animal */}
@@ -184,42 +184,42 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
             </p>
           </div>
 
-          {/* Event info + confidence — subtle, factual */}
-          <div className="flex flex-col items-center gap-1.5 text-[10px] text-muted mb-6">
+          {/* Event info + confidence */}
+          <div className="flex flex-col items-center gap-1.5 text-xs text-muted mb-6">
             <div className="flex items-center justify-center gap-1.5">
               <span>{entity.name}</span>
               <span aria-hidden="true">·</span>
               <span>{eventDate}</span>
             </div>
             {event.confidence === "exacta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+              <span className="inline-flex items-center gap-1 text-[11px] text-green-700">
                 <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {event.confidence === "alta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
+              <span className="inline-flex items-center gap-1 text-[11px] text-green-700">
                 <span className="w-1 h-1 rounded-full bg-green-600" />
                 Fecha histórica verificada
               </span>
             )}
             {result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600">
+              <span className="inline-flex items-center gap-1 text-[11px] text-amber-700">
                 <span className="w-1 h-1 rounded-full bg-amber-500" />
                 Fecha aproximada
               </span>
             )}
             {(event.confidence === "tradicion" || event.confidence === "baja") && !result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-muted">
+              <span className="inline-flex items-center gap-1 text-[11px] text-muted">
                 <span className="w-1 h-1 rounded-full bg-muted/50" />
                 Tradición cultural
               </span>
             )}
           </div>
 
-          {/* Transparency block — minimal */}
+          {/* Transparency block */}
           <div className="p-3 rounded-md bg-background/50 mb-6">
-            <p className="text-[9px] text-muted leading-relaxed text-center">
+            <p className="text-[11px] text-muted leading-relaxed text-center">
               Basado en: fecha de nacimiento · fecha histórica de la entidad · tradición del zodíaco chino
             </p>
           </div>
@@ -232,8 +232,8 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
             </p>
           </div>
 
-          {/* Disclaimer — minimal, non-intrusive */}
-          <p className="text-[8px] text-muted text-center leading-relaxed mb-4">
+          {/* Disclaimer */}
+          <p className="text-[11px] text-muted text-center leading-relaxed mb-4">
             Lectura simbólica. No constituye predicción científica.
           </p>
 
@@ -246,7 +246,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Inteligencia Personal</span>
+            <span className="text-[11px] text-muted">Inteligencia Personal</span>
           </div>
         </div>
       </div>
