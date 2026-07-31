@@ -14,6 +14,7 @@ import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
 import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
+import AffinityPreview from "@/components/affinity/AffinityPreview";
 
 const IdentityScreen = dynamic(() => import("@/components/profile/screens/IdentityScreen"), {
   loading: () => <LoadingState fullScreen={false} />,
@@ -81,6 +82,9 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   const [activeTab, setActiveTab] = useState<ProfileTab | null>(
     VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
   );
+  const [showFirstDiscovery, setShowFirstDiscovery] = useState(
+    searchParams.get("first") === "1" && !tabFromUrl
+  );
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
@@ -135,6 +139,12 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   }, [activeTab, handleEnter]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
+  const dismissFirstDiscovery = useCallback(() => {
+    setShowFirstDiscovery(false);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("first");
+    router.replace(url.pathname + url.search, { scroll: false });
+  }, [router]);
 
   if (!mounted && !profile && !futureDateError) {
     return <LoadingState message="Cargando tu mapa..." />;
@@ -191,32 +201,38 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           </div>
         )}
 
-        <AnimatePresence mode="wait">
-          {!activeTab ? (
-            <motion.div
-              key="hub"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ProfileHub profile={profile} onEnter={handleEnter} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "world" && <WorldScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "circle" && <CircleScreen profile={profile} onNavigate={handleEnter} />}
-              {activeTab === "intelligence" && <IntelligenceScreen profile={profile} onNavigate={handleEnter} />}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!showFirstDiscovery && (
+          <AnimatePresence mode="wait">
+            {!activeTab ? (
+              <motion.div
+                key="hub"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ProfileHub profile={profile} onEnter={handleEnter} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+              >
+                {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
+                {activeTab === "world" && <WorldScreen profile={profile} onNavigate={handleEnter} />}
+                {activeTab === "circle" && <CircleScreen profile={profile} onNavigate={handleEnter} />}
+                {activeTab === "intelligence" && <IntelligenceScreen profile={profile} onNavigate={handleEnter} />}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+
+        {showFirstDiscovery && profile && (
+          <AffinityPreview profile={profile} onEnter={dismissFirstDiscovery} />
+        )}
 
         {showGuidedCTA && (
           <motion.div
