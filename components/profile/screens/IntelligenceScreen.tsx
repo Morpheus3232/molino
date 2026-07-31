@@ -18,7 +18,6 @@ import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import CrossLinks from "@/components/profile/CrossLinks";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 
@@ -292,17 +291,6 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
           </div>
         </div>
       </section>
-
-      {/* Cross-links */}
-      {onNavigate && (
-        <CrossLinks
-          links={[
-            { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onNavigate("world") },
-            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
-            { label: "Volvé a tu identidad", description: "Revisá tu perfil base y arquetipo.", onClick: () => onNavigate("identity") },
-          ]}
-        />
-      )}
     </div>
   );
 }

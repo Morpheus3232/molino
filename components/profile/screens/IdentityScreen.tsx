@@ -18,7 +18,6 @@ import KnowledgeConnections from "@/components/academy/KnowledgeConnections";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import CrossLinks from "@/components/profile/CrossLinks";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import dynamic from "next/dynamic";
@@ -321,17 +320,6 @@ export default function IdentityScreen({ profile, onNavigate }: IdentityScreenPr
           <ShareableImageCard profile={profile} currentTab="identity" />
         </div>
       </section>
-
-      {/* Cross-links */}
-      {onNavigate && (
-        <CrossLinks
-          links={[
-            { label: "Descubrí qué resuena con vos", description: "Marcas, destinos y entidades que conectan con tu perfil.", onClick: () => onNavigate("world") },
-            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
-            { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
-          ]}
-        />
-      )}
     </div>
   );
 }
