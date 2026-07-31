@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +12,7 @@ import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/ses
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
-import type { ProfileTab } from "@/components/profile/ProfileTabs";
+import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import PremiumGate from "@/components/profile/PremiumGate";
 
@@ -36,13 +36,6 @@ interface ProfileClientProps {
 }
 
 const VALID_TABS: ProfileTab[] = ["identity", "world", "circle", "intelligence"];
-
-const TAB_LABELS: Record<ProfileTab, string> = {
-  identity: "Tu Identidad",
-  world: "Tu Mundo",
-  circle: "Tu Círculo",
-  intelligence: "Tu Inteligencia",
-};
 
 const NEXT_TAB: Record<ProfileTab, ProfileTab> = {
   identity: "world",
@@ -108,8 +101,9 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     }
   }, [serverProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const discovery = loadDiscoveryState();
-  const isNewUser = !discovery.hasCompletedOnboarding;
+  // Se relee al cambiar de tab (markSeen actualiza localStorage en handleEnter),
+  // en vez de parsear el JSON de discovery en cada render.
+  const isNewUser = useMemo(() => !loadDiscoveryState().hasCompletedOnboarding, [activeTab]);
   const showGuidedCTA = activeTab && isNewUser && !hasSeenAll();
 
   const updateUrl = useCallback((tab: ProfileTab | null) => {
@@ -154,14 +148,14 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-4">Mi mapa personal</p>
           {futureDateError ? (
-            <>
+            <div role="alert">
               <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
                 Fecha inválida
               </h1>
               <p className="text-muted mb-8 max-w-md mx-auto">
                 La fecha de nacimiento no puede ser futura. Ingresá una fecha válida para generar tu mapa.
               </p>
-            </>
+            </div>
           ) : (
             <>
               <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
@@ -192,21 +186,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     <div className="min-h-screen bg-background">
       <main id="main-content">
         {activeTab && (
-          <div className="sticky top-0 z-30 bg-background border-b border-ink/10">
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 flex items-center gap-4 h-12">
-              <button
-                type="button"
-                onClick={handleBackToHub}
-                className="flex items-center gap-2 text-sm text-muted hover:text-foreground transition-colors"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-                <span className="hidden sm:inline">Mi mapa</span>
-              </button>
-              <span className="text-sm font-medium text-foreground">{TAB_LABELS[activeTab]}</span>
-            </div>
-          </div>
+          <ProfileTabs active={activeTab} onChange={handleEnter} onBack={handleBackToHub} />
         )}
 
         {!activeTab && showEphemeralWarning && (

@@ -40,8 +40,8 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 2);
 
-  const discovery = loadDiscoveryState();
-  const topRec = discovery.hasCompletedOnboarding ? positiveRecs[0] : null;
+  const hasCompletedOnboarding = useMemo(() => loadDiscoveryState().hasCompletedOnboarding, []);
+  const topRec = hasCompletedOnboarding ? positiveRecs[0] : null;
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
   const intelligenceScore = dailyEnergy.overallScore;
