@@ -80,16 +80,18 @@ export default function HeroNew() {
             </motion.div>
           </div>
 
-          {/* Número del día — ahora es soporte, no protagonista */}
+          {/* Número del día — soporte, no protagonista: más chico que el
+              titular y que la pregunta de entrada de abajo (DecisionEntryPrompt),
+              para no competirles la atención. */}
           <Link
             href="/daily-energy"
             className="group flex flex-wrap border-b border-ink/10 transition-colors hover:bg-ink/[0.02]"
           >
-            <div className={`w-full sm:w-auto sm:min-w-[10rem] ${cellPad} py-6 sm:border-r border-ink/10 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1`}>
+            <div className={`w-full sm:w-auto sm:min-w-[10rem] ${cellPad} py-4 sm:border-r border-ink/10 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1`}>
               <span className="label-micro">NÚMERO DEL DÍA</span>
-              <span className="font-display text-5xl leading-none text-foreground">{number}</span>
+              <span className="font-display text-2xl leading-none text-foreground">{number}</span>
             </div>
-            <div className={`flex-1 ${cellPad} py-6 flex items-center justify-between gap-4 min-w-[16rem]`}>
+            <div className={`flex-1 ${cellPad} py-4 flex items-center justify-between gap-4 min-w-[16rem]`}>
               <div>
                 <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{reflection.title}</p>
                 <p className="text-sm text-muted mt-1 line-clamp-1 max-w-md">{reflection.text}</p>
