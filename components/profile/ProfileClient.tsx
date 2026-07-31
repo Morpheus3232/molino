@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
@@ -11,13 +12,22 @@ import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/ses
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
-import IdentityScreen from "@/components/profile/screens/IdentityScreen";
-import WorldScreen from "@/components/profile/screens/WorldScreen";
-import CircleScreen from "@/components/profile/screens/CircleScreen";
-import IntelligenceScreen from "@/components/profile/screens/IntelligenceScreen";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import PremiumGate from "@/components/profile/PremiumGate";
+
+const IdentityScreen = dynamic(() => import("@/components/profile/screens/IdentityScreen"), {
+  loading: () => <LoadingState fullScreen={false} />,
+});
+const WorldScreen = dynamic(() => import("@/components/profile/screens/WorldScreen"), {
+  loading: () => <LoadingState fullScreen={false} />,
+});
+const CircleScreen = dynamic(() => import("@/components/profile/screens/CircleScreen"), {
+  loading: () => <LoadingState fullScreen={false} />,
+});
+const IntelligenceScreen = dynamic(() => import("@/components/profile/screens/IntelligenceScreen"), {
+  loading: () => <LoadingState fullScreen={false} />,
+});
 
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
