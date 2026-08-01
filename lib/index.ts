@@ -5,7 +5,7 @@ export type { Archetype } from './data';
 export { ENTITIES, getEntityById, getEntitiesByCategory } from './data/entities';
 export type { EntityProfile, EntityCategory } from './data/entities';
 export { getChineseZodiac } from './data/chineseNewYearDates';
-export { ARCHETYPE_DESCRIPTIONS, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, getArchetypeInfo, calculateNumerologyCompatibility } from './engines/numerologyEngine';
+export { ARCHETYPE_DESCRIPTIONS, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, calculateBirthDayNumber, getArchetypeInfo, calculateNumerologyCompatibility } from './engines/numerologyEngine';
 export type { NumerologyProfile } from './engines/numerologyEngine';
 export { calculateCompatibility } from './engines/compatibilityEngine';
 export type { CompatibilityResult, UserProfile, CompatibilityScore } from './engines/compatibilityEngine';

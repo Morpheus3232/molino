@@ -199,6 +199,21 @@ export function calculatePersonalityNumber(name: string): number {
   return sum;
 }
 
+export function calculateBirthDayNumber(day: number): number {
+  if (day < 1 || day > 31) return 0;
+  let sum = day;
+  if (sum === 11 || sum === 22 || sum === 33) return sum;
+  while (sum > 9) {
+    let temp = 0;
+    for (const char of String(sum)) {
+      temp += parseInt(char, 10);
+    }
+    sum = temp;
+    if (sum === 11 || sum === 22 || sum === 33) return sum;
+  }
+  return sum;
+}
+
 export function getArchetypeInfo(lifePath: number) {
   return ARCHETYPE_DESCRIPTIONS[lifePath] || {
     name: 'El Buscador',

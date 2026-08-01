@@ -22,6 +22,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
   const element = profile.chineseZodiacInfo?.element ?? "";
   const expressionNumber = profile.expressionNumber;
   const soulNumber = profile.soulNumber;
+  const personalityNumber = profile.personalityNumber;
 
   const sources: DataSource[] = [
     {
@@ -59,6 +60,12 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
       value: String(soulNumber ?? "—"),
       origin: "Numerología del nombre",
       tradition: "Basado en las vocales del nombre, representa el deseo interior.",
+    },
+    {
+      field: "Personalidad",
+      value: String(personalityNumber ?? "—"),
+      origin: "Numerología del día de nacimiento",
+      tradition: "Se obtiene exclusivamente a partir del día de nacimiento reducido a un solo dígito, o manteniendo los números maestros 11, 22 y 33.",
     },
   ];
 

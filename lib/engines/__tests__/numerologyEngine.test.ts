@@ -4,6 +4,7 @@ import {
   calculateExpressionNumber,
   calculateSoulNumber,
   calculatePersonalityNumber,
+  calculateBirthDayNumber,
   getArchetypeInfo,
 } from "../numerologyEngine";
 
@@ -60,19 +61,59 @@ describe("Numerology Engine", () => {
     });
   });
 
-  describe("calculatePersonalityNumber", () => {
-    it("calculates personality from consonants only", () => {
-      // JUAN -> J=1, N=5 = 6
-      expect(calculatePersonalityNumber("JUAN")).toBe(6);
-    });
-
-    it("calculates personality for MARIA", () => {
-      // MARIA -> M=4, R=9 = 13 -> 4
-      expect(calculatePersonalityNumber("MARIA")).toBe(4);
-    });
+describe("calculatePersonalityNumber", () => {
+  it("calculates personality from consonants only", () => {
+    // JUAN -> J=1, N=5 = 6
+    expect(calculatePersonalityNumber("JUAN")).toBe(6);
   });
 
-  describe("getArchetypeInfo", () => {
+  it("calculates personality for MARIA", () => {
+    // MARIA -> M=4, R=9 = 13 -> 4
+    expect(calculatePersonalityNumber("MARIA")).toBe(4);
+  });
+});
+
+describe("calculateBirthDayNumber", () => {
+  it("returns single digit for days 1-9", () => {
+    expect(calculateBirthDayNumber(1)).toBe(1);
+    expect(calculateBirthDayNumber(2)).toBe(2);
+    expect(calculateBirthDayNumber(8)).toBe(8);
+    expect(calculateBirthDayNumber(9)).toBe(9);
+  });
+
+  it("reduces double-digit days to single digit", () => {
+    expect(calculateBirthDayNumber(10)).toBe(1);
+    expect(calculateBirthDayNumber(17)).toBe(8);
+    expect(calculateBirthDayNumber(18)).toBe(9);
+    expect(calculateBirthDayNumber(25)).toBe(7);
+    expect(calculateBirthDayNumber(30)).toBe(3);
+    expect(calculateBirthDayNumber(31)).toBe(4);
+  });
+
+  it("keeps master number 11", () => {
+    expect(calculateBirthDayNumber(11)).toBe(11);
+  });
+
+  it("keeps master number 22", () => {
+    expect(calculateBirthDayNumber(22)).toBe(22);
+  });
+
+  it("keeps master number 11 for day 29", () => {
+    expect(calculateBirthDayNumber(29)).toBe(11);
+  });
+
+  it("does not depend on name, month, or year", () => {
+    expect(calculateBirthDayNumber(17)).toBe(8);
+    expect(calculateBirthDayNumber(17)).toBe(calculateBirthDayNumber(17));
+  });
+
+  it("returns 0 for invalid day", () => {
+    expect(calculateBirthDayNumber(0)).toBe(0);
+    expect(calculateBirthDayNumber(32)).toBe(0);
+  });
+});
+
+describe("getArchetypeInfo", () => {
     it("returns correct archetype for life path 1", () => {
       const archetype = getArchetypeInfo(1);
       expect(archetype.name).toBe("El Líder");
