@@ -9,6 +9,9 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
+import { buildOrientation } from "@/lib/utils/orientation";
+import { getTopAffinityHighlights, TIER_META } from "@/lib/engines/affinityEngine";
+import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import {
   recordDailySnapshot,
   getPreviousSnapshot,
@@ -37,29 +40,19 @@ function getScoreStyle(score: number): string {
         : "var(--score-poor)";
 }
 
-/** Orientación del momento — deriva de timing.timingScore, sin tocar el engine. */
-function getOrientation(timingScore: number): Orientation {
+/**
+ * Postura de decisión — deriva únicamente de timing.timingScore, sin tocar el engine.
+ * NO es la orientación general del momento (esa es buildOrientation(), de
+ * lib/utils/orientation.ts): esto responde específicamente "¿qué hago con una
+ * decisión hoy?", no "¿qué significa este momento para mí?".
+ */
+function getDecisionPosture(timingScore: number): Orientation {
   if (timingScore >= 70) return "ACTUAR";
   if (timingScore >= 50) return "ESPERAR";
   return "OBSERVAR";
 }
 
-const ORIENTATION_COPY: Record<Orientation, { headline: string; detail: string }> = {
-  ACTUAR: {
-    headline: "Es momento de actuar",
-    detail: "Las condiciones acompañan avanzar con lo que tenías en mente.",
-  },
-  ESPERAR: {
-    headline: "Es momento de esperar",
-    detail: "Conviene dejar que las cosas maduren un poco más antes de comprometerte.",
-  },
-  OBSERVAR: {
-    headline: "Es momento de observar",
-    detail: "El día pide juntar información antes de tomar una posición.",
-  },
-};
-
-/** Texto de ventana recomendada coherente con la orientación — única autoridad, no timing.recommendedWindow. */
+/** Texto de ventana recomendada coherente con la postura de decisión — única autoridad, no timing.recommendedWindow. */
 const WINDOW_COPY: Record<Orientation, string> = {
   ACTUAR: "No hace falta esperar más señales: con lo que ya tenés, andá para adelante.",
   ESPERAR: "Todavía no es momento de cerrar nada. Dejalo reposar y volvé a mirarlo más adelante.",
@@ -109,8 +102,11 @@ export default function HoyClient() {
       energy.overallScore,
       energy.theme,
     );
+    // Orientación canónica del momento — misma fuente que MomentOrientation en /profile.
+    const moment = buildOrientation(energy, momentState, timing);
+    const topAffinities = getTopAffinityHighlights(profile).slice(0, 2);
 
-    return { energy, convergence, timing, momentState };
+    return { energy, convergence, timing, momentState, moment, topAffinities };
   }, [profile, today]);
 
   const todayStr = useMemo(() => toLocalDateKey(today), [today]);
@@ -125,7 +121,7 @@ export default function HoyClient() {
     recordDailySnapshot({
       date: todayStr,
       profileKey: profile.birthDate,
-      orientation: getOrientation(data.timing.timingScore),
+      orientation: getDecisionPosture(data.timing.timingScore),
       energyLevel: getEnergyLevel(data.energy.overallScore),
       theme: data.energy.theme,
     });
@@ -136,17 +132,18 @@ export default function HoyClient() {
 
   const derived = useMemo(() => {
     if (!data) return null;
-    const orientation = getOrientation(data.timing.timingScore);
+    const decisionPosture = getDecisionPosture(data.timing.timingScore);
     return {
       energy: data.energy,
       convergence: data.convergence,
       timing: data.timing,
       momentState: data.momentState,
+      moment: data.moment,
+      topAffinities: data.topAffinities,
       scoreStyle: getScoreStyle(data.energy.overallScore),
       energyLevel: getEnergyLevel(data.energy.overallScore),
-      orientation,
-      orientationCopy: ORIENTATION_COPY[orientation],
-      decisionCopy: DECISION_COPY[orientation],
+      decisionPosture,
+      decisionCopy: DECISION_COPY[decisionPosture],
       topStrengths: data.energy.strengths.slice(0, 3),
       dateLabel: today.toLocaleDateString("es-AR", {
         weekday: "long",
@@ -161,12 +158,13 @@ export default function HoyClient() {
     convergence,
     timing,
     momentState,
+    moment,
     scoreStyle,
     energyLevel,
-    orientation,
-    orientationCopy,
+    decisionPosture,
     decisionCopy,
     topStrengths,
+    topAffinities,
     dateLabel,
   } = derived ?? ({} as NonNullable<typeof derived>);
 
@@ -292,8 +290,7 @@ export default function HoyClient() {
         {/* HERO — el nivel de energía y la frase humana lideran; el score queda secundario */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="border border-ink/10 p-8 lg:p-12"
         >
@@ -304,10 +301,7 @@ export default function HoyClient() {
           >
             {energyLevel}
           </p>
-          <p className="text-lg sm:text-xl font-heading text-foreground leading-relaxed max-w-2xl">
-            {energy.description}
-          </p>
-          <p className="text-xs text-muted mt-4">
+          <p className="text-xs text-muted">
             {energy.theme} · Luna {energy.moonPhase.phase}
           </p>
         </motion.div>
@@ -315,8 +309,7 @@ export default function HoyClient() {
         {/* INSIGHT PRINCIPAL — interpretación humana determinística, no lenguaje de algoritmo */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mt-6 border border-ink/10 p-8 lg:p-12"
         >
@@ -332,8 +325,7 @@ export default function HoyClient() {
         {/* QUÉ HACER HOY — acciones concretas derivadas de energy.strengths, no un informe de fortalezas/debilidades */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-6 p-8 lg:p-12"
         >
@@ -360,75 +352,124 @@ export default function HoyClient() {
         {/* MOMENTO PARA ACTUAR — orientación primero, score secundario */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.25 }}
           className="mt-6 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">MOMENTO PARA ACTUAR</p>
 
-          {previousSnapshot && (
-            <p className="text-xs text-muted mb-3">
-              Ayer fue{" "}
-              <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
-            </p>
-          )}
-
-          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
-            <p
-              className="text-3xl sm:text-4xl font-display font-bold tracking-tight"
-              style={{ color: getScoreStyle(timing.timingScore) }}
-            >
-              {orientation}
-            </p>
-            <div className="flex items-center gap-4">
-              <p className="text-xs text-muted">{timing.timingScore}/100</p>
-              <Button
-                variant="secondary"
-                size="md"
-                onClick={() => router.push("/timing")}
-              >
-                Ver mi timing
-              </Button>
-            </div>
-          </div>
-          <p className="text-base text-foreground leading-relaxed max-w-2xl">
-            {orientationCopy.detail}
+          {/* Orientación del momento — canónica, misma fuente que /profile (buildOrientation) */}
+          <p className="text-base text-foreground leading-relaxed max-w-2xl mb-6">
+            {moment.orientation}
           </p>
 
-          {timing.favorableDimensions.length > 0 && (
-            <div className="mt-6">
-              <p className="label-micro mb-3 text-accent">Favorece</p>
-              <ul className="space-y-2">
-                {timing.favorableDimensions.map((dim, i) => (
-                  <li
-                    key={i}
-                    className="text-sm text-foreground flex items-start gap-3"
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0"
-                      aria-hidden="true"
-                    />
-                    {dim}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          <div className="border-t border-ink/10 pt-6">
+            <p className="label-micro mb-4 text-muted">Para una decisión</p>
 
-          <div className="mt-6 border-t border-ink/10 pt-4">
-            <p className="label-micro mb-2">Ventana recomendada</p>
-            <p className="text-sm text-foreground leading-relaxed">
-              {WINDOW_COPY[orientation]}
-            </p>
+            {previousSnapshot && (
+              <p className="text-xs text-muted mb-3">
+                Ayer fue{" "}
+                <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
+              </p>
+            )}
+
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
+              <p
+                className="text-3xl sm:text-4xl font-display font-bold tracking-tight"
+                style={{ color: getScoreStyle(timing.timingScore) }}
+              >
+                {decisionPosture}
+              </p>
+              <div className="flex items-center gap-4">
+                <p className="text-xs text-muted">{timing.timingScore}/100</p>
+                <Button
+                  variant="secondary"
+                  size="md"
+                  onClick={() => router.push("/timing")}
+                >
+                  Ver mi timing
+                </Button>
+              </div>
+            </div>
+
+            {timing.favorableDimensions.length > 0 && (
+              <div className="mt-6">
+                <p className="label-micro mb-3 text-accent">Favorece</p>
+                <ul className="space-y-2">
+                  {timing.favorableDimensions.map((dim, i) => (
+                    <li
+                      key={i}
+                      className="text-sm text-foreground flex items-start gap-3"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0"
+                        aria-hidden="true"
+                      />
+                      {dim}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="mt-6 border-t border-ink/10 pt-4">
+              <p className="label-micro mb-2">Ventana recomendada</p>
+              <p className="text-sm text-foreground leading-relaxed">
+                {WINDOW_COPY[decisionPosture]}
+              </p>
+            </div>
           </div>
         </motion.div>
+
+        {/* RELACIONES — qué resuena con vos hoy en el mundo, afinidad simbólica */}
+        {topAffinities.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.28 }}
+            className="mt-6 p-8 lg:p-12"
+          >
+            <p className="eyebrow-brutalist mb-4">RELACIONES</p>
+            <ul className="space-y-0">
+              {topAffinities.map((r) => (
+                <li key={r.entity.id}>
+                  <Link
+                    href={`/affinity/${r.entity.type}/${r.entity.id}`}
+                    className="group flex items-center justify-between gap-4 py-4 border-b border-ink/10 hover:border-accent/40 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  >
+                    <span className="flex items-center gap-3 min-w-0">
+                      <span className="text-2xl shrink-0" aria-hidden="true">
+                        {r.entity.emoji}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-xs text-muted">
+                          {ENTITY_TYPES[r.entity.type]?.label ?? r.entity.type}
+                        </span>
+                        <span className="block font-heading text-base text-foreground truncate group-hover:text-accent transition-colors">
+                          {r.entity.name}
+                        </span>
+                      </span>
+                    </span>
+                    <span className="text-xs shrink-0" style={{ color: TIER_META[r.tier].color }}>
+                      {TIER_META[r.tier].label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/affinity"
+              className="inline-flex items-center gap-2 text-sm text-accent hover:underline mt-6"
+            >
+              Ver todas mis afinidades →
+            </Link>
+          </motion.div>
+        )}
 
         {/* CONTEXTO PERSONAL — los números aparecen contextualizados, no aislados */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-6 border-t border-ink/10 pt-12"
         >
@@ -444,8 +485,7 @@ export default function HoyClient() {
         {/* DECISIONES — CTA coherente con la orientación del momento */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.35 }}
           className="mt-6 border-t border-ink/10 pt-12 text-center"
         >
@@ -468,8 +508,7 @@ export default function HoyClient() {
         {/* PROFUNDIZAR — detalle técnico disponible pero subordinado */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-6 border-t border-ink/10 pt-12"
         >
@@ -525,8 +564,7 @@ export default function HoyClient() {
         {/* IA — enriquecimiento opcional, nunca fuente principal de verdad */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.45 }}
           className="mt-6"
         >
@@ -542,8 +580,7 @@ export default function HoyClient() {
         {/* CIERRE — genera expectativa de regreso, sin mendigar retención */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-10 pt-8 border-t border-ink/10 text-center"
         >
