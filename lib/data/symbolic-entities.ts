@@ -11,8 +11,12 @@
 import { getChineseAnimal, getChineseElement, calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { BRANDS_60 } from "./brands-60";
 import { BRANDS_AUTOS_60 } from "./brands-autos-60";
+import { BRANDS_ARGENTINA } from "./brands-argentina";
 import { COUNTRIES_60 } from "./countries-60";
 import { CITIES_60 } from "./cities-60";
+import { CITIES_ARGENTINA } from "./cities-argentina";
+import { TEAMS_ARGENTINA } from "./teams-argentina";
+import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
 
 export type EntityType =
   | "brand"
@@ -131,9 +135,14 @@ export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
 export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...BRANDS_60,
   ...BRANDS_AUTOS_60,
+  ...BRANDS_ARGENTINA,
 
   ...COUNTRIES_60,
   ...CITIES_60,
+  ...CITIES_ARGENTINA,
+
+  ...TEAMS_ARGENTINA,
+  ...UNIVERSITIES_ARGENTINA,
 
   // ──── UNIVERSIDADES (3) ────
   {
@@ -377,6 +386,25 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
         description: "David Robert Jones nace en Brixton, Londres.",
         source: "Encyclopaedia Britannica",
         confidence: "exacta",
+        primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "soda-stereo", name: "Soda Stereo", type: "artist", foundingYear: 1982, country: "Argentina",
+    emoji: "🎸",
+    description: "Soda Stereo es la banda de rock en español más influyente de Latinoamérica, referencia ineludible del new wave y el rock latino.",
+    keyThemes: ["Reinvención", "Vanguardia", "Latinoamérica", "Elegancia"],
+    sourceNote: "Formada en 1982 en Buenos Aires por Gustavo Cerati, Zeta Bosio y Charly Alberti. Fecha exacta de formación no documentada públicamente; se usa el año.",
+    events: [
+      {
+        id: "soda-stereo-formacion",
+        type: "creacion",
+        label: "Formación de la banda",
+        year: 1982,
+        description: "Gustavo Cerati, Héctor «Zeta» Bosio y Charly Alberti forman Soda Stereo en Buenos Aires.",
+        source: "Soda Stereo — Historia oficial / Wikipedia",
+        confidence: "media",
         primaryForAffinity: true,
       },
     ],
