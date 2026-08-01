@@ -19,6 +19,13 @@ import ToolsAndDiscovery from "@/components/sections/ToolsAndDiscovery";
 import ConceptsIndex from "@/components/sections/ConceptsIndex";
 import DecisionEntryPrompt from "@/components/sections/DecisionEntryPrompt";
 
+/** Mismo criterio que /hoy — la energía se lee como nivel, no como score. */
+function getEnergyLevel(score: number): string {
+  if (score >= 75) return "ALTA";
+  if (score >= 55) return "MEDIA";
+  return "BAJA";
+}
+
 // Feature flag — paso 1 del roadmap de PRODUCT-BREAKTHROUGH.md (sección 19,
 // "Semanas 1-2"). Controla si la home de un usuario NUEVO (sin perfil
 // guardado) muestra la pregunta de entrada "¿Qué te trae por acá hoy?" antes
@@ -123,12 +130,11 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
               <div className="text-center mb-8">
                 <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu energía de hoy</p>
                 <Link
-                  href="/daily-energy"
+                  href="/hoy"
                   className="group inline-flex items-center gap-3"
                 >
                   <span className={`text-5xl sm:text-6xl font-heading font-bold tracking-tight ${getScoreColor(energy.overallScore)}`}>
-                    {energy.overallScore}
-                    <span className="text-2xl sm:text-3xl text-muted font-sans font-medium">/100</span>
+                    {getEnergyLevel(energy.overallScore)}
                   </span>
                   <span className="text-xs font-mono tracking-wider text-muted group-hover:text-accent transition-colors">
                     VER DETALLE →
