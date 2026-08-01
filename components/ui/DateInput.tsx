@@ -158,9 +158,35 @@ export default function DateInput({ value, onChange }: DateInputProps) {
     [yyyy]
   );
 
+  // Sin "w-full": en un flex row, `.w-full{width:100%}` compila después de
+  // `.w-16`/`.sm\:w-20` en el CSS generado por Tailwind y, a igual
+  // especificidad, gana la cascada — Día y Mes terminaban pidiendo 100% del
+  // ancho cada uno y el campo Año (flex-1, basis 0%) quedaba en 0px reales.
   const baseInput =
-    "w-full bg-transparent text-center font-heading font-semibold text-foreground " +
+    "bg-transparent text-center font-heading font-semibold text-foreground " +
     "placeholder:text-muted-foreground focus:outline-none tabular-nums";
+
+  const handleGroupKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key !== "Enter") return;
+      if (dd.length < 2) {
+        e.preventDefault();
+        e.stopPropagation();
+        focusAndReveal(ddRef);
+      } else if (mm.length < 2) {
+        e.preventDefault();
+        e.stopPropagation();
+        focusAndReveal(mmRef);
+      } else if (yyyy.length < 4) {
+        e.preventDefault();
+        e.stopPropagation();
+        focusAndReveal(yyyyRef);
+      }
+      // Fecha completa: se deja pasar el Enter para que el onKeyDown del
+      // formulario (fuera de este componente) dispare el submit existente.
+    },
+    [dd, mm, yyyy]
+  );
 
   return (
     <div className="mx-auto max-w-xs">
@@ -168,6 +194,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         className="flex items-center gap-0 rounded-md border border-border bg-card shadow-sm px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-all"
         role="group"
         aria-label="Fecha de nacimiento"
+        onKeyDown={handleGroupKeyDown}
       >
         {/* Day */}
         <input
