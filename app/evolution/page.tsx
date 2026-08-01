@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { getHistoryForProfile, type DailySnapshot, type Orientation } from "@/lib/session/dailyHistory";
+import { getPersonalYear } from "@/lib/calculations";
+import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
@@ -40,6 +42,28 @@ export default function EvolutionPage() {
     },
     { ACTUAR: 0, ESPERAR: 0, OBSERVAR: 0 }
   );
+
+  /**
+   * Ciclo personal a través del tiempo — mismo cálculo que profileBuilder
+   * (getPersonalYear), aplicado a año pasado/actual/próximo. No hay memoria
+   * inventada: es la misma matemática numerológica de siempre, evaluada en
+   * tres puntos del calendario.
+   */
+  const cycleArc = useMemo(() => {
+    if (!profile) return null;
+    const [birthYear, birthMonth, birthDay] = profile.birthDate.split("-").map(Number);
+    if (!birthDay || !birthMonth || !birthYear) return null;
+    const thisYear = new Date().getFullYear();
+    const build = (targetYear: number) => {
+      const cycle = getPersonalYear(birthDay, birthMonth, birthYear, targetYear);
+      return { year: targetYear, cycle, theme: getYearTheme(cycle) };
+    };
+    return {
+      previous: build(thisYear - 1),
+      current: build(thisYear),
+      next: build(thisYear + 1),
+    };
+  }, [profile]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,9 +135,37 @@ export default function EvolutionPage() {
                   Tu recorrido
                 </h1>
                 <p className="text-sm text-muted mt-4 max-w-2xl">
-                  Cada vez que abrís Hoy, Molino guarda tu orientación del día. Con el tiempo, esto se convierte en un recorrido.
+                  De dónde venís, dónde estás y qué ciclo se abre a continuación — según tu numerología. Además, cada vez que abrís Hoy, Molino guarda tu orientación del día para que con el tiempo puedas ver un historial real.
                 </p>
               </motion.div>
+
+              {/* TU CICLO — de dónde venís / dónde estás / qué viene, siempre disponible: no depende de historial acumulado */}
+              {cycleArc && (
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.05 }} className="mb-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
+                    <div className="bg-background p-8 lg:p-10">
+                      <p className="label-micro mb-3">Año anterior · {cycleArc.previous.year}</p>
+                      <p className="font-display text-4xl text-muted mb-3">{cycleArc.previous.cycle}</p>
+                      <p className="text-sm text-muted leading-relaxed">Fue {cycleArc.previous.theme}.</p>
+                    </div>
+                    <div className="bg-background p-8 lg:p-10">
+                      <p className="label-micro mb-3 text-accent">Este año · {cycleArc.current.year}</p>
+                      <p className="font-display text-4xl text-foreground mb-3">{cycleArc.current.cycle}</p>
+                      <p className="text-sm text-foreground leading-relaxed">Es {cycleArc.current.theme}.</p>
+                    </div>
+                    <div className="bg-background p-8 lg:p-10">
+                      <p className="label-micro mb-3">Próximo año · {cycleArc.next.year}</p>
+                      <p className="font-display text-4xl text-muted mb-3">{cycleArc.next.cycle}</p>
+                      <p className="text-sm text-muted leading-relaxed">Va a ser {cycleArc.next.theme}.</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted mt-4">
+                    {cycleArc.current.cycle === cycleArc.next.cycle
+                      ? `Tu ciclo personal se mantiene en ${cycleArc.current.cycle} el próximo año.`
+                      : `Tu ciclo personal pasa de ${cycleArc.current.cycle} a ${cycleArc.next.cycle} el próximo año.`}
+                  </p>
+                </motion.div>
+              )}
 
               <AnimatePresence mode="wait">
                 {history.length === 0 ? (
@@ -124,10 +176,10 @@ export default function EvolutionPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                   >
-                    <motion.div className="text-center py-16">
-                      <p className="eyebrow-brutalist mb-4">Sin datos todavía</p>
+                    <motion.div className="text-center py-16 border-t border-ink/10">
+                      <p className="eyebrow-brutalist mb-4">Todavía no registraste días</p>
                       <p className="text-muted mb-6 max-w-md mx-auto">
-                        Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación.
+                        Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación día a día.
                       </p>
                       <div className="mt-6">
                         <Button variant="primary" onClick={() => router.push("/hoy")}>
@@ -144,10 +196,10 @@ export default function EvolutionPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
                   >
-                    <div className="space-y-px bg-ink/10">
+                    <div className="space-y-px bg-ink/10 border-t border-ink/10 pt-6">
                       <motion.div className="bg-background p-8 lg:p-12">
                         <p className="eyebrow-brutalist mb-4">
-                          {history.length} {history.length === 1 ? "día registrado" : "días registrados"}
+                          Hitos que registraste · {history.length} {history.length === 1 ? "día" : "días"}
                         </p>
                         <ul className="flex flex-wrap gap-x-8 gap-y-2">
                           {ORIENTATION_ORDER.map((o) => (
