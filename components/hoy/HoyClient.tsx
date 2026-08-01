@@ -55,6 +55,15 @@ const ORIENTATION_COPY: Record<Orientation, { headline: string; detail: string }
   },
 };
 
+/** Texto de ventana recomendada coherente con la orientación — única autoridad, no timing.recommendedWindow. */
+const WINDOW_COPY: Record<Orientation, string> = {
+  ACTUAR: "No hace falta esperar más señales: con lo que ya tenés, andá para adelante.",
+  ESPERAR: "Todavía no es momento de cerrar nada. Dejalo reposar y volvé a mirarlo más adelante.",
+  OBSERVAR: "Este no es un día para definir posiciones. Sumá información y dejá la decisión para cuando el panorama esté más claro.",
+};
+
+const ACTION_PREFIXES = ["Enfocarte en", "Apoyarte en", "Sostener"];
+
 const DECISION_COPY: Record<Orientation, { title: string; body: string; cta: string }> = {
   ACTUAR: {
     title: "¿Tenés algo que decidir hoy?",
@@ -240,7 +249,7 @@ export default function HoyClient() {
                   {i + 1}
                 </span>
                 <span className="text-base text-foreground leading-relaxed">
-                  {s}
+                  {ACTION_PREFIXES[i] ?? "Aprovechar"} {s.toLowerCase()}
                 </span>
               </li>
             ))}
@@ -304,14 +313,12 @@ export default function HoyClient() {
             </div>
           )}
 
-          {timing.recommendedWindow && (
-            <div className="mt-6 border-t border-ink/10 pt-4">
-              <p className="label-micro mb-2">Ventana recomendada</p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {timing.recommendedWindow}
-              </p>
-            </div>
-          )}
+          <div className="mt-6 border-t border-ink/10 pt-4">
+            <p className="label-micro mb-2">Ventana recomendada</p>
+            <p className="text-sm text-foreground leading-relaxed">
+              {WINDOW_COPY[orientation]}
+            </p>
+          </div>
         </motion.div>
 
         {/* CONTEXTO PERSONAL — los números aparecen contextualizados, no aislados */}
