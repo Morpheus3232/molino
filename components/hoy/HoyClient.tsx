@@ -10,8 +10,7 @@ import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation } from "@/lib/utils/orientation";
-import { getTopAffinityHighlights, TIER_META } from "@/lib/engines/affinityEngine";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import { getTopAffinityHighlights, type AffinityResult } from "@/lib/engines/affinityEngine";
 import {
   recordDailySnapshot,
   getPreviousSnapshot,
@@ -28,6 +27,10 @@ function getEnergyLevel(score: number): EnergyLevel {
   if (score >= 75) return "ALTA";
   if (score >= 55) return "MEDIA";
   return "BAJA";
+}
+
+function formatAffinityHint(result: AffinityResult): string {
+  return `con ${result.entity.name}`;
 }
 
 function getScoreStyle(score: number): string {
@@ -135,7 +138,6 @@ export default function HoyClient() {
       energyLevel: getEnergyLevel(data.energy.overallScore),
       decisionPosture,
       decisionCopy: DECISION_COPY[decisionPosture],
-      topStrengths: data.energy.strengths.slice(0, 3),
       dateLabel: today.toLocaleDateString("es-AR", {
         weekday: "long",
         day: "numeric",
@@ -154,7 +156,6 @@ export default function HoyClient() {
     energyLevel,
     decisionPosture,
     decisionCopy,
-    topStrengths,
     topAffinities,
     dateLabel,
   } = derived ?? ({} as NonNullable<typeof derived>);
@@ -246,6 +247,7 @@ export default function HoyClient() {
               className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24"
               id="main-content"
             >
+        {/* HERO — fecha, estado, una única frase protagonista. Nada compite acá. */}
         <motion.div
           {...fadeUp}
           className="border-t border-ink/10 py-10 sm:py-16"
@@ -256,12 +258,18 @@ export default function HoyClient() {
             <span className="text-foreground font-medium">Hoy</span>
           </nav>
 
-          <p className="eyebrow-brutalist mb-4">HOY · {dateLabel}</p>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
-            TU DÍA, EN PERSPECTIVA.
-          </h1>
-          <p className="text-sm text-muted mt-4">
-            Una lectura de tu mapa aplicado al momento que estás viviendo.
+          <p className="eyebrow-brutalist mb-4">TU DÍA · {dateLabel}</p>
+          <p
+            className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-[0.9]"
+            style={{ color: scoreStyle }}
+          >
+            {energyLevel}
+          </p>
+          <p className="text-xs text-muted mt-3">
+            {energy.theme} · Luna {energy.moonPhase.phase}
+          </p>
+          <p className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed max-w-2xl mt-6">
+            {energy.description}
           </p>
           <AnimatePresence>
             {snapshotSaved && (
@@ -270,7 +278,7 @@ export default function HoyClient() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="text-xs text-muted mt-2"
+                className="text-xs text-muted mt-4"
               >
                 Tu día quedó guardado.
               </motion.p>
@@ -278,187 +286,107 @@ export default function HoyClient() {
           </AnimatePresence>
         </motion.div>
 
-        {/* 1 · TU ENERGÍA — nivel, tema, luna y qué favorece hoy, en un solo golpe de vista */}
+        {/* TU MOMENTO — postura + por qué, en pocas líneas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="border border-ink/10 p-8 lg:p-12"
-        >
-          <p className="label-micro mb-1">Tu energía</p>
-          <p
-            className="text-4xl sm:text-5xl font-display font-bold tracking-tight mb-4"
-            style={{ color: scoreStyle }}
-          >
-            {energyLevel}
-          </p>
-          <p className="text-xs text-muted mb-6">
-            {energy.theme} · Luna {energy.moonPhase.phase}
-          </p>
-          <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed max-w-2xl">
-            {energy.description}
-          </p>
-          {topStrengths.length > 0 && (
-            <ul className="flex flex-wrap gap-x-2 gap-y-2 mt-6">
-              {topStrengths.map((s, i) => (
-                <li
-                  key={i}
-                  className="text-xs text-muted border border-ink/10 rounded-full px-3 py-1"
-                >
-                  {s}
-                </li>
-              ))}
-            </ul>
-          )}
-        </motion.div>
-
-        {/* 2 · TU MOMENTO — postura de decisión y por qué, seguido de la acción directa si hay algo que decidir */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6 border border-ink/10 p-8 lg:p-12"
+          className="border-t border-ink/10 py-10 sm:py-16"
         >
           <p className="eyebrow-brutalist mb-4">Tu momento</p>
 
-          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
+          <div className="flex items-baseline gap-4 mb-4">
             <p
               className="text-3xl sm:text-4xl font-display font-bold tracking-tight"
               style={{ color: getScoreStyle(timing.timingScore) }}
             >
               {decisionPosture}
             </p>
-            <div className="flex items-center gap-4">
-              <p className="text-xs text-muted">{timing.timingScore}/100</p>
-              <Button variant="secondary" size="md" onClick={() => router.push("/timing")}>
-                Ver mi timing
-              </Button>
-            </div>
+            <p className="text-xs text-muted">{timing.timingScore}/100</p>
           </div>
 
+          <p className="text-sm text-foreground leading-relaxed max-w-2xl">{timing.explanation}</p>
+
           {previousSnapshot && (
-            <p className="text-xs text-muted mb-4">
+            <p className="text-xs text-muted mt-3">
               Ayer fue <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
             </p>
           )}
 
-          <p className="text-sm text-foreground leading-relaxed max-w-2xl">{timing.explanation}</p>
-
-          {timing.favorableDimensions.length > 0 && (
-            <ul className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
-              {timing.favorableDimensions.map((dim, i) => (
-                <li key={i} className="text-xs text-accent border border-accent/20 rounded-full px-3 py-1">
-                  {dim}
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="mt-8 border-t border-ink/10 pt-6 text-center">
-            <h2 className="font-display text-2xl sm:text-3xl text-foreground leading-[0.9] tracking-tight mb-3">
-              {decisionCopy.title}
-            </h2>
-            <p className="text-sm text-muted mb-6 max-w-md mx-auto">{decisionCopy.body}</p>
-            <Button variant="primary" size="lg" onClick={() => router.push("/decisions")}>
-              {decisionCopy.cta}
-            </Button>
-          </div>
-        </motion.div>
-
-        {/* 3 · QUÉ HACER HOY — favorece / evitá / momento recomendado, sin inventar más allá de lo que ya calculan los engines */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6 p-8 lg:p-12"
-        >
-          <p className="eyebrow-brutalist mb-6">Qué hacer hoy</p>
-
-          <div>
-            <p className="label-micro mb-2 text-accent">Favorece</p>
-            <p className="text-base text-foreground leading-relaxed">{moment.orientation}</p>
-          </div>
-
-          {energy.cautions.length > 0 && (
-            <div className="mt-6 pt-6 border-t border-ink/10">
-              <p className="label-micro mb-2 text-muted">Evitá</p>
-              <p className="text-sm text-foreground leading-relaxed">{energy.cautions.join(" · ")}</p>
-            </div>
-          )}
-
-          <div className="mt-6 pt-6 border-t border-ink/10">
-            <p className="label-micro mb-2">Momento recomendado</p>
-            <p className="text-sm text-foreground leading-relaxed">{timing.recommendedWindow}</p>
-          </div>
-        </motion.div>
-
-        {/* 4 · TU DÍA EN UNA FRASE — conclusión, no otra introducción: compone lo ya mostrado, no agrega una lectura nueva */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6 border-t border-ink/10 pt-12 text-center"
-        >
-          <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug tracking-tight max-w-2xl mx-auto">
-            Un día de {energy.theme.toLowerCase()} para {decisionPosture.toLowerCase()}.
+          <p className="text-sm mt-6">
+            <Link href="/decisions" className="text-accent hover:underline">
+              {decisionCopy.cta} →
+            </Link>
           </p>
         </motion.div>
 
-        {/* 5 · EXPLORAR MÁS — solo después de lo útil; un CTA por destino, sin competir entre sí */}
+        {/* QUÉ HACER — favorece / evitá / momento, una idea por línea, sin cajas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="mt-10 border-t border-ink/10 pt-12"
+          className="border-t border-ink/10 py-10 sm:py-16"
         >
-          <p className="eyebrow-brutalist mb-6">Explorar más</p>
+          <p className="eyebrow-brutalist mb-6">Qué hacer</p>
 
-          {topAffinities.length > 0 && (
-            <div className="mb-8">
-              <p className="label-micro mb-3 text-muted">Relaciones</p>
-              <ul className="space-y-0">
-                {topAffinities.map((r) => (
-                  <li key={r.entity.id}>
-                    <Link
-                      href={`/affinity/${r.entity.type}/${r.entity.id}`}
-                      className="group flex items-center justify-between gap-4 py-4 border-b border-ink/10 hover:border-accent/40 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                    >
-                      <span className="flex items-center gap-3 min-w-0">
-                        <span className="text-2xl shrink-0" aria-hidden="true">
-                          {r.entity.emoji}
-                        </span>
-                        <span className="min-w-0">
-                          <span className="block text-xs text-muted">
-                            {ENTITY_TYPES[r.entity.type]?.label ?? r.entity.type}
-                          </span>
-                          <span className="block font-heading text-base text-foreground truncate group-hover:text-accent transition-colors">
-                            {r.entity.name}
-                          </span>
-                        </span>
-                      </span>
-                      <span className="text-xs shrink-0" style={{ color: TIER_META[r.tier].color }}>
-                        {TIER_META[r.tier].label}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/affinity" className="inline-flex items-center gap-2 text-sm text-accent hover:underline mt-4">
-                Ver todas mis afinidades →
-              </Link>
+          <div className="space-y-6">
+            <div>
+              <p className="label-micro mb-2 text-accent">Favorece</p>
+              <p className="text-base text-foreground leading-relaxed">{moment.orientation}</p>
             </div>
-          )}
 
-          <div className="grid grid-cols-2 gap-px bg-ink/10">
+            {energy.cautions.length > 0 && (
+              <div>
+                <p className="label-micro mb-2 text-muted">Evitá</p>
+                <p className="text-sm text-foreground leading-relaxed">{energy.cautions.join(" · ")}</p>
+              </div>
+            )}
+
+            <div>
+              <p className="label-micro mb-2">Momento</p>
+              <p className="text-sm text-foreground leading-relaxed">{timing.recommendedWindow}</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* EXPLORAR — cuatro salidas, mismo peso, sin competir con lo de arriba */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="border-t border-ink/10 py-10 sm:py-16"
+        >
+          <p className="eyebrow-brutalist mb-6">Explorar</p>
+
+          <div className="grid grid-cols-2 gap-px bg-ink/10 border border-ink/10">
             <Link href="/profile" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
               <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Mi mapa</p>
             </Link>
+            <Link href="/timing" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
+              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Timing</p>
+            </Link>
+            <Link href="/affinity" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
+              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Relaciones</p>
+            </Link>
             <Link href="/evolution" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Tu recorrido</p>
+              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Evolución</p>
             </Link>
           </div>
 
-          <details className="mt-8 group">
+          {topAffinities.length > 0 && (
+            <p className="text-xs text-muted mt-4">
+              Hoy resuena especialmente{" "}
+              <Link
+                href={`/affinity/${topAffinities[0].entity.type}/${topAffinities[0].entity.id}`}
+                className="text-accent hover:underline"
+              >
+                {formatAffinityHint(topAffinities[0])}
+              </Link>
+              .
+            </p>
+          )}
+
+          <details className="mt-10 group">
             <summary className="text-sm text-muted cursor-pointer hover:text-accent transition-colors list-none flex items-center gap-2">
               <span aria-hidden="true" className="group-open:rotate-90 transition-transform">
                 ›
@@ -499,21 +427,6 @@ export default function HoyClient() {
               {convergence.convergentCount} de {convergence.totalLayers} capas de tu mapa coinciden hoy.
             </p>
           </details>
-
-          <div className="mt-10 pt-8 border-t border-ink/10 text-center">
-            {previousSnapshot ? (
-              <Link href="/evolution" className="text-sm text-muted hover:text-accent transition-colors">
-                Ver cómo viene tu recorrido →
-              </Link>
-            ) : (
-              <p className="text-sm text-muted">
-                Mañana tu energía y tu orientación pueden cambiar.{" "}
-                <Link href="/evolution" className="text-accent hover:underline">
-                  Volvé para verlo.
-                </Link>
-              </p>
-            )}
-          </div>
         </motion.div>
         </main>
 
