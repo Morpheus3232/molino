@@ -66,6 +66,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   const [synthesisData, setSynthesisData] = useState<SynthesisResult | null>(null);
   const [previewInterpretation, setPreviewInterpretation] = useState<MolinoInterpretationResult | null>(null);
   const [synthesisError, setSynthesisError] = useState<string | null>(null);
+  const [previewInterpretationError, setPreviewInterpretationError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!birthDate) return;
@@ -83,14 +84,22 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
   }, [birthDate, name]);
 
   useEffect(() => {
-    if (!dailyEnergy || !timing || !birthDate) return;
+    // `timing` solo existe una vez que el usuario eligió una intención en /timing
+    // (ver loadTimingIntention). No es un requisito real de la API — fetchInterpretation
+    // lo declara opcional — así que no debe bloquear este fetch.
+    if (!dailyEnergy || !birthDate) return;
     let cancelled = false;
-    fetchInterpretation("personal_profile", birthDate, name, { dailyEnergy, timing })
+    fetchInterpretation("personal_profile", birthDate, name, { dailyEnergy, timing: timing ?? undefined })
       .then((data) => {
         if (!cancelled) setPreviewInterpretation(data.fallback || null);
       })
       .catch((err) => {
-        if (!cancelled) console.error("Interpretation error:", err);
+        if (!cancelled) {
+          console.error("Interpretation error:", err);
+          setPreviewInterpretationError(
+            err instanceof Error ? err.message : "No pudimos cargar tu interpretación."
+          );
+        }
       });
     return () => { cancelled = true; };
   }, [birthDate, name, dailyEnergy, timing]);
@@ -301,8 +310,12 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                   </div>
                   <p className="text-sm text-muted mb-4">Una lectura que conecta lo que tus números, tu cielo y tus ciclos dicen en conjunto.</p>
                 </>
+              ) : previewInterpretationError ? (
+                <p className="text-sm text-muted mb-4">
+                  No pudimos preparar tu interpretación en este momento. Probá de nuevo más tarde.
+                </p>
               ) : (
-                <p className="text-sm text-muted mb-4">Cargando interpretación...</p>
+                <p className="text-sm text-muted mb-4" role="status">Cargando interpretación...</p>
               )}
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 mb-6">
                 <span className="font-display text-3xl sm:text-4xl tracking-tight text-foreground">$8 USD</span>

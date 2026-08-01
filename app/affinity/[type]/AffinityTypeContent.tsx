@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
@@ -12,6 +12,7 @@ import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import SearchInput from "@/components/ui/SearchInput";
+import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 
 interface AffinityTypeContentProps {
@@ -20,8 +21,6 @@ interface AffinityTypeContentProps {
   entities: SymbolicEntity[];
 }
 
-const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-const MONTH_LABELS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 
 const transitionVariants = {
@@ -34,31 +33,31 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const [search, setSearch] = useState("");
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [error, setError] = useState("");
+  const [quickDate, setQuickDate] = useState("");
   const [quickResult, setQuickResult] = useState<AffinityResult | null>(null);
-  const currentYear = new Date().getFullYear();
+  const dateInputRef = useRef<DateInputHandle>(null);
 
-  const yearOptions = useMemo(() => Array.from({ length: 100 }, (_, i) => currentYear - i), [currentYear]);
+  const isQuickDateValid = Boolean(
+    quickDate &&
+    /^\d{4}-\d{2}-\d{2}$/.test(quickDate) &&
+    (() => {
+      const [y] = quickDate.split("-").map(Number);
+      const birth = new Date(quickDate + "T00:00:00");
+      return y >= 1900 && birth < new Date();
+    })()
+  );
 
   const handleQuickDiscover = () => {
-    setError("");
-    const parsedDay = parseInt(day, 10);
-    const parsedMonth = parseInt(month, 10);
-    const parsedYear = parseInt(year, 10);
-    if (!parsedDay || !parsedMonth || !parsedYear) {
-      setError("Seleccioná día, mes y año");
+    if (!isQuickDateValid) {
+      dateInputRef.current?.reportIncomplete();
       return;
     }
-    const birthDate = `${parsedYear}-${String(parsedMonth).padStart(2, "0")}-${String(parsedDay).padStart(2, "0")}`;
     try {
       if (typeof window !== "undefined") {
-        window.sessionStorage.setItem(AFFINITY_DATE_KEY, birthDate);
+        window.sessionStorage.setItem(AFFINITY_DATE_KEY, quickDate);
       }
     } catch {}
-    const p = calculateUserProfile("", birthDate);
+    const p = calculateUserProfile("", quickDate);
     if (entities.length > 0) {
       const result = calculateAffinity(p, entities[0]);
       setQuickResult(result);
@@ -137,67 +136,67 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 </p>
               </motion.section>
 
-              {/* QUICK DISCOVERY */}
-              <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-                <div className="max-w-lg mx-auto">
-                  <div className="text-center mb-8">
-                    <h2 className="font-heading uppercase text-xl sm:text-2xl font-semibold text-foreground mb-2">
-                      Descubrí tus afinidades
-                    </h2>
-                    <p className="text-sm text-muted">
-                      Ingresá tu fecha y conocé tu afinidad simbólica con los {meta.plural.toLowerCase()}.
-                    </p>
-                  </div>
-
-                  <div className="p-6 sm:p-8 rounded-md border border-border bg-card shadow-sm">
-                    <div className="grid grid-cols-3 gap-3 mb-4">
-                      <div>
-                        <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="cta-day">Día</label>
-                        <select id="cta-day" value={day} onChange={(e) => setDay(e.target.value)} className="w-full px-3 py-3 rounded-md border border-border bg-background shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]">
-                          <option value="">—</option>
-                          {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
-                            <option key={d} value={d}>{d}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="cta-month">Mes</label>
-                        <select id="cta-month" value={month} onChange={(e) => setMonth(e.target.value)} className="w-full px-3 py-3 rounded-md border border-border bg-background shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]">
-                          <option value="">—</option>
-                          {MONTHS.map((m, i) => (
-                            <option key={m} value={m}>{MONTH_LABELS[i]}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="cta-year">Año</label>
-                        <select id="cta-year" value={year} onChange={(e) => setYear(e.target.value)} className="w-full px-3 py-3 rounded-md border border-border bg-background shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]">
-                          <option value="">—</option>
-                          {yearOptions.map(y => (
-                            <option key={y} value={y}>{y}</option>
-                          ))}
-                        </select>
-                      </div>
+              {/* QUICK DISCOVERY — solo para quien todavía no tiene perfil */}
+              {!profile && (
+                <motion.section {...fadeUp} className="mb-16 sm:mb-20">
+                  <div className="max-w-lg mx-auto">
+                    <div className="text-center mb-8">
+                      <h2 className="font-heading uppercase text-xl sm:text-2xl font-semibold text-foreground mb-2">
+                        Descubrí tus afinidades
+                      </h2>
+                      <p className="text-sm text-muted">
+                        Ingresá tu fecha y conocé tu afinidad simbólica con los {meta.plural.toLowerCase()}.
+                      </p>
                     </div>
 
-                    {error && (
-                      <p className="text-xs text-red-500 mb-3 text-center">{error}</p>
-                    )}
+                    <div className="p-6 sm:p-8 rounded-md border border-border bg-card shadow-sm">
+                      <DateInput ref={dateInputRef} value={quickDate} onChange={setQuickDate} />
 
-                    <button
-                      type="button"
-                      onClick={handleQuickDiscover}
-                      className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                    >
-                      Descubrir mis afinidades →
-                    </button>
+                      <button
+                        type="button"
+                        onClick={handleQuickDiscover}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 mt-6"
+                      >
+                        Descubrir mis afinidades →
+                      </button>
 
-                    <p className="text-[11px] text-muted text-center mt-3">
-                      Sin registro. No guardamos tu fecha.
-                    </p>
+                      <p className="text-[11px] text-muted text-center mt-3">
+                        Sin registro. No guardamos tu fecha.
+                      </p>
+
+                      <AnimatePresence>
+                        {quickResult && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="mt-6 p-5 rounded-md border border-border bg-background flex items-center gap-4"
+                          >
+                            <span className="text-3xl shrink-0">{quickResult.entity.emoji}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-heading text-base font-semibold text-foreground truncate">
+                                {quickResult.entity.name}
+                              </p>
+                              <p className="text-xs text-muted mt-1">
+                                {formatAnimalSimple(quickResult.entityAnimal)}
+                              </p>
+                            </div>
+                            <div className="text-right shrink-0">
+                              <div className="font-heading text-xl font-bold" style={{ color: TIER_META[quickResult.tier].color }}>
+                                {quickResult.score}
+                              </div>
+                              <div className="text-[11px] font-medium uppercase tracking-wider mt-0.5" style={{ color: TIER_META[quickResult.tier].color }}>
+                                {TIER_META[quickResult.tier].label}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
-                </div>
-              </motion.section>
+                </motion.section>
+              )}
 
               {/* RESULTS (when profile exists) */}
               {profile && (

@@ -60,6 +60,8 @@ export default function TimingPage() {
     return findBestDates(profile, start, end, selectedIntention, 3);
   }, [profile, selectedIntention]);
 
+  const SelectedIcon = INTENTIONS.find((i) => i.id === selectedIntention)?.icon;
+
   return (
     <div className="min-h-screen bg-background">
       <AnimatePresence mode="wait">
@@ -158,7 +160,7 @@ export default function TimingPage() {
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <span className="text-2xl" aria-hidden="true">
-                          {INTENTIONS.find((i) => i.id === selectedIntention)?.icon}
+                          {SelectedIcon && <SelectedIcon className="w-6 h-6" />}
                         </span>
                         <p className="font-display text-2xl text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
                       </div>
