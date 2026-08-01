@@ -2,20 +2,13 @@
 
 import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Hash, Sun, Moon, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
-import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
-
-const ENGINES_PREVIEW = [
-  { icon: Hash, title: "Numerología", details: "Camino de Vida, Expresión, Alma, Personalidad" },
-  { icon: Sun, title: "Astrología", details: "Signo Solar, Elemento, Modalidad" },
-  { icon: Moon, title: "Zodíaco Chino", details: "Animal, Elemento, Ciclo de 12 años" },
-];
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -99,18 +92,12 @@ export default function OnboardingPage() {
           <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
         </motion.div>
 
-        {/* Adelanto de dimensiones: se despliega solo, en cuanto la fecha
-            es valida. Todo el calculo pasa en el navegador. */}
-        <AnimatePresence>
-          {isDateValid && <DimensionsPreview key={dateValue} birthDate={dateValue} />}
-        </AnimatePresence>
-
-        {/* CTA */}
+        {/* CTA — nada aparece debajo de los campos de fecha salvo esto */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="flex justify-center mb-12"
+          className="flex justify-center"
         >
           <Button
             variant="accent"
@@ -129,38 +116,6 @@ export default function OnboardingPage() {
               </>
             )}
           </Button>
-        </motion.div>
-
-        {/* Engines preview — info block, not a step */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.25 }}
-        >
-          <p className="eyebrow-brutalist text-center mb-4">
-            Qué vamos a analizar
-          </p>
-          <div role="list" aria-label="Motores de análisis">
-            {ENGINES_PREVIEW.map((engine, i) => (
-              <motion.div
-                key={engine.title}
-                role="listitem"
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
-                className="flex items-center gap-3 py-3.5 border-b border-ink/10 last:border-b-0"
-              >
-                <engine.icon className="w-4 h-4 text-accent flex-shrink-0" aria-hidden="true" />
-                <div>
-                  <p className="font-heading uppercase text-sm font-semibold text-foreground">{engine.title}</p>
-                  <p className="text-xs text-muted-foreground">{engine.details}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <p className="mt-6 text-xs text-muted-foreground text-center">
-            Tu fecha nunca sale de tu navegador.
-          </p>
         </motion.div>
 
       </main>

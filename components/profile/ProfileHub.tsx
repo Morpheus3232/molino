@@ -57,6 +57,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       title: `Tu arquetipo es ${archetype.name}`,
       subtitle: `Camino de Vida ${lifePath} (tu número guía) · ${display.name} de ${profile.chineseZodiacInfo?.element ?? ""}`,
       detail: `${profile.sunSign} · ${profile.chineseZodiac}`,
+      color: "var(--layer-identity)",
     },
     {
       key: "circle" as ProfileTab,
@@ -66,6 +67,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
         : "Tus aliados definen tu círculo",
       subtitle: "Relaciones del ciclo chino",
       detail: sameFriends.length > 0 ? sameFriends.map(f => f.animal).join(" · ") : "",
+      color: "var(--layer-astrology)",
     },
     {
       key: "world" as ProfileTab,
@@ -73,6 +75,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       title: `${affinityResults.filter(r => r.entityAnimal === userAnimal).length} entidades conectan con tu perfil`,
       subtitle: "Marcas, historias y referentes que resuenan",
       detail: "",
+      color: "var(--layer-cycles)",
     },
     {
       key: "intelligence" as ProfileTab,
@@ -80,12 +83,14 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       title: `${intelligenceScore}/100 — ${intelligenceLabel}`,
       subtitle: "Estado actual de tu mapa simbólico",
       detail: "",
+      color: "var(--layer-moment)",
     },
   ];
   return (
     <div className="min-h-screen bg-background">
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
+        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 40% 30% at 50% 15%, ${elementColor}0d, transparent 60%)` }} aria-hidden="true" />
         <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex flex-col items-center text-center">
             <motion.p
@@ -168,10 +173,11 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                 }`}
               >
                 <p
-                  className={`font-mono text-[0.7rem] font-semibold uppercase tracking-[0.25em] mb-4 ${
+                  className={`flex items-center gap-2 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.25em] mb-4 ${
                     section.key === "identity" ? "text-accent" : "text-muted"
                   }`}
                 >
+                  <span className="w-2 h-2 shrink-0" style={{ backgroundColor: section.color }} aria-hidden="true" />
                   {section.eyebrow}
                 </p>
                 <p

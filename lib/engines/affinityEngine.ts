@@ -125,11 +125,26 @@ export function calculateAffinity(
 ): AffinityResult {
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
+  return calculateAffinityForAnimal(userAnimal, userYear, entity);
+}
 
+/**
+ * Same calculation as calculateAffinity, but takes the user's Chinese zodiac
+ * animal directly instead of a full UserProfile — for contexts (like the
+ * /affinity animal switcher) where the user is exploring affinity for an
+ * animal that isn't necessarily their own. Same rule, same scores, no new
+ * formula: this is calculateAffinity with its two inputs (userAnimal,
+ * userYear) exposed instead of read off a profile.
+ */
+export function calculateAffinityForAnimal(
+  userAnimal: string,
+  userYear: number,
+  entity: SymbolicEntity,
+): AffinityResult {
   // Resolve primary event
   const primaryEvent = getPrimaryEvent(entity);
   if (!primaryEvent) {
-    return buildFallbackResult(profile, entity, "Entidad sin evento histórico primario.");
+    return buildFallbackResult(userAnimal, userYear, entity, "Entidad sin evento histórico primario.");
   }
 
   const { animal: entityAnimal, isApproximate } = resolveEntityAnimal(entity);
@@ -187,12 +202,11 @@ export function calculateAffinity(
 
 /** Build a safe fallback result when data is insufficient */
 function buildFallbackResult(
-  profile: UserProfile,
+  userAnimal: string,
+  userYear: number,
   entity: SymbolicEntity,
   reason: string,
 ): AffinityResult {
-  const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
   const fallbackEvent: HistoricalEvent = {
     id: "fallback",
     type: "fecha-tradicional",
@@ -286,6 +300,43 @@ export function calculateAllAffinity(
   return entities
     .map(entity => calculateAffinity(profile, entity))
     .sort((a, b) => b.score - a.score);
+}
+
+/** Same as calculateAllAffinity, for a raw animal instead of a full profile. */
+export function calculateAllAffinityForAnimal(
+  animal: string,
+  entities: SymbolicEntity[],
+): AffinityResult[] {
+  return entities
+    .map(entity => calculateAffinityForAnimal(animal, 0, entity))
+    .sort((a, b) => b.score - a.score);
+}
+
+export interface RepresentativeAffinitySet {
+  positive: AffinityResult[];
+  mixed: AffinityResult[];
+  negative: AffinityResult[];
+}
+
+/**
+ * Picks 8 representative results out of an already-scored, already-sorted
+ * set: the top 5 (positivas), 2 from the middle of what's left (mixtas), and
+ * the single lowest-scored one (negativa). Pure selection over existing
+ * scores — no new scoring rule, no change to what calculateAffinity(...)
+ * returns for any entity.
+ */
+export function getRepresentativeAffinitySet(
+  sortedResults: AffinityResult[],
+): RepresentativeAffinitySet {
+  if (sortedResults.length < 8) {
+    return { positive: sortedResults, mixed: [], negative: [] };
+  }
+  const positive = sortedResults.slice(0, 5);
+  const negative = sortedResults.slice(-1);
+  const remaining = sortedResults.slice(5, -1);
+  const midStart = Math.max(0, Math.floor(remaining.length / 2) - 1);
+  const mixed = remaining.slice(midStart, midStart + 2);
+  return { positive, mixed, negative };
 }
 
 /** Get top affinity highlight per category for the profile summary */
