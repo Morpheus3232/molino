@@ -16,6 +16,18 @@ function daysInMonth(month: number, year: number) {
 }
 
 /**
+ * Foco + selección + scroll-into-view. Sin esto, en mobile (especialmente
+ * iOS Safari) el teclado virtual puede tapar el campo al avanzar
+ * programáticamente entre Día → Mes → Año, dejando al usuario escribiendo
+ * "a ciegas".
+ */
+function focusAndReveal(ref: React.RefObject<HTMLInputElement | null>) {
+  ref.current?.focus();
+  ref.current?.select();
+  ref.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+}
+
+/**
  * Fast date input: DD / MM / YYYY
  * - Writes left-to-right, auto-advances on completion
  * - Backspace steps back between fields
@@ -58,8 +70,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         const fixed = String(n).padStart(2, "0");
         setDd(fixed);
         emit(fixed, mm, yyyy);
-        mmRef.current?.focus();
-        mmRef.current?.select();
+        focusAndReveal(mmRef);
       }
     },
     [mm, yyyy, emit]
@@ -69,8 +80,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "ArrowRight" && (e.currentTarget.selectionStart ?? 0) >= dd.length) {
         e.preventDefault();
-        mmRef.current?.focus();
-        mmRef.current?.select();
+        focusAndReveal(mmRef);
       }
     },
     [dd]
@@ -94,8 +104,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         } else {
           emit(dd, fixed, yyyy);
         }
-        yyyyRef.current?.focus();
-        yyyyRef.current?.select();
+        focusAndReveal(yyyyRef);
       }
     },
     [dd, yyyy, emit]
@@ -105,18 +114,15 @@ export default function DateInput({ value, onChange }: DateInputProps) {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Backspace" && mm === "") {
         e.preventDefault();
-        ddRef.current?.focus();
-        ddRef.current?.select();
+        focusAndReveal(ddRef);
       }
       if (e.key === "ArrowLeft" && e.currentTarget.selectionStart === 0) {
         e.preventDefault();
-        ddRef.current?.focus();
-        ddRef.current?.select();
+        focusAndReveal(ddRef);
       }
       if (e.key === "ArrowRight" && (e.currentTarget.selectionStart ?? 0) >= mm.length) {
         e.preventDefault();
-        yyyyRef.current?.focus();
-        yyyyRef.current?.select();
+        focusAndReveal(yyyyRef);
       }
     },
     [mm]
@@ -142,13 +148,11 @@ export default function DateInput({ value, onChange }: DateInputProps) {
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Backspace" && yyyy === "") {
         e.preventDefault();
-        mmRef.current?.focus();
-        mmRef.current?.select();
+        focusAndReveal(mmRef);
       }
       if (e.key === "ArrowLeft" && e.currentTarget.selectionStart === 0) {
         e.preventDefault();
-        mmRef.current?.focus();
-        mmRef.current?.select();
+        focusAndReveal(mmRef);
       }
     },
     [yyyy]
@@ -177,7 +181,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           value={dd}
           onChange={handleDdChange}
           onKeyDown={handleDdKeyDown}
-          onFocus={e => e.target.select()}
+          onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-label="Día"
           autoComplete="off"
@@ -197,7 +201,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           value={mm}
           onChange={handleMmChange}
           onKeyDown={handleMmKeyDown}
-          onFocus={e => e.target.select()}
+          onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-label="Mes"
           autoComplete="off"
@@ -217,7 +221,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           value={yyyy}
           onChange={handleYyyyChange}
           onKeyDown={handleYyyyKeyDown}
-          onFocus={e => e.target.select()}
+          onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl flex-1`}
           aria-label="Año"
           autoComplete="off"

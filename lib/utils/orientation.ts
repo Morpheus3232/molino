@@ -79,7 +79,7 @@ function pickTopArea(daily: DailyEnergyResult): { label: string; value: string }
 
 export function buildOrientation(
   dailyEnergy: DailyEnergyResult,
-  momentState: MomentState,
+  momentState: MomentState | undefined,
   timing?: TimingResult | null
 ): OrientationData {
   const action =
@@ -87,7 +87,7 @@ export function buildOrientation(
     "Dedicá unos minutos a decidir una sola cosa importante y avanzá con ella.";
 
   const evidence: OrientationEvidence[] = [
-    { label: "Foco", value: momentState.focus },
+    ...(momentState ? [{ label: "Foco", value: momentState.focus }] : []),
     { label: "Luna", value: dailyEnergy.moonPhase.phase },
     { label: "Año personal", value: String(dailyEnergy.personalYear) },
   ];

@@ -51,7 +51,7 @@ function FinalCTA() {
               <br />
               TU MAPA PERSONAL?
             </p>
-            <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
+            <p className="text-sm sm:text-base text-white/85 max-w-xl mx-auto mb-10 leading-relaxed">
               Identidad, mundo, círculo e inteligencia en un solo lugar.
             </p>
             <Button asChild variant="inverse" size="lg">
@@ -126,23 +126,28 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
       {energy && (
         <section className="bg-background">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <motion.div {...fadeUp} className="border-t border-ink/10 py-16">
-              <div className="text-center mb-8">
-                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Tu energía de hoy</p>
-                <Link
-                  href="/hoy"
-                  className="group inline-flex items-center gap-3"
-                >
-                  <span className={`text-5xl sm:text-6xl font-heading font-bold tracking-tight ${getScoreColor(energy.overallScore)}`}>
+            <motion.div {...fadeUp} className="border-t border-ink/10 py-16 lg:py-20">
+              <Link
+                href="/hoy"
+                className="group grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-8 lg:gap-16 items-center border border-ink/10 p-8 lg:p-12 transition-colors hover:bg-ink/[0.02]"
+              >
+                <div>
+                  <p className="label-micro mb-4">Tu energía de hoy</p>
+                  <p className={`text-5xl sm:text-6xl font-heading font-bold tracking-tight ${getScoreColor(energy.overallScore)}`}>
                     {getEnergyLevel(energy.overallScore)}
+                  </p>
+                  <p className="text-sm text-muted mt-2">{energy.theme}</p>
+                </div>
+                <div>
+                  <p className="text-lg sm:text-xl font-heading text-foreground leading-relaxed max-w-xl">
+                    {energy.description}
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent">
+                    Ver mi día completo
+                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
                   </span>
-                  <span className="text-xs font-mono tracking-wider text-muted group-hover:text-accent transition-colors">
-                    VER DETALLE →
-                  </span>
-                </Link>
-                <p className="text-lg font-heading text-foreground mt-4">{energy.theme}</p>
-                <p className="text-sm text-muted mt-2 max-w-lg mx-auto">{energy.description}</p>
-              </div>
+                </div>
+              </Link>
             </motion.div>
           </div>
         </section>
@@ -160,7 +165,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
                 <br />
                 TU MAPA COMPLETO?
               </p>
-              <p className="text-sm sm:text-base text-white/70 max-w-xl mx-auto mb-10 leading-relaxed">
+              <p className="text-sm sm:text-base text-white/85 max-w-xl mx-auto mb-10 leading-relaxed">
                 Identidad, mundo, círculo e inteligencia en un solo lugar.
               </p>
               <Button asChild variant="inverse" size="lg">

@@ -8,7 +8,22 @@
   --color-paper-alt: #F5F5F0;
   --color-accent: #1E3AFF;
   --color-accent-hover: #0026E6;
+  /* Variante de accent para texto sobre fondos oscuros (bg-ink/negro):
+     el accent base (#1E3AFF) no cumple contraste mínimo sobre ink. */
+  --color-accent-light: #7C8CFF;
   --color-muted: #6B6B6B;
+
+  /* Mismos colores en RGB espaciado — Tailwind necesita este formato
+     (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
+     modificador de opacidad (ej. text-paper/70). Con la variable en hex
+     plano, Tailwind no puede aplicar la opacidad y la clase queda sin
+     efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
+     en varias secciones del sitio. Ver tailwind.config.ts. */
+  --color-ink-rgb: 15 15 16;
+  --color-paper-rgb: 255 255 255;
+  --color-accent-rgb: 30 58 255;
+  --color-accent-light-rgb: 124 140 255;
+  --color-muted-rgb: 107 107 107;
   --color-border: #D4D4D4;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);

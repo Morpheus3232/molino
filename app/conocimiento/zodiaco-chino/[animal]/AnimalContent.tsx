@@ -112,7 +112,7 @@ export default function AnimalContent() {
               <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
             </div>
             <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-accent mb-6">
+              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-accent-light mb-6">
                 HISTORIA Y SIMBOLISMO
               </p>
               <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
@@ -165,7 +165,7 @@ export default function AnimalContent() {
         >
           <div className="flex flex-wrap">
             <div className={`w-full md:w-1/2 ${cellPad} md:border-r border-paper/20`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/70 mb-6">
+              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/85 mb-6">
                 COMPATIBLES
               </p>
               <div className="flex flex-wrap gap-2">
@@ -180,14 +180,14 @@ export default function AnimalContent() {
               </div>
             </div>
             <div className={`w-full md:w-1/2 ${cellPad} border-t md:border-t-0 border-paper/20`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/70 mb-6">
+              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/85 mb-6">
                 DESAFIANTES
               </p>
               <div className="flex flex-wrap gap-2">
                 {animal.compatibility.challenging.map((c) => (
                   <span
                     key={c}
-                    className="font-heading text-sm uppercase tracking-wider text-paper/70 border border-paper/20 rounded-sm px-3 py-1.5"
+                    className="font-heading text-sm uppercase tracking-wider text-paper/85 border border-paper/20 rounded-sm px-3 py-1.5"
                   >
                     {c}
                   </span>
@@ -235,7 +235,7 @@ export default function AnimalContent() {
                 <p className="font-display text-3xl sm:text-4xl lg:text-5xl text-paper leading-[0.92] mb-6">
                   ¿CUÁL ES TU ANIMAL?
                 </p>
-                <p className="text-sm lg:text-base text-paper/70 max-w-lg mx-auto mb-10 leading-relaxed">
+                <p className="text-sm lg:text-base text-paper/85 max-w-lg mx-auto mb-10 leading-relaxed">
                   Calculalo con tu fecha de nacimiento y descubrí tu afinidad con entidades del mundo.
                 </p>
                 <Button asChild variant="inverse" size="lg">

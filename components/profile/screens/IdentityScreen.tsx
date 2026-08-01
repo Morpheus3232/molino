@@ -350,12 +350,9 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               className="py-10 lg:py-12 border-b border-paper/15 last:border-b-0"
             >
               <div className="flex items-center gap-4 mb-5">
-                <span className="font-mono text-xs text-paper/40">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-xs text-paper/60">{String(i + 1).padStart(2, "0")}</span>
                 <span className="w-8 h-px shrink-0" style={{ backgroundColor: persp.color }} aria-hidden="true" />
-                <span
-                  className="font-mono text-xs uppercase tracking-[0.25em] font-semibold"
-                  style={{ color: persp.color }}
-                >
+                <span className="font-mono text-xs uppercase tracking-[0.25em] font-semibold text-paper/85">
                   {persp.systemLabel}
                 </span>
               </div>

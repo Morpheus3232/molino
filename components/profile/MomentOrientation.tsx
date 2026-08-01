@@ -54,10 +54,7 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
   }, [cacheKey]);
 
   const orientation = useMemo(
-    () =>
-      momentState
-        ? buildOrientation(dailyEnergy, momentState, timing)
-        : buildOrientation(dailyEnergy, undefined as any, timing),
+    () => buildOrientation(dailyEnergy, momentState ?? undefined, timing),
     [dailyEnergy, momentState, timing]
   );
 
@@ -70,7 +67,7 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
         intro="Calculando tu momento actual..."
       >
         <div className="pt-4">
-          <p className="text-sm text-muted">Un momento mientras preparamos tu orientaci&#243;n.</p>
+          <p className="text-sm text-paper/70">Un momento mientras preparamos tu orientaci&#243;n.</p>
         </div>
       </EditorialSection>
     );
@@ -87,7 +84,7 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
         <p className="text-base text-paper/75 leading-relaxed max-w-2xl">{orientation.expression}</p>
 
         <div className="mt-10 border-l-2 border-accent pl-5 sm:pl-8">
-          <p className="label-micro text-accent font-semibold mb-2">ORIENTACI&#211;N</p>
+          <p className="label-micro text-accent-light font-semibold mb-2">ORIENTACI&#211;N</p>
           <p className="font-heading text-xl sm:text-2xl text-paper leading-relaxed max-w-2xl">
             {orientation.orientation}
           </p>
@@ -96,7 +93,7 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
         <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-paper/15 border border-paper/15">
           {orientation.evidence.map((e) => (
             <div key={e.label} className="bg-ink px-5 py-4">
-              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-paper/40 mb-1.5">
+              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-paper/60 mb-1.5">
                 {e.label}
               </p>
               <p className="text-sm text-paper/85 leading-snug">{e.value}</p>

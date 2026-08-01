@@ -47,7 +47,7 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
           <div className="max-w-md w-full text-center py-12">
             <svg width="48" height="48" viewBox="0 0 64 64" className="mx-auto mb-4" aria-hidden="true">
               <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+              <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent-light)" textAnchor="middle">M</text>
             </svg>
             <h2 className="font-heading text-2xl font-semibold text-foreground mb-2">Algo salió mal</h2>
             <p className="text-sm text-muted mb-6">
