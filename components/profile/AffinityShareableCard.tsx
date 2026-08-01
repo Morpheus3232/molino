@@ -242,7 +242,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
                 <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent-light)" textAnchor="middle">M</text>
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>

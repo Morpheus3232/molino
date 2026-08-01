@@ -46,16 +46,16 @@ const TONES: Record<Tone, { wrap: string; eyebrow: string; title: string; intro:
   },
   ink: {
     wrap: "section-full-bleed bg-ink text-paper",
-    eyebrow: "text-accent",
+    eyebrow: "text-accent-light",
     title: "text-paper",
     intro: "text-paper/70",
     rule: "border-paper/15",
   },
   accent: {
     wrap: "section-full-bleed bg-accent text-paper",
-    eyebrow: "text-paper/70",
+    eyebrow: "text-paper/85",
     title: "text-paper",
-    intro: "text-paper/70",
+    intro: "text-paper/85",
     rule: "border-paper/20",
   },
 };

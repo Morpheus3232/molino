@@ -99,7 +99,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                   >
                     <span className="text-2xl mb-1">{relDisplay.emoji}</span>
                     <p className="text-xs font-medium text-paper text-center">{relDisplay.name}</p>
-                    <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-accent text-center mt-1">Aliado</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.15em] text-accent-light text-center mt-1">Aliado</p>
                   </motion.div>
                 );
               })}

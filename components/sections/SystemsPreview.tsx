@@ -58,7 +58,7 @@ export default function SystemsPreview() {
           transition={{ duration: 0.5 }}
           className="pt-20 pb-12 lg:pt-28 lg:pb-16"
         >
-          <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-6">
+          <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent-light mb-6">
             SISTEMAS SIMBÓLICOS
           </p>
           <h2 className="font-display text-[clamp(2.5rem,7vw,6rem)] leading-[0.88] tracking-tight text-paper max-w-4xl">
@@ -89,11 +89,11 @@ export default function SystemsPreview() {
                 className={`group relative flex h-full flex-col ${cellPad} pb-16 lg:pb-20 transition-colors hover:bg-paper/[0.04]`}
               >
                 {/* Numeral grande como firma visual */}
-                <span className="font-display text-6xl lg:text-7xl leading-none text-paper/15 mb-8 transition-colors group-hover:text-accent">
+                <span className="font-display text-6xl lg:text-7xl leading-none text-paper/15 mb-8 transition-colors group-hover:text-accent-light">
                   {system.index}
                 </span>
 
-                <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase text-accent mb-4">
+                <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase text-accent-light mb-4">
                   {system.micro}
                 </p>
                 <h3 className="font-display text-3xl lg:text-4xl leading-[0.92] text-paper mb-6">
