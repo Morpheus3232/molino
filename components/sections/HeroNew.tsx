@@ -13,7 +13,7 @@ const ESTADISTICAS = [
   { valor: "0", label: "DATOS ALMACENADOS" },
 ];
 
-export default function HeroNew() {
+export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }) {
   const router = useRouter();
   const today = new Date();
   const number = getDailyNumber(today);
@@ -84,7 +84,7 @@ export default function HeroNew() {
               titular y que la pregunta de entrada de abajo (DecisionEntryPrompt),
               para no competirles la atención. */}
           <Link
-            href="/hoy"
+            href={hasProfile ? "/hoy" : "/onboarding"}
             className="group flex flex-wrap border-b border-ink/10 transition-colors hover:bg-ink/[0.02]"
           >
             <div className={`w-full sm:w-auto sm:min-w-[10rem] ${cellPad} py-4 sm:border-r border-ink/10 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1`}>
@@ -97,7 +97,7 @@ export default function HeroNew() {
                 <p className="text-sm text-muted mt-1 line-clamp-1 max-w-md">{reflection.text}</p>
               </div>
               <span className="label-micro shrink-0 text-accent group-hover:translate-x-1 transition-transform hidden sm:inline-flex items-center gap-1">
-                VER HOY <ArrowRight className="w-3 h-3" aria-hidden="true" />
+                {hasProfile ? "VER HOY" : "DESCUBRIR"} <ArrowRight className="w-3 h-3" aria-hidden="true" />
               </span>
             </div>
           </Link>

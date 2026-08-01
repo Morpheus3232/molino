@@ -81,7 +81,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
-        <HeroNew />
+        <HeroNew hasProfile={mounted && !!profile} />
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
           {mounted && profile ? (
             // Solo se monta después de resolver mounted+profile: es un cambio
