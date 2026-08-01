@@ -84,7 +84,7 @@ export default function HeroNew() {
               titular y que la pregunta de entrada de abajo (DecisionEntryPrompt),
               para no competirles la atención. */}
           <Link
-            href="/daily-energy"
+            href="/hoy"
             className="group flex flex-wrap border-b border-ink/10 transition-colors hover:bg-ink/[0.02]"
           >
             <div className={`w-full sm:w-auto sm:min-w-[10rem] ${cellPad} py-4 sm:border-r border-ink/10 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-1`}>

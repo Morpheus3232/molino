@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
@@ -19,7 +19,6 @@ import {
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
 
 function getEnergyLevel(score: number): EnergyLevel {
@@ -87,10 +86,17 @@ const DECISION_COPY: Record<Orientation, { title: string; body: string; cta: str
   },
 };
 
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
+
 export default function HoyClient() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const today = useMemo(() => new Date(), []);
+  const [snapshotSaved, setSnapshotSaved] = useState(false);
 
   const data = useMemo(() => {
     if (!profile) return null;
@@ -123,90 +129,144 @@ export default function HoyClient() {
       energyLevel: getEnergyLevel(data.energy.overallScore),
       theme: data.energy.theme,
     });
+    setSnapshotSaved(true);
+    const timeout = setTimeout(() => setSnapshotSaved(false), 2500);
+    return () => clearTimeout(timeout);
   }, [profile, data, todayStr]);
 
-  if (loading || !mounted) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
-          <p
-            className="sr-only"
-            role="status"
-            aria-label="Preparando tu día..."
-          >
-            Preparando tu día...
-          </p>
-          <div className="animate-pulse">
-            <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
-            <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
-            <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
-            <div className="h-64 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
-            <div className="h-40 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
-            <div className="h-40 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
-          </div>
-          <UniversityFooter />
-        </div>
-      </div>
-    );
-  }
+  const derived = useMemo(() => {
+    if (!data) return null;
+    const orientation = getOrientation(data.timing.timingScore);
+    return {
+      energy: data.energy,
+      convergence: data.convergence,
+      timing: data.timing,
+      momentState: data.momentState,
+      scoreStyle: getScoreStyle(data.energy.overallScore),
+      energyLevel: getEnergyLevel(data.energy.overallScore),
+      orientation,
+      orientationCopy: ORIENTATION_COPY[orientation],
+      decisionCopy: DECISION_COPY[orientation],
+      topStrengths: data.energy.strengths.slice(0, 3),
+      dateLabel: today.toLocaleDateString("es-AR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      }),
+    };
+  }, [data, today]);
 
-  if (!profile) {
-    return (
-      <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
-          <p className="eyebrow-brutalist mb-4">HOY</p>
-          <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
-            Tu día, en perspectiva
-          </h1>
-          <p className="text-sm text-muted mb-8 max-w-md mx-auto">
-            Para ver tu energía, timing y convergencia de hoy, primero
-            necesitás crear tu perfil.
-          </p>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => router.push("/onboarding")}
-          >
-            Crear mi perfil
-          </Button>
-        </div>
-        <UniversityFooter />
-      </div>
-    );
-  }
-
-  if (!data) {
-    return (
-      <div className="min-h-screen bg-background">
-        <LoadingState message="Preparando tu día..." />
-        <UniversityFooter />
-      </div>
-    );
-  }
-
-  const { energy, convergence, timing, momentState } = data;
-  const scoreStyle = getScoreStyle(energy.overallScore);
-  const energyLevel = getEnergyLevel(energy.overallScore);
-  const orientation = getOrientation(timing.timingScore);
-  const orientationCopy = ORIENTATION_COPY[orientation];
-  const decisionCopy = DECISION_COPY[orientation];
-  const topStrengths = energy.strengths.slice(0, 3);
-  const dateLabel = today.toLocaleDateString("es-AR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
+  const {
+    energy,
+    convergence,
+    timing,
+    momentState,
+    scoreStyle,
+    energyLevel,
+    orientation,
+    orientationCopy,
+    decisionCopy,
+    topStrengths,
+    dateLabel,
+  } = derived ?? ({} as NonNullable<typeof derived>);
 
   return (
     <div className="min-h-screen bg-background">
-      <main
-        className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24"
-        id="main-content"
-      >
+      <AnimatePresence mode="wait">
+        {loading || !mounted ? (
+          <motion.div
+            key="loading"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+              <p className="sr-only" role="status" aria-label="Preparando tu día...">
+                Preparando tu día...
+              </p>
+              <div className="animate-pulse">
+                <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
+                <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+                <div className="h-64 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
+                <div className="h-40 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
+                <div className="h-40 bg-[var(--skeleton)] rounded border border-ink/10 mb-6" />
+              </div>
+              <UniversityFooter />
+            </div>
+          </motion.div>
+        ) : !profile ? (
+          <motion.div
+            key="empty"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
+              <p className="eyebrow-brutalist mb-4">HOY</p>
+              <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
+                Tu día, en perspectiva
+              </h1>
+              <p className="text-sm text-muted mb-8 max-w-md mx-auto">
+                Para ver tu energía, timing y convergencia de hoy, primero
+                necesitás crear tu perfil.
+              </p>
+              <Button
+                variant="primary"
+                size="lg"
+                onClick={() => router.push("/onboarding")}
+              >
+                Crear mi perfil
+              </Button>
+            </div>
+            <UniversityFooter />
+          </motion.div>
+        ) : !data ? (
+          <motion.div
+            key="nodata"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+              <p className="sr-only" role="status" aria-label="Preparando tu día...">
+                Preparando tu día...
+              </p>
+              <div className="animate-pulse">
+                <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
+                <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+                <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
+                <div className="h-96 bg-[var(--skeleton)] border border-ink/10 rounded-md" />
+              </div>
+              <UniversityFooter />
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <main
+              className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24"
+              id="main-content"
+            >
         <motion.div
           {...fadeUp}
           className="border-t border-ink/10 py-10 sm:py-16"
         >
+          <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">Hoy</span>
+          </nav>
+
           <p className="eyebrow-brutalist mb-4">HOY · {dateLabel}</p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
             TU DÍA, EN PERSPECTIVA.
@@ -214,6 +274,19 @@ export default function HoyClient() {
           <p className="text-sm text-muted mt-4">
             Una lectura de tu mapa aplicado al momento que estás viviendo.
           </p>
+          <AnimatePresence>
+            {snapshotSaved && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="text-xs text-muted mt-2"
+              >
+                Tu día quedó guardado.
+              </motion.p>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         {/* HERO — el nivel de energía y la frase humana lideran; el score queda secundario */}
@@ -262,7 +335,7 @@ export default function HoyClient() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 border border-ink/10 p-8 lg:p-12"
+          className="mt-6 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">QUÉ HACER HOY</p>
           <ul className="space-y-3">
@@ -290,7 +363,7 @@ export default function HoyClient() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.25 }}
-          className="mt-6 border border-ink/10 p-8 lg:p-12"
+          className="mt-6 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">MOMENTO PARA ACTUAR</p>
 
@@ -429,29 +502,13 @@ export default function HoyClient() {
             </dl>
           </details>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10">
-            <Link
-              href="/daily-energy"
-              className="bg-background p-6 text-center group transition-colors hover:bg-accent/5"
-            >
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">
-                Energía
-              </p>
-            </Link>
+          <div className="grid grid-cols-2 gap-px bg-ink/10">
             <Link
               href="/timing"
               className="bg-background p-6 text-center group transition-colors hover:bg-accent/5"
             >
               <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">
                 Timing
-              </p>
-            </Link>
-            <Link
-              href="/decisions"
-              className="bg-background p-6 text-center group transition-colors hover:bg-accent/5"
-            >
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">
-                Decisiones
               </p>
             </Link>
             <Link
@@ -506,9 +563,12 @@ export default function HoyClient() {
             </p>
           )}
         </motion.div>
-      </main>
+        </main>
 
-      <UniversityFooter />
+        <UniversityFooter />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -2,19 +2,37 @@
 
 import { Suspense, useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
-import EmptyState from "@/components/ui/EmptyState";
 import SearchInput from "@/components/ui/SearchInput";
 
 type SelectionStep = "pick-a" | "pick-b";
 
 export default function ComparePickerPage() {
   return (
-    <Suspense fallback={<LoadingState message="Cargando..." />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background">
+          <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <p className="sr-only" role="status" aria-label="Cargando...">
+              Cargando...
+            </p>
+            <div className="animate-pulse">
+              <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+              <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+              <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="h-16 bg-[var(--skeleton)] rounded-md border border-ink/10" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
       <ComparePickerInner />
     </Suspense>
   );
@@ -155,12 +173,25 @@ function ComparePickerInner() {
         </motion.div>
 
         {filtered.length === 0 && (
-          <EmptyState
-            title="Sin resultados"
-            description={`No se encontraron resultados para "${search}".`}
-            actionLabel="Volver"
-            onAction={() => router.push("/affinity")}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-center py-16"
+          >
+            <p className="eyebrow-brutalist mb-4">Sin resultados</p>
+            <p className="text-sm text-muted mb-6 max-w-md mx-auto">
+              No se encontraron resultados para &ldquo;{search}&rdquo;.
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push("/affinity")}
+              className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+            >
+              Volver a Afinidad Personal
+            </button>
+          </motion.div>
         )}
 
         {/* Disclaimer */}

@@ -17,7 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/filosofia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/docs/motores`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/daily-energy`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.8 },
   ];
 
   // Affinity hub + category listings

@@ -39,25 +39,25 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Numerología</p>
-            <div className={`inline-block px-2 py-1 rounded-sm text-xs font-bold ${getScoreColor(result.scores.numerology)}`}>
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.numerology) }}>
               {result.scores.numerology}%
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Astrología occidental</p>
-            <div className={`inline-block px-2 py-1 rounded-sm text-xs font-bold ${getScoreColor(result.scores.westernAstrology)}`}>
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.westernAstrology) }}>
               {result.scores.westernAstrology}%
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Zodiaco chino</p>
-            <div className={`inline-block px-2 py-1 rounded-sm text-xs font-bold ${getScoreColor(result.scores.chineseAstrology)}`}>
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.chineseAstrology) }}>
               {result.scores.chineseAstrology}%
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Elementos</p>
-            <div className={`inline-block px-2 py-1 rounded-sm text-xs font-bold ${getScoreColor(result.scores.element)}`}>
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.element) }}>
               {result.scores.element}%
             </div>
           </div>

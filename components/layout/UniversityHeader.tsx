@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { Menu, X } from "lucide-react";
-import { headerNavLinks } from "@/lib/data/navigation";
+import { headerNavLinks, productNavLinks } from "@/lib/data/navigation";
 import Button from "@/components/ui/Button";
 
 export default function UniversityHeader() {
@@ -21,6 +21,9 @@ export default function UniversityHeader() {
   const { scrollY } = useScroll();
 
   const navLinks = headerNavLinks;
+
+  const isNavLinkActive = (href: string) =>
+    pathname === href || (href !== "/" && pathname.startsWith(href));
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
@@ -123,7 +126,7 @@ export default function UniversityHeader() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Navegación principal">
+          <nav className="hidden xl:flex items-center gap-8" aria-label="Navegación principal">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -140,29 +143,19 @@ export default function UniversityHeader() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
-            {hasProfile && (
-              <>
-                <Link
-                  href="/daily-energy"
-                  className={`hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
-                    pathname === "/daily-energy" ? "text-accent" : "text-muted"
-                  }`}
-                  aria-current={pathname === "/daily-energy" ? "page" : undefined}
-                >
-                  HOY
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`hidden sm:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
-                    pathname.startsWith("/profile") || pathname.startsWith("/evolution") || pathname.startsWith("/decisions") ? "text-accent" : "text-muted"
-                  }`}
-                  aria-current={pathname.startsWith("/profile") ? "page" : undefined}
-                >
-                  MI MAPA
-                </Link>
-              </>
-            )}
+          <div className="flex items-center gap-2">
+            {productNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`hidden xl:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
+                  isNavLinkActive(link.href) ? "text-accent" : "text-muted"
+                }`}
+                aria-current={pathname === link.href ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            ))}
             {hasProfile ? (
               <button
                 ref={triggerRef}
@@ -184,7 +177,7 @@ export default function UniversityHeader() {
             {/* Mobile menu toggle */}
             <button
               type="button"
-              className="lg:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
+              className="xl:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -198,7 +191,7 @@ export default function UniversityHeader() {
         {/* Mobile Navigation */}
         <motion.div
           id="mobile-menu"
-          className="lg:hidden overflow-hidden border-t border-ink/10 bg-background"
+          className="xl:hidden overflow-hidden border-t border-ink/10 bg-background"
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: mobileMenuOpen ? 1 : 0, height: mobileMenuOpen ? "auto" : 0 }}
           transition={{ duration: 0.2 }}
@@ -220,36 +213,39 @@ export default function UniversityHeader() {
               </Link>
             ))}
             <hr className="border-ink/10 my-2" />
+            {productNavLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
+                  isNavLinkActive(link.href) ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
+                }`}
+                aria-current={pathname === link.href ? "page" : undefined}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {hasProfile && (
+              <Link
+                href="/profile"
+                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
+                  isNavLinkActive("/profile") ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
+                }`}
+                aria-current={pathname === "/profile" ? "page" : undefined}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                MI PERFIL
+              </Link>
+            )}
             {hasProfile ? (
-              <>
-                <Link
-                  href="/daily-energy"
-                  className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
-                    pathname === "/daily-energy" ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
-                  }`}
-                  aria-current={pathname === "/daily-energy" ? "page" : undefined}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  HOY
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
-                    pathname.startsWith("/profile") ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
-                  }`}
-                  aria-current={pathname.startsWith("/profile") ? "page" : undefined}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  MI MAPA
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleNewProfile}
-                  className="w-full text-left px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
-                >
-                  NUEVO PERFIL
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={handleNewProfile}
+                className="w-full text-left px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
+              >
+                NUEVO PERFIL
+              </button>
             ) : (
               <Link
                 href="/onboarding"
@@ -263,23 +259,38 @@ export default function UniversityHeader() {
         </motion.div>
       </motion.header>
 
-      {showConfirm && (
-        <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
-          <div className="absolute inset-0 bg-ink/50" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} />
-          <div className="relative bg-background border border-ink/10 p-8 sm:p-10 max-w-sm mx-4 w-full">
-            <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">NUEVO PERFIL</h3>
-            <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
-            <div className="flex gap-3">
-              <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
-                CANCELAR
-              </Button>
-              <Button variant="primary" onClick={confirmNewProfile} className="flex-1">
-                CREAR NUEVO
-              </Button>
-            </div>
+      <AnimatePresence>
+        {showConfirm && (
+          <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+            <motion.div
+              className="absolute inset-0 bg-ink/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }}
+            />
+            <motion.div
+              className="relative bg-background border border-ink/10 p-8 sm:p-10 max-w-sm mx-4 w-full"
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+            >
+              <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">NUEVO PERFIL</h3>
+              <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
+              <div className="flex gap-3">
+                <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
+                  CANCELAR
+                </Button>
+                <Button variant="primary" onClick={confirmNewProfile} className="flex-1">
+                  CREAR NUEVO
+                </Button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
@@ -10,23 +11,34 @@ import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/session/discovery";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
 import ProfileHub from "@/components/profile/ProfileHub";
 import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import AffinityPreview from "@/components/affinity/AffinityPreview";
+import Button from "@/components/ui/Button";
+
+const SkeletonSpinner = () => (
+  <div className="flex items-center justify-center py-12">
+    <div className="text-center">
+      <div className="w-6 h-6 border-2 border-border border-t-accent rounded-full animate-spin mx-auto mb-3" aria-hidden="true" />
+      <p className="text-xs text-muted" role="status" aria-label="Cargando...">
+        Cargando...
+      </p>
+    </div>
+  </div>
+);
 
 const IdentityScreen = dynamic(() => import("@/components/profile/screens/IdentityScreen"), {
-  loading: () => <LoadingState fullScreen={false} />,
+  loading: SkeletonSpinner,
 });
 const WorldScreen = dynamic(() => import("@/components/profile/screens/WorldScreen"), {
-  loading: () => <LoadingState fullScreen={false} />,
+  loading: SkeletonSpinner,
 });
 const CircleScreen = dynamic(() => import("@/components/profile/screens/CircleScreen"), {
-  loading: () => <LoadingState fullScreen={false} />,
+  loading: SkeletonSpinner,
 });
 const IntelligenceScreen = dynamic(() => import("@/components/profile/screens/IntelligenceScreen"), {
-  loading: () => <LoadingState fullScreen={false} />,
+  loading: SkeletonSpinner,
 });
 
 interface ProfileClientProps {
@@ -147,7 +159,22 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   }, [router]);
 
   if (!mounted && !profile && !futureDateError) {
-    return <LoadingState message="Cargando tu mapa..." />;
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+          <p className="sr-only" role="status" aria-label="Cargando tu mapa...">
+            Cargando tu mapa...
+          </p>
+          <div className="animate-pulse">
+            <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+            <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+            <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+            <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
+          </div>
+          <UniversityFooter />
+        </div>
+      </div>
+    );
   }
 
   if (!profile) {
@@ -175,13 +202,9 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               </p>
             </>
           )}
-          <button
-            type="button"
-            onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-accent text-white hover:bg-accent/90 min-h-[52px]"
-          >
+          <Button variant="primary" size="lg" onClick={() => router.push("/")}>
             Crear mi mapa
-          </button>
+          </Button>
         </div>
         <UniversityFooter />
       </div>
@@ -203,17 +226,22 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
         {!showFirstDiscovery && (
           <AnimatePresence mode="wait">
-            {!activeTab ? (
-              <motion.div
-                key="hub"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ProfileHub profile={profile} onEnter={handleEnter} />
-              </motion.div>
-            ) : (
+{!activeTab ? (
+               <motion.div
+                 key="hub"
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 exit={{ opacity: 0 }}
+                 transition={{ duration: 0.2 }}
+               >
+                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                   <span>›</span>
+                   <span className="text-foreground font-medium">Mi mapa</span>
+                 </nav>
+                 <ProfileHub profile={profile} onEnter={handleEnter} />
+               </motion.div>
+             ) : (
               <motion.div
                 key={activeTab}
                 initial={{ opacity: 0, y: 10 }}

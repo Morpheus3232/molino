@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import {
   resolveYearCycle,
@@ -40,8 +40,13 @@ import {
 } from "@/lib/utils/premiumMotion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import LoadingState from "@/components/ui/LoadingState";
 import CountUp from "@/components/ui/CountUp";
+
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
 
 const ANIMAL_TRAITS: Record<string, string> = {
   Rata: "movimiento, astucia y adaptabilidad",
@@ -101,7 +106,27 @@ export default function InsightsContent() {
   }, [profile]);
   const profile_ = useMemo(() => userAnimal ? getAnimalProfile(userAnimal) : null, [userAnimal]);
 
-  if (!mounted) return <LoadingState message="Cargando tu inteligencia..." />;
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+          <p className="sr-only" role="status" aria-label="Cargando tu inteligencia...">
+            Cargando tu inteligencia...
+          </p>
+          <div className="animate-pulse">
+            <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-4" />
+            <div className="h-9 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+            <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-8" />
+            <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-20 bg-[var(--skeleton)] border-t border-ink/10" />
+            ))}
+          </div>
+          <UniversityFooter />
+        </div>
+      </div>
+    );
+  }
 
   if (!profile) {
     return (
