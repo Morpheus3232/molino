@@ -5,58 +5,42 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
+import { getHistoryForProfile, type DailySnapshot, type Orientation } from "@/lib/session/dailyHistory";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import EmptyState from "@/components/ui/EmptyState";
 import Link from "next/link";
 
-const EVOLUTION_HISTORY_KEY = "molino.evolution-history.v1";
+const ORIENTATION_ORDER: Orientation[] = ["ACTUAR", "ESPERAR", "OBSERVAR"];
 
-type EvolutionItem = {
-  date: string;
-  title: string;
-  detail: string;
-};
-
-function loadEvolutionHistory(): EvolutionItem[] {
-  if (typeof window === "undefined") return [];
-  const raw = window.localStorage.getItem(EVOLUTION_HISTORY_KEY);
-  if (!raw) return [];
-  try {
-    return JSON.parse(raw) as EvolutionItem[];
-  } catch {
-    return [];
-  }
-}
-
-function saveEvolutionHistory(items: EvolutionItem[]) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(EVOLUTION_HISTORY_KEY, JSON.stringify(items));
+function formatDate(dateStr: string): string {
+  const date = new Date(`${dateStr}T00:00:00`);
+  return date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" });
 }
 
 export default function EvolutionPage() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-  const [history, setHistory] = useState<EvolutionItem[]>([]);
+  const [history, setHistory] = useState<DailySnapshot[]>([]);
 
   useEffect(() => {
-    setHistory(loadEvolutionHistory());
-  }, []);
+    if (!profile) return;
+    setHistory(getHistoryForProfile(profile.birthDate));
+  }, [profile]);
 
-  const addMilestone = () => {
-    const next = [
-      { date: new Date().toISOString().slice(0, 10), title: "Nuevo milestone", detail: "Registrá tu avance o insight." },
-      ...history,
-    ];
-    setHistory(next);
-    saveEvolutionHistory(next);
-  };
+  const counts = ORIENTATION_ORDER.reduce<Record<Orientation, number>>(
+    (acc, o) => {
+      acc[o] = history.filter((h) => h.orientation === o).length;
+      return acc;
+    },
+    { ACTUAR: 0, ESPERAR: 0, OBSERVAR: 0 }
+  );
 
   if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <LoadingState message="Cargando historial..." />
+        <LoadingState message="Cargando tu recorrido..." />
         <UniversityFooter />
       </div>
     );
@@ -68,10 +52,10 @@ export default function EvolutionPage() {
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
           <p className="eyebrow-brutalist mb-4">Evolución</p>
           <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
-            Historial y evolución
+            Tu recorrido
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
-            Para registrar tu evolución, primero necesitás crear tu perfil personal.
+            Para ver tu recorrido, primero necesitás crear tu perfil personal.
           </p>
           <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
@@ -94,53 +78,73 @@ export default function EvolutionPage() {
 
           <p className="eyebrow-brutalist mb-4">Evolución</p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
-            Historial y evolución
+            Tu recorrido
           </h1>
-          <p className="text-sm text-muted mt-4 max-w-2xl">Registro de tus sesiones, insights y avances en tu proceso de Inteligencia Personal.</p>
+          <p className="text-sm text-muted mt-4 max-w-2xl">
+            Cada vez que abrís Hoy, Molino guarda tu orientación del día. Con el tiempo, esto se convierte en un recorrido.
+          </p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-          <div className="space-y-px bg-ink/10">
-            {history.length === 0 ? (
-              <EmptyState
-                title="Sin registros"
-                description="Todavía no hay registros. Agregá tu primer milestone."
-              />
-            ) : (
-              history.map((item, i) => (
-                <motion.div
-                  key={item.date + item.title}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: i * 0.04 }}
-                  className="bg-background p-8 lg:p-12 border-b border-ink/10 last:border-b-0"
-                >
-                  <div className="flex items-start justify-between gap-3">
+        {history.length === 0 ? (
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+            <EmptyState
+              title="Todavía no hay recorrido"
+              description="Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación."
+            />
+            <div className="mt-6 text-center">
+              <Button variant="primary" onClick={() => router.push("/hoy")}>
+                Ver tu día de hoy →
+              </Button>
+            </div>
+          </motion.div>
+        ) : (
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="border border-ink/10 p-8 lg:p-12"
+            >
+              <p className="eyebrow-brutalist mb-4">
+                {history.length} {history.length === 1 ? "día registrado" : "días registrados"}
+              </p>
+              <ul className="flex flex-wrap gap-x-8 gap-y-2">
+                {ORIENTATION_ORDER.map((o) => (
+                  <li key={o} className="text-sm text-foreground">
+                    <span className="font-display text-2xl font-bold tracking-tight mr-2">{counts[o]}</span>
+                    {o}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-6">
+              <div className="space-y-px bg-ink/10">
+                {history.map((item, i) => (
+                  <motion.div
+                    key={item.date}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: i * 0.03 }}
+                    className="bg-background p-6 sm:p-8 border-b border-ink/10 last:border-b-0 flex items-center justify-between gap-4"
+                  >
                     <div>
-                      <p className="label-micro mb-2">{item.date}</p>
-                      <h3 className="font-display text-xl text-foreground">{item.title}</h3>
-                      <p className="text-sm text-muted mt-2">{item.detail}</p>
+                      <p className="label-micro mb-1">{formatDate(item.date)}</p>
+                      <p className="text-sm text-muted">{item.theme} · {item.energyLevel}</p>
                     </div>
-                  </div>
-                </motion.div>
-              ))
-            )}
-          </div>
-        </motion.div>
+                    <p className="font-display text-xl text-foreground shrink-0">{item.orientation}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 lg:p-12 text-center">
-          <p className="eyebrow-brutalist mb-4">Evolución continua</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-foreground">Próximamente</h2>
-          <p className="text-sm text-muted mt-3 max-w-md mx-auto">Podrás ver métricas, streaks y logros de tu proceso.</p>
-          <Button variant="primary" onClick={addMilestone} className="mt-6">
-            Agregar milestone
-          </Button>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
-          <Button variant="primary" fullWidth onClick={() => router.push("/daily-energy")}>
-            Energía de hoy →
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
+          <Button variant="primary" fullWidth onClick={() => router.push("/hoy")}>
+            Ver hoy →
           </Button>
           <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
             Ver mi perfil
