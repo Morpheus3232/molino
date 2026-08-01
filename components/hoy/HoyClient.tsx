@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -9,13 +9,20 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
+import {
+  recordDailySnapshot,
+  getPreviousSnapshot,
+  toLocalDateKey,
+  type Orientation,
+  type EnergyLevel,
+} from "@/lib/session/dailyHistory";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import LoadingState from "@/components/ui/LoadingState";
 import Link from "next/link";
 
-function getEnergyLevel(score: number): string {
+function getEnergyLevel(score: number): EnergyLevel {
   if (score >= 75) return "ALTA";
   if (score >= 55) return "MEDIA";
   return "BAJA";
@@ -30,8 +37,6 @@ function getScoreStyle(score: number): string {
         ? "var(--score-neutral)"
         : "var(--score-poor)";
 }
-
-type Orientation = "ACTUAR" | "ESPERAR" | "OBSERVAR";
 
 /** Orientación del momento — deriva de timing.timingScore, sin tocar el engine. */
 function getOrientation(timingScore: number): Orientation {
@@ -101,6 +106,24 @@ export default function HoyClient() {
 
     return { energy, convergence, timing, momentState };
   }, [profile, today]);
+
+  const todayStr = useMemo(() => toLocalDateKey(today), [today]);
+
+  const previousSnapshot = useMemo(() => {
+    if (!profile || !data) return null;
+    return getPreviousSnapshot(profile.birthDate, todayStr);
+  }, [profile, data, todayStr]);
+
+  useEffect(() => {
+    if (!profile || !data) return;
+    recordDailySnapshot({
+      date: todayStr,
+      profileKey: profile.birthDate,
+      orientation: getOrientation(data.timing.timingScore),
+      energyLevel: getEnergyLevel(data.energy.overallScore),
+      theme: data.energy.theme,
+    });
+  }, [profile, data, todayStr]);
 
   if (loading || !mounted) {
     return (
@@ -270,6 +293,13 @@ export default function HoyClient() {
           className="mt-6 border border-ink/10 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">MOMENTO PARA ACTUAR</p>
+
+          {previousSnapshot && (
+            <p className="text-xs text-muted mb-3">
+              Ayer fue{" "}
+              <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
+            </p>
+          )}
 
           <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
             <p
@@ -450,6 +480,31 @@ export default function HoyClient() {
             label="Interpretación de Molino"
             description="Análisis personalizado de tu día"
           />
+        </motion.div>
+
+        {/* CIERRE — genera expectativa de regreso, sin mendigar retención */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-10 pt-8 border-t border-ink/10 text-center"
+        >
+          {previousSnapshot ? (
+            <Link
+              href="/evolution"
+              className="text-sm text-muted hover:text-accent transition-colors"
+            >
+              Ver cómo viene tu recorrido →
+            </Link>
+          ) : (
+            <p className="text-sm text-muted">
+              Mañana tu energía y tu orientación pueden cambiar.{" "}
+              <Link href="/evolution" className="text-accent hover:underline">
+                Volvé para verlo.
+              </Link>
+            </p>
+          )}
         </motion.div>
       </main>
 

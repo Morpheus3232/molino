@@ -191,6 +191,18 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           ))}
         </div>
 
+        <div className="border-b border-ink/10">
+          <Link
+            href="/profile/insights"
+            className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Un paso más</p>
+            <p className="text-sm text-foreground group-hover:text-accent transition-colors">
+              Ver tus insights completos →
+            </p>
+          </Link>
+        </div>
+
         {topRec && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
