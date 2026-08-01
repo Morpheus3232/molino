@@ -37,14 +37,14 @@ export default function AstrologiaContent() {
 
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
           <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">Astrología</h1>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Astrología</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El mapa del cielo de tu nacimiento y su tradición interpretativa.
           </h2>
         </motion.section>
 
         <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{ASTROLOGY_DISCLAIMER}</p>
           </div>
         </motion.section>
@@ -100,7 +100,7 @@ export default function AstrologiaContent() {
             <div className="space-y-4">
               <h3 className="font-heading text-lg font-semibold text-foreground">Elementos</h3>
               {ELEMENTS.map((el) => (
-                <div key={el.name} className="p-4 rounded-md border border-border bg-card shadow-sm">
+                <div key={el.name} className="p-4 border border-ink/10">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: el.color }} />
                     <p className="text-sm font-medium text-foreground">{el.name}</p>
@@ -113,7 +113,7 @@ export default function AstrologiaContent() {
             <div className="space-y-4">
               <h3 className="font-heading text-lg font-semibold text-foreground">Modalidades</h3>
               {MODALITIES.map((mod) => (
-                <div key={mod.name} className="p-4 rounded-md border border-border bg-card shadow-sm">
+                <div key={mod.name} className="p-4 border border-ink/10">
                   <p className="text-sm font-medium text-foreground mb-1">{mod.name}</p>
                   <p className="text-xs text-muted">{mod.signs}</p>
                   <p className="text-xs text-muted mt-1">{mod.traits.join(" · ")}</p>
@@ -134,7 +134,7 @@ export default function AstrologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {ZODIAC_SIGNS.map((sign, i) => (
-              <motion.button key={sign.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`)} className="text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] group">
+              <motion.button key={sign.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`)} className="text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">{sign.symbol}</span>
                   <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{sign.name}</h3>
@@ -155,7 +155,7 @@ export default function AstrologiaContent() {
             <div className="w-8 h-px bg-border" />
             <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Diferencia entre astrología y astronomía</h2>
           </div>
-          <div className="max-w-3xl p-6 rounded-md border border-border bg-card shadow-sm">
+          <div className="max-w-3xl p-6 border border-ink/10">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-foreground mb-2">Astronomía</p>
@@ -195,7 +195,7 @@ export default function AstrologiaContent() {
 
         {/* Herramientas relacionadas */}
         <motion.section {...fadeUpDelayed(0.22)} className="mb-12">
-          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 border border-accent/20">
             <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Signo Solar</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
@@ -208,7 +208,7 @@ export default function AstrologiaContent() {
         </motion.section>
 
         <motion.section {...fadeUpDelayed(0.24)}>
-          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+          <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
         </motion.section>

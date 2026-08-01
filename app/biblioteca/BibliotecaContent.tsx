@@ -2,10 +2,9 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import EmptyState from "@/components/ui/EmptyState";
 import SearchInput from "@/components/ui/SearchInput";
 import Chip from "@/components/ui/Chip";
 
@@ -433,10 +432,18 @@ export default function BibliotecaContent() {
             );
           })
         ) : (
-          <EmptyState
-            title="No se encontraron fuentes"
-            description="Probá con otro filtro."
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-center py-16"
+          >
+            <p className="eyebrow-brutalist mb-4">Sin fuentes</p>
+            <p className="text-sm text-muted mb-6 max-w-md mx-auto">
+              No se encontraron fuentes para los filtros seleccionados.
+            </p>
+          </motion.div>
         )}
       </main>
 

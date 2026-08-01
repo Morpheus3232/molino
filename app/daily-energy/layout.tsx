@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     "Tu energía de hoy según numerología, astrología y zodíaco chino: tema del día, fortalezas, precauciones y fase lunar.",
   alternates: {
-    canonical: siteUrl("/daily-energy"),
+    canonical: siteUrl("/hoy"),
   },
   openGraph: {
     title: "Energía Diaria — Molino",
     description: "Tu energía de hoy según numerología, astrología y zodíaco chino.",
     type: "website",
-    url: siteUrl("/daily-energy"),
+    url: siteUrl("/hoy"),
   },
 };
 

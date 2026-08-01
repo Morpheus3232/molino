@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "@/lib/utils/motion";
 
 interface AnimatedLayoutProps {
@@ -9,14 +10,19 @@ interface AnimatedLayoutProps {
 
 export default function AnimatedLayout({ children }: AnimatedLayoutProps) {
   const reducedMotion = useReducedMotion();
+  const pathname = usePathname();
 
   return (
-    <motion.div
-      initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: reducedMotion ? 0 : 0.3, ease: "easeOut" }}
-    >
-      {children}
-    </motion.div>
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={pathname}
+        initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={reducedMotion ? undefined : { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }}
+        transition={{ duration: reducedMotion ? 0 : 0.3, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
   );
 }

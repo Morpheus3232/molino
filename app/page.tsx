@@ -32,6 +32,7 @@ function getEnergyLevel(score: number): string {
 // del contenido genérico de siempre. En false, la home no cambia en nada.
 const DECISION_FIRST_HOME_ENABLED = false;
 
+
 /* ═══ CTA final ═══ */
 
 function FinalCTA() {
@@ -82,7 +83,22 @@ export default function Home() {
       <div className="relative z-10">
         <HeroNew />
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-          {mounted && profile ? <PersonalizedHome profile={profile} /> : <GenericHome />}
+          {mounted && profile ? (
+            // Solo se monta después de resolver mounted+profile: es un cambio
+            // real de rama, así que recibe una entrada sutil.
+            <motion.div key="personalized" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }}>
+              <PersonalizedHome profile={profile} />
+            </motion.div>
+          ) : (
+            // Es la rama que ya pinta el server (mounted=false ahí también),
+            // así que nunca debe animar: initial={false} evita el fundido
+            // artificial y, al ser una rama condicional simple (no
+            // AnimatePresence), React jamás mantiene esta rama montada en
+            // paralelo con PersonalizedHome.
+            <motion.div key="generic" initial={false} animate={{ opacity: 1, y: 0 }}>
+              <GenericHome />
+            </motion.div>
+          )}
         </main>
         <UniversityFooter />
       </div>
@@ -133,7 +149,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
               >
                 <div>
                   <p className="label-micro mb-4">Tu energía de hoy</p>
-                  <p className={`text-5xl sm:text-6xl font-heading font-bold tracking-tight ${getScoreColor(energy.overallScore)}`}>
+                  <p className="text-5xl sm:text-6xl font-heading font-bold tracking-tight" style={{ color: getScoreColor(energy.overallScore) }}>
                     {getEnergyLevel(energy.overallScore)}
                   </p>
                   <p className="text-sm text-muted mt-2">{energy.theme}</p>

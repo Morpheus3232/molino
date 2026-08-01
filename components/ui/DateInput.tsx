@@ -1,11 +1,22 @@
 "use client";
 
-import { useRef, useState, useCallback, useId } from "react";
+import { useRef, useState, useCallback, useId, useEffect, forwardRef, useImperativeHandle } from "react";
 
 interface DateInputProps {
   value: string; // YYYY-MM-DD
   onChange: (value: string) => void;
 }
+
+export interface DateInputHandle {
+  /** Si la fecha está incompleta, marca error y lleva el foco al campo faltante. */
+  reportIncomplete: () => void;
+}
+
+const MISSING_FIELD_MESSAGE = {
+  dd: "Completá el día de nacimiento.",
+  mm: "Completá el mes de nacimiento.",
+  yyyy: "Completá el año de nacimiento.",
+} as const;
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -33,7 +44,10 @@ function focusAndReveal(ref: React.RefObject<HTMLInputElement | null>) {
  * - Backspace steps back between fields
  * - Validates ranges in real time
  */
-export default function DateInput({ value, onChange }: DateInputProps) {
+const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput(
+  { value, onChange },
+  ref
+) {
   const id = useId();
   // Parse initial value
   const initial = /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -43,10 +57,12 @@ export default function DateInput({ value, onChange }: DateInputProps) {
   const [dd, setDd] = useState(initial[2] === "00" ? "" : initial[2]);
   const [mm, setMm] = useState(initial[1] === "00" ? "" : initial[1]);
   const [yyyy, setYyyy] = useState(initial[0] === "0000" ? "" : initial[0]);
+  const [missingField, setMissingField] = useState<"dd" | "mm" | "yyyy" | null>(null);
 
   const ddRef = useRef<HTMLInputElement>(null);
   const mmRef = useRef<HTMLInputElement>(null);
   const yyyyRef = useRef<HTMLInputElement>(null);
+  const errorId = `${id}-error`;
 
   const emit = useCallback(
     (d: string, m: string, y: string) => {
@@ -166,26 +182,51 @@ export default function DateInput({ value, onChange }: DateInputProps) {
     "bg-transparent text-center font-heading font-semibold text-foreground " +
     "placeholder:text-muted-foreground focus:outline-none tabular-nums";
 
+  // Determina el primer campo incompleto, marca el error y le lleva el foco.
+  // Devuelve true si la fecha ya está completa (nada que reportar).
+  const reportIncomplete = useCallback(() => {
+    if (dd.length < 2) {
+      setMissingField("dd");
+      focusAndReveal(ddRef);
+      return false;
+    }
+    if (mm.length < 2) {
+      setMissingField("mm");
+      focusAndReveal(mmRef);
+      return false;
+    }
+    if (yyyy.length < 4) {
+      setMissingField("yyyy");
+      focusAndReveal(yyyyRef);
+      return false;
+    }
+    setMissingField(null);
+    return true;
+  }, [dd, mm, yyyy]);
+
+  useImperativeHandle(ref, () => ({ reportIncomplete: () => { reportIncomplete(); } }), [reportIncomplete]);
+
+  // Una vez mostrado el error, se limpia solo apenas el campo faltante se completa.
+  useEffect(() => {
+    if (!missingField) return;
+    if (missingField === "dd" && dd.length === 2) setMissingField(null);
+    if (missingField === "mm" && mm.length === 2) setMissingField(null);
+    if (missingField === "yyyy" && yyyy.length === 4) setMissingField(null);
+  }, [dd, mm, yyyy, missingField]);
+
   const handleGroupKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key !== "Enter") return;
-      if (dd.length < 2) {
+      const isComplete = dd.length === 2 && mm.length === 2 && yyyy.length === 4;
+      if (!isComplete) {
         e.preventDefault();
         e.stopPropagation();
-        focusAndReveal(ddRef);
-      } else if (mm.length < 2) {
-        e.preventDefault();
-        e.stopPropagation();
-        focusAndReveal(mmRef);
-      } else if (yyyy.length < 4) {
-        e.preventDefault();
-        e.stopPropagation();
-        focusAndReveal(yyyyRef);
+        reportIncomplete();
       }
       // Fecha completa: se deja pasar el Enter para que el onKeyDown del
       // formulario (fuera de este componente) dispare el submit existente.
     },
-    [dd, mm, yyyy]
+    [dd, mm, yyyy, reportIncomplete]
   );
 
   return (
@@ -194,6 +235,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
         className="flex items-center gap-0 rounded-md border border-border bg-card shadow-sm px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-all"
         role="group"
         aria-label="Fecha de nacimiento"
+        aria-describedby={missingField ? errorId : undefined}
         onKeyDown={handleGroupKeyDown}
       >
         {/* Day */}
@@ -211,6 +253,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-label="Día"
+          aria-invalid={missingField === "dd"}
           autoComplete="off"
         />
 
@@ -231,6 +274,7 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-label="Mes"
+          aria-invalid={missingField === "mm"}
           autoComplete="off"
         />
 
@@ -249,20 +293,31 @@ export default function DateInput({ value, onChange }: DateInputProps) {
           onChange={handleYyyyChange}
           onKeyDown={handleYyyyKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
-          className={`${baseInput} text-3xl sm:text-4xl flex-1`}
+          className={`${baseInput} text-3xl sm:text-4xl flex-1 min-w-0`}
           aria-label="Año"
+          aria-invalid={missingField === "yyyy"}
           autoComplete="off"
         />
       </div>
 
       {/* Labels */}
-      <div className="flex items-center mt-2 px-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="flex items-center mt-2 px-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
         <span className="w-16 sm:w-20 text-center">Día</span>
-        <span className="px-2 opacity-0">/</span>
+        <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
         <span className="w-16 sm:w-20 text-center">Mes</span>
-        <span className="px-2 opacity-0">/</span>
+        <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
         <span className="flex-1 text-center">Año</span>
       </div>
+
+      {missingField && (
+        <p id={errorId} role="alert" aria-live="polite" className="mt-2 px-3 text-xs font-medium text-error text-center">
+          {MISSING_FIELD_MESSAGE[missingField]}
+        </p>
+      )}
     </div>
   );
-}
+});
+
+DateInput.displayName = "DateInput";
+
+export default DateInput;

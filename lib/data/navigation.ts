@@ -11,6 +11,18 @@ export const headerNavLinks: NavLink[] = [
   { href: "https://github.com/Morpheus3232/molino", label: "GITHUB", external: true },
 ];
 
+/**
+ * Las cuatro superficies centrales del producto. Siempre visibles/enlazables
+ * en el header, independientemente de si hay un perfil guardado — cada
+ * página maneja su propio estado sin-perfil (CTA a /onboarding).
+ */
+export const productNavLinks: NavLink[] = [
+  { href: "/hoy", label: "HOY" },
+  { href: "/timing", label: "TIMING" },
+  { href: "/decisions", label: "DECISIONES" },
+  { href: "/evolution", label: "EVOLUCIÓN" },
+];
+
 export interface FooterColumn {
   title: string;
   links: NavLink[];
@@ -22,11 +34,10 @@ export const footerColumns: FooterColumn[] = [
     links: [
       { href: "/", label: "INICIO" },
       { href: "/profile", label: "MI MAPA" },
-      { href: "/daily-energy", label: "ENERGÍA DE HOY" },
+      { href: "/hoy", label: "ENERGÍA DE HOY" },
       { href: "/timing", label: "TIMING" },
       { href: "/affinity", label: "AFINIDAD" },
       { href: "/evolution", label: "MI EVOLUCIÓN" },
-      { href: "/decisions", label: "DECISIONES" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },
       { href: "/guia", label: "GUÍA" },

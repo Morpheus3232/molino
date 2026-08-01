@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Hash, Sun, Moon, ArrowRight } from "lucide-react";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import DateInput from "@/components/ui/DateInput";
+import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 import { analytics } from "@/lib/analytics/analytics";
@@ -21,6 +21,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const dateInputRef = useRef<DateInputHandle>(null);
 
   const handleDateChange = useCallback((value: string) => {
     setDateValue(value);
@@ -37,7 +38,10 @@ export default function OnboardingPage() {
   );
 
   const handleGenerate = async () => {
-    if (!isDateValid) return;
+    if (!isDateValid) {
+      dateInputRef.current?.reportIncomplete();
+      return;
+    }
     setIsGenerating(true);
     try {
       const [year, month, day] = dateValue.split("-");
@@ -76,7 +80,7 @@ export default function OnboardingPage() {
           <p className="eyebrow-brutalist mb-3">
             Mapa personal de autoconocimiento
           </p>
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-4">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
             ¿Cuándo naciste?
           </h1>
           <p className="text-base text-muted-foreground max-w-sm mx-auto">
@@ -92,7 +96,7 @@ export default function OnboardingPage() {
           className="mb-8"
           onKeyDown={handleKeyDown}
         >
-          <DateInput value={dateValue} onChange={handleDateChange} />
+          <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
         </motion.div>
 
         {/* Adelanto de dimensiones: se despliega solo, en cuanto la fecha
@@ -112,7 +116,8 @@ export default function OnboardingPage() {
             variant="accent"
             size="lg"
             onClick={handleGenerate}
-            disabled={!isDateValid}
+            aria-disabled={!isDateValid}
+            className={!isDateValid ? "opacity-50" : ""}
             loading={isGenerating}
           >
             {isGenerating ? (
@@ -130,9 +135,9 @@ export default function OnboardingPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
         >
-          <p className="label-micro text-center mb-4">
+          <p className="eyebrow-brutalist text-center mb-4">
             Qué vamos a analizar
           </p>
           <div role="list" aria-label="Motores de análisis">
@@ -142,7 +147,7 @@ export default function OnboardingPage() {
                 role="listitem"
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 + i * 0.07 }}
+                transition={{ duration: 0.3, delay: 0.3 + i * 0.05 }}
                 className="flex items-center gap-3 py-3.5 border-b border-ink/10 last:border-b-0"
               >
                 <engine.icon className="w-4 h-4 text-accent flex-shrink-0" aria-hidden="true" />

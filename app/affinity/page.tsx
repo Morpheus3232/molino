@@ -2,15 +2,20 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
+
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
 
 export default function AffinityHub() {
   const router = useRouter();
@@ -22,9 +27,6 @@ export default function AffinityHub() {
       router.push("/onboarding");
     }
   }, [mounted, loading, profile, router]);
-
-  if (!mounted || loading) return <LoadingState message="Cargando..." />;
-  if (!profile) return <LoadingState message="Redirigiendo..." />;
 
   const availableTypes = getAvailableTypes();
 
@@ -40,75 +42,101 @@ export default function AffinityHub() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
-
-        {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
-          <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
-            Descubrí tus afinidades
-          </h1>
-          <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
-            Explorá qué entidades resuenan con tu perfil simbólico. Marcas, ciudades, países, universidades, equipos y más.
-          </p>
-          {profile && (
-            <p className="text-sm text-muted mt-3">
-              Camino de Vida {profile.lifePath} · {profile.chineseZodiac}
-            </p>
-          )}
-          {!profile && (
-            <div className="mt-6">
-              <button type="button" onClick={() => router.push("/onboarding")} className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]">
-                Crear tu perfil para afinidad personalizada
-              </button>
-              <p className="text-xs text-muted mt-2">Sin servidor. Sin cuentas.</p>
+      <AnimatePresence mode="wait">
+        {!mounted || loading || !profile ? (
+          <motion.div
+            key="loading"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <div className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+              <p className="sr-only" role="status" aria-label="Preparando tu afinity...">
+                Preparando tu afinidad...
+              </p>
+              <div className="animate-pulse">
+                <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
+                <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="h-48 bg-[var(--skeleton)] border border-ink/10 rounded-md" />
+                  ))}
+                </div>
+              </div>
+              <UniversityFooter />
             </div>
-          )}
-        </motion.section>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
+            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
-        {/* Category grid */}
-        <section>
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar por categoría</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {availableTypes.map((type, i) => {
-              const meta = ENTITY_TYPES[type];
-              const totalCount = getEntitiesByType(type).length;
-              const personalCount = personalizedCounts?.[type] ?? null;
-              
-              return (
-                <motion.button
-                  key={type}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-20px" }}
-                  transition={{ delay: i * 0.05, duration: 0.4 }}
-                    onClick={() => router.push(`/affinity/${type}`)}
-                    className="text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all group relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
-                  <span className="text-3xl mb-3 block">{meta.icon}</span>
-                  <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
-                  <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
-                  <div className="mt-4 pt-3 border-t border-border">
-                    {personalCount !== null ? (
-                      <>
-                        <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
-                        <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
-                      </>
-                    ) : (
-                      <p className="text-xs text-accent font-medium">{totalCount} {meta.plural.toLowerCase()}</p>
-                    )}
-                  </div>
-                </motion.button>
-              );
-            })}
-          </div>
-        </section>
-      </main>
-      <UniversityFooter />
+              {/* Hero */}
+              <motion.section {...fadeUp} className="mb-16 sm:mb-20">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
+                <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
+                  Descubrí tus afinidades
+                </h1>
+                <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
+                  Explorá qué entidades resuenan con tu perfil simbólico. Marcas, ciudades, países, universidades, equipos y más.
+                </p>
+                {profile && (
+                  <p className="text-sm text-muted mt-3">
+                    Camino de Vida {profile.lifePath} · {profile.chineseZodiac}
+                  </p>
+                )}
+              </motion.section>
+
+              {/* Category grid */}
+              <section>
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-8 h-px bg-border" aria-hidden="true" />
+                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar por categoría</h2>
+                </div>
+                <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {availableTypes.map((type, i) => {
+                    const meta = ENTITY_TYPES[type];
+                    const totalCount = getEntitiesByType(type).length;
+                    const personalCount = personalizedCounts?.[type] ?? null;
+
+                    return (
+                      <motion.button
+                        key={type}
+                        {...staggerItem}
+                        onClick={() => router.push(`/affinity/${type}`)}
+                        className="text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all group relative overflow-hidden"
+                      >
+                        <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl bg-accent/80" />
+                        <span className="text-3xl mb-3 block">{meta.icon}</span>
+                        <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
+                        <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
+                        <div className="mt-4 pt-3 border-t border-border">
+                          {personalCount !== null ? (
+                            <>
+                              <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
+                              <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
+                            </>
+                          ) : (
+                            <p className="text-xs text-accent font-medium">{totalCount} {meta.plural.toLowerCase()}</p>
+                          )}
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </motion.div>
+              </section>
+            </main>
+            <UniversityFooter />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

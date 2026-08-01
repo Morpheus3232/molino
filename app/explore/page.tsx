@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import EmptyState from "@/components/ui/EmptyState";
 import SearchInput from "@/components/ui/SearchInput";
 
 const SYSTEMS = [
@@ -133,12 +132,25 @@ export default function ExplorePage() {
           </div>
 
           {filteredConcepts.length === 0 ? (
-            <EmptyState
-              title="No se encontraron conceptos"
-              description={`No se encontraron conceptos para "${searchTerm}".`}
-              actionLabel="Limpiar búsqueda"
-              onAction={() => setSearchTerm("")}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-center py-16"
+            >
+              <p className="eyebrow-brutalist mb-4">Sin resultados</p>
+              <p className="text-sm text-muted mb-6 max-w-md mx-auto">
+                No se encontraron conceptos para &ldquo;{searchTerm}&rdquo;.
+              </p>
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-accent text-white hover:bg-accent/90 min-h-[44px]"
+              >
+                Limpiar búsqueda
+              </button>
+            </motion.div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-ink/10">
               {filteredConcepts.map((concept, i) => (

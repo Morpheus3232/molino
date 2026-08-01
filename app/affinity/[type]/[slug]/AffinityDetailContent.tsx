@@ -14,7 +14,6 @@ import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
@@ -25,6 +24,12 @@ import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 const MONTH_LABELS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -50,7 +55,29 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
       .slice(0, 3);
   }, [profile, entity, result]);
 
-  if (!mounted) return <LoadingState message="Cargando..." />;
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+          <p className="sr-only" role="status" aria-label="Cargando afinidad...">
+            Cargando afinidad...
+          </p>
+          <div className="animate-pulse">
+            <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+            <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+            <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-8" />
+            <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
+            <div className="space-y-px bg-ink/10">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-24 bg-[var(--skeleton)] border-b border-ink/10" />
+              ))}
+            </div>
+          </div>
+          <UniversityFooter />
+        </div>
+      </div>
+    );
+  }
 
   if (!profile) {
     return (
@@ -1020,9 +1047,17 @@ function QuickAffinity({
           </div>
         </motion.section>
 
-        {/* Date input OR Result */}
-        {!hasResult ? (
-          /* Date input — shown when no date is saved */
+        {/* Date input OR Result — AnimatePresence for smooth transition */}
+        <AnimatePresence mode="wait">
+          {!hasResult ? (
+            <motion.div
+              key="date-input"
+              variants={transitionVariants}
+              initial="enter"
+              animate="show"
+              exit="exit"
+            >
+          {/* Date input — shown when no date is saved */}
           <motion.section {...fadeUp} className="mb-12">
             <div className="max-w-md mx-auto p-6 rounded-md border border-border bg-card shadow-sm">
               <p className="text-sm font-medium text-foreground mb-1 text-center">
@@ -1088,9 +1123,16 @@ function QuickAffinity({
               </button>
             </div>
           </motion.section>
+          </motion.div>
         ) : (
           /* Result — shown after date is entered */
-          <>
+          <motion.div
+            key="result"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
             {/* PremiumHero reuses the same component from the with-profile flow */}
             {result && tierMeta && (
               <PremiumHero result={result} entity={entity} meta={meta} type={type} />
@@ -1181,10 +1223,11 @@ function QuickAffinity({
                     );
                   })}
                 </div>
-              </motion.section>
-            )}
-          </>
+            </motion.section>
+          )}
+          </motion.div>
         )}
+        </AnimatePresence>
       </main>
       <UniversityFooter />
     </div>
