@@ -6,6 +6,7 @@ import {
   generateFallbackInterpretation,
   type InterpretationType,
   type MolinoInterpretation,
+  type ConversationTurn,
 } from '@/lib/engines/intelligenceEngine';
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
 
@@ -20,12 +21,14 @@ interface RequestBody {
   decision?: any;
   question?: string;
   provider?: 'openai' | 'claude';
+  /** Prior Q&A turns from the current chat session only — never persisted server-side. */
+  conversationHistory?: ConversationTurn[];
 }
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider = 'openai' } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider = 'openai', conversationHistory } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
@@ -46,7 +49,7 @@ export async function POST(req: NextRequest) {
     let aiError: string | null = null;
 
     try {
-      const prompt = buildIntelligencePrompt({ type, context, question });
+      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory });
 
       const compatResult = compatibility || {
         user: profile,

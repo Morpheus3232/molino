@@ -75,11 +75,18 @@ export type InterpretationType =
   | 'decision'
   | 'pattern';
 
+/** A prior question/answer pair from the current chat session only — never persisted. */
+export interface ConversationTurn {
+  question: string;
+  answer: string;
+}
+
 export interface InterpretationRequest {
   type: InterpretationType;
   context: MolinoContext;
   question?: string;
   template?: string;
+  conversationHistory?: ConversationTurn[];
 }
 
 export interface MolinoInterpretation {
@@ -171,8 +178,14 @@ export function buildMolinoContext(
  * The AI's role is to INTERPRET, not to CALCULATE.
  */
 export function buildIntelligencePrompt(request: InterpretationRequest): string {
-  const { type, context, question, template } = request;
+  const { type, context, question, template, conversationHistory } = request;
   const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
+
+  const conversationContext = conversationHistory?.length
+    ? `\nCONVERSACIÓN PREVIA (misma sesión — la pregunta actual puede ser continuación de esto):\n${conversationHistory
+        .map((turn, i) => `${i + 1}. Usuario preguntó: "${turn.question}"\n   Molino respondió: "${turn.answer}"`)
+        .join('\n')}\n`
+    : '';
 
   const baseContext = `
 CONTEXTO DEL USUARIO:
@@ -339,7 +352,7 @@ Generá una respuesta JSON con:
       return `${rolePrompt}
 
 ${baseContext}
-${decision ? `DECISIÓN:
+${conversationContext}${decision ? `DECISIÓN:
 - Pregunta: ${decision.question}
 - Categoría: ${decision.category}
 - Score general: ${decision.overallScore}/100
@@ -352,6 +365,7 @@ ${decision ? `DECISIÓN:
 - Próximos pasos: ${decision.nextSteps.join(', ')}` : 'No hay datos de decisión disponibles.'}
 
 TAREA: Interpretá la decisión del usuario en el contexto de su perfil y momento actual.
+${conversationHistory?.length ? 'Si la pregunta actual hace referencia implícita a algo de la conversación previa (ej. "¿y si lo hago en marzo?"), interpretala como continuación de esa conversación, no como una pregunta aislada.' : ''}
 
 Generá una respuesta JSON con:
 {

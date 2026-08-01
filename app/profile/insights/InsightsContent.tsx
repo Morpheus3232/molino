@@ -17,11 +17,8 @@ import {
   getAnimalProfile,
   type Animal,
 } from "@/lib/data/animalRelations";
-import {
-  buildPersonalRecommendations,
-  hasPositiveAffinity,
-  type PersonalRecommendation,
-} from "@/lib/engines/personalRecommendationEngine";
+import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
+import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import {
   formatAnimalSimple,
@@ -97,11 +94,11 @@ export default function InsightsContent() {
     [userAnimal, yearCycle.yearAnimal]
   );
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
+  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente que /affinity, /hoy y ProfileHub.
   const recommendations = useMemo(() => {
     if (!profile) return [];
-    return buildPersonalRecommendations(profile)
-      .recommendations
-      .filter(r => hasPositiveAffinity(r.priority))
+    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
+      .filter(r => r.tier === "resonancia-alta" || r.tier === "afinidad-media")
       .slice(0, 5);
   }, [profile]);
   const profile_ = useMemo(() => userAnimal ? getAnimalProfile(userAnimal) : null, [userAnimal]);
@@ -133,7 +130,7 @@ export default function InsightsContent() {
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Mi Inteligencia Personal
           </p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
@@ -161,7 +158,7 @@ export default function InsightsContent() {
             HEADER
             ═══════════════════════════════════════════════ */}
         <motion.div {...smoothReveal} className="mb-10">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-3">
+          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-3">
             Mi Inteligencia Personal
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
@@ -180,7 +177,7 @@ export default function InsightsContent() {
             <div className="h-1.5" style={{ backgroundColor: elementColor }} />
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Hoy en tu perfil</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Hoy en tu perfil</span>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -192,7 +189,7 @@ export default function InsightsContent() {
                 <div className="flex-1 text-center sm:text-left">
                   <div className="flex items-center gap-2 justify-center sm:justify-start mb-3">
                     <span
-                      className="text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-sm"
+                      className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-sm"
                       style={{ color: yearResonance.color, backgroundColor: `${yearResonance.color}12` }}
                     >
                       {yearResonance.label}
@@ -216,7 +213,7 @@ export default function InsightsContent() {
                 <span className="text-xl">{formatAnimalEmoji(yearCycle.yearAnimal)}</span>
                 <div className="flex-1">
                   <p className="text-xs font-medium text-foreground">{yearCycle.year} — Año del {yearCycle.yearAnimal}</p>
-                  <p className="text-[10px] text-muted">{yearCycle.label}</p>
+                  <p className="text-xs text-muted">{yearCycle.label}</p>
                 </div>
                 <span className="text-xs font-medium" style={{ color: yearResonance.color }}>
                   {yearResonance.type === "alignment" ? "5/5" : yearResonance.type === "harmony" ? "4/5" : yearResonance.type === "neutral" ? "3/5" : "2/5"}
@@ -233,7 +230,7 @@ export default function InsightsContent() {
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</span>
               </div>
 
               <div className="space-y-3">
@@ -252,11 +249,11 @@ export default function InsightsContent() {
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                         {rec.entity.name}
                       </p>
-                      <p className="text-[10px] text-muted truncate">{rec.explanation}</p>
+                      <p className="text-xs text-muted truncate">{rec.explanation}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="font-heading text-lg font-bold text-foreground">{rec.totalScore}</p>
-                      <p className="text-[10px] text-muted">/100</p>
+                      <p className="font-heading text-lg font-bold text-foreground">{rec.score}</p>
+                      <p className="text-xs text-muted">/100</p>
                     </div>
                   </motion.button>
                 ))}
@@ -279,7 +276,7 @@ export default function InsightsContent() {
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</span>
             </div>
 
             <motion.div
@@ -290,14 +287,14 @@ export default function InsightsContent() {
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="font-medium">{discovery.title}</span>
                 </p>
-                <p className="text-[10px] text-muted mt-1">{discovery.detail}</p>
+                <p className="text-xs text-muted mt-1">{discovery.detail}</p>
               </motion.div>
 
               <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
                   Encontramos <span className="font-medium">{recommendations.length} entidades</span> compatibles con tu perfil.
                 </p>
-                <p className="text-[10px] text-muted mt-1">Marcas, destinos y más, rankeados por resonancia simbólica.</p>
+                <p className="text-xs text-muted mt-1">Marcas, destinos y más, rankeados por resonancia simbólica.</p>
               </motion.div>
 
               {yearResonance.type === "alignment" && (
@@ -305,7 +302,7 @@ export default function InsightsContent() {
                   <p className="text-sm text-foreground leading-relaxed">
                     <span className="font-medium">Tu ciclo actual coincide con tu animal natal.</span>
                   </p>
-                  <p className="text-[10px] text-muted mt-1">Un momento de alineación según la tradición.</p>
+                  <p className="text-xs text-muted mt-1">Un momento de alineación según la tradición.</p>
                 </motion.div>
               )}
             </motion.div>
@@ -319,7 +316,7 @@ export default function InsightsContent() {
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Opuestos</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Opuestos</span>
               </div>
 
               <p className="text-xs text-muted mb-4 leading-relaxed">
@@ -339,7 +336,7 @@ export default function InsightsContent() {
                   >
                     <span className="text-lg">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
-                    <span className="text-[10px] text-muted">★★☆☆☆</span>
+                    <span className="text-xs text-muted">★★☆☆☆</span>
                   </motion.div>
                 ))}
               </div>
@@ -353,7 +350,7 @@ export default function InsightsContent() {
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</span>
             </div>
 
             {/* Progress bar */}
@@ -403,7 +400,7 @@ export default function InsightsContent() {
 
         {/* Disclaimer */}
         <motion.div {...smoothReveal} className="mt-8">
-          <p className="text-[10px] text-muted text-center leading-relaxed">
+          <p className="text-xs text-muted text-center leading-relaxed">
             Análisis personal basado en tradiciones culturales del zodíaco chino. No constituye predicción científica ni determina resultados reales.
           </p>
         </motion.div>
@@ -435,14 +432,14 @@ function ProgressMilestone({
         done ? "bg-background/30" : "bg-background/50 hover:bg-background/80"
       } ${onClick ? "cursor-pointer" : "cursor-default"}`}
     >
-      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] shrink-0 ${
+      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 ${
         done ? "bg-success text-white" : "bg-muted/20 text-muted"
       }`}>
         {done ? "✓" : "○"}
       </span>
       <span className={`text-xs ${done ? "text-foreground" : "text-muted"}`}>{label}</span>
       {onClick && !done && (
-        <span className="ml-auto text-[10px] text-accent">Explorar →</span>
+        <span className="ml-auto text-xs text-accent">Explorar →</span>
       )}
     </button>
   );

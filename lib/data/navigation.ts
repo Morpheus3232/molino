@@ -18,6 +18,7 @@ export const headerNavLinks: NavLink[] = [
  */
 export const productNavLinks: NavLink[] = [
   { href: "/hoy", label: "HOY" },
+  { href: "/affinity", label: "AFINIDAD" },
   { href: "/timing", label: "TIMING" },
   { href: "/decisions", label: "DECISIONES" },
   { href: "/evolution", label: "EVOLUCIÓN" },

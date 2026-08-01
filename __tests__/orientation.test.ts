@@ -90,3 +90,24 @@ describe("buildOrientation", () => {
     }
   });
 });
+
+describe("HoyClient consumes the canonical orientation (no competing implementation)", () => {
+  const fs = require("fs");
+  const path = require("path");
+  const hoyClientSource: string = fs.readFileSync(
+    path.resolve(__dirname, "..", "components", "hoy", "HoyClient.tsx"),
+    "utf8"
+  );
+
+  test("imports buildOrientation from lib/utils/orientation", () => {
+    expect(hoyClientSource).toMatch(/import\s*{\s*buildOrientation\s*}\s*from\s*["']@\/lib\/utils\/orientation["']/);
+  });
+
+  test("does not define a competing getOrientation() function", () => {
+    expect(hoyClientSource).not.toMatch(/function getOrientation\(/);
+  });
+
+  test("names the timingScore-derived bucket as a decision posture, not a general orientation", () => {
+    expect(hoyClientSource).toMatch(/function getDecisionPosture\(/);
+  });
+});

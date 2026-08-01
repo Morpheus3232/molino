@@ -5,7 +5,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { buildPersonalRecommendations, hasPositiveAffinity } from "@/lib/engines/personalRecommendationEngine";
+import { calculateAllAffinity, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -32,14 +33,18 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const name = typeof profile.name === "string" ? profile.name : "";
 
-  const recommendationMap = useMemo(() => buildPersonalRecommendations(profile), [profile]);
-  const positiveRecs = useMemo(() => recommendationMap.recommendations.filter(r => hasPositiveAffinity(r.priority)), [recommendationMap]);
+  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente que /affinity, /hoy y WorldScreen.
+  const affinityResults = useMemo(() => calculateAllAffinity(profile, SYMBOLIC_ENTITIES), [profile]);
+  const positiveAffinities = useMemo(
+    () => affinityResults.filter((r) => r.tier === "resonancia-alta" || r.tier === "afinidad-media"),
+    [affinityResults]
+  );
 
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 2);
 
   const hasCompletedOnboarding = useMemo(() => loadDiscoveryState().hasCompletedOnboarding, []);
-  const topRec = hasCompletedOnboarding ? positiveRecs[0] : null;
+  const topRec: AffinityResult | null = hasCompletedOnboarding ? positiveAffinities[0] ?? null : null;
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
   const intelligenceScore = dailyEnergy.overallScore;
@@ -65,7 +70,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
     {
       key: "world" as ProfileTab,
       eyebrow: "Tu Mundo",
-      title: `${recommendationMap.recommendations.filter(r => r.entityAnimal === userAnimal).length} entidades conectan con tu perfil`,
+      title: `${affinityResults.filter(r => r.entityAnimal === userAnimal).length} entidades conectan con tu perfil`,
       subtitle: "Marcas, historias y referentes que resuenan",
       detail: "",
     },
@@ -126,17 +131,17 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
             >
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Animal</span>
+                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Animal</span>
                 <span className="text-base text-muted font-medium">{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
               </div>
               <span className="hidden sm:inline text-muted">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Signo</span>
+                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Signo</span>
                 <span className="text-base text-muted font-medium">{profile.sunSign}</span>
               </div>
               <span className="hidden sm:inline text-muted">|</span>
               <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-[10px] tracking-[0.15em] text-muted">Camino</span>
+                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Camino</span>
                 <span className="text-base text-muted font-medium">{lifePath}</span>
               </div>
           </motion.div>
@@ -196,7 +201,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             href="/profile/insights"
             className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Un paso más</p>
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">Un paso más</p>
             <p className="text-sm text-foreground group-hover:text-accent transition-colors">
               Ver tus insights completos →
             </p>
@@ -214,7 +219,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               href={`/affinity/${topRec.entity.type}/${topRec.entity.id}`}
               className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
             >
-              <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
               <p className="text-sm text-foreground group-hover:text-accent transition-colors">
                 {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
               </p>
