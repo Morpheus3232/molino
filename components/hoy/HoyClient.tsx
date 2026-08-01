@@ -52,15 +52,6 @@ function getDecisionPosture(timingScore: number): Orientation {
   return "OBSERVAR";
 }
 
-/** Texto de ventana recomendada coherente con la postura de decisión — única autoridad, no timing.recommendedWindow. */
-const WINDOW_COPY: Record<Orientation, string> = {
-  ACTUAR: "No hace falta esperar más señales: con lo que ya tenés, andá para adelante.",
-  ESPERAR: "Todavía no es momento de cerrar nada. Dejalo reposar y volvé a mirarlo más adelante.",
-  OBSERVAR: "Este no es un día para definir posiciones. Sumá información y dejá la decisión para cuando el panorama esté más claro.",
-};
-
-const ACTION_PREFIXES = ["Enfocarte en", "Apoyarte en", "Sostener"];
-
 const DECISION_COPY: Record<Orientation, { title: string; body: string; cta: string }> = {
   ACTUAR: {
     title: "¿Tenés algo que decidir hoy?",
@@ -287,241 +278,203 @@ export default function HoyClient() {
           </AnimatePresence>
         </motion.div>
 
-        {/* HERO — el nivel de energía y la frase humana lideran; el score queda secundario */}
+        {/* 1 · TU ENERGÍA — nivel, tema, luna y qué favorece hoy, en un solo golpe de vista */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="border border-ink/10 p-8 lg:p-12"
         >
-          <p className="label-micro mb-1">Energía de hoy</p>
+          <p className="label-micro mb-1">Tu energía</p>
           <p
             className="text-4xl sm:text-5xl font-display font-bold tracking-tight mb-4"
             style={{ color: scoreStyle }}
           >
             {energyLevel}
           </p>
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted mb-6">
             {energy.theme} · Luna {energy.moonPhase.phase}
           </p>
+          <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed max-w-2xl">
+            {energy.description}
+          </p>
+          {topStrengths.length > 0 && (
+            <ul className="flex flex-wrap gap-x-2 gap-y-2 mt-6">
+              {topStrengths.map((s, i) => (
+                <li
+                  key={i}
+                  className="text-xs text-muted border border-ink/10 rounded-full px-3 py-1"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
         </motion.div>
 
-        {/* INSIGHT PRINCIPAL — interpretación humana determinística, no lenguaje de algoritmo */}
+        {/* 2 · TU MOMENTO — postura de decisión y por qué, seguido de la acción directa si hay algo que decidir */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="mt-6 border border-ink/10 p-8 lg:p-12"
         >
-          <p className="eyebrow-brutalist mb-4">LO MÁS IMPORTANTE DE HOY</p>
-          <p className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed">
-            {energy.explanation}
-          </p>
-          <p className="text-xs text-muted mt-6">
-            {convergence.convergentCount} de {convergence.totalLayers} capas de tu mapa coinciden hoy.
-          </p>
-        </motion.div>
+          <p className="eyebrow-brutalist mb-4">Tu momento</p>
 
-        {/* QUÉ HACER HOY — acciones concretas derivadas de energy.strengths, no un informe de fortalezas/debilidades */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6 p-8 lg:p-12"
-        >
-          <p className="eyebrow-brutalist mb-4">QUÉ HACER HOY</p>
-          <ul className="space-y-3">
-            {topStrengths.map((s, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <span className="text-sm text-muted font-medium mt-0.5 w-4 shrink-0">
-                  {i + 1}
-                </span>
-                <span className="text-base text-foreground leading-relaxed">
-                  {ACTION_PREFIXES[i] ?? "Aprovechar"} {s.toLowerCase()}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {energy.cautions.length > 0 && (
-            <p className="text-xs text-muted mt-6 pt-4 border-t border-ink/10">
-              Cuidado con: {energy.cautions.join(", ")}.
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
+            <p
+              className="text-3xl sm:text-4xl font-display font-bold tracking-tight"
+              style={{ color: getScoreStyle(timing.timingScore) }}
+            >
+              {decisionPosture}
             </p>
-          )}
-        </motion.div>
-
-        {/* MOMENTO PARA ACTUAR — orientación primero, score secundario */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6 p-8 lg:p-12"
-        >
-          <p className="eyebrow-brutalist mb-4">MOMENTO PARA ACTUAR</p>
-
-          {/* Orientación del momento — canónica, misma fuente que /profile (buildOrientation) */}
-          <p className="text-base text-foreground leading-relaxed max-w-2xl mb-6">
-            {moment.orientation}
-          </p>
-
-          <div className="border-t border-ink/10 pt-6">
-            <p className="label-micro mb-4 text-muted">Para una decisión</p>
-
-            {previousSnapshot && (
-              <p className="text-xs text-muted mb-3">
-                Ayer fue{" "}
-                <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
-              </p>
-            )}
-
-            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-4">
-              <p
-                className="text-3xl sm:text-4xl font-display font-bold tracking-tight"
-                style={{ color: getScoreStyle(timing.timingScore) }}
-              >
-                {decisionPosture}
-              </p>
-              <div className="flex items-center gap-4">
-                <p className="text-xs text-muted">{timing.timingScore}/100</p>
-                <Button
-                  variant="secondary"
-                  size="md"
-                  onClick={() => router.push("/timing")}
-                >
-                  Ver mi timing
-                </Button>
-              </div>
-            </div>
-
-            {timing.favorableDimensions.length > 0 && (
-              <div className="mt-6">
-                <p className="label-micro mb-3 text-accent">Favorece</p>
-                <ul className="space-y-2">
-                  {timing.favorableDimensions.map((dim, i) => (
-                    <li
-                      key={i}
-                      className="text-sm text-foreground flex items-start gap-3"
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0"
-                        aria-hidden="true"
-                      />
-                      {dim}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="mt-6 border-t border-ink/10 pt-4">
-              <p className="label-micro mb-2">Ventana recomendada</p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {WINDOW_COPY[decisionPosture]}
-              </p>
+            <div className="flex items-center gap-4">
+              <p className="text-xs text-muted">{timing.timingScore}/100</p>
+              <Button variant="secondary" size="md" onClick={() => router.push("/timing")}>
+                Ver mi timing
+              </Button>
             </div>
           </div>
-        </motion.div>
 
-        {/* RELACIONES — qué resuena con vos hoy en el mundo, afinidad simbólica */}
-        {topAffinities.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2 }}
-            className="mt-6 p-8 lg:p-12"
-          >
-            <p className="eyebrow-brutalist mb-4">RELACIONES</p>
-            <ul className="space-y-0">
-              {topAffinities.map((r) => (
-                <li key={r.entity.id}>
-                  <Link
-                    href={`/affinity/${r.entity.type}/${r.entity.id}`}
-                    className="group flex items-center justify-between gap-4 py-4 border-b border-ink/10 hover:border-accent/40 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-                  >
-                    <span className="flex items-center gap-3 min-w-0">
-                      <span className="text-2xl shrink-0" aria-hidden="true">
-                        {r.entity.emoji}
-                      </span>
-                      <span className="min-w-0">
-                        <span className="block text-xs text-muted">
-                          {ENTITY_TYPES[r.entity.type]?.label ?? r.entity.type}
-                        </span>
-                        <span className="block font-heading text-base text-foreground truncate group-hover:text-accent transition-colors">
-                          {r.entity.name}
-                        </span>
-                      </span>
-                    </span>
-                    <span className="text-xs shrink-0" style={{ color: TIER_META[r.tier].color }}>
-                      {TIER_META[r.tier].label}
-                    </span>
-                  </Link>
+          {previousSnapshot && (
+            <p className="text-xs text-muted mb-4">
+              Ayer fue <span className="font-medium text-foreground">{previousSnapshot.orientation}</span>.
+            </p>
+          )}
+
+          <p className="text-sm text-foreground leading-relaxed max-w-2xl">{timing.explanation}</p>
+
+          {timing.favorableDimensions.length > 0 && (
+            <ul className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
+              {timing.favorableDimensions.map((dim, i) => (
+                <li key={i} className="text-xs text-accent border border-accent/20 rounded-full px-3 py-1">
+                  {dim}
                 </li>
               ))}
             </ul>
-            <Link
-              href="/affinity"
-              className="inline-flex items-center gap-2 text-sm text-accent hover:underline mt-6"
-            >
-              Ver todas mis afinidades →
-            </Link>
-          </motion.div>
-        )}
+          )}
 
-        {/* CONTEXTO PERSONAL — los números aparecen contextualizados, no aislados */}
+          <div className="mt-8 border-t border-ink/10 pt-6 text-center">
+            <h2 className="font-display text-2xl sm:text-3xl text-foreground leading-[0.9] tracking-tight mb-3">
+              {decisionCopy.title}
+            </h2>
+            <p className="text-sm text-muted mb-6 max-w-md mx-auto">{decisionCopy.body}</p>
+            <Button variant="primary" size="lg" onClick={() => router.push("/decisions")}>
+              {decisionCopy.cta}
+            </Button>
+          </div>
+        </motion.div>
+
+        {/* 3 · QUÉ HACER HOY — favorece / evitá / momento recomendado, sin inventar más allá de lo que ya calculan los engines */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="mt-6 border-t border-ink/10 pt-12"
+          className="mt-6 p-8 lg:p-12"
         >
-          <p className="eyebrow-brutalist mb-4">TU CICLO</p>
-          <p className="text-sm text-muted mb-3">
-            Año personal {momentState.personalYear} · Mes {momentState.personalMonth} · Día {momentState.personalDay}
-          </p>
-          <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
-            {momentState.cycleDescription}
-          </p>
+          <p className="eyebrow-brutalist mb-6">Qué hacer hoy</p>
+
+          <div>
+            <p className="label-micro mb-2 text-accent">Favorece</p>
+            <p className="text-base text-foreground leading-relaxed">{moment.orientation}</p>
+          </div>
+
+          {energy.cautions.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-ink/10">
+              <p className="label-micro mb-2 text-muted">Evitá</p>
+              <p className="text-sm text-foreground leading-relaxed">{energy.cautions.join(" · ")}</p>
+            </div>
+          )}
+
+          <div className="mt-6 pt-6 border-t border-ink/10">
+            <p className="label-micro mb-2">Momento recomendado</p>
+            <p className="text-sm text-foreground leading-relaxed">{timing.recommendedWindow}</p>
+          </div>
         </motion.div>
 
-        {/* DECISIONES — CTA coherente con la orientación del momento */}
+        {/* 4 · TU DÍA EN UNA FRASE — conclusión, no otra introducción: compone lo ya mostrado, no agrega una lectura nueva */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="mt-6 border-t border-ink/10 pt-12 text-center"
         >
-          <p className="eyebrow-brutalist mb-4">DECISIONES</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-foreground leading-[0.9] tracking-tight mb-4">
-            {decisionCopy.title}
-          </h2>
-          <p className="text-sm text-muted mb-8 max-w-md mx-auto">
-            {decisionCopy.body}
+          <p className="font-display text-2xl sm:text-3xl text-foreground leading-snug tracking-tight max-w-2xl mx-auto">
+            Un día de {energy.theme.toLowerCase()} para {decisionPosture.toLowerCase()}.
           </p>
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={() => router.push("/decisions")}
-          >
-            {decisionCopy.cta}
-          </Button>
         </motion.div>
 
-        {/* PROFUNDIZAR — detalle técnico disponible pero subordinado */}
+        {/* 5 · EXPLORAR MÁS — solo después de lo útil; un CTA por destino, sin competir entre sí */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
-          className="mt-6 border-t border-ink/10 pt-12"
+          className="mt-10 border-t border-ink/10 pt-12"
         >
-          <p className="eyebrow-brutalist mb-6">PROFUNDIZAR</p>
+          <p className="eyebrow-brutalist mb-6">Explorar más</p>
 
-          <details className="mb-6 group">
+          {topAffinities.length > 0 && (
+            <div className="mb-8">
+              <p className="label-micro mb-3 text-muted">Relaciones</p>
+              <ul className="space-y-0">
+                {topAffinities.map((r) => (
+                  <li key={r.entity.id}>
+                    <Link
+                      href={`/affinity/${r.entity.type}/${r.entity.id}`}
+                      className="group flex items-center justify-between gap-4 py-4 border-b border-ink/10 hover:border-accent/40 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    >
+                      <span className="flex items-center gap-3 min-w-0">
+                        <span className="text-2xl shrink-0" aria-hidden="true">
+                          {r.entity.emoji}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-xs text-muted">
+                            {ENTITY_TYPES[r.entity.type]?.label ?? r.entity.type}
+                          </span>
+                          <span className="block font-heading text-base text-foreground truncate group-hover:text-accent transition-colors">
+                            {r.entity.name}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="text-xs shrink-0" style={{ color: TIER_META[r.tier].color }}>
+                        {TIER_META[r.tier].label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/affinity" className="inline-flex items-center gap-2 text-sm text-accent hover:underline mt-4">
+                Ver todas mis afinidades →
+              </Link>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-px bg-ink/10">
+            <Link href="/profile" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
+              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Mi mapa</p>
+            </Link>
+            <Link href="/evolution" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
+              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Tu recorrido</p>
+            </Link>
+          </div>
+
+          <details className="mt-8 group">
             <summary className="text-sm text-muted cursor-pointer hover:text-accent transition-colors list-none flex items-center gap-2">
               <span aria-hidden="true" className="group-open:rotate-90 transition-transform">
                 ›
               </span>
-              Ver detalle técnico
+              Interpretación de Molino y detalle técnico
             </summary>
-            <dl className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+            <div className="mt-6">
+              <MolinoInterpretation
+                profile={profile}
+                type="daily_energy"
+                dailyEnergy={energy}
+                label="Interpretación de Molino"
+                description="Análisis personalizado de tu día"
+              />
+            </div>
+            <dl className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm border-t border-ink/10 pt-6">
               <div>
                 <dt className="label-micro mb-1">Energía exacta</dt>
                 <dd className="text-foreground">{energy.overallScore}/100</dd>
@@ -531,74 +484,36 @@ export default function HoyClient() {
                 <dd className="text-foreground">{timing.timingScore}/100</dd>
               </div>
               <div>
-                <dt className="label-micro mb-1">Fase lunar</dt>
-                <dd className="text-foreground">{energy.moonPhase.phase}</dd>
-              </div>
-              <div>
                 <dt className="label-micro mb-1">Elemento</dt>
                 <dd className="text-foreground">{energy.elementInfluence}</dd>
               </div>
+              <div>
+                <dt className="label-micro mb-1">Ciclo</dt>
+                <dd className="text-foreground">
+                  Año {momentState.personalYear} · Mes {momentState.personalMonth} · Día {momentState.personalDay}
+                </dd>
+              </div>
             </dl>
+            <p className="text-sm text-muted leading-relaxed mt-4">{momentState.cycleDescription}</p>
+            <p className="text-xs text-muted mt-4">
+              {convergence.convergentCount} de {convergence.totalLayers} capas de tu mapa coinciden hoy.
+            </p>
           </details>
 
-          <div className="grid grid-cols-2 gap-px bg-ink/10">
-            <Link
-              href="/timing"
-              className="bg-background p-6 text-center group transition-colors hover:bg-accent/5"
-            >
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">
-                Timing
-              </p>
-            </Link>
-            <Link
-              href="/profile"
-              className="bg-background p-6 text-center group transition-colors hover:bg-accent/5"
-            >
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">
-                Mi mapa
-              </p>
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* IA — enriquecimiento opcional, nunca fuente principal de verdad */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-6"
-        >
-          <MolinoInterpretation
-            profile={profile}
-            type="daily_energy"
-            dailyEnergy={energy}
-            label="Interpretación de Molino"
-            description="Análisis personalizado de tu día"
-          />
-        </motion.div>
-
-        {/* CIERRE — genera expectativa de regreso, sin mendigar retención */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="mt-10 pt-8 border-t border-ink/10 text-center"
-        >
-          {previousSnapshot ? (
-            <Link
-              href="/evolution"
-              className="text-sm text-muted hover:text-accent transition-colors"
-            >
-              Ver cómo viene tu recorrido →
-            </Link>
-          ) : (
-            <p className="text-sm text-muted">
-              Mañana tu energía y tu orientación pueden cambiar.{" "}
-              <Link href="/evolution" className="text-accent hover:underline">
-                Volvé para verlo.
+          <div className="mt-10 pt-8 border-t border-ink/10 text-center">
+            {previousSnapshot ? (
+              <Link href="/evolution" className="text-sm text-muted hover:text-accent transition-colors">
+                Ver cómo viene tu recorrido →
               </Link>
-            </p>
-          )}
+            ) : (
+              <p className="text-sm text-muted">
+                Mañana tu energía y tu orientación pueden cambiar.{" "}
+                <Link href="/evolution" className="text-accent hover:underline">
+                  Volvé para verlo.
+                </Link>
+              </p>
+            )}
+          </div>
         </motion.div>
         </main>
 
