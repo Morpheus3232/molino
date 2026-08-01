@@ -8,7 +8,10 @@ import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 
-const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
+const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), {
+  ssr: false,
+  loading: () => <div className="h-80" aria-hidden="true" />,
+});
 
 interface DimensionsPreviewProps {
   /** Fecha en formato YYYY-MM-DD. Debe estar ya validada. */
