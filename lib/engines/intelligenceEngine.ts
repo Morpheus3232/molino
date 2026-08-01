@@ -528,12 +528,24 @@ export function generateFallbackInterpretation(
       suggestedNextStep = 'Evaluá si el momento es favorable para tu intención específica.';
       break;
 
-    case 'decision':
-      summary = `Para esta decisión, tu perfil sugiere ${getDecisionAdvice(userProfile.lifePath, cycles.personalDay)}.`;
-      alignment = `Tu energía de ${userProfile.archetype} y tu elemento ${userProfile.element} influyen en cómo procesás esta decisión.`;
-      timing = `El día personal (${cycles.personalDay}) ${getDayDecisionTiming(cycles.personalDay)}.`;
-      suggestedNextStep = 'Considerá los pros y contras desde la perspectiva de tu perfil.';
+    case 'decision': {
+      // Si hay un DecisionResult real (analyzeDecision ya corrió sobre la pregunta
+      // del usuario), usamos su razonamiento — así el fallback sigue respondiendo
+      // a lo que la persona preguntó, en vez de un consejo genérico por lifePath/día.
+      const decision = context.decision;
+      if (decision) {
+        summary = `Sobre "${decision.question}": ${decision.reasoning}`;
+        alignment = `Tu energía de ${userProfile.archetype} y tu elemento ${userProfile.element} influyen en cómo procesás esta decisión.`;
+        timing = `El día personal (${cycles.personalDay}) ${getDayDecisionTiming(cycles.personalDay)}.`;
+        suggestedNextStep = decision.nextSteps[0] || 'Considerá los pros y contras desde la perspectiva de tu perfil.';
+      } else {
+        summary = `Para esta decisión, tu perfil sugiere ${getDecisionAdvice(userProfile.lifePath, cycles.personalDay)}.`;
+        alignment = `Tu energía de ${userProfile.archetype} y tu elemento ${userProfile.element} influyen en cómo procesás esta decisión.`;
+        timing = `El día personal (${cycles.personalDay}) ${getDayDecisionTiming(cycles.personalDay)}.`;
+        suggestedNextStep = 'Considerá los pros y contras desde la perspectiva de tu perfil.';
+      }
       break;
+    }
 
     default:
       summary = `Tu perfil de ${userProfile.archetype} con Life Path ${userProfile.lifePath} muestra una energía única.`;
