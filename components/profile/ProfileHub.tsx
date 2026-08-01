@@ -93,9 +93,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             </motion.p>
 
             <motion.div
-              initial="initial"
-              animate="animate"
-              variants={emojiBounce}
+              {...emojiBounce}
               className="relative mb-6"
             >
               <div
@@ -106,8 +104,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                 className="relative block text-7xl sm:text-8xl lg:text-9xl leading-none select-none"
                 role="img"
                 aria-label={display.name}
-                whileHover="animate"
-                variants={hoverEmoji}
+                {...hoverEmoji}
               >
                 {display.emoji}
               </motion.span>
@@ -119,7 +116,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="font-display text-[clamp(2.75rem,9vw,7rem)] tracking-tight text-foreground leading-[0.9] uppercase"
             >
-              {name}
+              {name || archetype.name}
             </motion.h1>
 
             <motion.div
