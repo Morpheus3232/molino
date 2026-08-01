@@ -14,7 +14,6 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import ProfileHub from "@/components/profile/ProfileHub";
 import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
-import AffinityPreview from "@/components/affinity/AffinityPreview";
 import Button from "@/components/ui/Button";
 
 const SkeletonSpinner = () => (
@@ -94,9 +93,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   const [activeTab, setActiveTab] = useState<ProfileTab | null>(
     VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
   );
-  const [showFirstDiscovery, setShowFirstDiscovery] = useState(
-    searchParams.get("first") === "1" && !tabFromUrl
-  );
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
@@ -104,6 +100,15 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   useEffect(() => {
     setMounted(true);
     recordVisit();
+
+    // El "?first=1" que agrega /onboarding ya no gatilla una pantalla propia
+    // (ver Mi mapa personal / ProfileHub es el destino inmediato); solo se
+    // limpia de la URL para no dejarlo colgado.
+    if (searchParams.get("first") === "1") {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("first");
+      router.replace(url.pathname + url.search, { scroll: false });
+    }
 
     if (serverProfile) {
       saveProfileToStorage(serverProfile);
@@ -151,12 +156,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   }, [activeTab, handleEnter]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
-  const dismissFirstDiscovery = useCallback(() => {
-    setShowFirstDiscovery(false);
-    const url = new URL(window.location.href);
-    url.searchParams.delete("first");
-    router.replace(url.pathname + url.search, { scroll: false });
-  }, [router]);
 
   if (!mounted && !profile && !futureDateError) {
     return (
@@ -224,8 +223,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           </div>
         )}
 
-        {!showFirstDiscovery && (
-          <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait">
 {!activeTab ? (
                <motion.div
                  key="hub"
@@ -256,11 +254,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               </motion.div>
             )}
           </AnimatePresence>
-        )}
-
-        {showFirstDiscovery && profile && (
-          <AffinityPreview profile={profile} onEnter={dismissFirstDiscovery} />
-        )}
 
         {showGuidedCTA && (
           <motion.div
