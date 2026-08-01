@@ -128,8 +128,10 @@ export default function DecisionsPage() {
                     </p>
                   </motion.div>
 
+                  {/* SEÑAL — el veredicto del momento, con la evidencia que lo sostiene */}
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
                     <div className="border border-ink/10 p-8 lg:p-12">
+                      <p className="eyebrow-brutalist mb-4">Señal</p>
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                         <ReadingNumber
                           value={result.overallScore}
@@ -141,7 +143,6 @@ export default function DecisionsPage() {
                           <p className="text-xl font-heading font-semibold text-foreground">{result.recommendation}</p>
                         </div>
                       </div>
-                      <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.reasoning}</p>
                     </div>
                   </motion.div>
 
@@ -158,24 +159,29 @@ export default function DecisionsPage() {
                     ))}
                   </motion.div>
 
+                  {/* CONTEXTO — qué dicen tus ciclos hoy */}
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
-                    <p className="eyebrow-brutalist mb-4">Consideraciones</p>
-                    <ul className="space-y-3">
-                      {result.considerations.map((c, i) => (
-                        <li key={i} className="text-sm text-foreground flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
-                          {c}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="eyebrow-brutalist mb-4">Contexto</p>
+                    <p className="text-sm text-foreground leading-relaxed max-w-2xl mb-6">{result.reasoning}</p>
+                    {result.considerations.length > 0 && (
+                      <ul className="space-y-3 pt-2 border-t border-ink/10">
+                        {result.considerations.map((c, i) => (
+                          <li key={i} className="text-sm text-foreground flex items-start gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
+                            {c}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </motion.div>
 
+                  {/* SIGUIENTE PASO — la acción concreta */}
                   <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
-                    <p className="eyebrow-brutalist mb-4">Próximos pasos</p>
+                    <p className="eyebrow-brutalist mb-4">Siguiente paso</p>
                     <ul className="space-y-3">
                       {result.nextSteps.map((s, i) => (
                         <li key={i} className="text-sm text-foreground flex items-start gap-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-ink/20 mt-1.5 shrink-0" aria-hidden="true" />
+                          <span className="text-sm text-muted mt-0.5">{i + 1}.</span>
                           {s}
                         </li>
                       ))}
@@ -236,7 +242,7 @@ export default function DecisionsPage() {
 
                     <p className="eyebrow-brutalist mb-4">Motor de Decisiones</p>
                     <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
-                      Consultá tu brújula
+                      ¿Qué estás tratando de decidir?
                     </h1>
                     <p className="text-sm text-muted mt-4 max-w-xl">
                       {profile.name} · Camino de Vida {profile.lifePath} · {profile.sunSign}
@@ -250,7 +256,7 @@ export default function DecisionsPage() {
                     >
                       <div>
                         <label htmlFor="question" className="label-micro block mb-2">
-                          ¿Qué decisión querés analizar?
+                          Contame en una frase qué estás por decidir
                         </label>
                         <textarea
                           id="question"
@@ -258,7 +264,7 @@ export default function DecisionsPage() {
                           onChange={(e) => setQuestion(e.target.value)}
                           placeholder="Ej: ¿Es buen momento para cambiar de trabajo?"
                           rows={3}
-                          className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-none"
+                          className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-base placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-none"
                         />
                       </div>
 
@@ -270,7 +276,7 @@ export default function DecisionsPage() {
                           id="category"
                           value={category}
                           onChange={(e) => setCategory(e.target.value as DecisionCategory)}
-                          className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                          className="input"
                         >
                           {CATEGORIES.map(([value, label]) => (
                             <option key={value} value={value}>{label}</option>
