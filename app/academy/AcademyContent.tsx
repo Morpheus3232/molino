@@ -132,6 +132,22 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   numerologia: IconNumbers,
   astrologia: IconStars,
   filosofia: IconBook,
+  // Claves usadas directamente por el campo `icon` de KNOWLEDGE_TREE/HOW_IT_WORKS/COURSES.
+  knowledge: IconKnowledge,
+  numbers: IconNumbers,
+  letters: IconLetters,
+  stars: IconStars,
+  cycle: IconCycle,
+  book: IconBook,
+  hand: IconHand,
+  graduation: IconGraduation,
+  computer: IconComputer,
+  flame: IconFlame,
+  target: IconTarget,
+  repeat: IconRepeat,
+  sparkle: IconSparkle,
+  clock: IconClock,
+  map: IconMap,
 };
 
 const KNOWLEDGE_TREE = [
@@ -338,7 +354,12 @@ function KnowledgeNode({
           isExpanded ? "border-accent bg-accent/10" : "border-border bg-background hover:border-accent/50"
         }`}
       >
-        <span className="text-sm">{node.icon}</span>
+        <span className="text-sm">
+          {(() => {
+            const Icon = ICON_MAP[node.icon];
+            return Icon ? <Icon className="w-4 h-4" /> : null;
+          })()}
+        </span>
       </button>
 
       <button
@@ -456,7 +477,12 @@ export default function AcademyContent() {
                 className="p-6 rounded-md border border-border bg-card shadow-sm"
               >
                 <div className="flex items-start gap-4">
-                  <span className="text-2xl shrink-0">{step.icon}</span>
+                  <span className="text-2xl shrink-0">
+                    {(() => {
+                      const Icon = ICON_MAP[step.icon];
+                      return Icon ? <Icon className="w-6 h-6" /> : null;
+                    })()}
+                  </span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-[10px] font-semibold text-accent">Paso {step.step}</span>
@@ -495,7 +521,12 @@ export default function AcademyContent() {
                 className="p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent/50 transition-colors cursor-pointer group"
                 onClick={() => {}}
               >
-                <span className="text-2xl block mb-3">{course.icon}</span>
+                <span className="text-2xl block mb-3">
+                  {(() => {
+                    const Icon = ICON_MAP[course.icon];
+                    return Icon ? <Icon className="w-6 h-6" /> : null;
+                  })()}
+                </span>
                 <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors mb-1">
                   {course.title}
                 </h3>
