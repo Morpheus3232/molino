@@ -223,7 +223,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           </div>
         )}
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
 {!activeTab ? (
                <motion.div
                  key="hub"

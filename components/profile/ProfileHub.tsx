@@ -118,7 +118,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="font-display text-[clamp(2.75rem,9vw,7rem)] tracking-tight text-foreground leading-[0.9] uppercase"
             >
               {name || archetype.name}
@@ -127,7 +127,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
             >
               <div className="flex items-center gap-2">

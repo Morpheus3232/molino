@@ -42,7 +42,7 @@ export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
               className="font-display text-[clamp(2.75rem,8vw,7rem)] leading-[0.88] tracking-tight text-foreground max-w-5xl"
             >
               CONOCETE.
@@ -55,7 +55,7 @@ export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
+              transition={{ duration: 0.3 }}
               className="text-base md:text-lg text-muted leading-relaxed max-w-lg mt-8"
             >
               Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Sin registro, sin datos guardados.
@@ -64,7 +64,7 @@ export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
+              transition={{ duration: 0.25 }}
               className="mt-8"
             >
               <Button

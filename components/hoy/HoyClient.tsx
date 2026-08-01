@@ -291,7 +291,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          transition={{ duration: 0.2 }}
           className="border border-ink/10 p-8 lg:p-12"
         >
           <p className="label-micro mb-1">Energía de hoy</p>
@@ -310,7 +310,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 border border-ink/10 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">LO MÁS IMPORTANTE DE HOY</p>
@@ -326,7 +326,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">QUÉ HACER HOY</p>
@@ -353,7 +353,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 p-8 lg:p-12"
         >
           <p className="eyebrow-brutalist mb-4">MOMENTO PARA ACTUAR</p>
@@ -426,7 +426,7 @@ export default function HoyClient() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.28 }}
+            transition={{ duration: 0.2 }}
             className="mt-6 p-8 lg:p-12"
           >
             <p className="eyebrow-brutalist mb-4">RELACIONES</p>
@@ -470,7 +470,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 border-t border-ink/10 pt-12"
         >
           <p className="eyebrow-brutalist mb-4">TU CICLO</p>
@@ -486,7 +486,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 border-t border-ink/10 pt-12 text-center"
         >
           <p className="eyebrow-brutalist mb-4">DECISIONES</p>
@@ -509,7 +509,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.2 }}
           className="mt-6 border-t border-ink/10 pt-12"
         >
           <p className="eyebrow-brutalist mb-6">PROFUNDIZAR</p>
@@ -565,7 +565,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.45 }}
+          transition={{ duration: 0.2 }}
           className="mt-6"
         >
           <MolinoInterpretation
@@ -581,7 +581,7 @@ export default function HoyClient() {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          transition={{ duration: 0.2 }}
           className="mt-10 pt-8 border-t border-ink/10 text-center"
         >
           {previousSnapshot ? (
