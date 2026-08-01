@@ -1,3 +1,5 @@
+import { calculateBirthDayNumber } from "@/lib/engines/numerologyEngine";
+
 export interface StoredUserProfile {
   version: 1;
   profile: {
@@ -73,6 +75,16 @@ export function loadProfileFromStorage(): StoredUserProfile["profile"] | null {
     }
     if (parsed.profile.chineseZodiacInfo?.animal === "Conejo") {
       parsed.profile.chineseZodiacInfo.animal = "Gato";
+    }
+    // Migration: recalculate personalityNumber from birth day
+    if (parsed.profile.birthDate) {
+      const birthParts = parsed.profile.birthDate.split("-");
+      if (birthParts.length === 3) {
+        const day = parseInt(birthParts[2], 10);
+        if (Number.isFinite(day) && day >= 1 && day <= 31) {
+          parsed.profile.personalityNumber = calculateBirthDayNumber(day);
+        }
+      }
     }
     return parsed.profile;
   } catch {

@@ -1,4 +1,4 @@
-import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber, calculatePersonalityNumber, getArchetypeInfo } from './numerologyEngine';
+import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber, calculateBirthDayNumber, getArchetypeInfo } from './numerologyEngine';
 import { getSunSign, getSunSignInfo, getSunSignSymbol } from './astrologyEngine';
 import { getChineseZodiac, getChineseZodiacInfo } from './chineseZodiacEngine';
 import type { UserProfile } from '@/types/user';
@@ -53,7 +53,7 @@ export function calculateUserProfile(name: string, birthDate: string, overrides?
     lifePath,
     expressionNumber: name ? calculateExpressionNumber(name) : undefined,
     soulNumber: name ? calculateSoulNumber(name) : undefined,
-    personalityNumber: name ? calculatePersonalityNumber(name) : undefined,
+    personalityNumber: calculateBirthDayNumber(birthDay),
     sunSign,
     sunSignInfo: { sign: sunSignInfo.sign, element: sunSignInfo.element, modality: sunSignInfo.modality, symbol: getSunSignSymbol(birthDate) },
     chineseZodiac,

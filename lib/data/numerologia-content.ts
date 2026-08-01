@@ -228,9 +228,9 @@ export const CALCULATIONS = {
   },
   personality: {
     title: "Número de Personalidad",
-    description: "Usa solo las consonantes. Representa la imagen pública y las primeras impresiones.",
-    formula: "Sumar los valores de las consonantes del nombre completo y reducir.",
-    caveat: "Representa cómo te perciben los demás, no quién 'eres' realmente.",
+    description: "Se obtiene exclusivamente a partir del día de nacimiento. Representa la energía que proyectas al mundo.",
+    formula: "Reducir el dígito del día de nacimiento a un solo dígito (o mantener 11, 22 y 33 como números maestros).",
+    caveat: "No depende del nombre ni de la fecha completa. Solo del día en que naciste.",
   },
 };
 

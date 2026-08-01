@@ -16,6 +16,7 @@ import type { UserProfile } from "@/types/user";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
 import { getCurrentYearAnimal, getYearAnimal, resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { calculatePersonalYear } from "@/lib/engines/personalTimelineEngine";
+import { calculateBirthDayNumber } from "@/lib/engines/numerologyEngine";
 
 // ════════════════════════════════════════════════════
 // TYPES
@@ -161,12 +162,5 @@ function detectConvergences(
 function extractBirthdayNumber(birthDate?: string): number {
   if (!birthDate) return 0;
   const day = parseInt(birthDate.split("-")[2] || "0", 10);
-  return reduceToSingleDigit(day);
-}
-
-function reduceToSingleDigit(n: number): number {
-  while (n > 9 && n !== 11 && n !== 22) {
-    n = Math.floor(n / 10) + (n % 10);
-  }
-  return n;
+  return calculateBirthDayNumber(day);
 }
