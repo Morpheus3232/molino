@@ -91,7 +91,7 @@ export default function HeroNew() {
               <span className="label-micro">NÚMERO DEL DÍA</span>
               <span className="font-display text-2xl leading-none text-foreground">{number}</span>
             </div>
-            <div className={`flex-1 ${cellPad} py-4 flex items-center justify-between gap-4 min-w-[16rem]`}>
+            <div className={`flex-1 ${cellPad} py-4 flex items-center justify-between gap-4 sm:min-w-[16rem]`}>
               <div>
                 <p className="text-sm md:text-base font-semibold text-foreground leading-tight">{reflection.title}</p>
                 <p className="text-sm text-muted mt-1 line-clamp-1 max-w-md">{reflection.text}</p>

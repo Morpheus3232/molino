@@ -178,7 +178,7 @@ export default function TimingPage() {
                         type="date"
                         value={selectedDate}
                         onChange={(e) => { setSelectedDate(e.target.value); setShowResults(true); }}
-                        className="w-full max-w-xs px-3 py-2 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                        className="w-full max-w-xs px-3 py-2 border border-ink/10 bg-background text-foreground text-base focus:outline-none focus:border-accent transition-colors"
                       />
                     </div>
                   </motion.div>
