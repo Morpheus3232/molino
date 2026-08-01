@@ -45,6 +45,11 @@ const Prism = ({
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
+    // Purely decorative (8% opacity background) — skip the WebGL raymarch entirely
+    // on small/low-power viewports to save battery and avoid jank.
+    const isSmallViewport = window.matchMedia("(max-width: 767px)").matches;
+    if (isSmallViewport) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -429,8 +434,15 @@ const Prism = ({
       startRAF();
     }
 
+    const onVisibilityChange = () => {
+      if (document.hidden) stopRAF();
+      else startRAF();
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
       stopRAF();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       ro.disconnect();
       if (animationType === "hover") {
         if (onPointerMove) window.removeEventListener("pointermove", onPointerMove);
