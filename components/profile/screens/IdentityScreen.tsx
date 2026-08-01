@@ -167,7 +167,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.25 }}
               className="font-heading text-sm sm:text-base uppercase tracking-[0.3em] text-muted mb-3"
             >
               {name}
@@ -177,7 +177,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: 0.3 }}
             className="font-display text-[clamp(2.5rem,8vw,6.5rem)] leading-[0.9] tracking-tight text-foreground uppercase"
           >
             {formattedDate}
@@ -186,7 +186,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.25 }}
             className="label-micro text-muted mt-6"
           >
             {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()} · CAMINO {lifePath}
@@ -195,7 +195,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.3 }}
             className="mt-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 sm:gap-12"
           >
             <span
@@ -216,7 +216,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.3 }}
               className="mt-12 text-lg sm:text-xl italic text-foreground leading-relaxed max-w-2xl"
             >
               &ldquo;{archetype.quote}&rdquo;
@@ -226,7 +226,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.55 }}
+            transition={{ duration: 0.25 }}
             className="mt-6 text-sm text-muted leading-relaxed max-w-xl"
           >
             {synthesisLine}
@@ -236,7 +236,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.65 }}
+              transition={{ duration: 0.25 }}
               className="mt-14 font-mono text-xs uppercase tracking-[0.2em] text-muted"
             >
               Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
