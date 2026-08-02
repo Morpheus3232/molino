@@ -12,7 +12,7 @@ import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import { emojiBounce, hoverEmoji } from "@/lib/utils/premiumMotion";
+import ZodiacMark from "@/components/ui/ZodiacMark";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
 
@@ -21,8 +21,11 @@ interface ProfileHubProps {
   onEnter?: (tab: ProfileTab) => void;
 }
 
-const colBorder = "border-ink/10";
-const cellPad = "p-8 lg:p-12";
+const fade = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.3 },
+};
 
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
@@ -31,9 +34,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
+  const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
   const name = typeof profile.name === "string" ? profile.name : "";
 
-  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente que /affinity, /hoy y WorldScreen.
   const affinityResults = useMemo(() => calculateAllAffinity(profile, SYMBOLIC_ENTITIES), [profile]);
   const positiveAffinities = useMemo(
     () => affinityResults.filter((r) => r.tier === "resonancia-alta" || r.tier === "afinidad-media"),
@@ -41,189 +44,156 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   );
 
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  const sameFriends = relationMap.friends.filter(f => f.type === "triad").slice(0, 2);
+  const sameFriends = relationMap.friends.filter((f) => f.type === "triad").slice(0, 2);
 
   const hasCompletedOnboarding = useMemo(() => loadDiscoveryState().hasCompletedOnboarding, []);
   const topRec: AffinityResult | null = hasCompletedOnboarding ? positiveAffinities[0] ?? null : null;
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
-  const intelligenceScore = dailyEnergy.overallScore;
-  const intelligenceLabel = dailyEnergy.theme;
 
-  const sections = [
-    {
-      key: "identity" as ProfileTab,
-      eyebrow: "Tu Identidad",
-      title: `Tu arquetipo es ${archetype.name}`,
-      subtitle: `Camino de Vida ${lifePath} (tu número guía) · ${display.name} de ${profile.chineseZodiacInfo?.element ?? ""}`,
-      detail: `${profile.sunSign} · ${profile.chineseZodiac}`,
-      color: "var(--layer-identity)",
-    },
-    {
-      key: "circle" as ProfileTab,
-      eyebrow: "Tu Círculo",
-      title: sameFriends.length > 0
-        ? `Tus aliados: ${sameFriends.map(f => f.animal).join(", ")}`
-        : "Tus aliados definen tu círculo",
-      subtitle: "Relaciones del ciclo chino",
-      detail: sameFriends.length > 0 ? sameFriends.map(f => f.animal).join(" · ") : "",
-      color: "var(--layer-astrology)",
-    },
-    {
-      key: "world" as ProfileTab,
-      eyebrow: "Tu Mundo",
-      title: `${affinityResults.filter(r => r.entityAnimal === userAnimal).length} entidades conectan con tu perfil`,
-      subtitle: "Marcas, historias y referentes que resuenan",
-      detail: "",
-      color: "var(--layer-cycles)",
-    },
-    {
-      key: "intelligence" as ProfileTab,
-      eyebrow: "Tu Inteligencia",
-      title: `${intelligenceScore}/100 — ${intelligenceLabel}`,
-      subtitle: "Estado actual de tu mapa simbólico",
-      detail: "",
-      color: "var(--layer-moment)",
-    },
-  ];
+  const worldCount = affinityResults.filter((r) => r.entityAnimal === userAnimal).length;
+  const allies = sameFriends.map((f) => f.animal);
+
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative py-24 sm:py-32 overflow-hidden">
-        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 70% 50% at 50% 30%, ${elementColor}15, transparent 70%)` }} />
-        <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse 40% 30% at 50% 15%, ${elementColor}0d, transparent 60%)` }} aria-hidden="true" />
-        <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex flex-col items-center text-center">
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="label-micro mb-8"
-            >
-              Mi mapa personal
-            </motion.p>
+      {/* ═══════════════════ HERO ═══════════════════ */}
+      <header className="relative overflow-hidden">
+        <div
+          className="absolute inset-0"
+          style={{ background: `radial-gradient(ellipse 70% 55% at 50% 20%, ${elementColor}14, transparent 72%)` }}
+          aria-hidden="true"
+        />
+        <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-12 sm:pb-16">
+          <motion.div {...fade} className="flex flex-col items-center text-center">
+            <span className="label-micro mb-8">Mi mapa personal</span>
 
-            <motion.div
-              {...emojiBounce}
-              className="relative mb-6"
-            >
+            <div className="relative mb-7">
               <div
-                className="absolute inset-0 scale-[2] blur-3xl opacity-20 rounded-full"
+                className="absolute inset-0 scale-[2.4] blur-3xl opacity-[0.16] rounded-full"
                 style={{ backgroundColor: elementColor }}
+                aria-hidden="true"
               />
-              <motion.span
-                className="relative block text-7xl sm:text-8xl lg:text-9xl leading-none select-none"
-                role="img"
-                aria-label={display.name}
-                {...hoverEmoji}
-              >
-                {display.emoji}
-              </motion.span>
-            </motion.div>
+              <ZodiacMark animal={userAnimal} color={elementColor} size="lg" className="relative" />
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-display text-[clamp(2.75rem,9vw,7rem)] tracking-tight text-foreground leading-[0.9] uppercase"
-            >
-              {name || archetype.name}
-            </motion.h1>
+            <h1 className="font-display text-[clamp(2.75rem,9vw,6.5rem)] tracking-tight text-foreground leading-[0.9] uppercase">
+              {name || archetypeName || display.name}
+            </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="mt-4 flex flex-wrap justify-center gap-x-6 gap-y-1"
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Animal</span>
-                <span className="text-base text-muted font-medium">{display.name} de {profile.chineseZodiacInfo?.element ?? ""}</span>
-              </div>
-              <span className="hidden sm:inline text-muted">|</span>
-              <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Signo</span>
-                <span className="text-base text-muted font-medium">{profile.sunSign}</span>
-              </div>
-              <span className="hidden sm:inline text-muted">|</span>
-              <div className="flex items-center gap-2">
-                <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">Camino</span>
-                <span className="text-base text-muted font-medium">{lifePath}</span>
-              </div>
+            <p className="mt-5 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
+              {archetypeName
+                ? `Tu mapa: arquetipo ${archetypeName}, Camino de Vida ${lifePath}, ${display.name} de ${profile.chineseZodiacInfo?.element ?? element}.`
+                : `Tu mapa: ${display.name} del zodíaco chino, Camino de Vida ${lifePath}.`}
+            </p>
+
+            <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 items-center">
+              {[
+                { label: "Elemento", value: profile.chineseZodiacInfo?.element ?? "" },
+                { label: "Signo", value: profile.sunSign },
+                { label: "Camino", value: String(lifePath) },
+              ].map(({ label, value }, i) => (
+                <div key={label} className="flex items-center gap-3">
+                  {i > 0 && <span className="w-px h-4 bg-border" aria-hidden="true" />}
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">{label}</span>
+                    <span className="text-base text-foreground font-medium">{value}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
-      </div>
-    </section>
+      </header>
 
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-20 sm:pb-24">
-        <div className="flex flex-wrap border-t border-ink/10">
-          {sections.map((section, i) => (
-            <motion.div
-              key={section.key}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className={`w-full md:w-1/2 flex flex-col ${i % 2 === 0 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
+      {/* ═══════════════════ SECCIONES ═══════════════════ */}
+      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pb-24">
+        {/* Identidad — protagonista */}
+        <motion.div {...fade} transition={{ delay: 0.05, duration: 0.3 }}>
+          <button
+            type="button"
+            onClick={() => onEnter?.("identity")}
+            disabled={!onEnter}
+            className="group w-full text-left border-t border-border py-8 lg:py-10 transition-colors hover:bg-ink/[0.02]"
+          >
+            <div className="flex items-start justify-between gap-6">
+              <div className="max-w-2xl">
+                <p className="label-micro mb-3">01 · Tu Identidad</p>
+                <h2 className="font-display uppercase text-[clamp(1.75rem,4vw,3rem)] leading-[0.95] tracking-tight text-foreground group-hover:text-accent transition-colors">
+                  Tu arquetipo es {archetype.name}
+                </h2>
+                <p className="mt-3 text-sm sm:text-base text-muted max-w-xl">
+                  Camino de Vida {lifePath} — {archetype.keywords.slice(0, 3).join(", ").toLowerCase()}.
+                </p>
+              </div>
+              <span className="hidden sm:inline-flex mt-2 font-mono text-xs uppercase tracking-[0.15em] text-accent group-hover:translate-x-1 transition-transform">
+                Explorar →
+              </span>
+            </div>
+          </button>
+        </motion.div>
+
+        {/* Círculo + Mundo — par secundario */}
+        <div className="grid grid-cols-1 md:grid-cols-2 border-t border-border">
+          <motion.div {...fade} transition={{ delay: 0.1, duration: 0.3 }}>
+            <button
+              type="button"
+              onClick={() => onEnter?.("circle")}
+              disabled={!onEnter}
+              className="group w-full text-left md:border-r border-border py-8 lg:py-10 md:pr-8 transition-colors hover:bg-ink/[0.02]"
             >
-              <button
-                type="button"
-                onClick={() => onEnter?.(section.key)}
-                disabled={!onEnter}
-                className={`group flex-1 text-left ${cellPad} transition-colors ${
-                  section.key === "identity" ? "bg-accent/[0.04] hover:bg-accent/[0.07]" : "hover:bg-ink/[0.03]"
-                }`}
-              >
-                <p
-                  className={`flex items-center gap-2 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.25em] mb-4 ${
-                    section.key === "identity" ? "text-accent" : "text-muted"
-                  }`}
-                >
-                  <span className="w-2 h-2 shrink-0" style={{ backgroundColor: section.color }} aria-hidden="true" />
-                  {section.eyebrow}
-                </p>
-                <p
-                  className={`font-display uppercase text-foreground mb-3 leading-[0.95] group-hover:text-accent transition-colors ${
-                    section.key === "identity" ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
-                  }`}
-                >
-                  {section.title}
-                </p>
-                <p className="text-sm text-muted">{section.subtitle}</p>
-                {section.detail && (
-                  <p className="text-xs text-muted mt-2">{section.detail}</p>
-                )}
-                {onEnter && (
-                  <span className="mt-5 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-accent inline-flex items-center gap-2">
-                    Explorar
-                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
-                  </span>
-                )}
-              </button>
-            </motion.div>
-          ))}
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">02 · Tu Círculo</p>
+              <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
+                {allies.length > 0 ? `Tus aliados: ${allies.join(" y ")}` : "Quién te rodea"}
+              </h3>
+              <p className="mt-2 text-sm text-muted">Armonía y tensión dentro del ciclo chino.</p>
+            </button>
+          </motion.div>
+
+          <motion.div {...fade} transition={{ delay: 0.15, duration: 0.3 }}>
+            <button
+              type="button"
+              onClick={() => onEnter?.("world")}
+              disabled={!onEnter}
+              className="group w-full text-left py-8 lg:py-10 md:pl-8 transition-colors hover:bg-ink/[0.02]"
+            >
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">03 · Tu Mundo</p>
+              <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
+                {worldCount} entidades resuenan con vos
+              </h3>
+              <p className="mt-2 text-sm text-muted">Marcas, historias y referentes que conectan.</p>
+            </button>
+          </motion.div>
         </div>
 
-        <div className="border-b border-ink/10 px-6 sm:px-8 py-4 text-center">
-          <Link
-            href="/profile/insights"
-            className="text-xs text-muted hover:text-accent transition-colors"
+        {/* Inteligencia — cierre premium */}
+        <motion.div {...fade} transition={{ delay: 0.2, duration: 0.3 }}>
+          <button
+            type="button"
+            onClick={() => onEnter?.("intelligence")}
+            disabled={!onEnter}
+            className="group w-full text-left border-t border-border py-8 lg:py-10 transition-colors hover:bg-ink/[0.02]"
           >
-            Ver tus insights completos →
-          </Link>
-        </div>
+            <div className="max-w-2xl">
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-3">04 · Tu Inteligencia</p>
+              <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-foreground leading-[0.95] group-hover:text-accent transition-colors">
+                Tu momento: {dailyEnergy.overallScore}/100 — {dailyEnergy.theme}
+              </h3>
+              <p className="mt-3 text-sm sm:text-base text-muted">
+                El mapa profundo que conecta tus sistemas. Versión completa premium.
+              </p>
+            </div>
+          </button>
+        </motion.div>
 
+        {/* Próximo descubrimiento */}
         {topRec && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="border-b border-ink/10"
-          >
+          <motion.div {...fade} transition={{ delay: 0.25, duration: 0.3 }}>
             <Link
               href={`/affinity/${topRec.entity.type}/${topRec.entity.id}`}
-              className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
+              className="group block border-t border-border py-8"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">Tu próximo descubrimiento</p>
-              <p className="text-sm text-foreground group-hover:text-accent transition-colors">
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-2">Tu próximo descubrimiento</p>
+              <p className="text-base sm:text-lg text-foreground group-hover:text-accent transition-colors max-w-2xl">
                 {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
               </p>
             </Link>

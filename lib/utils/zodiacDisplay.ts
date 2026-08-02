@@ -108,4 +108,19 @@ export function formatAnimalEmoji(animal: string): string {
   return getZodiacDisplay(animal).emoji;
 }
 
+// ════════════════════════════════════════════════════
+// CICLO SEXAGENARIO — posición 1-12
+// ════════════════════════════════════════════════════
+
+/** Orden canónico del ciclo de 12 animales del zodíaco chino. */
+export const ZODIAC_CYCLE_ORDER = [
+  "Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente",
+  "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo",
+] as const;
+
+/** Posición 1-12 de un animal en el ciclo. 0 si no se reconoce. */
+export function getZodiacPosition(animal: string): number {
+  const idx = ZODIAC_CYCLE_ORDER.indexOf(animal as (typeof ZODIAC_CYCLE_ORDER)[number]);
+  return idx === -1 ? 0 : idx + 1;
+}
 
