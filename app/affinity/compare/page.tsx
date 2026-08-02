@@ -104,7 +104,7 @@ function ComparePickerInner() {
 
         {/* Header */}
         <motion.section {...fadeUp} className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
             Comparación Simbólica
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
@@ -197,7 +197,7 @@ function ComparePickerInner() {
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
               Molino es una plataforma educativa y de entretenimiento.

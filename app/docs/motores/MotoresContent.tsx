@@ -109,7 +109,7 @@ export default function MotoresContent() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Documentación técnica</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Documentación técnica</p>
           <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Motores de cálculo
           </h1>

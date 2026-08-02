@@ -257,11 +257,11 @@ function FamousPersonCard({
             <p className={`text-xs ${inverse ? "text-paper/70" : "text-muted"}`}>{person.animal} · {person.year}</p>
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <span className={`text-[10px] ${inverse ? "text-paper/60" : "text-muted"}`}>{person.field} · {person.country}</span>
+            <span className={`text-xs ${inverse ? "text-paper/60" : "text-muted"}`}>{person.field} · {person.country}</span>
           </div>
           <Link
             href={`/conocimiento/zodiaco-chino/${person.animal.toLowerCase()}`}
-            className={`mt-2 inline-block text-[10px] hover:underline ${inverse ? "text-paper" : "text-accent"}`}
+            className={`mt-2 inline-block text-xs hover:underline ${inverse ? "text-paper" : "text-accent"}`}
           >
             {isChallenging ? `Explorar contraste con ${person.animal}` : `Explorar afinidad con ${person.animal}`} →
           </Link>

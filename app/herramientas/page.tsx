@@ -52,7 +52,7 @@ export default function HerramientasPage() {
         </nav>
 
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Herramientas</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Herramientas</p>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Calcul\u00e1 tu identidad
           </h1>
@@ -77,7 +77,7 @@ export default function HerramientasPage() {
                 <div className="flex items-start gap-6">
                   <span className="text-3xl shrink-0 transition-transform duration-200 group-hover:scale-110">{tool.icon}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.2em] font-medium mb-1" style={{ color: tool.color }}>
+                    <p className="text-xs uppercase tracking-[0.2em] font-medium mb-1" style={{ color: tool.color }}>
                       {tool.subtitle}
                     </p>
                     <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground group-hover:text-accent transition-colors duration-200">

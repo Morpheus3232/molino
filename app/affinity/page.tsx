@@ -80,7 +80,7 @@ export default function AffinityHub() {
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-                <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
                 <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
                   Descubrí tus afinidades
                 </h1>
@@ -98,7 +98,7 @@ export default function AffinityHub() {
               <section>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
-                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar por categoría</h2>
+                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explorar por categoría</h2>
                 </div>
                 <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableTypes.map((type, i) => {

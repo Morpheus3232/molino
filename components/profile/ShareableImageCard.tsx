@@ -143,14 +143,14 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
                 Molino
               </span>
             </div>
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: muted }}>
+            <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: muted }}>
               Mi perfil
             </span>
           </div>
 
           {/* Identity — sistemas en overline, nombre en display */}
           <div className="mb-9">
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
               {sunSign} · {element} · {zodiacDisplay.name} de {chineseElement}
             </p>
             <h2
@@ -167,7 +167,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
             style={{ borderTop: rule, borderBottom: rule }}
           >
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em] mb-1" style={{ color: muted }}>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] mb-1" style={{ color: muted }}>
                 Camino de vida
               </p>
               <p className="font-display leading-none tracking-tight" style={{ color: elementColor, fontSize: "76px" }}>
@@ -178,7 +178,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
               <p className="font-heading text-lg font-semibold" style={{ color: ink }}>
                 {archetypeName}
               </p>
-              <p className="font-mono text-[11px] uppercase tracking-[0.15em] mt-1" style={{ color: muted }}>
+              <p className="font-mono text-xs uppercase tracking-[0.15em] mt-1" style={{ color: muted }}>
                 {zodiacDisplay.name} · {chineseElement}
               </p>
             </div>
@@ -200,7 +200,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
             style={{ borderTop: rule }}
           >
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: elementColor }}>
+              <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: elementColor }}>
                 Descubrí tu perfil
               </p>
               <p className="font-heading text-base font-semibold mt-1" style={{ color: ink }}>

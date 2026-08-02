@@ -63,7 +63,7 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
               <span className="text-base">{entity.emoji}</span>
               <span className="font-medium truncate max-w-[80px]">{entity.name}</span>
               <span
-                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-sm shrink-0"
+                className="text-xs font-semibold px-1.5 py-0.5 rounded-sm shrink-0"
                 style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
               >
                 {result.score}

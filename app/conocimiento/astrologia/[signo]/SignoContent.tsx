@@ -67,7 +67,7 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{sign.meaning}</p>
         </motion.section>
@@ -76,7 +76,7 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{sign.history}</p>
         </motion.section>
@@ -85,7 +85,7 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-2">
                 {sign.strengths.map(s => (
                   <li key={s} className="text-sm text-foreground flex items-start gap-2"><span className="text-accent mt-0.5">&bull;</span>{s}</li>
@@ -93,7 +93,7 @@ export default function SignoContent() {
               </ul>
             </div>
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {sign.challenges.map(c => (
                   <li key={c} className="text-sm text-foreground flex items-start gap-2"><span className="text-muted mt-0.5">&bull;</span>{c}</li>
@@ -107,11 +107,11 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
                   <span key={f} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{f}</span>
@@ -119,7 +119,7 @@ export default function SignoContent() {
               </div>
             </div>
             <div className="p-4 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
                   <span key={c} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{c}</span>
@@ -132,7 +132,7 @@ export default function SignoContent() {
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 border border-ink/10">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>
           </div>

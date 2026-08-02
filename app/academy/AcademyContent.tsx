@@ -367,7 +367,7 @@ function KnowledgeNode({
         onClick={onToggle}
         className="w-full text-left"
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
         <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{node.title}</h3>
         <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
       </button>
@@ -383,21 +383,21 @@ function KnowledgeNode({
           >
             <div className="mt-4 p-6 rounded-md border border-border bg-background shadow-sm/50 space-y-3">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Origen</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Origen</p>
                 <p className="text-xs text-foreground">{node.origin}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Influencia en Molino</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
-                    <span key={inf} className="text-[10px] px-2 py-0.5 rounded-sm bg-accent/10 text-accent">
+                    <span key={inf} className="text-xs px-2 py-0.5 rounded-sm bg-accent/10 text-accent">
                       {inf}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Cómo se usa</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Cómo se usa</p>
                 <p className="text-xs text-foreground">{node.molino}</p>
               </div>
             </div>
@@ -420,7 +420,7 @@ export default function AcademyContent() {
             HERO
             ═══════════════════════════════════════════════ */}
         <motion.section {...heroReveal} className="mb-16">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">La Academia</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">La Academia</p>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
             De dónde viene este sistema
           </h1>
@@ -436,7 +436,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">El árbol del conocimiento</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">El árbol del conocimiento</h2>
           </div>
 
           <p className="text-sm text-muted mb-8 leading-relaxed">
@@ -465,7 +465,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
           </div>
 
           <motion.div {...staggerApple} className="space-y-4">
@@ -485,13 +485,13 @@ export default function AcademyContent() {
                   </span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-semibold text-accent">Paso {step.step}</span>
+                      <span className="text-xs font-semibold text-accent">Paso {step.step}</span>
                       <h3 className="text-sm font-semibold text-foreground">{step.title}</h3>
                     </div>
                     <p className="text-xs text-muted leading-relaxed mb-2">{step.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {step.items.map((item) => (
-                        <span key={item} className="text-[10px] px-2 py-0.5 rounded-md bg-background text-muted">
+                        <span key={item} className="text-xs px-2 py-0.5 rounded-md bg-background text-muted">
                           {item}
                         </span>
                       ))}
@@ -509,7 +509,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Rutas de aprendizaje</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Rutas de aprendizaje</h2>
           </div>
 
           <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -531,7 +531,7 @@ export default function AcademyContent() {
                   {course.title}
                 </h3>
                 <p className="text-xs text-muted leading-relaxed mb-2">{course.description}</p>
-                <p className="text-[10px] text-accent font-medium">{course.lessons} lecciones →</p>
+                <p className="text-xs text-accent font-medium">{course.lessons} lecciones →</p>
               </motion.div>
             ))}
           </motion.div>
@@ -542,7 +542,7 @@ export default function AcademyContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
             <p className="text-sm text-foreground leading-relaxed mb-3">
               Molino explora tradiciones históricas de números y símbolos culturales como herramienta de reflexión personal.
             </p>

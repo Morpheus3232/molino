@@ -161,7 +161,7 @@ export default function MolinoInterpretation({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium">{label}</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">{label}</p>
           {description && (
             <p className="text-xs text-muted mt-1">{description}</p>
           )}
@@ -227,7 +227,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.2, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{interpretation.alignment}</p>
@@ -242,7 +242,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.3, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{interpretation.timing}</p>
@@ -257,7 +257,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.35, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   Timing para {INTENTION_LABELS[timing.intention]}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{timing.explanation}</p>
@@ -272,7 +272,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.4, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">
                   {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
                 </p>
                 <ul className="space-y-1.5">
@@ -294,7 +294,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.5, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">
                   {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
                 </p>
                 <ul className="space-y-1.5">
@@ -317,7 +317,7 @@ export default function MolinoInterpretation({
                 className="py-4 mt-4 border-t border-ink/10"
               >
                 <div className="border-l-2 border-accent pl-4 sm:pl-6">
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">
+                  <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">
                     {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
                   </p>
                   <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
@@ -333,7 +333,7 @@ export default function MolinoInterpretation({
                 transition={{ delay: 0.7, duration: 0.4 }}
                 className="py-4 border-t border-ink/10"
               >
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
                 <ul className="space-y-1.5">
                   {interpretation.whatToConsider.map((c, i) => (
                     <li key={i} className="text-sm text-muted flex items-start gap-2">
@@ -377,7 +377,7 @@ export default function MolinoInterpretation({
 
       {/* Subtle error when AI failed but local fallback exists */}
       {error && interpretation && (
-        <p className="text-[10px] text-muted text-right">
+        <p className="text-xs text-muted text-right">
           Interpretación local · AI no disponible
         </p>
       )}

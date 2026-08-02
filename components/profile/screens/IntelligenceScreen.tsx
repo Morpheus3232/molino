@@ -165,11 +165,11 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
-                      <p className="uppercase text-[11px] tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
+                      <p className="uppercase text-xs tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-base font-medium" style={{ color: elementColor }}>{dim.value}</p>
-                      <p className="uppercase text-[11px] tracking-[0.15em] text-muted">/ 100</p>
+                      <p className="uppercase text-xs tracking-[0.15em] text-muted">/ 100</p>
                     </div>
                   </div>
                   <AnimatePresence>
@@ -213,10 +213,10 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 className="py-6 border-b border-ink/10 last:border-b-0"
               >
                 <div className="flex items-baseline gap-3 mb-2">
-                  <span className="uppercase text-[11px] tracking-[0.25em] text-muted">
+                  <span className="uppercase text-xs tracking-[0.25em] text-muted">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-[11px] uppercase tracking-[0.25em] font-medium text-muted">{pattern.label}</span>
+                  <span className="text-xs uppercase tracking-[0.25em] font-medium text-muted">{pattern.label}</span>
                 </div>
                 <p className="font-display text-lg sm:text-xl mb-2" style={{ color: elementColor }}>
                   {pattern.keyword}
@@ -224,7 +224,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 <p className="text-sm text-muted leading-relaxed mb-3 max-w-2xl">{pattern.description}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {pattern.sources.map((src) => (
-                    <span key={src} className="uppercase text-[11px] tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
+                    <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
                       {src}
                     </span>
                   ))}
@@ -267,9 +267,9 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                 <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: sys.color }} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{sys.title}</p>
-                  <p className="uppercase text-[11px] tracking-[0.15em] text-muted mt-0.5">{sys.detail}</p>
+                  <p className="uppercase text-xs tracking-[0.15em] text-muted mt-0.5">{sys.detail}</p>
                 </div>
-                <span className="uppercase text-[11px] tracking-[0.15em] text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
+                <span className="uppercase text-xs tracking-[0.15em] text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
               </motion.button>
             ))}
           </div>
@@ -300,11 +300,11 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                   <div className="space-y-4 pb-4">
                     <p className="font-heading text-lg text-foreground leading-relaxed">{previewInterpretation.summary}</p>
                     <div className="pt-4 border-t border-ink/10">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
                       <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.alignment}</p>
                     </div>
                     <div className="pt-4 border-t border-ink/10">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
                       <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.timing}</p>
                     </div>
                   </div>
@@ -364,7 +364,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               onClick={() => router.push("/explore")}
               className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
-              <p className="uppercase text-[11px] tracking-[0.2em] text-muted mb-2">Conexiones</p>
+              <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Conexiones</p>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Con qué resonás?</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">Explorá compatibilidad con personas, países, marcas y conceptos.</p>
             </motion.button>
@@ -377,7 +377,7 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               onClick={() => router.push("/academy")}
               className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
             >
-              <p className="uppercase text-[11px] tracking-[0.2em] text-muted mb-2">Conocimiento</p>
+              <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Conocimiento</p>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Querés entender el sistema?</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">Explorá numerología, astrología, zodiaco chino y más.</p>
             </motion.button>

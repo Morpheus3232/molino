@@ -71,7 +71,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
               </div>
             </motion.div>
             <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
@@ -118,7 +118,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Países que resuenan con vos</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Países que resuenan con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Estos países tienen mayor afinidad simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
@@ -160,7 +160,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Marcas con mayor resonancia según tu energía y el ciclo actual, organizadas por rubro.
@@ -170,7 +170,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <div className="space-y-8">
               {Object.entries(grouped).map(([category, recs]) => (
                 <div key={category}>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
                   <div className="space-y-3">
                     {recs.map((rec, i) => (
                       <BrandCard key={rec.entity.id} rec={rec} index={i} />
@@ -202,7 +202,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           <motion.div {...smoothReveal}>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
+              <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
             </div>
           </motion.div>
           <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">

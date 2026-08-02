@@ -21,7 +21,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
           </div>
         </motion.div>
 
