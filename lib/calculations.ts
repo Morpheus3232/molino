@@ -50,11 +50,12 @@ export function getPersonalYear(
   birthDay: number,
   birthMonth: number,
   _birthYear?: number,
-  _a?: number,
+  targetYear?: number,
   _b?: number,
   currentYear?: number
 ): number {
-  const year = currentYear ?? new Date().getFullYear();
+  // Prefer explicit currentYear (used by the personalMonth call hack), else the 4th positional arg every real caller passes.
+  const year = currentYear ?? targetYear ?? new Date().getFullYear();
   let sum = birthDay + birthMonth + year;
 
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
