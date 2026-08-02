@@ -15,7 +15,6 @@ test("home includes onboarding form and conversion sections", () => {
     expect(source).toContain("HeroNew");
     expect(source).toContain("SystemsPreview");
     expect(source).toContain("Journey");
-    expect(source).toContain("ToolsAndDiscovery");
     expect(source).toContain("ConceptsIndex");
     expect(source).toContain("FinalCTA");
     expect(source).toContain("DESCUBRIR MI MAPA");

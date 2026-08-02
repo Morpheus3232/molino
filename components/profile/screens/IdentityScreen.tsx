@@ -126,11 +126,13 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
     );
   }
 
-  // TU CÓDIGO — rows for the name-derived numbers ("—" when no name)
-  const codeRows = [
+  // TU CÓDIGO — filas de "Expresión"/"Alma" (derivadas del nombre, "—" si no
+  // hay nombre) y "Personalidad" (derivada exclusivamente del día de
+  // nacimiento — ver KnowledgeConnections más abajo en esta misma pantalla).
+  const codeRows: { label: string; number: number | null; name: string; meaning?: string }[] = [
     { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode?.expression?.name || "" },
     { label: "Alma", number: profile.soulNumber ?? null, name: personalCode?.soul?.name || "" },
-    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode?.personality?.name || "" },
+    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode?.personality?.name || "", meaning: personalCode?.personality?.meaning },
   ];
 
   return (
@@ -303,19 +305,24 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: 0.05 * (i + 1), duration: 0.4 }}
-              className="flex items-baseline justify-between gap-4 py-5 border-b border-ink/10 last:border-b-0"
+              className="py-5 border-b border-ink/10 last:border-b-0"
             >
-              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
-              <div className="flex items-baseline gap-3">
-                {row.number ? (
-                  <>
-                    <span className="font-display text-2xl text-foreground">{row.number}</span>
-                    <span className="text-xs text-muted">{row.name}</span>
-                  </>
-                ) : (
-                  <span className="text-lg text-muted">—</span>
-                )}
+              <div className="flex items-baseline justify-between gap-4">
+                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
+                <div className="flex items-baseline gap-3">
+                  {row.number ? (
+                    <>
+                      <span className="font-display text-2xl text-foreground">{row.number}</span>
+                      <span className="text-xs text-muted">{row.name}</span>
+                    </>
+                  ) : (
+                    <span className="text-lg text-muted">—</span>
+                  )}
+                </div>
               </div>
+              {row.number && row.meaning && (
+                <p className="text-xs text-muted mt-2">{row.meaning}</p>
+              )}
             </motion.div>
           ))}
         </div>

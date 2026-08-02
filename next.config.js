@@ -54,7 +54,15 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            // Solo immutable en producción: los chunks de build ahí sí están
+            // hasheados por contenido. En `next dev` (Turbopack) los nombres
+            // de chunk son estables entre rebuilds, así que este mismo header
+            // le decía al browser que cacheara CSS/JS de dev "para siempre"
+            // — Next.js ya lo advierte en el log de `next dev` como causa de
+            // comportamiento roto en desarrollo.
+            value: process.env.NODE_ENV === 'production'
+              ? 'public, max-age=31536000, immutable'
+              : 'no-store',
           },
         ],
       },

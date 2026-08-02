@@ -6,21 +6,19 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { Menu, X } from "lucide-react";
-import { headerNavLinks, productNavLinks } from "@/lib/data/navigation";
+import { primaryNavLinks, secondaryNavLinks, knowledgeNavLinks } from "@/lib/data/navigation";
 import Button from "@/components/ui/Button";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
-
-  const navLinks = headerNavLinks;
 
   const isNavLinkActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -42,7 +40,7 @@ export default function UniversityHeader() {
     };
   }, []);
 
-  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -51,7 +49,7 @@ export default function UniversityHeader() {
           setShowConfirm(false);
           triggerRef.current?.focus();
         }
-        setMobileMenuOpen(false);
+        setMenuOpen(false);
       }
     };
     document.addEventListener("keydown", handleEscape);
@@ -127,16 +125,14 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center gap-8" aria-label="Navegación principal">
-            {navLinks.map((link) => (
+          {/* Primaria: solo lo que se usa a diario. Todo lo demás vive en el menú. */}
+          <nav className="hidden md:flex items-center gap-6" aria-label="Navegación principal">
+            {primaryNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
                 className={`text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
-                  pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href)) ? "text-foreground" : "text-muted"
+                  isNavLinkActive(link.href) ? "text-foreground" : "text-muted"
                 }`}
                 aria-current={pathname === link.href ? "page" : undefined}
               >
@@ -146,33 +142,14 @@ export default function UniversityHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            {productNavLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`hidden xl:inline-flex items-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors hover:text-accent ${
-                  isNavLinkActive(link.href) ? "text-accent" : "text-muted"
-                }`}
-                aria-current={pathname === link.href ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
             {hasProfile ? (
-              <div className="flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-2">
                 <Link
                   href="/profile"
-                  className="hidden xl:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                  className="inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
                 >
-                  MI PERFIL
+                  MI MAPA
                 </Link>
-                <button
-                  type="button"
-                  onClick={handleNewProfile}
-                  className="hidden xl:inline-flex items-center justify-center border border-ink/10 px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
-                >
-                  CREAR NUEVO PERFIL
-                </button>
               </div>
             ) : (
               <Link
@@ -184,87 +161,96 @@ export default function UniversityHeader() {
               </Link>
             )}
 
-            {/* Mobile menu toggle */}
+            {/* Menú — único, disponible en todos los tamaños (antes había dos
+                implementaciones paralelas: una fila desktop y un panel mobile). */}
             <button
               type="button"
-              className="xl:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              className="p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-expanded={menuOpen}
+              aria-controls="main-menu"
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Menú expandido */}
         <motion.div
-          id="mobile-menu"
-          className="xl:hidden overflow-hidden border-t border-ink/10 bg-background"
+          id="main-menu"
+          className="overflow-hidden border-t border-ink/10 bg-background"
           initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: mobileMenuOpen ? 1 : 0, height: mobileMenuOpen ? "auto" : 0 }}
+          animate={{ opacity: menuOpen ? 1 : 0, height: menuOpen ? "auto" : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <nav className="px-6 py-4 space-y-3" aria-label="Navegación móvil">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
-                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
-                  pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href)) ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
-                }`}
-                aria-current={pathname === link.href ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <hr className="border-ink/10 my-2" />
-            {productNavLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
-                  isNavLinkActive(link.href) ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
-                }`}
-                aria-current={pathname === link.href ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            {hasProfile && (
-              <Link
-                href="/profile"
-                className={`block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors ${
-                  isNavLinkActive("/profile") ? "bg-accent/10 text-accent" : "text-muted hover:text-foreground hover:bg-ink/5"
-                }`}
-                aria-current={pathname === "/profile" ? "page" : undefined}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                MI PERFIL
-              </Link>
-            )}
-            {hasProfile ? (
-              <button
-                type="button"
-                onClick={handleNewProfile}
-                className="w-full text-left px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
-              >
-                CREAR NUEVO PERFIL
-              </button>
-            ) : (
-              <Link
-                href="/onboarding"
-                className="block px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-center bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                DESCUBRIR MI MAPA
-              </Link>
-            )}
+          <nav className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap-8" aria-label="Menú">
+            <div className="space-y-1">
+              <p className="font-mono text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-3">Explorar</p>
+              {[...primaryNavLinks, ...secondaryNavLinks].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-3 py-2 -mx-3 text-sm transition-colors ${
+                    isNavLinkActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
+                  }`}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="space-y-1">
+              <p className="font-mono text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-3">Conocimiento</p>
+              {knowledgeNavLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`block px-3 py-2 -mx-3 text-sm transition-colors ${
+                    isNavLinkActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
+                  }`}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="space-y-1">
+              <p className="font-mono text-[0.65rem] tracking-[0.2em] text-muted uppercase mb-3">Mi mapa</p>
+              {hasProfile ? (
+                <>
+                  <Link
+                    href="/profile"
+                    className={`block px-3 py-2 -mx-3 text-sm transition-colors sm:hidden ${
+                      isNavLinkActive("/profile") ? "text-accent" : "text-foreground hover:text-accent"
+                    }`}
+                    aria-current={pathname === "/profile" ? "page" : undefined}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Mi mapa
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleNewProfile}
+                    className="block w-full text-left px-3 py-2 -mx-3 text-sm text-muted hover:text-foreground transition-colors"
+                  >
+                    Crear nuevo perfil
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/onboarding"
+                  className="inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  DESCUBRIR MI MAPA
+                </Link>
+              )}
+            </div>
           </nav>
         </motion.div>
       </motion.header>

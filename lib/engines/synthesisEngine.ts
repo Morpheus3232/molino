@@ -62,7 +62,7 @@ function getNumberMeaning(n: number, type: "lifePath" | "expression" | "soul" | 
     6: { lifePath: "Responsabilidad y cuidado", expression: "Belleza y armonía", soul: "Amor incondicional", personality: "Calidez" },
     7: { lifePath: "Búsqueda de verdad", expression: "Análisis profundo", soul: "Retiro y reflexión", personality: "Misterio" },
     8: { lifePath: "Poder y materialización", expression: "Autoridad natural", soul: "Abundancia", personality: "Presencia" },
-    9: { lifePath: "Compasión y sabiduría", expression: "Humanitarismo", soul: "Servicio al todo", personality: "Generosidad" },
+    9: { lifePath: "Compasión y sabiduría", expression: "Humanitarismo", soul: "Servicio al todo", personality: "Capacidad de adaptación" },
     11: { lifePath: "Intuición elevada", expression: "Inspiración espiritual", soul: "Iluminación personal", personality: "Magnetismo" },
     22: { lifePath: "Manifestación a gran escala", expression: "Visión constructiva", soul: "Propósito divino", personality: "Grandeza" },
     33: { lifePath: "Sanación y servicio", expression: "Maestía expresiva", soul: "Amor universal", personality: "Compasión" },
@@ -78,7 +78,7 @@ function getNumberMeaning(n: number, type: "lifePath" | "expression" | "soul" | 
   return meanings[n]?.[type] || defaults[type];
 }
 
-function getNumberName(n: number): string {
+function getNumberName(n: number, type: "lifePath" | "expression" | "soul" | "personality"): string {
   const names: Record<number, string> = {
     1: "El Pionero",
     2: "El Puente",
@@ -93,6 +93,12 @@ function getNumberName(n: number): string {
     22: "El Maestro Constructor",
     33: "El Sanador",
   };
+  // Personalidad 9 (días 9/18/27) se nombra distinto de Camino de Vida 9:
+  // ver FASE 1D-2C. El resto de los números/tipos conserva el nombre compartido.
+  const personalityNames: Partial<Record<number, string>> = {
+    9: "El Adaptador",
+  };
+  if (type === "personality" && personalityNames[n]) return personalityNames[n] as string;
   return names[n] || "El Viajero";
 }
 
@@ -158,10 +164,10 @@ export function buildPersonalCode(profile: UserProfile): PersonalCode {
   const pn = safeNumber(profile.personalityNumber, 0);
 
   return {
-    lifePath: { number: lp, name: getNumberName(lp), meaning: getNumberMeaning(lp, "lifePath") },
-    expression: { number: en, name: getNumberName(en), meaning: getNumberMeaning(en, "expression") },
-    soul: { number: sn, name: getNumberName(sn), meaning: getNumberMeaning(sn, "soul") },
-    personality: { number: pn, name: getNumberName(pn), meaning: getNumberMeaning(pn, "personality") },
+    lifePath: { number: lp, name: getNumberName(lp, "lifePath"), meaning: getNumberMeaning(lp, "lifePath") },
+    expression: { number: en, name: getNumberName(en, "expression"), meaning: getNumberMeaning(en, "expression") },
+    soul: { number: sn, name: getNumberName(sn, "soul"), meaning: getNumberMeaning(sn, "soul") },
+    personality: { number: pn, name: getNumberName(pn, "personality"), meaning: getNumberMeaning(pn, "personality") },
   };
 }
 

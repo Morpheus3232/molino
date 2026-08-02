@@ -220,7 +220,7 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
           type="button"
           onClick={handleShare}
           disabled={generating}
-          className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-accent text-white hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
         >
           {generating ? (
             <>

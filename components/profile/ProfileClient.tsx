@@ -265,7 +265,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               <button
                 type="button"
                 onClick={handleGuidedNext}
-                className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-accent text-white hover:bg-accent/90 min-h-[52px]"
+                className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-accent text-accent-foreground hover:bg-accent/90 min-h-[52px]"
               >
                 {GUIDED_CTA[activeTab].text}
               </button>

@@ -145,7 +145,7 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
           >
             <Link
               href="/affinity"
-              className="group inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-accent text-white hover:bg-accent/90 transition-colors min-h-[52px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="group inline-flex items-center justify-center gap-2 font-semibold px-8 py-4 text-base bg-accent text-accent-foreground hover:bg-accent/90 transition-colors min-h-[52px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Explorar todas tus afinidades
               <span className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">

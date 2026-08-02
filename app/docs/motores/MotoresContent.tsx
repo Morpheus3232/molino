@@ -10,13 +10,12 @@ const engines = [
     icon: Hash,
     title: "Motor de Numerología",
     slug: "numerologia",
-    description: "Calcula Camino de Vida, Expresión, Alma, Personalidad, Día de Nacimiento y Ciclos de vida basados en la fecha y el nombre completo.",
+    description: "Calcula Camino de Vida, Expresión, Alma, Personalidad y Ciclos de vida. Camino de Vida, Personalidad y Ciclos salen de la fecha de nacimiento; Expresión y Alma, del nombre completo.",
     formulas: [
       { name: "Camino de Vida (Life Path)", formula: "Suma reductiva de DD + MM + AAAA → dígito 1-9 (11, 22, 33 como maestros)", example: "15/03/1990 → 1+5+0+3+1+9+9+0 = 28 → 2+8 = 10 → 1+0 = 1" },
       { name: "Expresión (Destiny)", formula: "Suma de valores pitagóricos de cada letra del nombre completo → reducido a 1-9", example: "JUAN PEREZ → J(1)+U(3)+A(1)+N(5) + P(7)+E(5)+R(9)+E(5)+Z(8) = 44 → 4+4 = 8" },
       { name: "Alma (Soul Urge)", formula: "Suma solo de vocales del nombre completo", example: "JUAN PEREZ → U(3)+A(1)+E(5)+E(5) = 14 → 1+4 = 5" },
-      { name: "Personalidad", formula: "Suma solo de consonantes del nombre completo", example: "JUAN PEREZ → J(1)+N(5)+P(7)+R(9)+Z(8) = 30 → 3+0 = 3" },
-      { name: "Día de Nacimiento", formula: "Día del mes reducido (1-31 → 1-9)", example: "15 → 1+5 = 6" },
+      { name: "Personalidad", formula: "Se obtiene exclusivamente del día de nacimiento (no del nombre): día del mes reducido a un dígito, o mantenido si es 11/22/33.", example: "Nacido el 9, el 18 o el 27 → Personalidad 9. Nacido el 15 → 1+5 = 6." },
       { name: "Ciclos de Vida (Pinnacles/Challenges)", formula: "Basados en fecha de nacimiento: 4 ciclos de ~27-28 años cada uno", example: "Ciclo 1: 0-27 años, Ciclo 2: 28-55, Ciclo 3: 56-83, Ciclo 4: 84+" },
     ],
     codeExample: `// Cálculo Camino de Vida (simplificado)

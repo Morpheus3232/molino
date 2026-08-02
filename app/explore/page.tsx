@@ -146,7 +146,7 @@ export default function ExplorePage() {
               <button
                 type="button"
                 onClick={() => setSearchTerm("")}
-                className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-accent text-white hover:bg-accent/90 min-h-[44px]"
+                className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent/90 min-h-[44px]"
               >
                 Limpiar búsqueda
               </button>
@@ -209,7 +209,7 @@ export default function ExplorePage() {
           <div className="flex flex-wrap gap-3">
             <Link
               href="/affinity"
-              className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-accent text-white hover:bg-accent/90 transition-colors min-h-[44px]"
+              className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent/90 transition-colors min-h-[44px]"
             >
               Explorar afinidades
             </Link>

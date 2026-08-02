@@ -433,7 +433,7 @@ function ProgressMilestone({
       } ${onClick ? "cursor-pointer" : "cursor-default"}`}
     >
       <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs shrink-0 ${
-        done ? "bg-success text-white" : "bg-muted/20 text-muted"
+        done ? "bg-success text-success-foreground" : "bg-muted/20 text-muted"
       }`}>
         {done ? "✓" : "○"}
       </span>

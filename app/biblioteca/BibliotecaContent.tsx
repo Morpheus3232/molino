@@ -395,7 +395,7 @@ export default function BibliotecaContent() {
                               }
                               className={`w-full text-left px-3 py-2.5 font-mono text-xs font-semibold tracking-wider uppercase transition-all min-h-[40px] ${
                                 expandedDescription === source.id
-                                  ? "bg-accent text-white"
+                                  ? "bg-accent text-accent-foreground"
                                   : "bg-background border border-ink/10 text-muted hover:text-foreground hover:border-ink/30"
                               }`}
                             >

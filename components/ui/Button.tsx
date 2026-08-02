@@ -28,7 +28,7 @@ export default function Button({
     accent: "bg-accent text-accent-foreground shadow-sm hover:opacity-95 hover:shadow-glow-accent hover:-translate-y-px active:translate-y-0",
     secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent hover:shadow-sm",
     ghost: "bg-transparent text-muted hover:text-foreground",
-    inverse: "bg-white text-accent shadow-sm hover:bg-white/95 hover:shadow-md hover:-translate-y-px active:translate-y-0",
+    inverse: "bg-paper text-accent shadow-sm hover:bg-paper/90 hover:shadow-md hover:-translate-y-px active:translate-y-0",
   };
 
   const sizes = {

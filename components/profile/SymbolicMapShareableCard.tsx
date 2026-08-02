@@ -153,7 +153,7 @@ export default function SymbolicMapShareableCard({
       <button
         type="button"
         onClick={handleShare}
-        className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-white min-h-[44px]"
+        className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground min-h-[44px]"
       >
         {copied ? (
           <>

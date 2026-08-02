@@ -111,6 +111,12 @@ describe("calculateBirthDayNumber", () => {
     expect(calculateBirthDayNumber(0)).toBe(0);
     expect(calculateBirthDayNumber(32)).toBe(0);
   });
+
+  it("days 9, 18 and 27 all produce personality 9 (FASE 1D-2C)", () => {
+    expect(calculateBirthDayNumber(9)).toBe(9);
+    expect(calculateBirthDayNumber(18)).toBe(9);
+    expect(calculateBirthDayNumber(27)).toBe(9);
+  });
 });
 
 describe("getArchetypeInfo", () => {
