@@ -7,7 +7,8 @@ import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
 import { getTopAffinityHighlights, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { ENTITY_TYPES, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
-import { formatAnimalSimple, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import ZodiacMark from "@/components/ui/ZodiacMark";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
@@ -28,13 +29,13 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const topCountries = useMemo(
     () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
       .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
-      .slice(0, 10),
+      .slice(0, 6),
     [profile]
   );
   const topBrands = useMemo(
     () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
       .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
-      .slice(0, 10),
+      .slice(0, 6),
     [profile]
   );
 
@@ -238,7 +239,7 @@ function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
           <span className="text-3xl">{rec.entity.emoji}</span>
-          <span className="text-xl mt-1">{animalDisplay.emoji}</span>
+          <ZodiacMark animal={rec.entityAnimal} color="var(--color-muted)" size="sm" showLabel={false} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -248,10 +249,9 @@ function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
             <span className="text-sm font-semibold text-muted">{rec.score}</span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
+            {rec.entity.country} · {animalDisplay.name}
           </p>
 
-          {/* Historical fact — separated */}
           {event && (
             <div className="p-3 bg-ink/[0.02] mb-2">
               <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
@@ -264,7 +264,6 @@ function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
             </div>
           )}
 
-          {/* Why it appears — symbolic */}
           <p className="text-sm text-muted leading-relaxed italic">
             {rec.explanation}
           </p>
@@ -291,7 +290,7 @@ function BrandCard({ rec, index }: { rec: AffinityResult; index: number }) {
       <div className="flex items-start gap-4">
         <div className="flex flex-col items-center shrink-0">
           <span className="text-3xl">{rec.entity.emoji}</span>
-          <span className="text-xl mt-1">{animalDisplay.emoji}</span>
+          <ZodiacMark animal={rec.entityAnimal} color="var(--color-muted)" size="sm" showLabel={false} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -301,7 +300,7 @@ function BrandCard({ rec, index }: { rec: AffinityResult; index: number }) {
             <span className="text-sm font-semibold text-muted">{rec.score}</span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
+            {rec.entity.country} · {animalDisplay.name}
           </p>
 
           {event && (
