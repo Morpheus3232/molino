@@ -6,6 +6,7 @@ import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
+import { buildPersonalCode } from "@/lib/engines/synthesisEngine";
 import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -38,11 +39,16 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const archetype = ARCHETYPES[lifePath];
 
   const cacheKey = `${profile.birthDate || ""}:${profile.name || ""}`;
-  const { data: personalCode, error: personalCodeError, retry: retryPersonalCode } = useCachedFetch(
+  const { data: apiPersonalCode, error: personalCodeError, retry: retryPersonalCode } = useCachedFetch(
     PERSONAL_CODE_CACHE,
     cacheKey,
     () => fetchSynthesis(profile.birthDate || "", profile.name || "").then((data) => data.personalCode)
   );
+
+  // Fallback local inmediato: el mapa siempre se renderiza, aunque la
+  // síntesis remota no esté disponible. buildPersonalCode es un engine
+  // puro que usa las mismas tablas de significado.
+  const personalCode = apiPersonalCode ?? buildPersonalCode(profile);
 
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
@@ -98,33 +104,20 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
     ? `Tu Camino de Vida ${lifePath} te marca como ${archetype.name.toLowerCase()} (${archetype.keywords.slice(0, 3).join(", ").toLowerCase()}).`
     : `Tu Camino de Vida ${lifePath} define el eje de tu recorrido.`;
 
-  if (!personalCode) {
-    return (
-      <div
-        id="panel-identity"
-        role="tabpanel"
-        aria-labelledby="tab-identity"
-        className="bg-background"
+  // Aviso sutil solo si la síntesis remota falló: la pantalla ya está
+  // renderizada con el engine local, no hay pantalla en blanco.
+  const remoteWarning = personalCodeError && !apiPersonalCode ? (
+    <div role="status" className="flex items-center gap-2 mt-4">
+      <p className="text-xs text-muted">Mostrando tu código calculado localmente.</p>
+      <button
+        type="button"
+        onClick={retryPersonalCode}
+        className="text-xs text-accent hover:underline"
       >
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
-          {personalCodeError ? (
-            <div role="alert">
-              <p className="text-sm text-muted mb-3">No pudimos cargar esta parte de tu mapa.</p>
-              <button
-                type="button"
-                onClick={retryPersonalCode}
-                className="text-sm text-accent hover:underline"
-              >
-                Reintentar
-              </button>
-            </div>
-          ) : (
-            <p className="text-sm text-muted">Calculando tu código personal...</p>
-          )}
-        </div>
-      </div>
-    );
-  }
+        Reintentar síntesis completa
+      </button>
+    </div>
+  ) : null;
 
   // TU CÓDIGO — filas de "Expresión"/"Alma" (derivadas del nombre, "—" si no
   // hay nombre) y "Personalidad" (derivada exclusivamente del día de
@@ -225,18 +218,20 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             {synthesisLine}
           </motion.p>
 
-          {matchingFamous && (
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className="mt-14 font-mono text-xs uppercase tracking-[0.2em] text-muted"
-            >
-              Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
-            </motion.p>
-          )}
-        </div>
-      </section>
+            {matchingFamous && (
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                className="mt-14 font-mono text-xs uppercase tracking-[0.2em] text-muted"
+              >
+                Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
+              </motion.p>
+            )}
+
+            {remoteWarning}
+          </div>
+        </section>
 
       {/* ═══════════════════════════════════════════════
           2 · TU CÓDIGO — el número protagonista
