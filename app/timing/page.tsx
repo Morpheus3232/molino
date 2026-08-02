@@ -144,7 +144,7 @@ export default function TimingPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
-                      onClick={() => { setSelectedIntention(intention.id); saveTimingIntention(intention.id); }}
+                      onClick={() => { setSelectedIntention(intention.id); saveTimingIntention(intention.id); setShowResults(true); }}
                       className="bg-background p-8 lg:p-12 text-left hover:bg-accent/5 transition-colors group"
                     >
                       <span className="text-3xl block mb-4 text-muted"><intention.icon className="w-8 h-8" /></span>

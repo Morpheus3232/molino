@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { Menu, X } from "lucide-react";
@@ -29,7 +29,9 @@ export default function UniversityHeader() {
     setScrolled(latest > 50);
   });
 
-  useEffect(() => {
+  // useLayoutEffect (not useEffect) so hasProfile resolves before the browser
+  // paints the hydrated frame, avoiding a visible header CTA flash for returning users.
+  useLayoutEffect(() => {
     setHasProfile(hasStoredProfile());
     const refresh = () => setHasProfile(hasStoredProfile());
     window.addEventListener("molino-profile-created", refresh);
@@ -90,7 +92,7 @@ export default function UniversityHeader() {
     setShowConfirm(false);
     triggerRef.current?.focus();
     window.dispatchEvent(new Event("molino-profile-cleared"));
-    router.push("/");
+    router.push("/onboarding");
   }, [router]);
 
   return (
@@ -157,20 +159,28 @@ export default function UniversityHeader() {
               </Link>
             ))}
             {hasProfile ? (
-              <button
-                ref={triggerRef}
-                type="button"
-                onClick={handleNewProfile}
-                className="inline-flex items-center justify-center border border-ink/10 px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
-              >
-                NUEVO PERFIL
-              </button>
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/profile"
+                  className="hidden xl:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                >
+                  MI PERFIL
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleNewProfile}
+                  className="hidden xl:inline-flex items-center justify-center border border-ink/10 px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground transition-colors"
+                >
+                  CREAR NUEVO PERFIL
+                </button>
+              </div>
             ) : (
               <Link
                 href="/onboarding"
-                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center px-3 sm:px-4 py-2 text-xs font-mono font-semibold tracking-[0.1em] sm:tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
               >
-                DESCUBRIR MI MAPA
+                <span className="sm:hidden">MI MAPA</span>
+                <span className="hidden sm:inline">DESCUBRIR MI MAPA</span>
               </Link>
             )}
 
@@ -244,7 +254,7 @@ export default function UniversityHeader() {
                 onClick={handleNewProfile}
                 className="w-full text-left px-3 py-2 text-xs font-mono font-semibold tracking-[0.15em] uppercase text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
               >
-                NUEVO PERFIL
+                CREAR NUEVO PERFIL
               </button>
             ) : (
               <Link
@@ -277,14 +287,14 @@ export default function UniversityHeader() {
               exit={{ opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">NUEVO PERFIL</h3>
+              <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">CREAR NUEVO PERFIL</h3>
               <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
                   CANCELAR
                 </Button>
                 <Button variant="primary" onClick={confirmNewProfile} className="flex-1">
-                  CREAR NUEVO
+                  CREAR NUEVO PERFIL
                 </Button>
               </div>
             </motion.div>

@@ -17,6 +17,9 @@ import { CITIES_60 } from "./cities-60";
 import { CITIES_ARGENTINA } from "./cities-argentina";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
+import { MOVIES } from "./movies";
+import { ARTISTS_ARGENTINA } from "./artists-argentina";
+import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
 
 export type EntityType =
   | "brand"
@@ -144,6 +147,10 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...TEAMS_ARGENTINA,
   ...UNIVERSITIES_ARGENTINA,
 
+  ...MOVIES,
+  ...ARTISTS_ARGENTINA,
+  ...FAMOUS_PEOPLE_ENTITIES,
+
   // ──── UNIVERSIDADES (3) ────
   {
     id: "uba", name: "Universidad de Buenos Aires", type: "university", foundingYear: 1821, country: "Argentina",
@@ -210,6 +217,26 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
         description: "Primera evidencia documentada de ense\u00f1anza en la Universidad de Oxford.",
         source: "University of Oxford — History",
         confidence: "baja",
+        primaryForAffinity: true,
+      },
+    ],
+  },
+
+  {
+    id: "salamanca", name: "Universidad de Salamanca", type: "university", foundingYear: 1218, country: "España",
+    emoji: "📖",
+    description: "Salamanca es la universidad más antigua del mundo hispanohablante. Referencia histórica del pensamiento jurídico y humanista.",
+    keyThemes: ["Legado", "Sabiduría", "Tradición", "Humanismo"],
+    sourceNote: "Fundada en 1218 por el rey Alfonso IX de León. Fecha exacta de fundación no documentada; se usa el año.",
+    events: [
+      {
+        id: "salamanca-fundacion",
+        type: "fundacion",
+        label: "Fundación",
+        year: 1218,
+        description: "El rey Alfonso IX de León funda el Estudio General de Salamanca, origen de la universidad.",
+        source: "Universidad de Salamanca — Historia institucional",
+        confidence: "media",
         primaryForAffinity: true,
       },
     ],
@@ -283,6 +310,27 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
         source: "Real Madrid — Historia del Club",
         confidence: "alta",
         primaryForAffinity: false,
+      },
+    ],
+  },
+
+  {
+    id: "sporting-cp", name: "Sporting CP", type: "team", foundingYear: 1906, country: "Portugal",
+    emoji: "⚽",
+    description: "Sporting Clube de Portugal es uno de los tres grandes del fútbol portugués, cantera histórica de figuras como Cristiano Ronaldo.",
+    keyThemes: ["Cantera", "Identidad", "Tradición", "Formación"],
+    sourceNote: "Fundado el 1 de julio de 1906 en Lisboa por José Alvalade.",
+    events: [
+      {
+        id: "sporting-fundacion",
+        type: "fundacion",
+        label: "Fundación",
+        date: "1906-07-01",
+        year: 1906,
+        description: "José Alvalade funda el Sporting Clube de Portugal en Lisboa.",
+        source: "Sporting Clube de Portugal — Historia oficial",
+        confidence: "exacta",
+        primaryForAffinity: true,
       },
     ],
   },
