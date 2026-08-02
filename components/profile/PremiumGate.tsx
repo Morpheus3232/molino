@@ -48,6 +48,10 @@ function cleanUrlParams() {
 
 export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
   const [state, setState] = useState<GateState>('locked');
+  // Distingue "acabo de pagar/recuperar en esta sesión" de "ya era premium al
+  // entrar" (checkServer() en el mount inicial) — solo el primer caso merece
+  // el momento de revelación; un usuario que vuelve no necesita la fanfarria.
+  const [justUnlocked, setJustUnlocked] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
   const [showRecover, setShowRecover] = useState(false);
   const [recoverPaymentId, setRecoverPaymentId] = useState('');
@@ -95,6 +99,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
         .then(data => {
           if (data.verified) {
             setState('unlocked');
+            setJustUnlocked(true);
             analytics.trackPaymentApproved(paypalOrderId, 'paypal');
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
@@ -122,6 +127,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
         .then(data => {
           if (data.verified) {
             setState('unlocked');
+            setJustUnlocked(true);
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
           } else {
@@ -165,6 +171,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       if (premium) {
         if (pollRef.current) clearInterval(pollRef.current);
         setState('unlocked');
+        setJustUnlocked(true);
         analytics.trackPremiumUnlocked();
       }
     }, POLL_INTERVAL);
@@ -246,6 +253,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
       if (res.ok && data.verified) {
         setState('unlocked');
+        setJustUnlocked(true);
         analytics.trackPremiumUnlocked();
       } else {
         setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
@@ -273,6 +281,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       const data = await res.json();
       if (res.ok && data.valid) {
         setState('unlocked');
+        setJustUnlocked(true);
         analytics.trackPremiumUnlocked();
       } else {
         setCouponError(data.reason || 'Código inválido');
@@ -284,8 +293,35 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
     }
   };
 
-  if (!PREMIUM_ENABLED || state === 'unlocked') {
+  if (!PREMIUM_ENABLED) {
     return <>{children}</>;
+  }
+
+  if (state === 'unlocked') {
+    // El pago no termina en "gracias, listo" silencioso: la primera vez que
+    // se desbloquea en esta sesión, el contenido entra con una revelación
+    // propia en vez de aparecer sin más. Un usuario que vuelve otro día
+    // (justUnlocked queda false, nunca se seteó) ve el contenido directo.
+    if (!justUnlocked) return <>{children}</>;
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          className="flex items-center gap-3 mb-8 pb-6 border-b border-accent/20"
+        >
+          <span className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center shrink-0" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+          </span>
+          <div>
+            <p className="text-sm font-semibold text-foreground">Desbloqueaste tu síntesis completa</p>
+            <p className="text-xs text-muted">Acceso permanente — la vas a encontrar acá cada vez que vuelvas.</p>
+          </div>
+        </motion.div>
+        {children}
+      </motion.div>
+    );
   }
 
   return (
