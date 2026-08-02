@@ -3,7 +3,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { getHistoryForProfile, type DailySnapshot, type Orientation } from "@/lib/session/dailyHistory";
 import { getPersonalYear } from "@/lib/calculations";
@@ -123,7 +122,7 @@ export default function EvolutionPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-              <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                   <span>›</span>
@@ -141,7 +140,7 @@ export default function EvolutionPage() {
 
               {/* TU CICLO — de dónde venís / dónde estás / qué viene, siempre disponible: no depende de historial acumulado */}
               {cycleArc && (
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.05 }} className="mb-6">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mb-6">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
                     <div className="bg-background p-8 lg:p-10">
                       <p className="label-micro mb-3">Año anterior · {cycleArc.previous.year}</p>
@@ -171,10 +170,10 @@ export default function EvolutionPage() {
                 {history.length === 0 ? (
                   <motion.div
                     key="empty-state"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    transition={{ duration: 0.15 }}
                   >
                     <motion.div className="text-center py-16 border-t border-ink/10">
                       <p className="eyebrow-brutalist mb-4">Todavía no registraste días</p>
@@ -191,10 +190,10 @@ export default function EvolutionPage() {
                 ) : (
                   <motion.div
                     key="history-content"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    transition={{ duration: 0.15 }}
                   >
                     <div className="space-y-px bg-ink/10 border-t border-ink/10 pt-6">
                       <motion.div className="bg-background p-8 lg:p-12">
@@ -212,13 +211,9 @@ export default function EvolutionPage() {
                       </motion.div>
 
                       <div className="bg-background">
-                        {history.map((item, i) => (
-                          <motion.div
+                        {history.map((item) => (
+                          <div
                             key={item.date}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.3, delay: i * 0.03 }}
                             className="p-6 sm:p-8 border-b border-ink/10 last:border-b-0 flex items-center justify-between gap-4"
                           >
                             <div>
@@ -226,7 +221,7 @@ export default function EvolutionPage() {
                               <p className="text-sm text-muted">{item.theme} · {item.energyLevel}</p>
                             </div>
                             <p className="font-display text-xl text-foreground shrink-0">{item.orientation}</p>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -234,7 +229,7 @@ export default function EvolutionPage() {
                 )}
               </AnimatePresence>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
                 <Button variant="primary" fullWidth onClick={() => router.push("/hoy")}>
                   Ver hoy →
                 </Button>

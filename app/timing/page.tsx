@@ -3,7 +3,6 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { Rocket, Briefcase, Target, FileText, Zap, Heart, Send, Sparkles } from "lucide-react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
@@ -121,7 +120,7 @@ export default function TimingPage() {
             exit="exit"
           >
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
-              <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                   <span>›</span>
@@ -136,27 +135,23 @@ export default function TimingPage() {
               </motion.div>
 
               {!selectedIntention && (
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10">
-                  {INTENTIONS.map((intention, i) => (
-                    <motion.button
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10">
+                  {INTENTIONS.map((intention) => (
+                    <button
                       key={intention.id}
-                      initial={{ opacity: 0, y: 12 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: 0.1 + i * 0.04 }}
                       onClick={() => { setSelectedIntention(intention.id); saveTimingIntention(intention.id); setShowResults(true); }}
                       className="bg-background p-8 lg:p-12 text-left hover:bg-accent/5 transition-colors group"
                     >
                       <span className="text-3xl block mb-4 text-muted"><intention.icon className="w-8 h-8" /></span>
                       <p className="font-display text-xl text-foreground group-hover:text-accent transition-colors">{intention.label}</p>
-                    </motion.button>
+                    </button>
                   ))}
                 </motion.div>
               )}
 
               {selectedIntention && (
                 <>
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="border border-ink/10 p-6">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border border-ink/10 p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <span className="text-2xl" aria-hidden="true">
@@ -187,13 +182,13 @@ export default function TimingPage() {
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`${selectedIntention}-${selectedDate}`}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
                         className="space-y-px bg-ink/10 mt-6"
                       >
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }} className="bg-background p-8 lg:p-12">
+                        <div className="bg-background p-8 lg:p-12">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                             <ReadingNumber
                               value={result.timingScore}
@@ -208,10 +203,10 @@ export default function TimingPage() {
                             </div>
                           </div>
                           <p className="text-sm text-muted leading-relaxed max-w-2xl">{result.explanation}</p>
-                        </motion.div>
+                        </div>
 
                         {result.favorableDimensions.length > 0 && (
-                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="bg-background p-8 lg:p-12">
+                          <div className="bg-background p-8 lg:p-12">
                             <p className="eyebrow-brutalist mb-4">Dimensiones favorables</p>
                             <ul className="space-y-3">
                               {result.favorableDimensions.map((dim, i) => (
@@ -221,11 +216,11 @@ export default function TimingPage() {
                                 </li>
                               ))}
                             </ul>
-                          </motion.div>
+                          </div>
                         )}
 
                         {result.challengingDimensions.length > 0 && (
-                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="bg-background p-8 lg:p-12">
+                          <div className="bg-background p-8 lg:p-12">
                             <p className="eyebrow-brutalist mb-4">Dimensiones desafiantes</p>
                             <ul className="space-y-3">
                               {result.challengingDimensions.map((dim, i) => (
@@ -235,26 +230,26 @@ export default function TimingPage() {
                                 </li>
                               ))}
                             </ul>
-                          </motion.div>
+                          </div>
                         )}
 
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-background p-8 lg:p-12">
+                        <div className="bg-background p-8 lg:p-12">
                           <p className="eyebrow-brutalist mb-4">Recomendación</p>
                           <p className="text-sm text-foreground leading-relaxed">{result.recommendedWindow}</p>
-                        </motion.div>
+                        </div>
 
                         {result.caveats.length > 0 && (
-                          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.35 }} className="bg-background p-6">
+                          <div className="bg-background p-6">
                             <p className="label-micro mb-2">Aclaraciones</p>
                             <ul className="space-y-1">
                               {result.caveats.map((caveat, i) => (
                                 <li key={i} className="text-xs text-muted">• {caveat}</li>
                               ))}
                             </ul>
-                          </motion.div>
+                          </div>
                         )}
 
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="bg-background p-8 lg:p-12">
+                        <div className="bg-background p-8 lg:p-12">
                           <MolinoInterpretation
                             profile={profile}
                             type="timing"
@@ -262,21 +257,18 @@ export default function TimingPage() {
                             label="Interpretación de Molino"
                             description="Análisis personalizado de tu timing"
                           />
-                        </motion.div>
+                        </div>
                       </motion.div>
                     </AnimatePresence>
                   )}
 
                   {bestDates.length > 0 && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.45 }} className="mt-8">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8">
                       <p className="eyebrow-brutalist mb-6">Mejores fechas (próximos 14 días)</p>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
                         {bestDates.map((date, i) => (
-                          <motion.div
+                          <div
                             key={i}
-                            initial={{ opacity: 0, y: 12 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: i * 0.06 }}
                             className="bg-background p-6"
                           >
                             <div className="flex items-center justify-between mb-2">
@@ -288,13 +280,13 @@ export default function TimingPage() {
                               </span>
                             </div>
                             <p className="text-sm text-muted">{date.theme}</p>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </motion.div>
                   )}
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
                     <Button variant="secondary" fullWidth onClick={() => router.push("/hoy")}>
                       Ver energía de hoy
                     </Button>

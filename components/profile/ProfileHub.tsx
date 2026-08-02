@@ -159,9 +159,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           {sections.map((section, i) => (
             <motion.div
               key={section.key}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * i, duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.15 }}
               className={`w-full md:w-1/2 flex flex-col ${i % 2 === 0 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
             >
               <button
@@ -216,9 +216,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
 
         {topRec && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
             className="border-b border-ink/10"
           >
             <Link
