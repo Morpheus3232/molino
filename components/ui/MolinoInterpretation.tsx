@@ -205,73 +205,48 @@ export default function MolinoInterpretation({
         {interpretation && (
           <motion.div
             key={isUsingAI ? "ai" : "local"}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
           >
             {/* 1. INSIGHT PRINCIPAL — lede editorial, sin caja */}
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.4 }}
-              className="pb-5"
-            >
+            <div className="pb-5">
               <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed">{interpretation.summary}</p>
-            </motion.div>
+            </div>
 
             {/* 2. Qué significa */}
             {interpretation.alignment && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{interpretation.alignment}</p>
-              </motion.div>
+              </div>
             )}
 
             {/* 3. Por qué importa */}
             {interpretation.timing && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{interpretation.timing}</p>
-              </motion.div>
+              </div>
             )}
 
             {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
             {timing && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
                   Timing para {INTENTION_LABELS[timing.intention]}
                 </p>
                 <p className="text-sm text-foreground leading-relaxed">{timing.explanation}</p>
-              </motion.div>
+              </div>
             )}
 
             {/* Strengths */}
             {interpretation.strengths.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">
                   {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
                 </p>
@@ -283,17 +258,12 @@ export default function MolinoInterpretation({
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             )}
 
             {/* Tensions */}
             {interpretation.tensions.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">
                   {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
                 </p>
@@ -305,34 +275,24 @@ export default function MolinoInterpretation({
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             )}
 
             {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
             {interpretation.suggestedNextStep && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.4 }}
-                className="py-4 mt-4 border-t border-ink/10"
-              >
+              <div className="py-4 mt-4 border-t border-ink/10">
                 <div className="border-l-2 border-accent pl-4 sm:pl-6">
                   <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">
                     {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
                   </p>
                   <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* 5. Qué considerar */}
             {interpretation.whatToConsider.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7, duration: 0.4 }}
-                className="py-4 border-t border-ink/10"
-              >
+              <div className="py-4 border-t border-ink/10">
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
                 <ul className="space-y-1.5">
                   {interpretation.whatToConsider.map((c, i) => (
@@ -342,21 +302,16 @@ export default function MolinoInterpretation({
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             )}
 
             {/* Confidence */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.4 }}
-              className="pt-3 mt-4 border-t border-ink/10"
-            >
+            <div className="pt-3 mt-4 border-t border-ink/10">
               <p className="text-xs text-muted">
                 Confianza: {interpretation.confidence}
                 {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
               </p>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

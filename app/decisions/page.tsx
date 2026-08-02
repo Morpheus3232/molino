@@ -3,10 +3,8 @@
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeDecision, CATEGORY_LABELS, type DecisionCategory, type DecisionResult } from "@/lib/engines/decisionsEngine";
-import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -110,7 +108,7 @@ export default function DecisionsPage() {
                   className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24"
                   id="main-content"
                 >
-                  <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                     <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                       <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                       <span>›</span>
@@ -129,7 +127,7 @@ export default function DecisionsPage() {
                   </motion.div>
 
                   {/* SEÑAL — el veredicto del momento, con la evidencia que lo sostiene */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+                  <div>
                     <div className="border border-ink/10 p-8 lg:p-12">
                       <p className="eyebrow-brutalist mb-4">Señal</p>
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -144,9 +142,9 @@ export default function DecisionsPage() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }} className="mt-6 grid grid-cols-3 gap-px bg-ink/10">
+                  <div className="mt-6 grid grid-cols-3 gap-px bg-ink/10">
                     {[
                       { label: "Alineación", score: result.alignmentScore },
                       { label: "Timing", score: result.timingScore },
@@ -157,10 +155,10 @@ export default function DecisionsPage() {
                         <p className="text-3xl font-display font-bold" style={{ color: getScoreColor(sub.score) }}>{sub.score}%</p>
                       </div>
                     ))}
-                  </motion.div>
+                  </div>
 
                   {/* CONTEXTO — qué dicen tus ciclos hoy */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
+                  <div className="mt-6 border border-ink/10 p-8 lg:p-12">
                     <p className="eyebrow-brutalist mb-4">Contexto</p>
                     <p className="text-sm text-foreground leading-relaxed max-w-2xl mb-6">{result.reasoning}</p>
                     {result.considerations.length > 0 && (
@@ -173,10 +171,10 @@ export default function DecisionsPage() {
                         ))}
                       </ul>
                     )}
-                  </motion.div>
+                  </div>
 
                   {/* SIGUIENTE PASO — la acción concreta */}
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.25 }} className="mt-6 border border-ink/10 p-8 lg:p-12">
+                  <div className="mt-6 border border-ink/10 p-8 lg:p-12">
                     <p className="eyebrow-brutalist mb-4">Siguiente paso</p>
                     <ul className="space-y-3">
                       {result.nextSteps.map((s, i) => (
@@ -186,9 +184,9 @@ export default function DecisionsPage() {
                         </li>
                       ))}
                     </ul>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-px bg-ink/10">
+                  <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-px bg-ink/10">
                     <div className="bg-background p-6">
                       <p className="label-micro mb-2">Día personal</p>
                       <p className="text-xl font-display font-bold text-foreground">{result.personalDay}</p>
@@ -201,24 +199,14 @@ export default function DecisionsPage() {
                       <p className="label-micro mb-2">Fase lunar</p>
                       <p className="text-xl font-display font-bold text-foreground">{result.moonPhase}</p>
                     </div>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.35 }} className="mt-6 border border-ink/10 p-6">
+                  <div className="mt-6 border border-ink/10 p-6">
                     <p className="label-micro mb-2">Influencia de tu elemento</p>
                     <p className="text-sm text-foreground">{result.elementInfluence}</p>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }} className="mt-6">
-                    <MolinoInterpretation
-                      profile={profile}
-                      type="decision"
-                      decision={result}
-                      label="Interpretación de Molino"
-                      description="Análisis personalizado de tu decisión"
-                    />
-                  </motion.div>
-
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.45 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
                     <Button variant="primary" fullWidth onClick={() => { setSubmitted(false); setQuestion(""); }}>Consultar otra decisión</Button>
                     <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>Ver mi perfil</Button>
                   </motion.div>
@@ -233,7 +221,7 @@ export default function DecisionsPage() {
                   className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24"
                   id="main-content"
                 >
-                  <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                     <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                       <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                       <span>›</span>
@@ -249,7 +237,7 @@ export default function DecisionsPage() {
                     </p>
                   </motion.div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+                  <div>
                     <form
                       onSubmit={(e) => { e.preventDefault(); if (question.trim()) setSubmitted(true); }}
                       className="max-w-lg space-y-6"
@@ -288,22 +276,22 @@ export default function DecisionsPage() {
                         Analizar decisión
                       </Button>
                     </form>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="border-t border-ink/10 pt-8 sm:pt-10 lg:pt-14 mt-8">
+                  <div className="border-t border-ink/10 pt-8 sm:pt-10 lg:pt-14 mt-8">
                     <div className="border border-ink/10 p-8 lg:p-12">
                       <p className="eyebrow-brutalist mb-4">¿Cómo funciona?</p>
                       <p className="text-sm text-muted leading-relaxed">
                         El Motor de Decisiones combina tu numerología (Life Path, día y año personal), tu signo solar, tu elemento, la fase lunar y la energía del día para ofrecerte una perspectiva única sobre cualquier decisión. Todo es determinístico y se calcula localmente — no guardamos ninguna pregunta ni resultado.
                       </p>
                     </div>
-                  </motion.div>
+                  </div>
 
-                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.3 }} className="mt-6 border-t border-ink/10 pt-6">
+                  <div className="mt-6 border-t border-ink/10 pt-6">
                     <Button variant="ghost" fullWidth onClick={() => router.push("/profile")}>
                       Ver mi perfil
                     </Button>
-                  </motion.div>
+                  </div>
                 </motion.main>
               )}
             </AnimatePresence>

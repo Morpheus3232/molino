@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
@@ -249,7 +248,9 @@ export default function HoyClient() {
             >
         {/* HERO — fecha, estado, una única frase protagonista. Nada compite acá. */}
         <motion.div
-          {...fadeUp}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           className="border-t border-ink/10 py-10 sm:py-16"
         >
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">

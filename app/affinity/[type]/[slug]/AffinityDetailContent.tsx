@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
+import { fadeUp, fadeUpDelayed, useReducedMotion } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -456,28 +456,24 @@ function PremiumHero({
   return (
     <motion.section
       className="mb-12"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="whileInView"
-      viewport={{ once: true, margin: "-40px" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
     >
       {/* Label */}
-      <motion.div variants={staggerItem}>
+      <div>
         <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
           Afinidad Personal · {meta.label}
         </p>
-      </motion.div>
+      </div>
 
       {/* Animals facing each other — approach animation for high scores */}
-      <motion.div
-        variants={staggerItem}
-        className="flex items-end justify-center gap-6 sm:gap-10 mb-8"
-      >
+      <div className="flex items-end justify-center gap-6 sm:gap-10 mb-8">
         {/* Entity — moves right for high scores */}
         <motion.div
           className="text-center"
           animate={reducedMotion ? {} : { x: result.score >= 75 ? 12 : 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label={entity.name}>
             {entity.emoji}
@@ -492,7 +488,7 @@ function PremiumHero({
         <motion.div
           className="flex flex-col items-center pb-6"
           animate={reducedMotion ? {} : { opacity: result.score >= 75 ? 0.3 : 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.3 }}
         >
           <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">vs</span>
         </motion.div>
@@ -501,7 +497,7 @@ function PremiumHero({
         <motion.div
           className="text-center"
           animate={reducedMotion ? {} : { x: result.score >= 75 ? -12 : 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label="Vos">
             🪞
@@ -511,10 +507,10 @@ function PremiumHero({
           </p>
           <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.userAnimal)}</p>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Score — número editorial, sin gauge ni badge */}
-      <motion.div variants={staggerItem} className="flex justify-center mb-6 text-center">
+      <div className="flex justify-center mb-6 text-center">
         <ReadingNumber
           value={result.score}
           label={`Afinidad · ${meta.label}`}
@@ -522,17 +518,17 @@ function PremiumHero({
           context={tierMeta.label}
           size="xl"
         />
-      </motion.div>
+      </div>
 
       {/* Contextual explanation */}
-      <motion.div variants={staggerItem} className="text-center mb-8 px-4">
+      <div className="text-center mb-8 px-4">
         <p className="text-sm text-foreground leading-relaxed max-w-md mx-auto">
           {explanation}
         </p>
-      </motion.div>
+      </div>
 
       {/* CTAs — primary Share + secondary Explore */}
-      <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
           type="button"
           onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
@@ -541,7 +537,7 @@ function PremiumHero({
           Explorar otra entidad
           <span aria-hidden="true">→</span>
         </button>
-      </motion.div>
+      </div>
     </motion.section>
   );
 }
