@@ -165,4 +165,24 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
       },
     ],
   },
+  {
+    id: "unt", name: "Universidad Nacional de Tucumán", type: "university", foundingYear: 1914, country: "Argentina",
+    emoji: "🎓",
+    description: "La UNT es la universidad pública más importante del norte argentino, con fuerte tradición en ciencias exactas y humanidades.",
+    keyThemes: ["Región", "Formación", "Comunidad", "Rigor"],
+    sourceNote: "Fundada el 25 de agosto de 1914 en San Miguel de Tucumán.",
+    events: [
+      {
+        id: "unt-fundacion",
+        type: "fundacion",
+        label: "Fundación",
+        date: "1914-08-25",
+        year: 1914,
+        description: "Se funda la Universidad Nacional de Tucumán.",
+        source: "Universidad Nacional de Tucumán — Historia institucional",
+        confidence: "exacta",
+        primaryForAffinity: true,
+      },
+    ],
+  },
 ];
