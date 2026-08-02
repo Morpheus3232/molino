@@ -179,7 +179,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
                 Tu momento: {dailyEnergy.overallScore}/100 — {dailyEnergy.theme}
               </h3>
               <p className="mt-3 text-sm sm:text-base text-muted">
-                El mapa profundo que conecta tus sistemas. Versión completa premium.
+                Tu síntesis completa: qué significa todo esto cuando se conecta. Premium.
               </p>
             </div>
           </button>
