@@ -13,10 +13,25 @@ import EditorialSection from "@/components/ui/EditorialSection";
 import ZodiacMark from "@/components/ui/ZodiacMark";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
-/** Posiciones fijas (viewBox 0-100, calzan con % del contenedor) para la
- * composición radial: vos en el centro, aliados arriba, tensión abajo. */
-const ALLY_SLOTS = [{ x: 24, y: 24 }, { x: 76, y: 24 }];
-const TENSION_SLOTS = [{ x: 30, y: 84 }, { x: 70, y: 84 }];
+/**
+ * Posiciones radiales (viewBox 0-100) para la composición: vos en el
+ * centro, aliados en el arco superior, tensión en el arco inferior.
+ * Generado por conteo real de relaciones (getFriends/getChallenging
+ * devuelven hasta 3 y 2 respectivamente) en vez de dos slots fijos que
+ * truncaban o desperdiciaban espacio según el animal.
+ */
+function arcSlots(count: number, centerDeg: number, spreadDeg: number, radius = 33): { x: number; y: number }[] {
+  if (count <= 0) return [];
+  if (count === 1) return [angleToXY(centerDeg, radius)];
+  const start = centerDeg - spreadDeg / 2;
+  const step = spreadDeg / (count - 1);
+  return Array.from({ length: count }, (_, i) => angleToXY(start + i * step, radius));
+}
+
+function angleToXY(deg: number, radius: number): { x: number; y: number } {
+  const rad = (deg * Math.PI) / 180;
+  return { x: 50 + radius * Math.sin(rad), y: 50 - radius * Math.cos(rad) };
+}
 
 interface CircleScreenProps {
   profile: UserProfile;
@@ -30,8 +45,10 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
 
   const display = getZodiacDisplay(userAnimal);
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  const allies: AnimalRelation[] = useMemo(() => relationMap.friends.slice(0, ALLY_SLOTS.length), [relationMap]);
-  const tensions: AnimalRelation[] = useMemo(() => relationMap.challenging.slice(0, TENSION_SLOTS.length), [relationMap]);
+  const allies: AnimalRelation[] = relationMap.friends;
+  const tensions: AnimalRelation[] = relationMap.challenging;
+  const allySlots = useMemo(() => arcSlots(allies.length, 0, allies.length > 1 ? 110 : 0), [allies.length]);
+  const tensionSlots = useMemo(() => arcSlots(tensions.length, 180, tensions.length > 1 ? 70 : 0), [tensions.length]);
 
   // Famous people of same animal (different years)
   const sameAnimalFamous = useMemo(
@@ -86,10 +103,23 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
         <div className="relative mx-auto max-w-sm aspect-square mt-6 mb-4">
           <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             {allies.map((rel, i) => (
-              <line key={`line-ally-${rel.animal}`} x1="50" y1="50" x2={ALLY_SLOTS[i].x} y2={ALLY_SLOTS[i].y} stroke="var(--color-accent-light)" strokeWidth="0.4" opacity="0.5" />
+              <line
+                key={`line-ally-${rel.animal}`}
+                x1="50" y1="50" x2={allySlots[i].x} y2={allySlots[i].y}
+                stroke="var(--color-accent-light)"
+                strokeWidth={0.25 + (rel.score / 100) * 0.5}
+                opacity={0.3 + (rel.score / 100) * 0.35}
+              />
             ))}
             {tensions.map((rel, i) => (
-              <line key={`line-tension-${rel.animal}`} x1="50" y1="50" x2={TENSION_SLOTS[i].x} y2={TENSION_SLOTS[i].y} stroke="var(--color-paper)" strokeWidth="0.4" strokeDasharray="2 2" opacity="0.3" />
+              <line
+                key={`line-tension-${rel.animal}`}
+                x1="50" y1="50" x2={tensionSlots[i].x} y2={tensionSlots[i].y}
+                stroke="var(--color-paper)"
+                strokeWidth="0.4"
+                strokeDasharray="2 2"
+                opacity={0.45 - (rel.score / 100) * 0.2}
+              />
             ))}
           </svg>
 
@@ -102,10 +132,12 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             <div
               key={rel.animal}
               className="absolute"
-              style={{ left: `${ALLY_SLOTS[i].x}%`, top: `${ALLY_SLOTS[i].y}%`, transform: "translate(-50%,-50%)" }}
+              style={{ left: `${allySlots[i].x}%`, top: `${allySlots[i].y}%`, transform: "translate(-50%,-50%)" }}
             >
               <ZodiacMark animal={rel.animal} color="var(--color-accent-light)" size="sm" showLabel={true} />
-              <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-accent-light/60 text-center mt-1.5">Aliado</p>
+              <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-accent-light/60 text-center mt-1.5">
+                {rel.label}
+              </p>
             </div>
           ))}
 
@@ -113,10 +145,12 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             <div
               key={rel.animal}
               className="absolute"
-              style={{ left: `${TENSION_SLOTS[i].x}%`, top: `${TENSION_SLOTS[i].y}%`, transform: "translate(-50%,-50%)" }}
+              style={{ left: `${tensionSlots[i].x}%`, top: `${tensionSlots[i].y}%`, transform: "translate(-50%,-50%)" }}
             >
               <ZodiacMark animal={rel.animal} color="var(--color-paper)" size="sm" showLabel={true} />
-              <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-paper/40 text-center mt-1.5">Tensión</p>
+              <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-paper/40 text-center mt-1.5">
+                {rel.label}
+              </p>
             </div>
           ))}
         </div>

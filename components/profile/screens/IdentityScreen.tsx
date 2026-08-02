@@ -14,6 +14,7 @@ import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { calculateLuckyNumber } from "@/lib/calculations";
 import { buildLifePathProof, buildLuckyNumberProof } from "@/lib/calculations/proof";
 import EditorialSection from "@/components/ui/EditorialSection";
+import ZodiacMark from "@/components/ui/ZodiacMark";
 import ConvergentSection from "@/components/profile/ConvergentSection";
 import IdentityCard from "@/components/profile/IdentityCard";
 import PersonalScoreCard from "@/components/profile/PersonalScoreCard";
@@ -169,14 +170,17 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             {formattedDate}
           </motion.h1>
 
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25 }}
-            className="label-micro text-muted mt-6"
+            className="flex items-center gap-3 mt-6"
           >
-            {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()} · CAMINO {lifePath}
-          </motion.p>
+            <ZodiacMark animal={chineseZodiac} color="var(--color-accent)" size="sm" showLabel={false} />
+            <p className="label-micro text-muted">
+              {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()} · CAMINO {lifePath}
+            </p>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -328,8 +332,8 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           ═══════════════════════════════════════════════ */}
       <EditorialSection
         tone="ink"
-        eyebrow="LAS TRES LECTURAS"
-        title={<>TRES SISTEMAS.<br />UNA MISMA PERSONA.</>}
+        eyebrow="CADA SISTEMA, SU VOZ"
+        title={<>LO QUE DICE<br />CADA UNO.</>}
         texture="circle"
       >
         <div className="pt-2">
