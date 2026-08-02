@@ -9,6 +9,7 @@
 import type { UserProfile } from '@/types/user';
 import { getPersonalDayForDate, getPersonalYear, getMoonPhase } from '@/lib/calculations';
 import { calculateDailyEnergy, type DailyEnergyResult } from './dailyEnergyEngine';
+import { detectDecisionIntent, type DecisionIntent } from './decisionIntent';
 
 export type DecisionCategory =
   | 'career'
@@ -36,6 +37,7 @@ export interface DecisionResult {
   personalYear: number;
   moonPhase: string;
   elementInfluence: string;
+  detectedIntent?: DecisionIntent;
 }
 
 const CATEGORY_LABELS: Record<DecisionCategory, string> = {
@@ -100,17 +102,19 @@ export function analyzeDecision(
     energyScore * 0.3
   );
 
+  const detectedIntent = detectDecisionIntent(question, category);
+
   // Generate recommendation
-  const recommendation = generateRecommendation(overallScore, category, personalDay);
+  const recommendation = generateRecommendation(overallScore, category, personalDay, detectedIntent);
 
   // Generate reasoning
-  const reasoning = generateReasoning(profile, category, overallScore, personalDay, moonPhase.phase);
+  const reasoning = generateReasoning(profile, category, overallScore, personalDay, moonPhase.phase, detectedIntent);
 
   // Generate considerations
-  const considerations = generateConsiderations(profile, category, personalDay, personalYear);
+  const considerations = generateConsiderations(profile, category, personalDay, personalYear, detectedIntent);
 
   // Generate next steps
-  const nextSteps = generateNextSteps(overallScore, category);
+  const nextSteps = generateNextSteps(overallScore, category, detectedIntent);
 
   return {
     question,
@@ -127,6 +131,7 @@ export function analyzeDecision(
     personalYear,
     moonPhase: moonPhase.phase,
     elementInfluence: getElementDecisionInfluence(profile.element, category),
+    detectedIntent: detectedIntent ?? undefined,
   };
 }
 
@@ -203,18 +208,30 @@ function calculateTimingScore(
   return Math.min(100, Math.max(1, score));
 }
 
-function generateRecommendation(score: number, category: DecisionCategory, personalDay: number): string {
+function generateRecommendation(score: number, category: DecisionCategory, personalDay: number, intent: DecisionIntent | null): string {
   const categoryLabel = CATEGORY_LABELS[category];
 
+  let recommendation: string;
   if (score >= 75) {
-    return `El momento es favorable para tomar decisiones sobre ${categoryLabel.toLowerCase()}. Tu energía está alineada.`;
+    recommendation = `El momento es favorable para tomar decisiones sobre ${categoryLabel.toLowerCase()}. Tu energía está alineada.`;
   } else if (score >= 55) {
-    return `Es un buen momento para reflexionar sobre ${categoryLabel.toLowerCase()}. Considerá los pros y contras.`;
+    recommendation = `Es un buen momento para reflexionar sobre ${categoryLabel.toLowerCase()}. Considerá los pros y contras.`;
   } else if (score >= 40) {
-    return `El momento es neutral para ${categoryLabel.toLowerCase()}. Si no tenés prisa, podés esperar.`;
+    recommendation = `El momento es neutral para ${categoryLabel.toLowerCase()}. Si no tenés prisa, podés esperar.`;
   } else {
-    return `Este momento presenta desafíos para decisiones sobre ${categoryLabel.toLowerCase()}. Considerá postergar.`;
+    recommendation = `Este momento presenta desafíos para decisiones sobre ${categoryLabel.toLowerCase()}. Considerá postergar.`;
   }
+
+  if (intent) {
+    const intentLine: Record<DecisionIntent['kind'], string> = {
+      accion: ' Tu pregunta apunta a dar un paso concreto. Si te sentís alineado, avanzá con confianza.',
+      espera: ' Tu pregunta refleja una intención de esperar. Aprovechá el momento para no apurarte.',
+      revisar: ' Tu pregunta apunta a cerrar o abandonar algo. Valorá el cierre como parte del proceso.',
+    };
+    recommendation += intentLine[intent.kind];
+  }
+
+  return recommendation;
 }
 
 function generateReasoning(
@@ -222,7 +239,8 @@ function generateReasoning(
   category: DecisionCategory,
   overallScore: number,
   personalDay: number,
-  moonPhase: string
+  moonPhase: string,
+  intent: DecisionIntent | null
 ): string {
   const categoryLabel = CATEGORY_LABELS[category];
 
@@ -232,6 +250,15 @@ function generateReasoning(
   reasoning += `Hoy es personal day ${personalDay}, lo que ${getDayDecisionInfluence(personalDay).toLowerCase()}. `;
   reasoning += `La fase lunar ${moonPhase.toLowerCase()} ${getMoonDecisionInfluence(moonPhase).toLowerCase()}.`;
 
+  if (intent) {
+    const intentLine: Record<DecisionIntent['kind'], string> = {
+      accion: ' Tu intención de actuar es clara; el momento acompaña la iniciativa.',
+      espera: ' Tu señal de espera sugiere cautela; conviene darte más margen antes de ejecutar.',
+      revisar: ' Tu señal de revisión indica que este cierre puede liberarte energía.',
+    };
+    reasoning += intentLine[intent.kind];
+  }
+
   return reasoning;
 }
 
@@ -239,7 +266,8 @@ function generateConsiderations(
   profile: UserProfile,
   category: DecisionCategory,
   personalDay: number,
-  personalYear: number
+  personalYear: number,
+  intent: DecisionIntent | null
 ): string[] {
   const considerations: string[] = [];
 
@@ -272,10 +300,20 @@ function generateConsiderations(
     considerations.push("Tu año personal favorece la estructura y el trabajo metódico.");
   }
 
+  if (intent) {
+    if (intent.kind === 'accion') {
+      considerations.push("Tu intención de actuar es fuerte. Definí el paso concreto antes de comprometerte.");
+    } else if (intent.kind === 'espera') {
+      considerations.push("Elegiste esperar. Usá ese tiempo para reunir más información.");
+    } else {
+      considerations.push("Estás evaluando un cierre o abandono. Asegurate de no dejar pendientes importantes.");
+    }
+  }
+
   return considerations;
 }
 
-function generateNextSteps(score: number, category: DecisionCategory): string[] {
+function generateNextSteps(score: number, category: DecisionCategory, intent: DecisionIntent | null): string[] {
   const steps: string[] = [];
 
   if (score >= 75) {
@@ -294,6 +332,16 @@ function generateNextSteps(score: number, category: DecisionCategory): string[] 
     steps.push("Este momento presenta desafíos. Esperá una ventana más favorable.");
     steps.push("Enfocá tu energía en el autoconocimiento y la reflexión.");
     steps.push("La paciencia es tu mejor herramienta ahora.");
+  }
+
+  if (intent) {
+    if (intent.kind === 'accion') {
+      steps.push("Concretá el primer paso pequeño de tu plan de acción.");
+    } else if (intent.kind === 'espera') {
+      steps.push("Fijá una fecha para reevaluar tu decisión.");
+    } else {
+      steps.push("Planificá cómo cerrar este ciclo de forma ordenada.");
+    }
   }
 
   return steps;
