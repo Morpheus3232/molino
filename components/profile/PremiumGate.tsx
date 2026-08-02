@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analytics } from '@/lib/analytics/analytics';
 import Button from '@/components/ui/Button';
+import Logo from '@/components/ui/Logo';
+import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 
 interface PremiumGateProps {
   name: string;
@@ -18,6 +20,10 @@ const POLL_MAX_ATTEMPTS = 24;
 const PRICE_USD = 8;
 
 const PREMIUM_ENABLED = process.env.NEXT_PUBLIC_PREMIUM_ENABLED === 'true';
+// PayPal requiere PAYPAL_CLIENT_ID/SECRET server-side; en entornos donde no
+// están configurados, /api/paypal/create-order falla con 500. Este flag deja
+// mostrar Mercado Pago sin ofrecer un botón de pago roto.
+const PAYPAL_ENABLED = process.env.NEXT_PUBLIC_PAYPAL_ENABLED === 'true';
 
 const blockVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -152,6 +158,15 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // El molino del header gira mientras se confirma un pago real — refuerza
+  // la metáfora de "procesando" justo en el momento de mayor ansiedad del
+  // flujo (después de volver de Mercado Pago/PayPal).
+  useEffect(() => {
+    if (state !== 'verifying' && state !== 'verifying_redirect') return;
+    startLoading();
+    return () => stopLoading();
+  }, [state]);
 
   useEffect(() => {
     // Only poll when we're explicitly verifying (not on redirect verification)
@@ -375,22 +390,26 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                 </Button>
               </div>
 
-              <div className="flex items-center gap-4 my-6" aria-hidden="true">
-                <span className="h-px flex-1 bg-ink/10" />
-                <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
-                <span className="h-px flex-1 bg-ink/10" />
-              </div>
+              {PAYPAL_ENABLED && (
+                <>
+                  <div className="flex items-center gap-4 my-6" aria-hidden="true">
+                    <span className="h-px flex-1 bg-ink/10" />
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
+                    <span className="h-px flex-1 bg-ink/10" />
+                  </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  fullWidth
-                  onClick={() => handleCheckout('paypal')}
-                >
-                  Pagar con PayPal
-                </Button>
-              </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      fullWidth
+                      onClick={() => handleCheckout('paypal')}
+                    >
+                      Pagar con PayPal
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
@@ -425,25 +444,27 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                         </button>
                       </div>
                     </form>
-                    <form onSubmit={e => handleRecover(e, 'paypal')} className="space-y-2 w-full sm:w-[220px]">
-                      <label className="text-xs text-muted block">PayPal Order ID:</label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={recoverPaymentId}
-                          onChange={e => setRecoverPaymentId(e.target.value)}
-                          placeholder="Ej: 5O123456AB789"
-                          className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
-                        />
-                        <button
-                          type="submit"
-                          disabled={isRecovering}
-                          className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
-                        >
-                          {isRecovering ? '…' : 'OK'}
-                        </button>
-                      </div>
-                    </form>
+                    {PAYPAL_ENABLED && (
+                      <form onSubmit={e => handleRecover(e, 'paypal')} className="space-y-2 w-full sm:w-[220px]">
+                        <label className="text-xs text-muted block">PayPal Order ID:</label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={recoverPaymentId}
+                            onChange={e => setRecoverPaymentId(e.target.value)}
+                            placeholder="Ej: 5O123456AB789"
+                            className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                          />
+                          <button
+                            type="submit"
+                            disabled={isRecovering}
+                            className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
+                          >
+                            {isRecovering ? '…' : 'OK'}
+                          </button>
+                        </div>
+                      </form>
+                    )}
                   </div>
                   {recoverError && (
                     <p className="text-xs text-red-600">{recoverError}</p>
@@ -513,7 +534,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
                 {checkoutLoading ? (
                   <div className="flex flex-col items-center py-12 gap-3">
-                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                    <Logo className="w-8 h-8 text-accent" spinning />
                     <p className="text-sm text-muted">
                       Redirigiendo a {checkoutMethod === 'paypal' ? 'PayPal' : 'Mercado Pago'}...
                     </p>
@@ -587,7 +608,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
               <motion.div key="verifying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
                 {!pollTimedOut ? (
                   <>
-                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-6" />
+                    <Logo className="w-8 h-8 text-accent mb-6" spinning />
                     <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
                     <p className="text-sm text-muted">Esto solo toma unos segundos.</p>
                   </>
@@ -607,7 +628,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
             {state === 'verifying_redirect' && (
               <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-                <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin mb-6" />
+                <Logo className="w-8 h-8 text-accent mb-6" spinning />
                 <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
                 <p className="text-sm text-muted">Volviste de Mercado Pago. Confirmando tu compra.</p>
                 {verificationError && (
