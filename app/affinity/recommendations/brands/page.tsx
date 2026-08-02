@@ -3,14 +3,14 @@ import { siteUrl } from "@/lib/seo";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
 
 export const metadata: Metadata = {
-  title: "Marcas alineadas | Afinidad Personal",
-  description: "Descubrí qué marcas resuenan con tu perfil simbólico según el zodíaco chino.",
+  title: "Marcas para priorizar este ciclo | Molino",
+  description: "Prioridad del ciclo actual: qué marcas explorar ahora según tu perfil simbólico.",
   alternates: {
     canonical: siteUrl("/affinity/recommendations/brands"),
   },
   openGraph: {
-    title: "Marcas alineadas contigo | Molino",
-    description: "Recomendaciones simbólicas de marcas según el zodíaco chino.",
+    title: "Marcas para priorizar este ciclo | Molino",
+    description: "Prioridad del ciclo actual: qué marcas explorar ahora según tu perfil simbólico.",
     type: "website",
     url: siteUrl("/affinity/recommendations/brands"),
   },
@@ -21,7 +21,7 @@ export default function BrandsRecommendationPage() {
     <RecommendationContent
       entityType="brand"
       title="Marcas alineadas contigo"
-      subtitle="Marcas que resuenan con tu perfil simbólico según el zodíaco chino."
+      subtitle="Qué marcas priorizar en el ciclo actual, según tu perfil simbólico."
     />
   );
 }

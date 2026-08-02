@@ -137,7 +137,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 onClick={() => router.push("/affinity/recommendations/countries")}
                 className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
               >
-                Ver todos los países &rarr;
+                Ver recomendaciones del ciclo actual &rarr;
               </button>
             </motion.div>
           </div>
@@ -163,7 +163,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Marcas con mayor resonancia según tu energía y el ciclo actual, organizadas por rubro.
+                Marcas con mayor afinidad simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.
               </p>
             </motion.div>
 
@@ -186,7 +186,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 onClick={() => router.push("/affinity/recommendations/brands")}
                 className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
               >
-                Ver todas las marcas &rarr;
+                Ver recomendaciones del ciclo actual &rarr;
               </button>
             </motion.div>
           </div>

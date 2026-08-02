@@ -3,14 +3,14 @@ import { siteUrl } from "@/lib/seo";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
 
 export const metadata: Metadata = {
-  title: "Destinos compatibles | Afinidad Personal",
-  description: "Descubrí qué destinos resuenan con tu perfil simbólico según el zodíaco chino.",
+  title: "Destinos para priorizar este ciclo | Molino",
+  description: "Prioridad del ciclo actual: qué destinos explorar ahora según tu perfil simbólico.",
   alternates: {
     canonical: siteUrl("/affinity/recommendations/countries"),
   },
   openGraph: {
-    title: "Destinos compatibles contigo | Molino",
-    description: "Recomendaciones simbólicas de destinos según el zodíaco chino.",
+    title: "Destinos para priorizar este ciclo | Molino",
+    description: "Prioridad del ciclo actual: qué destinos explorar ahora según tu perfil simbólico.",
     type: "website",
     url: siteUrl("/affinity/recommendations/countries"),
   },
@@ -21,7 +21,7 @@ export default function CountriesRecommendationPage() {
     <RecommendationContent
       entityType="country"
       title="Destinos con resonancia"
-      subtitle="Países y ciudades que pueden resonar con tu perfil simbólico según el zodíaco chino."
+      subtitle="Qué destinos priorizar en el ciclo actual, según tu perfil simbólico."
     />
   );
 }
