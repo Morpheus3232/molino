@@ -8,7 +8,7 @@ import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
-import { fetchSynthesis, fetchInterpretation, type SynthesisResult, type MolinoInterpretationResult } from "@/lib/api/client";
+import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
@@ -16,7 +16,6 @@ import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import MomentOrientation from "@/components/profile/MomentOrientation";
-import Button from "@/components/ui/Button";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
@@ -64,38 +63,12 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
     [profile, savedIntention]
   );
 
-  const [showPremiumGate, setShowPremiumGate] = useState(false);
-
-  const [previewInterpretation, setPreviewInterpretation] = useState<MolinoInterpretationResult | null>(null);
-  const [previewInterpretationError, setPreviewInterpretationError] = useState<string | null>(null);
-
   const synthesisKey = birthDate ? `${birthDate}:${name}` : "";
   const { data: synthesisData, error: synthesisError, retry: retrySynthesis } = useCachedFetch(
     SYNTHESIS_CACHE,
     synthesisKey,
     () => fetchSynthesis(birthDate, name, true)
   );
-
-  useEffect(() => {
-    // `timing` solo existe una vez que el usuario eligió una intención en /timing
-    // (ver loadTimingIntention). No es un requisito real de la API — fetchInterpretation
-    // lo declara opcional — así que no debe bloquear este fetch.
-    if (!dailyEnergy || !birthDate) return;
-    let cancelled = false;
-    fetchInterpretation("personal_profile", birthDate, name, { dailyEnergy, timing: timing ?? undefined })
-      .then((data) => {
-        if (!cancelled) setPreviewInterpretation(data.fallback || null);
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error("Interpretation error:", err);
-          setPreviewInterpretationError(
-            err instanceof Error ? err.message : "No pudimos cargar tu interpretación."
-          );
-        }
-      });
-    return () => { cancelled = true; };
-  }, [birthDate, name, dailyEnergy, timing]);
 
   const dimensions = synthesisData?.dimensions || [];
   const patterns = synthesisData?.patterns || [];
@@ -293,62 +266,29 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
         onRetry={retrySynthesis}
       />
 
-      {/* Tu interpretación */}
+      {/* Tu síntesis completa — un único paywall (PremiumGate), no dos
+          pantallas de venta seguidas. Antes esta sección mostraba gratis el
+          resumen, "qué significa" y "por qué importa" de la MISMA
+          interpretación que después pedía $8 por leer — pagabas por dos
+          campos más del mismo objeto. Ahora el contenido no se filtra: lo
+          único que se ve gratis es la propuesta (en PremiumGate), nunca la
+          lectura en sí. */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tu interpretación</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tu síntesis completa</h2>
           </div>
-          {!showPremiumGate ? (
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-              {previewInterpretation ? (
-                <>
-                  <div className="space-y-4 pb-4">
-                    <p className="font-heading text-lg text-foreground leading-relaxed">{previewInterpretation.summary}</p>
-                    <div className="pt-4 border-t border-ink/10">
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Qué significa</p>
-                      <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.alignment}</p>
-                    </div>
-                    <div className="pt-4 border-t border-ink/10">
-                      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Por qué importa</p>
-                      <p className="text-sm text-foreground leading-relaxed">{previewInterpretation.timing}</p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted mb-4">Una lectura que conecta lo que tus números, tu cielo y tus ciclos dicen en conjunto.</p>
-                </>
-              ) : previewInterpretationError ? (
-                <p className="text-sm text-muted mb-4">
-                  No pudimos preparar tu interpretación en este momento. Probá de nuevo más tarde.
-                </p>
-              ) : (
-                <p className="text-sm text-muted mb-4" role="status">Cargando interpretación...</p>
-              )}
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2 mb-6">
-                <span className="font-display text-3xl sm:text-4xl tracking-tight text-foreground">$8 USD</span>
-                <span className="text-sm text-muted">Pago único · acceso permanente</span>
-              </div>
-              <Button
-                variant="accent"
-                size="lg"
-                onClick={() => setShowPremiumGate(true)}
-                className="w-full sm:w-auto"
-              >
-                Leer la síntesis completa
-              </Button>
-            </motion.div>
-          ) : (
-            <PremiumGate name={name} birthDate={birthDate}>
-              <MolinoInterpretation
-                profile={profile}
-                type="personal_profile"
-                dailyEnergy={dailyEnergy}
-                timing={timing ?? undefined}
-                label="Interpretación de Molino"
-                description="Análisis integrado de tu perfil personal"
-              />
-            </PremiumGate>
-          )}
+          <PremiumGate name={name} birthDate={birthDate}>
+            <MolinoInterpretation
+              profile={profile}
+              type="personal_profile"
+              dailyEnergy={dailyEnergy}
+              timing={timing ?? undefined}
+              label="Tu síntesis"
+              description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
+            />
+          </PremiumGate>
         </div>
       </section>
 
