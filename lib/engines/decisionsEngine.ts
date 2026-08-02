@@ -211,15 +211,73 @@ function calculateTimingScore(
 function generateRecommendation(score: number, category: DecisionCategory, personalDay: number, intent: DecisionIntent | null): string {
   const categoryLabel = CATEGORY_LABELS[category];
 
+  const templates: Record<DecisionCategory, { high: string; medium: string; neutral: string; low: string }> = {
+    career: {
+      high: `El momento favorece decisiones de carrera. Confiá en tu iniciativa para dar el paso.`,
+      medium: `Reflexioná sobre tu entorno profesional. Pesá pros y contras antes de moverte.`,
+      neutral: `Carrera: momento neutro. Sin urgencia, podés esperar a mayor claridad.`,
+      low: `Decisiones laborales pueden encontrar obstáculos. Considerá posponer cambios mayores.`,
+    },
+    relationships: {
+      high: `Tu energía relacional está afinada. Es buen momento para conversaciones importantes o nuevos vínculos.`,
+      medium: `Las relaciones piden escucha antes de acción. No apures definiciones.`,
+      neutral: `Relaciones: momento neutro. Mantené el vínculo sin forzar profundidad hoy.`,
+      low: `Pueden aparecer malentendidos. Si es evitable, postergá charlas delicadas.`,
+    },
+    creativity: {
+      high: `La energía creativa está alta. Es el momento de lanzar, publicar o iniciar ese proyecto.`,
+      medium: `Tu creatividad pide espacio. Explorá ideas sin comprometerte todavía.`,
+      neutral: `Creatividad: momento neutro. La inspiración vendrá sin forzar.`,
+      low: `La energía creativa está baja. No fuerces la salida; dejá que madure.`,
+    },
+    finances: {
+      high: `El momento favorece decisiones financieras concretas. Inversiones, compras o planes van bien.`,
+      medium: `Evaluá opciones económicas con calma. No hay apuro por cerrar.`,
+      neutral: `Finanzas: momento neutro. Mantené el plan actual sin innovar hoy.`,
+      low: `Evita movimientos de dinero arriesgados. Priorizá la estabilidad y el ahorro.`,
+    },
+    health: {
+      high: `Tu cuerpo y mente piden acción. Es buen momento para rutinas, chequeos o cambios de hábito.`,
+      medium: `Cuidá tu bienestar con atención, sin dramatizar. Pequeños ajustes funcionan mejor.`,
+      neutral: `Salud: momento neutro. Mantené lo que funciona, no innoves hoy.`,
+      low: `Evita cambios bruscos en salud o rutina. Priorizá el reposo y la estabilidad.`,
+    },
+    education: {
+      high: `La mente está receptiva. Empezar un curso, estudio o investigación va bien ahora.`,
+      medium: `Explorá qué aprender sin comprometerte. La curiosidad guía mejor que la presión.`,
+      neutral: `Educación: momento neutro. No hay apuro por inscribirte hoy.`,
+      low: `El foco mental está disperso. Si podés, postergá inicios de estudio formales.`,
+    },
+    travel: {
+      high: `Tu energía abre caminos para viajar. Es buen momento para planear o decidir un destino.`,
+      medium: `Podés reflexionar sobre viajes sin apuro. Evaluá destinos y fechas con calma.`,
+      neutral: `Viajes: momento neutro. Si no tenés fecha fija, no hay presión para decidir.`,
+      low: `Los viajes pueden presentar imprevistos ahora. Si podés, postergá la reserva.`,
+    },
+    personal: {
+      high: `El momento favorece decisiones personales. Confiá en tu criterio para lo que te define.`,
+      medium: `Reflexioná sobre lo personal sin presión externa. El tiempo juega a tu favor.`,
+      neutral: `Personal: momento neutro. No hay urgencia por definir hoy.`,
+      low: `Las decisiones íntimas pueden encontrar ruido. Esperá mayor claridad interna.`,
+    },
+    other: {
+      high: `El momento es favorable para avanzar. Tu energía está alineada.`,
+      medium: `Es buen momento para reflexionar. Considerá los pros y contras.`,
+      neutral: `Momento neutro. Si no tenés prisa, podés esperar.`,
+      low: `Este momento presenta desafíos. Considerá postergar.`,
+    },
+  };
+
+  const t = templates[category];
   let recommendation: string;
   if (score >= 75) {
-    recommendation = `El momento es favorable para tomar decisiones sobre ${categoryLabel.toLowerCase()}. Tu energía está alineada.`;
+    recommendation = t.high;
   } else if (score >= 55) {
-    recommendation = `Es un buen momento para reflexionar sobre ${categoryLabel.toLowerCase()}. Considerá los pros y contras.`;
+    recommendation = t.medium;
   } else if (score >= 40) {
-    recommendation = `El momento es neutral para ${categoryLabel.toLowerCase()}. Si no tenés prisa, podés esperar.`;
+    recommendation = t.neutral;
   } else {
-    recommendation = `Este momento presenta desafíos para decisiones sobre ${categoryLabel.toLowerCase()}. Considerá postergar.`;
+    recommendation = t.low;
   }
 
   if (intent) {
