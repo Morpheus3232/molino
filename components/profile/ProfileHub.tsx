@@ -202,15 +202,12 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           ))}
         </div>
 
-        <div className="border-b border-ink/10">
+        <div className="border-b border-ink/10 px-6 sm:px-8 py-4 text-center">
           <Link
             href="/profile/insights"
-            className="block w-full text-left px-6 sm:px-8 py-6 sm:py-8 group"
+            className="text-xs text-muted hover:text-accent transition-colors"
           >
-            <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">Un paso más</p>
-            <p className="text-sm text-foreground group-hover:text-accent transition-colors">
-              Ver tus insights completos →
-            </p>
+            Ver tus insights completos →
           </Link>
         </div>
 

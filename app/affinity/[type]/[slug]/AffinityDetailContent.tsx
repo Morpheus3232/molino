@@ -114,11 +114,6 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <AnimalQuickSelector profile={profile} currentEntity={entity} type={type} />
         )}
 
-         {/* Share CTA — right after hero, before details */}
-         {result && (
-           <ShareInlineCTA result={result} entity={entity} />
-         )}
-
          {/* Compartir esta afinidad — visible without scrolling */}
          {result && (
            <motion.section {...fadeUp} className="mb-12">
@@ -401,20 +396,20 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* CTAs */}
         <motion.section {...fadeUp}>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={() => router.push("/conocimiento/zodiaco-chino")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:border-accent/30 sm:bg-accent/[0.03]"
-            >
-              Conocé el zodíaco chino →
-            </button>
+          <div className="flex flex-col items-center gap-3">
             <button
               type="button"
               onClick={() => router.push(`/affinity/${type}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push("/conocimiento/zodiaco-chino")}
+              className="text-sm text-accent hover:underline min-h-[44px] inline-flex items-center focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+            >
+              Conocé el zodíaco chino →
             </button>
           </div>
         </motion.section>
@@ -562,205 +557,6 @@ function buildContextualExplanation(result: AffinityResult): string {
     return `La relación entre ${userAnimal} y ${entityAnimal} genera una tensión creativa según esta tradición.`;
   }
   return `${userAnimal} y ${entityAnimal} tienen una baja resonancia simbólica, pero no por eso menos interesante.`;
-}
-
-function ShareButton({
-  result,
-  entity,
-  tierMeta,
-}: {
-  result: AffinityResult;
-  entity: SymbolicEntity;
-  tierMeta: { label: string; color: string; description: string };
-}) {
-  const [copied, setCopied] = useState(false);
-  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
-
-  const shareText = useMemo(() => {
-    const { entityAnimal, userAnimal, score } = result;
-    const emoji = entity.emoji || "";
-    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubríla en Molino ✨`;
-  }, [result, entity]);
-
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Afinidad simbólica con ${entity.name} — Molino`,
-          text: shareText,
-          url: shareUrl,
-        });
-        analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida", {
-          description: "Link copiado al portapapeles",
-          duration: 3000,
-        });
-      } catch {
-        // User cancelled — no toast needed
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        analytics.trackAffinityShared(entity.type, "clipboard");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!", {
-          description: "Compartí la afinidad con quien quieras",
-          duration: 3000,
-        });
-      } catch {
-        toast.error("No pudimos copiar. Intentá de nuevo.");
-      }
-    }
-  }, [entity, shareText, shareUrl]);
-
-  return (
-    <button
-      type="button"
-      onClick={handleShare}
-      className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-      style={{ backgroundColor: tierMeta.color, color: "#fff" }}
-      aria-label={`Compartí tu afinidad con ${entity.name}`}
-    >
-      {copied ? (
-        <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          Enlace copiado
-        </>
-      ) : (
-        <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-          </svg>
-          Compartí tu afinidad
-        </>
-      )}
-    </button>
-  );
-}
-
-function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: SymbolicEntity }) {
-  const [copied, setCopied] = useState(false);
-  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
-
-  const shareText = useMemo(() => {
-    const { entityAnimal, userAnimal, score, relationship } = result;
-    const emoji = entity.emoji || "";
-    const tierLabel = TIER_META[result.tier].label;
-
-    if (entityAnimal === userAnimal) {
-      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
-    }
-    if (relationship === "tríada compatible") {
-      return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
-    }
-    if (relationship === "armonía natural") {
-      return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
-    }
-    if (relationship === "opuestos en el ciclo") {
-      return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
-    }
-    if (relationship === "requiere atención") {
-      return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
-    }
-    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
-  }, [result, entity]);
-
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Afinidad simbólica con ${entity.name} — Molino`,
-          text: shareText,
-          url: shareUrl,
-        });
-        analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida", {
-          description: "Link copiado al portapapeles",
-          duration: 3000,
-        });
-      } catch {
-        // User cancelled — no toast needed
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        analytics.trackAffinityShared(entity.type, "clipboard");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!", {
-          description: "Compartí la afinidad con quien quieras",
-          duration: 3000,
-        });
-      } catch {
-        toast.error("No pudimos copiar. Intentá de nuevo.");
-      }
-    }
-  }, [shareText, shareUrl, entity]);
-
-  const tierMeta = TIER_META[result.tier];
-  const isHighAffinity = result.score >= 75;
-
-  return (
-    <motion.section {...fadeUp} className="mb-12">
-      <div
-        className="p-6 rounded-md border-2 transition-colors"
-        style={{
-          borderColor: isHighAffinity ? `${tierMeta.color}30` : "var(--border)",
-          backgroundColor: isHighAffinity ? `${tierMeta.color}05` : "var(--card)",
-        }}
-      >
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground mb-1">
-              {isHighAffinity
-                ? `¡${entity.name} tiene una afinidad destacada con vos!`
-                : `¿Te sorprendió esta conexión con ${entity.name}?`}
-            </p>
-            <p className="text-xs text-muted">
-              Compartí tu afinidad simbólica y descubrí qué tienen los demás.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleShare}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            style={{
-              backgroundColor: tierMeta.color,
-              color: "#fff",
-            }}
-            aria-label={`Compartí tu afinidad con ${entity.name}`}
-          >
-            {copied ? (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Enlace copiado
-              </>
-            ) : (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="18" cy="5" r="3" />
-                  <circle cx="6" cy="12" r="3" />
-                  <circle cx="18" cy="19" r="3" />
-                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                </svg>
-                Compartí tu afinidad
-              </>
-            )}
-          </button>
-        </div>
-      </div>
-    </motion.section>
-  );
 }
 
 function OtherEventCard({ event }: { event: HistoricalEvent }) {

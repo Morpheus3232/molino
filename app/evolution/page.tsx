@@ -180,11 +180,6 @@ export default function EvolutionPage() {
                       <p className="text-muted mb-6 max-w-md mx-auto">
                         Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación día a día.
                       </p>
-                      <div className="mt-6">
-                        <Button variant="primary" onClick={() => router.push("/hoy")}>
-                          Ver tu día de hoy →
-                        </Button>
-                      </div>
                     </motion.div>
                   </motion.div>
                 ) : (
