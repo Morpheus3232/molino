@@ -99,7 +99,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
             onClick={() => router.push("/affinity")}
             className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px]"
           >
-            &larr; Afinidad Personal
+            &larr; Afinidad simbólica
           </button>
         </motion.div>
 
@@ -118,6 +118,9 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
             <span>Tu animal:</span>
             <span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span>
           </div>
+          <p className="text-xs text-muted mt-2">
+            Estos números indican prioridad para el ciclo actual — no son tu score de afinidad.
+          </p>
         </motion.section>
 
         {/* Recommendation groups with AnimatePresence on search/filter change */}
@@ -283,6 +286,7 @@ function RecommendationCard({
 
         {/* Score + stars */}
         <div className="text-right shrink-0">
+          <p className="text-[9px] uppercase tracking-wider text-muted">Prioridad del ciclo</p>
           <p className="font-heading text-xl font-bold text-foreground">{rec.totalScore}</p>
           <p className="text-xs mt-0.5" style={{ color: getScoreHexColor(rec.totalScore) }}>{stars}</p>
         </div>
