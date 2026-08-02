@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
+import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getFamousByAnimal } from "@/lib/data/famousPeople";
 import { calculateLuckyNumber } from "@/lib/calculations";
@@ -37,34 +38,11 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const archetype = ARCHETYPES[lifePath];
 
   const cacheKey = `${profile.birthDate || ""}:${profile.name || ""}`;
-  const [personalCode, setPersonalCode] = useState<SynthesisResult["personalCode"] | null>(
-    PERSONAL_CODE_CACHE.get(cacheKey) || null
+  const { data: personalCode, error: personalCodeError, retry: retryPersonalCode } = useCachedFetch(
+    PERSONAL_CODE_CACHE,
+    cacheKey,
+    () => fetchSynthesis(profile.birthDate || "", profile.name || "").then((data) => data.personalCode)
   );
-
-  useEffect(() => {
-    if (PERSONAL_CODE_CACHE.has(cacheKey)) {
-      setPersonalCode(PERSONAL_CODE_CACHE.get(cacheKey) || null);
-      return;
-    }
-
-    let cancelled = false;
-    fetchSynthesis(profile.birthDate || "", profile.name || "")
-      .then((data) => {
-        if (!cancelled) {
-          PERSONAL_CODE_CACHE.set(cacheKey, data.personalCode);
-          setPersonalCode(data.personalCode);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error("IdentityScreen: error fetching personal code:", err);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [cacheKey]);
 
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
@@ -129,7 +107,20 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
         className="bg-background"
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-16 sm:pb-24">
-          <p className="text-sm text-muted">Calculando tu código personal...</p>
+          {personalCodeError ? (
+            <div role="alert">
+              <p className="text-sm text-muted mb-3">No pudimos cargar esta parte de tu mapa.</p>
+              <button
+                type="button"
+                onClick={retryPersonalCode}
+                className="text-sm text-accent hover:underline"
+              >
+                Reintentar
+              </button>
+            </div>
+          ) : (
+            <p className="text-sm text-muted">Calculando tu código personal...</p>
+          )}
         </div>
       </div>
     );

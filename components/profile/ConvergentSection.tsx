@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { buildIdentityProfile } from "@/lib/engines/perspectivesEngine";
 import { fetchConvergence, type ConvergenceResult } from "@/lib/api/client";
+import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 interface ConvergentSectionProps {
@@ -32,34 +33,11 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
   const identityProfile = useMemo(() => buildIdentityProfile(profile), [profile]);
 
   const cacheKey = `${profile.birthDate || ''}:${profile.name || ''}`;
-  const [convergence, setConvergence] = useState<ConvergenceResult | null>(
-    CONVERGENCE_CACHE.get(cacheKey) || null
+  const { data: convergence, error: convergenceError, retry: retryConvergence } = useCachedFetch(
+    CONVERGENCE_CACHE,
+    cacheKey,
+    () => fetchConvergence(profile.birthDate || '', profile.name || '').then((data) => data.convergence)
   );
-
-  useEffect(() => {
-    if (CONVERGENCE_CACHE.has(cacheKey)) {
-      setConvergence(CONVERGENCE_CACHE.get(cacheKey) || null);
-      return;
-    }
-
-    let cancelled = false;
-    fetchConvergence(profile.birthDate || '', profile.name || '')
-      .then((data) => {
-        if (!cancelled) {
-          CONVERGENCE_CACHE.set(cacheKey, data.convergence);
-          setConvergence(data.convergence);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error("ConvergentSection: error fetching convergence:", err);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [cacheKey]);
 
   if (!convergence) {
     return (
@@ -70,7 +48,20 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
         intro="Distintos sistemas pueden llegar al mismo punto sobre tu perfil. Cuando lo hacen, ese punto vale la pena mirarlo."
       >
         <div className="pt-4">
-          <p className="text-sm text-muted">Calculando convergencia...</p>
+          {convergenceError ? (
+            <div role="alert">
+              <p className="text-sm text-muted mb-3">No pudimos cargar esta parte de tu mapa.</p>
+              <button
+                type="button"
+                onClick={retryConvergence}
+                className="text-sm text-accent hover:underline"
+              >
+                Reintentar
+              </button>
+            </div>
+          ) : (
+            <p className="text-sm text-muted">Calculando convergencia...</p>
+          )}
         </div>
       </EditorialSection>
     );

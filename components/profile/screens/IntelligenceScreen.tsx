@@ -9,6 +9,7 @@ import { ARCHETYPES } from "@/lib/data";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
 import { fetchSynthesis, fetchInterpretation, type SynthesisResult, type MolinoInterpretationResult } from "@/lib/api/client";
+import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import dynamic from "next/dynamic";
 import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -23,6 +24,8 @@ import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
+
+const SYNTHESIS_CACHE = new Map<string, SynthesisResult>();
 
 interface IntelligenceScreenProps {
   profile: UserProfile;
@@ -63,25 +66,15 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
 
   const [showPremiumGate, setShowPremiumGate] = useState(false);
 
-  const [synthesisData, setSynthesisData] = useState<SynthesisResult | null>(null);
   const [previewInterpretation, setPreviewInterpretation] = useState<MolinoInterpretationResult | null>(null);
-  const [synthesisError, setSynthesisError] = useState<string | null>(null);
   const [previewInterpretationError, setPreviewInterpretationError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!birthDate) return;
-    let cancelled = false;
-    fetchSynthesis(birthDate, name, true)
-      .then((data) => {
-        if (!cancelled) {
-          setSynthesisData(data);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) setSynthesisError(err.message);
-      });
-    return () => { cancelled = true; };
-  }, [birthDate, name]);
+  const synthesisKey = birthDate ? `${birthDate}:${name}` : "";
+  const { data: synthesisData, error: synthesisError, retry: retrySynthesis } = useCachedFetch(
+    SYNTHESIS_CACHE,
+    synthesisKey,
+    () => fetchSynthesis(birthDate, name, true)
+  );
 
   useEffect(() => {
     // `timing` solo existe una vez que el usuario eligió una intención en /timing
@@ -141,6 +134,14 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                   <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tus dimensiones</h2>
                 </div>
                 <p className="text-sm text-muted mb-4">Una síntesis simbólica de tu perfil, no una medición científica.</p>
+                {synthesisError && !synthesisData && (
+                  <p className="text-sm text-muted mb-4" role="alert">
+                    No pudimos cargar esta parte de tu mapa.{" "}
+                    <button type="button" onClick={retrySynthesis} className="text-accent hover:underline">
+                      Reintentar
+                    </button>
+                  </p>
+                )}
               </motion.div>
               <div className="mt-6">
                 <ProfileRadar
@@ -284,7 +285,13 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
       </section>
 
       {/* Tu momento / Orientación */}
-      <MomentOrientation profile={profile} dailyEnergy={dailyEnergy} timing={timing} />
+      <MomentOrientation
+        dailyEnergy={dailyEnergy}
+        timing={timing}
+        momentState={synthesisData?.momentState ?? null}
+        error={!!synthesisError && !synthesisData}
+        onRetry={retrySynthesis}
+      />
 
       {/* Tu interpretación */}
       <section className="py-8 sm:py-12 border-t border-ink/10">

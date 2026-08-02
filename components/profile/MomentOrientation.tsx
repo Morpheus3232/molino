@@ -1,58 +1,28 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import type { UserProfile } from "@/types/user";
+import { useMemo } from "react";
 import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import type { TimingResult } from "@/lib/engines/timingEngine";
+import type { SynthesisResult } from "@/lib/api/client";
 import { buildOrientation } from "@/lib/utils/orientation";
-import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 interface MomentOrientationProps {
-  profile: UserProfile;
   dailyEnergy: DailyEnergyResult;
   timing?: TimingResult | null;
+  momentState: SynthesisResult["momentState"] | null;
+  error?: boolean;
+  onRetry?: () => void;
 }
-
-const MOMENT_CACHE = new Map<string, SynthesisResult["momentState"]>();
 
 /**
  * TU MOMENTO / ORIENTACI&#211;N.
  *
- * Una sola respuesta editorial: qu&#233; conviene tener en cuenta ahora. Reutiliza
- * la energ&#237;a diaria, el estado de momento y el timing que Molino ya calcula.
+ * `momentState` llega por props: lo calcula el mismo fetchSynthesis() que ya
+ * dispara IntelligenceScreen (su &#250;nico consumidor), en vez de que este
+ * componente dispare una segunda llamada id&#233;ntica a /api/synthesis/calculate.
  */
-export default function MomentOrientation({ profile, dailyEnergy, timing }: MomentOrientationProps) {
-  const cacheKey = `${profile.birthDate || ""}:${profile.name || ""}`;
-  const [momentState, setMomentState] = useState<SynthesisResult["momentState"] | null>(
-    MOMENT_CACHE.get(cacheKey) || null
-  );
-
-  useEffect(() => {
-    if (MOMENT_CACHE.has(cacheKey)) {
-      setMomentState(MOMENT_CACHE.get(cacheKey) || null);
-      return;
-    }
-
-    let cancelled = false;
-    fetchSynthesis(profile.birthDate || "", profile.name || "", true)
-      .then((data) => {
-        if (!cancelled && data.momentState) {
-          MOMENT_CACHE.set(cacheKey, data.momentState);
-          setMomentState(data.momentState);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error("MomentOrientation: error fetching moment state:", err);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [cacheKey]);
-
+export default function MomentOrientation({ dailyEnergy, timing, momentState, error, onRetry }: MomentOrientationProps) {
   const orientation = useMemo(
     () => buildOrientation(dailyEnergy, momentState ?? undefined, timing),
     [dailyEnergy, momentState, timing]
@@ -63,11 +33,21 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
       <EditorialSection
         tone="ink"
         eyebrow="TU MOMENTO"
-        title={<>Cargando...</>}
-        intro="Calculando tu momento actual..."
+        title={<>{error ? "No disponible" : "Cargando..."}</>}
+        intro={error ? "No pudimos cargar esta parte de tu mapa." : "Calculando tu momento actual..."}
       >
         <div className="pt-4">
-          <p className="text-sm text-paper/70">Un momento mientras preparamos tu orientaci&#243;n.</p>
+          {error ? (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="text-sm text-paper hover:underline"
+            >
+              Reintentar
+            </button>
+          ) : (
+            <p className="text-sm text-paper/70">Un momento mientras preparamos tu orientaci&#243;n.</p>
+          )}
         </div>
       </EditorialSection>
     );
