@@ -194,48 +194,23 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
         );
       })()}
 
-      {/* ═══════════════════════════════════════════════
-          EXPLORAR MÁS
-          ═══════════════════════════════════════════════ */}
+      {/* Un único puente hacia afuera: el mapa completo de afinidades.
+          "Explorar compatibilidad" y "Aprender más" ya se repetían, casi
+          palabra por palabra, en "Tu próximo movimiento" (IntelligenceScreen)
+          — cada tab no necesita reofrecer las mismas dos salidas. */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
+          <motion.button
+            {...smoothReveal}
+            onClick={() => router.push("/affinity")}
+            className="w-full text-left p-6 sm:p-8 border border-ink/10 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors group flex items-center justify-between gap-4"
+          >
+            <div>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Ver el mapa completo de afinidades</p>
+              <p className="text-sm text-muted mt-1">Todas las entidades, no solo tus mejores matches.</p>
             </div>
-          </motion.div>
-          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
-            <motion.button
-              {...staggerItemSmooth}
-              onClick={() => router.push("/affinity")}
-              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
-            >
-              <span className="text-xl block mb-2">✦</span>
-              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
-              <p className="text-sm text-muted mt-1">Explorá el mapa completo de afinidades.</p>
-            </motion.button>
-            <motion.button
-              {...staggerItemSmooth}
-              transition={{ ...staggerDelay, delay: 0.08 }}
-              onClick={() => router.push("/explore")}
-              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
-            >
-              <span className="text-xl block mb-2">🔍</span>
-              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Explorar compatibilidad</p>
-              <p className="text-sm text-muted mt-1">Buscá personas, países y conceptos.</p>
-            </motion.button>
-            <motion.button
-              {...staggerItemSmooth}
-              transition={{ ...staggerDelay, delay: 0.16 }}
-              onClick={() => router.push("/academy")}
-              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
-            >
-              <span className="text-xl block mb-2">📚</span>
-              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Aprender más</p>
-              <p className="text-sm text-muted mt-1">Numerología, astrología y zodiaco chino.</p>
-            </motion.button>
-          </motion.div>
+            <span className="text-accent shrink-0" aria-hidden="true">→</span>
+          </motion.button>
         </div>
       </section>
     </div>

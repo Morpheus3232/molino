@@ -58,7 +58,9 @@ export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }
               transition={{ duration: 0.3 }}
               className="text-base md:text-lg text-muted leading-relaxed max-w-lg mt-8"
             >
-              Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Sin registro, sin datos guardados.
+              {hasProfile
+                ? "Tu mapa ya está listo: identidad, mundo, círculo e inteligencia, en un solo lugar."
+                : "Numerología, astrología y zodiaco chino cruzados en un solo mapa personal. Sin registro, sin datos guardados."}
             </motion.p>
 
             <motion.div
@@ -70,19 +72,18 @@ export default function HeroNew({ hasProfile = false }: { hasProfile?: boolean }
               <Button
                 variant="accent"
                 size="lg"
-                onClick={() => router.push("/onboarding")}
-                aria-label="Descubrir mi mapa personal: ir al onboarding"
+                onClick={() => router.push(hasProfile ? "/profile" : "/onboarding")}
+                aria-label={hasProfile ? "Ver mi mapa personal" : "Descubrir mi mapa personal: ir al onboarding"}
                 className="w-full sm:w-auto"
               >
-                DESCUBRIR MI MAPA
+                {hasProfile ? "VER MI MAPA" : "DESCUBRIR MI MAPA"}
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Button>
             </motion.div>
           </div>
 
           {/* Número del día — soporte, no protagonista: más chico que el
-              titular y que la pregunta de entrada de abajo (DecisionEntryPrompt),
-              para no competirles la atención. */}
+              titular, para no competirle la atención. */}
           <Link
             href={hasProfile ? "/hoy" : "/onboarding"}
             className="group flex flex-wrap border-b border-ink/10 transition-colors hover:bg-ink/[0.02]"

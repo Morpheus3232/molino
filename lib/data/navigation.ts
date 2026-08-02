@@ -4,24 +4,28 @@ export interface NavLink {
   external?: boolean;
 }
 
-export const headerNavLinks: NavLink[] = [
-  { href: "/", label: "INICIO" },
-  { href: "/biblioteca", label: "BIBLIOTECA" },
-  { href: "/filosofia", label: "FILOSOFÍA" },
-  { href: "https://github.com/Morpheus3232/molino", label: "GITHUB", external: true },
+/**
+ * REBUILD (Bloque 2) — la nav primaria bajó de 9 links planos compitiendo
+ * entre sí a 2: "Hoy" (el gancho de retorno diario) y "Afinidad" (la
+ * exploración hacia el mundo). Todo lo demás — Timing, Decisiones,
+ * Evolución, Biblioteca, Filosofía — sigue existiendo y es 100% alcanzable,
+ * pero vive en el menú (secondaryNavLinks), no peleando en la barra
+ * principal. "Mi Mapa" no es un link más: es el CTA acentuado del header.
+ */
+export const primaryNavLinks: NavLink[] = [
+  { href: "/hoy", label: "Hoy" },
+  { href: "/affinity", label: "Afinidad" },
 ];
 
-/**
- * Las cuatro superficies centrales del producto. Siempre visibles/enlazables
- * en el header, independientemente de si hay un perfil guardado — cada
- * página maneja su propio estado sin-perfil (CTA a /onboarding).
- */
-export const productNavLinks: NavLink[] = [
-  { href: "/hoy", label: "HOY" },
-  { href: "/affinity", label: "AFINIDAD" },
-  { href: "/timing", label: "TIMING" },
-  { href: "/decisions", label: "DECISIONES" },
-  { href: "/evolution", label: "EVOLUCIÓN" },
+export const secondaryNavLinks: NavLink[] = [
+  { href: "/timing", label: "Timing" },
+  { href: "/decisions", label: "Decisiones" },
+  { href: "/evolution", label: "Evolución" },
+];
+
+export const knowledgeNavLinks: NavLink[] = [
+  { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/filosofia", label: "Filosofía" },
 ];
 
 export interface FooterColumn {

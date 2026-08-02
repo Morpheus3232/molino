@@ -17,12 +17,12 @@ describe("Product consistency — Molino", () => {
     }
   });
 
-  test("UniversidadHeader navLinks do not contain 'Descubrir'", () => {
+  test("UniversityHeader nav links do not contain 'Descubrir'", () => {
     const fs = require("fs");
     const path = require("path");
     const navPath = path.resolve(__dirname, "..", "lib", "data", "navigation.ts");
     const source = fs.readFileSync(navPath, "utf8");
-    const navSection = source.match(/export const headerNavLinks: NavLink\[\] = \[([^\]]+)\]/);
+    const navSection = source.match(/export const primaryNavLinks: NavLink\[\] = \[([^\]]+)\]/);
     expect(navSection).toBeTruthy();
     expect(navSection![1]).not.toContain("Descubrir");
   });

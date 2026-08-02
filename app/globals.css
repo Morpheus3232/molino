@@ -3,15 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #0F0F10;
-  --color-paper: #FFFFFF;
-  --color-paper-alt: #F5F5F0;
-  --color-accent: #1E3AFF;
-  --color-accent-hover: #0026E6;
-  /* Variante de accent para texto sobre fondos oscuros (bg-ink/negro):
-     el accent base (#1E3AFF) no cumple contraste mínimo sobre ink. */
-  --color-accent-light: #7C8CFF;
-  --color-muted: #6B6B6B;
+  /* ═══════════════════════════════════════════════════════════════
+     REBUILD — base oscura premium (reemplaza la base clara anterior).
+     "ink" sigue siendo el color de la marca legible, "paper" sigue
+     siendo la superficie — solo se invirtieron los valores, así que
+     TODA utilidad existente (bg-background, text-foreground, border-ink/10,
+     bg-ink/[0.04], text-paper/70, etc.) hereda el cambio sin tocar
+     componentes uno por uno.
+     ═══════════════════════════════════════════════════════════════ */
+  --color-ink: #F3F1EA;
+  --color-paper: #0A0A0C;
+  --color-paper-alt: #16161A;
+  --color-accent: #7C8CFF;
+  --color-accent-hover: #94A0FF;
+  --color-accent-light: #AEB8FF;
+  --color-muted: #A6A69C;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -19,29 +25,29 @@
      plano, Tailwind no puede aplicar la opacidad y la clase queda sin
      efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
      en varias secciones del sitio. Ver tailwind.config.ts. */
-  --color-ink-rgb: 15 15 16;
-  --color-paper-rgb: 255 255 255;
-  --color-accent-rgb: 30 58 255;
-  --color-accent-light-rgb: 124 140 255;
-  --color-muted-rgb: 107 107 107;
-  --color-border: #D4D4D4;
+  --color-ink-rgb: 243 241 234;
+  --color-paper-rgb: 10 10 12;
+  --color-accent-rgb: 124 140 255;
+  --color-accent-light-rgb: 174 184 255;
+  --color-muted-rgb: 166 166 156;
+  --color-border: #2A2A2E;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: #F5F5F0;
+  --color-card: #131315;
   --color-card-border: var(--color-border);
-  --color-surface-elevated: #FFFFFF;
+  --color-surface-elevated: #1B1B1E;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
   --color-accent-foreground: var(--color-paper);
-  --color-success: #059669;
-  --color-success-foreground: var(--color-paper);
-  --color-warning: #1E3AFF;
+  --color-success: #10B981;
+  --color-success-foreground: var(--color-ink);
+  --color-warning: #7C8CFF;
   --color-warning-foreground: var(--color-paper);
-  --color-error: #DC2626;
-  --color-error-foreground: var(--color-paper);
+  --color-error: #EF4444;
+  --color-error-foreground: var(--color-ink);
 
   /*
    * Radios — sistema hibrido.
@@ -109,13 +115,13 @@
    * Sombras — sutiles y en capas. Sirven para separar el detalle del fondo,
    * no para simular profundidad exagerada. Van solo en elementos de detalle.
    */
-  --shadow-sm: 0 1px 2px rgba(15, 15, 16, 0.05);
-  --shadow-md: 0 2px 6px rgba(15, 15, 16, 0.06), 0 1px 2px rgba(15, 15, 16, 0.04);
-  --shadow-lg: 0 8px 24px rgba(15, 15, 16, 0.08), 0 2px 6px rgba(15, 15, 16, 0.04);
-  --shadow-xl: 0 16px 40px rgba(15, 15, 16, 0.12), 0 4px 12px rgba(15, 15, 16, 0.06);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.36), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.48), 0 4px 12px rgba(0, 0, 0, 0.28);
   --shadow-glow: none;
-  --shadow-glow-accent: 0 4px 16px rgba(30, 58, 255, 0.24);
-  --shadow-inner: inset 0 1px 2px rgba(15, 15, 16, 0.04);
+  --shadow-glow-accent: 0 4px 20px rgba(124, 140, 255, 0.32);
+  --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.24);
 
   --max-width-content: 680px;
   --max-input: 480px;
@@ -132,10 +138,10 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(15, 15, 16, 0.25);
-  --color-ink-alpha-03: rgba(15, 15, 16, 0.03);
-  --color-accent-alpha-04: rgba(30, 58, 255, 0.08);
-  --color-accent-alpha-10: rgba(30, 58, 255, 0.12);
+  --color-ink-alpha-25: rgba(243, 241, 234, 0.25);
+  --color-ink-alpha-03: rgba(243, 241, 234, 0.05);
+  --color-accent-alpha-04: rgba(124, 140, 255, 0.1);
+  --color-accent-alpha-10: rgba(124, 140, 255, 0.16);
 
   /* Element colors */
   --element-fire: #1E3AFF;
@@ -174,11 +180,11 @@
   --score-poor: #EF4444;
 
   /* Overlay */
-  --overlay: rgba(15, 15, 16, 0.5);
-  --overlay-light: rgba(15, 15, 16, 0.3);
+  --overlay: rgba(0, 0, 0, 0.6);
+  --overlay-light: rgba(0, 0, 0, 0.4);
 
   /* Skeleton */
-  --skeleton: #E5E7EB;
+  --skeleton: #1E1E22;
 }
 
 @layer base {
@@ -247,14 +253,14 @@
   }
 
   input[type="date"] {
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   input:focus-visible,
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(30, 58, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.24);
   }
 
   .skip-link {
@@ -276,7 +282,7 @@
   }
 
   ::selection {
-    background: rgba(30, 58, 255, 0.18);
+    background: rgba(124, 140, 255, 0.28);
     color: var(--color-foreground);
   }
 

@@ -16,13 +16,10 @@ function ConceptsIndex() {
   const entries = useMemo(
     () => [
       { title: "ARQUETIPOS", desc: "Los patrones universales que moldean tu personalidad", href: "/conocimiento/numerologia", tier: "FUNDAMENTAL" },
-      { title: "CICLOS", desc: "Los ritmos temporales que guían tu año personal", href: "/profile", tier: "TEMPORAL" },
       { title: "ELEMENTOS", desc: "Las energías primarias que componen tu naturaleza", href: "/conocimiento/astrologia", tier: "FUNDAMENTAL" },
+      { title: "CICLOS", desc: "Los ritmos temporales que guían tu año personal", href: "/profile", tier: "TEMPORAL" },
       { title: "NÚMEROS MAESTROS", desc: "Las frecuencias elevadas de tu mapa numérico", href: "/conocimiento/numerologia", tier: "AVANZADO" },
-      { title: "MODALIDADES", desc: "Los tres modos de expresión de tu energía", href: "/conocimiento/astrologia", tier: "ESTRUCTURAL" },
       { title: "COMPATIBILIDAD", desc: "Cómo interactúan tus patrones con otros", href: "/compatibility/countries", tier: "RELACIONAL" },
-      { title: "SÍNTESIS", desc: "La lectura integrada de todos tus sistemas", href: "/synthesis", tier: "INTEGRAL" },
-      { title: "PATRONES", desc: "Los temas recurrentes en tu historia personal", href: "/patterns", tier: "PROFUNDO" },
       { title: "MOMENTUM", desc: "La energía disponible en tu ciclo actual", href: "/timing", tier: "DINÁMICO" },
     ],
     []

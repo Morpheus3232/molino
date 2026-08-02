@@ -200,7 +200,7 @@ CONTEXTO DEL USUARIO:
 - Día personal: ${cycles.personalDay}
 ${numerology.expressionNumber ? `- Expresión: ${numerology.expressionNumber}` : ''}
 ${numerology.soulNumber ? `- Alma: ${numerology.soulNumber}` : ''}
-${numerology.personalityNumber ? `- Personalidad: ${numerology.personalityNumber}` : ''}
+${numerology.personalityNumber ? `- Personalidad: ${numerology.personalityNumber} (en Molino se calcula solo desde el día de nacimiento, no desde el nombre; para el 9 representa capacidad de adaptación — no uses el significado clásico de "número de personalidad" por consonantes)` : ''}
 `;
 
   const rolePrompt = `Eres el Motor de Inteligencia de Molino. Tu rol es interpretar datos deterministas calculados por los sistemas simbólicos de Molino (numerología, astrología, zodiaco chino, ciclos).

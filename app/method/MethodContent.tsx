@@ -48,8 +48,8 @@ export default function MethodContent() {
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Número de Personalidad</h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  Usa solo las consonantes. Representa la imagen pública y las primeras impresiones, no una caracterización
-                  definitiva de la persona.
+                  Sale exclusivamente del día de nacimiento (no del nombre): el día del mes reducido a un dígito.
+                  Representa la energía que proyectás hacia afuera, no una caracterización definitiva de la persona.
                 </p>
               </div>
             </div>
