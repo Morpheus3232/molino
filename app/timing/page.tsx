@@ -286,13 +286,17 @@ export default function TimingPage() {
                     </motion.div>
                   )}
 
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
-                    <Button variant="secondary" fullWidth onClick={() => router.push("/hoy")}>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col items-center gap-3">
+                    <Button variant="primary" fullWidth onClick={() => router.push("/hoy")}>
                       Ver energía de hoy
                     </Button>
-                    <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
+                    <button
+                      type="button"
+                      onClick={() => router.push("/profile")}
+                      className="text-sm text-accent hover:underline"
+                    >
                       Ver mi perfil
-                    </Button>
+                    </button>
                   </motion.div>
                 </>
               )}

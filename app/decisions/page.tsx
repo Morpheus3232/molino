@@ -287,10 +287,14 @@ export default function DecisionsPage() {
                     </div>
                   </div>
 
-                  <div className="mt-6 border-t border-ink/10 pt-6">
-                    <Button variant="ghost" fullWidth onClick={() => router.push("/profile")}>
+                  <div className="mt-6 border-t border-ink/10 pt-6 text-center">
+                    <button
+                      type="button"
+                      onClick={() => router.push("/profile")}
+                      className="text-sm text-accent hover:underline"
+                    >
                       Ver mi perfil
-                    </Button>
+                    </button>
                   </div>
                 </motion.main>
               )}
