@@ -327,7 +327,10 @@ export function getFriends(animal: Animal): AnimalRelation[] {
 }
 
 /**
- * Get all challenging relationships (clash + harm).
+ * Get all challenging relationships. Product rule (see
+ * __tests__/animal-relations.test.ts): exactly 3 friends (2 triad + 1
+ * liuHe) + 1 enemy (clash) per animal — the Liu Hai "harm" pair is
+ * deliberately folded into neutral, not surfaced as a second tension.
  */
 export function getChallenging(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];

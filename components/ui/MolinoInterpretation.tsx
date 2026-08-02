@@ -172,6 +172,14 @@ export default function MolinoInterpretation({
               IA
             </span>
           )}
+          {/* Transparencia: si la IA no respondió, el usuario ve una síntesis
+              calculada localmente — no debe parecer indistinguible de la
+              interpretación de IA completa que el premium promete. */}
+          {hasAttemptedAI && !isUsingAI && interpretation && (
+            <span className="text-[9px] uppercase tracking-[0.15em] text-muted/70 font-medium px-2 py-0.5 rounded-sm border border-border" title="Síntesis calculada localmente — la IA no respondió esta vez.">
+              Local
+            </span>
+          )}
           {hasAttemptedAI && !isInterpreting && (
             <button
               type="button"
