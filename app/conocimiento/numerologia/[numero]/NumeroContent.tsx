@@ -67,7 +67,7 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{num.meaning}</p>
         </motion.section>
@@ -76,7 +76,7 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia y simbolismo</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y simbolismo</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-4">{num.history}</p>
           <p className="text-sm text-muted leading-relaxed max-w-3xl">{num.symbolism}</p>
@@ -86,7 +86,7 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
               <ul className="space-y-2">
                 {num.strengths.map(s => (
                   <li key={s} className="text-sm text-foreground flex items-start gap-2">
@@ -97,7 +97,7 @@ export default function NumeroContent() {
               </ul>
             </div>
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
               <ul className="space-y-2">
                 {num.challenges.map(c => (
                   <li key={c} className="text-sm text-foreground flex items-start gap-2">
@@ -114,11 +114,11 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Interpretación de Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Interpretación de Molino</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-6">{num.interpretation}</p>
           <div className="p-6 border border-ink/10">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Ejemplo práctico</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Ejemplo práctico</p>
             <p className="text-sm text-foreground leading-relaxed">{num.example}</p>
           </div>
         </motion.section>
@@ -127,7 +127,7 @@ export default function NumeroContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Relación con otros números</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Relación con otros números</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
         </motion.section>
@@ -135,7 +135,7 @@ export default function NumeroContent() {
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 border border-ink/10">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-sm text-muted leading-relaxed">{num.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
@@ -144,7 +144,7 @@ export default function NumeroContent() {
         {/* Herramienta relacionada */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-6 border border-ink/10">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Calculá tu mapa numérico</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Calculá tu mapa numérico</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad.
             </p>

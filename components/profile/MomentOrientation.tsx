@@ -93,7 +93,7 @@ export default function MomentOrientation({ profile, dailyEnergy, timing }: Mome
         <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-paper/15 border border-paper/15">
           {orientation.evidence.map((e) => (
             <div key={e.label} className="bg-ink px-5 py-4">
-              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-paper/60 mb-1.5">
+              <p className="font-mono text-xs uppercase tracking-[0.15em] text-paper/60 mb-1.5">
                 {e.label}
               </p>
               <p className="text-sm text-paper/85 leading-snug">{e.value}</p>

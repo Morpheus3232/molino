@@ -27,7 +27,7 @@ export default function NumerologiaContent() {
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Numerología
           </h1>
@@ -47,7 +47,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.08)} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Índice de contenidos</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Índice de contenidos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
@@ -72,7 +72,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.1)} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Qué es la numerología</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Qué es la numerología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -82,7 +82,7 @@ export default function NumerologiaContent() {
               <strong>Es importante aclarar:</strong> la numerología no es una ciencia. No existe evidencia empírica que respalde la idea de que los números determinen rasgos de personalidad o destinos. Lo que sí existe es una tradición cultural de más de 2500 años que Molino utiliza como herramienta de reflexión.
             </p>
             <div className="p-6 border border-ink/10 mt-6">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
                 La numerología es un lenguaje simbólico. Molino la usa como una lente de autoconocimiento, no como una métrica objetiva.
               </p>
@@ -94,7 +94,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.12)} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia y evolución</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y evolución</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -108,7 +108,7 @@ export default function NumerologiaContent() {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <div className="p-6 border border-ink/10">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
                 <p className="text-sm text-muted leading-relaxed">
                   <strong>Pitagorismo histórico:</strong> Escuela filosófica que veía los números como principios matemáticos del universo.
                 </p>
@@ -117,7 +117,7 @@ export default function NumerologiaContent() {
                 </p>
               </div>
               <div className="p-6 border border-ink/10">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
                 <p className="text-sm text-muted leading-relaxed">
                   No existe evidencia científica que respalde que los números determinen rasgos de personalidad. La investigación en psicología no ha encontrado correlaciones válidas entre fechas de nacimiento y características psicológicas.
                 </p>
@@ -130,14 +130,14 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.14)} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Numerología pitagórica</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Numerología pitagórica</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
               La numerología pitagórica es el sistema más utilizado en occidente. Asigna valores numéricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo dígito.
             </p>
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-foreground">
                 {["A=1", "B=2", "C=3", "D=4", "E=5", "F=6", "G=7", "H=8", "I=9", "J=1", "K=2", "L=3", "M=4", "N=5", "O=6", "P=7", "Q=8", "R=9", "S=1", "T=2", "U=3", "V=4", "W=5", "X=6", "Y=7", "Z=8"].map((v) => (
                   <span key={v} className="text-center py-1 px-2 rounded bg-background text-xs">{v}</span>
@@ -154,7 +154,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.16)} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo calcula Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo calcula Molino</h2>
           </div>
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
@@ -172,7 +172,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.18)} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los números del 1 al 9</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los números del 1 al 9</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Cada número tiene un significado tradicional en la numerología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
@@ -207,7 +207,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.2)} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Los números maestros fueron incorporados a la numerología moderna. No forman parte del sistema pitagórico original.
@@ -227,7 +227,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.22)} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <div className="p-6 border border-ink/10">
@@ -248,7 +248,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUpDelayed(0.24)} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes y referencias</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes y referencias</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -272,7 +272,7 @@ export default function NumerologiaContent() {
         {/* Herramientas relacionadas */}
         <motion.section {...fadeUpDelayed(0.24)} className="mb-12">
           <div className="p-6 border border-accent/20">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
               Ingresá tu fecha de nacimiento y descubrí tu número de Camino de Vida, Expresión y más.

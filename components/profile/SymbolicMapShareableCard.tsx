@@ -63,10 +63,10 @@ export default function SymbolicMapShareableCard({
         <div className="p-6 sm:p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium">
+            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">
               Mi mapa simbólico {year}
             </p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted">
               Según el zodíaco chino
             </p>
           </div>
@@ -81,7 +81,7 @@ export default function SymbolicMapShareableCard({
           {/* Allies */}
           {friends.length > 0 && (
             <div className="mb-6">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
               <div className="flex flex-wrap gap-2">
                 {friends.map((rel) => (
                   <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
@@ -96,7 +96,7 @@ export default function SymbolicMapShareableCard({
           {/* Challenging */}
           {challenging.length > 0 && (
             <div className="mb-6">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
               <div className="flex flex-wrap gap-2">
                 {challenging.map((rel) => (
                   <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
@@ -114,7 +114,7 @@ export default function SymbolicMapShareableCard({
               <span className="text-2xl">{formatAnimalEmoji(yearAnimal)}</span>
               <div className="flex-1">
                 <p className="text-xs font-medium text-foreground">{year} — Año del {yearAnimal}</p>
-                <p className="text-[10px] text-muted">{yearResonance.label}</p>
+                <p className="text-xs text-muted">{yearResonance.label}</p>
               </div>
               <span className="text-xs font-medium" style={{ color: yearResonance.color }}>
                 {"★".repeat(yearResonance.type === "alignment" ? 5 : yearResonance.type === "harmony" ? 4 : yearResonance.type === "neutral" ? 3 : 2)}

@@ -7,12 +7,12 @@ export default function GuiaContent() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[700px] px-6 sm:px-8 py-16 sm:py-28" id="main-content">
         <nav className="mb-12">
-          <Link href="/guia" className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium hover:text-accent/80 transition-colors">
+          <Link href="/guia" className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium hover:text-accent/80 transition-colors">
             ← volver a la guía
           </Link>
         </nav>
 
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Camino de Vida</p>
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Camino de Vida</p>
         <h1 className="font-heading text-6xl sm:text-7xl lg:text-8xl font-semibold tracking-tight text-foreground leading-[0.9] mb-4">
           7
         </h1>

@@ -127,7 +127,7 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                       style={{ backgroundColor: TIER_META[result.tier].color }}
                     />
                     <span
-                      className="text-[11px] uppercase tracking-wider"
+                      className="text-xs uppercase tracking-wider"
                       style={{ color: TIER_META[result.tier].color }}
                     >
                       {TIER_META[result.tier].label}

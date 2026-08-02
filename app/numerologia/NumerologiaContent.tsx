@@ -16,7 +16,7 @@ export default function NumerologiaContent() {
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerología</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerología</p>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             El lenguaje de los números
           </h1>
@@ -27,7 +27,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Metodología</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Metodología</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
@@ -45,7 +45,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Números maestros</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Números maestros</h2>
           </div>
           <p className="text-sm text-muted mb-6">Vibraciones de alta frecuencia que no se reducen a un solo dígito.</p>
           <div className="flex flex-wrap gap-4">
@@ -64,7 +64,7 @@ export default function NumerologiaContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cálculos fundamentales</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cálculos fundamentales</h2>
           </div>
           <div className="space-y-3">
             {(num.topics || []).map((topic: any) => (

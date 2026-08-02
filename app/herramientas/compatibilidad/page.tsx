@@ -96,7 +96,7 @@ export default function CompatibilidadCalcPage() {
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Compatibilidad simbólica
           </h1>
@@ -110,7 +110,7 @@ export default function CompatibilidadCalcPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Persona 1 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
               <div className="space-y-3">
                 <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
                   <option value="">Día</option>
@@ -138,7 +138,7 @@ export default function CompatibilidadCalcPage() {
 
             {/* Persona 2 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
               <div className="space-y-3">
                 <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
                   <option value="">Día</option>
@@ -187,7 +187,7 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                    className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-3"
                   >
                     Compatibilidad
                   </motion.p>
@@ -220,7 +220,7 @@ export default function CompatibilidadCalcPage() {
                   className="max-w-lg mx-auto mb-6"
                 >
                   <div className="p-4 rounded-md bg-card border border-border text-center transition-colors hover:border-accent/30">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
                     <p className="text-2xl font-heading font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
                   </div>
                 </motion.div>

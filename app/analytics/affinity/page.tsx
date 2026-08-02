@@ -198,7 +198,7 @@ export default function AffinityAnalyticsPage() {
             <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
               <div className="mb-8">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Analytics</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Analytics</p>
                 <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-2">
                   Affinity Experiment
                 </h1>
@@ -209,7 +209,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Event counts */}
               <section className="mb-12">
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">Conteo por evento</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Conteo por evento</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", counts.date_entered],
@@ -227,7 +227,7 @@ export default function AffinityAnalyticsPage() {
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-                      <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">
+                      <div className="text-xs text-muted mt-1 uppercase tracking-wider">
                         {EVENT_LABELS[
                           key === "profile_cta" ? "affinity_profile_cta_clicked"
                           : key === "recommendation_clicked" ? "affinity_recommendation_clicked"
@@ -244,7 +244,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Ratios */}
               <section className="mb-12">
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">Ratios (base: resultado visto)</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Ratios (base: resultado visto)</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <RatioCard label="Save rate" value={pct(ratios.save_rate)} desc={`${counts.save_clicked} / ${counts.result_viewed}`} />
                   <RatioCard label="Share rate" value={pct(ratios.share_rate)} desc={`${counts.shared} / ${counts.result_viewed}`} />
@@ -255,7 +255,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Unique users */}
               <section className="mb-12">
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">Usuarios únicos por evento</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Usuarios únicos por evento</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", userCounts.date_entered],
@@ -273,7 +273,7 @@ export default function AffinityAnalyticsPage() {
                       className="p-4 rounded-md border border-border bg-card shadow-sm text-center"
                     >
                       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-                      <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">usuarios</div>
+                      <div className="text-xs text-muted mt-1 uppercase tracking-wider">usuarios</div>
                     </motion.div>
                   ))}
                 </div>
@@ -282,7 +282,7 @@ export default function AffinityAnalyticsPage() {
               {/* Daily evolution */}
               {daily.length > 0 && (
                 <section className="mb-12">
-                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-6">Evolución diaria</h2>
+                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Evolución diaria</h2>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
@@ -338,8 +338,8 @@ function RatioCard({ label, value, desc }: { label: string; value: string; desc:
   return (
     <div className="p-4 rounded-md border border-border bg-card shadow-sm text-center">
       <div className="font-heading text-2xl font-bold text-foreground">{value}</div>
-      <div className="text-[10px] text-muted mt-1 uppercase tracking-wider">{label}</div>
-      <div className="text-[10px] text-muted mt-0.5">{desc}</div>
+      <div className="text-xs text-muted mt-1 uppercase tracking-wider">{label}</div>
+      <div className="text-xs text-muted mt-0.5">{desc}</div>
     </div>
   );
 }

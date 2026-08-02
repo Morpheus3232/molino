@@ -46,7 +46,7 @@ export default function FuentesContent() {
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Transparencia</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Transparencia</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Fuentes y metodología
           </h1>
@@ -66,7 +66,7 @@ export default function FuentesContent() {
         <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -89,14 +89,14 @@ export default function FuentesContent() {
         <motion.section {...fadeUpDelayed(0.15)} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
               La compatibilidad de Molino utiliza <strong>70% zodiaco chino + 30% numerología</strong> como fórmula base. Esto es una propuesta de Molino, no una convención universal.
             </p>
             <div className="p-6 border border-ink/10">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fórmula</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Fórmula</p>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
@@ -124,7 +124,7 @@ export default function FuentesContent() {
         <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes por sistema</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes por sistema</h2>
           </div>
           <div className="space-y-8">
             {Object.entries(bySystem).map(([system, sources]) => (

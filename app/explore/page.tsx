@@ -86,7 +86,7 @@ export default function ExplorePage() {
         <motion.section {...fadeUpDelayed(0.1)} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los tres sistemas</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los tres sistemas</p>
           </div>
           <div className="flex flex-wrap border-t border-ink/10">
             {SYSTEMS.map((system, i) => (
@@ -100,7 +100,7 @@ export default function ExplorePage() {
                 className={`w-full md:w-1/3 flex flex-col ${i < 2 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder} group`}
               >
                 <div className={`flex-1 ${cellPad}`}>
-                  <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium mb-2">{system.subtitle}</p>
+                  <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">{system.subtitle}</p>
                   <p className="font-display text-lg sm:text-xl text-foreground group-hover:text-accent transition-colors mb-3">
                     {system.title}
                   </p>
@@ -118,7 +118,7 @@ export default function ExplorePage() {
         <motion.section {...fadeUpDelayed(0.15)} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Conceptos clave</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Conceptos clave</p>
           </div>
 
           <div className="mb-8">
@@ -179,7 +179,7 @@ export default function ExplorePage() {
         <motion.section {...fadeUpDelayed(0.2)} className="mb-20 sm:mb-28">
           <div className="flex items-center gap-4 mb-10">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 border-t border-ink/10">
             {SOURCES.map((source, i) => (
@@ -201,7 +201,7 @@ export default function ExplorePage() {
         <motion.section {...fadeUpDelayed(0.25)}>
           <div className="flex items-center gap-4 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <p className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Afinidad Simbólica</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Afinidad Simbólica</p>
           </div>
           <p className="text-sm text-muted mb-6 max-w-lg leading-relaxed">
             Descubrí qué entidades reales resuenan con vos. Países, marcas, universidades y más.

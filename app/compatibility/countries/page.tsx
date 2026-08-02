@@ -107,7 +107,7 @@ export default function CountriesPage() {
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-12 sm:mb-16">
                 <button type="button" onClick={() => router.push("/profile")} className="text-sm text-muted hover:text-accent transition-colors mb-6 inline-flex items-center gap-2">&larr; Volver a mi mapa</button>
-                <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">Compatibilidad · Países</p>
+                <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">Compatibilidad · Países</p>
                 <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
                   Países que resuenan
                   <br /><span className="text-muted">con tu mapa</span>
@@ -123,7 +123,7 @@ export default function CountriesPage() {
                 <section className="mb-14">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-8 h-px bg-border" aria-hidden="true" />
-                    <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus 10 países ideales</h2>
+                    <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Tus 10 países ideales</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                     {top10.map((r, i) => (
@@ -139,12 +139,12 @@ export default function CountriesPage() {
                         <p className="text-3xl mb-1">{r.meta.flag}</p>
                         <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
                         <p className="text-xl font-heading font-bold mt-1" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
-                        <p className="text-[8px] uppercase tracking-[0.15em] text-muted">{r.targetAnimal}</p>
+                        <p className="text-[10px] uppercase tracking-[0.1em] text-muted">{r.targetAnimal}</p>
                         <AnimatePresence>
                           {expandedItem === `top-${r.name}` && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3">
                               <div className="text-left space-y-1 pt-2 border-t border-border">
-                                {r.reasons.map((reason, j) => (<p key={j} className="text-[11px] text-muted leading-relaxed">{reason}</p>))}
+                                {r.reasons.map((reason, j) => (<p key={j} className="text-xs text-muted leading-relaxed">{reason}</p>))}
                                 <p className="text-[9px] text-muted mt-1">Zodiac: {r.zodiacScore}/100</p>
                               </div>
                             </motion.div>
@@ -160,7 +160,7 @@ export default function CountriesPage() {
               <section className="mb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
-                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar todos los países</h2>
+                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explorar todos los países</h2>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <SearchInput value={search} onValueChange={setSearch} placeholder="Buscar país..." label="Buscar país" className="flex-1 max-w-sm" />
@@ -236,7 +236,7 @@ export default function CountriesPage() {
                                   <div className="flex flex-wrap gap-3 mt-3 text-xs text-muted">
                                     <span>Tu signo: {typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : ""}</span><span>·</span><span>País: {r.targetAnimal} de {r.targetElement}</span><span>·</span><span>{r.meta.reference} ({r.meta.year})</span>
                                   </div>
-                                  <p className="text-[10px] text-muted">Zodiac: {r.zodiacScore}/100 · Numerología: {r.numerologyScore}/100 · Final: {r.score}/100</p>
+                                  <p className="text-xs text-muted">Zodiac: {r.zodiacScore}/100 · Numerología: {r.numerologyScore}/100 · Final: {r.score}/100</p>
                                 </div>
                               </motion.div>
                             )}

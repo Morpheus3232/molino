@@ -134,13 +134,13 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Tu año */}
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
                   <p className="font-heading text-3xl font-bold text-foreground">{result.userYear}</p>
                   <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.userAnimal)}</p>
                 </div>
                 {/* Evento de la entidad */}
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">
                     {primaryEvent.label}
                   </p>
                   <p className="font-heading text-3xl font-bold text-foreground">{result.entityYear}</p>
@@ -189,7 +189,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
                 </p>
                 <span
-                  className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
+                  className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                   style={{ color: tierMeta?.color, backgroundColor: `${tierMeta?.color}15` }}
                 >
                   {result.relationship}
@@ -217,7 +217,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
             </p>
@@ -313,7 +313,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
               Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.
@@ -343,7 +343,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-lg">{relationIcon}</span>
                   <span
-                    className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
+                    className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                     style={{ color: relationColor, backgroundColor: `${relationColor}15` }}
                   >
                     {story.relationLabel} · {story.relationScore}/100
@@ -463,7 +463,7 @@ function PremiumHero({
     >
       {/* Label */}
       <motion.div variants={staggerItem}>
-        <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
+        <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
           Afinidad Personal · {meta.label}
         </p>
       </motion.div>
@@ -494,7 +494,7 @@ function PremiumHero({
           animate={reducedMotion ? {} : { opacity: result.score >= 75 ? 0.3 : 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium">vs</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">vs</span>
         </motion.div>
 
         {/* User — moves left for high scores */}
@@ -788,9 +788,9 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
       </div>
       <p className="text-xs text-muted leading-relaxed">{event.description}</p>
       <div className="flex items-center gap-3 mt-2">
-        <p className="text-[10px] text-muted">Fuente: {event.source}</p>
+        <p className="text-xs text-muted">Fuente: {event.source}</p>
         {isApproximate && (
-          <p className="text-[10px] text-muted">· Año aproximado</p>
+          <p className="text-xs text-muted">· Año aproximado</p>
         )}
       </div>
     </div>
@@ -801,7 +801,7 @@ function SectionHeader({ title, id }: { title: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 id={id} className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+      <h2 id={id} className="text-xs uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
     </div>
   );
 }
@@ -1033,7 +1033,7 @@ function QuickAffinity({
 
         {/* Hero — entity info always visible */}
         <motion.section {...fadeUp} className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
+          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
             Afinidad Personal · {meta.label}
           </p>
           <div className="flex items-center justify-center gap-4 mb-4">
@@ -1069,12 +1069,12 @@ function QuickAffinity({
 
               <div className="grid grid-cols-3 gap-3 mb-4">
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
                   <select
                     id="qa-day"
                     value={day}
                     onChange={e => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
@@ -1083,12 +1083,12 @@ function QuickAffinity({
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
                   <select
                     id="qa-month"
                     value={month}
                     onChange={e => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={m}>{MONTH_LABELS[i]}</option>
@@ -1096,12 +1096,12 @@ function QuickAffinity({
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
                   <select
                     id="qa-year"
                     value={year}
                     onChange={e => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
@@ -1143,7 +1143,7 @@ function QuickAffinity({
               <div className="p-6 rounded-md border border-border bg-card shadow-sm">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
                     <p className="text-sm text-muted leading-relaxed">
                       {saved
                         ? "Tu afinidad con esta entidad está guardada."

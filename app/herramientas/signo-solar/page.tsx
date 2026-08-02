@@ -55,7 +55,7 @@ export default function SignoSolarPage() {
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Astrología</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Astrología</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Signo Solar
           </h1>
@@ -68,7 +68,7 @@ export default function SignoSolarPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="max-w-md space-y-4">
             <div>
-              <label className="block text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
+              <label className="block text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
               <div className="flex gap-3">
                 <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
                   <option value="">Día</option>
@@ -115,7 +115,7 @@ export default function SignoSolarPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                    className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-3"
                   >
                     Tu Signo Solar
                   </motion.p>

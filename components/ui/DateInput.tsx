@@ -301,7 +301,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
       </div>
 
       {/* Labels */}
-      <div className="flex items-center mt-2 px-2 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="flex items-center mt-2 px-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
         <span className="w-16 sm:w-20 text-center">Día</span>
         <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
         <span className="w-16 sm:w-20 text-center">Mes</span>

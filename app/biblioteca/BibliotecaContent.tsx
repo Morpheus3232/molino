@@ -285,7 +285,7 @@ export default function BibliotecaContent() {
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Fuentes y referencias
           </h1>
@@ -331,10 +331,10 @@ export default function BibliotecaContent() {
               <section key={catKey} className="mb-14">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">
+                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">
                     {CATEGORY_LABELS[catKey]}
                   </h2>
-                  <span className="font-mono text-[10px] text-muted">{sources.length}</span>
+                  <span className="font-mono text-xs text-muted">{sources.length}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -393,7 +393,7 @@ export default function BibliotecaContent() {
                                   expandedDescription === source.id ? null : source.id
                                 )
                               }
-                              className={`w-full text-left px-3 py-2.5 font-mono text-[10px] font-semibold tracking-wider uppercase transition-all min-h-[40px] ${
+                              className={`w-full text-left px-3 py-2.5 font-mono text-xs font-semibold tracking-wider uppercase transition-all min-h-[40px] ${
                                 expandedDescription === source.id
                                   ? "bg-accent text-white"
                                   : "bg-background border border-ink/10 text-muted hover:text-foreground hover:border-ink/30"

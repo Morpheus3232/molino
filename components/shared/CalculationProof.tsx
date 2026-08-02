@@ -35,7 +35,7 @@ export default function CalculationProof({ label, data, className = "" }: Calcul
           className="w-4 h-px bg-ink/15 group-hover:bg-accent transition-colors"
           aria-hidden="true"
         />
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted group-hover:text-accent transition-colors">
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:text-accent transition-colors">
           {open ? "Ocultar" : "¿Cómo se calculó?"}
         </span>
         <span

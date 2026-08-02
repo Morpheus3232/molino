@@ -50,7 +50,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explora tus afinidades</h2>
+            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explora tus afinidades</h2>
           </div>
           <p className="text-sm text-muted max-w-xl leading-relaxed">
             Cada categoría muestra entidades rankeadas por resonancia simbólica con tu perfil.
@@ -77,7 +77,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-sm font-medium text-foreground">{cat.title}</h3>
                     <span
-                      className="  uppercase text-[11px] tracking-[0.1em] px-1.5 py-0.5"
+                      className="  uppercase text-xs tracking-[0.1em] px-1.5 py-0.5"
                       style={{
                         color: cat.result.overallScore >= 70 ? "#2D5A3D" : cat.result.overallScore >= 50 ? "#D4A843" : "#B45309",
                         backgroundColor: cat.result.overallScore >= 70 ? "rgba(45,90,61,0.1)" : cat.result.overallScore >= 50 ? "rgba(212,168,67,0.1)" : "rgba(180,83,9,0.1)",
@@ -130,7 +130,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
   return (
     <div className="mt-4 p-6 border border-ink/10">
       {/* Score breakdown */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 mb-6">
         <ScoreMiniCard label="Alineación" score={result.alignmentScore} icon="🎯" />
         <ScoreMiniCard label="Timing" score={result.timingScore} icon="⏰" />
         <ScoreMiniCard label="Energía" score={result.energyScore} icon="⚡" />
@@ -141,19 +141,19 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
         <p className="text-3xl font-semibold" style={{ color: scoreColor }}>
           {result.overallScore}/100
         </p>
-        <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mt-1">Score general</p>
+        <p className="  uppercase text-xs tracking-[0.15em] text-muted mt-1">Score general</p>
       </div>
 
       {/* Explanation */}
       <div className="mb-6">
-        <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">Análisis</p>
+        <p className="  uppercase text-xs tracking-[0.15em] text-muted mb-2">Análisis</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
         <div className="mb-6">
-          <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">A considerar</p>
+          <p className="  uppercase text-xs tracking-[0.15em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -168,7 +168,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
         <div className="mb-6">
-          <p className="  uppercase text-[11px] tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
+          <p className="  uppercase text-xs tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -209,7 +209,7 @@ function ScoreMiniCard({ label, score, icon }: { label: string; score: number; i
     <div className="p-3 border border-ink/10 text-center">
       <span className="text-lg block mb-1">{icon}</span>
       <p className="text-lg font-semibold" style={{ color }}>{score}</p>
-      <p className="  uppercase text-[11px] tracking-[0.1em] text-muted">{label}</p>
+      <p className="  uppercase text-xs tracking-[0.1em] text-muted">{label}</p>
     </div>
   );
 }
