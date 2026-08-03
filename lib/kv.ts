@@ -204,6 +204,44 @@ export async function markPaymentProcessed(paymentId: string): Promise<boolean> 
   }
 }
 
+/**
+ * Best-effort running total of estimated AI spend, bucketed by UTC day.
+ * NOT billing-critical (no atomic increment in the KvLike interface, so this
+ * is read-modify-write — under real concurrent writes it can undercount by a
+ * few generations) — it exists so there's at least a queryable number for
+ * "roughly how much are we spending" before a proper cost dashboard exists
+ * (see the [premium_interpretation_served] telemetry comment in
+ * app/api/intelligence/interpret/route.ts, same gap). Never throws in
+ * production: losing a cost data point must never fail the actual AI
+ * request it's tracking.
+ */
+export async function incrementDailyCost(usd: number): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+
+    const day = new Date().toISOString().slice(0, 10);
+    const key = `ai_cost:${day}`;
+    const current = (await kv.get<number>(key)) || 0;
+    // 40-day TTL: enough to compare week-over-week without accumulating
+    // indefinitely in a store that isn't meant to be a real time-series DB.
+    await kv.set(key, current + usd, { ex: 40 * 86400 });
+  } catch (error) {
+    console.error('[KV] Error in incrementDailyCost:', error);
+  }
+}
+
+export async function getDailyCost(day: string): Promise<number> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 0;
+    return (await kv.get<number>(`ai_cost:${day}`)) || 0;
+  } catch (error) {
+    console.error('[KV] Error in getDailyCost:', error);
+    return 0;
+  }
+}
+
 export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

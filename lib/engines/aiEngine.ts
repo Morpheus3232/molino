@@ -7,6 +7,44 @@ export interface AIInterpretation {
   reflectionQuestions: string[];
   poeticSummary: string;
   rawResponse?: string;
+  /** Token usage as reported by the provider — undefined only if the
+   * response shape didn't include it. Feeds lib/ai/costTracking.ts. */
+  usage?: { inputTokens: number; outputTokens: number };
+  /** The actual model string used (respects OPENAI_MODEL/ANTHROPIC_MODEL env
+   * overrides) — the caller needs this to price `usage` correctly instead of
+   * re-deriving the same default logic a second time. */
+  model?: string;
+}
+
+const AI_TIMEOUT_MS = 20_000;
+
+/**
+ * Single retry on transient failures only (network error, timeout, or a 5xx
+ * — never on 4xx, which means the request itself is wrong and retrying
+ * changes nothing but cost). One retry, not a backoff loop: this runs
+ * inside a user-facing request, so a long retry chain would just make a
+ * failing call feel like a hang instead of degrading to the deterministic
+ * fallback that already exists for exactly this case.
+ */
+async function fetchWithTimeoutAndRetry(url: string, init: RequestInit): Promise<Response> {
+  const attempt = async (): Promise<Response> => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+    try {
+      return await fetch(url, { ...init, signal: controller.signal });
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
+
+  try {
+    const res = await attempt();
+    if (res.status >= 500) throw new Error(`Transient upstream error: ${res.status}`);
+    return res;
+  } catch (err) {
+    console.warn('[aiEngine] First attempt failed, retrying once:', err instanceof Error ? err.message : err);
+    return attempt();
+  }
 }
 
 export async function generateAIInterpretation(
@@ -60,7 +98,7 @@ export async function generateWithOpenAI(
 
   const prompt = buildPrompt(user, target, result, template);
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const response = await fetchWithTimeoutAndRetry('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -89,7 +127,15 @@ export async function generateWithOpenAI(
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content || '';
-  return parseAIResponse(content);
+  const interpretation = parseAIResponse(content);
+  if (data.usage) {
+    interpretation.usage = {
+      inputTokens: data.usage.prompt_tokens ?? 0,
+      outputTokens: data.usage.completion_tokens ?? 0,
+    };
+  }
+  interpretation.model = model;
+  return interpretation;
 }
 
 // NOTE: This function must only be called from server-side (API routes)
@@ -109,7 +155,7 @@ export async function generateWithClaude(
 
   const prompt = buildPrompt(user, target, result, template);
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const response = await fetchWithTimeoutAndRetry('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -136,7 +182,15 @@ export async function generateWithClaude(
 
   const data = await response.json();
   const content = data.content?.[0]?.text || '';
-  return parseAIResponse(content);
+  const interpretation = parseAIResponse(content);
+  if (data.usage) {
+    interpretation.usage = {
+      inputTokens: data.usage.input_tokens ?? 0,
+      outputTokens: data.usage.output_tokens ?? 0,
+    };
+  }
+  interpretation.model = model;
+  return interpretation;
 }
 
 function buildPrompt(user: UserProfile, target: any, result: CompatibilityResult, template?: string): string {
