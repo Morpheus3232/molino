@@ -166,25 +166,14 @@ Fortalezas: ${result.strengths.join(', ')}
 Desafíos: ${result.challenges.join(', ')}`;
 
   if (template) {
-    return `${base}
-
-Instrucción especial: ${template}
-
-Genera una interpretación profunda que incluya:
-1. Una narrativa principal (2-3 párrafos)
-2. 3-4 insights detallados
-3. 3 recomendaciones prácticas
-4. 3 preguntas para la reflexión
-5. Un resumen poético (1-2 líneas)
-
-Formato de respuesta JSON:
-{
-  "narrative": "...",
-  "detailedInsights": ["..."],
-  "recommendations": ["..."],
-  "reflectionQuestions": ["..."],
-  "poeticSummary": "..."
-}`;
+    // The template (built by buildIntelligencePrompt) already contains the
+    // full user context AND its own JSON response format for the requested
+    // InterpretationType. Appending the generic compatibility-shaped format
+    // below used to silently override it — every type (personal_profile,
+    // timing, decision, ...) ended up forced into narrative/detailedInsights/
+    // recommendations/reflectionQuestions regardless of what it actually
+    // asked for. Trust the template completely instead.
+    return template;
   }
 
   return `${base}
