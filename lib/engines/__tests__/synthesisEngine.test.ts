@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildPersonalCode, buildPatterns, hasCircularSources } from "../synthesisEngine";
+import { buildPersonalCode, buildPatterns, buildTensions, hasCircularSources } from "../synthesisEngine";
 import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo } from "../numerologyEngine";
 import type { UserProfile } from "@/types/user";
 
@@ -184,5 +184,54 @@ describe("buildPatterns — 'Tu tensión' y 'Tu próximo movimiento' con converg
     const conCaballo = buildPatterns(realisticProfile(1, "Caballo", 4)).find((p) => p.label === "Tu próximo movimiento")!;
     expect(conBuey.sources).toEqual(["Ciclos", "Zodiaco Chino"]);
     expect(conCaballo.sources).toEqual(["Ciclos"]);
+  });
+});
+
+// buildTensions es la contraparte de buildPatterns: en vez de detectar cuándo
+// dos sistemas COINCIDEN, detecta cuándo dos sistemas ya calculados apuntan
+// en direcciones OPUESTAS. Solo debe declarar una tensión cuando el Life Path
+// tiene un reclamo de ritmo real (getLifePathPace) Y el elemento contradice
+// ese ritmo — nunca debe inventar una tensión para un grupo de Life Path sin
+// reclamo de ritmo (2,6,9,11,22,33) ni para un elemento fluido (Aire/Agua).
+describe("buildTensions — solo declara tensión ante una contradicción real de ritmo", () => {
+  it("Life Path rápido (1) + elemento lento (Tierra) → tensión real", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 1, element: "Tierra" }));
+    expect(tensions).toHaveLength(1);
+    expect(tensions[0].sources).toEqual(["Numerología", "Astrología"]);
+    expect(tensions[0].evidence).toContain("Tierra");
+    expect(tensions[0].evidence).toContain("1");
+  });
+
+  it("Life Path lento (7) + elemento rápido (Fuego) → tensión real", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 7, element: "Fuego" }));
+    expect(tensions).toHaveLength(1);
+  });
+
+  it("Life Path rápido (8) + elemento rápido (Fuego) → sin tensión (se refuerzan, no se contradicen)", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 8, element: "Fuego" }));
+    expect(tensions).toHaveLength(0);
+  });
+
+  it("Life Path sin reclamo de ritmo (2, 6, 9, 11, 22, 33) → nunca declara esta tensión, sea cual sea el elemento", () => {
+    for (const lifePath of [2, 6, 9, 11, 22, 33]) {
+      for (const element of ["Fuego", "Tierra", "Metal", "Aire", "Agua"]) {
+        const tensions = buildTensions(profileWith({ lifePath, element }));
+        expect(tensions, `lifePath=${lifePath}, element=${element}`).toHaveLength(0);
+      }
+    }
+  });
+
+  it("elemento fluido (Aire/Agua) nunca contradice, porque no fuerza un ritmo propio", () => {
+    for (const lifePath of [1, 3, 4, 5, 7, 8]) {
+      for (const element of ["Aire", "Agua"]) {
+        const tensions = buildTensions(profileWith({ lifePath, element }));
+        expect(tensions, `lifePath=${lifePath}, element=${element}`).toHaveLength(0);
+      }
+    }
+  });
+
+  it("determinismo: mismo perfil produce siempre la misma tensión", () => {
+    const profile = profileWith({ lifePath: 4, element: "Fuego" });
+    expect(buildTensions(profile)).toEqual(buildTensions(profile));
   });
 });
