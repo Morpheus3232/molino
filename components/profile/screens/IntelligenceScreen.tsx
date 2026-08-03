@@ -14,6 +14,7 @@ import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import ChatWithMolino from "@/components/profile/ChatWithMolino";
 import { smoothReveal } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
@@ -288,6 +289,26 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
               description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
             />
           </PremiumGate>
+        </div>
+      </section>
+
+      {/* 07 · PREGUNTALE A TU MOLINO — el chat contextual, no un asistente
+          genérico: cada pregunta se responde SOLO con el perfil, patrones y
+          tensiones ya calculados de este usuario (ver el caso "question" en
+          intelligenceEngine.ts), distinguiendo dato calculado / interpretación
+          simbólica / recomendación en la propia respuesta. Gating vía
+          usePremiumAccess (no un segundo PremiumGate) — ver el comentario en
+          ese hook sobre por qué no se reutiliza el paywall de la sección 06. */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">07 · Preguntale a tu Molino</h2>
+          </div>
+          <p className="text-sm text-muted mb-6 max-w-xl">
+            Una pregunta concreta sobre tu momento, tu perfil o una decisión — respondida solo con lo que Molino ya calculó sobre vos.
+          </p>
+          <ChatWithMolino profile={profile} />
         </div>
       </section>
 

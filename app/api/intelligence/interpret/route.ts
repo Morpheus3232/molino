@@ -18,7 +18,10 @@ import { hasPremiumAccess } from '@/lib/kv';
 // direct POST to this route could otherwise read the full paid interpretation
 // for any birth date without paying. Every other InterpretationType (timing,
 // compatibility, daily_energy, ...) is free product content and stays open.
-const PREMIUM_INTERPRETATION_TYPES = new Set<InterpretationType>(['personal_profile']);
+// "question" (the grounded chat) is gated the same way — each turn is a real
+// AI call, so an ungated chat would be an open-ended cost sink, not just a
+// content leak.
+const PREMIUM_INTERPRETATION_TYPES = new Set<InterpretationType>(['personal_profile', 'question']);
 
 interface RequestBody {
   type: InterpretationType;
