@@ -11,6 +11,7 @@ import {
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
 import { hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess } from '@/lib/kv';
+import { recordGeneration } from '@/lib/ai/costTracking';
 
 // "personal_profile" is the paid synthesis shown behind PremiumGate on
 // /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
@@ -75,6 +76,7 @@ export async function POST(req: NextRequest) {
 
     let aiResult: MolinoInterpretation | null = null;
     let aiError: string | null = null;
+    const generationStartedAt = Date.now();
 
     try {
       const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory });
@@ -92,6 +94,15 @@ export async function POST(req: NextRequest) {
       const aiResponse = provider === 'claude'
         ? await generateWithClaude(profile, entity || { name: 'Análisis' }, compatResult, prompt)
         : await generateWithOpenAI(profile, entity || { name: 'Análisis' }, compatResult, prompt);
+
+      await recordGeneration({
+        type,
+        provider,
+        model: aiResponse.model || 'unknown',
+        usage: aiResponse.usage,
+        durationMs: Date.now() - generationStartedAt,
+        status: 'ai',
+      });
 
       // buildIntelligencePrompt's template dictates its own JSON schema
       // (summary/alignment/timing/... — matching MolinoInterpretation
@@ -145,6 +156,14 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error('[/api/intelligence/interpret] AI error:', err);
       aiError = 'AI interpretation unavailable';
+      await recordGeneration({
+        type,
+        provider,
+        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
+        durationMs: Date.now() - generationStartedAt,
+        status: 'error',
+        errorReason: err instanceof Error ? err.message : String(err),
+      });
     }
 
     // Telemetry: how often does the paid synthesis actually fall back to the
