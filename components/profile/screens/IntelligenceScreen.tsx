@@ -19,7 +19,7 @@ import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { buildPatterns, buildMomentState } from "@/lib/engines/synthesisEngine";
+import { buildPatterns, buildTensions, buildMomentState } from "@/lib/engines/synthesisEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
@@ -57,6 +57,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
   // Fallback local — los mismos motores puros que la API llama. Si la síntesis
   // remota falla o tarda, la pantalla nunca queda vacía.
   const localPatterns = useMemo(() => buildPatterns(profile), [profile]);
+  const tensions = useMemo(() => buildTensions(profile), [profile]);
   const localMomentState = useMemo(
     () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
     [profile, dailyEnergy.overallScore, dailyEnergy.theme]
@@ -177,7 +178,44 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         </section>
       )}
 
-      {/* 03 · QUÉ SIGNIFICA PARA VOS — momentState.narrative ya es, en sí
+      {/* 03 · TUS TENSIONES — el reverso de "02": ahí dos sistemas COINCIDEN,
+          acá dos sistemas ya calculados apuntan en direcciones DISTINTAS.
+          buildTensions() solo declara una tensión cuando hay una
+          contradicción real y trazable (ritmo del Life Path vs. ritmo del
+          elemento) — si no la hay, la sección entera no se renderiza en vez
+          de mostrar una tensión débil o inventada. No oculta la
+          contradicción: la explica (evidence) y dice qué significa
+          (implication), sin resolverla como si una señal fuera la correcta. */}
+      {tensions.length > 0 && (
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">03 · Tus tensiones</h2>
+            </div>
+            <div className="space-y-8 max-w-2xl">
+              {tensions.map((tension) => (
+                <div key={tension.title}>
+                  <h3 className="font-display text-xl sm:text-2xl tracking-tight mb-3" style={{ color: elementColor }}>
+                    {tension.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-foreground leading-relaxed">{tension.evidence}</p>
+                  <p className="text-sm text-muted leading-relaxed mt-3">{tension.implication}</p>
+                  <div className="flex flex-wrap gap-1.5 mt-4">
+                    {tension.sources.map((src) => (
+                      <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
+                        {src}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 04 · QUÉ SIGNIFICA PARA VOS — momentState.narrative ya es, en sí
           misma, una síntesis cruzada (ciclo numerológico + energía del día +
           elemento astrológico + Life Path) en una sola oración. Antes esto
           vivía adentro de un <MomentOrientation> entero que repetía la
@@ -193,7 +231,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">03 · Qué significa para vos</h2>
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · Qué significa para vos</h2>
             </div>
             <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
               {momentState.narrative}
@@ -207,20 +245,20 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         </section>
       )}
 
-      {/* 04 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
+      {/* 05 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
           (esa es afinidad con entidades); acá es qué tan preparado está cada
           área de tu vida según decisionsEngine. */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · De la lectura a la acción</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · De la lectura a la acción</h2>
           </div>
           <DecisionMapSection profile={profile} />
         </div>
       </section>
 
-      {/* 05 · SÍNTESIS PROFUNDA — un único paywall (PremiumGate), no dos
+      {/* 06 · SÍNTESIS PROFUNDA — un único paywall (PremiumGate), no dos
           pantallas de venta seguidas. Antes esta sección mostraba gratis el
           resumen, "qué significa" y "por qué importa" de la MISMA
           interpretación que después pedía $8 por leer — pagabas por dos
@@ -234,7 +272,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · Síntesis profunda</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">06 · Síntesis profunda</h2>
           </div>
           <PremiumGate
             name={name}

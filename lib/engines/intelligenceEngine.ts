@@ -15,7 +15,7 @@ import type { DailyEnergyResult } from './dailyEnergyEngine';
 import type { TimingResult } from './timingEngine';
 import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
-import { buildPersonalCode, buildPatterns } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, ELEMENT_PACE } from './synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 
 // ============================================================
@@ -744,14 +744,10 @@ export function generateFallbackInterpretation(
  * with element — same discipline as decisionsEngine's per-lifePath text,
  * so two different lifePaths never collapse into the same sentence.
  */
-/** Whether an element's natural pace tends to move fast, slow down to check, or flow contextually — used to decide whether the element AGREES with a lifePath's speed claim ("y") or PULLS AGAINST it ("aunque"), so the two never contradict each other in the same sentence. */
-const ELEMENT_PACE: Record<string, 'fast' | 'slow' | 'fluid'> = {
-  Fuego: 'fast',
-  Tierra: 'slow',
-  Metal: 'slow',
-  Aire: 'fluid',
-  Agua: 'fluid',
-};
+// ELEMENT_PACE (fast/slow/fluid per element) now lives in synthesisEngine.ts
+// as the single source of truth — buildTensions() there uses the exact same
+// mapping to detect a structural pace mismatch, so the narrative here and
+// the "Tus Tensiones" section always agree on what counts as a contradiction.
 
 const ELEMENT_TONE: Record<string, string> = {
   Fuego: 'actuás primero y ajustás sobre la marcha',

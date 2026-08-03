@@ -26,6 +26,13 @@ export interface PatternInsight {
   sources: string[];
 }
 
+export interface TensionInsight {
+  title: string;
+  sources: string[];
+  evidence: string;
+  implication: string;
+}
+
 /**
  * Señal fundamental de la que depende cada `sources` label. Un insight/pattern
  * con `sources.length > 1` solo es una convergencia real si sus señales son
@@ -393,6 +400,69 @@ export function buildPatterns(profile: UserProfile): PatternInsight[] {
   }
 
   return patterns;
+}
+
+/**
+ * Whether an element's natural pace tends to move fast, slow down to check,
+ * or flow contextually. Shared with intelligenceEngine's operating-pattern
+ * narrative (getOperatingPattern/combineWithElement) — kept here as the
+ * single source so both the narrative text and buildTensions() below agree
+ * on what counts as "fast" vs "slow" for a given element.
+ */
+export const ELEMENT_PACE: Record<string, "fast" | "slow" | "fluid"> = {
+  Fuego: "fast",
+  Tierra: "slow",
+  Metal: "slow",
+  Aire: "fluid",
+  Agua: "fluid",
+};
+
+/**
+ * Whether a Life Path group has an inherent pace claim. Only [1,8] and [3,5]
+ * (material-action / expression-freedom numbers) carry a real "moves first"
+ * tendency, and only [4,7] (structure numbers) carry a real "checks before
+ * moving" tendency — see getOperatingPattern in intelligenceEngine.ts for the
+ * numerological reasoning behind each grouping. [2,6] (relational) and
+ * [9,11,22,33] (master/completion) don't have an inherent speed claim, so
+ * they return null rather than forcing a pace onto a group that doesn't have
+ * one.
+ */
+function getLifePathPace(lifePath: number): "fast" | "slow" | null {
+  if ([1, 8, 3, 5].includes(lifePath)) return "fast";
+  if ([4, 7].includes(lifePath)) return "slow";
+  return null;
+}
+
+/**
+ * Detects when two independent, already-computed signals point in opposite
+ * directions instead of reinforcing each other — the counterpart to
+ * buildPatterns' convergence detection. Currently checks one real structural
+ * contradiction: Life Path's inherent pace (only defined for groups that
+ * actually carry one, see getLifePathPace) vs. the element's natural pace.
+ * Returns an empty array rather than a weak/inferred tension when the two
+ * signals don't actually disagree, or when the Life Path group has no
+ * inherent pace claim to compare against.
+ */
+export function buildTensions(profile: UserProfile): TensionInsight[] {
+  const lp = safeNumber(profile.lifePath, 1);
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const tensions: TensionInsight[] = [];
+
+  const lpPace = getLifePathPace(lp);
+  const elementPace = ELEMENT_PACE[element];
+  if (lpPace && elementPace && elementPace !== "fluid" && elementPace !== lpPace) {
+    const lpClaim = lpPace === "fast" ? "moverte primero y ajustar en el camino" : "analizar antes de moverte";
+    const elementClaim = elementPace === "fast" ? "empuja a actuar ya" : "pide más tiempo de verificación antes de avanzar";
+    tensions.push({
+      title: "Tu ritmo interno no es parejo",
+      sources: ["Numerología", "Astrología"],
+      evidence: `Tu Life Path ${lp} tiende a ${lpClaim}, pero tu elemento ${element} ${elementClaim}. Son dos señales independientes — una del número, otra del elemento — tirando en direcciones distintas.`,
+      implication:
+        "Esto no significa que una de las dos señales esté \"equivocada\": significa que tu impulso y tu forma de procesar operan a velocidades distintas entre sí. Cuando sentís ese desfasaje, es información — no un error a corregir.",
+    });
+  }
+
+  return tensions;
 }
 
 export function buildDimensions(profile: UserProfile): DimensionInsight[] {
