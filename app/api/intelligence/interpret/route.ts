@@ -90,21 +90,71 @@ export async function POST(req: NextRequest) {
         ? await generateWithClaude(profile, entity || { name: 'Análisis' }, compatResult, prompt)
         : await generateWithOpenAI(profile, entity || { name: 'Análisis' }, compatResult, prompt);
 
-      aiResult = {
-        summary: aiResponse.narrative || '',
-        alignment: aiResponse.detailedInsights?.[0] || '',
-        timing: aiResponse.detailedInsights?.[1] || '',
-        strengths: aiResponse.recommendations?.slice(1, 4) || [],
-        tensions: aiResponse.reflectionQuestions?.slice(0, 2) || [],
-        whatToConsider: aiResponse.detailedInsights?.slice(2, 5) || [],
-        suggestedNextStep: aiResponse.recommendations?.[0] || '',
-        confidence: 'Alta',
-        limitations: ['Interpretación generada con IA.'],
-        rawContext: context,
-      };
+      // buildIntelligencePrompt's template dictates its own JSON schema
+      // (summary/alignment/timing/... — matching MolinoInterpretation
+      // directly, plus opening/corePattern/howYouOperate/relationalNote/
+      // closingSynthesis for personal_profile). aiEngine now sends that
+      // template verbatim, so the model's raw JSON already has these keys —
+      // parse it straight instead of shuffling it through the old
+      // narrative/detailedInsights/recommendations/reflectionQuestions shape,
+      // which was a different (compatibility-only) schema than what we asked for.
+      let structured: Partial<MolinoInterpretation> | null = null;
+      if (aiResponse.rawResponse) {
+        try {
+          structured = JSON.parse(aiResponse.rawResponse);
+        } catch {
+          structured = null;
+        }
+      }
+
+      aiResult = structured?.summary
+        ? {
+            summary: structured.summary || '',
+            alignment: structured.alignment || '',
+            timing: structured.timing || '',
+            strengths: structured.strengths || [],
+            tensions: structured.tensions || [],
+            whatToConsider: structured.whatToConsider || [],
+            suggestedNextStep: structured.suggestedNextStep || '',
+            confidence: structured.confidence || 'Alta',
+            limitations: structured.limitations?.length ? structured.limitations : ['Interpretación generada con IA.'],
+            opening: structured.opening,
+            corePattern: structured.corePattern,
+            howYouOperate: structured.howYouOperate,
+            relationalNote: structured.relationalNote,
+            closingSynthesis: structured.closingSynthesis,
+            rawContext: context,
+          }
+        : {
+            // Legacy shape fallback, kept in case the model ever ignores the
+            // requested JSON schema and free-forms prose instead.
+            summary: aiResponse.narrative || '',
+            alignment: aiResponse.detailedInsights?.[0] || '',
+            timing: aiResponse.detailedInsights?.[1] || '',
+            strengths: aiResponse.recommendations?.slice(1, 4) || [],
+            tensions: aiResponse.reflectionQuestions?.slice(0, 2) || [],
+            whatToConsider: aiResponse.detailedInsights?.slice(2, 5) || [],
+            suggestedNextStep: aiResponse.recommendations?.[0] || '',
+            confidence: 'Media',
+            limitations: ['Interpretación generada con IA.'],
+            rawContext: context,
+          };
     } catch (err) {
       console.error('[/api/intelligence/interpret] AI error:', err);
       aiError = 'AI interpretation unavailable';
+    }
+
+    // Telemetry: how often does the paid synthesis actually fall back to the
+    // templated local copy instead of the real AI interpretation? This has
+    // no dashboard yet — it's a structured log line so exposure can be
+    // measured (grep/aggregate in the hosting provider's log viewer) before
+    // deciding whether it needs a proper metric.
+    if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
+      console.log('[premium_interpretation_served]', JSON.stringify({
+        type,
+        source: aiResult ? 'ai' : 'fallback',
+        aiError: aiError || undefined,
+      }));
     }
 
     return NextResponse.json({
@@ -129,5 +179,10 @@ function sanitizeInterpretation(interp: MolinoInterpretation) {
     suggestedNextStep: interp.suggestedNextStep,
     confidence: interp.confidence,
     limitations: interp.limitations,
+    opening: interp.opening,
+    corePattern: interp.corePattern,
+    howYouOperate: interp.howYouOperate,
+    relationalNote: interp.relationalNote,
+    closingSynthesis: interp.closingSynthesis,
   };
 }

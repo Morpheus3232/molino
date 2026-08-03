@@ -25,6 +25,10 @@ interface MolinoInterpretationProps {
   showFallbackImmediately?: boolean;
   label?: string;
   description?: string;
+  /** Set by PremiumGate right after a real unlock (coupon or payment) so the
+   * loading state reads as part of the reveal instead of a second, unrelated
+   * loading screen appearing right under the "you unlocked it" banner. */
+  justUnlocked?: boolean;
 }
 
 function LoadingSkeleton() {
@@ -50,6 +54,16 @@ function LoadingSkeleton() {
         <div className="h-3 bg-border/50 rounded w-full mb-2" />
         <div className="h-3 bg-border/50 rounded w-3/4" />
       </div>
+    </div>
+  );
+}
+
+/** Reveal-specific loading state — same beat as PremiumGate's "unlocked" banner, not a second unrelated loading screen. */
+function RevealLoading() {
+  return (
+    <div className="flex items-center gap-3 py-6">
+      <span className="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0" aria-hidden="true" />
+      <p className="text-sm text-muted">Preparando tu lectura…</p>
     </div>
   );
 }
@@ -80,6 +94,7 @@ export default function MolinoInterpretation({
   showFallbackImmediately = true,
   label = "Interpretación de Molino",
   description,
+  justUnlocked = false,
 }: MolinoInterpretationProps) {
   const [fallbackInterpretation, setFallbackInterpretation] = useState<MolinoInterpretation | null>(null);
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretation | null>(null);
@@ -166,8 +181,8 @@ export default function MolinoInterpretation({
 
   const handleRegenerate = useCallback(() => {
     setAiInterpretation(null);
-    fetchInterpretation();
-  }, [fetchInterpretation]);
+    setHasAttemptedAI(false);
+  }, []);
 
   const interpretation = aiInterpretation || fallbackInterpretation;
   const isUsingAI = !!aiInterpretation;
@@ -219,7 +234,7 @@ export default function MolinoInterpretation({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <LoadingSkeleton />
+            {justUnlocked ? <RevealLoading /> : <LoadingSkeleton />}
           </motion.div>
         )}
       </AnimatePresence>
@@ -233,10 +248,28 @@ export default function MolinoInterpretation({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
           >
+            {/* 00. Apertura — solo en la síntesis premium (personal_profile) */}
+            {interpretation.opening && (
+              <div className="pb-4">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu lectura</p>
+                <p className="font-heading text-xl sm:text-2xl text-foreground leading-snug">{interpretation.opening}</p>
+              </div>
+            )}
+
             {/* 1. INSIGHT PRINCIPAL — lede editorial, sin caja */}
-            <div className="pb-5">
+            <div className={interpretation.opening ? "py-4 border-t border-ink/10" : "pb-5"}>
               <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed">{interpretation.summary}</p>
             </div>
+
+            {/* 01. Tu patrón central */}
+            {interpretation.corePattern && (
+              <div className="py-4 border-t border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
+                  Tu patrón central · {interpretation.corePattern.source}
+                </p>
+                <p className="text-sm text-foreground leading-relaxed">{interpretation.corePattern.whyItMatters}</p>
+              </div>
+            )}
 
             {/* 2. Qué significa */}
             {interpretation.alignment && (
@@ -302,6 +335,22 @@ export default function MolinoInterpretation({
               </div>
             )}
 
+            {/* 03. Cómo funcionás */}
+            {interpretation.howYouOperate && (
+              <div className="py-4 border-t border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Cómo funcionás</p>
+                <p className="text-sm text-foreground leading-relaxed">{interpretation.howYouOperate}</p>
+              </div>
+            )}
+
+            {/* 04. Tus relaciones — solo si hay datos reales de afinidad de zodiaco chino */}
+            {interpretation.relationalNote && (
+              <div className="py-4 border-t border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Tus relaciones</p>
+                <p className="text-sm text-foreground leading-relaxed">{interpretation.relationalNote}</p>
+              </div>
+            )}
+
             {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
             {interpretation.suggestedNextStep && (
               <div className="py-4 mt-4 border-t border-ink/10">
@@ -311,6 +360,16 @@ export default function MolinoInterpretation({
                   </p>
                   <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
                 </div>
+              </div>
+            )}
+
+            {/* 07. Síntesis — cierre memorable, pensado para compartir */}
+            {interpretation.closingSynthesis && (
+              <div className="py-5 mt-4 border-t border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu síntesis</p>
+                <p className="font-heading text-base sm:text-lg text-foreground leading-relaxed italic">
+                  “{interpretation.closingSynthesis}”
+                </p>
               </div>
             )}
 

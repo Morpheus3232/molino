@@ -15,6 +15,8 @@ import type { DailyEnergyResult } from './dailyEnergyEngine';
 import type { TimingResult } from './timingEngine';
 import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
+import { buildPersonalCode, buildPatterns } from './synthesisEngine';
+import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 
 // ============================================================
 // SHARED CONTEXT TYPES
@@ -44,6 +46,8 @@ export interface MolinoContext {
     personalityNumber?: number;
     archetype: string;
     archetypeDescription: string;
+    archetypeChallenges: string[];
+    archetypeStrengths: string[];
   };
   astrology: {
     sunSign: string;
@@ -100,6 +104,20 @@ export interface MolinoInterpretation {
   confidence: string;
   limitations: string[];
   rawContext: MolinoContext;
+  /**
+   * Narrative extension, populated only for type "personal_profile" (the paid
+   * synthesis). Optional and additive so the other interpretation types
+   * (daily_energy, timing, compatibility, decision, pattern) are unaffected.
+   */
+  opening?: string;
+  corePattern?: {
+    what: string;
+    source: string;
+    whyItMatters: string;
+  };
+  howYouOperate?: string;
+  relationalNote?: string;
+  closingSynthesis?: string;
 }
 
 // ============================================================
@@ -143,7 +161,17 @@ export function buildMolinoContext(
       soulNumber: profile.soulNumber,
       personalityNumber: profile.personalityNumber,
       archetype: profile.archetype,
-      archetypeDescription: profile.archetypeInfo?.description || '',
+      // ARCHETYPE_DESCRIPTIONS (numerologyEngine.ts) no tiene un campo
+      // `.description` — solo `keywords`/`strengths`/`challenges`. Leer
+      // `.description` devolvía siempre '' para cualquier perfil real,
+      // apagando en silencio la rama de texto más específica en
+      // generateFallbackInterpretation. `keywords` sí existe siempre (3 por
+      // arquetipo) — se usa para construir una frase real, no fabricada.
+      archetypeDescription: profile.archetypeInfo?.keywords?.length
+        ? `Tu arquetipo se define por ${profile.archetypeInfo.keywords.join(', ').toLowerCase()}.`
+        : '',
+      archetypeChallenges: profile.archetypeInfo?.challenges || [],
+      archetypeStrengths: profile.archetypeInfo?.strengths || [],
     },
     astrology: {
       sunSign: profile.sunSign,
@@ -217,9 +245,29 @@ PRINCIPIOS:
     case 'personal_profile': {
       const dailyEnergy = context.dailyEnergy;
       const timingCtx = context.timing;
+      const personalCode = buildPersonalCode({
+        lifePath: userProfile.lifePath,
+        expressionNumber: numerology.expressionNumber,
+        soulNumber: numerology.soulNumber,
+        personalityNumber: numerology.personalityNumber,
+      } as UserProfile);
+      const animal = chineseZodiac.animal as Animal;
+      const friends = getFriends(animal);
+      const challenging = getChallenging(animal);
+      const relationsBlock = friends.length || challenging.length
+        ? `RELACIONES REALES DE TU ANIMAL CHINO (${animal}) — dato tradicional, no inventado:
+- Afines: ${friends.map(f => `${f.animal} (${f.label})`).join(', ') || 'sin datos'}
+- Desafiantes: ${challenging.map(c => `${c.animal} (${c.label})`).join(', ') || 'sin datos'}`
+        : '';
+
       return `${rolePrompt}
 
 ${baseContext}
+CÓDIGO PERSONAL (numerología completa):
+- Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
+${personalCode.expression.number ? `- Expresión ${personalCode.expression.number} — ${personalCode.expression.name}: ${personalCode.expression.meaning}` : ''}
+${personalCode.soul.number ? `- Alma ${personalCode.soul.number} — ${personalCode.soul.name}: ${personalCode.soul.meaning}` : ''}
+${relationsBlock}
 ${dailyEnergy ? `MOMENTO ACTUAL:
 - Score de energía de hoy: ${dailyEnergy.overallScore}/100
 - Tema del día: ${dailyEnergy.theme}` : ''}
@@ -227,24 +275,42 @@ ${timingCtx ? `TIMING (para la intención "${timingCtx.intention}" que el usuari
 - Score: ${timingCtx.timingScore}/100
 - Explicación: ${timingCtx.explanation}` : ''}
 
-TAREA: Interpretá el perfil personal completo del usuario dentro de su mapa simbólico.
+TAREA: Escribí la síntesis premium del perfil completo del usuario, como una lectura con arco narrativo — no una lista de datos sueltos.
 
 IMPORTANTE:
-- El campo "timing" de tu respuesta debe explicar POR QUÉ el momento actual importa dentro
-  de la identidad del usuario (archetype, elemento) — no repitas el tema del año/día
-  personal como si fuera la novedad, eso ya se le mostró en otra sección.
+- El campo "timing" debe explicar POR QUÉ el momento actual importa dentro de la identidad
+  del usuario (archetype, elemento) — no repitas el tema del año/día personal como si fuera
+  la novedad, eso ya se le mostró en otra sección.
 - Si no hay MOMENTO ACTUAL disponible, no inventes un score ni un tema.
 - Si no hay TIMING disponible, no menciones ninguna intención ni recomendación de timing.
+- "corePattern": nombrá UN patrón central real (ej. cómo el Life Path y la Expresión, o el
+  elemento y el arquetipo, se refuerzan o se tensionan entre sí), decí de qué dos señales sale,
+  y por qué importa. No inventes una convergencia si las señales no dicen realmente lo mismo —
+  en ese caso describí la señal más fuerte sola.
+- "howYouOperate": traducí el perfil a comportamiento observable ("cuando tenés que elegir
+  entre X e Y, tu patrón tiende a..."), no a rasgos abstractos ("sos comunicativo").
+- "relationalNote": usá SOLO los animales afines/desafiantes reales listados arriba. Si no hay
+  relaciones listadas, dejá este campo vacío en vez de inventar una dinámica.
+- "closingSynthesis": una o dos frases memorables y compartibles que conecten quién es esta
+  persona, dónde está (su momento) y qué hacer ahora. Es el cierre, tiene que poder
+  leerse solo, fuera de contexto, y seguir siendo específico de este perfil.
+- "tensions": basate en un desafío real del arquetipo o en una fricción entre dos señales
+  concretas del perfil — nunca una frase que podría aplicar a cualquier persona.
 
 Generá una respuesta JSON con:
 {
+  "opening": "Una frase fuerte que sintetice quién es esta persona, derivada del perfil real — no una definición genérica de su Life Path",
   "summary": "Síntesis del perfil en 2-3 oraciones",
+  "corePattern": { "what": "el patrón central", "source": "de qué señales sale (ej. Life Path 4 + elemento Tierra)", "whyItMatters": "por qué importa" },
   "alignment": "Cómo los elementos del perfil se conectan entre sí",
+  "tensions": ["tensión 1, real y trazable", "tensión 2"],
+  "howYouOperate": "Comportamiento observable derivado del perfil, en 2-3 oraciones",
+  "relationalNote": "Qué tipo de energías complementan o generan fricción, basado en las relaciones reales del animal chino (vacío si no hay datos)",
   "timing": "Por qué el momento actual importa dentro de la identidad del usuario",
-  "strengths": ["fortaleza 1", "fortaleza 2", "fortaleza 3"],
-  "tensions": ["tensión 1", "tensión 2"],
-  "whatToConsider": ["consideración 1", "consideración 2"],
   "suggestedNextStep": "Una acción concreta y personalizada",
+  "closingSynthesis": "Cierre memorable y compartible en 1-2 frases",
+  "strengths": ["fortaleza 1", "fortaleza 2", "fortaleza 3"],
+  "whatToConsider": ["consideración 1", "consideración 2"],
   "confidence": "Alta/Media/Baja - basado en los datos disponibles",
   "limitations": ["limitación 1"]
 }`;
@@ -498,19 +564,114 @@ export function generateFallbackInterpretation(
   let alignment = '';
   let timing = '';
   let suggestedNextStep = '';
+  let strengths: string[] = [userProfile.archetype, `Elemento ${userProfile.element}`, `${userProfile.sunSign}`];
+  let tensions: string[] = ['Las diferencias son oportunidades de crecimiento.'];
+  let whatToConsider: string[] = [
+    'Estas interpretaciones se basan en sistemas simbólicos.',
+    'Son herramientas de reflexión, no predicciones.',
+  ];
+  let narrativeExtension: Pick<
+    MolinoInterpretation,
+    'opening' | 'corePattern' | 'howYouOperate' | 'relationalNote' | 'closingSynthesis'
+  > = {};
 
   switch (type) {
     case 'personal_profile': {
       const dailyEnergy = context.dailyEnergy;
-      summary = `${userProfile.name} tiene un Life Path ${userProfile.lifePath} como ${userProfile.archetype}. Su elemento ${userProfile.element} y signo ${userProfile.sunSign} crean una personalidad única.`;
-      alignment = `Los elementos de tu perfil se conectan a través de tu energía de ${userProfile.element} y tu enfoque de ${userProfile.archetype}.`;
+      const { numerology } = context;
+      const personalCode = buildPersonalCode({
+        lifePath: userProfile.lifePath,
+        expressionNumber: numerology.expressionNumber,
+        soulNumber: numerology.soulNumber,
+        personalityNumber: numerology.personalityNumber,
+      } as UserProfile);
+
+      // buildPatterns ya trae el guardrail anti-fabricación de synthesisEngine
+      // (assertNotCircular + findSharedTheme) — reusarlo acá evita reinventar
+      // esa lógica y garantiza que "Tu motor"/"Tu tensión" nunca inventen una
+      // convergencia que no exista en el perfil real.
+      const patterns = buildPatterns({
+        lifePath: userProfile.lifePath,
+        element: userProfile.element,
+        sunSign: userProfile.sunSign,
+        chineseZodiac: userProfile.chineseZodiac,
+        archetypeInfo: { description: numerology.archetypeDescription, challenges: numerology.archetypeChallenges },
+        cycles: { personalYear: cycles.personalYear },
+      } as UserProfile);
+      const motorPattern = patterns.find(p => p.label === 'Tu motor');
+      const tensionPattern = patterns.find(p => p.label === 'Tu tensión');
+
+      const animal = userProfile.chineseZodiac as Animal;
+      const friends = getFriends(animal);
+      const challengingRelations = getChallenging(animal);
+
+      summary = `${userProfile.name ? `${userProfile.name}, tu` : 'Tu'} Life Path ${userProfile.lifePath} (${personalCode.lifePath.name}) es la nota base de tu perfil: ${personalCode.lifePath.meaning} Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} lo modulan.`;
+      // "Qué significa" tiene que agregar una capa distinta de "Tu patrón
+      // central" (corePattern.whyItMatters usa motorPattern.description más
+      // abajo) — reusar el mismo texto acá era literal, no una repetición
+      // aparente. archetypeDescription es una señal real que hasta ahora no
+      // se usaba en ningún lado del fallback.
+      alignment = numerology.archetypeDescription
+        ? `${numerology.archetypeDescription} Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} son la textura con la que esto se expresa día a día.`
+        : `Tu energía de ${userProfile.element} y tu enfoque de ${userProfile.archetype} se conectan a través de tu Life Path ${userProfile.lifePath}.`;
       // Si hay energía del día real, explicamos por qué ese momento importa
       // para esta identidad — el tema de año/día y la mecánica elemento→potencia/modula
       // ya se comunican en Moment Insight, así que acá evitamos repetirlas literalmente.
       timing = dailyEnergy
         ? `El tono de ${dailyEnergy.theme.toLowerCase()} (${dailyEnergy.overallScore}/100) puede ser especialmente relevante para tu forma de desenvolverte desde tu ${userProfile.archetype}.`
         : `Tu año personal (${cycles.personalYear}) indica ${yearTheme}. Tu día personal (${cycles.personalDay}) sugiere ${dayTheme}.`;
-      suggestedNextStep = 'Explorá las diferentes capas de tu perfil para entender cómo se conectan.';
+      suggestedNextStep = getOperatingAction(userProfile.element, userProfile.lifePath, cycles.personalDay, numerology.archetypeChallenges[0], numerology.archetypeStrengths[0]);
+
+      // "Fortalezas" no puede ser una relabel de datos ya mostrados arriba
+      // (archetype/elemento/signo) — cada línea agrega una capa real:
+      // qué es (archetypeDescription), cómo se nota (ELEMENT_TONE, la misma
+      // tabla que usa howYouOperate) y cuándo se vuelve costo (el challenge
+      // real del arquetipo, sin repetir la oración completa de "tensions").
+      const motorKeyword = motorPattern?.keyword || personalCode.lifePath.name;
+      // `strengths` (archetypeInfo.strengths, p.ej. Iniciativa/Coraje) es un
+      // campo real distinto de `keywords` (que arma archetypeDescription,
+      // usado en "alignment") — evita que Fortalezas y Qué significa
+      // terminen citando la misma lista de palabras.
+      strengths = [
+        numerology.archetypeStrengths.length
+          ? `Tu fortaleza central: ${numerology.archetypeStrengths.slice(0, 3).join(', ').toLowerCase()}.`
+          : `${motorKeyword} es tu fortaleza central según tu Life Path ${userProfile.lifePath}.`,
+        `Con tu elemento ${userProfile.element}, esto se nota en que ${ELEMENT_TONE[userProfile.element] || 'tu forma de avanzar es propia'}.`,
+        numerology.archetypeChallenges[0]
+          ? `El límite aparece cuando se acumula sin freno: ahí tu ${numerology.archetypeChallenges[0].toLowerCase()} pasa de ser un rasgo a ser un costo.`
+          : 'Como toda fortaleza, rinde más cuando se equilibra con momentos de pausa.',
+      ];
+
+      tensions = [
+        tensionPattern?.description ||
+          (numerology.archetypeChallenges[0]
+            ? `Tu necesidad de ${numerology.archetypeChallenges[0].toLowerCase()} puede aparecer cuando tu energía está desbalanceada.`
+            : 'Todo perfil tiene una zona de crecimiento; la clave es reconocerla a tiempo.'),
+      ];
+      whatToConsider = [
+        'Estas interpretaciones se basan en sistemas simbólicos, no en predicciones científicas.',
+        'Son herramientas de reflexión — el patrón que ves acá describe una tendencia, no un destino fijo.',
+      ];
+
+      narrativeExtension = {
+        opening: `${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}`,
+        corePattern: motorPattern
+          ? { what: motorPattern.keyword, source: motorPattern.sources.join(' + '), whyItMatters: motorPattern.description }
+          : undefined,
+        howYouOperate: getOperatingPattern(userProfile.element, userProfile.lifePath, cycles.personalDay, numerology.archetypeChallenges[0], numerology.archetypeStrengths[0]),
+        relationalNote: friends.length || challengingRelations.length
+          ? `Tu animal chino (${animal}) tiende a complementarse con ${friends.map(f => f.animal).join(', ') || 'perfiles afines'}${challengingRelations.length ? `, y suele generar más fricción con ${challengingRelations.map(c => c.animal).join(', ')}` : ''}.`
+          : undefined,
+        // Pensado explícitamente para compartirse (screenshot/WhatsApp): corto,
+        // en forma de contraste (no de resumen), y sin ningún dato que no
+        // esté ya en el perfil. Combina 3 señales reales e independientes
+        // (animal chino, Life Path, motor+challenge del arquetipo) — la
+        // cardinalidad combinada (12 animales × 12 arquetipos) hace que la
+        // frase sea distinta para la enorme mayoría de los perfiles, sin
+        // reformular literalmente howYouOperate/suggestedNextStep de arriba
+        // (comparten el dato, no la oración).
+        closingSynthesis: `${animal} × Life Path ${userProfile.lifePath}: ${(motorPattern?.keyword || personalCode.lifePath.name).toLowerCase()} cuando podés elegir, ${(tensionPattern?.keyword || numerology.archetypeChallenges[0] || 'la duda').toLowerCase()} cuando no.`,
+      };
       break;
     }
 
@@ -558,12 +719,9 @@ export function generateFallbackInterpretation(
     summary,
     alignment,
     timing,
-    strengths: [userProfile.archetype, `Elemento ${userProfile.element}`, `${userProfile.sunSign}`],
-    tensions: ['Las diferencias son oportunidades de crecimiento.'],
-    whatToConsider: [
-      'Estas interpretaciones se basan en sistemas simbólicos.',
-      'Son herramientas de reflexión, no predicciones.',
-    ],
+    strengths,
+    tensions,
+    whatToConsider,
     suggestedNextStep,
     confidence: 'Media',
     limitations: [
@@ -571,12 +729,122 @@ export function generateFallbackInterpretation(
       'Los sistemas simbólicos son herramientas de reflexión, no ciencia.',
     ],
     rawContext: request.context,
+    ...narrativeExtension,
   };
 }
 
 // ============================================================
 // HELPER FUNCTIONS
 // ============================================================
+
+/**
+ * Translates the profile into observable behavior ("cuando tenés que elegir
+ * entre X e Y, tu patrón tiende a...") instead of an abstract trait label.
+ * Branches on lifePath group first (the dominant signal), then modulates
+ * with element — same discipline as decisionsEngine's per-lifePath text,
+ * so two different lifePaths never collapse into the same sentence.
+ */
+/** Whether an element's natural pace tends to move fast, slow down to check, or flow contextually — used to decide whether the element AGREES with a lifePath's speed claim ("y") or PULLS AGAINST it ("aunque"), so the two never contradict each other in the same sentence. */
+const ELEMENT_PACE: Record<string, 'fast' | 'slow' | 'fluid'> = {
+  Fuego: 'fast',
+  Tierra: 'slow',
+  Metal: 'slow',
+  Aire: 'fluid',
+  Agua: 'fluid',
+};
+
+const ELEMENT_TONE: Record<string, string> = {
+  Fuego: 'actuás primero y ajustás sobre la marcha',
+  Tierra: 'necesitás ver el terreno antes de moverte',
+  Aire: 'necesitás poder explicarlo con palabras antes de comprometerte',
+  Agua: 'seguís lo que sentís aunque no puedas justificarlo todavía',
+  Metal: 'buscás la versión más precisa antes de avanzar',
+};
+
+/**
+ * Combines a lifePath's directional claim ("tiende a moverte primero") with
+ * an element's pace. When they point the same way, joins with "y" (reinforces);
+ * when they don't, joins with "aunque" (names the real tension instead of
+ * producing a sentence that asserts both "you move fast" and "you need to
+ * check the terrain first" as if they were the same thing).
+ */
+function combineWithElement(branchPace: 'fast' | 'slow', element: string): string {
+  const tone = ELEMENT_TONE[element] || 'tu forma de avanzar es propia, no calca un patrón fijo';
+  const elementPace = ELEMENT_PACE[element];
+  if (!elementPace || elementPace === 'fluid') return `y tu elemento ${element} lo atraviesa a su manera: ${tone}`;
+  return elementPace === branchPace
+    ? `y tu elemento ${element} lo refuerza: ${tone}`
+    : `aunque tu elemento ${element} tira para el otro lado: ${tone}`;
+}
+
+/**
+ * The [1,8] / [2,6] / [3,5] / [4,7] / [9,11,22,33] grouping is a real
+ * numerological convergence, not an arbitrary bucket: 1&8 are the two
+ * "material action" numbers, 2&6 the two relational/caretaking numbers,
+ * 3&5 the two expression/freedom numbers, 4&7 the two structure numbers,
+ * and 9/11/22/33 are the master/completion numbers. Sharing the underlying
+ * BEHAVIORAL SHAPE across a group is legitimate — but each member still has
+ * its own real archetype challenge/strength (ARCHETYPE_DESCRIPTIONS), so the
+ * specific risk and the specific gift named in the sentence must come from
+ * THIS profile's actual data, not a placeholder shared by the whole group.
+ */
+function getOperatingPattern(element: string, lifePath: number, personalDay: number, challenge?: string, strength?: string): string {
+  const risk = challenge?.toLowerCase() || 'perder de vista tu propio límite';
+  const gift = strength?.toLowerCase() || 'tu forma de encarar las cosas';
+  if ([1, 8].includes(lifePath)) {
+    return `Cuando tenés que elegir entre esperar una señal externa o moverte por tu cuenta, tu patrón tiende a moverte primero — es tu ${gift} en acción, ${combineWithElement('fast', element)}. El riesgo específico en tu caso es tu ${risk}: no es la duda lo que te frena, es no delegar a tiempo cuando tu ${risk} toma el volante.`;
+  }
+  if ([2, 6].includes(lifePath)) {
+    return `Cuando tenés que elegir entre lo que necesitás vos y lo que necesita el grupo, tu patrón tiende a priorizar el equilibrio del conjunto — tu ${gift} lo hace posible: ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. El riesgo específico es que tu ${risk} te haga posponer tu propia necesidad hasta que se vuelve urgente.`;
+  }
+  if ([3, 5].includes(lifePath)) {
+    return `Cuando tenés que elegir entre profundizar en una sola cosa o mantener varias opciones abiertas, tu patrón tiende a mantener el movimiento — tu ${gift} necesita ese espacio, ${combineWithElement('fast', element)}. El riesgo específico es que tu ${risk} disperse la energía antes de que algo madure.`;
+  }
+  if ([4, 7].includes(lifePath)) {
+    return `Cuando tenés que elegir entre avanzar con lo que ya sabés o seguir analizando, tu patrón tiende a seguir analizando un poco más — ahí aparece tu ${gift}, ${combineWithElement('slow', element)}. El riesgo específico es que tu ${risk} confunda preparación con postergación.`;
+  }
+  if ([9, 11, 22, 33].includes(lifePath)) {
+    return `Cuando tenés que elegir entre tu propio proceso y lo que el entorno necesita de vos, tu patrón tiende a inclinarte hacia lo colectivo — tu ${gift} te lo pide: ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. El riesgo específico es que tu ${risk} diluya tu propio criterio en el de otros.`;
+  }
+  return `Cuando tenés que decidir entre avanzar o esperar, ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. Tu día personal (${personalDay}) modula cuánto pesa esa tendencia hoy en particular.`;
+}
+
+/**
+ * Concrete next action — same grouping logic as getOperatingPattern, but the
+ * action itself names this profile's real challenge/strength so it reads as
+ * "patrón detectado → tensión → acción" instead of a generic tip that could
+ * apply to anyone in the group.
+ */
+function getOperatingAction(element: string, lifePath: number, personalDay: number, challenge?: string, strength?: string): string {
+  const risk = challenge?.toLowerCase();
+  const gift = strength?.toLowerCase();
+  if ([1, 8].includes(lifePath)) {
+    return risk && gift
+      ? `La próxima vez que notes tu ${risk} empujando, dejá pasar un día antes de decidir — tu ${gift} no necesita la urgencia para funcionar.`
+      : 'Antes de tu próxima decisión importante, identificá un paso que puedas delegar en vez de asumirlo vos.';
+  }
+  if ([2, 6].includes(lifePath)) {
+    return risk
+      ? `Esta semana, nombrá en voz alta una necesidad tuya antes de que tu ${risk} la convierta en resentimiento.`
+      : 'Esta semana, nombrá en voz alta una necesidad tuya antes de que se vuelva urgente.';
+  }
+  if ([3, 5].includes(lifePath)) {
+    return risk
+      ? `Elegí una sola cosa de las que tenés abiertas y llevala un paso más allá — notá cuándo tu ${risk} te empuja a saltar a la siguiente.`
+      : 'Elegí una sola cosa de las que tenés abiertas y llevala un paso más allá de donde la dejaste.';
+  }
+  if ([4, 7].includes(lifePath)) {
+    return risk
+      ? `Ponete un límite de tiempo explícito para dejar de analizar — tu ${risk} va a pedir "un poco más", ignorala esta vez.`
+      : 'Ponete un límite de tiempo explícito para dejar de analizar y avanzar con lo que ya sabés.';
+  }
+  if ([9, 11, 22, 33].includes(lifePath)) {
+    return risk
+      ? `Antes de responder a lo que el entorno te pide, chequeá si es una necesidad real tuya o tu ${risk} actuando por costumbre.`
+      : 'Antes de responder a lo que el entorno te pide, chequeá qué es lo que vos necesitás en esto.';
+  }
+  return `Usá tu día personal (${personalDay}) como referencia para elegir si es momento de actuar o de observar.`;
+}
 
 function getDayTheme(personalDay: number): string {
   const themes: Record<number, string> = {

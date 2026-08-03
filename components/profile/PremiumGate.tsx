@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, isValidElement, cloneElement, type ReactElement } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analytics } from '@/lib/analytics/analytics';
 import Button from '@/components/ui/Button';
@@ -348,7 +348,12 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
             <p className="text-xs text-muted">Acceso permanente — la vas a encontrar acá cada vez que vuelvas.</p>
           </div>
         </motion.div>
-        {children}
+        {/* justUnlocked pasa a MolinoInterpretation para que, mientras carga,
+            muestre un estado de espera propio de la revelación en vez del
+            skeleton genérico — sin esto, el usuario ve "desbloqueaste tu
+            síntesis" y un instante después una SEGUNDA pantalla de carga
+            desconectada, como si el desbloqueo hubiera fallado a medias. */}
+        {isValidElement(children) ? cloneElement(children as ReactElement<{ justUnlocked?: boolean }>, { justUnlocked: true }) : children}
       </motion.div>
     );
   }

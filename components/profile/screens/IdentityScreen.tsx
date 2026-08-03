@@ -120,14 +120,18 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
     </div>
   ) : null;
 
-  // TU CÓDIGO — filas de "Expresión"/"Alma" (derivadas del nombre, "—" si no
-  // hay nombre) y "Personalidad" (derivada exclusivamente del día de
-  // nacimiento — ver KnowledgeConnections más abajo en esta misma pantalla).
-  const codeRows: { label: string; number: number | null; name: string; meaning?: string }[] = [
+  // TU CÓDIGO — "Expresión"/"Alma" solo existen si hay nombre (se calculan
+  // letra por letra); "Personalidad" siempre existe porque sale del día de
+  // nacimiento. El onboarding actual no pide nombre, así que Expresión/Alma
+  // no aplican para casi nadie — se ocultan en vez de mostrar un "—" que
+  // aparenta un dato roto (ver KnowledgeConnections más abajo).
+  const allCodeRows: { label: string; number: number | null; name: string; meaning?: string }[] = [
     { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode?.expression?.name || "" },
     { label: "Alma", number: profile.soulNumber ?? null, name: personalCode?.soul?.name || "" },
     { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode?.personality?.name || "", meaning: personalCode?.personality?.meaning },
   ];
+  const codeRows = allCodeRows.filter(row => row.number);
+  const hiddenNameDerivedRows = !profile.name && allCodeRows.some(row => !row.number && row.label !== "Personalidad");
 
   return (
     <div
@@ -296,7 +300,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             )}
           </motion.div>
 
-          {/* Expresión · Alma · Personalidad — filas */}
+          {/* Expresión · Alma · Personalidad — solo filas con dato real */}
           {codeRows.map((row, i) => (
             <motion.div
               key={row.label}
@@ -309,21 +313,20 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               <div className="flex items-baseline justify-between gap-4">
                 <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
                 <div className="flex items-baseline gap-3">
-                  {row.number ? (
-                    <>
-                      <span className="font-display text-2xl text-foreground">{row.number}</span>
-                      <span className="text-xs text-muted">{row.name}</span>
-                    </>
-                  ) : (
-                    <span className="text-lg text-muted">—</span>
-                  )}
+                  <span className="font-display text-2xl text-foreground">{row.number}</span>
+                  <span className="text-xs text-muted">{row.name}</span>
                 </div>
               </div>
-              {row.number && row.meaning && (
+              {row.meaning && (
                 <p className="text-xs text-muted mt-2">{row.meaning}</p>
               )}
             </motion.div>
           ))}
+          {hiddenNameDerivedRows && (
+            <p className="text-xs text-muted pt-4">
+              Expresión y Alma se calculan a partir de las letras de tu nombre — como Molino no lo pidió al empezar, no aparecen acá.
+            </p>
+          )}
         </div>
       </EditorialSection>
 

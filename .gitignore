@@ -35,3 +35,6 @@ next-env.d.ts
 .vercel
 .env*
 OmniRoute/
+
+# local-only dev fallback KV store (see lib/kv.ts), never used in production
+.molino-dev-kv.json
