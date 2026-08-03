@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { generateFallbackInterpretation, type MolinoContext } from "../intelligenceEngine";
+import { generateFallbackInterpretation, buildIntelligencePrompt, type MolinoContext } from "../intelligenceEngine";
 
 // Minimal MolinoContext fixture — only the fields generateFallbackInterpretation
 // actually reads for the "personal_profile" branch.
@@ -208,5 +208,86 @@ describe("generateFallbackInterpretation — personal_profile no debe ser genér
     expect(result.howYouOperate).toBeUndefined();
     expect(result.relationalNote).toBeUndefined();
     expect(result.closingSynthesis).toBeUndefined();
+  });
+});
+
+// El chat ("question") es la única superficie donde el usuario controla
+// directamente el prompt (pregunta en lenguaje libre) — el fallback nunca
+// debe fabricar una respuesta a esa pregunta sin IA, y el prompt real debe
+// llevar las reglas de grounding explícitas (no inventar datos, distinguir
+// dato/interpretación/recomendación, declinar lo fuera de alcance).
+describe("generateFallbackInterpretation — 'question' nunca inventa una respuesta sin IA", () => {
+  it("el summary reconoce que no pudo responder, no simula una respuesta a la pregunta", () => {
+    const context = contextWith({ lifePath: 4, archetype: "El Cimiento", chineseZodiac: "Buey" });
+    const result = generateFallbackInterpretation({
+      type: "question",
+      context,
+      question: "¿Debería cambiar de trabajo este mes?",
+    });
+    expect(result.summary).toMatch(/no está disponible|no pudimos generar/i);
+    expect(result.summary).not.toMatch(/deberías|te recomendamos cambiar/i);
+  });
+
+  it("igual expone los datos calculados reales del perfil (Life Path, archetype, animal) mientras espera la IA", () => {
+    const context = contextWith({ lifePath: 7, archetype: "El Investigador", chineseZodiac: "Serpiente" });
+    const result = generateFallbackInterpretation({ type: "question", context, question: "test" });
+    expect(result.alignment).toMatch(/7/);
+    expect(result.alignment).toMatch(/El Investigador/);
+    expect(result.alignment).toMatch(/Serpiente/);
+  });
+
+  it("sin pregunta, el summary sigue siendo honesto (no genera un resumen genérico como si hubiera respondido algo)", () => {
+    const context = contextWith({});
+    const result = generateFallbackInterpretation({ type: "question", context });
+    expect(result.summary).toMatch(/no pudimos generar/i);
+  });
+});
+
+describe("buildIntelligencePrompt — 'question' lleva las reglas de grounding del chat", () => {
+  const context = contextWith({ lifePath: 4, archetype: "El Cimiento", chineseZodiac: "Buey", element: "Tierra" });
+
+  it("incluye la pregunta real del usuario en el prompt", () => {
+    const prompt = buildIntelligencePrompt({ type: "question", context, question: "¿Es buen momento para mudarme?" });
+    expect(prompt).toContain("¿Es buen momento para mudarme?");
+  });
+
+  it("instruye explícitamente distinguir dato calculado / interpretación simbólica / recomendación", () => {
+    const prompt = buildIntelligencePrompt({ type: "question", context, question: "test" });
+    expect(prompt).toMatch(/DATO CALCULADO/);
+    expect(prompt).toMatch(/INTERPRETACIÓN SIMBÓLICA/);
+    expect(prompt).toMatch(/RECOMENDACIÓN/);
+  });
+
+  it("instruye no inventar datos y declinar explícitamente lo que Molino no calcula", () => {
+    const prompt = buildIntelligencePrompt({ type: "question", context, question: "test" });
+    expect(prompt).toMatch(/nunca inventes|Nunca inventes/i);
+    expect(prompt).toMatch(/médic|financier|legal/i);
+  });
+
+  it("incluye la conversación previa cuando existe, para preguntas de continuación", () => {
+    const prompt = buildIntelligencePrompt({
+      type: "question",
+      context,
+      question: "¿y si lo hago en marzo?",
+      conversationHistory: [{ question: "¿Es buen momento para mudarme?", answer: "Tu ciclo actual favorece construir." }],
+    });
+    expect(prompt).toContain("¿Es buen momento para mudarme?");
+    expect(prompt).toContain("Tu ciclo actual favorece construir.");
+  });
+
+  it("nunca declara un pattern/tension como convergencia de dos fuentes que resuelven a la misma señal", () => {
+    // Barre lifePaths cuyo grupo SÍ tiene reclamo de ritmo (donde buildTensions
+    // puede disparar) cruzado con elementos que lo contradicen — mismo chequeo
+    // anti-circularidad que ya corre para buildPatterns, aplicado al prompt del chat.
+    for (const lifePath of [1, 3, 4, 5, 7, 8]) {
+      for (const element of ["Fuego", "Tierra", "Metal"]) {
+        const prompt = buildIntelligencePrompt({
+          type: "question",
+          context: contextWith({ lifePath, element }),
+          question: "test",
+        });
+        expect(prompt).not.toMatch(/Numerología \+ Numerología|Zodiaco Chino \+ Zodiaco Chino/);
+      }
+    }
   });
 });

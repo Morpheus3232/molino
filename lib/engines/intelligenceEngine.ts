@@ -15,7 +15,7 @@ import type { DailyEnergyResult } from './dailyEnergyEngine';
 import type { TimingResult } from './timingEngine';
 import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
-import { buildPersonalCode, buildPatterns, ELEMENT_PACE } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, ELEMENT_PACE } from './synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 
 // ============================================================
@@ -77,7 +77,8 @@ export type InterpretationType =
   | 'timing'
   | 'compatibility'
   | 'decision'
-  | 'pattern';
+  | 'pattern'
+  | 'question';
 
 /** A prior question/answer pair from the current chat session only — never persisted. */
 export interface ConversationTurn {
@@ -446,6 +447,70 @@ Generá una respuesta JSON con:
   "limitations": ["limitación 1"]
 }`;
 
+    case 'question': {
+      // Reusa exactamente el mismo nivel de grounding que "personal_profile"
+      // (personalCode, patterns reales con guardrail anti-fabricación,
+      // relaciones reales del animal chino) — el chat no debe responder con
+      // menos base que la síntesis paga que lo precede.
+      const personalCode = buildPersonalCode({
+        lifePath: userProfile.lifePath,
+        expressionNumber: numerology.expressionNumber,
+        soulNumber: numerology.soulNumber,
+        personalityNumber: numerology.personalityNumber,
+      } as UserProfile);
+      const patterns = buildPatterns({
+        lifePath: userProfile.lifePath,
+        element: userProfile.element,
+        sunSign: astrology.sunSign,
+        chineseZodiac: chineseZodiac.animal,
+        archetypeInfo: { description: numerology.archetypeDescription, challenges: numerology.archetypeChallenges },
+        cycles: { personalYear: cycles.personalYear },
+      } as UserProfile);
+      const questionTensions = buildTensions({
+        lifePath: userProfile.lifePath,
+        element: userProfile.element,
+      } as UserProfile);
+      const animal = chineseZodiac.animal as Animal;
+      const friends = getFriends(animal);
+      const challenging = getChallenging(animal);
+      const dailyEnergy = context.dailyEnergy;
+
+      return `${rolePrompt}
+
+${baseContext}
+CÓDIGO PERSONAL:
+- Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
+PATRONES YA CALCULADOS:
+${patterns.map(p => `- ${p.label}: ${p.keyword} (${p.sources.join(' + ')})`).join('\n')}
+${questionTensions.length ? `TENSIONES YA DETECTADAS:\n${questionTensions.map(t => `- ${t.title}: ${t.evidence}`).join('\n')}\n` : ''}
+${friends.length || challenging.length ? `RELACIONES REALES DE TU ANIMAL CHINO (${animal}):\n- Afines: ${friends.map(f => f.animal).join(', ') || 'sin datos'}\n- Desafiantes: ${challenging.map(c => c.animal).join(', ') || 'sin datos'}\n` : ''}
+${dailyEnergy ? `MOMENTO ACTUAL: energía del día ${dailyEnergy.overallScore}/100, tema "${dailyEnergy.theme}"\n` : ''}
+${conversationContext}
+PREGUNTA DEL USUARIO: "${question || ''}"
+
+TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este es el chat contextual de Molino, no un asistente genérico.
+
+REGLAS ESTRICTAS:
+- Nunca inventes un dato (número, signo, animal, relación) que no esté en el CONTEXTO DEL USUARIO o en los bloques de arriba.
+- Distinguí SIEMPRE, dentro de tu respuesta, entre estas tres capas — no las mezcles como si fueran lo mismo:
+  1) DATO CALCULADO: lo que Molino ya calculó (citalo tal cual, ej. "tu Life Path es 4").
+  2) INTERPRETACIÓN SIMBÓLICA: qué podría significar ese dato — con lenguaje de posibilidad ("puede sugerir", "tiende a"), nunca de certeza.
+  3) RECOMENDACIÓN: una acción concreta, solo si la pregunta la pide — dejala vacía si no aplica.
+- Si la pregunta pide algo que Molino NO calcula (compatibilidad con una persona sin sus datos, un evento futuro con certeza, un consejo médico/financiero/legal/psicológico clínico), decilo explícitamente en "limitations" en vez de inventar una respuesta — y en ese caso "confidence" debe ser "Baja".
+- Si la pregunta hace referencia implícita a la conversación previa, interpretala como continuación de esa conversación.
+- Nunca dés certeza médica, financiera, legal o de diagnóstico psicológico. Si la pregunta lo pide, decí que Molino es una herramienta de reflexión simbólica y sugerí un profesional para eso específico.
+
+Generá una respuesta JSON con:
+{
+  "summary": "La respuesta directa a la pregunta, 2-4 oraciones",
+  "alignment": "La interpretación simbólica detrás de esa respuesta — qué significa dentro del mapa del usuario",
+  "suggestedNextStep": "Una recomendación concreta si la pregunta la pide, vacío ('') si no aplica",
+  "whatToConsider": ["qué no se puede saber con este sistema, si corresponde"],
+  "confidence": "Alta/Media/Baja",
+  "limitations": ["qué falta o qué está fuera del alcance de Molino, si corresponde"]
+}`;
+    }
+
     case 'pattern':
       return `${rolePrompt}
 
@@ -707,6 +772,22 @@ export function generateFallbackInterpretation(
       }
       break;
     }
+
+    // Sin IA no hay forma honesta de responder una pregunta abierta en
+    // lenguaje natural — el fallback determinista no inventa una respuesta,
+    // solo confirma qué datos reales tiene disponibles para cuando la IA
+    // vuelva a estar disponible (mismo principio que "no fabricar" del resto
+    // del engine, aplicado a un caso donde la única respuesta honesta es
+    // "no puedo responder esto todavía").
+    case 'question':
+      summary = request.question
+        ? `Todavía no pudimos generar una respuesta a "${request.question}" — necesita interpretación de IA, que no está disponible en este momento.`
+        : 'No pudimos generar una respuesta — intentá de nuevo en un momento.';
+      alignment = `Mientras tanto, tu Life Path ${userProfile.lifePath} (${userProfile.archetype}) y tu animal chino ${userProfile.chineseZodiac} son los datos base que Molino ya tiene calculados sobre vos.`;
+      timing = '';
+      suggestedNextStep = 'Volvé a intentar en unos segundos.';
+      whatToConsider = [];
+      break;
 
     default:
       summary = `Tu perfil de ${userProfile.archetype} con Life Path ${userProfile.lifePath} muestra una energía única.`;
