@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import { useDictionary } from "@/lib/i18n/useDictionary";
 
 const PRINCIPLE_ICONS: Record<string, string> = {
   "conocimiento-libre": "01",
@@ -21,7 +22,7 @@ const principles = [
   {
     id: "privacidad-radical",
     title: "Privacidad radical",
-    description: "Tu fecha de nacimiento es el único dato que usamos, y nunca sale de tu navegador. No hay base de datos, no hay servidor guardando tu perfil, no hay cookies de tracking. Tu mapa de autoconocimiento existe solo mientras la pestaña está abierta.",
+    description: "Tu fecha de nacimiento es el único dato que usamos, y nunca sale de tu navegador: se guarda localmente en tu dispositivo (para que tu mapa siga ahí la próxima vez que entrás) y nunca en un servidor. No hay base de datos con tu perfil, no hay cookies de tracking.",
   },
   {
     id: "transparencia-total",
@@ -76,6 +77,7 @@ const contemporarySystems = [
 ];
 
 export default function FilosofiaContent() {
+  const t = useDictionary();
   return (
     <div className="min-h-screen bg-background">
 
@@ -248,7 +250,7 @@ export default function FilosofiaContent() {
               },
               {
                 q: "No es un producto gratuito en su totalidad",
-                a: "Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral —la lectura que conecta todos tus sistemas— es una capa Premium opcional de $8 USD, pago único y acceso permanente. No hay suscripciones ni versiones por mes.",
+                a: `Tu mapa, tus patrones y las tradiciones se exploran libremente, sin registro. Solo la síntesis integral —la lectura que conecta todos tus sistemas— es una capa Premium opcional de ${t.premium.priceLabel}, pago único y acceso permanente. No hay suscripciones ni versiones por mes.`,
               },
             ].map((item, i) => (
               <motion.div

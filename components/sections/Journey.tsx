@@ -3,19 +3,38 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const steps = [
+interface JourneyProps {
+  /** Si el usuario ya tiene mapa, el paso 01 deja de vender "creá tu mapa"
+   *  (ya lo hizo) y se convierte en una entrada a su propio mapa. */
+  hasProfile?: boolean;
+}
+
+const steps: Array<{
+  number: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+}> = [
   { number: "01", title: "DESCUBRÍ", description: "Creá tu mapa con tu fecha de nacimiento. Sin registro, al instante.", href: "/onboarding", cta: "EMPEZÁ AHORA" },
-  { number: "02", title: "ENTENDÉ", description: "Conocé tu mapa de numerología, zodíaco y astrología en un solo lugar.", href: "/profile", cta: "VER MÁS" },
-  { number: "03", title: "EXPLORÁ", description: "Descubrí patrones, ciclos y sincronías ocultas en tu perfil.", href: "/explore", cta: "VER MÁS" },
-  { number: "04", title: "CONECTÁ", description: "Compará tu perfil con países, ciudades y marcas que resuenan con vos.", href: "/affinity", cta: "VER MÁS" },
-  { number: "05", title: "REFLEXIONÁ", description: "Tomá perspectiva con tu lectura completa de todos los sistemas.", href: "/biblioteca", cta: "VER MÁS" },
+  { number: "02", title: "ENTENDÉ", description: "Conocé tu mapa de numerología, zodíaco y astrología en un solo lugar.", href: "/profile", cta: "ARMÁ TU MAPA" },
+  { number: "03", title: "EXPLORÁ", description: "Descubrí patrones, ciclos y sincronías ocultas en tu perfil.", href: "/explore", cta: "MIRÁ TUS PATRONES" },
+  { number: "04", title: "CONECTÁ", description: "Compará tu perfil con países, ciudades y marcas que resuenan con vos.", href: "/affinity", cta: "COMPARÁ AFINIDADES" },
+  { number: "05", title: "REFLEXIONÁ", description: "Tomá perspectiva con tu lectura completa de todos los sistemas.", href: "/biblioteca", cta: "LEÉ MÁS" },
 ];
 
 /**
  * Lista numerada a escala editorial: el numeral es el elemento grafico y cada
  * paso ocupa una fila completa, en vez de cinco columnas apretadas.
  */
-export default function Journey() {
+export default function Journey({ hasProfile = false }: JourneyProps) {
+  const resolved = hasProfile
+    ? [
+        { ...steps[0], description: "Tu mapa ya está listo: identidad, mundo, círculo e inteligencia en un solo lugar.", href: "/profile", cta: "VER MI MAPA" },
+        ...steps.slice(1),
+      ]
+    : steps;
+
   return (
     <section className="bg-background">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
@@ -39,7 +58,7 @@ export default function Journey() {
 
         {/* Una fila por paso: el numeral manda */}
         <div className="border-t border-ink/10">
-          {steps.map((step, i) => (
+          {resolved.map((step, i) => (
             <motion.div
               key={step.number}
               initial={{ opacity: 0, y: 20 }}

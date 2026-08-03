@@ -10,6 +10,7 @@ import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { formatDate as formatI18nDate } from "@/lib/i18n/format";
 
 const ORIENTATION_ORDER: Orientation[] = ["ACTUAR", "ESPERAR", "OBSERVAR"];
 
@@ -21,7 +22,7 @@ const transitionVariants = {
 
 function formatDate(dateStr: string): string {
   const date = new Date(`${dateStr}T00:00:00`);
-  return date.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" });
+  return formatI18nDate(date, { weekday: "long", day: "numeric", month: "long" });
 }
 
 export default function EvolutionPage() {

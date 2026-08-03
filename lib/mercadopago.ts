@@ -10,7 +10,7 @@ function getRequiredEnv(name: string): string {
 }
 
 const PRODUCT_PRICE_USD = 8;
-const PRODUCT_PRICE_ARS = 8100;
+const PRODUCT_PRICE_ARS = 11880;
 const PRODUCT_CURRENCY_USD = 'USD';
 const PRODUCT_CURRENCY_ARS = 'ARS';
 const PRODUCT_ID = 'molino_premium';

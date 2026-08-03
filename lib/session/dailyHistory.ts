@@ -22,6 +22,11 @@ export interface DailySnapshot {
   orientation: Orientation;
   energyLevel: EnergyLevel;
   theme: string;
+  /** Energía numérica 1-100 del día (dailyEnergyEngine). Permite comparar
+   *  "hoy" con "ayer" con un delta real en vez de solo el bucket de 3 niveles. */
+  overallScore?: number;
+  /** Día personal numerológico (1-9/11/22) del día registrado. */
+  personalDay?: number;
 }
 
 /**
@@ -83,4 +88,31 @@ export function getPreviousSnapshot(profileKey: string, date: string): DailySnap
   const history = getHistoryForProfile(profileKey, MAX_ENTRIES);
   const before = history.filter((h) => h.date < date);
   return before[0] ?? null;
+}
+
+/**
+ * Racha de días consecutivos (por fecha calendario, sin huecos) con la misma
+ * orientación, contando desde el snapshot más reciente hacia atrás. Devuelve
+ * null si hay menos de 2 días consecutivos — una racha de 1 no es un patrón,
+ * solo el día de hoy.
+ */
+export function computeStreak(profileKey: string): { orientation: Orientation; days: number } | null {
+  const history = getHistoryForProfile(profileKey, MAX_ENTRIES);
+  if (history.length === 0) return null;
+
+  const orientation = history[0].orientation;
+  let days = 1;
+  let cursor = new Date(`${history[0].date}T00:00:00`);
+
+  for (let i = 1; i < history.length; i++) {
+    const expectedPrev = new Date(cursor);
+    expectedPrev.setDate(expectedPrev.getDate() - 1);
+    const expectedKey = toLocalDateKey(expectedPrev);
+
+    if (history[i].date !== expectedKey || history[i].orientation !== orientation) break;
+    days += 1;
+    cursor = expectedPrev;
+  }
+
+  return days >= 2 ? { orientation, days } : null;
 }

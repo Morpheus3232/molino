@@ -25,13 +25,16 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
   const [generating, setGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { name, lifePath, sunSign, element, chineseZodiac, archetype } = profile;
+  const { lifePath, sunSign, element, chineseZodiac, archetype } = profile;
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
   const chineseElement = profile.chineseZodiacInfo?.element || "";
   const archetypeData = ARCHETYPES[lifePath];
   const archetypeName = archetypeData?.name || archetype;
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
-  const firstName = name.split(" ")[0] || name;
+  // El onboarding es birthDate-first: casi nunca hay un name real. El
+  // arquetipo funciona como titular editorial en su lugar.
+  const name = profile.name?.trim() || archetypeName || "";
+  const firstName = name ? name.split(" ")[0] : archetypeName || "Tu perfil";
 
   const shareUrl = buildShareableUrl(profile, currentTab);
 

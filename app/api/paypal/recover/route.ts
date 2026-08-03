@@ -25,14 +25,14 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    if (!name || !birthDate) {
+    if (!birthDate) {
       return NextResponse.json({
         verified: false,
-        reason: 'No se pudo vincular el pago a un mapa. Proporcioná tu nombre y fecha de nacimiento registrados.',
+        reason: 'No se pudo vincular el pago a un mapa. Proporcioná tu fecha de nacimiento.',
       }, { status: 400 });
     }
 
-    const profileHash = hashProfile(name, birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate);
 
     let order;
     try {

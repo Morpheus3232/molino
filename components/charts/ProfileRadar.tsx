@@ -34,7 +34,7 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
             el contenedor monta con tamaño 0 (tab animado con AnimatePresence),
             lo que rompía la pantalla con "Cannot read properties of undefined
             (reading 'focus')". */}
-        <RadarChart data={data} accessibilityLayer={false}>
+        <RadarChart data={data} accessibilityLayer={false} margin={{ top: 32, right: 44, bottom: 28, left: 44 }}>
           <defs>
             <radialGradient id={gradientId} cx="50%" cy="50%" r="75%">
               <stop offset="0%" stopColor={color} stopOpacity={0.4} />
@@ -46,7 +46,7 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
           </defs>
           <PolarGrid stroke="currentColor" strokeOpacity={0.5} className="text-border" />
           <PolarAngleAxis dataKey="subject" tick={{ fill: "currentColor", fontSize: 12 }} className="text-muted" />
-          <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: "currentColor", fontSize: 12 }} className="text-muted" />
+          <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
           <Radar
             name="Perfil"
             dataKey="value"

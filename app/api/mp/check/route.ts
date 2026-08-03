@@ -6,14 +6,14 @@ export async function POST(req: NextRequest) {
   try {
     const { name, birthDate } = await req.json();
 
-    if (!name || !birthDate) {
+    if (!birthDate) {
       return NextResponse.json(
-        { error: 'name and birthDate are required' },
+        { error: 'birthDate is required' },
         { status: 400 },
       );
     }
 
-    const profileHash = hashProfile(name, birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate);
     const premium = await hasPremiumAccess(profileHash);
 
     return NextResponse.json({ premium });

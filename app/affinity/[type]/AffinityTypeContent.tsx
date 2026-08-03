@@ -182,8 +182,7 @@ function ResultRow({
           </p>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-lg font-display font-semibold" style={{ color: tierMeta.color }}>{result.score}</p>
-          <p className="text-xs" style={{ color: tierMeta.color }}>{tierMeta.label}</p>
+          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierMeta.color }}>{tierMeta.label}</p>
         </div>
       </div>
       {result.explanation && (

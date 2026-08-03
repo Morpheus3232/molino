@@ -26,7 +26,7 @@ export function useReducedMotion(): boolean {
 export const fadeUp = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: "easeOut" as const },
 };
 
@@ -34,7 +34,7 @@ export const fadeUp = {
 export const fadeUpDelayed = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
@@ -42,7 +42,7 @@ export const fadeUpDelayed = (delay: number) => ({
 export const fadeIn = {
   initial: { opacity: 0 },
   whileInView: { opacity: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -50,7 +50,7 @@ export const fadeIn = {
 export const scaleUp = {
   initial: { opacity: 0, scale: 0.95 },
   whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -58,13 +58,16 @@ export const scaleUp = {
 export const staggerContainer = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.08 } },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
 };
 
-// Stagger item (use inside staggerContainer)
+// Stagger item (use inside staggerContainer) — needs its own viewport:{once:true}
+// or it reverts to invisible whenever it scrolls out of view again (e.g. after
+// the app's own scrollTo(0,0) on navigation), leaving content stuck hidden.
 export const staggerItem = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -79,13 +82,14 @@ export const pageEnter = {
 export const staggerSection = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-  viewport: { once: true, margin: "-60px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
 };
 
 // Stagger item for cards inside a section
 export const staggerCard = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: "easeOut" as const },
 };
 
@@ -93,7 +97,7 @@ export const staggerCard = {
 export const numberReveal = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 

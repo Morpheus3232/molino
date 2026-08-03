@@ -217,7 +217,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                           <ul className="text-sm text-muted space-y-2">
                             {story.connections.map((conn, i) => (
                               <li key={i} className="flex items-start gap-2">
-                                <span className="text-green-500 mt-0.5">✓</span>
+                                <span className="text-accent mt-0.5">✓</span>
                                 <span>{conn}</span>
                               </li>
                             ))}

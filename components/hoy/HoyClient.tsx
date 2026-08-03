@@ -9,18 +9,22 @@ import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation } from "@/lib/utils/orientation";
-import { getTopAffinityHighlights, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { getTopAffinityHighlights } from "@/lib/engines/affinityEngine";
+import { getScoreLabel } from "@/lib/utils/score";
 import {
   recordDailySnapshot,
   getPreviousSnapshot,
+  computeStreak,
   toLocalDateKey,
   type Orientation,
   type EnergyLevel,
+  type DailySnapshot,
 } from "@/lib/session/dailyHistory";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { formatDate } from "@/lib/i18n/format";
 
 function getEnergyLevel(score: number): EnergyLevel {
   if (score >= 75) return "ALTA";
@@ -28,8 +32,47 @@ function getEnergyLevel(score: number): EnergyLevel {
   return "BAJA";
 }
 
-function formatAffinityHint(result: AffinityResult): string {
-  return `con ${result.entity.name}`;
+/**
+ * El hilo de continuidad día a día — la razón real para volver a /hoy.
+ * Usa dailyHistory (ya calculado, ya guardado localmente) para que el
+ * usuario sienta que Molino "recuerda" su día anterior, sin backend ni
+ * notificaciones: solo comparar el snapshot de ayer con el de hoy.
+ */
+function buildContinuityLine(
+  previous: DailySnapshot | null,
+  theme: string,
+  currentScore: number
+): string | null {
+  if (!previous) return "Volvé mañana y vas a poder comparar cómo cambió tu energía.";
+
+  const sameTheme = previous.theme === theme;
+
+  if (typeof previous.overallScore === "number") {
+    const delta = currentScore - previous.overallScore;
+    const deltaLabel =
+      Math.abs(delta) < 3
+        ? "se mantiene estable"
+        : delta > 0
+          ? `subió ${Math.round(delta)} puntos`
+          : `bajó ${Math.round(Math.abs(delta))} puntos`;
+
+    if (sameTheme) {
+      return `Sigue siendo un día de ${theme.toLowerCase()} — tu energía ${deltaLabel} respecto a ayer.`;
+    }
+    return `Ayer fue ${previous.theme.toLowerCase()}. Hoy es ${theme.toLowerCase()} y tu energía ${deltaLabel}.`;
+  }
+
+  const currentLevel = getEnergyLevel(currentScore);
+  const sameEnergy = previous.energyLevel === currentLevel;
+  const prevLabel = getScoreLabel(previous.overallScore ?? 50);
+  const currLabel = getScoreLabel(currentScore);
+  if (sameTheme && sameEnergy) {
+    return `Segundo día seguido de ${theme.toLowerCase()} — la energía se sostiene.`;
+  }
+  if (sameTheme) {
+    return `Sigue siendo un día de ${theme.toLowerCase()}, pero con otra intensidad: ayer ${prevLabel.toLowerCase()}, hoy ${currLabel.toLowerCase()}.`;
+  }
+  return `Ayer fue ${previous.theme.toLowerCase()}. Hoy es ${theme.toLowerCase()} — tu energía se movió.`;
 }
 
 function getScoreStyle(score: number): string {
@@ -83,6 +126,7 @@ export default function HoyClient() {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const today = useMemo(() => new Date(), []);
   const [snapshotSaved, setSnapshotSaved] = useState(false);
+  const [streak, setStreak] = useState<{ orientation: Orientation; days: number } | null>(null);
 
   const data = useMemo(() => {
     if (!profile) return null;
@@ -95,7 +139,8 @@ export default function HoyClient() {
       energy.overallScore,
       energy.theme,
     );
-    // Orientación canónica del momento — misma fuente que MomentOrientation en /profile.
+    // Orientación canónica del momento — misma buildOrientation() que usaba
+    // el ahora eliminado MomentOrientation de Intelligence.
     const moment = buildOrientation(energy, momentState, timing);
     const topAffinities = getTopAffinityHighlights(profile).slice(0, 2);
 
@@ -117,7 +162,10 @@ export default function HoyClient() {
       orientation: getDecisionPosture(data.timing.timingScore),
       energyLevel: getEnergyLevel(data.energy.overallScore),
       theme: data.energy.theme,
+      overallScore: data.energy.overallScore,
+      personalDay: data.momentState.personalDay,
     });
+    setStreak(computeStreak(profile.birthDate));
     setSnapshotSaved(true);
     const timeout = setTimeout(() => setSnapshotSaved(false), 2500);
     return () => clearTimeout(timeout);
@@ -134,10 +182,9 @@ export default function HoyClient() {
       moment: data.moment,
       topAffinities: data.topAffinities,
       scoreStyle: getScoreStyle(data.energy.overallScore),
-      energyLevel: getEnergyLevel(data.energy.overallScore),
       decisionPosture,
       decisionCopy: DECISION_COPY[decisionPosture],
-      dateLabel: today.toLocaleDateString("es-AR", {
+      dateLabel: formatDate(today, {
         weekday: "long",
         day: "numeric",
         month: "long",
@@ -152,7 +199,6 @@ export default function HoyClient() {
     momentState,
     moment,
     scoreStyle,
-    energyLevel,
     decisionPosture,
     decisionCopy,
     topAffinities,
@@ -264,7 +310,7 @@ export default function HoyClient() {
             className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-[0.9]"
             style={{ color: scoreStyle }}
           >
-            {energyLevel}
+            {getScoreLabel(energy.overallScore)}
           </p>
           <p className="text-xs text-muted mt-3">
             {energy.theme} · Luna {energy.moonPhase.phase}
@@ -272,6 +318,14 @@ export default function HoyClient() {
           <p className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed max-w-2xl mt-6">
             {energy.description}
           </p>
+          <p className="text-sm text-accent mt-4 max-w-xl">
+            {buildContinuityLine(previousSnapshot, energy.theme, energy.overallScore)}
+          </p>
+          {streak && streak.days >= 2 && (
+            <p className="text-xs text-muted mt-2">
+              {streak.days}° día seguido de <span className="font-medium text-foreground">{streak.orientation.toLowerCase()}</span>.
+            </p>
+          )}
           <AnimatePresence>
             {snapshotSaved && (
               <motion.p
@@ -295,6 +349,7 @@ export default function HoyClient() {
           className="border-t border-ink/10 py-10 sm:py-16"
         >
           <p className="eyebrow-brutalist mb-4">Tu momento</p>
+          <p className="label-micro text-muted mb-1">Para decidir hoy</p>
 
           <div className="flex items-baseline gap-4 mb-4">
             <p
@@ -303,7 +358,6 @@ export default function HoyClient() {
             >
               {decisionPosture}
             </p>
-            <p className="text-xs text-muted">{timing.timingScore}/100</p>
           </div>
 
           <p className="text-sm text-foreground leading-relaxed max-w-2xl">{timing.explanation}</p>
@@ -350,40 +404,36 @@ export default function HoyClient() {
           </div>
         </motion.div>
 
-        {/* EXPLORAR — cuatro salidas, mismo peso, sin competir con lo de arriba */}
+        {/* Seguir el hilo — antes era una grilla de 4 salidas de mismo peso
+            (mapa/timing/relaciones/evolución) que no se desprendía de nada
+            leído arriba, solo navegación genérica ya disponible en el menú.
+            La única salida que sí tiene motivo narrativo acá es evolución:
+            es literalmente donde se ve la racha/continuidad que esta misma
+            pantalla acaba de mostrar (streak, energía de ayer vs. hoy). */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="border-t border-ink/10 py-10 sm:py-16"
         >
-          <p className="eyebrow-brutalist mb-6">Explorar</p>
-
-          <div className="grid grid-cols-2 gap-px bg-ink/10 border border-ink/10">
-            <Link href="/profile" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Mi mapa</p>
-            </Link>
-            <Link href="/timing" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Timing</p>
-            </Link>
-            <Link href="/affinity" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Relaciones</p>
-            </Link>
-            <Link href="/evolution" className="bg-background p-6 text-center group transition-colors hover:bg-accent/5">
-              <p className="font-display text-lg text-foreground group-hover:text-accent transition-colors">Evolución</p>
-            </Link>
-          </div>
+          <p className="eyebrow-brutalist mb-4">Seguir el hilo</p>
+          <Link
+            href="/evolution"
+            className="group inline-flex items-center gap-2 font-display text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"
+          >
+            Ver cómo vino tu semana
+            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+          </Link>
 
           {topAffinities.length > 0 && (
             <p className="text-xs text-muted mt-4">
-              Hoy resuena especialmente{" "}
               <Link
                 href={`/affinity/${topAffinities[0].entity.type}/${topAffinities[0].entity.id}`}
                 className="text-accent hover:underline"
               >
-                {formatAffinityHint(topAffinities[0])}
-              </Link>
-              .
+                {topAffinities[0].entity.name}
+              </Link>{" "}
+              resuena especialmente con tu energía de {profile?.chineseZodiacInfo?.animal ?? profile?.chineseZodiac}.
             </p>
           )}
 
@@ -404,14 +454,6 @@ export default function HoyClient() {
               />
             </div>
             <dl className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm border-t border-ink/10 pt-6">
-              <div>
-                <dt className="label-micro mb-1">Energía exacta</dt>
-                <dd className="text-foreground">{energy.overallScore}/100</dd>
-              </div>
-              <div>
-                <dt className="label-micro mb-1">Timing exacto</dt>
-                <dd className="text-foreground">{timing.timingScore}/100</dd>
-              </div>
               <div>
                 <dt className="label-micro mb-1">Elemento</dt>
                 <dd className="text-foreground">{energy.elementInfluence}</dd>

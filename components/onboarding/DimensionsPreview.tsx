@@ -7,6 +7,7 @@ import { ChevronDown } from "lucide-react";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+import { getScoreLabel } from "@/lib/utils/score";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), {
   ssr: false,
@@ -46,7 +47,12 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
     fetchSynthesis(birthDate, "")
       .then((data) => {
         if (!cancelled) {
-          const dims = data.dimensions;
+          // Sin nombre, `dimensions` (Expresión/Alma/Personalidad) colapsa a
+          // un solo valor repetido — ver el comentario de buildDateDimensions
+          // en synthesisEngine.ts. `dateDimensions` es la variante pensada
+          // para depender solo de la fecha, que es todo lo que hay en este
+          // punto del onboarding.
+          const dims = data.dateDimensions;
           DIMENSIONS_PREVIEW_CACHE.set(birthDate, dims);
           setDimensions(dims);
         }
@@ -146,16 +152,8 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    {/* Barra de nivel: el color tambien esta acompanado por
-                        el numero, no es el unico indicador. */}
-                    <span className="hidden sm:block w-20 h-1.5 rounded-sm bg-ink/10 overflow-hidden">
-                      <span
-                        className="block h-full rounded-sm"
-                        style={{ width: `${dim.value}%`, backgroundColor: elementColor }}
-                      />
-                    </span>
-                    <span className="text-base font-semibold tabular-nums" style={{ color: elementColor }}>
-                      {dim.value}
+                    <span className="text-xs uppercase tracking-[0.15em] font-medium" style={{ color: elementColor }}>
+                      {getScoreLabel(dim.value)}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 text-muted transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}

@@ -3,7 +3,7 @@ import { calculateBirthDayNumber } from "@/lib/engines/numerologyEngine";
 export interface StoredUserProfile {
   version: 1;
   profile: {
-    name: string;
+    name?: string;
     birthDate: string;
     birthPlace: string;
     birthTime?: string;
@@ -12,7 +12,7 @@ export interface StoredUserProfile {
     onboardingStep: number;
     completedSections: string[];
     theme: "light" | "dark";
-    language: "es" | "en";
+    language: "es" | "en" | "pt-BR";
     notifications: boolean;
     lifePath: number;
     expressionNumber?: number;

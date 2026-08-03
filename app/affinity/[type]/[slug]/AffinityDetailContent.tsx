@@ -341,7 +341,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                     style={{ color: relationColor, backgroundColor: `${relationColor}15` }}
                   >
-                    {story.relationLabel} · {story.relationScore}/100
+                    {story.relationLabel}
                   </span>
                 </div>
                 <p className="text-sm text-foreground leading-relaxed">{story.explanation}</p>
@@ -379,10 +379,10 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span
-                          className="text-xs font-semibold px-2 py-0.5 rounded-sm"
+                          className="text-xs font-semibold px-2 py-0.5 rounded-sm uppercase tracking-[0.05em]"
                           style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                         >
-                          {rel.score}
+                          {relTier.label}
                         </span>
                         <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
                       </div>
@@ -437,7 +437,10 @@ function PremiumHero({
   const router = useRouter();
   const reducedMotion = useReducedMotion();
   const tierMeta = TIER_META[result.tier];
-  const explanation = buildContextualExplanation(result);
+  // result.explanation ya nombra a la entidad (affinityEngine.getExplanation),
+  // en vez de un bucket genérico por score que repetía la misma frase para
+  // cualquier entidad que compartiera relación de animal con el usuario.
+  const explanation = result.explanation;
 
   // Stagger delays (seconds)
   const d = {
@@ -535,28 +538,6 @@ function PremiumHero({
       </div>
     </motion.section>
   );
-}
-
-function buildContextualExplanation(result: AffinityResult): string {
-  const { entity, userAnimal, entityAnimal, relationship, score } = result;
-  const eName = entity.name;
-
-  if (entityAnimal === userAnimal) {
-    return `${userAnimal} y ${entityAnimal} son el mismo signo — una conexión directa con ${eName}.`;
-  }
-  if (score >= 75) {
-    return `${userAnimal} y ${entityAnimal} tienen una fuerte resonancia simbólica según la tradición del zodíaco chino.`;
-  }
-  if (score >= 60) {
-    return `${userAnimal} y ${entityAnimal} comparten una conexión moderada que revela puntos de interés con ${eName}.`;
-  }
-  if (score >= 45) {
-    return `${userAnimal} y ${entityAnimal} son diferentes pero se enriquecen mutuamente en el ciclo del zodíaco chino.`;
-  }
-  if (score >= 30) {
-    return `La relación entre ${userAnimal} y ${entityAnimal} genera una tensión creativa según esta tradición.`;
-  }
-  return `${userAnimal} y ${entityAnimal} tienen una baja resonancia simbólica, pero no por eso menos interesante.`;
 }
 
 function OtherEventCard({ event }: { event: HistoricalEvent }) {
@@ -944,7 +925,7 @@ function QuickAffinity({
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md font-medium px-4 py-2 text-sm text-accent bg-accent/10 min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
@@ -1003,10 +984,10 @@ function QuickAffinity({
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             <span
-                              className="text-xs font-semibold px-2 py-0.5 rounded-sm"
+                              className="text-xs font-semibold px-2 py-0.5 rounded-sm uppercase tracking-[0.05em]"
                               style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                             >
-                              {rel.score}
+                              {relTier.label}
                             </span>
                             <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
                           </div>

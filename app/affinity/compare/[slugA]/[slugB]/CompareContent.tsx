@@ -192,12 +192,11 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
                     <div className="flex flex-col items-center">
                       <span
-                        className="font-heading text-3xl font-bold"
+                        className="font-heading text-lg font-bold text-center"
                         style={{ color: compTier.color }}
                       >
-                        {entityComparison.score}
+                        {compTier.label}
                       </span>
-                      <span className="text-xs text-muted mt-1">/ 100</span>
                     </div>
 
                     <div className="text-center">
@@ -284,9 +283,9 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                     valueB={resultB.relationship}
                   />
                   <DifferenceRow
-                    label="Score personal"
-                    valueA={`${resultA.score}/100`}
-                    valueB={`${resultB.score}/100`}
+                    label="Afinidad personal"
+                    valueA={tierA.label}
+                    valueB={tierB.label}
                   />
                 </div>
               </motion.section>
@@ -378,7 +377,7 @@ function EntityBaseCard({
         <div className="flex justify-between items-center">
           <span className="text-muted">Afinidad personal</span>
           <span className="font-medium" style={{ color: tierMeta.color }}>
-            {result.score}/100 · {tierMeta.label}
+            {tierMeta.label}
           </span>
         </div>
       </div>
@@ -410,8 +409,8 @@ function PersonalCard({
           <span className="text-lg shrink-0">{emoji ?? "·"}</span>
           <span className="text-sm font-medium text-foreground truncate">{entityName}</span>
         </div>
-        <span className="font-heading text-xl font-bold shrink-0" style={{ color: tierMeta.color }}>
-          {score}
+        <span className="font-heading text-sm font-bold shrink-0 uppercase tracking-[0.08em]" style={{ color: tierMeta.color }}>
+          {tierMeta.label}
         </span>
       </div>
       <p className="text-xs text-muted mb-1">

@@ -105,7 +105,7 @@ export function analyzeDecision(
   const detectedIntent = detectDecisionIntent(question, category);
 
   // Generate recommendation
-  const recommendation = generateRecommendation(overallScore, category, personalDay, detectedIntent);
+  const recommendation = generateRecommendation(overallScore, category, personalDay, detectedIntent, profile.element);
 
   // Generate reasoning
   const reasoning = generateReasoning(profile, category, overallScore, personalDay, moonPhase.phase, detectedIntent);
@@ -208,7 +208,7 @@ function calculateTimingScore(
   return Math.min(100, Math.max(1, score));
 }
 
-function generateRecommendation(score: number, category: DecisionCategory, personalDay: number, intent: DecisionIntent | null): string {
+function generateRecommendation(score: number, category: DecisionCategory, personalDay: number, intent: DecisionIntent | null, element?: string): string {
   const categoryLabel = CATEGORY_LABELS[category];
 
   const templates: Record<DecisionCategory, { high: string; medium: string; neutral: string; low: string }> = {
@@ -280,6 +280,18 @@ function generateRecommendation(score: number, category: DecisionCategory, perso
     recommendation = t.low;
   }
 
+  // El texto por tier+categoría es igual para cualquier perfil que caiga en
+  // ese mismo tier — con timing/energía compartidos entre las 6 categorías
+  // (60% del score), la mayoría de los perfiles terminaban leyendo el mismo
+  // puñado de frases. La afinidad elemento↔categoría ya participa del score
+  // (calculateAlignmentScore, +15 si coincide) pero nunca se explicaba: acá
+  // se hace visible el motivo real, que sí varía por persona y por categoría.
+  // Antes solo Fuego/Tierra (o el par que corresponda) recibía esta línea;
+  // los otros dos elementos de cada categoría no tenían ninguna señal propia.
+  if (element) {
+    recommendation += ` Tu elemento ${element.toLowerCase()} ${getElementDecisionInfluence(element, category)}.`;
+  }
+
   if (intent) {
     const intentLine: Record<DecisionIntent['kind'], string> = {
       accion: ' Tu pregunta apunta a dar un paso concreto. Si te sentís alineado, avanzá con confianza.',
@@ -304,7 +316,9 @@ function generateReasoning(
 
   let reasoning = `Analizando tu perfil para una decisión sobre ${categoryLabel.toLowerCase()}: `;
   reasoning += `Tu Life Path ${profile.lifePath} como ${profile.archetype} te da una perspectiva única. `;
-  reasoning += `Tu elemento ${profile.element} ${getElementDecisionInfluence(profile.element, category).toLowerCase()}. `;
+  // "Elemento" sin calificar es ambiguo con el elemento del zodíaco chino
+  // que Identidad muestra como dato protagonista — ver mismo fix en timingEngine.
+  reasoning += `Tu elemento astrológico, ${profile.element}, ${getElementDecisionInfluence(profile.element, category).toLowerCase()}. `;
   reasoning += `Hoy es personal day ${personalDay}, lo que ${getDayDecisionInfluence(personalDay).toLowerCase()}. `;
   reasoning += `La fase lunar ${moonPhase.toLowerCase()} ${getMoonDecisionInfluence(moonPhase).toLowerCase()}.`;
 
@@ -330,8 +344,16 @@ function generateConsiderations(
   const considerations: string[] = [];
 
   // Life Path considerations
-  if (profile.lifePath === 1 || profile.lifePath === 8) {
-    considerations.push("Tu energía de liderazgo te impulsa a decidir rápido. Asegurate de considerar todas las opciones.");
+  // LP1 y LP8 compartían un único texto ("energía de liderazgo") pese a que
+  // el propio scoring del engine ya los trata distinto (lifePathDecisionStyle:
+  // 1→75, 8→80) y sus arquetipos reales (ARCHETYPES en lib/data.ts) son
+  // genuinamente distintos: LP1 "El Líder" (Independiente/Innovador/
+  // Determinado) vs LP8 "El Poderoso" (Ambicioso/Estratégico/Autoritario).
+  // Se hace visible esa diferencia real en vez de inventar una nueva.
+  if (profile.lifePath === 1) {
+    considerations.push("Tu energía de liderazgo te impulsa a decidir rápido y de forma independiente. Asegurate de considerar todas las opciones.");
+  } else if (profile.lifePath === 8) {
+    considerations.push("Tu energía estratégica busca la jugada de mayor impacto. Asegurate de que la ambición no te haga saltear pasos.");
   } else if (profile.lifePath === 2 || profile.lifePath === 6) {
     considerations.push("Tu naturaleza cooperativa te hace considerar a otros. No olvides tus propias necesidades.");
   } else if (profile.lifePath === 7) {
@@ -372,22 +394,28 @@ function generateConsiderations(
 }
 
 function generateNextSteps(score: number, category: DecisionCategory, intent: DecisionIntent | null): string[] {
+  // Antes esta lista solo dependía del bucket de score (4 combinaciones
+  // posibles en total). Perfiles con distinta categoría y elemento pero
+  // score similar leían exactamente los mismos 3 pasos. Ahora la categoría
+  // entra al texto para que el paso concreto varíe con lo que se está
+  // decidiendo, no solo con el puntaje.
+  const categoryLabel = CATEGORY_LABELS[category].toLowerCase();
   const steps: string[] = [];
 
   if (score >= 75) {
-    steps.push("Escribí los pros y contras de cada opción.");
+    steps.push(`Escribí los pros y contras de cada opción de ${categoryLabel}.`);
     steps.push("Hablá con alguien de confianza sobre tu decisión.");
     steps.push("Dale una semana antes de ejecutar para confirmar tu intuición.");
   } else if (score >= 55) {
     steps.push("Tomate tiempo para reflexionar sin presión.");
-    steps.push("Investigá más sobre las opciones disponibles.");
+    steps.push(`Investigá más sobre tus opciones en ${categoryLabel}.`);
     steps.push("Consultá con alguien que tenga experiencia en el tema.");
   } else if (score >= 40) {
     steps.push("No te apures. Este momento no es ideal para decisiones grandes.");
-    steps.push("Enfocá tu energía en otras áreas por ahora.");
+    steps.push(`Enfocá tu energía en otras áreas mientras el timing de ${categoryLabel} mejora.`);
     steps.push("Volvé a evaluar en una semana.");
   } else {
-    steps.push("Este momento presenta desafíos. Esperá una ventana más favorable.");
+    steps.push(`Este momento presenta desafíos para ${categoryLabel}. Esperá una ventana más favorable.`);
     steps.push("Enfocá tu energía en el autoconocimiento y la reflexión.");
     steps.push("La paciencia es tu mejor herramienta ahora.");
   }
@@ -406,13 +434,20 @@ function generateNextSteps(score: number, category: DecisionCategory, intent: De
 }
 
 function getElementDecisionInfluence(element: string, category: DecisionCategory): string {
-  const influences: Record<string, string> = {
-    Fuego: "aporta pasión e iniciativa a tus decisiones",
-    Tierra: "aporta estabilidad y practicidad a tus decisiones",
-    Aire: "aporta claridad mental y comunicación a tus decisiones",
-    Agua: "aporta intuición y empatía a tus decisiones",
+  const traits: Record<string, string> = {
+    Fuego: "aporta pasión e iniciativa",
+    Tierra: "aporta estabilidad y practicidad",
+    Aire: "aporta claridad mental y comunicación",
+    Agua: "aporta intuición y empatía",
   };
-  return influences[element] || "influye en tu proceso de decisión";
+  const trait = traits[element];
+  if (!trait) return "influye en tu proceso de decisión";
+
+  const categoryLabel = CATEGORY_LABELS[category].toLowerCase();
+  const hasAffinity = CATEGORY_ELEMENT_AFFINITY[category].includes(element);
+  return hasAffinity
+    ? `${trait} a tus decisiones de ${categoryLabel}, con afinidad natural para este terreno`
+    : `${trait} a tus decisiones de ${categoryLabel}`;
 }
 
 function getDayDecisionInfluence(day: number): string {

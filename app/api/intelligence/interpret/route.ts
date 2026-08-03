@@ -9,6 +9,16 @@ import {
   type ConversationTurn,
 } from '@/lib/engines/intelligenceEngine';
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
+import { hashProfile } from '@/lib/mercadopago';
+import { hasPremiumAccess } from '@/lib/kv';
+
+// "personal_profile" is the paid synthesis shown behind PremiumGate on
+// /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
+// the component mounts — it's a UI convenience, not a security boundary. A
+// direct POST to this route could otherwise read the full paid interpretation
+// for any birth date without paying. Every other InterpretationType (timing,
+// compatibility, daily_energy, ...) is free product content and stays open.
+const PREMIUM_INTERPRETATION_TYPES = new Set<InterpretationType>(['personal_profile']);
 
 interface RequestBody {
   type: InterpretationType;
@@ -32,6 +42,21 @@ export async function POST(req: NextRequest) {
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
+    }
+
+    if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
+      let premium = false;
+      try {
+        const profileHash = hashProfile(name || '', dob);
+        premium = await hasPremiumAccess(profileHash);
+      } catch (err) {
+        // Falta de config (MP_WEBHOOK_SECRET, KV) no debe filtrar contenido
+        // pago como un 500 genérico ni tumbar la request — falla cerrado.
+        console.error('[/api/intelligence/interpret] Premium check failed:', err);
+      }
+      if (!premium) {
+        return NextResponse.json({ error: 'Premium required' }, { status: 403 });
+      }
     }
 
     const profile = calculateUserProfile(name || '', dob);

@@ -85,12 +85,14 @@ export default function MolinoInterpretation({
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretation | null>(null);
   const [isInterpreting, setIsInterpreting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [premiumRequired, setPremiumRequired] = useState(false);
   const [hasAttemptedAI, setHasAttemptedAI] = useState(false);
 
   const fetchInterpretation = useCallback(async () => {
     if (hasAttemptedAI) return;
     setIsInterpreting(true);
     setError(null);
+    setPremiumRequired(false);
 
     try {
       const response = await fetch('/api/intelligence/interpret', {
@@ -109,6 +111,16 @@ export default function MolinoInterpretation({
         }),
       });
 
+      // 403 = contenido premium sin acceso — server-side gate, independiente
+      // de si el paywall del cliente está habilitado (NEXT_PUBLIC_PREMIUM_ENABLED).
+      // No es una falla técnica: no tiene sentido ni reintentar ni mostrar un
+      // error genérico "algo se rompió" en la pantalla insignia del producto.
+      if (response.status === 403) {
+        setPremiumRequired(true);
+        setHasAttemptedAI(true);
+        return;
+      }
+
       if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
       }
@@ -123,8 +135,12 @@ export default function MolinoInterpretation({
       }
       setHasAttemptedAI(true);
     } catch (err) {
+      // A diferencia del camino feliz (línea 130), acá el fetch mismo falló
+      // antes de llegar a leer `data.fallback` — no hay dato local para
+      // mostrar. El mensaje anterior prometía "mostrando datos locales" sin
+      // que ningún dato local llegara a setearse.
       console.error("Error getting interpretation:", err);
-      setError("No se pudo obtener la interpretación. Mostrando datos locales.");
+      setError("No se pudo obtener la interpretación. Intentá de nuevo.");
       setHasAttemptedAI(true);
     } finally {
       setIsInterpreting(false);
@@ -324,14 +340,21 @@ export default function MolinoInterpretation({
         )}
       </AnimatePresence>
 
+      {/* Requiere premium — no es un error, no tiene sentido ofrecer reintentar */}
+      {premiumRequired && !interpretation && (
+        <p className="text-sm text-muted">
+          Esta lectura forma parte de la síntesis paga.
+        </p>
+      )}
+
       {/* Error state (only show if no interpretation at all) */}
-      {error && !interpretation && (
-        <div className="p-4 rounded-md bg-yellow-50 border border-yellow-200">
-          <p className="text-sm text-yellow-700 mb-2">{error}</p>
+      {error && !interpretation && !premiumRequired && (
+        <div className="p-4 border border-ink/10 bg-ink/[0.02]">
+          <p className="text-sm text-muted mb-2">{error}</p>
           <button
             type="button"
             onClick={handleRegenerate}
-            className="text-xs text-yellow-800 underline hover:no-underline"
+            className="text-xs text-accent underline hover:no-underline"
           >
             Reintentar
           </button>

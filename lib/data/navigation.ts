@@ -1,3 +1,5 @@
+import { t } from "@/lib/i18n";
+
 export interface NavLink {
   href: string;
   label: string;
@@ -13,19 +15,19 @@ export interface NavLink {
  * principal. "Mi Mapa" no es un link más: es el CTA acentuado del header.
  */
 export const primaryNavLinks: NavLink[] = [
-  { href: "/hoy", label: "Hoy" },
-  { href: "/affinity", label: "Afinidad" },
+  { href: "/hoy", label: t.nav.hoy },
+  { href: "/affinity", label: t.nav.afinidad },
 ];
 
 export const secondaryNavLinks: NavLink[] = [
-  { href: "/timing", label: "Timing" },
-  { href: "/decisions", label: "Decisiones" },
-  { href: "/evolution", label: "Evolución" },
+  { href: "/timing", label: t.nav.timing },
+  { href: "/decisions", label: t.nav.decisiones },
+  { href: "/evolution", label: t.nav.evolucion },
 ];
 
 export const knowledgeNavLinks: NavLink[] = [
-  { href: "/biblioteca", label: "Biblioteca" },
-  { href: "/filosofia", label: "Filosofía" },
+  { href: "/biblioteca", label: t.nav.biblioteca },
+  { href: "/filosofia", label: t.nav.filosofia },
 ];
 
 export interface FooterColumn {

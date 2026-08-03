@@ -51,7 +51,10 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
 
-  const worldCount = affinityResults.filter((r) => r.entityAnimal === userAnimal).length;
+  // Misma definición de "resuena" que WorldScreen (score >= 60): la cifra del
+  // hub y la apertura de Mundo tienen que contar lo mismo, o el usuario lee
+  // dos números distintos para la misma afirmación ("resuenan con vos").
+  const worldCount = affinityResults.filter((r) => r.score >= 60).length;
   const allies = sameFriends.map((f) => f.animal);
 
   return (
@@ -132,35 +135,39 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           </button>
         </motion.div>
 
-        {/* Círculo + Mundo — par secundario */}
+        {/* Mundo + Círculo — par secundario.
+            Orden alineado con ProfileTabs y GUIDED_CTA en ProfileClient.tsx:
+            Identidad → Mundo → Círculo → Inteligencia. Antes este hub numeraba
+            Círculo antes que Mundo (02/03), al revés que el tab bar y el CTA
+            guiado — dos rutas distintas para "seguir" que discrepaban. */}
         <div className="grid grid-cols-1 md:grid-cols-2 border-t border-border">
           <motion.div {...fade} transition={{ delay: 0.1, duration: 0.3 }}>
             <button
               type="button"
-              onClick={() => onEnter?.("circle")}
+              onClick={() => onEnter?.("world")}
               disabled={!onEnter}
               className="group w-full text-left md:border-r border-border py-8 lg:py-10 md:pr-8 transition-colors hover:bg-ink/[0.02]"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">02 · Tu Círculo</p>
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">02 · Tu Mundo</p>
               <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
-                {allies.length > 0 ? `Tus aliados: ${allies.join(" y ")}` : "Quién te rodea"}
+                {worldCount} entidades resuenan con vos
               </h3>
-              <p className="mt-2 text-sm text-muted">Armonía y tensión dentro del ciclo chino.</p>
+              <p className="mt-2 text-sm text-muted">Marcas, historias y referentes que conectan.</p>
             </button>
           </motion.div>
 
           <motion.div {...fade} transition={{ delay: 0.15, duration: 0.3 }}>
             <button
               type="button"
-              onClick={() => onEnter?.("world")}
+              onClick={() => onEnter?.("circle")}
               disabled={!onEnter}
               className="group w-full text-left py-8 lg:py-10 md:pl-8 transition-colors hover:bg-ink/[0.02]"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">03 · Tu Mundo</p>
+              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">03 · Tu Círculo</p>
               <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
-                {worldCount} entidades resuenan con vos
+                {allies.length > 0 ? `Tus aliados: ${allies.join(" y ")}` : "Quién te rodea"}
               </h3>
-              <p className="mt-2 text-sm text-muted">Marcas, historias y referentes que conectan.</p>
+              <p className="mt-2 text-sm text-muted">Armonía y tensión dentro del ciclo chino.</p>
             </button>
           </motion.div>
         </div>
@@ -176,7 +183,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-3">04 · Tu Inteligencia</p>
               <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-foreground leading-[0.95] group-hover:text-accent transition-colors">
-                Tu momento: {dailyEnergy.overallScore}/100 — {dailyEnergy.theme}
+                Tu momento: {dailyEnergy.theme}
               </h3>
               <p className="mt-3 text-sm sm:text-base text-muted">
                 Tu síntesis completa: qué significa todo esto cuando se conecta. Premium.

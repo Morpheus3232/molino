@@ -18,14 +18,6 @@ const TIER_LABELS: Record<string, string> = {
   desafiante: "Desafiantes",
 };
 
-const TIER_STYLES: Record<string, { bg: string; border: string; accent: string; icon: string }> = {
-  all: { bg: "bg-card", border: "border-border", accent: "text-accent", icon: "✦" },
-  "resonancia-alta": { bg: "bg-[#E8F0FE]", border: "border-blue-200", accent: "text-blue-700", icon: "★" },
-  "afinidad-media": { bg: "bg-[#E8F5E9]", border: "border-green-200", accent: "text-green-700", icon: "●" },
-  complementarios: { bg: "bg-[#E3F2FD]", border: "border-indigo-200", accent: "text-indigo-700", icon: "◆" },
-  desafiante: { bg: "bg-[#FCE4EC]", border: "border-pink-200", accent: "text-pink-700", icon: "▲" },
-};
-
 const ENTITY_CATEGORIES = [
   { label: "Países", type: "country" as const, href: "/affinity/country", desc: "Descubrí con qué países resuena tu energía" },
   { label: "Ciudades", type: "city" as const, href: "/affinity/city", desc: "Destinos alineados con tu perfil" },
@@ -113,22 +105,13 @@ export default function AffinityHub() {
                 <span className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                   {cat.label}
                 </span>
-                <span className={`text-xs font-mono ${TIER_STYLES[cat.tier]?.accent || "text-muted"}`}>
-                  {TIER_LABELS[cat.tier] || cat.tier}
-                </span>
+                {profile && (
+                  <span className="text-xs text-muted">
+                    {TIER_LABELS[cat.tier] || cat.tier}
+                  </span>
+                )}
               </div>
               <p className="text-sm text-muted leading-relaxed">{cat.desc}</p>
-              {profile && (
-                <div className="mt-2 flex items-center gap-2">
-                  <div className="h-1 flex-1 rounded-full bg-neutral-200 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-accent transition-all duration-500"
-                      style={{ width: `${cat.score}%` }}
-                    />
-                  </div>
-                  <span className="text-xs font-mono text-muted">{cat.score}%</span>
-                </div>
-              )}
             </motion.button>
           ))}
         </div>
