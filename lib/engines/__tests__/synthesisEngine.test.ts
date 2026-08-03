@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildPersonalCode, buildPatterns, buildTensions, hasCircularSources } from "../synthesisEngine";
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, hasCircularSources } from "../synthesisEngine";
 import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo } from "../numerologyEngine";
 import type { UserProfile } from "@/types/user";
 
@@ -233,5 +233,48 @@ describe("buildTensions — solo declara tensión ante una contradicción real d
   it("determinismo: mismo perfil produce siempre la misma tensión", () => {
     const profile = profileWith({ lifePath: 4, element: "Fuego" });
     expect(buildTensions(profile)).toEqual(buildTensions(profile));
+  });
+});
+
+// buildRules nunca debe rellenar hasta 10 con texto inventado — cada regla
+// debe trazarse a un dato real (archetypeInfo.strengths/challenges, o un
+// pattern/tension ya calculado en otro lado del engine).
+describe("buildRules — nunca rellena hasta 10, cada regla se traza a un dato real", () => {
+  it("sin archetypeInfo (perfil vacío como el que arma profileWith por defecto), solo produce reglas desde patterns/tensions — nunca inventa fortalezas/desafíos", () => {
+    const rules = buildRules(profileWith({}));
+    expect(rules.every((r) => !r.source.startsWith("Arquetipo"))).toBe(true);
+  });
+
+  it("con archetypeInfo real (3-5 strengths/challenges), produce una regla por cada uno — nunca más de las que existen", () => {
+    const strengths = ["Iniciativa", "Creatividad", "Coraje", "Originalidad"];
+    const challenges = ["Impaciencia", "Ego", "Control"];
+    const rules = buildRules(profileWith({ archetypeInfo: { strengths, challenges } }));
+    const strengthRules = rules.filter((r) => r.source.startsWith("Arquetipo") && strengths.some((s) => r.source.includes(s)));
+    const challengeRules = rules.filter((r) => r.source.startsWith("Arquetipo") && challenges.some((c) => r.source.includes(c)));
+    expect(strengthRules).toHaveLength(4);
+    expect(challengeRules).toHaveLength(3);
+  });
+
+  it("nunca devuelve más de 10 reglas", () => {
+    const rules = buildRules(
+      profileWith({
+        archetypeInfo: {
+          strengths: ["A", "B", "C", "D", "E"],
+          challenges: ["F", "G", "H", "I"],
+        },
+      })
+    );
+    expect(rules.length).toBeLessThanOrEqual(10);
+  });
+
+  it("cada regla cita el rasgo real (en minúscula) del que sale, no una plantilla genérica", () => {
+    const rules = buildRules(profileWith({ archetypeInfo: { strengths: ["Diplomacia"], challenges: [] } }));
+    const diplomaciaRule = rules.find((r) => r.source.includes("Diplomacia"));
+    expect(diplomaciaRule?.rule).toMatch(/diplomacia/);
+  });
+
+  it("determinismo: mismo perfil produce siempre las mismas reglas", () => {
+    const profile = profileWith({ lifePath: 1, element: "Tierra", archetypeInfo: { strengths: ["Iniciativa"], challenges: ["Impaciencia"] } });
+    expect(buildRules(profile)).toEqual(buildRules(profile));
   });
 });

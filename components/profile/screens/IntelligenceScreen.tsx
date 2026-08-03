@@ -20,7 +20,7 @@ import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { buildPatterns, buildTensions, buildMomentState } from "@/lib/engines/synthesisEngine";
+import { buildPatterns, buildTensions, buildRules, buildMomentState } from "@/lib/engines/synthesisEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
@@ -59,6 +59,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
   // remota falla o tarda, la pantalla nunca queda vacía.
   const localPatterns = useMemo(() => buildPatterns(profile), [profile]);
   const tensions = useMemo(() => buildTensions(profile), [profile]);
+  const rules = useMemo(() => buildRules(profile), [profile]);
   const localMomentState = useMemo(
     () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
     [profile, dailyEnergy.overallScore, dailyEnergy.theme]
@@ -216,7 +217,43 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         </section>
       )}
 
-      {/* 04 · QUÉ SIGNIFICA PARA VOS — momentState.narrative ya es, en sí
+      {/* 04 · TUS REGLAS — deterministas (buildRules, sin IA), no relleno
+          motivacional genérico: cada regla cita el rasgo/patrón real del que
+          sale (ver source en el chip debajo de cada una). Nunca fuerza un
+          conteo fijo — un perfil con menos señales reales muestra menos
+          reglas, en vez de inventar hasta completar diez. */}
+      {rules.length > 0 && (
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · Tus reglas</h2>
+            </div>
+            <ol className="space-y-0 max-w-2xl">
+              {rules.map((r, i) => (
+                <motion.li
+                  key={r.rule}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05, duration: 0.35 }}
+                  className="flex items-start gap-4 py-4 border-b border-ink/10 last:border-b-0"
+                >
+                  <span className="font-display text-lg shrink-0 w-8" style={{ color: elementColor }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{r.rule}</p>
+                    <span className="uppercase text-[10px] tracking-[0.15em] text-muted mt-1.5 inline-block">{r.source}</span>
+                  </div>
+                </motion.li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {/* 05 · QUÉ SIGNIFICA PARA VOS — momentState.narrative ya es, en sí
           misma, una síntesis cruzada (ciclo numerológico + energía del día +
           elemento astrológico + Life Path) en una sola oración. Antes esto
           vivía adentro de un <MomentOrientation> entero que repetía la
@@ -232,7 +269,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · Qué significa para vos</h2>
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · Qué significa para vos</h2>
             </div>
             <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
               {momentState.narrative}
@@ -246,20 +283,20 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         </section>
       )}
 
-      {/* 05 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
+      {/* 06 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
           (esa es afinidad con entidades); acá es qué tan preparado está cada
           área de tu vida según decisionsEngine. */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · De la lectura a la acción</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">06 · De la lectura a la acción</h2>
           </div>
           <DecisionMapSection profile={profile} />
         </div>
       </section>
 
-      {/* 06 · SÍNTESIS PROFUNDA — un único paywall (PremiumGate), no dos
+      {/* 07 · SÍNTESIS PROFUNDA — un único paywall (PremiumGate), no dos
           pantallas de venta seguidas. Antes esta sección mostraba gratis el
           resumen, "qué significa" y "por qué importa" de la MISMA
           interpretación que después pedía $8 por leer — pagabas por dos
@@ -273,7 +310,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">06 · Síntesis profunda</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">07 · Síntesis profunda</h2>
           </div>
           <PremiumGate
             name={name}
@@ -292,7 +329,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         </div>
       </section>
 
-      {/* 07 · PREGUNTALE A TU MOLINO — el chat contextual, no un asistente
+      {/* 08 · PREGUNTALE A TU MOLINO — el chat contextual, no un asistente
           genérico: cada pregunta se responde SOLO con el perfil, patrones y
           tensiones ya calculados de este usuario (ver el caso "question" en
           intelligenceEngine.ts), distinguiendo dato calculado / interpretación
@@ -303,7 +340,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">07 · Preguntale a tu Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">08 · Preguntale a tu Molino</h2>
           </div>
           <p className="text-sm text-muted mb-6 max-w-xl">
             Una pregunta concreta sobre tu momento, tu perfil o una decisión — respondida solo con lo que Molino ya calculó sobre vos.
