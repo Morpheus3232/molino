@@ -33,6 +33,11 @@ export interface TensionInsight {
   implication: string;
 }
 
+export interface RuleInsight {
+  rule: string;
+  source: string;
+}
+
 /**
  * Señal fundamental de la que depende cada `sources` label. Un insight/pattern
  * con `sources.length > 1` solo es una convergencia real si sus señales son
@@ -463,6 +468,64 @@ export function buildTensions(profile: UserProfile): TensionInsight[] {
   }
 
   return tensions;
+}
+
+/**
+ * "Tus reglas" — short, personal, imperative statements the user can
+ * actually carry around. Deliberately does NOT try to force exactly 10:
+ * every rule here traces to a real per-archetype strength/challenge
+ * (ARCHETYPE_DESCRIPTIONS has 3-5 of each, never a fixed 10) or to a
+ * pattern/tension already computed elsewhere — padding to a round number
+ * with invented filler would break the same anti-fabrication discipline
+ * buildPatterns/buildTensions already enforce. Order: strengths first
+ * (what to lean into), then challenges (what to watch), then the
+ * already-computed motor/movement/tension patterns (how they show up in
+ * practice) — capped at 10 as an upper bound, not a target.
+ */
+export function buildRules(profile: UserProfile): RuleInsight[] {
+  const strengths = profile.archetypeInfo?.strengths || [];
+  const challenges = profile.archetypeInfo?.challenges || [];
+  const rules: RuleInsight[] = [];
+
+  for (const strength of strengths) {
+    rules.push({
+      rule: `Cuando dudes, andá hacia tu ${strength.toLowerCase()} — es una fortaleza real, no un accesorio.`,
+      source: `Arquetipo · ${strength}`,
+    });
+  }
+
+  for (const challenge of challenges) {
+    rules.push({
+      rule: `Tu ${challenge.toLowerCase()} es una señal, no un defecto — escuchala antes de que se vuelva un costo.`,
+      source: `Arquetipo · ${challenge}`,
+    });
+  }
+
+  const patterns = buildPatterns(profile);
+  const motor = patterns.find((p) => p.label === "Tu motor");
+  if (motor) {
+    rules.push({
+      rule: `Tu motor es ${motor.keyword.toLowerCase()}. No lo apagues solo para encajar.`,
+      source: motor.sources.join(" + "),
+    });
+  }
+  const movement = patterns.find((p) => p.label === "Tu próximo movimiento");
+  if (movement) {
+    rules.push({
+      rule: `Este ciclo te empuja hacia ${movement.keyword.toLowerCase()} — dejalo, no lo frenes por costumbre.`,
+      source: movement.sources.join(" + "),
+    });
+  }
+
+  const tensions = buildTensions(profile);
+  for (const tension of tensions) {
+    rules.push({
+      rule: "Cuando tu ritmo no sea parejo, es información — no fuerces una sola velocidad para las dos señales.",
+      source: tension.sources.join(" + "),
+    });
+  }
+
+  return rules.slice(0, 10);
 }
 
 export function buildDimensions(profile: UserProfile): DimensionInsight[] {
