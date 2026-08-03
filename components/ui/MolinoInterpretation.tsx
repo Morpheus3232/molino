@@ -12,6 +12,7 @@ import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { INTENTION_LABELS, type TimingResult } from "@/lib/engines/timingEngine";
 import type { DecisionResult } from "@/lib/engines/decisionsEngine";
 import type { EntityProfile } from "@/lib/data/entities";
+import BuildingMolino from "@/components/ui/BuildingMolino";
 
 interface MolinoInterpretationProps {
   profile: UserProfile;
@@ -58,16 +59,6 @@ function LoadingSkeleton() {
   );
 }
 
-/** Reveal-specific loading state — same beat as PremiumGate's "unlocked" banner, not a second unrelated loading screen. */
-function RevealLoading() {
-  return (
-    <div className="flex items-center gap-3 py-6">
-      <span className="w-2 h-2 rounded-full bg-accent animate-pulse shrink-0" aria-hidden="true" />
-      <p className="text-sm text-muted">Preparando tu lectura…</p>
-    </div>
-  );
-}
-
 /**
  * Unified interpretation component for Molino.
  *
@@ -102,6 +93,15 @@ export default function MolinoInterpretation({
   const [error, setError] = useState<string | null>(null);
   const [premiumRequired, setPremiumRequired] = useState(false);
   const [hasAttemptedAI, setHasAttemptedAI] = useState(false);
+  // React batches setFallbackInterpretation/setAiInterpretation/setIsInterpreting
+  // together in the same render (they all happen in one fetch callback), so
+  // `interpretation` and `!isInterpreting` become true in the SAME tick —
+  // without this, BuildingMolino would never get to show its catch-up
+  // animation, it'd just unmount the instant data arrives. revealReady is a
+  // separate flag, only flipped by BuildingMolino's own onComplete once its
+  // checklist has visually finished — content only swaps in after that.
+  const [revealReady, setRevealReady] = useState(!justUnlocked);
+  const handleRevealComplete = useCallback(() => setRevealReady(true), []);
 
   const fetchInterpretation = useCallback(async () => {
     if (hasAttemptedAI) return;
@@ -226,22 +226,36 @@ export default function MolinoInterpretation({
 
       {/* Loading state */}
       <AnimatePresence mode="wait">
-        {isInterpreting && !interpretation && (
-          <motion.div
-            key="loading"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {justUnlocked ? <RevealLoading /> : <LoadingSkeleton />}
-          </motion.div>
+        {justUnlocked ? (
+          !revealReady && (
+            <motion.div
+              key="building"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <BuildingMolino done={!isInterpreting} onComplete={handleRevealComplete} />
+            </motion.div>
+          )
+        ) : (
+          isInterpreting && !interpretation && (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <LoadingSkeleton />
+            </motion.div>
+          )
         )}
       </AnimatePresence>
 
       {/* Main content */}
       <AnimatePresence mode="wait">
-        {interpretation && (
+        {interpretation && revealReady && (
           <motion.div
             key={isUsingAI ? "ai" : "local"}
             initial={{ opacity: 0 }}
@@ -400,14 +414,14 @@ export default function MolinoInterpretation({
       </AnimatePresence>
 
       {/* Requiere premium — no es un error, no tiene sentido ofrecer reintentar */}
-      {premiumRequired && !interpretation && (
+      {premiumRequired && !interpretation && revealReady && (
         <p className="text-sm text-muted">
           Esta lectura forma parte de la síntesis paga.
         </p>
       )}
 
       {/* Error state (only show if no interpretation at all) */}
-      {error && !interpretation && !premiumRequired && (
+      {error && !interpretation && !premiumRequired && revealReady && (
         <div className="p-4 border border-ink/10 bg-ink/[0.02]">
           <p className="text-sm text-muted mb-2">{error}</p>
           <button
@@ -421,7 +435,7 @@ export default function MolinoInterpretation({
       )}
 
       {/* Subtle error when AI failed but local fallback exists */}
-      {error && interpretation && (
+      {error && interpretation && revealReady && (
         <p className="text-xs text-muted text-right">
           Interpretación local · AI no disponible
         </p>
