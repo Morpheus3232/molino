@@ -20,6 +20,18 @@ export function getMpClient(): MercadoPagoConfig {
   return new MercadoPagoConfig({ accessToken });
 }
 
+/**
+ * MP siempre devuelve sandbox_init_point en la respuesta de Preference,
+ * sin importar si el access_token es de test o de producción — confirmado
+ * en vivo: con un APP_USR- (producción) real, el campo igual vino poblado.
+ * Elegir la URL en base a "¿vino el campo?" mandaba usuarios reales a
+ * sandbox. El modo real solo lo dice el prefijo del propio token.
+ */
+export function isTestCredentials(): boolean {
+  const accessToken = process.env.MP_ACCESS_TOKEN || '';
+  return accessToken.startsWith('TEST-');
+}
+
 export function getWebhookSecret(): string {
   return process.env.MP_WEBHOOK_SECRET || getRequiredEnv('MP_WEBHOOK_SECRET');
 }
@@ -85,8 +97,10 @@ export async function createPreference(profileHash: string, name: string, curren
 
   return {
     preferenceId: response.id,
-    initPoint: response.init_point,
-    sandboxInitPoint: response.sandbox_init_point,
+    // Un único campo `checkoutUrl`, ya resuelto server-side según el modo
+    // real del token (ver isTestCredentials) — el cliente no vuelve a tener
+    // que elegir entre init_point/sandbox_init_point.
+    checkoutUrl: isTestCredentials() ? response.sandbox_init_point : response.init_point,
   };
 }
 

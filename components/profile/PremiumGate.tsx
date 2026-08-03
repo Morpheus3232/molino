@@ -251,12 +251,11 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
       }
 
       const data = await res.json();
-      // MP solo devuelve sandbox_init_point cuando la preferencia se creó
-      // con credenciales de TEST — con esas credenciales, init_point (la URL
-      // de producción) deja completar la tarjeta pero falla al confirmar el
-      // pago. Con credenciales reales, sandboxInitPoint viene null/ausente y
-      // cae a initPoint como siempre.
-      window.location.href = data.sandboxInitPoint || data.initPoint;
+      // El server ya resolvió cuál URL corresponde (ver isTestCredentials en
+      // lib/mercadopago.ts) — MP devuelve sandbox_init_point poblado siempre,
+      // sin importar el modo del token, así que decidir acá con "¿vino el
+      // campo?" mandaba usuarios reales a sandbox.
+      window.location.href = data.checkoutUrl;
     } catch (error) {
       const msg = error instanceof Error ? error.message : 'Error al iniciar el pago';
       setPayError(msg);
