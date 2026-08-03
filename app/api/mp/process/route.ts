@@ -5,14 +5,14 @@ export async function POST(req: NextRequest) {
   try {
     const { name, birthDate, paymentData } = await req.json();
 
-    if (!name || !birthDate || !paymentData) {
+    if (!birthDate || !paymentData) {
       return NextResponse.json(
-        { error: 'name, birthDate, and paymentData are required' },
+        { error: 'birthDate and paymentData are required' },
         { status: 400 },
       );
     }
 
-    const profileHash = hashProfile(name, birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate);
     const result = await processPayment({ profileHash, paymentData });
 
     return NextResponse.json(result);

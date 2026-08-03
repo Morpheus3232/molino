@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Molino",
   },
   description:
-    "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto, con una capa Premium opcional.",
+    "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin servidor guardando tu perfil. Código abierto, con una capa Premium opcional.",
   keywords: [
     "autoconocimiento",
     "numerología",
@@ -41,7 +41,10 @@ export const metadata: Metadata = {
   creator: "Molino",
   openGraph: {
     type: "website",
-    locale: "es_AR",
+    // es_419: español latinoamericano neutro (no atado a un país). Cuando
+    // existan en/pt-BR reales, esto se vuelve dinámico por locale de ruta.
+    locale: "es_419",
+    alternateLocale: ["en_US", "pt_BR"],
     url: SITE_URL,
     siteName: "Molino",
     title: "Molino — Mapa Personal de Autoconocimiento",
@@ -112,7 +115,7 @@ export default function RootLayout({
   ];
 
   return (
-    <html lang="es-AR" suppressHydrationWarning className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
+    <html lang="es" suppressHydrationWarning className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
       <head>
         {jsonLd.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
@@ -151,7 +154,19 @@ export default function RootLayout({
               <AnimatedLayout>{children}</AnimatedLayout>
             </AppErrorBoundary>
           </MotionProvider>
-          <Toaster position="bottom-right" richColors />
+          {/* Sin theme="dark" caía al fondo blanco por defecto de sonner —
+              un toast de librería sin skin, roto contra el resto de la UI
+              (siempre oscura, sin theme toggle implementado). */}
+          <Toaster
+            position="bottom-right"
+            richColors
+            theme="dark"
+            toastOptions={{
+              classNames: {
+                toast: "!bg-background !text-foreground !border !border-ink/10 !font-sans",
+              },
+            }}
+          />
         </PostHogProvider>
       </body>
     </html>

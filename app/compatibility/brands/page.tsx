@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllBrandCompatibility, type CompatibilityResult } from "@/lib/engines/compatibilityScoreEngine";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 import { getBrandCategories } from "@/lib/data/brands";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -138,14 +139,13 @@ export default function BrandsPage() {
                       >
                         <p className="text-2xl mb-1">{r.meta.logo}</p>
                         <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
-                        <p className="text-xl font-heading font-bold mt-1" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
+                        <p className="text-xs uppercase tracking-[0.1em] font-bold mt-1" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
                         <p className="text-[10px] uppercase tracking-[0.1em] text-muted">{r.targetAnimal} · {r.meta.category}</p>
                         <AnimatePresence>
                           {expandedItem === `top-${r.name}` && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3">
                               <div className="text-left space-y-1 pt-2 border-t border-border">
                                 {r.reasons.map((reason, j) => (<p key={j} className="text-xs text-muted leading-relaxed">{reason}</p>))}
-                                <p className="text-[9px] text-muted mt-1">Zodiac: {r.zodiacScore}/100</p>
                               </div>
                             </motion.div>
                           )}
@@ -223,7 +223,7 @@ export default function BrandsPage() {
                                 <p className="text-xs text-muted">{r.meta.category} · {r.meta.country} · {r.targetAnimal} de {r.targetElement} · Fundada {r.meta.year}</p>
                               </div>
                               <div className="text-right shrink-0">
-                                <p className="text-lg font-heading font-bold" style={{ color: r.score >= 75 ? "var(--score-excellent)" : r.score >= 55 ? "var(--score-good)" : "var(--score-neutral)" }}>{r.score}%</p>
+                                <p className="text-xs uppercase tracking-[0.1em] font-bold" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
                               </div>
                             </div>
                           </button>
@@ -236,7 +236,6 @@ export default function BrandsPage() {
                                   <div className="flex flex-wrap gap-3 mt-3 text-xs text-muted">
                                     <span>Tu signo: {typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : ""}</span><span>·</span><span>Marca: {r.targetAnimal} de {r.targetElement}</span><span>·</span><span>Fundada: {r.meta.year}</span>
                                   </div>
-                                  <p className="text-xs text-muted">Zodiac: {r.zodiacScore}/100 · Numerología: {r.numerologyScore}/100 · Final: {r.score}/100</p>
                                 </div>
                               </motion.div>
                             )}

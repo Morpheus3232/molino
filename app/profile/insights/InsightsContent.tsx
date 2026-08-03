@@ -17,7 +17,7 @@ import {
   getAnimalProfile,
   type Animal,
 } from "@/lib/data/animalRelations";
-import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
+import { calculateAllAffinity, getTierForScore, TIER_META } from "@/lib/engines/affinityEngine";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import {
@@ -251,10 +251,9 @@ export default function InsightsContent() {
                       </p>
                       <p className="text-xs text-muted truncate">{rec.explanation}</p>
                     </div>
-                    <div className="text-right shrink-0">
-                      <p className="font-heading text-lg font-bold text-foreground">{rec.score}</p>
-                      <p className="text-xs text-muted">/100</p>
-                    </div>
+                    <p className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
+                      {TIER_META[getTierForScore(rec.score)].label}
+                    </p>
                   </motion.button>
                 ))}
               </div>

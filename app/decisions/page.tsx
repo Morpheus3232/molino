@@ -8,7 +8,7 @@ import { analyzeDecision, CATEGORY_LABELS, type DecisionCategory, type DecisionR
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
-import { getScoreColor } from "@/lib/utils/score";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 import Link from "next/link";
 
 const CATEGORIES = Object.entries(CATEGORY_LABELS) as [DecisionCategory, string][];
@@ -40,15 +40,15 @@ export default function DecisionsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {loading || !mounted ? (
-          <motion.div
-            key="loading"
-            variants={pageTransitionVariants}
-            initial="enter"
-            animate="show"
-            exit="exit"
-          >
+          // Plain div, not motion.div: this is the very first thing painted
+          // (SSR + first client render both hit this branch since `mounted`
+          // starts false) — there's nothing to transition from, so animating
+          // it in from opacity:0 only bakes an invisible frame into the SSR
+          // HTML that lingers until hydration finishes. framer-motion's
+          // `initial={false}` does not suppress this during SSR.
+          <div key="loading">
             <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
               <p className="sr-only" role="status" aria-label="Preparando tu brújula de decisiones...">
                 Preparando tu brújula de decisiones...
@@ -65,7 +65,7 @@ export default function DecisionsPage() {
               </div>
               <UniversityFooter />
             </div>
-          </motion.div>
+          </div>
         ) : !profile ? (
           <motion.div
             key="no-profile"
@@ -112,6 +112,8 @@ export default function DecisionsPage() {
                     <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                       <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                       <span>›</span>
+                      <Link href="/hoy" className="hover:text-foreground transition-colors">Hoy</Link>
+                      <span>›</span>
                       <Link href="/decisions" className="hover:text-foreground transition-colors">Decisiones</Link>
                       <span>›</span>
                       <span className="text-foreground font-medium">Resultado</span>
@@ -152,7 +154,7 @@ export default function DecisionsPage() {
                     ].map(sub => (
                       <div key={sub.label} className="bg-background p-6 text-center">
                         <p className="label-micro mb-2">{sub.label}</p>
-                        <p className="text-3xl font-display font-bold" style={{ color: getScoreColor(sub.score) }}>{sub.score}%</p>
+                        <p className="text-lg font-display font-bold" style={{ color: getScoreColor(sub.score) }}>{getScoreLabel(sub.score)}</p>
                       </div>
                     ))}
                   </div>
@@ -224,6 +226,8 @@ export default function DecisionsPage() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                     <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                       <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                      <span>›</span>
+                      <Link href="/hoy" className="hover:text-foreground transition-colors">Hoy</Link>
                       <span>›</span>
                       <span className="text-foreground font-medium">Decisiones</span>
                     </nav>

@@ -1,5 +1,5 @@
 export interface EphemeralSession {
-  name: string;
+  name?: string;
   birthDate: string;
   birthPlace: string;
   birthTime?: string;
@@ -8,7 +8,7 @@ export interface EphemeralSession {
   onboardingStep: number;
   completedSections: string[];
   theme: "light" | "dark";
-  language: "es" | "en";
+  language: "es" | "en" | "pt-BR";
   notifications: boolean;
   timestamp: number;
 }
@@ -16,7 +16,7 @@ export interface EphemeralSession {
 let session: EphemeralSession | null = null;
 
 export function saveSession(data: {
-  name: string;
+  name?: string;
   birthDate: string;
   birthPlace: string;
   birthTime?: string;
@@ -25,7 +25,7 @@ export function saveSession(data: {
   onboardingStep?: number;
   completedSections?: string[];
   theme?: "light" | "dark";
-  language?: "es" | "en";
+  language?: "es" | "en" | "pt-BR";
   notifications?: boolean;
 }): void {
   session = {

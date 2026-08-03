@@ -13,7 +13,7 @@ export default function AnimatedLayout({ children }: AnimatedLayoutProps) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence>
+    <AnimatePresence initial={false}>
       <motion.div
         key={pathname}
         initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}

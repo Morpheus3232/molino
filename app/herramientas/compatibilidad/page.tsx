@@ -195,35 +195,14 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0, scale: 0.6 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="number-display text-[5rem] sm:text-[7rem] leading-none"
+                    className="font-heading text-3xl sm:text-4xl font-semibold leading-tight"
                     style={{
                       color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
                     }}
                   >
-                    {compatibility.score}%
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-heading text-xl font-semibold text-foreground mt-4"
-                  >
                     {compatibility.label}
                   </motion.p>
                 </div>
-
-                {/* Desglose */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                  className="max-w-lg mx-auto mb-6"
-                >
-                  <div className="p-4 rounded-md bg-card border border-border text-center transition-colors hover:border-accent/30">
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
-                    <p className="text-2xl font-heading font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
-                  </div>
-                </motion.div>
 
                 {/* Explicación */}
                 <motion.div
@@ -244,7 +223,7 @@ export default function CompatibilidadCalcPage() {
                 className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>Fórmula:</strong> 100% relación zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
+                  <strong>Fórmula:</strong> relación zodiacal entre el animal del usuario y el de la otra persona. Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
                 </p>
               </motion.div>
 
@@ -258,7 +237,7 @@ export default function CompatibilidadCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Compatibilidad zodiacal: ${compatibility.score}% — ${compatibility.label}. Calculá la tuya en Molino.`;
+                    const text = `Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`;
                     if (navigator.share) {
                       navigator.share({ title: "Compatibilidad — Molino", text }).catch(() => {});
                     } else {

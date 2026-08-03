@@ -4,6 +4,7 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { decodeProfileData } from "@/lib/utils/profileShare";
 import ProfileClient from "@/components/profile/ProfileClient";
 import type { UserProfile } from "@/types/user";
+import { formatDate } from "@/lib/i18n/format";
 
 export const dynamic = "force-dynamic";
 
@@ -49,13 +50,16 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
   const hasData = Boolean(dob || dataParam);
   const dateStr = birthDate
-    ? new Date(birthDate + "T00:00:00").toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })
+    ? formatDate(new Date(birthDate + "T00:00:00"), { day: "numeric", month: "long", year: "numeric" })
     : "";
+  // El onboarding es birthDate-first: casi nunca hay un name real acá. Cuando
+  // no hay nombre, "Tu Mapa" en vez de "Mapa de tu" (que no cierra en español).
+  const titleBase = name ? `Mapa de ${name}` : "Tu Mapa";
 
   return {
-    title: hasData ? `Mapa de ${name}` : "Tu Mapa Personal",
+    title: hasData ? titleBase : "Tu Mapa Personal",
     description: hasData
-      ? `Mapa personal de autoconocimiento de ${name}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
+      ? `Mapa personal de autoconocimiento${name ? ` de ${name}` : ""}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
       : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
     // Un perfil con datos (?dob= o ?data=) es contenido personal de una
     // sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
@@ -64,9 +68,9 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       ? { robots: { index: false, follow: true } }
       : { alternates: { canonical: siteUrl("/profile") } }),
     openGraph: {
-      title: hasData ? `Mapa de ${name} — Molino` : "Tu Mapa Personal — Molino",
+      title: hasData ? `${titleBase} — Molino` : "Tu Mapa Personal — Molino",
       description: hasData
-        ? `Perfil completo de ${name}: Camino de Vida, signo solar y animal del zodíaco chino.`
+        ? `Perfil completo${name ? ` de ${name}` : ""}: Camino de Vida, signo solar y animal del zodíaco chino.`
         : "Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.",
       type: "profile",
     },
@@ -84,9 +88,9 @@ export default async function ProfilePage({ searchParams }: Props) {
   if (dataParam) {
     try {
       const decoded = decodeProfileData(dataParam);
-      if (decoded?.n && decoded?.b) {
-        const calculated = calculateUserProfile(decoded.n, decoded.b);
-        profile = buildProfile(calculated, decoded.n, decoded.b);
+      if (decoded?.b) {
+        const calculated = calculateUserProfile(decoded.n || "", decoded.b);
+        profile = buildProfile(calculated, decoded.n || "", decoded.b);
       }
     } catch {}
   }

@@ -14,6 +14,7 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { getScoreLabel } from "@/lib/utils/score";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
+import { formatDate } from "@/lib/i18n/format";
 
 const INTENTIONS: { id: TimingIntention; label: string; icon: any }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: Rocket },
@@ -63,15 +64,14 @@ export default function TimingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {loading || !mounted ? (
-          <motion.div
-            key="loading"
-            variants={transitionVariants}
-            initial="enter"
-            animate="show"
-            exit="exit"
-          >
+          // Plain div, not motion.div: the very first thing painted (SSR +
+          // first client render both hit this branch since `mounted` starts
+          // false). See app/decisions/page.tsx for why — animating it in
+          // from opacity:0 bakes an invisible frame into the SSR HTML that
+          // framer-motion's `initial={false}` does not suppress there.
+          <div key="loading">
             <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
               <p className="sr-only" role="status" aria-label="Preparando tu timing...">
                 Preparando tu timing...
@@ -88,7 +88,7 @@ export default function TimingPage() {
               </div>
               <UniversityFooter />
             </div>
-          </motion.div>
+          </div>
         ) : !profile ? (
           <motion.div
             key="empty"
@@ -124,7 +124,9 @@ export default function TimingPage() {
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                   <span>›</span>
-                  <span className="text-foreground font-medium">Tu momento</span>
+                  <Link href="/hoy" className="hover:text-foreground transition-colors">Hoy</Link>
+                  <span>›</span>
+                  <span className="text-foreground font-medium">Timing</span>
                 </nav>
 
                 <p className="eyebrow-brutalist mb-4">Tu timing personal</p>
@@ -273,10 +275,10 @@ export default function TimingPage() {
                           >
                             <div className="flex items-center justify-between mb-2">
                               <p className="font-display text-base text-foreground">
-                                {new Date(date.date + 'T12:00:00').toLocaleDateString('es-AR', { weekday: 'short', day: 'numeric', month: 'short' })}
+                                {formatDate(new Date(date.date + 'T12:00:00'), { weekday: 'short', day: 'numeric', month: 'short' })}
                               </p>
-                              <span className="text-lg font-semibold" style={{ color: elementColor }}>
-                                {date.timingScore}%
+                              <span className="text-xs uppercase tracking-[0.1em] font-semibold" style={{ color: elementColor }}>
+                                {getScoreLabel(date.timingScore)}
                               </span>
                             </div>
                             <p className="text-sm text-muted">{date.theme}</p>

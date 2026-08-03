@@ -6,10 +6,25 @@ import { analytics } from '@/lib/analytics/analytics';
 import Button from '@/components/ui/Button';
 import Logo from '@/components/ui/Logo';
 import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
+import { useDictionary } from '@/lib/i18n/useDictionary';
+
+interface PremiumGatePreview {
+  lifePath: number;
+  chineseZodiac: string;
+  /**
+   * Un pattern ya calculado gratis (buildPatterns → "Tu motor"), no un dato
+   * nuevo inventado para el paywall. `sources.length > 1` solo si el engine
+   * verificó una convergencia real entre dos sistemas independientes (ver
+   * findSharedTheme en synthesisEngine.ts) — por eso el copy de abajo tiene
+   * dos ramas honestas en vez de asumir siempre que "hay una conexión".
+   */
+  pattern: { keyword: string; sources: string[] } | null;
+}
 
 interface PremiumGateProps {
-  name: string;
+  name?: string;
   birthDate: string;
+  preview?: PremiumGatePreview;
   children: React.ReactNode;
 }
 
@@ -52,7 +67,8 @@ function cleanUrlParams() {
   window.history.replaceState({}, '', url.pathname + url.search);
 }
 
-export default function PremiumGate({ name, birthDate, children }: PremiumGateProps) {
+export default function PremiumGate({ name, birthDate, preview, children }: PremiumGateProps) {
+  const t = useDictionary();
   const [state, setState] = useState<GateState>('locked');
   // Distingue "acabo de pagar/recuperar en esta sesión" de "ya era premium al
   // entrar" (checkServer() en el mount inicial) — solo el primer caso merece
@@ -226,7 +242,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, birthDate, currencyId: 'USD' }),
+        body: JSON.stringify({ name, birthDate, currencyId: 'ARS' }),
       });
 
       if (!res.ok) {
@@ -235,7 +251,12 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
       }
 
       const data = await res.json();
-      window.location.href = data.initPoint;
+      // MP solo devuelve sandbox_init_point cuando la preferencia se creó
+      // con credenciales de TEST — con esas credenciales, init_point (la URL
+      // de producción) deja completar la tarjeta pero falla al confirmar el
+      // pago. Con credenciales reales, sandboxInitPoint viene null/ausente y
+      // cae a initPoint como siempre.
+      window.location.href = data.sandboxInitPoint || data.initPoint;
     } catch (error) {
       const msg = error instanceof Error ? error.message : 'Error al iniciar el pago';
       setPayError(msg);
@@ -346,21 +367,42 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
           <div className="max-w-2xl">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-8 h-px bg-accent" aria-hidden="true" />
-              <p className="label-micro text-accent font-semibold">Premium · Pago único</p>
+              <p className="label-micro text-accent font-semibold">{t.premium.eyebrow}</p>
             </div>
 
             <h3 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-snug mb-4">
-              Ya conocés tus piezas.
+              {t.premium.headline}
               <br className="hidden sm:block" />
-              Ahora entendé cómo se conectan.
+              {t.premium.headlineLine2}
             </h3>
 
             <p className="text-base text-muted leading-relaxed mb-10 max-w-xl">
-              Tu síntesis completa reúne tus sistemas en una sola lectura: qué patrones se alinean, qué tensiones aparecen y qué importa en tu momento actual.
+              {t.premium.body}
             </p>
 
+            {preview && (
+              <div className="border border-ink/10 bg-ink/[0.02] px-6 py-5 mb-10 max-w-xl">
+                <p className="text-sm text-foreground leading-relaxed">
+                  Tu Camino de Vida es <span className="font-semibold">{preview.lifePath}</span>. Tu animal chino es{" "}
+                  <span className="font-semibold">{preview.chineseZodiac}</span>.
+                  {preview.pattern && preview.pattern.sources.length > 1 ? (
+                    <>
+                      {" "}
+                      <span className="font-semibold">{preview.pattern.sources.join(" y ")}</span> coinciden en{" "}
+                      <span className="font-semibold">{preview.pattern.keyword}</span> — eso ya lo viste arriba, gratis.
+                    </>
+                  ) : (
+                    " Dos sistemas distintos, calculados por separado."
+                  )}
+                </p>
+                <p className="text-sm text-muted leading-relaxed mt-2">
+                  La síntesis completa explica qué significa esa combinación en tu caso — no qué son por separado.
+                </p>
+              </div>
+            )}
+
             <div className="border-t border-ink/10 pt-8 mb-10">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">QUÉ VAS A LEER</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">{t.premium.whatYouGetLabel}</p>
               <ul className="space-y-3 text-sm text-foreground/90 leading-relaxed">
                 <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Cómo convergen tus sistemas.</li>
                 <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué tensiones aparecen entre ellos.</li>
@@ -374,10 +416,10 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
 
               <div className="flex items-baseline gap-2 mb-2">
                 <span className="font-display text-6xl sm:text-7xl leading-none tracking-tight text-foreground">${PRICE_USD}</span>
-                <span className="font-heading text-xl font-semibold text-foreground uppercase tracking-wider">USD</span>
+                <span className="font-heading text-xl font-semibold text-foreground uppercase tracking-wider">{t.premium.priceSuffix}</span>
               </div>
 
-              <p className="text-sm text-muted mb-8">Pago único · acceso permanente</p>
+              <p className="text-sm text-muted mb-8">{t.premium.priceNote}</p>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
@@ -386,7 +428,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   fullWidth
                   onClick={() => handleCheckout('mercadopago')}
                 >
-                  Pagar con Mercado Pago
+                  {t.premium.payWithMercadoPago}
                 </Button>
               </div>
 
@@ -405,7 +447,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                       fullWidth
                       onClick={() => handleCheckout('paypal')}
                     >
-                      Pagar con PayPal
+                      {t.premium.payWithPaypal}
                     </Button>
                   </div>
                 </>
@@ -419,7 +461,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   onClick={() => setShowRecover(true)}
                   className="text-left text-xs text-muted hover:text-accent transition-colors"
                 >
-                  Recuperar acceso
+                  {t.premium.recoverAccess}
                 </button>
               ) : (
                 <div className="space-y-3 w-full sm:w-auto">
@@ -486,7 +528,7 @@ export default function PremiumGate({ name, birthDate, children }: PremiumGatePr
                   onClick={() => setShowCoupon(true)}
                   className="text-left text-xs text-muted hover:text-accent transition-colors"
                 >
-                  Tengo un cupón
+                  {t.premium.haveCoupon}
                 </button>
               ) : (
                 <form onSubmit={handleApplyCoupon} className="space-y-2 max-w-xs">

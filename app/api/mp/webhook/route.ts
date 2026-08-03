@@ -13,7 +13,13 @@ export async function POST(req: NextRequest) {
       if (body) {
         data = JSON.parse(body);
       }
-    } catch {
+    } catch (parseErr) {
+      console.error('[MP Webhook] JSON parse failed', {
+        contentType: req.headers.get('content-type'),
+        bodyLength: body.length,
+        bodyPreview: body.slice(0, 300),
+        parseError: parseErr instanceof Error ? parseErr.message : String(parseErr),
+      });
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
 

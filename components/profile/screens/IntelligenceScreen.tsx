@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
-import { ARCHETYPES } from "@/lib/data";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { safeNumber } from "@/lib/utils/score";
+import { safeNumber, getScoreLabel } from "@/lib/utils/score";
 import { fetchSynthesis, type SynthesisResult } from "@/lib/api/client";
 import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import dynamic from "next/dynamic";
@@ -15,12 +14,12 @@ import ShareableImageCard from "@/components/profile/ShareableImageCard";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import PremiumGate from "@/components/profile/PremiumGate";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
-import MomentOrientation from "@/components/profile/MomentOrientation";
-import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { smoothReveal } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { buildPatterns, buildMomentState } from "@/lib/engines/synthesisEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
 
@@ -31,22 +30,14 @@ interface IntelligenceScreenProps {
   onNavigate?: (tab: ProfileTab) => void;
 }
 
-export default function IntelligenceScreen({ profile, onNavigate }: IntelligenceScreenProps) {
-  const router = useRouter();
+export default function IntelligenceScreen({ profile }: IntelligenceScreenProps) {
   const [expandedDimension, setExpandedDimension] = useState<string | null>(null);
 
   const lifePath = safeNumber(profile.lifePath, 1);
-  const expressionNumber = safeNumber(profile.expressionNumber, 0);
-  const soulNumber = safeNumber(profile.soulNumber, 0);
-  const personalityNumber = safeNumber(profile.personalityNumber, 0);
   const name = typeof profile.name === "string" ? profile.name : "";
   const birthDate = typeof profile.birthDate === "string" ? profile.birthDate : "";
-  const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
   const element = typeof profile.element === "string" ? profile.element : "";
-  const modality = typeof profile.modality === "string" ? profile.modality : "";
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
-  const archetype = ARCHETYPES[lifePath];
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
   const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
@@ -63,6 +54,14 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
     [profile, savedIntention]
   );
 
+  // Fallback local — los mismos motores puros que la API llama. Si la síntesis
+  // remota falla o tarda, la pantalla nunca queda vacía.
+  const localPatterns = useMemo(() => buildPatterns(profile), [profile]);
+  const localMomentState = useMemo(
+    () => buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme),
+    [profile, dailyEnergy.overallScore, dailyEnergy.theme]
+  );
+
   const synthesisKey = birthDate ? `${birthDate}:${name}` : "";
   const { data: synthesisData, error: synthesisError, retry: retrySynthesis } = useCachedFetch(
     SYNTHESIS_CACHE,
@@ -70,8 +69,13 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
     () => fetchSynthesis(birthDate, name, true)
   );
 
-  const dimensions = synthesisData?.dimensions || [];
-  const patterns = synthesisData?.patterns || [];
+  // API data takes precedence; local fallback fills gaps instantly.
+  // `dimensions` needs a name to vary — without one, 4 of 5 collapse to the
+  // same value (lp*10). The onboarding never asks for a name, so
+  // `dateDimensions` is the correct fallback.
+  const dimensions = (name ? synthesisData?.dimensions : synthesisData?.dateDimensions) || [];
+  const patterns = synthesisData?.patterns ?? localPatterns;
+  const momentState = synthesisData?.momentState ?? localMomentState;
 
   return (
     <div
@@ -89,39 +93,197 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               Tu mapa profundo
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-              Síntesis, patrones, dimensiones y las conexiones que Molino detecta entre tus sistemas.
+              Lo interesante no está en cada sistema por separado, sino en lo que aparece cuando los miramos juntos.
             </p>
-            <p className="text-sm text-muted mt-3">La síntesis integral que conecta tus sistemas forma parte de Premium — <span className="text-foreground font-semibold">$8 USD</span> · pago único · acceso permanente.</p>
           </motion.div>
         </div>
       </section>
 
-      {/* Tus Dimensiones */}
+      {/* 01 · TU LECTURA — tu motor / tu tensión / tu próximo movimiento: el
+          núcleo de la pantalla. Va inmediatamente después del hero, sin nada
+          entre medio — antes "Tus dimensiones" (un desglose por-sistema, no
+          una convergencia) ocupaba este lugar y hacía que el usuario llegara
+          al corazón de Intelligence recién en el tercer scroll. */}
       <section className="py-8 sm:py-12 border-t border-ink/10">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-            <div>
-              <motion.div {...smoothReveal}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tus dimensiones</h2>
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">01 · Tu lectura</h2>
+          </div>
+          {synthesisError && !synthesisData && (
+            <div role="status" className="flex items-center gap-2 mb-6">
+              <p className="text-xs text-muted">Mostrando tu lectura calculada localmente.</p>
+              <button
+                type="button"
+                onClick={retrySynthesis}
+                className="text-xs text-accent hover:underline"
+              >
+                Reintentar síntesis completa
+              </button>
+            </div>
+          )}
+          <div className="space-y-0">
+            {patterns.map((pattern, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+                className="py-8 border-b border-ink/10 last:border-b-0"
+              >
+                <h2 className="font-display text-2xl sm:text-3xl tracking-tight mb-3" style={{ color: elementColor }}>
+                  {pattern.label.toUpperCase()}
+                </h2>
+                <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
+                  <span className="font-semibold">{pattern.keyword}.</span> {pattern.description}
+                </p>
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {pattern.sources.map((src) => (
+                    <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
+                      {src}
+                    </span>
+                  ))}
                 </div>
-                <p className="text-sm text-muted mb-4">Una síntesis simbólica de tu perfil, no una medición científica.</p>
-                {synthesisError && !synthesisData && (
-                  <p className="text-sm text-muted mb-4" role="alert">
-                    No pudimos cargar esta parte de tu mapa.{" "}
-                    <button type="button" onClick={retrySynthesis} className="text-accent hover:underline">
-                      Reintentar
-                    </button>
-                  </p>
-                )}
               </motion.div>
-              <div className="mt-6">
-                <ProfileRadar
-                  data={dimensions.map((d) => ({ subject: d.dimension, value: d.value }))}
-                  color={elementColor}
-                />
-              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 02 · CUANDO TUS SISTEMAS SE ENCUENTRAN — el diferencial real de
+          Molino: no un dato nuevo, sino que dos o más sistemas ya calculados
+          apuntan a la misma conclusión. Usa pattern.sources (qué sistemas
+          alimentaron cada patrón), no una relación inventada. */}
+      {patterns.some((p) => p.sources.length > 1) && (
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">02 · Cuando tus sistemas se encuentran</h2>
+            </div>
+            <div className="space-y-4 max-w-2xl">
+              {patterns
+                .filter((p) => p.sources.length > 1)
+                .map((p) => (
+                  <p key={p.label} className="text-sm text-foreground leading-relaxed">
+                    <span className="font-semibold">{p.sources.join(" y ")}</span> coinciden en{" "}
+                    <span style={{ color: elementColor }}>{p.keyword}</span>: no es una lectura aislada, es lo que
+                    aparece cuando ambos sistemas se miran juntos.
+                  </p>
+                ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 03 · QUÉ SIGNIFICA PARA VOS — momentState.narrative ya es, en sí
+          misma, una síntesis cruzada (ciclo numerológico + energía del día +
+          elemento astrológico + Life Path) en una sola oración. Antes esto
+          vivía adentro de un <MomentOrientation> entero que repetía la
+          postura ACTUAR/ESPERAR/OBSERVAR y la grilla de evidencia que YA
+          muestra /hoy (con más contexto: racha, continuidad ayer/hoy).
+          Mantener esa duplicación completa acá competía con el clímax de la
+          pantalla sin agregar nada que /hoy no hiciera mejor — se eliminó el
+          componente (sin otros consumidores). Lo que sí es exclusivo de acá
+          — la traducción de esta lectura a "qué significa ahora" — se
+          conserva en una sola oración. */}
+      {momentState?.narrative && (
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">03 · Qué significa para vos</h2>
+            </div>
+            <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
+              {momentState.narrative}
+            </p>
+            <p className="text-sm mt-6">
+              <Link href="/hoy" className="text-accent hover:underline">
+                Ver tu día de hoy en detalle →
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* 04 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
+          (esa es afinidad con entidades); acá es qué tan preparado está cada
+          área de tu vida según decisionsEngine. */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · De la lectura a la acción</h2>
+          </div>
+          <DecisionMapSection profile={profile} />
+        </div>
+      </section>
+
+      {/* 05 · SÍNTESIS PROFUNDA — un único paywall (PremiumGate), no dos
+          pantallas de venta seguidas. Antes esta sección mostraba gratis el
+          resumen, "qué significa" y "por qué importa" de la MISMA
+          interpretación que después pedía $8 por leer — pagabas por dos
+          campos más del mismo objeto. Ahora el contenido no se filtra: lo
+          único que se ve gratis es la propuesta (en PremiumGate), nunca la
+          lectura en sí. PremiumGate ya promete "interpretación, no más
+          datos" (cómo convergen, qué tensiones, qué significa el momento,
+          una recomendación) — se verificó contra intelligenceEngine y no
+          hizo falta tocarlo. */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · Síntesis profunda</h2>
+          </div>
+          <PremiumGate
+            name={name}
+            birthDate={birthDate}
+            preview={{ lifePath, chineseZodiac, pattern: patterns.find((p) => p.label === "Tu motor") ?? null }}
+          >
+            <MolinoInterpretation
+              profile={profile}
+              type="personal_profile"
+              dailyEnergy={dailyEnergy}
+              timing={timing ?? undefined}
+              label="Tu síntesis"
+              description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
+            />
+          </PremiumGate>
+        </div>
+      </section>
+
+      {/* Para profundizar — Dimensiones + Sistemas, demovidos a referencia
+          secundaria. Antes "Tus dimensiones" abría la pantalla con un radar
+          a página completa (mismo contenido que el Adelanto del onboarding,
+          ver dateDimensions más arriba) y "Tus sistemas" era una sección
+          entera de navegación entre el clímax y la acción. Ninguna de las
+          dos es parte de la síntesis (son desglose por-sistema o links de
+          salida), así que quedan acá, después de que la lectura ya terminó,
+          en un formato compacto que no compite con ella. No se elimina
+          capacidad: los 4 links a /conocimiento/* y el detalle de
+          dimensiones siguen disponibles. */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <p className="text-xs uppercase tracking-[0.2em] text-muted font-semibold mb-6">Para profundizar</p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-10">
+            <div>
+              <p className="text-sm text-muted mb-4">
+                Tus dimensiones — la misma lectura de tu Adelanto, ahora con tu perfil completo.
+              </p>
+              {synthesisError && !synthesisData && (
+                <p className="text-sm text-muted mb-4" role="alert">
+                  No pudimos cargar esta parte de tu mapa.{" "}
+                  <button type="button" onClick={retrySynthesis} className="text-accent hover:underline">
+                    Reintentar
+                  </button>
+                </p>
+              )}
+              <ProfileRadar
+                data={dimensions.map((d) => ({ subject: d.dimension, value: d.value }))}
+                color={elementColor}
+              />
             </div>
 
             <div className="space-y-0">
@@ -141,10 +303,9 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
                       <p className="uppercase text-xs tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-base font-medium" style={{ color: elementColor }}>{dim.value}</p>
-                      <p className="uppercase text-xs tracking-[0.15em] text-muted">/ 100</p>
-                    </div>
+                    <p className="text-xs uppercase tracking-[0.15em] font-medium shrink-0 ml-4" style={{ color: elementColor }}>
+                      {getScoreLabel(dim.value)}
+                    </p>
                   </div>
                   <AnimatePresence>
                     {expandedDimension === dim.dimension && (
@@ -163,172 +324,25 @@ export default function IntelligenceScreen({ profile, onNavigate }: Intelligence
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Tus Patrones */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tus patrones</h2>
-            </div>
-          </motion.div>
-
-          <div className="space-y-0">
-            {patterns.map((pattern, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="py-6 border-b border-ink/10 last:border-b-0"
-              >
-                <div className="flex items-baseline gap-3 mb-2">
-                  <span className="uppercase text-xs tracking-[0.25em] text-muted">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.25em] font-medium text-muted">{pattern.label}</span>
-                </div>
-                <p className="font-display text-lg sm:text-xl mb-2" style={{ color: elementColor }}>
-                  {pattern.keyword}
-                </p>
-                <p className="text-sm text-muted leading-relaxed mb-3 max-w-2xl">{pattern.description}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {pattern.sources.map((src) => (
-                    <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
-                      {src}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tus Sistemas */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tus sistemas</h2>
-            </div>
-            <p className="text-sm text-muted max-w-xl mb-6">
-              Estos sistemas no están aislados. Molino los conecta para construir una lectura integrada.
-            </p>
-          </motion.div>
-
-          <div className="space-y-0">
+          <p className="text-sm text-muted max-w-xl mb-4 pt-6 border-t border-ink/10">
+            Tus sistemas por separado:
+          </p>
+          <p className="text-sm leading-relaxed">
             {[
-              { title: "Numerolog\u00eda", detail: `Camino de Vida ${lifePath} \u00b7 ${ARCHETYPES[lifePath]?.name || ""}`, href: "/conocimiento/numerologia", color: "var(--element-fire)", system: "El lenguaje de los n\u00fameros" },
-              { title: "Astrología", detail: `${sunSign} · ${element} · ${modality}`, href: "/conocimiento/astrologia", color: "var(--layer-astrology)", system: "El mapa del cielo" },
-              { title: "Zodiaco Chino", detail: `${chineseZodiac}`, href: "/conocimiento/zodiaco-chino", color: "var(--layer-moment)", system: "El ciclo de los animales" },
-              { title: "Arquetipos", detail: archetypeName || archetype?.name || "", href: "/conocimiento/numerologia", color: elementColor, system: "La síntesis de tus patrones" },
-            ].map((sys, i) => (
-              <motion.button
-                key={sys.title}
-                initial={{ opacity: 0, x: -12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06, duration: 0.4 }}
-                onClick={() => router.push(sys.href)}
-                className="w-full flex items-center gap-4 py-6 border-b border-ink/10 last:border-b-0 text-left group hover:pl-3 transition-all"
-              >
-                <span className="w-2.5 h-2.5 shrink-0" style={{ backgroundColor: sys.color }} />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{sys.title}</p>
-                  <p className="uppercase text-xs tracking-[0.15em] text-muted mt-0.5">{sys.detail}</p>
-                </div>
-                <span className="uppercase text-xs tracking-[0.15em] text-muted group-hover:text-accent transition-colors shrink-0">{sys.system} &rarr;</span>
-              </motion.button>
+              { title: "Numerología", href: "/conocimiento/numerologia" },
+              { title: "Astrología", href: "/conocimiento/astrologia" },
+              { title: "Zodiaco Chino", href: "/conocimiento/zodiaco-chino" },
+              { title: "Arquetipos", href: "/conocimiento/numerologia" },
+            ].map((sys, i, arr) => (
+              <span key={sys.title}>
+                <Link href={sys.href} className="text-foreground hover:text-accent transition-colors underline underline-offset-4 decoration-ink/20">
+                  {sys.title}
+                </Link>
+                {i < arr.length - 1 ? " · " : ""}
+              </span>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Explora tus Afinidades */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <DecisionMapSection profile={profile} />
-        </div>
-      </section>
-
-      {/* Tu momento / Orientación */}
-      <MomentOrientation
-        dailyEnergy={dailyEnergy}
-        timing={timing}
-        momentState={synthesisData?.momentState ?? null}
-        error={!!synthesisError && !synthesisData}
-        onRetry={retrySynthesis}
-      />
-
-      {/* Tu síntesis completa — un único paywall (PremiumGate), no dos
-          pantallas de venta seguidas. Antes esta sección mostraba gratis el
-          resumen, "qué significa" y "por qué importa" de la MISMA
-          interpretación que después pedía $8 por leer — pagabas por dos
-          campos más del mismo objeto. Ahora el contenido no se filtra: lo
-          único que se ve gratis es la propuesta (en PremiumGate), nunca la
-          lectura en sí. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tu síntesis completa</h2>
-          </div>
-          <PremiumGate name={name} birthDate={birthDate}>
-            <MolinoInterpretation
-              profile={profile}
-              type="personal_profile"
-              dailyEnergy={dailyEnergy}
-              timing={timing ?? undefined}
-              label="Tu síntesis"
-              description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
-            />
-          </PremiumGate>
-        </div>
-      </section>
-
-      {/* Tu Próximo Movimiento */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Tu próximo movimiento</h2>
-            </div>
-          </motion.div>
-
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10">
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              onClick={() => router.push("/explore")}
-              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
-            >
-              <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Conexiones</p>
-              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Con qué resonás?</p>
-              <p className="text-sm text-muted mt-1 leading-relaxed">Explorá compatibilidad con personas, países, marcas y conceptos.</p>
-            </motion.button>
-
-            <motion.button
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.16, duration: 0.5 }}
-              onClick={() => router.push("/academy")}
-              className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
-            >
-              <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Conocimiento</p>
-              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">¿Querés entender el sistema?</p>
-              <p className="text-sm text-muted mt-1 leading-relaxed">Explorá numerología, astrología, zodiaco chino y más.</p>
-            </motion.button>
-          </div>
+          </p>
         </div>
       </section>
 

@@ -16,31 +16,31 @@ interface AffinityShareableCardProps {
  * Animal names are always clean: "Rata", "Caballo", "Dragón", etc. — no articles.
  */
 function buildShareText(result: AffinityResult): string {
-  const { entity, entityAnimal, userAnimal, score, relationship } = result;
+  const { entity, entityAnimal, userAnimal, relationship } = result;
   const emoji = entity.emoji || "";
   const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
   }
 
   if (relationship === "armonía natural") {
-    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
   }
 
   if (relationship === "opuestos en el ciclo") {
-    return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${tierLabel}. Mirá qué significa tu conexión en Molino ✨`;
   }
 
   if (relationship === "requiere atención") {
-    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${tierLabel}. Descubrí tu afinidad en Molino ✨`;
   }
 
-  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${tierLabel} — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
 }
 
 /**
@@ -148,15 +148,14 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               <p className="text-xs text-muted mt-1 truncate">{entity.name}</p>
             </div>
 
-            {/* Score — central, impactful, never pushes */}
-            <div className="flex flex-col items-center shrink-0 px-1">
+            {/* Tier — central, impactful, never pushes */}
+            <div className="flex flex-col items-center shrink-0 px-1 max-w-[7rem]">
               <span
-                className="font-heading text-4xl sm:text-5xl font-bold leading-none"
+                className="font-heading text-lg sm:text-xl font-bold leading-tight text-center"
                 style={{ color: tierMeta.color }}
               >
-                {result.score}
+                {tierMeta.label}
               </span>
-              <span className="text-xs text-muted mt-1">/100</span>
             </div>
 
             {/* User animal */}
@@ -173,7 +172,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               className="text-xs font-medium uppercase tracking-wider px-4 py-1.5 rounded-sm"
               style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
             >
-              {tierMeta.label} · {result.relationship}
+              {result.relationship}
             </span>
           </div>
 
@@ -192,14 +191,14 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               <span>{eventDate}</span>
             </div>
             {event.confidence === "exacta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-xs text-green-700">
-                <span className="w-1 h-1 rounded-full bg-green-600" />
+              <span className="inline-flex items-center gap-1 text-xs text-accent">
+                <span className="w-1 h-1 rounded-full bg-accent" />
                 Fecha histórica verificada
               </span>
             )}
             {event.confidence === "alta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-xs text-green-700">
-                <span className="w-1 h-1 rounded-full bg-green-600" />
+              <span className="inline-flex items-center gap-1 text-xs text-accent">
+                <span className="w-1 h-1 rounded-full bg-accent" />
                 Fecha histórica verificada
               </span>
             )}

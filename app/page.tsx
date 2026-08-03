@@ -10,53 +10,11 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
-import { safeNumber, getScoreColor } from "@/lib/utils/score";
-import Button from "@/components/ui/Button";
+import { safeNumber, getScoreColor, getScoreLabel } from "@/lib/utils/score";
 import HeroNew from "@/components/sections/HeroNew";
 import SystemsPreview from "@/components/sections/SystemsPreview";
 import Journey from "@/components/sections/Journey";
 import ConceptsIndex from "@/components/sections/ConceptsIndex";
-
-/** Mismo criterio que /hoy — la energía se lee como nivel, no como score. */
-function getEnergyLevel(score: number): string {
-  if (score >= 75) return "ALTA";
-  if (score >= 55) return "MEDIA";
-  return "BAJA";
-}
-
-/* ═══ CTA final ═══ */
-
-function FinalCTA() {
-  return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="border-t border-ink/10"
-        >
-          <div className="accent-block py-16 px-8 sm:px-12 lg:px-16 text-center">
-            <p className="font-display text-4xl sm:text-5xl lg:text-6xl text-accent-foreground leading-[0.9] mb-4">
-              ¿LISTO PARA DESCUBRIR
-              <br />
-              TU MAPA PERSONAL?
-            </p>
-            <p className="text-sm sm:text-base text-accent-foreground/85 max-w-xl mx-auto mb-10 leading-relaxed">
-              Identidad, mundo, círculo e inteligencia en un solo lugar.
-            </p>
-            <Button asChild variant="inverse" size="lg">
-              <Link href="/onboarding" aria-label="Descubrir mi mapa personal: ir al onboarding">
-                DESCUBRIR MI MAPA →
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 /* ═══ Main ═══ */
 
@@ -105,7 +63,6 @@ function GenericHome() {
       <SystemsPreview />
       <Journey />
       <ConceptsIndex />
-      <FinalCTA />
     </>
   );
 }
@@ -141,7 +98,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
                 <div>
                   <p className="label-micro mb-4">Tu energía de hoy</p>
                   <p className="text-5xl sm:text-6xl font-heading font-bold tracking-tight" style={{ color: getScoreColor(energy.overallScore) }}>
-                    {getEnergyLevel(energy.overallScore)}
+                    {getScoreLabel(energy.overallScore)}
                   </p>
                   <p className="text-sm text-muted mt-2">{energy.theme}</p>
                 </div>
@@ -160,7 +117,7 @@ function PersonalizedHome({ profile }: { profile: UserProfile }) {
         </div>
       </section>
 
-      <Journey />
+      <Journey hasProfile />
       <ConceptsIndex />
     </>
   );

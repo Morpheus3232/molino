@@ -7,15 +7,15 @@ export async function POST(req: NextRequest) {
   try {
     const { orderId, name, birthDate } = await req.json();
 
-    if (!orderId || !name || !birthDate) {
+    if (!orderId || !birthDate) {
       return NextResponse.json(
-        { error: 'orderId, name and birthDate are required' },
+        { error: 'orderId and birthDate are required' },
         { status: 400 },
       );
     }
 
     const cleanOrderId = String(orderId).trim();
-    const profileHash = hashProfile(name, birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate);
 
     const alreadyProcessed = await isPaymentProcessed(cleanOrderId);
     const order = await captureOrder(cleanOrderId);

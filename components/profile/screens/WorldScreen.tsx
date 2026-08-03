@@ -5,10 +5,9 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
-import { getTopAffinityHighlights, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { getTopAffinityHighlights, calculateAllAffinity, getTierForScore, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { ENTITY_TYPES, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import ZodiacMark from "@/components/ui/ZodiacMark";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
@@ -22,6 +21,20 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const userAnimal = (profile.chineseZodiac ?? "") as string;
 
   const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
+
+  // Cuántas de TODAS las entidades que Molino conoce resuenan con el animal
+  // del usuario — un hecho real y agregado (varía según el animal: cada uno
+  // tiene una posición distinta en el ciclo respecto al resto de entidades),
+  // no una lista más: es la cifra que abre la sección, antes de listar nada.
+  // Umbral score>=60 (afinidad-media o mejor) — no "complementarios": la
+  // mayoría de las entidades caen ahí por ser relación "neutral" (score~50),
+  // así que incluirlas hacía que ~80% de las 383 entidades "resonaran",
+  // vaciando de sentido la cifra.
+  const resonanceStats = useMemo(() => {
+    const all = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
+    const resonant = all.filter(r => r.score >= 60);
+    return { resonant: resonant.length, total: all.length };
+  }, [profile]);
 
   // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente
   // que usa toda la superficie /affinity/*. "Positiva" = tier afinidad-media
@@ -53,12 +66,17 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           <motion.div {...fadeUp}>
             <p className="label-micro mb-3">Tu Mundo</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
-              Descubrí qué resuena con vos
+              Cómo te proyectás hacia afuera
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-              Marcas, destinos y ciudades que conectan con tu perfil de{" "}
+              Lugares, marcas y entornos — no personas — que conectan con tu perfil de{" "}
               <span className="font-medium text-foreground">{userDisplay.name}</span>.
             </p>
+            {resonanceStats.total > 0 && (
+              <p className="text-sm text-accent mt-5">
+                De las {resonanceStats.total} entidades que Molino conoce, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
+              </p>
+            )}
           </motion.div>
         </div>
       </section>
@@ -88,7 +106,6 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-2xl">{result.entity.emoji}</span>
-                      <span className="text-lg font-semibold text-foreground">{result.score}</span>
                     </div>
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                       {result.entity.name}
@@ -237,16 +254,15 @@ function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
       className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
-        <div className="flex flex-col items-center shrink-0">
-          <span className="text-3xl">{rec.entity.emoji}</span>
-          <ZodiacMark animal={rec.entityAnimal} color="var(--color-muted)" size="sm" showLabel={false} />
-        </div>
+        <span className="text-3xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors min-w-0 truncate">
               {rec.entity.name}
             </h4>
-            <span className="text-sm font-semibold text-muted">{rec.score}</span>
+            <span className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
+              {TIER_META[getTierForScore(rec.score)].label}
+            </span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name}
@@ -288,16 +304,15 @@ function BrandCard({ rec, index }: { rec: AffinityResult; index: number }) {
       className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
     >
       <div className="flex items-start gap-4">
-        <div className="flex flex-col items-center shrink-0">
-          <span className="text-3xl">{rec.entity.emoji}</span>
-          <ZodiacMark animal={rec.entityAnimal} color="var(--color-muted)" size="sm" showLabel={false} />
-        </div>
+        <span className="text-3xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors min-w-0 truncate">
               {rec.entity.name}
             </h4>
-            <span className="text-sm font-semibold text-muted">{rec.score}</span>
+            <span className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
+              {TIER_META[getTierForScore(rec.score)].label}
+            </span>
           </div>
           <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
             {rec.entity.country} · {animalDisplay.name}

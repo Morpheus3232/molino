@@ -77,7 +77,9 @@ class Analytics {
 
     this.events.push(fullEvent);
     this.saveToStorage();
-    console.log("📊 Analytics:", fullEvent);
+    if (process.env.NODE_ENV !== "production") {
+      console.log("📊 Analytics:", fullEvent);
+    }
 
     // PostHog sink — fires only if posthog is loaded (Project Key configured)
     if (posthog && typeof posthog.capture === "function") {

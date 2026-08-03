@@ -122,7 +122,7 @@ export function buildMolinoContext(
 ): MolinoContext {
   return {
     userProfile: {
-      name: profile.name,
+      name: profile.name || '',
       lifePath: profile.lifePath,
       archetype: profile.archetype,
       sunSign: profile.sunSign,

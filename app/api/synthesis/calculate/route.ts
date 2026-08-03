@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import {
   buildPersonalCode,
-  buildSynthesisInsights,
   buildPatterns,
   buildDimensions,
   buildDateDimensions,
@@ -35,7 +34,6 @@ export async function POST(req: NextRequest) {
 
     const result: any = {
       personalCode: sanitizePersonalCode(buildPersonalCode(profile)),
-      synthesisInsights: sanitizeSynthesisInsights(buildSynthesisInsights(profile)),
       patterns: sanitizePatterns(buildPatterns(profile)),
       dimensions: sanitizeDimensionInsight(buildDimensions(profile)),
       dateDimensions: sanitizeDimensionInsight(buildDateDimensions(profile)),
@@ -62,15 +60,6 @@ function sanitizePersonalCode(pc: any) {
     soul: pc.soul ? { number: pc.soul.number, name: pc.soul.name, meaning: pc.soul.meaning } : undefined,
     personality: pc.personality ? { number: pc.personality.number, name: pc.personality.name, meaning: pc.personality.meaning } : undefined,
   };
-}
-
-function sanitizeSynthesisInsights(insights: any[]) {
-  return insights.map((i) => ({
-    type: i.type,
-    title: i.title,
-    text: i.text,
-    sources: i.sources,
-  }));
 }
 
 function sanitizePatterns(patterns: any[]) {

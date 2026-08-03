@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { analyzeDecision, type DecisionCategory, type DecisionResult } from "@/lib/engines/decisionsEngine";
 import { smoothReveal, cardReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 
 interface DecisionMapSectionProps {
   profile: UserProfile;
@@ -13,17 +14,16 @@ interface DecisionMapSectionProps {
 
 const DECISION_CATEGORIES: {
   id: DecisionCategory;
-  emoji: string;
   title: string;
   route: string;
   description: string;
 }[] = [
-  { id: "travel", emoji: "✈", title: "Viajes", route: "/affinity/recommendations/countries", description: "Explorá destinos compatibles con tu energía" },
-  { id: "career", emoji: "🏢", title: "Entorno profesional", route: "/affinity/recommendations/brands", description: "Marcas y empresas que resuenan con tu perfil" },
-  { id: "personal", emoji: "🏠", title: "Lugares", route: "/affinity/recommendations/countries", description: "Ciudades y espacios con resonancia" },
-  { id: "creativity", emoji: "🎨", title: "Creatividad", route: "/affinity", description: "Entidades que potencian tu expresión" },
-  { id: "health", emoji: "💪", title: "Bienestar", route: "/affinity", description: "Símbolos de equilibrio y cuidado" },
-  { id: "education", emoji: "📚", title: "Aprendizaje", route: "/academy", description: "Rutas de conocimiento para tu perfil" },
+  { id: "travel", title: "Viajes", route: "/affinity/recommendations/countries", description: "Explorá destinos compatibles con tu energía" },
+  { id: "career", title: "Entorno profesional", route: "/affinity/recommendations/brands", description: "Marcas y empresas que resuenan con tu perfil" },
+  { id: "personal", title: "Lugares", route: "/affinity/recommendations/countries", description: "Ciudades y espacios con resonancia" },
+  { id: "creativity", title: "Creatividad", route: "/affinity", description: "Entidades que potencian tu expresión" },
+  { id: "health", title: "Bienestar", route: "/affinity", description: "Símbolos de equilibrio y cuidado" },
+  { id: "education", title: "Aprendizaje", route: "/academy", description: "Rutas de conocimiento para tu perfil" },
 ];
 
 export default function DecisionMapSection({ profile }: DecisionMapSectionProps) {
@@ -53,41 +53,34 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explora tus afinidades</h2>
           </div>
           <p className="text-sm text-muted max-w-xl leading-relaxed">
-            Cada categoría muestra entidades rankeadas por resonancia simbólica con tu perfil.
+            Cada categoría muestra las entidades que más resuenan simbólicamente con tu perfil.
           </p>
         </motion.div>
 
-        {/* Category cards */}
-        <motion.div {...staggerApple} className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-ink/10">
+        {/* Category list — misma gramática editorial que "Tus sistemas": filas,
+            no cards. La etiqueta de score es texto (getScoreLabel), nunca un
+            número ni un badge. */}
+        <motion.div {...staggerApple} className="mt-8">
           {decisionResults.map((cat, i) => (
             <motion.button
               key={cat.id}
               {...staggerItemSmooth}
               transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
               onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
-              className={`text-left p-6 border border-transparent transition-all duration-200 ease-out bg-background hover:bg-ink/[0.02] ${
-                selectedCategory === cat.id
-                  ? "bg-ink/[0.03] border-ink/20"
-                  : ""
-              }`}
+              aria-expanded={selectedCategory === cat.id}
+              className="w-full text-left py-5 border-b border-ink/10 last:border-b-0 group transition-all hover:pl-2"
             >
-              <div className="flex items-start gap-3">
-                <span className="text-2xl shrink-0">{cat.emoji}</span>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-sm font-medium text-foreground">{cat.title}</h3>
-                    <span
-                      className="  uppercase text-xs tracking-[0.1em] px-1.5 py-0.5"
-                      style={{
-                        color: cat.result.overallScore >= 70 ? "#2D5A3D" : cat.result.overallScore >= 50 ? "#D4A843" : "#B45309",
-                        backgroundColor: cat.result.overallScore >= 70 ? "rgba(45,90,61,0.1)" : cat.result.overallScore >= 50 ? "rgba(212,168,67,0.1)" : "rgba(180,83,9,0.1)",
-                      }}
-                    >
-                      {cat.result.overallScore}/100
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted leading-relaxed">{cat.result.recommendation}</p>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{cat.title}</p>
+                  <p className="text-sm text-muted leading-relaxed mt-0.5">{cat.description}</p>
                 </div>
+                <span
+                  className="uppercase text-xs tracking-[0.15em] font-medium shrink-0"
+                  style={{ color: getScoreColor(cat.result.overallScore) }}
+                >
+                  {getScoreLabel(cat.result.overallScore)}
+                </span>
               </div>
             </motion.button>
           ))}
@@ -125,24 +118,17 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
 function DecisionDetail({ result, profile }: { result: DecisionResult; profile: UserProfile }) {
   const router = useRouter();
-  const scoreColor = result.overallScore >= 70 ? "#2D5A3D" : result.overallScore >= 50 ? "#D4A843" : "#B45309";
+  const scoreColor = getScoreColor(result.overallScore);
 
   return (
-    <div className="mt-4 p-6 border border-ink/10">
-      {/* Score breakdown */}
-      <div className="grid grid-cols-1 xs:grid-cols-3 gap-4 mb-6">
-        <ScoreMiniCard label="Alineación" score={result.alignmentScore} icon="🎯" />
-        <ScoreMiniCard label="Timing" score={result.timingScore} icon="⏰" />
-        <ScoreMiniCard label="Energía" score={result.energyScore} icon="⚡" />
-      </div>
-
-      {/* Overall */}
-      <div className="text-center mb-6">
-        <p className="text-3xl font-semibold" style={{ color: scoreColor }}>
-          {result.overallScore}/100
-        </p>
-        <p className="  uppercase text-xs tracking-[0.15em] text-muted mt-1">Score general</p>
-      </div>
+    <div className="mt-2 py-6 border-t border-ink/10">
+      {/* Lectura general — una frase, no una grilla de tarjetas de score */}
+      <p className="text-lg sm:text-xl font-display tracking-tight mb-1" style={{ color: scoreColor }}>
+        {getScoreLabel(result.overallScore)}
+      </p>
+      <p className="uppercase text-xs tracking-[0.15em] text-muted mb-6">
+        Alineación {getScoreLabel(result.alignmentScore)} · Timing {getScoreLabel(result.timingScore)} · Energía {getScoreLabel(result.energyScore)}
+      </p>
 
       {/* Explanation */}
       <div className="mb-6">
@@ -199,17 +185,6 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
           Explorar {result.category}
           <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
         </button>
-    </div>
-  );
-}
-
-function ScoreMiniCard({ label, score, icon }: { label: string; score: number; icon: string }) {
-  const color = score >= 70 ? "#2D5A3D" : score >= 50 ? "#D4A843" : "#B45309";
-  return (
-    <div className="p-3 border border-ink/10 text-center">
-      <span className="text-lg block mb-1">{icon}</span>
-      <p className="text-lg font-semibold" style={{ color }}>{score}</p>
-      <p className="  uppercase text-xs tracking-[0.1em] text-muted">{label}</p>
     </div>
   );
 }

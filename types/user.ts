@@ -1,6 +1,7 @@
 export interface UserProfile {
   id?: string;
-  name: string;
+  /** Onboarding solo pide birthDate — name no se colecta y no debería exigirse río abajo (perfil, premium, pagos). */
+  name?: string;
   birthDate: string;
   birthPlace: string;
   birthTime?: string;
@@ -9,8 +10,16 @@ export interface UserProfile {
   onboardingStep: number;
   completedSections: string[];
   theme: 'light' | 'dark';
-  language: 'es' | 'en';
+  language: 'es' | 'en' | 'pt-BR';
   notifications: boolean;
+  // Contexto geográfico "dónde estoy ahora" — separado de birthPlace y del
+  // Affinity Score (que sigue siendo 100% animal↔animal). Ver
+  // lib/context/userContext.ts. No se pobla por defecto acá; ese módulo
+  // es la fuente de verdad, esto es solo el espacio en el tipo.
+  country?: string;
+  region?: string;
+  currency?: string;
+  timezone?: string;
   lifePath: number;
   sunSign: string;
   sunSignInfo: {

@@ -26,11 +26,47 @@ export interface PatternInsight {
   sources: string[];
 }
 
-export interface SynthesisInsight {
-  type: "identity" | "tension" | "strength" | "attention" | "opportunity";
-  title: string;
-  text: string;
-  sources: string[];
+/**
+ * Señal fundamental de la que depende cada `sources` label. Un insight/pattern
+ * con `sources.length > 1` solo es una convergencia real si sus señales son
+ * distintas entre sí — si dos labels resuelven a la misma señal, es el mismo
+ * dato repetido con otro nombre, no dos sistemas coincidiendo.
+ *
+ * "Arquetipos" y "Numerología" comparten señal (`lifePath`) porque
+ * ARCHETYPES[lifePath] se deriva enteramente del Camino de Vida: nunca deben
+ * aparecer juntos en un mismo insight/pattern. "Ciclos" es distinto de
+ * "Numerología" aunque ambos partan de la fecha de nacimiento: el año/día
+ * personal también depende de la fecha *actual*, no es un alias estático del
+ * mismo valor. Cubierto por el test de no-circularidad en
+ * synthesisEngine.test.ts.
+ */
+export const SOURCE_SIGNAL: Record<string, string> = {
+  "Numerología": "lifePath",
+  "Arquetipos": "lifePath",
+  "Ciclos": "personalCycle",
+  "Astrología": "sunSign",
+  "Zodiaco Chino": "chineseZodiac",
+};
+
+/** true si dos o más sources del mismo insight/pattern resuelven a la misma señal fundamental. */
+export function hasCircularSources(sources: string[]): boolean {
+  const signals = sources.map((s) => SOURCE_SIGNAL[s] ?? s);
+  return new Set(signals).size < signals.length;
+}
+
+/**
+ * hasCircularSources() solo se validaba en tests — buildPatterns() nunca la
+ * llamaba, así que un futuro pair de sources circular (ej. agregar
+ * ["Numerología","Arquetipos"], que resuelven a la misma señal lifePath)
+ * podía pasar a producción y renderizar una "convergencia" fabricada sin que
+ * nada lo detectara en runtime. Esto lo hace explícito en el propio engine.
+ */
+function assertNotCircular(sources: string[]): void {
+  if (hasCircularSources(sources)) {
+    throw new Error(
+      `synthesisEngine: fuentes circulares detectadas en un pattern (${sources.join(", ")}) — resuelven a la misma señal subyacente y no pueden presentarse como una convergencia real.`
+    );
+  }
 }
 
 export interface PersonalCode {
@@ -120,25 +156,6 @@ function getKeywordForLifePath(n: number): string {
   return keywords[n] || "adaptación";
 }
 
-function getElementTraits(element: string): string[] {
-  const traits: Record<string, string[]> = {
-    Fuego: ["iniciativa", "pasión", "coraje", "liderazgo"],
-    Tierra: ["practicidad", "estabilidad", "paciencia", "sentido común"],
-    Aire: ["comunicación", "intelecto", "socialidad", "flexibilidad"],
-    Agua: ["intuición", "emocionalidad", "empatía", "profundidad"],
-  };
-  return traits[element] || ["adaptabilidad"];
-}
-
-function getModalityTraits(modality: string): string[] {
-  const traits: Record<string, string[]> = {
-    Cardinal: ["iniciativa", "pionero", "decisivo"],
-    Fijo: ["determinación", "lealtad", "consistencia"],
-    Mutable: ["adaptabilidad", "versatilidad", "flexibilidad"],
-  };
-  return traits[modality] || ["equilibrio"];
-}
-
 function getChineseTraits(animal: string): string[] {
   const traits: Record<string, string[]> = {
     Rata: ["ingenio", "astucia", "adaptable"],
@@ -157,6 +174,113 @@ function getChineseTraits(animal: string): string[] {
   return traits[animal] || ["equilibrio"];
 }
 
+/**
+ * Buckets temáticos usados para verificar convergencia real entre sistemas
+ * independientes (ver buildPatterns "Tu motor"). Cada palabra —de arquetipo
+ * o de animal chino— se mapea a un tema compartido. Dos sistemas "convergen"
+ * solo si comparten un tema; si no, no se etiquetan como coincidentes.
+ * Sin este chequeo, `sources` era una etiqueta asertada, no algo calculado.
+ */
+const THEME_BUCKETS: Record<string, string> = {
+  // liderazgo / impulso hacia adelante
+  independiente: "liderazgo", innovador: "liderazgo", determinado: "liderazgo",
+  ambicioso: "liderazgo", estratégico: "liderazgo", autoritario: "liderazgo",
+  valentía: "liderazgo", competitividad: "liderazgo", liderazgo: "liderazgo",
+  ambición: "liderazgo", poder: "liderazgo", coraje: "liderazgo",
+  independencia: "liderazgo", // variante sustantiva de "independiente"
+  // diplomacia / vínculo con otros
+  diplomático: "vínculo", cooperativo: "vínculo", armonioso: "vínculo",
+  responsable: "vínculo", protector: "vínculo", diplomacia: "vínculo",
+  sensibilidad: "vínculo", paz: "vínculo", lealtad: "vínculo",
+  honestidad: "vínculo", protección: "vínculo", generosidad: "vínculo",
+  compasión: "vínculo", optimismo: "vínculo",
+  servicio: "vínculo", relaciones: "vínculo", // YEAR_TYPES[2].description, YEAR_TYPES[6/33].description
+  // creatividad / expresión
+  creativo: "creatividad", expresivo: "creatividad", curioso: "creatividad",
+  versátil: "creatividad", creatividad: "creatividad", versatilidad: "creatividad",
+  ingenio: "creatividad", carisma: "creatividad",
+  curiosidad: "creatividad", // variante sustantiva de "curioso" (getChineseTraits: Rata, Mono)
+  dispersión: "creatividad", // numerologia-content challenges LP3/LP5: exceso de ideas sin foco
+  // análisis / sabiduría interior
+  analítico: "introspección", observador: "introspección", sabiduría: "introspección",
+  intuitivo: "introspección", inspirador: "introspección", iluminado: "introspección",
+  intuición: "introspección", misterio: "introspección", observación: "introspección",
+  astucia: "introspección",
+  análisis: "introspección", inspiración: "introspección", // YEAR_TYPES[7/11].description
+  aislamiento: "introspección", // numerologia-content challenges LP1/LP7: retiro hacia adentro, llevado al extremo
+  // estructura / practicidad
+  práctico: "estructura", organizado: "estructura", confiable: "estructura",
+  visionario: "estructura", manifestador: "estructura", fuerza: "estructura",
+  determinación: "estructura", confiabilidad: "estructura", puntualidad: "estructura",
+  estabilidad: "estructura", disciplina: "estructura", práctica: "estructura", // YEAR_TYPES[4/22].description
+  rigidez: "estructura", control: "estructura", perfeccionismo: "estructura", // numerologia-content challenges LP4/6/7/8/22: la misma estructura llevada al extremo
+  // libertad / movimiento
+  libre: "libertad", adaptación: "libertad", finalización: "libertad",
+  libertad: "libertad", energia: "libertad", aventura: "libertad", adaptable: "libertad",
+  impulsividad: "libertad", inconstancia: "libertad", // numerologia-content challenges LP5: la misma energía sin freno
+};
+
+/** Conectores sin peso temático — se descartan antes de buscar un tema. */
+const STOPWORDS = new Set([
+  "de", "del", "la", "el", "los", "las", "al", "a", "en", "con", "sin", "por", "para",
+  "tu", "su", "un", "una", "y", "e", "o", "que", "cualquier", "costo", "entre",
+  "exceso", "excesivo", "excesiva", "extremo", "extrema",
+]);
+
+/**
+ * Normaliza una frase (challenge de numerología, descripción de YEAR_TYPES)
+ * a sus palabras de contenido: minúsculas, sin puntuación, sin conectores.
+ * Una palabra suelta (ej. un trait de animal chino) se normaliza a sí misma,
+ * así que esta función reemplaza a la vieja `themeOf` sin cambiar su
+ * comportamiento para los casos que ya andaban.
+ */
+function normalizeToThemeWords(phrase: string): string[] {
+  return phrase
+    .toLowerCase()
+    .split(/[\s,.;:]+/)
+    .map((w) => w.trim())
+    .filter((w) => w.length > 0 && !STOPWORDS.has(w));
+}
+
+/** Tema (si existe) de la primera palabra de contenido de `phrase` que esté en THEME_BUCKETS. */
+function themeOfPhrase(phrase: string): string | undefined {
+  for (const word of normalizeToThemeWords(phrase)) {
+    const theme = THEME_BUCKETS[word];
+    if (theme) return theme;
+  }
+  return undefined;
+}
+
+/**
+ * Busca un tema compartido entre dos listas de rasgos/frases de sistemas
+ * distintos. Cada entrada puede ser una palabra sola (trait de animal
+ * chino, keyword de arquetipo) o una frase (challenge de numerología,
+ * descripción de un YEAR_TYPES) — `themeOfPhrase` normaliza ambas por igual.
+ * Sin este chequeo, `sources` sería una etiqueta asertada, no calculada.
+ */
+function findSharedTheme(itemsA: string[], itemsB: string[]): { theme: string; wordA: string; wordB: string } | null {
+  for (const a of itemsA) {
+    const themeA = themeOfPhrase(a);
+    if (!themeA) continue;
+    for (const b of itemsB) {
+      if (themeOfPhrase(b) === themeA) {
+        return { theme: themeA, wordA: a, wordB: b };
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Palabras de contenido de la descripción de un año personal (YEAR_TYPES),
+ * la única señal textual real que expone `personalCycle` — se usa para
+ * buscar convergencia entre "el momento del ciclo" y otro sistema.
+ */
+function getCycleThemeWords(personalYear: number): string[] {
+  const description = YEAR_TYPES[personalYear]?.description;
+  return description ? description.split(/[,.]/).map((w: string) => w.trim()).filter(Boolean) : [];
+}
+
 export function buildPersonalCode(profile: UserProfile): PersonalCode {
   const lp = safeNumber(profile.lifePath, 1);
   const en = safeNumber(profile.expressionNumber, 0);
@@ -171,75 +295,6 @@ export function buildPersonalCode(profile: UserProfile): PersonalCode {
   };
 }
 
-export function buildSynthesisInsights(profile: UserProfile): SynthesisInsight[] {
-  const lp = safeNumber(profile.lifePath, 1);
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
-  const modality = typeof profile.modality === "string" ? profile.modality : "";
-  const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const archetype = typeof profile.archetype === "string" ? profile.archetype : "";
-  const archetypeInfo = profile.archetypeInfo;
-  const personalYear = safeNumber(profile.cycles?.personalYear, 0);
-
-  const archetypeName = ARCHETYPES[lp]?.name || archetype;
-  const archetypeKeywords = ARCHETYPES[lp]?.keywords || [];
-
-  const insights: SynthesisInsight[] = [];
-
-  // Identity insight: Life Path + Element
-  const elementTraits = getElementTraits(element);
-  insights.push({
-    type: "identity",
-    title: "Tu identidad",
-    text: `Tu Life Path ${lp} (${getKeywordForLifePath(lp)}) combinado con tu elemento ${element} (${elementTraits[0]}, ${elementTraits[1]}) crea una personalidad que busca ${elementTraits[2] || "el equilibrio"} con ${getKeywordForLifePath(lp)}.`,
-    sources: ["Numerología", "Astrología"],
-  });
-
-  // Tension insight: archetype vs modality
-  const modalityTraits = getModalityTraits(modality);
-  if (archetypeKeywords.length > 0) {
-    insights.push({
-      type: "tension",
-      title: "Tu tensión",
-      text: `Como ${archetypeName}, tu naturaleza tiende a ${archetypeKeywords[0]?.toLowerCase() || "liderar"}. Pero tu modalidad ${modality} (${modalityTraits[0]}) te impulsa a ${modalityTraits[1] || "actuar"} de forma ${modalityTraits[2] || "decidida"}. Esa combinación puede generar momentos donde tu intención choca con tu método.`,
-      sources: ["Arquetipos", "Astrología"],
-    });
-  }
-
-  // Strength insight: numerology + chinese zodiac
-  const chineseTraits = getChineseTraits(chineseZodiac);
-  insights.push({
-    type: "strength",
-    title: "Tu fortaleza",
-    text: `La energía de tu ${chineseZodiac} (${chineseTraits[0]}, ${chineseTraits[1]}) potencia tu Life Path ${lp}. Cuando这两种 fuerzas trabajan juntas, tu capacidad de ${getKeywordForLifePath(lp)} se amplifica.`,
-    sources: ["Zodiaco Chino", "Numerología"],
-  });
-
-  // Attention insight based on archetype challenges
-  const challenges = archetypeInfo?.challenges || [];
-  if (challenges.length > 0) {
-    insights.push({
-      type: "attention",
-      title: "Tu zona de atención",
-      text: `El patrón que conviene observar: ${challenges[0]?.toLowerCase() || "la tendencia a..."}. Esto aparece cuando tu energía de ${getKeywordForLifePath(lp)} se intensifica sin regulación.`,
-      sources: ["Arquetipos"],
-    });
-  }
-
-  // Opportunity insight: cycle + element
-  const yearType = YEAR_TYPES[personalYear];
-  if (yearType) {
-    insights.push({
-      type: "opportunity",
-      title: "Tu oportunidad",
-      text: `Tu Año Personal ${personalYear} (${yearType.name?.replace("Año de ", "") || ""}) abre una oportunidad específica para tu perfil: ${yearType.description || "un nuevo ciclo"}. Elementos ${element} como el tuyo están especialmente favorecidos para ${personalYear <= 3 ? "sembrar" : personalYear <= 6 ? "consolidar" : "cerrar"} en este momento.`,
-      sources: ["Ciclos", "Astrología"],
-    });
-  }
-
-  return insights;
-}
-
 export function buildPatterns(profile: UserProfile): PatternInsight[] {
   const lp = safeNumber(profile.lifePath, 1);
   const element = typeof profile.element === "string" ? profile.element : "";
@@ -249,37 +304,93 @@ export function buildPatterns(profile: UserProfile): PatternInsight[] {
   const personalYear = safeNumber(profile.cycles?.personalYear, 0);
 
   const archetypeName = ARCHETYPES[lp]?.name || "Tu arquetipo";
-  const archetypeKeywords = ARCHETYPES[lp]?.keywords || [];
+  const archetypeKeywords: string[] = ARCHETYPES[lp]?.keywords || [];
   const challenges = archetypeInfo?.challenges || [];
 
   const patterns: PatternInsight[] = [];
 
-  // Pattern 1: Motor
-  patterns.push({
-    label: "Tu motor",
-    keyword: archetypeKeywords[0] || getKeywordForLifePath(lp),
-    description: archetypeInfo?.description || `Tu energía natural es la de ${getKeywordForLifePath(lp)}. Esto te impulsa en cada área de tu vida.`,
-    sources: ["Arquetipos", "Numerología"],
-  });
+  // Pattern 1: Motor.
+  // El arquetipo se deriva del mismo Life Path (ver ARCHETYPES[lp] en lib/data),
+  // así que no es un segundo sistema — es el mismo número con otro nombre.
+  // Para no inventar una convergencia, el arquetipo (Numerología) se compara
+  // contra el animal chino (sistema real e independiente, viene del año de
+  // nacimiento) y solo se etiqueta como coincidencia de "dos sistemas" cuando
+  // ambos comparten un tema de verdad (findSharedTheme).
+  const chineseTraitsForMotor = getChineseTraits(chineseZodiac);
+  const motorShared = findSharedTheme(archetypeKeywords, chineseTraitsForMotor);
+  if (motorShared) {
+    const motorSources = ["Arquetipos", "Zodiaco Chino"];
+    assertNotCircular(motorSources);
+    patterns.push({
+      label: "Tu motor",
+      keyword: motorShared.wordA,
+      description: `Tu arquetipo (${motorShared.wordA.toLowerCase()}) y tu animal chino ${chineseZodiac} (${motorShared.wordB}) parten de sistemas distintos — pero apuntan a lo mismo. Esto te impulsa en cada área de tu vida.`,
+      sources: motorSources,
+    });
+  } else {
+    patterns.push({
+      label: "Tu motor",
+      keyword: archetypeKeywords[0] || getKeywordForLifePath(lp),
+      description: archetypeInfo?.description || `Tu energía natural es la de ${getKeywordForLifePath(lp)}. Esto te impulsa en cada área de tu vida.`,
+      sources: ["Numerología"],
+    });
+  }
 
-  // Pattern 2: Tensión
-  patterns.push({
-    label: "Tu tensión",
-    keyword: challenges[0] || "adaptación",
-    description: challenges[0]
-      ? `Tu necesidad de ${challenges[0].toLowerCase()} puede aparecer cuando tu energía está desbalanceada. Observar este patrón es el primer paso para transformarlo.`
-      : "Todo perfil tiene una zona de crecimiento. La clave es reconocerla a tiempo.",
-    sources: ["Arquetipos"],
-  });
-
-  // Pattern 3: Próximo movimiento
+  // Pattern 2: Tensión.
+  // "challenges" viene de numerologia-content.ts (keyed por Life Path) — es
+  // Numerología, no un segundo sistema por sí solo. Para una convergencia
+  // real se compara contra el año personal (Ciclos/personalCycle, una señal
+  // temporal independiente de la fecha de nacimiento en sí). Si el tema de
+  // algún challenge coincide con el tema del año actual, la tensión no es
+  // un dato aislado: dos sistemas distintos están señalando lo mismo. Si no
+  // coincide, fallback honesto de una sola fuente — no se inventa la segunda.
   const yearType = YEAR_TYPES[personalYear];
-  patterns.push({
-    label: "Tu próximo movimiento",
-    keyword: yearType?.name?.replace("Año de ", "").toLowerCase() || "nuevo ciclo",
-    description: yearType?.description || `Tu ciclo actual favorece ${personalYear <= 3 ? "empezar" : personalYear <= 6 ? "construir" : "cerrar"}.`,
-    sources: ["Ciclos"],
-  });
+  const cycleThemeWords = getCycleThemeWords(personalYear);
+  const tensionShared = findSharedTheme(challenges, cycleThemeWords);
+  if (tensionShared) {
+    const tensionSources = ["Numerología", "Ciclos"];
+    assertNotCircular(tensionSources);
+    patterns.push({
+      label: "Tu tensión",
+      keyword: tensionShared.wordA,
+      description: `Tu ${tensionShared.wordA.toLowerCase()} y tu momento actual (${tensionShared.wordB.toLowerCase()}) tocan el mismo punto: cuando tu energía está desbalanceada, este año la amplifica en vez de compensarla. Observar el patrón es el primer paso para transformarlo.`,
+      sources: tensionSources,
+    });
+  } else {
+    patterns.push({
+      label: "Tu tensión",
+      keyword: challenges[0] || "adaptación",
+      description: challenges[0]
+        ? `Tu necesidad de ${challenges[0].toLowerCase()} puede aparecer cuando tu energía está desbalanceada. Observar este patrón es el primer paso para transformarlo.`
+        : "Todo perfil tiene una zona de crecimiento. La clave es reconocerla a tiempo.",
+      sources: ["Numerología"],
+    });
+  }
+
+  // Pattern 3: Próximo movimiento.
+  // El año personal (Ciclos) es una lectura temporal aislada por defecto.
+  // Se compara contra el animal chino (Zodiaco Chino/chineseZodiac, señal
+  // fija de nacimiento e independiente del ciclo) para ver si tu naturaleza
+  // de base refuerza lo que este año ya propone — misma regla que "Tu motor".
+  const chineseTraitsForMovement = getChineseTraits(chineseZodiac);
+  const movementShared = findSharedTheme(cycleThemeWords, chineseTraitsForMovement);
+  if (movementShared) {
+    const movementSources = ["Ciclos", "Zodiaco Chino"];
+    assertNotCircular(movementSources);
+    patterns.push({
+      label: "Tu próximo movimiento",
+      keyword: movementShared.wordA,
+      description: `Tu ${yearType?.name?.toLowerCase() || "ciclo actual"} y tu ${chineseZodiac} de base coinciden en ${movementShared.theme}: tu naturaleza no está peleando contra el momento, lo está empujando en la misma dirección.`,
+      sources: movementSources,
+    });
+  } else {
+    patterns.push({
+      label: "Tu próximo movimiento",
+      keyword: yearType?.name?.replace("Año de ", "").toLowerCase() || "nuevo ciclo",
+      description: yearType?.description || `Tu ciclo actual favorece ${personalYear <= 3 ? "empezar" : personalYear <= 6 ? "construir" : "cerrar"}.`,
+      sources: ["Ciclos"],
+    });
+  }
 
   return patterns;
 }

@@ -24,7 +24,7 @@ export interface ShareableProfileData {
 /** Encode profile data to a URL-safe base64 string */
 export function encodeProfileData(profile: UserProfile): string {
   const data: ShareableProfileData = {
-    n: profile.name,
+    n: profile.name || '',
     b: profile.birthDate,
     l: profile.lifePath,
     s: profile.sunSign,
@@ -52,8 +52,9 @@ export function decodeProfileData(encoded: string): ShareableProfileData | null 
     while (base64.length % 4) base64 += "=";
     const json = decodeURIComponent(atob(base64));
     const data = JSON.parse(json) as ShareableProfileData;
-    // Validate required fields
-    if (!data.n || !data.b || !data.l || !data.s || !data.e || !data.c || !data.a) {
+    // Validate required fields. `n` (name) is deliberately not required here —
+    // onboarding is birthDate-first and most shared profiles have no name.
+    if (!data.b || !data.l || !data.s || !data.e || !data.c || !data.a) {
       return null;
     }
     return data;

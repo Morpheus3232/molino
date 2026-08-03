@@ -139,7 +139,10 @@ export default function UniversityHeader() {
                 href="/onboarding"
                 className="inline-flex items-center justify-center px-3 sm:px-4 py-2 text-xs font-mono font-semibold tracking-[0.1em] sm:tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
               >
-                <span className="sm:hidden">MI MAPA</span>
+                {/* En mobile decía "MI MAPA" igual que el estado con perfil
+                    ya creado — primera impresión rota para un usuario nuevo:
+                    el header prometía un mapa que todavía no existe. */}
+                <span className="sm:hidden">EMPEZAR</span>
                 <span className="hidden sm:inline">DESCUBRIR MI MAPA</span>
               </Link>
             )}

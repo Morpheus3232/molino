@@ -113,7 +113,7 @@ describe('Payment flow security', () => {
     test('accepts valid ARS payment', () => {
       const result = validatePayment({
         status: 'approved',
-        transaction_amount: 8100,
+        transaction_amount: 11880,
         currency_id: 'ARS',
         metadata: { product: 'molino_premium' },
       });

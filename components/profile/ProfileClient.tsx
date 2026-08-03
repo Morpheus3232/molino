@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -57,7 +57,7 @@ const NEXT_TAB: Record<ProfileTab, ProfileTab> = {
 
 const GUIDED_CTA: Record<ProfileTab, { text: string; next: ProfileTab }> = {
   identity: { text: "Ya conocés tu código. Ahora descubrí tu mundo →", next: "world" },
-  world: { text: "Ahora mirá con quién resonás →", next: "circle" },
+  world: { text: "Así te proyectás hacia afuera. Ahora, con quién resonás →", next: "circle" },
   circle: { text: "Descubrí qué patrones aparecen en vos →", next: "intelligence" },
   intelligence: { text: "Ya conocés tu mapa. Volvé cuando quieras →", next: "identity" },
 };
@@ -121,10 +121,21 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     }
   }, [serverProfile]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Se relee al cambiar de tab (markSeen actualiza localStorage en handleEnter),
-  // en vez de parsear el JSON de discovery en cada render.
-  const isNewUser = useMemo(() => !loadDiscoveryState().hasCompletedOnboarding, [activeTab]);
-  const showGuidedCTA = activeTab && isNewUser && !hasSeenAll();
+  // isNewUser/seenAll arrancan en el mismo valor que el server (que siempre
+  // ve DEFAULT_STATE porque no tiene localStorage) y recién se corrigen en
+  // un efecto post-mount. Antes esto era un useMemo que leía localStorage
+  // directo durante el render: en el primer render del cliente ya devolvía
+  // el valor real (distinto del server si el usuario ya había visto algo),
+  // lo que producía un hydration mismatch en <main> (className "pb-28..."
+  // en el server vs undefined en el cliente) — y ese mismatch forzaba a
+  // React a re-generar el árbol, dejando el scroll de la página trabado.
+  const [isNewUser, setIsNewUser] = useState(true);
+  const [seenAll, setSeenAll] = useState(false);
+  useEffect(() => {
+    setIsNewUser(!loadDiscoveryState().hasCompletedOnboarding);
+    setSeenAll(hasSeenAll());
+  }, [activeTab]);
+  const showGuidedCTA = activeTab && isNewUser && !seenAll;
 
   const updateUrl = useCallback((tab: ProfileTab | null) => {
     const url = new URL(window.location.href);
@@ -212,7 +223,9 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
   return (
     <div className="min-h-screen bg-background">
-      <main id="main-content">
+      {/* pb reserva espacio para el CTA guiado fijo para que no tape la
+          última sección del tab. */}
+      <main id="main-content" className={showGuidedCTA ? "pb-20 sm:pb-16" : undefined}>
         {activeTab && (
           <ProfileTabs active={activeTab} onChange={handleEnter} onBack={handleBackToHub} />
         )}
@@ -255,17 +268,23 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             )}
           </AnimatePresence>
 
+        {/* Prompt de continuidad entre secciones del mapa — guía el recorrido
+            de un usuario nuevo (Identidad → Mundo → Círculo → Inteligencia).
+            Antes era una barra fija estilo app (fondo sólido, botón lleno,
+            blur) que tapaba contenido durante todo el scroll; ahora es una
+            línea editorial fina, coherente con el resto de los CTA de
+            "próxima sección" que ya usa cada screen in-flow. */}
         {showGuidedCTA && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/95 backdrop-blur-xl border-t border-ink/10"
+            className="fixed bottom-0 left-0 right-0 z-40 border-t border-ink/10 bg-background/90 backdrop-blur-md"
           >
-            <div className="mx-auto max-w-[600px]">
+            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
               <button
                 type="button"
                 onClick={handleGuidedNext}
-                className="w-full inline-flex items-center justify-center gap-2 font-semibold px-6 py-4 text-base bg-accent text-accent-foreground hover:bg-accent/90 min-h-[52px]"
+                className="w-full flex items-center justify-center gap-2 py-3.5 min-h-[44px] text-sm font-medium text-foreground hover:text-accent transition-colors"
               >
                 {GUIDED_CTA[activeTab].text}
               </button>

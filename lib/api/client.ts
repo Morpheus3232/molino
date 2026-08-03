@@ -5,12 +5,6 @@ export interface SynthesisResult {
     soul?: { number: number; name: string; meaning: string };
     personality?: { number: number; name: string; meaning: string };
   };
-  synthesisInsights: Array<{
-    type: string;
-    title: string;
-    text: string;
-    sources: string[];
-  }>;
   patterns: Array<{
     label: string;
     keyword: string;

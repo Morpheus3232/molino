@@ -290,7 +290,9 @@ export default function BibliotecaContent() {
             Fuentes y referencias
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
-            Colección curada de libros, artículos y recursos que nutren el conocimiento simbólico de Molino.
+            Molino calcula tu mapa a partir de tres sistemas: numerología, astrología y zodíaco chino. Esta es
+            lectura adicional sobre esos sistemas y sobre otras tradiciones simbólicas relacionadas — no todo lo
+            que aparece acá alimenta tu mapa.
           </p>
         </motion.section>
 

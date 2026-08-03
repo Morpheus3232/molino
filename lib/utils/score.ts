@@ -1,5 +1,8 @@
 // Score color and label utilities
-// Single source of truth for score visualization
+// Single source of truth for score visualization. Copy lives in lib/i18n —
+// this file only maps a number to a bucket id/CSS token, never to text.
+
+import { t } from "@/lib/i18n";
 
 export function getScoreColor(score: number): string {
   if (score >= 75) return "var(--score-excellent)";
@@ -9,10 +12,10 @@ export function getScoreColor(score: number): string {
 }
 
 export function getScoreLabel(score: number): string {
-  if (score >= 75) return "Excelente";
-  if (score >= 55) return "Buena";
-  if (score >= 40) return "Moderada";
-  return "Baja";
+  if (score >= 75) return t.scoreLabels.excellent;
+  if (score >= 55) return t.scoreLabels.good;
+  if (score >= 40) return t.scoreLabels.neutral;
+  return t.scoreLabels.poor;
 }
 
 export function safeNumber(value: unknown, fallback = 0): number {

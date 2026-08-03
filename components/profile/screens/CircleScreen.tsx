@@ -84,6 +84,11 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               Aliados, opuestos y personas que comparten tu energía de{" "}
               <span className="font-medium text-foreground">{display.name}</span>.
             </p>
+            {(sameAnimalFamous.length + sameSignFamous.length) > 0 && (
+              <p className="text-sm text-accent mt-5">
+                Molino encontró {sameAnimalFamous.length + sameSignFamous.length} figuras históricas que comparten tu {display.name.toLowerCase()} o tu {userSunSign.toLowerCase()} — tu círculo real, no una lista al azar.
+              </p>
+            )}
           </motion.div>
         </div>
       </section>

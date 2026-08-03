@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import EditorialSection from "@/components/ui/EditorialSection";
+import { getScoreLabel } from "@/lib/utils/score";
 
 interface PersonalScoreCardProps {
   profile: UserProfile;
@@ -72,8 +73,8 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
               <span className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">
                 {ind.label}
               </span>
-              <span className="font-display text-4xl sm:text-5xl leading-none tracking-tight" style={{ color: ind.color }}>
-                {ind.value}%
+              <span className="font-display text-2xl sm:text-3xl leading-none tracking-tight uppercase" style={{ color: ind.color }}>
+                {getScoreLabel(ind.value)}
               </span>
             </div>
             <p className="text-sm text-muted">{ind.description}</p>

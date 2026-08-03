@@ -13,7 +13,7 @@
 export const smoothReveal = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -21,7 +21,7 @@ export const smoothReveal = {
 export const cardReveal = {
   initial: { opacity: 0, y: 24, scale: 0.97 },
   whileInView: { opacity: 1, y: 0, scale: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -29,7 +29,7 @@ export const cardReveal = {
 export const heroReveal = {
   initial: { opacity: 0, scale: 0.9 },
   whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-60px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -37,7 +37,7 @@ export const heroReveal = {
 export const slideInLeft = {
   initial: { opacity: 0, x: -24 },
   whileInView: { opacity: 1, x: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -45,7 +45,7 @@ export const slideInLeft = {
 export const slideInRight = {
   initial: { opacity: 0, x: 24 },
   whileInView: { opacity: 1, x: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -57,7 +57,7 @@ export const slideInRight = {
 export const popIn = {
   initial: { opacity: 0, scale: 0.8, y: 12 },
   whileInView: { opacity: 1, scale: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 
@@ -65,7 +65,7 @@ export const popIn = {
 export const numberReveal = {
   initial: { opacity: 0, scale: 0.5, y: 8 },
   whileInView: { opacity: 1, scale: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 
@@ -73,7 +73,7 @@ export const numberReveal = {
 export const emojiBounce = {
   initial: { opacity: 0, scale: 0, rotate: -12 },
   whileInView: { opacity: 1, scale: 1, rotate: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 
@@ -81,7 +81,7 @@ export const emojiBounce = {
 export const badgePop = {
   initial: { opacity: 0, scale: 0.8, y: 4 },
   whileInView: { opacity: 1, scale: 1, y: 0 },
-  viewport: { once: true, margin: "-20px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 
@@ -93,20 +93,24 @@ export const badgePop = {
 export const staggerApple = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.1 } },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
 };
 
 /** Stagger container — Spotify Wrapped (faster) */
 export const staggerSpotify = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.06 } },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "200px" },
 };
 
-/** Stagger item */
+/** Stagger item — without its own viewport:{once:true}, this would revert
+ * to invisible every time it scrolls out of view (e.g. after the app's own
+ * scrollTo(0,0) on tab change), leaving content permanently hidden until
+ * re-scrolled. once:true locks it visible after the first successful reveal. */
 export const staggerItemSmooth = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
 };
 
@@ -114,6 +118,7 @@ export const staggerItemSmooth = {
 export const staggerItemPop = {
   initial: { opacity: 0, scale: 0.9, y: 12 },
   whileInView: { opacity: 1, scale: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "200px" },
   transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 

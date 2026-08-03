@@ -5,15 +5,15 @@ export async function POST(req: NextRequest) {
   try {
     const { name, birthDate, currencyId } = await req.json();
 
-    if (!name || !birthDate) {
+    if (!birthDate) {
       return NextResponse.json(
-        { error: 'name and birthDate are required' },
+        { error: 'birthDate is required' },
         { status: 400 },
       );
     }
 
-    const profileHash = hashProfile(name, birthDate);
-    const preference = await createPreference(profileHash, name, currencyId);
+    const profileHash = hashProfile(name ?? '', birthDate);
+    const preference = await createPreference(profileHash, name ?? '', currencyId);
 
     return NextResponse.json(preference);
   } catch (error) {

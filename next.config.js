@@ -13,7 +13,11 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    // `removeConsole: true` se comía console.error también, dejando errores
+    // de runtime (ej. webhooks de Mercado Pago) sin ningún rastro en los
+    // logs de producción. Con `exclude: ['error']` los console.log/warn de
+    // debug siguen fuera del bundle, pero console.error sí llega a Vercel.
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
   compress: true,
   output: 'standalone',

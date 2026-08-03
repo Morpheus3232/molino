@@ -39,26 +39,26 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Numerología</p>
-            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.numerology) }}>
-              {result.scores.numerology}%
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide" style={{ color: getScoreColor(result.scores.numerology) }}>
+              {getScoreLabel(result.scores.numerology)}
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Astrología occidental</p>
-            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.westernAstrology) }}>
-              {result.scores.westernAstrology}%
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide" style={{ color: getScoreColor(result.scores.westernAstrology) }}>
+              {getScoreLabel(result.scores.westernAstrology)}
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Zodiaco chino</p>
-            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.chineseAstrology) }}>
-              {result.scores.chineseAstrology}%
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide" style={{ color: getScoreColor(result.scores.chineseAstrology) }}>
+              {getScoreLabel(result.scores.chineseAstrology)}
             </div>
           </div>
           <div className="rounded-md bg-background p-3">
             <p className="text-xs text-muted mb-1">Elementos</p>
-            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold" style={{ color: getScoreColor(result.scores.element) }}>
-              {result.scores.element}%
+            <div className="inline-block px-2 py-1 rounded-sm text-xs font-bold uppercase tracking-wide" style={{ color: getScoreColor(result.scores.element) }}>
+              {getScoreLabel(result.scores.element)}
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function CompatibilityLab({ user, entity, result, template }: Com
           {result.strengths.map((strength, index) => (
             <span
               key={index}
-              className="px-3 py-1 rounded-sm text-xs font-medium bg-green-50 text-green-700"
+              className="px-3 py-1 rounded-sm text-xs font-medium bg-accent/10 text-accent"
             >
               {strength}
             </span>

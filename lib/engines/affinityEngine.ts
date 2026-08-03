@@ -16,6 +16,7 @@ import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/sym
 import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { t } from "@/lib/i18n";
 
 // ════════════════════════════════════════════════════
 // TYPES
@@ -50,13 +51,24 @@ export type AffinityTier =
   | "desafiante"
   | "distante";
 
-export const TIER_META: Record<AffinityTier, { label: string; color: string; description: string }> = {
-  "resonancia-alta":  { label: "Resonancia alta",       color: "#2D5A3D", description: "Patrones simbólicos fuertemente alineados" },
-  "afinidad-media":   { label: "Afinidad media",        color: "#4A6FA5", description: "Conexión moderada con puntos de interés compartidos" },
-  "complementarios":  { label: "Complementarios",       color: "#D4A843", description: "Diferentes pero que se enriquecen mutuamente" },
-  "desafiante":       { label: "Desafiante",            color: "#B45309", description: "Tensión creativa que puede generar crecimiento" },
-  "distante":         { label: "Frecuencias lejanas",   color: "#6B7280", description: "Baja resonancia simbólica, pero no excluyente" },
+// Colores por tier: token de diseño, no depende del locale — por eso vive
+// acá y no en el diccionario (lib/i18n solo tiene label/description).
+const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
+  "resonancia-alta": "#2D5A3D",
+  "afinidad-media": "#4A6FA5",
+  "complementarios": "#D4A843",
+  "desafiante": "#B45309",
+  "distante": "#6B7280",
 };
+
+// Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +
+// color para no romper los call sites existentes (TIER_META[tier].label/.color/.description).
+export const TIER_META: Record<AffinityTier, { label: string; color: string; description: string }> = Object.fromEntries(
+  (Object.keys(AFFINITY_TIER_COLORS) as AffinityTier[]).map((tier) => [
+    tier,
+    { ...t.affinityTiers[tier], color: AFFINITY_TIER_COLORS[tier] },
+  ])
+) as Record<AffinityTier, { label: string; color: string; description: string }>;
 
 export function getTierForScore(score: number): AffinityTier {
   if (score >= 75) return "resonancia-alta";
@@ -82,10 +94,37 @@ function getRelationship(_diff: number, userAnimal: string, entityAnimal: string
   return getRelation(userAnimal as Animal, entityAnimal as Animal).label;
 }
 
-/** Detailed explanation of the relationship from canonical animalRelations */
-function getExplanation(_diff: number, userAnimal: string, entityAnimal: string): string {
+/**
+ * Detailed explanation of the relationship, naming the entity.
+ *
+ * getRelation().description is a generic animal-pair sentence (also used
+ * for person-to-person compatibility, where no entity exists) — reused
+ * as-is here it produces the exact same sentence for every entity that
+ * shares a relation type with the user's animal (e.g. every "same animal"
+ * match reads "Caballo comparte tu misma energía base."). With ~12
+ * animals and dozens of entities per type, that reads as templated. This
+ * builds an entity-named sentence per type instead, so each card reads as
+ * about that entity — the score and underlying relation are unchanged.
+ */
+function getExplanation(_diff: number, userAnimal: string, entityAnimal: string, entityName?: string): string {
   if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
-  return getRelation(userAnimal as Animal, entityAnimal as Animal).description;
+  const relation = getRelation(userAnimal as Animal, entityAnimal as Animal);
+  if (!entityName) return relation.description;
+
+  switch (relation.type) {
+    case "same":
+      return `${entityName} comparte tu energía de ${entityAnimal}: mismo animal, mismas fortalezas y los mismos puntos ciegos.`;
+    case "triad":
+      return `${entityName} y vos comparten el elemento oculto de la tríada ${userAnimal}-${entityAnimal} (San He).`;
+    case "harmonious":
+      return `${entityName} (${entityAnimal}) es la pareja armoniosa natural de tu ${userAnimal}, según el Liu He.`;
+    case "clash":
+      return `${entityName} (${entityAnimal}) está en el punto opuesto del ciclo a tu ${userAnimal} — tensión que pide más consciencia.`;
+    case "harm":
+      return `${entityName} (${entityAnimal}) tiene una relación de atención con tu ${userAnimal}, según el Liu Hai.`;
+    default:
+      return `${entityName} (${entityAnimal}) y tu ${userAnimal} recorren energías independientes dentro del ciclo.`;
+  }
 }
 
 /** Traditional context for the relationship */
@@ -166,7 +205,7 @@ export function calculateAffinityForAnimal(
     diff = Math.abs(ui - ei) % 12;
     score = getZodiacScore(userAnimal, entityAnimal);
     relationship = getRelationship(diff, userAnimal, entityAnimal);
-    explanation = getExplanation(diff, userAnimal, entityAnimal);
+    explanation = getExplanation(diff, userAnimal, entityAnimal, entity.name);
     tradition = getTradition(diff, userAnimal, entityAnimal);
   }
 

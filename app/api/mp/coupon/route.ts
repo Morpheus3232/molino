@@ -2,27 +2,29 @@ import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
 import { grantPremiumAccess } from '@/lib/kv';
 
-const COUPON_CODE = process.env.PREMIUM_COUPON || 'MOLINO-DEV';
+const COUPON_CODE = process.env.PREMIUM_COUPON;
 
 export async function POST(req: NextRequest) {
   try {
     const { coupon, name, birthDate } = await req.json();
 
-    if (!coupon || !name || !birthDate) {
+    if (!coupon || !birthDate) {
       return NextResponse.json(
         { valid: false, reason: 'Faltan datos requeridos' },
         { status: 400 },
       );
     }
 
-    if (coupon.trim() !== COUPON_CODE) {
+    // Sin PREMIUM_COUPON configurado, el canje queda deshabilitado — nunca
+    // hay un código por defecto que otorgue acceso gratis.
+    if (!COUPON_CODE || coupon.trim() !== COUPON_CODE) {
       return NextResponse.json(
         { valid: false, reason: 'Código de cupón inválido' },
         { status: 400 },
       );
     }
 
-    const profileHash = hashProfile(name, birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate);
     const paymentId = `coupon_${profileHash}_${Date.now()}`;
 
     await grantPremiumAccess(profileHash, paymentId);
