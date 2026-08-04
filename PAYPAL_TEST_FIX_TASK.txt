@@ -1,0 +1,108 @@
+# TASK: Fix PayPal validation tests after implementation changes
+
+Context:
+The repository is Molino.
+Vitest now executes the PayPal test suite successfully.
+
+Command executed:
+
+npx vitest .claude/worktrees/premium-validation-harness/__tests__/paypal.test.ts
+
+Current result:
+
+26 tests total
+20 passed
+6 failed
+
+Do not rewrite tests blindly.
+Analyze whether the tests are outdated or the implementation is wrong.
+
+Failures:
+
+1)
+paypal.test.ts:394
+
+Expected:
+(await first.json()).idempotent === false
+
+Received:
+undefined
+
+Analyze app/api/paypal/capture-order/route.ts.
+Decide whether the API should expose idempotent in its response or whether the test expectation is obsolete.
+
+---
+
+2)
+paypal.test.ts:416
+
+Expected:
+data.reason contains "Amount mismatch"
+
+Received:
+"Order is not associated with this profile"
+
+Analyze validation order in lib/paypal.ts and capture-order route.
+
+The test uses a wrong amount scenario but currently fails earlier on profile association.
+
+Determine the correct behavior:
+- preserve security validation order?
+- update test expectation?
+- or fix implementation?
+
+---
+
+3)
+paypal.test.ts:447
+
+Expected:
+ORDER_ALREADY_CAPTURED flow returns 200
+
+Received:
+400
+
+Analyze PayPal capture handling.
+
+Verify if already captured orders should be recovered through PayPal API.
+
+---
+
+4)
+paypal.test.ts:488
+
+Expected:
+recover source === "paypal-api"
+
+Received:
+"kv"
+
+Analyze recover route.
+
+The test expects PayPal API fallback but implementation finds KV first.
+
+Determine if test or implementation is incorrect.
+
+---
+
+Goal:
+
+Bring the PayPal test suite into alignment with the current production security model.
+
+Requirements:
+- Do not weaken security checks.
+- Do not remove validations.
+- Prefer fixing implementation only when behavior is clearly wrong.
+- Prefer updating tests if they describe obsolete behavior.
+- After changes run:
+
+npx vitest .claude/worktrees/premium-validation-harness/__tests__/paypal.test.ts
+
+Then run:
+
+npm run build
+
+Report:
+1. Files changed
+2. Reason for each change
+3. Final test result
