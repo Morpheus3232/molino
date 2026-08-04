@@ -44,8 +44,17 @@ function getRequiredEnv(name: string): string {
 }
 
 function getPaypalBaseUrl(): string {
-  const env = (process.env.PAYPAL_ENVIRONMENT || 'sandbox').toLowerCase();
-  return env === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
+  const env = (process.env.PAYPAL_ENVIRONMENT || '').toLowerCase();
+  if (env === 'live') {
+    return 'https://api-m.paypal.com';
+  }
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      'PAYPAL_ENVIRONMENT must be "live" in production. Current value: ' +
+        (process.env.PAYPAL_ENVIRONMENT || '(not set)'),
+    );
+  }
+  return 'https://api-m.sandbox.paypal.com';
 }
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
@@ -221,6 +230,11 @@ export function validateOrder(order: PayPalOrder, profileHash: string): OrderVal
 
   if (amount.value !== PRODUCT_PRICE_USD) {
     return { valid: false, reason: `Amount mismatch: got ${amount.value}, expected ${PRODUCT_PRICE_USD}` };
+  }
+
+  const capture = unit.payments?.captures?.[0];
+  if (capture && capture.status !== 'COMPLETED') {
+    return { valid: false, reason: `Capture status is '${capture.status}', expected 'COMPLETED'` };
   }
 
   return { valid: true };

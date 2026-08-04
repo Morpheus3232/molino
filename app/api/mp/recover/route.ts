@@ -17,6 +17,18 @@ export async function POST(req: NextRequest) {
 
     const existingHash = await getProfileHashByPaymentId(cleanPaymentId);
     if (existingHash) {
+      // KV hit is only trusted when the requester proves ownership of the
+      // profile (same normalized name+birthDate that produced the hash).
+      // Without this check, anyone who knows a paymentId could claim access.
+      if (name && birthDate) {
+        const requestedHash = hashProfile(name, birthDate);
+        if (requestedHash !== existingHash) {
+          return NextResponse.json({
+            verified: false,
+            reason: 'El ID de pago no corresponde a este perfil.',
+          }, { status: 400 });
+        }
+      }
       return NextResponse.json({
         verified: true,
         profileHash: existingHash,
