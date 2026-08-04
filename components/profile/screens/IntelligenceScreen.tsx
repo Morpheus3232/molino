@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -31,7 +32,39 @@ interface IntelligenceScreenProps {
   onNavigate?: (tab: ProfileTab) => void;
 }
 
+/** Cabecera de capítulo — la firma editorial de la pantalla: número grande en
+ * el color del elemento, regla de transición y título. Puramente presentacional. */
+function ChapterHeader({ number, title, elementColor }: { number: string; title: string; elementColor: string }) {
+  return (
+    <div className="mb-10 sm:mb-14">
+      <div className="flex items-center gap-4 sm:gap-6 mb-5 sm:mb-6">
+        <span className="number-display text-4xl sm:text-6xl leading-none" style={{ color: elementColor }} aria-hidden="true">
+          {number}
+        </span>
+        <span className="h-px flex-1 bg-ink/10" aria-hidden="true" />
+      </div>
+      <h2 className="font-display text-[2rem] sm:text-[2.5rem] tracking-tight leading-[1.02] text-foreground">
+        <span className="sr-only">Capítulo {number}. </span>
+        {title}
+      </h2>
+    </div>
+  );
+}
+
+/** Cabecera de cierre (apéndice) — sin número, para "Para profundizar" y "Compartir". */
+function BackmatterHeader({ title }: { title: string }) {
+  return (
+    <div className="mb-8 sm:mb-10">
+      <span className="block w-10 h-0.5 bg-accent/60 mb-5" aria-hidden="true" />
+      <h2 className="font-display text-[1.75rem] sm:text-[2.25rem] tracking-tight leading-[1.05] text-foreground">
+        {title}
+      </h2>
+    </div>
+  );
+}
+
 export default function IntelligenceScreen({ profile }: IntelligenceScreenProps) {
+  const prefersReducedMotion = useSafeReducedMotion();
   const [expandedDimension, setExpandedDimension] = useState<string | null>(null);
 
   const lifePath = safeNumber(profile.lifePath, 1);
@@ -80,6 +113,13 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
   const patterns = synthesisData?.patterns ?? localPatterns;
   const momentState = synthesisData?.momentState ?? localMomentState;
 
+  // Reveal de capítulo — el header de cada capítulo entra con un fade+rise
+  // suave al entrar al viewport. Con prefers-reduced-motion, sin animación.
+  const chapterReveal = {
+    ...smoothReveal,
+    initial: prefersReducedMotion ? false : smoothReveal.initial,
+  };
+
   return (
     <div
       id="panel-intelligence"
@@ -87,10 +127,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
       aria-labelledby="tab-intelligence"
       className="animate-in fade-in duration-300"
     >
-      {/* Hero */}
-      <section className="py-12 sm:pt-16 pb-8">
+      {/* Portada */}
+      <section className="pt-14 sm:pt-20 pb-12 sm:pb-16">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
+            <span className="block w-10 h-0.5 mb-5" style={{ backgroundColor: elementColor }} aria-hidden="true" />
             <p className="label-micro mb-3">Tu Inteligencia</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
               Tu mapa profundo
@@ -107,14 +148,13 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           entre medio — antes "Tus dimensiones" (un desglose por-sistema, no
           una convergencia) ocupaba este lugar y hacía que el usuario llegara
           al corazón de Intelligence recién en el tercer scroll. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="pt-2 sm:pt-4 pb-20 sm:pb-24">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">01 · Tu lectura</h2>
-          </div>
+          <motion.div {...chapterReveal}>
+            <ChapterHeader number="01" title="Tu lectura" elementColor={elementColor} />
+          </motion.div>
           {synthesisError && !synthesisData && (
-            <div role="status" className="flex items-center gap-2 mb-6">
+            <div role="status" className="flex items-center gap-2 mb-8">
               <p className="text-xs text-muted">Mostrando tu lectura calculada localmente.</p>
               <button
                 type="button"
@@ -133,13 +173,16 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="py-8 border-b border-ink/10 last:border-b-0"
+                className="py-7 sm:py-8 border-b border-ink/10 last:border-b-0"
               >
-                <h2 className="font-display text-2xl sm:text-3xl tracking-tight mb-3" style={{ color: elementColor }}>
+                <h3 className="font-heading text-[1.5rem] sm:text-[1.75rem] tracking-tight mb-3" style={{ color: elementColor }}>
                   {pattern.label.toUpperCase()}
-                </h2>
-                <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
-                  <span className="font-semibold">{pattern.keyword}.</span> {pattern.description}
+                </h3>
+                <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-3xl">
+                  <span className="font-heading font-semibold" style={{ color: elementColor }}>
+                    {pattern.keyword}.
+                  </span>{" "}
+                  {pattern.description}
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-4">
                   {pattern.sources.map((src) => (
@@ -159,19 +202,19 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           apuntan a la misma conclusión. Usa pattern.sources (qué sistemas
           alimentaron cada patrón), no una relación inventada. */}
       {patterns.some((p) => p.sources.length > 1) && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
+        <section className="py-20 sm:py-28">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">02 · Cuando tus sistemas se encuentran</h2>
-            </div>
-            <div className="space-y-4 max-w-2xl">
+            <motion.div {...chapterReveal}>
+              <ChapterHeader number="02" title="Cuando tus sistemas se encuentran" elementColor={elementColor} />
+            </motion.div>
+            <div className="space-y-5 max-w-3xl">
               {patterns
                 .filter((p) => p.sources.length > 1)
                 .map((p) => (
-                  <p key={p.label} className="text-sm text-foreground leading-relaxed">
-                    <span className="font-semibold">{p.sources.join(" y ")}</span> coinciden en{" "}
-                    <span style={{ color: elementColor }}>{p.keyword}</span>: no es una lectura aislada, es lo que
+                  <p key={p.label} className="text-base sm:text-lg text-foreground leading-relaxed">
+                    <span className="font-heading font-semibold">{p.sources.join(" y ")}</span> coinciden en{" "}
+                    <span className="font-heading font-semibold" style={{ color: elementColor }}>{p.keyword}</span>
+                    : no es una lectura aislada, es lo que
                     aparece cuando ambos sistemas se miran juntos.
                   </p>
                 ))}
@@ -189,20 +232,21 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           contradicción: la explica (evidence) y dice qué significa
           (implication), sin resolverla como si una señal fuera la correcta. */}
       {tensions.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
+        <section className="py-20 sm:py-28">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">03 · Tus tensiones</h2>
-            </div>
-            <div className="space-y-8 max-w-2xl">
+            <motion.div {...chapterReveal}>
+              <ChapterHeader number="03" title="Tus tensiones" elementColor={elementColor} />
+            </motion.div>
+            <div className="space-y-10 sm:space-y-12 max-w-3xl">
               {tensions.map((tension) => (
                 <div key={tension.title}>
-                  <h3 className="font-display text-xl sm:text-2xl tracking-tight mb-3" style={{ color: elementColor }}>
+                  <h3 className="font-heading text-[1.5rem] sm:text-[1.75rem] tracking-tight mb-3" style={{ color: elementColor }}>
                     {tension.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-foreground leading-relaxed">{tension.evidence}</p>
-                  <p className="text-sm text-muted leading-relaxed mt-3">{tension.implication}</p>
+                  <p className="text-base sm:text-lg text-foreground leading-relaxed">{tension.evidence}</p>
+                  <div className="mt-4 border-l border-ink/10 pl-4 sm:pl-5">
+                    <p className="text-sm sm:text-base text-muted leading-relaxed">{tension.implication}</p>
+                  </div>
                   <div className="flex flex-wrap gap-1.5 mt-4">
                     {tension.sources.map((src) => (
                       <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
@@ -223,28 +267,40 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           conteo fijo — un perfil con menos señales reales muestra menos
           reglas, en vez de inventar hasta completar diez. */}
       {rules.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
+        <section className="py-20 sm:py-28">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">04 · Tus reglas</h2>
-            </div>
-            <ol className="space-y-0 max-w-2xl">
+            <motion.div {...chapterReveal}>
+              <ChapterHeader number="04" title="Tus reglas" elementColor={elementColor} />
+            </motion.div>
+            <ol className="max-w-4xl">
               {rules.map((r, i) => (
                 <motion.li
                   key={r.rule}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05, duration: 0.35 }}
-                  className="flex items-start gap-4 py-4 border-b border-ink/10 last:border-b-0"
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}
+                  className="relative py-9 sm:py-12 border-t border-ink/10 first:border-t-0"
                 >
-                  <span className="font-display text-lg shrink-0 w-8" style={{ color: elementColor }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{r.rule}</p>
-                    <span className="uppercase text-[10px] tracking-[0.15em] text-muted mt-1.5 inline-block">{r.source}</span>
+                  <div className="flex items-start gap-5 sm:gap-8">
+                    <span
+                      className="number-display shrink-0 text-5xl sm:text-6xl"
+                      style={{ color: elementColor }}
+                      aria-hidden="true"
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0 pt-1 sm:pt-2">
+                      <p className="font-heading text-[1.5rem] sm:text-[1.75rem] leading-[1.4] tracking-tight text-foreground">
+                        {r.rule}
+                      </p>
+                      <div className="flex items-center gap-3 mt-4 sm:mt-5">
+                        <span className="w-8 h-px bg-accent/50 shrink-0" aria-hidden="true" />
+                        <span className="font-mono text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.2em] text-muted">
+                          {r.source}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </motion.li>
               ))}
@@ -265,20 +321,22 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           — la traducción de esta lectura a "qué significa ahora" — se
           conserva en una sola oración. */}
       {momentState?.narrative && (
-        <section className="py-8 sm:py-12 border-t border-ink/10">
+        <section className="py-20 sm:py-28">
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">05 · Qué significa para vos</h2>
-            </div>
-            <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
-              {momentState.narrative}
-            </p>
-            <p className="text-sm mt-6">
-              <Link href="/hoy" className="text-accent hover:underline">
-                Ver tu día de hoy en detalle →
-              </Link>
-            </p>
+            <motion.div {...chapterReveal}>
+              <ChapterHeader number="05" title="Qué significa para vos" elementColor={elementColor} />
+            </motion.div>
+            <motion.div {...chapterReveal}>
+              <p className="font-heading text-xl sm:text-2xl lg:text-[1.75rem] leading-[1.5] text-foreground max-w-3xl">
+                {momentState.narrative}
+              </p>
+              <p className="mt-8">
+                <Link href="/hoy" className="text-accent hover:underline text-sm sm:text-base inline-flex items-center gap-2">
+                  Ver tu día de hoy en detalle
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </p>
+            </motion.div>
           </div>
         </section>
       )}
@@ -286,12 +344,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
       {/* 06 · DE LA LECTURA A LA ACCIÓN — DecisionMapSection no repite Mundo
           (esa es afinidad con entidades); acá es qué tan preparado está cada
           área de tu vida según decisionsEngine. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">06 · De la lectura a la acción</h2>
-          </div>
+          <motion.div {...chapterReveal}>
+            <ChapterHeader number="06" title="De la lectura a la acción" elementColor={elementColor} />
+          </motion.div>
           <DecisionMapSection profile={profile} />
         </div>
       </section>
@@ -306,12 +363,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           datos" (cómo convergen, qué tensiones, qué significa el momento,
           una recomendación) — se verificó contra intelligenceEngine y no
           hizo falta tocarlo. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">07 · Síntesis profunda</h2>
-          </div>
+          <motion.div {...chapterReveal}>
+            <ChapterHeader number="07" title="Síntesis profunda" elementColor={elementColor} />
+          </motion.div>
           <PremiumGate
             name={name}
             birthDate={birthDate}
@@ -336,13 +392,12 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           simbólica / recomendación en la propia respuesta. Gating vía
           usePremiumAccess (no un segundo PremiumGate) — ver el comentario en
           ese hook sobre por qué no se reutiliza el paywall de la sección 06. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">08 · Preguntale a tu Molino</h2>
-          </div>
-          <p className="text-sm text-muted mb-6 max-w-xl">
+          <motion.div {...chapterReveal}>
+            <ChapterHeader number="08" title="Preguntale a tu Molino" elementColor={elementColor} />
+          </motion.div>
+          <p className="text-sm text-muted mb-8 max-w-xl">
             Una pregunta concreta sobre tu momento, tu perfil o una decisión — respondida solo con lo que Molino ya calculó sobre vos.
           </p>
           <ChatWithMolino profile={profile} />
@@ -359,9 +414,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           en un formato compacto que no compite con ella. No se elimina
           capacidad: los 4 links a /conocimiento/* y el detalle de
           dimensiones siguen disponibles. */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="pt-20 sm:pt-28 pb-20 sm:pb-24 border-t border-ink/10 mt-4">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted font-semibold mb-6">Para profundizar</p>
+          <motion.div {...chapterReveal}>
+            <BackmatterHeader title="Para profundizar" />
+          </motion.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start mb-10">
             <div>
@@ -443,12 +500,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
       </section>
 
       {/* Compartir */}
-      <section className="py-8 sm:py-12 border-t border-ink/10">
+      <section className="pt-20 sm:pt-28 pb-20 sm:pb-24 border-t border-ink/10 mt-4">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">Compartir</h2>
-          </div>
+          <motion.div {...chapterReveal}>
+            <BackmatterHeader title="Compartir" />
+          </motion.div>
           <ShareableImageCard profile={profile} currentTab="intelligence" />
         </div>
       </section>

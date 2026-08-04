@@ -13,6 +13,7 @@ import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import ZodiacMark from "@/components/ui/ZodiacMark";
+import Badge from "@/components/ui/Badge";
 import type { ProfileTab } from "./ProfileTabs";
 import { loadDiscoveryState } from "@/lib/session/discovery";
 
@@ -181,12 +182,15 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             className="group w-full text-left border-t border-border py-8 lg:py-10 transition-colors hover:bg-ink/[0.02]"
           >
             <div className="max-w-2xl">
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-3">04 · Tu Inteligencia</p>
+              <div className="flex items-center gap-2 mb-3">
+                <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted">04 · Tu Inteligencia</p>
+                <Badge variant="accent">Premium</Badge>
+              </div>
               <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-foreground leading-[0.95] group-hover:text-accent transition-colors">
                 Tu momento: {dailyEnergy.theme}
               </h3>
               <p className="mt-3 text-sm sm:text-base text-muted">
-                Tu síntesis completa: qué significa todo esto cuando se conecta. Premium.
+                Tu síntesis completa + chat contextual con Molino. Contenido Premium.
               </p>
             </div>
           </button>
