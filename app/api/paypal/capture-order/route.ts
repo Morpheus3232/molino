@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
 import { captureOrder, validateOrder } from '@/lib/paypal';
-import { grantPremiumAccess, isPaymentProcessed, markPaymentProcessed } from '@/lib/kv';
+import { grantPremiumAccess, hasPremiumAccess, isPaymentProcessed, markPaymentProcessed } from '@/lib/kv';
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,16 +32,27 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isFirst = alreadyProcessed ? false : await markPaymentProcessed(cleanOrderId);
-    if (isFirst) {
-      await grantPremiumAccess(profileHash, cleanOrderId);
+    if (alreadyProcessed) {
+      const hasAccess = await hasPremiumAccess(profileHash);
+      if (!hasAccess) {
+        await grantPremiumAccess(profileHash, cleanOrderId);
+      }
+      return NextResponse.json({
+        verified: true,
+        status: order.status,
+        orderId: cleanOrderId,
+        idempotent: true,
+      });
     }
+
+    await grantPremiumAccess(profileHash, cleanOrderId);
+    await markPaymentProcessed(cleanOrderId);
 
     return NextResponse.json({
       verified: true,
       status: order.status,
       orderId: cleanOrderId,
-      idempotent: !isFirst,
+      idempotent: false,
     });
   } catch (error) {
     console.error('[PayPal Capture Order] Error:', error);

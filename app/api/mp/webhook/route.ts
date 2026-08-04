@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
-import { grantPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
+import { grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
 
 export async function POST(req: NextRequest) {
   try {
@@ -47,11 +47,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true, status: payment.status, revoked: true });
     }
 
-    const isFirstTime = await markPaymentProcessed(paymentId);
-    if (!isFirstTime) {
-      return NextResponse.json({ received: true, idempotent: true });
-    }
-
+    // Validate BEFORE consuming idempotency — invalid payments must never
+    // consume the processed flag, otherwise a transient validation failure
+    // causes all subsequent retries to silently skip granting.
     const validation = validatePayment(payment);
     if (!validation.valid) {
       console.warn(`[MP Webhook] Payment validation failed for ${paymentId}: ${validation.reason}`);
@@ -63,7 +61,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ received: true, valid: false, reason: 'Missing profile_hash in metadata' });
     }
 
+    // Grant FIRST, then mark. If grant fails after mark, retry would
+    // silently skip granting (the old bug). This ordering guarantees
+    // premium access is always in place before we consume idempotency.
     await grantPremiumAccess(profileHash, paymentId);
+
+    const isFirstTime = await markPaymentProcessed(paymentId);
+    if (!isFirstTime) {
+      // Already processed — verify access exists, retry grant if missing.
+      const hasAccess = await hasPremiumAccess(profileHash);
+      if (!hasAccess) {
+        await grantPremiumAccess(profileHash, paymentId);
+      }
+    }
 
     return NextResponse.json({ received: true });
   } catch (error) {

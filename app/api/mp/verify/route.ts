@@ -38,13 +38,29 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const targetHash =
-      (payment.metadata?.profile_hash as string | undefined) ||
-      (name && birthDate ? hashProfile(name, birthDate) : undefined);
+    const metadataHash = payment.metadata?.profile_hash as string | undefined;
+    const calculatedHash = name && birthDate ? hashProfile(name, birthDate) : undefined;
 
-    if (targetHash) {
-      await grantPremiumAccess(targetHash, String(paymentId));
+    // If both metadata hash and calculated hash exist, they must match.
+    // This prevents a user from claiming another person's payment by
+    // providing their own PII when metadata contains a different hash.
+    if (metadataHash && calculatedHash && metadataHash !== calculatedHash) {
+      return NextResponse.json({
+        verified: false,
+        reason: 'El ID de pago no corresponde a este perfil.',
+      }, { status: 400 });
     }
+
+    const targetHash = metadataHash || calculatedHash;
+
+    if (!targetHash) {
+      return NextResponse.json({
+        verified: false,
+        reason: 'No se pudo vincular el pago a un mapa. Proporcioná tu nombre y fecha de nacimiento registrados.',
+      }, { status: 400 });
+    }
+
+    await grantPremiumAccess(targetHash, String(paymentId));
 
     return NextResponse.json({
       verified: true,
