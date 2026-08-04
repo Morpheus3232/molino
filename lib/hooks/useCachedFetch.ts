@@ -22,7 +22,10 @@ export function useCachedFetch<T>(
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const keyRef = useRef(key);
-  keyRef.current = key;
+
+  useEffect(() => {
+    keyRef.current = key;
+  }, [key]);
 
   useEffect(() => {
     if (!key) return;

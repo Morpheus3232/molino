@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 
 interface BuildingMolinoProps {
   /** True once the real fetch has settled (success or error) and the
@@ -28,6 +29,13 @@ interface BuildingMolinoProps {
  * pending. `done` can flip true at any point — early (fast AI response) or
  * late — and the checklist always catches up to a real finished state
  * instead of either stalling on a false wait or cutting off mid-step.
+ *
+ * The presentation reads as a document being composed for the reader: the
+ * active step is typeset as the headline, a hairline progress rule tracks
+ * the build with a blinking composing caret, and the checklist below logs
+ * each finished step. All motion degrades gracefully under
+ * prefers-reduced-motion (checked via useReducedMotion); the pacing logic
+ * itself is unaffected.
  */
 const STEPS = [
   "Leyendo tu mapa",
@@ -39,7 +47,24 @@ const STEPS = [
 const STEP_INTERVAL_MS = 550;
 const CATCH_UP_INTERVAL_MS = 140;
 
+const CHECK_MARK = (
+  <svg
+    width="10"
+    height="10"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="var(--color-paper)"
+    strokeWidth="3.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps) {
+  const reduceMotion = useSafeReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const doneRef = useRef(done);
   const onCompleteRef = useRef(onComplete);
@@ -92,44 +117,162 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     };
   }, [done]);
 
+  const isReady = done && activeIndex >= STEPS.length - 1;
+  const completedCount = STEPS.reduce(
+    (count, _, i) => count + (i < activeIndex || (done && i <= activeIndex) ? 1 : 0),
+    0
+  );
+  const progress = completedCount / STEPS.length;
+  const counter = Math.min(activeIndex + 1, STEPS.length);
+  const hero = isReady ? "Tu síntesis está lista" : STEPS[activeIndex];
+
+  const fadeIn = (duration: number, delay = 0) => ({
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { duration: reduceMotion ? 0 : duration, ease: "easeOut" as const, delay: reduceMotion ? 0 : delay },
+    },
+  });
+
   return (
     <div role="status" aria-live="polite" className="py-6">
       <span className="sr-only">
         {done ? "Tu síntesis está lista." : `${STEPS[activeIndex]}…`}
       </span>
-      <ul aria-hidden="true" className="space-y-3">
-        {STEPS.map((step, i) => {
-          const isComplete = i < activeIndex || (done && i <= activeIndex);
-          const isActive = i === activeIndex && !isComplete;
-          return (
-            <li key={step} className="flex items-center gap-3">
-              <span
-                className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors duration-300 ${
-                  isComplete ? "border-accent bg-accent" : "border-ink/15 bg-transparent"
-                }`}
+
+      <motion.div
+        aria-hidden="true"
+        className="w-full max-w-md"
+        initial={reduceMotion ? false : "hidden"}
+        animate="show"
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: reduceMotion ? 0 : 0.07,
+              delayChildren: reduceMotion ? 0 : 0.05,
+            },
+          },
+        }}
+      >
+        {/* Overline — framing the process, not the price */}
+        <motion.p
+          variants={fadeIn(0.4)}
+          className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-muted"
+        >
+          Construyendo tu lectura
+        </motion.p>
+
+        {/* Hero — the step being composed, typeset as the headline */}
+        <motion.h3
+          key={hero}
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeOut", delay: reduceMotion ? 0 : 0.08 }}
+          className="mt-3 text-balance font-display text-[1.5rem] uppercase leading-[1.05] tracking-tight text-foreground sm:text-[1.75rem]"
+        >
+          {hero}
+        </motion.h3>
+
+        {/* Progress hairline + composing caret */}
+        <div className="relative mt-4 h-px bg-ink/10">
+          <motion.div
+            className="absolute inset-y-0 left-0 bg-accent"
+            initial={false}
+            animate={{ width: `${progress * 100}%` }}
+            transition={{ duration: reduceMotion ? 0 : 0.5, ease: "easeOut" }}
+          />
+          {!isReady && (
+            <motion.span
+              className="absolute top-1/2 h-3 w-px -translate-y-1/2 bg-accent"
+              initial={false}
+              animate={{ left: `${progress * 100}%`, opacity: reduceMotion ? 0.6 : [1, 0.25, 1] }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      left: { duration: 0.5, ease: "easeOut" },
+                      opacity: { duration: 1.6, repeat: Infinity, ease: "easeInOut" },
+                    }
+              }
+            />
+          )}
+        </div>
+
+        {/* Meta row — state word + step counter */}
+        <motion.div variants={fadeIn(0.4)} className="mt-3 flex items-baseline justify-between">
+          <p
+            className={`font-mono text-[0.625rem] uppercase tracking-[0.22em] transition-colors duration-300 ${
+              isReady ? "text-accent" : "text-muted/70"
+            }`}
+          >
+            {isReady ? "Lista" : "En proceso"}
+          </p>
+          <p className="font-mono text-[0.625rem] tracking-[0.22em] text-muted/70">
+            {String(counter).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
+          </p>
+        </motion.div>
+
+        {/* Checklist — editorial log of the build */}
+        <motion.ul
+          variants={{ hidden: {}, show: { transition: { staggerChildren: reduceMotion ? 0 : 0.05 } } }}
+          className="mt-6 border-t border-ink/10"
+        >
+          {STEPS.map((step, i) => {
+            const isComplete = i < activeIndex || (done && i <= activeIndex);
+            const isActive = i === activeIndex && !isComplete;
+            return (
+              <motion.li
+                key={step}
+                variants={{
+                  hidden: { opacity: 0, y: 8 },
+                  show: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: reduceMotion ? 0 : 0.35, ease: "easeOut" as const },
+                  },
+                }}
+                className="relative flex items-center gap-3 py-3.5 pl-5"
               >
-                {isComplete && (
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--color-paper)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
                 {isActive && (
-                  <motion.span
-                    className="w-1.5 h-1.5 rounded-full bg-accent"
-                    animate={{ opacity: [1, 0.3, 1] }}
-                    transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+                  <span
+                    className="absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 bg-accent"
+                    aria-hidden="true"
                   />
                 )}
-              </span>
-              <span
-                className={`text-sm transition-colors duration-300 ${isComplete ? "text-foreground" : isActive ? "text-foreground" : "text-muted"}`}
-              >
-                {step}
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+                <span
+                  className={`w-5 shrink-0 font-mono text-[0.625rem] tracking-[0.1em] transition-colors duration-300 ${
+                    isActive ? "text-accent" : isComplete ? "text-muted/70" : "text-muted/40"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className={`flex-1 text-sm transition-colors duration-300 ${
+                    isActive ? "text-foreground" : isComplete ? "text-foreground/75" : "text-muted/50"
+                  }`}
+                >
+                  {step}
+                </span>
+                <span className="flex w-5 shrink-0 items-center justify-center">
+                  {isComplete ? (
+                    <motion.span
+                      initial={reduceMotion ? false : { scale: 0.4, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={
+                        reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 24 }
+                      }
+                      className="flex h-5 w-5 items-center justify-center rounded-full border border-accent bg-accent"
+                    >
+                      {CHECK_MARK}
+                    </motion.span>
+                  ) : null}
+                </span>
+              </motion.li>
+            );
+          })}
+        </motion.ul>
+      </motion.div>
     </div>
   );
 }

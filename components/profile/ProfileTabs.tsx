@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Badge from "@/components/ui/Badge";
 
 export type ProfileTab = "identity" | "world" | "circle" | "intelligence";
 
@@ -9,13 +10,14 @@ interface Tab {
   label: string;
   shortLabel: string;
   icon: string;
+  isPremium?: boolean;
 }
 
 const TABS: Tab[] = [
   { id: "identity", label: "Tu Identidad", shortLabel: "Identidad", icon: "✦" },
   { id: "world", label: "Tu Mundo", shortLabel: "Mundo", icon: "🌎" },
   { id: "circle", label: "Tu Círculo", shortLabel: "Círculo", icon: "⬡" },
-  { id: "intelligence", label: "Tu Inteligencia", shortLabel: "Análisis", icon: "◆" },
+  { id: "intelligence", label: "Tu Inteligencia", shortLabel: "Análisis", icon: "◆", isPremium: true },
 ];
 
 interface ProfileTabsProps {
@@ -71,6 +73,11 @@ export default function ProfileTabs({ active, onChange, onBack }: ProfileTabsPro
               >
                 <span className="text-xs font-mono" aria-hidden="true">{tab.icon}</span>
                 <span>{tab.label}</span>
+                {tab.isPremium && !isActive && (
+                  <Badge variant="muted" className="ml-1.5 text-[0.6rem] py-1">
+                    Premium
+                  </Badge>
+                )}
                 {isActive && (
                   <motion.div
                     layoutId="profile-tab-indicator"

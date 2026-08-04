@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import type {
   InterpretationType,
   MolinoInterpretation,
@@ -13,6 +14,7 @@ import { INTENTION_LABELS, type TimingResult } from "@/lib/engines/timingEngine"
 import type { DecisionResult } from "@/lib/engines/decisionsEngine";
 import type { EntityProfile } from "@/lib/data/entities";
 import BuildingMolino from "@/components/ui/BuildingMolino";
+import MolinoReveal from "@/components/ui/MolinoReveal";
 
 interface MolinoInterpretationProps {
   profile: UserProfile;
@@ -34,26 +36,29 @@ interface MolinoInterpretationProps {
 
 function LoadingSkeleton() {
   return (
-    <div className="animate-pulse">
-      {/* Insight principal */}
-      <div className="pb-4">
-        <div className="h-5 bg-border/50 rounded w-3/4 mb-3" />
-        <div className="h-3 bg-border/50 rounded w-full mb-2" />
-        <div className="h-3 bg-border/50 rounded w-5/6" />
+    <div className="animate-pulse" aria-hidden="true">
+      {/* Apertura — aire editorial antes del contenido */}
+      <div className="pt-10 sm:pt-14 pb-10 sm:pb-14">
+        <div className="h-1.5 bg-border/40 rounded w-14 mb-6" />
+        <div className="h-5 bg-border/40 rounded w-3/4 mb-3" />
+        <div className="h-5 bg-border/40 rounded w-2/5" />
       </div>
 
-      {/* Qué significa */}
-      <div className="pt-4 border-t border-ink/10">
-        <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
-        <div className="h-3 bg-border/50 rounded w-full mb-2" />
-        <div className="h-3 bg-border/50 rounded w-4/5" />
+      {/* Lede — resumen en jerarquía de titular */}
+      <div className="pb-8 sm:pb-10">
+        <div className="h-4 bg-border/40 rounded w-full mb-3" />
+        <div className="h-4 bg-border/40 rounded w-4/5" />
       </div>
 
-      {/* Por qué importa */}
-      <div className="pt-4 mt-4 border-t border-ink/10">
-        <div className="h-2 bg-border/50 rounded w-1/4 mb-2" />
-        <div className="h-3 bg-border/50 rounded w-full mb-2" />
-        <div className="h-3 bg-border/50 rounded w-3/4" />
+      {/* Secciones de cuerpo */}
+      <div className="space-y-8 sm:space-y-10">
+        {[0.6, 0.75, 0.5].map((w, i) => (
+          <div key={i} className="py-5">
+            <div className="h-1 bg-border/30 rounded w-16 mb-4" />
+            <div className="h-3 bg-border/40 rounded w-full mb-2" />
+            <div className="h-3 bg-border/40 rounded" style={{ width: `${w * 100}%` }} />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -99,105 +104,307 @@ export default function MolinoInterpretation({
   // without this, BuildingMolino would never get to show its catch-up
   // animation, it'd just unmount the instant data arrives. revealReady is a
   // separate flag, only flipped by BuildingMolino's own onComplete once its
-  // checklist has visually finished — content only swaps in after that.
+  // checklist has visually finished (or immediately for non-unlock flows).
   const [revealReady, setRevealReady] = useState(!justUnlocked);
-  const handleRevealComplete = useCallback(() => setRevealReady(true), []);
 
+  const prefersReducedMotion = useSafeReducedMotion();
+
+  // Fetch the interpretation. Separated from the effect that triggers it to
+  // avoid re-creating the callback on every render (it closes over profile).
   const fetchInterpretation = useCallback(async () => {
-    if (hasAttemptedAI) return;
-    setIsInterpreting(true);
-    setError(null);
-    setPremiumRequired(false);
-
     try {
-      const response = await fetch('/api/intelligence/interpret', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      setIsInterpreting(true);
+      const res = await fetch("/api/intelligence/interpret", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type,
-          dob: profile.birthDate,
           name: profile.name,
-          dailyEnergy,
-          timing,
-          compatibility,
-          entity,
-          decision,
+          dob: profile.birthDate,
+          type,
           question,
         }),
       });
-
-      // 403 = contenido premium sin acceso — server-side gate, independiente
-      // de si el paywall del cliente está habilitado (NEXT_PUBLIC_PREMIUM_ENABLED).
-      // No es una falla técnica: no tiene sentido ni reintentar ni mostrar un
-      // error genérico "algo se rompió" en la pantalla insignia del producto.
-      if (response.status === 403) {
-        setPremiumRequired(true);
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 403) {
+          setPremiumRequired(true);
+          setError(null);
+        } else {
+          setError(data.error?.message || "No pudimos interpretar tu perfil.");
+        }
         setHasAttemptedAI(true);
         return;
       }
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      setFallbackInterpretation(data.fallback || null);
       if (data.ai) {
-        setAiInterpretation(data.ai);
-      } else if (data.error) {
-        setError(data.error);
+        setAiInterpretation(data.ai as MolinoInterpretation);
+        setError(null);
+      } else {
+        setError("No recibimos una interpretación válida.");
       }
       setHasAttemptedAI(true);
-    } catch (err) {
-      // A diferencia del camino feliz (línea 130), acá el fetch mismo falló
-      // antes de llegar a leer `data.fallback` — no hay dato local para
-      // mostrar. El mensaje anterior prometía "mostrando datos locales" sin
-      // que ningún dato local llegara a setearse.
-      console.error("Error getting interpretation:", err);
-      setError("No se pudo obtener la interpretación. Intentá de nuevo.");
+    } catch {
+      setError("Hubo un problema de conexión. Reintentá en un momento.");
       setHasAttemptedAI(true);
     } finally {
       setIsInterpreting(false);
     }
-  }, [
-    type,
-    profile.birthDate,
-    profile.name,
-    dailyEnergy,
-    timing,
-    compatibility,
-    entity,
-    decision,
-    question,
-    hasAttemptedAI,
-  ]);
+  }, [profile.name, profile.birthDate, type, question]);
 
+  // Try AI interpretation unless explicitly told to skip, or the user has
+  // already asked to regenerate and we're waiting on the result.
   useEffect(() => {
     if (!hasAttemptedAI) {
       fetchInterpretation();
     }
   }, [fetchInterpretation, hasAttemptedAI]);
 
-  const handleRegenerate = useCallback(() => {
+  // BuildingMolino's onComplete flips this — only after the checklist has
+  // visually finished does the content swap in (see note above).
+  const handleRevealComplete = useCallback(() => {
+    setRevealReady(true);
+  }, []);
+
+  // Regenerate: clear the AI result so `interpretation` falls back to the
+  // local synthesis while the new fetch runs, then re-fetch.
+  const handleRegenerate = useCallback(async () => {
     setAiInterpretation(null);
+    setError(null);
     setHasAttemptedAI(false);
   }, []);
 
   const interpretation = aiInterpretation || fallbackInterpretation;
   const isUsingAI = !!aiInterpretation;
 
+  // Reveal progresivo: cada sección entra con un fade+rise breve y encadenado.
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: {
+        staggerChildren: prefersReducedMotion ? 0 : 0.08,
+        delayChildren: prefersReducedMotion ? 0 : 0.05,
+      },
+    },
+  };
+  const itemVariants = {
+    hidden: prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 14 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0 : 0.5,
+        ease: [0.25, 0.1, 0.25, 1] as const,
+      },
+    },
+  };
+
+  const readingContent = (() => {
+    if (!interpretation) return null;
+    return (
+      <motion.div
+        key={isUsingAI ? "ai" : "local"}
+        variants={containerVariants}
+        initial={prefersReducedMotion ? false : "hidden"}
+        animate="show"
+      >
+        {/* 00. Apertura — solo en la síntesis premium (personal_profile) */}
+        {interpretation.opening && (
+          <motion.div variants={itemVariants} className="pt-10 sm:pt-14 pb-8 sm:pb-10">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-4">
+              Tu lectura
+            </p>
+            <p className="font-heading text-base leading-[1.6] text-foreground sm:text-lg">
+              {interpretation.opening}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 1. INSIGHT PRINCIPAL — lede editorial, jerarquía de titular */}
+        <motion.div
+          variants={itemVariants}
+          className={
+            interpretation.opening
+              ? "py-6 sm:py-8"
+              : "pt-10 sm:pt-14 pb-8 sm:pb-10"
+          }
+        >
+          <p className="font-heading text-lg sm:text-xl leading-[1.65] text-foreground">
+            {interpretation.summary}
+          </p>
+        </motion.div>
+
+        {/* 01. Tu patrón central */}
+        {interpretation.corePattern && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              Tu patrón central · {interpretation.corePattern.source}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {interpretation.corePattern.whyItMatters}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 2. Qué significa */}
+        {interpretation.alignment && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {interpretation.alignment}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 3. Por qué importa */}
+        {interpretation.timing && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {interpretation.timing}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
+        {timing && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              Timing para {INTENTION_LABELS[timing.intention]}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {timing.explanation}
+            </p>
+          </motion.div>
+        )}
+
+        {/* Strengths */}
+        {interpretation.strengths.length > 0 && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-4">
+              {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
+            </p>
+            <div className="space-y-3">
+              {interpretation.strengths.map((s, si) => (
+                <div key={si} className="flex items-start gap-3">
+                  <span className="w-4 h-px bg-accent mt-[0.65em] shrink-0" aria-hidden="true" />
+                  <p className="text-sm leading-[1.75] sm:text-base text-foreground">{s}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Tensions */}
+        {interpretation.tensions.length > 0 && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-4">
+              {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
+            </p>
+            <div className="space-y-3">
+              {interpretation.tensions.map((t, ti) => (
+                <div key={ti} className="flex items-start gap-3">
+                  <span className="w-4 h-px bg-border mt-[0.65em] shrink-0" aria-hidden="true" />
+                  <p className="text-sm leading-[1.75] sm:text-base text-muted">{t}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* 03. Cómo funcionás */}
+        {interpretation.howYouOperate && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              Cómo funcionás
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {interpretation.howYouOperate}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 04. Tus relaciones — solo si hay datos reales de afinidad de zodiaco chino */}
+        {interpretation.relationalNote && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+              Tus relaciones
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              {interpretation.relationalNote}
+            </p>
+          </motion.div>
+        )}
+
+        {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
+        {interpretation.suggestedNextStep && (
+          <motion.div variants={itemVariants} className="py-6 sm:py-8 mt-2">
+            <div className="border-l-2 border-accent pl-5 sm:pl-7">
+              <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-3">
+                {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
+              </p>
+              <p className="text-sm leading-[1.75] sm:text-base text-foreground font-medium">
+                {interpretation.suggestedNextStep}
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* 07. Síntesis — cierre memorable, pensado para compartir */}
+        {interpretation.closingSynthesis && (
+          <motion.div variants={itemVariants} className="py-8 sm:py-12 mt-2 border-t border-ink/10">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-5">
+              Tu síntesis
+            </p>
+            <blockquote className="font-heading text-lg sm:text-xl leading-[1.6] text-foreground italic">
+              &ldquo;{interpretation.closingSynthesis}&rdquo;
+            </blockquote>
+          </motion.div>
+        )}
+
+        {/* 5. Qué considerar */}
+        {interpretation.whatToConsider.length > 0 && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-4">
+              Qué considerar
+            </p>
+            <div className="space-y-3">
+              {interpretation.whatToConsider.map((c, ci) => (
+                <div key={ci} className="flex items-start gap-3">
+                  <span className="w-4 h-px bg-border mt-[0.65em] shrink-0" aria-hidden="true" />
+                  <p className="text-sm leading-[1.75] sm:text-base text-muted">{c}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Confidence */}
+        <motion.div variants={itemVariants} className="pt-6 border-t border-ink/10">
+          <p className="font-mono text-[0.6875rem] text-muted/50">
+            Confianza: {interpretation.confidence}
+            {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
+          </p>
+        </motion.div>
+      </motion.div>
+    );
+  })();
+
   return (
-    <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      {/* Header — byline editorial, sin ruido de dashboard */}
+      <div className="flex items-center justify-between pb-6 sm:pb-10 border-b border-ink/10">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium">{label}</p>
+          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent">
+            {label}
+          </p>
           {description && (
-            <p className="text-xs text-muted mt-1">{description}</p>
+            <p className="text-sm text-muted leading-relaxed mt-2 max-w-lg">{description}</p>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 shrink-0 ml-4">
           {isUsingAI && (
             <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-sm border border-accent/20">
               IA
@@ -224,7 +431,7 @@ export default function MolinoInterpretation({
         </div>
       </div>
 
-      {/* Loading state */}
+      {/* Loading state — BuildingMolino solo en el flujo post-pago */}
       <AnimatePresence mode="wait">
         {justUnlocked ? (
           !revealReady && (
@@ -253,177 +460,34 @@ export default function MolinoInterpretation({
         )}
       </AnimatePresence>
 
-      {/* Main content */}
+      {/* Main content — post-pago, la portada de identidad (MolinoReveal) abre
+          antes de que el contenido editorial aparezca; en otros flujos entra
+          directo con el reveal progresivo de secciones. */}
       <AnimatePresence mode="wait">
         {interpretation && revealReady && (
-          <motion.div
-            key={isUsingAI ? "ai" : "local"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-          >
-            {/* 00. Apertura — solo en la síntesis premium (personal_profile) */}
-            {interpretation.opening && (
-              <div className="pb-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu lectura</p>
-                <p className="font-heading text-xl sm:text-2xl text-foreground leading-snug">{interpretation.opening}</p>
-              </div>
-            )}
-
-            {/* 1. INSIGHT PRINCIPAL — lede editorial, sin caja */}
-            <div className={interpretation.opening ? "py-4 border-t border-ink/10" : "pb-5"}>
-              <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed">{interpretation.summary}</p>
-            </div>
-
-            {/* 01. Tu patrón central */}
-            {interpretation.corePattern && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
-                  Tu patrón central · {interpretation.corePattern.source}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{interpretation.corePattern.whyItMatters}</p>
-              </div>
-            )}
-
-            {/* 2. Qué significa */}
-            {interpretation.alignment && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
-                  {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{interpretation.alignment}</p>
-              </div>
-            )}
-
-            {/* 3. Por qué importa */}
-            {interpretation.timing && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
-                  {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{interpretation.timing}</p>
-              </div>
-            )}
-
-            {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
-            {timing && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">
-                  Timing para {INTENTION_LABELS[timing.intention]}
-                </p>
-                <p className="text-sm text-foreground leading-relaxed">{timing.explanation}</p>
-              </div>
-            )}
-
-            {/* Strengths */}
-            {interpretation.strengths.length > 0 && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">
-                  {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
-                </p>
-                <ul className="space-y-1.5">
-                  {interpretation.strengths.map((s, i) => (
-                    <li key={i} className="text-sm text-foreground flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 shrink-0" aria-hidden="true" />
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Tensions */}
-            {interpretation.tensions.length > 0 && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">
-                  {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
-                </p>
-                <ul className="space-y-1.5">
-                  {interpretation.tensions.map((t, i) => (
-                    <li key={i} className="text-sm text-muted flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* 03. Cómo funcionás */}
-            {interpretation.howYouOperate && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Cómo funcionás</p>
-                <p className="text-sm text-foreground leading-relaxed">{interpretation.howYouOperate}</p>
-              </div>
-            )}
-
-            {/* 04. Tus relaciones — solo si hay datos reales de afinidad de zodiaco chino */}
-            {interpretation.relationalNote && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Tus relaciones</p>
-                <p className="text-sm text-foreground leading-relaxed">{interpretation.relationalNote}</p>
-              </div>
-            )}
-
-            {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
-            {interpretation.suggestedNextStep && (
-              <div className="py-4 mt-4 border-t border-ink/10">
-                <div className="border-l-2 border-accent pl-4 sm:pl-6">
-                  <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">
-                    {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
-                  </p>
-                  <p className="text-sm text-foreground font-medium leading-relaxed">{interpretation.suggestedNextStep}</p>
-                </div>
-              </div>
-            )}
-
-            {/* 07. Síntesis — cierre memorable, pensado para compartir */}
-            {interpretation.closingSynthesis && (
-              <div className="py-5 mt-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu síntesis</p>
-                <p className="font-heading text-base sm:text-lg text-foreground leading-relaxed italic">
-                  “{interpretation.closingSynthesis}”
-                </p>
-              </div>
-            )}
-
-            {/* 5. Qué considerar */}
-            {interpretation.whatToConsider.length > 0 && (
-              <div className="py-4 border-t border-ink/10">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Qué considerar</p>
-                <ul className="space-y-1.5">
-                  {interpretation.whatToConsider.map((c, i) => (
-                    <li key={i} className="text-sm text-muted flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-border mt-1.5 shrink-0" aria-hidden="true" />
-                      {c}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Confidence */}
-            <div className="pt-3 mt-4 border-t border-ink/10">
-              <p className="text-xs text-muted">
-                Confianza: {interpretation.confidence}
-                {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
-              </p>
-            </div>
-          </motion.div>
+          justUnlocked ? (
+            <MolinoReveal key="reading-reveal" profile={profile}>
+              {readingContent}
+            </MolinoReveal>
+          ) : (
+            readingContent
+          )
         )}
       </AnimatePresence>
 
       {/* Requiere premium — no es un error, no tiene sentido ofrecer reintentar */}
       {premiumRequired && !interpretation && revealReady && (
-        <p className="text-sm text-muted">
-          Esta lectura forma parte de la síntesis paga.
-        </p>
+        <div className="pt-6 border-t border-ink/10">
+          <p className="text-sm text-muted">
+            Esta lectura forma parte de la síntesis paga.
+          </p>
+        </div>
       )}
 
       {/* Error state (only show if no interpretation at all) */}
       {error && !interpretation && !premiumRequired && revealReady && (
-        <div className="p-4 border border-ink/10 bg-ink/[0.02]">
-          <p className="text-sm text-muted mb-2">{error}</p>
+        <div className="pt-6 border-t border-ink/10">
+          <p className="text-sm text-muted mb-3">{error}</p>
           <button
             type="button"
             onClick={handleRegenerate}
@@ -436,9 +500,11 @@ export default function MolinoInterpretation({
 
       {/* Subtle error when AI failed but local fallback exists */}
       {error && interpretation && revealReady && (
-        <p className="text-xs text-muted text-right">
-          Interpretación local · AI no disponible
-        </p>
+        <div className="pt-6 border-t border-ink/10">
+          <p className="text-xs text-muted/50 text-right">
+            Interpretación local · AI no disponible
+          </p>
+        </div>
       )}
     </div>
   );
