@@ -70,7 +70,7 @@ export const es = {
 
   premium: {
     priceLabel: "$8 USD",
-    eyebrow: "Premium · Pago único",
+    eyebrow: "Lectura completa",
     headline: "Ya conocés tus piezas.",
     headlineLine2: "Ahora entendé cómo se conectan.",
     body: "Tu síntesis completa reúne tus sistemas en una sola lectura: qué patrones se alinean, qué tensiones aparecen y qué importa en tu momento actual.",

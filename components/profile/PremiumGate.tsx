@@ -393,7 +393,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
                     <>
                       {" "}
                       <span className="font-semibold">{preview.pattern.sources.join(" y ")}</span> coinciden en{" "}
-                      <span className="font-semibold">{preview.pattern.keyword}</span> — eso ya lo viste arriba, gratis.
+                      <span className="font-semibold">{preview.pattern.keyword}</span>.
                     </>
                   ) : (
                     " Dos sistemas distintos, calculados por separado."

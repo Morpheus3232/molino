@@ -102,8 +102,8 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   })();
 
   const synthesisLine = archetype
-    ? `Tu Camino de Vida ${lifePath} te marca como ${archetype.name.toLowerCase()} (${archetype.keywords.slice(0, 3).join(", ").toLowerCase()}).`
-    : `Tu Camino de Vida ${lifePath} define el eje de tu recorrido.`;
+    ? `Tu mapa sugiere una energía ligada a ${archetype.name.toLowerCase()} — ${archetype.keywords.slice(0, 3).join(", ").toLowerCase()}.`
+    : `Tu mapa sugiere el Camino de Vida ${lifePath} como eje de tu recorrido.`;
 
   // Aviso sutil solo si la síntesis remota falló: la pantalla ya está
   // renderizada con el engine local, no hay pantalla en blanco.
@@ -182,7 +182,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           >
             <ZodiacMark animal={chineseZodiac} color="var(--color-accent)" size="sm" showLabel={false} />
             <p className="label-micro text-muted">
-              {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()} · CAMINO {lifePath}
+              {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()}
             </p>
           </motion.div>
 
@@ -199,9 +199,9 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               {lifePath}
             </span>
             <div className="sm:text-right">
-              <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-3">Tu arquetipo</p>
+              <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-3">El arquetipo de tu mapa</p>
               <p className="font-display text-3xl sm:text-5xl uppercase text-foreground tracking-tight">
-                # {archetype?.name}
+                {archetype?.name}
               </p>
             </div>
           </motion.div>
