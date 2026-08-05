@@ -10,6 +10,8 @@ interface ZodiacMarkProps {
   size?: "sm" | "md" | "lg" | "xl";
   /** Si se muestra el nombre del animal debajo de la marca. */
   showLabel?: boolean;
+  /** Si es true, oculta el número de posición del ciclo (1-12). */
+  hidePosition?: boolean;
   className?: string;
 }
 
@@ -30,7 +32,7 @@ const SIZE_MAP = {
  * Una sola familia visual para los 12 animales: mismo anillo, misma
  * tipografía, solo cambian el número, el ángulo del tick y el color.
  */
-export default function ZodiacMark({ animal, color, size = "md", showLabel = true, className = "" }: ZodiacMarkProps) {
+export default function ZodiacMark({ animal, color, size = "md", showLabel = true, hidePosition = false, className = "" }: ZodiacMarkProps) {
   const position = getZodiacPosition(animal);
   const display = getZodiacDisplay(animal);
   const { box, ring, number, label } = SIZE_MAP[size];
@@ -64,12 +66,15 @@ export default function ZodiacMark({ animal, color, size = "md", showLabel = tru
             }}
           />
         )}
-        <span
-          className={`font-display leading-none tracking-tight ${number}`}
-          style={{ color }}
-        >
-          {position || "—"}
-        </span>
+        {hidePosition ? (
+          <span className={`font-display leading-none tracking-tight ${number}`} style={{ color }}>
+            {display.emoji}
+          </span>
+        ) : (
+          <span className={`font-display leading-none tracking-tight ${number}`} style={{ color }}>
+            {position || "—"}
+          </span>
+        )}
       </motion.div>
       {showLabel && (
         <p className={`font-mono uppercase tracking-[0.2em] text-muted font-medium ${label}`}>

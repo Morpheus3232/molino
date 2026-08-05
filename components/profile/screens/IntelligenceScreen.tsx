@@ -134,10 +134,11 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
             <span className="block w-10 h-0.5 mb-5" style={{ backgroundColor: elementColor }} aria-hidden="true" />
             <p className="label-micro mb-3">Tu Inteligencia</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
-              Tu mapa profundo
+              La conversación entre tus sistemas
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-              Lo interesante no está en cada sistema por separado, sino en lo que aparece cuando los miramos juntos.
+              Hasta ahora viste las piezas. Aquí aparece la conversación
+              entre ellas.
             </p>
           </motion.div>
         </div>
@@ -367,6 +368,13 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...chapterReveal}>
             <ChapterHeader number="07" title="Síntesis profunda" elementColor={elementColor} />
+          </motion.div>
+          <motion.div {...chapterReveal} className="max-w-2xl">
+            <p className="font-heading text-xl sm:text-2xl leading-[1.5] text-foreground mb-8">
+              Hasta ahora viste las piezas. Aquí aparece la conversación
+              entre ellas — tu identidad, tus ciclos y tus patrones vistos
+              como un solo sistema.
+            </p>
           </motion.div>
           <PremiumGate
             name={name}

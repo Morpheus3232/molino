@@ -1,216 +1,297 @@
 "use client";
 
 import { useMemo } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { calculateAllAffinity, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import ZodiacMark from "@/components/ui/ZodiacMark";
-import Badge from "@/components/ui/Badge";
+import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import MapaIdentity from "@/components/profile/MapaIdentity";
+import MapaMundo from "@/components/profile/MapaMundo";
+import MapaCirculo from "@/components/profile/MapaCirculo";
 import type { ProfileTab } from "./ProfileTabs";
-import { loadDiscoveryState } from "@/lib/session/discovery";
 
 interface ProfileHubProps {
   profile: UserProfile;
   onEnter?: (tab: ProfileTab) => void;
 }
 
-const fade = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.3 },
+/* ═══════════════════════════════════════════════════
+   Capa de presentación local del hero.
+   Copy narrativo por arquetipo — NO toca engines ni
+   cálculos: solo da voz a un valor ya calculado.
+   Si un arquetipo no tiene texto, cae en el fallback.
+   ═══════════════════════════════════════════════════ */
+const ARCHETYPE_OPENINGS: Record<number, { opening: string[]; question: string; essence: string }> = {
+  1: {
+    opening: [
+      "Hay personas que esperan que el mundo les muestre el camino.",
+      "Otras lo construyen.",
+    ],
+    question: "¿Qué comienza cuando decidís ser el primero?",
+    essence: "Una identidad que encuentra impulso en los comienzos.",
+  },
+  2: {
+    opening: [
+      "Hay personas que imponen su verdad.",
+      "Otras encuentran el punto donde todos pueden verse.",
+    ],
+    question: "¿Qué se encuentra en el punto donde todos pueden verse?",
+    essence: "Una identidad que une lo que parece separado.",
+  },
+  3: {
+    opening: [
+      "Hay personas que guardan lo que sienten.",
+      "Otras lo convierten en palabra.",
+    ],
+    question: "¿Qué se vuelve posible cuando lo sentís en palabras?",
+    essence: "Una identidad que se vuelve visible cuando se expresa.",
+  },
+  4: {
+    opening: [
+      "Hay personas que imaginan posibilidades.",
+      "Otras tienen la energía para convertirlas en realidad.",
+    ],
+    question: "¿Qué se sostiene cuando empezás a construir?",
+    essence: "Una identidad que convierte ideas en cimientos.",
+  },
+  5: {
+    opening: [
+      "Hay personas que encuentran respuestas siguiendo caminos conocidos.",
+      "Otras necesitan explorar lo que todavía no existe.",
+    ],
+    question: "¿Dónde aparece tu energía?",
+    essence: "Una identidad que encuentra crecimiento cuando transforma el cambio en camino.",
+  },
+  6: {
+    opening: [
+      "Hay personas que buscan ser cuidadas.",
+      "Otras encuentran su fuerza cuidando lo cercano.",
+    ],
+    question: "¿Qué florece cuando cuidás lo cercano?",
+    essence: "Una identidad que se fortalece cuidando a quienes la rodean.",
+  },
+  7: {
+    opening: [
+      "Hay personas que se quedan en la superficie.",
+      "Otras necesitan llegar al fondo de las cosas.",
+    ],
+    question: "¿Qué se revela cuando llegás al fondo?",
+    essence: "Una identidad que busca el sentido detrás de lo visible.",
+  },
+  8: {
+    opening: [
+      "Hay personas que sueñan en pequeño.",
+      "Otras aprenden a construir lo que imaginan.",
+    ],
+    question: "¿Qué se materializa cuando dirigís tu fuerza?",
+    essence: "Una identidad que aprende a dirigir su propio poder.",
+  },
+  9: {
+    opening: [
+      "Hay personas que viven para sí.",
+      "Otras encuentran su sentido en lo colectivo.",
+    ],
+    question: "¿Qué queda cuando servís a algo más grande?",
+    essence: "Una identidad que se realiza en lo colectivo.",
+  },
+  11: {
+    opening: [
+      "Hay personas que siguen lo evidente.",
+      "Otras perciben lo que todavía no tiene forma.",
+    ],
+    question: "¿Qué percibís antes de que los demás lo vean?",
+    essence: "Una identidad que percibe antes de entender.",
+  },
+  22: {
+    opening: [
+      "Hay personas que imaginan grandes cosas.",
+      "Otras encuentran el modo de hacerlas reales.",
+    ],
+    question: "¿Qué se vuelve real cuando lo imaginás en grande?",
+    essence: "Una identidad que materializa lo que otros solo sueñan.",
+  },
+  33: {
+    opening: [
+      "Hay personas que aprenden para sí.",
+      "Otras aprenden para acompañar a otros.",
+    ],
+    question: "¿Qué despierta cuando acompañás a otros?",
+    essence: "Una identidad que guía elevando a quienes la rodean.",
+  },
 };
 
+const FALLBACK_OPENING = {
+  opening: [
+    "Hay personas que leen su historia en voz baja.",
+    "Otras la escuchan con atención.",
+  ],
+  question: "¿Dónde aparece tu energía?",
+  essence: "Una identidad que tu mapa invita a explorar.",
+};
+
+function getArchetypeCopy(lifePath: number) {
+  return ARCHETYPE_OPENINGS[lifePath] ?? FALLBACK_OPENING;
+}
+
 export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
+  const reduceMotion = useSafeReducedMotion();
+
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const chineseElement =
+    typeof profile.chineseZodiacInfo?.element === "string"
+      ? profile.chineseZodiacInfo.element
+      : "";
+  const elementColor =
+    ELEMENT_COLORS[chineseElement] ||
+    ELEMENT_COLORS[typeof profile.element === "string" ? profile.element : ""] ||
+    "var(--element-fire)";
+
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
-  const archetypeName = typeof profile.archetype === "string" ? profile.archetype : "";
-  const name = typeof profile.name === "string" ? profile.name : "";
+  const archetypeName = archetype.name;
+  const { opening, question, essence } = getArchetypeCopy(lifePath);
 
-  const affinityResults = useMemo(() => calculateAllAffinity(profile, SYMBOLIC_ENTITIES), [profile]);
-  const positiveAffinities = useMemo(
-    () => affinityResults.filter((r) => r.tier === "resonancia-alta" || r.tier === "afinidad-media"),
-    [affinityResults]
-  );
+  const worldCount = useMemo(() => {
+    const results = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
+    return results.filter((r) => r.score >= 60).length;
+  }, [profile]);
 
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  const sameFriends = relationMap.friends.filter((f) => f.type === "triad").slice(0, 2);
+  const allies = relationMap.friends.filter((f) => f.type === "triad").map((f) => f.animal);
 
-  const hasCompletedOnboarding = useMemo(() => loadDiscoveryState().hasCompletedOnboarding, []);
-  const topRec: AffinityResult | null = hasCompletedOnboarding ? positiveAffinities[0] ?? null : null;
+  /* Motion — fade + translateY, 300-500ms, sin desplazamiento si
+     el usuario prefiere menos movimiento. */
+  const heroItem = (delay: number) => ({
+    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reduceMotion ? 0.1 : 0.45, delay, ease: [0.22, 1, 0.36, 1] as const },
+  });
 
-  const dailyEnergy = useMemo(() => calculateDailyEnergy(profile), [profile]);
-
-  // Misma definición de "resuena" que WorldScreen (score >= 60): la cifra del
-  // hub y la apertura de Mundo tienen que contar lo mismo, o el usuario lee
-  // dos números distintos para la misma afirmación ("resuenan con vos").
-  const worldCount = affinityResults.filter((r) => r.score >= 60).length;
-  const allies = sameFriends.map((f) => f.animal);
+  const chapterReveal = {
+    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" } as const,
+    transition: { duration: reduceMotion ? 0.1 : 0.5, ease: [0.22, 1, 0.36, 1] as const },
+  };
 
   return (
     <div className="min-h-screen bg-background">
-      {/* ═══════════════════ HERO ═══════════════════ */}
+      {/* ═══════════════════════════════════════════════
+          HERO — revelación, no ficha técnica.
+          Orden: apertura narrativa → arquetipo → contexto.
+          ═══════════════════════════════════════════════ */}
       <header className="relative overflow-hidden">
         <div
           className="absolute inset-0"
-          style={{ background: `radial-gradient(ellipse 70% 55% at 50% 20%, ${elementColor}14, transparent 72%)` }}
+          style={{
+            background: `radial-gradient(ellipse 70% 55% at 50% 15%, ${elementColor}16, transparent 72%)`,
+          }}
           aria-hidden="true"
         />
-        <div className="relative mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-12 sm:pb-16">
-          <motion.div {...fade} className="flex flex-col items-center text-center">
-            <span className="label-micro mb-8">Mi mapa personal</span>
+        <div className="relative mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12 pt-24 sm:pt-36 pb-24 sm:pb-32">
+          <motion.div {...heroItem(0)}>
+            <p className="label-micro text-muted">Mi mapa personal</p>
+          </motion.div>
 
-            <div className="relative mb-7">
-              <div
-                className="absolute inset-0 scale-[2.4] blur-3xl opacity-[0.16] rounded-full"
-                style={{ backgroundColor: elementColor }}
-                aria-hidden="true"
-              />
-              <ZodiacMark animal={userAnimal} color={elementColor} size="lg" className="relative" />
-            </div>
-
-            <h1 className="font-display text-[clamp(2.75rem,9vw,6.5rem)] tracking-tight text-foreground leading-[0.9] uppercase">
-              {name || archetypeName || display.name}
-            </h1>
-
-            <p className="mt-5 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
-              {archetypeName
-                ? `Tu mapa: arquetipo ${archetypeName}, Camino de Vida ${lifePath}, ${display.name} de ${profile.chineseZodiacInfo?.element ?? element}.`
-                : `Tu mapa: ${display.name} del zodíaco chino, Camino de Vida ${lifePath}.`}
+          <motion.div {...heroItem(0.15)} className="mt-14">
+            <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed max-w-[560px]">
+              {opening[0]}
+              <br />
+              {opening[1]}
             </p>
+          </motion.div>
 
-            <div className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2 items-center">
-              {[
-                { label: "Elemento", value: profile.chineseZodiacInfo?.element ?? "" },
-                { label: "Signo", value: profile.sunSign },
-                { label: "Camino", value: String(lifePath) },
-              ].map(({ label, value }, i) => (
-                <div key={label} className="flex items-center gap-3">
-                  {i > 0 && <span className="w-px h-4 bg-border" aria-hidden="true" />}
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono uppercase text-xs tracking-[0.15em] text-muted">{label}</span>
-                    <span className="text-base text-foreground font-medium">{value}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* Pausa visual: la pregunta prepara la revelación. */}
+          <motion.div {...heroItem(0.45)} className="mt-16">
+            <p className="text-base sm:text-lg italic text-muted leading-relaxed max-w-[520px]">
+              {question}
+            </p>
+          </motion.div>
+
+          {/* El momento: el arquetipo es la revelación. */}
+          <motion.div {...heroItem(0.8)} className="mt-16 sm:mt-20">
+            <h1 className="font-display text-[clamp(3rem,11vw,8rem)] tracking-tight text-foreground leading-[0.9] uppercase">
+              {archetypeName}
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl italic text-foreground/75 leading-relaxed max-w-[520px]">
+              {essence}
+            </p>
+          </motion.div>
+
+          <motion.div {...heroItem(1.1)} className="mt-10">
+            <p className="text-sm sm:text-base text-muted tracking-wide">
+              {display.name} de {chineseElement} · Camino de Vida {lifePath}
+            </p>
+          </motion.div>
+
+          <motion.div {...heroItem(1.3)} className="mt-10">
+            <button
+              type="button"
+              onClick={() => onEnter?.("identity")}
+              className="font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors"
+            >
+              Comenzar la lectura →
+            </button>
           </motion.div>
         </div>
       </header>
 
-      {/* ═══════════════════ SECCIONES ═══════════════════ */}
-      <div className="mx-auto max-w-8xl px-5 sm:px-8 lg:px-12 pb-24">
-        {/* Identidad — protagonista */}
-        <motion.div {...fade} transition={{ delay: 0.05, duration: 0.3 }}>
-          <button
-            type="button"
-            onClick={() => onEnter?.("identity")}
-            disabled={!onEnter}
-            className="group w-full text-left border-t border-border py-8 lg:py-10 transition-colors hover:bg-ink/[0.02]"
-          >
-            <div className="flex items-start justify-between gap-6">
-              <div className="max-w-2xl">
-                <p className="label-micro mb-3">01 · Tu Identidad</p>
-                <h2 className="font-display uppercase text-[clamp(1.75rem,4vw,3rem)] leading-[0.95] tracking-tight text-foreground group-hover:text-accent transition-colors">
-                  Tu arquetipo es {archetype.name}
-                </h2>
-                <p className="mt-3 text-sm sm:text-base text-muted max-w-xl">
-                  Camino de Vida {lifePath} — {archetype.keywords.slice(0, 3).join(", ").toLowerCase()}.
-                </p>
-              </div>
-              <span className="hidden sm:inline-flex mt-2 font-mono text-xs uppercase tracking-[0.15em] text-accent group-hover:translate-x-1 transition-transform">
-                Explorar →
-              </span>
-            </div>
-          </button>
-        </motion.div>
+      {/* ═══════════════════════════════════════════════
+          CAPÍTULO 01 · TU IDENTIDAD
+          ═══════════════════════════════════════════════ */}
+      <motion.div {...chapterReveal}>
+        <MapaIdentity profile={profile} onNavigate={onEnter} />
+      </motion.div>
 
-        {/* Mundo + Círculo — par secundario.
-            Orden alineado con ProfileTabs y GUIDED_CTA en ProfileClient.tsx:
-            Identidad → Mundo → Círculo → Inteligencia. Antes este hub numeraba
-            Círculo antes que Mundo (02/03), al revés que el tab bar y el CTA
-            guiado — dos rutas distintas para "seguir" que discrepaban. */}
-        <div className="grid grid-cols-1 md:grid-cols-2 border-t border-border">
-          <motion.div {...fade} transition={{ delay: 0.1, duration: 0.3 }}>
+      {/* ═══════════════════════════════════════════════
+          CAPÍTULO 02 · TU MUNDO
+          ═══════════════════════════════════════════════ */}
+      <motion.div {...chapterReveal}>
+        <MapaMundo profile={profile} worldCount={worldCount} onNavigate={onEnter} />
+      </motion.div>
+
+      {/* ═══════════════════════════════════════════════
+          CAPÍTULO 03 · TU CÍRCULO
+          ═══════════════════════════════════════════════ */}
+      <motion.div {...chapterReveal}>
+        <MapaCirculo profile={profile} allies={allies} onNavigate={onEnter} />
+      </motion.div>
+
+      {/* ═══════════════════════════════════════════════
+          CAPÍTULO 04 · TU INTELIGENCIA
+          Evolución natural del mapa — no un muro.
+          ═══════════════════════════════════════════════ */}
+      <section className="py-24 sm:py-32">
+        <div className="mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12">
+          <motion.div {...chapterReveal}>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-10">
+              04
+            </p>
+            <h2 className="font-display text-[clamp(2rem,6vw,4rem)] uppercase tracking-tight text-foreground leading-[0.95] max-w-[650px]">
+              La lectura profunda
+            </h2>
+            <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed max-w-[600px]">
+              Hasta ahora viste las piezas. Aquí aparece la conversación
+              entre ellas — tu identidad, tus ciclos y tus patrones
+              vistos como un solo sistema.
+            </p>
             <button
               type="button"
-              onClick={() => onEnter?.("world")}
-              disabled={!onEnter}
-              className="group w-full text-left md:border-r border-border py-8 lg:py-10 md:pr-8 transition-colors hover:bg-ink/[0.02]"
+              onClick={() => onEnter?.("intelligence")}
+              className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">02 · Tu Mundo</p>
-              <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
-                {worldCount} entidades resuenan con vos
-              </h3>
-              <p className="mt-2 text-sm text-muted">Marcas, historias y referentes que conectan.</p>
-            </button>
-          </motion.div>
-
-          <motion.div {...fade} transition={{ delay: 0.15, duration: 0.3 }}>
-            <button
-              type="button"
-              onClick={() => onEnter?.("circle")}
-              disabled={!onEnter}
-              className="group w-full text-left py-8 lg:py-10 md:pl-8 transition-colors hover:bg-ink/[0.02]"
-            >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-2">03 · Tu Círculo</p>
-              <h3 className="font-display text-xl sm:text-2xl uppercase tracking-tight text-foreground leading-tight group-hover:text-accent transition-colors">
-                {allies.length > 0 ? `Tus aliados: ${allies.join(" y ")}` : "Quién te rodea"}
-              </h3>
-              <p className="mt-2 text-sm text-muted">Armonía y tensión dentro del ciclo chino.</p>
+              Continuar la lectura →
             </button>
           </motion.div>
         </div>
-
-        {/* Inteligencia — cierre premium */}
-        <motion.div {...fade} transition={{ delay: 0.2, duration: 0.3 }}>
-          <button
-            type="button"
-            onClick={() => onEnter?.("intelligence")}
-            disabled={!onEnter}
-            className="group w-full text-left border-t border-border py-8 lg:py-10 transition-colors hover:bg-ink/[0.02]"
-          >
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-2 mb-3">
-                <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted">04 · Tu Inteligencia</p>
-                <Badge variant="accent">Premium</Badge>
-              </div>
-              <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-foreground leading-[0.95] group-hover:text-accent transition-colors">
-                Tu momento: {dailyEnergy.theme}
-              </h3>
-              <p className="mt-3 text-sm sm:text-base text-muted">
-                Tu síntesis completa + chat contextual con Molino. Contenido Premium.
-              </p>
-            </div>
-          </button>
-        </motion.div>
-
-        {/* Próximo descubrimiento */}
-        {topRec && (
-          <motion.div {...fade} transition={{ delay: 0.25, duration: 0.3 }}>
-            <Link
-              href={`/affinity/${topRec.entity.type}/${topRec.entity.id}`}
-              className="group block border-t border-border py-8"
-            >
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-2">Tu próximo descubrimiento</p>
-              <p className="text-base sm:text-lg text-foreground group-hover:text-accent transition-colors max-w-2xl">
-                {topRec.entity.name} resuena especialmente con tu energía de {display.name}.
-              </p>
-            </Link>
-          </motion.div>
-        )}
-      </div>
+      </section>
     </div>
   );
 }

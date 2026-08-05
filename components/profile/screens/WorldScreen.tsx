@@ -74,7 +74,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             </p>
             {resonanceStats.total > 0 && (
               <p className="text-sm text-accent mt-5">
-                De las {resonanceStats.total} entidades que Molino conoce, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
+                De las {resonanceStats.total} conexiones que Molino conoce, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
               </p>
             )}
           </motion.div>
@@ -225,7 +225,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           >
             <div>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Ver el mapa completo de afinidades</p>
-              <p className="text-sm text-muted mt-1">Todas las entidades, no solo tus mejores matches.</p>
+              <p className="text-sm text-muted mt-1">Todas las conexiones, no solo tus mejores matches.</p>
             </div>
             <span className="text-accent shrink-0" aria-hidden="true">→</span>
           </motion.button>
