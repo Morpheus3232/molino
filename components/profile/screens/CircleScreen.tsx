@@ -7,7 +7,8 @@ import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { getRelationshipMap, getRelation, type Animal, type AnimalRelation } from "@/lib/data/animalRelations";
-import { getFamousByAnimal, getFamousBySign, type FamousPerson } from "@/lib/data/famousPeople";
+import { getFamousByAnimal, type FamousPerson } from "@/lib/data/famousPeople";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import { smoothReveal } from "@/lib/utils/premiumMotion";
 import EditorialSection from "@/components/ui/EditorialSection";
 import ZodiacMark from "@/components/ui/ZodiacMark";
@@ -40,27 +41,39 @@ interface CircleScreenProps {
 
 export default function CircleScreen({ profile, onNavigate }: CircleScreenProps) {
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
-  const userSunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
   const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
+  const userCountry = useUserContext().country;
 
   const display = getZodiacDisplay(userAnimal);
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  const allies: AnimalRelation[] = relationMap.friends;
+  const allies: AnimalRelation[] = useMemo(
+    () => relationMap.friends.filter((f) => f.type === "triad"),
+    [relationMap.friends]
+  );
   const tensions: AnimalRelation[] = relationMap.challenging;
   const allySlots = useMemo(() => arcSlots(allies.length, 0, allies.length > 1 ? 110 : 0), [allies.length]);
   const tensionSlots = useMemo(() => arcSlots(tensions.length, 180, tensions.length > 1 ? 70 : 0), [tensions.length]);
 
-  // Famous people of same animal (different years)
+  // Famous people of same animal (different years) — ordenados por
+  // relevancia cultural: país del usuario primero, luego edad cercana,
+  // luego afinidad zodiacal. El animal no cambia (solo el orden).
   const sameAnimalFamous = useMemo(
     () => getFamousByAnimal(userAnimal, userYear),
     [userAnimal, userYear]
   );
-
-  // Famous people of same Western sign (different years)
-  const sameSignFamous = useMemo(
-    () => getFamousBySign(userSunSign, userYear),
-    [userSunSign, userYear]
-  );
+  const rankedFamous = useMemo(() => {
+    const country = userCountry;
+    const ageTolerance = 10;
+    return [...sameAnimalFamous].sort((a, b) => {
+      const aSame = a.country === country ? 1 : 0;
+      const bSame = b.country === country ? 1 : 0;
+      if (aSame !== bSame) return bSame - aSame;
+      const aAge = Math.abs(a.year - userYear) <= ageTolerance ? 1 : 0;
+      const bAge = Math.abs(b.year - userYear) <= ageTolerance ? 1 : 0;
+      if (aAge !== bAge) return bAge - aAge;
+      return 0;
+    });
+  }, [sameAnimalFamous, userCountry, userYear]);
 
   return (
     <div
@@ -81,12 +94,12 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               QUE TE RODEAN.
             </h1>
             <p className="text-base lg:text-lg text-muted mt-8 max-w-xl leading-relaxed">
-              Aliados, opuestos y personas que comparten tu energía de{" "}
-              <span className="font-medium text-foreground">{display.name}</span>.
+              Algunas energías amplifican tu camino.
+              Otras muestran dónde aparece la tensión.
             </p>
-            {(sameAnimalFamous.length + sameSignFamous.length) > 0 && (
+            {(sameAnimalFamous.length) > 0 && (
               <p className="text-sm text-accent mt-5">
-                Molino encontró {sameAnimalFamous.length + sameSignFamous.length} figuras históricas que comparten tu {display.name.toLowerCase()} o tu {userSunSign.toLowerCase()} — tu círculo real, no una lista al azar.
+                Encontramos {sameAnimalFamous.length} figuras históricas que comparten tu {display.name.toLowerCase()} — tu círculo real, no una lista al azar.
               </p>
             )}
           </motion.div>
@@ -95,7 +108,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
 
       {/* ═══════════════════════════════════════════════
           TU RED ZODIACAL — composición radial, no grid de cards.
-          Vos en el centro; aliados arriba (armonía); tensión abajo
+          Vos en el centro; aliados arriba; tensión abajo
           (oposición). La relación se ve en la posición, no hay que leer
           un párrafo para entenderla.
           ═══════════════════════════════════════════════ */}
@@ -129,7 +142,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           </svg>
 
           <div className="absolute" style={{ left: "50%", top: "50%", transform: "translate(-50%,-50%)" }}>
-            <ZodiacMark animal={userAnimal} color="var(--color-accent)" size="md" showLabel={false} />
+            <ZodiacMark animal={userAnimal} color="var(--color-accent)" size="md" showLabel={false} hidePosition />
             <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-accent-light text-center mt-2">Vos</p>
           </div>
 
@@ -139,7 +152,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               className="absolute"
               style={{ left: `${allySlots[i].x}%`, top: `${allySlots[i].y}%`, transform: "translate(-50%,-50%)" }}
             >
-              <ZodiacMark animal={rel.animal} color="var(--color-accent-light)" size="sm" showLabel={true} />
+              <ZodiacMark animal={rel.animal} color="var(--color-accent-light)" size="sm" showLabel={true} hidePosition />
               <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-accent-light/60 text-center mt-1.5">
                 {rel.label}
               </p>
@@ -152,7 +165,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               className="absolute"
               style={{ left: `${tensionSlots[i].x}%`, top: `${tensionSlots[i].y}%`, transform: "translate(-50%,-50%)" }}
             >
-              <ZodiacMark animal={rel.animal} color="var(--color-paper)" size="sm" showLabel={true} />
+              <ZodiacMark animal={rel.animal} color="var(--color-paper)" size="sm" showLabel={true} hidePosition />
               <p className="font-mono text-[8px] uppercase tracking-[0.15em] text-paper/40 text-center mt-1.5">
                 {rel.label}
               </p>
@@ -161,7 +174,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
         </div>
 
         <p className="text-xs text-paper/50 italic text-center max-w-sm mx-auto">
-          Armonía y tensión según la tradición del zodíaco chino — no son predicciones.
+          Tensión según la tradición del zodíaco chino — no son predicciones.
         </p>
       </EditorialSection>
 
@@ -170,32 +183,13 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
           ═══════════════════════════════════════════════ */}
       {sameAnimalFamous.length > 0 && (
         <EditorialSection
-          eyebrow="GENTE COMO VOS"
-          title={<>FAMOSOS<br />{display.name.toUpperCase()}.</>}
+          eyebrow="EN EL MISMO CICLO"
+          title={<>OTROS {display.name.toUpperCase()}<br />EN LA HISTORIA.</>}
           intro="Personas nacidas en el mismo animal zodiacal chino, aunque sean de otros años."
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-8">
-            {sameAnimalFamous.slice(0, 6).map((person, i) => (
+            {rankedFamous.slice(0, 6).map((person, i) => (
               <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} />
-            ))}
-          </div>
-        </EditorialSection>
-      )}
-
-      {/* ═══════════════════════════════════════════════
-          CÍRCULO OCCIDENTAL — azul full-bleed
-          ═══════════════════════════════════════════════ */}
-      {sameSignFamous.length > 0 && (
-        <EditorialSection
-          tone="accent"
-          eyebrow="CÍRCULO OCCIDENTAL"
-          title={<>MISMO SIGNO,<br />{userSunSign.toUpperCase()}.</>}
-          intro="Personas del mismo signo zodiacal occidental."
-          texture="wave"
-        >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-8">
-            {sameSignFamous.slice(0, 6).map((person, i) => (
-              <FamousPersonCard key={person.name} person={person} index={i} userAnimal={userAnimal} inverse />
             ))}
           </div>
         </EditorialSection>
@@ -245,8 +239,8 @@ function FamousPersonCard({
       transition={{ delay: index * 0.04, duration: 0.3 }}
       className={
         inverse
-          ? "p-4 rounded-md border border-paper/20 bg-paper/[0.06]"
-          : "p-4 rounded-md border border-border bg-card shadow-sm"
+          ? "p-4 border border-paper/20 bg-paper/[0.06]"
+          : "p-4 border border-ink/10 bg-transparent hover:bg-ink/[0.02] transition-colors"
       }
     >
       <div className="flex items-start gap-3">
@@ -256,7 +250,7 @@ function FamousPersonCard({
             {person.name}
           </p>
           <div className="flex flex-wrap items-center gap-2 mt-1">
-            <ZodiacMark animal={person.animal} color={inverse ? "var(--color-paper)" : "var(--color-accent)"} size="sm" showLabel={false} />
+            <ZodiacMark animal={person.animal} color={inverse ? "var(--color-paper)" : "var(--color-accent)"} size="sm" showLabel={false} hidePosition />
             <p className={`text-xs ${inverse ? "text-paper/70" : "text-muted"}`}>{person.animal} · {person.year}</p>
           </div>
           <div className="flex items-center gap-2 mt-1">

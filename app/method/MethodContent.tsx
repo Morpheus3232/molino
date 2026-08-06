@@ -1,5 +1,3 @@
-"use client";
-
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";

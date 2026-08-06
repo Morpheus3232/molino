@@ -58,7 +58,7 @@ export default async function AnimalPage({ params }: Props) {
   return (
     <>
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
-      <AnimalContent />
+      <AnimalContent animal={animal} />
     </>
   );
 }

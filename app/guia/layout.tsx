@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Guía — Inteligencia Personal",
+    default: "Guía — Molino",
     template: "%s | Guía | Molino",
   },
   description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",

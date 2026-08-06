@@ -14,7 +14,7 @@ const SYSTEMS = [
     title: "Numerología",
     subtitle: "El lenguaje de los números",
     description:
-      "Cada número tiene un significado. Tu Camino de Vida, Expresión, Alma y Personalidad revelan capas diferentes de quién sos.",
+      "Cada número tiene un significado. Tu Camino de Vida y tus números derivados se cruzan con el resto de tu mapa para componer quién sos.",
     href: "/conocimiento/numerologia",
   },
   {
@@ -22,7 +22,7 @@ const SYSTEMS = [
     title: "Astrología",
     subtitle: "Los astros y tu energía",
     description:
-      "Tu signo solar y su elemento revelan cómo te mostrás al mundo y qué te mueve.",
+      "Tu signo solar y su elemento muestran cómo te mostrás al mundo y qué te mueve.",
     href: "/conocimiento/astrologia",
   },
   {
@@ -30,13 +30,13 @@ const SYSTEMS = [
     title: "Zodiaco Chino",
     subtitle: "El ciclo de 12 animales",
     description:
-      "Un sistema de 12 animales y 5 elementos que se repite cada 60 años. Tu animal y elemento definen tu estilo.",
+      "Un sistema de 12 animales y 5 elementos que se repite cada 60 años. Tu animal y elemento describen tu estilo.",
     href: "/conocimiento/zodiaco-chino",
   },
 ];
 
 const CONCEPTS = [
-  { title: "Arquetipos", description: "Los 9 arquetipos numerológicos y lo que revelan sobre tu energía natural.", href: "/conocimiento/numerologia" },
+  { title: "Arquetipos", description: "Los 9 arquetipos numerológicos y lo que describen sobre tu energía natural.", href: "/conocimiento/numerologia" },
   { title: "Elementos", description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental.", href: "/conocimiento/astrologia" },
   { title: "Ciclos", description: "Tu año, mes y día personal. Cómo cambia tu energía a lo largo del tiempo.", href: "/profile#moment" },
   { title: "Compatibilidad", description: "Cómo conectás con personas, lugares, marcas y conceptos a través de tus sistemas.", href: "/compatibility/argentina" },
@@ -77,7 +77,7 @@ export default function ExplorePage() {
             El universo de tu conocimiento
           </h1>
           <p className="mt-6 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
-            Molino combina múltiples sistemas simbólicos para construir tu mapa personal.
+            Tu mapa combina múltiples sistemas simbólicos para construir tu perfil.
             Explorá cada sistema para entender cómo funciona.
           </p>
         </motion.section>
@@ -90,16 +90,18 @@ export default function ExplorePage() {
           </div>
           <div className="flex flex-wrap border-t border-ink/10">
             {SYSTEMS.map((system, i) => (
-              <motion.button
+              <motion.div
                 key={system.id}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
-                onClick={() => router.push(system.href)}
-                className={`w-full md:w-1/3 flex flex-col ${i < 2 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder} group`}
+                className={`w-full md:w-1/3 flex flex-col ${i < 2 ? `md:border-r ${colBorder}` : ""} border-b ${colBorder}`}
               >
-                <div className={`flex-1 ${cellPad}`}>
+                <Link
+                  href={system.href}
+                  className={`flex-1 ${cellPad} group block`}
+                >
                   <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-2">{system.subtitle}</p>
                   <p className="font-display text-lg sm:text-xl text-foreground group-hover:text-accent transition-colors mb-3">
                     {system.title}
@@ -108,8 +110,8 @@ export default function ExplorePage() {
                   <p className="text-xs text-accent mt-4 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                     Explorar →
                     </p>
-                  </div>
-              </motion.button>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </motion.section>
@@ -204,14 +206,14 @@ export default function ExplorePage() {
             <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Afinidad Simbólica</p>
           </div>
           <p className="text-sm text-muted mb-6 max-w-lg leading-relaxed">
-            Descubrí qué entidades reales resuenan con vos. Países, marcas, universidades y más.
+            Mirá qué entidades resuenan con tu patrón. Países, marcas, universidades y más.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/affinity"
               className="inline-flex items-center justify-center gap-2 font-semibold px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent/90 transition-colors min-h-[44px]"
             >
-              Explorar afinidades
+              Ver resonancias
             </Link>
             <Link
               href="/compatibility/countries"

@@ -1,0 +1,446 @@
+{
+  "content": "🐎\n\nEL COMUNICADOR · CABALLO\n\nTU ENERGÍA DE HOY\n\nAlta\n\nArmonía\n\nUn día para cuidar de quienes te rodean. El equilibrio es la clave.\n\nVER MI DÍA COMPLETO\n→\n\nRECORRIDO\n\nCINCO PASOS\nHACIA ADENTRO.\n\nDe tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones.\n\n01\nDESCUBRÍ\n\nCreá tu mapa con tu fecha de nacimiento. Sin registro, al instante.\n\nEMPEZÁ AHORA\n→\n02\nENTENDÉ\n\nConocé tu mapa de numerología, zodíaco y astrología en un solo lugar.\n\nARMÁ TU MAPA\n→\n03\nEXPLORÁ\n\nDescubrí patrones, ciclos y sincronías ocultas en tu perfil.\n\nMIRÁ TUS PATRONES\n→\n04\nCONECTÁ\n\nCompará tu perfil con países, ciudades y marcas que resuenan con vos.\n\nCOMPARÁ AFINIDADES\n→\n05\nREFLEXIONÁ\n\nTomá perspectiva con tu lectura completa de todos los sistemas.\n\nLEÉ MÁS\n→\n\nLA BIBLIOTECA\n\nEL LENGUAJE\nDETRÁS DE TU MAPA.\n\nConceptos clave, explicados en profundidad.\n\nFUNDAMENTAL\n\nARQUETIPOS\n\nLos patrones universales que moldean tu personalidad\n\nEXPLORAR\n→\n\nFUNDAMENTAL\n\nELEMENTOS\n\nLas energías primarias que componen tu naturaleza\n\nEXPLORAR\n→\n\nTEMPORAL\n\nCICLOS\n\nLos ritmos temporales que guían tu año personal\n\nEXPLORAR\n→\n\nAVANZADO\n\nNÚMEROS MAESTROS\n\nLas frecuencias elevadas de tu mapa numérico\n\nEXPLORAR\n→\n\nRELACIONAL\n\nCOMPATIBILIDAD\n\nCómo interactúan tus patrones con otros\n\nEXPLORAR\n→\n\nDINÁMICO\n\nMOMENTUM\n\nLa energía disponible en tu ciclo actual\n\nEXPLORAR\n→\nVER TODA LA BIBLIOTECA\n→",
+  "metrics": {
+    "buttons": [
+      {
+        "text": "Saltar al contenido principal",
+        "w": 218,
+        "h": 38,
+        "solid": true,
+        "bg": "rgb(243, 241, 234)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Hoy",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Afinidad",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Timing",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Decisiones",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Evolución",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Biblioteca",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Filosofía",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Mi mapa",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Crear nuevo perfil",
+        "w": 343,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "VER MI MAPA",
+        "w": 279,
+        "h": 67,
+        "solid": true,
+        "bg": "rgb(124, 140, 255)"
+      },
+      {
+        "text": "NÚMERO DEL DÍA3La ExpresiónComunicá tu verdad",
+        "w": 343,
+        "h": 153,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Tu energía de hoyAltaArmoníaUn día para cuida",
+        "w": 311,
+        "h": 521,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "01DESCUBRÍCreá tu mapa con tu fecha de nacimi",
+        "w": 311,
+        "h": 268,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "02ENTENDÉConocé tu mapa de numerología, zodía",
+        "w": 311,
+        "h": 298,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "03EXPLORÁDescubrí patrones, ciclos y sincroní",
+        "w": 311,
+        "h": 268,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "04CONECTÁCompará tu perfil con países, ciudad",
+        "w": 311,
+        "h": 298,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "05REFLEXIONÁTomá perspectiva con tu lectura c",
+        "w": 311,
+        "h": 268,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "FUNDAMENTALARQUETIPOSLos patrones universales",
+        "w": 343,
+        "h": 343,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "FUNDAMENTALELEMENTOSLas energías primarias qu",
+        "w": 343,
+        "h": 343,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TEMPORALCICLOSLos ritmos temporales que guían",
+        "w": 343,
+        "h": 307,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "AVANZADONÚMEROS MAESTROSLas frecuencias eleva",
+        "w": 343,
+        "h": 337,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "RELACIONALCOMPATIBILIDADCómo interactúan tus ",
+        "w": 343,
+        "h": 307,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "DINÁMICOMOMENTUMLa energía disponible en tu c",
+        "w": 343,
+        "h": 307,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 20,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "VER TODA LA BIBLIOTECA→",
+        "w": 306,
+        "h": 26,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "INICIO",
+        "w": 55,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI MAPA",
+        "w": 78,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "ENERGÍA DE HOY",
+        "w": 151,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TIMING",
+        "w": 65,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "AFINIDAD",
+        "w": 85,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI EVOLUCIÓN",
+        "w": 132,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "EXPLORAR",
+        "w": 95,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "BIBLIOTECA",
+        "w": 105,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "GUÍA",
+        "w": 44,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CONOCIMIENTO LIBRE",
+        "w": 198,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "PRIVACIDAD RADICAL",
+        "w": 191,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TRANSPARENCIA TOTAL",
+        "w": 214,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CÓDIGO ABIERTO",
+        "w": 154,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "SIN TRACKING",
+        "w": 128,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "emojiElements": [
+      "SPAN.text-2xl: \"🐎\""
+    ],
+    "cardLike": [
+      {
+        "cls": "border-t border-ink/10 pt-10 pb-6 flex items-center gap-3",
+        "w": 311,
+        "h": 116,
+        "border": true,
+        "bg": false,
+        "text": "🐎EL COMUNICADOR · Caballo"
+      },
+      {
+        "cls": "group grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] ga",
+        "w": 311,
+        "h": 521,
+        "border": true,
+        "bg": false,
+        "text": "Tu energía de hoyAltaArmoníaUn día para "
+      },
+      {
+        "cls": "border-t border-ink/10",
+        "w": 311,
+        "h": 1401,
+        "border": true,
+        "bg": false,
+        "text": "01DESCUBRÍCreá tu mapa con tu fecha de n"
+      },
+      {
+        "cls": "flex flex-wrap border-t border-paper/20",
+        "w": 343,
+        "h": 1947,
+        "border": true,
+        "bg": false,
+        "text": "FUNDAMENTALARQUETIPOSLos patrones univer"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "inline-flex items-center gap-2 font-mono text-xs font-semibold trackin",
+        "w": 279,
+        "h": 51,
+        "border": true,
+        "bg": false,
+        "text": "EXPLORAR→"
+      },
+      {
+        "cls": "border-t border-paper/20",
+        "w": 343,
+        "h": 107,
+        "border": true,
+        "bg": false,
+        "text": "VER TODA LA BIBLIOTECA→"
+      }
+    ],
+    "sections": [
+      {
+        "cls": "bg-background",
+        "h": 701,
+        "text": "🐎EL COMUNICADOR · CaballoTu energía de hoyAltaArm"
+      },
+      {
+        "cls": "bg-background",
+        "h": 1884,
+        "text": "RECORRIDOCINCO PASOSHACIA ADENTRO.De tu fecha de n"
+      },
+      {
+        "cls": "section-full-bleed bg-accent text-paper relative overflow-hi",
+        "h": 2541,
+        "text": "LA BIBLIOTECAEL LENGUAJEDETRÁS DE TU MAPA.Concepto"
+      }
+    ]
+  }
+}

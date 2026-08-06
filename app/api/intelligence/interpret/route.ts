@@ -9,9 +9,11 @@ import {
   type ConversationTurn,
 } from '@/lib/engines/intelligenceEngine';
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
+import { generateWithRouting, getProviderStatus } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
-import { hasPremiumAccess } from '@/lib/kv';
+import { hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
 import { recordGeneration } from '@/lib/ai/costTracking';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
 
 // "personal_profile" is the paid synthesis shown behind PremiumGate on
 // /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
@@ -37,29 +39,58 @@ interface RequestBody {
   provider?: 'openai' | 'claude';
   /** Prior Q&A turns from the current chat session only — never persisted server-side. */
   conversationHistory?: ConversationTurn[];
+  /** Device-bound premium token: proves the request comes from a paying device. */
+  premiumToken?: string;
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(rateLimitKey(ip, 'intelligence/interpret'), AI_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider = 'openai', conversationHistory } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider = 'openai', conversationHistory, premiumToken } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
     }
 
+    // Cap conversationHistory: max 8 turns, max 500 chars per turn.
+    // Prevents token-inflation attacks from oversized client payloads.
+    const MAX_HISTORY_TURNS = 8;
+    const MAX_TURN_CHARS = 500;
+    const safeHistory: ConversationTurn[] = Array.isArray(conversationHistory)
+      ? conversationHistory.slice(-MAX_HISTORY_TURNS).map((t) => ({
+          question: String(t.question || '').slice(0, MAX_TURN_CHARS),
+          answer: String(t.answer || '').slice(0, MAX_TURN_CHARS),
+        }))
+      : [];
+
     if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
+      // Device-bound token verification: prevents share-URL bypass.
+      // hasPremiumAccess alone is NOT enough — it only proves the profile
+      // has been paid for, not that THIS device paid. The token lives
+      // exclusively in localStorage of the paying device and never travels
+      // in shareable URLs.
+      const profileHash = hashProfile(name || '', dob);
       let premium = false;
       try {
-        const profileHash = hashProfile(name || '', dob);
         premium = await hasPremiumAccess(profileHash);
       } catch (err) {
-        // Falta de config (MP_WEBHOOK_SECRET, KV) no debe filtrar contenido
-        // pago como un 500 genérico ni tumbar la request — falla cerrado.
         console.error('[/api/intelligence/interpret] Premium check failed:', err);
       }
       if (!premium) {
         return NextResponse.json({ error: 'Premium required' }, { status: 403 });
+      }
+
+      if (!premiumToken) {
+        return NextResponse.json({ error: 'Premium token required' }, { status: 403 });
+      }
+
+      const tokenValid = await verifyPremiumToken(profileHash, premiumToken);
+      if (!tokenValid) {
+        return NextResponse.json({ error: 'Invalid premium token' }, { status: 403 });
       }
     }
 
@@ -76,10 +107,12 @@ export async function POST(req: NextRequest) {
 
     let aiResult: MolinoInterpretation | null = null;
     let aiError: string | null = null;
+    let providerUsed: 'openai' | 'claude' = 'openai';
+    let fallbackUsed = false;
     const generationStartedAt = Date.now();
 
     try {
-      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory });
+      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory });
 
       const compatResult = compatibility || {
         user: profile,
@@ -91,13 +124,19 @@ export async function POST(req: NextRequest) {
         insight: '',
       };
 
-      const aiResponse = provider === 'claude'
-        ? await generateWithClaude(profile, entity || { name: 'Análisis' }, compatResult, prompt)
-        : await generateWithOpenAI(profile, entity || { name: 'Análisis' }, compatResult, prompt);
+      const { interpretation: aiResponse, providerUsed: usedProvider, fallbackUsed: usedFallback } = await generateWithRouting(
+        profile,
+        entity || { name: 'Análisis' },
+        compatResult,
+        prompt,
+        provider
+      );
+      providerUsed = usedProvider;
+      fallbackUsed = usedFallback;
 
       await recordGeneration({
         type,
-        provider,
+        provider: providerUsed,
         model: aiResponse.model || 'unknown',
         usage: aiResponse.usage,
         durationMs: Date.now() - generationStartedAt,

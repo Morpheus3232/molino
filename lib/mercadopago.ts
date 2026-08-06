@@ -16,7 +16,7 @@ const PRODUCT_CURRENCY_ARS = 'ARS';
 const PRODUCT_ID = 'molino_premium';
 
 export function getMpClient(): MercadoPagoConfig {
-  const accessToken = process.env.MP_ACCESS_TOKEN || getRequiredEnv('MP_ACCESS_TOKEN');
+  const accessToken = getRequiredEnv('MP_ACCESS_TOKEN');
   return new MercadoPagoConfig({ accessToken });
 }
 
@@ -33,7 +33,7 @@ export function isTestCredentials(): boolean {
 }
 
 export function getWebhookSecret(): string {
-  return process.env.MP_WEBHOOK_SECRET || getRequiredEnv('MP_WEBHOOK_SECRET');
+  return getRequiredEnv('MP_WEBHOOK_SECRET');
 }
 
 export function normalizeName(name: string): string {
@@ -59,7 +59,12 @@ export function requireSecrets(): void {
   getRequiredEnv('MP_WEBHOOK_SECRET');
 }
 
-export async function createPreference(profileHash: string, name: string, currencyId = 'USD') {
+export async function createPreference(
+  profileHash: string,
+  name: string,
+  currencyId = 'USD',
+  externalReference?: string,
+) {
   const preference = new Preference(getMpClient());
 
   const price = currencyId === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
@@ -78,12 +83,13 @@ export async function createPreference(profileHash: string, name: string, curren
   const response = await preference.create({
     body: {
       items: [item],
+      external_reference: externalReference || profileHash,
       back_urls: {
         success: `${baseUrl}/profile?payment_status=approved`,
         failure: `${baseUrl}/profile?payment_status=failed`,
         pending: `${baseUrl}/profile?payment_status=pending`,
       },
-      auto_return: 'approved',
+      // auto_return: 'approved', // Temporarily disabled for localhost testing
       notification_url: `${baseUrl}/api/mp/webhook`,
       metadata: {
         profile_hash: profileHash,

@@ -82,7 +82,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-xl px-4 sm:px-6 py-16 sm:py-24" id="main-content">
+      <main className="mx-auto max-w-xl px-4 sm:px-8 lg:px-12 py-16 sm:py-24" id="main-content">
         {step === "date" ? (
           <>
             {/* Header */}

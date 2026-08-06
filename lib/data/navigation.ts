@@ -47,7 +47,6 @@ export const footerColumns: FooterColumn[] = [
       { href: "/evolution", label: "MI EVOLUCIÓN" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },
-      { href: "/guia", label: "GUÍA" },
     ],
   },
   {
@@ -58,6 +57,13 @@ export const footerColumns: FooterColumn[] = [
       { href: "/filosofia#transparencia-total", label: "TRANSPARENCIA TOTAL" },
       { href: "/filosofia#codigo-abierto", label: "CÓDIGO ABIERTO" },
       { href: "/filosofia#sin-tracking", label: "SIN TRACKING" },
+    ],
+  },
+  {
+    title: "LEGAL",
+    links: [
+      { href: "/privacidad", label: "PRIVACIDAD" },
+      { href: "/terminos", label: "TÉRMINOS" },
     ],
   },
 ];

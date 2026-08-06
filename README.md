@@ -7,19 +7,19 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC)](https://tailwindcss.com/)
-[![No Tracking](https://img.shields.io/badge/No%20Tracking-✓-brightgreen.svg)](https://github.com/Morpheus3232/molino)
+[![No Tracking](https://img.shields.io/badge/Sin%20Tracking%20Invasivo-✓-brightgreen.svg)](https://github.com/Morpheus3232/molino)
 
 ## Filosofía
 
-Molino es una plataforma educativa de código abierto que explora sistemas simbólicos (numerología pitagórica, astrología tropical, zodíaco chino/ciclo sexagenario) con total transparencia y privacidad. Sin registro, sin cookies, sin tracking.
+Molino es una plataforma educativa de código abierto que explora sistemas simbólicos (numerología pitagórica, astrología tropical, zodíaco chino/ciclo sexagenario) con total transparencia y privacidad. Sin registro, sin cookies, sin tracking invasivo.
 
 ### Principios
 
 - 📚 **Conocimiento libre**: Todo el contenido se basa en fuentes públicas.
-- 🔒 **Privacidad radical**: No persistimos datos. Todo se procesa en memoria de sesión.
+- 🔒 **Privacidad radical**: No persistimos datos en servidores. Tu perfil se procesa localmente y vive en tu navegador (localStorage).
 - 🔍 **Transparencia total**: Cada cálculo está explicado con sus fórmulas y fuentes.
 - 💻 **Código abierto**: Todo el código está disponible en GitHub (licencia MIT).
-- 🚫 **Sin tracking**: Sin analytics, sin píxeles, sin fingerprinting.
+- 🚫 **Sin tracking invasivo**: Sin píxeles, sin fingerprinting, sin cookies de rastreo. Solo métricas de uso agregadas y anónimas.
 
 ## Tecnologías
 

@@ -194,7 +194,7 @@ export default function TimingPage() {
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                             <ReadingNumber
                               value={result.timingScore}
-                              label="Puntuación de timing"
+                              label={`Momento para ${selectedIntention ? INTENTION_LABELS[selectedIntention].toLowerCase() : "tu intención"}`}
                               color={elementColor}
                               context={getScoreLabel(result.timingScore)}
                               size="xl"

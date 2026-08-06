@@ -1,29 +1,18 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 
-export default function NumeroContent() {
-  const router = useRouter();
-  const params = useParams();
-  const [copied, setCopied] = useState(false);
-  const numId = params.numero as string;
-  const num = NUMBERS.find(n => n.number === parseInt(numId));
-
+export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] | null | undefined }) {
   if (!num) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-heading text-4xl font-semibold text-foreground">Número no encontrado</h1>
-          <p className="text-muted mt-4">El número {numId} no existe en la base de numerología de Molino.</p>
-          <button onClick={() => router.push("/conocimiento/numerologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Numerología</button>
+          <p className="text-muted mt-4">El número no existe en la base de numerología de Molino.</p>
+          <Link href="/conocimiento/numerologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Numerología</Link>
         </main>
         <UniversityFooter />
       </div>
@@ -157,14 +146,14 @@ export default function NumeroContent() {
         {/* Navegación entre números */}
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
-            <button onClick={() => router.push(`/conocimiento/numerologia/numero-${prev.number}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/numerologia/numero-${prev.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               &larr; Número {prev.number} — {prev.title}
-            </button>
+            </Link>
           ) : <div />}
           {next ? (
-            <button onClick={() => router.push(`/conocimiento/numerologia/numero-${next.number}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/numerologia/numero-${next.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               {next.number} — {next.title} &rarr;
-            </button>
+            </Link>
           ) : <div />}
         </motion.section>
 

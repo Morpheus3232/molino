@@ -34,7 +34,6 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const lifePath = safeNumber(profile.lifePath, 1);
   const name = typeof profile.name === "string" ? profile.name : "";
   const birthDate = typeof profile.birthDate === "string" ? profile.birthDate : "";
-  const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const chineseElement = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
   const archetype = ARCHETYPES[lifePath];
@@ -79,14 +78,12 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
   const zodiacDisplay = getZodiacDisplay(chineseZodiac);
   const userYear = parseInt(birthDate?.split("-")[0] || "0", 10);
 
-  // Famous people sharing the user's energy
+  // Famous people sharing the user's Chinese zodiac animal
   const famousByAnimal = useMemo(() => getFamousByAnimal(chineseZodiac, userYear), [chineseZodiac, userYear]);
   const matchingFamous = useMemo(() => {
-    const both = famousByAnimal.filter(p => p.westernSign === sunSign);
-    if (both.length > 0) return both[0];
     if (famousByAnimal.length > 0) return famousByAnimal[0];
     return null;
-  }, [famousByAnimal, sunSign]);
+  }, [famousByAnimal]);
 
   // Format date: "1990-03-15" → "15 de marzo de 1990"
   const MONTH_NAMES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
@@ -120,18 +117,12 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
     </div>
   ) : null;
 
-  // TU CÓDIGO — "Expresión"/"Alma" solo existen si hay nombre (se calculan
-  // letra por letra); "Personalidad" siempre existe porque sale del día de
-  // nacimiento. El onboarding actual no pide nombre, así que Expresión/Alma
-  // no aplican para casi nadie — se ocultan en vez de mostrar un "—" que
-  // aparenta un dato roto (ver KnowledgeConnections más abajo).
-  const allCodeRows: { label: string; number: number | null; name: string; meaning?: string }[] = [
-    { label: "Expresión", number: profile.expressionNumber ?? null, name: personalCode?.expression?.name || "" },
-    { label: "Alma", number: profile.soulNumber ?? null, name: personalCode?.soul?.name || "" },
-    { label: "Personalidad", number: profile.personalityNumber ?? null, name: personalCode?.personality?.name || "", meaning: personalCode?.personality?.meaning },
-  ];
-  const codeRows = allCodeRows.filter(row => row.number);
-  const hiddenNameDerivedRows = !profile.name && allCodeRows.some(row => !row.number && row.label !== "Personalidad");
+  // Personalidad siempre existe (se calcula del día de nacimiento).
+  // Expresión y Alma requieren nombre completo — no se muestran en el
+  // mapa principal porque el onboarding no lo solicita.
+  const personalityRow = profile.personalityNumber
+    ? { label: "Personalidad", number: profile.personalityNumber, name: personalCode?.personality?.name || "", meaning: personalCode?.personality?.meaning }
+    : null;
 
   return (
     <div
@@ -180,7 +171,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             transition={{ duration: 0.25 }}
             className="flex items-center gap-3 mt-6"
           >
-            <ZodiacMark animal={chineseZodiac} color="var(--color-accent)" size="sm" showLabel={false} />
+            <ZodiacMark animal={chineseZodiac} color="var(--color-accent)" size="sm" showLabel={false} hidePosition />
             <p className="label-micro text-muted">
               {zodiacDisplay.name.toUpperCase()} · {chineseElement.toUpperCase()}
             </p>
@@ -233,7 +224,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
                 transition={{ duration: 0.25 }}
                 className="mt-14 font-mono text-xs uppercase tracking-[0.2em] text-muted"
               >
-                Compartís energía con {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
+                Una figura asociada al mismo signo chino: {matchingFamous.name} — {matchingFamous.field} · {matchingFamous.country}
               </motion.p>
             )}
 
@@ -246,7 +237,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           ═══════════════════════════════════════════════ */}
       <EditorialSection
         eyebrow="TU CÓDIGO PERSONAL"
-        title={<>LOS NÚMEROS<br />QUE TE DEFINEN.</>}
+        title={<>LOS PATRONES<br />QUE TE COMPONEN.</>}
       >
         <div className="pt-4">
           {/* Camino de Vida — protagonista */}
@@ -272,7 +263,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
             </div>
           </motion.div>
 
-          {/* Número de la Suerte — derivado de la fecha, no del nombre */}
+          {/* Número complementario — derivado de la fecha, no del nombre */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -282,7 +273,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
           >
             <div className="flex items-baseline justify-between gap-4 py-5">
               <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
-                Número de la Suerte
+                Número complementario
               </span>
               <div className="flex items-baseline gap-3">
                 {luckyNumber ? (
@@ -296,36 +287,30 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               </div>
             </div>
             {luckyProof && (
-              <CalculationProof label="Número de la Suerte" data={luckyProof} className="pb-6" />
+              <CalculationProof label="Número complementario" data={luckyProof} className="pb-6" />
             )}
           </motion.div>
 
-          {/* Expresión · Alma · Personalidad — solo filas con dato real */}
-          {codeRows.map((row, i) => (
+          {/* Personalidad — se calcula del día de nacimiento */}
+          {personalityRow && (
             <motion.div
-              key={row.label}
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: 0.05 * (i + 1), duration: 0.4 }}
+              transition={{ delay: 0.05, duration: 0.4 }}
               className="py-5 border-b border-ink/10 last:border-b-0"
             >
               <div className="flex items-baseline justify-between gap-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{row.label}</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{personalityRow.label}</span>
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl text-foreground">{row.number}</span>
-                  <span className="text-xs text-muted">{row.name}</span>
+                  <span className="font-display text-2xl text-foreground">{personalityRow.number}</span>
+                  <span className="text-xs text-muted">{personalityRow.name}</span>
                 </div>
               </div>
-              {row.meaning && (
-                <p className="text-xs text-muted mt-2">{row.meaning}</p>
+              {personalityRow.meaning && (
+                <p className="text-xs text-muted mt-2">{personalityRow.meaning}</p>
               )}
             </motion.div>
-          ))}
-          {hiddenNameDerivedRows && (
-            <p className="text-xs text-muted pt-4">
-              Expresión y Alma se calculan a partir de las letras de tu nombre — como Molino no lo pidió al empezar, no aparecen acá.
-            </p>
           )}
         </div>
       </EditorialSection>

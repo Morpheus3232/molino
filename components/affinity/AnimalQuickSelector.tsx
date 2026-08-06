@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { motion } from "framer-motion";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";

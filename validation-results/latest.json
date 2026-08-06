@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-08-06T10:13:46.699Z",
+  "provider": "openai",
+  "goldResults": [],
+  "antiAdnResults": [],
+  "incompleteResults": [],
+  "genericReplacementResults": [],
+  "silenceResults": [],
+  "executiveSummary": {
+    "overallScore": 0.2,
+    "publicationRate": 0,
+    "silenceRate": 0,
+    "goldPassRate": 0,
+    "antiAdnRejectionRate": 0,
+    "genericReplacementFalsePositiveRate": 0,
+    "incompleteInputSafetyRate": 0
+  },
+  "topFailures": [
+    "No API key set (OPENAI_API_KEY / ANTHROPIC_API_KEY) — AI-dependent suites were skipped; only the fixture/evaluator scaffolding ran."
+  ],
+  "baselineDiagnosis": [
+    "Run again with an API key set to produce a real baseline diagnosis."
+  ]
+}

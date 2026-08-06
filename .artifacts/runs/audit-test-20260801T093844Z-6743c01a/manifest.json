@@ -1,0 +1,28 @@
+{
+  "workflowId": "audit-test-20260801T093844Z-6743c01a",
+  "sessionId": "shared-session",
+  "task": "audit-finding-race",
+  "owner": "audit-test",
+  "agent": null,
+  "stage": "DISCOVER",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01T09:38:44.685Z",
+  "updatedAt": "2026-08-01T09:38:44.825Z",
+  "pid": 60781,
+  "artifactRoot": ".artifacts/runs/audit-test-20260801T093844Z-6743c01a",
+  "transitions": [
+    {
+      "ts": "2026-08-01T09:38:44.685Z",
+      "stage": "DISCOVER",
+      "actor": "audit-test",
+      "action": "run created"
+    },
+    {
+      "ts": "2026-08-01T09:38:44.825Z",
+      "stage": "qa",
+      "actor": "audit-test",
+      "agent": null,
+      "action": "wrote race.md"
+    }
+  ]
+}

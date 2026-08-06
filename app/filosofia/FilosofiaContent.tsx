@@ -22,7 +22,7 @@ const principles = [
   {
     id: "privacidad-radical",
     title: "Privacidad radical",
-    description: "Tu fecha de nacimiento es el único dato que usamos, y nunca sale de tu navegador: se guarda localmente en tu dispositivo (para que tu mapa siga ahí la próxima vez que entrás) y nunca en un servidor. No hay base de datos con tu perfil, no hay cookies de tracking.",
+    description: "Tu fecha de nacimiento es el único dato que usamos para calcular tu mapa. Se guarda localmente en tu dispositivo (para que tu mapa siga ahí la próxima vez que entrás) y no se almacena en ningún servidor de Molino en forma directa: solo un identificador anónimo derivado de ella se usa para verificar el acceso a la capa Premium. No hay base de datos con tu perfil, no hay cookies de tracking.",
   },
   {
     id: "transparencia-total",

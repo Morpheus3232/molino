@@ -21,6 +21,7 @@ import type { ProfileTab } from "@/components/profile/ProfileTabs";
 import { analyzeTiming, type TimingIntention } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/engines/intelligenceEngine";
 import { buildPatterns, buildTensions, buildRules, buildMomentState } from "@/lib/engines/synthesisEngine";
 
 const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), { ssr: false });
@@ -66,6 +67,9 @@ function BackmatterHeader({ title }: { title: string }) {
 export default function IntelligenceScreen({ profile }: IntelligenceScreenProps) {
   const prefersReducedMotion = useSafeReducedMotion();
   const [expandedDimension, setExpandedDimension] = useState<string | null>(null);
+  // Lectura Premium resuelta por MolinoInterpretation — se eleva aquí para
+  // alimentar el export sin re-generar (sin coste extra de IA).
+  const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretationType | null>(null);
 
   const lifePath = safeNumber(profile.lifePath, 1);
   const name = typeof profile.name === "string" ? profile.name : "";
@@ -132,7 +136,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
             <span className="block w-10 h-0.5 mb-5" style={{ backgroundColor: elementColor }} aria-hidden="true" />
-            <p className="label-micro mb-3">Tu Inteligencia</p>
+            <p className="label-micro mb-3">Tu lectura</p>
             <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
               La conversación entre tus sistemas
             </h1>
@@ -199,7 +203,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
       </section>
 
       {/* 02 · CUANDO TUS SISTEMAS SE ENCUENTRAN — el diferencial real de
-          Molino: no un dato nuevo, sino que dos o más sistemas ya calculados
+          // Unidad: no un dato nuevo, sino que dos o más sistemas ya calculados
           apuntan a la misma conclusión. Usa pattern.sources (qué sistemas
           alimentaron cada patrón), no una relación inventada. */}
       {patterns.some((p) => p.sources.length > 1) && (
@@ -379,7 +383,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           <PremiumGate
             name={name}
             birthDate={birthDate}
-            preview={{ lifePath, chineseZodiac, pattern: patterns.find((p) => p.label === "Tu motor") ?? null }}
+            preview={{ lifePath, chineseZodiac, pattern: patterns[0] ?? null }}
           >
             <MolinoInterpretation
               profile={profile}
@@ -388,6 +392,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
               timing={timing ?? undefined}
               label="Tu síntesis"
               description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
+              onInterpretationReady={setAiInterpretation}
             />
           </PremiumGate>
         </div>
@@ -403,10 +408,10 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
       <section className="py-20 sm:py-28">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...chapterReveal}>
-            <ChapterHeader number="08" title="Preguntale a tu Molino" elementColor={elementColor} />
+            <ChapterHeader number="08" title="Preguntale a tu mapa" elementColor={elementColor} />
           </motion.div>
           <p className="text-sm text-muted mb-8 max-w-xl">
-            Una pregunta concreta sobre tu momento, tu perfil o una decisión — respondida solo con lo que Molino ya calculó sobre vos.
+            Una pregunta concreta sobre tu momento, tu perfil o una decisión — respondida solo con lo que tu mapa ya calculó sobre vos.
           </p>
           <ChatWithMolino profile={profile} />
         </div>
@@ -513,7 +518,15 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
           <motion.div {...chapterReveal}>
             <BackmatterHeader title="Compartir" />
           </motion.div>
-          <ShareableImageCard profile={profile} currentTab="intelligence" />
+          <ShareableImageCard
+            profile={profile}
+            currentTab="intelligence"
+            interpretation={aiInterpretation}
+            patterns={patterns}
+            tensions={tensions}
+            momentState={momentState}
+            dailyEnergy={dailyEnergy}
+          />
         </div>
       </section>
     </div>

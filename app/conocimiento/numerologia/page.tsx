@@ -43,7 +43,7 @@ const jsonLd = [
       {
         "@type": "Question",
         name: "¿Qué es la numerología?",
-        acceptedAnswer: { "@type": "Answer", text: "La numerología es un sistema simbólico que estudia la relación entre los números y los eventos de la vida. Se basa en la idea de que los números tienen un significado vibracional que puede revelar aspectos de la personalidad y el destino de una persona." },
+        acceptedAnswer: { "@type": "Answer", text: "La numerología es un sistema simbólico que estudia la relación entre los números y los eventos de la vida. Se basa en la idea de que los números tienen un significado vibracional que puede ofrecer una perspectiva simbólica sobre la personalidad y los ciclos de vida." },
       },
       {
         "@type": "Question",

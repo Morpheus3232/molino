@@ -1,0 +1,216 @@
+{
+  "content": "MAPA PERSONAL DE AUTOCONOCIMIENTO\n\n¿CUÁNDO NACISTE?\n\nSolo tu fecha. Sin registro, sin cookies, sin datos personales extra.\n\n/\n/\nDÍA\n/\nMES\n/\nAÑO\nCONTINUAR",
+  "metrics": {
+    "buttons": [
+      {
+        "text": "Saltar al contenido principal",
+        "w": 218,
+        "h": 38,
+        "solid": true,
+        "bg": "rgb(243, 241, 234)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Hoy",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Afinidad",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Timing",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Decisiones",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Evolución",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Biblioteca",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Filosofía",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Mi mapa",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Crear nuevo perfil",
+        "w": 343,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Continuar",
+        "w": 221,
+        "h": 67,
+        "solid": true,
+        "bg": "rgb(124, 140, 255)"
+      },
+      {
+        "text": "INICIO",
+        "w": 55,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI MAPA",
+        "w": 78,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "ENERGÍA DE HOY",
+        "w": 151,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TIMING",
+        "w": 65,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "AFINIDAD",
+        "w": 85,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI EVOLUCIÓN",
+        "w": 132,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "EXPLORAR",
+        "w": 95,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "BIBLIOTECA",
+        "w": 105,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "GUÍA",
+        "w": 44,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CONOCIMIENTO LIBRE",
+        "w": 198,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "PRIVACIDAD RADICAL",
+        "w": 191,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TRANSPARENCIA TOTAL",
+        "w": 214,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CÓDIGO ABIERTO",
+        "w": 154,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "SIN TRACKING",
+        "w": 128,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "emojiElements": [],
+    "cardLike": [
+      {
+        "cls": "flex items-center gap-0 rounded-md border border-border bg-card shadow",
+        "w": 320,
+        "h": 103,
+        "border": true,
+        "bg": true,
+        "text": "//"
+      },
+      {
+        "cls": "inline-flex items-center justify-center gap-2 rounded-md font-heading ",
+        "w": 221,
+        "h": 67,
+        "border": false,
+        "bg": true,
+        "text": "Continuar"
+      }
+    ],
+    "sections": []
+  }
+}

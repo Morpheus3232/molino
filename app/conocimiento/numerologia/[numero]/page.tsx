@@ -58,7 +58,7 @@ export default async function NumeroPage({ params }: Props) {
   return (
     <>
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
-      <NumeroContent />
+      <NumeroContent num={num} />
     </>
   );
 }

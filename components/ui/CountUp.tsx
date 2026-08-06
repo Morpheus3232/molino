@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { useReducedMotion } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 
 /**
  * Animated counter — Spotify Wrapped / Apple Health style.

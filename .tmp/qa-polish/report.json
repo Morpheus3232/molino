@@ -1,0 +1,947 @@
+[
+  {
+    "route": "01-home",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 9,
+      "imgs": 12
+    }
+  },
+  {
+    "route": "02-onboarding-date",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 3,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "03-profile-hub",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "relative overflow-hidden",
+          "h": 684,
+          "w": 1440
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 6,
+      "imgs": 3
+    }
+  },
+  {
+    "route": "04-identity",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 679
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 11,
+      "imgs": 8
+    }
+  },
+  {
+    "route": "05-world",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 679
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 25,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "06-circle",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 679
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 7,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "07-hoy",
+    "vp": "desktop-1440",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 1440,
+      "clientW": 1440,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 900,
+          "w": 1440
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "hidden md:flex items-center gap-6",
+          "h": 26,
+          "w": 156
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 317,
+          "w": 1440
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 1344
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 2,
+      "imgs": 3
+    }
+  },
+  {
+    "route": "01-home",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 9,
+      "imgs": 12
+    }
+  },
+  {
+    "route": "02-onboarding-date",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 3,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "03-profile-hub",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "relative overflow-hidden",
+          "h": 641,
+          "w": 375
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 6,
+      "imgs": 3
+    }
+  },
+  {
+    "route": "04-identity",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 306
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 11,
+      "imgs": 8
+    }
+  },
+  {
+    "route": "05-world",
+    "vp": "mobile-375",
+    "issues": [
+      "OUT_OF_VIEW: SPAN.text-xs uppercase tracking-[0.1em] R=380 \"Complementarios\" | SPAN.text-xs uppercase tracking-[0.1em] R=392 \"Complementarios\" | SPAN.text-xs uppercase tracking-[0.1em] R=392 \"Complementarios\""
+    ],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 306
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [
+        "SPAN.text-xs uppercase tracking-[0.1em] R=380 \"Complementarios\"",
+        "SPAN.text-xs uppercase tracking-[0.1em] R=392 \"Complementarios\"",
+        "SPAN.text-xs uppercase tracking-[0.1em] R=392 \"Complementarios\""
+      ],
+      "buttons": 25,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "06-circle",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 306
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 7,
+      "imgs": 7
+    }
+  },
+  {
+    "route": "07-hoy",
+    "vp": "mobile-375",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 375,
+      "clientW": 375,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 812,
+          "w": 375
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 375
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 343
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 3,
+      "imgs": 3
+    }
+  },
+  {
+    "route": "01-home",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 9,
+      "imgs": 12
+    }
+  },
+  {
+    "route": "02-onboarding-date",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 3,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "03-profile-hub",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "relative overflow-hidden",
+          "h": 641,
+          "w": 390
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 6,
+      "imgs": 3
+    }
+  },
+  {
+    "route": "04-identity",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 321
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 11,
+      "imgs": 8
+    }
+  },
+  {
+    "route": "05-world",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 321
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 25,
+      "imgs": 4
+    }
+  },
+  {
+    "route": "06-circle",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        },
+        {
+          "tag": "div",
+          "cls": "sticky top-0 z-30 bg-background border-b border-ink/10",
+          "h": 58,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "flex gap-0 overflow-x-auto scrollbar-hide",
+          "h": 57,
+          "w": 321
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 7,
+      "imgs": 7
+    }
+  },
+  {
+    "route": "07-hoy",
+    "vp": "mobile-390",
+    "issues": [],
+    "metrics": {
+      "overflow": false,
+      "scrollW": 390,
+      "clientW": 390,
+      "fixed": [
+        {
+          "tag": "div",
+          "cls": "fixed inset-0 -z-10 opacity-[0.08] pointer-events-none",
+          "h": 844,
+          "w": 390
+        },
+        {
+          "tag": "header",
+          "cls": "fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 bor",
+          "h": 66,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-6 grid grid-cols-1 sm:grid-cols-3 gap",
+          "h": 627,
+          "w": 390
+        },
+        {
+          "tag": "nav",
+          "cls": "flex items-center gap-2 text-xs text-muted mb-6",
+          "h": 26,
+          "w": 358
+        }
+      ],
+      "clips": [],
+      "headings": [],
+      "outOfView": [],
+      "buttons": 3,
+      "imgs": 3
+    }
+  }
+]

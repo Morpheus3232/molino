@@ -1,0 +1,283 @@
+{
+  "content": "Inicio\n›\nMi mapa\nMI MAPA PERSONAL\n7\n\nCABALLO\n\nVALENTINA\n\nTu mapa: arquetipo El Comunicador, Camino de Vida 3, Caballo de Metal.\n\nELEMENTO\nMetal\nSIGNO\nTauro\nCAMINO\n3\n\n01 · TU IDENTIDAD\n\nTU ARQUETIPO ES EL COMUNICADOR\n\nCamino de Vida 3 — creativo, expresivo, optimista.\n\n02 · TU MUNDO\n\n27 ENTIDADES RESUENAN CON VOS\n\nMarcas, historias y referentes que conectan.\n\n03 · TU CÍRCULO\n\nTUS ALIADOS: TIGRE Y PERRO\n\nArmonía y tensión dentro del ciclo chino.\n\n04 · TU INTELIGENCIA\n\nTU MOMENTO: ARMONÍA\n\nTu síntesis completa: qué significa todo esto cuando se conecta. Premium.\n\nTU PRÓXIMO DESCUBRIMIENTO\n\nSpaceX resuena especialmente con tu energía de Caballo.",
+  "metrics": {
+    "buttons": [
+      {
+        "text": "Saltar al contenido principal",
+        "w": 218,
+        "h": 38,
+        "solid": true,
+        "bg": "rgb(243, 241, 234)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Hoy",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Afinidad",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Timing",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Decisiones",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Evolución",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Biblioteca",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Filosofía",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Mi mapa",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Crear nuevo perfil",
+        "w": 343,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Inicio",
+        "w": 40,
+        "h": 26,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "01 · Tu IdentidadTu arquetipo es EL COMUNICAD",
+        "w": 335,
+        "h": 220,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "02 · Tu Mundo27 entidades resuenan con vosMar",
+        "w": 335,
+        "h": 301,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "03 · Tu CírculoTus aliados: Tigre y PerroArmo",
+        "w": 335,
+        "h": 256,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "04 · Tu InteligenciaTu momento: ArmoníaTu sín",
+        "w": 335,
+        "h": 265,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Tu próximo descubrimientoSpaceX resuena espec",
+        "w": 335,
+        "h": 198,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "INICIO",
+        "w": 55,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI MAPA",
+        "w": 78,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "ENERGÍA DE HOY",
+        "w": 151,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TIMING",
+        "w": 65,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "AFINIDAD",
+        "w": 85,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI EVOLUCIÓN",
+        "w": 132,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "EXPLORAR",
+        "w": 95,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "BIBLIOTECA",
+        "w": 105,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "GUÍA",
+        "w": 44,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CONOCIMIENTO LIBRE",
+        "w": 198,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "PRIVACIDAD RADICAL",
+        "w": 191,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TRANSPARENCIA TOTAL",
+        "w": 214,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CÓDIGO ABIERTO",
+        "w": 154,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "SIN TRACKING",
+        "w": 128,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "emojiElements": [],
+    "cardLike": [
+      {
+        "cls": "absolute inset-0 scale-[2.4] blur-3xl opacity-[0.16] rounded-full",
+        "w": 307,
+        "h": 399,
+        "border": false,
+        "bg": true,
+        "text": ""
+      },
+      {
+        "cls": "relative rounded-full flex items-center justify-center shrink-0",
+        "w": 128,
+        "h": 128,
+        "border": true,
+        "bg": false,
+        "text": "7"
+      },
+      {
+        "cls": "group w-full text-left border-t border-border py-8 lg:py-10 transition",
+        "w": 335,
+        "h": 220,
+        "border": true,
+        "bg": false,
+        "text": "01 · Tu IdentidadTu arquetipo es EL COMU"
+      },
+      {
+        "cls": "grid grid-cols-1 md:grid-cols-2 border-t border-border",
+        "w": 335,
+        "h": 558,
+        "border": true,
+        "bg": false,
+        "text": "02 · Tu Mundo27 entidades resuenan con v"
+      },
+      {
+        "cls": "group w-full text-left border-t border-border py-8 lg:py-10 transition",
+        "w": 335,
+        "h": 265,
+        "border": true,
+        "bg": false,
+        "text": "04 · Tu InteligenciaTu momento: ArmoníaT"
+      },
+      {
+        "cls": "group block border-t border-border py-8",
+        "w": 335,
+        "h": 198,
+        "border": true,
+        "bg": false,
+        "text": "Tu próximo descubrimientoSpaceX resuena "
+      }
+    ],
+    "sections": []
+  }
+}

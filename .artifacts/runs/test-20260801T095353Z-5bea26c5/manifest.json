@@ -1,0 +1,27 @@
+{
+  "workflowId": "test-20260801T095353Z-5bea26c5",
+  "sessionId": "session-B",
+  "task": "hardening-test-run-B",
+  "owner": "test",
+  "agent": null,
+  "stage": "CLOSED",
+  "status": "CLOSED",
+  "createdAt": "2026-08-01T09:53:53.068Z",
+  "updatedAt": "2026-08-01T09:53:53.281Z",
+  "pid": 61212,
+  "artifactRoot": ".artifacts/runs/test-20260801T095353Z-5bea26c5",
+  "transitions": [
+    {
+      "ts": "2026-08-01T09:53:53.068Z",
+      "stage": "DISCOVER",
+      "actor": "test",
+      "action": "run created"
+    },
+    {
+      "ts": "2026-08-01T09:53:53.281Z",
+      "stage": "CLOSED",
+      "actor": "test",
+      "action": "run closed"
+    }
+  ]
+}

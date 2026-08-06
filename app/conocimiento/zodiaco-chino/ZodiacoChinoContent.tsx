@@ -1,16 +1,10 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { CHINESE_ANIMALS, CHINESE_ELEMENTS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
+import Reveal from "@/components/ui/Reveal";
 
 export default function ZodiacoChinoContent() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
@@ -22,22 +16,22 @@ export default function ZodiacoChinoContent() {
           <span className="text-foreground font-medium" aria-current="page">Zod&#237;aco Chino</span>
         </nav>
 
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
+        <Reveal tag="section" className="mb-16 sm:mb-20">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Zod&#237;aco Chino</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             Los 12 animales, los 5 elementos y el ciclo de 60 a&#241;os.
           </h2>
-        </motion.section>
+        </Reveal>
 
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
+        <Reveal tag="section" delay={0.05} className="mb-12">
           <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{CHINESE_ZODIAC_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Historia */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.1} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y origen</h2>
@@ -59,30 +53,30 @@ export default function ZodiacoChinoContent() {
               </p>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Los 12 animales */}
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.15} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los 12 animales</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {CHINESE_ANIMALS.map((animal, i) => (
-              <motion.button key={animal.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`)} className="text-left p-4 border border-ink/10 hover:border-accent transition-colors group">
+            {CHINESE_ANIMALS.map((animal) => (
+              <Link key={animal.name} href={`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`} className="text-left p-4 border border-ink/10 hover:border-accent transition-colors group">
                 <p className="text-2xl mb-1">{animal.emoji}</p>
                 <h3 className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors">{animal.name}</h3>
                  <p className="text-xs text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
                    {animal.traits.slice(0, 3).join(", ")}
                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
                  </p>
-              </motion.button>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Los 5 elementos */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.2} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los 5 elementos</h2>
@@ -96,10 +90,10 @@ export default function ZodiacoChinoContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Fuentes */}
-        <motion.section {...fadeUpDelayed(0.25)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.25} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes</h2>
@@ -119,10 +113,10 @@ export default function ZodiacoChinoContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Herramientas relacionadas */}
-        <motion.section {...fadeUpDelayed(0.28)} className="mb-12">
+        <Reveal tag="section" delay={0.28} className="mb-12">
           <div className="p-6 border border-accent/20">
             <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramientas relacionadas</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Conocé tu animal y compatibilidades</h3>
@@ -138,13 +132,13 @@ export default function ZodiacoChinoContent() {
               </Link>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
-        <motion.section {...fadeUpDelayed(0.3)}>
+        <Reveal tag="section" delay={0.3}>
           <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
       </main>
       <UniversityFooter />
     </div>

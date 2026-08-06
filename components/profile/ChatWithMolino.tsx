@@ -70,6 +70,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
             name: profile.name,
             question,
             conversationHistory,
+            premiumToken: (await import('@/lib/premium')).getPremiumTokenClient(),
           }),
         });
 
@@ -109,10 +110,10 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
       <div className="max-w-2xl">
         <div className="flex items-center gap-3 mb-4">
           <span className="w-8 h-px bg-accent/60" aria-hidden="true" />
-          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu Molino</p>
+          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu mapa</p>
         </div>
         <p className="text-sm text-muted leading-relaxed max-w-xl">
-          Preguntale a tu Molino forma parte de tu síntesis completa — desbloqueala arriba para acceder.
+          Preguntale a tu mapa forma parte de tu síntesis completa — desbloqueala arriba para acceder.
         </p>
       </div>
     );
@@ -134,10 +135,10 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="w-8 h-px" style={{ backgroundColor: elementColor }} aria-hidden="true" />
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu Molino</p>
+<p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu mapa</p>
           </div>
           <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-xl">
-            {name ? `Molino ya leyó tu mapa, ${name}.` : "Molino ya leyó tu mapa."} Elegí una puerta para empezar o escribí tu propia pregunta.
+            {name ? `Tu mapa ya está leído, ${name}.` : "Tu mapa ya está leído."} Elegí una puerta para empezar o escribí tu propia pregunta.
           </p>
 
           <div role="group" aria-label="Preguntas sugeridas" className="mt-6">
@@ -199,7 +200,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
                       />
                     )}
                   </span>
-                  <span className="text-xs text-muted">Molino está leyendo tu mapa…</span>
+                  <span className="text-xs text-muted">Leyendo tu mapa…</span>
                 </div>
               )}
 
@@ -245,7 +246,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
       {turns.length >= MAX_QUESTIONS_PER_SESSION ? (
         <div className="border-t border-ink/10 pt-5">
           <p className="text-xs text-muted leading-relaxed">
-            Llegaste al límite de preguntas para esta visita. Volvé a entrar más tarde para seguir consultando tu Molino.
+            Llegaste al límite de preguntas para esta visita. Volvé a entrar más tarde para seguir consultando tu mapa.
           </p>
         </div>
       ) : (
@@ -254,9 +255,9 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Preguntale algo a tu Molino…"
+            placeholder="Preguntale algo a tu mapa…"
             className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
-            aria-label="Tu pregunta para Molino"
+            aria-label="Tu pregunta para tu mapa"
           />
           <button
             type="submit"

@@ -1,44 +1,16 @@
-'use client'
+import type { ReactNode } from "react";
 
-import posthog from 'posthog-js'
-import { PostHogProvider as PHProvider, usePostHog } from 'posthog-js/react'
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect, Suspense } from 'react'
+/**
+ * Server Component wrapper. Checks NEXT_PUBLIC_POSTHOG_KEY at build
+ * time — if absent, children pass through with zero PostHog JS.
+ * When the key exists, dynamically imports the client provider so
+ * posthog-js is never part of the initial server bundle.
+ */
+export async function PostHogProvider({ children }: { children: ReactNode }) {
+  if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+    return <>{children}</>;
+  }
 
-function PostHogPageView() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const ph = usePostHog()
-
-  useEffect(() => {
-    if (pathname && ph) {
-      let url = window.location.origin + pathname
-      const search = searchParams.toString()
-      if (search) url += '?' + search
-      ph.capture('$pageview', { $current_url: url })
-    }
-  }, [pathname, searchParams, ph])
-
-  return null
-}
-
-if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
-    cookieless_mode: 'always',
-    capture_pageview: false,
-    capture_pageleave: true,
-    autocapture: false,
-  })
-}
-
-export function PostHogProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <PHProvider client={posthog}>
-      <Suspense fallback={null}>
-        <PostHogPageView />
-      </Suspense>
-      {children}
-    </PHProvider>
-  )
+  const { PostHogProviderClient } = await import("./PostHogProviderClient");
+  return <PostHogProviderClient>{children}</PostHogProviderClient>;
 }

@@ -25,7 +25,7 @@ export default function UniversityFooter() {
               MOLINO
             </p>
             <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">
-              Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+              Mapa personal de autoconocimiento. Tres sistemas, una lectura.
             </p>
           </div>
 

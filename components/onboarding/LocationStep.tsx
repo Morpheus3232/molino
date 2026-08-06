@@ -16,7 +16,7 @@ interface LocationStepProps {
 // Países con más probabilidad de ser el primer clic — mercado hispanohablante,
 // Argentina primero (donde vive la mayor parte de la base actual). El resto
 // del mundo sigue disponible completo por el buscador, no se pierde nada.
-const SUGGESTED_COUNTRIES = ["Argentina", "México", "España", "Chile", "Colombia", "Uruguay", "Perú", "Estados Unidos"];
+const SUGGESTED_COUNTRIES = ["Argentina", "México", "España", "Chile", "Colombia", "Uruguay", "Perú"];
 
 function normalize(text: string): string {
   return text
@@ -82,7 +82,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
           ¿Dónde estás ahora?
         </h1>
         <p className="text-base text-muted-foreground max-w-sm mx-auto">
-          Para adaptar Molino a tu mundo. No rastreamos tu ubicación real — elegís vos, y podés cambiarlo cuando quieras.
+          Para adaptar tu mapa a tu mundo. No rastreamos tu ubicación real — elegís vos, y podés cambiarlo cuando quieras.
         </p>
       </motion.div>
 

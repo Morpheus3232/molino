@@ -9,6 +9,7 @@ import { getTopAffinityHighlights, calculateAllAffinity, getTierForScore, TIER_M
 import { ENTITY_TYPES, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface WorldScreenProps {
@@ -19,10 +20,25 @@ interface WorldScreenProps {
 export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as string;
+  const userCountry = useUserContext().country;
+
+  // Orden de presentación: score primero (afinidad zodiacal intacta), y
+  // como tiebreaker la relevancia cultural — el país del usuario adelanta
+  // entidades de su país sin tocar ningún scoring.
+  const withCountryPreference = (results: AffinityResult[]) => {
+    const country = userCountry;
+    if (!country) return results;
+    return [...results].sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const aMatch = a.entity.country === country ? 1 : 0;
+      const bMatch = b.entity.country === country ? 1 : 0;
+      return bMatch - aMatch;
+    });
+  };
 
   const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
 
-  // Cuántas de TODAS las entidades que Molino conoce resuenan con el animal
+  // Cuántas de TODAS las entidades conocidas resuenan con el animal
   // del usuario — un hecho real y agregado (varía según el animal: cada uno
   // tiene una posición distinta en el ciclo respecto al resto de entidades),
   // no una lista más: es la cifra que abre la sección, antes de listar nada.
@@ -40,16 +56,18 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   // que usa toda la superficie /affinity/*. "Positiva" = tier afinidad-media
   // o mejor, el mismo umbral (score >= 60) que ya define getTierForScore.
   const topCountries = useMemo(
-    () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
-      .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
+    () => withCountryPreference(
+        calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
+      ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 6),
-    [profile]
+    [profile, userCountry]
   );
   const topBrands = useMemo(
-    () => calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
-      .filter(r => r.tier !== "desafiante" && r.tier !== "distante")
+    () => withCountryPreference(
+        calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
+      ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 6),
-    [profile]
+    [profile, userCountry]
   );
 
   const userDisplay = getZodiacDisplay(userAnimal);
@@ -74,7 +92,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             </p>
             {resonanceStats.total > 0 && (
               <p className="text-sm text-accent mt-5">
-                De las {resonanceStats.total} conexiones que Molino conoce, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
+                De las {resonanceStats.total} conexiones conocidas, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
               </p>
             )}
           </motion.div>
@@ -82,7 +100,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       </section>
 
       {/* ═══════════════════════════════════════════════
-          TOP HIGHLIGHTS — The 3 best matches
+          TOP HIGHLIGHTS — Lo que más resuena
           ═══════════════════════════════════════════════ */}
       {affinityHighlights.length > 0 && (
         <section className="py-6 sm:py-8">
@@ -90,7 +108,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lo que más resuena</h2>
               </div>
             </motion.div>
             <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
@@ -111,8 +129,8 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                       {result.entity.name}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: tierMeta.color }} />
-                      <span className="uppercase text-[9px] tracking-wider" style={{ color: tierMeta.color }}>
+                      <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }} />
+                      <span className="uppercase text-[9px] tracking-wider" style={{ color: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }}>
                         {tierMeta.label}
                       </span>
                     </div>
@@ -225,7 +243,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           >
             <div>
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Ver el mapa completo de afinidades</p>
-              <p className="text-sm text-muted mt-1">Todas las conexiones, no solo tus mejores matches.</p>
+              <p className="text-sm text-muted mt-1">Todas las conexiones, no solo las más altas.</p>
             </div>
             <span className="text-accent shrink-0" aria-hidden="true">→</span>
           </motion.button>

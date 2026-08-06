@@ -62,7 +62,7 @@ export default async function SignoPage({ params }: Props) {
   return (
     <>
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />}
-      <SignoContent />
+      <SignoContent sign={sign} />
     </>
   );
 }

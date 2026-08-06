@@ -7,26 +7,45 @@ import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
 import { buildShareableUrl } from "@/lib/utils/profileShare";
 import type { UserProfile } from "@/types/user";
+import type { MolinoInterpretation } from "@/lib/engines/intelligenceEngine";
+import type { PatternInsight, TensionInsight, MomentState } from "@/lib/engines/synthesisEngine";
+import type { DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 
 interface ShareableImageCardProps {
   profile: UserProfile;
   currentTab?: string;
+  /** Lectura Premium resuelta (AI o fallback). Si llega, el export se vuelve
+   * una pieza Premium editorial; si no, cae al export base de siempre. */
+  interpretation?: MolinoInterpretation | null;
+  patterns?: PatternInsight[];
+  tensions?: TensionInsight[];
+  momentState?: MomentState | null;
+  dailyEnergy?: DailyEnergyResult | null;
 }
 
 /**
  * Pieza editorial compartible.
  *
- * Un fragmento del perfil tratado como una pequeña pieza editorial
- * personalizada: marca, número protagonista, sistemas y un cierre.
- * PNG vía html-to-image + share nativo + portapapeles.
+ * Con contenido Premium (interpretation/patterns/tensions/momentState) se
+ * convierte en una síntesis Premium de la lectura: portada + síntesis +
+ * patrones + tensiones + momento. Sin ese contenido, conserva el export base
+ * de identidad. PNG vía html-to-image + share nativo + portapapeles.
  */
-export default function ShareableImageCard({ profile, currentTab = "identity" }: ShareableImageCardProps) {
+export default function ShareableImageCard({
+  profile,
+  currentTab = "identity",
+  interpretation,
+  patterns,
+  tensions,
+  momentState,
+  dailyEnergy,
+}: ShareableImageCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [generating, setGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { lifePath, sunSign, element, chineseZodiac, archetype } = profile;
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const { lifePath, chineseZodiac, archetype } = profile;
+  const elementColor = ELEMENT_COLORS[profile.chineseZodiacInfo?.element] || "var(--element-fire)";
   const chineseElement = profile.chineseZodiacInfo?.element || "";
   const archetypeData = ARCHETYPES[lifePath];
   const archetypeName = archetypeData?.name || archetype;
@@ -35,6 +54,8 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
   // arquetipo funciona como titular editorial en su lugar.
   const name = profile.name?.trim() || archetypeName || "";
   const firstName = name ? name.split(" ")[0] : archetypeName || "Tu perfil";
+
+  const hasPremiumContent = !!interpretation;
 
   const shareUrl = buildShareableUrl(profile, currentTab);
 
@@ -119,13 +140,16 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
   const muted = "#6B6560";
   const ink = "#1A1A1A";
 
+  const highlightPatterns = (patterns ?? []).slice(0, 3);
+  const highlightTensions = (tensions ?? []).slice(0, 2);
+
   return (
     <div className="space-y-4">
       {/* The visual card */}
       <div
         ref={cardRef}
         className="relative overflow-hidden"
-        style={{ maxWidth: "520px", background: "#F3EDE3" }}
+        style={{ maxWidth: "560px", background: "#F3EDE3" }}
       >
         <div className="p-9 sm:p-11">
           {/* Branding */}
@@ -147,14 +171,14 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
               </span>
             </div>
             <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: muted }}>
-              Mi perfil
+              {hasPremiumContent ? "Tu lectura" : "Mi perfil"}
             </span>
           </div>
 
           {/* Identity — sistemas en overline, nombre en display */}
           <div className="mb-9">
             <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
-              {sunSign} · {element} · {zodiacDisplay.name} de {chineseElement}
+              {zodiacDisplay.name} de {chineseElement}
             </p>
             <h2
               className="font-display uppercase leading-[0.9] tracking-tight"
@@ -192,38 +216,120 @@ export default function ShareableImageCard({ profile, currentTab = "identity" }:
             <p className="font-heading italic leading-relaxed" style={{ color: "#333333", fontSize: "17px" }}>
               {archetypeData?.quote
                 ? `\u201C${archetypeData.quote}\u201D`
-                : `Tu energía combina ${element.toLowerCase()}, intuición y visión.`
+                : `Tu energía combina ${chineseElement.toLowerCase()}, intuición y visión.`
               }
             </p>
           </div>
 
-          {/* Cierre */}
-          <div
-            className="mt-8 flex items-end justify-between pt-5"
-            style={{ borderTop: rule }}
-          >
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: elementColor }}>
-                Descubrí tu perfil
-              </p>
-              <p className="font-heading text-base font-semibold mt-1" style={{ color: ink }}>
-                molino.app
-              </p>
+          {/* ═══ CONTENIDO PREMIUM ═══ */}
+          {hasPremiumContent && (
+            <div className="mt-9 pt-9" style={{ borderTop: rule }}>
+              {/* TU LECTURA — síntesis Premium */}
+              {(interpretation.summary || interpretation.opening) && (
+                <div className="mb-9">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: elementColor }}>
+                    Tu lectura
+                  </p>
+                  <p className="font-heading text-lg leading-[1.65] font-semibold" style={{ color: ink }}>
+                    {interpretation.opening || interpretation.summary}
+                  </p>
+                  {interpretation.opening && interpretation.summary && (
+                    <p className="font-heading text-base leading-[1.7] mt-3" style={{ color: "#333333" }}>
+                      {interpretation.summary}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* PATRONES */}
+              {highlightPatterns.length > 0 && (
+                <div className="mb-9">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
+                    Tus patrones
+                  </p>
+                  <div className="space-y-3">
+                    {highlightPatterns.map((p, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="w-4 h-px shrink-0 mt-[0.65em]" style={{ backgroundColor: elementColor }} aria-hidden="true" />
+                        <p className="text-sm leading-[1.7]" style={{ color: ink }}>
+                          <span className="font-semibold">{p.label}:</span> {p.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TENSIONES */}
+              {highlightTensions.length > 0 && (
+                <div className="mb-9">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
+                    Tus tensiones
+                  </p>
+                  <div className="space-y-3">
+                    {highlightTensions.map((t, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <span className="w-4 h-px shrink-0 mt-[0.65em]" style={{ backgroundColor: muted }} aria-hidden="true" />
+                        <p className="text-sm leading-[1.7]" style={{ color: "#4A4540" }}>
+                          <span className="font-semibold">{t.title}:</span> {t.implication}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TU MOMENTO */}
+              {(momentState?.narrative || dailyEnergy?.description || interpretation.timing) && (
+                <div className="mb-9">
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
+                    Tu momento
+                  </p>
+                  <p className="font-heading italic text-base leading-[1.7]" style={{ color: "#333333" }}>
+                    &ldquo;{momentState?.narrative || dailyEnergy?.description || interpretation.timing}&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* Cierre Premium */}
+              <div
+                className="pt-8"
+                style={{ borderTop: rule }}
+              >
+                <p className="font-heading text-lg italic leading-[1.55]" style={{ color: ink }}>
+                  Tu mapa no es una respuesta. Es una forma de mirar tus patrones.
+                </p>
+              </div>
             </div>
-            <span className="font-display text-2xl leading-none" style={{ color: elementColor }} aria-hidden="true">
-              →
-            </span>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div
+          className="flex items-end justify-between"
+          style={{ borderTop: rule, padding: "20px 36px", background: "#EDE5D8" }}
+        >
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: elementColor }}>
+              {hasPremiumContent ? "Tu lectura completa" : "Descubrí tu perfil"}
+            </p>
+            <p className="font-heading text-base font-semibold mt-1" style={{ color: ink }}>
+              molino.app
+            </p>
           </div>
+          <span className="font-display text-2xl leading-none" style={{ color: elementColor }} aria-hidden="true">
+            →
+          </span>
         </div>
       </div>
 
-      {/* Action buttons */}
+      {/* Actions */}
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
           onClick={handleShare}
           disabled={generating}
-          className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm bg-ink text-background hover:opacity-85 disabled:opacity-50"
         >
           {generating ? (
             <>

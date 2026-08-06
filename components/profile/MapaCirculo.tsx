@@ -41,8 +41,8 @@ export default function MapaCirculo({ profile, allies, onNavigate }: MapaCirculo
           </h2>
 
           <p className="mt-8 text-base sm:text-lg text-muted leading-relaxed max-w-[600px]">
-            Algunas vienen a impulsarte. Otras a desafiarte. Tu mapa
-            muestra quiénes son.
+            Algunas energías amplifican tu camino.
+            Otras muestran dónde aparece la tensión.
           </p>
 
           <div className="mt-14 flex flex-col gap-8 max-w-[520px]">

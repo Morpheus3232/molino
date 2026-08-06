@@ -1,0 +1,35 @@
+{
+  "workflowId": "test-20260801T095344Z-cf66067b",
+  "sessionId": "session-A",
+  "task": "hardening-test-run-A",
+  "owner": "test",
+  "agent": null,
+  "stage": "DISCOVER",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01T09:53:44.782Z",
+  "updatedAt": "2026-08-01T09:53:44.948Z",
+  "pid": 61200,
+  "artifactRoot": ".artifacts/runs/test-20260801T095344Z-cf66067b",
+  "transitions": [
+    {
+      "ts": "2026-08-01T09:53:44.782Z",
+      "stage": "DISCOVER",
+      "actor": "test",
+      "action": "run created"
+    },
+    {
+      "ts": "2026-08-01T09:53:44.875Z",
+      "stage": "qa",
+      "actor": "test",
+      "agent": "hardening-test",
+      "action": "wrote probe.md"
+    },
+    {
+      "ts": "2026-08-01T09:53:44.948Z",
+      "stage": "qa",
+      "actor": "test",
+      "agent": null,
+      "action": "wrote once-only.md"
+    }
+  ]
+}

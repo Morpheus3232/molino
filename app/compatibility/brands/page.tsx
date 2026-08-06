@@ -135,7 +135,7 @@ export default function BrandsPage() {
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.04, duration: 0.35 }}
                         onClick={() => setExpandedItem(expandedItem === `top-${r.name}` ? null : `top-${r.name}`)}
-                        className="p-4 rounded-md border border-border bg-card shadow-sm text-center hover:border-accent/50 transition-colors group"
+                        className="p-4 border border-ink/10 bg-transparent text-center hover:border-accent/50 transition-colors group"
                       >
                         <p className="text-2xl mb-1">{r.meta.logo}</p>
                         <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>

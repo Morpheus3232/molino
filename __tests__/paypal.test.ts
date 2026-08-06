@@ -87,10 +87,15 @@ function tokenRoute() {
   };
 }
 
+let requestSeq = 0;
 function requestTo(url: string, body: unknown): NextRequest {
+  requestSeq += 1;
   return new Request(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-forwarded-for': `198.51.100.${requestSeq % 254}`,
+    },
     body: JSON.stringify(body),
   }) as unknown as NextRequest;
 }

@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useReducedMotion } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 
 interface AnimatedLayoutProps {
   children: React.ReactNode;

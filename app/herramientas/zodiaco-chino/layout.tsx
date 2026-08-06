@@ -2,18 +2,24 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Calculá tu Zodiaco Chino — Animal y Elemento",
+  title: "Zodiaco Chino",
   description:
-    "Ingresá tu fecha de nacimiento y descubrí tu animal del zodiaco chino, elemento y polaridad. Basado en el calendario lunar y las fechas reales del Año Nuevo Chino.",
+    "Calculá tu animal del zodíaco chino con tu fecha de nacimiento. Conocé los 12 animales, los 5 elementos y las compatibilidades.",
   alternates: { canonical: siteUrl("/herramientas/zodiaco-chino") },
   openGraph: {
-    title: "Zodiaco Chino — Molino",
-    description:
-      "Calculadora de zodiaco chino: tu animal, elemento y polaridad según el calendario lunar.",
     type: "website",
+    url: siteUrl("/herramientas/zodiaco-chino"),
+    title: "Calculá tu animal del Zodiaco Chino — Molino",
+    description: "Animal del zodíaco chino a partir de tu fecha de nacimiento.",
+    images: [siteUrl("/opengraph-image")],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Calculá tu animal del Zodiaco Chino — Molino",
+    description: "Animal del zodíaco chino a partir de tu fecha de nacimiento.",
   },
 };
 
-export default function ZodiacoChinoCalcLayout({ children }: { children: React.ReactNode }) {
-  return children;
+export default function ZodiacoChinoLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }

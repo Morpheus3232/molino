@@ -1,0 +1,28 @@
+{
+  "workflowId": "audit-test-20260801T093752Z-baac8be7",
+  "sessionId": "owner-A-session",
+  "task": "audit-finding-1-owner-A",
+  "owner": "audit-test",
+  "agent": null,
+  "stage": "DISCOVER",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01T09:37:52.338Z",
+  "updatedAt": "2026-08-01T09:37:52.388Z",
+  "pid": 60761,
+  "artifactRoot": ".artifacts/runs/audit-test-20260801T093752Z-baac8be7",
+  "transitions": [
+    {
+      "ts": "2026-08-01T09:37:52.338Z",
+      "stage": "DISCOVER",
+      "actor": "audit-test",
+      "action": "run created"
+    },
+    {
+      "ts": "2026-08-01T09:37:52.388Z",
+      "stage": "qa",
+      "actor": "audit-test",
+      "agent": null,
+      "action": "wrote bypass-proof.md"
+    }
+  ]
+}

@@ -21,15 +21,15 @@ function buildShareText(result: AffinityResult): string {
   const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. ${tierLabel}. ¿Cuál es la tuya? Leelo en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${tierLabel}. ¿Y vos? Leé tu afinidad en Molino ✨`;
   }
 
   if (relationship === "armonía natural") {
-    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${tierLabel}. Leé tu afinidad simbólica en Molino ✨`;
   }
 
   if (relationship === "opuestos en el ciclo") {
@@ -37,10 +37,10 @@ function buildShareText(result: AffinityResult): string {
   }
 
   if (relationship === "requiere atención") {
-    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${tierLabel}. Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${tierLabel}. Leé tu afinidad en Molino ✨`;
   }
 
-  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${tierLabel} — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${tierLabel} — ${relationship}. ¿Cuál es la tuya? Leelo en Molino ✨`;
 }
 
 /**
@@ -226,7 +226,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           {/* CTA */}
           <div className="text-center mb-4">
             <p className="text-xs text-muted">
-              Descubrí más afinidades en{" "}
+              Leé más afinidades en{" "}
               <span className="font-semibold text-foreground">Molino</span>
             </p>
           </div>
@@ -245,7 +245,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-xs text-muted">Inteligencia Personal</span>
+            <span className="text-xs text-muted">Mapa personal de autoconocimiento</span>
           </div>
         </div>
       </div>

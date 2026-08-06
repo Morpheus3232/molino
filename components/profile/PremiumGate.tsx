@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Logo from '@/components/ui/Logo';
 import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
+import { savePremiumTokenClient } from '@/lib/premium';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -26,19 +27,30 @@ interface PremiumGateProps {
   birthDate: string;
   preview?: PremiumGatePreview;
   children: React.ReactNode;
+  /** Moneda para el checkout (ARS | USD). Default: ARS */
+  currencyId?: 'ARS' | 'USD';
 }
 
 type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked' | 'pay_error' | 'verifying_redirect';
 
-const POLL_INTERVAL = 5000;
-const POLL_MAX_ATTEMPTS = 24;
-const PRICE_USD = 8;
+const POLL_SCHEDULE_MS = [5000, 10000, 20000, 30000]; // Exponential backoff: 5→10→20→30s
+const POLL_MAX_ATTEMPTS = 10;
 
-const PREMIUM_ENABLED = process.env.NEXT_PUBLIC_PREMIUM_ENABLED === 'true';
-// PayPal requiere PAYPAL_CLIENT_ID/SECRET server-side; en entornos donde no
-// están configurados, /api/paypal/create-order falla con 500. Este flag deja
-// mostrar Mercado Pago sin ofrecer un botón de pago roto.
-const PAYPAL_ENABLED = process.env.NEXT_PUBLIC_PAYPAL_ENABLED === 'true';
+interface FeatureFlags {
+  premiumEnabled: boolean;
+  paypalEnabled: boolean;
+  mercadoPagoEnabled: boolean;
+  premiumPriceUsd: number;
+}
+
+function getDefaultFlags(): FeatureFlags {
+  return {
+    premiumEnabled: true,
+    paypalEnabled: false,
+    mercadoPagoEnabled: true,
+    premiumPriceUsd: 8,
+  };
+}
 
 const blockVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -67,7 +79,7 @@ function cleanUrlParams() {
   window.history.replaceState({}, '', url.pathname + url.search);
 }
 
-export default function PremiumGate({ name, birthDate, preview, children }: PremiumGateProps) {
+export default function PremiumGate({ name, birthDate, preview, children, currencyId = 'ARS' }: PremiumGateProps) {
   const t = useDictionary();
   const [state, setState] = useState<GateState>('locked');
   // Distingue "acabo de pagar/recuperar en esta sesión" de "ya era premium al
@@ -87,8 +99,17 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutMethod, setCheckoutMethod] = useState<'mercadopago' | 'paypal' | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
+  const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
+
+  // Fetch feature flags from API (runtime-configurable, no rebuild needed)
+  useEffect(() => {
+    fetch('/api/features/flags')
+      .then(res => res.json())
+      .then(data => setFlags(data))
+      .catch(() => {}); // fallback to defaults
+  }, []);
 
   const checkServer = useCallback(async (): Promise<boolean> => {
     try {
@@ -123,6 +144,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
           if (data.verified) {
             setState('unlocked');
             setJustUnlocked(true);
+            if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
             analytics.trackPaymentApproved(paypalOrderId, 'paypal');
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
@@ -151,6 +173,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
           if (data.verified) {
             setState('unlocked');
             setJustUnlocked(true);
+            if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
           } else {
@@ -191,30 +214,39 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
     pollAttemptsRef.current = 0;
     setPollTimedOut(false);
 
-    pollRef.current = setInterval(async () => {
+    let currentTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const poll = async () => {
       pollAttemptsRef.current += 1;
 
-      if (pollAttemptsRef.current >= POLL_MAX_ATTEMPTS) {
-        if (pollRef.current) clearInterval(pollRef.current);
+      if (pollAttemptsRef.current > POLL_SCHEDULE_MS.length) {
         setPollTimedOut(true);
         return;
       }
 
       const premium = await checkServer();
       if (premium) {
-        if (pollRef.current) clearInterval(pollRef.current);
         setState('unlocked');
         setJustUnlocked(true);
         analytics.trackPremiumUnlocked();
+        return;
       }
-    }, POLL_INTERVAL);
+
+      const delay = POLL_SCHEDULE_MS[Math.min(pollAttemptsRef.current, POLL_SCHEDULE_MS.length - 1)];
+      currentTimeout = setTimeout(poll, delay);
+    };
+
+    // Start with first delay
+    currentTimeout = setTimeout(poll, POLL_SCHEDULE_MS[0]);
 
     return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
+      if (currentTimeout) clearTimeout(currentTimeout);
     };
   }, [state, checkServer]);
 
   const handleCheckout = async (method: 'mercadopago' | 'paypal') => {
+    if (checkoutLoading) return; // Prevent double-click
+
     analytics.trackCheckoutStarted('USD', method);
     setCheckoutMethod(method);
     setCheckoutLoading(true);
@@ -242,7 +274,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, birthDate, currencyId: 'ARS' }),
+        body: JSON.stringify({ name, birthDate, currencyId }),
       });
 
       if (!res.ok) {
@@ -283,6 +315,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
       if (res.ok && data.verified) {
         setState('unlocked');
         setJustUnlocked(true);
+        if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
         analytics.trackPremiumUnlocked();
       } else {
         setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
@@ -311,6 +344,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
       if (res.ok && data.valid) {
         setState('unlocked');
         setJustUnlocked(true);
+        if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
         analytics.trackPremiumUnlocked();
       } else {
         setCouponError(data.reason || 'Código inválido');
@@ -322,7 +356,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
     }
   };
 
-  if (!PREMIUM_ENABLED) {
+  if (!flags.premiumEnabled) {
     return <>{children}</>;
   }
 
@@ -407,19 +441,30 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
 
             <div className="border-t border-ink/10 pt-8 mb-10">
               <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">{t.premium.whatYouGetLabel}</p>
-              <ul className="space-y-3 text-sm text-foreground/90 leading-relaxed">
-                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Cómo convergen tus sistemas.</li>
-                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué tensiones aparecen entre ellos.</li>
-                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Qué significa tu momento actual.</li>
-                <li className="flex items-baseline gap-3"><span className="w-4 h-px bg-accent shrink-0 translate-y-[-4px]" aria-hidden="true" />Una recomendación personalizada.</li>
-              </ul>
+              <blockquote className="border-l-2 border-accent/30 pl-5 sm:pl-6 text-sm text-foreground/80 leading-relaxed italic">
+                {preview?.pattern && preview.pattern.sources.length > 1 ? (
+                  <>
+                    Tu {preview.pattern.sources.join(" y ")} comparten un tema:{" "}
+                    <span className="font-semibold not-italic">{preview.pattern.keyword}</span>.
+                    La síntesis completa explica cómo este tema se manifiesta en tu identidad,
+                    qué tensiones genera y qué hacer con eso en tu momento actual.
+                  </>
+                ) : (
+                  <>
+                    Tu numerología, astrología y zodíaco chino cuentan tres historias distintas.
+                    La síntesis completa las conecta en una sola lectura — qué significa todo esto
+                    en tu caso, no qué son por separado.
+                  </>
+                )}
+              </blockquote>
+              <p className="mt-3 text-xs text-muted/60">...y más.</p>
             </div>
 
             <div className="border-t border-ink/10 pt-10">
               <p className="label-micro mb-4 text-muted">Tu síntesis completa</p>
 
               <div className="flex items-baseline gap-2 mb-2">
-                <span className="font-display text-6xl sm:text-7xl leading-none tracking-tight text-foreground">${PRICE_USD}</span>
+                <span className="font-display text-6xl sm:text-7xl leading-none tracking-tight text-foreground">${flags.premiumPriceUsd}</span>
                 <span className="font-heading text-xl font-semibold text-foreground uppercase tracking-wider">{t.premium.priceSuffix}</span>
               </div>
 
@@ -436,7 +481,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
                 </Button>
               </div>
 
-              {PAYPAL_ENABLED && (
+              {flags.paypalEnabled && (
                 <>
                   <div className="flex items-center gap-4 my-6" aria-hidden="true">
                     <span className="h-px flex-1 bg-ink/10" />
@@ -470,6 +515,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
               ) : (
                 <div className="space-y-3 w-full sm:w-auto">
                   <p className="text-xs text-muted">Recuperar por:</p>
+                  <p className="text-xs text-muted/70 leading-relaxed">Lo encontrás en el email de confirmación de tu pago.</p>
                   <div className="flex flex-wrap gap-4">
                     <form onSubmit={e => handleRecover(e, 'mercadopago')} className="space-y-2 w-full sm:w-[220px]">
                       <label className="text-xs text-muted block">Mercado Pago ID:</label>
@@ -490,7 +536,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
                         </button>
                       </div>
                     </form>
-                    {PAYPAL_ENABLED && (
+                    {flags.paypalEnabled && (
                       <form onSubmit={e => handleRecover(e, 'paypal')} className="space-y-2 w-full sm:w-[220px]">
                         <label className="text-xs text-muted block">PayPal Order ID:</label>
                         <div className="flex gap-2">
@@ -596,7 +642,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
                       size="lg"
                       onClick={() => handleCheckout(checkoutMethod ?? 'mercadopago')}
                     >
-                      Ir a pagar ${PRICE_USD} USD
+                      Ir a pagar ${flags.premiumPriceUsd} USD
                     </Button>
                   </div>
                 )}
@@ -656,7 +702,7 @@ export default function PremiumGate({ name, birthDate, preview, children }: Prem
                   <>
                     <Logo className="w-8 h-8 text-accent mb-6" spinning />
                     <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
-                    <p className="text-sm text-muted">Esto solo toma unos segundos.</p>
+                    <p className="text-sm text-muted">Puede tardar hasta 60 segundos.</p>
                   </>
                 ) : (
                   <>

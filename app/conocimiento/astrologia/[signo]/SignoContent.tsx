@@ -1,8 +1,4 @@
-"use client";
-
-import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
@@ -12,20 +8,14 @@ function normalize(str: string) {
   return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-export default function SignoContent() {
-  const router = useRouter();
-  const params = useParams();
-  const [copied, setCopied] = useState(false);
-  const signId = params.signo as string;
-  const sign = ZODIAC_SIGNS.find(s => normalize(s.name) === normalize(signId));
-
+export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[number] | null | undefined }) {
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
           <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
-          <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrología de Molino.</p>
-          <button onClick={() => router.push("/conocimiento/astrologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</button>
+          <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
+          <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
         </main>
         <UniversityFooter />
       </div>
@@ -141,14 +131,14 @@ export default function SignoContent() {
         {/* Navegación */}
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
-            <button onClick={() => router.push(`/conocimiento/astrologia/${normalize(prev.name)}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/astrologia/${normalize(prev.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               &larr; {prev.symbol} {prev.name}
-            </button>
+            </Link>
           ) : <div />}
           {next ? (
-            <button onClick={() => router.push(`/conocimiento/astrologia/${normalize(next.name)}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/astrologia/${normalize(next.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               {next.symbol} {next.name} &rarr;
-            </button>
+            </Link>
           ) : <div />}
         </motion.section>
       </main>
