@@ -1,5 +1,6 @@
 'use client'
 
+import { PostHogProvider as PHProvider } from 'posthog-js/react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useEffect, Suspense, useState } from 'react'
 
@@ -34,14 +35,10 @@ function usePostHog() {
 
 export function PostHogProviderClient({ children }: { children: React.ReactNode }) {
   const [posthogClient, setPosthogClient] = useState<any>(null)
-  const [PHProvider, setPHProvider] = useState<any>(null)
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_POSTHOG_KEY
     if (key) {
-      import('posthog-js/react').then((mod) => {
-        setPHProvider(mod.PostHogProvider)
-      })
       import('posthog-js').then((mod) => {
         const posthog = mod.default
         posthog.init(key, {
@@ -55,10 +52,6 @@ export function PostHogProviderClient({ children }: { children: React.ReactNode 
       })
     }
   }, [])
-
-  if (!posthogClient || !PHProvider) {
-    return <>{children}</>
-  }
 
   return (
     <PHProvider client={posthogClient}>
