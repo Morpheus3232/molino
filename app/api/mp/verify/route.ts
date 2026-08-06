@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
-import { hasPremiumAccess, grantPremiumAccess } from '@/lib/kv';
+import { hasPremiumAccess, grantPremiumAccess, savePremiumToken, getProfileHashByPaymentId } from '@/lib/kv';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(rateLimitKey(ip, 'mp/verify'), PAYMENT_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const { paymentId, name, birthDate } = await req.json();
 
@@ -13,19 +18,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (name && birthDate) {
-      const profileHash = hashProfile(name, birthDate);
-      const inKv = await hasPremiumAccess(profileHash);
-      if (inKv) {
-        return NextResponse.json({
-          verified: true,
-          source: 'kv',
-          status: 'approved',
-        });
+    const calculatedHash = name && birthDate ? hashProfile(name, birthDate) : undefined;
+
+    // Fast path: the paymentId is already linked to this profile in KV.
+    // Only trust it when the requester proves ownership of the profile
+    // (same name+birthDate that produced the hash). This also prevents
+    // someone who decodes a shared profile URL from claiming access with
+    // an arbitrary paymentId.
+    if (calculatedHash) {
+      const linkedHash = await getProfileHashByPaymentId(String(paymentId).trim());
+      if (linkedHash === calculatedHash) {
+        const inKv = await hasPremiumAccess(calculatedHash);
+        if (inKv) {
+          const premiumToken = await savePremiumToken(calculatedHash);
+          return NextResponse.json({
+            verified: true,
+            source: 'kv',
+            status: 'approved',
+            premiumToken,
+          });
+        }
       }
     }
 
-    const payment = await getPaymentStatus(paymentId);
+    const payment = await getPaymentStatus(String(paymentId));
 
     const validation = validatePayment(payment);
 
@@ -39,7 +55,6 @@ export async function POST(req: NextRequest) {
     }
 
     const metadataHash = payment.metadata?.profile_hash as string | undefined;
-    const calculatedHash = name && birthDate ? hashProfile(name, birthDate) : undefined;
 
     // If both metadata hash and calculated hash exist, they must match.
     // This prevents a user from claiming another person's payment by
@@ -61,6 +76,7 @@ export async function POST(req: NextRequest) {
     }
 
     await grantPremiumAccess(targetHash, String(paymentId));
+    const premiumToken = await savePremiumToken(targetHash);
 
     return NextResponse.json({
       verified: true,
@@ -68,6 +84,7 @@ export async function POST(req: NextRequest) {
       status: payment.status,
       status_detail: payment.status_detail,
       transaction_amount: payment.transaction_amount,
+      premiumToken,
     });
   } catch (error) {
     console.error('[MP Verify] Error:', error);

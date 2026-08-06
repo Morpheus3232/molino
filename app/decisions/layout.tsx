@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Decisiones",
-  robots: { index: false },
-  alternates: { canonical: siteUrl("/decisions") },
+  description: "Registrá y revisá tus decisiones con el marco de Molino.",
+  robots: { index: false, follow: false },
 };
 
 export default function DecisionsLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return <>{children}</>;
 }

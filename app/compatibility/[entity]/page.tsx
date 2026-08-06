@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
     };
   }
 
-  const description = `Análisis profundo de compatibilidad con ${entity.name} usando numerología, astrología occidental y zodiaco chino. Molino — Inteligencia Personal.`;
+  const description = `Compatibilidad simbólica con ${entity.name}: numerología, astrología y zodíaco chino. Molino — Mapa personal de autoconocimiento.`;
 
   return {
     title: `Análisis multi-factor de ${entity.name}`,

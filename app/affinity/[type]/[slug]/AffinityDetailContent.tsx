@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { fadeUp, fadeUpDelayed, useReducedMotion } from "@/lib/utils/motion";
+import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -59,8 +60,8 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
-          <p className="sr-only" role="status" aria-label="Cargando afinidad...">
-            Cargando afinidad...
+          <p className="sr-only" role="status" aria-label="Cargando lectura...">
+            Cargando lectura...
           </p>
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
@@ -117,7 +118,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
          {/* Compartir esta afinidad — visible without scrolling */}
          {result && (
            <motion.section {...fadeUp} className="mb-12">
-             <SectionHeader title="Compartí esta afinidad" />
+             <SectionHeader title="Compartí esta resonancia" />
              <AffinityShareableCard result={result} />
            </motion.section>
          )}
@@ -211,7 +212,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-6 rounded-md border border-accent/20 bg-accent/[0.03]">
+          <div className="p-6 border border-accent/20 bg-accent/[0.03]">
             <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
@@ -231,7 +232,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {otherEvents.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Otros eventos históricos" />
-            <div className="rounded-md border border-border bg-card shadow-sm overflow-hidden">
+            <div className="border border-ink/10 bg-transparent overflow-hidden">
               <button
                 type="button"
                 onClick={() => setShowOtherEvents(!showOtherEvents)}
@@ -307,7 +308,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+          <div className="p-6 border border-ink/10 bg-transparent">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
@@ -325,7 +326,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           return (
             <motion.section {...fadeUp} className="mb-12">
               <SectionHeader title="Tu conexión" />
-              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+              <div className="p-6 border border-ink/10 bg-transparent">
                 <div className="flex items-start gap-4 mb-4">
                   <span className="text-3xl shrink-0">{entity.emoji}</span>
                   <div>
@@ -353,7 +354,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {/* Discovery loop — related entities across all types */}
         {relatedEntities.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Descubrí algo más" />
+              <SectionHeader title="Explorá más" />
             <div className="space-y-3">
               {relatedEntities.map((rel, idx) => {
                 const relTier = TIER_META[rel.tier];
@@ -363,7 +364,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     key={rel.entity.id}
                     href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                     onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                    className="block w-full text-left p-4 rounded-md border border-border bg-card shadow-sm hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -461,7 +462,7 @@ function PremiumHero({
       {/* Label */}
       <div>
         <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
-          Afinidad Personal · {meta.label}
+          Cómo resuena · {meta.label}
         </p>
       </div>
 
@@ -511,8 +512,8 @@ function PremiumHero({
       <div className="flex justify-center mb-6 text-center">
         <ReadingNumber
           value={result.score}
-          label={`Afinidad · ${meta.label}`}
-          color={tierMeta.color}
+          label={`Resonancia · ${meta.label}`}
+          color={result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)"}
           context={tierMeta.label}
           size="xl"
         />
@@ -612,7 +613,7 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-md border border-border bg-card shadow-sm overflow-hidden">
+    <div className="border border-ink/10 bg-transparent overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -770,7 +771,7 @@ function QuickAffinity({
     });
     analytics.trackAffinitySaveClicked(type, entity.id, result.score, result.tier);
     setSaved(true);
-    toast.success("Afinidad guardada ✓", {
+    toast.success("Resonancia guardada", {
       description: "Encontrala en tus conexiones personales",
       duration: 4000,
     });
@@ -807,7 +808,7 @@ function QuickAffinity({
         {/* Hero — entity info always visible */}
         <motion.section {...fadeUp} className="mb-8">
           <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
-            Afinidad Personal · {meta.label}
+            Cómo resuena · {meta.label}
           </p>
           <div className="flex items-center justify-center gap-4 mb-4">
             <span className="text-5xl">{entity.emoji}</span>
@@ -832,9 +833,9 @@ function QuickAffinity({
             >
           {/* Date input — shown when no date is saved */}
           <motion.section {...fadeUp} className="mb-12">
-            <div className="max-w-md mx-auto p-6 rounded-md border border-border bg-card shadow-sm">
+            <div className="max-w-md mx-auto p-6 border border-ink/10 bg-transparent">
               <p className="text-sm font-medium text-foreground mb-1 text-center">
-                Ingresá tu fecha de nacimiento para descubrir tu afinidad con {entity.name}
+                Ingresá tu fecha de nacimiento para ver tu resonancia con {entity.name}
               </p>
               <p className="text-xs text-muted mb-6 text-center">
                 Solo necesitamos tu fecha. No se guarda permanentemente.
@@ -892,7 +893,7 @@ function QuickAffinity({
                 onClick={handleSubmit}
                 className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
-                Descubrir mi afinidad
+                Ver mi resonancia
               </button>
             </div>
           </motion.section>
@@ -913,14 +914,14 @@ function QuickAffinity({
 
             {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+              <div className="p-6 border border-ink/10 bg-transparent">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
                     <p className="text-sm text-muted leading-relaxed">
                       {saved
-                        ? "Tu afinidad con esta entidad está guardada."
-                        : "Guardá tu afinidad para accederla después sin reingresar tu fecha."
+                        ? "Tu resonancia con esta entidad está guardada."
+                        : "Guardá tu resonancia para accederla después sin reingresar tu fecha."
                       }
                     </p>
                   </div>
@@ -937,7 +938,7 @@ function QuickAffinity({
                       onClick={handleSave}
                       className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
-                      Guardar mi afinidad
+                      Guardar mi resonancia
                     </button>
                   )}
                 </div>
@@ -968,7 +969,7 @@ function QuickAffinity({
                         key={rel.entity.id}
                         href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                         onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                        className="block w-full text-left p-4 rounded-md border border-border bg-card shadow-sm hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xl shrink-0">{rel.entity.emoji}</span>

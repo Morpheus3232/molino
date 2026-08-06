@@ -1,0 +1,816 @@
+
+============================================================
+MOBILE (375x812)
+============================================================
+
+--- home ---
+Content (first 1500 chars):
+SISTEMAS SIMBÓLICOS
+
+UNA MISMA PERSONA.
+TRES FORMAS
+DE OBSERVARLA.
+01
+
+LOS NÚMEROS
+
+NUMEROLOGÍA
+
+Tu estructura interior revelada a través de los números de tu fecha de nacimiento.
+
+LEER MÁS→
+02
+
+EL CIELO
+
+ASTROLOGÍA
+
+Tu momento de nacimiento en el mapa celeste y la posición de los astros.
+
+LEER MÁS→
+03
+
+LOS CICLOS
+
+ZODÍACO CHINO
+
+Tu energía en el tiempo, según la sabiduría ancestral de los ciclos animales.
+
+LEER MÁS→
+
+RECORRIDO
+
+CINCO PASOS
+HACIA ADENTRO.
+
+De tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones.
+
+01
+DESCUBRÍ
+
+Creá tu mapa con tu fecha de nacimiento. Sin registro, al instante.
+
+EMPEZÁ AHORA→
+02
+ENTENDÉ
+
+Conocé tu mapa de numerología, zodíaco y astrología en un solo lugar.
+
+ARMÁ TU MAPA→
+03
+EXPLORÁ
+
+Descubrí patrones, ciclos y sincronías ocultas en tu perfil.
+
+MIRÁ TUS PATRONES→
+04
+CONECTÁ
+
+Compará tu perfil con países, ciudades y marcas que resuenan con vos.
+
+COMPARÁ AFINIDADES→
+05
+REFLEXIONÁ
+
+Tomá perspectiva con tu lectura completa de todos los sistemas.
+
+LEÉ MÁS→
+
+LA BIBLIOTECA
+
+EL LENGUAJE
+DETRÁS DE TU MAPA.
+
+Conceptos clave, explicados en profundidad.
+
+FUNDAMENTAL
+
+ARQUETIPOS
+
+Los patrones universales que moldean tu personalidad
+
+EXPLORAR→
+
+FUNDAMENTAL
+
+ELEMENTOS
+
+Las energías primarias que componen tu naturaleza
+
+EXPLORAR→
+
+TEMPORAL
+
+CICLOS
+
+Los ritmos temporales que guían tu año personal
+
+EXPLORAR→
+
+AVANZADO
+
+NÚMEROS MAESTROS
+
+Las frecuencias elevadas de tu mapa numérico
+
+EXPLORAR→
+
+RELACIONAL
+
+COMPATIBILIDAD
+
+Cómo interactú
+
+Sections: 5
+Document: 375x5445
+Sticky elements: 0 
+Buttons/links: 51
+Card grids: 7 cols=3, cols=4, cols=4, cols=4, cols=4, cols=4, cols=3
+Headings: H1("CONOCETE.ENTENDETE.ORIENTATE.") fs=32px w=359, H2("UNA MISMA PERSONA.TRES FORMASDE OBSERVAR") fs=24px w=359, H3("NUMEROLOGÍA") fs=18.72px w=359, H3("ASTROLOGÍA") fs=18.72px w=359, H3("ZODÍACO CHINO") fs=18.72px w=359, H2("CINCO PASOSHACIA ADENTRO.") fs=24px w=359, H3("DESCUBRÍ") fs=18.72px w=359, H3("ENTENDÉ") fs=18.72px w=359, H3("EXPLORÁ") fs=18.72px w=359, H3("CONECTÁ") fs=18.72px w=359, H3("REFLEXIONÁ") fs=18.72px w=359, H2("EL LENGUAJEDETRÁS DE TU MAPA.") fs=24px w=359, H3("ARQUETIPOS") fs=18.72px w=359, H3("ELEMENTOS") fs=18.72px w=359, H3("CICLOS") fs=18.72px w=359, H3("NÚMEROS MAESTROS") fs=18.72px w=359, H3("COMPATIBILIDAD") fs=18.72px w=359, H3("MOMENTUM") fs=18.72px w=359
+
+--- onboarding-date ---
+Content (first 1500 chars):
+Mapa personal de autoconocimiento
+
+¿Cuándo naciste?
+
+Solo tu fecha. Sin registro, sin cookies, sin datos personales extra.
+
+//
+Día/Mes/Año
+Continuar
+
+Sections: 1
+Document: 375x1657
+Sticky elements: 0 
+Buttons/links: 29
+Card grids: 2 cols=3, cols=3
+Headings: H1("¿Cuándo naciste?") fs=32px w=359
+
+--- profile-hub ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 375x1448
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- identity ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 375x1448
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- world ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 375x1448
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- circle ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 375x1448
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- hoy ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Preparando tu día...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 375x1452
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+============================================================
+DESKTOP (1440x900)
+============================================================
+
+--- home ---
+Content (first 1500 chars):
+SISTEMAS SIMBÓLICOS
+
+UNA MISMA PERSONA.
+TRES FORMAS
+DE OBSERVARLA.
+01
+
+LOS NÚMEROS
+
+NUMEROLOGÍA
+
+Tu estructura interior revelada a través de los números de tu fecha de nacimiento.
+
+LEER MÁS→
+02
+
+EL CIELO
+
+ASTROLOGÍA
+
+Tu momento de nacimiento en el mapa celeste y la posición de los astros.
+
+LEER MÁS→
+03
+
+LOS CICLOS
+
+ZODÍACO CHINO
+
+Tu energía en el tiempo, según la sabiduría ancestral de los ciclos animales.
+
+LEER MÁS→
+
+RECORRIDO
+
+CINCO PASOS
+HACIA ADENTRO.
+
+De tu fecha de nacimiento a una lectura completa de identidad, patrones y conexiones.
+
+01
+DESCUBRÍ
+
+Creá tu mapa con tu fecha de nacimiento. Sin registro, al instante.
+
+EMPEZÁ AHORA→
+02
+ENTENDÉ
+
+Conocé tu mapa de numerología, zodíaco y astrología en un solo lugar.
+
+ARMÁ TU MAPA→
+03
+EXPLORÁ
+
+Descubrí patrones, ciclos y sincronías ocultas en tu perfil.
+
+MIRÁ TUS PATRONES→
+04
+CONECTÁ
+
+Compará tu perfil con países, ciudades y marcas que resuenan con vos.
+
+COMPARÁ AFINIDADES→
+05
+REFLEXIONÁ
+
+Tomá perspectiva con tu lectura completa de todos los sistemas.
+
+LEÉ MÁS→
+
+LA BIBLIOTECA
+
+EL LENGUAJE
+DETRÁS DE TU MAPA.
+
+Conceptos clave, explicados en profundidad.
+
+FUNDAMENTAL
+
+ARQUETIPOS
+
+Los patrones universales que moldean tu personalidad
+
+EXPLORAR→
+
+FUNDAMENTAL
+
+ELEMENTOS
+
+Las energías primarias que componen tu naturaleza
+
+EXPLORAR→
+
+TEMPORAL
+
+CICLOS
+
+Los ritmos temporales que guían tu año personal
+
+EXPLORAR→
+
+AVANZADO
+
+NÚMEROS MAESTROS
+
+Las frecuencias elevadas de tu mapa numérico
+
+EXPLORAR→
+
+RELACIONAL
+
+COMPATIBILIDAD
+
+Cómo interactú
+
+Sections: 5
+Document: 1440x9435
+Sticky elements: 0 
+Buttons/links: 51
+Card grids: 7 cols=3, cols=4, cols=4, cols=4, cols=4, cols=4, cols=3
+Headings: H1("CONOCETE.ENTENDETE.ORIENTATE.") fs=32px w=1424, H2("UNA MISMA PERSONA.TRES FORMASDE OBSERVAR") fs=24px w=1424, H3("NUMEROLOGÍA") fs=18.72px w=1424, H3("ASTROLOGÍA") fs=18.72px w=1424, H3("ZODÍACO CHINO") fs=18.72px w=1424, H2("CINCO PASOSHACIA ADENTRO.") fs=24px w=1424, H3("DESCUBRÍ") fs=18.72px w=1424, H3("ENTENDÉ") fs=18.72px w=1424, H3("EXPLORÁ") fs=18.72px w=1424, H3("CONECTÁ") fs=18.72px w=1424, H3("REFLEXIONÁ") fs=18.72px w=1424, H2("EL LENGUAJEDETRÁS DE TU MAPA.") fs=24px w=1424, H3("ARQUETIPOS") fs=18.72px w=1424, H3("ELEMENTOS") fs=18.72px w=1424, H3("CICLOS") fs=18.72px w=1424, H3("NÚMEROS MAESTROS") fs=18.72px w=1424, H3("COMPATIBILIDAD") fs=18.72px w=1424, H3("MOMENTUM") fs=18.72px w=1424
+
+--- onboarding-date ---
+Content (first 1500 chars):
+Mapa personal de autoconocimiento
+
+¿Cuándo naciste?
+
+Solo tu fecha. Sin registro, sin cookies, sin datos personales extra.
+
+//
+Día/Mes/Año
+Continuar
+
+Sections: 1
+Document: 1440x3694
+Sticky elements: 0 
+Buttons/links: 29
+Card grids: 2 cols=3, cols=3
+Headings: H1("¿Cuándo naciste?") fs=32px w=1424
+
+--- profile-hub ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 1440x3524
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- identity ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 1440x3524
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- world ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 1440x3524
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- circle ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Cargando tu mapa...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 1440x3524
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 
+
+--- hoy ---
+Content (first 1500 chars):
+Saltar al contenido principal
+HoyAfinidad
+EMPEZARDESCUBRIR MI MAPA
+
+Explorar
+
+HoyAfinidadTimingDecisionesEvolución
+
+Conocimiento
+
+BibliotecaFilosofía
+
+Mi mapa
+
+DESCUBRIR MI MAPA
+
+Preparando tu día...
+
+MOLINO
+
+Mapa Personal de Autoconocimiento. Conocéte. Entendéte. Orientáte.
+
+EXPLORAR
+INICIO
+MI MAPA
+ENERGÍA DE HOY
+TIMING
+AFINIDAD
+MI EVOLUCIÓN
+EXPLORAR
+BIBLIOTECA
+GUÍA
+PRINCIPIOS
+CONOCIMIENTO LIBRE
+PRIVACIDAD RADICAL
+TRANSPARENCIA TOTAL
+CÓDIGO ABIERTO
+SIN TRACKING
+
+MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO
+
+CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+
+Sections: 1
+Document: 1440x3528
+Sticky elements: 0 
+Buttons/links: 28
+Card grids: 2 cols=3, cols=3
+Headings: 

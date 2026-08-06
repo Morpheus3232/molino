@@ -138,6 +138,63 @@ export async function grantPremiumAccess(profileHash: string, paymentId: string)
   }
 }
 
+// ── Device-bound premium token ────────────────────────────────────
+//
+// A device-bound token prevents the share-URL premium bypass:
+// someone who decodes name+birthDate from a shared link can check
+// hasPremiumAccess(), but can NOT produce the token that lives only
+// in the paying device's localStorage.
+//
+// Flow:  grantPremiumAccess() → savePremiumToken() → token returned
+//        to client → stored in localStorage → sent with AI requests
+//        → verified server-side before serving paid content.
+
+const crypto = typeof globalThis.crypto !== 'undefined'
+  ? globalThis.crypto
+  : require('crypto').webcrypto;
+
+function generateToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Generate and store a device-bound premium token.
+ * Called after every successful grantPremiumAccess().
+ * Returns the raw token that must be delivered to the client.
+ */
+export async function savePremiumToken(profileHash: string): Promise<string> {
+  const token = generateToken();
+  try {
+    const kv = await getKvClient();
+    if (!kv) return token;
+    // 180-day TTL — re-granted on each new payment.
+    await kv.set(`premium_token:${profileHash}`, token, { ex: 180 * 86400 });
+  } catch (error) {
+    console.error('[KV] Error in savePremiumToken:', error);
+  }
+  return token;
+}
+
+/**
+ * Verify a device-bound premium token.
+ * Returns true ONLY if the token matches the one stored server-side.
+ * This prevents share-URL bypass: the token never travels in the URL.
+ */
+export async function verifyPremiumToken(profileHash: string, token: string): Promise<boolean> {
+  if (!token || !profileHash) return false;
+  try {
+    const kv = await getKvClient();
+    if (!kv) return false;
+    const stored = await kv.get<string>(`premium_token:${profileHash}`);
+    return stored === token;
+  } catch (error) {
+    console.error('[KV] Error in verifyPremiumToken:', error);
+    return false;
+  }
+}
+
 export async function getProfileHashByPaymentId(paymentId: string): Promise<string | null> {
   try {
     const kv = await getKvClient();
@@ -252,5 +309,58 @@ export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   } catch (error) {
     console.error('[KV] Error in isPaymentProcessed:', error);
     return false;
+  }
+}
+
+// ── Preference dedup (prevents double-charge from double-click) ─────
+
+const PENDING_PREFERENCE_TTL = 30 * 60; // 30 minutes
+
+export interface PendingPreference {
+  preferenceId: string;
+  checkoutUrl: string;
+  createdAt: number;
+}
+
+/**
+ * Store a newly-created preference so concurrent/repeated requests for
+ * the same checkout intent (identified by profileHash) can reuse it
+ * instead of creating a duplicate.
+ */
+export async function savePendingPreference(
+  profileHash: string,
+  preferenceId: string,
+  checkoutUrl: string,
+): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    const key = `pending_pref:${profileHash}`;
+    const data: PendingPreference = { preferenceId, checkoutUrl, createdAt: Date.now() };
+    await kv.set(key, JSON.stringify(data), { ex: PENDING_PREFERENCE_TTL });
+  } catch (error) {
+    console.error('[KV] Error in savePendingPreference:', error);
+  }
+}
+
+/**
+ * Return an existing pending preference for this profile if one was
+ * created within the last PENDING_PREFERENCE_TTL seconds, or null.
+ */
+export async function getPendingPreference(
+  profileHash: string,
+): Promise<PendingPreference | null> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return null;
+    const key = `pending_pref:${profileHash}`;
+    const raw = await kv.get<string>(key);
+    if (!raw) return null;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) as PendingPreference : raw as PendingPreference;
+    if (!parsed?.preferenceId || !parsed?.checkoutUrl) return null;
+    return parsed;
+  } catch (error) {
+    console.error('[KV] Error in getPendingPreference:', error);
+    return null;
   }
 }

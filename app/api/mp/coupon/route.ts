@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
-import { grantPremiumAccess } from '@/lib/kv';
+import { grantPremiumAccess, savePremiumToken } from '@/lib/kv';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, COUPON_RATE_LIMIT } from '@/lib/rate-limit';
 
 const COUPON_CODE = process.env.PREMIUM_COUPON;
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(rateLimitKey(ip, 'mp/coupon'), COUPON_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const { coupon, name, birthDate } = await req.json();
 
@@ -28,8 +33,9 @@ export async function POST(req: NextRequest) {
     const paymentId = `coupon_${profileHash}_${Date.now()}`;
 
     await grantPremiumAccess(profileHash, paymentId);
+    const premiumToken = await savePremiumToken(profileHash);
 
-    return NextResponse.json({ valid: true });
+    return NextResponse.json({ valid: true, premiumToken });
   } catch (error) {
     console.error('[Coupon] Error:', error);
     return NextResponse.json(

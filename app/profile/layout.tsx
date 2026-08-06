@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Mi Mapa Personal | Molino",
   description:
-    "Tu perfil de Inteligencia Personal: identidad simbólica, afinidades, círculo zodiacal y conexiones profundas. Descubrí tu mapa en Molino.",
+    "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos. Explorá tu mapa en Molino.",
   openGraph: {
     title: "Mi Mapa Personal | Molino",
     description:
-      "Tu perfil de Inteligencia Personal: identidad simbólica, afinidades y conexiones profundas.",
+      "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos.",
     type: "website",
     siteName: "Molino",
   },
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Mi Mapa Personal | Molino",
     description:
-      "Tu perfil de Inteligencia Personal: identidad simbólica, afinidades y conexiones profundas.",
+      "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos.",
   },
 };
 

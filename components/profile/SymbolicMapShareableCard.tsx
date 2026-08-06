@@ -31,7 +31,7 @@ export default function SymbolicMapShareableCard({
 
   const display = getZodiacDisplay(userAnimal);
 
-  const shareText = `Mi mapa simbólico ${year}: ${display.name}. Aliados: ${friends.map(f => formatAnimalSimple(f.animal)).join(", ")}. Según el zodíaco chino. Descubrí el tuyo en Molino.`;
+  const shareText = `Mi mapa simbólico ${year}: ${display.name}. Aliados: ${friends.map(f => formatAnimalSimple(f.animal)).join(", ")}. Según el zodíaco chino. Leé el tuyo en Molino.`;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -117,7 +117,7 @@ export default function SymbolicMapShareableCard({
                 <p className="text-xs text-muted">{yearResonance.label}</p>
               </div>
               <span className="text-xs font-medium" style={{ color: yearResonance.color }}>
-                {"★".repeat(yearResonance.type === "alignment" ? 5 : yearResonance.type === "harmony" ? 4 : yearResonance.type === "neutral" ? 3 : 2)}
+                {yearResonance.type === "alignment" ? "Alta" : yearResonance.type === "harmony" ? "Media" : yearResonance.type === "neutral" ? "Neutra" : "Baja"}
               </span>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function SymbolicMapShareableCard({
           {/* CTA */}
           <div className="text-center mb-4">
             <p className="text-xs text-muted">
-              Descubrí tu mapa en{" "}
+              Mirá tu mapa en{" "}
               <span className="font-semibold text-foreground">Molino</span>
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function SymbolicMapShareableCard({
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Inteligencia Personal</span>
+            <span className="text-[9px] text-muted">Mapa personal de autoconocimiento</span>
           </div>
         </div>
       </div>

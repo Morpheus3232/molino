@@ -1,0 +1,324 @@
+{
+  "content": "Inicio\n›\nHoy\n\nTU DÍA · LUNES, 3 DE AGOSTO\n\nAlta\n\nArmonía · Luna Gibosa Menguante\n\nUn día para cuidar de quienes te rodean. El equilibrio es la clave.\n\nVolvé mañana y vas a poder comparar cómo cambió tu energía.\n\nTU MOMENTO\n\nPARA DECIDIR HOY\n\nESPERAR\n\nPara tomar una decisión, este día presenta una energía favorable. Tu personal day (6) aporta cualidades de armonía y responsabilidad. La fase lunar gibosa menguante favorece la liberación. Tu elemento astrológico, Tierra, aporta estabilidad y prakticidad. Construí sobre bases sólidas.\n\nPensar una decisión →\n\nQUÉ HACER\n\nFAVORECE\n\nEscribí o llamá a alguien a quien cuidás. La cercanía es tu forma de avanzar.\n\nEVITÁ\n\nAutosacrificio · Control · Culpa\n\nMOMENTO\n\nEs un buen momento para tomar una decisión. Prepará bien los detalles y actuá con confianza.\n\nSEGUIR EL HILO\n\nVer cómo vino tu semana\n→\n\nHoy resuena especialmente con SpaceX.\n\n›\nInterpretación de Molino y detalle técnico",
+  "metrics": {
+    "buttons": [
+      {
+        "text": "Saltar al contenido principal",
+        "w": 218,
+        "h": 38,
+        "solid": true,
+        "bg": "rgb(243, 241, 234)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "",
+        "w": 40,
+        "h": 40,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Hoy",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Afinidad",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Timing",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Decisiones",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Evolución",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Biblioteca",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Filosofía",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Mi mapa",
+        "w": 367,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Crear nuevo perfil",
+        "w": 343,
+        "h": 45,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Inicio",
+        "w": 40,
+        "h": 26,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Pensar una decisión →",
+        "w": 195,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Ver cómo vino tu semana→",
+        "w": 343,
+        "h": 115,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "con SpaceX",
+        "w": 91,
+        "h": 20,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "Regenerar",
+        "w": 66,
+        "h": 14,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "INICIO",
+        "w": 55,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI MAPA",
+        "w": 78,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "ENERGÍA DE HOY",
+        "w": 151,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TIMING",
+        "w": 65,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "AFINIDAD",
+        "w": 85,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "MI EVOLUCIÓN",
+        "w": 132,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "EXPLORAR",
+        "w": 95,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "BIBLIOTECA",
+        "w": 105,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "GUÍA",
+        "w": 44,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CONOCIMIENTO LIBRE",
+        "w": 198,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "PRIVACIDAD RADICAL",
+        "w": 191,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "TRANSPARENCIA TOTAL",
+        "w": 214,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "CÓDIGO ABIERTO",
+        "w": 154,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "text": "SIN TRACKING",
+        "w": 128,
+        "h": 21,
+        "solid": false,
+        "bg": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "emojiElements": [],
+    "cardLike": [
+      {
+        "cls": "border-t border-ink/10 py-10 sm:py-16",
+        "w": 343,
+        "h": 580,
+        "border": true,
+        "bg": false,
+        "text": "Inicio›HoyTU DÍA · lunes, 3 de agostoAlt"
+      },
+      {
+        "cls": "border-t border-ink/10 py-10 sm:py-16",
+        "w": 343,
+        "h": 521,
+        "border": true,
+        "bg": false,
+        "text": "Tu momentoPara decidir hoyESPERARPara to"
+      },
+      {
+        "cls": "border-t border-ink/10 py-10 sm:py-16",
+        "w": 343,
+        "h": 474,
+        "border": true,
+        "bg": false,
+        "text": "Qué hacerFavoreceEscribí o llamá a algui"
+      },
+      {
+        "cls": "border-t border-ink/10 py-10 sm:py-16",
+        "w": 343,
+        "h": 371,
+        "border": true,
+        "bg": false,
+        "text": "Seguir el hiloVer cómo vino tu semana→Ho"
+      },
+      {
+        "cls": "py-4 border-t border-ink/10",
+        "w": 343,
+        "h": 122,
+        "border": true,
+        "bg": false,
+        "text": "Qué significaTu elemento Tierra interact"
+      },
+      {
+        "cls": "py-4 border-t border-ink/10",
+        "w": 343,
+        "h": 122,
+        "border": true,
+        "bg": false,
+        "text": "Por qué importaEste es un buen momento p"
+      },
+      {
+        "cls": "py-4 border-t border-ink/10",
+        "w": 343,
+        "h": 166,
+        "border": true,
+        "bg": false,
+        "text": "FortalezasEl ComunicadorElemento TierraT"
+      },
+      {
+        "cls": "py-4 border-t border-ink/10",
+        "w": 343,
+        "h": 125,
+        "border": true,
+        "bg": false,
+        "text": "Zonas de atenciónLas diferencias son opo"
+      },
+      {
+        "cls": "py-4 mt-4 border-t border-ink/10",
+        "w": 343,
+        "h": 151,
+        "border": true,
+        "bg": false,
+        "text": "RecomendaciónDedicá unos minutos a refle"
+      },
+      {
+        "cls": "py-4 border-t border-ink/10",
+        "w": 343,
+        "h": 189,
+        "border": true,
+        "bg": false,
+        "text": "Qué considerarEstas interpretaciones se "
+      },
+      {
+        "cls": "pt-3 mt-4 border-t border-ink/10",
+        "w": 343,
+        "h": 66,
+        "border": true,
+        "bg": false,
+        "text": "Confianza: Media · Interpretación genera"
+      },
+      {
+        "cls": "mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm border-t border-ink",
+        "w": 343,
+        "h": 219,
+        "border": true,
+        "bg": false,
+        "text": "ElementoTu elemento Tierra entra en tens"
+      }
+    ],
+    "sections": []
+  }
+}

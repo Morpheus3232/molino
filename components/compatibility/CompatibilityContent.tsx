@@ -74,7 +74,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
     if (navigator.share) {
       navigator.share({
         title: `Compatibilidad con ${entity.name}`,
-        text: `Descubrí tu compatibilidad con ${entity.name} en Molino`,
+        text: `Leé tu compatibilidad con ${entity.name} en Molino`,
         url,
       }).catch(() => {});
     } else {
@@ -148,7 +148,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8 p-6 rounded-md border border-ink/10 bg-card shadow-sm"
+                className="mb-8 p-6 rounded-md border border-ink/10 bg-transparent"
               >
                 <p className="font-heading text-lg font-semibold text-foreground mb-2">No se pudo cargar el análisis</p>
                 <p className="text-sm text-muted mb-4">Ocurrió un error al calcular la compatibilidad. Podés intentar nuevamente.</p>
@@ -188,7 +188,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                 </div>
 
                 {/* User context */}
-                <div className="mb-6 p-4 rounded-md bg-background border border-border shadow-sm">
+                <div className="mb-6 p-4 border border-ink/10 bg-transparent">
                   <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu perfil</p>
                   <p className="text-sm text-foreground">
                     <span className="font-medium">{profile.name}</span> · Camino de Vida {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
@@ -208,7 +208,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                 {/* Narrative */}
                 {story && (
                   <div className="mt-6">
-                    <div className="rounded-md border border-border bg-card shadow-sm p-6">
+                    <div className="border border-ink/10 bg-transparent p-6">
                       <span className="badge mb-3">Narrativa de conexión</span>
                       <p className="text-lg leading-relaxed text-foreground mb-4">{story.narrative}</p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

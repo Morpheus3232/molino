@@ -59,7 +59,7 @@ const GUIDED_CTA: Record<ProfileTab, { text: string; next: ProfileTab }> = {
   identity: { text: "Ya conocés tu código. Ahora descubrí tu mundo →", next: "world" },
   world: { text: "Así te proyectás hacia afuera. Ahora, con quién resonás →", next: "circle" },
   circle: { text: "Descubrí qué patrones aparecen en vos →", next: "intelligence" },
-  intelligence: { text: "Ya conocés tu mapa. Volvé cuando quieras →", next: "identity" },
+  intelligence: { text: "Tu síntesis completa te espera (Premium) →", next: "identity" },
 };
 
 function buildFromLocal(): UserProfile | null {
@@ -269,7 +269,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           </AnimatePresence>
 
         {/* Prompt de continuidad entre secciones del mapa — guía el recorrido
-            de un usuario nuevo (Identidad → Mundo → Círculo → Inteligencia).
+            de un usuario nuevo (Identidad → Mundo → Círculo → Lectura).
             Antes era una barra fija estilo app (fondo sólido, botón lleno,
             blur) que tapaba contenido durante todo el scroll; ahora es una
             línea editorial fina, coherente con el resto de los CTA de

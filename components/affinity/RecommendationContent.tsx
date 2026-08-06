@@ -11,6 +11,7 @@ import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
+import { resolveUserContext } from "@/lib/context/userContext";
 
 interface RecommendationContentProps {
   entityType: EntityType;
@@ -30,7 +31,17 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
   const recommendations = useMemo(() => {
     if (!profile) return [];
-    return getRecommendationsByType(profile, entityType, 10);
+    const recs = getRecommendationsByType(profile, entityType, 10);
+    // El score no cambia (afinidad zodiacal pura). El país del usuario solo
+    // adelanta entidades de su país como tiebreaker de presentación.
+    const country = resolveUserContext().country;
+    if (!country) return recs;
+    return [...recs].sort((a, b) => {
+      if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
+      const aMatch = a.entity.country === country ? 1 : 0;
+      const bMatch = b.entity.country === country ? 1 : 0;
+      return bMatch - aMatch;
+    });
   }, [profile, entityType]);
 
   if (!mounted) {
@@ -118,9 +129,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
             <span>Tu animal:</span>
             <span className="font-medium text-foreground">{formatAnimalSimple(userAnimal)}</span>
           </div>
-          <p className="text-xs text-muted mt-2">
-            Estos números indican prioridad para el ciclo actual — no son tu score de afinidad.
-          </p>
         </motion.section>
 
         {/* Recommendation groups with AnimatePresence on search/filter change */}
@@ -128,10 +136,10 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           {tripleResonance.length > 0 && (
             <RecommendationGroup
               key="triple"
-              title="Resonancia triple"
+              title="Resonancia alta"
               subtitle="Tu signo, la entidad y el ciclo actual comparten la misma energía"
               recommendations={tripleResonance}
-              accentColor="#2D5A3D"
+              accentColor="var(--color-accent)"
               router={router}
               transitionDelay={0}
             />
@@ -139,10 +147,10 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           {aligned.length > 0 && (
             <RecommendationGroup
               key="aligned"
-              title="Alineadas contigo"
+              title="Patrón complementario"
               subtitle="Símbolos tradicionalmente asociados con armonía"
               recommendations={aligned}
-              accentColor="#4A6FA5"
+              accentColor="var(--color-accent)"
               router={router}
               transitionDelay={0.1}
             />
@@ -150,10 +158,10 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           {compatible.length > 0 && (
             <RecommendationGroup
               key="compatible"
-              title="Explorar"
+              title="Diferente"
               subtitle="Energías complementarias dentro del ciclo chino"
               recommendations={compatible}
-              accentColor="#D4A843"
+              accentColor="var(--color-muted)"
               router={router}
               transitionDelay={0.15}
             />
@@ -161,10 +169,10 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           {strategic.length > 0 && (
             <RecommendationGroup
               key="strategic"
-              title="Combinaciones para observar"
+              title="Contraste"
               subtitle="Relaciones que requieren más atención simbólica"
               recommendations={strategic}
-              accentColor="#B45309"
+              accentColor="var(--color-muted)"
               router={router}
               transitionDelay={0.2}
             />
@@ -187,15 +195,13 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
         </AnimatePresence>
 
         {/* Disclaimer */}
-        <motion.section {...fadeUp} className="mt-12">
-          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+        <motion.section {...fadeUp} className="mt-12 border-t border-ink/10 pt-8">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               Las recomendaciones son una lectura simbólica basada en tradiciones del zodíaco chino.
               No constituyen predicción científica ni determinan resultados reales.
               Cada persona puede interpretar estos sistemas de forma diferente.
             </p>
-          </div>
         </motion.section>
       </main>
       <UniversityFooter />
@@ -250,8 +256,6 @@ function RecommendationCard({
   router: ReturnType<typeof useRouter>;
   index: number;
 }) {
-  const stars = "★".repeat(rec.priority) + "☆".repeat(5 - rec.priority);
-
   return (
     <motion.button
       {...staggerItem}
@@ -259,7 +263,7 @@ function RecommendationCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent/50 transition-all group"
+      className="w-full text-left py-5 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
@@ -275,29 +279,15 @@ function RecommendationCard({
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm bg-success/10 text-success">
-                Triple
+              <span className="text-[9px] font-medium uppercase tracking-wider text-accent">
+                resonancia triple
               </span>
             )}
           </div>
           <p className="text-xs text-muted mb-1">{rec.title}</p>
           <p className="text-xs text-muted leading-relaxed line-clamp-2">{rec.explanation}</p>
         </div>
-
-        {/* Score + stars */}
-        <div className="text-right shrink-0">
-          <p className="text-[9px] uppercase tracking-wider text-muted">Prioridad del ciclo</p>
-          <p className="font-heading text-xl font-bold text-foreground">{rec.totalScore}</p>
-          <p className="text-xs mt-0.5" style={{ color: getScoreHexColor(rec.totalScore) }}>{stars}</p>
-        </div>
       </div>
     </motion.button>
   );
-}
-
-function getScoreHexColor(score: number): string {
-  if (score >= 85) return "#2D5A3D";
-  if (score >= 70) return "#4A6FA5";
-  if (score >= 50) return "#D4A843";
-  return "#B45309";
 }

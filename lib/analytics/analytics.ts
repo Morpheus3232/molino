@@ -1,6 +1,17 @@
 "use client";
 
-import posthog from 'posthog-js'
+const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+
+let posthogPromise: Promise<any> | null = null;
+
+function getPostHog(): Promise<any> | null {
+  if (!POSTHOG_KEY) return null;
+  if (typeof window === "undefined") return null;
+  if (!posthogPromise) {
+    posthogPromise = import('posthog-js').then((mod) => mod.default);
+  }
+  return posthogPromise;
+}
 
 type EventType =
   | "page_view"
@@ -82,11 +93,18 @@ class Analytics {
     }
 
     // PostHog sink — fires only if posthog is loaded (Project Key configured)
-    if (posthog && typeof posthog.capture === "function") {
-      try {
-        posthog.capture(event.type, event.data || {});
-      } catch {
-        // PostHog blocked or misconfigured — silent fail
+    if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+      const phPromise = getPostHog()
+      if (phPromise) {
+        phPromise.then((posthog) => {
+          if (posthog && typeof posthog.capture === "function") {
+            try {
+              posthog.capture(event.type, event.data || {});
+            } catch {
+              // PostHog blocked or misconfigured — silent fail
+            }
+          }
+        })
       }
     }
 

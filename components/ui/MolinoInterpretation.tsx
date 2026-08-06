@@ -32,6 +32,9 @@ interface MolinoInterpretationProps {
    * loading state reads as part of the reveal instead of a second, unrelated
    * loading screen appearing right under the "you unlocked it" banner. */
   justUnlocked?: boolean;
+  /** Recibe la interpretación una vez resuelta (AI o fallback). El padre la
+   * usa para alimentar el export/share sin re-generar ni re-fetchar. */
+  onInterpretationReady?: (interpretation: MolinoInterpretation | null) => void;
 }
 
 function LoadingSkeleton() {
@@ -91,6 +94,7 @@ export default function MolinoInterpretation({
   label = "Interpretación de Molino",
   description,
   justUnlocked = false,
+  onInterpretationReady,
 }: MolinoInterpretationProps) {
   const [fallbackInterpretation, setFallbackInterpretation] = useState<MolinoInterpretation | null>(null);
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretation | null>(null);
@@ -114,6 +118,7 @@ export default function MolinoInterpretation({
   const fetchInterpretation = useCallback(async () => {
     try {
       setIsInterpreting(true);
+      const { getPremiumTokenClient } = await import('@/lib/premium');
       const res = await fetch("/api/intelligence/interpret", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -122,6 +127,7 @@ export default function MolinoInterpretation({
           dob: profile.birthDate,
           type,
           question,
+          premiumToken: getPremiumTokenClient(),
         }),
       });
       const data = await res.json();
@@ -138,6 +144,9 @@ export default function MolinoInterpretation({
       if (data.ai) {
         setAiInterpretation(data.ai as MolinoInterpretation);
         setError(null);
+      } else if (data.fallback) {
+        setFallbackInterpretation(data.fallback as MolinoInterpretation);
+        setError(data.error ?? null);
       } else {
         setError("No recibimos una interpretación válida.");
       }
@@ -174,6 +183,12 @@ export default function MolinoInterpretation({
 
   const interpretation = aiInterpretation || fallbackInterpretation;
   const isUsingAI = !!aiInterpretation;
+
+  // Eleva la interpretación resuelta al padre (para el export/share) sin
+  // re-generar: se dispara cada vez que cambia el resultado de la lectura.
+  useEffect(() => {
+    onInterpretationReady?.(interpretation);
+  }, [interpretation, onInterpretationReady]);
 
   // Reveal progresivo: cada sección entra con un fade+rise breve y encadenado.
   const containerVariants = {

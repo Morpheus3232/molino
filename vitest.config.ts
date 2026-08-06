@@ -10,9 +10,10 @@ const config = {
     },
   },
   test: {
-    environment: 'node',
-    include: ['**/__tests__/**/*.test.ts', '**/*.test.ts'],
-    exclude: ['**/e2e/**', '**/node_modules/**'],
+    environment: 'jsdom',
+    globals: true,
+    include: ['**/__tests__/**/*.test.{ts,tsx}', '**/*.test.{ts,tsx}'],
+    exclude: ['**/e2e/**', '**/node_modules/**', '**/.claude/worktrees/**', '**/.next/**', '**/playwright-report/**', '**/test-results/**'],
   },
 };
 

@@ -13,9 +13,9 @@ interface Tab {
 
 const TABS: Tab[] = [
   { id: "identity", label: "Tu Identidad", shortLabel: "Identidad", icon: "✦" },
-  { id: "world", label: "Tu Mundo", shortLabel: "Mundo", icon: "🌎" },
+  { id: "world", label: "Tu Mundo", shortLabel: "Mundo", icon: "◎" },
   { id: "circle", label: "Tu Círculo", shortLabel: "Círculo", icon: "⬡" },
-  { id: "intelligence", label: "Tu Inteligencia", shortLabel: "Análisis", icon: "◆" },
+  { id: "intelligence", label: "Tu Lectura", shortLabel: "Lectura", icon: "◈" },
 ];
 
 interface ProfileTabsProps {
@@ -71,6 +71,9 @@ export default function ProfileTabs({ active, onChange, onBack }: ProfileTabsPro
               >
                 <span className="text-xs font-mono" aria-hidden="true">{tab.icon}</span>
                 <span>{tab.label}</span>
+                {tab.id === "intelligence" && (
+                  <span className="ml-1 px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-[0.15em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">Premium</span>
+                )}
                 {isActive && (
                   <motion.div
                     layoutId="profile-tab-indicator"

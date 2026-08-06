@@ -131,10 +131,10 @@ export default function InsightsContent() {
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
           <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Mi Inteligencia Personal
+            Mis patrones
           </p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-            Tu feed personalizado
+            Tu mapa en movimiento
           </h1>
           <p className="text-muted mb-8 max-w-md mx-auto">
             Creá tu perfil para acceder a tu inteligencia personal diaria.
@@ -159,10 +159,10 @@ export default function InsightsContent() {
             ═══════════════════════════════════════════════ */}
         <motion.div {...smoothReveal} className="mb-10">
           <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-3">
-            Mi Inteligencia Personal
+            Mis patrones
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
-            Tu feed de hoy
+            Tu mapa hoy
           </h1>
           <p className="text-sm text-muted">
             Exploración personal basada en tradiciones culturales.
@@ -195,7 +195,7 @@ export default function InsightsContent() {
                       {yearResonance.label}
                     </span>
                     <span className="text-sm" style={{ color: yearResonance.color }}>
-                      {"★".repeat(yearCycle.level)}{"☆".repeat(5 - yearCycle.level)}
+                      {yearCycle.level >= 4 ? "Alta resonancia" : yearCycle.level >= 3 ? "Resonancia moderada" : "Baja resonancia"}
                     </span>
                   </div>
                   <p className="text-sm text-foreground leading-relaxed mb-2">
@@ -335,7 +335,7 @@ export default function InsightsContent() {
                   >
                     <span className="text-lg">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
-                    <span className="text-xs text-muted">★★☆☆☆</span>
+                    <span className="text-xs text-muted">Complementario</span>
                   </motion.div>
                 ))}
               </div>

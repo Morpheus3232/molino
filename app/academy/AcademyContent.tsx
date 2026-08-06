@@ -247,7 +247,7 @@ const KNOWLEDGE_TREE = [
     title: "Molino",
     icon: "flame",
     origin: "Plataforma global",
-    idea: "Inteligencia Personal: combina tradiciones históricas en una experiencia interactiva.",
+    idea: "Tu mapa: combina tradiciones históricas en una lectura personal.",
     influence: ["Numerología", "Astrología", "Zodíaco chino", "IA", "Recomendaciones"],
     molino: "Convergencia de todas las tradiciones en una plataforma moderna",
   },
@@ -295,7 +295,7 @@ const HOW_IT_WORKS = [
 const COURSES = [
   {
     id: "intro",
-    title: "Introducción a la Inteligencia Personal",
+    title: "Introducción a tu mapa personal",
     icon: "target",
     lessons: 5,
     description: "Los conceptos fundamentales detrás de tu mapa personal.",
@@ -319,7 +319,7 @@ const COURSES = [
     title: "Cómo leer tu mapa personal",
     icon: "map",
     lessons: 4,
-    description: "Guía práctica para interpretar tu Inteligencia Personal.",
+    description: "Guía práctica para interpretar tu mapa personal.",
   },
 ];
 
@@ -425,7 +425,7 @@ export default function AcademyContent() {
             De dónde viene este sistema
           </h1>
           <p className="text-base text-muted max-w-xl leading-relaxed">
-            Aprendé las raíces históricas detrás de tu Inteligencia Personal.
+            Aprendé las raíces históricas detrás de tu mapa personal.
             Molino conecta tradiciones de miles de años en una experiencia moderna.
           </p>
         </motion.section>
@@ -544,11 +544,11 @@ export default function AcademyContent() {
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
             <p className="text-sm text-foreground leading-relaxed mb-3">
-              Molino explora tradiciones históricas de números y símbolos culturales como herramienta de reflexión personal.
+              Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.
             </p>
             <p className="text-xs text-muted leading-relaxed">
               Las interpretaciones pertenecen al campo simbólico y cultural, no constituyen predicciones científicas.
-              Molino combina numerología, astrología y zodíaco chino de forma transparente y educativa.
+              Este mapa combina numerología, astrología y zodíaco chino de forma transparente y educativa.
             </p>
           </div>
         </motion.section>
@@ -566,7 +566,7 @@ export default function AcademyContent() {
               onClick={() => router.push("/profile")}
               className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
             >
-              Ver mi Inteligencia Personal
+              Ver mi mapa
             </button>
           </div>
         </motion.section>

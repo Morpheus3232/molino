@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
+import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { Code, Calculator, Globe, BookOpen, Hash, Sun, Moon } from "lucide-react";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 

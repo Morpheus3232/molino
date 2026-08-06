@@ -153,7 +153,7 @@ function ComparePickerInner() {
                 key={entity.id}
                 type="button"
                 onClick={() => handleSelect(entity.id)}
-                className="w-full text-left p-4 rounded-md border border-border bg-card shadow-sm hover:border-accent transition-all group flex items-center gap-4"
+                className="w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent transition-all group flex items-center gap-4"
               >
                 <span className="text-xl shrink-0">{entity.emoji}</span>
                 <div className="flex-1 min-w-0">
@@ -196,7 +196,7 @@ function ComparePickerInner() {
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-16">
-          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+          <div className="p-6 border border-ink/10 bg-transparent">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.

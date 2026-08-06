@@ -1,0 +1,21 @@
+{
+  "workflowId": "test-20260801T095344Z-cef2114a",
+  "sessionId": "session-C",
+  "task": "hardening-test-concurrency",
+  "owner": "test",
+  "agent": null,
+  "stage": "DISCOVER",
+  "status": "ACTIVE",
+  "createdAt": "2026-08-01T09:53:44.294Z",
+  "updatedAt": "2026-08-01T09:53:44.294Z",
+  "pid": 61193,
+  "artifactRoot": ".artifacts/runs/test-20260801T095344Z-cef2114a",
+  "transitions": [
+    {
+      "ts": "2026-08-01T09:53:44.294Z",
+      "stage": "DISCOVER",
+      "actor": "test",
+      "action": "run created"
+    }
+  ]
+}

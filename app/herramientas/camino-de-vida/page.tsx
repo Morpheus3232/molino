@@ -74,7 +74,7 @@ export default function CaminoDeVidaPage() {
             Camino de Vida
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número revela tu energía central.
+            Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número describe tu energía central.
           </p>
         </motion.section>
 
@@ -191,7 +191,7 @@ export default function CaminoDeVidaPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Descubrí el tuyo en Molino.`;
+                    const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Leé el tuyo en Molino.`;
                     if (navigator.share) {
                       navigator.share({ title: "Mi Camino de Vida — Molino", text }).catch(() => {});
                     } else {

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description: "Autoconocimiento sin dogmas, código abierto, privacidad radical. La síntesis de tradiciones simbólicas milenarias en una herramienta moderna.",
     type: "article",
     url: siteUrl("/filosofia"),
+    images: [siteUrl("/opengraph-image")],
   },
 };
 

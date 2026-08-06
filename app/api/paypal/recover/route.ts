@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
 import { getOrder, validateOrder } from '@/lib/paypal';
-import { getProfileHashByPaymentId, grantPremiumAccess } from '@/lib/kv';
+import { getProfileHashByPaymentId, grantPremiumAccess, savePremiumToken } from '@/lib/kv';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(rateLimitKey(ip, 'paypal/recover'), PAYMENT_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const { paymentId, name, birthDate } = await req.json();
 
@@ -33,6 +38,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({
         verified: true,
         profileHash: existingHash,
+        premiumToken: await savePremiumToken(existingHash),
         source: 'kv',
       });
     }
@@ -66,10 +72,12 @@ export async function POST(req: NextRequest) {
     }
 
     await grantPremiumAccess(profileHash, cleanPaymentId);
+    const premiumToken = await savePremiumToken(profileHash);
 
     return NextResponse.json({
       verified: true,
       profileHash,
+      premiumToken,
       source: 'paypal-api',
     });
   } catch (error) {

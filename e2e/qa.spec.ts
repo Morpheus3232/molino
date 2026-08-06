@@ -108,47 +108,15 @@ test.describe("QA — Molino Homepage", () => {
   });
 
   // ──────────────────────────────────────────────
-  // 3. AffinityHub
+  // 3. Home (conceptual sections)
   // ──────────────────────────────────────────────
-  test.describe("3. AffinityHub — Favorites & Filters", () => {
-    test("Shows Países, Ciudades, Marcas sections", async ({ page }) => {
+  test.describe("3. Home — key sections", () => {
+    test("Hero renders with CTA for new user", async ({ page }) => {
       await page.goto("/");
-      const countries = page.locator("text=Países");
-      const cities = page.locator("text=Ciudades");
-      const brands = page.locator("text=Marcas");
-      await expect(countries.first()).toBeVisible({ timeout: 5000 });
-      await expect(cities.first()).toBeVisible({ timeout: 5000 });
-      await expect(brands.first()).toBeVisible({ timeout: 5000 });
-    });
-
-    test("Tier filter pills exist: Todas, Alta, Media, Complementarias, Desafiantes", async ({ page }) => {
-      await page.goto("/");
-      const pills = page.locator("button").filter({ hasText: /Todas|Alta|Media|Complementarias|Desafiantes/ });
-      await expect(pills.first()).toBeVisible({ timeout: 5000 });
-    });
-
-    test("Heart toggle on affinity cards", async ({ page }) => {
-      await page.goto("/");
-      const heartBtn = page.locator("button[aria-label*='favorit|favorite'], svg.lucide-heart").first();
-      if (await heartBtn.isVisible({ timeout: 3000 })) {
-        const beforeCount = await page.evaluate(() => {
-          const saved = localStorage.getItem("molino-favorites");
-          return saved ? JSON.parse(saved).length : 0;
-        });
-        await heartBtn.click();
-        const afterCount = await page.evaluate(() => {
-          const saved = localStorage.getItem("molino-favorites");
-          return saved ? JSON.parse(saved).length : 0;
-        });
-        expect(afterCount).toBeGreaterThanOrEqual(beforeCount);
-      }
-    });
-
-    test("Toast notification appears after favorite toggle", async ({ page }) => {
-      await page.goto("/");
-      const heartBtn = page.locator("button").filter({ has: page.locator("svg") }).first();
-      await heartBtn.click({ timeout: 3000 });
-      await expect(page.locator("[role='status'], [class*='toast'], [class*='sonner']")).toBeVisible({ timeout: 3000 });
+      const cta = page.getByRole("button", { name: /descubrir mi mapa|ver mi mapa/i }).or(
+        page.getByRole("link", { name: /descubrir mi mapa|ver mi mapa/i })
+      );
+      await expect(cta.first()).toBeVisible({ timeout: 5000 });
     });
   });
 

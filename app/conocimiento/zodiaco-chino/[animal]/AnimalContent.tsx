@@ -1,6 +1,3 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -10,22 +7,18 @@ import EditorialSection from "@/components/ui/EditorialSection";
 import Halftone from "@/components/ui/Halftone";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import { CHINESE_ANIMALS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
+import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 
 const cellPad = "p-8 lg:p-12";
 
-export default function AnimalContent() {
-  const params = useParams();
-  const animalId = params.animal as string;
-  const animal = CHINESE_ANIMALS.find((a) => a.name.toLowerCase() === animalId.toLowerCase());
-
+export default function AnimalContent({ animal }: { animal: ChineseAnimal | null | undefined }) {
   if (!animal) {
     return (
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-24 pb-24">
           <h1 className="font-display text-4xl sm:text-5xl text-foreground">Animal no encontrado</h1>
           <p className="text-muted mt-4">
-            El animal &quot;{animalId}&quot; no existe en la base del zodiaco chino de Molino.
+            El animal no existe en la base del zodiaco chino de Molino.
           </p>
           <div className="mt-8">
             <Button asChild variant="primary">
@@ -236,7 +229,7 @@ export default function AnimalContent() {
                   ¿CUÁL ES TU ANIMAL?
                 </p>
                 <p className="text-sm lg:text-base text-paper/85 max-w-lg mx-auto mb-10 leading-relaxed">
-                  Calculalo con tu fecha de nacimiento y descubrí tu afinidad con entidades del mundo.
+                  Calculalo con tu fecha de nacimiento y mirá tu afinidad con entidades del mundo.
                 </p>
                 <Button asChild variant="inverse" size="lg">
                   <Link href="/herramientas/zodiaco-chino">

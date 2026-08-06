@@ -182,7 +182,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {/* Entity vs Entity comparison */}
               <motion.section {...fadeUp} className="mb-12">
                 <SectionHeader title="Relación entre ambos" />
-                <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+                <div className="p-6 border border-ink/10 bg-transparent">
                   <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6">
                     <div className="text-center">
                       <span className="text-3xl block mb-2">{entityA.emoji}</span>
@@ -261,7 +261,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               {/* Symbolic differences */}
               <motion.section {...fadeUp} className="mb-12">
                 <SectionHeader title="Diferencias simbólicas" />
-                <div className="p-6 rounded-md border border-border bg-card shadow-sm space-y-4">
+                <div className="p-6 border border-ink/10 bg-transparent space-y-4">
                   <DifferenceRow
                     label="Animales"
                     valueA={`${formatAnimalSimple(resultA.entityAnimal)} (${entityA.name})`}
@@ -292,7 +292,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Disclaimer */}
               <motion.section {...fadeUp} className="mb-12">
-                <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+                <div className="p-6 border border-ink/10 bg-transparent">
                   <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
                   <p className="text-xs text-muted leading-relaxed">
                     La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
@@ -348,7 +348,7 @@ function EntityBaseCard({
   typeLabel: string;
 }) {
   return (
-    <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+    <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-2xl">{entity.emoji}</span>
         <div>
@@ -403,7 +403,7 @@ function PersonalCard({
   relationship: string;
 }) {
   return (
-    <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+    <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-lg shrink-0">{emoji ?? "·"}</span>

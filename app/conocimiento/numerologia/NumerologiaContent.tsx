@@ -1,16 +1,10 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, CALCULATIONS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
+import Reveal from "@/components/ui/Reveal";
 
 export default function NumerologiaContent() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-background">
 
@@ -26,7 +20,7 @@ export default function NumerologiaContent() {
         </nav>
 
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
+        <Reveal tag="section" className="mb-16 sm:mb-20">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Numerología
@@ -34,17 +28,17 @@ export default function NumerologiaContent() {
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El lenguaje simbólico de los números y su relación con la personalidad y los ciclos.
           </h2>
-        </motion.section>
+        </Reveal>
 
         {/* Disclaimer */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
+        <Reveal tag="section" delay={0.05} className="mb-12">
           <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Índice */}
-        <motion.section {...fadeUpDelayed(0.08)} className="mb-12 sm:mb-16">
+        <Reveal tag="section" delay={0.08} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Índice de contenidos</h2>
@@ -60,16 +54,16 @@ export default function NumerologiaContent() {
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
-              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-accent/5 inline-flex items-center gap-1">
+              <a key={item.id} href={`#${item.id}`} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-accent/5 inline-flex items-center gap-1">
                 {item.label}
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-              </button>
+              </a>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* QUÉ ES LA NUMEROLYGÍA */}
-        <motion.section {...fadeUpDelayed(0.1)} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.1} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Qué es la numerología</h2>
@@ -88,10 +82,10 @@ export default function NumerologiaContent() {
               </p>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* HISTORIA */}
-        <motion.section {...fadeUpDelayed(0.12)} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.12} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y evolución</h2>
@@ -124,10 +118,10 @@ export default function NumerologiaContent() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* PITAGÓRICA */}
-        <motion.section {...fadeUpDelayed(0.14)} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.14} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Numerología pitagórica</h2>
@@ -148,10 +142,10 @@ export default function NumerologiaContent() {
               Nota: Este sistema fue codificado en el siglo XIX. La versión que usa Molino sigue esta convención. Otros sistemas numerológicos usan tablas diferentes.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* CÁLCULOS */}
-        <motion.section {...fadeUpDelayed(0.16)} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.16} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo calcula Molino</h2>
@@ -166,10 +160,10 @@ export default function NumerologiaContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* NÚMEROS 1-9 */}
-        <motion.section {...fadeUpDelayed(0.18)} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.18} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los números del 1 al 9</h2>
@@ -179,32 +173,30 @@ export default function NumerologiaContent() {
           </p>
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
-              <motion.div key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.04, duration: 0.4 }}>
-                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
-                  <div className="flex items-start gap-6">
-                    <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
-                      <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        {num.keywords.map((kw) => (
-                          <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
-                        ))}
-                      </div>
+              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block w-full text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
+                <div className="flex items-start gap-6">
+                  <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
+                    <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {num.keywords.map((kw) => (
+                        <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
+                      ))}
                     </div>
-                     <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:inline-flex items-center gap-1">
-                       Ver
-                       <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-                     </span>
                   </div>
-                </button>
-              </motion.div>
+                   <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:inline-flex items-center gap-1">
+                     Ver
+                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                   </span>
+                </div>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* NÚMEROS MAESTROS */}
-        <motion.section {...fadeUpDelayed(0.2)} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.2} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
@@ -214,17 +206,17 @@ export default function NumerologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
-              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-6 border border-accent/20 hover:border-accent/50 transition-colors group">
+              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block text-left p-6 border border-accent/20 hover:border-accent/50 transition-colors group">
                 <p className="text-3xl font-heading font-bold text-accent mb-2">{num.number}</p>
                 <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
                 <p className="text-sm text-muted mt-2 leading-relaxed">{num.meaning}</p>
-              </motion.button>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* LIMITACIONES */}
-        <motion.section {...fadeUpDelayed(0.22)} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.22} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
@@ -242,10 +234,10 @@ export default function NumerologiaContent() {
               Si buscas información sobre salud, relaciones o decisiones importantes, consulta a un profesional calificado. La numerología no reemplaza el consejo médico, psicológico o legal.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* FUENTES */}
-        <motion.section {...fadeUpDelayed(0.24)} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.24} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes y referencias</h2>
@@ -267,28 +259,28 @@ export default function NumerologiaContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Herramientas relacionadas */}
-        <motion.section {...fadeUpDelayed(0.24)} className="mb-12">
+        <Reveal tag="section" delay={0.24} className="mb-12">
           <div className="p-6 border border-accent/20">
             <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
-              Ingresá tu fecha de nacimiento y descubrí tu número de Camino de Vida, Expresión y más.
+              Ingresá tu fecha de nacimiento y calculá tu número de Camino de Vida, Expresión y más.
             </p>
             <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →
             </Link>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Disclaimer final */}
-        <motion.section {...fadeUpDelayed(0.26)}>
+        <Reveal tag="section" delay={0.26}>
           <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
       </main>
 

@@ -1,0 +1,695 @@
+[
+  {
+    "t": "Tu Inteligencia",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "600",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Lo interesante no está en cada sistema por separado, sino en lo que ap",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "TU MOTOR",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Creativo. Tu energía natural es la de expresión. Esto te impulsa en ca",
+    "font": "Inter",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "TU TENSIÓN",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Dispersión. Tu dispersión y tu momento actual (creatividad) tocan el m",
+    "font": "Inter",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "TU PRÓXIMO MOVIMIENTO",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "expresión. Creatividad, comunicación, alegría.",
+    "font": "Inter",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Numerología y Ciclos coinciden en Dispersión: no es una lectura aislad",
+    "font": "Inter",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Cuando dudes, andá hacia tu perspicacia — es una fortaleza real, no un",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu soledad es una señal, no un defecto — escuchala antes de que se vue",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu motor es curioso. No lo apagues solo para encajar.",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Este ciclo te empuja hacia nuevo ciclo — dejalo, no lo frenes por cost",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Estás en un Año de Expresión (nivel 3). Tu energía del día (Introspecc",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Ver tu día de hoy en detalle→",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Cada categoría muestra las entidades que más resuenan simbólicamente c",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Viajes",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Explorá destinos compatibles con tu energía",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Entorno profesional",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Marcas y empresas que resuenan con tu perfil",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Lugares",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Ciudades y espacios con resonancia",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Creatividad",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Entidades que potencian tu expresión",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Bienestar",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Símbolos de equilibrio y cuidado",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Aprendizaje",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Rutas de conocimiento para tu perfil",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Herramienta de reflexión personal basada en tradiciones culturales. No",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Desbloqueaste tu síntesis completa",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "600",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Acceso permanente — la vas a encontrar acá cada vez que vuelvas.",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu síntesis",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "La lectura que conecta tus números, tu cielo y tus ciclos en una sola ",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Construyendo tu lectura",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "500",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu síntesis está lista",
+    "font": "\"Archivo Black\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Lista",
+    "font": "\"JetBrains Mono\"",
+    "fs": "10px",
+    "fw": "400",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "04 / 04",
+    "font": "\"JetBrains Mono\"",
+    "fs": "10px",
+    "fw": "400",
+    "color": "rgba(166, 166, 156, 0.7)"
+  },
+  {
+    "t": "Lectura completa",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "500",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "El mapa de Valentina",
+    "font": "\"Archivo Black\"",
+    "fs": "48px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "15.05.1990",
+    "font": "\"JetBrains Mono\"",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tauro · Tierra",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgba(166, 166, 156, 0.7)"
+  },
+  {
+    "t": "Tu lectura",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "Tu lectura empieza donde tus sistemas dejan de hablar por separado. Lo",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu mapa no es una suma de sistemas: es una conversación entre ellos. C",
+    "font": "\"Space Grotesk\"",
+    "fs": "36px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu patrón central · Life Path 7 · Expresión 11",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "El 7 te da la distancia y el 11 la necesidad de impacto. Esa combinaci",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Qué significa",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Que tu Camino de Vida 7 busque profundidad y tu expresión 11 demande a",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Por qué importa",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu año personal 8 favorece el cierre de ciclos, pero tu mes 5 te pide ",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Fortalezas",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "Tu capacidad de síntesis convierte ruido en criterio.",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "La tensión entre tu 7 y tu 11 te da una ventaja rara.",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu elemento metal te da límites claros.",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Zonas de atención",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu soledad natural (Camino 7) choca con tu necesidad de reconocimiento",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Cómo funcionás",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Entrás en profundidad de a ráfagas, necesitás silencio para procesar y",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tus relaciones",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu caballo de metal busca compañeros de aventura, pero tu Tierra fija ",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Recomendación",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(124, 140, 255)"
+  },
+  {
+    "t": "Antes de tu próxima decisión grande, escribí en una sola página qué qu",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Tu síntesis",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Qué considerar",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Los meses de retiro no son pérdida de tiempo.",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Las decisiones tomadas desde la ansiedad tienden a desalinearse.",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Confianza: Alta · Interpretación generada con IA.",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgba(166, 166, 156, 0.5)"
+  },
+  {
+    "t": "Una pregunta concreta sobre tu momento, tu perfil o una decisión — res",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tu Molino",
+    "font": "\"JetBrains Mono\"",
+    "fs": "11px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Molino ya leyó tu mapa, Valentina. Elegí una puerta para empezar o esc",
+    "font": "Inter",
+    "fs": "28px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "¿Qué significa mi tensión principal en el día a día?",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "¿Este es un buen momento para tomar una decisión importante?",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "¿Cómo se relaciona mi elemento con mi Life Path?",
+    "font": "Inter",
+    "fs": "22px",
+    "fw": "400",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Molino es una herramienta de reflexión simbólica, no reemplaza asesora",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgba(166, 166, 156, 0.7)"
+  },
+  {
+    "t": "Tus dimensiones — la misma lectura de tu Adelanto, ahora con tu perfil",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Adaptabilidad",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Expresión + Tierra",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Alta",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "500",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Creatividad",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Alma + Tauro",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Marcada",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "500",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Estructura",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Life Path + Fijo",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Sutil",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "500",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Independencia",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Personalidad + Caballo",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Marcada",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "500",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Intuición",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "500",
+    "color": "rgb(243, 241, 234)"
+  },
+  {
+    "t": "Life Path + Elemento",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Alta",
+    "font": "Inter",
+    "fs": "16px",
+    "fw": "500",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "Tus sistemas por separado:",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Numerología · Astrología · Zodiaco Chino · Arquetipos",
+    "font": "Inter",
+    "fs": "18px",
+    "fw": "400",
+    "color": "rgb(166, 166, 156)"
+  },
+  {
+    "t": "Tauro · metal · caballo de metal",
+    "font": "\"JetBrains Mono\"",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(107, 101, 96)"
+  },
+  {
+    "t": "Camino de vida",
+    "font": "\"JetBrains Mono\"",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(107, 101, 96)"
+  },
+  {
+    "t": "EL INVESTIGADOR",
+    "font": "\"Space Grotesk\"",
+    "fs": "28px",
+    "fw": "600",
+    "color": "rgb(26, 26, 26)"
+  },
+  {
+    "t": "caballo · metal",
+    "font": "\"JetBrains Mono\"",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(107, 101, 96)"
+  },
+  {
+    "t": "“La verdad no teme a la pregunta.”",
+    "font": "\"Space Grotesk\"",
+    "fs": "17px",
+    "fw": "400",
+    "color": "rgb(51, 51, 51)"
+  },
+  {
+    "t": "Descubrí tu perfil",
+    "font": "\"JetBrains Mono\"",
+    "fs": "16px",
+    "fw": "400",
+    "color": "rgb(30, 58, 255)"
+  },
+  {
+    "t": "molino.app",
+    "font": "\"Space Grotesk\"",
+    "fs": "22px",
+    "fw": "600",
+    "color": "rgb(26, 26, 26)"
+  }
+]

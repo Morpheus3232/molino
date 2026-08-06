@@ -1,8 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import Link from "next/link";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { SOURCES, MOLINO_DISCLAIMER } from "@/lib/data/sources";
 
@@ -23,8 +19,6 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default function FuentesContent() {
-  const router = useRouter();
-
   const bySystem = SOURCES.reduce((acc, src) => {
     if (!acc[src.system]) acc[src.system] = [];
     acc[src.system].push(src);
@@ -37,15 +31,15 @@ export default function FuentesContent() {
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/")}>Inicio</span>
+          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
           <span className="mx-2">&rsaquo;</span>
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/explore")}>Conocimiento</span>
+          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
           <span className="mx-2">&rsaquo;</span>
           <span className="text-foreground font-medium">Fuentes y metodología</span>
         </nav>
 
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Transparencia</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Fuentes y metodología
@@ -53,17 +47,17 @@ export default function FuentesContent() {
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
             Molino se compromete con la transparencia. Cada afirmación factual puede rastrearse hasta una fuente confiable. Cada interpretación simbólica está claramente identificada como tal.
           </p>
-        </motion.section>
+        </section>
 
         {/* Disclaimer */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
+        <section className="mb-12 animate-fade-in-up stagger-1">
           <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </section>
 
         {/* Cómo funciona Molino */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-2">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
@@ -83,10 +77,10 @@ export default function FuentesContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </section>
 
         {/* Cómo se calcula la compatibilidad */}
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-3">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
@@ -118,10 +112,10 @@ export default function FuentesContent() {
               Para países se utiliza el <strong>año de independencia</strong> como fecha de referencia. Para marcas, el <strong>año de fundación</strong>. Cuando existen múltiples fechas posibles, Molino elige la más documentada y lo indica explícitamente.
             </p>
           </div>
-        </motion.section>
+        </section>
 
         {/* Fuentes por sistema */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-4">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
             <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes por sistema</h2>
@@ -153,14 +147,14 @@ export default function FuentesContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </section>
 
         {/* Disclaimer final */}
-        <motion.section {...fadeUpDelayed(0.25)}>
+        <section className="animate-fade-in-up stagger-5">
           <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </section>
 
       </main>
       <UniversityFooter />

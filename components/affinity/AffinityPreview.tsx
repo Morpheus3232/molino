@@ -12,7 +12,8 @@ import {
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import { staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
+import { staggerContainer, staggerItem } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 
 interface AffinityPreviewProps {
   profile: UserProfile;

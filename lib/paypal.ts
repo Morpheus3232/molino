@@ -70,6 +70,7 @@ export async function getAccessToken(): Promise<string> {
 
   const clientId = getRequiredEnv('PAYPAL_CLIENT_ID');
   const clientSecret = getRequiredEnv('PAYPAL_CLIENT_SECRET');
+  const environment = (process.env.PAYPAL_ENVIRONMENT || '').toLowerCase();
 
   const res = await fetch(`${getPaypalBaseUrl()}/v1/oauth2/token`, {
     method: 'POST',
@@ -82,7 +83,27 @@ export async function getAccessToken(): Promise<string> {
   });
 
   if (!res.ok) {
-    throw new Error(`PayPal authentication failed with status ${res.status}`);
+    const errorData = await res.json().catch(() => ({}));
+    const errorCode = errorData.error || 'unknown_error';
+    const errorDescription = errorData.error_description || '';
+    
+    // Detectar mismatch entre credenciales y environment
+    if (environment === 'live' && errorCode === 'invalid_client') {
+      throw new Error(
+        'PayPal authentication failed: invalid_client. ' +
+        'PAYPAL_ENVIRONMENT=live pero PAYPAL_CLIENT_ID/SECRET parecen ser de sandbox. ' +
+        'Verificá que las credenciales sean de producción (live) en developer.paypal.com.'
+      );
+    }
+    if (environment === 'sandbox' && errorCode === 'invalid_client') {
+      throw new Error(
+        'PayPal authentication failed: invalid_client. ' +
+        'PAYPAL_ENVIRONMENT=sandbox pero PAYPAL_CLIENT_ID/SECRET parecen ser de producción. ' +
+        'Verificá que las credenciales sean de sandbox en developer.paypal.com.'
+      );
+    }
+    
+    throw new Error(`PayPal authentication failed with status ${res.status}: ${errorCode} - ${errorDescription}`);
   }
 
   const data = await res.json();

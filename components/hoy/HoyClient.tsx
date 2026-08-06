@@ -21,10 +21,12 @@ import {
   type DailySnapshot,
 } from "@/lib/session/dailyHistory";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
+import LocationSelector from "@/components/hoy/LocationSelector";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { formatDate } from "@/lib/i18n/format";
+import { resolveUserContext } from "@/lib/context/userContext";
 
 function getEnergyLevel(score: number): EnergyLevel {
   if (score >= 75) return "ALTA";
@@ -127,6 +129,9 @@ export default function HoyClient() {
   const today = useMemo(() => new Date(), []);
   const [snapshotSaved, setSnapshotSaved] = useState(false);
   const [streak, setStreak] = useState<{ orientation: Orientation; days: number } | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(() => {
+    try { return resolveUserContext().country ?? null; } catch { return null; }
+  });
 
   const data = useMemo(() => {
     if (!profile) return null;
@@ -323,7 +328,7 @@ export default function HoyClient() {
           </p>
           {streak && streak.days >= 2 && (
             <p className="text-xs text-muted mt-2">
-              {streak.days}° día seguido de <span className="font-medium text-foreground">{streak.orientation.toLowerCase()}</span>.
+              Continuidad de observación: {streak.days} días en postura de <span className="font-medium text-foreground">{streak.orientation.toLowerCase()}</span>.
             </p>
           )}
           <AnimatePresence>
@@ -335,11 +340,36 @@ export default function HoyClient() {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className="text-xs text-muted mt-4"
               >
-                Tu día quedó guardado.
+                Tu día quedó registrado.
               </motion.p>
             )}
           </AnimatePresence>
         </motion.div>
+
+        {/* ═══════════════════════════════════════════════
+            UBICACIÓN — dónde estás ahora
+            ═══════════════════════════════════════════════ */}
+        <LocationSelector onCountryChange={setSelectedCountry} />
+
+        {selectedCountry && topAffinities.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="border-t border-ink/10 py-6 sm:py-8"
+          >
+            <p className="text-sm text-muted leading-relaxed max-w-xl">
+              Desde <span className="font-medium text-foreground">{selectedCountry}</span>,{" "}
+              <Link
+                href={`/affinity/${topAffinities[0].entity.type}/${topAffinities[0].entity.id}`}
+                className="text-accent hover:underline"
+              >
+                {topAffinities[0].entity.name}
+              </Link>{" "}
+              resuena alrededor de tu energía de {profile?.chineseZodiacInfo?.animal ?? profile?.chineseZodiac}.
+            </p>
+          </motion.div>
+        )}
 
         {/* TU MOMENTO — postura + por qué, en pocas líneas */}
         <motion.div
@@ -375,14 +405,14 @@ export default function HoyClient() {
           </p>
         </motion.div>
 
-        {/* QUÉ HACER — favorece / evitá / momento, una idea por línea, sin cajas */}
+        {/* QUÉ HACER — favorece / observar / momento, una idea por línea, sin cajas */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2 }}
           className="border-t border-ink/10 py-10 sm:py-16"
         >
-          <p className="eyebrow-brutalist mb-6">Qué hacer</p>
+          <p className="eyebrow-brutalist mb-6">Lectura del día</p>
 
           <div className="space-y-6">
             <div>
@@ -392,7 +422,7 @@ export default function HoyClient() {
 
             {energy.cautions.length > 0 && (
               <div>
-                <p className="label-micro mb-2 text-muted">Evitá</p>
+                <p className="label-micro mb-2 text-muted">Puede ser un momento para observar</p>
                 <p className="text-sm text-foreground leading-relaxed">{energy.cautions.join(" · ")}</p>
               </div>
             )}
@@ -425,7 +455,7 @@ export default function HoyClient() {
             <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
           </Link>
 
-          {topAffinities.length > 0 && (
+          {!selectedCountry && topAffinities.length > 0 && (
             <p className="text-xs text-muted mt-4">
               <Link
                 href={`/affinity/${topAffinities[0].entity.type}/${topAffinities[0].entity.id}`}
@@ -442,14 +472,14 @@ export default function HoyClient() {
               <span aria-hidden="true" className="group-open:rotate-90 transition-transform">
                 ›
               </span>
-              Interpretación de Molino y detalle técnico
+              Interpretación y detalle técnico
             </summary>
             <div className="mt-6">
               <MolinoInterpretation
                 profile={profile}
                 type="daily_energy"
                 dailyEnergy={energy}
-                label="Interpretación de Molino"
+                label="Tu interpretación"
                 description="Análisis personalizado de tu día"
               />
             </div>

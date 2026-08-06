@@ -265,7 +265,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 04 · TU INTELIGENCIA
+          CAPÍTULO 04 · TU LECTURA
           Evolución natural del mapa — no un muro.
           ═══════════════════════════════════════════════ */}
       <section className="py-24 sm:py-32">
@@ -282,6 +282,9 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               entre ellas — tu identidad, tus ciclos y tus patrones
               vistos como un solo sistema.
             </p>
+            <span className="mt-4 inline-flex px-2 py-1 text-[10px] font-mono uppercase tracking-[0.15em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">
+              Premium
+            </span>
             <button
               type="button"
               onClick={() => onEnter?.("intelligence")}

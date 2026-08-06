@@ -16,6 +16,7 @@ import type { EntityType } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -30,22 +31,34 @@ const transitionVariants = {
 };
 
 const GROUPS: { key: "positive" | "mixed" | "negative"; label: string; symbol: string }[] = [
-  { key: "positive", label: "Positivas", symbol: "★★★★★" },
-  { key: "mixed", label: "Mixtas", symbol: "≈" },
-  { key: "negative", label: "Difícil", symbol: "×" },
+  { key: "positive", label: "Resonantes", symbol: "●" },
+  { key: "mixed", label: "Complementarias", symbol: "◐" },
+  { key: "negative", label: "Contraste", symbol: "○" },
 ];
 
 export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
+  const userCountry = useUserContext().country;
 
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const activeAnimal: Animal = selectedAnimal
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
   const sorted = useMemo(
-    () => calculateAllAffinityForAnimal(activeAnimal, entities),
-    [activeAnimal, entities]
+    () => {
+      const results = calculateAllAffinityForAnimal(activeAnimal, entities);
+      if (!userCountry) return results;
+      // El score queda intacto (afinidad zodiacal pura). El país del usuario
+      // solo adelanta entidades de su país como tiebreaker de presentación.
+      return [...results].sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        const aMatch = a.entity.country === userCountry ? 1 : 0;
+        const bMatch = b.entity.country === userCountry ? 1 : 0;
+        return bMatch - aMatch;
+      });
+    },
+    [activeAnimal, entities, userCountry]
   );
   const set = useMemo(() => getRepresentativeAffinitySet(sorted), [sorted]);
 
@@ -80,12 +93,22 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 </nav>
                 <p className="eyebrow-brutalist mb-4">Afinidad simbólica</p>
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] tracking-tight">
-                  ¿Con qué {meta.plural.toLowerCase()} tenés afinidad?
+                  Cómo resuena cada {meta.label.toLowerCase()}
                 </h1>
                 <p className="text-sm text-muted mt-4 max-w-xl">
-                  Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} resuena.
+                  Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} aparecen sus patrones.
                 </p>
               </motion.div>
+
+              {/* Contexto editorial — qué es y qué no es la resonancia */}
+              <div className="border-t border-ink/10 py-8">
+                <p className="text-sm text-foreground leading-relaxed max-w-2xl">
+                  Cada entidad tiene un animal asociado según su fecha de origen. La resonancia compara ese animal con el de tu mapa.
+                </p>
+                <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">
+                  No es una predicción ni una medida de compatibilidad personal. Es una lectura simbólica basada exclusivamente en la relación entre ambos animales del zodíaco chino.
+                </p>
+              </div>
 
               {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
               <div className="border-t border-ink/10 py-8">
@@ -164,6 +187,12 @@ function ResultRow({
   onClick: () => void;
 }) {
   const tierMeta = TIER_META[result.tier];
+  // Presentación editorial: el label del engine se mantiene, el color pasa
+  // a tonos de marca (accent/muted) — nunca semáforo verde/rojo.
+  const tierColor =
+    result.tier === "resonancia-alta" || result.tier === "afinidad-media"
+      ? "var(--color-accent)"
+      : "var(--color-muted)";
 
   return (
     <button
@@ -182,7 +211,7 @@ function ResultRow({
           </p>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierMeta.color }}>{tierMeta.label}</p>
+          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierMeta.label}</p>
         </div>
       </div>
       {result.explanation && (
