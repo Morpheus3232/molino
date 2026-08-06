@@ -97,17 +97,49 @@ function getRelationship(_diff: number, userAnimal: string, entityAnimal: string
 /**
  * Detailed explanation of the relationship, naming the entity.
  *
- * getRelation().description is a generic animal-pair sentence (also used
- * for person-to-person compatibility, where no entity exists) — reused
- * as-is here it produces the exact same sentence for every entity that
- * shares a relation type with the user's animal (e.g. every "same animal"
- * match reads "Caballo comparte tu misma energía base."). With ~12
- * animals and dozens of entities per type, that reads as templated. This
- * builds an entity-named sentence per type instead, so each card reads as
- * about that entity — the score and underlying relation are unchanged.
+ * Uses the entity's primary historical event to generate a specific,
+ * non-repetitive explanation. Falls back to animal relation description
+ * only when no historical event data is available.
  */
-function getExplanation(_diff: number, userAnimal: string, entityAnimal: string, entityName?: string): string {
+function getExplanation(
+  _diff: number,
+  userAnimal: string,
+  entityAnimal: string,
+  entityName?: string,
+  primaryEvent?: HistoricalEvent
+): string {
   if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
+
+  // If we have a primary event with date/year, build a historical explanation
+  if (primaryEvent && entityName) {
+    const year = primaryEvent.year;
+    const label = primaryEvent.label.toLowerCase();
+    const dateStr = primaryEvent.date
+      ? formatEventDate(primaryEvent.date)
+      : `en ${year}`;
+
+    switch (primaryEvent.type) {
+      case "independencia-declarada":
+      case "independencia-consumada":
+        return `La ${label} de ${entityName} ocurrió el ${dateStr}. Ese momento fundacional quedó asociado al año del ${entityAnimal}.`;
+      case "fundacion":
+        return `${entityName} fue fundada ${dateStr}. Su origen quedó asociado al año del ${entityAnimal}.`;
+      case "incorporacion":
+        return `${entityName} se incorporó formalmente ${dateStr}. Esa fecha define su afinidad con el ${entityAnimal}.`;
+      case "creacion":
+        return `${entityName} fue creada ${dateStr}. Esa fecha de origen la vincula al ${entityAnimal}.`;
+      case "lanzamiento":
+        return `${entityName} se lanzó ${dateStr}. Su estreno la asocia al año del ${entityAnimal}.`;
+      case "cambio-nombre":
+        return `${entityName} adoptó su nombre actual ${dateStr}. Ese hito la vincula al ${entityAnimal}.`;
+      case "fecha-tradicional":
+        return `La ${label} de ${entityName} se sitúa tradicionalmente ${dateStr}. Esa fecha la asocia al ${entityAnimal}.`;
+      default:
+        return `${entityName} tuvo su ${label} ${dateStr}, origen que define su afinidad con el ${entityAnimal}.`;
+    }
+  }
+
+  // Fallback: use generic animal relation description
   const relation = getRelation(userAnimal as Animal, entityAnimal as Animal);
   if (!entityName) return relation.description;
 
@@ -205,7 +237,7 @@ export function calculateAffinityForAnimal(
     diff = Math.abs(ui - ei) % 12;
     score = getZodiacScore(userAnimal, entityAnimal);
     relationship = getRelationship(diff, userAnimal, entityAnimal);
-    explanation = getExplanation(diff, userAnimal, entityAnimal, entity.name);
+    explanation = getExplanation(diff, userAnimal, entityAnimal, entity.name, primaryEvent);
     tradition = getTradition(diff, userAnimal, entityAnimal);
   }
 
