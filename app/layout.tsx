@@ -9,7 +9,6 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import { SITE_URL } from "@/lib/seo";
-import { PostHogProvider } from "./providers/PostHogProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-display" });
@@ -123,9 +122,8 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body>
-        <PostHogProvider>
-          <a href="#main-content" className="skip-link">
+<body>
+         <a href="#main-content" className="skip-link">
             Saltar al contenido principal
           </a>
           <AnalyticsProvider />
@@ -149,7 +147,6 @@ export default function RootLayout({
               },
             }}
           />
-        </PostHogProvider>
       </body>
     </html>
   );

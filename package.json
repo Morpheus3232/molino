@@ -21,7 +21,6 @@
     "mercadopago": "^3.2.1",
     "next": "16.2.12",
     "ogl": "^1.0.11",
-    "posthog-js": "^1.407.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.10.0",

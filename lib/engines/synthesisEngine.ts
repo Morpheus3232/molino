@@ -255,7 +255,7 @@ function normalizeToThemeWords(phrase: string): string[] {
 }
 
 /** Tema (si existe) de la primera palabra de contenido de `phrase` que esté en THEME_BUCKETS. */
-function themeOfPhrase(phrase: string): string | undefined {
+export function themeOfPhrase(phrase: string): string | undefined {
   for (const word of normalizeToThemeWords(phrase)) {
     const theme = THEME_BUCKETS[word];
     if (theme) return theme;
@@ -270,7 +270,7 @@ function themeOfPhrase(phrase: string): string | undefined {
  * descripción de un YEAR_TYPES) — `themeOfPhrase` normaliza ambas por igual.
  * Sin este chequeo, `sources` sería una etiqueta asertada, no calculada.
  */
-function findSharedTheme(itemsA: string[], itemsB: string[]): { theme: string; wordA: string; wordB: string } | null {
+export function findSharedTheme(itemsA: string[], itemsB: string[]): { theme: string; wordA: string; wordB: string } | null {
   for (const a of itemsA) {
     const themeA = themeOfPhrase(a);
     if (!themeA) continue;
