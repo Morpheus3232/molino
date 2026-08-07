@@ -195,7 +195,7 @@ export default function InsightsContent() {
                       {yearResonance.label}
                     </span>
                     <span className="text-sm" style={{ color: yearResonance.color }}>
-                      {yearCycle.level >= 4 ? "Alta resonancia" : yearCycle.level >= 3 ? "Resonancia moderada" : "Baja resonancia"}
+                      {yearCycle.level >= 4 ? "Presencia marcada" : yearCycle.level >= 3 ? "Presencia moderada" : "Presencia sutil"}
                     </span>
                   </div>
                   <p className="text-sm text-foreground leading-relaxed mb-2">
@@ -291,9 +291,9 @@ export default function InsightsContent() {
 
               <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
-                  Encontramos <span className="font-medium">{recommendations.length} entidades</span> compatibles con tu perfil.
+                  Encontramos <span className="font-medium">{recommendations.length} entidades</span> con presencia en tu mapa.
                 </p>
-                <p className="text-xs text-muted mt-1">Marcas, destinos y más, rankeados por resonancia simbólica.</p>
+                <p className="text-xs text-muted mt-1">Marcas, destinos y más, ordenados por su presencia simbólica en tu mapa.</p>
               </motion.div>
 
               {yearResonance.type === "alignment" && (

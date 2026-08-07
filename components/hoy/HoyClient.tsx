@@ -399,7 +399,7 @@ export default function HoyClient() {
           )}
 
           <p className="text-sm mt-6">
-            <Link href="/decisions" className="text-accent hover:underline">
+            <Link href="/profile" className="text-accent hover:underline">
               {decisionCopy.cta} →
             </Link>
           </p>

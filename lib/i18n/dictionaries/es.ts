@@ -49,7 +49,7 @@ export const es = {
   // el idioma. Los colores de cada tier son tokens de diseño (no dependen
   // del locale) y viven en AFFINITY_TIER_COLORS, en affinityEngine.ts.
   affinityTiers: {
-    "resonancia-alta": { label: "Resonancia alta", description: "Patrones simbólicos fuertemente alineados" },
+    "resonancia-alta": { label: "Presencia marcada", description: "Patrones simbólicos fuertemente alineados" },
     "afinidad-media": { label: "Afinidad media", description: "Conexión moderada con puntos de interés compartidos" },
     "complementarios": { label: "Complementarios", description: "Diferentes pero que se enriquecen mutuamente" },
     "desafiante": { label: "Desafiante", description: "Tensión creativa que puede generar crecimiento" },

@@ -136,7 +136,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           {tripleResonance.length > 0 && (
             <RecommendationGroup
               key="triple"
-              title="Resonancia alta"
+              title="Alineación triple"
               subtitle="Tu signo, la entidad y el ciclo actual comparten la misma energía"
               recommendations={tripleResonance}
               accentColor="var(--color-accent)"
@@ -280,7 +280,7 @@ function RecommendationCard({
             </h3>
             {rec.isTripleResonance && (
               <span className="text-[9px] font-medium uppercase tracking-wider text-accent">
-                resonancia triple
+                triple alineación
               </span>
             )}
           </div>

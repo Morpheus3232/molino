@@ -21,7 +21,6 @@ export const primaryNavLinks: NavLink[] = [
 
 export const secondaryNavLinks: NavLink[] = [
   { href: "/timing", label: t.nav.timing },
-  { href: "/decisions", label: t.nav.decisiones },
   { href: "/evolution", label: t.nav.evolucion },
 ];
 
