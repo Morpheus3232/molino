@@ -20,7 +20,7 @@ export default function CountriesRecommendationPage() {
   return (
     <RecommendationContent
       entityType="country"
-      title="Destinos con resonancia"
+      title="Destinos con mayor presencia en tu mapa"
       subtitle="Qué destinos priorizar en el ciclo actual, según tu perfil simbólico."
     />
   );

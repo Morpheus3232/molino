@@ -92,7 +92,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             </p>
             {resonanceStats.total > 0 && (
               <p className="text-sm text-accent mt-5">
-                De las {resonanceStats.total} conexiones conocidas, tu {userDisplay.name.toLowerCase()} resuena con {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
+                De las {resonanceStats.total} conexiones conocidas, tu {userDisplay.name.toLowerCase()} tiene presencia en {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
               </p>
             )}
           </motion.div>
@@ -108,7 +108,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lo que más resuena</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lo que más presencia tiene en tu mapa</h2>
               </div>
             </motion.div>
             <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
@@ -154,10 +154,10 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Países que resuenan con vos</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lugares con mayor presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Estos países tienen mayor afinidad simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
+                Estos lugares tienen una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
               </p>
             </motion.div>
 
@@ -196,10 +196,10 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
+                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Marcas con presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Marcas con mayor afinidad simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.
+                Marcas con una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.
               </p>
             </motion.div>
 

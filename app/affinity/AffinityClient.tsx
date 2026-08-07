@@ -129,7 +129,7 @@ export default function AffinityHub() {
                         <div className="mt-4 pt-3">
                           {personalCount !== null ? (
                             <>
-                              <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">resuenan con tu perfil</span></p>
+                              <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">con presencia en tu mapa</span></p>
                               <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
                             </>
                           ) : (
