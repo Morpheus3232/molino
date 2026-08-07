@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
-        <main id="main-content">
+        <main id="main-content" className="pt-14">
           <NumeroDia />
           <TresPasos />
           <QueDescubris />
