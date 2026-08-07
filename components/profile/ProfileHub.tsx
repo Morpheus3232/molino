@@ -182,57 +182,70 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* ═══════════════════════════════════════════════
-          HERO — revelación, no ficha técnica.
-          Orden: apertura narrativa → arquetipo → contexto.
+          HERO — Dashboard visual, no novela.
+          Radar chart protagonista + datos concretos.
           ═══════════════════════════════════════════════ */}
-      <header className="relative overflow-hidden">
+      <header className="relative overflow-hidden border-b border-ink/10">
         <div
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse 70% 55% at 50% 15%, ${elementColor}16, transparent 72%)`,
+            background: `radial-gradient(ellipse 80% 60% at 50% 30%, ${elementColor}12, transparent 70%)`,
           }}
           aria-hidden="true"
         />
-        <div className="relative mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12 pt-24 sm:pt-36 pb-16 sm:pb-24">
+        <div className="relative mx-auto max-w-[1080px] px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-14 sm:pb-20">
+          {/* Eyebrow */}
           <motion.div {...heroItem(0)}>
-            <p className="label-micro text-muted">Mi mapa personal</p>
+            <p className="label-micro text-muted mb-10 sm:mb-14">Tu mapa personal</p>
           </motion.div>
 
-          <motion.div {...heroItem(0.15)} className="mt-14">
-            <p className="text-xl sm:text-2xl text-foreground/80 leading-relaxed max-w-[560px]">
-              {opening[0]}
-              <br />
-              {opening[1]}
-            </p>
-          </motion.div>
+          {/* Two-column: Radar chart left + Identity right */}
+          <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-16 items-center">
+            {/* Radar chart — el protagonista */}
+            <motion.div {...heroItem(0.15)} className="flex justify-center">
+              <MapVisualization profile={profile} className="w-80 h-80 sm:w-96 sm:h-96" />
+            </motion.div>
 
-          {/* Pausa visual: la pregunta prepara la revelación. */}
-          <motion.div {...heroItem(0.45)} className="mt-16">
-            <p className="text-base sm:text-lg italic text-muted leading-relaxed max-w-[520px]">
-              {question}
-            </p>
-          </motion.div>
+            {/* Identity block */}
+            <div className="text-center lg:text-left">
+              {/* Archetype — large, immediate */}
+              <motion.div {...heroItem(0.3)}>
+                <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] sm:text-[clamp(3rem,7vw,5.5rem)] tracking-tight text-foreground leading-[0.9] uppercase">
+                  {archetypeName}
+                </h1>
+              </motion.div>
 
-          {/* El momento: el arquetipo es la revelación. */}
-          <motion.div {...heroItem(0.8)} className="mt-16 sm:mt-20">
-            <h1 className="font-display text-[clamp(3rem,11vw,8rem)] tracking-tight text-foreground leading-[0.9] uppercase">
-              {archetypeName}
-            </h1>
-            <p className="mt-6 text-lg sm:text-xl italic text-foreground/75 leading-relaxed max-w-[520px]">
-              {essence}
-            </p>
-          </motion.div>
+              {/* Concrete data row */}
+              <motion.div {...heroItem(0.5)} className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#6B4C7A" }} />
+                  <span className="font-mono text-sm text-foreground tracking-wide">Camino de Vida {lifePath}</span>
+                </span>
+                <span className="text-ink/20">|</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#2E5C8A" }} />
+                  <span className="font-mono text-sm text-foreground tracking-wide">{profile.sunSign}</span>
+                </span>
+                <span className="text-ink/20">|</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#C49A2A" }} />
+                  <span className="font-mono text-sm text-foreground tracking-wide">{display.name} de {chineseElement}</span>
+                </span>
+              </motion.div>
 
-          <motion.div {...heroItem(1.1)} className="mt-10">
-            <p className="text-sm sm:text-base text-muted tracking-wide">
-              {display.name} de {chineseElement} · Camino de Vida {lifePath}
-            </p>
-          </motion.div>
+              {/* Essence — una línea, editorial */}
+              <motion.p {...heroItem(0.7)} className="mt-6 text-base sm:text-lg text-muted leading-relaxed max-w-lg italic">
+                {essence}
+              </motion.p>
 
-          {/* Visualización del mapa completa */}
-          <motion.div {...heroItem(1.3)} className="mt-10">
-            <MapVisualization profile={profile} className="w-72 h-72" />
-          </motion.div>
+              {/* Poetic opening — sutil, al fondo */}
+              <motion.div {...heroItem(0.9)} className="mt-8 pt-6 border-t border-ink/10">
+                <p className="text-sm text-muted/60 leading-relaxed max-w-md">
+                  {opening[0]} {opening[1]}
+                </p>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </header>
 
