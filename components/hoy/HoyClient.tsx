@@ -30,6 +30,7 @@ import { resolveUserContext } from "@/lib/context/userContext";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import TimingCalendar from "@/components/timing/TimingCalendar";
 import HoyBaseEnergy from "@/components/hoy/HoyBaseEnergy";
+import EnergyRing from "@/components/hoy/EnergyRing";
 import { getGenericDailyEnergy } from "@/lib/utils/daily-energy-utils";
 
 function getEnergyLevel(score: number): EnergyLevel {
@@ -99,34 +100,40 @@ export default function HoyClient() {
   const [streak, setStreak] = useState<{ days: number; orientation: Orientation } | null>(null);
   const [previousSnapshot, setPreviousSnapshot] = useState<DailySnapshot | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [calcFailed, setCalcFailed] = useState(false);
 
   useEffect(() => {
     if (!mounted || !profile) return;
-    const today = new Date();
-    const todayStr = toLocalDateKey(today);
-    const userCtx = resolveUserContext();
-    const energy = calculateDailyEnergy(profile, today);
-    const convergence = buildConvergence(profile);
-    const timing = analyzeTiming(profile, today, "start_project");
-    const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
-    const moment = buildOrientation(energy, momentState, timing);
-    const topAff = getTopAffinityHighlights(profile);
+    try {
+      const today = new Date();
+      const todayStr = toLocalDateKey(today);
+      const userCtx = resolveUserContext();
+      const energy = calculateDailyEnergy(profile, today);
+      const convergence = buildConvergence(profile);
+      const timing = analyzeTiming(profile, today, "start_project");
+      const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
+      const moment = buildOrientation(energy, momentState, timing);
+      const topAff = getTopAffinityHighlights(profile);
 
-    setDayState({ energy, convergence, timing, momentState, moment, topAffinities: topAff });
-    setPreviousSnapshot(getPreviousSnapshot(profile.birthDate, todayStr));
-    setStreak(computeStreak(profile.birthDate));
-    recordDailySnapshot({
-      date: todayStr,
-      profileKey: profile.birthDate,
-      orientation: getDecisionPosture(timing.timingScore),
-      energyLevel: getEnergyLevel(energy.overallScore),
-      theme: energy.theme,
-      overallScore: energy.overallScore,
-      personalDay: momentState.personalDay,
-    });
-    setSnapshotSaved(true);
-    const timeout = setTimeout(() => setSnapshotSaved(false), 2500);
-    return () => clearTimeout(timeout);
+      setDayState({ energy, convergence, timing, momentState, moment, topAffinities: topAff });
+      setPreviousSnapshot(getPreviousSnapshot(profile.birthDate, todayStr));
+      setStreak(computeStreak(profile.birthDate));
+      recordDailySnapshot({
+        date: todayStr,
+        profileKey: profile.birthDate,
+        orientation: getDecisionPosture(timing.timingScore),
+        energyLevel: getEnergyLevel(energy.overallScore),
+        theme: energy.theme,
+        overallScore: energy.overallScore,
+        personalDay: momentState.personalDay,
+      });
+      setSnapshotSaved(true);
+      const timeout = setTimeout(() => setSnapshotSaved(false), 2500);
+      return () => clearTimeout(timeout);
+    } catch (err) {
+      console.error("[Hoy] Error calculando el día:", err);
+      setCalcFailed(true);
+    }
   }, [profile, mounted]);
 
   const derived = useMemo(() => {
@@ -178,7 +185,7 @@ export default function HoyClient() {
   return (
     <div className="min-h-screen bg-background">
       <AnimatePresence mode="wait">
-        {loading || !mounted ? (
+        {loading || !mounted || (profile && !dayState && !calcFailed) ? (
           <motion.div
             key="loading"
             variants={transitionVariants}
@@ -215,7 +222,7 @@ export default function HoyClient() {
               id="main-content"
             >
               {/* ═══════════════════════════════════════════════
-                  01 · HERO — fecha, score, frase protagonista
+                  01 · HERO — fecha, anillo de energía, frase protagonista
                   ═══════════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -223,47 +230,73 @@ export default function HoyClient() {
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
-                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+                <nav className="flex items-center gap-2 text-xs text-muted mb-8" aria-label="Breadcrumb">
                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
                   <span aria-hidden="true">›</span>
                   <span className="text-foreground font-medium">Hoy</span>
                 </nav>
 
-                <p className="eyebrow-brutalist mb-4">TU DÍA · {dateLabel}</p>
-                <p
-                  className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-[0.9]"
-                  style={{ color: scoreStyle }}
-                >
-                  {getScoreLabel(energy.overallScore)}
-                </p>
-                <p className="text-xs text-muted mt-3">
-                  {energy.theme} · Luna {energy.moonPhase.phase}
-                </p>
-                <p className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed max-w-2xl mt-6">
-                  {energy.description}
-                </p>
-                <p className="text-sm text-accent mt-4 max-w-xl">
-                  {buildContinuityLine(previousSnapshot, energy.theme, energy.overallScore)}
-                </p>
-                {streak && streak.days >= 2 && (
-                  <p className="text-xs text-muted mt-2">
-                    Continuidad: {streak.days} días en postura de{" "}
-                    <span className="font-medium text-foreground">{streak.orientation.toLowerCase()}</span>.
-                  </p>
-                )}
-                <AnimatePresence>
-                  {snapshotSaved && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="text-xs text-muted mt-4"
+                <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-center">
+                  {/* Anillo de energía */}
+                  <div className="flex justify-center md:justify-start">
+                    <EnergyRing score={energy.overallScore} label="energía" />
+                  </div>
+
+                  {/* Score + frase */}
+                  <div>
+                    <p className="eyebrow-brutalist mb-3">TU DÍA · {dateLabel}</p>
+                    <p
+                      className="text-5xl sm:text-6xl font-display font-bold tracking-tight leading-[0.9]"
+                      style={{ color: scoreStyle }}
                     >
-                      Tu día quedó registrado.
-                    </motion.p>
-                  )}
-                </AnimatePresence>
+                      {getScoreLabel(energy.overallScore)}
+                    </p>
+                    <p className="text-sm text-muted mt-3">
+                      {energy.theme} · Luna {energy.moonPhase.phase} {energy.moonPhase.emoji}
+                    </p>
+                    <p className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed max-w-2xl mt-6">
+                      {energy.description}
+                    </p>
+                    <p className="text-sm text-accent mt-4 max-w-xl">
+                      {buildContinuityLine(previousSnapshot, energy.theme, energy.overallScore)}
+                    </p>
+                    {streak && streak.days >= 2 && (
+                      <p className="text-xs text-muted mt-2">
+                        Continuidad: {streak.days} días en postura de{" "}
+                        <span className="font-medium text-foreground">{streak.orientation.toLowerCase()}</span>.
+                      </p>
+                    )}
+                    <AnimatePresence>
+                      {snapshotSaved && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-xs text-muted mt-4"
+                        >
+                          Tu día quedó registrado.
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Micro-stats concretas */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10 border border-ink/10 mt-12">
+                  {[
+                    { label: "Día personal", value: energy.personalDay, sub: `Año ${energy.personalYear}` },
+                    { label: "Tema", value: energy.theme, sub: energy.elementInfluence },
+                    { label: "Luna", value: energy.moonPhase.phase, sub: "Sincronía lunar" },
+                    { label: "Ventana", value: timing.recommendedWindow, sub: "Timing hoy" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="bg-background p-4 sm:p-5">
+                      <p className="label-micro text-muted mb-1">{stat.label}</p>
+                      <p className="font-heading text-lg sm:text-xl text-foreground leading-tight">{stat.value}</p>
+                      {stat.sub && <p className="text-xs text-muted mt-1">{stat.sub}</p>}
+                    </div>
+                  ))}
+                </div>
               </motion.div>
 
               {/* ═══════════════════════════════════════════════
@@ -317,7 +350,7 @@ export default function HoyClient() {
               </motion.div>
 
               {/* ═══════════════════════════════════════════════
-                  03 · QUÉ HACE TU ENERGÍA — favorece / observar / momento
+                  03 · QUÉ HACE TU ENERGÍA — áreas + favorece / observar
                   ═══════════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
@@ -326,6 +359,35 @@ export default function HoyClient() {
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
                 <p className="eyebrow-brutalist mb-6">Lectura del día</p>
+
+                {/* Áreas con barras */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6 mb-10">
+                  {Object.entries(energy.areas).map(([key, area]) => {
+                    const areaLabel =
+                      key === "work" ? "Trabajo"
+                        : key === "relationships" ? "Relaciones"
+                          : key === "creativity" ? "Creatividad"
+                            : key === "decisions" ? "Decisiones"
+                              : key;
+                    return (
+                      <div key={key}>
+                        <div className="flex items-center justify-between gap-4 mb-1.5">
+                          <p className="text-sm text-muted">{areaLabel}</p>
+                          <p className="font-mono text-xs text-foreground">{area.score}% · {area.label}</p>
+                        </div>
+                        <div className="h-1.5 bg-ink/10 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${area.score}%` }}
+                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            className="h-full rounded-full"
+                            style={{ backgroundColor: area.score >= 60 ? "var(--score-excellent)" : area.score >= 45 ? "var(--score-good)" : "var(--score-poor)" }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
 
                 <div className="space-y-6">
                   <div>
