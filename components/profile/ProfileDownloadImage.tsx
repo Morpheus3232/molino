@@ -15,55 +15,47 @@ interface ProfileDownloadImageProps {
   profile: UserProfile;
 }
 
-const CARD_WIDTH = 620;
+const W = 620;
 
-const COLORS = {
+const C = {
   bg: "#0A0A0C",
-  card: "#101013",
+  card: "#111114",
   ink: "#F3F1EA",
-  muted: "#A6A69C",
-  faint: "rgba(243, 241, 234, 0.08)",
-  rule: "1px solid rgba(243, 241, 234, 0.08)",
+  muted: "#8A8880",
+  dim: "rgba(243,241,234,0.06)",
+  rule: "1px solid rgba(243,241,234,0.07)",
   accent: "#7C8CFF",
-  num: "#6B4C7A",
-  ast: "#2E5C8A",
-  zod: "#C49A2A",
+  num: "#8B6FA0",
+  ast: "#5A8AB4",
+  zod: "#D4A843",
 };
 
-const SYSTEM = [
-  { key: "num", label: "Numerología", color: COLORS.num },
-  { key: "ast", label: "Astrología", color: COLORS.ast },
-  { key: "zod", label: "Zodíaco chino", color: COLORS.zod },
+const SYSTEMS = [
+  { key: "num", label: "NUMEROLOGÍA", color: C.num },
+  { key: "ast", label: "ASTROLOGÍA", color: C.ast },
+  { key: "zod", label: "ZODÍACO CHINO", color: C.zod },
 ];
 
-function Stat({ label, value, color }: { label: string; value: string | number; color?: string }) {
+function S({ l, v, c }: { l: string; v: string | number; c?: string }) {
   return (
-    <div style={{ padding: "9px 0", borderBottom: COLORS.rule }}>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.18em", textTransform: "uppercase", color: COLORS.muted, margin: 0 }}>
-        {label}
-      </p>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "15px", fontWeight: 600, color: color || COLORS.ink, margin: "3px 0 0 0" }}>
-        {value}
-      </p>
+    <div style={{ padding: "5px 0", borderBottom: C.rule, display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
+      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9px", letterSpacing: "0.16em", textTransform: "uppercase", color: C.muted }}>{l}</span>
+      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", fontWeight: 600, color: c || C.ink, textAlign: "right" }}>{v}</span>
     </div>
   );
 }
 
-function ListBlock({ title, items, color }: { title: string; items: string[]; color?: string }) {
+function List({ t, items, c }: { t: string; items: string[]; c?: string }) {
   if (!items.length) return null;
   return (
-    <div style={{ marginTop: "24px" }}>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase", color: color || COLORS.muted, margin: "0 0 10px 0" }}>
-        {title}
-      </p>
-      <div>
-        {items.map((item, i) => (
-          <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontSize: "14px", lineHeight: "1.65", color: "#D6D4CC", margin: "0 0 6px 0", paddingLeft: "14px", position: "relative" }}>
-            <span style={{ position: "absolute", left: 0, color: COLORS.accent }}>·</span>
-            {item}
-          </p>
-        ))}
-      </div>
+    <div style={{ marginBottom: "12px" }}>
+      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.22em", textTransform: "uppercase", color: c || C.muted, margin: "0 0 6px 0", fontWeight: 600 }}>{t}</p>
+      {items.map((item, i) => (
+        <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontSize: "11px", lineHeight: "1.55", color: "#C0BEB8", margin: "0 0 3px 0", paddingLeft: "10px", position: "relative" }}>
+          <span style={{ position: "absolute", left: 0, color: C.accent, fontSize: "8px", top: "2px" }}>—</span>
+          {item}
+        </p>
+      ))}
     </div>
   );
 }
@@ -78,11 +70,7 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
     const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
     const archetypeData = ARCHETYPES[lifePath];
     const birthDate = profile.birthDate
-      ? new Date(profile.birthDate + "T00:00:00").toLocaleDateString("es-AR", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })
+      ? new Date(profile.birthDate + "T00:00:00").toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })
       : "";
     const strengths = profile.recommendations?.strengths || [];
     const challenges = profile.recommendations?.challenges || [];
@@ -91,13 +79,7 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
     const renderPng = useCallback(async (): Promise<string> => {
       if (!cardRef.current) return "";
       const { toPng } = await import("html-to-image");
-      return toPng(cardRef.current, {
-        quality: 1,
-        pixelRatio: 3,
-        cacheBust: true,
-        backgroundColor: COLORS.bg,
-        width: CARD_WIDTH,
-      });
+      return toPng(cardRef.current, { quality: 1, pixelRatio: 3, cacheBust: true, backgroundColor: C.bg, width: W });
     }, []);
 
     const download = useCallback(async () => {
@@ -119,161 +101,108 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
     useImperativeHandle(ref, () => ({ download }), [download]);
 
     return (
-      <>
-        {/* Card invisible fuera de pantalla — se captura con html-to-image */}
-        <div aria-hidden="true" style={{ position: "fixed", left: -9999, top: 0, pointerEvents: "none", zIndex: -1 }}>
-          <div
-            ref={cardRef}
-            style={{
-              width: CARD_WIDTH,
-              background: COLORS.bg,
-              color: COLORS.ink,
-              fontFamily: "'Inter', sans-serif",
-              lineHeight: 1.6,
-              WebkitFontSmoothing: "antialiased",
-            }}
-          >
-            {/* Branding */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "22px 26px",
-                borderBottom: COLORS.rule,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke={COLORS.ink} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="11" y1="30" x2="14.5" y2="13" />
-                  <line x1="21" y1="30" x2="17.5" y2="13" />
-                  <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" />
-                  <line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" />
-                  <line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
-                  <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
-                  <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" />
-                  <path d="M24 6 L24 11 L27 8.5 Z" fill={COLORS.ink} stroke="none" opacity="0.7" />
-                  <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
-                  <line x1="16" y1="8.5" x2="20.5" y2="8.5" strokeWidth="0.65" />
-                  <line x1="16" y1="8.5" x2="18.36" y2="12.57" strokeWidth="0.65" />
-                  <line x1="16" y1="8.5" x2="13.64" y2="12.57" strokeWidth="0.65" />
-                  <line x1="16" y1="8.5" x2="11.5" y2="8.5" strokeWidth="0.65" />
-                  <line x1="16" y1="8.5" x2="13.64" y2="4.43" strokeWidth="0.65" />
-                  <line x1="16" y1="8.5" x2="18.36" y2="4.43" strokeWidth="0.65" />
-                  <circle cx="16" cy="8.5" r="1" fill={COLORS.ink} stroke="none" />
-                </svg>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase", color: COLORS.ink }}>
-                  Molino
-                </span>
-              </div>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.muted }}>
-                Tu mapa personal
-              </span>
+      <div aria-hidden="true" style={{ position: "fixed", left: -9999, top: 0, pointerEvents: "none", zIndex: -1 }}>
+        <div
+          ref={cardRef}
+          style={{
+            width: W,
+            background: C.bg,
+            color: C.ink,
+            fontFamily: "'Inter', sans-serif",
+            lineHeight: 1.5,
+            WebkitFontSmoothing: "antialiased",
+          }}
+        >
+          {/* Header */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", borderBottom: C.rule, background: C.card }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke={C.ink} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="11" y1="30" x2="14.5" y2="13" /><line x1="21" y1="30" x2="17.5" y2="13" />
+                <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" /><line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" /><line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
+                <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
+                <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" /><path d="M24 6 L24 11 L27 8.5 Z" fill={C.ink} stroke="none" opacity="0.7" />
+                <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
+                <circle cx="16" cy="8.5" r="1" fill={C.ink} stroke="none" />
+              </svg>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.28em", textTransform: "uppercase", color: C.ink, fontWeight: 500 }}>Molino</span>
             </div>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: C.muted }}>Tu mapa personal</span>
+          </div>
 
-            {/* Hero */}
-            <div style={{ padding: "30px 26px 26px" }}>
-              <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: COLORS.muted, margin: "0 0 10px 0" }}>
-                {zodiacDisplay.emoji} {zodiacDisplay.name} de {profile.chineseZodiacInfo?.element || ""} · {symbol} {profile.sunSign}
+          {/* Hero — Archetype */}
+          <div style={{ padding: "20px 24px 14px" }}>
+            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: C.muted, margin: "0 0 6px 0" }}>
+              {zodiacDisplay.emoji} {zodiacDisplay.name} de {profile.chineseZodiacInfo?.element || ""} · {symbol} {profile.sunSign}
+            </p>
+            <h2 style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: "38px", lineHeight: 0.92, letterSpacing: "-0.02em", textTransform: "uppercase", color: C.ink, margin: 0 }}>
+              {archetypeData?.name || profile.archetype}
+            </h2>
+            {archetypeData?.quote && (
+              <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "13px", fontStyle: "italic", lineHeight: 1.5, color: C.muted, margin: "8px 0 0 0" }}>
+                &ldquo;{archetypeData.quote}&rdquo;
               </p>
-              <h2
-                style={{
-                  fontFamily: "'Archivo Black', sans-serif",
-                  fontSize: "44px",
-                  lineHeight: 0.95,
-                  letterSpacing: "-0.02em",
-                  textTransform: "uppercase",
-                  color: COLORS.ink,
-                  margin: 0,
-                }}
-              >
-                {archetypeData?.name || profile.archetype}
-              </h2>
-              {archetypeData?.quote && (
-                <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "16px", fontStyle: "italic", lineHeight: 1.6, color: "#B4B2AA", margin: "14px 0 0 0", maxWidth: "520px" }}>
-                  “{archetypeData.quote}”
-                </p>
-              )}
-            </div>
+            )}
+          </div>
 
-            {/* Sistemas */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "12px",
-                padding: "0 26px 26px",
-              }}
-            >
-              {SYSTEM.map((sys) => {
-                const stats: { label: string; value: string | number }[] =
-                  sys.key === "num"
+          {/* Divider */}
+          <div style={{ margin: "0 24px", height: 1, background: C.dim }} />
+
+          {/* Systems — 3 columns, compact */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", padding: "10px 24px 14px" }}>
+            {SYSTEMS.map((sys) => {
+              const stats: { l: string; v: string | number }[] =
+                sys.key === "num"
+                  ? [
+                      { l: "Camino", v: lifePath },
+                      { l: "Expresión", v: profile.expressionNumber ?? "—" },
+                      { l: "Alma", v: profile.soulNumber ?? "—" },
+                      { l: "Personalidad", v: profile.personalityNumber ?? "—" },
+                      { l: "Suerte", v: profile.luckyNumber ?? "—" },
+                    ]
+                  : sys.key === "ast"
                     ? [
-                        { label: "Camino de vida", value: lifePath },
-                        { label: "Expresión", value: profile.expressionNumber ?? "—" },
-                        { label: "Alma", value: profile.soulNumber ?? "—" },
-                        { label: "Personalidad", value: profile.personalityNumber ?? "—" },
-                        { label: "Suerte", value: profile.luckyNumber ?? "—" },
+                        { l: "Signo", v: `${symbol} ${profile.sunSign}` },
+                        { l: "Elemento", v: profile.sunSignInfo?.element || "—" },
+                        { l: "Modalidad", v: profile.sunSignInfo?.modality || "—" },
+                        { l: "Año pers.", v: profile.cycles?.personalYear ?? "—" },
+                        { l: "Mes pers.", v: profile.cycles?.personalMonth ?? "—" },
                       ]
-                    : sys.key === "ast"
-                      ? [
-                          { label: "Signo solar", value: `${symbol} ${profile.sunSign}` },
-                          { label: "Elemento", value: profile.sunSignInfo?.element || "—" },
-                          { label: "Modalidad", value: profile.sunSignInfo?.modality || "—" },
-                          { label: "Año personal", value: profile.cycles?.personalYear ?? "—" },
-                          { label: "Mes personal", value: profile.cycles?.personalMonth ?? "—" },
-                        ]
-                      : [
-                          { label: "Animal", value: `${zodiacDisplay.emoji} ${zodiacDisplay.name}` },
-                          { label: "Elemento", value: profile.chineseZodiacInfo?.element || "—" },
-                          { label: "Año", value: profile.birthDate?.split("-")[0] || "—" },
-                        ];
-                return (
-                  <div key={sys.key} style={{ background: COLORS.card, border: COLORS.rule, borderLeft: `3px solid ${sys.color}`, padding: "14px 14px 6px" }}>
-                    <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase", color: sys.color, fontWeight: 600, margin: "0 0 8px 0" }}>
-                      {sys.label}
-                    </p>
-                    {stats.map((s) => (
-                      <Stat key={s.label} label={s.label} value={s.value} />
-                    ))}
-                  </div>
-                );
-              })}
-            </div>
+                    : [
+                        { l: "Animal", v: `${zodiacDisplay.emoji} ${zodiacDisplay.name}` },
+                        { l: "Elemento", v: profile.chineseZodiacInfo?.element || "—" },
+                        { l: "Año", v: profile.birthDate?.split("-")[0] || "—" },
+                      ];
+              return (
+                <div key={sys.key} style={{ background: C.card, borderLeft: `3px solid ${sys.color}`, padding: "8px 10px 4px" }}>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: sys.color, fontWeight: 600, margin: "0 0 4px 0" }}>{sys.label}</p>
+                  {stats.map((s) => <S key={s.l} l={s.l} v={s.v} />)}
+                </div>
+              );
+            })}
+          </div>
 
-            {/* Recomendaciones */}
-            <div style={{ padding: "0 26px 30px", borderTop: COLORS.rule, marginTop: "4px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 28px", marginTop: "20px" }}>
-                <ListBlock title="Fortalezas" items={strengths} color={COLORS.num} />
-                <ListBlock title="Desafíos" items={challenges} color={COLORS.ast} />
-              </div>
-              <ListBlock title="Prácticas recomendadas" items={practices} color={COLORS.zod} />
-            </div>
+          {/* Divider */}
+          <div style={{ margin: "0 24px", height: 1, background: C.dim }} />
 
-            {/* Footer */}
-            <div
-              style={{
-                borderTop: COLORS.rule,
-                padding: "16px 26px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.1em", color: COLORS.muted }}>
-                {birthDate}
-              </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.12em", color: COLORS.muted }}>
-                molino.app · Sin registro · Sin cookies
-              </span>
-            </div>
+          {/* Recommendations — 2 col */}
+          <div style={{ padding: "10px 24px 6px", display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 20px" }}>
+            <List t="Fortalezas" items={strengths} c={C.num} />
+            <List t="Desafíos" items={challenges} c={C.ast} />
+          </div>
+          <div style={{ padding: "0 24px 12px" }}>
+            <List t="Prácticas recomendadas" items={practices} c={C.zod} />
+          </div>
+
+          {/* Footer */}
+          <div style={{ borderTop: C.rule, padding: "10px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: C.card }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.1em", color: C.muted }}>{birthDate}</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.1em", color: C.muted }}>molino.app · Sin registro · Sin cookies</span>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 );
 
 ProfileDownloadImage.displayName = "ProfileDownloadImage";
-
 export default ProfileDownloadImage;
