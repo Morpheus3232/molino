@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Logo from "@/components/ui/Logo";
 
-const MIN_DISPLAY_MS = 2200;
-const FADE_MS = 700;
+const MIN_DISPLAY_MS = 1800;
+const FADE_MS = 500;
 const SESSION_KEY = "molino-intro-seen";
 
 /**
@@ -85,12 +85,15 @@ export default function SiteIntro() {
                 left: "-25%",
                 width: `${18 + i * 3}%`,
               }}
-              animate={{ x: ["0vw", "130vw"], opacity: [0, 0.7, 0] }}
+              animate={{
+                x: ["0vw", "130vw"],
+                opacity: [0, 0.7, 0, 0.5, 0],
+              }}
               transition={{
-                duration: 2.6 + i * 0.6,
+                duration: 1.8 + i * 0.4,
                 repeat: Infinity,
-                delay: i * 0.45,
-                ease: "linear",
+                delay: i * 0.3,
+                ease: [0.25, 0.1, 0.25, 1],
               }}
             />
           ))}
@@ -100,12 +103,12 @@ export default function SiteIntro() {
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="relative flex flex-col items-center gap-8"
         >
           <motion.div
-            animate={{ rotate: [0, 6, 0, -6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ rotate: [0, 4, 0, -4, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
             className="relative"
           >
             <Logo wind className="w-32 h-32 sm:w-40 sm:h-40 text-ink" />
@@ -115,6 +118,35 @@ export default function SiteIntro() {
               style={{ background: "radial-gradient(circle, var(--color-accent), transparent 70%)" }}
               aria-hidden="true"
             />
+            {/* Partículas de viento pasando por las aspas */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none -z-10"
+              aria-hidden="true"
+            >
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 rounded-full bg-ink/20"
+                  style={{
+                    left: `${35 + i * 5}%`,
+                    top: `${45 + (i % 2) * 8}%`,
+                  }}
+                  initial={{ opacity: 0, scale: 0.3 }}
+                  animate={{
+                    x: ["-10px", "20px"],
+                    y: ["0", "-5px", "0"],
+                    opacity: [0, 0.5, 0.2, 0],
+                    scale: [0.3, 1, 0.5],
+                  }}
+                  transition={{
+                    duration: 1.2 + i * 0.15,
+                    repeat: Infinity,
+                    delay: i * 0.2,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                />
+              ))}
+            </motion.div>
           </motion.div>
 
           <div className="text-center">
@@ -134,7 +166,7 @@ export default function SiteIntro() {
             className="h-full bg-accent"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
-            transition={{ duration: MIN_DISPLAY_MS / 1000, ease: "easeInOut" }}
+            transition={{ duration: MIN_DISPLAY_MS / 1000, ease: [0.25, 0.1, 0.25, 1] }}
           />
         </motion.div>
       </motion.div>

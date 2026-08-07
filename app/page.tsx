@@ -5,7 +5,6 @@ const NumeroDia = dynamic(() => import("@/components/sections/NumeroDia"), { ssr
 const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const QueMapa = dynamic(() => import("@/components/sections/QueMapa"), { ssr: true, loading: () => <div className="h-96 animate-pulse bg-ink/5" /> });
 const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true, loading: () => <div className="h-48 animate-pulse bg-ink/5" /> });
 const Testimonial = dynamic(() => import("@/components/social/Testimonial"), { ssr: true });
 const TrustMetrics = dynamic(() => import("@/components/social/TrustMetrics"), { ssr: true });
@@ -20,7 +19,6 @@ export default function Home() {
           <TresPasos />
           <QueDescubris />
           <TresSistemas />
-          <QueMapa />
           <Testimonial />
           <TrustMetrics />
           <CTAFinal />
