@@ -12,6 +12,8 @@ interface ZodiacMarkProps {
   showLabel?: boolean;
   /** Si es true, oculta el número de posición del ciclo (1-12). */
   hidePosition?: boolean;
+  /** Modo: "ring" (anillo con posición) o "emoji" (emoji grande + posición sutil) */
+  variant?: "ring" | "emoji";
   className?: string;
 }
 
@@ -32,54 +34,73 @@ const SIZE_MAP = {
  * Una sola familia visual para los 12 animales: mismo anillo, misma
  * tipografía, solo cambian el número, el ángulo del tick y el color.
  */
-export default function ZodiacMark({ animal, color, size = "md", showLabel = true, hidePosition = false, className = "" }: ZodiacMarkProps) {
+export default function ZodiacMark({ animal, color, size = "md", showLabel = true, hidePosition = false, variant = "ring", className = "" }: ZodiacMarkProps) {
   const position = getZodiacPosition(animal);
   const display = getZodiacDisplay(animal);
   const { box, ring, number, label } = SIZE_MAP[size];
-  const angle = position ? ((position - 1) / 12) * 360 - 90 : -90;
+  const angle = position ? ((position - 1) * 30 - 90) * (Math.PI / 180) : 0;
+
+  // For emoji variant at large sizes, use the emoji as protagonist
+  const useEmoji = variant === "emoji" && size === "xl";
 
   return (
-    <div className={`inline-flex flex-col items-center ${className}`}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="relative rounded-full flex items-center justify-center shrink-0"
-        style={{
-          width: box,
-          height: box,
-          border: `${ring}px solid color-mix(in srgb, ${color} 35%, transparent)`,
-        }}
-        aria-hidden="true"
+    <div className={`flex flex-col items-center ${className}`}>
+      <div
+        className="relative flex items-center justify-center rounded-full overflow-hidden"
+        style={{ width: box, height: box }}
+        role="img"
+        aria-label={`${display.name} — posición ${position} del ciclo`}
       >
-        {/* Tick de posición sobre el anillo */}
-        {position > 0 && (
-          <span
-            className="absolute rounded-full"
-            style={{
-              width: box * 0.06,
-              height: box * 0.06,
-              backgroundColor: color,
-              top: "50%",
-              left: "50%",
-              transform: `rotate(${angle}deg) translate(${box / 2}px) rotate(${-angle}deg) translate(-50%, -50%)`,
-            }}
-          />
-        )}
-        {hidePosition ? (
-          <span className={`font-display leading-none tracking-tight ${number}`} style={{ color }}>
-            {display.emoji}
-          </span>
+        {useEmoji ? (
+          <span className="text-[120px] leading-none" aria-hidden="true">{display.emoji}</span>
         ) : (
-          <span className={`font-display leading-none tracking-tight ${number}`} style={{ color }}>
-            {position || "—"}
-          </span>
+          <>
+            <svg className="absolute inset-0" viewBox="0 0 100 100" aria-hidden="true">
+              <circle
+                cx="50"
+                cy="50"
+                r={50 - ring}
+                fill="none"
+                stroke="var(--color-ink)"
+                strokeWidth={ring}
+                opacity={0.08}
+              />
+              {position && !hidePosition && (
+                <line
+                  x1="50"
+                  y1="50"
+                  x2={50 + (50 - ring) * Math.cos(angle)}
+                  y2={50 + (50 - ring) * Math.sin(angle)}
+                  stroke={color}
+                  strokeWidth={ring * 0.8}
+                  strokeLinecap="round"
+                />
+              )}
+            </svg>
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center justify-center w-full h-full"
+            >
+              <span className={number} style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}>
+                {position ?? "?"}
+              </span>
+            </motion.div>
+          </>
         )}
-      </motion.div>
+      </div>
+
       {showLabel && (
-        <p className={`font-mono uppercase tracking-[0.2em] text-muted font-medium ${label}`}>
+        <motion.p
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.3 }}
+          className={label}
+        >
           {display.name}
-        </p>
+        </motion.p>
       )}
     </div>
   );

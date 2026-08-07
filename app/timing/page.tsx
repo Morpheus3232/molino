@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +13,7 @@ import Link from "next/link";
 import { getScoreLabel } from "@/lib/utils/score";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { formatDate } from "@/lib/i18n/format";
+import BestDatesTimeline from "@/components/timing/BestDatesTimeline";
 
 const INTENTIONS: { id: TimingIntention; label: string; icon: any }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: Rocket },
@@ -265,26 +264,24 @@ export default function TimingPage() {
                   )}
 
                   {bestDates.length > 0 && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8">
-                      <p className="eyebrow-brutalist mb-6">Mejores fechas (próximos 14 días)</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
-                        {bestDates.map((date, i) => (
-                          <div
-                            key={i}
-                            className="bg-background p-6"
-                          >
-                            <div className="flex items-center justify-between mb-2">
-                              <p className="font-display text-base text-foreground">
-                                {formatDate(new Date(date.date + 'T12:00:00'), { weekday: 'short', day: 'numeric', month: 'short' })}
-                              </p>
-                              <span className="text-xs uppercase tracking-[0.1em] font-semibold" style={{ color: elementColor }}>
-                                {getScoreLabel(date.timingScore)}
-                              </span>
-                            </div>
-                            <p className="text-sm text-muted">{date.theme}</p>
-                          </div>
-                        ))}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.15 }}
+                      className="mt-10"
+                    >
+                      <div className="flex items-center justify-between mb-6">
+                        <p className="eyebrow-brutalist">Mejores fechas — próximos 14 días</p>
+                        <span className="text-xs text-muted">
+                          Para: {INTENTION_LABELS[selectedIntention]}
+                        </span>
                       </div>
+                      <BestDatesTimeline
+                        dates={bestDates}
+                        elementColor={elementColor}
+                        intentionLabel={INTENTION_LABELS[selectedIntention]}
+                        maxVisible={7}
+                      />
                     </motion.div>
                   )}
 
