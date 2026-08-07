@@ -18,9 +18,7 @@ export const primaryNavLinks: NavLink[] = [
 ];
 
 export const secondaryNavLinks: NavLink[] = [
-  { href: "/timing", label: t.nav.timing },
   { href: "/decisions", label: t.nav.decisiones },
-  { href: "/evolution", label: t.nav.evolucion },
 ];
 
 export const knowledgeNavLinks: NavLink[] = [
@@ -40,9 +38,7 @@ export const footerColumns: FooterColumn[] = [
       { href: "/", label: "INICIO" },
       { href: "/profile", label: "MI MAPA" },
       { href: "/hoy", label: "ENERGÍA DE HOY" },
-      { href: "/timing", label: "TIMING" },
       { href: "/affinity", label: "AFINIDAD" },
-      { href: "/evolution", label: "MI EVOLUCIÓN" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },
     ],
