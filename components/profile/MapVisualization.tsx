@@ -48,7 +48,10 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
   const scores = useMemo(() => getSystemScores(profile), [profile]);
   const display = getZodiacDisplay(profile.chineseZodiac);
   const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
-  const center = 96;
+
+  // Expanded viewBox: 260x260 gives 35px padding on each side of the 190-pixel chart area
+  const vbSize = 260;
+  const center = vbSize / 2; // 130
   const maxRadius = 70;
   const sides = 3;
 
@@ -67,8 +70,13 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
   });
 
   return (
-    <div className={`relative w-64 h-64 mx-auto ${className}`} role="img" aria-label="Visualización de tu mapa personal con tres sistemas">
-      <svg viewBox="0 0 192 192" className="w-full h-full">
+    <div
+      className={`relative mx-auto ${className}`}
+      role="img"
+      aria-label="Visualización de tu mapa personal con tres sistemas"
+      style={{ aspectRatio: "1 / 1" }}
+    >
+      <svg viewBox={`0 0 ${vbSize} ${vbSize}`} className="w-full h-full" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#6B4C7A" stopOpacity="0.3" />
@@ -77,16 +85,16 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
         </defs>
 
         {/* Grid lines */}
-        <g stroke="currentColor" strokeOpacity="0.1" strokeWidth="1" fill="none">
+        <g stroke="currentColor" strokeOpacity="0.08" strokeWidth="1" fill="none">
           {gridPaths.map((path, i) => (
             <path key={i} d={path + " Z"} />
           ))}
         </g>
 
         {/* Axis lines */}
-        <g stroke="currentColor" strokeOpacity="0.15" strokeWidth="1" fill="none">
-          {gridPoints.map((p) => (
-            <line key={p.x} x1={center} y1={center} x2={p.x} y2={p.y} />
+        <g stroke="currentColor" strokeOpacity="0.12" strokeWidth="1" fill="none">
+          {gridPoints.map((p, i) => (
+            <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} />
           ))}
         </g>
 
@@ -95,7 +103,7 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
           d={scorePath + " Z"}
           fill="url(#scoreGradient)"
           stroke="#6B4C7A"
-          strokeOpacity="0.5"
+          strokeOpacity="0.4"
           strokeWidth="1.5"
         />
 
@@ -105,18 +113,30 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
           fill="none"
           stroke="#6B4C7A"
           strokeWidth="2"
-          strokeOpacity="0.8"
+          strokeOpacity="0.7"
         />
 
-        {/* Axis labels */}
-        <g fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.6" textAnchor="middle" dominantBaseline="middle">
+        {/* Score dots */}
+        {scorePoints.map((p, i) => (
+          <circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r="3"
+            fill={SYSTEM_LABELS[i].color}
+            opacity="0.9"
+          />
+        ))}
+
+        {/* Axis labels — positioned well outside the grid */}
+        <g fontSize="8" fontFamily="'JetBrains Mono', monospace" textAnchor="middle" dominantBaseline="middle">
           {SYSTEM_LABELS.map((system, i) => {
             const angle = -Math.PI / 2 + (i * 2 * Math.PI) / sides;
-            const labelRadius = maxRadius + 18;
+            const labelRadius = maxRadius + 22;
             const x = center + labelRadius * Math.cos(angle);
             const y = center + labelRadius * Math.sin(angle);
             return (
-              <text key={system.key} x={x} y={y} fill={system.color} fontWeight="600">
+              <text key={system.key} x={x} y={y} fill={system.color} fontWeight="600" opacity="0.8">
                 {system.label}
               </text>
             );
@@ -125,19 +145,21 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
       </svg>
 
       {/* Center content */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-        <p className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none w-[70%]">
+        <p className="font-display text-lg sm:text-xl lg:text-2xl font-bold tracking-tight text-foreground leading-tight">
           {profile.archetype}
         </p>
-        <div className="flex items-center justify-center gap-3 mt-2 text-sm text-muted">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-2 text-xs sm:text-sm text-muted">
           <span className="flex items-center gap-1">
-            <span style={{ color: "#6B4C7A" }}>{profile.lifePath}</span>
-            <span>·</span>
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#6B4C7A" }} />
+            <span>{profile.lifePath}</span>
           </span>
+          <span className="text-ink/20">·</span>
           <span className="flex items-center gap-1">
             {symbol}
             <span>{profile.sunSign}</span>
           </span>
+          <span className="text-ink/20">·</span>
           <span className="flex items-center gap-1">
             <span role="img" aria-label={display.name}>{display.emoji}</span>
             <span>{display.name}</span>
