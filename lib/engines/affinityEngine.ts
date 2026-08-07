@@ -97,18 +97,20 @@ function getRelationship(_diff: number, userAnimal: string, entityAnimal: string
 /**
  * Detailed explanation of the relationship, naming the entity.
  *
- * Composes a relational insight from the entity's specific identity and
- * the animal pair — never uses generic template phrases like
- * "comparte tu energía".  Each output sentence names the entity, both
- * animals, and the relation type in a way that feels specific to that
- * particular pair.
+ * Composes a unique explanation by combining:
+ * 1. The entity's historical grounding (event label + year)
+ * 2. The relational meaning (specific to this animal pair)
+ *
+ * Never uses generic template phrases like "comparte tu energía".
+ * The historical part ensures every entity reads as distinct, even when
+ * two entities share the same animal relation type.
  */
 function getExplanation(
   _diff: number,
   userAnimal: string,
   entityAnimal: string,
   entityName?: string,
-  _primaryEvent?: HistoricalEvent
+  primaryEvent?: HistoricalEvent
 ): string {
   if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
 
@@ -118,22 +120,48 @@ function getExplanation(
 
   const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
 
+  // Historical grounding — unique per entity thanks to event year + description
+  const eventYear = primaryEvent?.year;
+  const eventLabel = primaryEvent?.label?.toLowerCase() || "evento histórico";
+  const eventDescription = primaryEvent?.description;
+
+  const hasUniqueEvent = eventDescription && eventDescription !== primaryEvent?.label;
+
+  // Build the historical context (unique per entity)
+  const historicalContext = eventYear
+    ? (hasUniqueEvent
+      ? `${eventDescription} (${eventYear}).`
+      : `${entityName} quedó definida por ${eventLabel} de ${eventYear}.`)
+    : "";
+
+  // Build the relational meaning (specific to this pair)
+  let relationalMeaning: string;
   switch (rel.type) {
     case "same":
-      return `${entityName} nació bajo la energía del ${entityAnimal} — como tu ${userAnimal}: misma frecuencia, fortalezas compartidas y los mismos puntos ciegos.`;
+      relationalMeaning = `Su energía del ${entityAnimal} comparte la misma frecuencia que tu ${userAnimal} — fortalezas, puntos ciegos y ritmo natural en sintonía.`;
+      break;
     case "triad": {
       const triad = SAN_HE_TRIADS.find(t => t.animals.includes(userAnimal as Animal) && t.animals.includes(entityAnimal as Animal));
-      return `${entityName} (${entityAnimal}) y tu ${userAnimal} comparten el elemento oculto${triad ? ` de ${triad.element}` : ""} de la tríada, una conexión que refuerza la energía de ambos.`;
+      relationalMeaning = `${entityName} (${entityAnimal}) y tu ${userAnimal} comparten el elemento oculto${triad ? ` de ${triad.element}` : ""} de la tríada, una conexión que refuerza la energía de ambos.`;
+      break;
     }
     case "harmonious":
-      return `${entityName} canaliza la energía del ${entityAnimal}, que complementa naturalmente tu ${userAnimal}.`;
+      relationalMeaning = `Su energía del ${entityAnimal} complementa naturalmente tu ${userAnimal}.`;
+      break;
     case "clash":
-      return `${entityName} refleja la energía del ${entityAnimal}, opuesta a tu ${userAnimal} — una tensión que invita a replantear perspectivas.`;
+      relationalMeaning = `Su energía del ${entityAnimal} entra en tensión con tu ${userAnimal} — un contraste que invita a replantear perspectivas.`;
+      break;
     case "harm":
-      return `${entityName} lleva la energía del ${entityAnimal}, que tiene una relación de atención con tu ${userAnimal}.`;
+      relationalMeaning = `Su energía del ${entityAnimal} tiene una relación de atención con tu ${userAnimal}.`;
+      break;
     default:
-      return `${entityName} canaliza la energía del ${entityAnimal}, que corre por un carril distinto al de tu ${userAnimal}.`;
+      relationalMeaning = `Su energía del ${entityAnimal} corre por un carril distinto al de tu ${userAnimal}.`;
+      break;
   }
+
+  return historicalContext
+    ? `${historicalContext} ${relationalMeaning}`
+    : relationalMeaning;
 }
 
 /** Traditional context for the relationship */
