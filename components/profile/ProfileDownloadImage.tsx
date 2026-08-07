@@ -144,13 +144,23 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke={COLORS.ink} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M10 30 L8 14 L24 14 L22 30 Z" />
-                  <path d="M7 14 L16 7 L25 14 Z" />
-                  <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
-                  <circle cx="16" cy="17.5" r="1.1" />
-                  <line x1="0" y1="7" x2="32" y2="7" />
-                  <line x1="16" y1="-3" x2="16" y2="17" />
+                <svg width="20" height="20" viewBox="0 0 32 32" fill="none" stroke={COLORS.ink} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="11" y1="30" x2="14.5" y2="13" />
+                  <line x1="21" y1="30" x2="17.5" y2="13" />
+                  <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" />
+                  <line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" />
+                  <line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
+                  <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
+                  <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" />
+                  <path d="M24 6 L24 11 L27 8.5 Z" fill={COLORS.ink} stroke="none" opacity="0.7" />
+                  <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
+                  <line x1="16" y1="8.5" x2="20.5" y2="8.5" strokeWidth="0.65" />
+                  <line x1="16" y1="8.5" x2="18.36" y2="12.57" strokeWidth="0.65" />
+                  <line x1="16" y1="8.5" x2="13.64" y2="12.57" strokeWidth="0.65" />
+                  <line x1="16" y1="8.5" x2="11.5" y2="8.5" strokeWidth="0.65" />
+                  <line x1="16" y1="8.5" x2="13.64" y2="4.43" strokeWidth="0.65" />
+                  <line x1="16" y1="8.5" x2="18.36" y2="4.43" strokeWidth="0.65" />
+                  <circle cx="16" cy="8.5" r="1" fill={COLORS.ink} stroke="none" />
                 </svg>
                 <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase", color: COLORS.ink }}>
                   Molino
