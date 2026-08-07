@@ -11,15 +11,13 @@ import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
-import MapaIdentity from "@/components/profile/MapaIdentity";
-import MapaMundo from "@/components/profile/MapaMundo";
-import MapaCirculo from "@/components/profile/MapaCirculo";
+import MapVisualization from "@/components/profile/MapVisualization";
+import ProfileSummaryTable from "@/components/profile/ProfileSummaryTable";
+import WorldConnections from "@/components/profile/WorldConnections";
+import CircleAlignment from "@/components/profile/CircleAlignment";
+import FullReadingAccordion from "@/components/profile/FullReadingAccordion";
+import ActionButtons from "@/components/profile/ActionButtons";
 import type { ProfileTab } from "./ProfileTabs";
-
-interface ProfileHubProps {
-  profile: UserProfile;
-  onEnter?: (tab: ProfileTab) => void;
-}
 
 /* ═══════════════════════════════════════════════════
    Capa de presentación local del hero.
@@ -195,7 +193,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           }}
           aria-hidden="true"
         />
-        <div className="relative mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12 pt-24 sm:pt-36 pb-24 sm:pb-32">
+        <div className="relative mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12 pt-24 sm:pt-36 pb-16 sm:pb-24">
           <motion.div {...heroItem(0)}>
             <p className="label-micro text-muted">Mi mapa personal</p>
           </motion.div>
@@ -231,70 +229,52 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
             </p>
           </motion.div>
 
+          {/* Visualización del mapa completa */}
           <motion.div {...heroItem(1.3)} className="mt-10">
-            <button
-              type="button"
-              onClick={() => onEnter?.("identity")}
-              className="font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors"
-            >
-              Comenzar la lectura →
-            </button>
+            <MapVisualization profile={profile} className="w-72 h-72" />
           </motion.div>
         </div>
       </header>
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 01 · TU IDENTIDAD
+          RESUMEN POR SISTEMA — Datos concretos
           ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <MapaIdentity profile={profile} onNavigate={onEnter} />
+      <motion.div {...chapterReveal} className="py-8 sm:py-12 border-t border-ink/10">
+        <ProfileSummaryTable profile={profile} />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
           CAPÍTULO 02 · TU MUNDO
           ═══════════════════════════════════════════════ */}
       <motion.div {...chapterReveal}>
-        <MapaMundo profile={profile} worldCount={worldCount} onNavigate={onEnter} />
+        <WorldConnections profile={profile} />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
           CAPÍTULO 03 · TU CÍRCULO
           ═══════════════════════════════════════════════ */}
       <motion.div {...chapterReveal}>
-        <MapaCirculo profile={profile} allies={allies} onNavigate={onEnter} />
+        <CircleAlignment profile={profile} />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 04 · TU LECTURA
-          Evolución natural del mapa — no un muro.
+          CAPÍTULO 04 · TU LECTURA PROFUNDA — Desbloqueada
           ═══════════════════════════════════════════════ */}
-      <section className="py-24 sm:py-32">
-        <div className="mx-auto max-w-[860px] px-5 sm:px-8 lg:px-12">
-          <motion.div {...chapterReveal}>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-10">
-              04
-            </p>
-            <h2 className="font-display text-[clamp(2rem,6vw,4rem)] uppercase tracking-tight text-foreground leading-[0.95] max-w-[650px]">
-              La lectura profunda
-            </h2>
-            <p className="mt-6 text-base sm:text-lg text-muted leading-relaxed max-w-[600px]">
-              Hasta ahora viste las piezas. Aquí aparece la conversación
-              entre ellas — tu identidad, tus ciclos y tus patrones
-              vistos como un solo sistema.
-            </p>
-            <span className="mt-4 inline-flex px-2 py-1 text-[10px] font-mono uppercase tracking-[0.15em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">
-              Premium
-            </span>
-            <button
-              type="button"
-              onClick={() => onEnter?.("intelligence")}
-              className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-accent/80 transition-colors"
-            >
-              Continuar la lectura →
-            </button>
-          </motion.div>
-        </div>
-      </section>
+      <motion.div {...chapterReveal}>
+        <FullReadingAccordion profile={profile} />
+      </motion.div>
+
+      {/* ═══════════════════════════════════════════════
+          ACCIONES — Exportar, compartir, navegar
+          ═══════════════════════════════════════════════ */}
+      <motion.div {...chapterReveal}>
+        <ActionButtons profile={profile} />
+      </motion.div>
     </div>
   );
+}
+
+interface ProfileHubProps {
+  profile: UserProfile;
+  onEnter?: (tab: ProfileTab) => void;
 }
