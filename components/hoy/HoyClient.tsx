@@ -1,12 +1,10 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
-import { analyzeTiming } from "@/lib/engines/timingEngine";
+import { analyzeTiming, findBestDates, type TimingIntention } from "@/lib/engines/timingEngine";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation } from "@/lib/utils/orientation";
 import { getTopAffinityHighlights } from "@/lib/engines/affinityEngine";
@@ -27,6 +25,8 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { formatDate } from "@/lib/i18n/format";
 import { resolveUserContext } from "@/lib/context/userContext";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
+import BestDatesTimeline from "@/components/timing/BestDatesTimeline";
 
 function getEnergyLevel(score: number): EnergyLevel {
   if (score >= 75) return "ALTA";
@@ -197,6 +197,15 @@ export default function HoyClient() {
     };
   }, [data, today]);
 
+  // Best dates for next 14 days (default intention: start_project)
+  const bestDates = useMemo(() => {
+    if (!profile || !data) return [];
+    const start = new Date();
+    const end = new Date();
+    end.setDate(end.getDate() + 14);
+    return findBestDates(profile, start, end, "start_project", 5);
+  }, [profile, data]);
+
   const {
     energy,
     convergence,
@@ -209,6 +218,8 @@ export default function HoyClient() {
     topAffinities,
     dateLabel,
   } = derived ?? ({} as NonNullable<typeof derived>);
+
+  const elementColor = profile ? ELEMENT_COLORS[profile.element] || "var(--color-accent)" : "var(--color-accent)";
 
   return (
     <div className="min-h-screen bg-background">
@@ -433,6 +444,30 @@ export default function HoyClient() {
             </div>
           </div>
         </motion.div>
+
+        {/* MEJORES FECHAS — próximas 2 semanas para iniciar proyectos */}
+        {bestDates.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-ink/10 py-10 sm:py-16"
+          >
+            <BestDatesTimeline
+              dates={bestDates}
+              elementColor={elementColor}
+              intentionLabel="Iniciar un proyecto"
+              maxVisible={5}
+              compact={false}
+            />
+            <p className="text-xs text-muted text-center mt-4">
+              Calculado para tu energía diaria y ciclo personal.{" "}
+              <Link href="/timing" className="text-accent hover:underline">
+                Ver todas las intenciones →
+              </Link>
+            </p>
+          </motion.div>
+        )}
 
         {/* Seguir el hilo — antes era una grilla de 4 salidas de mismo peso
             (mapa/timing/relaciones/evolución) que no se desprendía de nada
