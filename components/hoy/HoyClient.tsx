@@ -470,7 +470,7 @@ export default function HoyClient() {
               >
                 <p className="eyebrow-brutalist mb-4">Seguir el hilo</p>
                 <Link
-                  href="/hoy"
+                  href="/timing?week=current"
                   className="group inline-flex items-center gap-2 font-display text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"
                 >
                   Ver tu semana
