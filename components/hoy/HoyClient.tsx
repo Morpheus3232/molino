@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence, type Convergence } from "@/lib/engines/convergentEngine";
-import { analyzeTiming, findBestDates, type TimingIntention, type TimingResult, INTENTION_LABELS } from "@/lib/engines/timingEngine";
+import { analyzeTiming, type TimingResult } from "@/lib/engines/timingEngine";
 import { buildMomentState, type MomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation, type OrientationData } from "@/lib/utils/orientation";
 import { getTopAffinityHighlights, type AffinityResult } from "@/lib/engines/affinityEngine";
@@ -26,8 +26,8 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { formatDate } from "@/lib/i18n/format";
 import { resolveUserContext } from "@/lib/context/userContext";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
-import TimingCalendar from "@/components/timing/TimingCalendar";
+import VibrationCalendar from "@/components/timing/VibrationCalendar";
+import { type TopicId } from "@/lib/utils/dateVibration";
 import HoyBaseEnergy from "@/components/hoy/HoyBaseEnergy";
 import EnergyRing from "@/components/hoy/EnergyRing";
 import { getGenericDailyEnergy } from "@/lib/utils/daily-energy-utils";
@@ -85,10 +85,9 @@ interface DayState {
   topAffinities: AffinityResult[];
 }
 
-const INTENTION_OPTIONS: { id: TimingIntention; label: string; emoji: string }[] = [
-  { id: "start_project", label: "Empezar un proyecto", emoji: "🚀" },
-  { id: "make_decision", label: "Tomar una decisión", emoji: "⚡" },
-  { id: "start_relationship", label: "Empezar una relación", emoji: "💫" },
+const TOPIC_OPTIONS: { id: TopicId; label: string; emoji: string }[] = [
+  { id: "viajes", label: "Viajar", emoji: "✈️" },
+  { id: "negocios", label: "Emprender / Negocios", emoji: "💼" },
 ];
 
 const transitionVariants = {
@@ -104,7 +103,7 @@ export default function HoyClient() {
   const [snapshotSaved, setSnapshotSaved] = useState(false);
   const [streak, setStreak] = useState<{ days: number; orientation: Orientation } | null>(null);
   const [previousSnapshot, setPreviousSnapshot] = useState<DailySnapshot | null>(null);
-  const [intention, setIntention] = useState<TimingIntention>("start_project" as TimingIntention);
+  const [topic, setTopic] = useState<TopicId>("viajes");
   const [calcFailed, setCalcFailed] = useState(false);
 
   useEffect(() => {
@@ -115,7 +114,7 @@ export default function HoyClient() {
       const userCtx = resolveUserContext();
       const energy = calculateDailyEnergy(profile, today);
       const convergence = buildConvergence(profile);
-      const timing = analyzeTiming(profile, today, intention);
+      const timing = analyzeTiming(profile, today, "start_project");
       const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
       const moment = buildOrientation(energy, momentState, timing);
       const topAff = getTopAffinityHighlights(profile);
@@ -139,7 +138,7 @@ export default function HoyClient() {
       console.error("[Hoy] Error calculando el día:", err);
       setCalcFailed(true);
     }
-  }, [profile, mounted, intention]);
+  }, [profile, mounted]);
 
   const derived = useMemo(() => {
     if (!dayState) return null;
@@ -164,13 +163,17 @@ export default function HoyClient() {
     };
   }, [dayState]);
 
-  const bestDates = useMemo(() => {
-    if (!profile || !dayState) return [];
+  const calendarDates = useMemo(() => {
+    const dates: string[] = [];
     const start = new Date();
-    const end = new Date();
-    end.setDate(end.getDate() + 14);
-    return findBestDates(profile, start, end, intention, 14);
-  }, [profile, dayState, intention]);
+    start.setHours(0, 0, 0, 0);
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(start);
+      d.setDate(start.getDate() + i);
+      dates.push(toLocalDateKey(d));
+    }
+    return dates;
+  }, []);
 
   const {
     energy,
@@ -184,8 +187,6 @@ export default function HoyClient() {
     topAffinities: affinities,
     dateLabel,
   } = derived ?? ({} as NonNullable<typeof derived>);
-
-  const elementColor = profile ? ELEMENT_COLORS[profile.element] || "var(--color-accent)" : "var(--color-accent)";
 
   return (
     <div className="min-h-screen bg-background">
@@ -415,40 +416,34 @@ export default function HoyClient() {
               </motion.div>
 
               {/* ═══════════════════════════════════════════════
-                  04 · PRÓXIMOS 14 DÍAS — Calendario visual de timing
+                  04 · PRÓXIMOS DÍAS — Calendario de vibraciones
                   ═══════════════════════════════════════════════ */}
-              {bestDates.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.24, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="border-t border-ink/10 py-12 sm:py-16"
-                >
-                  <p className="eyebrow-brutalist mb-4">¿Qué querés hacer?</p>
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {INTENTION_OPTIONS.map((opt) => (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => setIntention(opt.id)}
-                        className={`flex items-center gap-2 px-4 py-2 border text-sm font-medium transition-colors ${
-                          intention === opt.id
-                            ? "border-accent bg-accent/10 text-accent"
-                            : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
-                        }`}
-                      >
-                        <span aria-hidden="true">{opt.emoji}</span>
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                  <TimingCalendar
-                    dates={bestDates}
-                    elementColor={elementColor}
-                    intentionLabel={INTENTION_LABELS[intention]}
-                  />
-                </motion.div>
-              )}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.24, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                className="border-t border-ink/10 py-12 sm:py-16"
+              >
+                <p className="eyebrow-brutalist mb-4">¿Qué querés hacer?</p>
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {TOPIC_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setTopic(opt.id)}
+                      className={`flex items-center gap-2 px-4 py-2 border text-sm font-medium transition-colors ${
+                        topic === opt.id
+                          ? "border-accent bg-accent/10 text-accent"
+                          : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
+                      }`}
+                    >
+                      <span aria-hidden="true">{opt.emoji}</span>
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+                <VibrationCalendar topic={topic} dates={calendarDates} />
+              </motion.div>
 
               {/* ═══════════════════════════════════════════════
                   05 · SEGUIR EL HILO — semana abreviada

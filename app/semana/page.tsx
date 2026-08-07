@@ -2,21 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { Suspense } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { analyzeTiming, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { getScoreColor } from "@/lib/utils/score";
+import { getDayVibration, type TopicId, getFavorableNumbers } from "@/lib/utils/dateVibration";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 
-const INTENTION_OPTIONS: { id: TimingIntention; label: string; emoji: string }[] = [
-  { id: "start_project", label: "Empezar un proyecto", emoji: "🚀" },
-  { id: "make_decision", label: "Tomar una decisión", emoji: "⚡" },
-  { id: "start_relationship", label: "Empezar una relación", emoji: "💫" },
+const TOPIC_OPTIONS: { id: TopicId; label: string; emoji: string }[] = [
+  { id: "viajes", label: "Viajar", emoji: "✈️" },
+  { id: "negocios", label: "Emprender / Negocios", emoji: "💼" },
 ];
 
 export default function SemanaPage() {
@@ -30,9 +28,7 @@ export default function SemanaPage() {
 function SemanaContent() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-  const [intention, setIntention] = useState<TimingIntention>("start_project");
-
-  const elementColor = profile ? ELEMENT_COLORS[profile.element] || "var(--color-accent)" : "var(--color-accent)";
+  const [topic, setTopic] = useState<TopicId>("viajes");
 
   // Get Monday to Sunday of current week
   const weekDays = useMemo(() => {
@@ -54,12 +50,12 @@ function SemanaContent() {
 
   const weekResults = useMemo(() => {
     if (!profile || weekDays.length === 0) return [];
-    return weekDays.map(d => analyzeTiming(profile, d, intention));
-  }, [profile, weekDays, intention]);
+    return weekDays.map(d => getDayVibration(topic, toLocalDateKey(d)));
+  }, [profile, weekDays, topic]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const todayKey = today.toISOString().split("T")[0];
+  const todayKey = toLocalDateKey(today);
 
   if (loading || !mounted) {
     return (
@@ -118,15 +114,15 @@ function SemanaContent() {
           <p className="text-sm text-muted mt-3">{weekRange}</p>
         </motion.div>
 
-        {/* Selector de intención */}
+        {/* Selector de tema */}
         <div className="flex flex-wrap gap-2 mb-8">
-          {INTENTION_OPTIONS.map((opt) => (
+          {TOPIC_OPTIONS.map((opt) => (
             <button
               key={opt.id}
               type="button"
-              onClick={() => setIntention(opt.id)}
+              onClick={() => setTopic(opt.id)}
               className={`flex items-center gap-2 px-4 py-2 border text-sm font-medium transition-colors ${
-                intention === opt.id
+                topic === opt.id
                   ? "border-accent bg-accent/10 text-accent"
                   : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
               }`}
@@ -140,7 +136,7 @@ function SemanaContent() {
         {/* 7 días de la semana */}
         <div className="grid grid-cols-1 sm:grid-cols-7 gap-px bg-ink/10">
           {weekResults.map((day, i) => {
-            const color = getScoreColor(day.timingScore);
+            const color = day.favorable ? day.color : "var(--color-muted)";
             const isTodayCell = day.date === todayKey;
             const date = new Date(day.date + "T12:00:00");
             const dayName = date.toLocaleDateString("es-AR", { weekday: "short" });
@@ -169,15 +165,24 @@ function SemanaContent() {
                     backgroundColor: isTodayCell ? color : `${color}12`,
                   }}
                 >
-                  {day.timingScore}
+                  {day.number}
                 </span>
                 <span className="mt-2 text-xs text-muted leading-tight line-clamp-2 min-h-[2rem]">
-                  {day.theme}
+                  {day.label}
                 </span>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Regla del tema */}
+        <p className="text-xs text-muted mt-4">
+          Días marcados:{" "}
+          <span className="font-mono font-semibold" style={{ color: "var(--score-excellent)" }}>
+            {getFavorableNumbers(topic)}
+          </span>{" "}
+          {topic === "viajes" ? "= ideales para viajar" : "= ideales para emprender"}.
+        </p>
 
         {/* Detalle del día actual */}
         {weekResults.length > 0 && (() => {
@@ -194,13 +199,24 @@ function SemanaContent() {
                 <span className="eyebrow-brutalist">Tu día de hoy</span>
                 <span
                   className="text-xs font-mono uppercase tracking-[0.1em] px-2 py-0.5 border border-ink/10"
-                  style={{ color: getScoreColor(todayResult.timingScore) }}
+                  style={{ color: todayResult.favorable ? todayResult.color : "var(--color-muted)" }}
                 >
-                  {todayResult.theme}
+                  Vibración {todayResult.number} · {todayResult.label}
                 </span>
               </div>
-              <p className="text-base text-foreground leading-relaxed">{todayResult.explanation}</p>
-              <p className="text-sm text-muted mt-3">{todayResult.recommendedWindow}</p>
+              <p className="text-base text-foreground leading-relaxed">
+                {todayResult.favorable
+                  ? topic === "viajes"
+                    ? "La fecha de hoy vibra en 5: un día para moverse, abrir horizontes y fluir con los imprevistos."
+                    : "La fecha de hoy vibra en 8 (o 28): un día para construir, concretar y dar estructura a un proyecto."
+                  : topic === "viajes"
+                    ? "La fecha de hoy no es de viaje, pero podés aprovechar la energía para planificar la ruta y preparar todo."
+                    : "La fecha de hoy no es la ideal para arrancar un negocio, pero sirve para ordenar documentos y definir el plan."}
+              </p>
+              <p className="text-sm text-muted mt-3">
+                Regla del tema: {getFavorableNumbers(topic)} = días ideales para{" "}
+                {topic === "viajes" ? "viajar" : "emprender"}.
+              </p>
             </motion.div>
           );
         })()}
