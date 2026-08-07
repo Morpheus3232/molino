@@ -58,14 +58,19 @@ export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProp
         style={{ transformOrigin: "16px 8.5px" }}
         animate={
           isWind
-            ? { rotate: 360 }
+            ? { rotate: [0, 360] }
             : isSpinning
               ? { rotate: 360 }
               : { rotate: 0 }
         }
         transition={
           isWind
-            ? { duration: 1.8, ease: [0.16, 0.84, 0.44, 1], repeat: Infinity }
+            ? {
+                duration: 1.2,
+                ease: [0.25, 0.1, 0.25, 1],
+                repeat: Infinity,
+                repeatType: "mirror",
+              }
             : isSpinning
               ? { duration: 1.1, ease: "linear", repeat: Infinity }
               : { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }
