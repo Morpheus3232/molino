@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Archivo_Black, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
+import SiteIntro from "@/components/ui/SiteIntro";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import UniversityHeader from "@/components/layout/UniversityHeader";
@@ -123,9 +124,10 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
 <body>
-         <a href="#main-content" className="skip-link">
+          <a href="#main-content" className="skip-link">
             Saltar al contenido principal
           </a>
+          <SiteIntro />
           <AnalyticsProvider />
           <MotionProvider>
             <ScrollProgress />
