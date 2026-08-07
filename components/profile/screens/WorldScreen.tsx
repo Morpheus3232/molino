@@ -161,9 +161,9 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
               </p>
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
               {topCountries.map((rec, i) => (
-                <CountryCard key={rec.entity.id} rec={rec} index={i} />
+                <EntityCard key={rec.entity.id} rec={rec} index={i} />
               ))}
             </div>
 
@@ -207,9 +207,9 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
               {Object.entries(grouped).map(([category, recs]) => (
                 <div key={category}>
                   <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {recs.map((rec, i) => (
-                      <BrandCard key={rec.entity.id} rec={rec} index={i} />
+                      <EntityCard key={rec.entity.id} rec={rec} index={i} />
                     ))}
                   </div>
                 </div>
@@ -257,10 +257,11 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
    SUB-COMPONENTS
    ════════════════════════════════════════════════════ */
 
-function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
+function EntityCard({ rec, index }: { rec: AffinityResult; index: number }) {
   const router = useRouter();
   const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
   const animalDisplay = getZodiacDisplay(rec.entityAnimal);
+  const tierMeta = TIER_META[getTierForScore(rec.score)];
 
   return (
     <motion.button
@@ -269,89 +270,40 @@ function CountryCard({ rec, index }: { rec: AffinityResult; index: number }) {
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
+      className="w-full text-left p-5 sm:p-6 border border-ink/10 hover:border-accent/40 hover:bg-ink/[0.02] transition-all group flex flex-col"
     >
-      <div className="flex items-start gap-4">
-        <span className="text-3xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors min-w-0 truncate">
+      {/* Entidad + animal + nivel de resonancia */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-2xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
+          <div className="min-w-0">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
               {rec.entity.name}
             </h4>
-            <span className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
-              {TIER_META[getTierForScore(rec.score)].label}
-            </span>
+            <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-0.5">
+              {animalDisplay.name}{event ? ` · ${event.year}` : ""}
+            </p>
           </div>
-          <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name}
-          </p>
-
-          {event && (
-            <div className="p-3 bg-ink/[0.02] mb-2">
-              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {rec.entity.description}
-              </p>
-              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
-                {event.label} ({event.year}) · {event.confidence === "exacta" ? "Fecha exacta" : event.confidence === "alta" ? "Alta precisión" : "Aproximado"}
-              </p>
-            </div>
-          )}
-
-          <p className="text-sm text-muted leading-relaxed italic">
-            {rec.explanation}
-          </p>
         </div>
+        <span
+          className="text-[10px] uppercase tracking-[0.1em] shrink-0 px-2 py-1 border rounded-sm"
+          style={{ color: tierMeta.color, borderColor: `${tierMeta.color}40` }}
+        >
+          {tierMeta.label}
+        </span>
       </div>
-    </motion.button>
-  );
-}
 
-function BrandCard({ rec, index }: { rec: AffinityResult; index: number }) {
-  const router = useRouter();
-  const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
-  const animalDisplay = getZodiacDisplay(rec.entityAnimal);
+      {/* Historia breve */}
+      <p className="text-sm text-muted leading-relaxed line-clamp-3 mb-4">
+        {rec.entity.description}
+      </p>
 
-  return (
-    <motion.button
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
-      onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-6 border-b border-ink/10 last:border-b-0 hover:bg-ink/[0.02] transition-all group"
-    >
-      <div className="flex items-start gap-4">
-        <span className="text-3xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors min-w-0 truncate">
-              {rec.entity.name}
-            </h4>
-            <span className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
-              {TIER_META[getTierForScore(rec.score)].label}
-            </span>
-          </div>
-          <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name}
-          </p>
-
-          {event && (
-            <div className="p-3 bg-ink/[0.02] mb-2">
-              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mb-1">Dato histórico</p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {rec.entity.description}
-              </p>
-              <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-1">
-                {event.label} ({event.year})
-              </p>
-            </div>
-          )}
-
-          <p className="text-sm text-muted leading-relaxed italic">
-            {rec.explanation}
-          </p>
-        </div>
+      {/* Por qué aparece en tu mundo */}
+      <div className="mt-auto border-t border-ink/10 pt-3">
+        <p className="label-micro mb-1.5">Por qué aparece en tu mundo</p>
+        <p className="text-sm text-foreground leading-relaxed">
+          {rec.explanation}
+        </p>
       </div>
     </motion.button>
   );

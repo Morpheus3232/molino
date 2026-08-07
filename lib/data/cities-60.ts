@@ -8,7 +8,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1900, country: "Estados Unidos", emoji: "🇺🇸",
     description: "Capital del entretenimiento mundial, fundada como ciudad ferroviaria en el desierto de Nevada.",
     keyThemes: ["Entretenimiento", "Noche", "Suerte", "Espectáculo"],
-    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Nacida el 15 de mayo de 1905, cuando se subastaron solares del ferrocarril de San Pedro, Los Ángeles y Salt Lake en el valle del desierto de Nevada.", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad el 15 de mayo de 1905.",
   },
   {
@@ -16,7 +16,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1912, country: "Israel", emoji: "🇮🇱",
     description: "Fundada en 1909 como suburbio de Jaffa, hoy es la vibrante capital tecnológica de Israel.",
     keyThemes: ["Innovación", "Playas", "Startups", "Cultura"],
-    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 11 de abril de 1909 cuando sesenta familias judías sortearon terrenos junto a Jaffa para levantar el barrio de Ahuzat Bayit.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 11 de abril de 1909.",
   },
   {
@@ -24,7 +24,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1924, country: "China", emoji: "🇨🇳",
     description: "De pueblo pesquero a megaciudad tecnológica en solo cuatro décadas.",
     keyThemes: ["Tecnología", "Crecimiento", "Innovación", "Futuro"],
-    events: [{ id: "shenzhen-fund", type: "fundacion", label: "Fundación", year: 1979, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "shenzhen-fund", type: "fundacion", label: "Fundación", year: 1979, confidence: "exacta", primaryForAffinity: true, description: "En 1979 Deng Xiaoping la declaró primera zona económica especial, convirtiendo un pueblo pesquero en el taller tecnológico de China.", source: "Documentación histórica" }],
     sourceNote: "Zona económica especial establecida en 1979.",
   },
   {
@@ -32,7 +32,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1936, country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "La ciudad más grande de Nueva Zelanda, conocida como la Ciudad de las Velas.",
     keyThemes: ["Navegación", "Naturaleza", "Diversidad", "Puerto"],
-    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "auckland-fund", type: "fundacion", label: "Fundación", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Establecida en 1840 por el gobernador William Hobson como nueva capital colonial sobre el istmo volcánico que los maoríes llamaban Tāmaki.", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad en 1840 por colonos británicos.",
   },
   {
@@ -40,7 +40,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1948, country: "Canadá", emoji: "🇨🇦",
     description: "Ciudad portuaria rodeada de montañas, conocida por su calidad de vida y diversidad.",
     keyThemes: ["Naturaleza", "Diversidad", "Calidad", "Puerto"],
-    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1886, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1886, confidence: "exacta", primaryForAffinity: true, description: "Incorporada el 6 de abril de 1886 como término del ferrocarril transcontinental, quedó arrasada meses después por el Gran Incendio.", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de abril de 1886.",
   },
   // BUEY
@@ -49,7 +49,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1901, country: "Alemania", emoji: "🇩🇪",
     description: "Capital alemana que renació de su historia convirtiéndose en centro creativo y político europeo.",
     keyThemes: ["Historia", "Arte", "Resiliencia", "Innovación"],
-    events: [{ id: "berlin-fund", type: "fundacion", label: "Fundación", year: 1237, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "berlin-fund", type: "fundacion", label: "Fundación", year: 1237, confidence: "exacta", primaryForAffinity: true, description: "Mencionada por primera vez en 1237 como asentamiento comercial junto al río Spree, nació de la fusión de Cölln y Berlín.", source: "Documentación histórica" }],
     sourceNote: "Primera mención documentada en 1237.",
   },
   {
@@ -57,7 +57,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1913, country: "Suiza", emoji: "🇨🇭",
     description: "Capital financiera de Suiza, a orillas del lago homónimo.",
     keyThemes: ["Banca", "Precisión", "Lago", "Orden"],
-    events: [{ id: "zurich-fund", type: "fundacion", label: "Fundación", year: 1836, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "zurich-fund", type: "fundacion", label: "Fundación", year: 1836, confidence: "exacta", primaryForAffinity: true, description: "En 1836 obtuvo el estatus de ciudad, consolidando a orillas del lago y del río Limmat el núcleo de su poder financiero.", source: "Documentación histórica" }],
     sourceNote: "Estatus de ciudad desde 1836.",
   },
   {
@@ -65,7 +65,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1925, country: "Canadá", emoji: "🇨🇦",
     description: "La ciudad más grande de Canadá, motor económico y cultural del país.",
     keyThemes: ["Multiculturalismo", "Economía", "Cultura", "Orden"],
-    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Incorporada como ciudad el 6 de marzo de 1834, dejó atrás el nombre colonial de York para recuperar el topónimo indígena Toronto.", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de marzo de 1834.",
   },
   {
@@ -73,7 +73,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1937, country: "Corea del Sur", emoji: "🇰🇷",
     description: "Capital de Corea del Sur, una metrópolis donde tradición milenaria y tecnología conviven.",
     keyThemes: ["Tecnología", "Tradición", "Disciplina", "Progreso"],
-    events: [{ id: "seul-fund", type: "fundacion", label: "Fundación", year: 1394, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "seul-fund", type: "fundacion", label: "Fundación", year: 1394, confidence: "exacta", primaryForAffinity: true, description: "En 1394 el fundador de la dinastía Joseon, Yi Seong-gye, la designó capital con el nombre de Hanyang, junto al río Han.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1394 (dinastía Joseon).",
   },
   {
@@ -81,7 +81,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1949, country: "Japón", emoji: "🇯🇵",
     description: "Capital comercial de Japón, conocida por su gastronomía y espíritu mercantil.",
     keyThemes: ["Comercio", "Gastronomía", "Industria", "Tradición"],
-    events: [{ id: "osaka-fund", type: "fundacion", label: "Fundación", year: 1868, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "osaka-fund", type: "fundacion", label: "Fundación", year: 1868, confidence: "exacta", primaryForAffinity: true, description: "En 1868 el gobierno Meiji la abrió como puerto al comercio exterior, despertando su vocación industrial y mercantil.", source: "Documentación histórica" }],
     sourceNote: "Ciudad designada en 1868.",
   },
   // TIGRE
@@ -90,7 +90,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1902, country: "México", emoji: "🇲🇽",
     description: "Una de las ciudades más grandes del mundo, construida sobre las ruinas de Tenochtitlán.",
     keyThemes: ["Historia", "Pasión", "Diversidad", "Revolución"],
-    events: [{ id: "mexico-city-fund", type: "fundacion", label: "Fundación", year: 1325, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "mexico-city-fund", type: "fundacion", label: "Fundación", year: 1325, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1325 como Tenochtitlán por los mexicas sobre una isla del lago de Texcoco, donde vieron un águila sobre un nopal.", source: "Documentación histórica" }],
     sourceNote: "Fundada como Tenochtitlán en 1325.",
   },
   {
@@ -98,7 +98,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1914, country: "Brasil", emoji: "🇧🇷",
     description: "La ciudad maravillosa, cuna de la samba y el carnaval más famoso del mundo.",
     keyThemes: ["Samba", "Carnaval", "Playas", "Alegría"],
-    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1565, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1565, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 1 de marzo de 1565 por Estácio de Sá entre el Pan de Azúcar y el Corcovado, para expulsar a los franceses de la bahía.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de marzo de 1565.",
   },
   {
@@ -106,7 +106,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1926, country: "India", emoji: "🇮🇳",
     description: "Capital financiera y cinematográfica de la India, ciudad de sueños y contrastes.",
     keyThemes: ["Cine", "Comercio", "Diversidad", "Energía"],
-    events: [{ id: "mumbai-fund", type: "fundacion", label: "Fundación", year: 1508, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "mumbai-fund", type: "fundacion", label: "Fundación", year: 1508, confidence: "exacta", primaryForAffinity: true, description: "Puerto pesquero en activo desde 1508, pasó a la Corona británica en 1661 como parte de la dote de Catalina de Braganza.", source: "Documentación histórica" }],
     sourceNote: "Cedida a Inglaterra en 1661, pero puerto desde 1508.",
   },
   {
@@ -114,7 +114,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1938, country: "Colombia", emoji: "🇨🇴",
     description: "Capital colombiana a 2600 metros de altura, centro cultural y político del país.",
     keyThemes: ["Cultura", "Altura", "Diversidad", "Resiliencia"],
-    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1538, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1538, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 6 de agosto de 1538 por Gonzalo Jiménez de Quesada en la sabana cundiboyacense, sobre el territorio del cacique Bacatá.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 6 de agosto de 1538.",
   },
   {
@@ -122,7 +122,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1950, country: "Nigeria", emoji: "🇳🇬",
     description: "Megaciudad nigeriana, motor económico y cultural del África subsahariana.",
     keyThemes: ["Energía", "Comercio", "Música", "Crecimiento"],
-    events: [{ id: "lagos-fund", type: "fundacion", label: "Fundación", year: 1914, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lagos-fund", type: "fundacion", label: "Fundación", year: 1914, confidence: "exacta", primaryForAffinity: true, description: "En 1914 se convirtió en capital de la Nigeria colonial unida, consolidando su puerto como eje del comercio atlántico.", source: "Documentación histórica" }],
     sourceNote: "Capital de Nigeria hasta 1991. Puerto desde 1914.",
   },
   // GATO
@@ -131,7 +131,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1903, country: "Francia", emoji: "🇫🇷",
     description: "La Ciudad de la Luz, capital del arte, la moda y la gastronomía mundial.",
     keyThemes: ["Elegancia", "Arte", "Moda", "Romance"],
-    events: [{ id: "paris-city-fund", type: "fundacion", label: "Fundación", year: 1790, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "paris-city-fund", type: "fundacion", label: "Fundación", year: 1790, confidence: "exacta", primaryForAffinity: true, description: "En 1790, en plena Revolución francesa, se constituyó como municipio y se reorganizó en 48 secciones con un alcalde electo.", source: "Documentación histórica" }],
     sourceNote: "Capital de Francia. Municipio desde 1790.",
   },
   {
@@ -139,7 +139,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1915, country: "Italia", emoji: "🇮🇹",
     description: "La Ciudad Eterna, cuna de una civilización que marcó el destino de Occidente.",
     keyThemes: ["Historia", "Arte", "Fe", "Elegancia"],
-    events: [{ id: "roma-fund", type: "fundacion", label: "Fundación", year: 1871, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "roma-fund", type: "fundacion", label: "Fundación", year: 1871, confidence: "exacta", primaryForAffinity: true, description: "En 1871 se convirtió en capital de la Italia unificada, un año después de la toma de Roma por las tropas del rey Víctor Manuel II.", source: "Documentación histórica" }],
     sourceNote: "Capital de Italia desde 1871.",
   },
   {
@@ -147,7 +147,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1927, country: "Marruecos", emoji: "🇲🇦",
     description: "La ciudad roja, encrucijada de culturas bereber, árabe y africana.",
     keyThemes: ["Artesanía", "Cultura", "Misterio", "Exotismo"],
-    events: [{ id: "marrakech-fund", type: "fundacion", label: "Fundación", year: 1070, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "marrakech-fund", type: "fundacion", label: "Fundación", year: 1070, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1070 por Abu Bakr ibn Umar de la dinastía almorávide, tomó su nombre del término bereber 'tierra de Dios'.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1070 por la dinastía almorávide.",
   },
   {
@@ -155,7 +155,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1939, country: "Tailandia", emoji: "🇹🇭",
     description: "Capital tailandesa, ciudad de templos dorados y moderna energía urbana.",
     keyThemes: ["Templos", "Cortesía", "Gastronomía", "Exotismo"],
-    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bangkok-fund", type: "fundacion", label: "Fundación", year: 1782, confidence: "exacta", primaryForAffinity: true, description: "En 1782 el rey Rama I, fundador de la dinastía Chakri, la estableció como capital en la orilla este del río Chao Phraya.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1782 (dinastía Chakri).",
   },
   {
@@ -163,7 +163,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1951, country: "Kenia", emoji: "🇰🇪",
     description: "La única capital del mundo con un parque nacional, puerta al safari africano.",
     keyThemes: ["Naturaleza", "Safari", "Cultura", "Crecimiento"],
-    events: [{ id: "nairobi-fund", type: "fundacion", label: "Fundación", year: 1899, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "nairobi-fund", type: "fundacion", label: "Fundación", year: 1899, confidence: "exacta", primaryForAffinity: true, description: "Nacida en 1899 como depósito del ferrocarril de Uganda, en las marismas que los masái llamaban 'aguas frescas'.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1899 como depósito ferroviario.",
   },
   // DRAGÓN
@@ -172,7 +172,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1904, country: "China", emoji: "🇨🇳",
     description: "Capital financiera de China, ciudad del futuro con el horizonte más impactante del mundo.",
     keyThemes: ["Poder", "Futuro", "Comercio", "Innovación"],
-    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "shanghai-fund", type: "fundacion", label: "Fundación", year: 1927, confidence: "exacta", primaryForAffinity: true, description: "En 1927 fue declarada municipio especial de China, afianzando su papel de puerta comercial del Pacífico.", source: "Documentación histórica" }],
     sourceNote: "Municipio especial desde 1927.",
   },
   {
@@ -180,7 +180,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1916, country: "Rusia", emoji: "🇷🇺",
     description: "Capital rusa, corazón político y cultural del país más extenso del mundo.",
     keyThemes: ["Poder", "Historia", "Arte", "Resistencia"],
-    events: [{ id: "moscu-fund", type: "fundacion", label: "Fundación", year: 1156, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "moscu-fund", type: "fundacion", label: "Fundación", year: 1156, confidence: "exacta", primaryForAffinity: true, description: "En 1156 se levantó su primera fortaleza de madera, obra del príncipe Yuri Dolgoruki sobre el río Moscova, origen del Kremlin.", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1147. Fortaleza en 1156.",
   },
   {
@@ -188,7 +188,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1928, country: "Reino Unido", emoji: "🇬🇧",
     description: "Capital británica, centro financiero global y crisol de culturas del mundo.",
     keyThemes: ["Historia", "Finanzas", "Diversidad", "Realeza"],
-    events: [{ id: "londres-fund", type: "fundacion", label: "Fundación", year: 1707, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "londres-fund", type: "fundacion", label: "Fundación", year: 1707, confidence: "exacta", primaryForAffinity: true, description: "En 1707, con el Acta de Unión que creó el Reino de Gran Bretaña, se consolidó como capital política y financiera del nuevo Estado.", source: "Documentación histórica" }],
     sourceNote: "Capital de Gran Bretaña desde 1707.",
   },
   {
@@ -196,7 +196,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1940, country: "Emiratos Árabes Unidos", emoji: "🇦🇪",
     description: "Ciudad del lujo y la ambición arquitectónica en medio del desierto.",
     keyThemes: ["Lujo", "Ambición", "Futurismo", "Desierto"],
-    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1833, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dubai-fund", type: "fundacion", label: "Fundación", year: 1833, confidence: "exacta", primaryForAffinity: true, description: "En 1833 el jeque Maktum bin Butti, de la tribu Bani Yas, estableció el asentamiento junto al arroyo que fundó su linaje gobernante.", source: "Documentación histórica" }],
     sourceNote: "Asentamiento desde 1833 por la tribu Bani Yas.",
   },
   {
@@ -204,7 +204,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1952, country: "Turquía", emoji: "🇹🇷",
     description: "Puente entre Europa y Asia, ciudad que fue capital de imperios.",
     keyThemes: ["Puente", "Historia", "Cultura", "Comercio"],
-    events: [{ id: "estambul-fund", type: "fundacion", label: "Fundación", year: 1453, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "estambul-fund", type: "fundacion", label: "Fundación", year: 1453, confidence: "exacta", primaryForAffinity: true, description: "En 1453 Mehmed II la conquistó y la refundó como capital del Imperio otomano, convirtiendo Santa Sofía en mezquita.", source: "Documentación histórica" }],
     sourceNote: "Conquistada por los otomanos en 1453.",
   },
   // SERPIENTE
@@ -213,7 +213,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1905, country: "Egipto", emoji: "🇪🇬",
     description: "Capital egipcia, la ciudad más grande del mundo árabe y cuna de civilizaciones.",
     keyThemes: ["Historia", "Sabiduría", "Misterio", "Cultura"],
-    events: [{ id: "el-cairo-fund", type: "fundacion", label: "Fundación", year: 969, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "el-cairo-fund", type: "fundacion", label: "Fundación", year: 969, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 969 por el general fatimí Jawhar al-Siqilli como al-Mansuriyya, se convirtió en la capital del califato fatimí.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 969 por los fatimíes.",
   },
   {
@@ -221,7 +221,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1917, country: "Grecia", emoji: "🇬🇷",
     description: "Cuna de la democracia y la filosofía, capital griega desde 1834.",
     keyThemes: ["Filosofía", "Democracia", "Historia", "Sabiduría"],
-    events: [{ id: "atenas-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "atenas-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "En 1834 fue proclamada capital del joven reino griego, rescatando la gloria de la antigua ciudad de Pericles y la Acrópolis.", source: "Documentación histórica" }],
     sourceNote: "Capital de Grecia desde 1834.",
   },
   {
@@ -229,7 +229,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1929, country: "Perú", emoji: "🇵🇪",
     description: "Capital peruana, ciudad de los reyes y capital gastronómica de Latinoamérica.",
     keyThemes: ["Gastronomía", "Historia", "Cultura", "Misterio"],
-    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1535, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1535, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 18 de enero de 1535 por Francisco Pizarro como Ciudad de los Reyes, a orillas del río Rímac.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 18 de enero de 1535.",
   },
   {
@@ -237,7 +237,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1941, country: "Irán", emoji: "🇮🇷",
     description: "Capital iraní, metrópolis persa donde tradición y revolución se encuentran.",
     keyThemes: ["Persia", "Cultura", "Geopolítica", "Tradición"],
-    events: [{ id: "teheran-fund", type: "fundacion", label: "Fundación", year: 1786, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "teheran-fund", type: "fundacion", label: "Fundación", year: 1786, confidence: "exacta", primaryForAffinity: true, description: "En 1786 Agha Mohammad Khan la designó capital de la dinastía kayar, desplazando a Isfahán como centro del poder persa.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1786.",
   },
   {
@@ -245,7 +245,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1953, country: "Arabia Saudita", emoji: "🇸🇦",
     description: "Capital saudita, centro del poder petrolero y la modernización del reino.",
     keyThemes: ["Petróleo", "Poder", "Tradición", "Futuro"],
-    events: [{ id: "riad-fund", type: "fundacion", label: "Fundación", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "riad-fund", type: "fundacion", label: "Fundación", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "En 1902 Ibn Saud la recuperó en un asalto nocturno con cuarenta hombres, sembrando las bases del reino de Arabia Saudita.", source: "Documentación histórica" }],
     sourceNote: "Conquistada en 1902 por Ibn Saud.",
   },
   // CABALLO
@@ -254,7 +254,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1906, country: "Argentina", emoji: "🇦🇷",
     description: "Capital argentina, ciudad del tango, la literatura y la pasión desbordante.",
     keyThemes: ["Tango", "Pasión", "Literatura", "Libertad"],
-    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1536, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1536, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 3 de febrero de 1536 por Pedro de Mendoza como Puerto de Nuestra Señora Santa María del Buen Aire, fue abandonada y refundada en 1580.", source: "Documentación histórica" }],
     sourceNote: "Primera fundación en 1536, definitiva en 1580.",
   },
   {
@@ -262,7 +262,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1918, country: "Australia", emoji: "🇦🇺",
     description: "La ciudad más icónica de Australia, con su famosa ópera y playas doradas.",
     keyThemes: ["Playas", "Aventura", "Opera", "Libertad"],
-    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1788, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1788, confidence: "exacta", primaryForAffinity: true, description: "En 1788 el capitán Arthur Phillip fundó la primera colonia británica en Port Jackson, bautizada en honor a Lord Sydney.", source: "Documentación histórica" }],
     sourceNote: "Establecida el 26 de enero de 1788.",
   },
   {
@@ -270,7 +270,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1930, country: "Mongolia", emoji: "🇲🇳",
     description: "Capital de Mongolia, ciudad nómada que preserva el espíritu de la estepa.",
     keyThemes: ["Estepa", "Nomadismo", "Libertad", "Tradición"],
-    events: [{ id: "ulaanbaatar-fund", type: "fundacion", label: "Fundación", year: 1639, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "ulaanbaatar-fund", type: "fundacion", label: "Fundación", year: 1639, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1639 como sede del primer Jebtsundamba, comenzó como monasterio nómada que se desplazaba con su estandarte sagrado.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1639 como monasterio.",
   },
   {
@@ -278,7 +278,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1942, country: "Cuba", emoji: "🇨🇺",
     description: "Capital cubana, ciudad de música, colores y un espíritu libre e irreverente.",
     keyThemes: ["Música", "Color", "Libertad", "Historia"],
-    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 16 de noviembre de 1519 por Diego Velázquez de Cuéllar junto a la bahía, tras ser trasladada desde la costa sur.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de noviembre de 1519.",
   },
   {
@@ -286,7 +286,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1954, country: "Jamaica", emoji: "🇯🇲",
     description: "Capital jamaiquina, cuna del reggae y el ritmo que conquistó el mundo.",
     keyThemes: ["Reggae", "Música", "Libertad", "Caribe"],
-    events: [{ id: "kingston-fund", type: "fundacion", label: "Fundación", year: 1872, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kingston-fund", type: "fundacion", label: "Fundación", year: 1872, confidence: "exacta", primaryForAffinity: true, description: "En 1872 fue declarada capital de Jamaica, desplazando a Spanish Town, sede colonial desde el siglo XVI.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1872.",
   },
   // CABRA
@@ -295,7 +295,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1907, country: "España", emoji: "🇪🇸",
     description: "Capital española, ciudad del arte, la noche y la pasión mediterránea.",
     keyThemes: ["Arte", "Pasión", "Cultura", "Noche"],
-    events: [{ id: "madrid-fund", type: "fundacion", label: "Fundación", year: 1561, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "madrid-fund", type: "fundacion", label: "Fundación", year: 1561, confidence: "exacta", primaryForAffinity: true, description: "En 1561 Felipe II la estableció como capital de la Monarquía Hispánica, en pleno centro geográfico de la península.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1561 por Felipe II.",
   },
   {
@@ -303,7 +303,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1919, country: "Portugal", emoji: "🇵🇹",
     description: "Capital portuguesa ciudad de la luz el fado y la saudade.",
     keyThemes: ["Fado", "Luz", "Añoranza", "Navegación"],
-    events: [{ id: "lisboa-fund", type: "fundacion", label: "Fundación", year: 1256, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lisboa-fund", type: "fundacion", label: "Fundación", year: 1256, confidence: "exacta", primaryForAffinity: true, description: "En 1256 el rey Afonso III la convirtió en capital de Portugal, con su puerto sobre el estuario del río Tajo.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1256.",
   },
   {
@@ -311,7 +311,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1931, country: "Vietnam", emoji: "🇻🇳",
     description: "Capital vietnamita milenaria que combina tradición oriental y resiliencia.",
     keyThemes: ["Tradición", "Resiliencia", "Cultura", "Lagos"],
-    events: [{ id: "hanoi-fund", type: "fundacion", label: "Fundación", year: 1010, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "hanoi-fund", type: "fundacion", label: "Fundación", year: 1010, confidence: "exacta", primaryForAffinity: true, description: "En 1010 el emperador Lý Thái Tổ la fundó como Thăng Long, la 'ciudad del dragón que asciende', junto al lago de la Espada.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1010 como Thăng Long.",
   },
   {
@@ -319,7 +319,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1943, country: "Austria", emoji: "🇦🇹",
     description: "Capital austriaca cuna de la música clásica y el arte de vivir.",
     keyThemes: ["Música", "Arte", "Elegancia", "Cultura"],
-    events: [{ id: "viena-fund", type: "fundacion", label: "Fundación", year: 1137, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "viena-fund", type: "fundacion", label: "Fundación", year: 1137, confidence: "exacta", primaryForAffinity: true, description: "En 1137 surge como ciudad de los duques de Babenberg, germen de la futura capital de los Habsburgo junto al Danubio.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1137.",
   },
   {
@@ -327,7 +327,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1955, country: "Bélgica", emoji: "🇧🇪",
     description: "Capital de Bélgica y corazón de la Unión Europea.",
     keyThemes: ["Europa", "Diplomacia", "Cultura", "Arte"],
-    events: [{ id: "bruselas-fund", type: "fundacion", label: "Fundación", year: 1831, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bruselas-fund", type: "fundacion", label: "Fundación", year: 1831, confidence: "exacta", primaryForAffinity: true, description: "En 1831 fue elegida capital del nuevo reino de Bélgica tras la revolución que lo independizó de los Países Bajos.", source: "Documentación histórica" }],
     sourceNote: "Capital de Bélgica desde 1831.",
   },
   // MONO
@@ -336,7 +336,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1908, country: "Suecia", emoji: "🇸🇪",
     description: "Capital sueca construida sobre catorce islas ciudad del diseño y la innovación.",
     keyThemes: ["Diseño", "Innovación", "Agua", "Sostenibilidad"],
-    events: [{ id: "estocolmo-fund", type: "fundacion", label: "Fundación", year: 1252, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "estocolmo-fund", type: "fundacion", label: "Fundación", year: 1252, confidence: "exacta", primaryForAffinity: true, description: "Mencionada por primera vez en 1252, creció como bastión defensivo del regente Birger Jarl en el estrecho entre el lago Mälaren y el mar Báltico.", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1252.",
   },
   {
@@ -344,7 +344,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1920, country: "Finlandia", emoji: "🇫🇮",
     description: "Capital finlandesa conocida por su diseño funcionalista y calidad de vida.",
     keyThemes: ["Diseño", "Educación", "Naturaleza", "Innovación"],
-    events: [{ id: "helsinki-fund", type: "fundacion", label: "Fundación", year: 1812, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "helsinki-fund", type: "fundacion", label: "Fundación", year: 1812, confidence: "exacta", primaryForAffinity: true, description: "En 1812 el zar Alejandro I la nombró capital del Gran Ducado de Finlandia, trasladando la sede desde Turku.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1812.",
   },
   {
@@ -352,7 +352,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1932, country: "Dinamarca", emoji: "🇩🇰",
     description: "Capital danesa ciudad del diseño la sostenibilidad y la felicidad.",
     keyThemes: ["Diseño", "Hygge", "Sostenibilidad", "Felicidad"],
-    events: [{ id: "copenhague-fund", type: "fundacion", label: "Fundación", year: 1167, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "copenhague-fund", type: "fundacion", label: "Fundación", year: 1167, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1167 por el obispo Absalón, quien levantó su castillo sobre el puerto pesquero vikingo de Havn.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1167 por Absalón.",
   },
   {
@@ -360,7 +360,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1944, country: "Chile", emoji: "🇨🇱",
     description: "Capital chilena a los pies de los Andes centro financiero del Cono Sur.",
     keyThemes: ["Innovación", "Naturaleza", "Estabilidad", "Cultura"],
-    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1541, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1541, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 12 de febrero de 1541 por Pedro de Valdivia en el valle del río Mapocho, junto al cerro Huelén.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 12 de febrero de 1541.",
   },
   {
@@ -368,7 +368,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1956, country: "Hungría", emoji: "🇭🇺",
     description: "Capital húngara unión de Buda y Pest a orillas del Danubio.",
     keyThemes: ["Arquitectura", "Cultura", "Agua", "Ingenio"],
-    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1873, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "budapest-fund", type: "fundacion", label: "Fundación", year: 1873, confidence: "exacta", primaryForAffinity: true, description: "En 1873 la unificación de Buda, Pest y Óbuda creó una sola capital a orillas del Danubio, a imagen de la Viena imperial.", source: "Documentación histórica" }],
     sourceNote: "Unificación de Buda y Pest en 1873.",
   },
   // GALLO
@@ -377,7 +377,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1909, country: "Polonia", emoji: "🇵🇱",
     description: "Capital polaca fénix que renació de las cenizas de la Segunda Guerra Mundial.",
     keyThemes: ["Resistencia", "Organización", "Cultura", "Renacimiento"],
-    events: [{ id: "varsovia-fund", type: "fundacion", label: "Fundación", year: 1596, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "varsovia-fund", type: "fundacion", label: "Fundación", year: 1596, confidence: "exacta", primaryForAffinity: true, description: "En 1596 Segismundo III Vasa trasladó la capital de Cracovia a Varsovia, situada sobre el río Vístula.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1596.",
   },
   {
@@ -385,7 +385,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1921, country: "República Checa", emoji: "🇨🇿",
     description: "Capital checa una de las ciudades más hermosas de Europa.",
     keyThemes: ["Arquitectura", "Cultura", "Orden", "Historia"],
-    events: [{ id: "praga-fund", type: "fundacion", label: "Fundación", year: 1784, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "praga-fund", type: "fundacion", label: "Fundación", year: 1784, confidence: "exacta", primaryForAffinity: true, description: "En 1784 la Ciudad Vieja, la Ciudad Nueva, Malá Strana y Hradčany se fusionaron en un único municipio, la Praga moderna.", source: "Documentación histórica" }],
     sourceNote: "Cuatro ciudades unificadas en 1784.",
   },
   {
@@ -393,7 +393,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1933, country: "Noruega", emoji: "🇳🇴",
     description: "Capital noruega rodeada de fiordos y montañas ciudad del diseño nórdico.",
     keyThemes: ["Naturaleza", "Diseño", "Orden", "Bienestar"],
-    events: [{ id: "oslo-fund", type: "fundacion", label: "Fundación", year: 1040, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "oslo-fund", type: "fundacion", label: "Fundación", year: 1040, confidence: "exacta", primaryForAffinity: true, description: "Nacida hacia 1040 como asentamiento del rey vikingo Harald Hardrada en el fondo del fiordo de Oslo.", source: "Documentación histórica" }],
     sourceNote: "Fundada alrededor de 1040.",
   },
   {
@@ -401,7 +401,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1945, country: "Rumania", emoji: "🇷🇴",
     description: "Capital rumana conocida como el París del Este.",
     keyThemes: ["Cultura", "Orden", "Arquitectura", "Resiliencia"],
-    events: [{ id: "bucarest-fund", type: "fundacion", label: "Fundación", year: 1459, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "bucarest-fund", type: "fundacion", label: "Fundación", year: 1459, confidence: "exacta", primaryForAffinity: true, description: "Mencionada por primera vez en 1459 en un documento del príncipe Vlad el Empalador, creció junto al río Dâmbovița.", source: "Documentación histórica" }],
     sourceNote: "Primera mención en 1459.",
   },
   {
@@ -409,7 +409,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1957, country: "Bulgaria", emoji: "🇧🇬",
     description: "Capital búlgara una de las ciudades más antiguas de Europa.",
     keyThemes: ["Historia", "Cultura", "Orden", "Tradición"],
-    events: [{ id: "sofia-fund", type: "fundacion", label: "Fundación", year: 1878, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "sofia-fund", type: "fundacion", label: "Fundación", year: 1878, confidence: "exacta", primaryForAffinity: true, description: "En 1878, liberada del dominio otomano, fue elegida capital del Principado autónomo de Bulgaria.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1878.",
   },
   // PERRO
@@ -418,7 +418,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1910, country: "Costa Rica", emoji: "🇨🇷",
     description: "Capital costarricense corazón de la paz y la naturaleza centroamericana.",
     keyThemes: ["Paz", "Naturaleza", "Justicia", "Educación"],
-    events: [{ id: "san-jose-fund", type: "fundacion", label: "Fundación", year: 1824, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "san-jose-fund", type: "fundacion", label: "Fundación", year: 1824, confidence: "exacta", primaryForAffinity: true, description: "En 1824 fue declarada capital de Costa Rica, desplazando a Cartago tras la primera guerra civil del país.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1824.",
   },
   {
@@ -426,7 +426,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1922, country: "Uruguay", emoji: "🇺🇾",
     description: "Capital uruguaya ciudad de la rambla la tranquila y la igualdad.",
     keyThemes: ["Rambla", "Tranquilidad", "Igualdad", "Justicia"],
-    events: [{ id: "montevideo-fund", type: "fundacion", label: "Fundación", year: 1724, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "montevideo-fund", type: "fundacion", label: "Fundación", year: 1724, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1724 por Bruno Mauricio de Zabala como baluarte español frente a la ocupación portuguesa del Río de la Plata.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1724 por Bruno Mauricio de Zabala.",
   },
   {
@@ -434,7 +434,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1934, country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "Capital neozelandesa ciudad del viento y el cine.",
     keyThemes: ["Naturaleza", "Cine", "Justicia", "Paz"],
-    events: [{ id: "wellington-fund", type: "fundacion", label: "Fundación", year: 1865, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "wellington-fund", type: "fundacion", label: "Fundación", year: 1865, confidence: "exacta", primaryForAffinity: true, description: "En 1865 fue designada capital de Nueva Zelanda por su posición central y su puerto natural en el estrecho de Cook.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1865.",
   },
   {
@@ -442,7 +442,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1946, country: "Panamá", emoji: "🇵🇦",
     description: "Capital panameña puente entre dos océanos y dos mundos.",
     keyThemes: ["Canal", "Comercio", "Conexión", "Soberanía"],
-    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 15 de agosto de 1519 por Pedro Arias Dávila, fue la primera ciudad española fundada en la costa del Pacífico.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 15 de agosto de 1519.",
   },
   {
@@ -450,7 +450,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1958, country: "Irlanda", emoji: "🇮🇪",
     description: "Capital irlandesa ciudad de la literatura la música y la cerveza.",
     keyThemes: ["Literatura", "Música", "Cerveza", "Resiliencia"],
-    events: [{ id: "dublin-fund", type: "fundacion", label: "Fundación", year: 988, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dublin-fund", type: "fundacion", label: "Fundación", year: 988, confidence: "exacta", primaryForAffinity: true, description: "En 988 el caudillo vikingo Olaf Cuarán consolidó el asentamiento nórdico a orillas del río Liffey, germen de Dublín.", source: "Documentación histórica" }],
     sourceNote: "Asentamiento vikingo desde 988.",
   },
   // CERDO
@@ -459,7 +459,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1911, country: "Filipinas", emoji: "🇵🇭",
     description: "Capital filipina ciudad de la sonrisa y la calidez en el Pacífico.",
     keyThemes: ["Hospitalidad", "Historia", "Calidez", "Diversidad"],
-    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1571, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1571, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 24 de junio de 1571 por Miguel López de Legazpi sobre el poblado del reino precolonial de Rajah Sulayman.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 24 de junio de 1571.",
   },
   {
@@ -467,7 +467,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1923, country: "Indonesia", emoji: "🇮🇩",
     description: "Capital indonesia megaciudad vibrante y diversa en el trópico.",
     keyThemes: ["Diversidad", "Comercio", "Calidez", "Espiritualidad"],
-    events: [{ id: "yakarta-fund", type: "fundacion", label: "Fundación", year: 1619, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "yakarta-fund", type: "fundacion", label: "Fundación", year: 1619, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1619 como Batavia por la Compañía Neerlandesa de las Indias Orientales, tras arrasar el puerto de Jayakarta.", source: "Documentación histórica" }],
     sourceNote: "Fundada como Batavia en 1619.",
   },
   {
@@ -475,7 +475,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1935, country: "Malasia", emoji: "🇲🇾",
     description: "Capital malasia donde las torres gemelas se elevan desde la jungla.",
     keyThemes: ["Diversidad", "Comercio", "Calidez", "Modernidad"],
-    events: [{ id: "kuala-lumpur-fund", type: "fundacion", label: "Fundación", year: 1857, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kuala-lumpur-fund", type: "fundacion", label: "Fundación", year: 1857, confidence: "exacta", primaryForAffinity: true, description: "Fundada en 1857 por mineros de estaño en la confluencia de los ríos Klang y Gombak, cuya unión dio origen a su nombre.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1857 por mineros de estaño.",
   },
   {
@@ -483,7 +483,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1947, country: "Bangladesh", emoji: "🇧🇩",
     description: "Capital bangladesí ciudad de ríos y resiliencia en el delta del Ganges.",
     keyThemes: ["Resiliencia", "Comunidad", "Generosidad", "Cultura"],
-    events: [{ id: "dhaka-fund", type: "fundacion", label: "Fundación", year: 1610, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dhaka-fund", type: "fundacion", label: "Fundación", year: 1610, confidence: "exacta", primaryForAffinity: true, description: "En 1610 el subedar mogol Islam Khan la nombró capital de Bengala, asentada junto al río Buriganga.", source: "Documentación histórica" }],
     sourceNote: "Capital de Bengala desde 1610.",
   },
   {
@@ -491,7 +491,7 @@ export const CITIES_60: SymbolicEntity[] = [
     foundingYear: 1959, country: "Ghana", emoji: "🇬🇭",
     description: "Capital ghanesa puerta de entrada a África Occidental y su calidez.",
     keyThemes: ["Calidez", "Comercio", "Hospitalidad", "Cultura"],
-    events: [{ id: "acra-fund", type: "fundacion", label: "Fundación", year: 1877, confidence: "exacta", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "acra-fund", type: "fundacion", label: "Fundación", year: 1877, confidence: "exacta", primaryForAffinity: true, description: "En 1877 fue nombrada capital de la Costa de Oro británica, sustituyendo a Cape Coast como centro administrativo.", source: "Documentación histórica" }],
     sourceNote: "Capital desde 1877.",
   },
 ];

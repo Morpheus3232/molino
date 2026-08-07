@@ -32,7 +32,7 @@ export type GenerationStatus = "ai" | "fallback" | "error";
 
 export interface GenerationRecord {
   type: string;
-  provider: "openai" | "claude";
+  provider: "openai" | "claude" | "openrouter";
   model: string;
   usage?: AIUsage;
   durationMs: number;

@@ -33,7 +33,7 @@ async function handleIntelligenceRequest(body: {
   context: MolinoContext;
   question?: string;
   template?: string;
-  provider?: 'openai' | 'claude';
+  provider?: 'openai' | 'claude' | 'openrouter';
 }) {
   const { type, context, question, template, provider } = body;
 
@@ -78,7 +78,7 @@ async function handleLegacyRequest(body: {
   user: any;
   target: any;
   result: any;
-  provider?: 'openai' | 'claude';
+  provider?: 'openai' | 'claude' | 'openrouter';
   template?: string;
 }) {
   const { user, target, result, provider, template } = body;
