@@ -1,66 +1,16 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { loadDiscoveryState, markSeen, recordVisit, hasSeenAll } from "@/lib/session/discovery";
+import { recordVisit } from "@/lib/session/discovery";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import ProfileHub from "@/components/profile/ProfileHub";
-import ProfileTabs, { type ProfileTab } from "@/components/profile/ProfileTabs";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import Button from "@/components/ui/Button";
-
-const SkeletonSpinner = () => (
-  <div className="flex items-center justify-center py-12">
-    <div className="text-center">
-      <div className="w-6 h-6 border-2 border-border border-t-accent rounded-full animate-spin mx-auto mb-3" aria-hidden="true" />
-      <p className="text-xs text-muted" role="status" aria-label="Cargando...">
-        Cargando...
-      </p>
-    </div>
-  </div>
-);
-
-const IdentityScreen = dynamic(() => import("@/components/profile/screens/IdentityScreen"), {
-  loading: SkeletonSpinner,
-});
-const WorldScreen = dynamic(() => import("@/components/profile/screens/WorldScreen"), {
-  loading: SkeletonSpinner,
-});
-const CircleScreen = dynamic(() => import("@/components/profile/screens/CircleScreen"), {
-  loading: SkeletonSpinner,
-});
-const IntelligenceScreen = dynamic(() => import("@/components/profile/screens/IntelligenceScreen"), {
-  loading: SkeletonSpinner,
-});
-
-interface ProfileClientProps {
-  serverProfile: UserProfile | null;
-  initialTab: string | null;
-  futureDateError?: boolean;
-}
-
-const VALID_TABS: ProfileTab[] = ["identity", "world", "circle", "intelligence"];
-
-const NEXT_TAB: Record<ProfileTab, ProfileTab> = {
-  identity: "world",
-  world: "circle",
-  circle: "intelligence",
-  intelligence: "identity",
-};
-
-const GUIDED_CTA: Record<ProfileTab, { text: string; next: ProfileTab }> = {
-  identity: { text: "Ya conocés tu código. Ahora descubrí tu mundo →", next: "world" },
-  world: { text: "Así te proyectás hacia afuera. Ahora, con quién resonás →", next: "circle" },
-  circle: { text: "Descubrí qué patrones aparecen en vos →", next: "intelligence" },
-  intelligence: { text: "Tu síntesis completa te espera (Premium) →", next: "identity" },
-};
 
 function buildFromLocal(): UserProfile | null {
   const stored = loadProfileFromStorage();
@@ -89,10 +39,6 @@ function buildFromLocal(): UserProfile | null {
 export default function ProfileClient({ serverProfile, initialTab, futureDateError }: ProfileClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tabFromUrl = initialTab || searchParams.get("tab");
-  const [activeTab, setActiveTab] = useState<ProfileTab | null>(
-    VALID_TABS.includes(tabFromUrl as ProfileTab) ? (tabFromUrl as ProfileTab) : null
-  );
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
@@ -101,9 +47,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     setMounted(true);
     recordVisit();
 
-    // El "?first=1" que agrega /onboarding ya no gatilla una pantalla propia
-    // (ver Mi mapa personal / ProfileHub es el destino inmediato); solo se
-    // limpia de la URL para no dejarlo colgado.
     if (searchParams.get("first") === "1") {
       const url = new URL(window.location.href);
       url.searchParams.delete("first");
@@ -119,52 +62,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       const local = buildFromLocal();
       if (local) setProfile(local);
     }
-  }, [serverProfile]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // isNewUser/seenAll arrancan en el mismo valor que el server (que siempre
-  // ve DEFAULT_STATE porque no tiene localStorage) y recién se corrigen en
-  // un efecto post-mount. Antes esto era un useMemo que leía localStorage
-  // directo durante el render: en el primer render del cliente ya devolvía
-  // el valor real (distinto del server si el usuario ya había visto algo),
-  // lo que producía un hydration mismatch en <main> (className "pb-28..."
-  // en el server vs undefined en el cliente) — y ese mismatch forzaba a
-  // React a re-generar el árbol, dejando el scroll de la página trabado.
-  const [isNewUser, setIsNewUser] = useState(true);
-  const [seenAll, setSeenAll] = useState(false);
-  useEffect(() => {
-    setIsNewUser(!loadDiscoveryState().hasCompletedOnboarding);
-    setSeenAll(hasSeenAll());
-  }, [activeTab]);
-  const showGuidedCTA = activeTab && isNewUser && !seenAll;
-
-  const updateUrl = useCallback((tab: ProfileTab | null) => {
-    const url = new URL(window.location.href);
-    if (tab) {
-      url.searchParams.set("tab", tab);
-    } else {
-      url.searchParams.delete("tab");
-      url.searchParams.delete("dob");
-    }
-    router.replace(url.pathname + url.search, { scroll: false });
-  }, [router]);
-
-  const handleEnter = useCallback((tab: ProfileTab) => {
-    setActiveTab(tab);
-    markSeen(tab);
-    updateUrl(tab);
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [updateUrl]);
-
-  const handleBackToHub = useCallback(() => {
-    setActiveTab(null);
-    updateUrl(null);
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [updateUrl]);
-
-  const handleGuidedNext = useCallback(() => {
-    if (!activeTab) return;
-    handleEnter(NEXT_TAB[activeTab]);
-  }, [activeTab, handleEnter]);
+  }, [serverProfile]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
@@ -223,77 +121,23 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
   return (
     <div className="min-h-screen bg-background">
-      {/* pb reserva espacio para el CTA guiado fijo para que no tape la
-          última sección del tab. */}
-      <main id="main-content" className={showGuidedCTA ? "pb-20 sm:pb-16" : undefined}>
-        {activeTab && (
-          <ProfileTabs active={activeTab} onChange={handleEnter} onBack={handleBackToHub} />
-        )}
-
-        {!activeTab && showEphemeralWarning && (
+      <main id="main-content">
+        {showEphemeralWarning && (
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4">
             <EphemeralWarning onDismiss={dismissEphemeralWarning} />
           </div>
         )}
 
-        <AnimatePresence>
-{!activeTab ? (
-               <motion.div
-                 key="hub"
-                 initial={{ opacity: 0 }}
-                 animate={{ opacity: 1 }}
-                 exit={{ opacity: 0 }}
-                 transition={{ duration: 0.2 }}
-               >
-                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-                   <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-                   <span>›</span>
-                   <span className="text-foreground font-medium">Mi mapa</span>
-                 </nav>
-                 <ProfileHub profile={profile} onEnter={handleEnter} />
-               </motion.div>
-             ) : (
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                {activeTab === "identity" && <IdentityScreen profile={profile} onNavigate={handleEnter} />}
-                {activeTab === "world" && <WorldScreen profile={profile} onNavigate={handleEnter} />}
-                {activeTab === "circle" && <CircleScreen profile={profile} onNavigate={handleEnter} />}
-                {activeTab === "intelligence" && <IntelligenceScreen profile={profile} onNavigate={handleEnter} />}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-        {/* Prompt de continuidad entre secciones del mapa — guía el recorrido
-            de un usuario nuevo (Identidad → Mundo → Círculo → Lectura).
-            Antes era una barra fija estilo app (fondo sólido, botón lleno,
-            blur) que tapaba contenido durante todo el scroll; ahora es una
-            línea editorial fina, coherente con el resto de los CTA de
-            "próxima sección" que ya usa cada screen in-flow. */}
-        {showGuidedCTA && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="fixed bottom-0 left-0 right-0 z-40 border-t border-ink/10 bg-background/90 backdrop-blur-md"
-          >
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-              <button
-                type="button"
-                onClick={handleGuidedNext}
-                className="w-full flex items-center justify-center gap-2 py-3.5 min-h-[44px] text-sm font-medium text-foreground hover:text-accent transition-colors"
-              >
-                {GUIDED_CTA[activeTab].text}
-              </button>
-            </div>
-          </motion.div>
-        )}
+        <ProfileHub profile={profile} />
       </main>
 
       <UniversityFooter />
     </div>
   );
+}
+
+interface ProfileClientProps {
+  serverProfile: UserProfile | null;
+  initialTab: string | null;
+  futureDateError?: boolean;
 }
