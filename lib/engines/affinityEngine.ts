@@ -15,7 +15,7 @@ import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
-import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { ANIMALS, SAN_HE_TRIADS, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { t } from "@/lib/i18n";
 
 // ════════════════════════════════════════════════════
@@ -97,65 +97,42 @@ function getRelationship(_diff: number, userAnimal: string, entityAnimal: string
 /**
  * Detailed explanation of the relationship, naming the entity.
  *
- * Uses the entity's primary historical event to generate a specific,
- * non-repetitive explanation. Falls back to animal relation description
- * only when no historical event data is available.
+ * Composes a relational insight from the entity's specific identity and
+ * the animal pair — never uses generic template phrases like
+ * "comparte tu energía".  Each output sentence names the entity, both
+ * animals, and the relation type in a way that feels specific to that
+ * particular pair.
  */
 function getExplanation(
   _diff: number,
   userAnimal: string,
   entityAnimal: string,
   entityName?: string,
-  primaryEvent?: HistoricalEvent
+  _primaryEvent?: HistoricalEvent
 ): string {
   if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
 
-  // If we have a primary event with date/year, build a historical explanation
-  if (primaryEvent && entityName) {
-    const year = primaryEvent.year;
-    const label = primaryEvent.label.toLowerCase();
-    const dateStr = primaryEvent.date
-      ? formatEventDate(primaryEvent.date)
-      : `en ${year}`;
-
-    switch (primaryEvent.type) {
-      case "independencia-declarada":
-      case "independencia-consumada":
-        return `La ${label} de ${entityName} ocurrió el ${dateStr}. Ese momento fundacional quedó asociado al año del ${entityAnimal}.`;
-      case "fundacion":
-        return `${entityName} fue fundada ${dateStr}. Su origen quedó asociado al año del ${entityAnimal}.`;
-      case "incorporacion":
-        return `${entityName} se incorporó formalmente ${dateStr}. Esa fecha define su afinidad con el ${entityAnimal}.`;
-      case "creacion":
-        return `${entityName} fue creada ${dateStr}. Esa fecha de origen la vincula al ${entityAnimal}.`;
-      case "lanzamiento":
-        return `${entityName} se lanzó ${dateStr}. Su estreno la asocia al año del ${entityAnimal}.`;
-      case "cambio-nombre":
-        return `${entityName} adoptó su nombre actual ${dateStr}. Ese hito la vincula al ${entityAnimal}.`;
-      case "fecha-tradicional":
-        return `La ${label} de ${entityName} se sitúa tradicionalmente ${dateStr}. Esa fecha la asocia al ${entityAnimal}.`;
-      default:
-        return `${entityName} tuvo su ${label} ${dateStr}, origen que define su afinidad con el ${entityAnimal}.`;
-    }
+  if (!entityName) {
+    return getRelation(userAnimal as Animal, entityAnimal as Animal).description;
   }
 
-  // Fallback: use generic animal relation description
-  const relation = getRelation(userAnimal as Animal, entityAnimal as Animal);
-  if (!entityName) return relation.description;
+  const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
 
-  switch (relation.type) {
+  switch (rel.type) {
     case "same":
-      return `${entityName} comparte tu energía de ${entityAnimal}: mismo animal, mismas fortalezas y los mismos puntos ciegos.`;
-    case "triad":
-      return `${entityName} y vos comparten el elemento oculto de la tríada ${userAnimal}-${entityAnimal} (San He).`;
+      return `${entityName} nació bajo la energía del ${entityAnimal} — como tu ${userAnimal}: misma frecuencia, fortalezas compartidas y los mismos puntos ciegos.`;
+    case "triad": {
+      const triad = SAN_HE_TRIADS.find(t => t.animals.includes(userAnimal as Animal) && t.animals.includes(entityAnimal as Animal));
+      return `${entityName} (${entityAnimal}) y tu ${userAnimal} comparten el elemento oculto${triad ? ` de ${triad.element}` : ""} de la tríada, una conexión que refuerza la energía de ambos.`;
+    }
     case "harmonious":
-      return `${entityName} (${entityAnimal}) es la pareja armoniosa natural de tu ${userAnimal}, según el Liu He.`;
+      return `${entityName} canaliza la energía del ${entityAnimal}, que complementa naturalmente tu ${userAnimal}.`;
     case "clash":
-      return `${entityName} (${entityAnimal}) está en el punto opuesto del ciclo a tu ${userAnimal} — tensión que pide más consciencia.`;
+      return `${entityName} refleja la energía del ${entityAnimal}, opuesta a tu ${userAnimal} — una tensión que invita a replantear perspectivas.`;
     case "harm":
-      return `${entityName} (${entityAnimal}) tiene una relación de atención con tu ${userAnimal}, según el Liu Hai.`;
+      return `${entityName} lleva la energía del ${entityAnimal}, que tiene una relación de atención con tu ${userAnimal}.`;
     default:
-      return `${entityName} (${entityAnimal}) y tu ${userAnimal} recorren energías independientes dentro del ciclo.`;
+      return `${entityName} canaliza la energía del ${entityAnimal}, que corre por un carril distinto al de tu ${userAnimal}.`;
   }
 }
 

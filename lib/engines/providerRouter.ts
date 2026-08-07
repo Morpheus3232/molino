@@ -1,7 +1,7 @@
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
-import { generateWithOpenAI, generateWithClaude } from './aiEngine';
+import { generateWithOpenAI, generateWithClaude, generateWithOpenRouter } from './aiEngine';
 
-export type Provider = 'openai' | 'claude';
+export type Provider = 'openai' | 'claude' | 'openrouter';
 
 export interface ProviderConfig {
   primary: Provider;
@@ -17,9 +17,9 @@ export interface FreeTierLimits {
 }
 
 export function getProviderConfig(): ProviderConfig {
-  const primary = (process.env.AI_PRIMARY_PROVIDER as Provider) || 'openai';
-  const fallback = (process.env.AI_FALLBACK_PROVIDER as Provider) || 'claude';
-  const enableFallback = process.env.AI_ENABLE_FALLBACK !== 'false';
+  const primary = (process.env.AI_PRIMARY_PROVIDER as Provider) || 'openrouter';
+  const fallback = (process.env.AI_FALLBACK_PROVIDER as Provider) || 'openai';
+  const enableFallback = process.env.AI_ENABLE_FALLBACK === 'true';
   const maxRetries = parseInt(process.env.AI_MAX_RETRIES || '2', 10);
   const retryDelayMs = parseInt(process.env.AI_RETRY_DELAY_MS || '1000', 10);
 
@@ -36,6 +36,12 @@ export function getFreeTierLimits(provider: Provider): FreeTierLimits {
     return {
       requestsPerMinute: parseInt(process.env.OPENAI_FREE_RPM || '3', 10),
       tokensPerMinute: parseInt(process.env.OPENAI_FREE_TPM || '40000', 10),
+    };
+  }
+  if (provider === 'openrouter') {
+    return {
+      requestsPerMinute: parseInt(process.env.OPENROUTER_FREE_RPM || '20', 10),
+      tokensPerMinute: parseInt(process.env.OPENROUTER_FREE_TPM || '40000', 10),
     };
   }
   return {
@@ -78,7 +84,9 @@ export async function generateWithRouting(
     try {
       const interpretation = provider === 'claude'
         ? await generateWithClaude(user, target, result, template)
-        : await generateWithOpenAI(user, target, result, template);
+        : provider === 'openrouter'
+          ? await generateWithOpenRouter(user, target, result, template)
+          : await generateWithOpenAI(user, target, result, template);
       return interpretation;
     } catch (error) {
       const isRateLimit = isRateLimitError(error);
@@ -118,11 +126,12 @@ export function getProviderStatus(): { primary: Provider; fallback: Provider; fa
     primary: config.primary,
     fallback: config.fallback,
     fallbackEnabled: config.enableFallback,
-    primaryConfigured: !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY'],
-    fallbackConfigured: !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY'],
+    primaryConfigured: !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : config.primary === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
+    fallbackConfigured: !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : config.fallback === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
     freeTierLimits: {
       openai: getFreeTierLimits('openai'),
       claude: getFreeTierLimits('claude'),
+      openrouter: getFreeTierLimits('openrouter'),
     },
   };
 }

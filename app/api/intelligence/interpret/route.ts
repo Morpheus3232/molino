@@ -9,7 +9,7 @@ import {
   type ConversationTurn,
 } from '@/lib/engines/intelligenceEngine';
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
-import { generateWithRouting, getProviderStatus } from '@/lib/engines/providerRouter';
+import { generateWithRouting, getProviderStatus, type Provider } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
 import { recordGeneration } from '@/lib/ai/costTracking';
@@ -36,7 +36,7 @@ interface RequestBody {
   entity?: any;
   decision?: any;
   question?: string;
-  provider?: 'openai' | 'claude';
+  provider?: 'openai' | 'claude' | 'openrouter';
   /** Prior Q&A turns from the current chat session only — never persisted server-side. */
   conversationHistory?: ConversationTurn[];
   /** Device-bound premium token: proves the request comes from a paying device. */
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
 
     let aiResult: MolinoInterpretation | null = null;
     let aiError: string | null = null;
-    let providerUsed: 'openai' | 'claude' = 'openai';
+    let providerUsed: Provider = 'openai';
     let fallbackUsed = false;
     const generationStartedAt = Date.now();
 
@@ -198,7 +198,7 @@ export async function POST(req: NextRequest) {
       await recordGeneration({
         type,
         provider,
-        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
+        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : provider === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
         durationMs: Date.now() - generationStartedAt,
         status: 'error',
         errorReason: err instanceof Error ? err.message : String(err),
