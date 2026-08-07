@@ -6,6 +6,7 @@ import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import type { UserProfile } from "@/types/user";
 import { buildPatterns, buildTensions, buildRules, buildMomentState } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
 
@@ -26,6 +27,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
   const tensions = buildTensions(profile);
   const rules = buildRules(profile);
   const momentState = buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme);
+  const timing = analyzeTiming(profile, new Date(), "start_project");
 
   const sections = [
     {
@@ -110,6 +112,85 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
         </motion.div>
       ) : (
         <p className="text-sm text-muted py-6">Sin datos de momento actual.</p>
+      ),
+    },
+    {
+      id: "timing",
+      title: "Tu timing",
+      description: "Momentos favorables según tu ciclo personal",
+      content: (
+        <div className="py-6 space-y-4">
+          <div>
+            <p className="label-micro text-muted mb-1">Score actual</p>
+            <p className="font-heading text-2xl font-semibold" style={{ color: elementColor }}>{timing.timingScore}/100</p>
+          </div>
+          <div>
+            <p className="label-micro text-muted mb-1">Ventana recomendada</p>
+            <p className="text-base text-foreground leading-relaxed">{timing.recommendedWindow}</p>
+          </div>
+          <div>
+            <p className="label-micro text-muted mb-1">Explicación</p>
+            <p className="text-sm text-foreground leading-relaxed">{timing.explanation}</p>
+          </div>
+          {timing.favorableDimensions.length > 0 && (
+            <div>
+              <p className="label-micro text-muted mb-2">Dimensiones favorables</p>
+              <div className="flex flex-wrap gap-1.5">
+                {timing.favorableDimensions.map((d) => (
+                  <span key={d} className="text-xs font-mono uppercase tracking-[0.12em] px-2 py-1 border border-ink/10 text-foreground">{d}</span>
+                ))}
+              </div>
+            </div>
+          )}
+          {timing.challengingDimensions.length > 0 && (
+            <div>
+              <p className="label-micro text-muted mb-2">Dimensiones desafiantes</p>
+              <div className="flex flex-wrap gap-1.5">
+                {timing.challengingDimensions.map((d) => (
+                  <span key={d} className="text-xs font-mono uppercase tracking-[0.12em] px-2 py-1 border border-ink/10 text-muted">{d}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "evolucion",
+      title: "Tu evolución",
+      description: "Cómo se conectan tus ciclos con tu camino",
+      content: (
+        <div className="py-6 space-y-6">
+          <div>
+            <p className="label-micro text-muted mb-1">Año personal</p>
+            <p className="font-heading text-xl font-semibold" style={{ color: elementColor }}>{dailyEnergy.personalYear}</p>
+            <p className="text-sm text-muted mt-1">Tema: {dailyEnergy.theme}</p>
+          </div>
+          <div>
+            <p className="label-micro text-muted mb-1">Mes personal</p>
+            <p className="font-heading text-xl font-semibold" style={{ color: elementColor }}>{dailyEnergy.personalMonth}</p>
+          </div>
+          <div>
+            <p className="label-micro text-muted mb-1">Día personal</p>
+            <p className="font-heading text-xl font-semibold" style={{ color: elementColor }}>{dailyEnergy.personalDay}</p>
+          </div>
+          <div className="border-t border-ink/10 pt-4">
+            <p className="label-micro text-muted mb-2">Energía por áreas</p>
+            <div className="grid grid-cols-2 gap-4">
+              {Object.entries(dailyEnergy.areas).map(([key, area]) => (
+                <div key={key}>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-muted capitalize">{key === "relationships" ? "Relaciones" : key}</span>
+                    <span className="font-mono text-xs text-foreground">{area.score}%</span>
+                  </div>
+                  <div className="h-1.5 bg-ink/10 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full" style={{ width: `${area.score}%`, backgroundColor: area.score >= 60 ? "var(--score-excellent)" : area.score >= 45 ? "var(--score-good)" : "var(--score-poor)" }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       ),
     },
   ];
