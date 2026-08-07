@@ -13,6 +13,12 @@ import { markOnboardingCompleted } from "@/lib/session/discovery";
 import LocationStep from "@/components/onboarding/LocationStep";
 import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 
+const STEPS = [
+  { id: "date", label: "Fecha", description: "Tu fecha de nacimiento — la base de todo" },
+  { id: "preview", label: "Adelanto", description: "Vos ya tenés dimensiones, sin dar tu nombre" },
+  { id: "location", label: "Ubicación", description: "País actual (opcional) para afinidades culturales" },
+];
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState<"date" | "preview" | "location">("date");
@@ -42,10 +48,6 @@ export default function OnboardingPage() {
     changeStep("preview");
   };
 
-  // Al cambiar de paso hay que volver arriba: el header es fijo (z-50) y si
-  // el scroll queda donde estaba (el usuario bajó para ver el adelanto), el
-  // botón del paso siguiente queda pegado arriba, detrás del header, y es
-  // imposible de clickear. Mismo patrón que ProfileClient al entrar a un tab.
   const changeStep = (next: "date" | "preview" | "location") => {
     setStep(next);
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -56,13 +58,7 @@ export default function OnboardingPage() {
     try {
       const [year, month, day] = dateValue.split("-");
       saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
-      // No mandamos la fecha real al tracker: /filosofia promete que la
-      // fecha de nacimiento no se asocia a analytics. Solo registramos que
-      // el onboarding se completó.
       analytics.track({ type: "onboarding_completed" });
-      // Marca el onboarding como completado para que discovery.ts active el
-      // "próximo descubrimiento" del hub y deje de mostrar el CTA guiado a
-      // usuarios que ya pasaron por el recorrido.
       markOnboardingCompleted();
       clearOnboardingData();
       router.push(`/profile?dob=${dateValue}&first=1`);
@@ -80,9 +76,43 @@ export default function OnboardingPage() {
     [isDateValid, dateValue]
   );
 
+  const currentStepIndex = STEPS.findIndex(s => s.id === step);
+
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-xl px-4 sm:px-8 lg:px-12 py-16 sm:py-24" id="main-content">
+        
+        {/* Progress indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-10"
+          role="navigation"
+          aria-label="Progreso del onboarding"
+        >
+          <div className="flex items-center justify-center gap-2 mb-4">
+            {STEPS.map((s, i) => (
+              <span
+                key={s.id}
+                className={`font-mono text-xs font-semibold tracking-[0.2em] uppercase transition-colors ${
+                  i <= currentStepIndex ? "text-accent" : "text-muted/50"
+                }`}
+              >
+                {s.label}
+              </span>
+            ))}
+          </div>
+          <div className="w-full max-w-md mx-auto h-1 bg-ink/10 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentStepIndex + 1) / STEPS.length) * 100}%` }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="h-full bg-accent rounded-full"
+            />
+          </div>
+        </motion.div>
+
         {step === "date" ? (
           <>
             {/* Header */}
@@ -93,7 +123,7 @@ export default function OnboardingPage() {
               className="text-center mb-10"
             >
               <p className="eyebrow-brutalist mb-3">
-                Mapa personal de autoconocimiento
+                Paso 1 de 3
               </p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
                 ¿Cuándo naciste?
@@ -114,7 +144,7 @@ export default function OnboardingPage() {
               <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
             </motion.div>
 
-            {/* CTA — nada aparece debajo de los campos de fecha salvo esto */}
+            {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -135,18 +165,17 @@ export default function OnboardingPage() {
           </>
         ) : step === "preview" ? (
           <>
-            {/* Adelanto — la primera devolución concreta por haber puesto la
-                fecha, antes de pedir nada más. Ver DimensionsPreview.tsx. */}
             <motion.div
               initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               className="text-center mb-6"
             >
-              <p className="eyebrow-brutalist mb-3">Esto ya dice algo de vos</p>
+              <p className="eyebrow-brutalist mb-3">Paso 2 de 3</p>
               <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[0.95]">
-                Y todavía no sabemos tu nombre.
+                Esto ya dice algo de vos
               </h1>
+              <p className="mt-2 text-sm text-muted">Y todavía no sabemos tu nombre.</p>
             </motion.div>
 
             <DimensionsPreview birthDate={dateValue} />

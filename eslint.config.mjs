@@ -8,9 +8,12 @@ const eslintConfig = [
       "react-hooks": reactHooks,
     },
     rules: {
-      // Flags widespread, legitimate patterns (mount flags for hydration safety,
-      // state derived from URL/hash on mount, polling counters) as errors.
-      "react-hooks/set-state-in-effect": "warn",
+      // Este codebase usa setState dentro de useEffect intencionalmente para:
+      // 1. Hydration safety (mount flags: setMounted(true) después del primer render)
+      // 2. Lectura de localStorage/URL params (solo disponible en cliente post-mount)
+      // 3. Sincronizar estado con eventos externos (media query, scroll, route)
+      // La regla la dejamos como "off" porque el patrón es deliberado y documentado.
+      "react-hooks/set-state-in-effect": "off",
     },
   },
 ];

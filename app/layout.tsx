@@ -10,10 +10,10 @@ import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import { SITE_URL } from "@/lib/seo";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", variable: "--font-display" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-heading" });
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
+const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 
 export const metadata: Metadata = {
   title: {

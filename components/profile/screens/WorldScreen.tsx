@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -25,7 +25,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   // Orden de presentación: score primero (afinidad zodiacal intacta), y
   // como tiebreaker la relevancia cultural — el país del usuario adelanta
   // entidades de su país sin tocar ningún scoring.
-  const withCountryPreference = (results: AffinityResult[]) => {
+  const withCountryPreference = useCallback((results: AffinityResult[]) => {
     const country = userCountry;
     if (!country) return results;
     return [...results].sort((a, b) => {
@@ -34,7 +34,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
       const bMatch = b.entity.country === country ? 1 : 0;
       return bMatch - aMatch;
     });
-  };
+  }, [userCountry]);
 
   const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
 
@@ -60,14 +60,14 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
         calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
       ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 6),
-    [profile, userCountry]
+    [profile, withCountryPreference]
   );
   const topBrands = useMemo(
     () => withCountryPreference(
         calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
       ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
       .slice(0, 6),
-    [profile, userCountry]
+    [profile, withCountryPreference]
   );
 
   const userDisplay = getZodiacDisplay(userAnimal);

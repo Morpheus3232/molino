@@ -4,87 +4,44 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { getDailyNumber, getDailyReflection } from "@/lib/numerology/daily";
 import Button from "@/components/ui/Button";
+import Halftone from "@/components/ui/Halftone";
 
-const ESTADISTICAS = [
-  { valor: "3", label: "SISTEMAS CRUZADOS" },
-  { valor: "1", label: "MAPA PERSONAL" },
-  { valor: "0", label: "DATOS EN SERVIDORES" },
+const PREVIEW_LAYERS = [
+  { number: "7", label: "CAMINO DE VIDA", system: "Numerología", color: "#6B4C7A" },
+  { symbol: "♎", label: "SIGNO SOLAR", system: "Astrología", color: "#2E5C8A" },
+  { emoji: "🐉", label: "DRAGÓN", system: "Zodíaco Chino", color: "#C49A2A" },
 ];
 
 export default function HeroClient({ hasProfile = false }: { hasProfile?: boolean }) {
   const router = useRouter();
-  const today = new Date();
-  const number = getDailyNumber(today);
-  const reflection = getDailyReflection(number, today);
-
-  const cellPad = "p-8 lg:p-12";
 
   return (
-    <section className="relative flex flex-col justify-center bg-background pt-16 overflow-hidden">
-      <div className="relative mx-auto max-w-8xl w-full px-4 sm:px-8 lg:px-12">
-        <div className="border-t border-ink/10">
-          <div className={`${cellPad} pb-6 lg:pb-8 border-b border-ink/10`}>
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="eyebrow-brutalist"
-            >
+    <section className="relative bg-background overflow-hidden">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 lg:pt-36 pb-16 sm:pb-20">
+        <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 items-center">
+          {/* Left: Copy + CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="eyebrow-brutalist mb-5">
               MAPA PERSONAL DE AUTOCONOCIMIENTO
-            </motion.div>
-          </div>
+            </p>
 
-          <div className={`${cellPad} border-b border-ink/10`}>
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-display text-[clamp(2.5rem,12vw,6rem)] leading-[0.92] tracking-tight uppercase"
-            >
+            <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.92] tracking-tight uppercase">
               CONOCÉ TU
               <br />
               <span className="text-accent">MAPA PERSONAL</span>
-            </motion.h1>
-          </div>
+            </h1>
 
-          <div className={`${cellPad} pb-6 lg:pb-8`}>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="text-base sm:text-lg text-muted/80 leading-relaxed max-w-xl"
-            >
-              Tu fecha de nacimiento revela una arquitectura única.
-              Numerología, astrología y zodíaco chino en un solo mapa.
-              <span className="font-semibold text-foreground"> Sin registro. Sin cookies. Sin servidor guardando tu perfil. </span>
-            </motion.p>
-          </div>
+            <p className="text-base sm:text-lg text-muted/80 leading-relaxed max-w-xl mt-8">
+              Tu fecha de nacimiento revela tres sistemas que se cruzan para mostrarte quién sos, en qué momento estás y qué energías te acompañan.
+              <span className="font-semibold text-foreground"> Sin registro. Sin cookies. Sin servidor.</span>
+            </p>
 
-          <div className={`${cellPad} border-b border-ink/10`}>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.15 }}
-              className="grid grid-cols-3 gap-4 lg:gap-8"
-            >
-              {ESTADISTICAS.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <p className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">{stat.valor}</p>
-                  <p className="label-micro mt-2">{stat.label}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          <div className={`${cellPad} pt-8 lg:pt-10`}>
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.2 }}
-              className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center mt-10">
               <Button
                 onClick={() => router.push("/onboarding")}
                 className="group w-full sm:w-auto flex-1 sm:flex-none"
@@ -97,43 +54,77 @@ export default function HeroClient({ hasProfile = false }: { hasProfile?: boolea
               </Button>
               <Link
                 href="/filosofia"
-                className="w-full sm:w-auto flex-1 sm:flex-none inline-flex items-center justify-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent hover:text-accent/80 transition-colors px-8 py-4 border border-accent/30 rounded hover:border-accent/60"
+                className="w-full sm:w-auto flex-1 sm:flex-none inline-flex items-center justify-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-muted hover:text-foreground transition-colors px-8 py-4"
               >
-                CÓMO FUNCIONA
-                <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                Cómo funciona
+                <ArrowRight className="w-3 h-3" aria-hidden="true" />
               </Link>
-            </motion.div>
-          </div>
-        </div>
+            </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 lg:py-16"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {[
-              { title: "ENERGÍA DE HOY", desc: reflection.text, href: "/hoy", icon: <span aria-hidden="true">☀️</span> },
-              { title: "TU MAPA", desc: "Identidad, arquetipo, elemento, animal y ciclos en un solo lugar.", href: "/profile", icon: <span aria-hidden="true">🗺️</span> },
-              { title: "EXPLORAR SISTEMAS", desc: "Numerología, astrología, zodíaco chino — contenido verificado.", href: "/explore", icon: <span aria-hidden="true">📚</span> },
-            ].map((card) => (
-              <Link
-                key={card.title}
-                href={card.href}
-                className="group p-6 lg:p-8 bg-background border border-ink/10 hover:bg-ink/[0.02] transition-colors"
-              >
-                <div className="text-3xl mb-4">{card.icon}</div>
-                <p className="label-micro mb-2">{card.title}</p>
-                <p className="text-sm text-muted leading-relaxed mb-6">{card.desc}</p>
-                <span className="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent group-hover:text-accent/80 transition-colors">
-                  Leer
-                  <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
+            <p className="text-xs text-muted/60 mt-5 font-medium">
+              Tres sistemas. Un mapa. Tu navegador es el único que guarda tu perfil.
+            </p>
+          </motion.div>
+
+          {/* Right: Map Preview Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="relative"
+          >
+            <div className="relative border border-ink/10 bg-background overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none">
+                <Halftone variant="spiral" resolution={25} className="w-full h-full text-ink opacity-[0.02]" />
+              </div>
+
+              {/* Header strip */}
+              <div className="relative px-8 pt-8 pb-6 border-b border-ink/10">
+                <div className="flex items-center justify-between">
+                  <p className="label-micro">Tu mapa personal</p>
+                  <p className="font-mono text-[0.6rem] tracking-[0.15em] text-muted/50 uppercase">Preview</p>
+                </div>
+                <p className="font-display text-2xl sm:text-3xl font-bold tracking-tight mt-3">
+                  Mapa de <span className="text-accent">autodescubrimiento</span>
+                </p>
+              </div>
+
+              {/* Three systems */}
+              <div className="relative grid grid-cols-3 divide-x divide-ink/10">
+                {PREVIEW_LAYERS.map((layer, i) => (
+                  <div key={layer.label} className="px-6 sm:px-8 py-8 text-center">
+                    <p className="text-[0.6rem] font-mono tracking-[0.15em] text-muted/50 uppercase mb-4">{layer.system}</p>
+                    {layer.number && (
+                      <p className="font-display text-4xl sm:text-5xl font-bold" style={{ color: layer.color }}>{layer.number}</p>
+                    )}
+                    {layer.symbol && (
+                      <p className="text-4xl sm:text-5xl" style={{ color: layer.color }}>{layer.symbol}</p>
+                    )}
+                    {layer.emoji && (
+                      <p className="text-4xl sm:text-5xl">{layer.emoji}</p>
+                    )}
+                    <p className="text-xs font-semibold tracking-[0.12em] text-foreground mt-3 uppercase">{layer.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom teaser */}
+              <div className="relative px-8 py-6 border-t border-ink/10 bg-ink/[0.015]">
+                <div className="flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <p className="text-sm text-muted">Tu elemento define tu energía base. Tu camino de vida revela tu propósito.</p>
+                </div>
+                <div className="flex items-center gap-3 mt-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <p className="text-sm text-muted">Tu signo solar complementa. Tu animal chino cicla cada 12 años.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Shadow / depth */}
+            <div className="absolute -bottom-3 left-4 right-4 h-6 bg-ink/[0.04] -z-10" />
+          </motion.div>
+        </div>
       </div>
     </section>
   );

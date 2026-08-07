@@ -100,7 +100,7 @@ describe("HoyClient consumes the canonical orientation (no competing implementat
   );
 
   test("imports buildOrientation from lib/utils/orientation", () => {
-    expect(hoyClientSource).toMatch(/import\s*{\s*buildOrientation\s*}\s*from\s*["']@\/lib\/utils\/orientation["']/);
+    expect(hoyClientSource).toMatch(/import\s*\{\s*buildOrientation(?:,\s*type\s+\w+)?\s*\}\s*from\s*["']@\/lib\/utils\/orientation["']/);
   });
 
   test("does not define a competing getOrientation() function", () => {

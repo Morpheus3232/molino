@@ -7,20 +7,19 @@ export interface NavLink {
 }
 
 /**
- * REBUILD (Bloque 2) — la nav primaria bajó de 9 links planos compitiendo
- * entre sí a 2: "Hoy" (el gancho de retorno diario) y "Afinidad" (la
- * exploración hacia el mundo). Todo lo demás — Timing, Decisiones,
- * Evolución, Biblioteca, Filosofía — sigue existiendo y es 100% alcanzable,
- * pero vive en el menú (secondaryNavLinks), no peleando en la barra
- * principal. "Mi Mapa" no es un link más: es el CTA acentuado del header.
+ * Nav primaria simplificada a 4 items: Inicio, Mi Mapa, Explorar, Filosofía
+ * Todo lo demás (Timing, Decisiones, Evolución, Biblioteca) va al menú secundario
  */
 export const primaryNavLinks: NavLink[] = [
-  { href: "/hoy", label: t.nav.hoy },
-  { href: "/affinity", label: t.nav.afinidad },
+  { href: "/", label: t.nav.inicio },
+  { href: "/profile", label: t.nav.miMapa },
+  { href: "/explore", label: t.nav.explorar },
+  { href: "/filosofia", label: t.nav.filosofia },
 ];
 
 export const secondaryNavLinks: NavLink[] = [
   { href: "/timing", label: t.nav.timing },
+  { href: "/decisions", label: t.nav.decisiones },
   { href: "/evolution", label: t.nav.evolucion },
 ];
 

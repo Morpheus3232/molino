@@ -9,17 +9,16 @@
  */
 export const es = {
   nav: {
+    inicio: "Inicio",
+    miMapa: "Mi Mapa",
+    explorar: "Explorar",
+    filosofia: "Filosofía",
     hoy: "Hoy",
     afinidad: "Afinidad",
     timing: "Timing",
     decisiones: "Decisiones",
     evolucion: "Evolución",
     biblioteca: "Biblioteca",
-    filosofia: "Filosofía",
-    inicio: "Inicio",
-    miMapa: "Mi Mapa",
-    energiaDeHoy: "Energía de hoy",
-    explorar: "Explorar",
     guia: "Guía",
     conocimientoLibre: "Conocimiento libre",
     privacidadRadical: "Privacidad radical",
