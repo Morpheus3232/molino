@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
+import { motion } from "framer-motion";
+import { getScoreColor } from "@/lib/utils/score";
 import type { TimingResult } from "@/lib/engines/timingEngine";
 
 interface TimingCalendarProps {
@@ -25,13 +24,18 @@ function formatDayLabel(dateStr: string): string {
   return d.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" });
 }
 
+function getScoreLabel(score: number): string {
+  if (score >= 75) return "Favorable";
+  if (score >= 55) return "Bueno";
+  if (score >= 40) return "Neutro";
+  return "Desafiante";
+}
+
 export default function TimingCalendar({
   dates,
   elementColor,
   intentionLabel,
 }: TimingCalendarProps) {
-  const [tooltip, setTooltip] = useState<{ dateStr: string; x: number; y: number } | null>(null);
-
   if (dates.length === 0) return null;
 
   const dateMap = new Map(dates.map(d => [d.date, d]));
@@ -90,10 +94,8 @@ export default function TimingCalendar({
     cursor.setDate(cursor.getDate() + 1);
   }
 
-  const hovered = tooltip ? dateMap.get(tooltip.dateStr) : undefined;
-
   return (
-    <div className="relative">
+    <div>
       <p className="eyebrow-brutalist mb-2">Tu semana en timing</p>
       <p className="text-sm text-muted mb-6">
         Mejores días para {intentionLabel.toLowerCase()}. Los números son el score de timing (0–100).
@@ -129,33 +131,18 @@ export default function TimingCalendar({
             <div
               key={dateStr}
               className="relative aspect-square flex items-center justify-center"
-              onMouseEnter={(e) => {
-                if (!data) return;
-                const rect = e.currentTarget.getBoundingClientRect();
-                setTooltip({ dateStr, x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
-              }}
-              onMouseLeave={() => setTooltip(null)}
-              onFocus={() => {
-                if (data) setTooltip({ dateStr, x: 0, y: 0 });
-              }}
-              onBlur={() => setTooltip(null)}
-              tabIndex={data ? 0 : -1}
-              aria-label={
-                data
-                  ? `${formatDayLabel(dateStr)}: score ${data.timingScore} de 100, tema ${data.theme}`
-                  : undefined
-              }
+              title={data ? `${formatDayLabel(dateStr)} — ${data.theme}` : undefined}
             >
               {inRange && color ? (
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: i * 0.02, duration: 0.25 }}
-                  className={`flex flex-col items-center justify-center gap-0.5 ${data ? "cursor-pointer" : ""}`}
+                  className="flex flex-col items-center justify-center gap-0.5"
                 >
                   <span className="text-[9px] font-mono text-muted">{date.getDate()}</span>
                   <span
-                    className="w-7 h-7 rounded-full flex items-center justify-center font-mono text-[10px] font-bold border-2 transition-transform duration-150 hover:scale-110"
+                    className="w-7 h-7 rounded-full flex items-center justify-center font-mono text-[10px] font-bold border-2"
                     style={{
                       borderColor: color,
                       color: isTodayCell ? "var(--color-background)" : color,
@@ -179,53 +166,58 @@ export default function TimingCalendar({
         })}
       </div>
 
-      {/* Tooltip con detalle del día */}
-      <AnimatePresence>
-        {tooltip && hovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 4 }}
-            transition={{ duration: 0.15 }}
-            className="fixed z-50 w-64 bg-background border border-ink/10 shadow-xl p-4 pointer-events-none hidden sm:block"
-            style={{
-              left: Math.min(tooltip.x, window.innerWidth - 280),
-              top: tooltip.y > window.innerHeight - 260 ? tooltip.y - 220 : tooltip.y + 16,
-            }}
-          >
-            <p className="label-micro text-muted mb-1 capitalize">{formatDayLabel(tooltip.dateStr)}</p>
-            <p className="font-heading text-lg font-semibold text-foreground mb-1">
-              {getScoreLabel(hovered.timingScore)}
-              <span className="text-muted font-normal text-sm"> · {hovered.timingScore}/100</span>
-            </p>
-            <p className="text-sm text-foreground leading-relaxed">{hovered.explanation}</p>
-            {hovered.favorableDimensions.length > 0 && (
-              <div className="mt-3">
-                <p className="label-micro text-muted mb-1">Favorece</p>
-                <div className="flex flex-wrap gap-1">
-                  {hovered.favorableDimensions.map((d) => (
-                    <span key={d} className="text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 border border-ink/10 text-foreground">
-                      {d}
-                    </span>
-                  ))}
-                </div>
+      {/* Detalle directo por día — cada fecha con su score, tema y explicación */}
+      <div className="mt-6 border-t border-ink/10">
+        {sortedDates.map((d, i) => {
+          const color = getScoreColor(d.timingScore);
+          const isTodayCell = isToday(d.date);
+          return (
+            <motion.div
+              key={d.date}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.03, duration: 0.25 }}
+              className={`flex items-start gap-4 py-4 border-b border-ink/10 ${isTodayCell ? "bg-ink/[0.03]" : ""}`}
+            >
+              <div className="flex flex-col items-center w-14 shrink-0">
+                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+                  {formatDayLabel(d.date).split(" ")[0]}
+                </span>
+                <span
+                  className="mt-1 w-9 h-9 rounded-full flex items-center justify-center font-mono text-xs font-bold border-2"
+                  style={{
+                    borderColor: color,
+                    color: isTodayCell ? "var(--color-background)" : color,
+                    backgroundColor: isTodayCell ? color : `${color}12`,
+                  }}
+                >
+                  {d.timingScore}
+                </span>
+                {isTodayCell && (
+                  <span className="mt-1 font-mono text-[9px] uppercase tracking-[0.1em] text-accent">Hoy</span>
+                )}
               </div>
-            )}
-            {hovered.challengingDimensions.length > 0 && (
-              <div className="mt-2">
-                <p className="label-micro text-muted mb-1">Observar</p>
-                <div className="flex flex-wrap gap-1">
-                  {hovered.challengingDimensions.map((d) => (
-                    <span key={d} className="text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 border border-ink/10 text-muted">
-                      {d}
-                    </span>
-                  ))}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
+                  <span className="font-heading text-sm font-semibold text-foreground capitalize">
+                    {formatDayLabel(d.date)}
+                  </span>
+                  <span
+                    className="text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 border border-ink/10"
+                    style={{ color }}
+                  >
+                    {d.theme}
+                  </span>
+                  <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted">
+                    {getScoreLabel(d.timingScore)}
+                  </span>
                 </div>
+                <p className="text-sm text-muted leading-relaxed">{d.explanation}</p>
               </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
 
       {/* Leyenda de escala */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5">
@@ -236,32 +228,6 @@ export default function TimingCalendar({
             {item.min}+ {item.label}
           </span>
         ))}
-      </div>
-
-      {/* Temas presentes */}
-      <div className="flex flex-wrap items-center gap-2 mt-3">
-        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted mr-1">Temas:</span>
-        {(() => {
-          const groups = new Map<string, { color: string; count: number }>();
-          dates.forEach(d => {
-            const existing = groups.get(d.theme);
-            if (existing) {
-              existing.count++;
-            } else {
-              groups.set(d.theme, { color: getScoreColor(d.timingScore), count: 1 });
-            }
-          });
-          return Array.from(groups.entries()).map(([theme, info]) => (
-            <span
-              key={theme}
-              className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.1em]"
-              style={{ color: info.color }}
-            >
-              <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: info.color }} />
-              {theme} ({info.count})
-            </span>
-          ));
-        })()}
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence, type Convergence } from "@/lib/engines/convergentEngine";
-import { analyzeTiming, findBestDates, type TimingIntention, type TimingResult } from "@/lib/engines/timingEngine";
+import { analyzeTiming, findBestDates, type TimingIntention, type TimingResult, INTENTION_LABELS } from "@/lib/engines/timingEngine";
 import { buildMomentState, type MomentState } from "@/lib/engines/synthesisEngine";
 import { buildOrientation, type OrientationData } from "@/lib/utils/orientation";
 import { getTopAffinityHighlights, type AffinityResult } from "@/lib/engines/affinityEngine";
@@ -21,7 +21,6 @@ import {
   type DailySnapshot,
 } from "@/lib/session/dailyHistory";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
-import LocationSelector from "@/components/hoy/LocationSelector";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
@@ -86,6 +85,12 @@ interface DayState {
   topAffinities: AffinityResult[];
 }
 
+const INTENTION_OPTIONS: { id: TimingIntention; label: string; emoji: string }[] = [
+  { id: "start_project", label: "Empezar un proyecto", emoji: "🚀" },
+  { id: "make_decision", label: "Tomar una decisión", emoji: "⚡" },
+  { id: "start_relationship", label: "Empezar una relación", emoji: "💫" },
+];
+
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
   show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] as const } },
@@ -99,7 +104,7 @@ export default function HoyClient() {
   const [snapshotSaved, setSnapshotSaved] = useState(false);
   const [streak, setStreak] = useState<{ days: number; orientation: Orientation } | null>(null);
   const [previousSnapshot, setPreviousSnapshot] = useState<DailySnapshot | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [intention, setIntention] = useState<TimingIntention>("start_project" as TimingIntention);
   const [calcFailed, setCalcFailed] = useState(false);
 
   useEffect(() => {
@@ -110,7 +115,7 @@ export default function HoyClient() {
       const userCtx = resolveUserContext();
       const energy = calculateDailyEnergy(profile, today);
       const convergence = buildConvergence(profile);
-      const timing = analyzeTiming(profile, today, "start_project");
+      const timing = analyzeTiming(profile, today, intention);
       const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
       const moment = buildOrientation(energy, momentState, timing);
       const topAff = getTopAffinityHighlights(profile);
@@ -134,7 +139,7 @@ export default function HoyClient() {
       console.error("[Hoy] Error calculando el día:", err);
       setCalcFailed(true);
     }
-  }, [profile, mounted]);
+  }, [profile, mounted, intention]);
 
   const derived = useMemo(() => {
     if (!dayState) return null;
@@ -164,8 +169,8 @@ export default function HoyClient() {
     const start = new Date();
     const end = new Date();
     end.setDate(end.getDate() + 14);
-    return findBestDates(profile, start, end, "start_project", 14);
-  }, [profile, dayState]);
+    return findBestDates(profile, start, end, intention, 14);
+  }, [profile, dayState, intention]);
 
   const {
     energy,
@@ -419,75 +424,49 @@ export default function HoyClient() {
                   transition={{ delay: 0.24, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="border-t border-ink/10 py-12 sm:py-16"
                 >
+                  <p className="eyebrow-brutalist mb-4">¿Qué querés hacer?</p>
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {INTENTION_OPTIONS.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setIntention(opt.id)}
+                        className={`flex items-center gap-2 px-4 py-2 border text-sm font-medium transition-colors ${
+                          intention === opt.id
+                            ? "border-accent bg-accent/10 text-accent"
+                            : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
+                        }`}
+                      >
+                        <span aria-hidden="true">{opt.emoji}</span>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
                   <TimingCalendar
                     dates={bestDates}
                     elementColor={elementColor}
-                    intentionLabel="Iniciar un proyecto"
+                    intentionLabel={INTENTION_LABELS[intention]}
                   />
                 </motion.div>
               )}
 
               {/* ═══════════════════════════════════════════════
-                  05 · CONTEXTO UBICACIÓN — si seleccionó país
+                  05 · SEGUIR EL HILO — semana abreviada
                   ═══════════════════════════════════════════════ */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.32, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <LocationSelector onCountryChange={setSelectedCountry} />
-
-                {selectedCountry && affinities.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="border-t border-ink/10 py-6 sm:py-8"
-                  >
-                    <p className="text-sm text-muted leading-relaxed max-w-xl">
-                      Desde{" "}
-                      <span className="font-medium text-foreground">{selectedCountry}</span>{" "}
-                      <Link
-                        href={`/affinity/${affinities[0].entity.type}/${affinities[0].entity.id}`}
-                        className="text-accent hover:underline"
-                      >
-                        {affinities[0].entity.name}
-                      </Link>{" "}
-                      tiene presencia en tu mapa.
-                    </p>
-                  </motion.div>
-                )}
-              </motion.div>
-
-              {/* ═══════════════════════════════════════════════
-                  06 · SEGUIR EL HILO — semana en timing
-                  ═══════════════════════════════════════════════ */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
                 <p className="eyebrow-brutalist mb-4">Seguir el hilo</p>
                 <Link
-                  href="/timing?week=current"
+                  href="/semana"
                   className="group inline-flex items-center gap-2 font-display text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"
                 >
                   Ver tu semana
                   <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
                 </Link>
-
-                {!selectedCountry && affinities.length > 0 && (
-                  <p className="text-xs text-muted mt-4">
-                    <Link
-                      href={`/affinity/${affinities[0].entity.type}/${affinities[0].entity.id}`}
-                      className="text-accent hover:underline"
-                    >
-                      {affinities[0].entity.name}
-                    </Link>{" "}
-                    resuena con tu energía de {profile?.chineseZodiacInfo?.animal ?? profile?.chineseZodiac}.
-                  </p>
-                )}
 
                 <details className="mt-10 group">
                   <summary className="text-sm text-muted cursor-pointer hover:text-accent transition-colors list-none flex items-center gap-2">
