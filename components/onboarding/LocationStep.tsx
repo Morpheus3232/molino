@@ -77,7 +77,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         transition={{ duration: 0.4 }}
         className="text-center mb-10"
       >
-        <p className="eyebrow-brutalist mb-3">Un dato más, opcional</p>
+        <p className="eyebrow-brutalist mb-3">Paso 3 de 3</p>
         <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
           ¿Dónde estás ahora?
         </h1>
@@ -92,6 +92,17 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         transition={{ duration: 0.25 }}
         className="mb-8 max-w-sm mx-auto"
       >
+        {/* Microcopy explicativo sobre qué hace la ubicación */}
+        <div className="mb-6 p-4 border border-ink/10 bg-background rounded-md text-left">
+          <p className="text-xs font-mono font-semibold tracking-[0.2em] uppercase text-accent mb-2">
+            ¿Para qué sirve esto?
+          </p>
+          <p className="text-sm text-muted leading-relaxed">
+            Tu país actual revela resonancias simbólicas con <strong className="text-foreground">países, ciudades y marcas</strong> que comparten tu patrón energético.
+            No es predicción — es una lente de lectura para explorar afinidades culturales y geográficas.
+          </p>
+        </div>
+
         <AnimatePresence mode="wait" initial={false}>
           {selectedCountry ? (
             <motion.div
@@ -160,8 +171,8 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
                       </button>
                     ))
                   ) : (
-                    <p className="px-4 py-3 text-sm text-muted">No encontramos ese país.</p>
-                  )}
+                      <p className="px-4 py-3 text-sm text-muted">No encontramos ese país.</p>
+                    )}
                 </div>
               )}
             </motion.div>

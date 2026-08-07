@@ -117,7 +117,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
               className="mt-8"
             >
               <div className="flex items-center gap-3 mb-4">
-                <p className="text-xs text-muted italic">"{freeResult.question}"</p>
+                <p className="text-xs text-muted italic">&ldquo;{freeResult.question}&rdquo;</p>
                 <button type="button" onClick={resetFreeResult} className="text-xs text-accent hover:underline">
                   Nueva pregunta
                 </button>

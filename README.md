@@ -36,7 +36,7 @@ Molino es una plataforma educativa de código abierto que explora sistemas simb�
 ```
 molino/
 ├── app/
-│   ├── page.tsx              # Landing
+│   ├── page.tsx              # Landing (Hero + SystemsPreview + Testimonial + TrustMetrics)
 │   ├── onboarding/           # Wizard 3 pasos (fecha → preview → generar)
 │   ├── profile/              # Mapa personal (hub + 4 pantallas)
 │   ├── explore/              # Explorador de entidades
@@ -45,22 +45,32 @@ molino/
 │   ├── biblioteca/           # Glosario + fuentes con búsqueda
 │   ├── filosofia/            # Principios y fundamentos (con anclas directas)
 │   ├── conocimiento/         # Contenido educativo
+│   ├── hoy/                  # Energía diaria + timing (con fallback sin perfil)
+│   ├── timing/               # Calendario de fechas favorables
+│   ├── evolution/            # Evolución temporal del mapa
+│   ├── decisions/            # Mapa de decisiones
+│   ├── synthesis/            # Lectura profunda
 │   └── api/                  # API routes
 ├── components/
-│   ├── layout/               # Header (nav + hamburger + theme), Footer
+│   ├── layout/               # Header (nav + dropdown + hamburger + theme), Footer
 │   ├── profile/              # Hub, screens, EphemeralWarning, DownloadButton
-│   ├── sections/             # Hero, Journey, SystemsPreview, HowItWorks
+│   ├── sections/             # HeroClient, SystemsPreview
+│   ├── social/               # TrustMetrics, Testimonial (prueba social)
 │   ├── ui/                   # Componentes base
 │   ├── effects/              # Efectos visuales (Prism, Grainient)
 │   ├── providers/            # ThemeProvider
-│   └── analytics/            # AnalyticsProvider
+│   └── analytics/            # AnalyticsProvider (localStorage only)
+├── legacy/
+│   ├── Journey.tsx           # Descontinuado
+│   ├── ConceptsIndex.tsx     # Descontinuado
+│   └── README.md
 ├── lib/
 │   ├── engines/              # Motores de cálculo (numerología, astrología, zodiaco chino, afinidad)
 │   ├── session/              # Memoria efímera de sesión
-│   ├── data/                 # Datos públicos estáticos
+│   ├── data/                 # Datos públicos estáticos (incl. navigation.ts para footerColumns)
 │   ├── hooks/                # React hooks
-│   ├── utils/                # Utilidades
-│   ├── analytics/            # Analytics interno
+│   ├── utils/                # Utilidades (incl. daily-energy-utils.ts para /hoy fallback)
+│   ├── analytics/            # Analytics interno (localStorage)
 │   └── profile/              # Hash de perfil compartible
 ├── public/                   # Assets estáticos
 └── types/                    # Tipos TypeScript

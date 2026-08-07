@@ -716,7 +716,6 @@ function QuickAffinity({
   }, [day, month, year, entity]);
 
   // Recommendations — top 3 across all types (excluding current)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const relatedEntities = useMemo(() => {
     if (!result) return [];
     let birthDate = "";

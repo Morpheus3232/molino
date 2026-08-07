@@ -159,14 +159,14 @@ describe("nudoEngine — detectarNudo", () => {
 
   it("contexto timing con fricción real: timingEngine reporta un score bajo (< 50) para este perfil/fecha → el Nudo cruza patrón estable + contexto y es real", () => {
     // Life Path 1 (rápido) + Tierra (lento) = contradicción de ritmo real.
-    // Con este nacimiento + intención, timingScore cae por debajo del punto neutro
-    // del propio engine (verificado por cálculo directo: change_job → 38/100),
-    // así que el contexto sí confirma la fricción y el Nudo debe ser real.
+    // Con fecha fija 2023-01-07 + change_job → timingScore = 35 (< 50),
+    // por debajo del umbral neutro del engine, así que el contexto sí
+    // confirma la fricción y el Nudo debe ser real.
     const profile = profileWith({ lifePath: 1, element: "Tierra", birthDate: "1985-05-15" });
     const result = detectarNudo({
       profile,
       context: "timing",
-      payload: { targetDate: new Date(), intention: "change_job" },
+      payload: { targetDate: new Date(2023, 0, 7, 12, 0, 0), intention: "change_job" },
     });
 
     expect(result.trace.hasRealTension).toBe(true);
@@ -180,13 +180,13 @@ describe("nudoEngine — detectarNudo", () => {
 
   it("contexto daily_energy con fricción real: dailyEnergyEngine reporta un score bajo para este perfil/fecha → el Nudo cruza patrón estable + contexto y es real", () => {
     // Life Path 3 (rápido) + Tierra (lento) = contradicción de ritmo real.
-    // Con este nacimiento, dailyEnergyEngine da overallScore 43/100 hoy (verificado
-    // por cálculo directo), por debajo del punto neutro del engine.
+    // Con fecha fija 2023-01-07, dailyEnergyEngine da overallScore 46/100,
+    // por debajo del umbral neutro del engine.
     const profile = profileWith({ lifePath: 3, element: "Tierra", birthDate: "1992-06-22" });
     const result = detectarNudo({
       profile,
       context: "daily_energy",
-      payload: { targetDate: new Date() },
+      payload: { targetDate: new Date(2023, 0, 7, 12, 0, 0) },
     });
 
     expect(result.trace.hasRealTension).toBe(true);
@@ -224,7 +224,7 @@ describe("nudoEngine — detectarNudo", () => {
     const conFriccion = detectarNudo({
       profile: profileWith({ lifePath: 1, element: "Tierra", birthDate: "1985-05-15" }),
       context: "timing",
-      payload: { targetDate: new Date(), intention: "change_job" },
+      payload: { targetDate: new Date(2023, 0, 7, 12, 0, 0), intention: "change_job" },
     });
 
     expect(favorable.trace.hasRealTension).toBe(false);

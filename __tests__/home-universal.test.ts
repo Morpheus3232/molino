@@ -15,8 +15,6 @@ describe("Home page — universal access without profile", () => {
     expect(source).toBeTruthy();
     expect(source).toContain("HeroClient");
     expect(source).toContain("SystemsPreview");
-    expect(source).toContain("Journey");
-    expect(source).toContain("ConceptsIndex");
     const heroPath = path.resolve(__dirname, "..", "components", "sections", "HeroClient.tsx");
     const heroSource = fs.readFileSync(heroPath, "utf8");
     expect(heroSource).toContain("CREAR MI MAPA");

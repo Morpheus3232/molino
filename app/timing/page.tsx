@@ -1,7 +1,9 @@
-import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+"use client";
+
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Rocket, Briefcase, Target, FileText, Zap, Heart, Send, Sparkles } from "lucide-react";
+import { Rocket, Briefcase, Target, FileText, Zap, Heart, Send, Sparkles, Calendar } from "lucide-react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
 import { saveTimingIntention } from "@/lib/session/timingIntention";
@@ -10,10 +12,11 @@ import ReadingNumber from "@/components/ui/ReadingNumber";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { getScoreLabel } from "@/lib/utils/score";
+import { getScoreLabel, getScoreColor } from "@/lib/utils/score";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { formatDate } from "@/lib/i18n/format";
 import BestDatesTimeline from "@/components/timing/BestDatesTimeline";
+import TimingCalendar from "@/components/timing/TimingCalendar";
 
 const INTENTIONS: { id: TimingIntention; label: string; icon: any }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: Rocket },
@@ -33,15 +36,33 @@ const transitionVariants = {
 };
 
 export default function TimingPage() {
-  const router = useRouter();
-  const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+  return (
+    <Suspense fallback={null}>
+      <TimingPageContent />
+    </Suspense>
+  );
+}
 
-  const [selectedIntention, setSelectedIntention] = useState<TimingIntention | null>(null);
+function TimingPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+  
+  const isWeekView = searchParams.get("week") === "current";
+
+  const [selectedIntention, setSelectedIntention] = useState<TimingIntention | null>(isWeekView ? "start_project" : null);
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date();
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
   });
   const [showResults, setShowResults] = useState(false);
+
+  // Auto-select first intention if week view
+  useEffect(() => {
+    if (isWeekView && !selectedIntention) {
+      setSelectedIntention("start_project");
+    }
+  }, [isWeekView, selectedIntention]);
 
   const result = useMemo(() => {
     if (!profile || !selectedIntention) return null;
@@ -56,7 +77,21 @@ export default function TimingPage() {
     const start = new Date();
     const end = new Date();
     end.setDate(end.getDate() + 14);
-    return findBestDates(profile, start, end, selectedIntention, 3);
+    return findBestDates(profile, start, end, selectedIntention, isWeekView ? 14 : 3);
+  }, [profile, selectedIntention, isWeekView]);
+
+  const allWeekDates = useMemo(() => {
+    if (!profile || !selectedIntention) return [];
+    const start = new Date();
+    const end = new Date();
+    end.setDate(end.getDate() + 14);
+    const results: import("@/lib/engines/timingEngine").TimingResult[] = [];
+    const current = new Date(start);
+    while (current <= end) {
+      results.push(analyzeTiming(profile, new Date(current), selectedIntention));
+      current.setDate(current.getDate() + 1);
+    }
+    return results;
   }, [profile, selectedIntention]);
 
   const SelectedIcon = INTENTIONS.find((i) => i.id === selectedIntention)?.icon;
@@ -271,17 +306,27 @@ export default function TimingPage() {
                       className="mt-10"
                     >
                       <div className="flex items-center justify-between mb-6">
-                        <p className="eyebrow-brutalist">Mejores fechas — próximos 14 días</p>
+                        <p className="eyebrow-brutalist">
+                          {isWeekView ? "Tu semana en timing — próximos 14 días" : "Mejores fechas — próximos 14 días"}
+                        </p>
                         <span className="text-xs text-muted">
                           Para: {INTENTION_LABELS[selectedIntention]}
                         </span>
                       </div>
-                      <BestDatesTimeline
-                        dates={bestDates}
-                        elementColor={elementColor}
-                        intentionLabel={INTENTION_LABELS[selectedIntention]}
-                        maxVisible={7}
-                      />
+                      {isWeekView ? (
+                        <TimingCalendar
+                          dates={allWeekDates}
+                          elementColor={elementColor}
+                          intentionLabel={INTENTION_LABELS[selectedIntention]}
+                        />
+                      ) : (
+                        <BestDatesTimeline
+                          dates={bestDates}
+                          elementColor={elementColor}
+                          intentionLabel={INTENTION_LABELS[selectedIntention]}
+                          maxVisible={7}
+                        />
+                      )}
                     </motion.div>
                   )}
 

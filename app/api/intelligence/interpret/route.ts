@@ -198,7 +198,7 @@ export async function POST(req: NextRequest) {
       await recordGeneration({
         type,
         provider,
-        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : provider === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'nvidia/nemotron-3-super-120b-a12b:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
+        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : provider === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.1-8b-instruct:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
         durationMs: Date.now() - generationStartedAt,
         status: 'error',
         errorReason: err instanceof Error ? err.message : String(err),
