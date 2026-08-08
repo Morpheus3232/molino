@@ -19,6 +19,11 @@ const PRICING_USD_PER_MILLION_TOKENS: Record<string, { input: number; output: nu
   "gpt-4.1-mini": { input: 0.4, output: 1.6 },
   "claude-3-5-sonnet-20241022": { input: 3, output: 15 },
   "claude-3-5-haiku-20241022": { input: 0.8, output: 4 },
+  // OmniRoute models (all free via ZenMux/Cloudflare)
+  "zenmux-free/z-ai/glm-4.7-flash-free": { input: 0, output: 0 },
+  "zenmux-free/deepseek/deepseek-chat": { input: 0, output: 0 },
+  "zenmux-free/kuaishou/kat-coder-pro-v1-free": { input: 0, output: 0 },
+  "auto/best-free": { input: 0, output: 0 },
 };
 
 export function estimateCostUsd(model: string, usage: AIUsage | undefined): number | null {
@@ -32,7 +37,7 @@ export type GenerationStatus = "ai" | "fallback" | "error";
 
 export interface GenerationRecord {
   type: string;
-  provider: "openai" | "claude" | "openrouter";
+  provider: "openai" | "claude" | "openrouter" | "omniroute";
   model: string;
   usage?: AIUsage;
   durationMs: number;

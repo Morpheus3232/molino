@@ -11,7 +11,7 @@ interface WorldConnectionsProps {
   profile: UserProfile;
 }
 
-function EntityCard({ entity, score, tier, emoji, type }: { entity: any; score: number; tier: string; emoji: string; type: string }) {
+function EntityCard({ entity, score, tier, type }: { entity: any; score: number; tier: string; type: string }) {
   const tierColors: Record<string, string> = {
     resonante: "#10B981",
     afin: "#3B82F6",
@@ -28,7 +28,7 @@ function EntityCard({ entity, score, tier, emoji, type }: { entity: any; score: 
       className="p-4 border border-ink/10 rounded-lg bg-background"
     >
       <div className="flex items-start gap-3">
-        <span className="text-2xl shrink-0" aria-hidden="true">{emoji}</span>
+        <span className="text-2xl shrink-0" aria-hidden="true">{entity.emoji || "📍"}</span>
         <div className="flex-1 min-w-0">
           <p className="font-medium text-foreground truncate">{entity.name}</p>
           <div className="flex items-center gap-2 mt-1">
@@ -46,11 +46,9 @@ function EntityCard({ entity, score, tier, emoji, type }: { entity: any; score: 
 function EntityRank({
   title,
   entities,
-  emojiMap,
 }: {
   title: string;
   entities: Array<{ entity: any; score: number; tier: string }>;
-  emojiMap: Record<string, string>;
 }) {
   return (
     <motion.div
@@ -67,7 +65,6 @@ function EntityRank({
             entity={item.entity}
             score={item.score}
             tier={item.tier}
-            emoji={emojiMap[item.entity.id] || "📍"}
             type={item.entity.type}
           />
         ))}
@@ -86,59 +83,6 @@ export default function WorldConnections({ profile }: WorldConnectionsProps) {
   }, [profile]);
 
   const totalConnections = countryResonances.length + cityResonances.length + brandResonances.length;
-
-  const countryEmojis: Record<string, string> = {
-    argentina: "🇦🇷",
-    chile: "🇨🇱",
-    uruguay: "🇺🇾",
-    brasil: "🇧🇷",
-    peru: "🇵🇪",
-    colombia: "🇨🇴",
-    mexico: "🇲🇽",
-    espana: "🇪🇸",
-    ee_uu: "🇺🇸",
-    francia: "🇫🇷",
-    italia: "🇮🇹",
-    alemania: "🇩🇪",
-    japon: "🇯🇵",
-    china: "🇨🇳",
-    india: "🇮🇳",
-  };
-
-  const cityEmojis: Record<string, string> = {
-    buenos_aires: "🌆",
-    santiago: "🏔️",
-    montevideo: "🌊",
-    sao_paulo: "🏙️",
-    lima: "🏛️",
-    bogota: "⛰️",
-    ciudad_de_mexico: "🏛️",
-    madrid: "🏛️",
-    barcelona: "🌊",
-    nueva_york: "🗽",
-    los_angeles: "🌴",
-    paris: "🗼",
-    roma: "🏛️",
-    berlina: "🏰",
-    tokio: "🗼",
-  };
-
-  const brandEmojis: Record<string, string> = {
-    apple: "🍎",
-    google: "🌈",
-    microsoft: "🪟",
-    tesla: "⚡",
-    amazon: "📦",
-    netflix: "🎬",
-    spotify: "🎵",
-    airbnb: "🏠",
-    uber: "🚗",
-    stripe: "💳",
-    notion: "📝",
-    figma: "🎨",
-  };
-
-  const allEmojis = { ...countryEmojis, ...cityEmojis, ...brandEmojis };
 
   return (
     <section className="py-10 sm:py-12 border-t border-ink/10" aria-labelledby="world-heading">
@@ -159,17 +103,14 @@ export default function WorldConnections({ profile }: WorldConnectionsProps) {
           <EntityRank
             title="PAÍSES RESONANTES"
             entities={countryResonances}
-            emojiMap={countryEmojis}
           />
           <EntityRank
             title="CIUDADES CONECTADAS"
             entities={cityResonances}
-            emojiMap={cityEmojis}
           />
           <EntityRank
             title="MARCAS AFINES"
             entities={brandResonances}
-            emojiMap={brandEmojis}
           />
         </div>
       </div>

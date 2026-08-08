@@ -36,7 +36,7 @@ interface RequestBody {
   entity?: any;
   decision?: any;
   question?: string;
-  provider?: 'openai' | 'claude' | 'openrouter';
+  provider?: 'openai' | 'claude' | 'openrouter' | 'omniroute';
   /** Prior Q&A turns from the current chat session only — never persisted server-side. */
   conversationHistory?: ConversationTurn[];
   /** Device-bound premium token: proves the request comes from a paying device. */

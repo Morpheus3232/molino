@@ -1,7 +1,8 @@
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
 import { generateWithOpenAI, generateWithClaude, generateWithOpenRouter } from './aiEngine';
+import { generateWithOmniRoute, getOmniRouteRouter, getOmniRouteStatus } from './omnirouteRouter';
 
-export type Provider = 'openai' | 'claude' | 'openrouter';
+export type Provider = 'openai' | 'claude' | 'openrouter' | 'omniroute';
 
 export interface ProviderConfig {
   primary: Provider;
@@ -19,7 +20,7 @@ export interface FreeTierLimits {
 export function getProviderConfig(): ProviderConfig {
   const primary = (process.env.AI_PRIMARY_PROVIDER as Provider) || 'openrouter';
   const fallback = (process.env.AI_FALLBACK_PROVIDER as Provider) || 'openai';
-  const enableFallback = process.env.AI_ENABLE_FALLBACK === 'true';
+  const enableFallback = process.env.AI_ENABLE_FALLBACK !== 'false';
   const maxRetries = parseInt(process.env.AI_MAX_RETRIES || '2', 10);
   const retryDelayMs = parseInt(process.env.AI_RETRY_DELAY_MS || '1000', 10);
 
@@ -44,6 +45,12 @@ export function getFreeTierLimits(provider: Provider): FreeTierLimits {
       tokensPerMinute: parseInt(process.env.OPENROUTER_FREE_TPM || '40000', 10),
     };
   }
+  if (provider === 'omniroute') {
+    return {
+      requestsPerMinute: parseInt(process.env.OMNIROUTE_FREE_RPM || '60', 10),
+      tokensPerMinute: parseInt(process.env.OMNIROUTE_FREE_TPM || '200000', 10),
+    };
+  }
   return {
     requestsPerMinute: parseInt(process.env.ANTHROPIC_FREE_RPM || '5', 10),
     tokensPerMinute: parseInt(process.env.ANTHROPIC_FREE_TPM || '40000', 10),
@@ -65,6 +72,38 @@ async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+async function tryLegacyProvider(
+  provider: Provider,
+  user: UserProfile,
+  target: any,
+  result: CompatibilityResult,
+  template?: string,
+  attempt: number = 1,
+  maxRetries: number = 2,
+  retryDelayMs: number = 1000
+): Promise<Awaited<ReturnType<typeof generateWithOpenAI>> | null> {
+  try {
+    const interpretation = provider === 'claude'
+      ? await generateWithClaude(user, target, result, template)
+      : provider === 'openrouter'
+        ? await generateWithOpenRouter(user, target, result, template)
+        : await generateWithOpenAI(user, target, result, template);
+    return interpretation;
+  } catch (error) {
+    const isRateLimit = isRateLimitError(error);
+    console.warn(`[providerRouter] ${provider} attempt ${attempt} failed:`, error instanceof Error ? error.message : error, isRateLimit ? '(rate limit)' : '');
+    
+    if (isRateLimit && attempt < maxRetries) {
+      const delay = retryDelayMs * attempt;
+      console.log(`[providerRouter] Rate limited, retrying ${provider} in ${delay}ms (attempt ${attempt + 1}/${maxRetries})`);
+      await sleep(delay);
+      return tryLegacyProvider(provider, user, target, result, template, attempt + 1, maxRetries, retryDelayMs);
+    }
+    
+    return null;
+  }
+}
+
 export async function generateWithRouting(
   user: UserProfile,
   target: any,
@@ -78,60 +117,58 @@ export async function generateWithRouting(
 }> {
   const config = getProviderConfig();
   const primary = preferredProvider || config.primary;
-  const fallback = config.fallback;
 
-  async function tryProvider(provider: Provider, attempt: number = 1): Promise<Awaited<ReturnType<typeof generateWithOpenAI>> | null> {
+  if (primary === 'omniroute') {
     try {
-      const interpretation = provider === 'claude'
-        ? await generateWithClaude(user, target, result, template)
-        : provider === 'openrouter'
-          ? await generateWithOpenRouter(user, target, result, template)
-          : await generateWithOpenAI(user, target, result, template);
-      return interpretation;
+      const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template);
+      return { interpretation, providerUsed: 'omniroute', fallbackUsed };
     } catch (error) {
-      const isRateLimit = isRateLimitError(error);
-      console.warn(`[providerRouter] ${provider} attempt ${attempt} failed:`, error instanceof Error ? error.message : error, isRateLimit ? '(rate limit)' : '');
-      
-      if (isRateLimit && attempt < config.maxRetries) {
-        const delay = config.retryDelayMs * attempt;
-        console.log(`[providerRouter] Rate limited, retrying ${provider} in ${delay}ms (attempt ${attempt + 1}/${config.maxRetries})`);
-        await sleep(delay);
-        return tryProvider(provider, attempt + 1);
-      }
-      
-      return null;
+      console.warn('[providerRouter] OmniRoute failed, trying legacy fallback:', error instanceof Error ? error.message : error);
     }
   }
 
-  const primaryResult = await tryProvider(primary);
+  const primaryResult = await tryLegacyProvider(primary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
   if (primaryResult) {
     return { interpretation: primaryResult, providerUsed: primary, fallbackUsed: false };
   }
 
   if (config.enableFallback) {
+    const fallback = config.fallback;
     console.log(`[providerRouter] Primary ${primary} failed, trying fallback ${fallback}`);
-    const fallbackResult = await tryProvider(fallback);
+    const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
     if (fallbackResult) {
       console.log(`[providerRouter] Fallback to ${fallback} succeeded`);
       return { interpretation: fallbackResult, providerUsed: fallback, fallbackUsed: true };
     }
   }
 
-  throw new Error(`All providers failed (primary: ${primary}${config.enableFallback ? `, fallback: ${fallback}` : ''})`);
+  throw new Error(`All providers failed (primary: ${primary}${config.enableFallback ? `, fallback: ${config.fallback}` : ''})`);
 }
 
-export function getProviderStatus(): { primary: Provider; fallback: Provider; fallbackEnabled: boolean; primaryConfigured: boolean; fallbackConfigured: boolean; freeTierLimits: Record<Provider, FreeTierLimits> } {
+export function getProviderStatus(): { 
+  primary: Provider; 
+  fallback: Provider; 
+  fallbackEnabled: boolean; 
+  primaryConfigured: boolean; 
+  fallbackConfigured: boolean; 
+  freeTierLimits: Record<Provider, FreeTierLimits>;
+  omniroute?: ReturnType<typeof getOmniRouteStatus>;
+} {
   const config = getProviderConfig();
+  const omniStatus = getOmniRouteStatus();
+  
   return {
     primary: config.primary,
     fallback: config.fallback,
     fallbackEnabled: config.enableFallback,
-    primaryConfigured: !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : config.primary === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
-    fallbackConfigured: !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : config.fallback === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
+    primaryConfigured: config.primary === 'omniroute' ? true : !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : config.primary === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
+    fallbackConfigured: config.fallback === 'omniroute' ? true : !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : config.fallback === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
     freeTierLimits: {
       openai: getFreeTierLimits('openai'),
       claude: getFreeTierLimits('claude'),
       openrouter: getFreeTierLimits('openrouter'),
+      omniroute: getFreeTierLimits('omniroute'),
     },
+    omniroute: omniStatus,
   };
 }

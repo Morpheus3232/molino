@@ -17,8 +17,9 @@ describe("Home page — universal access without profile", () => {
     expect(source).toContain("TresPasos");
     expect(source).toContain("QueDescubris");
     expect(source).toContain("TresSistemas");
-    expect(source).toContain("QueMapa");
     expect(source).toContain("CTAFinal");
+    expect(source).toContain("Testimonial");
+    expect(source).toContain("TrustMetrics");
     const numeroDiaPath = path.resolve(__dirname, "..", "components", "sections", "NumeroDia.tsx");
     const numeroDiaSource = fs.readFileSync(numeroDiaPath, "utf8");
     expect(numeroDiaSource).toContain("EMPEZÁ");

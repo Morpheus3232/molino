@@ -42,6 +42,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
   const userCountry = useUserContext().country;
 
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const activeAnimal: Animal = selectedAnimal
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
@@ -60,7 +61,19 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
     },
     [activeAnimal, entities, userCountry]
   );
-  const set = useMemo(() => getRepresentativeAffinitySet(sorted), [sorted]);
+  
+  // Filter results based on search query
+  const filteredSorted = useMemo(() => {
+    if (!searchQuery.trim()) return sorted;
+    const query = searchQuery.toLowerCase().trim();
+    return sorted.filter(r => 
+      r.entity.name.toLowerCase().includes(query) ||
+      r.entity.country.toLowerCase().includes(query) ||
+      r.entityAnimal.toLowerCase().includes(query)
+    );
+  }, [sorted, searchQuery]);
+  
+  const set = useMemo(() => getRepresentativeAffinitySet(filteredSorted), [filteredSorted]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,6 +150,24 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 </div>
                 {profile?.chineseZodiac === activeAnimal && !selectedAnimal && (
                   <p className="text-xs text-muted mt-3">Tu animal — {formatAnimalSimple(activeAnimal)}.</p>
+                )}
+              </div>
+
+              {/* SEARCH — Available for all types, shows before selecting entity */}
+              <div className="border-t border-ink/10 py-8">
+                <p className="label-micro mb-4">Buscar</p>
+                <input
+                  type="search"
+                  placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent rounded-lg"
+                  aria-label={`Buscar ${meta.plural.toLowerCase()}`}
+                />
+                {searchQuery && (
+                  <p className="text-xs text-muted mt-2">
+                    {filteredSorted.length} resultado{filteredSorted.length !== 1 ? "s" : ""} para "{searchQuery}"
+                  </p>
                 )}
               </div>
 
