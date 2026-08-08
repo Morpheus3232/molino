@@ -16,10 +16,9 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
   const relationMap = getRelationshipMap(userAnimal);
   const display = getZodiacDisplay(userAnimal);
 
-  const allies = [
-    ...relationMap.friends.filter((f) => f.type === "triad"),
-    ...relationMap.friends.filter((f) => f.type === "harmonious"),
-  ].map((f) => f.animal);
+  const allies = relationMap.friends
+    .filter((f) => f.type === "triad")
+    .map((f) => f.animal);
   const challenges = relationMap.challenging.map((c) => c.animal);
 
   const reveal = {
