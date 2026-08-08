@@ -325,7 +325,7 @@ export default function HoyClient() {
                     {decisionPosture}
                   </p>
                   <span
-                    className="text-xs uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-full"
+                    className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-full"
                     style={{
                       backgroundColor:
                         decisionPosture === "ACTUAR"
@@ -336,7 +336,9 @@ export default function HoyClient() {
                       color: "var(--color-paper)",
                     }}
                   >
-                    {timing.timingScore}
+                    <span>{timing.timingScore}/100</span>
+                    <span className="opacity-80" aria-hidden="true">·</span>
+                    <span className="opacity-80">alineación</span>
                   </span>
                 </div>
 
