@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Logo from "@/components/ui/Logo";
 import { footerColumns } from "@/lib/data/navigation";
 
 export default function UniversityFooter() {
@@ -8,18 +9,7 @@ export default function UniversityFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0">
           <div className="md:col-span-5 md:pr-12">
             <span className="inline-flex h-11 w-11 items-center justify-center bg-white/10 border border-white/20">
-              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-                <path d="M10 30 L8 14 L24 14 L22 30 Z" />
-                <path d="M7 14 L16 7 L25 14 Z" />
-                <path d="M14 30 L14 23 Q14 21 16 21 Q18 21 18 23 L18 30" />
-                <circle cx="16" cy="17.5" r="1.1" />
-                <line x1="0" y1="7" x2="32" y2="7" />
-                <line x1="16" y1="-3" x2="16" y2="17" />
-                <line x1="0" y1="4.5" x2="32" y2="4.5" strokeWidth="0.5" />
-                <line x1="0" y1="9.5" x2="32" y2="9.5" strokeWidth="0.5" />
-                <line x1="13" y1="-3" x2="13" y2="17" strokeWidth="0.5" />
-                <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
-              </svg>
+              <Logo className="w-6 h-6" />
             </span>
             <p className="font-heading text-lg text-white mt-6 uppercase tracking-wide">
               MOLINO
