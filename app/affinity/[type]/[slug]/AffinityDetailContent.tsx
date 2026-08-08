@@ -461,7 +461,7 @@ function PremiumHero({
     >
       {/* Label */}
       <div>
-        <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
+        <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-6 text-center">
           Cómo resuena · {meta.label}
         </p>
       </div>
@@ -575,7 +575,7 @@ function SectionHeader({ title, id }: { title: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 id={id} className="text-xs uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+      <h2 id={id} className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{title}</h2>
     </div>
   );
 }
@@ -806,7 +806,7 @@ function QuickAffinity({
 
         {/* Hero — entity info always visible */}
         <motion.section {...fadeUp} className="mb-8">
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4 text-center">
             Cómo resuena · {meta.label}
           </p>
           <div className="flex items-center justify-center gap-4 mb-4">

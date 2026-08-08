@@ -44,7 +44,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
           </p>
           <div className="flex flex-wrap gap-1.5 mt-3">
             {p.sources.map((src) => (
-              <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">{src}</span>
+              <span key={src} className="uppercase text-xs tracking-[0.2em] text-muted px-2 py-1 border border-ink/10">{src}</span>
             ))}
           </div>
         </motion.div>
@@ -65,7 +65,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
           </div>
           <div className="flex flex-wrap gap-1.5 mt-3">
             {t.sources.map((src) => (
-              <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">{src}</span>
+              <span key={src} className="uppercase text-xs tracking-[0.2em] text-muted px-2 py-1 border border-ink/10">{src}</span>
             ))}
           </div>
         </motion.div>
@@ -137,7 +137,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
               <p className="label-micro text-muted mb-2">Dimensiones favorables</p>
               <div className="flex flex-wrap gap-1.5">
                 {timing.favorableDimensions.map((d) => (
-                  <span key={d} className="text-xs font-mono uppercase tracking-[0.12em] px-2 py-1 border border-ink/10 text-foreground">{d}</span>
+                  <span key={d} className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-1 border border-ink/10 text-foreground">{d}</span>
                 ))}
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
               <p className="label-micro text-muted mb-2">Dimensiones desafiantes</p>
               <div className="flex flex-wrap gap-1.5">
                 {timing.challengingDimensions.map((d) => (
-                  <span key={d} className="text-xs font-mono uppercase tracking-[0.12em] px-2 py-1 border border-ink/10 text-muted">{d}</span>
+                  <span key={d} className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-1 border border-ink/10 text-muted">{d}</span>
                 ))}
               </div>
             </div>

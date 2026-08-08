@@ -54,7 +54,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           </div>
 
           <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 lg:pt-24">
-            <nav className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted mb-10" aria-label="Breadcrumb">
+            <nav className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-10" aria-label="Breadcrumb">
               <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
               <span className="mx-2" aria-hidden="true">/</span>
               <Link href="/conocimiento/zodiaco-chino" className="hover:text-accent transition-colors">
@@ -105,7 +105,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
               <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
             </div>
             <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-accent-light mb-6">
+              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent-light mb-6">
                 HISTORIA Y SIMBOLISMO
               </p>
               <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
@@ -134,7 +134,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 <span className="font-display text-5xl lg:text-6xl leading-none text-ink/15 block mb-8">
                   {block.numeral}
                 </span>
-                <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-accent mb-6">
+                <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-6">
                   {block.label}
                 </p>
                 <ul className="space-y-3">
@@ -158,7 +158,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
         >
           <div className="flex flex-wrap">
             <div className={`w-full md:w-1/2 ${cellPad} md:border-r border-paper/20`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/85 mb-6">
+              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper/85 mb-6">
                 COMPATIBLES
               </p>
               <div className="flex flex-wrap gap-2">
@@ -173,7 +173,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
               </div>
             </div>
             <div className={`w-full md:w-1/2 ${cellPad} border-t md:border-t-0 border-paper/20`}>
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-paper/85 mb-6">
+              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-paper/85 mb-6">
                 DESAFIANTES
               </p>
               <div className="flex flex-wrap gap-2">
@@ -211,7 +211,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 <span className="font-display text-4xl leading-none text-ink/15 block mb-6">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="font-display text-lg text-foreground uppercase leading-tight">
+                <p className="font-heading text-lg text-foreground uppercase leading-tight">
                   {el.element}
                 </p>
                 <p className="text-sm text-muted mt-3 leading-relaxed">{el.modifier}</p>
@@ -241,7 +241,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
             </motion.div>
 
             <motion.div {...fadeUp} className="mt-12 border border-border rounded-md bg-card shadow-sm p-8">
-              <p className="font-mono text-[0.7rem] font-semibold tracking-[0.25em] uppercase text-muted mb-4">
+              <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-muted mb-4">
                 AVISO IMPORTANTE
               </p>
               <p className="text-sm text-muted leading-relaxed">{animal.scientificNote}</p>
@@ -258,12 +258,12 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   href={`/conocimiento/zodiaco-chino/${prev.name.toLowerCase()}`}
                   className="group flex items-center gap-4 flex-1 min-w-[14rem]"
                 >
-                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted group-hover:-translate-x-1 transition-transform">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:-translate-x-1 transition-transform">
                     ←
                   </span>
                   <span>
-                    <span className="block font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted">Anterior</span>
-                    <span className="block font-display text-xl text-foreground group-hover:text-accent transition-colors uppercase">
+                    <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Anterior</span>
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase">
                       {prev.emoji} {prev.name}
                     </span>
                   </span>
@@ -278,12 +278,12 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   className="group flex items-center justify-end gap-4 flex-1 min-w-[14rem] text-right"
                 >
                   <span>
-                    <span className="block font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted">Siguiente</span>
-                    <span className="block font-display text-xl text-foreground group-hover:text-accent transition-colors uppercase">
+                    <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Siguiente</span>
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase">
                       {next.name} {next.emoji}
                     </span>
                   </span>
-                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted group-hover:translate-x-1 transition-transform">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:translate-x-1 transition-transform">
                     →
                   </span>
                 </Link>

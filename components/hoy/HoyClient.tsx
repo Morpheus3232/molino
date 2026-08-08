@@ -325,7 +325,7 @@ export default function HoyClient() {
                     {decisionPosture}
                   </p>
                   <span
-                    className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] font-semibold px-3 py-1 rounded-full"
+                    className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] font-semibold px-3 py-1 rounded-full"
                     style={{
                       backgroundColor:
                         decisionPosture === "ACTUAR"
@@ -459,7 +459,7 @@ export default function HoyClient() {
                 <p className="eyebrow-brutalist mb-4">Seguir el hilo</p>
                 <Link
                   href="/semana"
-                  className="group inline-flex items-center gap-2 font-display text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"
+                  className="group inline-flex items-center gap-2 font-heading text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"
                 >
                   Ver tu semana
                   <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>

@@ -91,7 +91,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
               <span className="label-micro text-accent font-semibold">CONVERGENCIA</span>
             </div>
 
-            <p className="font-display text-2xl sm:text-4xl tracking-tight text-foreground leading-[1.05] mb-5 uppercase">
+            <p className="font-heading text-2xl sm:text-4xl tracking-tight text-foreground leading-[1.05] mb-5 uppercase">
               {conv.theme}
             </p>
 
@@ -106,7 +106,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
                     style={{ backgroundColor: SYSTEM_COLORS[sys] || "var(--ink)" }}
                     aria-hidden="true"
                   />
-                  <span className="text-xs uppercase tracking-[0.15em] font-medium text-foreground">
+                  <span className="text-xs uppercase tracking-[0.2em] font-medium text-foreground">
                     {sys}
                   </span>
                 </span>
@@ -139,7 +139,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
                 className="flex items-baseline justify-between gap-4 py-3.5 border-b border-ink/10 last:border-b-0"
               >
                 <span className="text-sm text-muted">{layer.name}</span>
-                <span className="font-display text-lg text-foreground">{layer.value}</span>
+                <span className="font-heading text-lg text-foreground">{layer.value}</span>
               </motion.div>
             ))}
           </div>

@@ -209,7 +209,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Event counts */}
               <section className="mb-12">
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Conteo por evento</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-6">Conteo por evento</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", counts.date_entered],
@@ -244,7 +244,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Ratios */}
               <section className="mb-12">
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Ratios (base: resultado visto)</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-6">Ratios (base: resultado visto)</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <RatioCard label="Save rate" value={pct(ratios.save_rate)} desc={`${counts.save_clicked} / ${counts.result_viewed}`} />
                   <RatioCard label="Share rate" value={pct(ratios.share_rate)} desc={`${counts.shared} / ${counts.result_viewed}`} />
@@ -255,7 +255,7 @@ export default function AffinityAnalyticsPage() {
 
               {/* Unique users */}
               <section className="mb-12">
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Usuarios únicos por evento</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-6">Usuarios únicos por evento</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {([
                     ["date_entered", userCounts.date_entered],
@@ -282,7 +282,7 @@ export default function AffinityAnalyticsPage() {
               {/* Daily evolution */}
               {daily.length > 0 && (
                 <section className="mb-12">
-                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium mb-6">Evolución diaria</h2>
+                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-6">Evolución diaria</h2>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>

@@ -63,7 +63,7 @@ export default function SymbolicMapShareableCard({
         <div className="p-6 sm:p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <p className="text-xs uppercase tracking-[0.25em] text-muted font-medium">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
               Mi mapa simbólico {year}
             </p>
             <p className="text-xs uppercase tracking-[0.2em] text-muted">
@@ -131,7 +131,7 @@ export default function SymbolicMapShareableCard({
           </div>
 
           {/* Disclaimer */}
-          <p className="text-[8px] text-muted text-center leading-relaxed mb-4">
+          <p className="text-xs text-muted text-center leading-relaxed mb-4">
             Lectura simbólica. No constituye predicción científica.
           </p>
 
@@ -144,7 +144,7 @@ export default function SymbolicMapShareableCard({
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Mapa personal de autoconocimiento</span>
+            <span className="text-xs text-muted">Mapa personal de autoconocimiento</span>
           </div>
         </div>
       </div>

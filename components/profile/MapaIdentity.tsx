@@ -84,7 +84,7 @@ export default function MapaIdentity({ profile, onNavigate }: MapaIdentityProps)
           <p className="mt-8 font-mono text-xs uppercase tracking-[0.3em] text-muted">
             El arquetipo de tu mapa
           </p>
-          <p className="mt-3 font-display text-2xl sm:text-3xl uppercase tracking-tight text-foreground">
+          <p className="mt-3 font-heading text-2xl sm:text-3xl uppercase tracking-tight text-foreground">
             {archetype.name}
           </p>
 
@@ -96,7 +96,7 @@ export default function MapaIdentity({ profile, onNavigate }: MapaIdentityProps)
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted">
               Camino de Vida
             </span>
-            <span className="font-display text-xl sm:text-2xl text-foreground tracking-tight">
+            <span className="font-heading text-xl sm:text-2xl text-foreground tracking-tight">
               {lifePath}
             </span>
             <span className="text-sm text-muted mt-2 max-w-[480px]">

@@ -158,7 +158,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         {/* Overline — framing the process, not the price */}
         <motion.p
           variants={fadeIn(0.4)}
-          className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-muted"
+          className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted"
         >
           Construyendo tu lectura
         </motion.p>
@@ -169,7 +169,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeOut", delay: reduceMotion ? 0 : 0.08 }}
-          className="mt-3 text-balance font-display text-[1.5rem] uppercase leading-[1.05] tracking-tight text-foreground sm:text-[1.75rem]"
+          className="mt-3 text-balance font-heading text-2xl uppercase leading-[1.05] tracking-tight text-foreground sm:text-3xl"
         >
           {hero}
         </motion.h3>
@@ -202,13 +202,13 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         {/* Meta row — state word + step counter */}
         <motion.div variants={fadeIn(0.4)} className="mt-3 flex items-baseline justify-between">
           <p
-            className={`font-mono text-[0.625rem] uppercase tracking-[0.22em] transition-colors duration-300 ${
+            className={`font-mono text-xs uppercase tracking-[0.2em] transition-colors duration-300 ${
               isReady ? "text-accent" : "text-muted/70"
             }`}
           >
             {isReady ? "Lista" : "En proceso"}
           </p>
-          <p className="font-mono text-[0.625rem] tracking-[0.22em] text-muted/70">
+          <p className="font-mono text-xs tracking-[0.2em] text-muted/70">
             {String(counter).padStart(2, "0")} / {String(STEPS.length).padStart(2, "0")}
           </p>
         </motion.div>
@@ -241,7 +241,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
                   />
                 )}
                 <span
-                  className={`w-5 shrink-0 font-mono text-[0.625rem] tracking-[0.1em] transition-colors duration-300 ${
+                  className={`w-5 shrink-0 font-mono text-xs tracking-[0.2em] transition-colors duration-300 ${
                     isActive ? "text-accent" : isComplete ? "text-muted/70" : "text-muted/40"
                   }`}
                 >

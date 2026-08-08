@@ -39,7 +39,7 @@ export default function CalculationProof({ label, data, className = "" }: Calcul
           {open ? "Ocultar" : "¿Cómo se calculó?"}
         </span>
         <span
-          className="font-display text-sm text-muted group-hover:text-accent transition-colors"
+          className="font-heading text-sm text-muted group-hover:text-accent transition-colors"
           aria-hidden="true"
         >
           {open ? "−" : "+"}
@@ -72,11 +72,11 @@ export default function CalculationProof({ label, data, className = "" }: Calcul
                   >
                     <div>
                       <p className="text-sm text-foreground">{step.label}</p>
-                      <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1.5">
+                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-1.5">
                         {step.expression}
                       </p>
                     </div>
-                    <span className="font-display text-xl sm:text-2xl text-accent shrink-0">
+                    <span className="font-heading text-xl sm:text-2xl text-accent shrink-0">
                       {step.result}
                     </span>
                   </div>

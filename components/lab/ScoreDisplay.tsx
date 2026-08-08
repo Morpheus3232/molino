@@ -20,7 +20,7 @@ export default function ScoreDisplay({ score, size = "md" }: ScoreDisplayProps) 
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`font-bold uppercase tracking-[0.1em] ${sizeClasses[size]} px-3 py-1`}
+      className={`font-bold uppercase tracking-[0.2em] ${sizeClasses[size]} px-3 py-1`}
       style={{ color: getScoreColor(score), backgroundColor: "var(--score-bg)" }}
     >
       {getScoreLabel(score)}

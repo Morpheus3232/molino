@@ -61,9 +61,9 @@ function FamousPersonCard({ person, index, userAnimal }: { person: FamousPerson;
             {person.field}
           </p>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted">{person.year}</span>
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted/50">·</span>
-            <span className="text-[10px] uppercase tracking-[0.1em] text-muted">{person.country}</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-muted">{person.year}</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-muted/50">·</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-muted">{person.country}</span>
           </div>
         </div>
       </div>
@@ -256,8 +256,8 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             style={{ left: "50%", top: "50%", transform: "translate(-50%,-50%)" }}
           >
             <ZodiacMark animal={userAnimal} color="var(--color-accent)" size="xl" showLabel={false} hidePosition={false} variant="emoji" />
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent-light text-center mt-3">Vos</p>
-            <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-paper/50 text-center">{display.name}</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light text-center mt-3">Vos</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/50 text-center">{display.name}</p>
           </motion.div>
 
           {/* Allies - upper arc */}
@@ -283,7 +283,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 + i * 0.07 }}
-                className="font-mono text-[9px] uppercase tracking-[0.15em] text-accent-light/70 text-center mt-2 whitespace-nowrap"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light/70 text-center mt-2 whitespace-nowrap"
               >
                 {rel.label}
               </motion.p>
@@ -291,7 +291,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.4 + i * 0.07 }}
-                className="font-mono text-[8px] uppercase tracking-[0.1em] text-paper/40 text-center mt-1"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 text-center mt-1"
               >
                 {getScoreLabel(rel.score)}
               </motion.p>
@@ -319,7 +319,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45 + i * 0.07 }}
-                className="font-mono text-[9px] uppercase tracking-[0.15em] text-paper/40 text-center mt-2 whitespace-nowrap"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 text-center mt-2 whitespace-nowrap"
               >
                 {rel.label}
               </motion.p>
@@ -327,7 +327,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 + i * 0.07 }}
-                className="font-mono text-[8px] uppercase tracking-[0.1em] text-paper/30 text-center mt-1"
+                className="font-mono text-xs uppercase tracking-[0.2em] text-paper/30 text-center mt-1"
               >
                 {getScoreLabel(rel.score)}
               </motion.p>

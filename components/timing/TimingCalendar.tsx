@@ -103,7 +103,7 @@ export default function TimingCalendar({
 
       <div className="grid grid-cols-7">
         {DAY_NAMES.map((day) => (
-          <div key={day} className="py-2 text-center font-mono text-[10px] uppercase tracking-[0.12em] text-muted border-b border-ink/10">
+          <div key={day} className="py-2 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted border-b border-ink/10">
             {day}
           </div>
         ))}
@@ -122,7 +122,7 @@ export default function TimingCalendar({
           if (!isCurrentMonth && !inRange) {
             return (
               <div key={dateStr} className="aspect-square flex items-center justify-center">
-                <span className="text-[10px] text-muted/30 font-mono">{date.getDate()}</span>
+                <span className="text-xs text-muted/30 font-mono">{date.getDate()}</span>
               </div>
             );
           }
@@ -140,9 +140,9 @@ export default function TimingCalendar({
                   transition={{ delay: i * 0.02, duration: 0.25 }}
                   className="flex flex-col items-center justify-center gap-0.5"
                 >
-                  <span className="text-[9px] font-mono text-muted">{date.getDate()}</span>
+                  <span className="text-xs font-mono text-muted">{date.getDate()}</span>
                   <span
-                    className="w-7 h-7 rounded-full flex items-center justify-center font-mono text-[10px] font-bold border-2"
+                    className="w-7 h-7 rounded-full flex items-center justify-center font-mono text-xs font-bold border-2"
                     style={{
                       borderColor: color,
                       color: isTodayCell ? "var(--color-background)" : color,
@@ -153,7 +153,7 @@ export default function TimingCalendar({
                   </span>
                 </motion.div>
               ) : (
-                <span className={`text-[10px] font-mono ${past || isTodayCell ? "text-muted/40" : "text-muted"}`}>
+                <span className={`text-xs font-mono ${past || isTodayCell ? "text-muted/40" : "text-muted"}`}>
                   {date.getDate()}
                 </span>
               )}
@@ -180,7 +180,7 @@ export default function TimingCalendar({
               className={`flex items-start gap-4 py-4 border-b border-ink/10 ${isTodayCell ? "bg-ink/[0.03]" : ""}`}
             >
               <div className="flex flex-col items-center w-14 shrink-0">
-                <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+                <span className="font-mono text-xs uppercase tracking-[0.08em] text-muted">
                   {formatDayLabel(d.date).split(" ")[0]}
                 </span>
                 <span
@@ -194,7 +194,7 @@ export default function TimingCalendar({
                   {d.timingScore}
                 </span>
                 {isTodayCell && (
-                  <span className="mt-1 font-mono text-[9px] uppercase tracking-[0.1em] text-accent">Hoy</span>
+                  <span className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-accent">Hoy</span>
                 )}
               </div>
               <div className="min-w-0 flex-1">
@@ -203,12 +203,12 @@ export default function TimingCalendar({
                     {formatDayLabel(d.date)}
                   </span>
                   <span
-                    className="text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 border border-ink/10"
+                    className="text-xs font-mono uppercase tracking-[0.2em] px-1.5 py-0.5 border border-ink/10"
                     style={{ color }}
                   >
                     {d.theme}
                   </span>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-muted">
+                  <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted">
                     {getScoreLabel(d.timingScore)}
                   </span>
                 </div>
@@ -221,9 +221,9 @@ export default function TimingCalendar({
 
       {/* Leyenda de escala */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted mr-1">Escala:</span>
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted mr-1">Escala:</span>
         {SCALE_LEGEND.map((item) => (
-          <span key={item.label} className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.1em] text-muted">
+          <span key={item.label} className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.2em] text-muted">
             <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
             {item.min}+ {item.label}
           </span>

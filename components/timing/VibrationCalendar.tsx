@@ -94,7 +94,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
   return (
     <div>
       <div className="flex flex-col gap-1 mb-5">
-        <p className="font-display text-lg sm:text-xl font-bold tracking-tight text-foreground">
+        <p className="font-heading text-lg sm:text-xl font-bold tracking-tight text-foreground">
           {copy.title}
         </p>
         <p className="text-sm text-muted leading-relaxed max-w-2xl">{copy.desc}</p>
@@ -104,7 +104,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
       <div className="max-w-md">
         <div className="grid grid-cols-7">
           {DAY_NAMES.map((day) => (
-            <div key={day} className="py-1.5 text-center font-mono text-[9px] uppercase tracking-[0.1em] text-muted border-b border-ink/10">
+            <div key={day} className="py-1.5 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted border-b border-ink/10">
               {day}
             </div>
           ))}
@@ -121,16 +121,16 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
             if (!hasData || !vibration) {
               return (
                 <div key={dateStr} className="h-9 flex items-center justify-center">
-                  <span className={`text-[10px] font-mono ${past ? "text-muted/30" : "text-muted/50"}`}>{date.getDate()}</span>
+                  <span className={`text-xs font-mono ${past ? "text-muted/30" : "text-muted/50"}`}>{date.getDate()}</span>
                 </div>
               );
             }
 
             return (
               <div key={dateStr} className="h-9 flex flex-col items-center justify-center">
-                <span className="text-[9px] font-mono text-muted leading-none">{date.getDate()}</span>
+                <span className="text-xs font-mono text-muted leading-none">{date.getDate()}</span>
                 <span
-                  className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center font-mono text-[9px] font-bold border leading-none"
+                  className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center font-mono text-xs font-bold border leading-none"
                   style={{
                     borderColor: vibration.favorable ? vibration.color : "rgba(243,241,234,0.12)",
                     color: vibration.favorable ? (isTodayCell ? "var(--color-background)" : vibration.color) : isTodayCell ? "var(--color-foreground)" : "var(--color-muted)",
@@ -166,7 +166,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
                 className="flex items-center gap-3 py-2 border-b border-ink/10"
               >
                 <span
-                  className="w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold border shrink-0"
+                  className="w-6 h-6 rounded-full flex items-center justify-center font-mono text-xs font-bold border shrink-0"
                   style={{ borderColor: d.color, color: d.color, backgroundColor: `${d.color}1a` }}
                 >
                   {d.number}
@@ -176,7 +176,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
                   <p className="text-xs text-muted leading-tight">{d.label}</p>
                 </div>
                 {isTodayCell && (
-                  <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-accent shrink-0">Hoy</span>
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent shrink-0">Hoy</span>
                 )}
               </motion.div>
             );

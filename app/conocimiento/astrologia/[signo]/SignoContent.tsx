@@ -48,7 +48,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {[sign.element, sign.modality, sign.polarity, sign.rulingPlanet].map((tag) => (
-              <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 border border-ink/10">{tag}</span>
+              <span key={tag} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 border border-ink/10">{tag}</span>
             ))}
           </div>
         </motion.section>
@@ -57,7 +57,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{sign.meaning}</p>
         </motion.section>
@@ -66,7 +66,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{sign.history}</p>
         </motion.section>
@@ -97,7 +97,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 border border-ink/10">

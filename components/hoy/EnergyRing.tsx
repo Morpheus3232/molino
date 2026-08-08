@@ -75,7 +75,7 @@ export default function EnergyRing({ score, size = 220, stroke = 14, label }: En
           {clamped}
         </span>
         {label && (
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
             {label}
           </span>
         )}

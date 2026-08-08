@@ -75,7 +75,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
             Recomendaciones Simbólicas
           </p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
@@ -116,7 +116,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
             Recomendaciones Simbólicas · {meta?.plural ?? entityType}
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
@@ -235,7 +235,7 @@ function RecommendationGroup({
     >
       <div className="flex items-center gap-3 mb-2">
         <div className="w-8 h-px" style={{ backgroundColor: accentColor }} aria-hidden="true" />
-        <h2 className="text-xs uppercase tracking-[0.25em] font-medium" style={{ color: accentColor }}>{title}</h2>
+        <h2 className="text-xs uppercase tracking-[0.2em] font-medium" style={{ color: accentColor }}>{title}</h2>
       </div>
       <p className="text-xs text-muted mb-4 ml-11">{subtitle}</p>
       <motion.div {...staggerContainer} className="space-y-3">
@@ -279,7 +279,7 @@ function RecommendationCard({
               {rec.entity.name}
             </h3>
             {rec.isTripleResonance && (
-              <span className="text-[9px] font-medium uppercase tracking-wider text-accent">
+              <span className="text-xs font-medium uppercase tracking-wider text-accent">
                 triple alineación
               </span>
             )}

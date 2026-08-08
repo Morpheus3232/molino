@@ -21,7 +21,7 @@ export default function UniversityFooter() {
                 <line x1="19" y1="-3" x2="19" y2="17" strokeWidth="0.5" />
               </svg>
             </span>
-            <p className="font-display text-lg text-white mt-6 uppercase tracking-wide">
+            <p className="font-heading text-lg text-white mt-6 uppercase tracking-wide">
               MOLINO
             </p>
             <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">

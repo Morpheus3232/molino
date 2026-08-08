@@ -18,8 +18,8 @@ interface ZodiacMarkProps {
 }
 
 const SIZE_MAP = {
-  sm: { box: 56, ring: 1.5, number: "text-lg", label: "text-[9px] mt-1.5" },
-  md: { box: 84, ring: 2, number: "text-3xl", label: "text-[10px] mt-2.5" },
+  sm: { box: 56, ring: 1.5, number: "text-lg", label: "text-xs mt-1.5" },
+  md: { box: 84, ring: 2, number: "text-3xl", label: "text-xs mt-2.5" },
   lg: { box: 128, ring: 2, number: "text-5xl", label: "text-xs mt-3" },
   xl: { box: 176, ring: 2.5, number: "text-7xl", label: "text-xs mt-4" },
 };

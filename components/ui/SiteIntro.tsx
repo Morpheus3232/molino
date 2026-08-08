@@ -151,7 +151,7 @@ export default function SiteIntro() {
 
           <div className="text-center">
             <p className="font-display text-3xl sm:text-4xl tracking-tight uppercase text-ink">Molino</p>
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-muted mt-3">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mt-3">
               Mapa personal de autoconocimiento
             </p>
           </div>

@@ -130,7 +130,7 @@ export default function InsightsContent() {
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
             Mis patrones
           </p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
@@ -158,7 +158,7 @@ export default function InsightsContent() {
             HEADER
             ═══════════════════════════════════════════════ */}
         <motion.div {...smoothReveal} className="mb-10">
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-3">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-3">
             Mis patrones
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-2">
@@ -251,7 +251,7 @@ export default function InsightsContent() {
                       </p>
                       <p className="text-xs text-muted truncate">{rec.explanation}</p>
                     </div>
-                    <p className="text-xs uppercase tracking-[0.1em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
+                    <p className="text-xs uppercase tracking-[0.2em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
                       {TIER_META[getTierForScore(rec.score)].label}
                     </p>
                   </motion.button>

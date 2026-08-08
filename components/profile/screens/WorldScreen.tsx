@@ -108,7 +108,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lo que más presencia tiene en tu mapa</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Lo que más presencia tiene en tu mapa</h2>
               </div>
             </motion.div>
             <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
@@ -130,7 +130,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }} />
-                      <span className="uppercase text-[9px] tracking-wider" style={{ color: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }}>
+                      <span className="uppercase text-xs tracking-wider" style={{ color: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }}>
                         {tierMeta.label}
                       </span>
                     </div>
@@ -154,7 +154,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Lugares con mayor presencia en tu mapa</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Lugares con mayor presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Estos lugares tienen una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
@@ -196,7 +196,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Marcas con presencia en tu mapa</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Marcas con presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Marcas con una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.
@@ -280,13 +280,13 @@ function EntityCard({ rec, index }: { rec: AffinityResult; index: number }) {
             <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
               {rec.entity.name}
             </h4>
-            <p className="uppercase text-[9px] tracking-[0.15em] text-muted mt-0.5">
+            <p className="uppercase text-xs tracking-[0.2em] text-muted mt-0.5">
               {animalDisplay.name}{event ? ` · ${event.year}` : ""}
             </p>
           </div>
         </div>
         <span
-          className="text-[10px] uppercase tracking-[0.1em] shrink-0 px-2 py-1 border rounded-sm"
+          className="text-xs uppercase tracking-[0.2em] shrink-0 px-2 py-1 border rounded-sm"
           style={{ color: tierMeta.color, borderColor: `${tierMeta.color}40` }}
         >
           {tierMeta.label}

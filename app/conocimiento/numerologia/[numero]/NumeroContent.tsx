@@ -45,7 +45,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
               <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.1]">{num.title}</h1>
               <div className="flex flex-wrap gap-2 mt-3">
                 {num.keywords.map(kw => (
-                  <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
+                  <span key={kw} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
                 ))}
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{num.meaning}</p>
         </motion.section>
@@ -65,7 +65,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y simbolismo</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia y simbolismo</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-4">{num.history}</p>
           <p className="text-sm text-muted leading-relaxed max-w-3xl">{num.symbolism}</p>
@@ -103,7 +103,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Interpretación de Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Interpretación de Molino</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl mb-6">{num.interpretation}</p>
           <div className="p-6 border border-ink/10">
@@ -116,7 +116,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Relación con otros números</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Relación con otros números</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{num.relationshipWithOther}</p>
         </motion.section>

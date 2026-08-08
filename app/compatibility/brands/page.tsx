@@ -108,7 +108,7 @@ export default function BrandsPage() {
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-12 sm:mb-16">
                 <button type="button" onClick={() => router.push("/profile")} className="text-sm text-muted hover:text-accent transition-colors mb-6 inline-flex items-center gap-2">&larr; Volver a mi mapa</button>
-                <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">Compatibilidad · Marcas</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad · Marcas</p>
                 <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
                   Marcas que resuenan
                   <br /><span className="text-muted">con tu mapa</span>
@@ -124,7 +124,7 @@ export default function BrandsPage() {
                 <section className="mb-14">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-8 h-px bg-border" aria-hidden="true" />
-                    <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Tus 10 marcas ideales</h2>
+                    <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tus 10 marcas ideales</h2>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                     {top10.map((r, i) => (
@@ -139,8 +139,8 @@ export default function BrandsPage() {
                       >
                         <p className="text-2xl mb-1">{r.meta.logo}</p>
                         <p className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors truncate">{r.name}</p>
-                        <p className="text-xs uppercase tracking-[0.1em] font-bold mt-1" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
-                        <p className="text-[10px] uppercase tracking-[0.1em] text-muted">{r.targetAnimal} · {r.meta.category}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] font-bold mt-1" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted">{r.targetAnimal} · {r.meta.category}</p>
                         <AnimatePresence>
                           {expandedItem === `top-${r.name}` && (
                             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-3">
@@ -160,7 +160,7 @@ export default function BrandsPage() {
               <section className="mb-6">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-px bg-border" aria-hidden="true" />
-                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Explorar todas las marcas</h2>
+                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Explorar todas las marcas</h2>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <SearchInput value={search} onValueChange={setSearch} placeholder="Buscar marca..." label="Buscar marca" className="flex-1 max-w-sm" />
@@ -223,7 +223,7 @@ export default function BrandsPage() {
                                 <p className="text-xs text-muted">{r.meta.category} · {r.meta.country} · {r.targetAnimal} de {r.targetElement} · Fundada {r.meta.year}</p>
                               </div>
                               <div className="text-right shrink-0">
-                                <p className="text-xs uppercase tracking-[0.1em] font-bold" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
+                                <p className="text-xs uppercase tracking-[0.2em] font-bold" style={{ color: getScoreColor(r.score) }}>{getScoreLabel(r.score)}</p>
                               </div>
                             </div>
                           </button>
