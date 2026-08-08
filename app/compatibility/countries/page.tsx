@@ -61,7 +61,7 @@ export default function CountriesPage() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando compatibilidad de países...">
                 Cargando compatibilidad de países...
               </p>
@@ -76,8 +76,8 @@ export default function CountriesPage() {
                 </div>
                 <div className="h-48 bg-[var(--skeleton)] rounded-md border border-ink/10" />
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -87,12 +87,12 @@ export default function CountriesPage() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+            <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
               <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">Países que resuenan con tu mapa</h1>
               <p className="text-muted mb-8 max-w-md mx-auto">Creá tu perfil para descubrir con qué países resonás más.</p>
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
-            </div>
+            </main>
             <UniversityFooter />
           </motion.div>
         ) : (
@@ -189,7 +189,7 @@ export default function CountriesPage() {
                       transition={{ duration: 0.3 }}
                       className="text-center py-16"
                     >
-                      <p className="eyebrow-brutalist mb-4">Sin resultados</p>
+                      <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
                       <p className="text-sm text-muted mb-6 max-w-md mx-auto">
                         No se encontraron países que coincidan con tu búsqueda.
                       </p>

@@ -37,33 +37,33 @@ export default function TresSistemas() {
   return (
     <section className="bg-card border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.p {...fadeUp} className="eyebrow-brutalist mb-10 text-center">
-          QUÉ HACE DIFERENTE A MOLINO
-        </motion.p>
+        <motion.h2 {...fadeUp} className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-16">
+          Qué hace diferente a Molino.
+        </motion.h2>
 
         <motion.div
           {...fadeUp}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start"
+          className="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-ink/10"
         >
           {systems.map((system, i) => (
             <motion.div
               key={system.title}
               {...fadeUp}
               style={{ transitionDelay: `${i * 0.08}s` }}
-              className="relative"
+              className="pt-8 lg:pt-0 first:pt-0 lg:px-8 first:pl-0 last:pr-0"
             >
-              <div className="absolute left-0 top-0 h-full w-0.5" style={{ backgroundColor: system.color }} aria-hidden="true" />
-              <div className="pl-6 pr-4 lg:pr-8">
-                <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-2 tracking-tight">
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: system.color }} aria-hidden="true" />
+                <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground tracking-tight">
                   {system.title}
                 </h3>
-                <p className="text-sm text-muted/70 leading-relaxed mb-4">
-                  {system.subtitle}
-                </p>
-                <p className="text-xs text-muted/50 leading-relaxed">
-                  {system.description}
-                </p>
               </div>
+              <p className="text-sm text-muted/70 leading-relaxed mb-4">
+                {system.subtitle}
+              </p>
+              <p className="text-xs text-muted/70 leading-relaxed">
+                {system.description}
+              </p>
             </motion.div>
           ))}
         </motion.div>

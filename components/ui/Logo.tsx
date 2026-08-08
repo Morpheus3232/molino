@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState, type CSSProperties } from "react";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { subscribeLoading } from "@/lib/utils/loadingSignal";
 
 interface LogoProps {
@@ -10,9 +10,37 @@ interface LogoProps {
   wind?: boolean;
 }
 
+const HUB = { x: 50, y: 38 };
+
+/** Un aspa (vela), dibujada apuntando hacia arriba desde el eje (0,0). */
+function Blade({ angle }: { angle: number }) {
+  return (
+    <g transform={`rotate(${angle})`}>
+      {/* halo de separación — para que el aspa se lea en frente de la torre */}
+      <path
+        d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"
+        fill="none"
+        stroke="var(--color-paper, #0A0A0C)"
+        strokeWidth="2.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"
+        fill="currentColor"
+        stroke="none"
+      />
+      {/* celosía — travesaños de la vela */}
+      <line x1="-3" y1="-5" x2="3" y2="-5" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
+      <line x1="-4" y1="-11" x2="4" y2="-11" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
+      <line x1="-2" y1="-20" x2="2" y2="-20" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
+    </g>
+  );
+}
+
 /**
- * Molino de campo — molinete americano clásico.
- * La torre queda quieta. Solo el rotor gira.
+ * Molino de viento — torre sólida y cuatro aspas con celosía.
+ * Diseño moderno/minimalista/realista: silueta llena, no wireframe.
+ * La torre y el gorro quedan quietos. Solo el rotor (4 aspas) gira.
  *
  * - wind: arranque con viento (easeInOut, el rotor acelera como una ráfaga)
  * - spinning: rotación lineal continua (procesos de carga reales)
@@ -27,70 +55,50 @@ export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProp
   const isWind = wind && !reducedMotion;
   const isSpinning = !wind && (spinning ?? globalLoading) && !reducedMotion;
 
+  const rotorStyle: CSSProperties = {
+    transformOrigin: `${HUB.x}px ${HUB.y}px`,
+    transition: isWind || isSpinning ? undefined : "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    animation: isWind
+      ? "molino-rotor-spin 1.8s cubic-bezier(0.16, 0.84, 0.44, 1) infinite"
+      : isSpinning
+        ? "molino-rotor-spin 1.1s linear infinite"
+        : "none",
+    transform: isWind || isSpinning ? undefined : "rotate(0deg)",
+  };
+
   return (
     <svg
-      viewBox="0 0 32 32"
+      viewBox="0 0 100 100"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       className={className}
       aria-hidden="true"
     >
-      {/* ═══ TORRE — celosía, QUIETA ═══ */}
-      <line x1="11" y1="30" x2="14.5" y2="13" />
-      <line x1="21" y1="30" x2="17.5" y2="13" />
-      {/* Travesaños */}
-      <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" />
-      <line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" />
-      <line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
+      {/* ═══ BASE — línea de tierra ═══ */}
+      <line x1="24" y1="96.5" x2="80" y2="96.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.25" strokeLinecap="round" />
 
-      {/* Plataforma */}
-      <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
+      {/* ═══ TORRE — silueta cónica sólida, QUIETA ═══ */}
+      <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="currentColor" fillOpacity="0.95" stroke="none" />
+      {/* vetas sutiles de la torre */}
+      <line x1="38.5" y1="80" x2="61.5" y2="80" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.3" />
+      <line x1="41" y1="63" x2="59" y2="63" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.3" />
+      {/* puerta */}
+      <rect x="46" y="84" width="8" height="12" rx="1.5" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.45" />
 
-      {/* ═══ COLA DEL MOLINO — quieta, apunta al viento ═══ */}
-      <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" />
-      <path d="M24 6 L24 11 L27 8.5 Z" fill="currentColor" stroke="none" opacity="0.7" />
+      {/* ═══ GORRO — cúpula redondeada, quieta ═══ */}
+      <path d={`M44,46 Q${HUB.x},34 56,46 Z`} fill="currentColor" stroke="none" />
 
-      {/* ═══ ROTOR — el único elemento que gira ═══ */}
-      <motion.g
-        style={{ transformOrigin: "16px 8.5px" }}
-        animate={
-          isWind
-            ? { rotate: 360 }
-            : isSpinning
-              ? { rotate: 360 }
-              : { rotate: 0 }
-        }
-        transition={
-          isWind
-            ? { duration: 1.8, ease: [0.16, 0.84, 0.44, 1], repeat: Infinity }
-            : isSpinning
-              ? { duration: 1.1, ease: "linear", repeat: Infinity }
-              : { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }
-        }
-      >
-        {/* Anillo del rotor */}
-        <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
-        {/* 10 aspas — líneas desde el centro al anillo */}
-        {[0, 36, 72, 108, 144, 180, 216, 252, 288, 324].map((angle) => {
-          const rad = (angle * Math.PI) / 180;
-          const r = 4.5;
-          return (
-            <line
-              key={angle}
-              x1={16}
-              y1={8.5}
-              x2={16 + r * Math.cos(rad)}
-              y2={8.5 + r * Math.sin(rad)}
-              strokeWidth="0.65"
-            />
-          );
-        })}
-        {/* Cubo central */}
-        <circle cx="16" cy="8.5" r="1" fill="currentColor" stroke="none" />
-      </motion.g>
+      {/* ═══ ROTOR — el único elemento que gira (animación CSS, no framer-motion:
+           motion.g nunca aplicó la rotación sobre este <g> SVG en pruebas) ═══ */}
+      <g style={rotorStyle}>
+        <g transform={`translate(${HUB.x} ${HUB.y})`}>
+          <Blade angle={45} />
+          <Blade angle={135} />
+          <Blade angle={225} />
+          <Blade angle={315} />
+          {/* cubo central */}
+          <circle cx="0" cy="0" r="3.2" fill="currentColor" stroke="var(--color-paper, #0A0A0C)" strokeWidth="1" />
+        </g>
+      </g>
     </svg>
   );
 }

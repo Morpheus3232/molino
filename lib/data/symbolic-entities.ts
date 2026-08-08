@@ -16,9 +16,17 @@ import { COUNTRIES_60 } from "./countries-60";
 import { CITIES_60 } from "./cities-60";
 import { CITIES_ARGENTINA } from "./cities-argentina";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
+import { TEAMS_CHILE } from "./teams-chile";
+import { TEAMS_PERU } from "./teams-peru";
+import { TEAMS_URUGUAY } from "./teams-uruguay";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
+import { UNIVERSITIES_CHILE } from "./universities-chile";
+import { UNIVERSITIES_PERU } from "./universities-peru";
 import { MOVIES } from "./movies";
 import { ARTISTS_ARGENTINA } from "./artists-argentina";
+import { ARTISTS_CHILE } from "./artists-chile";
+import { ARTISTS_PERU } from "./artists-peru";
+import { ARTISTS_URUGUAY } from "./artists-uruguay";
 import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
 
 export type EntityType =
@@ -145,10 +153,18 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...CITIES_ARGENTINA,
 
   ...TEAMS_ARGENTINA,
+  ...TEAMS_CHILE,
+  ...TEAMS_PERU,
+  ...TEAMS_URUGUAY,
   ...UNIVERSITIES_ARGENTINA,
+  ...UNIVERSITIES_CHILE,
+  ...UNIVERSITIES_PERU,
 
   ...MOVIES,
   ...ARTISTS_ARGENTINA,
+  ...ARTISTS_CHILE,
+  ...ARTISTS_PERU,
+  ...ARTISTS_URUGUAY,
   ...FAMOUS_PEOPLE_ENTITIES,
 
   // ──── UNIVERSIDADES (3) ────

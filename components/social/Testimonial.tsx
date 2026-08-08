@@ -53,8 +53,6 @@ export default function Testimonial() {
   return (
     <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12">
-        <p className="eyebrow-brutalist mb-8 text-center">Lo que dicen</p>
-
         <div
           className="min-h-[160px] relative"
           onMouseEnter={() => setIsPaused(true)}
@@ -76,7 +74,7 @@ export default function Testimonial() {
                 <span className="text-sm text-foreground/70 font-medium">
                   {TESTIMONIALS[current].author}
                 </span>
-                <span className="text-xs text-muted/50">
+                <span className="text-xs text-muted/70">
                   {TESTIMONIALS[current].role}
                 </span>
               </footer>
@@ -92,12 +90,17 @@ export default function Testimonial() {
               type="button"
               onClick={() => setCurrent(i)}
               aria-label={`Reseña ${i + 1}`}
-              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                i === current
-                  ? "bg-accent w-4"
-                  : "bg-ink/15 hover:bg-ink/30"
-              }`}
-            />
+              className="group flex items-center justify-center w-6 h-6 -m-1"
+            >
+              <span
+                className={`block h-1.5 rounded-full transition-all duration-300 ${
+                  i === current
+                    ? "bg-accent w-4"
+                    : "bg-ink/15 group-hover:bg-ink/30 w-1.5"
+                }`}
+                aria-hidden="true"
+              />
+            </button>
           ))}
         </div>
       </div>

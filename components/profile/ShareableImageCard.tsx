@@ -237,9 +237,9 @@ export default function ShareableImageCard({
               {/* TU LECTURA — síntesis Premium */}
               {(interpretation.summary || interpretation.opening) && (
                 <div className="mb-9">
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: elementColor }}>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: elementColor }}>
                     Tu lectura
-                  </p>
+                  </h3>
                   <p className="font-heading text-lg leading-[1.65] font-semibold" style={{ color: ink }}>
                     {interpretation.opening || interpretation.summary}
                   </p>
@@ -254,9 +254,9 @@ export default function ShareableImageCard({
               {/* PATRONES */}
               {highlightPatterns.length > 0 && (
                 <div className="mb-9">
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
                     Tus patrones
-                  </p>
+                  </h3>
                   <div className="space-y-3">
                     {highlightPatterns.map((p, i) => (
                       <div key={i} className="flex items-start gap-3">
@@ -273,9 +273,9 @@ export default function ShareableImageCard({
               {/* TENSIONES */}
               {highlightTensions.length > 0 && (
                 <div className="mb-9">
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.2em] mb-4" style={{ color: muted }}>
                     Tus tensiones
-                  </p>
+                  </h3>
                   <div className="space-y-3">
                     {highlightTensions.map((t, i) => (
                       <div key={i} className="flex items-start gap-3">
@@ -292,9 +292,9 @@ export default function ShareableImageCard({
               {/* TU MOMENTO */}
               {(momentState?.narrative || dailyEnergy?.description || interpretation.timing) && (
                 <div className="mb-9">
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
+                  <h3 className="font-mono text-xs uppercase tracking-[0.2em] mb-3" style={{ color: muted }}>
                     Tu momento
-                  </p>
+                  </h3>
                   <p className="font-heading italic text-base leading-[1.7]" style={{ color: "#333333" }}>
                     &ldquo;{momentState?.narrative || dailyEnergy?.description || interpretation.timing}&rdquo;
                   </p>

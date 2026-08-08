@@ -41,7 +41,7 @@ const GROWTH_AREAS: Record<string, string[]> = {
 const ELEMENT_TRAITS: Record<string, { color: string; description: string }> = {
   Fuego: { color: "#B45309", description: "Energía de acción, pasión y transformación" },
   Agua: { color: "#4A6FA5", description: "Energía de flujo, intuición y profundidad" },
-  Tierra: { color: "#6B7280", description: "Energía de estabilidad, práctica y concreción" },
+  Tierra: { color: "#838C95", description: "Energía de estabilidad, práctica y concreción" },
   Madera: { color: "#2D5A3D", description: "Energía de crecimiento, expansión y visión" },
   Metal: { color: "#C49A2A", description: "Energía de precisión, estructura y excelencia" },
 };
@@ -64,9 +64,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Fortalezas */}
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-2">
+            <h3 className="font-heading text-lg font-semibold text-accent mb-2">
               Fortalezas
-            </p>
+            </h3>
             <div className="mt-6">
               {strengths.map((s, i) => (
                 <motion.div
@@ -88,9 +88,9 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
 
           {/* Áreas a cuidar */}
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-semibold mb-2">
+            <h3 className="font-heading text-lg font-semibold text-muted mb-2">
               Áreas a cuidar
-            </p>
+            </h3>
             <div className="mt-6">
               {growthAreas.map((g, i) => (
                 <motion.div

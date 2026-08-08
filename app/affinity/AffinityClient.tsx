@@ -4,12 +4,23 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+
+const TYPE_ICONS: Record<EntityType, LucideIcon> = {
+  brand: Sparkles,
+  city: Building2,
+  country: Globe2,
+  university: GraduationCap,
+  team: Trophy,
+  movie: Clapperboard,
+  artist: Mic2,
+};
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -51,7 +62,7 @@ export default function AffinityHub() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Preparando tu afinity...">
                 Preparando tu afinidad...
               </p>
@@ -65,8 +76,8 @@ export default function AffinityHub() {
                   ))}
                 </div>
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -80,7 +91,6 @@ export default function AffinityHub() {
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Afinidad Simbólica</p>
                 <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] max-w-3xl">
                   Lo que resuena con tu mapa
                 </h1>
@@ -113,6 +123,7 @@ export default function AffinityHub() {
                 <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableTypes.map((type, i) => {
                     const meta = ENTITY_TYPES[type];
+                    const Icon = TYPE_ICONS[type];
                     const totalCount = getEntitiesByType(type).length;
                     const personalCount = personalizedCounts?.[type] ?? null;
 
@@ -123,7 +134,7 @@ export default function AffinityHub() {
                         onClick={() => router.push(`/affinity/${type}`)}
                         className="text-left p-6 border-t border-ink/10 border-b border-ink/10 hover:bg-ink/[0.02] transition-colors group relative"
                       >
-                        <span className="text-3xl mb-3 block">{meta.icon}</span>
+                        <Icon className="w-7 h-7 mb-3 text-accent" strokeWidth={1.5} aria-hidden="true" />
                         <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                         <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
                         <div className="mt-4 pt-3">

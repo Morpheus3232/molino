@@ -150,10 +150,10 @@ export function getRelationColor(relationType: RelationType): string {
     case "same": return "#2D5A3D";
     case "triad": return "#2D5A3D";
     case "harmonious": return "#4A6FA5";
-    case "neutral": return "#6B7280";
+    case "neutral": return "#838C95";
     case "clash": return "#B45309";
     case "harm": return "#B45309";
-    default: return "#6B7280";
+    default: return "#838C95";
   }
 }
 

@@ -67,7 +67,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando comparación...">
                 Cargando comparación...
               </p>
@@ -77,8 +77,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -88,11 +88,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+            <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
-                Afinidad Personal · Comparación
-              </p>
               <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
                 {entityA.emoji} {entityA.name} vs {entityB.emoji} {entityB.name}
               </h1>
@@ -100,7 +97,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 Creá tu perfil para descubrir la comparación simbólica entre {entityA.name} y {entityB.name}.
               </p>
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
-            </div>
+            </main>
             <UniversityFooter />
           </motion.div>
         ) : !resultA || !resultB || !entityComparison ? (
@@ -111,11 +108,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
+            <main className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center" id="main-content">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
-                Afinidad Personal · Comparación
-              </p>
               <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
                 No se pudo calcular la comparación
               </h1>
@@ -123,7 +117,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 Ocurrió un error al calcular la afinidad entre {entityA.name} y {entityB.name}. Intentá de nuevo.
               </p>
               <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>Volver a comparar</Button>
-            </div>
+            </main>
             <UniversityFooter />
           </motion.div>
         ) : showContent && tierA && tierB && compTier && resultA && resultB && entityComparison ? (
@@ -149,9 +143,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Header */}
               <motion.section {...fadeUp} className="mb-12 text-center">
-                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
-                  Comparación Simbólica
-                </p>
                 <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3 line-clamp-2">
                   <span className="inline-block max-w-[45%] truncate align-bottom">{entityA.emoji} {entityA.name}</span>
                   <span className="text-muted mx-2 sm:mx-3">vs</span>
@@ -445,7 +436,7 @@ function SectionHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{title}</h2>
+      <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
     </div>
   );
 }

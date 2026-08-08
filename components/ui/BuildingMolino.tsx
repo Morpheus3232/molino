@@ -242,14 +242,14 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
                 )}
                 <span
                   className={`w-5 shrink-0 font-mono text-xs tracking-[0.2em] transition-colors duration-300 ${
-                    isActive ? "text-accent" : isComplete ? "text-muted/70" : "text-muted/40"
+                    isActive ? "text-accent" : "text-muted/70"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
                   className={`flex-1 text-sm transition-colors duration-300 ${
-                    isActive ? "text-foreground" : isComplete ? "text-foreground/75" : "text-muted/50"
+                    isActive ? "text-foreground" : isComplete ? "text-foreground/75" : "text-muted/70"
                   }`}
                 >
                   {step}

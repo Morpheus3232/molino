@@ -75,7 +75,6 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
           variant="primary"
           onClick={handleDownload}
           className="flex items-center gap-2"
-          aria-label="Descargar mi mapa"
         >
           <Download className="w-4 h-4" aria-hidden="true" />
           Descargar mapa
@@ -85,7 +84,6 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
           variant="ghost"
           onClick={handleShare}
           className="flex items-center gap-2"
-          aria-label="Compartir mi mapa"
         >
           <Share2 className="w-4 h-4" aria-hidden="true" />
           Compartir

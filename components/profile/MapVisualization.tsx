@@ -130,7 +130,7 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
               fontWeight="500"
               opacity="0.7"
             >
-              {a.label}
+              {a.shortLabel.toUpperCase()}
             </text>
           );
         })}

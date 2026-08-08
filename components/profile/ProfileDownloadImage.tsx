@@ -173,8 +173,11 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
                         { l: "Año", v: profile.birthDate?.split("-")[0] || "—" },
                       ];
               return (
-                <div key={sys.key} style={{ background: C.card, borderLeft: `3px solid ${sys.color}`, padding: "8px 10px 4px" }}>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: sys.color, fontWeight: 600, margin: "0 0 4px 0" }}>{sys.label}</p>
+                <div key={sys.key} style={{ background: C.card, borderTop: `2px solid ${C.dim}`, padding: "8px 10px 4px" }}>
+                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: sys.color, fontWeight: 600, margin: "0 0 4px 0", display: "flex", alignItems: "center", gap: "5px" }}>
+                    <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: sys.color, flexShrink: 0 }} />
+                    {sys.label}
+                  </p>
                   {stats.map((s) => <S key={s.l} l={s.l} v={s.v} />)}
                 </div>
               );

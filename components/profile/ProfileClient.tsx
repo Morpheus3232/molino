@@ -62,6 +62,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       const local = buildFromLocal();
       if (local) setProfile(local);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverProfile]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
@@ -90,7 +91,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
           <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
-          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-4">Mi mapa personal</p>
           {futureDateError ? (
             <div role="alert">
               <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">

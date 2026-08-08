@@ -237,9 +237,9 @@ const SOURCES: Source[] = [
 
 const TYPE_META = {
   libro: { label: "Libro", color: "#D4A843" },
-  articulo: { label: "Artículo", color: "#4A5568" },
-  video: { label: "Video", color: "#6B4C7A" },
-  sitio: { label: "Sitio web", color: "#2D5A3D" },
+  articulo: { label: "Artículo", color: "#77808E" },
+  video: { label: "Video", color: "#897095" },
+  sitio: { label: "Sitio web", color: "#708F7B" },
 };
 
 export default function BibliotecaContent() {
@@ -441,7 +441,7 @@ export default function BibliotecaContent() {
             transition={{ duration: 0.3 }}
             className="text-center py-16"
           >
-            <p className="eyebrow-brutalist mb-4">Sin fuentes</p>
+            <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin fuentes</h2>
             <p className="text-sm text-muted mb-6 max-w-md mx-auto">
               No se encontraron fuentes para los filtros seleccionados.
             </p>

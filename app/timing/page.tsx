@@ -106,7 +106,7 @@ function TimingPageContent() {
           // from opacity:0 bakes an invisible frame into the SSR HTML that
           // framer-motion's `initial={false}` does not suppress there.
           <div key="loading">
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Preparando tu timing...">
                 Preparando tu timing...
               </p>
@@ -120,8 +120,8 @@ function TimingPageContent() {
                   ))}
                 </div>
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </div>
         ) : !profile ? (
           <motion.div
@@ -131,8 +131,7 @@ function TimingPageContent() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
-              <p className="eyebrow-brutalist mb-4">Tu momento</p>
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
               <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
                 Tu momento personal
               </h1>
@@ -142,7 +141,7 @@ function TimingPageContent() {
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
                 Crear mi perfil
               </Button>
-            </div>
+            </main>
             <UniversityFooter />
           </motion.div>
         ) : (
@@ -156,14 +155,13 @@ function TimingPageContent() {
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-                  <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                  <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
                   <span>›</span>
-                  <Link href="/hoy" className="hover:text-foreground transition-colors">Hoy</Link>
+                  <Link href="/hoy" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Hoy</Link>
                   <span>›</span>
                   <span className="text-foreground font-medium">Timing</span>
                 </nav>
 
-                <p className="eyebrow-brutalist mb-4">Tu timing personal</p>
                 <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
                   ¿Qué querés hacer?
                 </h1>
@@ -242,7 +240,7 @@ function TimingPageContent() {
 
                         {result.favorableDimensions.length > 0 && (
                           <div className="bg-background p-8 lg:p-12">
-                            <p className="eyebrow-brutalist mb-4">Dimensiones favorables</p>
+                            <h2 className="font-display text-xl sm:text-2xl tracking-tight text-foreground mb-4">Dimensiones favorables</h2>
                             <ul className="space-y-3">
                               {result.favorableDimensions.map((dim, i) => (
                                 <li key={i} className="text-sm text-foreground flex items-start gap-3">
@@ -256,7 +254,7 @@ function TimingPageContent() {
 
                         {result.challengingDimensions.length > 0 && (
                           <div className="bg-background p-8 lg:p-12">
-                            <p className="eyebrow-brutalist mb-4">Dimensiones desafiantes</p>
+                            <h2 className="font-display text-xl sm:text-2xl tracking-tight text-foreground mb-4">Dimensiones desafiantes</h2>
                             <ul className="space-y-3">
                               {result.challengingDimensions.map((dim, i) => (
                                 <li key={i} className="text-sm text-muted flex items-start gap-3">
@@ -269,7 +267,7 @@ function TimingPageContent() {
                         )}
 
                         <div className="bg-background p-8 lg:p-12">
-                          <p className="eyebrow-brutalist mb-4">Recomendación</p>
+                          <h2 className="font-display text-xl sm:text-2xl tracking-tight text-foreground mb-4">Recomendación</h2>
                           <p className="text-sm text-foreground leading-relaxed">{result.recommendedWindow}</p>
                         </div>
 
@@ -305,9 +303,9 @@ function TimingPageContent() {
                       className="mt-10"
                     >
                       <div className="flex items-center justify-between mb-6">
-                        <p className="eyebrow-brutalist">
+                        <h2 className="font-display text-xl sm:text-2xl tracking-tight text-foreground">
                           {isWeekView ? "Tu semana en timing — próximos 14 días" : "Mejores fechas — próximos 14 días"}
-                        </p>
+                        </h2>
                         <span className="text-xs text-muted">
                           Para: {INTENTION_LABELS[selectedIntention]}
                         </span>

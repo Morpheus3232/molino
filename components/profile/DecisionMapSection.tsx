@@ -65,10 +65,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* Header */}
         <motion.div {...smoothReveal}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu pregunta</h2>
-          </div>
+          <h2 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-3">Tu pregunta</h2>
           <p className="text-sm text-muted max-w-xl leading-relaxed">
             Cualquier decisión puede leerse desde tu mapa. Escribí lo que estás por decidir o explorá una categoría.
           </p>

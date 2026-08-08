@@ -9,15 +9,14 @@ export default function ZodiacoChinoContent() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Zod&#237;aco Chino</span>
         </nav>
 
         <Reveal tag="section" className="mb-16 sm:mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Zod&#237;aco Chino</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             Los 12 animales, los 5 elementos y el ciclo de 60 a&#241;os.
@@ -34,7 +33,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.1} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia y origen</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Historia y origen</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -59,7 +58,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.15} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los 12 animales</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Los 12 animales</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {CHINESE_ANIMALS.map((animal) => (
@@ -79,7 +78,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.2} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los 5 elementos</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Los 5 elementos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {CHINESE_ELEMENTS.map((el) => (
@@ -96,7 +95,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.25} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Fuentes</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -118,7 +117,6 @@ export default function ZodiacoChinoContent() {
         {/* Herramientas relacionadas */}
         <Reveal tag="section" delay={0.28} className="mb-12">
           <div className="p-6 border border-accent/20">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramientas relacionadas</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Conocé tu animal y compatibilidades</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
               Calculá tu animal del zodiaco chino o compará la compatibilidad entre dos personas.

@@ -332,17 +332,17 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="py-10 lg:py-12 border-b border-paper/15 last:border-b-0"
+              className="py-10 lg:py-12 border-b border-ink/15 last:border-b-0"
             >
               <div className="flex items-center gap-4 mb-5">
-                <span className="font-mono text-xs text-paper/60">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-mono text-xs text-ink/60">{String(i + 1).padStart(2, "0")}</span>
                 <span className="w-8 h-px shrink-0" style={{ backgroundColor: persp.color }} aria-hidden="true" />
-                <span className="font-mono text-xs uppercase tracking-[0.2em] font-semibold text-paper/85">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] font-semibold text-ink/85">
                   {persp.systemLabel}
                 </span>
               </div>
-              <p className="font-heading text-xl sm:text-2xl font-semibold text-paper mb-3">{persp.headline}</p>
-              <p className="text-sm text-paper/70 leading-relaxed max-w-2xl">{persp.detail}</p>
+              <p className="font-heading text-xl sm:text-2xl font-semibold text-ink mb-3">{persp.headline}</p>
+              <p className="text-sm text-ink/70 leading-relaxed max-w-2xl">{persp.detail}</p>
             </motion.div>
           ))}
         </div>

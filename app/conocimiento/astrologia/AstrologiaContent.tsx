@@ -22,15 +22,14 @@ export default function AstrologiaContent() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Astrología</span>
         </nav>
 
         <Reveal tag="section" className="mb-16 sm:mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Astrología</h1>
           <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El mapa del cielo de tu nacimiento y su tradición interpretativa.
@@ -47,7 +46,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.1} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Qué es la astrología</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Qué es la astrología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -66,7 +65,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.12} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -88,7 +87,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.14} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Elementos y modalidades</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Elementos y modalidades</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-4">
@@ -121,7 +120,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.18} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los 12 signos zodiacales</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Los 12 signos zodiacales</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Cada signo tiene un significado tradicional en la astrología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
@@ -147,7 +146,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.2} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Diferencia entre astrología y astronomía</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Diferencia entre astrología y astronomía</h2>
           </div>
           <div className="max-w-3xl p-6 border border-ink/10">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -167,7 +166,7 @@ export default function AstrologiaContent() {
         <Reveal tag="section" delay={0.22} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes y referencias</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Fuentes y referencias</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -190,7 +189,6 @@ export default function AstrologiaContent() {
         {/* Herramientas relacionadas */}
         <Reveal tag="section" delay={0.22} className="mb-12">
           <div className="p-6 border border-accent/20">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Signo Solar</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
               Ingresá tu fecha de nacimiento y calculá tu signo zodiacal occidental.

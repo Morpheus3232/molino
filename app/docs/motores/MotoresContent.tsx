@@ -109,7 +109,6 @@ export default function MotoresContent() {
       <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Documentación técnica</p>
           <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Motores de cálculo
           </h1>
@@ -149,9 +148,9 @@ export default function MotoresContent() {
                 <table className="w-full text-left border border-border rounded-lg overflow-hidden">
                   <thead>
                     <tr className="bg-muted/50 border-b border-border">
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-muted">Fórmula</th>
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-muted">Descripción</th>
-                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-muted">Ejemplo</th>
+                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Fórmula</th>
+                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Descripción</th>
+                      <th className="px-4 py-3 font-medium text-sm uppercase tracking-wider text-foreground">Ejemplo</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -159,7 +158,7 @@ export default function MotoresContent() {
                       <tr key={f.name} className={`border-b border-border ${i % 2 === 0 ? "bg-background" : "bg-muted/30"}`}>
                         <td className="px-4 py-3 font-mono text-sm text-foreground">{f.name}</td>
                         <td className="px-4 py-3 text-sm text-muted">{f.formula}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-accent/80">{f.example}</td>
+                        <td className="px-4 py-3 font-mono text-sm text-accent-light">{f.example}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -168,9 +167,9 @@ export default function MotoresContent() {
 
               {/* Code example */}
               <div className="rounded-md border border-border overflow-hidden bg-muted/30">
-                <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/50">
-                  <Code className="w-4 h-4 text-muted" aria-hidden="true" />
-                  <span className="font-mono text-xs text-muted uppercase tracking-wider">TypeScript — Implementación de referencia</span>
+                <div className="flex items-center gap-2 px-4 py-2 border-b border-border bg-muted/20">
+                  <Code className="w-4 h-4 text-foreground" aria-hidden="true" />
+                  <span className="font-mono text-xs text-foreground uppercase tracking-wider">TypeScript — Implementación de referencia</span>
                 </div>
                 <pre className="p-4 overflow-x-auto text-sm"><code className="text-foreground">{engine.codeExample}</code></pre>
               </div>

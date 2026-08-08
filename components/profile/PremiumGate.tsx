@@ -441,7 +441,11 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
             <div className="border-t border-ink/10 pt-8 mb-10">
               <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">{t.premium.whatYouGetLabel}</p>
-              <blockquote className="border-l-2 border-accent/30 pl-5 sm:pl-6 text-sm text-foreground/80 leading-relaxed italic">
+              <div className="flex items-center gap-2 mb-4" aria-hidden="true">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+                <span className="h-px flex-1 bg-ink/10" />
+              </div>
+              <blockquote className="text-sm text-foreground/80 leading-relaxed italic">
                 {preview?.pattern && preview.pattern.sources.length > 1 ? (
                   <>
                     Tu {preview.pattern.sources.join(" y ")} comparten un tema:{" "}
@@ -457,7 +461,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   </>
                 )}
               </blockquote>
-              <p className="mt-3 text-xs text-muted/60">...y más.</p>
+              <p className="mt-3 text-xs text-muted/70">...y más.</p>
             </div>
 
             <div className="border-t border-ink/10 pt-10">

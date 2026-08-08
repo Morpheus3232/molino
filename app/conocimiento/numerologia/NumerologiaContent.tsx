@@ -12,16 +12,15 @@ export default function NumerologiaContent() {
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Numerología</span>
         </nav>
 
         {/* Hero */}
         <Reveal tag="section" className="mb-16 sm:mb-20">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Numerología
           </h1>
@@ -41,7 +40,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.08} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Índice de contenidos</h2>
+            <h2 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground">Índice de contenidos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
@@ -66,7 +65,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.1} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Qué es la numerología</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Qué es la numerología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -88,7 +87,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.12} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia y evolución</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Historia y evolución</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -124,7 +123,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.14} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Numerología pitagórica</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Numerología pitagórica</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -148,7 +147,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.16} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo calcula Molino</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Cómo calcula Molino</h2>
           </div>
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
@@ -166,7 +165,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.18} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los números del 1 al 9</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Los números del 1 al 9</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Cada número tiene un significado tradicional en la numerología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
@@ -199,7 +198,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.2} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Números maestros: 11, 22 y 33</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Los números maestros fueron incorporados a la numerología moderna. No forman parte del sistema pitagórico original.
@@ -219,7 +218,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.22} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Limitaciones y carácter no científico</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Limitaciones y carácter no científico</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <div className="p-6 border border-ink/10">
@@ -240,7 +239,7 @@ export default function NumerologiaContent() {
         <Reveal tag="section" delay={0.24} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes y referencias</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Fuentes y referencias</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -264,7 +263,6 @@ export default function NumerologiaContent() {
         {/* Herramientas relacionadas */}
         <Reveal tag="section" delay={0.24} className="mb-12">
           <div className="p-6 border border-accent/20">
-            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
             <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
               Ingresá tu fecha de nacimiento y calculá tu número de Camino de Vida, Expresión y más.

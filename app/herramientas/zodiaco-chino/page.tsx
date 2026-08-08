@@ -65,15 +65,14 @@ export default function ZodiacoChinoCalcPage() {
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Zodiaco Chino</span>
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Zodiaco Chino</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Tu animal del zodiaco chino
           </h1>
@@ -177,7 +176,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.55, duration: 0.4 }}
                       >
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Significado</p>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Significado</h3>
                         <p className="text-sm text-foreground leading-relaxed">{animalData.meaning}</p>
                       </motion.div>
 
@@ -187,7 +186,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 0.4 }}
                       >
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Historia y simbolismo</p>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Historia y simbolismo</h3>
                         <p className="text-sm text-muted leading-relaxed">{animalData.history}</p>
                       </motion.div>
 
@@ -199,15 +198,15 @@ export default function ZodiacoChinoCalcPage() {
                         className="grid grid-cols-1 sm:grid-cols-3 gap-4"
                       >
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Características</p>
+                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">Características</h3>
                           <p className="text-sm text-foreground">{animalData.traits.join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Fortalezas</p>
+                          <h3 className="font-heading text-lg font-semibold text-accent mb-2">Fortalezas</h3>
                           <p className="text-sm text-foreground">{animalData.strengths.slice(0, 3).join(", ")}</p>
                         </div>
                         <div className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">
-                          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafíos</p>
+                          <h3 className="font-heading text-lg font-semibold text-muted mb-2">Desafíos</h3>
                           <p className="text-sm text-foreground">{animalData.challenges.slice(0, 3).join(", ")}</p>
                         </div>
                       </motion.div>
@@ -218,7 +217,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7, duration: 0.4 }}
                       >
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Compatibilidades tradicionales</p>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Compatibilidades tradicionales</h3>
                         <div className="flex flex-wrap gap-2">
                           {animalData.compatibility.friendly.map(f => (
                             <span key={f} className="text-sm px-3 py-1 rounded-md border border-border text-foreground transition-colors hover:border-accent/40">{f}</span>
@@ -233,7 +232,7 @@ export default function ZodiacoChinoCalcPage() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.75, duration: 0.4 }}
                         >
-                          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Años correspondientes</p>
+                          <h3 className="font-heading text-lg font-semibold text-muted mb-3">Años correspondientes</h3>
                           <p className="text-sm text-foreground">{getYearRange(animalIndex)}</p>
                         </motion.div>
                       )}
@@ -244,7 +243,7 @@ export default function ZodiacoChinoCalcPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8, duration: 0.4 }}
                       >
-                        <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Los 5 elementos</p>
+                        <h3 className="font-heading text-lg font-semibold text-muted mb-3">Los 5 elementos</h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                           {animalData.elements.map((el) => (
                             <div key={el.element} className="p-4 rounded-md border border-border bg-card shadow-sm transition-colors hover:border-accent/30">

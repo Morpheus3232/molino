@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Logo from "@/components/ui/Logo";
 
-const MIN_DISPLAY_MS = 2200;
-const FADE_MS = 700;
+// 1100ms alcanza para una ráfaga completa del molino (ver Logo.tsx: el
+// rotor con wind tarda 1.8s/vuelta, así que esto cubre más de media vuelta
+// visible) sin sumar de más al LCP del primer visitante — medido con
+// Lighthouse: el valor anterior (2200ms) hacía que el intro por sí solo
+// explicara casi todo el LCP de ~3.6s de la home.
+const MIN_DISPLAY_MS = 1100;
+const FADE_MS = 500;
 const SESSION_KEY = "molino-intro-seen";
 
 /**

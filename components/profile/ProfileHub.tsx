@@ -194,11 +194,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           aria-hidden="true"
         />
         <div className="relative mx-auto max-w-[1080px] px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-14 sm:pb-20">
-          {/* Eyebrow */}
-          <motion.div {...heroItem(0)}>
-            <p className="label-micro text-muted mb-10 sm:mb-14">Tu mapa personal</p>
-          </motion.div>
-
           {/* Two-column: Radar chart left + Identity right */}
           <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-16 items-center">
             {/* Radar chart — el protagonista */}
@@ -240,7 +235,7 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
 
               {/* Poetic opening — sutil, al fondo */}
               <motion.div {...heroItem(0.9)} className="mt-8 pt-6 border-t border-ink/10">
-                <p className="text-sm text-muted/60 leading-relaxed max-w-md">
+                <p className="text-sm text-muted/70 leading-relaxed max-w-md">
                   {opening[0]} {opening[1]}
                 </p>
               </motion.div>

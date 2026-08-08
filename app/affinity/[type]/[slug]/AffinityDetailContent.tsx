@@ -575,7 +575,7 @@ function SectionHeader({ title, id }: { title: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 id={id} className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{title}</h2>
+      <h2 id={id} className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
     </div>
   );
 }

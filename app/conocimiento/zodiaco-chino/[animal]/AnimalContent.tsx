@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -15,7 +17,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
   if (!animal) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-24 pb-24">
+        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-24 pb-24" id="main-content">
           <h1 className="font-display text-4xl sm:text-5xl text-foreground">Animal no encontrado</h1>
           <p className="text-muted mt-4">
             El animal no existe en la base del zodiaco chino de Molino.
@@ -55,9 +57,9 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
 
           <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 lg:pt-24">
             <nav className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-10" aria-label="Breadcrumb">
-              <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+              <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
               <span className="mx-2" aria-hidden="true">/</span>
-              <Link href="/conocimiento/zodiaco-chino" className="hover:text-accent transition-colors">
+              <Link href="/conocimiento/zodiaco-chino" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">
                 Zodiaco Chino
               </Link>
               <span className="mx-2" aria-hidden="true">/</span>
@@ -101,14 +103,14 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           texture="spiral"
         >
           <div className="flex flex-wrap">
-            <div className={`w-full lg:w-1/2 ${cellPad} lg:border-r border-paper/15`}>
-              <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
+            <div className={`w-full lg:w-1/2 ${cellPad} lg:border-r border-ink/15`}>
+              <p className="text-base lg:text-lg text-ink/80 leading-relaxed">{animal.meaning}</p>
             </div>
-            <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
+            <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-ink/15`}>
               <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent-light mb-6">
                 HISTORIA Y SIMBOLISMO
               </p>
-              <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
+              <p className="text-sm lg:text-base text-ink/70 leading-relaxed">{animal.history}</p>
             </div>
           </div>
         </EditorialSection>
@@ -131,7 +133,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   i < 2 ? "md:border-r border-ink/10" : ""
                 } ${i < blocks.length - 1 ? "border-b md:border-b-0 border-ink/10" : ""}`}
               >
-                <span className="font-display text-5xl lg:text-6xl leading-none text-ink/15 block mb-8">
+                <span className="font-display text-5xl lg:text-6xl leading-none text-ink/15 block mb-8" aria-hidden="true">
                   {block.numeral}
                 </span>
                 <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-6">
@@ -208,7 +210,7 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   i < animal.elements.length - 1 ? "lg:border-r" : ""
                 } border-ink/10`}
               >
-                <span className="font-display text-4xl leading-none text-ink/15 block mb-6">
+                <span className="font-display text-4xl leading-none text-ink/15 block mb-6" aria-hidden="true">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <p className="font-heading text-lg text-foreground uppercase leading-tight">

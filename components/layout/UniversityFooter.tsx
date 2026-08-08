@@ -21,9 +21,9 @@ export default function UniversityFooter() {
 
           {footerColumns.map((col) => (
             <div key={col.title} className={col.title === "EXPLORAR" ? "md:col-span-3 md:col-start-7" : "md:col-span-2"}>
-              <h4 className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
+              <p className="font-mono text-xs font-semibold tracking-[0.2em] text-white/50 mb-6 uppercase">
                 {col.title}
-              </h4>
+              </p>
               <ul className="space-y-4">
                 {col.links.map((link) => (
                   <li key={link.href}>

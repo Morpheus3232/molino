@@ -15,7 +15,7 @@ function EntityCard({ entity, score, tier, type }: { entity: any; score: number;
   const tierColors: Record<string, string> = {
     resonante: "#10B981",
     afin: "#3B82F6",
-    neutral: "#6B7280",
+    neutral: "#838C95",
     desafiante: "#F59E0B",
     distante: "#EF4444",
   };
@@ -32,7 +32,7 @@ function EntityCard({ entity, score, tier, type }: { entity: any; score: number;
         <div className="flex-1 min-w-0">
           <p className="font-medium text-foreground truncate">{entity.name}</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs font-mono" style={{ color: tierColors[tier] || "#6B7280" }}>
+            <span className="text-xs font-mono" style={{ color: tierColors[tier] || "#838C95" }}>
               {tier.toUpperCase()} · {score}%
             </span>
             <span className="text-xs text-muted">{type}</span>
