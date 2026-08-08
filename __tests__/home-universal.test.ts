@@ -22,6 +22,6 @@ describe("Home page — universal access without profile", () => {
     expect(source).toContain("TrustMetrics");
     const numeroDiaPath = path.resolve(__dirname, "..", "components", "sections", "NumeroDia.tsx");
     const numeroDiaSource = fs.readFileSync(numeroDiaPath, "utf8");
-    expect(numeroDiaSource).toContain("EMPEZÁ");
+    expect(numeroDiaSource).toContain("CREAR MI MAPA");
   });
 });
