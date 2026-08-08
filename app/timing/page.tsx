@@ -234,7 +234,6 @@ function TimingPageContent() {
                               size="xl"
                             />
                             <div className="sm:text-right">
-                              <p className="text-sm text-muted">Día personal: {result.personalDay}</p>
                               <p className="text-sm text-muted">Luna {result.moonPhase}</p>
                             </div>
                           </div>

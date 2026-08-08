@@ -289,9 +289,8 @@ export default function HoyClient() {
                 </div>
 
                 {/* Micro-stats concretas */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10 border border-ink/10 mt-12">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-ink/10 border border-ink/10 mt-12">
                   {[
-                    { label: "Día personal", value: energy.personalDay, sub: `Año ${energy.personalYear}` },
                     { label: "Tema", value: energy.theme, sub: energy.elementInfluence },
                     { label: "Luna", value: energy.moonPhase.phase, sub: "Sincronía lunar" },
                     { label: "Ventana", value: timing.recommendedWindow, sub: "Timing hoy" },
@@ -483,7 +482,7 @@ export default function HoyClient() {
                     </div>
                     <div>
                       <p className="label-micro mb-1">Momento</p>
-                      <p>Día personal {momentState.personalDay} · Año personal {momentState.personalYear} · {energy.moonPhase.phase}</p>
+                      <p>Año personal {momentState.personalYear} · {energy.moonPhase.phase}</p>
                     </div>
                     <div>
                       <p className="label-micro mb-1">Elemento</p>
