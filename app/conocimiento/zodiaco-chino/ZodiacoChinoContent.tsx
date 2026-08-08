@@ -34,7 +34,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.1} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Historia y origen</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia y origen</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -59,7 +59,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.15} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los 12 animales</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los 12 animales</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {CHINESE_ANIMALS.map((animal) => (
@@ -79,7 +79,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.2} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Los 5 elementos</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Los 5 elementos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {CHINESE_ELEMENTS.map((el) => (
@@ -96,7 +96,7 @@ export default function ZodiacoChinoContent() {
         <Reveal tag="section" delay={0.25} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[

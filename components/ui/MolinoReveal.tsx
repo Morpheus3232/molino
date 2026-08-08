@@ -58,7 +58,7 @@ export default function MolinoReveal({ profile, children }: MolinoRevealProps) {
             hidden: { opacity: 0 },
             show: { opacity: 1, transition: { duration: sec(400), ease: "easeOut" } },
           }}
-          className="font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-accent"
+          className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-accent"
         >
           Lectura completa
         </motion.p>
@@ -86,7 +86,7 @@ export default function MolinoReveal({ profile, children }: MolinoRevealProps) {
             hidden: { opacity: 0, y: 12 },
             show: { opacity: 1, y: 0, transition: { duration: sec(550), ease: "easeOut", delay: sec(400) } },
           }}
-          className="mt-6 text-balance font-display text-2xl uppercase leading-[1.1] tracking-tight text-foreground sm:text-3xl"
+          className="mt-6 text-balance font-heading text-2xl uppercase leading-[1.1] tracking-tight text-foreground sm:text-3xl"
         >
           {name ? `El mapa de ${name}` : "Tu mapa"}
         </motion.h3>
@@ -100,10 +100,10 @@ export default function MolinoReveal({ profile, children }: MolinoRevealProps) {
             className="mt-4 flex flex-col items-center gap-2"
           >
             {formattedDate && (
-              <p className="font-mono text-xs tracking-[0.22em] text-muted">{formattedDate}</p>
+              <p className="font-mono text-xs tracking-[0.2em] text-muted">{formattedDate}</p>
             )}
             {signDetail && (
-              <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted/70">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/70">
                 {signDetail}
               </p>
             )}

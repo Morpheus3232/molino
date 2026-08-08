@@ -15,13 +15,20 @@ const config: Config = {
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       fontSize: {
-        xs: "var(--step-1-text)",
-        sm: "var(--step-2-text)",
-        base: "var(--step-3-text)",
-        lg: "var(--step-4-text)",
-        xl: "var(--step-5-text)",
-        "2xl": "2rem",
-        "3xl": "3rem",
+        // Escala tipográfica — alineada con DESIGN_SYSTEM.md.
+        // Monotónica y coherente: cada nivel crece sobre el anterior.
+        xs: "0.75rem",      // 12px — labels pequeños
+        sm: "0.875rem",     // 14px — Caption
+        base: "1rem",       // 16px — Body
+        lg: "1.125rem",     // 18px — Body Large
+        xl: "1.25rem",      // 20px
+        "2xl": "1.5rem",    // 24px
+        "3xl": "1.75rem",   // 28px — H3
+        "4xl": "2.25rem",   // 36px — H2
+        "5xl": "3rem",      // 48px — H1
+        "6xl": "3.75rem",   // 60px
+        "7xl": "4.5rem",    // 72px — Display
+        "8xl": "6rem",      // 96px
       },
       letterSpacing: {
         tight: "var(--tracking-tight)",

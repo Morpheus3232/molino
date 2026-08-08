@@ -97,7 +97,7 @@ export default function FilosofiaContent() {
         {/* Principles */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Cinco principios innegociables
             </h2>
             <p className="text-muted max-w-xl">
@@ -119,7 +119,7 @@ export default function FilosofiaContent() {
                     {PRINCIPLE_ICONS[principle.id]}
                   </span>
                   <div>
-                    <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
+                    <h3 className="font-heading text-lg text-foreground mb-2 group-hover:text-accent transition-colors">
                       {principle.title}
                     </h3>
                     <p className="text-sm text-muted leading-relaxed">
@@ -135,7 +135,7 @@ export default function FilosofiaContent() {
         {/* Pillars */}
         <motion.section {...fadeUpDelayed(0.1)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Pilares metodológicos
             </h2>
             <p className="text-muted max-w-xl">
@@ -156,7 +156,7 @@ export default function FilosofiaContent() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <h3 className="font-display text-lg text-foreground mb-2">
+                    <h3 className="font-heading text-lg text-foreground mb-2">
                       {pillar.title}
                     </h3>
                     <p className="text-sm text-muted leading-relaxed">
@@ -172,7 +172,7 @@ export default function FilosofiaContent() {
         {/* Traditions */}
         <motion.section {...fadeUpDelayed(0.15)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Tradiciones que nos nutren
             </h2>
             <p className="text-muted max-w-xl">
@@ -226,7 +226,7 @@ export default function FilosofiaContent() {
         {/* FAQ / Qué NO es Molino */}
         <motion.section {...fadeUpDelayed(0.2)} className="mb-20">
           <div className="mb-10">
-            <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Qué NO es Molino
             </h2>
             <p className="text-muted max-w-xl">
@@ -261,7 +261,7 @@ export default function FilosofiaContent() {
                 transition={{ delay: i * 0.06, duration: 0.3 }}
                 className="p-6 sm:p-8 bg-background"
               >
-                <h3 className="font-display text-base text-foreground mb-2">{item.q}</h3>
+                <h3 className="font-heading text-base text-foreground mb-2">{item.q}</h3>
                 <p className="text-sm text-muted leading-relaxed">{item.a}</p>
               </motion.div>
             ))}

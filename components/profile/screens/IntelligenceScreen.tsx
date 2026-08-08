@@ -44,7 +44,7 @@ function ChapterHeader({ number, title, elementColor }: { number: string; title:
         </span>
         <span className="h-px flex-1 bg-ink/10" aria-hidden="true" />
       </div>
-      <h2 className="font-display text-[2rem] sm:text-[2.5rem] tracking-tight leading-[1.02] text-foreground">
+      <h2 className="font-display text-3xl sm:text-4xl tracking-tight leading-[1.02] text-foreground">
         <span className="sr-only">Capítulo {number}. </span>
         {title}
       </h2>
@@ -57,7 +57,7 @@ function BackmatterHeader({ title }: { title: string }) {
   return (
     <div className="mb-8 sm:mb-10">
       <span className="block w-10 h-0.5 bg-accent/60 mb-5" aria-hidden="true" />
-      <h2 className="font-display text-[1.75rem] sm:text-[2.25rem] tracking-tight leading-[1.05] text-foreground">
+      <h2 className="font-display text-3xl sm:text-4xl tracking-tight leading-[1.05] text-foreground">
         {title}
       </h2>
     </div>
@@ -180,7 +180,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                 transition={{ delay: i * 0.08, duration: 0.4 }}
                 className="py-7 sm:py-8 border-b border-ink/10 last:border-b-0"
               >
-                <h3 className="font-heading text-[1.5rem] sm:text-[1.75rem] tracking-tight mb-3" style={{ color: elementColor }}>
+                <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mb-3" style={{ color: elementColor }}>
                   {pattern.label.toUpperCase()}
                 </h3>
                 <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-3xl">
@@ -191,7 +191,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                 </p>
                 <div className="flex flex-wrap gap-1.5 mt-4">
                   {pattern.sources.map((src) => (
-                    <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
+                    <span key={src} className="uppercase text-xs tracking-[0.2em] text-muted px-2 py-1 border border-ink/10">
                       {src}
                     </span>
                   ))}
@@ -245,7 +245,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
             <div className="space-y-10 sm:space-y-12 max-w-3xl">
               {tensions.map((tension) => (
                 <div key={tension.title}>
-                  <h3 className="font-heading text-[1.5rem] sm:text-[1.75rem] tracking-tight mb-3" style={{ color: elementColor }}>
+                  <h3 className="font-heading text-2xl sm:text-3xl tracking-tight mb-3" style={{ color: elementColor }}>
                     {tension.title}
                   </h3>
                   <p className="text-base sm:text-lg text-foreground leading-relaxed">{tension.evidence}</p>
@@ -254,7 +254,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                   </div>
                   <div className="flex flex-wrap gap-1.5 mt-4">
                     {tension.sources.map((src) => (
-                      <span key={src} className="uppercase text-xs tracking-[0.15em] text-muted px-2 py-1 border border-ink/10">
+                      <span key={src} className="uppercase text-xs tracking-[0.2em] text-muted px-2 py-1 border border-ink/10">
                         {src}
                       </span>
                     ))}
@@ -296,12 +296,12 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0 pt-1 sm:pt-2">
-                      <p className="font-heading text-[1.5rem] sm:text-[1.75rem] leading-[1.4] tracking-tight text-foreground">
+                      <p className="font-heading text-2xl sm:text-3xl leading-[1.4] tracking-tight text-foreground">
                         {r.rule}
                       </p>
                       <div className="flex items-center gap-3 mt-4 sm:mt-5">
                         <span className="w-8 h-px bg-accent/50 shrink-0" aria-hidden="true" />
-                        <span className="font-mono text-[0.625rem] sm:text-[0.6875rem] uppercase tracking-[0.2em] text-muted">
+                        <span className="font-mono text-xs sm:text-xs uppercase tracking-[0.2em] text-muted">
                           {r.source}
                         </span>
                       </div>
@@ -332,7 +332,7 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
               <ChapterHeader number="05" title="Qué significa para vos" elementColor={elementColor} />
             </motion.div>
             <motion.div {...chapterReveal}>
-              <p className="font-heading text-xl sm:text-2xl lg:text-[1.75rem] leading-[1.5] text-foreground max-w-3xl">
+              <p className="font-heading text-xl sm:text-2xl lg:text-3xl leading-[1.5] text-foreground max-w-3xl">
                 {momentState.narrative}
               </p>
               <p className="mt-8">
@@ -467,9 +467,9 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{dim.dimension}</p>
-                      <p className="uppercase text-xs tracking-[0.15em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
+                      <p className="uppercase text-xs tracking-[0.2em] text-muted mt-0.5">{dim.influences.join(" + ")}</p>
                     </div>
-                    <p className="text-xs uppercase tracking-[0.15em] font-medium shrink-0 ml-4" style={{ color: elementColor }}>
+                    <p className="text-xs uppercase tracking-[0.2em] font-medium shrink-0 ml-4" style={{ color: elementColor }}>
                       {getScoreLabel(dim.value)}
                     </p>
                   </div>

@@ -134,7 +134,7 @@ export default function ZodiacoChinoCalcPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-xs uppercase tracking-[0.25em] text-accent font-medium mb-4"
+                    className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4"
                   >
                     Tu Animal del Zodiaco Chino
                   </motion.p>

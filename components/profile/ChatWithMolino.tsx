@@ -110,7 +110,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
       <div className="max-w-2xl">
         <div className="flex items-center gap-3 mb-4">
           <span className="w-8 h-px bg-accent/60" aria-hidden="true" />
-          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu mapa</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Tu mapa</p>
         </div>
         <p className="text-sm text-muted leading-relaxed max-w-xl">
           Preguntale a tu mapa forma parte de tu síntesis completa — desbloqueala arriba para acceder.
@@ -135,7 +135,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
         >
           <div className="flex items-center gap-3 mb-4">
             <span className="w-8 h-px" style={{ backgroundColor: elementColor }} aria-hidden="true" />
-<p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted">Tu mapa</p>
+<p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Tu mapa</p>
           </div>
           <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-xl">
             {name ? `Tu mapa ya está leído, ${name}.` : "Tu mapa ya está leído."} Elegí una puerta para empezar o escribí tu propia pregunta.
@@ -153,7 +153,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
                 className="group w-full text-left py-4 sm:py-5 border-b border-ink/10"
               >
                 <div className="flex items-center gap-3 mb-1.5">
-                  <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-accent">{s.category}</span>
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{s.category}</span>
                   <span className="w-4 h-px bg-accent/40 group-hover:bg-accent transition-colors" aria-hidden="true" />
                 </div>
                 <p className="text-sm sm:text-base text-foreground group-hover:text-accent transition-colors leading-relaxed">
@@ -180,7 +180,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
               <div className="flex items-start gap-3">
                 <span className="w-4 h-px bg-ink/20 mt-[0.7em] shrink-0" aria-hidden="true" />
                 <div className="min-w-0">
-                  <p className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted mb-1">Tu pregunta</p>
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1">Tu pregunta</p>
                   <p className="text-sm sm:text-base font-medium text-foreground leading-relaxed">{turn.question}</p>
                 </div>
               </div>
@@ -217,7 +217,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
                 <div className="mt-3 pl-4 sm:pl-5 border-l border-ink/15">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: elementColor }} aria-hidden="true" />
-                    <span className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-muted">Molino</span>
+                    <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Molino</span>
                   </div>
                   <div className="space-y-3">
                     <p className="text-sm sm:text-base text-foreground leading-relaxed">{turn.answer.summary}</p>
@@ -262,7 +262,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
           <button
             type="submit"
             disabled={!input.trim()}
-            className="min-h-[44px] shrink-0 px-5 sm:px-7 text-[0.6875rem] font-medium uppercase tracking-[0.2em] border border-ink/10 text-foreground hover:border-accent hover:text-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
+            className="min-h-[44px] shrink-0 px-5 sm:px-7 text-xs font-medium uppercase tracking-[0.2em] border border-ink/10 text-foreground hover:border-accent hover:text-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
           >
             Preguntar
           </button>

@@ -215,7 +215,7 @@ export default function ShareableImageCard({
               <p className="font-heading text-lg font-semibold" style={{ color: ink }}>
                 {archetypeName}
               </p>
-              <p className="font-mono text-xs uppercase tracking-[0.15em] mt-1" style={{ color: muted }}>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] mt-1" style={{ color: muted }}>
                 {zodiacDisplay.name} · {chineseElement}
               </p>
             </div>
@@ -327,7 +327,7 @@ export default function ShareableImageCard({
               molino.app
             </p>
           </div>
-          <span className="font-display text-2xl leading-none" style={{ color: elementColor }} aria-hidden="true">
+          <span className="font-heading text-2xl leading-none" style={{ color: elementColor }} aria-hidden="true">
             →
           </span>
         </div>

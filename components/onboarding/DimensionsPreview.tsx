@@ -84,12 +84,12 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
       >
         <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
           <div className="px-6 pt-6 pb-2 text-center">
-            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-accent mb-2">
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
               Adelanto
             </p>
             <h2
               id="dimensions-preview-heading"
-              className="font-display text-2xl sm:text-3xl tracking-tight text-foreground"
+              className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground"
             >
               TUS DIMENSIONES
             </h2>
@@ -115,12 +115,12 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
     >
       <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
         <div className="px-6 pt-6 pb-2 text-center">
-          <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-accent mb-2">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
             Adelanto
           </p>
           <h2
             id="dimensions-preview-heading"
-            className="font-display text-2xl sm:text-3xl tracking-tight text-foreground"
+            className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground"
           >
             TUS DIMENSIONES
           </h2>
@@ -146,13 +146,13 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">
                       {dim.dimension}
                     </p>
-                    <p className="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-muted mt-0.5 truncate">
+                    <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-0.5 truncate">
                       {dim.influences.filter(Boolean).join(" + ")}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-xs uppercase tracking-[0.15em] font-medium" style={{ color: elementColor }}>
+                    <span className="text-xs uppercase tracking-[0.2em] font-medium" style={{ color: elementColor }}>
                       {getScoreLabel(dim.value)}
                     </span>
                     <ChevronDown

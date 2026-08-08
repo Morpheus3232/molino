@@ -178,7 +178,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
 
           {/* One-line viral explanation — THE key line */}
           <div className="mb-6">
-            <p className="text-sm sm:text-[15px] text-foreground leading-relaxed text-center font-medium">
+            <p className="text-sm sm:text-sm text-foreground leading-relaxed text-center font-medium">
               {buildCardExplanation(result)}
             </p>
           </div>

@@ -22,7 +22,7 @@ const variants: Record<BadgeVariant, string> = {
 export default function Badge({ children, variant = "accent", className = "" }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center gap-2 px-3 py-1.5 font-heading text-[0.7rem] font-semibold uppercase tracking-[0.15em] rounded-sm ${variants[variant]} ${className}`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 font-heading text-xs font-semibold uppercase tracking-[0.2em] rounded-sm ${variants[variant]} ${className}`}
     >
       {children}
     </span>

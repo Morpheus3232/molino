@@ -224,7 +224,7 @@ export default function MolinoInterpretation({
         {/* 00. Apertura — solo en la síntesis premium (personal_profile) */}
         {interpretation.opening && (
           <motion.div variants={itemVariants} className="pt-10 sm:pt-14 pb-8 sm:pb-10">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-4">
               Tu lectura
             </p>
             <p className="font-heading text-base leading-[1.6] text-foreground sm:text-lg">
@@ -250,7 +250,7 @@ export default function MolinoInterpretation({
         {/* 01. Tu patrón central */}
         {interpretation.corePattern && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               Tu patrón central · {interpretation.corePattern.source}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -262,7 +262,7 @@ export default function MolinoInterpretation({
         {/* 2. Qué significa */}
         {interpretation.alignment && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -274,7 +274,7 @@ export default function MolinoInterpretation({
         {/* 3. Por qué importa */}
         {interpretation.timing && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -286,7 +286,7 @@ export default function MolinoInterpretation({
         {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
         {timing && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               Timing para {INTENTION_LABELS[timing.intention]}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -298,7 +298,7 @@ export default function MolinoInterpretation({
         {/* Strengths */}
         {interpretation.strengths.length > 0 && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-4">
               {type === "compatibility" ? "Fortalezas de la relación" : "Fortalezas"}
             </p>
             <div className="space-y-3">
@@ -315,7 +315,7 @@ export default function MolinoInterpretation({
         {/* Tensions */}
         {interpretation.tensions.length > 0 && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
               {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
             </p>
             <div className="space-y-3">
@@ -332,7 +332,7 @@ export default function MolinoInterpretation({
         {/* 03. Cómo funcionás */}
         {interpretation.howYouOperate && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               Cómo funcionás
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -344,7 +344,7 @@ export default function MolinoInterpretation({
         {/* 04. Tus relaciones — solo si hay datos reales de afinidad de zodiaco chino */}
         {interpretation.relationalNote && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-3">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
               Tus relaciones
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -357,7 +357,7 @@ export default function MolinoInterpretation({
         {interpretation.suggestedNextStep && (
           <motion.div variants={itemVariants} className="py-6 sm:py-8 mt-2">
             <div className="border-l-2 border-accent pl-5 sm:pl-7">
-              <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent mb-3">
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
                 {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
               </p>
               <p className="text-sm leading-[1.75] sm:text-base text-foreground font-medium">
@@ -370,7 +370,7 @@ export default function MolinoInterpretation({
         {/* 07. Síntesis — cierre memorable, pensado para compartir */}
         {interpretation.closingSynthesis && (
           <motion.div variants={itemVariants} className="py-8 sm:py-12 mt-2 border-t border-ink/10">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-5">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-5">
               Tu síntesis
             </p>
             <blockquote className="font-heading text-lg sm:text-xl leading-[1.6] text-foreground italic">
@@ -382,7 +382,7 @@ export default function MolinoInterpretation({
         {/* 5. Qué considerar */}
         {interpretation.whatToConsider.length > 0 && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-muted mb-4">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
               Qué considerar
             </p>
             <div className="space-y-3">
@@ -398,7 +398,7 @@ export default function MolinoInterpretation({
 
         {/* Confidence */}
         <motion.div variants={itemVariants} className="pt-6 border-t border-ink/10">
-          <p className="font-mono text-[0.6875rem] text-muted/50">
+          <p className="font-mono text-xs text-muted/50">
             Confianza: {interpretation.confidence}
             {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
           </p>
@@ -412,7 +412,7 @@ export default function MolinoInterpretation({
       {/* Header — byline editorial, sin ruido de dashboard */}
       <div className="flex items-center justify-between pb-6 sm:pb-10 border-b border-ink/10">
         <div>
-          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-accent">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
             {label}
           </p>
           {description && (
@@ -421,7 +421,7 @@ export default function MolinoInterpretation({
         </div>
         <div className="flex items-center gap-3 shrink-0 ml-4">
           {isUsingAI && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-accent/60 font-medium px-2 py-0.5 rounded-sm border border-accent/20">
+            <span className="text-xs uppercase tracking-[0.2em] text-accent/60 font-medium px-2 py-0.5 rounded-sm border border-accent/20">
               IA
             </span>
           )}
@@ -429,7 +429,7 @@ export default function MolinoInterpretation({
               calculada localmente — no debe parecer indistinguible de la
               interpretación de IA completa que el premium promete. */}
           {hasAttemptedAI && !isUsingAI && interpretation && (
-            <span className="text-[9px] uppercase tracking-[0.15em] text-muted/70 font-medium px-2 py-0.5 rounded-sm border border-border" title="Síntesis calculada localmente — la IA no respondió esta vez.">
+            <span className="text-xs uppercase tracking-[0.2em] text-muted/70 font-medium px-2 py-0.5 rounded-sm border border-border" title="Síntesis calculada localmente — la IA no respondió esta vez.">
               Local
             </span>
           )}
@@ -437,7 +437,7 @@ export default function MolinoInterpretation({
             <button
               type="button"
               onClick={handleRegenerate}
-              className="text-[9px] uppercase tracking-[0.15em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors"
+              className="text-xs uppercase tracking-[0.2em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors"
               aria-label="Regenerar interpretación"
             >
               Regenerar

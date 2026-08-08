@@ -179,7 +179,7 @@ function TimingPageContent() {
                       className="bg-background p-8 lg:p-12 text-left hover:bg-accent/5 transition-colors group"
                     >
                       <span className="text-3xl block mb-4 text-muted"><intention.icon className="w-8 h-8" /></span>
-                      <p className="font-display text-xl text-foreground group-hover:text-accent transition-colors">{intention.label}</p>
+                      <p className="font-heading text-xl text-foreground group-hover:text-accent transition-colors">{intention.label}</p>
                     </button>
                   ))}
                 </motion.div>
@@ -193,7 +193,7 @@ function TimingPageContent() {
                         <span className="text-2xl" aria-hidden="true">
                           {SelectedIcon && <SelectedIcon className="w-6 h-6" />}
                         </span>
-                        <p className="font-display text-2xl text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
+                        <p className="font-heading text-2xl text-foreground">{INTENTION_LABELS[selectedIntention]}</p>
                       </div>
                       <button
                         onClick={() => { setSelectedIntention(null); setShowResults(false); }}

@@ -69,7 +69,7 @@ export default function BestDatesTimeline({
                     : "border-ink/10 hover:border-accent/30 hover:bg-accent/5"
                 }`}
               >
-                <span className="text-[10px] uppercase tracking-[0.1em] text-muted">
+                <span className="text-xs uppercase tracking-[0.2em] text-muted">
                   {label}
                 </span>
                 <span
@@ -78,7 +78,7 @@ export default function BestDatesTimeline({
                 >
                   {date.timingScore}
                 </span>
-                <span className="text-[9px] uppercase tracking-[0.05em] font-medium" style={{ color }}>
+                <span className="text-xs uppercase tracking-[0.05em] font-medium" style={{ color }}>
                   {getScoreLabel(date.timingScore)}
                 </span>
               </motion.div>
@@ -129,11 +129,11 @@ export default function BestDatesTimeline({
                     : "bg-ink/3"
                 }`}
               >
-                <span className="text-[10px] uppercase tracking-[0.1em] font-medium">
+                <span className="text-xs uppercase tracking-[0.2em] font-medium">
                   {dayName.charAt(0).toUpperCase() + dayName.slice(1, 3)}
                 </span>
-                <span className="font-display text-2xl font-bold">{dayNum}</span>
-                <span className="text-[10px] text-muted/70">{monthName.slice(0, 3)}</span>
+                <span className="font-heading text-2xl font-bold">{dayNum}</span>
+                <span className="text-xs text-muted/70">{monthName.slice(0, 3)}</span>
               </div>
 
               {/* Content */}
@@ -143,12 +143,12 @@ export default function BestDatesTimeline({
                     {isTodayDate ? "Hoy" : dayName.charAt(0).toUpperCase() + dayName.slice(1)}
                   </p>
                   {isTodayDate && (
-                    <span className="text-[9px] uppercase tracking-[0.1em] font-semibold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
+                    <span className="text-xs uppercase tracking-[0.2em] font-semibold px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
                       HOY
                     </span>
                   )}
                   {isPastDate && (
-                    <span className="text-[9px] uppercase tracking-[0.1em] text-muted">
+                    <span className="text-xs uppercase tracking-[0.2em] text-muted">
                       Pasado
                     </span>
                   )}
@@ -170,7 +170,7 @@ export default function BestDatesTimeline({
                   {date.timingScore}
                 </div>
                 <span
-                  className="text-[9px] uppercase tracking-[0.05em] font-medium"
+                  className="text-xs uppercase tracking-[0.05em] font-medium"
                   style={{ color: scoreColor }}
                 >
                   {getScoreLabel(date.timingScore)}
@@ -189,7 +189,7 @@ export default function BestDatesTimeline({
                       {date.favorableDimensions.slice(0, 3).map((dim, idx) => (
                         <span
                           key={idx}
-                          className="text-[10px] px-2 py-0.5 rounded-full border"
+                          className="text-xs px-2 py-0.5 rounded-full border"
                           style={{ borderColor: scoreColor + "40", color: scoreColor }}
                         >
                           {dim}
@@ -202,7 +202,7 @@ export default function BestDatesTimeline({
                       {date.challengingDimensions.slice(0, 2).map((dim, idx) => (
                         <span
                           key={idx}
-                          className="text-[10px] px-2 py-0.5 rounded-full border border-muted/30 text-muted"
+                          className="text-xs px-2 py-0.5 rounded-full border border-muted/30 text-muted"
                         >
                           {dim}
                         </span>

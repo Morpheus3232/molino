@@ -21,7 +21,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{title}</h2>
           </div>
         </motion.div>
 
@@ -38,7 +38,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
             >
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{link.label}</p>
               <p className="text-sm text-muted mt-1 leading-relaxed">{link.description}</p>
-              <p className="font-mono uppercase text-xs tracking-[0.15em] text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              <p className="font-mono uppercase text-xs tracking-[0.2em] text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                 Explorar
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </p>

@@ -50,7 +50,7 @@ export default function MapaCirculo({ profile, allies, onNavigate }: MapaCirculo
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-3">
                 Aliados
               </p>
-              <p className="font-display text-lg sm:text-xl text-foreground tracking-tight">
+              <p className="font-heading text-lg sm:text-xl text-foreground tracking-tight">
                 {alliesLine}
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function MapaCirculo({ profile, allies, onNavigate }: MapaCirculo
                 <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-3">
                   Contraste
                 </p>
-                <p className="font-display text-lg sm:text-xl text-foreground tracking-tight">
+                <p className="font-heading text-lg sm:text-xl text-foreground tracking-tight">
                   {tension}
                 </p>
               </div>

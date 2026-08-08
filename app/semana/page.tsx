@@ -152,10 +152,10 @@ function SemanaContent() {
                   isTodayCell ? "ring-2 ring-accent" : ""
                 }`}
               >
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted">{dayName}</span>
-                <span className={`font-display text-2xl mt-1 ${isTodayCell ? "text-accent" : "text-foreground"}`}>{dayNum}</span>
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">{dayName}</span>
+                <span className={`font-heading text-2xl mt-1 ${isTodayCell ? "text-accent" : "text-foreground"}`}>{dayNum}</span>
                 {isTodayCell && (
-                  <span className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-accent font-semibold">HOY</span>
+                  <span className="mt-0.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">HOY</span>
                 )}
                 <span
                   className="mt-2 w-10 h-10 rounded-full flex items-center justify-center font-mono text-sm font-bold border-2"
@@ -198,7 +198,7 @@ function SemanaContent() {
               <div className="flex items-center gap-3 mb-3">
                 <span className="eyebrow-brutalist">Tu día de hoy</span>
                 <span
-                  className="text-xs font-mono uppercase tracking-[0.1em] px-2 py-0.5 border border-ink/10"
+                  className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-ink/10"
                   style={{ color: todayResult.favorable ? todayResult.color : "var(--color-muted)" }}
                 >
                   Vibración {todayResult.number} · {todayResult.label}

@@ -278,7 +278,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               <div className="flex items-baseline gap-3">
                 {luckyNumber ? (
                   <>
-                    <span className="font-display text-2xl text-foreground">{luckyNumber}</span>
+                    <span className="font-heading text-2xl text-foreground">{luckyNumber}</span>
                     <span className="text-xs text-muted">de tu fecha</span>
                   </>
                 ) : (
@@ -303,7 +303,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               <div className="flex items-baseline justify-between gap-4">
                 <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{personalityRow.label}</span>
                 <div className="flex items-baseline gap-3">
-                  <span className="font-display text-2xl text-foreground">{personalityRow.number}</span>
+                  <span className="font-heading text-2xl text-foreground">{personalityRow.number}</span>
                   <span className="text-xs text-muted">{personalityRow.name}</span>
                 </div>
               </div>
@@ -337,7 +337,7 @@ export default function IdentityScreen({ profile }: IdentityScreenProps) {
               <div className="flex items-center gap-4 mb-5">
                 <span className="font-mono text-xs text-paper/60">{String(i + 1).padStart(2, "0")}</span>
                 <span className="w-8 h-px shrink-0" style={{ backgroundColor: persp.color }} aria-hidden="true" />
-                <span className="font-mono text-xs uppercase tracking-[0.25em] font-semibold text-paper/85">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] font-semibold text-paper/85">
                   {persp.systemLabel}
                 </span>
               </div>

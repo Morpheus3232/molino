@@ -136,7 +136,7 @@ export default function HeroClient({ hasProfile = false }: { hasProfile?: boolea
 
               {/* Badge */}
               <div className="absolute top-4 right-4 z-10">
-                <span className="inline-flex items-center gap-1.5 font-mono text-[0.6rem] tracking-[0.15em] text-muted/40 uppercase border border-ink/10 px-2.5 py-1 bg-background/80 backdrop-blur-sm">
+                <span className="inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.2em] text-muted/40 uppercase border border-ink/10 px-2.5 py-1 bg-background/80 backdrop-blur-sm">
                   <span className="w-1 h-1 rounded-full bg-accent" aria-hidden="true" />
                   Vista previa
                 </span>
@@ -146,10 +146,10 @@ export default function HeroClient({ hasProfile = false }: { hasProfile?: boolea
               <div className="relative mx-auto max-w-[280px] px-4 pt-8 pb-2">
                 <MapPreviewDiagram />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-[24%]">
-                  <p className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-tight uppercase">
+                  <p className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-tight uppercase">
                     El Aventurero
                   </p>
-                  <p className="font-mono text-[11px] text-muted/60 mt-1.5">
+                  <p className="font-mono text-xs text-muted/60 mt-1.5">
                     7 · ♎ Libra · 🐉 Dragón de Metal
                   </p>
                 </div>
@@ -163,8 +163,8 @@ export default function HeroClient({ hasProfile = false }: { hasProfile?: boolea
                   { label: "ZODÍACO", value: "🐉", color: "#C49A2A" },
                 ].map((sys) => (
                   <div key={sys.label} className="px-3 py-4 text-center">
-                    <p className="text-[0.5rem] font-mono tracking-[0.14em] text-muted/40 uppercase">{sys.label}</p>
-                    <p className="font-display text-lg sm:text-xl font-bold mt-1" style={{ color: sys.color }}>{sys.value}</p>
+                    <p className="text-xs font-mono tracking-[0.14em] text-muted/40 uppercase">{sys.label}</p>
+                    <p className="font-heading text-lg sm:text-xl font-bold mt-1" style={{ color: sys.color }}>{sys.value}</p>
                   </div>
                 ))}
               </div>
@@ -172,7 +172,7 @@ export default function HeroClient({ hasProfile = false }: { hasProfile?: boolea
               {/* CTA */}
               <Link
                 href="/onboarding"
-                className="relative flex items-center justify-center gap-2 py-4 border-t border-ink/10 font-mono text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-accent hover:bg-accent/[0.04] transition-colors"
+                className="relative flex items-center justify-center gap-2 py-4 border-t border-ink/10 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent hover:bg-accent/[0.04] transition-colors"
               >
                 Creá tu mapa
                 <ArrowRight className="w-3 h-3" aria-hidden="true" />

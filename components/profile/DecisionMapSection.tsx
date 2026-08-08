@@ -67,7 +67,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
         <motion.div {...smoothReveal}>
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Tu pregunta</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu pregunta</h2>
           </div>
           <p className="text-sm text-muted max-w-xl leading-relaxed">
             Cualquier decisión puede leerse desde tu mapa. Escribí lo que estás por decidir o explorá una categoría.
@@ -161,7 +161,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                       <p className="text-sm text-muted leading-relaxed mt-0.5">{cat.description}</p>
                     </div>
                     <span
-                      className="uppercase text-xs tracking-[0.15em] font-medium shrink-0"
+                      className="uppercase text-xs tracking-[0.2em] font-medium shrink-0"
                       style={{ color: getScoreColor(cat.result.overallScore) }}
                     >
                       {getScoreLabel(cat.result.overallScore)}
@@ -198,7 +198,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       <p className="text-lg sm:text-xl font-display tracking-tight mb-1" style={{ color: scoreColor }}>
         {getScoreLabel(result.overallScore)}
       </p>
-      <p className="uppercase text-xs tracking-[0.15em] text-muted mb-6">
+      <p className="uppercase text-xs tracking-[0.2em] text-muted mb-6">
         {result.category ? CATEGORY_LABELS[result.category as DecisionCategory] : ""}
         {result.category ? " · " : ""}
         Alineación {getScoreLabel(result.alignmentScore)} · Timing {getScoreLabel(result.timingScore)} · Energía {getScoreLabel(result.energyScore)}
@@ -206,14 +206,14 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
 
       {/* Explanation */}
       <div className="mb-6">
-        <p className="uppercase text-xs tracking-[0.15em] text-muted mb-2">Contexto</p>
+        <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Contexto</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
       {/* Considerations */}
       {result.considerations.length > 0 && (
         <div className="mb-6">
-          <p className="uppercase text-xs tracking-[0.15em] text-muted mb-2">A considerar</p>
+          <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">A considerar</p>
           <div className="space-y-2">
             {result.considerations.map((c, i) => (
               <div key={i} className="flex items-start gap-2">
@@ -228,7 +228,7 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       {/* Next steps */}
       {result.nextSteps.length > 0 && (
         <div className="mb-6">
-          <p className="uppercase text-xs tracking-[0.15em] text-muted mb-2">Próximos pasos</p>
+          <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Próximos pasos</p>
           <div className="space-y-2">
             {result.nextSteps.map((s, i) => (
               <div key={i} className="flex items-start gap-2">

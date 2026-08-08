@@ -73,7 +73,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
               <span className="text-xs uppercase tracking-[0.2em] text-muted font-semibold">
                 {ind.label}
               </span>
-              <span className="font-display text-2xl sm:text-3xl leading-none tracking-tight uppercase" style={{ color: ind.color }}>
+              <span className="font-heading text-2xl sm:text-3xl leading-none tracking-tight uppercase" style={{ color: ind.color }}>
                 {getScoreLabel(ind.value)}
               </span>
             </div>

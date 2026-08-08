@@ -122,7 +122,7 @@ export default function UniversityHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.12em] uppercase transition-colors rounded-sm ${
+                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
                   isActive(link.href)
                     ? "text-foreground bg-ink/[0.04]"
                     : "text-muted hover:text-foreground"
@@ -138,7 +138,7 @@ export default function UniversityHeader() {
               <button
                 type="button"
                 onClick={() => setExploreOpen(!exploreOpen)}
-                className={`flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.12em] uppercase transition-colors rounded-sm ${
+                className={`flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
                   EXPLORE_ITEMS.some((item) => isActive(item.href))
                     ? "text-foreground bg-ink/[0.04]"
                     : "text-muted hover:text-foreground"
@@ -221,7 +221,7 @@ export default function UniversityHeader() {
 
                 <div className="border-t border-ink/10 my-2" />
 
-                <p className="px-3 py-1.5 text-[0.6rem] font-mono tracking-[0.15em] text-muted uppercase">Explorar</p>
+                <p className="px-3 py-1.5 text-xs font-mono tracking-[0.2em] text-muted uppercase">Explorar</p>
                 {EXPLORE_ITEMS.map((link) => (
                   <Link
                     key={link.href}
@@ -259,7 +259,7 @@ export default function UniversityHeader() {
                 ) : (
                   <Link
                     href="/onboarding"
-                    className="block mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.15em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center"
+                    className="block mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center"
                     onClick={() => setMenuOpen(false)}
                   >
                     CREAR MI MAPA
@@ -290,7 +290,7 @@ export default function UniversityHeader() {
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               transition={{ duration: 0.2 }}
             >
-              <h3 id="confirm-title" className="font-display text-lg text-foreground mb-2 uppercase">CREAR NUEVO PERFIL</h3>
+              <h3 id="confirm-title" className="font-heading text-lg text-foreground mb-2 uppercase">CREAR NUEVO PERFIL</h3>
               <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">

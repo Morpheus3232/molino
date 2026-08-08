@@ -383,11 +383,11 @@ function KnowledgeNode({
           >
             <div className="mt-4 p-6 rounded-md border border-border bg-background shadow-sm/50 space-y-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Origen</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Origen</p>
                 <p className="text-xs text-foreground">{node.origin}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Influencia en Molino</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
                     <span key={inf} className="text-xs px-2 py-0.5 rounded-sm bg-accent/10 text-accent">
@@ -397,7 +397,7 @@ function KnowledgeNode({
                 </div>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.15em] text-muted font-medium mb-1">Cómo se usa</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Cómo se usa</p>
                 <p className="text-xs text-foreground">{node.molino}</p>
               </div>
             </div>
@@ -420,7 +420,7 @@ export default function AcademyContent() {
             HERO
             ═══════════════════════════════════════════════ */}
         <motion.section {...heroReveal} className="mb-16">
-          <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">La Academia</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">La Academia</p>
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
             De dónde viene este sistema
           </h1>
@@ -436,7 +436,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">El árbol del conocimiento</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">El árbol del conocimiento</h2>
           </div>
 
           <p className="text-sm text-muted mb-8 leading-relaxed">
@@ -465,7 +465,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo funciona Molino</h2>
           </div>
 
           <motion.div {...staggerApple} className="space-y-4">
@@ -509,7 +509,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Rutas de aprendizaje</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Rutas de aprendizaje</h2>
           </div>
 
           <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-2 gap-4">

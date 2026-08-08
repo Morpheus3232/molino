@@ -333,7 +333,7 @@ export default function BibliotecaContent() {
               <section key={catKey} className="mb-14">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                  <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">
+                  <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
                     {CATEGORY_LABELS[catKey]}
                   </h2>
                   <span className="font-mono text-xs text-muted">{sources.length}</span>
@@ -352,9 +352,9 @@ export default function BibliotecaContent() {
                         className="p-6 border border-ink/10 bg-background flex flex-col"
                       >
                         <div className="flex items-start justify-between gap-2 mb-1">
-                          <h3 className="font-display text-sm text-foreground">{source.title}</h3>
+                          <h3 className="font-heading text-sm text-foreground">{source.title}</h3>
                           <span
-                            className="font-mono text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 shrink-0"
+                            className="font-mono text-xs font-semibold tracking-wider uppercase px-2 py-0.5 shrink-0"
                             style={{ background: `${meta.color}15`, color: meta.color }}
                           >
                             {meta.label}
@@ -364,7 +364,7 @@ export default function BibliotecaContent() {
 
                         {/* Era badge */}
                         <span
-                          className={`self-start font-mono text-[9px] tracking-wider uppercase px-2 py-0.5 mb-3 ${
+                          className={`self-start font-mono text-xs tracking-wider uppercase px-2 py-0.5 mb-3 ${
                             source.era === "ancestral"
                               ? "bg-accent/10 text-accent"
                               : "bg-ink/5 text-muted"
@@ -379,7 +379,7 @@ export default function BibliotecaContent() {
                           {(source.tags || []).map((tag) => (
                             <span
                               key={tag}
-                              className="font-mono text-[9px] tracking-wider uppercase bg-background border border-ink/10 px-2 py-0.5 text-muted"
+                              className="font-mono text-xs tracking-wider uppercase bg-background border border-ink/10 px-2 py-0.5 text-muted"
                             >
                               #{tag}
                             </span>
@@ -410,7 +410,7 @@ export default function BibliotecaContent() {
                           <div className="mt-3 p-3 bg-background border border-ink/10 space-y-3">
                             {source.summary && (
                               <div>
-                                <p className="font-mono text-[9px] font-semibold tracking-wider uppercase text-muted mb-1">
+                                <p className="font-mono text-xs font-semibold tracking-wider uppercase text-muted mb-1">
                                   Método
                                 </p>
                                 <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
@@ -418,7 +418,7 @@ export default function BibliotecaContent() {
                             )}
                             {source.review && (
                               <div>
-                                <p className="font-mono text-[9px] font-semibold tracking-wider uppercase text-muted mb-1">
+                                <p className="font-mono text-xs font-semibold tracking-wider uppercase text-muted mb-1">
                                   Reseña
                                 </p>
                                 <p className="text-xs text-muted leading-relaxed">{source.review}</p>

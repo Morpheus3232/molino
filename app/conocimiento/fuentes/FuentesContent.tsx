@@ -60,7 +60,7 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-2">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo funciona Molino</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -83,7 +83,7 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-3">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
@@ -118,7 +118,7 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-4">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">Fuentes por sistema</h2>
+            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes por sistema</h2>
           </div>
           <div className="space-y-8">
             {Object.entries(bySystem).map(([system, sources]) => (
@@ -138,7 +138,7 @@ export default function FuentesContent() {
                         )}
                         <p className="text-xs text-muted mt-1 italic">{src.relevance}</p>
                       </div>
-                      <span className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-md border border-border shrink-0">
+                      <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border shrink-0">
                         {TYPE_LABELS[src.type] || src.type}
                       </span>
                     </div>

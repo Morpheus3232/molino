@@ -138,10 +138,10 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
 
       {/* Center content — archetype + data row */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-[18%]">
-        <p className="font-display text-base sm:text-lg lg:text-xl font-bold tracking-tight text-foreground leading-tight uppercase">
+        <p className="font-heading text-base sm:text-lg lg:text-xl font-bold tracking-tight text-foreground leading-tight uppercase">
           {archetypeData?.name || profile.archetype}
         </p>
-        <div className="flex items-center justify-center gap-x-3 gap-y-1 mt-1.5 text-[10px] sm:text-xs text-muted">
+        <div className="flex items-center justify-center gap-x-3 gap-y-1 mt-1.5 text-xs text-muted">
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#6B4C7A" }} />
             {profile.lifePath}

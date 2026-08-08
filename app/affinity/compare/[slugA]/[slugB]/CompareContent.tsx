@@ -90,7 +90,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           >
             <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
                 Afinidad Personal · Comparación
               </p>
               <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
@@ -113,7 +113,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
           >
             <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
               <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-              <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+              <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
                 Afinidad Personal · Comparación
               </p>
               <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground mb-4">
@@ -149,7 +149,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
 
               {/* Header */}
               <motion.section {...fadeUp} className="mb-12 text-center">
-                <p className="text-xs uppercase tracking-[0.35em] text-accent font-medium mb-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
                   Comparación Simbólica
                 </p>
                 <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3 line-clamp-2">
@@ -445,7 +445,7 @@ function SectionHeader({ title }: { title: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 className="text-xs uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+      <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{title}</h2>
     </div>
   );
 }

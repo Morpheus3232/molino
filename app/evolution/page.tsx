@@ -199,7 +199,7 @@ export default function EvolutionPage() {
                         <ul className="flex flex-wrap gap-x-8 gap-y-2">
                           {ORIENTATION_ORDER.map((o) => (
                             <li key={o} className="text-sm text-foreground">
-                              <span className="font-display text-2xl font-bold tracking-tight mr-2">{counts[o]}</span>
+                              <span className="font-heading text-2xl font-bold tracking-tight mr-2">{counts[o]}</span>
                               {o}
                             </li>
                           ))}
@@ -216,7 +216,7 @@ export default function EvolutionPage() {
                               <p className="label-micro mb-1">{formatDate(item.date)}</p>
                               <p className="text-sm text-muted">{item.theme} · {item.energyLevel}</p>
                             </div>
-                            <p className="font-display text-xl text-foreground shrink-0">{item.orientation}</p>
+                            <p className="font-heading text-xl text-foreground shrink-0">{item.orientation}</p>
                           </div>
                         ))}
                       </div>

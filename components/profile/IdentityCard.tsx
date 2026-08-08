@@ -77,7 +77,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                   transition={{ delay: i * 0.06, duration: 0.4 }}
                   className="flex items-baseline gap-4 py-4 border-b border-ink/10"
                 >
-                  <span className="font-display text-sm text-ink/30">
+                  <span className="font-heading text-sm text-ink/30">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-base text-foreground">{s}</span>
@@ -101,7 +101,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
                   transition={{ delay: i * 0.06, duration: 0.4 }}
                   className="flex items-baseline gap-4 py-4 border-b border-ink/10"
                 >
-                  <span className="font-display text-sm text-ink/30">
+                  <span className="font-heading text-sm text-ink/30">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="text-base text-foreground">{g}</span>

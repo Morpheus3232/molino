@@ -112,7 +112,7 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                     <span className="text-4xl sm:text-5xl leading-none" aria-hidden="true">
                       {result.entity.emoji}
                     </span>
-                    <span className="font-display text-2xl text-foreground tabular-nums">
+                    <span className="font-heading text-2xl text-foreground tabular-nums">
                       {result.score}
                     </span>
                   </div>
