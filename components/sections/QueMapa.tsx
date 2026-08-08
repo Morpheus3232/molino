@@ -7,9 +7,12 @@ export default function QueMapa() {
   return (
     <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.p {...fadeUp} className="eyebrow-brutalist mb-10 text-center">
+        <motion.h2
+          {...fadeUp}
+          className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-10 text-center"
+        >
           MIRA TU MAPA
-        </motion.p>
+        </motion.h2>
 
         <div className="space-y-16 lg:space-y-24">
           {/* Desktop Mockup */}
@@ -32,11 +35,12 @@ export default function QueMapa() {
                       <div key={col.title} className="bg-ink/3 border border-ink/10 p-4 flex flex-col">
                         <div className="flex items-center gap-2 mb-3">
                           <span className="w-1 h-6 rounded-full" style={{ backgroundColor: col.color }} />
-                          <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/60">{col.title}</p>
+                          <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70">{col.title}</p>
                         </div>
                         <ul className="space-y-2 text-sm text-foreground/80">
                           {col.items.map((item, j) => (
-                            <li key={j} className="border-l-2 pl-3" style={{ borderColor: col.color }}>
+                            <li key={j} className="flex items-start gap-2">
+                              <span className="w-1 h-1 rounded-full mt-1.5 shrink-0" style={{ backgroundColor: col.color }} aria-hidden="true" />
                               {item}
                             </li>
                           ))}
@@ -45,7 +49,7 @@ export default function QueMapa() {
                     ))}
                   </div>
                   <div className="flex items-center justify-center gap-4 pt-4 border-t border-ink/10">
-                    <span className="font-mono text-xs tracking-[0.2em] uppercase text-muted/60">Scroll para ver lectura completa →</span>
+                    <span className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70">Scroll para ver lectura completa →</span>
                   </div>
                 </div>
               </div>
@@ -61,27 +65,27 @@ export default function QueMapa() {
                 <div className="h-full flex flex-col gap-4 pt-2">
                   <div className="flex items-center gap-2 px-2">
                     <span className="w-1 h-6 rounded-full bg-[#6B4C7A]" />
-                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/60">IDENTIDAD</p>
+                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70">IDENTIDAD</p>
                   </div>
                   <div className="space-y-2 text-sm text-foreground/80 px-2">
-                    <div className="border-l-2 pl-3 border-[#6B4C7A]">Número de vida: 7</div>
-                    <div className="border-l-2 pl-3 border-[#6B4C7A]">Esencia: introspección</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#6B4C7A]" aria-hidden="true" />Número de vida: 7</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#6B4C7A]" aria-hidden="true" />Esencia: introspección</div>
                   </div>
                   <div className="flex items-center gap-2 px-2 border-t border-ink/10 pt-2">
                     <span className="w-1 h-6 rounded-full bg-[#2E5C8A]" />
-                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/60">MUNDO</p>
+                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70">MUNDO</p>
                   </div>
                   <div className="space-y-2 text-sm text-foreground/80 px-2">
-                    <div className="border-l-2 pl-3 border-[#2E5C8A]">Elemento: Tierra</div>
-                    <div className="border-l-2 pl-3 border-[#2E5C8A]">País: Japón</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#2E5C8A]" aria-hidden="true" />Elemento: Tierra</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#2E5C8A]" aria-hidden="true" />País: Japón</div>
                   </div>
                   <div className="flex items-center gap-2 px-2 border-t border-ink/10 pt-2">
                     <span className="w-1 h-6 rounded-full bg-[#C49A2A]" />
-                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/60">CÍRCULO</p>
+                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70">CÍRCULO</p>
                   </div>
                   <div className="space-y-2 text-sm text-foreground/80 px-2">
-                    <div className="border-l-2 pl-3 border-[#C49A2A]">Conexiones: 3</div>
-                    <div className="border-l-2 pl-3 border-[#C49A2A]">Resonancia: 87%</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#C49A2A]" aria-hidden="true" />Conexiones: 3</div>
+                    <div className="flex items-start gap-2"><span className="w-1 h-1 rounded-full mt-1.5 shrink-0 bg-[#C49A2A]" aria-hidden="true" />Resonancia: 87%</div>
                   </div>
                 </div>
               </div>
@@ -109,7 +113,7 @@ export default function QueMapa() {
                       { label: "DECISIONES", score: 79 },
                     ].map((area) => (
                       <div key={area.label} className="text-center">
-                        <div className="font-mono text-xs tracking-[0.2em] uppercase text-muted/50 mb-1">
+                        <div className="font-mono text-xs tracking-[0.2em] uppercase text-muted/70 mb-1">
                           {area.label}
                         </div>
                         <div className="font-heading text-xl font-bold text-foreground">

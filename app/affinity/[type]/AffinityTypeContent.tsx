@@ -80,7 +80,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
       <AnimatePresence mode="wait">
         {!mounted ? (
           <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando afinidades...">
                 Cargando afinidades...
               </p>
@@ -90,8 +90,8 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10" />
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
@@ -100,11 +100,10 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
               {/* HERO */}
               <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-                  <button type="button" onClick={() => router.push("/affinity")} className="hover:text-foreground transition-colors">Afinidad</button>
+                  <button type="button" onClick={() => router.push("/affinity")} className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</button>
                   <span>›</span>
                   <span className="text-foreground font-medium">{meta.plural}</span>
                 </nav>
-                <p className="eyebrow-brutalist mb-4">Afinidad simbólica</p>
                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] tracking-tight">
                   Cómo resuena cada {meta.label.toLowerCase()}
                 </h1>
@@ -166,7 +165,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 />
                 {searchQuery && (
                   <p className="text-xs text-muted mt-2">
-                    {filteredSorted.length} resultado{filteredSorted.length !== 1 ? "s" : ""} para "{searchQuery}"
+                    {filteredSorted.length} resultado{filteredSorted.length !== 1 ? "s" : ""} para &quot;{searchQuery}&quot;
                   </p>
                 )}
               </div>

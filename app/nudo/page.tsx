@@ -53,14 +53,14 @@ export default function NudoPage() {
   if (loading || !mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
           <div className="animate-pulse">
             <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
             <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
             <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
           </div>
-          <UniversityFooter />
-        </div>
+        </main>
+        <UniversityFooter />
       </div>
     );
   }
@@ -68,8 +68,7 @@ export default function NudoPage() {
   if (!profile) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
-          <p className="eyebrow-brutalist mb-4">Detectar un Nudo</p>
+        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
           <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
             Tu brújula personal
           </h1>
@@ -79,22 +78,21 @@ export default function NudoPage() {
           <Button variant="primary" size="lg" onClick={() => window.location.href = "/onboarding"}>
             Crear mi perfil
           </Button>
-          <UniversityFooter />
-        </div>
+        </main>
+        <UniversityFooter />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
           <span>›</span>
           <span className="text-foreground font-medium">Detectar un Nudo</span>
         </nav>
 
-        <p className="eyebrow-brutalist mb-4">Experimento</p>
         <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight mb-6">
           Detectar un Nudo
         </h1>
@@ -191,7 +189,7 @@ export default function NudoPage() {
             Ver mi perfil
           </Link>
         </div>
-      </div>
+      </main>
       <UniversityFooter />
     </div>
   );

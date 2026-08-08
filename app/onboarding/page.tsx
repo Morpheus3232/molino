@@ -96,7 +96,7 @@ export default function OnboardingPage() {
               <span
                 key={s.id}
                 className={`font-mono text-xs font-semibold tracking-[0.2em] uppercase transition-colors ${
-                  i <= currentStepIndex ? "text-accent" : "text-muted/50"
+                  i <= currentStepIndex ? "text-accent" : "text-muted/70"
                 }`}
               >
                 {s.label}
@@ -122,9 +122,6 @@ export default function OnboardingPage() {
               transition={{ duration: 0.4 }}
               className="text-center mb-10"
             >
-              <p className="eyebrow-brutalist mb-3">
-                Paso 1 de 3
-              </p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
                 ¿Cuándo naciste?
               </h1>
@@ -171,7 +168,6 @@ export default function OnboardingPage() {
               transition={{ duration: 0.4 }}
               className="text-center mb-6"
             >
-              <p className="eyebrow-brutalist mb-3">Paso 2 de 3</p>
               <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[0.95]">
                 Esto ya dice algo de vos
               </h1>

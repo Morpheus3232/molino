@@ -186,7 +186,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
               transition={{ duration: 0.3 }}
               className="text-center py-16"
             >
-              <p className="eyebrow-brutalist mb-4">Sin recomendaciones</p>
+              <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin recomendaciones</h2>
               <p className="text-sm text-muted mb-6 max-w-md mx-auto">
                 No encontramos recomendaciones para esta entidad con tu perfil actual.
               </p>

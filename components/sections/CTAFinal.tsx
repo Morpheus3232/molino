@@ -24,7 +24,7 @@ export default function CTAFinal() {
           en un solo lugar: tu identidad.
         </motion.p>
 
-        <motion.p {...fadeUp} className="text-sm text-muted/50 leading-relaxed mb-10 max-w-xl mx-auto">
+        <motion.p {...fadeUp} className="text-sm text-muted/70 leading-relaxed mb-10 max-w-xl mx-auto">
           No hay prisa. No hay presión.
           <br />
           Solo una invitación a conocerte.

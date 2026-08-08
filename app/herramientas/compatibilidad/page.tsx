@@ -88,15 +88,14 @@ export default function CompatibilidadCalcPage() {
       <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Compatibilidad</span>
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
           <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Compatibilidad simbólica
           </h1>
@@ -110,7 +109,7 @@ export default function CompatibilidadCalcPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Persona 1 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 1</h3>
               <div className="space-y-3">
                 <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
                   <option value="">Día</option>
@@ -138,7 +137,7 @@ export default function CompatibilidadCalcPage() {
 
             {/* Persona 2 */}
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 2</h3>
               <div className="space-y-3">
                 <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
                   <option value="">Día</option>

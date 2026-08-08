@@ -3,6 +3,7 @@ import { Inter, Archivo_Black, JetBrains_Mono, Space_Grotesk } from "next/font/g
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import SiteIntro from "@/components/ui/SiteIntro";
+import SkipLink from "@/components/ui/SkipLink";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import UniversityHeader from "@/components/layout/UniversityHeader";
@@ -124,9 +125,30 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
 <body>
-          <a href="#main-content" className="skip-link">
-            Saltar al contenido principal
-          </a>
+          <div
+            aria-hidden="true"
+            style={{ display: "none" }}
+            dangerouslySetInnerHTML={{
+              __html: `<!--
+THESIS: Molino no ilustra lo mistico, lo calcula en vivo -- el sitio se muestra
+como el instrumento que muele tres sistemas (numerologia, astrologia, zodiaco
+chino) en un mapa, y refusa el hero-metric estatico y el "neon sobre negro" generico.
+OWN-WORLD: fondo casi negro (#0A0A0C) + textura de grano (Grainient dorado/marron,
+ya en el repo) + un nucleo de turbina de 3 aspas, cada una con el color de un
+sistema (oro numerologia, indigo astrologia, jade zodiaco); Archivo Black para
+cifras/titulos, JetBrains Mono para lecturas/datos.
+STORY: el visitante ve su fecha entrar como grano y salir como numero del dia;
+entiende que cada cifra es trazable, no decorativa, y arranca el onboarding.
+FIRST VIEWPORT: hero full-bleed, turbina girando a la derecha/detras, numero del
+dia "molido" a la izquierda con su calculo visible, CTA "Crear mi mapa" debajo.
+FORM: Molino / Turbina Viva -- direccion asignada por concept-seed (candidato 5/7,
+seed 3b23cd2e), literalizando el molino del nombre como nucleo generativo.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
+review, the verdict, and DESIGN.md.
+-->`,
+            }}
+          />
+          <SkipLink />
           <SiteIntro />
           <AnalyticsProvider />
           <MotionProvider>

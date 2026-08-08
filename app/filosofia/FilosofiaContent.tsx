@@ -84,7 +84,6 @@ export default function FilosofiaContent() {
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-24">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Filosofía</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Principios y fundamentos
           </h1>

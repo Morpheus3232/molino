@@ -58,7 +58,7 @@ const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
   "afinidad-media": "#4A6FA5",
   "complementarios": "#D4A843",
   "desafiante": "#B45309",
-  "distante": "#6B7280",
+  "distante": "#838C95",
 };
 
 // Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +

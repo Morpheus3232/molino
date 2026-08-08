@@ -110,7 +110,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
           ))}
 
           {allDays.map((cell, i) => {
-            const { date, dateStr, hasData, vibration, today: isTodayCell, past } = cell;
+            const { date, dateStr, hasData, vibration, today: isTodayCell } = cell;
             const isCurrentMonth = date.getMonth() === startMonth.getMonth();
             const isEmpty = !dateStr;
 
@@ -121,7 +121,7 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
             if (!hasData || !vibration) {
               return (
                 <div key={dateStr} className="h-9 flex items-center justify-center">
-                  <span className={`text-xs font-mono ${past ? "text-muted/30" : "text-muted/50"}`}>{date.getDate()}</span>
+                  <span className="text-xs font-mono text-muted/70">{date.getDate()}</span>
                 </div>
               );
             }

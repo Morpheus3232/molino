@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Plane, Briefcase, type LucideIcon } from "lucide-react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { getDayVibration, type TopicId, getFavorableNumbers } from "@/lib/utils/dateVibration";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
@@ -12,9 +13,9 @@ import { formatDate } from "@/lib/i18n/format";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 
-const TOPIC_OPTIONS: { id: TopicId; label: string; emoji: string }[] = [
-  { id: "viajes", label: "Viajar", emoji: "✈️" },
-  { id: "negocios", label: "Emprender / Negocios", emoji: "💼" },
+const TOPIC_OPTIONS: { id: TopicId; label: string; icon: LucideIcon }[] = [
+  { id: "viajes", label: "Viajar", icon: Plane },
+  { id: "negocios", label: "Emprender / Negocios", icon: Briefcase },
 ];
 
 export default function SemanaPage() {
@@ -75,7 +76,6 @@ function SemanaContent() {
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <p className="eyebrow-brutalist mb-4">Tu semana</p>
           <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
             Creá tu mapa primero
           </h1>
@@ -100,14 +100,13 @@ function SemanaContent() {
       <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }} className="border-t border-ink/10 py-10 sm:py-16">
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-            <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+            <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
             <span aria-hidden="true">›</span>
-            <Link href="/hoy" className="hover:text-foreground transition-colors">Hoy</Link>
+            <Link href="/hoy" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Hoy</Link>
             <span aria-hidden="true">›</span>
             <span className="text-foreground font-medium">Semana</span>
           </nav>
 
-          <p className="eyebrow-brutalist mb-4">Tu semana</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.9] tracking-tight">
             {formatDate(new Date(), { weekday: "long" })}
           </h1>
@@ -127,7 +126,7 @@ function SemanaContent() {
                   : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
               }`}
             >
-              <span aria-hidden="true">{opt.emoji}</span>
+              <opt.icon className="w-4 h-4" aria-hidden="true" />
               {opt.label}
             </button>
           ))}
@@ -196,7 +195,7 @@ function SemanaContent() {
               className="border border-ink/10 p-6 mt-6"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="eyebrow-brutalist">Tu día de hoy</span>
+                <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground">Tu día de hoy</h3>
                 <span
                   className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-ink/10"
                   style={{ color: todayResult.favorable ? todayResult.color : "var(--color-muted)" }}

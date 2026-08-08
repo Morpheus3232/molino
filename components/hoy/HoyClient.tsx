@@ -20,6 +20,7 @@ import {
   type EnergyLevel,
   type DailySnapshot,
 } from "@/lib/session/dailyHistory";
+import { Plane, Briefcase, type LucideIcon } from "lucide-react";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
@@ -85,9 +86,9 @@ interface DayState {
   topAffinities: AffinityResult[];
 }
 
-const TOPIC_OPTIONS: { id: TopicId; label: string; emoji: string }[] = [
-  { id: "viajes", label: "Viajar", emoji: "✈️" },
-  { id: "negocios", label: "Emprender / Negocios", emoji: "💼" },
+const TOPIC_OPTIONS: { id: TopicId; label: string; icon: LucideIcon }[] = [
+  { id: "viajes", label: "Viajar", icon: Plane },
+  { id: "negocios", label: "Emprender / Negocios", icon: Briefcase },
 ];
 
 const transitionVariants = {
@@ -250,7 +251,7 @@ export default function HoyClient() {
 
                   {/* Score + frase */}
                   <div>
-                    <p className="eyebrow-brutalist mb-3">TU DÍA · {dateLabel}</p>
+                    <p className="text-sm text-muted mb-3">TU DÍA · {dateLabel}</p>
                     <p
                       className="text-5xl sm:text-6xl font-display font-bold tracking-tight leading-[0.9]"
                       style={{ color: scoreStyle }}
@@ -313,7 +314,9 @@ export default function HoyClient() {
                 transition={{ delay: 0.08, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
-                <p className="eyebrow-brutalist mb-4">Tu momento</p>
+                <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-4">
+                  Tu momento
+                </h2>
                 <p className="label-micro text-muted mb-1">Para decidir hoy</p>
 
                 <div className="flex items-baseline gap-4 mb-4">
@@ -365,7 +368,9 @@ export default function HoyClient() {
                 transition={{ delay: 0.16, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
-                <p className="eyebrow-brutalist mb-6">Lectura del día</p>
+                <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-6">
+                  Lectura del día
+                </h2>
 
                 {/* Áreas con barras */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6 mb-10">
@@ -425,7 +430,9 @@ export default function HoyClient() {
                 transition={{ delay: 0.24, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
-                <p className="eyebrow-brutalist mb-4">¿Qué querés hacer?</p>
+                <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-4">
+                  ¿Qué querés hacer?
+                </h2>
                 <div className="flex flex-wrap gap-2 mb-8">
                   {TOPIC_OPTIONS.map((opt) => (
                     <button
@@ -438,7 +445,7 @@ export default function HoyClient() {
                           : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
                       }`}
                     >
-                      <span aria-hidden="true">{opt.emoji}</span>
+                      <opt.icon className="w-4 h-4" aria-hidden="true" />
                       {opt.label}
                     </button>
                   ))}
@@ -455,7 +462,9 @@ export default function HoyClient() {
                 transition={{ delay: 0.32, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="border-t border-ink/10 py-12 sm:py-16"
               >
-                <p className="eyebrow-brutalist mb-4">Seguir el hilo</p>
+                <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-4">
+                  Seguir el hilo
+                </h2>
                 <Link
                   href="/semana"
                   className="group inline-flex items-center gap-2 font-heading text-xl sm:text-2xl text-foreground hover:text-accent transition-colors"

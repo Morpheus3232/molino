@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -12,7 +14,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
           <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
           <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
           <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
@@ -30,9 +32,9 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/conocimiento/astrologia" className="hover:text-accent transition-colors">Astrología</Link>
+          <Link href="/conocimiento/astrologia" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Astrología</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">{sign.name}</span>
         </nav>
@@ -57,7 +59,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{sign.meaning}</p>
         </motion.section>
@@ -66,7 +68,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Historia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{sign.history}</p>
         </motion.section>
@@ -75,7 +77,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="p-6 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fortalezas</h3>
               <ul className="space-y-2">
                 {sign.strengths.map(s => (
                   <li key={s} className="text-sm text-foreground flex items-start gap-2"><span className="text-accent mt-0.5">&bull;</span>{s}</li>
@@ -83,7 +85,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
               </ul>
             </div>
             <div className="p-6 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Desafíos</h3>
               <ul className="space-y-2">
                 {sign.challenges.map(c => (
                   <li key={c} className="text-sm text-foreground flex items-start gap-2"><span className="text-muted mt-0.5">&bull;</span>{c}</li>
@@ -97,11 +99,11 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Compatibilidades tradicionales</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-2">Compatibles</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
                   <span key={f} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{f}</span>
@@ -109,7 +111,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
               </div>
             </div>
             <div className="p-4 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Desafiantes</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
                   <span key={c} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{c}</span>
@@ -122,7 +124,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="p-6 border border-ink/10">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Aviso importante</h3>
             <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>
           </div>

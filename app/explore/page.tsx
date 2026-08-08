@@ -141,7 +141,7 @@ export default function ExplorePage() {
               transition={{ duration: 0.3 }}
               className="text-center py-16"
             >
-              <p className="eyebrow-brutalist mb-4">Sin resultados</p>
+              <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
               <p className="text-sm text-muted mb-6 max-w-md mx-auto">
                 No se encontraron conceptos para &ldquo;{searchTerm}&rdquo;.
               </p>

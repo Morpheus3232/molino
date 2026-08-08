@@ -96,7 +96,7 @@ export default function TimingCalendar({
 
   return (
     <div>
-      <p className="eyebrow-brutalist mb-2">Tu semana en timing</p>
+      <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground mb-2">Tu semana en timing</h3>
       <p className="text-sm text-muted mb-6">
         Mejores días para {intentionLabel.toLowerCase()}. Los números son el score de timing (0–100).
       </p>
@@ -122,7 +122,7 @@ export default function TimingCalendar({
           if (!isCurrentMonth && !inRange) {
             return (
               <div key={dateStr} className="aspect-square flex items-center justify-center">
-                <span className="text-xs text-muted/30 font-mono">{date.getDate()}</span>
+                <span className="text-xs text-muted/70 font-mono">{date.getDate()}</span>
               </div>
             );
           }
@@ -153,7 +153,7 @@ export default function TimingCalendar({
                   </span>
                 </motion.div>
               ) : (
-                <span className={`text-xs font-mono ${past || isTodayCell ? "text-muted/40" : "text-muted"}`}>
+                <span className={`text-xs font-mono ${past || isTodayCell ? "text-muted/70" : "text-muted"}`}>
                   {date.getDate()}
                 </span>
               )}

@@ -178,7 +178,7 @@ export default function InsightsContent() {
             <div className="h-1.5" style={{ backgroundColor: elementColor }} />
             <div className="p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Hoy en tu perfil</span>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Hoy en tu perfil</h2>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -231,7 +231,7 @@ export default function InsightsContent() {
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</span>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</h2>
               </div>
 
               <div className="space-y-3">
@@ -276,7 +276,7 @@ export default function InsightsContent() {
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</span>
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</h2>
             </div>
 
             <motion.div
@@ -316,7 +316,7 @@ export default function InsightsContent() {
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Opuestos</span>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Opuestos</h2>
               </div>
 
               <p className="text-xs text-muted mb-4 leading-relaxed">
@@ -350,7 +350,7 @@ export default function InsightsContent() {
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-6">
-              <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</span>
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</h2>
             </div>
 
             {/* Progress bar */}

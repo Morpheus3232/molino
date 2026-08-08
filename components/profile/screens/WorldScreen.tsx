@@ -108,7 +108,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Lo que más presencia tiene en tu mapa</h2>
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Lo que más presencia tiene en tu mapa</h2>
               </div>
             </motion.div>
             <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
@@ -154,7 +154,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Lugares con mayor presencia en tu mapa</h2>
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Lugares con mayor presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Estos lugares tienen una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
@@ -196,7 +196,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
-                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Marcas con presencia en tu mapa</h2>
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Marcas con presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
                 Marcas con una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.

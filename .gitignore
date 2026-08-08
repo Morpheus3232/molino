@@ -45,6 +45,8 @@ OmniRoute/
 .codex/
 .opencode/
 .artifacts/
+.impeccable/
+kilo.json
 .tmp/
 .github/hooks/
 .github/skills/

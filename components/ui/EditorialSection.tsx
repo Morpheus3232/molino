@@ -45,11 +45,19 @@ const TONES: Record<Tone, { wrap: string; eyebrow: string; title: string; intro:
     rule: "border-ink/10",
   },
   ink: {
-    wrap: "section-full-bleed bg-ink text-paper",
+    // "ink" evoca un bloque negro full-bleed (ver comentarios de uso, ej.
+    // "SIGNIFICADO — negro full-bleed") — pero en este sitio --color-ink es
+    // el tono CLARO de texto y --color-paper es el fondo OSCURO (nombres
+    // heredados de un rebuild que invirtió la base clara original sin
+    // renombrar las variables). bg-ink acá pintaba el fondo claro, lo
+    // opuesto de la intención, y de paso rompía el contraste del eyebrow
+    // (pensado para texto claro sobre fondo oscuro). bg-paper/text-ink es
+    // el bloque negro real.
+    wrap: "section-full-bleed bg-paper text-ink",
     eyebrow: "text-accent-light",
-    title: "text-paper",
-    intro: "text-paper/70",
-    rule: "border-paper/15",
+    title: "text-ink",
+    intro: "text-ink/70",
+    rule: "border-ink/15",
   },
   accent: {
     wrap: "section-full-bleed bg-accent text-paper",

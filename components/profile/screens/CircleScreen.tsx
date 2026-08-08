@@ -160,7 +160,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               cy="50"
               r="42"
               fill="none"
-              stroke="var(--color-paper)"
+              stroke="var(--color-ink)"
               strokeWidth="0.5"
               opacity="0.15"
             />
@@ -172,14 +172,14 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
               const y = 50 + 42 * Math.sin(angle);
               return (
                 <g key={pos} className="group">
-                  <circle cx={x} cy={y} r="2.5" fill="var(--color-paper)" opacity="0.2" />
+                  <circle cx={x} cy={y} r="2.5" fill="var(--color-ink)" opacity="0.2" />
                   <text
                     x={50 + 48 * Math.cos(angle)}
                     y={50 + 48 * Math.sin(angle) + 3}
                     textAnchor="middle"
                     dominantBaseline="middle"
                     fontSize="7"
-                    fill="var(--color-paper)"
+                    fill="var(--color-ink)"
                     opacity="0.25"
                     fontFamily="var(--font-mono)"
                     className="group-hover:opacity-100 transition-opacity"
@@ -219,7 +219,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
                 y1="50"
                 x2={tensionSlots[i].x}
                 y2={tensionSlots[i].y}
-                stroke="var(--color-paper)"
+                stroke="var(--color-ink)"
                 strokeWidth="0.6"
                 strokeDasharray="3 3"
                 opacity={0.45 - (rel.score / 100) * 0.2}
@@ -310,7 +310,7 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
             >
               <ZodiacMark
                 animal={rel.animal}
-                color="var(--color-paper)"
+                color="var(--color-ink)"
                 size="md"
                 showLabel={true}
                 hidePosition={false}

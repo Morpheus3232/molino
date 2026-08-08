@@ -17,7 +17,13 @@
   --color-accent: #7C8CFF;
   --color-accent-hover: #94A0FF;
   --color-accent-light: #AEB8FF;
-  --color-muted: #A6A69C;
+  /* B0B0A6 en vez de A6A69C: el valor anterior hacía que text-muted/70 (el
+     uso más común para texto secundario en todo el sitio) cayera a ~4.3:1
+     sobre los fondos oscuros del sitio, por debajo del mínimo WCAG AA de
+     4.5:1 para texto normal. Este valor deja text-muted/70 en ~4.7:1+
+     verificado contra bg-card (#131315, el fondo más oscuro en uso) sin
+     cambiar perceptiblemente el carácter "apagado" del tono. */
+  --color-muted: #B0B0A6;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -29,7 +35,7 @@
   --color-paper-rgb: 10 10 12;
   --color-accent-rgb: 124 140 255;
   --color-accent-light-rgb: 174 184 255;
-  --color-muted-rgb: 166 166 156;
+  --color-muted-rgb: 176 176 166;
   --color-border: #2A2A2E;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
@@ -148,7 +154,7 @@
   --element-earth: #059669;
   --element-air: #7C3AED;
   --element-water: #0284C7;
-  --element-metal: #6B7280;
+  --element-metal: #838C95;
   --element-wood: #10B981;
 
   /* Map layer colors */
@@ -480,7 +486,7 @@
   .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.18);
+    box-shadow: 0 0 0 3px rgb(var(--color-accent-rgb) / 0.18);
     background-color: var(--color-card);
   }
 
@@ -665,6 +671,11 @@
   .card-hover:hover {
     border-color: var(--color-accent);
   }
+}
+
+@keyframes molino-rotor-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {

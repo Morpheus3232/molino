@@ -14,8 +14,7 @@ export default function NumerosMaestrosPage() {
           <Link href="/guia" className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2">
             &larr; Volver a la guía
           </Link>
-          <p className="eyebrow-brutalist mt-8 mb-4">Guía</p>
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight mt-8">
             Números Maestros
           </h1>
           <p className="text-sm text-muted mt-4 max-w-xl">

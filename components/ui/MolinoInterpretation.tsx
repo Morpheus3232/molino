@@ -353,17 +353,19 @@ export default function MolinoInterpretation({
           </motion.div>
         )}
 
-        {/* 4. Recomendación práctica — único acento de color, borde izquierdo en vez de caja rellena */}
+        {/* 4. Recomendación práctica — único acento de color, punto + regla fina en vez de borde izquierdo */}
         {interpretation.suggestedNextStep && (
           <motion.div variants={itemVariants} className="py-6 sm:py-8 mt-2">
-            <div className="border-l-2 border-accent pl-5 sm:pl-7">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
-                {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
-              </p>
-              <p className="text-sm leading-[1.75] sm:text-base text-foreground font-medium">
-                {interpretation.suggestedNextStep}
-              </p>
+            <div className="flex items-center gap-2 mb-3" aria-hidden="true">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
+              <span className="h-px flex-1 bg-ink/10" />
             </div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
+              {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground font-medium">
+              {interpretation.suggestedNextStep}
+            </p>
           </motion.div>
         )}
 
@@ -398,7 +400,7 @@ export default function MolinoInterpretation({
 
         {/* Confidence */}
         <motion.div variants={itemVariants} className="pt-6 border-t border-ink/10">
-          <p className="font-mono text-xs text-muted/50">
+          <p className="font-mono text-xs text-muted/70">
             Confianza: {interpretation.confidence}
             {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
           </p>
@@ -516,7 +518,7 @@ export default function MolinoInterpretation({
       {/* Subtle error when AI failed but local fallback exists */}
       {error && interpretation && revealReady && (
         <div className="pt-6 border-t border-ink/10">
-          <p className="text-xs text-muted/50 text-right">
+          <p className="text-xs text-muted/70 text-right">
             Interpretación local · AI no disponible
           </p>
         </div>

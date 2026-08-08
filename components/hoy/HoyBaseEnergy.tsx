@@ -41,7 +41,7 @@ export default function HoyBaseEnergy({ data }: { data: GenericDailyData }) {
           transition={{ duration: 0.4 }}
           className="border-t border-ink/10 py-12 sm:py-16"
         >
-          <p className="eyebrow-brutalist mb-4">TU DÍA · {dateLabel}</p>
+          <p className="text-sm text-muted mb-4">TU DÍA · {dateLabel}</p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[0.9] text-foreground">
             Energía de Hoy
           </h1>
@@ -57,7 +57,9 @@ export default function HoyBaseEnergy({ data }: { data: GenericDailyData }) {
           transition={{ delay: 0.1, duration: 0.3 }}
           className="border-t border-ink/10 py-10 sm:py-14"
         >
-          <p className="eyebrow-brutalist mb-6">Tu energía base</p>
+          <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-6">
+            Tu energía base
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12">
             <div className="p-6 border border-ink/10">
               <p className="label-micro mb-2 text-accent">Enfoque</p>
@@ -81,7 +83,9 @@ export default function HoyBaseEnergy({ data }: { data: GenericDailyData }) {
           transition={{ delay: 0.2, duration: 0.3 }}
           className="border-t border-ink/10 py-10 sm:py-14"
         >
-          <p className="eyebrow-brutalist mb-6">Con tu mapa personal, descubrirías</p>
+          <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] tracking-tight text-foreground mb-6">
+            Con tu mapa personal, descubrirías
+          </h2>
           <ul className="space-y-4 max-w-xl">
             {TEASER_ITEMS.map((item) => (
               <li key={item} className="flex items-start gap-3 text-foreground">

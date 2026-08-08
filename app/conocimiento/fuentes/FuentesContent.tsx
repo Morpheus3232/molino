@@ -31,16 +31,15 @@ export default function FuentesContent() {
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2">&rsaquo;</span>
           <span className="text-foreground font-medium">Fuentes y metodología</span>
         </nav>
 
         {/* Hero */}
         <section className="mb-16 sm:mb-20 animate-fade-in-up">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">Transparencia</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Fuentes y metodología
           </h1>
@@ -60,7 +59,7 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-2">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Cómo funciona Molino</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -83,14 +82,14 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-3">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Cómo se calcula la compatibilidad</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
               La compatibilidad de Molino utiliza <strong>70% zodiaco chino + 30% numerología</strong> como fórmula base. Esto es una propuesta de Molino, no una convención universal.
             </p>
             <div className="p-6 border border-ink/10">
-              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Fórmula</p>
+              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fórmula</h3>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
@@ -118,7 +117,7 @@ export default function FuentesContent() {
         <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-4">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Fuentes por sistema</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Fuentes por sistema</h2>
           </div>
           <div className="space-y-8">
             {Object.entries(bySystem).map(([system, sources]) => (

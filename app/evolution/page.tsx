@@ -76,7 +76,7 @@ export default function EvolutionPage() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24">
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando tu recorrido...">
                 Cargando tu recorrido...
               </p>
@@ -89,8 +89,8 @@ export default function EvolutionPage() {
                   <div key={i} className="h-20 bg-[var(--skeleton)] border-t border-ink/10" />
                 ))}
               </div>
-              <UniversityFooter />
-            </div>
+            </main>
+            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -100,8 +100,7 @@ export default function EvolutionPage() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center">
-              <p className="eyebrow-brutalist mb-4">Evolución</p>
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-24 text-center" id="main-content">
               <h1 className="font-display text-5xl sm:text-6xl tracking-tight text-foreground mb-4">
                 Tu recorrido
               </h1>
@@ -111,7 +110,7 @@ export default function EvolutionPage() {
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
                 Crear mi perfil
               </Button>
-            </div>
+            </main>
             <UniversityFooter />
           </motion.div>
         ) : (
@@ -125,12 +124,11 @@ export default function EvolutionPage() {
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="border-t border-ink/10 py-10 sm:py-16">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-                  <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                  <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
                   <span>›</span>
                   <span className="text-foreground font-medium">Evolución</span>
                 </nav>
 
-                <p className="eyebrow-brutalist mb-4">Evolución</p>
                 <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl text-foreground leading-[0.9] tracking-tight">
                   Tu recorrido
                 </h1>
@@ -177,7 +175,7 @@ export default function EvolutionPage() {
                     transition={{ duration: 0.15 }}
                   >
                     <motion.div className="text-center py-16 border-t border-ink/10">
-                      <p className="eyebrow-brutalist mb-4">Todavía no registraste días</p>
+                      <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">Todavía no registraste días</h2>
                       <p className="text-muted mb-6 max-w-md mx-auto">
                         Volvé a Hoy mañana. A partir del segundo día vas a poder ver cómo cambia tu orientación día a día.
                       </p>
@@ -193,9 +191,9 @@ export default function EvolutionPage() {
                   >
                     <div className="space-y-px bg-ink/10 border-t border-ink/10 pt-6">
                       <motion.div className="bg-background p-8 lg:p-12">
-                        <p className="eyebrow-brutalist mb-4">
+                        <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">
                           Hitos que registraste · {history.length} {history.length === 1 ? "día" : "días"}
-                        </p>
+                        </h2>
                         <ul className="flex flex-wrap gap-x-8 gap-y-2">
                           {ORIENTATION_ORDER.map((o) => (
                             <li key={o} className="text-sm text-foreground">

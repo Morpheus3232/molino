@@ -44,13 +44,9 @@ export default function QueDescubris() {
   return (
     <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.p {...fadeUp} className="eyebrow-brutalist mb-10 text-center">
-          QUÉ VAS A DESCUBRIR
-        </motion.p>
-
-        <motion.p {...fadeUp} className="font-heading text-2xl sm:text-3xl font-semibold text-foreground text-center mb-16 max-w-2xl mx-auto leading-tight">
+        <motion.h2 {...fadeUp} className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-16 max-w-2xl mx-auto leading-[1.05]">
           Entendé cómo decidís. Descubrí tus afinidades. Elegí mejores momentos.
-        </motion.p>
+        </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {benefits.map((benefit, i) => (
