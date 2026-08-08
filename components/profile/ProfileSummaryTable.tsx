@@ -26,7 +26,7 @@ function SystemCard({ title, color, stats, children }: { title: string; color: s
     >
       <div className="flex items-center gap-2 mb-4">
         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-        <h3 className="label-micro text-foreground" style={{ color }}>{title}</h3>
+        <h3 className="label-micro text-foreground">{title}</h3>
       </div>
       <dl className="space-y-3">
         {stats.map((stat, i) => (
@@ -58,7 +58,7 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
   ];
 
   const astrologyStats = [
-    { label: "Signo Solar", value: `${symbol} ${profile.sunSign}`, icon: symbol },
+    { label: "Signo Solar", value: profile.sunSign, icon: symbol },
     { label: "Elemento", value: profile.sunSignInfo.element, icon: profile.sunSignInfo.element === "Fuego" ? "🔥" : profile.sunSignInfo.element === "Tierra" ? "🌱" : profile.sunSignInfo.element === "Aire" ? "💨" : "💧" },
     { label: "Modalidad", value: profile.sunSignInfo.modality },
     { label: "Año Personal", value: profile.cycles.personalYear },
@@ -66,7 +66,7 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
   ];
 
   const zodiacStats = [
-    { label: "Animal", value: `${display.emoji} ${display.name}`, icon: display.emoji },
+    { label: "Animal", value: display.name, icon: display.emoji },
     { label: "Elemento", value: profile.chineseZodiacInfo.element, icon: profile.chineseZodiacInfo.element === "Metal" ? "⚪" : profile.chineseZodiacInfo.element === "Madera" ? "🌿" : profile.chineseZodiacInfo.element === "Agua" ? "💧" : profile.chineseZodiacInfo.element === "Fuego" ? "🔥" : "🌱" },
     { label: "Año", value: profile.birthDate.split("-")[0] },
     { label: "Ciclo (60 años)", value: profile.chineseZodiac },
@@ -74,7 +74,12 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
 
   return (
     <section className="py-10 sm:py-12" aria-labelledby="summary-heading">
-      <h2 id="summary-heading" className="sr-only">Resumen de tu mapa por sistema</h2>
+      <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
+        01 · Tu resumen
+      </p>
+      <h2 id="summary-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">
+        Tres sistemas, una lectura
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         <SystemCard
           title="NUMEROLOGÍA"
