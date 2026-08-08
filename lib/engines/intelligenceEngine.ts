@@ -227,7 +227,6 @@ CONTEXTO DEL USUARIO:
 - Elemento: ${userProfile.element}
 - Año personal: ${cycles.personalYear}
 - Mes personal: ${cycles.personalMonth}
-- Día personal: ${cycles.personalDay}
 ${numerology.expressionNumber ? `- Expresión: ${numerology.expressionNumber}` : ''}
 ${numerology.soulNumber ? `- Alma: ${numerology.soulNumber}` : ''}
 ${numerology.personalityNumber ? `- Personalidad: ${numerology.personalityNumber} (en Molino se calcula solo desde el día de nacimiento, no desde el nombre; para el 9 representa capacidad de adaptación — no uses el significado clásico de "número de personalidad" por consonantes)` : ''}

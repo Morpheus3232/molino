@@ -624,12 +624,6 @@ export function buildDateDimensions(profile: UserProfile): DimensionInsight[] {
       explanation: `Estás en un año personal ${personalYear || lp}: es la etapa del ciclo de nueve años en la que te encontrás hoy.`,
     },
     {
-      dimension: "Momento",
-      value: scale(personalDay || lp),
-      influences: ["Día personal", String(personalDay || lp)],
-      explanation: `Tu dia personal ${personalDay || lp} describe la energía disponible específicamente hoy, y cambia cada día.`,
-    },
-    {
       dimension: "Intuición",
       value: scale(((lp * 2) % 9) + 1),
       influences: ["Camino de Vida", animal],

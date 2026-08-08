@@ -170,10 +170,6 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
             <p className="label-micro text-muted mb-1">Mes personal</p>
             <p className="font-heading text-xl font-semibold" style={{ color: elementColor }}>{dailyEnergy.personalMonth}</p>
           </div>
-          <div>
-            <p className="label-micro text-muted mb-1">Día personal</p>
-            <p className="font-heading text-xl font-semibold" style={{ color: elementColor }}>{dailyEnergy.personalDay}</p>
-          </div>
           <div className="border-t border-ink/10 pt-4">
             <p className="label-micro text-muted mb-2">Energía por áreas</p>
             <div className="grid grid-cols-2 gap-4">
