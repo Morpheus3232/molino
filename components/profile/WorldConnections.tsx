@@ -87,17 +87,27 @@ export default function WorldConnections({ profile }: WorldConnectionsProps) {
   return (
     <section className="py-10 sm:py-12 border-t border-ink/10" aria-labelledby="world-heading">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <div className="flex items-center justify-between mb-8">
-          <h2 id="world-heading" className="font-display text-2xl sm:text-3xl font-bold tracking-tight">
-            Tu Mundo
-          </h2>
-          <Link
-            href="/affinity"
-            className="text-sm font-mono text-accent hover:underline"
-          >
-            Ver todas las {totalConnections} conexiones →
-          </Link>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" } as const}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
+        >
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
+            02 · Tu mundo
+          </p>
+          <div className="flex items-end justify-between gap-4 mb-8">
+            <h2 id="world-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05]">
+              Tu Mundo
+            </h2>
+            <Link
+              href="/affinity"
+              className="text-sm font-mono text-accent hover:underline shrink-0"
+            >
+              Ver todas las {totalConnections} conexiones →
+            </Link>
+          </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           <EntityRank
