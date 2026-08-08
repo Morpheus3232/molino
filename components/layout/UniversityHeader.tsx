@@ -112,7 +112,7 @@ export default function UniversityHeader() {
           {/* Logo */}
           <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10">
-              <Logo className="w-5 h-5" />
+              <Logo className="w-6 h-6" />
             </span>
           </Link>
 
