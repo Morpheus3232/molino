@@ -80,9 +80,9 @@ export default function CircleScreen({ profile, onNavigate }: CircleScreenProps)
   const display = getZodiacDisplay(userAnimal);
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
   
-  // Aliados: tríada + armoniosos (no solo tríada)
+  // Aliados: tríada (2) — getFriends devuelve solo los 2 partners San He
   const allies: AnimalRelation[] = useMemo(
-    () => [...relationMap.friends.filter(f => f.type === "triad"), ...relationMap.friends.filter(f => f.type === "harmonious")],
+    () => relationMap.friends.filter(f => f.type === "triad"),
     [relationMap.friends]
   );
   const tensions: AnimalRelation[] = relationMap.challenging;

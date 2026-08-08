@@ -313,7 +313,9 @@ export function getAnimalProfile(animal: Animal): AnimalProfile {
 }
 
 /**
- * Get all friends of an animal (triad + harmonious).
+ * Get all friends of an animal. Product rule: exactly 2 friends — the
+ * San He triad partners. The Liu He partner remains available via
+ * AnimalProfile.liuHePartner but is not counted as a friend/ally.
  */
 export function getFriends(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];
@@ -322,7 +324,6 @@ export function getFriends(animal: Animal): AnimalRelation[] {
   for (const other of profile.harmonyPartners) {
     friends.push(getRelation(animal, other));
   }
-  friends.push(getRelation(animal, profile.liuHePartner));
   return friends.sort((a, b) => b.score - a.score);
 }
 

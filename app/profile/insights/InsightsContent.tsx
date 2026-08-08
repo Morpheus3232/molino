@@ -15,6 +15,7 @@ import {
 import {
   getRelationshipMap,
   getAnimalProfile,
+  getRelation,
   type Animal,
 } from "@/lib/data/animalRelations";
 import { calculateAllAffinity, getTierForScore, TIER_META } from "@/lib/engines/affinityEngine";
@@ -459,16 +460,13 @@ function getTriadPartners(animal: string): string[] {
 }
 
 function getLiuHePartner(animal: string): string {
-  const map = getRelationshipMap(animal as Animal);
-  const harmonious = map.friends.find(r => r.type === "harmonious");
-  return harmonious ? harmonious.animal : "";
+  const profile = getAnimalProfile(animal as Animal);
+  return profile ? profile.liuHePartner : "";
 }
 
 function getRelationLabel(a: string, b: string): string {
   if (a === b) return "misma energía";
-  const map = getRelationshipMap(a as Animal);
-  const rel = map.friends.find(r => r.animal === b) ?? map.neutral.find(r => r.animal === b);
-  if (!rel) return "energías independientes";
+  const rel = getRelation(a as Animal, b as Animal);
   if (rel.type === "triad") return "tríada";
   if (rel.type === "harmonious") return "armonía natural";
   return "energías independientes";
