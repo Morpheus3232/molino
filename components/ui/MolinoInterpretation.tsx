@@ -214,6 +214,15 @@ export default function MolinoInterpretation({
 
   const readingContent = (() => {
     if (!interpretation) return null;
+    // Transparencia de fuente: IA o datos locales, nunca indistinguible.
+    const sourceLabel = isUsingAI
+      ? "Interpretación generada con IA"
+      : "Interpretación generada con datos locales";
+    // Nota epistemológica: siempre presente, sin duplicar la etiqueta de fuente
+    // ("datos locales" ya aparece en la etiqueta del fallback).
+    const epistemologicalNote = interpretation.limitations.find(
+      (l) => !/datos locales/i.test(l)
+    );
     return (
       <motion.div
         key={isUsingAI ? "ai" : "local"}
@@ -401,8 +410,8 @@ export default function MolinoInterpretation({
         {/* Confidence */}
         <motion.div variants={itemVariants} className="pt-6 border-t border-ink/10">
           <p className="font-mono text-xs text-muted/70">
-            Confianza: {interpretation.confidence}
-            {interpretation.limitations[0] && ` · ${interpretation.limitations[0]}`}
+            Confianza: {interpretation.confidence} · {sourceLabel}
+            {epistemologicalNote && ` · ${epistemologicalNote}`}
           </p>
         </motion.div>
       </motion.div>

@@ -467,9 +467,10 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             <div className="border-t border-ink/10 pt-10">
               <p className="label-micro mb-4 text-muted">Tu síntesis completa</p>
 
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="font-display text-6xl sm:text-7xl leading-none tracking-tight text-foreground">${flags.premiumPriceUsd}</span>
-                <span className="font-heading text-xl font-semibold text-foreground uppercase tracking-wider">{t.premium.priceSuffix}</span>
+              <div className="flex items-baseline gap-3 mb-2">
+                <span className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+                  ${flags.premiumPriceUsd} <span className="text-lg font-medium tracking-wider">{t.premium.priceSuffix}</span>
+                </span>
               </div>
 
               <p className="text-sm text-muted mb-8">{t.premium.priceNote}</p>
@@ -522,9 +523,10 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   <p className="text-xs text-muted/70 leading-relaxed">Lo encontrás en el email de confirmación de tu pago.</p>
                   <div className="flex flex-wrap gap-4">
                     <form onSubmit={e => handleRecover(e, 'mercadopago')} className="space-y-2 w-full sm:w-[220px]">
-                      <label className="text-xs text-muted block">Mercado Pago ID:</label>
+                      <label htmlFor="recover-mp-id" className="text-xs text-muted block">Mercado Pago ID:</label>
                       <div className="flex gap-2">
                         <input
+                          id="recover-mp-id"
                           type="text"
                           value={recoverPaymentId}
                           onChange={e => setRecoverPaymentId(e.target.value)}
@@ -542,9 +544,10 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                     </form>
                     {flags.paypalEnabled && (
                       <form onSubmit={e => handleRecover(e, 'paypal')} className="space-y-2 w-full sm:w-[220px]">
-                        <label className="text-xs text-muted block">PayPal Order ID:</label>
+                        <label htmlFor="recover-paypal-id" className="text-xs text-muted block">PayPal Order ID:</label>
                         <div className="flex gap-2">
                           <input
+                            id="recover-paypal-id"
                             type="text"
                             value={recoverPaymentId}
                             onChange={e => setRecoverPaymentId(e.target.value)}
@@ -586,9 +589,10 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                 </button>
               ) : (
                 <form onSubmit={handleApplyCoupon} className="space-y-2 max-w-xs">
-                  <label className="text-xs text-muted block">Código de cupón:</label>
+                  <label htmlFor="coupon-code" className="text-xs text-muted block">Código de cupón:</label>
                   <div className="flex gap-2">
                     <input
+                      id="coupon-code"
                       type="text"
                       value={couponCode}
                       onChange={e => setCouponCode(e.target.value)}
