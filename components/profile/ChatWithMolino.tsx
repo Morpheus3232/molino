@@ -4,12 +4,17 @@ import { useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import type { UserProfile } from "@/types/user";
-import type { MolinoInterpretation, ConversationTurn } from "@/lib/engines/intelligenceEngine";
+import type { MolinoInterpretation, ConversationTurn, ReadingContext } from "@/lib/engines/intelligenceEngine";
 import { usePremiumAccess } from "@/lib/hooks/usePremiumAccess";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 
 interface ChatWithMolinoProps {
   profile: UserProfile;
+  /** Compact structural context of the premium reading the user just read —
+   * grounds chat answers in the same interpretation without resending the
+   * full object. Optional: the chat still works from the deterministic
+   * context alone when no reading is available. */
+  readingContext?: ReadingContext;
 }
 
 interface ChatTurn {
@@ -27,24 +32,33 @@ interface ChatTurn {
 // UX-level cost guardrail.
 const MAX_QUESTIONS_PER_SESSION = 8;
 
-// Puertas de entrada a la inteligencia personal: cada prompt conserva su
-// texto exacto (lo que recibe el engine), y agrega la categoría editorial
-// que lo presenta como una puerta (momentos, tensiones, sistemas) en vez de
-// una pregunta suelta.
+/** Compacta los campos estructurales de una respuesta para el historial del
+ * chat — conserva el grounding (patrón, cómo opera, cierre) sin reenviar el
+ * objeto completo. Pensado para tokens: un fragmento corto por turno. */
+function compactHighlights(a: MolinoInterpretation): string {
+  const parts: string[] = [];
+  if (a.corePattern?.what) parts.push(`patrón: ${a.corePattern.what}`);
+  if (a.howYouOperate) parts.push(`cómo opera: ${a.howYouOperate}`);
+  if (a.closingSynthesis) parts.push(`síntesis: ${a.closingSynthesis}`);
+  return parts.join(" | ").slice(0, 500);
+}
+
+// Cada prompt conserva su texto exacto (lo que recibe el engine) — solo el
+// wrapper visual cambia (chips en vez de filas de puerta).
 const SUGGESTED_QUESTIONS = [
-  { category: "Tus tensiones", prompt: "¿Qué significa mi tensión principal en el día a día?" },
-  { category: "Tu momento", prompt: "¿Este es un buen momento para tomar una decisión importante?" },
-  { category: "Tus sistemas", prompt: "¿Cómo se relaciona mi elemento con mi Life Path?" },
+  "¿Cuál es mi contradicción más importante?",
+  "¿Qué patrón estoy repitiendo?",
+  "¿Qué necesito entender de este momento?",
+  "¿Qué relación hay entre mis reglas y mis tensiones?",
 ];
 
-export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
+export default function ChatWithMolino({ profile, readingContext }: ChatWithMolinoProps) {
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
   const prefersReducedMotion = useSafeReducedMotion();
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const name = typeof profile.name === "string" ? profile.name : "";
   const element = typeof profile.element === "string" ? profile.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
@@ -58,7 +72,11 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
 
       const conversationHistory: ConversationTurn[] = turns
         .filter((t) => t.answer)
-        .map((t) => ({ question: t.question, answer: t.answer!.summary }));
+        .map((t) => ({
+          question: t.question,
+          answer: t.answer!.summary,
+          answerHighlights: compactHighlights(t.answer!),
+        }));
 
       try {
         const res = await fetch("/api/intelligence/interpret", {
@@ -70,6 +88,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
             name: profile.name,
             question,
             conversationHistory,
+            readingContext,
             premiumToken: (await import('@/lib/premium')).getPremiumTokenClient(),
           }),
         });
@@ -121,36 +140,30 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
 
   return (
     <div className="max-w-2xl">
-      {/* Entrada — la primera vez, una invitación privada + puertas */}
+      {/* Entrada — la primera vez, una invitación privada + chips */}
       {turns.length === 0 && (
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="mb-6 sm:mb-8"
+          className="mb-8 sm:mb-10"
         >
-          <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-xl">
-            {name ? `Tu mapa ya está leído, ${name}.` : "Tu mapa ya está leído."} Elegí una puerta para empezar o escribí tu propia pregunta.
+          <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed max-w-xl">
+            Ya conocés tu mapa. Ahora podés preguntarle qué significa.
           </p>
 
-          <div role="group" aria-label="Preguntas sugeridas" className="mt-6">
-            {SUGGESTED_QUESTIONS.map((s, i) => (
+          <div role="group" aria-label="Preguntas sugeridas" className="mt-6 flex flex-wrap gap-2.5">
+            {SUGGESTED_QUESTIONS.map((prompt, i) => (
               <motion.button
-                key={s.prompt}
+                key={prompt}
                 type="button"
-                onClick={() => askQuestion(s.prompt)}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                onClick={() => askQuestion(prompt)}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: prefersReducedMotion ? 0 : 0.1 + i * 0.07, duration: 0.35, ease: "easeOut" }}
-                className="group w-full text-left py-4 sm:py-5 border-b border-ink/10"
+                transition={{ delay: prefersReducedMotion ? 0 : 0.1 + i * 0.06, duration: 0.3, ease: "easeOut" }}
+                className="text-left px-4 py-2.5 text-sm text-foreground border border-ink/15 rounded-full hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors"
               >
-                <div className="flex items-center gap-3 mb-1.5">
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{s.category}</span>
-                  <span className="w-4 h-px bg-accent/40 group-hover:bg-accent transition-colors" aria-hidden="true" />
-                </div>
-                <p className="text-sm sm:text-base text-foreground group-hover:text-accent transition-colors leading-relaxed">
-                  {s.prompt}
-                </p>
+                {prompt}
               </motion.button>
             ))}
           </div>
@@ -204,15 +217,15 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
                 </p>
               )}
 
-              {/* Respuesta — la voz de Molino */}
+              {/* Respuesta — la voz de Molino, espacio editorial amplio, nunca una burbuja */}
               {turn.answer && (
-                <div className="mt-3 pl-4 sm:pl-5 border-l border-ink/15">
-                  <div className="flex items-center gap-2 mb-3">
+                <div className="mt-4 pl-4 sm:pl-6 border-l border-ink/15 max-w-2xl">
+                  <div className="flex items-center gap-2 mb-4">
                     <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: elementColor }} aria-hidden="true" />
                     <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Molino</span>
                   </div>
-                  <div className="space-y-3">
-                    <p className="text-sm sm:text-base text-foreground leading-relaxed">{turn.answer.summary}</p>
+                  <div className="space-y-4">
+                    <p className="font-heading text-base sm:text-lg text-foreground leading-[1.6]">{turn.answer.summary}</p>
                     {turn.answer.alignment && (
                       <p className="text-sm sm:text-base text-muted leading-relaxed italic">{turn.answer.alignment}</p>
                     )}
@@ -247,7 +260,7 @@ export default function ChatWithMolino({ profile }: ChatWithMolinoProps) {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Preguntale algo a tu mapa…"
+            placeholder="¿Qué querés entender de vos?"
             className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
             aria-label="Tu pregunta para tu mapa"
           />

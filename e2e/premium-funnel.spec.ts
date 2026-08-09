@@ -1,49 +1,61 @@
 import { test, expect } from '@playwright/test';
 
+// /profile es hoy un dashboard de scroll único (ProfileHub) — no hay más
+// rutas ?tab=intelligence ni un botón "Volver a mi mapa" (eso pertenecía al
+// ProfileTabs legacy, ya no montado). El gate de Premium vive en el
+// capítulo "04 · La lectura profunda" (LecturaProfunda → PremiumGate).
 test.describe('Premium Funnel E2E', () => {
-  test('Premium Gate visible on Intelligence chapter (ProfileHub)', async ({ page }) => {
-    // Use URL params to go directly to intelligence tab (server-side)
-    await page.goto('/profile?dob=1990-01-15&tab=intelligence');
+  test('PremiumGate visible en el capítulo "04 · La lectura profunda"', async ({ page }) => {
+    await page.goto('/profile?dob=1990-01-15');
     await page.waitForLoadState('networkidle');
-    
-    // Check page loads - ProfileHub is visible
-    await expect(page.locator('button:has-text("Volver a mi mapa")').first()).toBeVisible({ timeout: 15000 });
-    
-    // Check PremiumGate paywall is visible - use actual headline text
+
+    // Las piezas gratis (siempre visibles, sin paywall) — confirma que
+    // llegamos al capítulo correcto antes de buscar el gate.
+    await expect(page.getByRole('heading', { name: 'Tus patrones' })).toBeVisible({ timeout: 15000 });
+
+    // El paywall — headline real del diccionario (t.premium.headline).
     await expect(page.locator('h3:has-text("Ya conocés tus piezas")').first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('PremiumGate shows price and payment methods', async ({ page }) => {
-    // Go directly to intelligence tab
-    await page.goto('/profile?dob=1990-01-15&tab=intelligence');
+  test('PremiumGate muestra precio y métodos de pago', async ({ page }) => {
+    await page.goto('/profile?dob=1990-01-15');
     await page.waitForLoadState('networkidle');
-    
-    // Check price displayed - actual format is "$8 USD"
+
     await expect(page.locator('text=/\\$8/').first()).toBeVisible({ timeout: 15000 });
-    
-    // Check Mercado Pago button - actual text is "Pagar con Mercado Pago"
     await expect(page.locator('button:has-text("Pagar con Mercado Pago")').first()).toBeVisible({ timeout: 15000 });
   });
 
-  test('PremiumGate blocks double click', async ({ page }) => {
-    await page.goto('/profile?dob=1990-01-15&tab=intelligence');
+  test('PremiumGate bloquea doble click', async ({ page }) => {
+    await page.goto('/profile?dob=1990-01-15');
     await page.waitForLoadState('networkidle');
-    
+
     const mpButton = page.locator('button:has-text("Pagar con Mercado Pago")').first();
-    
-    // Force click to avoid navigation blocking the second click
+
+    // Trial click: no navega de verdad, solo confirma que el botón sigue
+    // siendo clickeable (no se duplica ni se rompe con clicks repetidos).
     await mpButton.click({ trial: true });
     await expect(mpButton).toBeVisible();
   });
 
-  test('Recovery form visible and functional', async ({ page }) => {
-    await page.goto('/profile?dob=1990-01-15&tab=intelligence');
+  test('Formulario de recuperación visible y funcional', async ({ page }) => {
+    await page.goto('/profile?dob=1990-01-15');
     await page.waitForLoadState('networkidle');
-    
-    // The recovery button is blocked by a fixed bottom bar - use force click
-    await page.locator('button:has-text("Recuperar acceso")').first().click({ force: true });
-    
-    // Check recovery form
-    await expect(page.locator('input[placeholder*="pago" i], input[placeholder*="ID" i]').first()).toBeVisible({ timeout: 10000 });
+
+    // Sin force: esperamos a que el botón esté realmente hidratado y
+    // clickeable — con force:true el click puede "pasar" antes de que
+    // React adjunte el listener, dejando el estado sin cambiar.
+    await page.locator('button:has-text("Recuperar acceso")').first().click();
+
+    // Labels ahora asociados vía htmlFor/id (antes el placeholder no
+    // contenía "pago" ni "ID" — el locator original nunca podía matchear).
+    await expect(page.getByLabel('Mercado Pago ID:')).toBeVisible({ timeout: 10000 });
+  });
+
+  test('Usuario sin Premium no ve "Preguntale a tu Molino" ni la interpretación (06)', async ({ page }) => {
+    await page.goto('/profile?dob=1990-01-15');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.getByRole('heading', { name: 'Tus patrones' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByRole('heading', { name: 'Preguntale a tu Molino' })).toHaveCount(0);
   });
 });

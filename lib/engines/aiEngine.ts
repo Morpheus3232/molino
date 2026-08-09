@@ -1,3 +1,4 @@
+import { extractJSON, looksLikeJSON } from './aiResponseParser';
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
 
 export interface AIInterpretation {
@@ -17,6 +18,15 @@ export interface AIInterpretation {
 }
 
 const AI_TIMEOUT_MS = 20_000;
+
+/**
+ * Fallback when OPENROUTER_MODEL is unset/empty. Must stay a model that
+ * actually returns the requested JSON contract — meta-llama/llama-3.1-8b-
+ * instruct:free (the old default) is discontinued on the free tier and
+ * ignores the JSON schema, so an unset env var used to silently degrade
+ * Premium output instead of just failing loud.
+ */
+export const OPENROUTER_MODEL_DEFAULT = 'deepseek/deepseek-v4-flash';
 
 /**
  * Single retry on transient failures only (network error, timeout, or a 5xx
@@ -234,7 +244,7 @@ export async function generateWithOpenRouter(
   template?: string
 ): Promise<AIInterpretation> {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  const model = process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.1-8b-instruct:free';
+  const model = process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT;
 
   if (!apiKey) {
     throw new Error('OPENROUTER_API_KEY no configurada');
@@ -355,17 +365,23 @@ Formato de respuesta JSON:
 }
 
 function parseAIResponse(content: string): AIInterpretation {
-  try {
-    const parsed = JSON.parse(content);
+  const result = extractJSON(content);
+  if (result.ok) {
+    const parsed = result.data;
     return {
-      narrative: parsed.narrative || '',
-      detailedInsights: parsed.detailedInsights || [],
-      recommendations: parsed.recommendations || [],
-      reflectionQuestions: parsed.reflectionQuestions || [],
-      poeticSummary: parsed.poeticSummary || '',
+      narrative: typeof parsed.narrative === 'string' ? parsed.narrative : '',
+      detailedInsights: Array.isArray(parsed.detailedInsights) ? parsed.detailedInsights : [],
+      recommendations: Array.isArray(parsed.recommendations) ? parsed.recommendations : [],
+      reflectionQuestions: Array.isArray(parsed.reflectionQuestions) ? parsed.reflectionQuestions : [],
+      poeticSummary: typeof parsed.poeticSummary === 'string' ? parsed.poeticSummary : '',
       rawResponse: content,
     };
-  } catch {
+  }
+
+  // Not recoverable JSON: if it looked like JSON but failed to parse (e.g.
+  // truncated), don't split it into prose sections — that would show broken
+  // JSON fragments as "insights". Only the plain-prose fallback below is safe.
+  if (!looksLikeJSON(content)) {
     const sections = content.split(/\n\n/);
     return {
       narrative: sections[0] || 'Una conexión profunda y significativa.',
@@ -376,6 +392,17 @@ function parseAIResponse(content: string): AIInterpretation {
       rawResponse: content,
     };
   }
+
+  // Looked like JSON (fenced/braces/quotes) but couldn't be recovered —
+  // never surface the broken JSON itself as narrative text.
+  return {
+    narrative: 'Una conexión profunda y significativa.',
+    detailedInsights: [],
+    recommendations: [],
+    reflectionQuestions: [],
+    poeticSummary: 'El encuentro revela una historia de posibilidades.',
+    rawResponse: content,
+  };
 }
 
 export function generateFallbackInterpretation(

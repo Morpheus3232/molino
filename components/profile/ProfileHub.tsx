@@ -15,7 +15,7 @@ import MapVisualization from "@/components/profile/MapVisualization";
 import ProfileSummaryTable from "@/components/profile/ProfileSummaryTable";
 import WorldConnections from "@/components/profile/WorldConnections";
 import CircleAlignment from "@/components/profile/CircleAlignment";
-import FullReadingAccordion from "@/components/profile/FullReadingAccordion";
+import LecturaProfunda from "@/components/profile/LecturaProfunda";
 import ActionButtons from "@/components/profile/ActionButtons";
 import type { ProfileTab } from "./ProfileTabs";
 
@@ -266,10 +266,10 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 04 · TU LECTURA PROFUNDA — Desbloqueada
+          CAPÍTULO 04 · TU LECTURA PROFUNDA — Premium
           ═══════════════════════════════════════════════ */}
       <motion.div {...chapterReveal}>
-        <FullReadingAccordion profile={profile} />
+        <LecturaProfunda profile={profile} />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════

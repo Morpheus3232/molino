@@ -15,7 +15,7 @@ import type { DailyEnergyResult } from './dailyEnergyEngine';
 import type { TimingResult } from './timingEngine';
 import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
-import { buildPersonalCode, buildPatterns, buildTensions, ELEMENT_PACE } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, ELEMENT_PACE } from './synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 
 // ============================================================
@@ -84,6 +84,23 @@ export type InterpretationType =
 export interface ConversationTurn {
   question: string;
   answer: string;
+  /** Compact highlights of the reading-level interpretation (corePattern,
+   * howYouOperate, closingSynthesis) so follow-up questions keep the same
+   * structural grounding without re-sending the whole object. Optional. */
+  answerHighlights?: string;
+}
+
+/**
+ * Structural context from the premium reading (type=personal_profile) that the
+ * user just unlocked. The chat sends it once per question so the model can
+ * answer against the SAME interpretation the user already read — never
+ * repeating the reading verbatim, just grounding on it. Never persisted.
+ */
+export interface ReadingContext {
+  corePattern?: { what?: string; source?: string };
+  howYouOperate?: string;
+  closingSynthesis?: string;
+  tensions?: string[];
 }
 
 export interface InterpretationRequest {
@@ -92,6 +109,7 @@ export interface InterpretationRequest {
   question?: string;
   template?: string;
   conversationHistory?: ConversationTurn[];
+  readingContext?: ReadingContext;
 }
 
 export interface MolinoInterpretation {
@@ -207,12 +225,15 @@ export function buildMolinoContext(
  * The AI's role is to INTERPRET, not to CALCULATE.
  */
 export function buildIntelligencePrompt(request: InterpretationRequest): string {
-  const { type, context, question, template, conversationHistory } = request;
+  const { type, context, question, template, conversationHistory, readingContext } = request;
   const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
 
   const conversationContext = conversationHistory?.length
     ? `\nCONVERSACIÓN PREVIA (misma sesión — la pregunta actual puede ser continuación de esto):\n${conversationHistory
-        .map((turn, i) => `${i + 1}. Usuario preguntó: "${turn.question}"\n   Molino respondió: "${turn.answer}"`)
+        .map((turn, i) => {
+          const highlights = turn.answerHighlights ? ` | clave: ${turn.answerHighlights}` : '';
+          return `${i + 1}. Usuario preguntó: "${turn.question}"\n   Molino respondió: "${turn.answer}${highlights}"`;
+        })
         .join('\n')}\n`
     : '';
 
@@ -284,42 +305,64 @@ ${timingCtx ? `TIMING (para la intención "${timingCtx.intention}" que el usuari
 
 TAREA: Escribí la síntesis premium del perfil completo del usuario, como una lectura con arco narrativo — no una lista de datos sueltos.
 
+CONTEXTO GRATUITO (el usuario ya vio esto antes de llegar acá — NO lo repitas):
+- Tu Mapa: identidad (Life Path, signo solar, animal chino, arquetipo)
+- Tus Patrones: qué sistemas se cruzan y qué palabra los conecta
+- Tus Reglas: qué hacer y qué evitar, derivadas del perfil
+- Tu Momento: si el momento actual es favorable o de preparación
+- Timing: ventana de acción concreta para una intención
+
+El usuario está leyendo la sección "La conversación entre tus sistemas" — por eso pagó.
+Cada campo debe aportar algo que las piezas gratuitas NO pudieron decir.
+
 IMPORTANTE:
-- El campo "timing" debe explicar POR QUÉ el momento actual importa dentro de la identidad
+- "summary": NO es una descripción del perfil. Es la síntesis CONECTIVA — qué aparece
+  cuando los sistemas del usuario se leen juntos como un solo relato. Debe responder:
+  "¿Qué patrón emergente se revela cuando juntás numerología, astrología, zodiaco chino
+  y ciclos personales?" No re expliques qué es un Life Path, qué es Aries o qué es un Caballo.
+- "alignment": NO es una reformulación del summary. Es el significado ESPECÍFICO para la
+  vida de esta persona AHORA — qué consecuencia concreta tiene el patrón descrito en el
+  summary sobre su situación actual. Es donde el patrón se traduce en vida vivida.
+- "timing" debe explicar POR QUÉ el momento actual importa dentro de la identidad
   del usuario (archetype, elemento) — no repitas el tema del año/día personal como si fuera
-  la novedad, eso ya se le mostró en otra sección.
+  la novedad, eso ya se le mostró en Tu Momento.
 - Si no hay MOMENTO ACTUAL disponible, no inventes un score ni un tema.
 - Si no hay TIMING disponible, no menciones ninguna intención ni recomendación de timing.
 - "corePattern": nombrá UN patrón central real (ej. cómo el Life Path y la Expresión, o el
   elemento y el arquetipo, se refuerzan o se tensionan entre sí), decí de qué dos señales sale,
   y por qué importa. No inventes una convergencia si las señales no dicen realmente lo mismo —
   en ese caso describí la señal más fuerte sola.
-- "howYouOperate": traducí el perfil a comportamiento observable ("cuando tenés que elegir
-  entre X e Y, tu patrón tiende a..."), no a rasgos abstractos ("sos comunicativo").
+- "howYouOperate": traducí el perfil a comportamiento observable — no digas "sos comunicativo"
+  o "valorás la libertad". Mostrá el patrón EN ACCIÓN: "cuando tenés que elegir entre
+  profundizar en una opción o mantener varias abiertas, tu patrón tiende a...". El usuario
+  debe reconocerse en la descripción porque describe lo que HACE, no lo que ES.
 - "relationalNote": usá SOLO los animales afines/desafiantes reales listados arriba. Si no hay
   relaciones listadas, dejá este campo vacío en vez de inventar una dinámica.
 - "closingSynthesis": una o dos frases memorables y compartibles que conecten quién es esta
   persona, dónde está (su momento) y qué hacer ahora. Es el cierre, tiene que poder
   leerse solo, fuera de contexto, y seguir siendo específico de este perfil.
 - "tensions": basate en un desafío real del arquetipo o en una fricción entre dos señales
-  concretas del perfil — nunca una frase que podría aplicar a cualquier persona.
+  concretas del perfil — nunca una frase que podría aplicar a cualquier persona. NO repitas
+  las tensiones que el usuario ya vio en la sección gratuita "Tus Tensiones".
+- "strengths": NO repitas las fortalezas que ya aparecen en "Cómo funcionás". Mostrá
+  capacidades que emergen de la COMBINACIÓN de sistemas, no fortalezas individuales.
 
 Generá una respuesta JSON con:
 {
   "opening": "Una frase fuerte que sintetice quién es esta persona, derivada del perfil real — no una definición genérica de su Life Path",
-  "summary": "Síntesis del perfil en 2-3 oraciones",
-  "corePattern": { "what": "el patrón central", "source": "de qué señales sale (ej. Life Path 4 + elemento Tierra)", "whyItMatters": "por qué importa" },
-  "alignment": "Cómo los elementos del perfil se conectan entre sí",
-  "tensions": ["tensión 1, real y trazable", "tensión 2"],
-  "howYouOperate": "Comportamiento observable derivado del perfil, en 2-3 oraciones",
+  "summary": "Síntesis conectiva: qué patrón emergente aparece cuando los sistemas del usuario se leen juntos — 2-3 oraciones, no repetir datos ya mostrados",
+  "corePattern": { "what": "el patrón central", "source": "de qué dos señales sale (ej. Life Path 4 + elemento Tierra)", "whyItMatters": "por qué importa" },
+  "alignment": "Qué significa ese patrón para la vida concreta de esta persona ahora — no cómo se conectan los datos, sino qué cambia en la práctica",
+  "tensions": ["tensión 1, real y trazable, diferente de las tensions gratuitas", "tensión 2"],
+  "howYouOperate": "El patrón en acción: qué hace esta persona cuando enfrenta una decisión real, no qué rasgo tiene — 2-3 oraciones",
   "relationalNote": "Qué tipo de energías complementan o generan fricción, basado en las relaciones reales del animal chino (vacío si no hay datos)",
   "timing": "Por qué el momento actual importa dentro de la identidad del usuario",
   "suggestedNextStep": "Una acción concreta y personalizada",
   "closingSynthesis": "Cierre memorable y compartible en 1-2 frases",
-  "strengths": ["fortaleza 1", "fortaleza 2", "fortaleza 3"],
-  "whatToConsider": ["consideración 1", "consideración 2"],
+  "strengths": ["fortaleza que emerge de la combinación de sistemas, no de un solo dato", "fortaleza 2"],
+  "whatToConsider": ["qué no se puede saber con este sistema, si corresponde"],
   "confidence": "Alta/Media/Baja - basado en los datos disponibles",
-  "limitations": ["limitación 1"]
+  "limitations": ["Los sistemas simbólicos son herramientas de reflexión, no ciencia"]
 }`;
     }
 
@@ -476,10 +519,30 @@ Generá una respuesta JSON con:
         lifePath: userProfile.lifePath,
         element: userProfile.element,
       } as UserProfile);
+      const questionRules = buildRules({
+        lifePath: userProfile.lifePath,
+        element: userProfile.element,
+        archetypeInfo: {
+          description: numerology.archetypeDescription,
+          strengths: numerology.archetypeStrengths,
+          challenges: numerology.archetypeChallenges,
+        },
+        sunSign: astrology.sunSign,
+        chineseZodiac: chineseZodiac.animal,
+      } as UserProfile);
       const animal = chineseZodiac.animal as Animal;
       const friends = getFriends(animal);
       const challenging = getChallenging(animal);
       const dailyEnergy = context.dailyEnergy;
+      const timingCtx = context.timing;
+      const readingBlock = readingContext
+        ? `CONTEXTO DE LA LECTURA PREMIUM (interpretación previa que el usuario ya leyó — usala como GROUNDING, NO la repitas verbatim):
+${readingContext.corePattern?.what ? `- Patrón central: ${readingContext.corePattern.what} (${readingContext.corePattern.source || 'fuente'})` : ''}
+${readingContext.howYouOperate ? `- Cómo opera en la práctica: ${readingContext.howYouOperate}` : ''}
+${readingContext.closingSynthesis ? `- Síntesis de cierre: ${readingContext.closingSynthesis}` : ''}
+${readingContext.tensions?.length ? `- Tensiones destacadas: ${readingContext.tensions.join(' | ')}` : ''}
+`
+        : '';
 
       return `${rolePrompt}
 
@@ -489,12 +552,16 @@ CÓDIGO PERSONAL:
 PATRONES YA CALCULADOS:
 ${patterns.map(p => `- ${p.label}: ${p.keyword} (${p.sources.join(' + ')})`).join('\n')}
 ${questionTensions.length ? `TENSIONES YA DETECTADAS:\n${questionTensions.map(t => `- ${t.title}: ${t.evidence}`).join('\n')}\n` : ''}
+${questionRules.length ? `REGLAS PRÁCTICAS YA DERIVADAS DEL PERFIL:\n${questionRules.map(r => `- ${r.rule}`).join('\n')}\n` : ''}
 ${friends.length || challenging.length ? `RELACIONES REALES DE TU ANIMAL CHINO (${animal}):\n- Afines: ${friends.map(f => f.animal).join(', ') || 'sin datos'}\n- Desafiantes: ${challenging.map(c => c.animal).join(', ') || 'sin datos'}\n` : ''}
 ${dailyEnergy ? `MOMENTO ACTUAL: energía del día ${dailyEnergy.overallScore}/100, tema "${dailyEnergy.theme}"\n` : ''}
-${conversationContext}
+${timingCtx ? `TIMING (intención "${timingCtx.intention}"): score ${timingCtx.timingScore}/100 — ${timingCtx.explanation}\n` : ''}
+${readingBlock}${conversationContext}
 PREGUNTA DEL USUARIO: "${question || ''}"
 
 TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este es el chat contextual de Molino, no un asistente genérico.
+- Si recibiste CONTEXTO DE LA LECTURA PREMIUM: usalo como grounding para responder LA PREGUNTA específica, no para repetir la lectura. La respuesta debe sumar un ángulo nuevo sobre la pregunta, no resumir lo que el usuario ya leyó.
+- Las REGLAS PRÁCTICAS y el TIMING son datos ya calculados: usalos solo cuando la pregunta los ponga en juego, no los listes de forma genérica.
 
 REGLAS ESTRICTAS:
 - Nunca inventes un dato (número, signo, animal, relación) que no esté en el CONTEXTO DEL USUARIO o en los bloques de arriba.
@@ -637,10 +704,10 @@ export function generateFallbackInterpretation(
   let suggestedNextStep = '';
   let strengths: string[] = [userProfile.archetype, `Elemento ${userProfile.element}`, `${userProfile.sunSign}`];
   let tensions: string[] = ['Las diferencias son oportunidades de crecimiento.'];
-  let whatToConsider: string[] = [
-    'Estas interpretaciones se basan en sistemas simbólicos.',
-    'Son herramientas de reflexión, no predicciones.',
-  ];
+  // El disclaimer epistemológico vive en limitations (se muestra una vez en la
+  // línea de confianza). whatToConsider queda para contenido propio de cada
+  // tipo — no repite la misma advertencia dos veces en la UI.
+  let whatToConsider: string[] = [];
   let narrativeExtension: Pick<
     MolinoInterpretation,
     'opening' | 'corePattern' | 'howYouOperate' | 'relationalNote' | 'closingSynthesis'
@@ -720,8 +787,7 @@ export function generateFallbackInterpretation(
             : 'Todo perfil tiene una zona de crecimiento; la clave es reconocerla a tiempo.'),
       ];
       whatToConsider = [
-        'Estas interpretaciones se basan en sistemas simbólicos, no en predicciones científicas.',
-        'Son herramientas de reflexión — el patrón que ves acá describe una tendencia, no un destino fijo.',
+        'Interpretá esto como una lente, no como un diagnóstico: señala una tendencia, no un destino fijo.',
       ];
 
       narrativeExtension = {

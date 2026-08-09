@@ -7,8 +7,10 @@ import {
   type InterpretationType,
   type MolinoInterpretation,
   type ConversationTurn,
+  type ReadingContext,
 } from '@/lib/engines/intelligenceEngine';
-import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
+import { generateWithOpenAI, generateWithClaude, OPENROUTER_MODEL_DEFAULT } from '@/lib/engines/aiEngine';
+import { extractJSON, isValidMolinoInterpretation } from '@/lib/engines/aiResponseParser';
 import { generateWithRouting, getProviderStatus, type Provider } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
@@ -39,6 +41,10 @@ interface RequestBody {
   provider?: 'openai' | 'claude' | 'openrouter' | 'omniroute';
   /** Prior Q&A turns from the current chat session only — never persisted server-side. */
   conversationHistory?: ConversationTurn[];
+  /** Compact structural context from the premium reading (type=personal_profile)
+   * the user already read — grounds chat answers without re-sending the full
+   * interpretation. Never persisted server-side. */
+  readingContext?: ReadingContext;
   /** Device-bound premium token: proves the request comes from a paying device. */
   premiumToken?: string;
 }
@@ -50,7 +56,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, premiumToken } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
@@ -64,8 +70,27 @@ export async function POST(req: NextRequest) {
       ? conversationHistory.slice(-MAX_HISTORY_TURNS).map((t) => ({
           question: String(t.question || '').slice(0, MAX_TURN_CHARS),
           answer: String(t.answer || '').slice(0, MAX_TURN_CHARS),
+          answerHighlights: t.answerHighlights ? String(t.answerHighlights).slice(0, MAX_TURN_CHARS) : undefined,
         }))
       : [];
+
+    // Cap readingContext: the chat grounds on the premium reading's structural
+    // fields only, never the raw payload — small, bounded, compact.
+    const safeReadingContext: ReadingContext | undefined = readingContext
+      ? {
+          corePattern: readingContext.corePattern
+            ? {
+                what: String(readingContext.corePattern.what || '').slice(0, MAX_TURN_CHARS),
+                source: String(readingContext.corePattern.source || '').slice(0, 200),
+              }
+            : undefined,
+          howYouOperate: readingContext.howYouOperate ? String(readingContext.howYouOperate).slice(0, MAX_TURN_CHARS) : undefined,
+          closingSynthesis: readingContext.closingSynthesis ? String(readingContext.closingSynthesis).slice(0, MAX_TURN_CHARS) : undefined,
+          tensions: Array.isArray(readingContext.tensions)
+            ? readingContext.tensions.slice(0, 3).map((t) => String(t).slice(0, MAX_TURN_CHARS))
+            : undefined,
+        }
+      : undefined;
 
     if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
       // Device-bound token verification: prevents share-URL bypass.
@@ -112,7 +137,7 @@ export async function POST(req: NextRequest) {
     const generationStartedAt = Date.now();
 
     try {
-      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory });
+      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext });
 
       const compatResult = compatibility || {
         user: profile,
@@ -151,12 +176,42 @@ export async function POST(req: NextRequest) {
       // parse it straight instead of shuffling it through the old
       // narrative/detailedInsights/recommendations/reflectionQuestions shape,
       // which was a different (compatibility-only) schema than what we asked for.
+      //
+      // Models don't always return clean JSON: some wrap it in ```json fences,
+      // some double-encode it, and some nest the whole payload inside
+      // "summary". extractJSON recovers those known-safe wrappers only — never
+      // arbitrary prose — so a malformed response falls through to the legacy
+      // branch below instead of leaking raw JSON into the UI.
       let structured: Partial<MolinoInterpretation> | null = null;
       if (aiResponse.rawResponse) {
-        try {
-          structured = JSON.parse(aiResponse.rawResponse);
-        } catch {
-          structured = null;
+        const extracted = extractJSON(aiResponse.rawResponse);
+        if (extracted.ok) {
+          const data: Record<string, unknown> = { ...extracted.data };
+          // Some models return corePattern as a JSON-string instead of an
+          // object. Recover it only when it unambiguously parses to the
+          // expected shape; otherwise drop the field rather than fabricate
+          // one — the rest of the reading (summary/alignment/...) still
+          // renders fine with corePattern absent (UI guards on its presence).
+          if (typeof data.corePattern === 'string') {
+            let recovered: unknown;
+            try {
+              recovered = JSON.parse(data.corePattern);
+            } catch {
+              recovered = null;
+            }
+            const isCorePatternShape =
+              recovered !== null &&
+              typeof recovered === 'object' &&
+              typeof (recovered as Record<string, unknown>).what === 'string' &&
+              typeof (recovered as Record<string, unknown>).source === 'string' &&
+              typeof (recovered as Record<string, unknown>).whyItMatters === 'string';
+            if (isCorePatternShape) {
+              data.corePattern = recovered;
+            } else {
+              delete data.corePattern;
+            }
+          }
+          structured = isValidMolinoInterpretation(data) ? data : null;
         }
       }
 
@@ -198,7 +253,7 @@ export async function POST(req: NextRequest) {
       await recordGeneration({
         type,
         provider: providerUsed,
-        model: providerUsed === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : providerUsed === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.1-8b-instruct:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
+        model: providerUsed === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : providerUsed === 'openrouter' ? (process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT) : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
         durationMs: Date.now() - generationStartedAt,
         status: 'error',
         errorReason: err instanceof Error ? err.message : String(err),
