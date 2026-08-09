@@ -97,10 +97,18 @@ export interface ConversationTurn {
  * repeating the reading verbatim, just grounding on it. Never persisted.
  */
 export interface ReadingContext {
+  summary?: string;
   corePattern?: { what?: string; source?: string };
   howYouOperate?: string;
   closingSynthesis?: string;
   tensions?: string[];
+  alignment?: string;
+  timing?: string;
+  strengths?: string[];
+  whatToConsider?: string[];
+  suggestedNextStep?: string;
+  opening?: string;
+  relationalNote?: string;
 }
 
 export interface InterpretationRequest {
@@ -315,37 +323,58 @@ CONTEXTO GRATUITO (el usuario ya vio esto antes de llegar acá — NO lo repitas
 El usuario está leyendo la sección "La conversación entre tus sistemas" — por eso pagó.
 Cada campo debe aportar algo que las piezas gratuitas NO pudieron decir.
 
+CONTRATO INTELECTUAL — CONVERGENCIA ENTRE SISTEMAS:
+
+1. SISTEMAS DEBEN INTERACTUAR
+Los sistemas disponibles pueden incluir: Numerología, Astrología, Zodíaco Chino, Ciclos, Elementos, Arquetipos.
+No describas sistemas independientemente cuando estés produciendo un insight Premium.
+Cada insight principal debe surgir de la interacción de al menos DOS señales provenientes de sistemas distintos.
+
+2. NO REPETIR EL MAPA
+No reformules literalmente: "Life Path 5 = libertad", "Aries = iniciativa", "Caballo = movimiento".
+Eso ya está disponible gratuitamente.
+La lectura Premium debe explicar: qué ocurre CUANDO esas señales coexisten.
+
+3. BUSCAR RESONANCIA O TENSIÓN
+La interacción puede ser: resonancia, amplificación, compensación, contradicción, desajuste, dependencia, cambio de fase.
+No asumir siempre que los sistemas "confirman" lo mismo.
+Una verdadera tensión es preferible a una lista de desafíos.
+
+4. INFERENCIA NUEVA
+Cada insight principal debe contener una consecuencia que NO aparezca literalmente en los datos de entrada.
+Ejemplo:
+DATOS: Life Path 5 → libertad, Caballo → movimiento, Año 5 → cambio
+NO alcanza: "Tenés mucha energía de cambio." (es obvio)
+Buscar: "Cuando libertad, movimiento y cambio se amplifican simultáneamente, el riesgo deja de ser la falta de oportunidades y pasa a ser la dificultad para sostener una elección." (eso es una inferencia)
+
+5. COMPORTAMIENTO
+Siempre que sea posible, convertir la inferencia en comportamiento observable.
+No: "Esto genera una energía intensa."
+Sí: "Podés sentir entusiasmo al abrir una posibilidad y perder interés cuando aparece la parte repetitiva que permite convertirla en resultado."
+
+6. TENSIÓN ESTRUCTURAL
+"tensions" no debe ser una lista de defectos genéricos.
+Una tensión debería tener conceptualmente: Sistema A + Sistema B → fricción/resonancia → manifestación observable.
+Ejemplo conceptual: "Life Path 5 necesita libertad mientras el ciclo actual aumenta la necesidad de cambio. La tensión aparece cuando confundir movimiento con progreso hace difícil sostener una decisión el tiempo suficiente."
+
+7. CLOSING SYNTHESIS
+La síntesis final debe ser consecuencia de la lectura.
+No generar frases inspiracionales genéricas.
+Debe responder: "¿Cuál es la única idea que emerge cuando miro todo el mapa junto?"
+Debe ser: específica, memorable, conectiva, no obvia, coherente con los insights anteriores.
+
 IMPORTANTE:
-- "summary": NO es una descripción del perfil. Es la síntesis CONECTIVA — qué aparece
-  cuando los sistemas del usuario se leen juntos como un solo relato. Debe responder:
-  "¿Qué patrón emergente se revela cuando juntás numerología, astrología, zodiaco chino
-  y ciclos personales?" No re expliques qué es un Life Path, qué es Aries o qué es un Caballo.
-- "alignment": NO es una reformulación del summary. Es el significado ESPECÍFICO para la
-  vida de esta persona AHORA — qué consecuencia concreta tiene el patrón descrito en el
-  summary sobre su situación actual. Es donde el patrón se traduce en vida vivida.
-- "timing" debe explicar POR QUÉ el momento actual importa dentro de la identidad
-  del usuario (archetype, elemento) — no repitas el tema del año/día personal como si fuera
-  la novedad, eso ya se le mostró en Tu Momento.
+- "summary": NO es una descripción del perfil. Es la síntesis CONECTIVA — qué aparece cuando los sistemas del usuario se leen juntos como un solo relato. Debe responder: "¿Qué patrón emergente se revela cuando juntás numerología, astrología, zodiaco chino y ciclos personales?" No re expliques qué es un Life Path, qué es Aries o qué es un Caballo.
+- "alignment": NO es una reformulación del summary. Es el significado ESPECÍFICO para la vida de esta persona AHORA — qué consecuencia concreta tiene el patrón descrito en el summary sobre su situación actual. Es donde el patrón se traduce en vida vivida.
+- "timing" debe explicar POR QUÉ el momento actual importa dentro de la identidad del usuario (archetype, elemento) — no repitas el tema del año/día personal como si fuera la novedad, eso ya se le mostró en Tu Momento.
 - Si no hay MOMENTO ACTUAL disponible, no inventes un score ni un tema.
 - Si no hay TIMING disponible, no menciones ninguna intención ni recomendación de timing.
-- "corePattern": nombrá UN patrón central real (ej. cómo el Life Path y la Expresión, o el
-  elemento y el arquetipo, se refuerzan o se tensionan entre sí), decí de qué dos señales sale,
-  y por qué importa. No inventes una convergencia si las señales no dicen realmente lo mismo —
-  en ese caso describí la señal más fuerte sola.
-- "howYouOperate": traducí el perfil a comportamiento observable — no digas "sos comunicativo"
-  o "valorás la libertad". Mostrá el patrón EN ACCIÓN: "cuando tenés que elegir entre
-  profundizar en una opción o mantener varias abiertas, tu patrón tiende a...". El usuario
-  debe reconocerse en la descripción porque describe lo que HACE, no lo que ES.
-- "relationalNote": usá SOLO los animales afines/desafiantes reales listados arriba. Si no hay
-  relaciones listadas, dejá este campo vacío en vez de inventar una dinámica.
-- "closingSynthesis": una o dos frases memorables y compartibles que conecten quién es esta
-  persona, dónde está (su momento) y qué hacer ahora. Es el cierre, tiene que poder
-  leerse solo, fuera de contexto, y seguir siendo específico de este perfil.
-- "tensions": basate en un desafío real del arquetipo o en una fricción entre dos señales
-  concretas del perfil — nunca una frase que podría aplicar a cualquier persona. NO repitas
-  las tensiones que el usuario ya vio en la sección gratuita "Tus Tensiones".
-- "strengths": NO repitas las fortalezas que ya aparecen en "Cómo funcionás". Mostrá
-  capacidades que emergen de la COMBINACIÓN de sistemas, no fortalezas individuales.
+- "corePattern": nombrá UN patrón central real (ej. cómo el Life Path y la Expresión, o el elemento y el arquetipo, se refuerzan o se tensionan entre sí), decí de qué dos señales sale, y por qué importa. No inventes una convergencia si las señales no dicen realmente lo mismo — en ese caso describí la señal más fuerte sola.
+- "howYouOperate": traducí el perfil a comportamiento observable — no digas "sos comunicativo" o "valorás la libertad". Mostrá el patrón EN ACCIÓN: "cuando tenés que elegir entre profundizar en una opción o mantener varias abiertas, tu patrón tiende a...". El usuario debe reconocerse en la descripción porque describe lo que HACE, no lo que ES.
+- "relationalNote": usá SOLO los animales afines/desafiantes reales listados arriba. Si no hay relaciones listadas, dejá este campo vacío en vez de inventar una dinámica.
+- "closingSynthesis": una o dos frases memorables y compartibles que conecten quién es esta persona, dónde está (su momento) y qué hacer ahora. Es el cierre, tiene que poder leerse solo, fuera de contexto, y seguir siendo específico de este perfil.
+- "tensions": basate en un desafío real del arquetipo o en una fricción entre dos señales concretas del perfil — nunca una frase que podría aplicar a cualquier persona. NO repitas las tensiones que el usuario ya vio en la sección gratuita "Tus Tensiones".
+- "strengths": NO repitas las fortalezas que ya aparecen en "Cómo funcionás". Mostrá capacidades que emergen de la COMBINACIÓN de sistemas, no fortalezas individuales.
 
 Generá una respuesta JSON con:
 {
@@ -537,10 +566,18 @@ Generá una respuesta JSON con:
       const timingCtx = context.timing;
       const readingBlock = readingContext
         ? `CONTEXTO DE LA LECTURA PREMIUM (interpretación previa que el usuario ya leyó — usala como GROUNDING, NO la repitas verbatim):
+${readingContext.summary ? `- Resumen conectivo: ${readingContext.summary}` : ''}
 ${readingContext.corePattern?.what ? `- Patrón central: ${readingContext.corePattern.what} (${readingContext.corePattern.source || 'fuente'})` : ''}
+${readingContext.alignment ? `- Qué significa para tu vida ahora: ${readingContext.alignment}` : ''}
 ${readingContext.howYouOperate ? `- Cómo opera en la práctica: ${readingContext.howYouOperate}` : ''}
 ${readingContext.closingSynthesis ? `- Síntesis de cierre: ${readingContext.closingSynthesis}` : ''}
 ${readingContext.tensions?.length ? `- Tensiones destacadas: ${readingContext.tensions.join(' | ')}` : ''}
+${readingContext.strengths?.length ? `- Fortalezas combinadas: ${readingContext.strengths.join(' | ')}` : ''}
+${readingContext.timing ? `- Por qué el momento importa: ${readingContext.timing}` : ''}
+${readingContext.suggestedNextStep ? `- Próximo paso sugerido: ${readingContext.suggestedNextStep}` : ''}
+${readingContext.opening ? `- Apertura: ${readingContext.opening}` : ''}
+${readingContext.relationalNote ? `- Nota relacional: ${readingContext.relationalNote}` : ''}
+${readingContext.whatToConsider?.length ? `- Consideraciones: ${readingContext.whatToConsider.join(' | ')}` : ''}
 `
         : '';
 

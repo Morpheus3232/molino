@@ -78,6 +78,7 @@ export async function POST(req: NextRequest) {
     // fields only, never the raw payload — small, bounded, compact.
     const safeReadingContext: ReadingContext | undefined = readingContext
       ? {
+          summary: readingContext.summary ? String(readingContext.summary).slice(0, MAX_TURN_CHARS) : undefined,
           corePattern: readingContext.corePattern
             ? {
                 what: String(readingContext.corePattern.what || '').slice(0, MAX_TURN_CHARS),
@@ -89,6 +90,17 @@ export async function POST(req: NextRequest) {
           tensions: Array.isArray(readingContext.tensions)
             ? readingContext.tensions.slice(0, 3).map((t) => String(t).slice(0, MAX_TURN_CHARS))
             : undefined,
+          alignment: readingContext.alignment ? String(readingContext.alignment).slice(0, MAX_TURN_CHARS) : undefined,
+          timing: readingContext.timing ? String(readingContext.timing).slice(0, MAX_TURN_CHARS) : undefined,
+          strengths: Array.isArray(readingContext.strengths)
+            ? readingContext.strengths.slice(0, 3).map((t) => String(t).slice(0, MAX_TURN_CHARS))
+            : undefined,
+          whatToConsider: Array.isArray(readingContext.whatToConsider)
+            ? readingContext.whatToConsider.slice(0, 2).map((t) => String(t).slice(0, MAX_TURN_CHARS))
+            : undefined,
+          suggestedNextStep: readingContext.suggestedNextStep ? String(readingContext.suggestedNextStep).slice(0, MAX_TURN_CHARS) : undefined,
+          opening: readingContext.opening ? String(readingContext.opening).slice(0, MAX_TURN_CHARS) : undefined,
+          relationalNote: readingContext.relationalNote ? String(readingContext.relationalNote).slice(0, MAX_TURN_CHARS) : undefined,
         }
       : undefined;
 
