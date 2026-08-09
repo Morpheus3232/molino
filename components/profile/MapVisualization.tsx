@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 
@@ -34,19 +33,21 @@ function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
 export default function MapVisualization({ profile, className = "" }: MapVisualizationProps) {
   const scores = useMemo(() => getSystemScores(profile), [profile]);
   const display = getZodiacDisplay(profile.chineseZodiac);
-  const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetypeData = ARCHETYPES[lifePath];
+  const avgScore = Math.round((scores.numerology + scores.astrology + scores.zodiac) / 3);
 
   const size = 280;
   const cx = size / 2;
   const cy = size / 2;
-  const maxR = 80;
+  const maxR = 104;
 
-  // 3 axes at 120° apart, starting from top (-90°)
+  // 3 axes at 120° apart, offset off-horizontal so no vertex lands
+  // level with the centered archetype label (was -90°, put NUM
+  // dead-center-left and colliding with the name every time).
   const axes = SYSTEMS.map((s, i) => ({
     ...s,
-    angle: -90 + i * 120,
+    angle: -60 + i * 120,
     score: scores[s.key as keyof typeof scores],
   }));
 
@@ -66,9 +67,9 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
     >
       <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <radialGradient id="mapGrad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#6B4C7A" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#2E5C8A" stopOpacity="0.05" />
+          <radialGradient id="mapGrad" cx="50%" cy="45%" r="65%">
+            <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0.03" />
           </radialGradient>
         </defs>
 
@@ -76,18 +77,19 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
         {rings.map((ratio) => {
           const pts = axes.map((a) => polarToCartesian(cx, cy, maxR * ratio, a.angle));
           const d = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ") + " Z";
-          return <path key={ratio} d={d} fill="none" stroke="currentColor" strokeOpacity={ratio === 1 ? "0.1" : "0.05"} strokeWidth="0.8" />;
+          return <path key={ratio} d={d} fill="none" stroke="currentColor" strokeOpacity={ratio === 1 ? "0.18" : "0.09"} strokeWidth="0.8" />;
         })}
 
         {/* Axis lines */}
         {axes.map((a) => {
           const end = polarToCartesian(cx, cy, maxR, a.angle);
-          return <line key={a.key} x1={cx} y1={cy} x2={end.x} y2={end.y} stroke="currentColor" strokeOpacity="0.07" strokeWidth="0.8" />;
+          return <line key={a.key} x1={cx} y1={cy} x2={end.x} y2={end.y} stroke="currentColor" strokeOpacity="0.12" strokeWidth="0.8" />;
         })}
 
-        {/* Score fill */}
+        {/* Score fill — restrained: one accent, not a color per system
+            (per DESIGN.md, system colors are an 8px-dot accent only). */}
         <path d={scorePathD} fill="url(#mapGrad)" />
-        <path d={scorePathD} fill="none" stroke="#6B4C7A" strokeWidth="1.5" strokeOpacity="0.6" strokeLinejoin="round" />
+        <path d={scorePathD} fill="none" stroke="var(--color-accent)" strokeWidth="1.5" strokeOpacity="0.7" strokeLinejoin="round" />
 
         {/* Score dots + score labels */}
         {axes.map((a, i) => {
@@ -136,25 +138,18 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
         })}
       </svg>
 
-      {/* Center content — archetype + data row */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none px-[18%]">
-        <p className="font-heading text-base sm:text-lg lg:text-xl font-bold tracking-tight text-foreground leading-tight uppercase">
-          {archetypeData?.name || profile.archetype}
+      {/* Center content — aggregate readout. The archetype name and
+          per-system data already live in the identity block beside
+          the chart; repeating them here just crowded the plot area
+          and collided with the NUM vertex. This is the one number
+          that only exists here. */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+        <p className="font-mono text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+          {avgScore}
         </p>
-        <div className="flex items-center justify-center gap-x-3 gap-y-1 mt-1.5 text-xs text-muted">
-          <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#6B4C7A" }} />
-            {profile.lifePath}
-          </span>
-          <span className="text-ink/20">·</span>
-          <span className="flex items-center gap-1">
-            {symbol} {profile.sunSign}
-          </span>
-          <span className="text-ink/20">·</span>
-          <span className="flex items-center gap-1">
-            {display.emoji} {display.name}
-          </span>
-        </div>
+        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted mt-1">
+          Índice general
+        </p>
       </div>
     </div>
   );
