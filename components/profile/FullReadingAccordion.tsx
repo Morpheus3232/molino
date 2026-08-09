@@ -30,11 +30,12 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
   const momentState = buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme);
   const timing = analyzeTiming(profile, new Date(), "start_project");
 
-  const sections = [
+  const rawSections = [
     {
       id: "patrones",
       title: "Tus patrones",
       description: "Lo que emerge cuando los sistemas convergen",
+      hasContent: patterns.length > 0,
       content: patterns.map((p) => (
         <motion.div key={p.label} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="py-6 border-b border-ink/10 last:border-b-0">
           <h4 className="font-heading text-xl font-semibold mb-2" style={{ color: elementColor }}>
@@ -55,7 +56,8 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
       id: "tensiones",
       title: "Tus tensiones",
       description: "Dónde dos sistemas apuntan en direcciones opuestas",
-      content: tensions.length > 0 ? tensions.map((t) => (
+      hasContent: tensions.length > 0,
+      content: tensions.map((t) => (
         <motion.div key={t.title} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="py-6 border-b border-ink/10 last:border-b-0">
           <h4 className="font-heading text-xl font-semibold mb-2" style={{ color: elementColor }}>
             {t.title}
@@ -70,15 +72,14 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
             ))}
           </div>
         </motion.div>
-      )) : (
-        <p className="text-sm text-muted py-6">No se detectaron tensiones cruzadas significativas en tu perfil.</p>
-      ),
+      )),
     },
     {
       id: "reglas",
       title: "Tus reglas",
       description: "Principios operativos derivados de tu mapa",
-      content: rules.length > 0 ? (
+      hasContent: rules.length > 0,
+      content: (
         <ol className="space-y-4">
           {rules.map((r, i) => (
             <motion.li key={r.rule} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05, duration: 0.4 }} className="py-4 border-t border-ink/10 first:border-t-0">
@@ -97,28 +98,26 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
             </motion.li>
           ))}
         </ol>
-      ) : (
-        <p className="text-sm text-muted py-6">No hay reglas derivadas para este perfil.</p>
       ),
     },
     {
       id: "momento",
       title: "Qué significa para ti ahora",
       description: "La síntesis de tu momento actual",
-      content: momentState?.narrative ? (
+      hasContent: !!momentState?.narrative,
+      content: (
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="py-6">
-          <p className="font-heading text-xl sm:text-2xl leading-[1.5] text-foreground max-w-3xl">
-            {momentState.narrative}
+          <p className="text-base text-foreground leading-relaxed max-w-3xl">
+            {momentState?.narrative}
           </p>
         </motion.div>
-      ) : (
-        <p className="text-sm text-muted py-6">Sin datos de momento actual.</p>
       ),
     },
     {
       id: "timing",
       title: "Tu timing",
       description: "Momentos favorables según tu ciclo personal",
+      hasContent: true,
       content: (
         <div className="py-6 space-y-4">
           <div>
@@ -160,6 +159,7 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
       id: "evolucion",
       title: "Tu evolución",
       description: "Cómo se conectan tus ciclos con tu camino",
+      hasContent: true,
       content: (
         <div className="py-6 space-y-6">
           <div>
@@ -191,6 +191,10 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
       ),
     },
   ];
+
+  // Solo se listan las secciones con contenido real — una tarjeta que abre
+  // para decir "no hay nada acá" no ayuda a nadie.
+  const sections = rawSections.filter((s) => s.hasContent);
 
   return (
     <section className="py-16 sm:py-24" aria-labelledby="reading-heading">
