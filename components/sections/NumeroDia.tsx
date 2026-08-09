@@ -49,11 +49,11 @@ export default function NumeroDia() {
             </div>
             {isMaster && (
               <p className="font-mono text-xs tracking-[0.2em] uppercase text-accent mt-3">
-                {reflection.title === "Maestro"
+                {dailyNumber === 11
                   ? "Número Maestro — Intuición y visión"
-                  : reflection.title === "Constructor"
+                  : dailyNumber === 22
                     ? "Número Maestro — Constructor visionario"
-                    : reflection.title === "Guía"
+                    : dailyNumber === 33
                       ? "Número Maestro de Maestros — Servicio"
                       : "Número de la Riqueza — Autoridad"}
               </p>
@@ -90,6 +90,7 @@ export default function NumeroDia() {
           className="order-1 lg:order-2 flex justify-center lg:justify-end"
         >
           <div className="relative flex items-center justify-center w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80">
+            <span className="sr-only">Molino — el molino vivo</span>
             <div
               className="absolute inset-0 rounded-full blur-3xl opacity-20 -z-10"
               style={{ background: "radial-gradient(circle, var(--color-accent), transparent 70%)" }}

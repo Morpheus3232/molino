@@ -5,7 +5,7 @@ colors:
   ground: "#0A0A0C"
   ground-alt: "#16161A"
   ink: "#F3F1EA"
-  muted: "#A6A69C"
+  muted: "#B0B0A6"
   border: "#2A2A2E"
   accent: "#7C8CFF"
   grano-oro: "#F5C77E"
@@ -13,6 +13,10 @@ colors:
   sistema-numerologia: "#6B4C7A"
   sistema-astrologia: "#2E5C8A"
   sistema-zodiaco: "#C49A2A"
+  biblioteca-libro: "#D4A843"
+  biblioteca-articulo: "#77808E"
+  biblioteca-video: "#897095"
+  biblioteca-sitio: "#708F7B"
 typography:
   display:
     fontFamily: "Archivo Black, sans-serif"
@@ -44,8 +48,9 @@ Estrategia: **restringida** (neutros + un acento), no una paleta de colores por 
 - **Grano** `#F5C77E` → `#8C7355` — textura Grainient, literal "molienda", solo visible en el hero.
 - **Molino** `#F3F1EA` (ink) — un solo trazo, como en el header. No se recolorea por sección.
 - **Acento** `#7C8CFF` — halo suave detrás del molino en el hero, botones, links.
-- **Texto** `#F3F1EA` sobre fondo oscuro (contraste >12:1); `#A6A69C` para texto secundario.
+- **Texto** `#F3F1EA` sobre fondo oscuro (contraste >12:1); `#B0B0A6` para texto secundario (corregido desde `#A6A69C`, ver auditoría técnica más abajo).
 - **Colores por sistema** (preexistentes en el código, documentados acá para que no lean como deriva): numerología `#6B4C7A`, astrología `#2E5C8A`, zodíaco chino `#C49A2A`. Uso restringido: un punto de 8px junto al nombre del sistema (`TresSistemas.tsx`) — nunca como fondo de sección ni como acento general. No introducir colores nuevos por sistema sin agregarlos acá primero.
+- **Colores de tipo de fuente en `/biblioteca`** (preexistentes, documentados acá para que no lean como deriva): libro `#D4A843`, artículo `#77808E`, video `#897095`, sitio web `#708F7B` (`TYPE_META` en `BibliotecaContent.tsx`). Uso restringido: texto + fondo al 15% de opacidad en el pill de tipo de fuente — todos verificados en ≥4.5:1 sobre `#0A0A0C`. Mismo patrón que los colores por sistema: no agregar un color nuevo por tipo sin sumarlo acá primero.
 
 ## Typography
 
