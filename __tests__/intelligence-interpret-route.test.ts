@@ -131,4 +131,22 @@ describe('POST /api/intelligence/interpret — AI validity contract', () => {
     expect(data.aiStatus).toBe('invalid');
     expect(data.fallback).not.toBeNull();
   });
+
+  test('json_schema strict-mode nulls on optional fields are normalized to absent, not rejected', async () => {
+    // strict:true requires every property present, so the model returns
+    // explicit null for fields it has nothing to say about instead of
+    // omitting them — must still validate as a real interpretation.
+    mockAiResponse(JSON.stringify({
+      ...VALID_CONTRACT,
+      opening: null,
+      relationalNote: null,
+      corePattern: null,
+    }));
+    const res = await POST(req(BASE_BODY));
+    const data = await res.json();
+    expect(data.aiStatus).toBe('valid');
+    expect(data.ai).not.toBeNull();
+    expect(data.ai.opening).toBeFalsy();
+    expect(data.ai.corePattern).toBeFalsy();
+  });
 });
