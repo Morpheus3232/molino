@@ -37,7 +37,7 @@ const principles = [
   {
     id: "sin-tracking",
     title: "Sin tracking invasivo",
-    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. Medimos lo mínimo para saber si Molino te sirve —qué páginas se visitan, sin nombre ni fecha de nacimiento asociada— y nunca lo vendemos ni lo compartimos con terceros con fines publicitarios.",
+    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. El único registro de uso (qué páginas visitás) vive exclusivamente en tu dispositivo —vos podés verlo y borrarlo en /analytics— y nunca sale de tu navegador: no llega a ningún servidor de Molino ni de terceros.",
   },
 ];
 
@@ -175,7 +175,9 @@ export default function FilosofiaContent() {
               Tradiciones que nos nutren
             </h2>
             <p className="text-muted max-w-xl">
-              Molino sintetiza múltiples corrientes. No inventamos: curamos, integramos y ponemos a dialogar.
+              Molino sintetiza múltiples corrientes, pero tu mapa se calcula únicamente a partir de tres:
+              numerología, astrología y zodíaco chino. El resto es contexto y lectura que enriquece la
+              interpretación — no alimenta el cálculo.
             </p>
           </div>
 

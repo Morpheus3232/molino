@@ -12,7 +12,7 @@ import Logo from "@/components/ui/Logo";
 /* ═══ Primary: siempre visibles en desktop ═══ */
 const PRIMARY = [
   { href: "/profile", label: "Mi mapa" },
-  { href: "/hoy", label: "Hoy" },
+  { href: "/hoy", label: "Energía de hoy" },
 ];
 
 /* ═══ Secondary: dentro del dropdown "Explorar" ═══ */
