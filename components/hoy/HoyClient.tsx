@@ -118,7 +118,7 @@ export default function HoyClient() {
       const timing = analyzeTiming(profile, today, "start_project");
       const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
       const moment = buildOrientation(energy, momentState, timing);
-      const topAff = getTopAffinityHighlights(profile);
+      const topAff = getTopAffinityHighlights(profile, userCtx.country);
 
       setDayState({ energy, convergence, timing, momentState, moment, topAffinities: topAff });
       setPreviousSnapshot(getPreviousSnapshot(profile.birthDate, todayStr));
@@ -191,7 +191,11 @@ export default function HoyClient() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
+      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
+          esperando para siempre a que la animación de salida del skeleton
+          termine — mismo bug reproducido en /affinity. Sin mode="wait"
+          cross-fadea y sí commitea. */}
+      <AnimatePresence>
         {loading || !mounted || (profile && !dayState && !calcFailed) ? (
           <motion.div
             key="loading"

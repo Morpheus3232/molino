@@ -36,7 +36,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
     });
   }, [userCountry]);
 
-  const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
+  const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile, userCountry), [profile, userCountry]);
 
   // Cuántas de TODAS las entidades conocidas resuenan con el animal
   // del usuario — un hecho real y agregado (varía según el animal: cada uno

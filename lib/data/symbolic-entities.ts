@@ -509,3 +509,34 @@ export function getAvailableTypes(): EntityType[] {
   const types = new Set(SYMBOLIC_ENTITIES.map(e => e.type));
   return Array.from(types);
 }
+
+/**
+ * Entity types with real per-country coverage (ciudades, artistas,
+ * universidades, equipos all have dedicated country data files —
+ * cities-argentina.ts, artists-chile.ts, etc.). "country" itself and
+ * global-only types (brand, movie) are excluded: narrowing "país" to just
+ * the user's own country would be a trivial, uninformative single result.
+ */
+const COUNTRY_FOCUSABLE_TYPES: EntityType[] = ["city", "artist", "university", "team"];
+
+function normalizeCountryName(name: string): string {
+  return name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+}
+
+/**
+ * Narrows entities to the user's own country for types where that's
+ * meaningful — un visitante de Chile ve ciudades/artistas/universidades/
+ * equipos de Chile, no una mezcla global de docenas de países. Si no hay
+ * datos locales para ese tipo (país sin cobertura todavía), devuelve la
+ * lista completa sin filtrar: mejor mostrar algo global que una página vacía.
+ */
+export function focusEntitiesByCountry(
+  entities: SymbolicEntity[],
+  type: EntityType,
+  userCountry?: string,
+): SymbolicEntity[] {
+  if (!userCountry || !COUNTRY_FOCUSABLE_TYPES.includes(type)) return entities;
+  const normalized = normalizeCountryName(userCountry);
+  const local = entities.filter(e => normalizeCountryName(e.country) === normalized);
+  return local.length > 0 ? local : entities;
+}
