@@ -1,5 +1,6 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import { createHmac, timingSafeEqual } from 'crypto';
+import { SITE_URL } from '@/lib/seo';
 
 function getRequiredEnv(name: string): string {
   const value = process.env[name];
@@ -34,6 +35,20 @@ export function isTestCredentials(): boolean {
 
 export function getWebhookSecret(): string {
   return getRequiredEnv('MP_WEBHOOK_SECRET');
+}
+
+/**
+ * Base URL for the webhook `notification_url` MP calls back on and the
+ * `back_urls`/`return_url`/`cancel_url` the user is redirected to after
+ * paying (PayPal's lib/paypal.ts reuses this same function). Previously read
+ * from NEXT_PUBLIC_BASE_URL — an env var that turned out unreliable to keep
+ * correctly set in Vercel, and didn't need the NEXT_PUBLIC_ prefix in the
+ * first place (both call sites are server-only, never bundled to the
+ * client). SITE_URL is the same canonical production URL app/sitemap.ts
+ * already uses — one hardcoded source of truth, no env var to drift.
+ */
+export function getBaseUrl(): string {
+  return SITE_URL;
 }
 
 export function normalizeName(name: string): string {
@@ -78,7 +93,7 @@ export async function createPreference(
     description: 'Acceso completo: numerología profunda, afinidad geográfica, compatibilidad y timing.',
   };
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = getBaseUrl();
 
   const response = await preference.create({
     body: {
