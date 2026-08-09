@@ -147,7 +147,7 @@ export default function UniversityHeader() {
                 aria-haspopup="true"
               >
                 Explorar
-                <ChevronDown className={`w-3 h-3 transition-transform ${exploreOpen ? "rotate-180" : ""}`} />
+                <ChevronDown aria-hidden="true" focusable="false" className={`w-3 h-3 transition-transform ${exploreOpen ? "rotate-180" : ""}`} />
               </button>
 
               <AnimatePresence>
@@ -189,7 +189,7 @@ export default function UniversityHeader() {
               aria-controls="mobile-menu"
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
             >
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {menuOpen ? <X aria-hidden="true" focusable="false" className="w-5 h-5" /> : <Menu aria-hidden="true" focusable="false" className="w-5 h-5" />}
             </button>
           </div>
         </div>
