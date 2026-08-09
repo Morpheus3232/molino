@@ -180,3 +180,99 @@ export function isValidMolinoInterpretation(data: unknown): data is MolinoContra
 
   return true;
 }
+
+/**
+ * Reasoning models sometimes leak their chain-of-thought / task-planning
+ * into the actual field VALUES instead of writing the interpretation —
+ * observed in production as `"summary": "We need to produce JSON with
+ * fields as specified. Use data from user context..."`. That text is
+ * formally valid JSON (right types, right shape) so isValidMolinoInterpretation
+ * accepts it — structural validation alone cannot catch this. These patterns
+ * catch the model narrating its own instructions instead of writing Spanish
+ * interpretive prose for the user.
+ */
+const META_LANGUAGE_PATTERNS: RegExp[] = [
+  /\bwe need to\b/i,
+  /\bproduce (the |a )?json\b/i,
+  /\buse data from\b/i,
+  /\bthe user\b/i,
+  /\bthe model\b/i,
+  /\bfields as specified\b/i,
+  /\bsystem prompt\b/i,
+  /\b(the )?instructions?\b/i,
+  /\breasoning\b/i,
+  /\banalysis\b/i,
+  // The model echoing its own schema/field names back as prose ("summary:
+  // connective synthesis...", "corePattern: object with what, source...") —
+  // legitimate Spanish interpretive text never contains these as labels.
+  /\b(summary|corepattern|alignment|tensions|opening|closingsynthesis|whyitmatters|suggestednextstep|whattoconsider)\s*:/i,
+];
+
+function containsMetaLanguageLeak(value: unknown): boolean {
+  if (typeof value !== 'string' || !value) return false;
+  return META_LANGUAGE_PATTERNS.some((pattern) => pattern.test(value));
+}
+
+export interface SemanticValidationResult {
+  valid: boolean;
+  /** Machine-readable reason for telemetry (e.g. "meta_language_leak:summary"). */
+  reason?: string;
+}
+
+/**
+ * Second validation layer, run only after isValidMolinoInterpretation
+ * confirms the shape is structurally correct. Rejects content that is
+ * technically well-formed but not an actual human interpretation: chain-of-
+ * thought leaks, or a summary too short/long to be real prose.
+ *
+ * Deliberately NOT a giant keyword blocklist — combines meta-language
+ * detection across every user-facing string field (top-level, nested
+ * corePattern, and array items) with a plain length sanity check on the
+ * mandatory summary field.
+ */
+export function validateMolinoInterpretationSemantics(data: MolinoContractJSON): SemanticValidationResult {
+  const STRING_FIELDS: Array<keyof MolinoContractJSON> = [
+    'summary',
+    'alignment',
+    'timing',
+    'opening',
+    'howYouOperate',
+    'relationalNote',
+    'closingSynthesis',
+    'suggestedNextStep',
+  ];
+  for (const field of STRING_FIELDS) {
+    if (containsMetaLanguageLeak(data[field])) {
+      return { valid: false, reason: `meta_language_leak:${field}` };
+    }
+  }
+
+  if (data.corePattern) {
+    for (const sub of ['what', 'source', 'whyItMatters'] as const) {
+      if (containsMetaLanguageLeak(data.corePattern[sub])) {
+        return { valid: false, reason: `meta_language_leak:corePattern.${sub}` };
+      }
+    }
+  }
+
+  const ARRAY_FIELDS: Array<keyof MolinoContractJSON> = ['strengths', 'tensions', 'whatToConsider', 'limitations'];
+  for (const field of ARRAY_FIELDS) {
+    const arr = data[field];
+    if (Array.isArray(arr) && arr.some((item) => containsMetaLanguageLeak(item))) {
+      return { valid: false, reason: `meta_language_leak:${field}` };
+    }
+  }
+
+  // Real interpretive prose reads as a sentence or two, never a one-word
+  // stub nor a multi-thousand-character dump (the CoT leak observed in
+  // production ran to several paragraphs).
+  const summaryLength = data.summary.trim().length;
+  if (summaryLength < 15) {
+    return { valid: false, reason: 'summary_too_short' };
+  }
+  if (summaryLength > 3000) {
+    return { valid: false, reason: 'summary_too_long' };
+  }
+
+  return { valid: true };
+}

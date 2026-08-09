@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { extractJSON, looksLikeJSON, isValidMolinoInterpretation } from '@/lib/engines/aiResponseParser';
+import { extractJSON, looksLikeJSON, isValidMolinoInterpretation, validateMolinoInterpretationSemantics } from '@/lib/engines/aiResponseParser';
 
 const CONTRACT = {
   summary: 'Una síntesis conectiva real.',
@@ -135,5 +135,69 @@ describe('isValidMolinoInterpretation', () => {
     expect(isValidMolinoInterpretation('not an object')).toBe(false);
     expect(isValidMolinoInterpretation(null)).toBe(false);
     expect(isValidMolinoInterpretation([1, 2])).toBe(false);
+  });
+});
+
+describe('validateMolinoInterpretationSemantics', () => {
+  test('accepts a real, well-formed interpretation', () => {
+    expect(validateMolinoInterpretationSemantics(CONTRACT).valid).toBe(true);
+  });
+
+  test('rejects chain-of-thought leak in summary', () => {
+    const result = validateMolinoInterpretationSemantics({
+      ...CONTRACT,
+      summary: 'We need to produce JSON with fields as specified. Use data from user context...',
+    });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('meta_language_leak:summary');
+  });
+
+  test('rejects the model echoing its own field names as prose', () => {
+    const result = validateMolinoInterpretationSemantics({
+      ...CONTRACT,
+      summary: 'summary: connective synthesis: pattern emergent when systems read together.',
+    });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('meta_language_leak:summary');
+  });
+
+  test('rejects chain-of-thought leak nested inside corePattern', () => {
+    const result = validateMolinoInterpretationSemantics({
+      ...CONTRACT,
+      corePattern: { what: 'corePattern: object with what, source, whyItMatters', source: 'x', whyItMatters: 'y' },
+    });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('meta_language_leak:corePattern.what');
+  });
+
+  test('rejects meta-language leak inside an array field (tensions)', () => {
+    const result = validateMolinoInterpretationSemantics({
+      ...CONTRACT,
+      tensions: ['tensions: list of real tensions, different from free section.'],
+    });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('meta_language_leak:tensions');
+  });
+
+  test('rejects a summary too short to be real prose', () => {
+    const result = validateMolinoInterpretationSemantics({ ...CONTRACT, summary: 'ok' });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('summary_too_short');
+  });
+
+  test('rejects a summary far longer than any real interpretation would be', () => {
+    const result = validateMolinoInterpretationSemantics({ ...CONTRACT, summary: 'x'.repeat(3001) });
+    expect(result.valid).toBe(false);
+    expect(result.reason).toBe('summary_too_long');
+  });
+
+  test('does not flag legitimate Spanish prose mentioning ordinary words like "instrucciones" in context', () => {
+    // Sanity check: the patterns target English meta-language, not any
+    // mention of related Spanish concepts in real interpretive text.
+    const result = validateMolinoInterpretationSemantics({
+      ...CONTRACT,
+      whatToConsider: ['Seguí tus propias instrucciones internas antes que las ajenas.'],
+    });
+    expect(result.valid).toBe(true);
   });
 });

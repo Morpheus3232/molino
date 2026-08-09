@@ -10,7 +10,7 @@ import {
   type ReadingContext,
 } from '@/lib/engines/intelligenceEngine';
 import { generateWithOpenAI, generateWithClaude, OPENROUTER_MODEL_DEFAULT } from '@/lib/engines/aiEngine';
-import { extractJSON, isValidMolinoInterpretation } from '@/lib/engines/aiResponseParser';
+import { extractJSON, isValidMolinoInterpretation, validateMolinoInterpretationSemantics } from '@/lib/engines/aiResponseParser';
 import { generateWithRouting, getProviderStatus, type Provider } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
@@ -180,9 +180,9 @@ export async function POST(req: NextRequest) {
       // Models don't always return clean JSON: some wrap it in ```json fences,
       // some double-encode it, and some nest the whole payload inside
       // "summary". extractJSON recovers those known-safe wrappers only — never
-      // arbitrary prose — so a malformed response falls through to the legacy
-      // branch below instead of leaking raw JSON into the UI.
+      // arbitrary prose.
       let structured: Partial<MolinoInterpretation> | null = null;
+      let aiInvalidReason: string | undefined;
       if (aiResponse.rawResponse) {
         const extracted = extractJSON(aiResponse.rawResponse);
         if (extracted.ok) {
@@ -211,42 +211,60 @@ export async function POST(req: NextRequest) {
               delete data.corePattern;
             }
           }
-          structured = isValidMolinoInterpretation(data) ? data : null;
+          if (isValidMolinoInterpretation(data)) {
+            // Structurally valid JSON is not the same as a real interpretation:
+            // reasoning models sometimes leak their chain-of-thought into the
+            // field VALUES ("summary": "We need to produce JSON with fields as
+            // specified..."), which passes the shape check above. This second
+            // pass rejects that content instead of presenting it as Molino's
+            // voice.
+            const semantic = validateMolinoInterpretationSemantics(data);
+            if (semantic.valid) {
+              structured = data;
+            } else {
+              aiInvalidReason = semantic.reason;
+            }
+          } else {
+            aiInvalidReason = 'structural_validation_failed';
+          }
+        } else {
+          aiInvalidReason = 'unparseable_response';
         }
+      } else {
+        aiInvalidReason = 'empty_response';
       }
 
-      aiResult = structured?.summary
-        ? {
-            summary: structured.summary || '',
-            alignment: structured.alignment || '',
-            timing: structured.timing || '',
-            strengths: structured.strengths || [],
-            tensions: structured.tensions || [],
-            whatToConsider: structured.whatToConsider || [],
-            suggestedNextStep: structured.suggestedNextStep || '',
-            confidence: structured.confidence || 'Alta',
-            limitations: structured.limitations?.length ? structured.limitations : ['Interpretación generada con IA.'],
-            opening: structured.opening,
-            corePattern: structured.corePattern,
-            howYouOperate: structured.howYouOperate,
-            relationalNote: structured.relationalNote,
-            closingSynthesis: structured.closingSynthesis,
-            rawContext: context,
-          }
-        : {
-            // Legacy shape fallback, kept in case the model ever ignores the
-            // requested JSON schema and free-forms prose instead.
-            summary: aiResponse.narrative || '',
-            alignment: aiResponse.detailedInsights?.[0] || '',
-            timing: aiResponse.detailedInsights?.[1] || '',
-            strengths: aiResponse.recommendations?.slice(1, 4) || [],
-            tensions: aiResponse.reflectionQuestions?.slice(0, 2) || [],
-            whatToConsider: aiResponse.detailedInsights?.slice(2, 5) || [],
-            suggestedNextStep: aiResponse.recommendations?.[0] || '',
-            confidence: 'Media',
-            limitations: ['Interpretación generada con IA.'],
-            rawContext: context,
-          };
+      // Invalid AI must never masquerade as a valid interpretation: no
+      // legacy narrative-shape fallback here anymore. If the model didn't
+      // produce a semantically sound MolinoInterpretation, aiResult stays
+      // null and the caller gets the honest deterministic `fallback` instead
+      // — never a placeholder string laundered through the `ai` field.
+      if (structured) {
+        aiResult = {
+          summary: structured.summary || '',
+          alignment: structured.alignment || '',
+          timing: structured.timing || '',
+          strengths: structured.strengths || [],
+          tensions: structured.tensions || [],
+          whatToConsider: structured.whatToConsider || [],
+          suggestedNextStep: structured.suggestedNextStep || '',
+          confidence: structured.confidence || 'Alta',
+          limitations: structured.limitations?.length ? structured.limitations : ['Interpretación generada con IA.'],
+          opening: structured.opening,
+          corePattern: structured.corePattern,
+          howYouOperate: structured.howYouOperate,
+          relationalNote: structured.relationalNote,
+          closingSynthesis: structured.closingSynthesis,
+          rawContext: context,
+        };
+      } else {
+        console.warn('[premium_ai_invalid]', JSON.stringify({
+          type,
+          provider: providerUsed,
+          model: aiResponse.model || 'unknown',
+          reason: aiInvalidReason,
+        }));
+      }
     } catch (err) {
       console.error('[/api/intelligence/interpret] AI error:', err);
       aiError = 'AI interpretation unavailable';
@@ -276,6 +294,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       fallback: sanitizeInterpretation(fallback),
       ai: aiResult ? sanitizeInterpretation(aiResult) : null,
+      // Explicit status so callers never have to infer "was this real AI?"
+      // from ai being truthy alone: 'valid' (aiResult is real), 'error' (the
+      // provider call threw), or 'invalid' (the provider responded but the
+      // content failed structural/semantic validation — see aiInvalidReason
+      // above / [premium_ai_invalid] log).
+      aiStatus: aiResult ? 'valid' : aiError ? 'error' : 'invalid',
       ...(aiError && { error: aiError }),
     });
   } catch (error) {
