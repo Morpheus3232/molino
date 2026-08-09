@@ -352,6 +352,13 @@ export async function generateWithOpenRouter(
         schema: MOLINO_INTERPRETATION_JSON_SCHEMA,
       },
     };
+    // Isolated experiment: production confirmed HTTP 200 + json_schema
+    // accepted structurally, but validateMolinoInterpretationSemantics still
+    // rejects the content (meta-language leak inside the field values, not a
+    // schema violation). Excluding reasoning tokens from the response is the
+    // next isolated variable to test — only for this contract, never for the
+    // legacy compatibility call below, which doesn't request json_schema at all.
+    requestBody.reasoning = { exclude: true };
   }
 
   const response = await fetchWithTimeoutAndRetry('https://openrouter.ai/api/v1/chat/completions', {

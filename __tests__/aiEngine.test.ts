@@ -173,4 +173,22 @@ describe('generateWithOpenRouter → structured output request', () => {
     const body = JSON.parse((init as RequestInit).body as string);
     expect(body.response_format).toBeUndefined();
   });
+
+  test('sends reasoning: { exclude: true } for the premium contract call (template provided)', async () => {
+    const fetchMock = mockOpenRouterContentCapturing(JSON.stringify({ summary: 'x' }));
+    await generateWithOpenRouter(USER, TARGET, RESULT, 'un template de buildIntelligencePrompt');
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.reasoning).toEqual({ exclude: true });
+  });
+
+  test('does NOT send reasoning for the legacy compatibility call (no template)', async () => {
+    const fetchMock = mockOpenRouterContentCapturing(JSON.stringify(LEGACY_PAYLOAD));
+    await generateWithOpenRouter(USER, TARGET, RESULT);
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.reasoning).toBeUndefined();
+  });
 });
