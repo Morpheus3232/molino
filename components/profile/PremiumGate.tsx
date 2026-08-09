@@ -119,6 +119,13 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         body: JSON.stringify({ name, birthDate }),
       });
       const data = await res.json();
+      // Re-sync the device-bound token whenever the server confirms premium:
+      // a returning visit can be premium (hasPremiumAccess) yet have no valid
+      // localStorage token (cleared storage, new browser/device), which would
+      // otherwise 403 every AI call downstream while this gate shows "unlocked".
+      if (data.premium === true && data.premiumToken) {
+        savePremiumTokenClient(data.premiumToken);
+      }
       return data.premium === true;
     } catch {
       return false;
