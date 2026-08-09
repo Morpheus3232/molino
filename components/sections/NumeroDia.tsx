@@ -32,6 +32,7 @@ export default function NumeroDia() {
 
   return (
     <section className="relative bg-background min-h-[85vh] overflow-hidden border-t border-ink/10">
+      <h1 className="sr-only">Molino — Mapa Personal de Autoconocimiento</h1>
       <div className="absolute inset-0 opacity-40 pointer-events-none">
         <Grainient timeSpeed={0.06} grainAmount={0.1} zoom={1.4} />
       </div>
