@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider = 'openai', conversationHistory, premiumToken } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, premiumToken } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
@@ -197,8 +197,8 @@ export async function POST(req: NextRequest) {
       aiError = 'AI interpretation unavailable';
       await recordGeneration({
         type,
-        provider,
-        model: provider === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : provider === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.1-8b-instruct:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
+        provider: providerUsed,
+        model: providerUsed === 'claude' ? (process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022') : providerUsed === 'openrouter' ? (process.env.OPENROUTER_MODEL || 'meta-llama/llama-3.1-8b-instruct:free') : (process.env.OPENAI_MODEL || 'gpt-4o-mini'),
         durationMs: Date.now() - generationStartedAt,
         status: 'error',
         errorReason: err instanceof Error ? err.message : String(err),

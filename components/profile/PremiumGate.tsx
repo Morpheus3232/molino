@@ -722,16 +722,20 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
               </motion.div>
             )}
 
-            {state === 'verifying_redirect' && (
-              <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-                <Logo className="w-8 h-8 text-accent mb-6" spinning />
-                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
-                <p className="text-sm text-muted">Volviste de Mercado Pago. Confirmando tu compra.</p>
-                {verificationError && (
-                  <p className="mt-4 text-sm text-red-600">{verificationError}</p>
-                )}
-              </motion.div>
-            )}
+            {state === 'verifying_redirect' && (() => {
+              const redirectMethod = getSearchParam('payment_method');
+              const providerLabel = redirectMethod === 'paypal' ? 'PayPal' : 'Mercado Pago';
+              return (
+                <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+                  <Logo className="w-8 h-8 text-accent mb-6" spinning />
+                  <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
+                  <p className="text-sm text-muted">Volviste de {providerLabel}. Confirmando tu compra.</p>
+                  {verificationError && (
+                    <p className="mt-4 text-sm text-red-600">{verificationError}</p>
+                  )}
+                </motion.div>
+              );
+            })()}
           </AnimatePresence>
         </motion.div>
       )}
