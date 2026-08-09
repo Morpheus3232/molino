@@ -200,6 +200,37 @@ describe('PayPal authentication', () => {
     expect(authHeader).toContain('Basic');
     expect(authHeader).toContain(Buffer.from('test-client-id:test-client-secret').toString('base64'));
   });
+
+  test('error de credenciales (invalid_client) da un mensaje claro sobre environment vs. credenciales', async () => {
+    vi.stubGlobal('fetch', vi.fn<FetchImpl>(async (url) => {
+      if (String(url).endsWith('/v1/oauth2/token')) {
+        return jsonResponse({ error: 'invalid_client', error_description: 'Client Authentication failed' }, 401, false);
+      }
+      return jsonResponse({ error: 'unexpected' }, 404, false);
+    }));
+
+    // PAYPAL_ENVIRONMENT='sandbox' en este archivo (línea 6) — invalid_client
+    // en sandbox dispara la rama que sugiere que las credenciales son de
+    // producción en vez de sandbox.
+    await expect(getAccessToken()).rejects.toThrow(/invalid_client/);
+  });
+
+  test('nunca expone client secret ni access token en el mensaje de error', async () => {
+    vi.stubGlobal('fetch', vi.fn<FetchImpl>(async (url) => {
+      if (String(url).endsWith('/v1/oauth2/token')) {
+        return jsonResponse({ error: 'invalid_client', error_description: 'Client Authentication failed' }, 401, false);
+      }
+      return jsonResponse({}, 404, false);
+    }));
+
+    try {
+      await getAccessToken();
+      throw new Error('should have thrown');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      expect(message).not.toContain('test-client-secret');
+    }
+  });
 });
 
 describe('PayPal validateOrder', () => {
