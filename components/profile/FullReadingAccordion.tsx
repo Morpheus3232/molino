@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import type { UserProfile } from "@/types/user";
 import { buildPatterns, buildTensions, buildRules, buildMomentState } from "@/lib/engines/synthesisEngine";
@@ -232,13 +233,14 @@ export default function FullReadingAccordion({ profile }: FullReadingAccordionPr
                   <p className="font-heading text-lg font-semibold text-foreground">{section.title}</p>
                   <p className="text-sm text-muted mt-0.5">{section.description}</p>
                 </div>
-                <span
-                  className="text-accent font-mono text-xs uppercase tracking-[0.2em] transition-transform"
-                  style={{
-                    transform: expanded === section.id ? "rotate(180deg)" : "rotate(0deg)",
-                  }}
-                >
+                <span className="flex items-center gap-2 text-accent font-mono text-xs uppercase tracking-[0.2em] shrink-0">
                   {expanded === section.id ? "Cerrar" : "Leer"}
+                  <ChevronDown
+                    aria-hidden="true"
+                    focusable="false"
+                    className="w-3.5 h-3.5 transition-transform"
+                    style={{ transform: expanded === section.id ? "rotate(180deg)" : "rotate(0deg)" }}
+                  />
                 </span>
               </button>
 
