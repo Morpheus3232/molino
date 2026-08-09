@@ -187,6 +187,20 @@ export async function POST(req: NextRequest) {
         const extracted = extractJSON(aiResponse.rawResponse);
         if (extracted.ok) {
           const data: Record<string, unknown> = { ...extracted.data };
+          // OpenRouter's json_schema structured output (strict mode) requires
+          // every property present, so optional fields the model has nothing
+          // to say about come back as explicit `null` instead of omitted.
+          // Normalize null → absent so isValidMolinoInterpretation and
+          // validateMolinoInterpretationSemantics see the same optional-field
+          // shape they always have (both treat "present but wrong type" as
+          // invalid, and null !== undefined).
+          const NULLABLE_OPTIONAL_FIELDS = [
+            'opening', 'alignment', 'howYouOperate', 'relationalNote',
+            'timing', 'suggestedNextStep', 'closingSynthesis', 'confidence', 'corePattern',
+          ] as const;
+          for (const field of NULLABLE_OPTIONAL_FIELDS) {
+            if (data[field] === null) delete data[field];
+          }
           // Some models return corePattern as a JSON-string instead of an
           // object. Recover it only when it unambiguously parses to the
           // expected shape; otherwise drop the field rather than fabricate

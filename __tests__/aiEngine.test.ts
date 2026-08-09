@@ -27,6 +27,21 @@ function mockOpenRouterContent(content: string) {
   );
 }
 
+/** Same as mockOpenRouterContent but returns the fetch mock so the caller
+ * can inspect exactly what was sent as the request body. */
+function mockOpenRouterContentCapturing(content: string) {
+  const fetchMock = vi.fn(async (_url: string, _init?: RequestInit) => ({
+    ok: true,
+    status: 200,
+    json: async () => ({
+      choices: [{ message: { content } }],
+      usage: { prompt_tokens: 10, completion_tokens: 20 },
+    }),
+  }));
+  vi.stubGlobal('fetch', fetchMock);
+  return fetchMock;
+}
+
 const LEGACY_PAYLOAD = {
   narrative: 'Una narrativa profunda sobre esta conexión.',
   detailedInsights: ['insight uno', 'insight dos'],
@@ -106,5 +121,56 @@ describe('OPENROUTER_MODEL_DEFAULT fallback', () => {
     mockOpenRouterContent(JSON.stringify(LEGACY_PAYLOAD));
     const result = await generateWithOpenRouter(USER, TARGET, RESULT);
     expect(result.model).toBe('some/other-model');
+  });
+});
+
+const MOLINO_CONTRACT_FIELDS = [
+  'opening', 'summary', 'corePattern', 'alignment', 'tensions', 'howYouOperate',
+  'relationalNote', 'timing', 'suggestedNextStep', 'closingSynthesis',
+  'strengths', 'whatToConsider', 'confidence', 'limitations',
+];
+
+describe('generateWithOpenRouter → structured output request', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  test('sends response_format: json_schema (strict) when a template is provided (premium contract)', async () => {
+    const fetchMock = mockOpenRouterContentCapturing(JSON.stringify({ summary: 'x' }));
+    await generateWithOpenRouter(USER, TARGET, RESULT, 'un template de buildIntelligencePrompt');
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+
+    expect(body.response_format).toBeDefined();
+    expect(body.response_format.type).toBe('json_schema');
+    expect(body.response_format.json_schema.strict).toBe(true);
+    expect(body.response_format.json_schema.name).toBe('molino_interpretation');
+  });
+
+  test('the JSON schema declares every field of the MolinoInterpretation contract', async () => {
+    const fetchMock = mockOpenRouterContentCapturing(JSON.stringify({ summary: 'x' }));
+    await generateWithOpenRouter(USER, TARGET, RESULT, 'un template de buildIntelligencePrompt');
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+    const schema = body.response_format.json_schema.schema;
+
+    expect(Object.keys(schema.properties).sort()).toEqual([...MOLINO_CONTRACT_FIELDS].sort());
+    expect(schema.required.sort()).toEqual([...MOLINO_CONTRACT_FIELDS].sort());
+    expect(schema.properties.corePattern.properties).toEqual({
+      what: { type: 'string' },
+      source: { type: 'string' },
+      whyItMatters: { type: 'string' },
+    });
+  });
+
+  test('does NOT send response_format for the legacy compatibility call (no template)', async () => {
+    const fetchMock = mockOpenRouterContentCapturing(JSON.stringify(LEGACY_PAYLOAD));
+    await generateWithOpenRouter(USER, TARGET, RESULT);
+
+    const [, init] = fetchMock.mock.calls[0];
+    const body = JSON.parse((init as RequestInit).body as string);
+    expect(body.response_format).toBeUndefined();
   });
 });
