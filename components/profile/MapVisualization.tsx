@@ -35,12 +35,11 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
   const display = getZodiacDisplay(profile.chineseZodiac);
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetypeData = ARCHETYPES[lifePath];
-  const avgScore = Math.round((scores.numerology + scores.astrology + scores.zodiac) / 3);
 
   const size = 280;
   const cx = size / 2;
   const cy = size / 2;
-  const maxR = 104;
+  const maxR = 108;
 
   // 3 axes at 120° apart, offset off-horizontal so no vertex lands
   // level with the centered archetype label (was -90°, put NUM
@@ -137,20 +136,6 @@ export default function MapVisualization({ profile, className = "" }: MapVisuali
           );
         })}
       </svg>
-
-      {/* Center content — aggregate readout. The archetype name and
-          per-system data already live in the identity block beside
-          the chart; repeating them here just crowded the plot area
-          and collided with the NUM vertex. This is the one number
-          that only exists here. */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-        <p className="font-mono text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-          {avgScore}
-        </p>
-        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted mt-1">
-          Índice general
-        </p>
-      </div>
     </div>
   );
 }

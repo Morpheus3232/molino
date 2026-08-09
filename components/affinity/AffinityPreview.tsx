@@ -14,6 +14,7 @@ import ReadingNumber from "@/components/ui/ReadingNumber";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 
 interface AffinityPreviewProps {
   profile: UserProfile;
@@ -22,7 +23,8 @@ interface AffinityPreviewProps {
 
 export default function AffinityPreview({ profile, onEnter }: AffinityPreviewProps) {
   const reducedMotion = useReducedMotion();
-  const highlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
+  const userCountry = useUserContext().country;
+  const highlights = useMemo(() => getTopAffinityHighlights(profile, userCountry), [profile, userCountry]);
 
   const main: AffinityResult | null = highlights[0] ?? null;
   const secondary = highlights.slice(1, 3);

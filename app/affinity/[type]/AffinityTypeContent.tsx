@@ -12,8 +12,7 @@ import {
   type AffinityResult,
 } from "@/lib/engines/affinityEngine";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
-import type { EntityType } from "@/lib/data/symbolic-entities";
-import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
+import { focusEntitiesByCountry, type EntityType, type SymbolicEntity } from "@/lib/data/symbolic-entities";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { useUserContext } from "@/lib/hooks/useUserContext";
@@ -46,20 +45,18 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
   const activeAnimal: Animal = selectedAnimal
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
+  // El score queda intacto (afinidad zodiacal pura). El país del usuario
+  // acota QUÉ entidades se muestran (ciudades/artistas/universidades/equipos
+  // de su propio país en vez de una mezcla global de docenas de países) —
+  // nunca cómo se puntúan.
+  const focusedEntities = useMemo(
+    () => focusEntitiesByCountry(entities, type, userCountry),
+    [entities, type, userCountry]
+  );
+
   const sorted = useMemo(
-    () => {
-      const results = calculateAllAffinityForAnimal(activeAnimal, entities);
-      if (!userCountry) return results;
-      // El score queda intacto (afinidad zodiacal pura). El país del usuario
-      // solo adelanta entidades de su país como tiebreaker de presentación.
-      return [...results].sort((a, b) => {
-        if (b.score !== a.score) return b.score - a.score;
-        const aMatch = a.entity.country === userCountry ? 1 : 0;
-        const bMatch = b.entity.country === userCountry ? 1 : 0;
-        return bMatch - aMatch;
-      });
-    },
-    [activeAnimal, entities, userCountry]
+    () => calculateAllAffinityForAnimal(activeAnimal, focusedEntities),
+    [activeAnimal, focusedEntities]
   );
   
   // Filter results based on search query
@@ -77,7 +74,11 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
+      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
+          esperando para siempre a que la animación de salida del skeleton
+          termine — reproducido en local, la página no pasa nunca de
+          "Cargando afinidades...". Sin mode="wait" cross-fadea y sí commitea. */}
+      <AnimatePresence>
         {!mounted ? (
           <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
@@ -110,6 +111,11 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 <p className="text-sm text-muted mt-4 max-w-xl">
                   Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} aparecen sus patrones.
                 </p>
+                {userCountry && focusedEntities.length < entities.length && (
+                  <p className="text-xs text-accent mt-3">
+                    Mostrando {meta.plural.toLowerCase()} de {userCountry}, tu país en Molino.
+                  </p>
+                )}
               </motion.div>
 
               {/* Contexto editorial — qué es y qué no es la resonancia */}

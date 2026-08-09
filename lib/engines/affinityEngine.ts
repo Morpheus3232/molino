@@ -13,7 +13,7 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, SYMBOLIC_ENTITIES, focusEntitiesByCountry } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { ANIMALS, SAN_HE_TRIADS, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { t } from "@/lib/i18n";
@@ -418,11 +418,17 @@ export function getRepresentativeAffinitySet(
 /** Get top affinity highlight per category for the profile summary */
 export type AffinityHighlightType = "brand" | "city" | "country";
 
-export function getTopAffinityHighlights(profile: UserProfile): AffinityResult[] {
+/**
+ * userCountry acota "city" a las ciudades del propio país cuando hay
+ * cobertura local (ver focusEntitiesByCountry) — el highlight de un
+ * visitante de Chile debería poder ser una ciudad chilena, no siempre la
+ * ciudad global con mejor puntaje.
+ */
+export function getTopAffinityHighlights(profile: UserProfile, userCountry?: string): AffinityResult[] {
   const highlightTypes: AffinityHighlightType[] = ["brand", "city", "country"];
   return highlightTypes
     .map((type) => {
-      const entities = SYMBOLIC_ENTITIES.filter((e) => e.type === type);
+      const entities = focusEntitiesByCountry(SYMBOLIC_ENTITIES.filter((e) => e.type === type), type, userCountry);
       if (entities.length === 0) return null;
       return calculateAllAffinity(profile, entities)[0];
     })

@@ -7,9 +7,9 @@ import { toast } from "sonner";
 import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType } from "@/lib/data/symbolic-entities";
-import type { EntityType } from "@/lib/data/symbolic-entities";
+import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType, focusEntitiesByCountry, type EntityType } from "@/lib/data/symbolic-entities";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
@@ -31,6 +31,7 @@ const transitionVariants = {
 export default function AffinityHub() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+  const userCountry = useUserContext().country;
 
   useEffect(() => {
     if (mounted && !loading && !profile) {
@@ -41,11 +42,17 @@ export default function AffinityHub() {
 
   const availableTypes = getAvailableTypes();
 
+  // Los conteos reflejan lo mismo que se ve al entrar a cada categoría:
+  // acotado al país del usuario cuando hay cobertura local (ciudad, artista,
+  // universidad, equipo) — nunca una cifra global que después se reduce.
+  const focusedEntitiesByType = Object.fromEntries(
+    availableTypes.map((type) => [type, focusEntitiesByCountry(getEntitiesByType(type), type, userCountry)])
+  ) as Record<EntityType, ReturnType<typeof getEntitiesByType>>;
+
   const personalizedCounts = profile ? (() => {
     const counts: Record<string, number> = {};
     availableTypes.forEach(type => {
-      const entities = getEntitiesByType(type);
-      const results = calculateAllAffinity(profile, entities);
+      const results = calculateAllAffinity(profile, focusedEntitiesByType[type]);
       counts[type] = results.filter(r => r.score >= 50).length;
     });
     return counts;
@@ -53,7 +60,11 @@ export default function AffinityHub() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
+      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
+          esperando para siempre a que la animación de salida del skeleton
+          termine — reproducido en local, la página no pasa nunca de
+          "Preparando tu afinidad...". Sin mode="wait" cross-fadea y sí commitea. */}
+      <AnimatePresence>
         {!mounted || loading || !profile ? (
           <motion.div
             key="loading"
@@ -124,7 +135,7 @@ export default function AffinityHub() {
                   {availableTypes.map((type, i) => {
                     const meta = ENTITY_TYPES[type];
                     const Icon = TYPE_ICONS[type];
-                    const totalCount = getEntitiesByType(type).length;
+                    const totalCount = focusedEntitiesByType[type].length;
                     const personalCount = personalizedCounts?.[type] ?? null;
 
                     return (

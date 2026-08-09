@@ -2,6 +2,13 @@
 const __impeccableLiveDev =
   process.env.NODE_ENV === "development" ? " http://localhost:8400" : "";
 
+// Dev-only: React's dev-mode tooling (owner stacks / warning stack traces)
+// calls eval() internally. Without this the CSP silently blocks it and
+// hydration can hang with zero visible error — "React will never use
+// eval() in production mode", so this never reaches prod builds.
+const __devEval =
+  process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -59,7 +66,7 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-`script-src 'self' 'unsafe-inline' https://js.mercadopago.com https://www.paypal.com https://*.paypal.com${__impeccableLiveDev}`,
+`script-src 'self' 'unsafe-inline' https://js.mercadopago.com https://www.paypal.com https://*.paypal.com${__impeccableLiveDev}${__devEval}`,
           "style-src 'self' 'unsafe-inline'",
           "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com https://*.paypalobjects.com",
           "font-src 'self'",
