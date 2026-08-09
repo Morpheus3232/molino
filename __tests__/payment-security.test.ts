@@ -2,7 +2,8 @@ import { vi, describe, test, expect, beforeEach } from 'vitest';
 
 vi.stubEnv('MP_ACCESS_TOKEN', 'test-access-token');
 vi.stubEnv('MP_WEBHOOK_SECRET', 'test-webhook-secret');
-vi.stubEnv('NEXT_PUBLIC_BASE_URL', 'http://localhost:3000');
+// getBaseUrl() now returns the hardcoded SITE_URL (lib/seo.ts) — no env var
+// to stub anymore.
 
 vi.mock('@vercel/kv', () => ({
   kv: {

@@ -1,4 +1,4 @@
-import { hashProfile } from '@/lib/mercadopago';
+import { hashProfile, getBaseUrl } from '@/lib/mercadopago';
 
 const PRODUCT_ID = 'molino_premium';
 const PRODUCT_PRICE_USD = '8.00';
@@ -116,9 +116,14 @@ export async function getAccessToken(): Promise<string> {
 
 export async function createOrder(profileHash: string): Promise<PayPalCreateOrderResult> {
   const token = await getAccessToken();
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const returnUrl = `${baseUrl}/profile?tab=intelligence&payment_method=paypal&payment_status=approved`;
-  const cancelUrl = `${baseUrl}/profile?tab=intelligence&payment_method=paypal&payment_status=cancelled`;
+  // Misma protección que Mercado Pago (getBaseUrl lanza en producción si no
+  // está configurada) — antes caía en el mismo fallback silencioso a
+  // localhost. `tab=intelligence` no existe más: /profile es hoy un scroll
+  // único (ProfileHub), no hay tabs — PremiumGate lee payment_status/
+  // payment_method/token del querystring sin importar qué otros params haya.
+  const baseUrl = getBaseUrl();
+  const returnUrl = `${baseUrl}/profile?payment_method=paypal&payment_status=approved`;
+  const cancelUrl = `${baseUrl}/profile?payment_method=paypal&payment_status=cancelled`;
 
   const body = {
     intent: 'CAPTURE',

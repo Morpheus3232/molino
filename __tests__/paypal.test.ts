@@ -5,7 +5,8 @@ vi.stubEnv('PAYPAL_CLIENT_ID', 'test-client-id');
 vi.stubEnv('PAYPAL_CLIENT_SECRET', 'test-client-secret');
 vi.stubEnv('PAYPAL_ENVIRONMENT', 'sandbox');
 vi.stubEnv('MP_WEBHOOK_SECRET', 'test-webhook-secret');
-vi.stubEnv('NEXT_PUBLIC_BASE_URL', 'https://molino.test');
+// getBaseUrl() now returns the hardcoded SITE_URL (lib/seo.ts) — no env var
+// to stub anymore.
 
 const { kvStore } = vi.hoisted(() => ({ kvStore: new Map<string, unknown>() }));
 
