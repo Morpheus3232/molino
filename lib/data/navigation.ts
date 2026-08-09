@@ -1,30 +1,8 @@
-import { t } from "@/lib/i18n";
-
 export interface NavLink {
   href: string;
   label: string;
   external?: boolean;
 }
-
-/**
- * Nav primaria simplificada a 4 items: Inicio, Mi Mapa, Explorar, Filosofía
- * Todo lo demás (Timing, Decisiones, Evolución, Biblioteca) va al menú secundario
- */
-export const primaryNavLinks: NavLink[] = [
-  { href: "/", label: t.nav.inicio },
-  { href: "/profile", label: t.nav.miMapa },
-  { href: "/explore", label: t.nav.explorar },
-  { href: "/filosofia", label: t.nav.filosofia },
-];
-
-export const secondaryNavLinks: NavLink[] = [
-  { href: "/decisions", label: t.nav.decisiones },
-];
-
-export const knowledgeNavLinks: NavLink[] = [
-  { href: "/biblioteca", label: t.nav.biblioteca },
-  { href: "/filosofia", label: t.nav.filosofia },
-];
 
 export interface FooterColumn {
   title: string;

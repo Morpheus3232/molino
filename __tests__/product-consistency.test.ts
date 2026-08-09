@@ -21,10 +21,9 @@ describe("Product consistency — Molino", () => {
     const fs = require("fs");
     const path = require("path");
     const navPath = path.resolve(__dirname, "..", "lib", "data", "navigation.ts");
-    const source = fs.readFileSync(navPath, "utf8");
-    const navSection = source.match(/export const primaryNavLinks: NavLink\[\] = \[([^\]]+)\]/);
-    expect(navSection).toBeTruthy();
-    expect(navSection![1]).not.toContain("Descubrir");
+    const headerPath = path.resolve(__dirname, "..", "components", "layout", "UniversityHeader.tsx");
+    expect(fs.readFileSync(navPath, "utf8")).not.toContain("Descubrir");
+    expect(fs.readFileSync(headerPath, "utf8")).not.toContain("Descubrir");
   });
 
   test("saved ProfileHub does not expose DailyInsights", () => {
