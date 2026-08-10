@@ -663,3 +663,83 @@ export function buildMomentState(profile: UserProfile, energyScore: number, ener
     focus,
   };
 }
+
+/**
+ * "Tus reglas" — grouped principles for the compact reading.
+ *
+ * Reuses the outputs of buildRules() and buildPatterns() (no duplicated
+ * logic): rules that trace to real archetype strengths feed AVANZÁ, rules
+ * that trace to real archetype challenges feed OBSERVÁ, and the
+ * already-computed movement pattern feeds INICIÁ. A category that has no
+ * real data falls back to a generic-but-true statement instead of inventing
+ * attributes — the UI synthesizes, it never fabricates.
+ */
+export interface PrincipleInsight {
+  title: "AVANZÁ" | "OBSERVÁ" | "INICIÁ";
+  body: string;
+}
+
+export function buildPrinciples(
+  rules: RuleInsight[],
+  patterns: PatternInsight[],
+  archetypeInfo?: { strengths?: string[]; challenges?: string[] }
+): PrincipleInsight[] {
+  const strengths = archetypeInfo?.strengths || [];
+  const challenges = archetypeInfo?.challenges || [];
+
+  const movement = patterns.find((p) => p.label === "Tu próximo movimiento");
+
+  const arquetipoTerms = (list: string[]) =>
+    rules
+      .filter((r) => list.some((term) => r.source.includes(term)))
+      .map((r) => r.source.replace("Arquetipo · ", "").toLowerCase());
+
+  const unique = (terms: string[]) => [...new Set(terms)];
+
+  // Los patterns (motor/tensión) ya se muestran en "Tus patrones" (01):
+  // repetir su keyword acá duplicaría el concepto ("ambición… y ambicioso")
+  // y rompería la lista con un adjetivo al final de sustantivos. Los
+  // principios se alimentan solo de las fortalezas/desafíos reales del
+  // arquetipo, con tope de 3 para que la frase no se vuelva un listado.
+  const avanzanTerms = unique(arquetipoTerms(strengths)).slice(0, 3);
+  const observaTerms = unique(arquetipoTerms(challenges)).slice(0, 3);
+  const iniciTerm = movement?.keyword.toLowerCase();
+
+  const joinTerms = (terms: string[]): string => {
+    if (terms.length === 0) return "";
+    if (terms.length === 1) return terms[0];
+    if (terms.length === 2) {
+      const last = terms[1];
+      return `${terms[0]} ${/^i/i.test(last) ? "e" : "y"} ${last}`;
+    }
+    const last = terms[terms.length - 1];
+    return `${terms.slice(0, -1).join(", ")} ${/^i/i.test(last) ? "e" : "y"} ${last}`;
+  };
+
+  const titleCase = (t: string) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : t);
+
+  return [
+    {
+      title: "AVANZÁ",
+      body:
+        avanzanTerms.length > 0
+          ? `Cuando dudes, elegí ${joinTerms(avanzanTerms)}.`
+          : "Tus fortalezas reales son tu brújula — confiá en ellas cuando dudes.",
+    },
+    {
+      title: "OBSERVÁ",
+      body:
+        observaTerms.length === 1
+          ? `${titleCase(observaTerms[0])} es una señal para revisar, no un defecto que eliminar.`
+          : observaTerms.length > 1
+            ? `${joinTerms(observaTerms.map((t, i) => (i === 0 ? titleCase(t) : t)))} son señales para revisar, no defectos que eliminar.`
+            : "Las zonas de exceso son información, no defectos — escuchalas a tiempo.",
+    },
+    {
+      title: "INICIÁ",
+      body: iniciTerm
+        ? `Tu ciclo actual favorece ${iniciTerm}. No frenes algo nuevo por costumbre.`
+        : "Tu ciclo actual tiene un ritmo propio — dejalo fluir sin forzar.",
+    },
+  ];
+}

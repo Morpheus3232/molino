@@ -7,6 +7,7 @@ import {
   buildTensions,
   buildRules,
   buildMomentState,
+  buildPrinciples,
 } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
@@ -125,6 +126,7 @@ function PiezasLibres({
   const patterns = buildPatterns(profile);
   const tensions = buildTensions(profile);
   const rules = buildRules(profile);
+  const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
   const momentState = buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme);
   // Misma intención por defecto que usa el resto del mapa cuando el usuario
   // todavía no eligió una en /hoy — no altera analyzeTiming, solo qué
@@ -141,24 +143,17 @@ function PiezasLibres({
       {/* 01 · Tus patrones */}
       {patterns.length > 0 && (
         <div>
-          <SubHeader number="01" title="Tus patrones" description="Lo que emerge cuando los sistemas convergen" elementColor={elementColor} />
-          <div className="max-w-3xl space-y-0">
+          <SubHeader number="01" title="Tus patrones" description="Lo que hoy conviene tener presente" elementColor={elementColor} />
+          <div className="max-w-3xl space-y-8 sm:space-y-10">
             {patterns.map((p) => (
-              <div key={p.label} className="py-6 border-t border-ink/10 first:border-t-0">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted mb-2">{p.label}</p>
+              <div key={p.label} className="py-2">
+                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted mb-3">{p.label}</p>
+                <p className="font-heading text-xl sm:text-2xl tracking-tight mb-2" style={{ color: elementColor }}>
+                  {p.keyword}
+                </p>
                 <p className="text-base sm:text-lg text-foreground leading-relaxed">
-                  <span className="font-heading font-semibold" style={{ color: elementColor }}>
-                    {p.keyword}.
-                  </span>{" "}
                   {p.description}
                 </p>
-                <div className="flex flex-wrap gap-1.5 mt-3" aria-hidden="true">
-                  {p.sources.map((src) => (
-                    <span key={src} className="uppercase text-[10px] tracking-[0.2em] text-muted/70 px-2 py-1 border border-ink/10">
-                      {src}
-                    </span>
-                  ))}
-                </div>
               </div>
             ))}
           </div>
@@ -166,26 +161,26 @@ function PiezasLibres({
       )}
 
       {/* 02 · Tus reglas */}
-      {rules.length > 0 && (
-        <div>
-          <SubHeader number="02" title="Tus reglas" description="Principios operativos derivados de tu mapa" elementColor={elementColor} />
-          <ol className="max-w-3xl">
-            {rules.map((r, i) => (
-              <li key={r.rule} className="py-5 border-t border-ink/10 first:border-t-0">
-                <div className="flex items-start gap-4 sm:gap-5">
-                  <span className="number-display shrink-0 text-lg sm:text-xl pt-0.5" style={{ color: elementColor }} aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <p className="font-heading text-base sm:text-lg leading-[1.5] text-foreground">{r.rule}</p>
-                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted mt-2">{r.source}</p>
-                  </div>
+      <div>
+        <SubHeader number="02" title="Tus reglas" description="Principios para moverte mejor" elementColor={elementColor} />
+        <ol className="max-w-3xl">
+          {principles.map((p, i) => (
+            <li key={p.title} className="py-5 border-t border-ink/10 first:border-t-0">
+              <div className="flex items-start gap-4 sm:gap-5">
+                <span className="number-display shrink-0 text-lg sm:text-xl pt-0.5" style={{ color: elementColor }} aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="font-heading text-base sm:text-lg leading-[1.5] text-foreground">
+                    {p.title}
+                  </p>
+                  <p className="text-sm sm:text-base text-muted leading-relaxed mt-2">{p.body}</p>
                 </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
 
       {/* 03 · Qué significa para ti ahora — tratamiento de cita editorial. La
           narrativa de buildMomentState ya cruza ciclo + energía del día +
