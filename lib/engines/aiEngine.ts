@@ -26,8 +26,15 @@ const AI_TIMEOUT_MS = 20_000;
  * off mid-object every time (completionTokens=800 exactly, contentLength
  * ~3020 chars and still unclosed). The legacy narrative-only shape (no
  * template) has far fewer fields and stays on the original budget.
+ *
+ * 2000 still truncated on a fraction of calls even with reasoning:{exclude:
+ * true} set (reasoningTokens up to ~965 measured in production eating into
+ * the same budget as the visible content). Raised to 2500 as a controlled,
+ * single-variable experiment — everything else (model, reasoning.exclude,
+ * response_format/schema, prompt) held constant. See __tests__/aiEngine.test.ts
+ * for the assertion pinning this value.
  */
-const STRUCTURED_OUTPUT_MAX_TOKENS = 2000;
+const STRUCTURED_OUTPUT_MAX_TOKENS = 2500;
 const DEFAULT_MAX_TOKENS = 800;
 
 /** Truncates a provider error body for logging and strips anything that
