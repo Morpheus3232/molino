@@ -410,7 +410,16 @@ export async function generateWithOpenRouter(
   logProviderRequest('openrouter', model, response.status, duration);
 
   const data = await response.json();
-  const content = data.choices?.[0]?.message?.content || '';
+  const message = data.choices?.[0]?.message;
+  const content = message?.content || '';
+  if (!content) {
+    // Never log message content (it's the model's raw output) — only shape,
+    // to tell apart "provider returned nothing" from "content landed in a
+    // different field" (e.g. reasoning models putting the answer under
+    // `reasoning`/`reasoning_content` instead of `content`) instead of a
+    // second silent empty_response with no way to tell which one happened.
+    console.error(`[AI] provider=openrouter stage=parse status=empty_content model=${model} finishReason=${data.choices?.[0]?.finish_reason} messageKeys=${message ? Object.keys(message).join(',') : 'none'} reasoningLength=${typeof message?.reasoning === 'string' ? message.reasoning.length : 'n/a'}`);
+  }
   const interpretation = parseAIResponse(content);
   if (data.usage) {
     interpretation.usage = {
