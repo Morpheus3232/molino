@@ -38,6 +38,16 @@ const benefits = [
     title: "Orientate con claridad",
     description: "Elegí los momentos justos para avanzar, descansar y conectar.",
   },
+  {
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="10" rx="2" />
+        <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+      </svg>
+    ),
+    title: "Acceso sin barreras",
+    description: "Generá tu mapa sin pagar, sin registrarte y sin dejar datos personales.",
+  },
 ];
 
 export default function QueDescubris() {
@@ -45,10 +55,10 @@ export default function QueDescubris() {
     <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.h2 {...fadeUp} className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-16 max-w-2xl mx-auto leading-[1.05]">
-          Entendé cómo decidís. Descubrí tus afinidades. Elegí mejores momentos.
+          Entendé cómo decidís. Descubrí tus afinidades. Anticipá tus mejores momentos.
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {benefits.map((benefit, i) => (
             <motion.div
               key={benefit.title}
@@ -74,7 +84,7 @@ export default function QueDescubris() {
             href="/biblioteca"
             className="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent hover:text-accent/80 transition-colors"
           >
-            EXPLORAR LA BIBLIOTECA
+            VER FUENTES Y REFERENCIAS
             <ArrowRight className="w-3 h-3 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </motion.div>

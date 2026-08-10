@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s | Molino",
   },
   description:
-    "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin servidor guardando tu perfil. Código abierto, con una capa Premium opcional.",
+    "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   keywords: [
     "autoconocimiento",
     "numerología",
@@ -48,13 +48,13 @@ export const metadata: Metadata = {
     siteName: "Molino",
     title: "Molino — Mapa Personal de Autoconocimiento",
     description:
-      "Descubrí tu mapa personal de autoconocimiento con numerología, astrología y zodíaco chino. Sin registro, sin cookies, sin guardar datos. Código abierto, con una capa Premium opcional.",
+      "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Molino — Mapa Personal de Autoconocimiento",
     description:
-      "Descubrí tu mapa personal de autoconocimiento. Numerología, astrología y zodíaco chino sin registro ni cookies.",
+      "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   },
   metadataBase: new URL(SITE_URL),
   alternates: {

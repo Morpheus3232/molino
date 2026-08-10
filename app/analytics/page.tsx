@@ -134,7 +134,7 @@ export default function AnalyticsPage() {
                   <Button
                     variant="ghost"
                     onClick={() => {
-                      if (typeof window !== "undefined" && window.confirm("¿Estás seguro de que quieres borrar todos los datos de analytics?")) {
+                      if (typeof window !== "undefined" && window.confirm("¿Estás seguro de que querés borrar todos los datos de analytics?")) {
                         analytics.clearEvents();
                         setStats(analytics.getStats());
                       }

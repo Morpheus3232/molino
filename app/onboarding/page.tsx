@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -8,7 +8,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import { analytics } from "@/lib/analytics/analytics";
-import { saveOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
+import { saveOnboardingData, loadOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 import { markOnboardingCompleted } from "@/lib/session/discovery";
 import LocationStep from "@/components/onboarding/LocationStep";
 import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
@@ -28,6 +28,17 @@ export default function OnboardingPage() {
 
   const handleDateChange = useCallback((value: string) => {
     setDateValue(value);
+  }, []);
+
+  // La fecha ya pudo haberse enviado desde el hero de la home: si está
+  // guardada, la precargamos y saltamos directo al paso de adelanto.
+  useEffect(() => {
+    const stored = loadOnboardingData();
+    if (stored?.dateValue && /^\d{4}-\d{2}-\d{2}$/.test(stored.dateValue)) {
+      setDateValue(stored.dateValue);
+      setStep("preview");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isDateValid = Boolean(

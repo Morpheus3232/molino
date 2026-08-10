@@ -14,6 +14,8 @@ export const footerColumns: FooterColumn[] = [
     title: "EXPLORAR",
     links: [
       { href: "/", label: "INICIO" },
+      { href: "/ejemplo", label: "EJEMPLO" },
+      { href: "/#faq", label: "FAQ" },
       { href: "/profile", label: "MI MAPA" },
       { href: "/hoy", label: "ENERGÍA DE HOY" },
       { href: "/affinity", label: "AFINIDAD" },
@@ -24,6 +26,7 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "PRINCIPIOS",
     links: [
+      { href: "/nosotros", label: "QUIÉNES SOMOS" },
       { href: "/filosofia#conocimiento-libre", label: "CONOCIMIENTO LIBRE" },
       { href: "/filosofia#privacidad-radical", label: "PRIVACIDAD RADICAL" },
       { href: "/filosofia#transparencia-total", label: "TRANSPARENCIA TOTAL" },

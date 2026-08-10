@@ -21,6 +21,13 @@ const EXPLORE_ITEMS = [
   { href: "/explore", label: "Explorar sistemas" },
 ];
 
+/* ═══ Sobre Molino: páginas informativas, agrupadas aparte dentro del mismo dropdown ═══ */
+const ABOUT_ITEMS = [
+  { href: "/ejemplo", label: "Ejemplo" },
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/#faq", label: "FAQ" },
+];
+
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
@@ -139,7 +146,7 @@ export default function UniversityHeader() {
                 type="button"
                 onClick={() => setExploreOpen(!exploreOpen)}
                 className={`flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
-                  EXPLORE_ITEMS.some((item) => isActive(item.href))
+                  [...EXPLORE_ITEMS, ...ABOUT_ITEMS].some((item) => isActive(item.href))
                     ? "text-foreground bg-ink/[0.04]"
                     : "text-muted hover:text-foreground"
                 }`}
@@ -160,6 +167,23 @@ export default function UniversityHeader() {
                     className="absolute right-0 top-full mt-1 w-48 bg-background border border-ink/10 shadow-lg py-1 z-50"
                   >
                     {EXPLORE_ITEMS.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`block px-4 py-2 text-sm transition-colors ${
+                          isActive(item.href)
+                            ? "text-accent bg-accent/5"
+                            : "text-foreground hover:text-accent hover:bg-ink/[0.02]"
+                        }`}
+                        onClick={() => setExploreOpen(false)}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+
+                    <div className="my-1 border-t border-ink/10" />
+
+                    {ABOUT_ITEMS.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
@@ -223,6 +247,22 @@ export default function UniversityHeader() {
 
                 <p className="px-3 py-1.5 text-xs font-mono tracking-[0.2em] text-muted uppercase">Explorar</p>
                 {EXPLORE_ITEMS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`block px-3 py-2.5 text-sm transition-colors ${
+                      isActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
+                    }`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                <div className="border-t border-ink/10 my-2" />
+
+                <p className="px-3 py-1.5 text-xs font-mono tracking-[0.2em] text-muted uppercase">Sobre Molino</p>
+                {ABOUT_ITEMS.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}

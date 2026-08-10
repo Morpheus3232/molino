@@ -1,108 +1,97 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Quote, Star } from "lucide-react";
+import { fadeUp } from "@/lib/utils/motion";
+import Card from "@/components/ui/Card";
 
-const TESTIMONIALS = [
+/**
+ * Ficticios por ahora (placeholder). Para reemplazar por reseñas reales,
+ * solo hace falta actualizar este array — la estructura ya está lista:
+ * cada item necesita name, location, text y opcionalmente photoUrl.
+ */
+const TESTIMONIALS: { name: string; location: string; text: string; photoUrl?: string }[] = [
   {
-    text: "Entré por curiosidad y me quedé por la profundidad. Vi mi perfil en un sitio de autoconocimiento y me pareció un acercamiento honesto — sin sensacionalismo, sin clickbait.",
-    author: "Valentina R.",
-    role: "Profesora, Buenos Aires",
-    accent: false,
+    name: "Ana L.",
+    location: "Buenos Aires",
+    text: "Entré por curiosidad y me quedé por la profundidad. Es un acercamiento honesto — sin sensacionalismo, sin clickbait.",
   },
   {
-    text: "Lo que más me gustó es que no guarda nada. Creás tu mapa, leés, y listo. No tenés que dar un mail ni descargar una app. Es lo que debería ser internet.",
-    author: "Martín C.",
-    role: "Diseñador UX, Córdoba",
-    accent: false,
+    name: "Carlos M.",
+    location: "Madrid",
+    text: "Lo que más me gustó es que no guarda nada. Creás tu mapa, leés, y listo. No tenés que dar un mail ni descargar una app.",
   },
   {
-    text: "Usé varios sitios de este tipo. La diferencia acá es que te muestran la estructura detrás del mapa: por qué un número, por qué un signo. No te lo dan mágicamente, te explican.",
-    author: "Luciana M.",
-    role: "Estudiante de psicología, Rosario",
-    accent: false,
-  },
-  {
-    text: "Me sorprendió lo rápido que carga. Pusé mi fecha, en segundos vi el mapa. Lo compartí con amigos y les pareció interesante también.",
-    author: "Facundo A.",
-    role: "Desarrollador, Mendoza",
-    accent: false,
-  },
-  {
-    text: "Me gustó que te dicen qué sistemas están usando y por qué. No es como otros sitios que te dicen 'esto es tu destino' sin explicar nada. Acá se nota que hay trabajo detrás.",
-    author: "Camila P.",
-    role: "Redactora, Montevideo",
-    accent: false,
+    name: "Lucía R.",
+    location: "Ciudad de México",
+    text: "Te muestran la estructura detrás del mapa: por qué un número, por qué un signo. No te lo dan mágicamente, te explican.",
   },
 ];
 
-export default function Testimonial() {
-  const [current, setCurrent] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+function initials(name: string): string {
+  return name.charAt(0).toUpperCase();
+}
 
-  const next = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % TESTIMONIALS.length);
-  }, []);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(next, 6000);
-    return () => clearInterval(timer);
-  }, [isPaused, next]);
-
+function Avatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
+  if (photoUrl) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-16 h-16 rounded-full object-cover" />;
+  }
   return (
-    <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12">
-        <div
-          className="min-h-[160px] relative"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <AnimatePresence mode="wait">
-            <motion.blockquote
-              key={current}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="text-center"
-            >
-              <p className="font-heading text-lg sm:text-xl lg:text-2xl font-light text-foreground/90 leading-relaxed mb-8">
-                &ldquo;{TESTIMONIALS[current].text}&rdquo;
-              </p>
-              <footer className="flex flex-col items-center gap-1">
-                <span className="text-sm text-foreground/70 font-medium">
-                  {TESTIMONIALS[current].author}
-                </span>
-                <span className="text-xs text-muted/70">
-                  {TESTIMONIALS[current].role}
-                </span>
-              </footer>
-            </motion.blockquote>
-          </AnimatePresence>
-        </div>
+    <div
+      role="img"
+      aria-label={`Foto de perfil de ${name}`}
+      className="w-16 h-16 rounded-full bg-accent/15 text-accent flex items-center justify-center font-heading text-xl font-semibold"
+    >
+      {initials(name)}
+    </div>
+  );
+}
 
-        {/* Dots */}
-        <div className="flex items-center justify-center gap-2 mt-8">
-          {TESTIMONIALS.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setCurrent(i)}
-              aria-label={`Reseña ${i + 1}`}
-              className="group flex items-center justify-center w-6 h-6 -m-1"
+function StarRating() {
+  return (
+    <div className="flex items-center gap-0.5" role="img" aria-label="Calificación: 5 de 5 estrellas">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" aria-hidden="true" />
+      ))}
+    </div>
+  );
+}
+
+export default function Testimonial() {
+  return (
+    <section className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-20">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+        <motion.h2 {...fadeUp} className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-muted/70 text-center mb-12">
+          Lo que dicen quienes ya lo probaron
+        </motion.h2>
+
+        <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 list-none">
+          {TESTIMONIALS.map((testimonial, i) => (
+            <motion.li
+              key={testimonial.name}
+              {...fadeUp}
+              style={{ transitionDelay: `${i * 0.08}s` }}
             >
-              <span
-                className={`block h-1.5 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "bg-accent w-4"
-                    : "bg-ink/15 group-hover:bg-ink/30 w-1.5"
-                }`}
-                aria-hidden="true"
-              />
-            </button>
+              <Card padding="lg" className="h-full flex flex-col">
+                <Quote className="w-8 h-8 text-accent/20 mb-4" aria-hidden="true" />
+
+                <blockquote className="text-sm sm:text-base text-foreground/80 leading-relaxed mb-6 flex-1">
+                  &ldquo;{testimonial.text}&rdquo;
+                </blockquote>
+
+                <footer className="flex items-center gap-3">
+                  <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} />
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-foreground">{testimonial.name}</p>
+                    <p className="text-xs text-muted/70 mb-1">{testimonial.location}</p>
+                    <StarRating />
+                  </div>
+                </footer>
+              </Card>
+            </motion.li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

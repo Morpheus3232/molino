@@ -1,5 +1,5 @@
 ---
-name: Molino — El Molino Vivo
+name: Molino — Molino funcional
 description: El molino de viento de la marca, ya existente, como protagonista funcional — gira cuando el sitio carga o navega, se queda quieto cuando está listo.
 colors:
   ground: "#0A0A0C"
