@@ -28,6 +28,22 @@ import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_L
 // content leak.
 const PREMIUM_INTERPRETATION_TYPES = new Set<InterpretationType>(['personal_profile', 'question']);
 
+// Entitlement-dependent responses must never be cached by a shared CDN:
+// a premium payload cached as `public` could be replayed to anonymous
+// visitors. Every response in this route carries private, no-store.
+const PRIVATE_NO_STORE = { 'Cache-Control': 'private, no-store, max-age=0' };
+
+interface PremiumErrorResponse {
+  error: { code: string; message: string };
+}
+
+function premiumError(code: string, message: string): NextResponse<PremiumErrorResponse> {
+  return NextResponse.json(
+    { error: { code, message } },
+    { status: 403, headers: PRIVATE_NO_STORE }
+  );
+}
+
 interface RequestBody {
   type: InterpretationType;
   dob: string;
@@ -118,16 +134,16 @@ export async function POST(req: NextRequest) {
         console.error('[/api/intelligence/interpret] Premium check failed:', err);
       }
       if (!premium) {
-        return NextResponse.json({ error: 'Premium required' }, { status: 403 });
+        return premiumError('premium_required', 'Premium required');
       }
 
       if (!premiumToken) {
-        return NextResponse.json({ error: 'Premium token required' }, { status: 403 });
+        return premiumError('premium_token_required', 'Premium token required');
       }
 
       const tokenValid = await verifyPremiumToken(profileHash, premiumToken);
       if (!tokenValid) {
-        return NextResponse.json({ error: 'Invalid premium token' }, { status: 403 });
+        return premiumError('premium_token_invalid', 'Invalid premium token');
       }
     }
 
@@ -333,7 +349,7 @@ export async function POST(req: NextRequest) {
       // above / [premium_ai_invalid] log).
       aiStatus: aiResult ? 'valid' : aiError ? 'error' : 'invalid',
       ...(aiError && { error: aiError }),
-    });
+    }, { headers: PRIVATE_NO_STORE });
   } catch (error) {
     console.error('[/api/intelligence/interpret] Error:', error);
     return NextResponse.json({ error: 'Internal error' }, { status: 500 });

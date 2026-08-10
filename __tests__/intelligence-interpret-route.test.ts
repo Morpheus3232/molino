@@ -3,11 +3,17 @@ import { NextRequest } from 'next/server';
 
 vi.stubEnv('MP_WEBHOOK_SECRET', 'test-webhook-secret');
 
+// hoisted so individual tests can flip the premium gate open/closed
+const { mockHasPremiumAccess, mockVerifyPremiumToken } = vi.hoisted(() => ({
+  mockHasPremiumAccess: vi.fn(),
+  mockVerifyPremiumToken: vi.fn(),
+}));
+
 // hashProfile is pure — real implementation is fine. Premium gating and the
 // AI call are mocked so each test controls exactly what the "model" returned.
 vi.mock('@/lib/kv', () => ({
-  hasPremiumAccess: vi.fn(async () => true),
-  verifyPremiumToken: vi.fn(async () => true),
+  hasPremiumAccess: mockHasPremiumAccess,
+  verifyPremiumToken: mockVerifyPremiumToken,
   incrementDailyCost: vi.fn(async () => {}),
 }));
 
@@ -65,6 +71,11 @@ function mockAiResponse(content: string) {
 describe('POST /api/intelligence/interpret — AI validity contract', () => {
   beforeEach(() => {
     mockGenerateWithRouting.mockReset();
+    // Default: premium is granted and the device token is valid — the
+    // existing AI-contract tests exercise the post-gate path. Gate tests
+    // below flip these per-case.
+    mockHasPremiumAccess.mockResolvedValue(true);
+    mockVerifyPremiumToken.mockResolvedValue(true);
   });
 
   test('valid, semantically sound JSON → ai is populated, aiStatus "valid"', async () => {
@@ -148,5 +159,130 @@ describe('POST /api/intelligence/interpret — AI validity contract', () => {
     expect(data.ai).not.toBeNull();
     expect(data.ai.opening).toBeFalsy();
     expect(data.ai.corePattern).toBeFalsy();
+  });
+});
+
+describe('POST /api/intelligence/interpret — premium gate (403 contract)', () => {
+  beforeEach(() => {
+    mockGenerateWithRouting.mockReset();
+  });
+
+  function assertPremiumRejected(res: Response, data: { error?: { code?: string; message?: string } }, expectedCode: string) {
+    expect(res.status).toBe(403);
+    expect(data.error).toBeTruthy();
+    expect(data.error?.code).toBe(expectedCode);
+    expect(typeof data.error?.message).toBe('string');
+    expect((data.error?.message || '').length).toBeGreaterThan(0);
+    expect(mockGenerateWithRouting).not.toHaveBeenCalled();
+    expect(JSON.stringify(data)).not.toContain('summary');
+  }
+
+  test('Caso A — anonymous user (no premium entitlement) → 403 premium_required, AI not invoked, no public cache', async () => {
+    mockHasPremiumAccess.mockResolvedValue(false);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ type: 'personal_profile', dob: '1990-04-15', name: 'Anonymous Visitor' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_required');
+    expect(data.error.message).toBe('Premium required');
+    expect(res.headers.get('cache-control')).toBe('private, no-store, max-age=0');
+  });
+
+  test('Caso A — free user: personal_profile is rejected even with a plausible name/date', async () => {
+    mockHasPremiumAccess.mockResolvedValue(false);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ type: 'personal_profile', dob: '1985-11-02', name: 'Free User' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_required');
+    expect(data.error.message).toBe('Premium required');
+  });
+
+  test('Caso A — question type (chat) is gated the same way for anonymous users', async () => {
+    mockHasPremiumAccess.mockResolvedValue(false);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ type: 'question', dob: '1990-04-15', name: 'Anonymous', question: '¿Quién soy?' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_required');
+    expect(data.error.message).toBe('Premium required');
+  });
+
+  test('Caso A — no premiumToken sent → 403 even when entitlement exists (share-URL bypass guard)', async () => {
+    mockHasPremiumAccess.mockResolvedValue(true);
+    mockVerifyPremiumToken.mockResolvedValue(true);
+
+    const res = await POST(req({ type: 'personal_profile', dob: '1990-04-15', name: 'Paying User' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_token_required');
+    expect(data.error.message).toBe('Premium token required');
+  });
+
+  test('Caso C — invalid premium code/token → 403 premium_token_invalid, AI not invoked', async () => {
+    mockHasPremiumAccess.mockResolvedValue(true);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ ...BASE_BODY, premiumToken: 'forged-token' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_token_invalid');
+    expect(data.error.message).toBe('Invalid premium token');
+  });
+
+  test('Caso D — expired entitlement (hasPremiumAccess false after grant lapsed) → 403 premium_required, AI not invoked', async () => {
+    mockHasPremiumAccess.mockResolvedValue(false);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ type: 'personal_profile', dob: '1988-07-19', name: 'Expired User', premiumToken: 'stale-token' }));
+    const data = await res.json();
+
+    assertPremiumRejected(res, data, 'premium_required');
+    expect(data.error.message).toBe('Premium required');
+  });
+
+  test('Caso B — valid premium (entitlement + device token) → 200, AI engine invoked, content present', async () => {
+    mockHasPremiumAccess.mockResolvedValue(true);
+    mockVerifyPremiumToken.mockResolvedValue(true);
+    mockAiResponse(JSON.stringify(VALID_CONTRACT));
+
+    const res = await POST(req(BASE_BODY));
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(mockGenerateWithRouting).toHaveBeenCalledTimes(1);
+    expect(data.aiStatus).toBe('valid');
+    expect(data.ai).not.toBeNull();
+    expect(data.ai.summary).toBe(VALID_CONTRACT.summary);
+  });
+
+  test('Caso B — valid premium via Mercado Pago entitlement path behaves identically (grant = hasPremiumAccess true)', async () => {
+    mockHasPremiumAccess.mockResolvedValue(true);
+    mockVerifyPremiumToken.mockResolvedValue(true);
+    mockAiResponse(JSON.stringify(VALID_CONTRACT));
+
+    const res = await POST(req({ ...BASE_BODY, name: 'MP Buyer' }));
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(mockGenerateWithRouting).toHaveBeenCalledTimes(1);
+    expect(data.ai).not.toBeNull();
+  });
+
+  test('premium content never present in a rejected response (no partial payload leak)', async () => {
+    mockHasPremiumAccess.mockResolvedValue(false);
+    mockVerifyPremiumToken.mockResolvedValue(false);
+
+    const res = await POST(req({ type: 'personal_profile', dob: '1990-04-15', name: 'Anonymous' }));
+    const body = await res.text();
+
+    expect(res.status).toBe(403);
+    expect(body).not.toContain('summary');
+    expect(body).not.toContain('corePattern');
+    expect(body).not.toContain('closingSynthesis');
+    expect(body).not.toContain('fallback');
   });
 });
