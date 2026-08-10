@@ -50,7 +50,10 @@ async function handleIntelligenceRequest(body: {
     // /api/intelligence/interpret, which carries the birthDate needed to
     // derive the premium hash. Blocking here is fail-safe: no premium
     // content can ever leak through this route.
-    return NextResponse.json({ error: 'Premium content is not served by this endpoint' }, { status: 403 });
+    return NextResponse.json(
+      { error: { code: 'premium_required', message: 'Premium content is not served by this endpoint' } },
+      { status: 403, headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+    );
   }
 
   try {
