@@ -419,6 +419,12 @@ export async function generateWithOpenRouter(
     // `reasoning`/`reasoning_content` instead of `content`) instead of a
     // second silent empty_response with no way to tell which one happened.
     console.error(`[AI] provider=openrouter stage=parse status=empty_content model=${model} finishReason=${data.choices?.[0]?.finish_reason} messageKeys=${message ? Object.keys(message).join(',') : 'none'} reasoningLength=${typeof message?.reasoning === 'string' ? message.reasoning.length : 'n/a'}`);
+  } else if (!content.trim().endsWith('}')) {
+    // Doesn't look truncated-JSON-shaped on its own — extractJSON will make
+    // the final call, this just distinguishes "truncated mid-object" (a
+    // token-budget problem) from other unparseable shapes (a prompt/format
+    // problem) without ever logging the content itself.
+    console.error(`[AI] provider=openrouter stage=parse status=possible_truncation model=${model} finishReason=${data.choices?.[0]?.finish_reason} contentLength=${content.length} completionTokens=${data.usage?.completion_tokens ?? 'n/a'} reasoningTokens=${data.usage?.completion_tokens_details?.reasoning_tokens ?? 'n/a'}`);
   }
   const interpretation = parseAIResponse(content);
   if (data.usage) {
