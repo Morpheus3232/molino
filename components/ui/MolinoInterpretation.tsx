@@ -120,7 +120,7 @@ export default function MolinoInterpretation({
     // premiumToken, or PII beyond birthDate/type which are already public
     // query-string inputs on this page.
     const callId = Math.random().toString(36).slice(2, 8);
-    console.log('[MolinoInterpretation] REQUEST START', { callId, type, dob: profile.birthDate, question: !!question });
+    console.error('[MolinoInterpretation] REQUEST START', { callId, type, dob: profile.birthDate, question: !!question });
     try {
       setIsInterpreting(true);
       const { getPremiumTokenClient } = await import('@/lib/premium');
@@ -136,7 +136,7 @@ export default function MolinoInterpretation({
         }),
       });
       const data = await res.json();
-      console.log('[MolinoInterpretation] REQUEST RESPONSE', {
+      console.error('[MolinoInterpretation] REQUEST RESPONSE', {
         callId, status: res.status, aiStatus: data.aiStatus,
         hasAI: !!data.ai, hasFallback: !!data.fallback, error: data.error,
       });
@@ -161,26 +161,26 @@ export default function MolinoInterpretation({
       }
       setHasAttemptedAI(true);
     } catch (err) {
-      console.log('[MolinoInterpretation] REQUEST EXCEPTION', { callId, message: err instanceof Error ? err.message : String(err) });
+      console.error('[MolinoInterpretation] REQUEST EXCEPTION', { callId, message: err instanceof Error ? err.message : String(err) });
       setError("Hubo un problema de conexión. Reintentá en un momento.");
       setHasAttemptedAI(true);
     } finally {
       setIsInterpreting(false);
-      console.log('[MolinoInterpretation] REQUEST END', { callId });
+      console.error('[MolinoInterpretation] REQUEST END', { callId });
     }
   }, [profile.name, profile.birthDate, type, question]);
 
   // Try AI interpretation unless explicitly told to skip, or the user has
   // already asked to regenerate and we're waiting on the result.
   useEffect(() => {
-    console.log('[MolinoInterpretation] EFFECT FIRE', { hasAttemptedAI, type, dob: profile.birthDate });
+    console.error('[MolinoInterpretation] EFFECT FIRE', { hasAttemptedAI, type, dob: profile.birthDate });
     if (!hasAttemptedAI) {
       fetchInterpretation();
     }
   }, [fetchInterpretation, hasAttemptedAI]);
 
   useEffect(() => {
-    console.log('[MolinoInterpretation] STATE UPDATE', {
+    console.error('[MolinoInterpretation] STATE UPDATE', {
       source: aiInterpretation ? 'ai' : fallbackInterpretation ? 'fallback' : 'none',
       hasError: !!error,
     });
