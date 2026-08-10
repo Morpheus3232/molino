@@ -388,14 +388,15 @@ export async function generateWithOpenRouter(
         schema: MOLINO_INTERPRETATION_JSON_SCHEMA,
       },
     };
-    // `reasoning: { exclude: true }` used to be set here as an isolated
-    // experiment for meta-language leaks. Measured in production instead:
-    // it suppresses reasoning from the response body but NOT from the
-    // completion_tokens budget (confirmed via usage.completion_tokens_details.
-    // reasoning_tokens, up to ~965 on a single call) — on this model, that
-    // silently ate into the fixed max_tokens budget and truncated the JSON
-    // mid-object (finishReason=length) on a non-trivial fraction of calls.
-    // Not requesting reasoning exclusion at all avoids that hidden cost.
+    // Tried removing this to see if omitting `reasoning` altogether reduced
+    // reasoning-token consumption (a single call had shown reasoningTokens
+    // up to ~965 with exclude:true set). Measured the opposite in production
+    // over 10 real requests: WITHOUT exclude:true, reasoningTokens regularly
+    // landed at 1300-7775 (vs. mostly 0 before), leaving as little as
+    // 33-318 chars of the 2000-token budget for actual content — 8/10
+    // requests came back unparseable/empty. Reverted: exclude:true measurably
+    // performs better even though it doesn't eliminate the failure mode.
+    requestBody.reasoning = { exclude: true };
   }
 
   const startedAt = Date.now();
