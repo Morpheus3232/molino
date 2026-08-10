@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Github } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { footerColumns } from "@/lib/data/navigation";
 
@@ -17,6 +18,15 @@ export default function UniversityFooter() {
             <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">
               Mapa personal de autoconocimiento. Tres sistemas, una lectura.
             </p>
+            <Link
+              href="https://github.com/molino-app/molino"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-6 text-sm text-white/60 hover:text-white transition-colors"
+            >
+              <Github className="w-4 h-4" aria-hidden="true" />
+              GitHub
+            </Link>
           </div>
 
           {footerColumns.map((col) => (
@@ -43,10 +53,10 @@ export default function UniversityFooter() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/70 font-mono tracking-wider">MOLINO — MAPA PERSONAL DE AUTOCONOCIMIENTO</p>
           <p className="text-xs text-white/70 font-mono tracking-wider">
-            CONTENIDO EDUCATIVO Y SIMBÓLICO. COMPARTILO LIBREMENTE.
+            © 2026 Molino. Todos los derechos reservados.
           </p>
+          <p className="text-xs text-white/70 font-mono tracking-wider">Hecho con intención.</p>
         </div>
       </div>
     </footer>
