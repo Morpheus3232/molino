@@ -388,13 +388,14 @@ export async function generateWithOpenRouter(
         schema: MOLINO_INTERPRETATION_JSON_SCHEMA,
       },
     };
-    // Isolated experiment: production confirmed HTTP 200 + json_schema
-    // accepted structurally, but validateMolinoInterpretationSemantics still
-    // rejects the content (meta-language leak inside the field values, not a
-    // schema violation). Excluding reasoning tokens from the response is the
-    // next isolated variable to test — only for this contract, never for the
-    // legacy compatibility call below, which doesn't request json_schema at all.
-    requestBody.reasoning = { exclude: true };
+    // `reasoning: { exclude: true }` used to be set here as an isolated
+    // experiment for meta-language leaks. Measured in production instead:
+    // it suppresses reasoning from the response body but NOT from the
+    // completion_tokens budget (confirmed via usage.completion_tokens_details.
+    // reasoning_tokens, up to ~965 on a single call) — on this model, that
+    // silently ate into the fixed max_tokens budget and truncated the JSON
+    // mid-object (finishReason=length) on a non-trivial fraction of calls.
+    // Not requesting reasoning exclusion at all avoids that hidden cost.
   }
 
   const startedAt = Date.now();
