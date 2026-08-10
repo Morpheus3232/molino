@@ -257,6 +257,11 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
   const handleCheckout = async (method: 'mercadopago' | 'paypal') => {
     if (checkoutLoading) return; // Prevent double-click
+    // Defensa contra CTAs que quedaron habilitados por un estado stale de
+    // `flags` (fetch todavía en vuelo) o un método invocado fuera del botón
+    // visible: el flag es la fuente de verdad, no la presencia del botón.
+    if (method === 'mercadopago' && !flags.mercadoPagoEnabled) return;
+    if (method === 'paypal' && !flags.paypalEnabled) return;
 
     analytics.trackCheckoutStarted('USD', method);
     setCheckoutMethod(method);
@@ -488,36 +493,44 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
               <p className="text-sm text-muted mb-8">{t.premium.priceNote}</p>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="accent"
-                  size="lg"
-                  fullWidth
-                  onClick={() => handleCheckout('mercadopago')}
-                >
-                  {t.premium.payWithMercadoPago}
-                </Button>
-              </div>
+              {flags.mercadoPagoEnabled && (
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    variant="accent"
+                    size="lg"
+                    fullWidth
+                    onClick={() => handleCheckout('mercadopago')}
+                  >
+                    {t.premium.payWithMercadoPago}
+                  </Button>
+                </div>
+              )}
+
+              {flags.mercadoPagoEnabled && flags.paypalEnabled && (
+                <div className="flex items-center gap-4 my-6" aria-hidden="true">
+                  <span className="h-px flex-1 bg-ink/10" />
+                  <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
+                  <span className="h-px flex-1 bg-ink/10" />
+                </div>
+              )}
 
               {flags.paypalEnabled && (
-                <>
-                  <div className="flex items-center gap-4 my-6" aria-hidden="true">
-                    <span className="h-px flex-1 bg-ink/10" />
-                    <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
-                    <span className="h-px flex-1 bg-ink/10" />
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    fullWidth
+                    onClick={() => handleCheckout('paypal')}
+                  >
+                    {t.premium.payWithPaypal}
+                  </Button>
+                </div>
+              )}
 
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button
-                      variant="secondary"
-                      size="lg"
-                      fullWidth
-                      onClick={() => handleCheckout('paypal')}
-                    >
-                      {t.premium.payWithPaypal}
-                    </Button>
-                  </div>
-                </>
+              {!flags.mercadoPagoEnabled && !flags.paypalEnabled && (
+                <p className="text-sm text-muted border border-ink/10 bg-ink/[0.02] px-4 py-3">
+                  {t.premium.paymentUnavailable}
+                </p>
               )}
             </div>
 

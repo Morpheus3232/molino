@@ -39,6 +39,9 @@ OmniRoute/
 # local-only dev fallback KV store (see lib/kv.ts), never used in production
 .molino-dev-kv.json
 
+# graphify generated knowledge-graph artifact
+graphify-out/
+
 # workspace / agent tooling (local config, not part of product)
 .agents/
 .claude/

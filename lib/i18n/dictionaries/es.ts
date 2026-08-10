@@ -78,6 +78,7 @@ export const es = {
     priceNote: "Pago único · acceso permanente",
     payWithMercadoPago: "Pagar con Mercado Pago",
     payWithPaypal: "Pagar con PayPal",
+    paymentUnavailable: "El pago no está disponible en este momento. Volvé a intentarlo más tarde.",
     recoverAccess: "Recuperar acceso",
     haveCoupon: "Tengo un cupón",
   },
