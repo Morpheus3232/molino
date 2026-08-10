@@ -284,7 +284,10 @@ export async function POST(req: NextRequest) {
           rawContext: context,
         };
       } else {
-        console.warn('[premium_ai_invalid]', JSON.stringify({
+        // console.error, not .warn: same production log-capture gap found
+        // and fixed in providerRouter.ts's attempt_failed log — .warn lines
+        // were observed to never reach `vercel logs` in this runtime.
+        console.error('[premium_ai_invalid]', JSON.stringify({
           type,
           provider: providerUsed,
           model: aiResponse.model || 'unknown',
