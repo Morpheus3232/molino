@@ -182,17 +182,15 @@ function PiezasLibres({
         </ol>
       </div>
 
-      {/* 03 · Qué significa para ti ahora — tratamiento de cita editorial. La
-          narrativa de buildMomentState ya cruza ciclo + energía del día +
-          elemento en una frase; acá la mostramos tal cual (determinístico,
-          gratis) — la lectura interpretada por IA vive en 06, adentro del
-          paywall. */}
+      {/* 03 · Qué significa para ti ahora — síntesis editorial en el cuerpo
+          tipográfico del perfil (sin tratamiento de cita). La narrativa de
+          buildMomentState ya cruza ciclo + energía del día + elemento en una
+          frase; acá la mostramos tal cual (determinístico, gratis) — la
+          lectura interpretada por IA vive en 06, adentro del paywall. */}
       {momentState?.narrative && (
         <div>
           <SubHeader number="03" title="Qué significa para ti ahora" description="La síntesis de tu momento actual" elementColor={elementColor} />
-          <blockquote className="max-w-2xl border-l-2 pl-6 sm:pl-8" style={{ borderColor: `${elementColor}66` }}>
-            <p className="font-heading text-xl sm:text-2xl leading-[1.5] text-foreground">{momentState.narrative}</p>
-          </blockquote>
+          <p className="max-w-3xl text-base sm:text-lg text-foreground leading-relaxed">{momentState.narrative}</p>
         </div>
       )}
 
