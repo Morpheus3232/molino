@@ -6,7 +6,6 @@ import {
   buildPatterns,
   buildTensions,
   buildRules,
-  buildMomentState,
   buildPrinciples,
 } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
@@ -127,7 +126,6 @@ function PiezasLibres({
   const tensions = buildTensions(profile);
   const rules = buildRules(profile);
   const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
-  const momentState = buildMomentState(profile, dailyEnergy.overallScore, dailyEnergy.theme);
   // Misma intención por defecto que usa el resto del mapa cuando el usuario
   // todavía no eligió una en /hoy — no altera analyzeTiming, solo qué
   // intención se le pasa.
@@ -179,66 +177,32 @@ function PiezasLibres({
         </ol>
       </div>
 
-      {/* 03 · Qué significa para ti ahora — síntesis editorial en el cuerpo
-          tipográfico del perfil (sin tratamiento de cita). La narrativa de
-          buildMomentState ya cruza ciclo + energía del día + elemento en una
-          frase; acá la mostramos tal cual (determinístico, gratis) — la
-          lectura interpretada por IA vive en 06, adentro del paywall. */}
-      {momentState?.narrative && (
-        <div>
-          <SubHeader number="03" title="Qué significa para ti ahora" description="La síntesis de tu momento actual" elementColor={elementColor} />
-          <p className="max-w-3xl text-base sm:text-lg text-foreground leading-relaxed">{momentState.narrative}</p>
-        </div>
-      )}
-
-      {/* 04 · Tu timing + 05 · Tu evolución — lectura de instrumento: pareja
-          compacta en mono, deliberadamente más terrenal que la interpretación
-          que sigue después del paywall. */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 sm:gap-8 max-w-4xl">
-        <div>
-          <SubHeader number="04" title="Tu timing" description="Momentos favorables según tu ciclo" elementColor={elementColor} />
-          <p className="font-mono text-4xl sm:text-5xl" style={{ color: elementColor }}>
-            {timing.timingScore}
-            <span className="text-lg text-muted">/100</span>
-          </p>
-          <p className="text-sm text-foreground leading-relaxed mt-4">{timing.recommendedWindow}</p>
-          <p className="text-sm text-muted leading-relaxed mt-2">{timing.explanation}</p>
-          {timing.favorableDimensions.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-4" aria-hidden="true">
-              {timing.favorableDimensions.map((d) => (
-                <span key={d} className="text-[10px] font-mono uppercase tracking-[0.2em] px-2 py-1 border border-ink/10 text-foreground">
-                  {d}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div>
-          <SubHeader number="05" title="Tu evolución" description="Cómo se conectan tus ciclos con tu camino" elementColor={elementColor} />
-          <p className="font-mono text-4xl sm:text-5xl" style={{ color: elementColor }}>
-            {dailyEnergy.personalYear}
-          </p>
-          <p className="text-sm text-muted mt-2">Año personal · {dailyEnergy.theme}</p>
-          <div className="mt-6 space-y-3">
-            {Object.entries(dailyEnergy.areas).map(([key, area]) => (
-              <div key={key}>
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs text-muted capitalize">{key === "relationships" ? "Relaciones" : key}</span>
-                  <span className="font-mono text-xs text-foreground">{area.score}%</span>
-                </div>
-                <div className="h-px bg-ink/10 overflow-hidden">
-                  <div
-                    className="h-full"
-                    style={{
-                      width: `${area.score}%`,
-                      backgroundColor: area.score >= 60 ? "var(--score-excellent)" : area.score >= 45 ? "var(--score-good)" : "var(--score-poor)",
-                    }}
-                  />
-                </div>
+      {/* 05 · Tu evolución — lectura de instrumento en mono, deliberadamente
+          más terrenal que la interpretación que sigue después del paywall. */}
+      <div>
+        <SubHeader number="05" title="Tu evolución" description="Cómo se conectan tus ciclos con tu camino" elementColor={elementColor} />
+        <p className="font-mono text-4xl sm:text-5xl" style={{ color: elementColor }}>
+          {dailyEnergy.personalYear}
+        </p>
+        <p className="text-sm text-muted mt-2">Año personal · {dailyEnergy.theme}</p>
+        <div className="mt-6 space-y-3">
+          {Object.entries(dailyEnergy.areas).map(([key, area]) => (
+            <div key={key}>
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs text-muted capitalize">{key === "relationships" ? "Relaciones" : key}</span>
+                <span className="font-mono text-xs text-foreground">{area.score}%</span>
               </div>
-            ))}
-          </div>
+              <div className="h-px bg-ink/10 overflow-hidden">
+                <div
+                  className="h-full"
+                  style={{
+                    width: `${area.score}%`,
+                    backgroundColor: area.score >= 60 ? "var(--score-excellent)" : area.score >= 45 ? "var(--score-good)" : "var(--score-poor)",
+                  }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
