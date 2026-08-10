@@ -18,6 +18,24 @@ export interface NumerologyNumber {
   relationshipWithOther: string;
   scientificNote: string;
   sourceIds: string[];
+  /** Qué mueve a este número desde adentro — más allá de sus rasgos observables. */
+  coreDrive: string;
+  /** Cómo suele traducirse ese impulso en comportamiento cotidiano observable. */
+  behaviorPattern: string;
+  /** Capacidades concretas que emergen cuando este número se expresa de forma equilibrada. */
+  potential: string[];
+  /** Su desequilibrio simbólico — no una lista de defectos, sino el mismo impulso llevado al extremo. */
+  shadow: string;
+  /** Qué necesita aprender o desarrollar, según esta tradición interpretativa. */
+  growthEdge: string;
+  /** Cómo puede manifestarse este número en tres áreas concretas de la vida. */
+  manifestation: {
+    decisions: string;
+    relationships: string;
+    work: string;
+  };
+  /** Pregunta abierta pensada para la reflexión personal, no para un diagnóstico. */
+  reflectionQuestion: string;
 }
 
 export const NUMBERS: NumerologyNumber[] = [
@@ -35,6 +53,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 1 funciona especialmente bien con los números 3, 5 y 7, que complementan su energía con expresión, versatilidad e introspección.",
     scientificNote: "La numerología es un sistema de creencias sin evidencia científica que respalde sus afirmaciones. Los significados atribuidos a los números son interpretaciones culturales y simbólicas.",
     sourceIds: ["britannica-numerology", "stanford-pythagoras"],
+    coreDrive: "En numerología, el impulso central del 1 suele describirse como la necesidad de iniciar: abrir camino donde antes no había ninguno, más que continuar algo que ya existe.",
+    behaviorPattern: "Puede manifestarse como una tendencia a tomar la iniciativa casi automáticamente — proponer, decidir, ponerse al frente — incluso en contextos donde nadie se lo pidió explícitamente.",
+    potential: [
+      "Abrir caminos que otros todavía no ven",
+      "Tomar decisiones bajo incertidumbre sin esperar consenso",
+      "Convertir una idea vaga en un primer paso concreto",
+      "Asumir responsabilidad por el resultado de lo que inicia",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando la iniciativa se convierte en la necesidad de controlar todo el proceso, o cuando pedir ayuda se vive como una forma de debilidad.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 1 crece cuando aprende a liderar sin cargar en soledad con lo que podría delegar o compartir.",
+    manifestation: {
+      decisions: "Suele inclinarse por decidir rápido y ajustar sobre la marcha, antes que esperar tener toda la información disponible.",
+      relationships: "Puede tender a ocupar el rol de quien propone o resuelve, lo que a veces deja poco espacio para que otros lideren.",
+      work: "Suele encontrar sentido en proyectos donde puede empezar algo desde cero, más que en sostener procesos ya establecidos.",
+    },
+    reflectionQuestion: "¿Estás abriendo tu propio camino o tratando de demostrar que podés con todo vos solo?",
   },
   {
     number: 2,
@@ -50,6 +84,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 2 se complementa naturalmente con el 6 (responsabilidad) y el 9 (servicio), mientras que puede tensionarse con el 1 (independencia).",
     scientificNote: "Los significados atribuidos al 2 en numerología son construcciones simbólicas. No existe evidencia de que la fecha de nacimiento determine rasgos de personalidad.",
     sourceIds: ["britannica-numerology", "iep-pythagoreanism"],
+    coreDrive: "El impulso central del 2 suele describirse como la búsqueda de conexión genuina: entender al otro lo suficiente como para construir algo en conjunto.",
+    behaviorPattern: "Puede expresarse como una atención constante al estado emocional de quienes lo rodean, y una tendencia a ajustar la propia postura para mantener la armonía del grupo.",
+    potential: [
+      "Mediar entre posiciones que parecen irreconciliables",
+      "Escuchar matices que otros pasan por alto",
+      "Sostener un vínculo en el tiempo, no solo iniciarlo",
+      "Detectar tensión antes de que se vuelva conflicto abierto",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando la búsqueda de armonía se convierte en evitar cualquier desacuerdo, incluso a costa de las propias necesidades.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 2 crece cuando aprende a sostener un límite sin necesitar la aprobación de la otra parte para hacerlo.",
+    manifestation: {
+      decisions: "Suele preferir decidir en conjunto o consultar antes de avanzar, incluso cuando la decisión le corresponde solo a él o ella.",
+      relationships: "Tiende a ser quien sostiene el vínculo de forma activa, a veces más allá de lo que el vínculo le devuelve.",
+      work: "Suele rendir mejor en entornos colaborativos que en roles donde debe imponer una postura en solitario.",
+    },
+    reflectionQuestion: "¿Estás construyendo un vínculo real o evitando el conflicto a cualquier precio?",
   },
   {
     number: 3,
@@ -65,6 +115,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 3 resuena especialmente con el 5 (aventura) y el 7 (profundidad), creando equilibrio entre expresión exterior e introspección.",
     scientificNote: "La numerología es un sistema de creencias. Las asociaciones entre el número 3 y la creatividad son interpretaciones culturales, no hechos científicos.",
     sourceIds: ["britannica-numerology", "stanford-pythagoras"],
+    coreDrive: "El impulso central del 3 suele describirse como la necesidad de poner algo interno hacia afuera: convertir una idea, una emoción o una observación en algo comunicable.",
+    behaviorPattern: "Puede manifestarse como facilidad para encontrar palabras, imágenes o gestos que otros tardan más en articular, y una búsqueda casi constante de un canal para expresarse.",
+    potential: [
+      "Convertir una idea abstracta en un mensaje que se entiende",
+      "Conectar personas o ideas que no se habían cruzado antes",
+      "Sostener el ánimo de un grupo en momentos difíciles",
+      "Encontrar la versión más simple y atractiva de algo complejo",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando la expresión se dispersa en demasiadas direcciones a la vez, o cuando necesita validación externa para sentir que lo que hizo tiene valor.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 3 crece cuando aprende a sostener una idea el tiempo suficiente para terminarla, en vez de saltar a la siguiente.",
+    manifestation: {
+      decisions: "Puede decidir guiado por el entusiasmo del momento, y suele beneficiarse de sumar una mirada más estructurada antes de comprometerse del todo.",
+      relationships: "Suele aportar liviandad y humor al vínculo, aunque puede evitar las conversaciones que requieren sostener incomodidad.",
+      work: "Suele prosperar en roles donde comunicar es parte central de la tarea, más que en tareas repetitivas sin salida creativa.",
+    },
+    reflectionQuestion: "¿Tu expresión está construyendo algo o solo persiguiendo el próximo estímulo?",
   },
   {
     number: 4,
@@ -80,6 +146,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 4 funciona bien con el 8 (logros materiales) y el 1 (iniciativa), pero puede generar tensión con el 5 (cambio) y el 7 (introspección).",
     scientificNote: "No existe evidencia científica de que el número 4 determine características de personalidad o ciclos de vida.",
     sourceIds: ["britannica-numerology", "iep-pythagoreanism"],
+    coreDrive: "El impulso central del 4 suele describirse como la necesidad de construir algo que perdure: un sistema, una rutina, una base que no dependa del ánimo del día.",
+    behaviorPattern: "Puede expresarse como preferencia por el método sobre la improvisación, y una tendencia a medir el progreso en pasos concretos y verificables.",
+    potential: [
+      "Sostener un proyecto mucho después de que el entusiasmo inicial se apagó",
+      "Detectar qué falta en un sistema para que funcione de verdad",
+      "Convertir una intención vaga en un plan ejecutable",
+      "Ser el punto de estabilidad cuando todo lo demás cambia",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando la estructura deja de servir al objetivo y se convierte en un fin en sí misma, o cuando cualquier cambio se vive como una amenaza.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 4 crece cuando aprende a distinguir la estructura que lo sostiene de la que ya dejó de sostenerlo.",
+    manifestation: {
+      decisions: "Suele preferir decidir con información completa y un plan claro, incluso si eso implica postergar la decisión.",
+      relationships: "Tiende a demostrar compromiso a través de la constancia y los actos concretos, más que con las palabras.",
+      work: "Suele encontrar satisfacción en roles donde el esfuerzo sostenido se traduce en resultados medibles.",
+    },
+    reflectionQuestion: "¿La estructura que armaste te sostiene o ya te está encerrando?",
   },
   {
     number: 5,
@@ -95,6 +177,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 5 resuena con el 3 (expresión) y el 7 (introspección), pero puede generar tensión con el 1 (orden) y el 4 (estabilidad).",
     scientificNote: "Las asociaciones entre el 5 y la libertad son construcciones simbólicas. No existe evidencia de que el número determine rasgos de comportamiento.",
     sourceIds: ["britannica-numerology", "stanford-pythagoras"],
+    coreDrive: "El impulso central del 5 no suele describirse simplemente como necesidad de cambio, sino como necesidad de mantener abierta la posibilidad de elegir distinto.",
+    behaviorPattern: "Puede expresarse como curiosidad activa ante lo nuevo, y una resistencia — a veces física, a veces solo interna — ante cualquier cosa que se sienta como una jaula.",
+    potential: [
+      "Adaptarse a un contexto que cambió sin perder el eje",
+      "Conectar mundos o grupos que normalmente no se cruzan",
+      "Encontrar oportunidades donde otros solo ven inestabilidad",
+      "Reinventar un plan cuando el original dejó de servir",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando el movimiento se vuelve un fin en sí mismo: cambiar por no quedarse quieto, más que por haber evolucionado realmente.",
+    growthEdge: "Dentro de esta tradición, el desafío del 5 no se interpreta como elegir entre libertad y estructura, sino como descubrir qué estructura mínima le permite sostener su libertad en el tiempo.",
+    manifestation: {
+      decisions: "Suele evitar comprometerse con una sola opción mientras sienta que existen otras disponibles, aunque eso implique postergar decisiones importantes.",
+      relationships: "Puede necesitar espacio y variedad dentro del vínculo, y suele beneficiarse de entornos que no interpreten eso como falta de compromiso.",
+      work: "Suele rendir mejor en roles con variedad genuina de tareas que en estructuras rígidas y repetitivas.",
+    },
+    reflectionQuestion: "¿Estás cambiando porque evolucionaste o porque no soportás quedarte quieto?",
   },
   {
     number: 6,
@@ -110,6 +208,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 6 se complementa con el 2 (cooperación) y el 9 (servicio), pero puede generar dependencia con el 1 (independencia).",
     scientificNote: "La numerología es un sistema simbólico. No existe evidencia de que el 6 determine la vocación o las relaciones de una persona.",
     sourceIds: ["britannica-numerology", "iep-pythagoreanism"],
+    coreDrive: "El impulso central del 6 suele describirse como la necesidad de que las personas y los espacios que lo rodean estén bien: cuidados, en armonía, sostenidos.",
+    behaviorPattern: "Puede expresarse como disposición casi automática a hacerse cargo de lo que otros dejan sin resolver, y una atención constante al bienestar del entorno.",
+    potential: [
+      "Sostener a otros en momentos difíciles sin perder el propio eje",
+      "Crear espacios y vínculos que se sienten seguros",
+      "Convertir la responsabilidad en un tipo de liderazgo afectivo",
+      "Detectar necesidades que nadie verbalizó todavía",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando cuidar se convierte en una obligación que no puede rechazar, o cuando confunde el amor con hacerse responsable de la felicidad ajena.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 6 crece cuando aprende a distinguir entre cuidar porque elige hacerlo y cuidar porque siente que, si no lo hace, todo se derrumba.",
+    manifestation: {
+      decisions: "Suele decidir pensando primero en el impacto sobre los demás, y puede beneficiarse de preguntarse qué quiere él o ella antes de resolver.",
+      relationships: "Tiende a ser quien sostiene al grupo o a la familia, un rol que puede volverse pesado si nadie más lo comparte.",
+      work: "Suele encontrar sentido en tareas centradas en personas, donde el cuidado o el servicio son parte visible del resultado.",
+    },
+    reflectionQuestion: "¿Estás cuidando porque elegís hacerlo o porque sentís que todo depende de vos?",
   },
   {
     number: 7,
@@ -125,6 +239,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 7 resuena con el 3 (expresión) y el 9 (sabiduría), pero puede generar aislamiento si se combina con números muy materiales.",
     scientificNote: "La asociación entre el 7 y la espiritualidad es una construcción cultural. No existe evidencia de que el número determine tendencias espirituales.",
     sourceIds: ["britannica-numerology", "stanford-pythagoras"],
+    coreDrive: "El impulso central del 7 suele describirse como la necesidad de comprender lo que hay debajo de la superficie, más que conformarse con la explicación disponible.",
+    behaviorPattern: "Puede expresarse como preferencia por la reflexión antes que la reacción inmediata, y una tendencia a necesitar tiempo a solas para procesar lo que vive.",
+    potential: [
+      "Detectar patrones que pasan inadvertidos para la mayoría",
+      "Desarrollar un conocimiento profundo en un área específica",
+      "Hacer la pregunta que nadie más se animó a hacer",
+      "Mantener criterio propio frente a la opinión mayoritaria",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando el análisis se convierte en una forma de mantener distancia emocional, o cuando la introspección reemplaza a la experiencia en vez de complementarla.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 7 crece cuando aprende a compartir lo que descubre en soledad, en vez de guardarlo solo para sí mismo.",
+    manifestation: {
+      decisions: "Suele necesitar tiempo e información suficiente antes de decidir, y puede resistirse a resolver bajo presión externa.",
+      relationships: "Tiende a mostrar afecto de forma más reservada que expresiva, lo que puede leerse como distancia sin serlo.",
+      work: "Suele prosperar en roles que permiten profundizar en un tema, más que en entornos de estímulo constante e interrupciones.",
+    },
+    reflectionQuestion: "¿Tu necesidad de entender te acerca a la verdad o te aleja de vivir la experiencia?",
   },
   {
     number: 8,
@@ -140,6 +270,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 8 funciona bien con el 4 (estabilidad) y el 1 (liderazgo), pero puede generar conflictos con el 2 (cooperación) y el 6 (cuidado).",
     scientificNote: "La asociación entre el 8 y la prosperidad es una creencia cultural, particularmente fuerte en tradiciones orientales. No tiene base científica.",
     sourceIds: ["britannica-numerology", "iep-pythagoreanism"],
+    coreDrive: "El impulso central del 8 suele describirse como la necesidad de traducir la ambición en resultados concretos y verificables.",
+    behaviorPattern: "Puede expresarse como orientación clara hacia metas medibles, y una lectura natural de las dinámicas de poder dentro de cualquier grupo u organización.",
+    potential: [
+      "Administrar recursos con visión estratégica",
+      "Sostener la disciplina necesaria para proyectos de largo plazo",
+      "Negociar sin perder de vista el objetivo final",
+      "Construir estructuras u organizaciones que escalan",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando el resultado se vuelve la única medida del propio valor, o cuando la necesidad de control desplaza a los vínculos que ese mismo resultado debería sostener.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 8 crece cuando aprende a separar lo que logra de lo que vale como persona. La riqueza, en este marco simbólico, es una temática asociada al número — nunca una garantía ni una predicción.",
+    manifestation: {
+      decisions: "Suele decidir con foco en el resultado y el costo-beneficio, a veces dejando en segundo plano el impacto emocional inmediato.",
+      relationships: "Puede tender a asumir un rol de autoridad o proveedor dentro del vínculo, incluso cuando no se lo pidieron.",
+      work: "Suele destacarse en roles de gestión, negociación o estrategia, donde la ambición tiene un canal claro de expresión.",
+    },
+    reflectionQuestion: "¿Estás usando el poder para construir algo o necesitás poder para sentir que valés?",
   },
   {
     number: 9,
@@ -155,6 +301,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 9 se complementa con el 3 (expresión) y el 6 (servicio), pero puede generar tensión con el 1 (individualismo).",
     scientificNote: "Las propiedades matemáticas del 9 son reales, pero su interpretación como 'sabiduría' o 'servicio' es una construcción simbólica sin respaldo científico.",
     sourceIds: ["britannica-numerology", "stanford-pythagoras"],
+    coreDrive: "El impulso central del 9 suele describirse como la necesidad de comprender el conjunto: ver más allá de la situación inmediata y encontrarle un sentido más amplio.",
+    behaviorPattern: "Puede expresarse como una sensibilidad marcada al estado del entorno, y una facilidad para adaptarse — casi reflejar — distintos contextos y personas.",
+    potential: [
+      "Integrar experiencias muy distintas en una sola comprensión",
+      "Adaptarse a contextos nuevos sin perder perspectiva",
+      "Cerrar ciclos en vez de prolongarlos indefinidamente",
+      "Ver en otra persona algo que ella todavía no ve en sí misma",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer cuando absorbe tanto del entorno que le cuesta distinguir su propio deseo de la influencia ajena, o cuando le cuesta soltar lo que ya cumplió su ciclo.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 9 crece cuando aprende a cerrar un ciclo sin necesitar que el resultado final sea perfecto.",
+    manifestation: {
+      decisions: "Suele decidir considerando el panorama completo, lo que puede volver la decisión más lenta cuando la situación pide algo inmediato.",
+      relationships: "Tiende a adaptarse mucho al otro, y puede beneficiarse de preguntarse cuánto de esa adaptación es elección propia.",
+      work: "Suele encontrar sentido en roles que integran distintas áreas o perspectivas, más que en tareas aisladas y repetitivas.",
+    },
+    reflectionQuestion: "¿Estás viendo quién sos de verdad o solo reflejando lo que tenés alrededor?",
   },
   {
     number: 11,
@@ -170,6 +332,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 11 se complementa con el 22 (maestro constructor) y el 33 (maestro sanador) como parte de la trinidad de números maestros.",
     scientificNote: "Los números maestros son una invención de la numerología moderna. No existen en la tradición pitagórica original ni tienen evidencia científica.",
     sourceIds: ["britannica-numerology", "buchanan-numerology-book"],
+    coreDrive: "El impulso central del 11 suele describirse como la necesidad de captar lo que todavía no es evidente: una intuición que llega antes que la evidencia concreta.",
+    behaviorPattern: "Puede expresarse como sensibilidad marcada a matices, atmósferas y señales que otros no registran conscientemente, junto con una intensidad interna difícil de traducir en palabras.",
+    potential: [
+      "Detectar una tendencia o un cambio antes de que sea visible para el resto",
+      "Inspirar a otros a través de una visión o una idea",
+      "Conectar percepción intuitiva con conocimiento concreto",
+      "Ofrecer una lectura de una situación que otros no alcanzan a ver",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer como sobrecarga sensorial o emocional, o como dificultad para bajar una visión amplia a un paso concreto y ejecutable.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 11 crece cuando encuentra un canal específico para lo que percibe, en vez de quedarse solo en la intensidad de percibirlo.",
+    manifestation: {
+      decisions: "Suele guiarse por la intuición de forma marcada, y puede beneficiarse de contrastarla con información concreta antes de actuar.",
+      relationships: "Tiende a percibir el estado emocional del otro con una precisión inusual, lo que puede resultar tanto un puente como una sobrecarga.",
+      work: "Suele encontrar sentido en roles donde la visión, la inspiración o la anticipación de tendencias tienen un lugar central.",
+    },
+    reflectionQuestion: "¿Qué hacés con lo que intuís antes de que los demás lo vean?",
   },
   {
     number: 22,
@@ -185,6 +363,22 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 22 se complementa con el 11 (intuición) y el 33 (compasión) como los tres números maestros.",
     scientificNote: "Los números maestros son una construcción de la numerología moderna sin respaldo en la tradición pitagórica ni en la evidencia científica.",
     sourceIds: ["britannica-numerology", "lavoselle-numerology"],
+    coreDrive: "El impulso central del 22 suele describirse como el cruce entre una visión de gran escala y la necesidad de volverla algo concreto y sostenible.",
+    behaviorPattern: "Puede expresarse como capacidad para pensar en sistemas completos — no solo en la próxima tarea, sino en cómo todas las piezas encajan a largo plazo.",
+    potential: [
+      "Diseñar sistemas u organizaciones que sostienen a mucha gente",
+      "Convertir una visión ambiciosa en etapas ejecutables",
+      "Sostener disciplina extraordinaria durante proyectos largos",
+      "Elevar el estándar de lo que un grupo cree que es posible",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer como sentirse abrumado por la magnitud de lo que quiere construir, o como perfeccionismo que posterga indefinidamente el primer paso.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 22 crece cuando aprende a avanzar con una estructura imperfecta, en vez de esperar tener la visión completa resuelta antes de empezar.",
+    manifestation: {
+      decisions: "Suele decidir pensando en el impacto de largo plazo, lo que puede volver lenta la puesta en marcha de proyectos más simples.",
+      relationships: "Puede tender a involucrar a su entorno cercano en sus proyectos, y suele necesitar aprender a delegar en vez de sostener todo personalmente.",
+      work: "Suele destacarse liderando proyectos de gran escala u organizaciones, más que en tareas acotadas y de corto plazo.",
+    },
+    reflectionQuestion: "¿Qué parte de tu visión podés empezar a construir hoy, en vez de esperar a tenerla completa?",
   },
   {
     number: 33,
@@ -200,8 +394,32 @@ export const NUMBERS: NumerologyNumber[] = [
     relationshipWithOther: "El 33 se complementa con el 11 (intuición) y el 22 (manifestación) como los tres números maestros.",
     scientificNote: "El 33 como número maestro es la interpretación más especulativa de la numerología moderna. No tiene base histórica en el pitagorismo ni evidencia científica.",
     sourceIds: ["britannica-numerology", "lavoselle-numerology"],
+    coreDrive: "El impulso central del 33 suele describirse como la combinación entre sensibilidad, responsabilidad y una capacidad marcada de influir positivamente en otros.",
+    behaviorPattern: "Puede expresarse como disposición a enseñar, acompañar o cuidar incluso sin que se lo pidan explícitamente, y una sensibilidad amplificada al malestar ajeno.",
+    potential: [
+      "Transformar experiencia personal en conocimiento útil para otros",
+      "Acompañar procesos de aprendizaje o cambio ajenos",
+      "Comunicar ideas complejas de forma accesible y cercana",
+      "Influir positivamente sobre un grupo o comunidad",
+    ],
+    shadow: "Su desequilibrio simbólico puede aparecer como la sensación de tener que resolver el malestar de todos los que lo rodean, o como dificultad para sostener límites frente a las necesidades ajenas.",
+    growthEdge: "Dentro de esta tradición, se interpreta que el 33 crece cuando aprende a compartir lo que sabe sin sentir que carga con la responsabilidad de salvar a cada persona que ayuda.",
+    manifestation: {
+      decisions: "Suele decidir priorizando el bienestar colectivo, y puede beneficiarse de incluir su propio bienestar en esa misma ecuación.",
+      relationships: "Tiende a ocupar un rol de guía o sostén dentro de sus vínculos, un lugar que puede volverse agotador si no se equilibra.",
+      work: "Suele encontrar sentido en roles de enseñanza, acompañamiento o servicio, donde el impacto sobre otros es visible.",
+    },
+    reflectionQuestion: "¿Estás compartiendo lo que aprendiste o cargando con el peso del mundo entero?",
   },
 ];
+
+/**
+ * Nota introductoria para 11, 22 y 33: por qué Molino los trata como
+ * vibraciones propias en vez de reducirlos a 2, 4 y 6, y qué NO implica esa
+ * convención (ni jerarquía espiritual, ni destino predeterminado).
+ */
+export const MASTER_NUMBERS_NOTE =
+  "Algunas escuelas de la tradición numerológica interpretan al 11, al 22 y al 33 como vibraciones distintas de sus reducciones simples (2, 4 y 6): números que conservarían una intensidad simbólica propia en vez de reducirse al dígito final. Molino sigue esa convención cuando el cálculo produce directamente 11, 22 o 33. Esto no implica que representen un destino superior, una 'misión' predeterminada ni ningún tipo de jerarquía espiritual frente a los demás números — son, como el resto del sistema, una capa más de interpretación simbólica.";
 
 /**
  * Cálculos de numerología que Molino implementa.

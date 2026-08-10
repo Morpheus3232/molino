@@ -112,7 +112,7 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
         );
       }
     },
-    [turns, profile.birthDate, profile.name]
+    [turns, profile.birthDate, profile.name, readingContext]
   );
 
   const handleSubmit = (e: React.FormEvent) => {
