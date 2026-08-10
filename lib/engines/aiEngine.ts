@@ -19,6 +19,21 @@ export interface AIInterpretation {
 
 const AI_TIMEOUT_MS = 20_000;
 
+/** Truncates a provider error body for logging and strips anything that
+ * looks like a key, in case a misconfigured provider ever echoes one back. */
+function sanitizeForLog(text: string, max = 300): string {
+  return text.slice(0, max).replace(/\b[A-Za-z0-9_-]{20,}\b/g, '[redacted]');
+}
+
+function logProviderRequest(provider: string, model: string, status: number, durationMs: number, statusText?: string, body?: string) {
+  const base = `[AI] provider=${provider} stage=request status=${status} model=${model} duration=${durationMs}ms`;
+  if (status >= 400) {
+    console.error(`${base} statusText=${statusText || ''} body=${sanitizeForLog(body || '')}`);
+  } else {
+    console.log(base);
+  }
+}
+
 /**
  * Fallback when OPENROUTER_MODEL is unset/empty. Must stay a model that
  * actually returns the requested JSON contract — meta-llama/llama-3.1-8b-
@@ -161,6 +176,7 @@ export async function generateWithOpenAI(
 
   const prompt = buildPrompt(user, target, result, template);
 
+  const startedAt = Date.now();
   const response = await fetchWithTimeoutAndRetry('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -199,10 +215,14 @@ export async function generateWithOpenAI(
       max_tokens: 800,
     }),
   });
+  const duration = Date.now() - startedAt;
 
   if (!response.ok) {
-    throw new Error(`OpenAI API error: ${response.status}`);
+    const bodyText = await response.text().catch(() => '');
+    logProviderRequest('openai', model, response.status, duration, response.statusText, bodyText);
+    throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
   }
+  logProviderRequest('openai', model, response.status, duration);
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content || '';
@@ -234,6 +254,7 @@ export async function generateWithClaude(
 
   const prompt = buildPrompt(user, target, result, template);
 
+  const startedAt = Date.now();
   const response = await fetchWithTimeoutAndRetry('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -270,10 +291,14 @@ export async function generateWithClaude(
       ],
     }),
   });
+  const duration = Date.now() - startedAt;
 
   if (!response.ok) {
-    throw new Error(`Claude API error: ${response.status}`);
+    const bodyText = await response.text().catch(() => '');
+    logProviderRequest('claude', model, response.status, duration, response.statusText, bodyText);
+    throw new Error(`Claude API error: ${response.status} ${response.statusText}`);
   }
+  logProviderRequest('claude', model, response.status, duration);
 
   const data = await response.json();
   const content = data.content?.[0]?.text || '';
@@ -361,6 +386,7 @@ export async function generateWithOpenRouter(
     requestBody.reasoning = { exclude: true };
   }
 
+  const startedAt = Date.now();
   const response = await fetchWithTimeoutAndRetry('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -369,6 +395,7 @@ export async function generateWithOpenRouter(
     },
     body: JSON.stringify(requestBody),
   });
+  const duration = Date.now() - startedAt;
 
   // Not every OpenRouter-routed model/provider supports json_schema
   // structured outputs — support is provider-dependent and OPENROUTER_MODEL
@@ -376,8 +403,11 @@ export async function generateWithOpenRouter(
   // response_format, fail loud (existing catch/fallback path in route.ts
   // handles this safely already) instead of silently retrying without it.
   if (!response.ok) {
-    throw new Error(`OpenRouter API error: ${response.status}`);
+    const bodyText = await response.text().catch(() => '');
+    logProviderRequest('openrouter', model, response.status, duration, response.statusText, bodyText);
+    throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
   }
+  logProviderRequest('openrouter', model, response.status, duration);
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content || '';

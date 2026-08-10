@@ -313,6 +313,9 @@ export async function POST(req: NextRequest) {
       console.log('[premium_interpretation_served]', JSON.stringify({
         type,
         source: aiResult ? 'ai' : 'fallback',
+        provider: providerUsed,
+        fallbackUsed,
+        durationMs: Date.now() - generationStartedAt,
         aiError: aiError || undefined,
       }));
     }
