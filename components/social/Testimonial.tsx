@@ -10,21 +10,24 @@ import Card from "@/components/ui/Card";
  * solo hace falta actualizar este array — la estructura ya está lista:
  * cada item necesita name, location, text y opcionalmente photoUrl.
  */
-const TESTIMONIALS: { name: string; location: string; text: string; photoUrl?: string }[] = [
+const TESTIMONIALS: { name: string; location: string; text: string; photoUrl?: string; color: string }[] = [
   {
-    name: "Ana L.",
-    location: "Buenos Aires",
+    name: "Ana López",
+    location: "Buenos Aires, Argentina",
     text: "Entré por curiosidad y me quedé por la profundidad. Es un acercamiento honesto — sin sensacionalismo, sin clickbait.",
+    color: "var(--layer-identity)",
   },
   {
-    name: "Carlos M.",
-    location: "Madrid",
+    name: "Carlos Méndez",
+    location: "Madrid, España",
     text: "Lo que más me gustó es que no guarda nada. Creás tu mapa, leés, y listo. No tenés que dar un mail ni descargar una app.",
+    color: "var(--layer-astrology)",
   },
   {
-    name: "Lucía R.",
-    location: "Ciudad de México",
+    name: "Lucía Rojas",
+    location: "Ciudad de México, México",
     text: "Te muestran la estructura detrás del mapa: por qué un número, por qué un signo. No te lo dan mágicamente, te explican.",
+    color: "var(--layer-cycles)",
   },
 ];
 
@@ -32,16 +35,17 @@ function initials(name: string): string {
   return name.charAt(0).toUpperCase();
 }
 
-function Avatar({ name, photoUrl }: { name: string; photoUrl?: string }) {
+function Avatar({ name, photoUrl, color }: { name: string; photoUrl?: string; color: string }) {
   if (photoUrl) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-16 h-16 rounded-full object-cover" />;
+    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover" />;
   }
   return (
     <div
       role="img"
       aria-label={`Foto de perfil de ${name}`}
-      className="w-16 h-16 rounded-full bg-accent/15 text-accent flex items-center justify-center font-heading text-xl font-semibold"
+      style={{ backgroundColor: `${color}26`, color }}
+      className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-heading text-lg sm:text-xl font-semibold shrink-0"
     >
       {initials(name)}
     </div>
@@ -80,8 +84,8 @@ export default function Testimonial() {
                   &ldquo;{testimonial.text}&rdquo;
                 </blockquote>
 
-                <footer className="flex items-center gap-3">
-                  <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} />
+                <footer className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} color={testimonial.color} />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-foreground">{testimonial.name}</p>
                     <p className="text-xs text-muted/70 mb-1">{testimonial.location}</p>

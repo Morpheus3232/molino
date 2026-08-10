@@ -1,47 +1,78 @@
 "use client";
 
+import { useCallback, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Button from "@/components/ui/Button";
+import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUp } from "@/lib/utils/motion";
+import { saveOnboardingData } from "@/lib/session/ephemeral";
+
+function isValidBirthDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year] = value.split("-").map(Number);
+  const birth = new Date(`${value}T00:00:00`);
+  return year >= 1900 && birth < new Date();
+}
 
 export default function CTAFinal() {
   const router = useRouter();
+  const [dateValue, setDateValue] = useState("");
+  const dateInputRef = useRef<DateInputHandle>(null);
+  const isDateValid = isValidBirthDate(dateValue);
+
+  const handleGenerate = useCallback(() => {
+    if (!isDateValid) {
+      dateInputRef.current?.reportIncomplete();
+      return;
+    }
+    const [year, month, day] = dateValue.split("-");
+    saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
+    router.push("/onboarding");
+  }, [dateValue, isDateValid, router]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" && isDateValid) handleGenerate();
+    },
+    [isDateValid, handleGenerate]
+  );
 
   return (
-    <section className="bg-card border-t border-ink/10 py-16 sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12 text-center">
-        <motion.p {...fadeUp} className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[0.9] mb-6">
-          TU MAPA TE ESPERA.
+    <section className="bg-accent/[0.05] border-t border-ink/10 py-16 sm:py-24">
+      <div className="mx-auto max-w-2xl px-4 sm:px-8 lg:px-12 text-center">
+        <motion.h2 {...fadeUp} className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[0.9] mb-3">
+          Tu mapa está a un clic.
+        </motion.h2>
+
+        <motion.p {...fadeUp} className="text-base sm:text-lg text-muted/70 leading-relaxed mb-8 max-w-md mx-auto">
+          Ingresá tu fecha de nacimiento y descubrí tu perfil en segundos.
         </motion.p>
 
-        <motion.p {...fadeUp} className="text-base sm:text-lg text-muted/70 leading-relaxed mb-10 max-w-xl mx-auto">
-          Ya conocés los tres lenguajes de Molino.
-          <br />
-          Numerología, astrología y zodíaco chino convergen
-          <br />
-          en un solo lugar: tu identidad.
-        </motion.p>
+        <motion.div {...fadeUp} className="w-[90%] sm:w-auto mx-auto mb-4" onKeyDown={handleKeyDown}>
+          <DateInput ref={dateInputRef} value={dateValue} onChange={setDateValue} />
+        </motion.div>
 
-        <motion.p {...fadeUp} className="text-sm text-muted/70 leading-relaxed mb-10 max-w-xl mx-auto">
-          No hay prisa. No hay presión.
-          <br />
-          Solo una invitación a conocerte.
-        </motion.p>
-
-        <motion.div {...fadeUp} className="flex justify-center">
+        <motion.div {...fadeUp} className="flex justify-center mb-3">
           <Button
-            onClick={() => router.push("/onboarding")}
-            className="group w-auto sm:w-[240px]"
+            variant="accent"
             size="lg"
+            onClick={handleGenerate}
+            aria-disabled={!isDateValid}
+            className={`w-[90%] sm:w-auto ${!isDateValid ? "opacity-50" : ""}`}
           >
-            <span className="flex items-center gap-2 justify-center">
-              CREAR MI MAPA
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </span>
+            Generar mi mapa
           </Button>
         </motion.div>
+
+        <motion.p {...fadeUp} className="font-mono text-xs text-muted/60 tracking-wide">
+          Gratis · Sin registro · Sin guardar datos
+          {" · "}
+          <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
+            Ver un ejemplo →
+          </Link>
+        </motion.p>
       </div>
     </section>
   );

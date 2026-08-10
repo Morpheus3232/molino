@@ -1,3 +1,4 @@
+import Link from "next/link";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const sections = [
@@ -122,6 +123,12 @@ export default function PrivacidadContent() {
     <div className="min-h-screen bg-background">
       <div className="container-content py-16 sm:py-24 max-w-3xl mx-auto">
         <div>
+          <nav className="flex items-center gap-2 text-xs text-muted mb-8" aria-label="Breadcrumb">
+            <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
+            <span>›</span>
+            <span className="text-foreground font-medium">Privacidad</span>
+          </nav>
+
           <h1
             className="font-heading text-4xl sm:text-5xl font-bold text-foreground mb-4 animate-fade-in-up"
           >
@@ -150,6 +157,15 @@ export default function PrivacidadContent() {
                 </div>
               </section>
             ))}
+          </div>
+
+          <div className="text-center border-t border-ink/10 pt-16 mt-10">
+            <Link
+              href="/"
+              className="text-sm font-medium text-accent underline decoration-accent/40 underline-offset-2 hover:decoration-accent transition-colors"
+            >
+              Volver al inicio
+            </Link>
           </div>
         </div>
       </div>

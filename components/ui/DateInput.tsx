@@ -242,6 +242,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
         <input
           ref={ddRef}
           id={`${id}-dd`}
+          name="birthdate-day"
           type="text"
           inputMode="numeric"
           pattern="\d*"
@@ -252,7 +253,6 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           onKeyDown={handleDdKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
-          aria-label="Día"
           aria-invalid={missingField === "dd"}
           autoComplete="off"
         />
@@ -263,6 +263,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
         <input
           ref={mmRef}
           id={`${id}-mm`}
+          name="birthdate-month"
           type="text"
           inputMode="numeric"
           pattern="\d*"
@@ -273,7 +274,6 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           onKeyDown={handleMmKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
-          aria-label="Mes"
           aria-invalid={missingField === "mm"}
           autoComplete="off"
         />
@@ -284,6 +284,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
         <input
           ref={yyyyRef}
           id={`${id}-yyyy`}
+          name="birthdate-year"
           type="text"
           inputMode="numeric"
           pattern="\d*"
@@ -294,19 +295,20 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           onKeyDown={handleYyyyKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl flex-1 min-w-0`}
-          aria-label="Año"
           aria-invalid={missingField === "yyyy"}
           autoComplete="off"
         />
       </div>
 
-      {/* Labels */}
+      {/* Labels: <label> real asociado por htmlFor, no solo aria-label —
+          así el lector de pantalla anuncia "Día, edit text" al enfocar,
+          en vez de depender de un atributo que un futuro edit podría borrar. */}
       <div className="flex items-center mt-2 px-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-        <span className="w-16 sm:w-20 text-center">Día</span>
+        <label htmlFor={`${id}-dd`} className="w-16 sm:w-20 text-center">Día</label>
         <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
-        <span className="w-16 sm:w-20 text-center">Mes</span>
+        <label htmlFor={`${id}-mm`} className="w-16 sm:w-20 text-center">Mes</label>
         <span className="text-2xl sm:text-3xl px-0.5 opacity-0">/</span>
-        <span className="flex-1 text-center">Año</span>
+        <label htmlFor={`${id}-yyyy`} className="flex-1 text-center">Año</label>
       </div>
 
       {missingField && (
