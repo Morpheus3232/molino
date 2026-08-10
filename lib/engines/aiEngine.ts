@@ -19,6 +19,17 @@ export interface AIInterpretation {
 
 const AI_TIMEOUT_MS = 20_000;
 
+/**
+ * The structured MolinoInterpretation schema (used whenever `template` is
+ * passed) requires 14 fields of Spanish prose — measured in production,
+ * the old flat 800-token cap hit `finishReason=length` with the JSON cut
+ * off mid-object every time (completionTokens=800 exactly, contentLength
+ * ~3020 chars and still unclosed). The legacy narrative-only shape (no
+ * template) has far fewer fields and stays on the original budget.
+ */
+const STRUCTURED_OUTPUT_MAX_TOKENS = 2000;
+const DEFAULT_MAX_TOKENS = 800;
+
 /** Truncates a provider error body for logging and strips anything that
  * looks like a key, in case a misconfigured provider ever echoes one back. */
 function sanitizeForLog(text: string, max = 300): string {
@@ -212,7 +223,7 @@ export async function generateWithOpenAI(
         },
       ],
       temperature: 0.7,
-      max_tokens: 800,
+      max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
     }),
   });
   const duration = Date.now() - startedAt;
@@ -264,7 +275,7 @@ export async function generateWithClaude(
     },
     body: JSON.stringify({
       model,
-      max_tokens: 800,
+      max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
       temperature: 0.7,
       system: [
         'Eres el Motor de Inteligencia de Molino — un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
@@ -365,7 +376,7 @@ export async function generateWithOpenRouter(
       },
     ],
     temperature: 0.7,
-    max_tokens: 800,
+    max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
   };
 
   if (template) {
