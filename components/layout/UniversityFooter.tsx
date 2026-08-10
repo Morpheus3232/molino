@@ -7,7 +7,7 @@ export default function UniversityFooter() {
   return (
     <footer className="bg-[#0F0F10] text-white">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-16 sm:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-y-0 text-center md:text-left">
           <div className="md:col-span-5 md:pr-12">
             <span className="inline-flex h-11 w-11 items-center justify-center bg-white/10 border border-white/20">
               <Logo className="w-6 h-6" />
@@ -15,8 +15,8 @@ export default function UniversityFooter() {
             <p className="font-heading text-lg text-white mt-6 uppercase tracking-wide">
               MOLINO
             </p>
-            <p className="text-sm text-white/60 mt-2 max-w-xs leading-relaxed">
-              Mapa personal de autoconocimiento. Tres sistemas, una lectura.
+            <p className="text-sm text-white/60 mt-2 max-w-xs mx-auto md:mx-0 leading-relaxed">
+              Autoconocimiento sin ruido.
             </p>
             <Link
               href="https://github.com/molino-app/molino"
