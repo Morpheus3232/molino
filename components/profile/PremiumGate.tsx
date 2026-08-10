@@ -8,6 +8,7 @@ import Logo from '@/components/ui/Logo';
 import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient } from '@/lib/premium';
+import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -125,6 +126,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       // otherwise 403 every AI call downstream while this gate shows "unlocked".
       if (data.premium === true && data.premiumToken) {
         savePremiumTokenClient(data.premiumToken);
+        invalidatePremiumAccessCache(name, birthDate);
       }
       return data.premium === true;
     } catch {
@@ -152,6 +154,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             setState('unlocked');
             setJustUnlocked(true);
             if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
+            invalidatePremiumAccessCache(name, birthDate);
             analytics.trackPaymentApproved(paypalOrderId, 'paypal');
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
@@ -181,6 +184,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             setState('unlocked');
             setJustUnlocked(true);
             if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
+            invalidatePremiumAccessCache(name, birthDate);
             analytics.trackPremiumUnlocked();
             cleanUrlParams();
           } else {
@@ -323,6 +327,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         setState('unlocked');
         setJustUnlocked(true);
         if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
+        invalidatePremiumAccessCache(name, birthDate);
         analytics.trackPremiumUnlocked();
       } else {
         setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
@@ -352,6 +357,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         setState('unlocked');
         setJustUnlocked(true);
         if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
+        invalidatePremiumAccessCache(name, birthDate);
         analytics.trackPremiumUnlocked();
       } else {
         setCouponError(data.reason || 'Código inválido');
