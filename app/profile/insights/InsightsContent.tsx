@@ -187,7 +187,7 @@ export default function InsightsContent() {
                   <p className="font-heading text-2xl font-bold text-foreground">{display.name}</p>
                 </motion.div>
 
-                <div className="flex-1 text-center sm:text-left">
+                <div className="flex-1 min-w-0 text-center sm:text-left">
                   <div className="flex items-center gap-2 justify-center sm:justify-start mb-3">
                     <span
                       className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-sm"
@@ -212,7 +212,7 @@ export default function InsightsContent() {
               {/* Year context */}
               <div className="mt-6 pt-4 border-t border-border flex items-center gap-3">
                 <span className="text-xl">{formatAnimalEmoji(yearCycle.yearAnimal)}</span>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium text-foreground">{yearCycle.year} — Año del {yearCycle.yearAnimal}</p>
                   <p className="text-xs text-muted">{yearCycle.label}</p>
                 </div>

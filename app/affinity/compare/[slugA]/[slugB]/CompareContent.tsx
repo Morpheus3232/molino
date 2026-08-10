@@ -426,7 +426,7 @@ function DifferenceRow({
   return (
     <div className="grid grid-cols-[1fr_auto_1fr] gap-3 items-center text-xs">
       <span className="text-foreground text-right truncate" title={valueA}>{valueA}</span>
-      <span className="text-muted font-medium w-24 text-center shrink-0">{label}</span>
+      <span className="text-muted font-medium w-16 sm:w-24 text-center shrink-0">{label}</span>
       <span className="text-foreground text-left truncate" title={valueB}>{valueB}</span>
     </div>
   );

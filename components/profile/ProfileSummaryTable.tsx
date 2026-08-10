@@ -30,7 +30,7 @@ function SystemCard({ title, color, stats, children }: { title: string; color: s
       </div>
       <dl className="space-y-3">
         {stats.map((stat, i) => (
-          <div key={i} className="flex justify-between items-baseline gap-4">
+          <div key={i} className="flex justify-between items-start gap-4">
             <dt className="text-sm text-muted">{stat.label}</dt>
             <dd className="font-mono text-base font-semibold text-foreground text-right min-w-[40%]">
               {stat.icon && <span className="mr-2" aria-hidden="true">{stat.icon}</span>}
