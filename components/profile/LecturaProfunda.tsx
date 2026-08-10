@@ -164,12 +164,9 @@ function PiezasLibres({
       <div>
         <SubHeader number="02" title="Tus reglas" description="Principios para moverte mejor" elementColor={elementColor} />
         <ol className="max-w-3xl">
-          {principles.map((p, i) => (
+          {principles.map((p) => (
             <li key={p.title} className="py-5 border-t border-ink/10 first:border-t-0">
               <div className="flex items-start gap-4 sm:gap-5">
-                <span className="number-display shrink-0 text-lg sm:text-xl pt-0.5" style={{ color: elementColor }} aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 <div>
                   <p className="font-heading text-base sm:text-lg leading-[1.5] text-foreground">
                     {p.title}
