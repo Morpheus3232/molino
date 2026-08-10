@@ -112,7 +112,7 @@ export default function SymbolicMapShareableCard({
           <div className="p-4 rounded-md bg-background mb-6">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{formatAnimalEmoji(yearAnimal)}</span>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-foreground">{year} — Año del {yearAnimal}</p>
                 <p className="text-xs text-muted">{yearResonance.label}</p>
               </div>

@@ -292,7 +292,7 @@ export default function UniversityHeader() {
             >
               <h3 id="confirm-title" className="font-heading text-lg text-foreground mb-2 uppercase">CREAR NUEVO PERFIL</h3>
               <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
                   CANCELAR
                 </Button>
