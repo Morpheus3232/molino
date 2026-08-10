@@ -174,13 +174,13 @@ describe('generateWithOpenRouter → structured output request', () => {
     expect(body.response_format).toBeUndefined();
   });
 
-  test('sends reasoning: { exclude: true } for the premium contract call (template provided)', async () => {
+  test('does NOT send reasoning: { exclude: true } for the premium contract call — it suppressed reasoning from the response but not from the completion_tokens budget, silently truncating the JSON', async () => {
     const fetchMock = mockOpenRouterContentCapturing(JSON.stringify({ summary: 'x' }));
     await generateWithOpenRouter(USER, TARGET, RESULT, 'un template de buildIntelligencePrompt');
 
     const [, init] = fetchMock.mock.calls[0];
     const body = JSON.parse((init as RequestInit).body as string);
-    expect(body.reasoning).toEqual({ exclude: true });
+    expect(body.reasoning).toBeUndefined();
   });
 
   test('does NOT send reasoning for the legacy compatibility call (no template)', async () => {
