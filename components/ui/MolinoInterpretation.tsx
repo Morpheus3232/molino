@@ -116,6 +116,11 @@ export default function MolinoInterpretation({
   // Fetch the interpretation. Separated from the effect that triggers it to
   // avoid re-creating the callback on every render (it closes over profile).
   const fetchInterpretation = useCallback(async () => {
+    // TEMP DIAGNOSTIC LOGGING — remove before merging. Never logs content,
+    // premiumToken, or PII beyond birthDate/type which are already public
+    // query-string inputs on this page.
+    const callId = Math.random().toString(36).slice(2, 8);
+    console.log('[MolinoInterpretation] REQUEST START', { callId, type, dob: profile.birthDate, question: !!question });
     try {
       setIsInterpreting(true);
       const { getPremiumTokenClient } = await import('@/lib/premium');
@@ -131,6 +136,10 @@ export default function MolinoInterpretation({
         }),
       });
       const data = await res.json();
+      console.log('[MolinoInterpretation] REQUEST RESPONSE', {
+        callId, status: res.status, aiStatus: data.aiStatus,
+        hasAI: !!data.ai, hasFallback: !!data.fallback, error: data.error,
+      });
       if (!res.ok) {
         if (res.status === 403) {
           setPremiumRequired(true);
@@ -151,21 +160,32 @@ export default function MolinoInterpretation({
         setError("No recibimos una interpretación válida.");
       }
       setHasAttemptedAI(true);
-    } catch {
+    } catch (err) {
+      console.log('[MolinoInterpretation] REQUEST EXCEPTION', { callId, message: err instanceof Error ? err.message : String(err) });
       setError("Hubo un problema de conexión. Reintentá en un momento.");
       setHasAttemptedAI(true);
     } finally {
       setIsInterpreting(false);
+      console.log('[MolinoInterpretation] REQUEST END', { callId });
     }
   }, [profile.name, profile.birthDate, type, question]);
 
   // Try AI interpretation unless explicitly told to skip, or the user has
   // already asked to regenerate and we're waiting on the result.
   useEffect(() => {
+    console.log('[MolinoInterpretation] EFFECT FIRE', { hasAttemptedAI, type, dob: profile.birthDate });
     if (!hasAttemptedAI) {
       fetchInterpretation();
     }
   }, [fetchInterpretation, hasAttemptedAI]);
+
+  useEffect(() => {
+    console.log('[MolinoInterpretation] STATE UPDATE', {
+      source: aiInterpretation ? 'ai' : fallbackInterpretation ? 'fallback' : 'none',
+      hasError: !!error,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiInterpretation, fallbackInterpretation, error]);
 
   // BuildingMolino's onComplete flips this — only after the checklist has
   // visually finished does the content swap in (see note above).
