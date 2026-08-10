@@ -91,15 +91,22 @@ async function tryLegacyProvider(
     return interpretation;
   } catch (error) {
     const isRateLimit = isRateLimitError(error);
-    console.warn(`[providerRouter] ${provider} attempt ${attempt} failed:`, error instanceof Error ? error.message : error, isRateLimit ? '(rate limit)' : '');
-    
+    const message = error instanceof Error ? error.message : String(error);
+    // console.error, not .warn: this is the only place the real provider
+    // failure reason (status/statusText/body, logged inside aiEngine.ts) is
+    // one hop from being silently swallowed into the generic "All providers
+    // failed" — Vercel's runtime log capture was observed dropping .warn
+    // lines from this exact catch in production, so .error is what actually
+    // reaches `vercel logs`.
+    console.error(`[AI] provider=${provider} stage=attempt_failed attempt=${attempt} rateLimit=${isRateLimit} message=${message}`);
+
     if (isRateLimit && attempt < maxRetries) {
       const delay = retryDelayMs * attempt;
-      console.log(`[providerRouter] Rate limited, retrying ${provider} in ${delay}ms (attempt ${attempt + 1}/${maxRetries})`);
+      console.log(`[AI] provider=${provider} stage=retry attempt=${attempt + 1} delayMs=${delay}`);
       await sleep(delay);
       return tryLegacyProvider(provider, user, target, result, template, attempt + 1, maxRetries, retryDelayMs);
     }
-    
+
     return null;
   }
 }
@@ -121,27 +128,30 @@ export async function generateWithRouting(
   if (primary === 'omniroute') {
     try {
       const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template);
+      console.log(`[AI] result=success provider=omniroute model=${modelUsed} fallback=${fallbackUsed}`);
       return { interpretation, providerUsed: 'omniroute', fallbackUsed };
     } catch (error) {
-      console.warn('[providerRouter] OmniRoute failed, trying legacy fallback:', error instanceof Error ? error.message : error);
+      console.error('[AI] provider=omniroute stage=attempt_failed message=' + (error instanceof Error ? error.message : String(error)));
     }
   }
 
   const primaryResult = await tryLegacyProvider(primary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
   if (primaryResult) {
+    console.log(`[AI] result=success provider=${primary} fallback=false`);
     return { interpretation: primaryResult, providerUsed: primary, fallbackUsed: false };
   }
 
   if (config.enableFallback) {
     const fallback = config.fallback;
-    console.log(`[providerRouter] Primary ${primary} failed, trying fallback ${fallback}`);
+    console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${primary}`);
     const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
     if (fallbackResult) {
-      console.log(`[providerRouter] Fallback to ${fallback} succeeded`);
+      console.log(`[AI] result=success provider=${fallback} fallback=true`);
       return { interpretation: fallbackResult, providerUsed: fallback, fallbackUsed: true };
     }
   }
 
+  console.error(`[AI] result=local_fallback reason=all_providers_failed primary=${primary} fallbackEnabled=${config.enableFallback}`);
   throw new Error(`All providers failed (primary: ${primary}${config.enableFallback ? `, fallback: ${config.fallback}` : ''})`);
 }
 
