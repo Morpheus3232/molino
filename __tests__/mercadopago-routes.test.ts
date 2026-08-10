@@ -10,6 +10,13 @@ import { NextRequest } from 'next/server';
 
 vi.stubEnv('MP_ACCESS_TOKEN', 'test-access-token');
 vi.stubEnv('MP_WEBHOOK_SECRET', 'test-webhook-secret');
+// coupon/route.ts reads process.env.PREMIUM_COUPON at module scope (`const
+// COUPON_CODE = ...`), evaluated when the module is first imported — ES
+// import hoisting runs that before a plain vi.stubEnv() call further down
+// this file would take effect, so it needs vi.hoisted() specifically.
+vi.hoisted(() => {
+  process.env.PREMIUM_COUPON = 'TEST_COUPON';
+});
 // getBaseUrl() now returns the hardcoded SITE_URL (lib/seo.ts) — no env var
 // to stub anymore.
 
@@ -52,12 +59,13 @@ vi.mock('mercadopago', () => ({
 }));
 
 import { hashProfile } from '@/lib/mercadopago';
-import { grantPremiumAccess, hasPremiumAccess } from '@/lib/kv';
+import { grantPremiumAccess, hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
 import { POST as preferenceRoute } from '@/app/api/mp/preference/route';
 import { POST as webhookRoute } from '@/app/api/mp/webhook/route';
 import { POST as verifyRoute } from '@/app/api/mp/verify/route';
 import { POST as recoverRoute } from '@/app/api/mp/recover/route';
 import { POST as checkRoute } from '@/app/api/mp/check/route';
+import { POST as couponRoute } from '@/app/api/mp/coupon/route';
 
 const NAME = 'Juan Perez';
 const BIRTH = '1990-01-15';
@@ -323,5 +331,54 @@ describe('Mercado Pago check route (Premium access — única fuente de verdad)'
 
     expect(data.premium).toBe(false);
     expect(data.premiumToken).toBeUndefined();
+  });
+});
+
+describe('Regresión: /api/mp/check no debe rotar un token ya emitido', () => {
+  test('sin token existente, /api/mp/check crea uno', async () => {
+    await grantPremiumAccess(HASH, PAYMENT_ID);
+
+    const res = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH }));
+    const data = await res.json();
+
+    expect(typeof data.premiumToken).toBe('string');
+    expect(await verifyPremiumToken(HASH, data.premiumToken)).toBe(true);
+  });
+
+  test('con un token existente, /api/mp/check NO lo rota', async () => {
+    await grantPremiumAccess(HASH, PAYMENT_ID);
+    const first = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH }));
+    const firstToken = (await first.json()).premiumToken;
+
+    const second = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH }));
+    const secondToken = (await second.json()).premiumToken;
+
+    expect(secondToken).toBe(firstToken);
+  });
+
+  test('dos checks consecutivos devuelven el mismo token', async () => {
+    await grantPremiumAccess(HASH, PAYMENT_ID);
+    const first = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH })).then((r) => r.json());
+    const second = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH })).then((r) => r.json());
+    expect(first.premiumToken).toBe(second.premiumToken);
+  });
+
+  // El bug real reportado: canjear ABDUZCAN entrega un token, pero el mismo
+  // page load dispara /api/mp/check desde otro componente (usePremiumAccess,
+  // PremiumGate.checkServer/poll) — ese segundo llamado rotaba el token y
+  // dejaba inválido el que el frontend acababa de guardar.
+  test('el token emitido por /api/mp/coupon sigue siendo válido después de un /api/mp/check posterior', async () => {
+    const coupon = await couponRoute(
+      requestTo('http://localhost/api/mp/coupon', { coupon: 'TEST_COUPON', name: NAME, birthDate: BIRTH })
+    );
+    const { premiumToken: couponToken } = await coupon.json();
+    expect(await verifyPremiumToken(HASH, couponToken)).toBe(true);
+
+    // Simula el segundo chequeo independiente que ocurre en la misma carga de página.
+    const check = await checkRoute(requestTo('http://localhost/api/mp/check', { name: NAME, birthDate: BIRTH }));
+    const { premiumToken: checkToken } = await check.json();
+
+    expect(checkToken).toBe(couponToken);
+    expect(await verifyPremiumToken(HASH, couponToken)).toBe(true);
   });
 });

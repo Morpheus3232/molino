@@ -182,6 +182,30 @@ export async function savePremiumToken(profileHash: string): Promise<string> {
  * Returns true ONLY if the token matches the one stored server-side.
  * This prevents share-URL bypass: the token never travels in the URL.
  */
+/**
+ * Read the device-bound token if one already exists, without rotating it.
+ * Only mints a new one (via savePremiumToken) when none exists yet.
+ *
+ * savePremiumToken() always overwrites — correct for real unlock events
+ * (verify/recover/coupon/capture-order), but /api/mp/check is a read-only
+ * status confirmation called from multiple independent places in the same
+ * page load (PremiumGate.checkServer + usePremiumAccess + polling). Calling
+ * savePremiumToken() from there rotated the token on every check, so a token
+ * saved to localStorage moments earlier by a real unlock could already be
+ * invalid by the time it was used.
+ */
+export async function getOrCreatePremiumToken(profileHash: string): Promise<string> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return '';
+    const existing = await kv.get<string>(`premium_token:${profileHash}`);
+    if (existing) return existing;
+  } catch (error) {
+    console.error('[KV] Error in getOrCreatePremiumToken:', error);
+  }
+  return savePremiumToken(profileHash);
+}
+
 export async function verifyPremiumToken(profileHash: string, token: string): Promise<boolean> {
   if (!token || !profileHash) return false;
   try {
