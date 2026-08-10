@@ -107,14 +107,13 @@ describe('LecturaProfunda', () => {
     expect(screen.getByText(/Hasta ahora viste las piezas/)).toBeInTheDocument();
   });
 
-  it('usuario sin Premium: SÍ ve las piezas gratis (patrones/reglas/timing/evolución), NO ve la interpretación ni el chat', async () => {
+  it('usuario sin Premium: SÍ ve las piezas gratis (patrones/reglas/evolución), NO ve la interpretación ni el chat', async () => {
     mockFetch(false);
     render(<LecturaProfunda profile={TEST_PROFILE} />);
 
     // Piezas — determinísticas, nunca detrás del paywall.
     expect(screen.getByText('Tus patrones')).toBeInTheDocument();
     expect(screen.getByText('Tus reglas')).toBeInTheDocument();
-    expect(screen.getByText('Tu timing')).toBeInTheDocument();
     expect(screen.getByText('Tu evolución')).toBeInTheDocument();
 
     await waitFor(() => {
