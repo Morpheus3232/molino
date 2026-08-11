@@ -16,8 +16,8 @@ export default function Home() {
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
           <Hero />
-          <TresPasos />
           <QueDescubris />
+          <TresPasos />
           <TresSistemas />
           <Testimonial />
           <TrustMetrics />

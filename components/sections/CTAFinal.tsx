@@ -43,11 +43,11 @@ export default function CTAFinal() {
     <section className="bg-accent/[0.05] border-t border-ink/10 py-16 sm:py-24">
       <div className="mx-auto max-w-2xl px-4 sm:px-8 lg:px-12 text-center">
         <motion.h2 {...fadeUp} className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[0.9] mb-3">
-          Tu mapa está a un clic.
+          Tu claridad está a un clic.
         </motion.h2>
 
         <motion.p {...fadeUp} className="text-base sm:text-lg text-muted/70 leading-relaxed mb-8 max-w-md mx-auto">
-          Ingresá tu fecha de nacimiento y descubrí tu perfil en segundos.
+          Ingresá tu fecha de nacimiento y recibí tu mapa personal en segundos.
         </motion.p>
 
         <motion.div {...fadeUp} className="w-[90%] sm:w-auto mx-auto mb-4" onKeyDown={handleKeyDown}>
@@ -62,7 +62,7 @@ export default function CTAFinal() {
             aria-disabled={!isDateValid}
             className={`w-[90%] sm:w-auto ${!isDateValid ? "opacity-50" : ""}`}
           >
-            Generar mi mapa
+            Crear mi mapa personal
           </Button>
         </motion.div>
 
