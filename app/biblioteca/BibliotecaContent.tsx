@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import SearchInput from "@/components/ui/SearchInput";
 import Chip from "@/components/ui/Chip";
 
@@ -282,7 +281,7 @@ export default function BibliotecaContent() {
   return (
     <div className="min-h-screen bg-background">
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca</p>
@@ -449,7 +448,6 @@ export default function BibliotecaContent() {
         )}
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

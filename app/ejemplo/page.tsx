@@ -8,7 +8,6 @@ import { ANIMAL_PROFILES } from "@/lib/data/animalRelations";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 export const metadata: Metadata = {
   title: "Ejemplo de mapa personal",
@@ -36,14 +35,9 @@ const jsonLd = [
   },
 ];
 
-// Perfil ficticio: nace de los mismos motores que usa la app real.
 const profile = calculateUserProfile("María", "1990-03-15", { birthPlace: "Buenos Aires, Argentina" });
 const archetypeIntro = ARCHETYPE_INTRO[profile.lifePath as keyof typeof ARCHETYPE_INTRO];
 const caballo = ANIMAL_PROFILES.Caballo;
-
-// El motor de astrología no calcula Luna/Ascendente (requieren hora exacta de
-// nacimiento, que este ejemplo no tiene). Se muestran valores ilustrativos
-// para que la sección se vea completa, con esa salvedad aclarada abajo.
 const moonSign = "Cáncer";
 const risingSign = "Escorpio";
 
@@ -61,7 +55,7 @@ export default function EjemploPage() {
 
         {/* Header */}
         <header className="text-center mb-14">
-          <Badge variant="muted" className="mb-5">Mapa de ejemplo · Perfil ficticio</Badge>
+          <Badge variant="muted" className="mb-5">Perfil de ejemplo</Badge>
           <h1 className="font-display text-[clamp(2.5rem,7vw,4.5rem)] font-bold tracking-tight text-foreground leading-[0.95] mb-3">
             María
           </h1>
@@ -78,7 +72,7 @@ export default function EjemploPage() {
           <div className="flex items-center gap-3 justify-center mb-8">
             <Hash className="w-5 h-5 text-accent" aria-hidden="true" />
             <h2 id="numerologia-heading" className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-              Numerología
+              Tu numerología
             </h2>
           </div>
 
@@ -114,11 +108,11 @@ export default function EjemploPage() {
           <div className="flex items-center gap-3 justify-center mb-8">
             <Sun className="w-5 h-5 text-accent" aria-hidden="true" />
             <h2 id="astrologia-heading" className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-              Astrología
+              Tu astrología
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
             <Card padding="lg" className="text-center">
               <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Signo solar</p>
               <p className="text-4xl mb-2" aria-hidden="true">{ZODIAC_SYMBOLS[profile.sunSign]}</p>
@@ -139,6 +133,10 @@ export default function EjemploPage() {
             </Card>
           </div>
 
+          <p className="text-sm text-muted/80 text-center max-w-xl mx-auto leading-relaxed mb-3">
+            Con el Sol en {profile.sunSign}, María percibe lo que otros no dicen. {moonSign} en la Luna amplifica esa sensibilidad emocional, mientras {risingSign} como Ascendente le da la profundidad para sostener lo que siente y transformarlo en decisión.
+          </p>
+
           <p className="text-xs text-muted/60 text-center max-w-xl mx-auto leading-relaxed">
             * Luna y Ascendente son ilustrativos en este ejemplo: calcularlos con precisión requiere la hora exacta de nacimiento.
           </p>
@@ -151,21 +149,31 @@ export default function EjemploPage() {
           <div className="flex items-center gap-3 justify-center mb-8">
             <span className="text-xl" aria-hidden="true">{caballo.emoji}</span>
             <h2 id="zodiaco-heading" className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
-              Zodíaco Chino
+              Tu zodíaco chino
             </h2>
           </div>
 
-          <Card padding="lg" className="max-w-md mx-auto text-center">
-            <p className="text-5xl mb-3" aria-hidden="true">{caballo.emoji}</p>
-            <p className="font-heading text-2xl font-semibold text-foreground mb-1">
-              {profile.chineseZodiacInfo.animal} de {profile.chineseZodiacInfo.element}
-            </p>
-            <div className="flex items-center justify-center gap-2 flex-wrap mt-4">
-              {caballo.traits.map((trait) => (
-                <Badge key={trait} variant="outline">{trait}</Badge>
-              ))}
-            </div>
-          </Card>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 max-w-lg mx-auto">
+            <Card padding="lg" className="text-center">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Animal</p>
+              <p className="text-4xl mb-2" aria-hidden="true">{caballo.emoji}</p>
+              <p className="font-heading text-lg font-semibold text-foreground">{profile.chineseZodiacInfo.animal}</p>
+              <div className="flex items-center justify-center gap-2 flex-wrap mt-4">
+                {caballo.traits.map((trait) => (
+                  <Badge key={trait} variant="outline">{trait}</Badge>
+                ))}
+              </div>
+            </Card>
+            <Card padding="lg" className="text-center">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Elemento</p>
+              <p className="font-heading text-5xl font-bold text-foreground mb-2">{profile.chineseZodiacInfo.element}</p>
+              <p className="text-sm text-muted">Determinación y estructura</p>
+            </Card>
+          </div>
+
+          <p className="text-sm text-muted/80 text-center max-w-xl mx-auto leading-relaxed">
+            El {profile.chineseZodiacInfo.animal} trae movimiento y exploración; el elemento {profile.chineseZodiacInfo.element} agrega determinación y estructura. Juntos, refuerzan la independencia del Camino de Vida {profile.lifePath} y suavizan la intuición de {profile.sunSign} con acción concreta.
+          </p>
         </section>
 
         <div className="border-t border-ink/10 mb-16" />
@@ -173,7 +181,7 @@ export default function EjemploPage() {
         {/* Resumen integrado */}
         <section aria-labelledby="resumen-heading" className="mb-20">
           <h2 id="resumen-heading" className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground text-center mb-8">
-            Tu mapa cruzado
+            Tu mapa integrado
           </h2>
           <Card padding="lg" className="max-w-2xl mx-auto">
             <div className="space-y-4 text-sm sm:text-base text-muted leading-relaxed">
@@ -183,9 +191,9 @@ export default function EjemploPage() {
                 adelante, hacia decisiones propias antes que heredadas.
               </p>
               <p>
-                Pero su Sol en Piscis suaviza ese impulso con intuición y sensibilidad: no lidera a fuerza de
-                imponerse, sino leyendo lo que no se dice. Su Luna en Cáncer profundiza esa escucha emocional,
-                y un Ascendente en Escorpio le da la determinación para sostener lo que empieza.
+                Pero su Sol en {profile.sunSign} suaviza ese impulso con intuición y sensibilidad: no lidera a fuerza de
+                imponerse, sino leyendo lo que no se dice. Su Luna en {moonSign} profundiza esa escucha emocional,
+                y un Ascendente en {risingSign} le da la determinación para sostener lo que empieza.
               </p>
               <p>
                 El {profile.chineseZodiacInfo.animal} de {profile.chineseZodiacInfo.element} completa el cruce:
@@ -199,24 +207,22 @@ export default function EjemploPage() {
         {/* CTA */}
         <section className="text-center border-t border-ink/10 pt-16">
           <h2 className="font-display text-2xl sm:text-3xl tracking-tight text-foreground mb-3">
-            ¿Y el tuyo?
+            ¿Querés ver tu propio mapa?
           </h2>
           <p className="text-sm text-muted mb-8 max-w-sm mx-auto">
-            Generá tu propio mapa con tu fecha de nacimiento real.
+            Generá tu mapa personal con tu fecha de nacimiento real.
           </p>
           <Button variant="accent" size="lg" asChild>
-            <Link href="/onboarding">
-              Generá tu propio mapa
+            <Link href="/">
+              Generar mi mapa
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </Button>
           <p className="font-mono text-xs text-muted/60 tracking-wide mt-4">
-            Gratis. Sin registro. Sin guardar datos.
+            Gratis · Sin registro
           </p>
         </section>
       </main>
-
-      <UniversityFooter />
     </div>
   );
 }

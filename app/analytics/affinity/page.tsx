@@ -3,7 +3,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { analytics } from "@/lib/analytics/analytics";
 
 type EventType =
@@ -155,7 +154,7 @@ export default function AffinityAnalyticsPage() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando datos de Affinity...">
                 Cargando datos de Affinity...
               </p>
@@ -185,7 +184,6 @@ export default function AffinityAnalyticsPage() {
                 )}
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -195,7 +193,7 @@ export default function AffinityAnalyticsPage() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
               <div className="mb-8">
                 <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-2">
@@ -325,7 +323,6 @@ export default function AffinityAnalyticsPage() {
               </div>
 
             </main>
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

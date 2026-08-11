@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { formatDate } from "@/lib/i18n/format";
 import type { GenericDailyData } from "@/lib/utils/daily-energy-utils";
 
@@ -118,7 +117,6 @@ export default function HoyBaseEnergy({ data }: { data: GenericDailyData }) {
           </p>
         </motion.div>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

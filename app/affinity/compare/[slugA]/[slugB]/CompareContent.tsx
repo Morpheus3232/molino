@@ -15,7 +15,6 @@ import {
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 
 const transitionVariants = {
@@ -67,7 +66,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando comparación...">
                 Cargando comparación...
               </p>
@@ -78,7 +77,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -98,7 +96,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               </p>
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : !resultA || !resultB || !entityComparison ? (
           <motion.div
@@ -118,7 +115,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
               </p>
               <Button variant="primary" size="lg" onClick={() => router.push("/affinity/compare")}>Volver a comparar</Button>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : showContent && tierA && tierB && compTier && resultA && resultB && entityComparison ? (
           <motion.div
@@ -128,7 +124,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
               {/* Back */}
               <motion.div {...fadeUp}>
@@ -319,7 +315,6 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 </div>
               </motion.section>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : null}
       </AnimatePresence>

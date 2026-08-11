@@ -8,7 +8,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAllBrandCompatibility, type CompatibilityResult } from "@/lib/engines/compatibilityScoreEngine";
 import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 import { getBrandCategories } from "@/lib/data/brands";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import SearchInput from "@/components/ui/SearchInput";
 
@@ -61,7 +60,7 @@ export default function BrandsPage() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Cargando compatibilidad de marcas...">
                 Cargando compatibilidad de marcas...
               </p>
@@ -77,7 +76,6 @@ export default function BrandsPage() {
                 <div className="h-48 bg-[var(--skeleton)] rounded-md border border-ink/10" />
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -93,7 +91,6 @@ export default function BrandsPage() {
               <p className="text-muted mb-8 max-w-md mx-auto">Creá tu perfil para descubrir con qué marcas resonás más.</p>
               <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -103,7 +100,7 @@ export default function BrandsPage() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-12 sm:mb-16">
@@ -248,7 +245,6 @@ export default function BrandsPage() {
               </section>
             </main>
 
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

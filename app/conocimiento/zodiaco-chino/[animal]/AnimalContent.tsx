@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import EditorialSection from "@/components/ui/EditorialSection";
 import Halftone from "@/components/ui/Halftone";
 import Badge from "@/components/ui/Badge";
@@ -28,7 +27,6 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
             </Button>
           </div>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -298,7 +296,6 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           </div>
         </section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

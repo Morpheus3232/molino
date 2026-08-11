@@ -7,6 +7,7 @@ import SkipLink from "@/components/ui/SkipLink";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import UniversityHeader from "@/components/layout/UniversityHeader";
+import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
@@ -156,6 +157,7 @@ review, the verdict, and DESIGN.md.
             <UniversityHeader />
             <AppErrorBoundary>
               <AnimatedLayout>{children}</AnimatedLayout>
+              <UniversityFooter />
             </AppErrorBoundary>
           </MotionProvider>
           {/* Sin theme="dark" caía al fondo blanco por defecto de sonner —

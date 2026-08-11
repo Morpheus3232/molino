@@ -13,7 +13,6 @@ import {
 } from "@/lib/engines/affinityEngine";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { focusEntitiesByCountry, type EntityType, type SymbolicEntity } from "@/lib/data/symbolic-entities";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 
@@ -92,7 +91,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10" />
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
@@ -205,7 +203,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 </motion.div>
               </AnimatePresence>
             </main>
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

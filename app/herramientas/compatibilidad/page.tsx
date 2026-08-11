@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { getSunSign } from "@/lib/engines/astrologyEngine";
 import { getChineseZodiac } from "@/lib/engines/chineseZodiacEngine";
@@ -85,7 +84,7 @@ export default function CompatibilidadCalcPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
@@ -265,7 +264,6 @@ export default function CompatibilidadCalcPage() {
         </AnimatePresence>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

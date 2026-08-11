@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { useDictionary } from "@/lib/i18n/useDictionary";
 
 const PRINCIPLE_ICONS: Record<string, string> = {
@@ -81,7 +80,7 @@ export default function FilosofiaContent() {
   return (
     <div className="min-h-screen bg-background">
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-24">
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
@@ -271,7 +270,6 @@ export default function FilosofiaContent() {
 
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

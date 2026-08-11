@@ -14,7 +14,6 @@ import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
@@ -59,7 +58,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
   if (!mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
           <p className="sr-only" role="status" aria-label="Cargando lectura...">
             Cargando lectura...
           </p>
@@ -74,7 +73,6 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
               ))}
             </div>
           </div>
-          <UniversityFooter />
         </div>
       </div>
     );
@@ -92,7 +90,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -415,7 +413,6 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </div>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }
@@ -791,7 +788,7 @@ function QuickAffinity({
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -1002,7 +999,6 @@ function QuickAffinity({
         )}
         </AnimatePresence>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

@@ -38,14 +38,14 @@ function initials(name: string): string {
 function Avatar({ name, photoUrl, color }: { name: string; photoUrl?: string; color: string }) {
   if (photoUrl) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover" />;
+    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-12 h-12 rounded-full object-cover" />;
   }
   return (
     <div
       role="img"
       aria-label={`Foto de perfil de ${name}`}
       style={{ backgroundColor: `${color}26`, color }}
-      className="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-heading text-lg sm:text-xl font-semibold shrink-0"
+      className="w-12 h-12 rounded-full flex items-center justify-center font-heading text-lg font-semibold shrink-0"
     >
       {initials(name)}
     </div>
@@ -78,20 +78,20 @@ export default function Testimonial() {
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
               <Card padding="lg" className="h-full flex flex-col">
-                <Quote className="w-8 h-8 text-accent/20 mb-4" aria-hidden="true" />
-
-                <blockquote className="text-sm sm:text-base text-foreground/80 leading-relaxed mb-6 flex-1">
-                  &ldquo;{testimonial.text}&rdquo;
-                </blockquote>
-
-                <footer className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <header className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
                   <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} color={testimonial.color} />
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground">{testimonial.name}</p>
-                    <p className="text-xs text-muted/70 mb-1">{testimonial.location}</p>
+                    <p className="text-sm font-bold text-foreground">{testimonial.name}</p>
+                    <p className="text-xs text-muted/60 mb-1">{testimonial.location}</p>
                     <StarRating />
                   </div>
-                </footer>
+                </header>
+
+                <Quote className="w-8 h-8 text-accent/20 mb-4" aria-hidden="true" />
+
+                <blockquote className="text-sm sm:text-base text-foreground/80 leading-relaxed flex-1">
+                  &ldquo;{testimonial.text}&rdquo;
+                </blockquote>
               </Card>
             </motion.li>
           ))}

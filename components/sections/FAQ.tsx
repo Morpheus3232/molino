@@ -99,7 +99,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-20 scroll-mt-20">
+    <section id="faq" className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12">
         <motion.h2
           {...fadeUp}

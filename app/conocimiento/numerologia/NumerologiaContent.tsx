@@ -1,5 +1,4 @@
 import Link from "next/link";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, CALCULATIONS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import Reveal from "@/components/ui/Reveal";
@@ -8,7 +7,7 @@ export default function NumerologiaContent() {
   return (
     <div className="min-h-screen bg-background">
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
@@ -62,7 +61,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* QUÉ ES LA NUMEROLYGÍA */}
-        <Reveal tag="section" delay={0.1} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.1} id="que-es" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Qué es la numerología</h2>
@@ -84,7 +83,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* HISTORIA */}
-        <Reveal tag="section" delay={0.12} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.12} id="historia" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Historia y evolución</h2>
@@ -120,7 +119,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* PITAGÓRICA */}
-        <Reveal tag="section" delay={0.14} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.14} id="pitagorica" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Numerología pitagórica</h2>
@@ -144,7 +143,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* CÁLCULOS */}
-        <Reveal tag="section" delay={0.16} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.16} id="calculos" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Cómo calcula Molino</h2>
@@ -162,7 +161,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* NÚMEROS 1-9 */}
-        <Reveal tag="section" delay={0.18} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.18} id="numeros" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Los números del 1 al 9</h2>
@@ -195,7 +194,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* NÚMEROS MAESTROS */}
-        <Reveal tag="section" delay={0.2} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.2} id="maestros" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Números maestros: 11, 22 y 33</h2>
@@ -215,7 +214,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* LIMITACIONES */}
-        <Reveal tag="section" delay={0.22} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.22} id="limitaciones" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Limitaciones y carácter no científico</h2>
@@ -236,7 +235,7 @@ export default function NumerologiaContent() {
         </Reveal>
 
         {/* FUENTES */}
-        <Reveal tag="section" delay={0.24} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.24} id="fuentes" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Fuentes y referencias</h2>
@@ -282,7 +281,6 @@ export default function NumerologiaContent() {
 
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

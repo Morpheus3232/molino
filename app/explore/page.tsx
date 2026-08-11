@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import SearchInput from "@/components/ui/SearchInput";
 
 const SYSTEMS = [
@@ -226,7 +225,6 @@ export default function ExplorePage() {
 
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

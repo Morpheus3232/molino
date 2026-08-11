@@ -5,7 +5,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { detectarNudo, type NudoInput, type NudoContext } from "@/lib/engines/nudoEngine";
 import { analytics } from "@/lib/analytics/analytics";
 import Button from "@/components/ui/Button";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Link from "next/link";
 
 const CONTEXTS: { value: NudoContext; label: string; description: string }[] = [
@@ -60,7 +59,6 @@ export default function NudoPage() {
             <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
           </div>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -79,7 +77,6 @@ export default function NudoPage() {
             Crear mi perfil
           </Button>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -190,7 +187,6 @@ export default function NudoPage() {
           </Link>
         </div>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

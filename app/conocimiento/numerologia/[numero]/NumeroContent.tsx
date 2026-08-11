@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, NUMEROLOGY_DISCLAIMER, MASTER_NUMBERS_NOTE, MASTER_NUMBERS } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 
@@ -11,12 +10,11 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
   if (!num) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
           <h1 className="font-heading text-4xl font-semibold text-foreground">Número no encontrado</h1>
           <p className="text-muted mt-4">El número no existe en la base de numerología de Molino.</p>
           <Link href="/conocimiento/numerologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Numerología</Link>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -28,7 +26,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
@@ -236,7 +234,6 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         </motion.section>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

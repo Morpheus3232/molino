@@ -10,7 +10,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType, focusEntitiesByCountry, type EntityType } from "@/lib/data/symbolic-entities";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
   brand: Sparkles,
@@ -73,7 +72,7 @@ export default function AffinityHub() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
               <p className="sr-only" role="status" aria-label="Preparando tu afinity...">
                 Preparando tu afinidad...
               </p>
@@ -88,7 +87,6 @@ export default function AffinityHub() {
                 </div>
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -98,7 +96,7 @@ export default function AffinityHub() {
             animate="show"
             exit="exit"
           >
-            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+            <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
               {/* Hero */}
               <motion.section {...fadeUp} className="mb-16 sm:mb-20">
@@ -164,7 +162,6 @@ export default function AffinityHub() {
                 </motion.div>
               </section>
             </main>
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>
