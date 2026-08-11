@@ -4,11 +4,11 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { getCalendarDayContent } from "@/lib/numerology/calendar";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
-import { safeNumber, getScoreColor, getScoreLabel } from "@/lib/utils/score";
+import { safeNumber } from "@/lib/utils/score";
 import { fadeUp } from "@/lib/utils/motion";
 
 /* ═══ Personalized home (with profile) — Client Island ═══ */
@@ -25,7 +25,7 @@ export default function PersonalizedHomeClient() {
   const display = profile ? getZodiacDisplay(profile.chineseZodiac ?? "") : { emoji: "", name: "" };
   const lifePath = profile ? safeNumber(profile.lifePath, 1) : 1;
   const archetype = profile ? (ARCHETYPES[lifePath] || ARCHETYPES[1]) : ARCHETYPES[1];
-  const energy = useMemo(() => profile ? calculateDailyEnergy(profile, new Date()) : null, [profile]);
+  const todayNumber = useMemo(() => getCalendarDayContent(new Date().getDate()), []);
 
   if (!mounted) return null;
   if (!profile) return null;
@@ -41,31 +41,29 @@ export default function PersonalizedHomeClient() {
             </p>
           </motion.div>
 
-          {energy && (
-            <motion.div {...fadeUp} className="pb-16 lg:pb-20">
-              <Link
-                href="/hoy"
-                className="group grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-8 lg:gap-16 items-center border border-ink/10 p-8 lg:p-12 transition-colors hover:bg-ink/[0.02]"
-              >
-                <div>
-                  <p className="label-micro mb-4">Tu energía de hoy</p>
-                  <p className="text-5xl sm:text-6xl font-heading font-bold tracking-tight" style={{ color: getScoreColor(energy.overallScore) }}>
-                    {getScoreLabel(energy.overallScore)}
-                  </p>
-                  <p className="text-sm text-muted mt-2">{energy.theme}</p>
-                </div>
-                <div>
-                  <p className="text-lg sm:text-xl font-heading text-foreground leading-relaxed max-w-xl">
-                    {energy.description}
-                  </p>
-                  <span className="mt-6 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent">
-                    Ver mi día completo
-                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
-          )}
+          <motion.div {...fadeUp} className="pb-16 lg:pb-20">
+            <Link
+              href="/calendario"
+              className="group grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-8 lg:gap-16 items-center border border-ink/10 p-8 lg:p-12 transition-colors hover:bg-ink/[0.02]"
+            >
+              <div>
+                <p className="label-micro mb-4">Hoy es día</p>
+                <p className="text-5xl sm:text-6xl font-heading font-bold tracking-tight text-accent">
+                  {todayNumber.number}
+                </p>
+                <p className="text-sm text-muted mt-2">{todayNumber.title}</p>
+              </div>
+              <div>
+                <p className="text-lg sm:text-xl font-heading text-foreground leading-relaxed max-w-xl">
+                  {todayNumber.purpose}
+                </p>
+                <span className="mt-6 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent">
+                  Ver calendario numerológico
+                  <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </Link>
+          </motion.div>
         </div>
       </section>
 

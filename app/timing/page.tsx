@@ -154,7 +154,7 @@ function TimingPageContent() {
                 <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
                   <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
                   <span>›</span>
-                  <Link href="/hoy" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Hoy</Link>
+                  <Link href="/calendario" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Calendario</Link>
                   <span>›</span>
                   <span className="text-foreground font-medium">Timing</span>
                 </nav>
@@ -325,8 +325,8 @@ function TimingPageContent() {
                   )}
 
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col items-center gap-3">
-                    <Button variant="primary" fullWidth onClick={() => router.push("/hoy")}>
-                      Ver energía de hoy
+                    <Button variant="primary" fullWidth onClick={() => router.push("/calendario")}>
+                      Ver calendario numerológico
                     </Button>
                     <button
                       type="button"
