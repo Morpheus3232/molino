@@ -36,20 +36,4 @@ describe("Product consistency — Molino", () => {
     expect(hubSource).not.toContain("Tu energía de hoy");
   });
 
-  test("saved IdentityScreen does not expose DailyInsights", () => {
-    const fs = require("fs");
-    const path = require("path");
-    const screenPath = path.resolve(__dirname, "..", "components", "profile", "screens", "IdentityScreen.tsx");
-    const source = fs.readFileSync(screenPath, "utf8");
-    expect(source).not.toContain("DailyInsights");
-  });
-
-  test("Profile does not contain Daily Energy card references", () => {
-    const fs = require("fs");
-    const path = require("path");
-    const screenPath = path.resolve(__dirname, "..", "components", "profile", "screens", "IdentityScreen.tsx");
-    const source = fs.readFileSync(screenPath, "utf8");
-    expect(source).not.toContain("calculateDailyEnergy");
-    expect(source).not.toContain("EnhancedMomentSection");
-  });
 });

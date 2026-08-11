@@ -1,3 +1,9 @@
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+import { buildPersonalCode, buildPatterns, buildDimensions, buildDateDimensions, buildMomentState } from "@/lib/engines/synthesisEngine";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { buildConvergence } from "@/lib/engines/convergentEngine";
+import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+
 export interface SynthesisResult {
   personalCode: {
     lifePath: { number: number; name: string; meaning: string };
@@ -65,22 +71,7 @@ export interface ConvergenceResult {
   insight: string;
 }
 
-export interface CompatibilityAPIResult {
-  user: Record<string, unknown>;
-  target: Record<string, unknown> | null;
-  scores: {
-    numerology: number;
-    westernAstrology: number;
-    chineseAstrology: number;
-    archetype: number;
-    element: number;
-    overall: number;
-  };
-  strengths: string[];
-  challenges: string[];
-  narrative: string;
-  insight: string;
-}
+export type { CompatibilityResult as CompatibilityAPIResult } from "@/lib/engines/compatibilityEngine";
 
 export interface MolinoInterpretationResult {
   summary: string;
@@ -100,51 +91,39 @@ export interface InterpretationResponse {
   error?: string;
 }
 
-const CACHE = new Map<string, { data: unknown; ts: number }>();
-const CACHE_TTL = 60000;
-
+/**
+ * Synthesis, convergence and compatibility are pure symbolic calculations —
+ * they run entirely in the browser so birth data never leaves the client.
+ * Only fetchInterpretation talks to the server, because it calls an external
+ * LLM with a secret API key.
+ */
 export async function fetchSynthesis(dob: string, name?: string, includeEnergy = false): Promise<SynthesisResult> {
-  const key = `synthesis:${dob}:${name || ""}:${includeEnergy}`;
-  const cached = CACHE.get(key);
-  if (cached && Date.now() - cached.ts < CACHE_TTL) {
-    return cached.data as SynthesisResult;
+  const profile = calculateUserProfile(name || "", dob);
+
+  const result: SynthesisResult = {
+    personalCode: buildPersonalCode(profile),
+    patterns: buildPatterns(profile),
+    dimensions: buildDimensions(profile),
+    dateDimensions: buildDateDimensions(profile),
+  };
+
+  if (includeEnergy) {
+    const energy = calculateDailyEnergy(profile);
+    result.dailyEnergy = energy;
+    result.momentState = buildMomentState(profile, energy.overallScore, energy.theme);
   }
 
-  const response = await fetch("/api/synthesis/calculate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ dob, name, includeEnergy }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Synthesis API error: ${response.status}`);
-  }
-
-  const data = await response.json();
-  CACHE.set(key, { data, ts: Date.now() });
-  return data as SynthesisResult;
+  return result;
 }
 
 export async function fetchConvergence(dob: string, name?: string): Promise<{ convergence: ConvergenceResult; momentState: SynthesisResult["momentState"]; dailyEnergy: SynthesisResult["dailyEnergy"] }> {
-  const key = `convergence:${dob}:${name || ""}`;
-  const cached = CACHE.get(key);
-  if (cached && Date.now() - cached.ts < CACHE_TTL) {
-    return cached.data as { convergence: ConvergenceResult; momentState: SynthesisResult["momentState"]; dailyEnergy: SynthesisResult["dailyEnergy"] };
-  }
+  const profile = calculateUserProfile(name || "", dob);
 
-  const response = await fetch("/api/convergence/calculate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ dob, name }),
-  });
+  const convergence = buildConvergence(profile);
+  const energy = calculateDailyEnergy(profile);
+  const momentState = buildMomentState(profile, energy.overallScore, energy.theme);
 
-  if (!response.ok) {
-    throw new Error(`Convergence API error: ${response.status}`);
-  }
-
-  const data = await response.json();
-  CACHE.set(key, { data, ts: Date.now() });
-  return data;
+  return { convergence, momentState, dailyEnergy: energy };
 }
 
 export async function fetchCompatibility(
@@ -158,26 +137,9 @@ export async function fetchCompatibility(
     element?: string;
     name?: string;
   }
-): Promise<CompatibilityAPIResult> {
-  const key = `compatibility:${dob}:${JSON.stringify(target)}`;
-  const cached = CACHE.get(key);
-  if (cached && Date.now() - cached.ts < CACHE_TTL) {
-    return cached.data as CompatibilityAPIResult;
-  }
-
-  const response = await fetch("/api/compatibility/calculate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ dob, target }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Compatibility API error: ${response.status}`);
-  }
-
-  const data = await response.json();
-  CACHE.set(key, { data, ts: Date.now() });
-  return data as CompatibilityAPIResult;
+) {
+  const profile = calculateUserProfile("", dob);
+  return calculateCompatibility(profile, target);
 }
 
 export async function fetchInterpretation(

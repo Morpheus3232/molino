@@ -195,11 +195,23 @@ function DecisionDetail({ result, profile }: { result: DecisionResult; profile: 
       <p className="text-lg sm:text-xl font-display tracking-tight mb-1" style={{ color: scoreColor }}>
         {getScoreLabel(result.overallScore)}
       </p>
-      <p className="uppercase text-xs tracking-[0.2em] text-muted mb-6">
+      <p className="uppercase text-xs tracking-[0.2em] text-muted mb-4">
         {result.category ? CATEGORY_LABELS[result.category as DecisionCategory] : ""}
         {result.category ? " · " : ""}
         Alineación {getScoreLabel(result.alignmentScore)} · Timing {getScoreLabel(result.timingScore)} · Energía {getScoreLabel(result.energyScore)}
       </p>
+
+      {result.detectedIntent && (
+        <span className="inline-block mb-4 px-1.5 py-0.5 text-xs font-mono uppercase tracking-[0.2em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">
+          {result.detectedIntent.label}
+        </span>
+      )}
+
+      {/* Recomendación — la lectura accionable, separada del contexto que la explica */}
+      <div className="mb-6 p-4 rounded-md bg-accent/[0.05] border border-accent/20">
+        <p className="uppercase text-xs tracking-[0.2em] text-accent mb-2">Recomendación</p>
+        <p className="text-sm text-foreground leading-relaxed">{result.recommendation}</p>
+      </div>
 
       {/* Explanation */}
       <div className="mb-6">

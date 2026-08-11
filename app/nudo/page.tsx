@@ -3,6 +3,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { detectarNudo, type NudoInput, type NudoContext } from "@/lib/engines/nudoEngine";
+import { CATEGORY_LABELS, type DecisionCategory } from "@/lib/engines/decisionsEngine";
+import { INTENTION_LABELS, type TimingIntention } from "@/lib/engines/timingEngine";
 import { analytics } from "@/lib/analytics/analytics";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
@@ -11,35 +13,60 @@ const CONTEXTS: { value: NudoContext; label: string; description: string }[] = [
   { value: "decision", label: "Decisión", description: "¿Cambio de trabajo? ¿Me mudo? ¿Invierto?" },
   { value: "timing", label: "Momento", description: "¿Es buen momento para lanzar/empezar/terminar?" },
   { value: "daily_energy", label: "Energía", description: "¿Cómo está mi energía hoy/esta semana?" },
-  { value: "compatibility", label: "Compatibilidad", description: "¿Cómo encajo con esta persona/proyecto?" },
+  { value: "compatibility", label: "Compatibilidad", description: "Con datos de muestra — todavía no elegís la otra persona" },
   { value: "free_text", label: "Texto libre", description: "Explorar sin pregunta específica" },
 ];
 
-const CONTEXT_PAYLOADS: Record<NudoContext, unknown> = {
-  decision: { question: "¿Cambio de trabajo?", category: "career" },
-  timing: { targetDate: new Date().toISOString(), intention: "start_project" },
-  daily_energy: { targetDate: new Date().toISOString() },
-  compatibility: { target: { lifePath: 4, sunSign: "Tauro", chineseZodiac: "Buey", archetype: "El Constructor", element: "Tierra" } },
-  free_text: {},
-};
+const TODAY = new Date().toISOString().slice(0, 10);
+
+const COMPATIBILITY_SAMPLE_TARGET = { lifePath: 4, sunSign: "Tauro", chineseZodiac: "Buey", archetype: "El Constructor", element: "Tierra" };
 
 export default function NudoPage() {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const [selectedContext, setSelectedContext] = useState<NudoContext>("decision");
   const [submitted, setSubmitted] = useState(false);
 
+  // Input real por contexto — decision/timing/daily_energy leen esto en vez
+  // de un fixture fijo. compatibility no tiene selector de otra persona
+  // todavía, así que sigue usando una muestra (ver nota en el contexto).
+  const [decisionQuestion, setDecisionQuestion] = useState("");
+  const [decisionCategory, setDecisionCategory] = useState<DecisionCategory>("career");
+  const [timingDate, setTimingDate] = useState(TODAY);
+  const [timingIntention, setTimingIntention] = useState<TimingIntention>("start_project");
+  const [energyDate, setEnergyDate] = useState(TODAY);
+
+  const canDetect =
+    selectedContext !== "decision" || decisionQuestion.trim().length > 0;
+
+  const buildPayload = (): unknown => {
+    switch (selectedContext) {
+      case "decision":
+        return { question: decisionQuestion.trim(), category: decisionCategory };
+      case "timing":
+        return { targetDate: new Date(`${timingDate}T00:00:00`), intention: timingIntention };
+      case "daily_energy":
+        return { targetDate: new Date(`${energyDate}T00:00:00`) };
+      case "compatibility":
+        return { target: COMPATIBILITY_SAMPLE_TARGET };
+      case "free_text":
+      default:
+        return {};
+    }
+  };
+
   const nudoResult = useMemo(() => {
     if (!submitted || !profile) return null;
     const input: NudoInput = {
       profile,
       context: selectedContext,
-      payload: CONTEXT_PAYLOADS[selectedContext],
+      payload: buildPayload(),
     };
     return detectarNudo(input);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [submitted, profile, selectedContext]);
 
   const handleDetect = () => {
-    if (!profile) return;
+    if (!profile || !canDetect) return;
     setSubmitted(true);
     analytics.trackFeatureUsed("nudo_detect");
   };
@@ -166,7 +193,83 @@ export default function NudoPage() {
               </div>
             </div>
 
-            <Button variant="primary" fullWidth onClick={handleDetect}>
+            {selectedContext === "decision" && (
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="nudo-question" className="label-micro block mb-2">Tu pregunta</label>
+                  <textarea
+                    id="nudo-question"
+                    value={decisionQuestion}
+                    onChange={(e) => setDecisionQuestion(e.target.value)}
+                    placeholder="Ej: ¿Cambio de trabajo?"
+                    rows={2}
+                    className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-none"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="nudo-category" className="label-micro block mb-2">Categoría</label>
+                  <select
+                    id="nudo-category"
+                    value={decisionCategory}
+                    onChange={(e) => setDecisionCategory(e.target.value as DecisionCategory)}
+                    className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                  >
+                    {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {selectedContext === "timing" && (
+              <div className="space-y-3">
+                <div>
+                  <label htmlFor="nudo-date" className="label-micro block mb-2">Fecha</label>
+                  <input
+                    id="nudo-date"
+                    type="date"
+                    value={timingDate}
+                    onChange={(e) => setTimingDate(e.target.value)}
+                    className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="nudo-intention" className="label-micro block mb-2">Intención</label>
+                  <select
+                    id="nudo-intention"
+                    value={timingIntention}
+                    onChange={(e) => setTimingIntention(e.target.value as TimingIntention)}
+                    className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                  >
+                    {Object.entries(INTENTION_LABELS).map(([value, label]) => (
+                      <option key={value} value={value}>{label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {selectedContext === "daily_energy" && (
+              <div>
+                <label htmlFor="nudo-energy-date" className="label-micro block mb-2">Fecha</label>
+                <input
+                  id="nudo-energy-date"
+                  type="date"
+                  value={energyDate}
+                  onChange={(e) => setEnergyDate(e.target.value)}
+                  className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm focus:outline-none focus:border-accent transition-colors"
+                />
+              </div>
+            )}
+
+            {selectedContext === "compatibility" && (
+              <p className="text-xs text-muted italic">
+                Este contexto todavía usa un perfil de muestra (Camino de Vida 4, Tauro, Buey) — no hay selector de la otra persona en esta versión.
+              </p>
+            )}
+
+            <Button variant="primary" fullWidth onClick={handleDetect} disabled={!canDetect}>
               Detectar
             </Button>
 
@@ -175,7 +278,8 @@ export default function NudoPage() {
               <p className="text-sm text-muted leading-relaxed">
                 El Nudo cruza tu patrón estable (numerología, arquetipo, ciclos) con tu contexto actual
                 para detectar una tensión real y devolver una pregunta que aumente claridad.
-                No inventa tensiones — si no las hay, lo dice honestamente.
+                No inventa tensiones — si no las hay, lo dice honestamente. Decisión, Momento y Energía
+                usan lo que escribas acá arriba; Compatibilidad todavía usa un perfil de muestra.
               </p>
             </div>
           </div>

@@ -71,7 +71,7 @@ export default function OnboardingPage() {
       analytics.track({ type: "onboarding_completed" });
       markOnboardingCompleted();
       clearOnboardingData();
-      router.push(`/profile?dob=${dateValue}&first=1`);
+      router.push(`/profile?dob=${dateValue}`);
     } catch (error) {
       console.error("Error generating profile:", error);
       setIsGenerating(false);

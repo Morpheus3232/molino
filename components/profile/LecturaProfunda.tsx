@@ -204,6 +204,13 @@ function PiezasLibres({
             </div>
           ))}
         </div>
+        {/* Puente hacia el gate — solo cuando hay una tensión real que
+            nombrar, nunca una frase de relleno genérica. */}
+        {tensions[0] && (
+          <p className="text-sm text-muted mt-8 pt-6 border-t border-ink/10">
+            Más abajo: qué hacer cuando {tensions[0].title.toLowerCase()}.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -321,10 +328,12 @@ export default function LecturaProfunda({ profile }: LecturaProfundaProps) {
     timing: ReturnType<typeof analyzeTiming>;
   } | null>(null);
 
-  // Preview gratuito: un único patrón ya calculado gratis (no un dato nuevo
-  // inventado para el paywall) — mismo contrato que preview usa en
+  // Preview gratuito: un único patrón (y, si existe, la única tensión real
+  // que calcula buildTensions) ya calculados gratis — no datos nuevos
+  // inventados para el paywall. Mismo contrato que preview usa en
   // PremiumGate en el resto del sitio.
   const previewPattern = buildPatterns(profile)[0] ?? null;
+  const previewTension = buildTensions(profile)[0] ?? null;
 
   return (
     <EditorialSection
@@ -340,7 +349,7 @@ export default function LecturaProfunda({ profile }: LecturaProfundaProps) {
 
         {/* PREMIUM — la interpretación */}
         <div className="mt-20 sm:mt-28">
-          <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern }}>
+          <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension }}>
             <LecturaProfundaDesbloqueada profile={profile} pieces={pieces} />
           </PremiumGate>
         </div>

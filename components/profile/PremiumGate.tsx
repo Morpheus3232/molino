@@ -21,6 +21,14 @@ interface PremiumGatePreview {
    * dos ramas honestas en vez de asumir siempre que "hay una conexión".
    */
   pattern: { keyword: string; sources: string[] } | null;
+  /**
+   * buildTensions(profile)[0] ya calculado gratis en LecturaProfunda (hoy
+   * solo se muestra post-pago en "Ver conexiones") — es la señal más
+   * específica que existe, así que gana prioridad sobre `pattern` cuando
+   * está presente. null para la mayoría de los perfiles: el desfasaje
+   * ritmo-elemento no es universal, y no se inventa uno cuando no lo hay.
+   */
+  tension: { title: string; evidence: string } | null;
 }
 
 interface PremiumGateProps {
@@ -396,7 +404,11 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
           </span>
           <div>
-            <p className="text-sm font-semibold text-foreground">Desbloqueaste tu síntesis completa</p>
+            <p className="text-sm font-semibold text-foreground">
+              {preview?.tension
+                ? <>Desbloqueaste tu tensión: {preview.tension.title.toLowerCase()}</>
+                : "Desbloqueaste tu síntesis completa"}
+            </p>
             <p className="text-xs text-muted">Acceso permanente — la vas a encontrar acá cada vez que vuelvas.</p>
           </div>
         </motion.div>
@@ -438,22 +450,36 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
             {preview && (
               <div className="border border-ink/10 bg-ink/[0.02] px-6 py-5 mb-10 max-w-xl">
-                <p className="text-sm text-foreground leading-relaxed">
-                  Tu Camino de Vida es <span className="font-semibold">{preview.lifePath}</span>. Tu animal chino es{" "}
-                  <span className="font-semibold">{preview.chineseZodiac}</span>.
-                  {preview.pattern && preview.pattern.sources.length > 1 ? (
-                    <>
-                      {" "}
-                      <span className="font-semibold">{preview.pattern.sources.join(" y ")}</span> coinciden en{" "}
-                      <span className="font-semibold">{preview.pattern.keyword}</span>.
-                    </>
-                  ) : (
-                    " Dos sistemas distintos, calculados por separado."
-                  )}
-                </p>
-                <p className="text-sm text-muted leading-relaxed mt-2">
-                  La síntesis completa explica qué significa esa combinación en tu caso — no qué son por separado.
-                </p>
+                {preview.tension ? (
+                  <>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      Detectamos una tensión real en tu perfil:{" "}
+                      <span className="font-semibold">{preview.tension.title.toLowerCase()}</span>. {preview.tension.evidence}
+                    </p>
+                    <p className="text-sm text-muted leading-relaxed mt-2">
+                      La lectura completa explica qué hacer con ese desfasaje en tu momento actual.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      Tu Camino de Vida es <span className="font-semibold">{preview.lifePath}</span>. Tu animal chino es{" "}
+                      <span className="font-semibold">{preview.chineseZodiac}</span>.
+                      {preview.pattern && preview.pattern.sources.length > 1 ? (
+                        <>
+                          {" "}
+                          <span className="font-semibold">{preview.pattern.sources.join(" y ")}</span> coinciden en{" "}
+                          <span className="font-semibold">{preview.pattern.keyword}</span>.
+                        </>
+                      ) : (
+                        " Dos sistemas distintos, calculados por separado."
+                      )}
+                    </p>
+                    <p className="text-sm text-muted leading-relaxed mt-2">
+                      La síntesis completa explica qué significa esa combinación en tu caso — no qué son por separado.
+                    </p>
+                  </>
+                )}
               </div>
             )}
 
@@ -464,22 +490,30 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                 <span className="h-px flex-1 bg-ink/10" />
               </div>
               <blockquote className="text-sm text-foreground/80 leading-relaxed italic">
-                {preview?.pattern && preview.pattern.sources.length > 1 ? (
+                {preview?.tension ? (
+                  <>
+                    Tu tensión —<span className="font-semibold not-italic">{preview.tension.title.toLowerCase()}</span>—
+                    no se queda ahí: la lectura completa explica de dónde viene y qué hacer con eso,
+                    conecta tu patrón dominante con tu timing de hoy, y te deja preguntarle a Molino
+                    lo que quieras sobre tu momento.
+                  </>
+                ) : preview?.pattern && preview.pattern.sources.length > 1 ? (
                   <>
                     Tu {preview.pattern.sources.join(" y ")} comparten un tema:{" "}
                     <span className="font-semibold not-italic">{preview.pattern.keyword}</span>.
                     La síntesis completa explica cómo este tema se manifiesta en tu identidad,
-                    qué tensiones genera y qué hacer con eso en tu momento actual.
+                    qué tensiones genera, qué hacer con eso en tu momento actual, y te deja
+                    preguntarle a Molino lo que quieras sobre tu momento.
                   </>
                 ) : (
                   <>
                     Tu numerología, astrología y zodíaco chino cuentan tres historias distintas.
                     La síntesis completa las conecta en una sola lectura — qué significa todo esto
-                    en tu caso, no qué son por separado.
+                    en tu caso, no qué son por separado, y te deja preguntarle a Molino lo que quieras
+                    sobre tu momento.
                   </>
                 )}
               </blockquote>
-              <p className="mt-3 text-xs text-muted/70">...y más.</p>
             </div>
 
             <div className="border-t border-ink/10 pt-10">
@@ -557,7 +591,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                           value={recoverPaymentId}
                           onChange={e => setRecoverPaymentId(e.target.value)}
                           placeholder="Ej: 123456789"
-                          className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                          className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
                         />
                         <button
                           type="submit"
@@ -578,7 +612,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                             value={recoverPaymentId}
                             onChange={e => setRecoverPaymentId(e.target.value)}
                             placeholder="Ej: 5O123456AB789"
-                            className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                            className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
                           />
                           <button
                             type="submit"
@@ -623,7 +657,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                       value={couponCode}
                       onChange={e => setCouponCode(e.target.value)}
                       placeholder="Ingresá tu código"
-                      className="flex-1 px-3 py-2 text-sm border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                      className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
                     />
                     <button
                       type="submit"
