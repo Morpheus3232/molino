@@ -10,7 +10,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { getDayVibration, type TopicId, getFavorableNumbers } from "@/lib/utils/dateVibration";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 
 const TOPIC_OPTIONS: { id: TopicId; label: string; icon: LucideIcon }[] = [
@@ -86,7 +85,6 @@ function SemanaContent() {
             Crear mi mapa
           </Button>
         </div>
-        <UniversityFooter />
       </div>
     );
   }
@@ -226,7 +224,6 @@ function SemanaContent() {
           </Link>
         </div>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

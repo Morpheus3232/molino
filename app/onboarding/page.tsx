@@ -4,7 +4,6 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import { analytics } from "@/lib/analytics/analytics";
@@ -203,7 +202,6 @@ export default function OnboardingPage() {
           <LocationStep onDone={handleFinish} isSubmitting={isGenerating} />
         )}
       </main>
-      <UniversityFooter />
     </div>
   );
 }

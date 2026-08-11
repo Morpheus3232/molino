@@ -1,5 +1,4 @@
 import Link from "next/link";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const sections = [
   {
@@ -169,7 +168,6 @@ export default function PrivacidadContent() {
           </div>
         </div>
       </div>
-      <UniversityFooter />
     </div>
   );
 }

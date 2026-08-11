@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 
 function normalize(str: string) {
@@ -14,12 +13,11 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
-        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
           <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
           <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
           <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -30,7 +28,7 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
@@ -144,7 +142,6 @@ export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[num
           ) : <div />}
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

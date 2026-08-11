@@ -9,7 +9,6 @@ import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } 
 import { saveTimingIntention } from "@/lib/session/timingIntention";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import ReadingNumber from "@/components/ui/ReadingNumber";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { getScoreLabel, getScoreColor } from "@/lib/utils/score";
@@ -121,7 +120,6 @@ function TimingPageContent() {
                 </div>
               </div>
             </main>
-            <UniversityFooter />
           </div>
         ) : !profile ? (
           <motion.div
@@ -142,7 +140,6 @@ function TimingPageContent() {
                 Crear mi perfil
               </Button>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -343,7 +340,6 @@ function TimingPageContent() {
               )}
             </main>
 
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

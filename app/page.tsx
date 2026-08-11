@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Hero from "@/components/sections/Hero";
 
 const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
@@ -15,7 +14,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
-        <main id="main-content" className="pt-14">
+        <main id="main-content" className="pt-16">
           <Hero />
           <TresPasos />
           <QueDescubris />
@@ -26,7 +25,6 @@ export default function Home() {
           <PersonalizedHomeClient />
           <FAQ />
         </main>
-        <UniversityFooter />
       </div>
     </div>
   );

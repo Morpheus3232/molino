@@ -8,7 +8,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { getRecommendationsByType, type Recommendation } from "@/lib/engines/recommendationEngine";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
 import { resolveUserContext } from "@/lib/context/userContext";
@@ -47,7 +46,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
   if (!mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
           <p className="sr-only" role="status" aria-label="Cargando recomendaciones...">
             Cargando recomendaciones...
           </p>
@@ -64,7 +63,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
               </div>
             ))}
           </div>
-          <UniversityFooter />
         </div>
       </div>
     );
@@ -86,7 +84,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
           </p>
           <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
-        <UniversityFooter />
       </div>
     );
   }
@@ -101,7 +98,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -204,7 +201,6 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
             </p>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

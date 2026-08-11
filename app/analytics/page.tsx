@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 import { analytics } from "@/lib/analytics/analytics";
 import Button from "@/components/ui/Button";
@@ -60,7 +59,6 @@ export default function AnalyticsPage() {
                 <div className="h-48 bg-[var(--skeleton)] rounded-md border border-ink/10" />
               </div>
             </div>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -145,7 +143,6 @@ export default function AnalyticsPage() {
                 </div>
               </div>
             </div>
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

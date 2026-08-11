@@ -1,4 +1,3 @@
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const sections = [
   {
@@ -110,7 +109,6 @@ export default function TerminosContent() {
           </div>
         </div>
       </div>
-      <UniversityFooter />
     </div>
   );
 }

@@ -7,7 +7,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { getHistoryForProfile, type DailySnapshot, type Orientation } from "@/lib/session/dailyHistory";
 import { getPersonalYear } from "@/lib/calculations";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { formatDate as formatI18nDate } from "@/lib/i18n/format";
@@ -90,7 +89,6 @@ export default function EvolutionPage() {
                 ))}
               </div>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : !profile ? (
           <motion.div
@@ -111,7 +109,6 @@ export default function EvolutionPage() {
                 Crear mi perfil
               </Button>
             </main>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -233,7 +230,6 @@ export default function EvolutionPage() {
               </motion.div>
             </main>
 
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

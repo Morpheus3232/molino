@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { Code, Calculator, Globe, BookOpen, Hash, Sun, Moon } from "lucide-react";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const engines = [
   {
@@ -106,7 +105,7 @@ export default function MotoresContent() {
   return (
     <div className="min-h-screen bg-background">
 
-      <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-5xl px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-16 sm:mb-20">
           <h1 className="font-heading uppercase text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
@@ -209,7 +208,6 @@ export default function MotoresContent() {
         </motion.section>
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

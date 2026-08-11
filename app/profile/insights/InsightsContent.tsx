@@ -36,7 +36,6 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
 
@@ -107,7 +106,7 @@ export default function InsightsContent() {
   if (!mounted) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+        <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
           <p className="sr-only" role="status" aria-label="Cargando tu inteligencia...">
             Cargando tu inteligencia...
           </p>
@@ -120,7 +119,6 @@ export default function InsightsContent() {
               <div key={i} className="h-20 bg-[var(--skeleton)] border-t border-ink/10" />
             ))}
           </div>
-          <UniversityFooter />
         </div>
       </div>
     );
@@ -142,7 +140,6 @@ export default function InsightsContent() {
           </p>
           <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>Crear mi perfil</Button>
         </div>
-        <UniversityFooter />
       </div>
     );
   }
@@ -153,7 +150,7 @@ export default function InsightsContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* ═══════════════════════════════════════════════
             HEADER
@@ -405,7 +402,6 @@ export default function InsightsContent() {
           </p>
         </motion.div>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

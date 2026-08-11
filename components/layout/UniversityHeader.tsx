@@ -116,11 +116,14 @@ export default function UniversityHeader() {
           scrolled ? "border-b border-ink/10" : "border-b border-transparent"
         }`}
       >
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-14 flex items-center justify-between">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center group" aria-label="Molino — Ir al inicio">
+          <Link href="/" className="flex items-center gap-2.5 group" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10">
               <Logo className="w-6 h-6" />
+            </span>
+            <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
+              Molino
             </span>
           </Link>
 

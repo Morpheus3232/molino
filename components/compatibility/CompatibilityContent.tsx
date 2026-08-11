@@ -9,7 +9,6 @@ import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { generateMatchStory, type MatchStory } from "@/lib/engines/storyEngine";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import CompatibilityLab from "@/components/lab/CompatibilityLab";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import type { EntityProfile } from "@/lib/data/entities";
@@ -95,7 +94,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
               <p className="sr-only" role="status" aria-label="Cargando compatibilidad...">
                 Cargando compatibilidad...
               </p>
@@ -108,7 +107,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                   <div key={i} className="h-16 bg-[var(--skeleton)] border-t border-ink/10" />
                 ))}
               </div>
-              <UniversityFooter />
             </div>
           </motion.div>
         ) : !profile ? (
@@ -133,7 +131,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                 Crear mi perfil
               </Button>
             </div>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -282,7 +279,6 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
               </>
             )}
           </main>
-          <UniversityFooter />
         </motion.div>
         )}
       </AnimatePresence>

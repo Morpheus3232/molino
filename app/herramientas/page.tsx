@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Hash, Sun, Moon, HeartHandshake, type LucideIcon } from "lucide-react";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const TOOLS: { title: string; subtitle: string; description: string; href: string; icon: LucideIcon; color: string; labelColor: string }[] = [
   {
@@ -51,7 +50,7 @@ const TOOLS: { title: string; subtitle: string; description: string; href: strin
 export default function HerramientasPage() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
@@ -122,7 +121,6 @@ export default function HerramientasPage() {
         </motion.section>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

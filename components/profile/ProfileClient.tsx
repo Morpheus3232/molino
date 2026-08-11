@@ -7,7 +7,6 @@ import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/loca
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { recordVisit } from "@/lib/session/discovery";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import ProfileHub from "@/components/profile/ProfileHub";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import Button from "@/components/ui/Button";
@@ -80,7 +79,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
             <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
           </div>
-          <UniversityFooter />
         </div>
       </div>
     );
@@ -114,7 +112,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             Crear mi mapa
           </Button>
         </div>
-        <UniversityFooter />
       </div>
     );
   }
@@ -131,7 +128,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
         <ProfileHub profile={profile} />
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

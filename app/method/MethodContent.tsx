@@ -1,4 +1,3 @@
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 
@@ -114,7 +113,6 @@ export default function MethodContent() {
           </Card>
         </Section>
       </div>
-      <UniversityFooter />
     </div>
   );
 }

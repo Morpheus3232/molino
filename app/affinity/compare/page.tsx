@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import SearchInput from "@/components/ui/SearchInput";
 
 type SelectionStep = "pick-a" | "pick-b";
@@ -15,7 +14,7 @@ export default function ComparePickerPage() {
     <Suspense
       fallback={
         <div className="min-h-screen bg-background">
-          <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+          <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
             <p className="sr-only" role="status" aria-label="Cargando...">
               Cargando...
             </p>
@@ -81,7 +80,7 @@ function ComparePickerInner() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -205,7 +204,6 @@ function ComparePickerInner() {
           </div>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

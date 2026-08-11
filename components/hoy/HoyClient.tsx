@@ -22,7 +22,6 @@ import {
 } from "@/lib/session/dailyHistory";
 import { Plane, Briefcase, type LucideIcon } from "lucide-react";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { formatDate } from "@/lib/i18n/format";
@@ -215,7 +214,6 @@ export default function HoyClient() {
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-lg" />
                 <div className="h-96 bg-[var(--skeleton)] border border-ink/10 rounded-lg" />
               </div>
-              <UniversityFooter />
             </div>
           </motion.div>
         ) : !profile ? (
@@ -505,7 +503,6 @@ export default function HoyClient() {
                 </details>
               </motion.div>
             </main>
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

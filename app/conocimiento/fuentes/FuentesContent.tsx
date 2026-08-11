@@ -1,5 +1,4 @@
 import Link from "next/link";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { SOURCES, MOLINO_DISCLAIMER } from "@/lib/data/sources";
 
 const SYSTEM_LABELS: Record<string, string> = {
@@ -27,7 +26,7 @@ export default function FuentesContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
@@ -156,7 +155,6 @@ export default function FuentesContent() {
         </section>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

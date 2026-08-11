@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { decodeProfileHash } from "@/lib/profile/hash";
 import ProfileHub from "@/components/profile/ProfileHub";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -41,7 +40,7 @@ export default function SharedProfilePage() {
             animate="show"
             exit="exit"
           >
-            <div className="mx-auto max-w-content px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
+            <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
               <p className="sr-only" role="status" aria-label="Cargando perfil compartido...">
                 Cargando perfil compartido...
               </p>
@@ -51,7 +50,6 @@ export default function SharedProfilePage() {
                 <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
                 <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
               </div>
-              <UniversityFooter />
             </div>
           </motion.div>
         ) : !profile ? (
@@ -70,7 +68,6 @@ export default function SharedProfilePage() {
                 El enlace que seguiste podría estar vencido o mal formado.
               </p>
             </div>
-            <UniversityFooter />
           </motion.div>
         ) : (
           <motion.div
@@ -81,7 +78,6 @@ export default function SharedProfilePage() {
             exit="exit"
           >
             <ProfileHub profile={profile} />
-            <UniversityFooter />
           </motion.div>
         )}
       </AnimatePresence>

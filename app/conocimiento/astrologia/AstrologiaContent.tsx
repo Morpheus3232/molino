@@ -1,5 +1,4 @@
 import Link from "next/link";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import Reveal from "@/components/ui/Reveal";
@@ -20,7 +19,7 @@ const MODALITIES = [
 export default function AstrologiaContent() {
   return (
     <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
           <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
@@ -205,7 +204,6 @@ export default function AstrologiaContent() {
           </div>
         </Reveal>
       </main>
-      <UniversityFooter />
     </div>
   );
 }
