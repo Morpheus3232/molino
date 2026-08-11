@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
-import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getAnimalBirthYears, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import type { UserProfile } from "@/types/user";
 
 interface CircleAlignmentProps {
@@ -54,18 +54,9 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
                 Tu {display.name} de {profile.chineseZodiacInfo?.element} forma tríada armónica con estos animales. Juntos crean un ciclo de apoyo mutuo.
               </p>
               <div className="flex flex-wrap gap-3">
-                {allies.map((ally, i) => {
-                  const allyDisplay = getZodiacDisplay(ally);
-                  return (
-                    <span
-                      key={i}
-                      className="inline-flex items-center gap-2 px-4 py-2 border border-ink/10 rounded-full bg-background text-sm"
-                    >
-                      <span role="img" aria-label={allyDisplay.name}>{allyDisplay.emoji}</span>
-                      <span className="font-medium">{allyDisplay.name}</span>
-                    </span>
-                  );
-                })}
+                {allies.map((ally, i) => (
+                  <AnimalCard key={i} animal={ally} />
+                ))}
               </div>
             </motion.div>
 
@@ -84,18 +75,9 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
               </p>
               {challenges.length > 0 ? (
                 <div className="flex flex-wrap gap-3">
-                  {challenges.map((ch, i) => {
-                    const chDisplay = getZodiacDisplay(ch);
-                    return (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-2 px-4 py-2 border border-ink/10 rounded-full bg-background text-sm"
-                      >
-                        <span role="img" aria-label={chDisplay.name}>{chDisplay.emoji}</span>
-                        <span className="font-medium">{chDisplay.name}</span>
-                      </span>
-                    );
-                  })}
+                  {challenges.map((ch, i) => (
+                    <AnimalCard key={i} animal={ch} />
+                  ))}
                 </div>
               ) : (
                 <p className="text-sm text-muted">Sin contraste directo en este ciclo.</p>
@@ -105,5 +87,22 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function AnimalCard({ animal }: { animal: Animal }) {
+  const display = getZodiacDisplay(animal);
+  const years = getAnimalBirthYears(animal);
+  return (
+    <div className="min-w-[150px] px-4 py-3 border border-ink/10 rounded-lg bg-background">
+      <div className="flex items-center gap-2 mb-2">
+        <span role="img" aria-label={display.name}>{display.emoji}</span>
+        <span className="font-medium">{display.name}</span>
+      </div>
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-1.5">
+        Años de nacimiento
+      </p>
+      <p className="font-mono text-xs text-muted leading-relaxed">{years.join(" · ")}</p>
+    </div>
   );
 }

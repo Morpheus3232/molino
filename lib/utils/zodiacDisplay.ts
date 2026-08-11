@@ -124,3 +124,23 @@ export function getZodiacPosition(animal: string): number {
   return idx === -1 ? 0 : idx + 1;
 }
 
+/**
+ * Años de nacimiento de un animal del zodíaco chino (uno cada 12 años).
+ * Devuelve los años recientes más relevantes para identificar a simple
+ * vista a quién corresponde cada animal (≈ últimos 70 años + próximos).
+ */
+export function getAnimalBirthYears(animal: string): number[] {
+  const idx = getZodiacPosition(animal);
+  if (idx === 0) return [];
+  const currentYear = new Date().getFullYear();
+  const end = currentYear + 6;
+  const start = currentYear - 66;
+  const years: number[] = [];
+  for (let year = start; year <= end; year++) {
+    if ((((year - 1900) % 12) + 12) % 12 === idx - 1) {
+      years.push(year);
+    }
+  }
+  return years;
+}
+
