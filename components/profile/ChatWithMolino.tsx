@@ -33,8 +33,8 @@ interface ChatTurn {
 const MAX_QUESTIONS_PER_SESSION = 8;
 
 /** Compacta los campos estructurales de una respuesta para el historial del
- * chat — conserva el grounding (patrón, cómo opera, cierre) sin reenviar el
- * objeto completo. Pensado para tokens: un fragmento corto por turno. */
+ *  chat — conserva el grounding (patrón, cómo opera, cierre) sin reenviar el
+ *  objeto completo. Pensado para tokens: un fragmento corto por turno. */
 function compactHighlights(a: MolinoInterpretation): string {
   const parts: string[] = [];
   if (a.corePattern?.what) parts.push(`patrón: ${a.corePattern.what}`);
@@ -43,8 +43,6 @@ function compactHighlights(a: MolinoInterpretation): string {
   return parts.join(" | ").slice(0, 500);
 }
 
-// Cada prompt conserva su texto exacto (lo que recibe el engine) — solo el
-// wrapper visual cambia (chips en vez de filas de puerta).
 const SUGGESTED_QUESTIONS = [
   "¿Cuál es mi contradicción más importante?",
   "¿Qué patrón estoy repitiendo?",
@@ -58,9 +56,18 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
   const [turns, setTurns] = useState<ChatTurn[]>([]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const element = typeof profile.element === "string" ? profile.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+
+  // Las preguntas sugeridas no disparan la consulta: completan el campo para
+  // que haya un único punto de acción (el formulario). Evita gastar un turno
+  // de IA por accidente y deja claro qué está pasando antes de preguntar.
+  const pickSuggestion = useCallback((question: string) => {
+    setInput(question);
+    inputRef.current?.focus();
+  }, []);
 
   const askQuestion = useCallback(
     async (question: string) => {
@@ -138,9 +145,11 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
     return null;
   }
 
+  const remaining = MAX_QUESTIONS_PER_SESSION - turns.length;
+
   return (
     <div className="max-w-2xl">
-      {/* Entrada — la primera vez, una invitación privada + chips */}
+      {/* Entrada — invitación clara, un solo camino hacia la pregunta */}
       {turns.length === 0 && (
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
@@ -148,24 +157,34 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="mb-8 sm:mb-10"
         >
-          <p className="font-heading text-lg sm:text-xl text-foreground leading-relaxed max-w-xl">
+          <h3 className="font-heading text-xl sm:text-2xl text-foreground leading-relaxed max-w-xl">
             Ya conocés tu mapa. Ahora podés preguntarle qué significa.
+          </h3>
+
+          <p className="mt-3 text-sm text-muted leading-relaxed max-w-xl">
+            Elegí una de estas preguntas o escribí la tuya.
           </p>
 
-          <div role="group" aria-label="Preguntas sugeridas" className="mt-6 flex flex-wrap gap-2.5">
-            {SUGGESTED_QUESTIONS.map((prompt, i) => (
-              <motion.button
-                key={prompt}
-                type="button"
-                onClick={() => askQuestion(prompt)}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: prefersReducedMotion ? 0 : 0.1 + i * 0.06, duration: 0.3, ease: "easeOut" }}
-                className="text-left px-4 py-2.5 text-sm text-foreground border border-ink/15 rounded-full hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors"
-              >
-                {prompt}
-              </motion.button>
-            ))}
+          <div role="group" aria-label="Preguntas sugeridas" className="mt-6">
+            <p className="label-micro mb-3">Preguntas sugeridas</p>
+            <ul className="flex flex-wrap gap-2.5">
+              {SUGGESTED_QUESTIONS.map((prompt, i) => (
+                <motion.li
+                  key={prompt}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: prefersReducedMotion ? 0 : 0.1 + i * 0.06, duration: 0.3, ease: "easeOut" }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => pickSuggestion(prompt)}
+                    className="text-left px-4 py-2.5 text-sm text-foreground border border-ink/15 hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent transition-colors"
+                  >
+                    {prompt}
+                  </button>
+                </motion.li>
+              ))}
+            </ul>
           </div>
         </motion.div>
       )}
@@ -249,34 +268,57 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
       </div>
 
       {turns.length >= MAX_QUESTIONS_PER_SESSION ? (
-        <div className="border-t border-ink/10 pt-5">
+        <div className="border border-ink/10 p-4 sm:p-5">
+          <p className="text-sm text-foreground mb-1">Llegaste al límite de esta visita.</p>
           <p className="text-xs text-muted leading-relaxed">
-            Llegaste al límite de preguntas para esta visita. Volvé a entrar más tarde para seguir consultando tu mapa.
+            Podés volver a entrar más tarde para seguir consultando tu mapa.
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="¿Qué querés entender de vos?"
-            className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/70 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
-            aria-label="Tu pregunta para tu mapa"
-          />
-          <button
-            type="submit"
-            disabled={!input.trim()}
-            className="min-h-[44px] shrink-0 px-5 sm:px-7 text-xs font-medium uppercase tracking-[0.2em] border border-ink/10 text-foreground hover:border-accent hover:text-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
-          >
-            Preguntar
-          </button>
+        <form onSubmit={handleSubmit} className="border border-ink/10 p-4 sm:p-5">
+          <label htmlFor="molino-question" className="label-micro block mb-3">
+            Hacé tu pregunta
+          </label>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+            <input
+              id="molino-question"
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="¿Qué querés entender de vos?"
+              className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/70 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
+              aria-label="Tu pregunta para tu mapa"
+            />
+            <button
+              type="submit"
+              disabled={!input.trim()}
+              className="min-h-[44px] shrink-0 px-5 sm:px-7 text-xs font-medium uppercase tracking-[0.2em] border border-ink/10 text-foreground hover:border-accent hover:text-accent disabled:opacity-40 disabled:pointer-events-none transition-colors"
+            >
+              Preguntar
+            </button>
+          </div>
         </form>
       )}
 
-      <p className="text-xs text-muted/70 mt-4 sm:mt-5 leading-relaxed">
-        Molino es una herramienta de reflexión simbólica, no reemplaza asesoramiento médico, financiero, legal o psicológico. Tus preguntas no se guardan más allá de esta visita.
-      </p>
+      {/* Límite transparente — el tope de 8 aparece antes de chocar con él */}
+      {turns.length < MAX_QUESTIONS_PER_SESSION && (
+        <p className="mt-3 font-mono text-xs text-muted/70">
+          Quedan {remaining} {remaining === 1 ? "pregunta" : "preguntas"} en esta visita.
+        </p>
+      )}
+
+      {/* Nota de uso — separada del área interactiva, en dos líneas cortas */}
+      <div className="mt-6 pt-5 border-t border-ink/10 space-y-1.5">
+        <p className="text-xs text-muted/70 leading-relaxed flex items-start gap-2">
+          <span className="mt-[0.5em] w-1 h-1 shrink-0 bg-ink/30" aria-hidden="true" />
+          Molino es una herramienta de reflexión simbólica. No reemplaza asesoramiento médico, financiero, legal o psicológico.
+        </p>
+        <p className="text-xs text-muted/70 leading-relaxed flex items-start gap-2">
+          <span className="mt-[0.5em] w-1 h-1 shrink-0 bg-ink/30" aria-hidden="true" />
+          Tus preguntas no se guardan más allá de esta visita.
+        </p>
+      </div>
     </div>
   );
 }
