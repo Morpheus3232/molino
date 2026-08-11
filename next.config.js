@@ -31,7 +31,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
   },
   compress: true,
-  output: 'standalone',
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
