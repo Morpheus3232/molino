@@ -99,7 +99,7 @@ export default function NosotrosContent() {
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </Button>
-          <p className="font-mono text-xs text-muted/60 tracking-wide mt-4">
+          <p className="font-mono text-xs text-muted/70 tracking-wide mt-4">
             Gratis · Sin registro · Sin guardar datos
           </p>
         </motion.section>

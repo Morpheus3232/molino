@@ -232,7 +232,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   return (
     <div className="mx-auto max-w-xs">
       <div
-        className="flex items-center gap-0 rounded-md border border-border bg-card shadow-sm px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-all"
+        className="flex items-center gap-0 rounded-md border border-border px-2 py-3 focus-within:border-accent/60 focus-within:ring-2 focus-within:ring-accent/10 transition-colors"
         role="group"
         aria-label="Fecha de nacimiento"
         aria-describedby={missingField ? errorId : undefined}

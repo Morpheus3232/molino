@@ -118,16 +118,16 @@
   --tracking-tight: -0.02em;
 
   /*
-   * Sombras — sutiles y en capas. Sirven para separar el detalle del fondo,
-   * no para simular profundidad exagerada. Van solo en elementos de detalle.
+   * Sombras — el sistema no usa sombras decorativas. La jerarquía se
+   * expresa con borde de 1px, no con profundidad simulada.
    */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.36), 0 2px 6px rgba(0, 0, 0, 0.2);
-  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.48), 0 4px 12px rgba(0, 0, 0, 0.28);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
   --shadow-glow: none;
-  --shadow-glow-accent: 0 4px 20px rgba(124, 140, 255, 0.32);
-  --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-glow-accent: none;
+  --shadow-inner: none;
 
   --max-width-content: 680px;
   --max-input: 480px;
@@ -178,6 +178,13 @@
   --cat-color: #EC4899;
   --cat-crystal: #14B8A6;
   --cat-deity: #F59E0B;
+
+  /* Tier colors — afinidad de entidades (mundo/perfil) */
+  --tier-resonante: var(--color-success);
+  --tier-afin: #3B82F6;
+  --tier-neutral: var(--element-metal);
+  --tier-desafiante: #F59E0B;
+  --tier-distante: var(--color-error);
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
   --score-excellent: #AEB8FF;
@@ -438,40 +445,35 @@
   }
 
   .card {
-    background: var(--color-card);
+    background: transparent;
     border: 1px solid var(--color-card-border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
     padding: var(--card-padding);
-    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+    transition: border-color 150ms ease;
   }
 
   .card:hover {
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
+    border-color: var(--color-ink-alpha-25);
   }
 
   .card-static {
-    background: var(--color-card);
+    background: transparent;
     border: 1px solid var(--color-card-border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
     padding: var(--card-padding);
   }
 
   .surface-elevated {
-    background: var(--color-card);
+    background: transparent;
     border: 1px solid var(--color-card-border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
   }
 
   .input {
     width: 100%;
     padding: 0.75rem 1rem;
     min-height: 44px;
-    background: var(--color-card);
+    background: transparent;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     color: var(--color-foreground);
@@ -524,8 +526,7 @@
   }
 
   .btn-primary:hover {
-    background: var(--color-accent);
-    color: var(--color-accent-foreground);
+    opacity: 0.85;
   }
 
   .btn-accent {
@@ -595,12 +596,11 @@
 
   .map-node {
     position: relative;
-    background: var(--color-card);
+    background: transparent;
     border: 1px solid var(--color-card-border);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
     padding: 1.25rem;
-    transition: border-color 200ms ease, box-shadow 200ms ease;
+    transition: border-color 200ms ease;
   }
 
   .map-node:hover {

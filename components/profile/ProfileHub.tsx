@@ -7,7 +7,6 @@ import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
@@ -146,10 +145,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
     typeof profile.chineseZodiacInfo?.element === "string"
       ? profile.chineseZodiacInfo.element
       : "";
-  const elementColor =
-    ELEMENT_COLORS[chineseElement] ||
-    ELEMENT_COLORS[typeof profile.element === "string" ? profile.element : ""] ||
-    "var(--element-fire)";
 
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
@@ -186,13 +181,6 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           Radar chart protagonista + datos concretos.
           ═══════════════════════════════════════════════ */}
       <header className="relative overflow-hidden border-b border-ink/10">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 80% 60% at 50% 30%, ${elementColor}12, transparent 70%)`,
-          }}
-          aria-hidden="true"
-        />
         <div className="relative mx-auto max-w-[1080px] px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-14 sm:pb-20">
           {/* Two-column: Radar chart left + Identity right */}
           <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-16 items-center">
@@ -213,17 +201,17 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
               {/* Concrete data row */}
               <motion.div {...heroItem(0.5)} className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#6B4C7A" }} />
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
                   <span className="font-mono text-sm text-foreground tracking-wide">Camino de Vida {lifePath}</span>
                 </span>
                 <span className="text-ink/20">|</span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#2E5C8A" }} />
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
                   <span className="font-mono text-sm text-foreground tracking-wide">{profile.sunSign}</span>
                 </span>
                 <span className="text-ink/20">|</span>
                 <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#C49A2A" }} />
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
                   <span className="font-mono text-sm text-foreground tracking-wide">{display.name} de {chineseElement}</span>
                 </span>
               </motion.div>

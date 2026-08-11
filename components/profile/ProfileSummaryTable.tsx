@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
 
 interface ProfileSummaryTableProps {
   profile: UserProfile;
@@ -16,16 +15,16 @@ interface StatItem {
   icon?: React.ReactNode;
 }
 
-function SystemCard({ title, color, stats, children }: { title: string; color: string; stats: StatItem[]; children?: React.ReactNode }) {
+function SystemCard({ title, stats, children }: { title: string; stats: StatItem[]; children?: React.ReactNode }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="p-5 sm:p-6 border border-ink/10 rounded-lg bg-ink/[0.015]"
+      className="p-5 sm:p-6 border border-ink/10 rounded-lg"
     >
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+        <div className="w-2 h-2 rounded-full bg-muted" />
         <h3 className="label-micro text-foreground">{title}</h3>
       </div>
       <dl className="space-y-3">
@@ -47,7 +46,6 @@ function SystemCard({ title, color, stats, children }: { title: string; color: s
 export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProps) {
   const display = getZodiacDisplay(profile.chineseZodiac);
   const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
-  const elementColor = ELEMENT_COLORS[profile.element] || "#6B4C7A";
 
   const numerologyStats = [
     { label: "Camino de Vida", value: profile.lifePath },
@@ -83,17 +81,14 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         <SystemCard
           title="NUMEROLOGÍA"
-          color="#6B4C7A"
           stats={numerologyStats}
         />
         <SystemCard
           title="ASTROLOGÍA"
-          color="#2E5C8A"
           stats={astrologyStats}
         />
         <SystemCard
           title="ZODÍACO CHINO"
-          color="#C49A2A"
           stats={zodiacStats}
         />
       </div>

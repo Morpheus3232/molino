@@ -82,7 +82,7 @@ export default function Testimonial() {
                   <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} color={testimonial.color} />
                   <div className="min-w-0">
                     <p className="text-sm font-bold text-foreground">{testimonial.name}</p>
-                    <p className="text-xs text-muted/60 mb-1">{testimonial.location}</p>
+                    <p className="text-xs text-muted/70 mb-1">{testimonial.location}</p>
                     <StarRating />
                   </div>
                 </header>

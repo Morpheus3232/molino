@@ -63,7 +63,7 @@ export default function TrustMetrics() {
           <p className="mt-5">
             <Link
               href="/privacidad"
-              className="font-mono text-xs font-semibold tracking-[0.15em] uppercase text-muted/60 hover:text-foreground underline decoration-muted/30 underline-offset-4 transition-colors"
+              className="font-mono text-xs font-semibold tracking-[0.15em] uppercase text-muted/70 hover:text-foreground underline decoration-muted/30 underline-offset-4 transition-colors"
             >
               Ver política de privacidad
             </Link>
