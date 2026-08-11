@@ -39,6 +39,14 @@ const TOOLS = [
     icon: "\u2726",
     color: "var(--score-good)",
   },
+  {
+    title: "Calendario Numerol\u00f3gico",
+    subtitle: "Energ\u00eda del d\u00eda",
+    description: "La energ\u00eda de cada d\u00eda seg\u00fan el n\u00famero al que se reduce. Naveg\u00e1 el mes y descubr\u00ed el prop\u00f3sito de cada jornada.",
+    href: "/calendario",
+    icon: "\ud83d\udcc5",
+    color: "var(--layer-numerology)",
+  },
 ];
 
 export default function HerramientasPage() {

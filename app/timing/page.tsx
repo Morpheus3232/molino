@@ -252,8 +252,8 @@ export default function TimingPage() {
 
             {/* CTAs */}
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
-              <Button variant="secondary" fullWidth onClick={() => router.push("/daily-energy")}>
-                Ver energía de hoy
+              <Button variant="secondary" fullWidth onClick={() => router.push("/calendario")}>
+                Calendario numerológico
               </Button>
               <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
                 Ver mi perfil
