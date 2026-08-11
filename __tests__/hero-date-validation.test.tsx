@@ -4,10 +4,6 @@ import "@testing-library/jest-dom";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import Hero from "@/components/sections/Hero";
 
-// Grainient mounts an ogl WebGL renderer in a useEffect — jsdom has no WebGL
-// context, unrelated to what this test verifies (date validation).
-vi.mock("@/components/Grainient", () => ({ default: () => null }));
-
 const push = vi.fn();
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),

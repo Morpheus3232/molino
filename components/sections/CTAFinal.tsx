@@ -66,7 +66,7 @@ export default function CTAFinal() {
           </Button>
         </motion.div>
 
-        <motion.p {...fadeUp} className="font-mono text-xs text-muted/60 tracking-wide">
+        <motion.p {...fadeUp} className="font-mono text-xs text-muted/70 tracking-wide">
           Gratis · Sin registro · Sin guardar datos
           {" · "}
           <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">

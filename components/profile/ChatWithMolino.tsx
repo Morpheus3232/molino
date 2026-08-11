@@ -261,7 +261,7 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="¿Qué querés entender de vos?"
-            className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
+            className="w-full min-h-[44px] flex-1 px-4 text-sm sm:text-base border border-ink/10 bg-background text-foreground placeholder:text-muted/70 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_rgba(124,140,255,0.15)] transition-colors"
             aria-label="Tu pregunta para tu mapa"
           />
           <button

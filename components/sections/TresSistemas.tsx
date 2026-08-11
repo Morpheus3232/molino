@@ -11,21 +11,18 @@ const systems = [
   {
     title: "Numerología",
     subtitle: "Tu fecha y hora revelan patrones que ya estás viviendo.",
-    color: "#6B4C7A",
     href: "/conocimiento/numerologia",
     description: "Directo, cuantificable. Tu número de vida, tu expresión, tu año personal.",
   },
   {
     title: "Astrología",
     subtitle: "Tu lugar en el cosmos te da un mapa energético único.",
-    color: "#2E5C8A",
     href: "/conocimiento/astrologia",
     description: "Geográfico, visual. Tu sol, tu luna, tu ascendente. El cielo de tu nacimiento.",
   },
   {
     title: "Zodiaco Chino",
     subtitle: "Tu año define un ciclo que guía tus decisiones.",
-    color: "#C49A2A",
     href: "/conocimiento/zodiaco-chino",
     description: "Tradicional, simbólico. Tu animal, tu elemento, tu pilar del año.",
   },
@@ -53,7 +50,7 @@ export default function TresSistemas() {
               className="pt-8 lg:pt-0 first:pt-0 lg:px-8 first:pl-0 last:pr-0"
             >
               <div className="flex items-center gap-2.5 mb-3">
-                <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: system.color }} aria-hidden="true" />
+                <span className="w-2 h-2 rounded-full shrink-0 bg-muted" aria-hidden="true" />
                 <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground tracking-tight">
                   {system.title}
                 </h3>

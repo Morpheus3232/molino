@@ -62,7 +62,7 @@ function FamousPersonCard({ person, index, userAnimal }: { person: FamousPerson;
           </p>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs uppercase tracking-[0.2em] text-muted">{person.year}</span>
-            <span className="text-xs uppercase tracking-[0.2em] text-muted/50">·</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-muted/70">·</span>
             <span className="text-xs uppercase tracking-[0.2em] text-muted">{person.country}</span>
           </div>
         </div>

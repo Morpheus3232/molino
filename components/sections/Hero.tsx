@@ -2,7 +2,6 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Badge from "@/components/ui/Badge";
@@ -10,10 +9,6 @@ import Button from "@/components/ui/Button";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUp } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
-
-// Purely decorative WebGL background (ogl) — keep it out of the homepage's
-// critical bundle. Can't SSR a canvas anyway.
-const Grainient = dynamic(() => import("@/components/Grainient"), { ssr: false });
 
 function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -47,11 +42,6 @@ export default function Hero() {
 
   return (
     <section className="relative bg-background min-h-[100dvh] lg:h-[calc(100dvh-3.5rem)] flex items-center overflow-hidden border-t border-ink/10">
-      <div className="absolute inset-0 opacity-40 pointer-events-none">
-        <Grainient timeSpeed={0.06} grainAmount={0.1} zoom={1.4} />
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/70 to-background pointer-events-none" />
-
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
         <motion.h1
           {...fadeUp}
@@ -89,7 +79,7 @@ export default function Hero() {
           </Button>
         </motion.div>
 
-        <motion.p {...fadeUp} className="font-mono text-xs text-muted/60 tracking-wide">
+        <motion.p {...fadeUp} className="font-mono text-xs text-muted/70 tracking-wide">
           Gratis. Sin registro. Sin guardar datos.
           {" · "}
           <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">

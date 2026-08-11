@@ -62,7 +62,7 @@ export default function EjemploPage() {
           <p className="text-base sm:text-lg text-muted/70">
             15 de marzo de 1990 · Buenos Aires, Argentina
           </p>
-          <p className="text-sm text-muted/60 max-w-lg mx-auto mt-4 leading-relaxed">
+          <p className="text-sm text-muted/70 max-w-lg mx-auto mt-4 leading-relaxed">
             Este mapa es ficticio: te mostramos cómo se ve el resultado antes de que ingreses tu propia fecha.
           </p>
         </header>
@@ -137,7 +137,7 @@ export default function EjemploPage() {
             Con el Sol en {profile.sunSign}, María percibe lo que otros no dicen. {moonSign} en la Luna amplifica esa sensibilidad emocional, mientras {risingSign} como Ascendente le da la profundidad para sostener lo que siente y transformarlo en decisión.
           </p>
 
-          <p className="text-xs text-muted/60 text-center max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs text-muted/70 text-center max-w-xl mx-auto leading-relaxed">
             * Luna y Ascendente son ilustrativos en este ejemplo: calcularlos con precisión requiere la hora exacta de nacimiento.
           </p>
         </section>
@@ -218,7 +218,7 @@ export default function EjemploPage() {
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </Button>
-          <p className="font-mono text-xs text-muted/60 tracking-wide mt-4">
+          <p className="font-mono text-xs text-muted/70 tracking-wide mt-4">
             Gratis · Sin registro
           </p>
         </section>
