@@ -261,7 +261,7 @@ export const NUMBER_LOSS_PREVENTION: Record<number, NumberLossPrevention> = {
   6:  { number: 6,  asset: "tiempo",      sentence: "Tu n\u00famero debe cuidar especialmente su tiempo." },
   7:  { number: 7,  asset: "foco",        sentence: "Tu n\u00famero debe cuidar especialmente su foco." },
   8:  { number: 8,  asset: "poder",       sentence: "Tu n\u00famero debe cuidar especialmente su poder." },
-  9:  { number: 9,  asset: "experiencia", sentence: "Tu n\u00famero debe cuidar especialmente su experiencia." },
+  9:  { number: 9,  asset: "fluidez", sentence: "Tu n\u00famero debe cuidar especialmente su fluidez." },
   11: { number: 11, asset: "intuici\u00f3n",  sentence: "Tu n\u00famero debe cuidar especialmente su intuici\u00f3n." },
   22: { number: 22, asset: "visi\u00f3n",     sentence: "Tu n\u00famero debe cuidar especialmente su visi\u00f3n." },
   33: { number: 33, asset: "influencia",  sentence: "Tu n\u00famero debe cuidar especialmente su influencia." },
@@ -356,7 +356,7 @@ export function getYearInterpretation(year: number): { reducedTo: number; theme:
     6: "Familia y responsabilidad",
     7: "Introspección y sabiduría",
     8: "Manifestación y poder",
-    9: "Cierre y compasión",
+    9: "Adaptación y desapego",
   };
   return {
     reducedTo: sum,

@@ -36,7 +36,7 @@ const chineseElements = ["Madera", "Fuego", "Tierra", "Metal", "Agua"];
 const archetypesByLifePath: Record<number, string> = {
   1: "El Pionero", 2: "El Diplomático", 3: "El Comunicador", 4: "El Constructor",
   5: "El Explorador", 6: "El Guardián", 7: "El Buscador", 8: "El Estratega",
-  9: "El Sanador", 11: "El Visionario", 22: "El Maestro Constructor", 33: "El Maestro Guía",
+  9: "El Adaptable", 11: "El Visionario", 22: "El Maestro Constructor", 33: "El Maestro Guía",
 };
 
 const elements: { name: string; description: string }[] = [

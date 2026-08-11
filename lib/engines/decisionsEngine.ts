@@ -319,7 +319,7 @@ function getDayDecisionInfluence(day: number): string {
     6: "favorece las decisiones de armonía",
     7: "favorece la introspección antes de decidir",
     8: "favorece las decisiones estratégicas",
-    9: "favorece los cierres y finalizaciones",
+    9: "favorece decisiones flexibles y adaptativas",
   };
   return influences[day] || "ofrece una energía neutra";
 }

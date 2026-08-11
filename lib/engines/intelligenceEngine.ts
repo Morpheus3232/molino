@@ -537,7 +537,7 @@ function getDayTheme(personalDay: number): string {
     6: 'armonía y cuidado',
     7: 'introspección y sabiduría',
     8: 'manifestación y poder',
-    9: 'cierre y compasión',
+    9: 'adaptación y desapego',
     11: 'intuición elevada',
     22: 'construcción a gran escala',
     33: 'servicio y amor',
@@ -555,7 +555,7 @@ function getYearTheme(personalYear: number): string {
     6: 'responsabilidad y hogar',
     7: 'introspección y sabiduría',
     8: 'manifestación y poder',
-    9: 'cierre y compasión',
+    9: 'adaptación y desapego',
     11: 'intuición elevada',
     22: 'construcción a gran escala',
     33: 'servicio y amor',
@@ -581,7 +581,7 @@ function getDayAction(personalDay: number): string {
     6: 'cuidar de quienes te rodean',
     7: 'mirar hacia adentro',
     8: 'asumir liderazgo',
-    9: 'completar y soltar',
+    9: 'fluir y adaptarse',
   };
   return actions[personalDay] || 'reflexionar y actuar con consciencia';
 }
