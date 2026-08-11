@@ -42,6 +42,16 @@ const nextConfig = {
         destination: '/filosofia',
         permanent: true,
       },
+      {
+        source: '/patterns',
+        destination: '/profile',
+        permanent: true,
+      },
+      {
+        source: '/synthesis',
+        destination: '/profile',
+        permanent: true,
+      },
     ];
   },
   async headers() {

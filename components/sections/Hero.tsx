@@ -41,7 +41,7 @@ export default function Hero() {
   );
 
   return (
-    <section className="relative bg-background min-h-[100dvh] lg:h-[calc(100dvh-3.5rem)] flex items-center overflow-hidden border-t border-ink/10">
+    <section className="relative bg-background min-h-[calc(100dvh-4rem)] lg:h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10">
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
         <motion.h1
           {...fadeUp}

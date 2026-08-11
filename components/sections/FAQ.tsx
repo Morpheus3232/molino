@@ -19,7 +19,7 @@ const FAQS = [
   {
     question: "¿Qué pasa con mis datos?",
     answer:
-      "Nada. Literalmente. Todo el cálculo se hace en tu navegador. Tu fecha de nacimiento nunca llega a nuestros servidores ni se guarda en ninguna base de datos.",
+      "Tu mapa se calcula enteramente en tu navegador: la fecha de nacimiento nunca sale de tu dispositivo ni se guarda en ninguna base de datos. La única excepción es si pedís una interpretación con IA — ahí sí tu perfil viaja a nuestro servidor para generarla, sin guardarse.",
   },
   {
     question: "¿Necesito registrarme?",

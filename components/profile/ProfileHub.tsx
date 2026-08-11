@@ -12,11 +12,10 @@ import { safeNumber } from "@/lib/utils/score";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import MapVisualization from "@/components/profile/MapVisualization";
 import ProfileSummaryTable from "@/components/profile/ProfileSummaryTable";
-import WorldConnections from "@/components/profile/WorldConnections";
-import CircleAlignment from "@/components/profile/CircleAlignment";
+import SpaceIndex from "@/components/profile/SpaceIndex";
 import LecturaProfunda from "@/components/profile/LecturaProfunda";
+import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import ActionButtons from "@/components/profile/ActionButtons";
-import type { ProfileTab } from "./ProfileTabs";
 
 /* ═══════════════════════════════════════════════════
    Capa de presentación local del hero.
@@ -136,7 +135,7 @@ function getArchetypeCopy(lifePath: number) {
   return ARCHETYPE_OPENINGS[lifePath] ?? FALLBACK_OPENING;
 }
 
-export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
+export default function ProfileHub({ profile }: ProfileHubProps) {
   const reduceMotion = useSafeReducedMotion();
 
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
@@ -240,17 +239,16 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 02 · TU MUNDO
+          TU ESPACIO — índice a Círculo/Mundo/Evolución,
+          reemplaza el scroll completo de esos capítulos.
           ═══════════════════════════════════════════════ */}
       <motion.div {...chapterReveal}>
-        <WorldConnections profile={profile} />
-      </motion.div>
-
-      {/* ═══════════════════════════════════════════════
-          CAPÍTULO 03 · TU CÍRCULO
-          ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <CircleAlignment profile={profile} />
+        <SpaceIndex
+          profile={profile}
+          circleName={`${display.name} de ${chineseElement}`}
+          allyName={allies[0] ?? null}
+          worldCount={worldCount}
+        />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
@@ -258,6 +256,13 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
           ═══════════════════════════════════════════════ */}
       <motion.div {...chapterReveal}>
         <LecturaProfunda profile={profile} />
+      </motion.div>
+
+      {/* ═══════════════════════════════════════════════
+          CAPÍTULO 05 · TU PREGUNTA
+          ═══════════════════════════════════════════════ */}
+      <motion.div {...chapterReveal}>
+        <DecisionMapSection profile={profile} />
       </motion.div>
 
       {/* ═══════════════════════════════════════════════
@@ -272,5 +277,4 @@ export default function ProfileHub({ profile, onEnter }: ProfileHubProps) {
 
 interface ProfileHubProps {
   profile: UserProfile;
-  onEnter?: (tab: ProfileTab) => void;
 }

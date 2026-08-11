@@ -20,6 +20,9 @@ const SITE_LINKS = [
 /* ═══ Primary: siempre visibles en desktop ═══ */
 const PRIMARY = [
   { href: "/profile", label: "Mi mapa" },
+  { href: "/circulo", label: "Círculo" },
+  { href: "/mundo", label: "Mundo" },
+  { href: "/evolution", label: "Evolución" },
   { href: "/calendario", label: "Calendario" },
 ];
 
@@ -40,6 +43,7 @@ export default function UniversityHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
 
   const isActive = (href: string) =>
@@ -100,6 +104,16 @@ export default function UniversityHeader() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [exploreOpen]);
 
+  useEffect(() => {
+    const handleClickOutsideMobileMenu = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    if (menuOpen) document.addEventListener("mousedown", handleClickOutsideMobileMenu);
+    return () => document.removeEventListener("mousedown", handleClickOutsideMobileMenu);
+  }, [menuOpen]);
+
   const handleNewProfile = useCallback(() => { setShowConfirm(true); }, []);
   const confirmNewProfile = useCallback(() => {
     clearStoredProfile();
@@ -112,6 +126,7 @@ export default function UniversityHeader() {
   return (
     <>
       <motion.header
+        ref={headerRef}
         className={`fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 ${
           scrolled ? "border-b border-ink/10" : "border-b border-transparent"
         }`}
@@ -233,7 +248,12 @@ export default function UniversityHeader() {
               transition={{ duration: 0.2 }}
               className="md:hidden overflow-hidden border-t border-ink/10 bg-background"
             >
-              <nav className="px-4 py-4 space-y-1" aria-label="Menú móvil">
+              {/* max-h + overflow-y-auto: el header es fixed, así que su
+                  altura no se recorta al viewport sola — sin esto, en
+                  pantallas cortas los últimos items (Explorar, CTA) quedan
+                  fuera de pantalla e inalcanzables, porque un elemento fixed
+                  no se mueve con el scroll de la página. */}
+              <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
                 {SITE_LINKS.map((link) => (
                   <Link
                     key={link.href}

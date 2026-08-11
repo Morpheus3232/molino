@@ -4,7 +4,7 @@ import { useMemo, useCallback, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { fetchCompatibility, type CompatibilityAPIResult } from "@/lib/api/client";
+import { fetchCompatibility } from "@/lib/api/client";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { generateMatchStory, type MatchStory } from "@/lib/engines/storyEngine";
 import type { CompatibilityResult } from "@/lib/engines/compatibilityEngine";
@@ -28,7 +28,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
-  const [compat, setCompat] = useState<CompatibilityAPIResult | null>(null);
+  const [compat, setCompat] = useState<CompatibilityResult | null>(null);
   const [compatError, setCompatError] = useState(false);
 
   useEffect(() => {
@@ -198,17 +198,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                   <CompatibilityLab
                     user={profile}
                     entity={entity}
-                    // REVIEW: CompatibilityLab wants the engine's CompatibilityResult
-                    // (result.user: full UserProfile), but /api/compatibility/calculate
-                    // sanitizes its response before sending it (CompatibilityAPIResult,
-                    // result.user: Record<string, unknown>) — a real shape mismatch
-                    // `any` was hiding, not something this pass should silently paper
-                    // over with a wider prop type. CompatibilityLab is only ever given
-                    // `profile` (the full local UserProfile, right above) for user-shaped
-                    // reads in practice, so this is very likely safe, but reconciling the
-                    // two types for real needs a decision: relax CompatibilityResult to
-                    // the sanitized shape, or stop sanitizing user out of the API response.
-                    result={compat as unknown as CompatibilityResult}
+                    result={compat}
                     template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
                   />
                 )}
@@ -253,8 +243,7 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                     <MolinoInterpretation
                       profile={profile}
                       type="compatibility"
-                      // REVIEW: same CompatibilityResult/CompatibilityAPIResult mismatch as above.
-                      compatibility={compat as unknown as CompatibilityResult}
+                      compatibility={compat}
                       dailyEnergy={dailyEnergy || undefined}
                       entity={entity}
                       label="Interpretación de Molino"
