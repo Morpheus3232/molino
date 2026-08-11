@@ -5,7 +5,8 @@
  * y, con el tiempo, reconstruir un recorrido (ver /evolution).
  *
  * Persistido en localStorage. No hay backend ni analytics: es la misma
- * orientación que HoyClient ya calculó, guardada para poder leerla mañana.
+ * orientación que calculateDailyEnergy/buildOrientation ya calculan,
+ * guardada para poder leerla mañana.
  */
 
 const STORAGE_KEY = "molino.daily-history.v1";

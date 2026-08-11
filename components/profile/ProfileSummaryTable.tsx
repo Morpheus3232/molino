@@ -72,25 +72,27 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
 
   return (
     <section className="py-10 sm:py-12" aria-labelledby="summary-heading">
-      <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
-        01 · Tu resumen
-      </p>
-      <h2 id="summary-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">
-        Tres sistemas, una lectura
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        <SystemCard
-          title="NUMEROLOGÍA"
-          stats={numerologyStats}
-        />
-        <SystemCard
-          title="ASTROLOGÍA"
-          stats={astrologyStats}
-        />
-        <SystemCard
-          title="ZODÍACO CHINO"
-          stats={zodiacStats}
-        />
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+        <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
+          01 · Tu resumen
+        </p>
+        <h2 id="summary-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] max-w-2xl mb-8">
+          Tres sistemas, una lectura
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <SystemCard
+            title="NUMEROLOGÍA"
+            stats={numerologyStats}
+          />
+          <SystemCard
+            title="ASTROLOGÍA"
+            stats={astrologyStats}
+          />
+          <SystemCard
+            title="ZODÍACO CHINO"
+            stats={zodiacStats}
+          />
+        </div>
       </div>
     </section>
   );
