@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import { Download, Share2, Sun, Copy } from "lucide-react";
+import { Download, Share2, CalendarDays, Copy } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import ProfileDownloadImage, { type ProfileDownloadImageHandle } from "@/components/profile/ProfileDownloadImage";
 
@@ -102,11 +102,11 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
         </Button>
 
         <Link
-          href="/hoy"
+          href="/calendario"
           className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
         >
-          <Sun className="w-4 h-4" aria-hidden="true" />
-          Energía de hoy
+          <CalendarDays className="w-4 h-4" aria-hidden="true" />
+          Calendario
         </Link>
 
         <Button

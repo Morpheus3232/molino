@@ -17,7 +17,7 @@ export const footerColumns: FooterColumn[] = [
       { href: "/ejemplo", label: "EJEMPLO" },
       { href: "/#faq", label: "FAQ" },
       { href: "/profile", label: "MI MAPA" },
-      { href: "/hoy", label: "ENERGÍA DE HOY" },
+      { href: "/calendario", label: "CALENDARIO" },
       { href: "/affinity", label: "AFINIDAD" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },

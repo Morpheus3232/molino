@@ -336,8 +336,8 @@ export default function IntelligenceScreen({ profile }: IntelligenceScreenProps)
                 {momentState.narrative}
               </p>
               <p className="mt-8">
-                <Link href="/hoy" className="text-accent hover:underline text-sm sm:text-base inline-flex items-center gap-2">
-                  Ver tu día de hoy en detalle
+                <Link href="/calendario" className="text-accent hover:underline text-sm sm:text-base inline-flex items-center gap-2">
+                  Ver el calendario numerológico
                   <span aria-hidden="true">→</span>
                 </Link>
               </p>

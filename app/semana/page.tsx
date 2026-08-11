@@ -100,7 +100,7 @@ function SemanaContent() {
           <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
             <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Inicio</Link>
             <span aria-hidden="true">›</span>
-            <Link href="/hoy" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Hoy</Link>
+            <Link href="/calendario" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Calendario</Link>
             <span aria-hidden="true">›</span>
             <span className="text-foreground font-medium">Semana</span>
           </nav>
@@ -219,8 +219,8 @@ function SemanaContent() {
         })()}
 
         <div className="mt-8">
-          <Link href="/hoy" className="text-sm text-accent hover:underline">
-            ← Volver a Hoy
+          <Link href="/calendario" className="text-sm text-accent hover:underline">
+            ← Volver al calendario
           </Link>
         </div>
       </main>

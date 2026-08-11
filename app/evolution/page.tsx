@@ -221,8 +221,8 @@ export default function EvolutionPage() {
               </AnimatePresence>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
-                <Button variant="primary" fullWidth onClick={() => router.push("/hoy")}>
-                  Ver hoy →
+                <Button variant="primary" fullWidth onClick={() => router.push("/calendario")}>
+                  Ver calendario →
                 </Button>
                 <Button variant="secondary" fullWidth onClick={() => router.push("/profile")}>
                   Ver mi perfil
