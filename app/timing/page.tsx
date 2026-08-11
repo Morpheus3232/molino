@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Rocket, Briefcase, Target, FileText, Zap, Heart, Send, Sparkles, Calendar } from "lucide-react";
+import { Rocket, Briefcase, Target, FileText, Zap, Heart, Send, Sparkles, Calendar, type LucideIcon } from "lucide-react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { analyzeTiming, findBestDates, type TimingIntention, INTENTION_LABELS } from "@/lib/engines/timingEngine";
 import { saveTimingIntention } from "@/lib/session/timingIntention";
@@ -17,7 +17,7 @@ import { formatDate } from "@/lib/i18n/format";
 import BestDatesTimeline from "@/components/timing/BestDatesTimeline";
 import TimingCalendar from "@/components/timing/TimingCalendar";
 
-const INTENTIONS: { id: TimingIntention; label: string; icon: any }[] = [
+const INTENTIONS: { id: TimingIntention; label: string; icon: LucideIcon }[] = [
   { id: "start_project", label: "Iniciar un proyecto", icon: Rocket },
   { id: "change_job", label: "Cambiar de trabajo", icon: Briefcase },
   { id: "launch_something", label: "Lanzar algo", icon: Target },

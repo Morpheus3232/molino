@@ -247,6 +247,13 @@ export function getOmniRouteRouter(config?: Partial<OmniRouteConfig>): OmniRoute
 
 export async function generateWithOmniRoute(
   user: UserProfile,
+  // REVIEW: target is CompatibilityResult["target"] in practice (a partial
+  // UserProfile-shaped object for person-to-person compatibility, or an
+  // EntityProfile-shaped object for person-to-entity), but the two call
+  // sites pass different partial shapes and nothing here has ever modeled
+  // that union — typing it for real means writing that union type once and
+  // threading it through omnirouteRouter/providerRouter together, not a
+  // one-line fix.
   target: any,
   result: CompatibilityResult,
   template?: string,

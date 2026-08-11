@@ -1,8 +1,6 @@
 import { ImageResponse } from "next/og";
 import { ENTITIES } from "@/lib/data/entities";
 
-export const runtime = "edge";
-
 export const alt = "Análisis de compatibilidad — Molino";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

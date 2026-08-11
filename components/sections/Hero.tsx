@@ -2,14 +2,18 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Grainient from "@/components/Grainient";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUp } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
+
+// Purely decorative WebGL background (ogl) — keep it out of the homepage's
+// critical bundle. Can't SSR a canvas anyway.
+const Grainient = dynamic(() => import("@/components/Grainient"), { ssr: false });
 
 function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;

@@ -3,8 +3,6 @@ import { getEntityById, getPrimaryEvent } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
 
-export const runtime = "edge";
-
 export const alt = "Mi afinidad simbólica — Molino";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";

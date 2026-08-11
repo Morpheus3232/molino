@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { decodeProfileData } from "@/lib/utils/profileShare";
+import { decodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import ProfileClient from "@/components/profile/ProfileClient";
 import type { UserProfile } from "@/types/user";
 import { formatDate } from "@/lib/i18n/format";
@@ -87,11 +87,7 @@ export default async function ProfilePage({ searchParams }: Props) {
 
   if (dataParam) {
     try {
-      const decoded = decodeProfileData(dataParam);
-      if (decoded?.b) {
-        const calculated = calculateUserProfile(decoded.n || "", decoded.b);
-        profile = buildProfile(calculated, decoded.n || "", decoded.b);
-      }
+      profile = profileFromEncoded(dataParam);
     } catch {}
   }
 

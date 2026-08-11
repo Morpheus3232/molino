@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Compatibilidad con países",
+  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
+  title: "Compatibilidad con países | Molino",
   description:
     "Descubrí la compatibilidad entre tu energía y la de los países del mundo, usando numerología y zodíaco chino.",
   alternates: { canonical: siteUrl("/compatibility/countries") },

@@ -6,19 +6,18 @@ import {
   buildDimensions,
   buildDateDimensions,
   buildMomentState,
+  type PersonalCode,
+  type PatternInsight,
+  type DimensionInsight,
+  type MomentState,
 } from "@/lib/engines/synthesisEngine";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
+import { isValidDate } from "@/lib/validation";
 
 interface RequestBody {
   dob: string;
   name?: string;
   includeEnergy?: boolean;
-}
-
-function isValidDate(date: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
-  const d = new Date(date);
-  return !isNaN(d.getTime());
 }
 
 export async function POST(req: NextRequest) {
@@ -32,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     const profile = calculateUserProfile(name || "", dob);
 
-    const result: any = {
+    const result: Record<string, unknown> = {
       personalCode: sanitizePersonalCode(buildPersonalCode(profile)),
       patterns: sanitizePatterns(buildPatterns(profile)),
       dimensions: sanitizeDimensionInsight(buildDimensions(profile)),
@@ -53,7 +52,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function sanitizePersonalCode(pc: any) {
+function sanitizePersonalCode(pc: PersonalCode) {
   return {
     lifePath: { number: pc.lifePath.number, name: pc.lifePath.name, meaning: pc.lifePath.meaning },
     expression: pc.expression ? { number: pc.expression.number, name: pc.expression.name, meaning: pc.expression.meaning } : undefined,
@@ -62,7 +61,7 @@ function sanitizePersonalCode(pc: any) {
   };
 }
 
-function sanitizePatterns(patterns: any[]) {
+function sanitizePatterns(patterns: PatternInsight[]) {
   return patterns.map((p) => ({
     label: p.label,
     keyword: p.keyword,
@@ -71,7 +70,7 @@ function sanitizePatterns(patterns: any[]) {
   }));
 }
 
-function sanitizeDimensionInsight(dims: any[]) {
+function sanitizeDimensionInsight(dims: DimensionInsight[]) {
   return dims.map((d) => ({
     dimension: d.dimension,
     value: d.value,
@@ -80,7 +79,7 @@ function sanitizeDimensionInsight(dims: any[]) {
   }));
 }
 
-function sanitizeMomentState(state: any) {
+function sanitizeMomentState(state: MomentState) {
   return {
     energyScore: state.energyScore,
     energyTheme: state.energyTheme,
@@ -94,15 +93,11 @@ function sanitizeMomentState(state: any) {
   };
 }
 
-function sanitizeEnergy(energy: any) {
+function sanitizeEnergy(energy: DailyEnergyResult) {
   return {
     overallScore: energy.overallScore,
-    energy: energy.energy,
-    level: energy.level,
     theme: energy.theme,
     description: energy.description,
-    recommendation: energy.recommendation,
-    color: energy.color,
     strengths: energy.strengths,
     cautions: energy.cautions,
     areas: energy.areas,

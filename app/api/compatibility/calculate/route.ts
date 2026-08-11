@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import { calculateCompatibility, type CompatibilityResult } from "@/lib/engines/compatibilityEngine";
+import { isValidDate } from "@/lib/validation";
 import type { UserProfile } from "@/types/user";
 
 interface RequestBody {
@@ -15,12 +16,6 @@ interface RequestBody {
     element?: string;
     name?: string;
   };
-}
-
-function isValidDate(date: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
-  const d = new Date(date);
-  return !isNaN(d.getTime());
 }
 
 export async function POST(req: NextRequest) {
@@ -83,7 +78,7 @@ function sanitizeProfileForClient(profile: UserProfile) {
   };
 }
 
-function sanitizeCompatibility(result: any) {
+function sanitizeCompatibility(result: CompatibilityResult) {
   return {
     user: sanitizeProfileForClient(result.user),
     target: result.target,

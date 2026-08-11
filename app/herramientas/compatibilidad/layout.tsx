@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Compatibilidad zodiacal",
+  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
+  title: "Compatibilidad zodiacal | Molino",
   description:
     "Calculá la compatibilidad entre dos personas según su numerología y zodíaco chino. Sin registro, gratis y auditable.",
   alternates: { canonical: siteUrl("/herramientas/compatibilidad") },
