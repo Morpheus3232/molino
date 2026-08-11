@@ -90,7 +90,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'Venezuela',
     category: 'country',
     emoji: '🇻🇪',
-    symbolism: { lifePath: 9, sunSign: 'Sagitario', chineseZodiac: 'Cabra', element: 'Fuego', archetype: 'El Humanitario' },
+    symbolism: { lifePath: 9, sunSign: 'Sagitario', chineseZodiac: 'Cabra', element: 'Fuego', archetype: 'El Adaptable' },
     context: { description: 'Tierra de luces y de gente luchadora.', keyThemes: ['Lucha', 'Esperanza', 'Recursos', 'Música'], funFact: 'Tiene el salto Ángel, la catarata más alta del mundo.' }
   },
   {
@@ -178,7 +178,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'India',
     category: 'country',
     emoji: '🇮🇳',
-    symbolism: { lifePath: 9, sunSign: 'Sagitario', chineseZodiac: 'Cerdo', element: 'Fuego', archetype: 'El Humanitario' },
+    symbolism: { lifePath: 9, sunSign: 'Sagitario', chineseZodiac: 'Cerdo', element: 'Fuego', archetype: 'El Adaptable' },
     context: { description: 'Espiritualidad, colores intensos y sabiduría ancestral.', keyThemes: ['Espiritualidad', 'Diversidad', 'Sabiduría', 'Contraste'], funFact: 'El ajedrez se originó en la India.' }
   },
   {
@@ -210,7 +210,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'Sudáfrica',
     category: 'country',
     emoji: '🇿🇦',
-    symbolism: { lifePath: 9, sunSign: 'Escorpio', chineseZodiac: 'Gallo', element: 'Tierra', archetype: 'El Humanitario' },
+    symbolism: { lifePath: 9, sunSign: 'Escorpio', chineseZodiac: 'Gallo', element: 'Tierra', archetype: 'El Adaptable' },
     context: { description: 'Libertad, diversidad y reconciliación.', keyThemes: ['Libertad', 'Diversidad', 'Reconciliación', 'Naturaleza'], funFact: 'Tiene 11 idiomas oficiales.' }
   },
   {
@@ -486,7 +486,7 @@ export const ENTITIES: EntityProfile[] = [
     name: 'Nelson Mandela',
     category: 'person',
     emoji: '✊',
-    symbolism: { lifePath: 9, sunSign: 'Cáncer', chineseZodiac: 'Gato', element: 'Agua', archetype: 'El Humanitario' },
+    symbolism: { lifePath: 9, sunSign: 'Cáncer', chineseZodiac: 'Gato', element: 'Agua', archetype: 'El Adaptable' },
     context: { description: 'Perdón, liderazgo y libertad para Sudáfrica.', keyThemes: ['Perdón', 'Libertad', 'Liderazgo', 'Paz'], funFact: 'Pasó 27 años en prisión antes de ser presidente.' }
   },
 

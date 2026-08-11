@@ -224,7 +224,7 @@ function getChallengingDimensions(
 
   if ([5, 9].includes(personalDay)) dims.push("Cambio e incertidumbre");
   if (moonPhase === "Menguante" || moonPhase === "Cuarto Menguante") dims.push("Energía lunar descendente");
-  if (personalYear >= 7 && personalYear <= 9) dims.push("Ciclo anual de cierre");
+  if (personalYear >= 7 && personalYear <= 9) dims.push("Ciclo anual de transición");
 
   return dims;
 }
@@ -279,7 +279,7 @@ function getDayQuality(day: number): string {
     6: "armonía y responsabilidad",
     7: "introspección y sabiduría",
     8: "poder y manifestación",
-    9: "cierre y compasión",
+    9: "adaptación y desapego",
     11: "intuición elevada",
     22: "construcción a gran escala",
     33: "amor y servicio",

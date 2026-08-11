@@ -62,7 +62,7 @@ function getNumberMeaning(n: number, type: "lifePath" | "expression" | "soul" | 
     6: { lifePath: "Responsabilidad y cuidado", expression: "Belleza y armonía", soul: "Amor incondicional", personality: "Calidez" },
     7: { lifePath: "Búsqueda de verdad", expression: "Análisis profundo", soul: "Retiro y reflexión", personality: "Misterio" },
     8: { lifePath: "Poder y materialización", expression: "Autoridad natural", soul: "Abundancia", personality: "Presencia" },
-    9: { lifePath: "Compasión y sabiduría", expression: "Humanitarismo", soul: "Servicio al todo", personality: "Generosidad" },
+    9: { lifePath: "Adaptación y desapego", expression: "Fluidez expresiva", soul: "Movimiento interior", personality: "Versatilidad" },
     11: { lifePath: "Intuición elevada", expression: "Inspiración espiritual", soul: "Iluminación personal", personality: "Magnetismo" },
     22: { lifePath: "Manifestación a gran escala", expression: "Visión constructiva", soul: "Propósito divino", personality: "Grandeza" },
     33: { lifePath: "Sanación y servicio", expression: "Maestía expresiva", soul: "Amor universal", personality: "Compasión" },
@@ -88,7 +88,7 @@ function getNumberName(n: number): string {
     6: "El Nutridor",
     7: "El Investigador",
     8: "El Arquitecto",
-    9: "El Filósofo",
+    9: "El Adaptable",
     11: "El Vidente",
     22: "El Maestro Constructor",
     33: "El Sanador",
@@ -106,7 +106,7 @@ function getKeywordForLifePath(n: number): string {
     6: "responsabilidad",
     7: "introspección",
     8: "manifestación",
-    9: "compasión",
+    9: "adaptación",
     11: "intuición",
     22: "construcción",
     33: "sanación",
@@ -226,7 +226,7 @@ export function buildSynthesisInsights(profile: UserProfile): SynthesisInsight[]
     insights.push({
       type: "opportunity",
       title: "Tu oportunidad",
-      text: `Tu Año Personal ${personalYear} (${yearType.name?.replace("Año de ", "") || ""}) abre una oportunidad específica para tu perfil: ${yearType.description || "un nuevo ciclo"}. Elementos ${element} como el tuyo están especialmente favorecidos para ${personalYear <= 3 ? "sembrar" : personalYear <= 6 ? "consolidar" : "cerrar"} en este momento.`,
+      text: `Tu Año Personal ${personalYear} (${yearType.name?.replace("Año de ", "") || ""}) abre una oportunidad específica para tu perfil: ${yearType.description || "un nuevo ciclo"}. Elementos ${element} como el tuyo están especialmente favorecidos para ${personalYear <= 3 ? "sembrar" : personalYear <= 6 ? "consolidar" : "adaptarte"} en este momento.`,
       sources: ["Ciclos", "Astrología"],
     });
   }
@@ -271,7 +271,7 @@ export function buildPatterns(profile: UserProfile): PatternInsight[] {
   patterns.push({
     label: "Tu próximo movimiento",
     keyword: yearType?.name?.replace("Año de ", "").toLowerCase() || "nuevo ciclo",
-    description: yearType?.description || `Tu ciclo actual favorece ${personalYear <= 3 ? "empezar" : personalYear <= 6 ? "construir" : "cerrar"}.`,
+    description: yearType?.description || `Tu ciclo actual favorece ${personalYear <= 3 ? "empezar" : personalYear <= 6 ? "construir" : "adaptarte"}.`,
     sources: ["Ciclos"],
   });
 
@@ -337,7 +337,7 @@ export function buildMomentState(profile: UserProfile, energyScore: number, ener
   else if (energyScore >= 40) focus = "Preparación";
   else focus = "Descanso";
 
-  const narrative = `Estás en un Año de ${cycleName} (nivel ${personalYear}). Tu energía del día (${energyTheme}) ${energyScore >= 55 ? "favorece" : "sugiere"} ${focus.toLowerCase()}. Tu ${element.toLowerCase()} natural ${energyScore >= 60 ? "potencia" : "modula"} este momento. Para tu Life Path ${lp}, esto significa que ${personalYear <= 3 ? "es momento de sembrar con intención" : personalYear <= 6 ? "la clave está en construir sobre lo que ya empezaste" : "el crecimiento viene de soltar lo que ya cumplió su ciclo"}.`;
+  const narrative = `Estás en un Año de ${cycleName} (nivel ${personalYear}). Tu energía del día (${energyTheme}) ${energyScore >= 55 ? "favorece" : "sugiere"} ${focus.toLowerCase()}. Tu ${element.toLowerCase()} natural ${energyScore >= 60 ? "potencia" : "modula"} este momento. Para tu Life Path ${lp}, esto significa que ${personalYear <= 3 ? "es momento de sembrar con intención" : personalYear <= 6 ? "la clave está en construir sobre lo que ya empezaste" : "el crecimiento viene de adaptarte a lo que cambia"}.`;
 
   return {
     energyScore,

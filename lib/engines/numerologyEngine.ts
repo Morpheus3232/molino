@@ -65,11 +65,11 @@ export const ARCHETYPE_DESCRIPTIONS: Record<number, {
     challenges: ['Materialismo', 'Control', 'Intimidación']
   },
   9: {
-    name: 'El Adaptador / El Místico',
-    keywords: ['Adaptación', 'Compasión', 'Sabiduría Universal', 'Finalización'],
-    essence: 'El 9 es el número de la culminación y la sabiduría adquirida. Su mayor fortaleza es su capacidad de adaptación: absorbe la energía de su entorno y se moldea a sí mismo para tener éxito. Es el "espejo" que ayuda a otros a verse a sí mismos. Su misión es completar ciclos y dejar un legado, pero debe protegerse de los apegos emocionales que pueden desviarlo.',
-    strengths: ['Adaptabilidad', 'Compasión', 'Sabiduría', 'Capacidad de reflejar a otros', 'Visión global'],
-    challenges: ['Apego emocional', 'Ego excesivo', 'Influencia del entorno negativo', 'Dificultad para soltar']
+    name: 'El Adaptable',
+    keywords: ['Adaptabilidad', 'Desapego', 'Flexibilidad'],
+    essence: 'El 9 es el swing path. No tiene origen fijo ni destino predeterminado. Su mayor fortaleza es su adaptabilidad extrema: maneja cualquier situación que le toque sin resistencia. Su trabajo es unificar lo que otros separan.',
+    strengths: ['Adaptabilidad', 'Fluidez social', 'Lectura de situaciones', 'Capacidad de unificar', 'Desapego funcional'],
+    challenges: ['Apego a situaciones que ya no funcionan', 'Identidad difusa', 'Evitar el compromiso', 'Perderse en la energía de otros']
   },
   11: {
     name: 'El Visionario',

@@ -63,7 +63,7 @@ function getNumerologyPerspective(profile: UserProfile): SystemPerspective {
     6: "responsabilidad y cuidado",
     7: "introspección y búsqueda de verdad",
     8: "poder y manifestación material",
-    9: "sabiduría y compasión",
+    9: "adaptación y desapego",
     11: "intuición elevada e inspiración",
     22: "construcción a gran escala",
     33: "compasión universal y sanación",
@@ -297,7 +297,7 @@ function getKeywordForLifePath(n: number): string {
   const keywords: Record<number, string> = {
     1: "liderazgo", 2: "cooperación", 3: "creatividad", 4: "estabilidad",
     5: "libertad", 6: "responsabilidad", 7: "introspección", 8: "poder",
-    9: "sabiduría", 11: "intuición", 22: "construcción", 33: "compasión",
+    9: "adaptabilidad", 11: "intuición", 22: "construcción", 33: "compasión",
   };
   return keywords[n] || "identidad";
 }

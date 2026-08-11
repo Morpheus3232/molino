@@ -63,7 +63,7 @@ export const ENERGY_BARS_MAP: Record<number, Record<string, number>> = {
   6: { Creatividad: 60, Liderazgo: 50, Intuición: 75, Estabilidad: 80, Comunicación: 70, Empatía: 95 },
   7: { Creatividad: 90, Liderazgo: 60, Intuición: 95, Estabilidad: 40, Comunicación: 70, Empatía: 55 },
   8: { Creatividad: 55, Liderazgo: 95, Intuición: 65, Estabilidad: 75, Comunicación: 70, Empatía: 45 },
-  9: { Creatividad: 85, Liderazgo: 60, Intuición: 90, Estabilidad: 50, Comunicación: 80, Empatía: 95 },
+  9: { Creatividad: 75, Liderazgo: 55, Intuición: 70, Estabilidad: 40, Comunicación: 80, Empatía: 70 },
   11: { Creatividad: 90, Liderazgo: 70, Intuición: 98, Estabilidad: 45, Comunicación: 85, Empatía: 80 },
   22: { Creatividad: 75, Liderazgo: 90, Intuición: 85, Estabilidad: 85, Comunicación: 75, Empatía: 70 },
   33: { Creatividad: 85, Liderazgo: 75, Intuición: 95, Estabilidad: 60, Comunicación: 90, Empatía: 98 },

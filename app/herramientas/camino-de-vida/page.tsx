@@ -32,7 +32,7 @@ const LIFE_PATH_MEANINGS: Record<number, { meaning: string; archetype: string; d
   6: { meaning: "Responsabilidad y cuidado", archetype: "El Nutridor", description: "Tu energía está orientada hacia el hogar y los demás. El amor práctico y la responsabilidad son tu camino." },
   7: { meaning: "Introspección y búsqueda de verdad", archetype: "El Investigador", description: "Tu energía es la búsqueda. El análisis, la reflexión y la sabiduría interior guían tu camino." },
   8: { meaning: "Poder y manifestación material", archetype: "El Poderoso", description: "Tu energía está orientada hacia los logros concretos. La estrategia y la visión te permiten materializar proyectos." },
-  9: { meaning: "Sabiduría y compasión", archetype: "El Filósofo", description: "Tu energía es la del servicio y la visión global. La compasión y la sabiduría acumulada son tu legado." },
+  9: { meaning: "Adaptabilidad y desapego", archetype: "El Adaptable", description: "Tu energía es del swing. No tenés un camino fijo: te adaptás a cualquier situación, unificás lo que otros separás y fluís donde otros se estancan." },
   11: { meaning: "Intuición elevada e inspiración", archetype: "El Vidente", description: "Tu energía conecta con lo trascendente. La intuición y la inspiración son tus herramientas más poderosas." },
   22: { meaning: "Construcción a gran escala", archetype: "El Maestro Constructor", description: "Tu energía combina visión con capacidad de manifestación. Podés construir cosas que perduren." },
   33: { meaning: "Compasión universal y sanación", archetype: "El Maestro Sanador", description: "Tu energía está dedicada al servicio y la sanación. Es el número más elevado de servicio." },
