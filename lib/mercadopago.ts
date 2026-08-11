@@ -60,6 +60,13 @@ export function normalizeName(name: string): string {
     .trim();
 }
 
+// TODO(security, medium): birthDate reaches here unvalidated from the payment
+// routes (mp/coupon, mp/preference, mp/process, mp/recover, paypal/*) — only
+// the /api/{synthesis,compatibility,convergence}/calculate routes check
+// isValidDate() before use. Not exploitable today (birthDate is just opaque
+// HMAC input, never parsed as a Date here), but a malformed value silently
+// produces a hash the user can't reproduce on recovery. Add the same
+// isValidDate() check to the payment routes before this call.
 export function hashProfile(name: string, birthDate: string): string {
   const secret = getWebhookSecret();
   const normalizedName = normalizeName(name);

@@ -1,11 +1,18 @@
 /**
  * Profile Share — Encode/decode profile data for shareable URLs.
  *
- * Minimal profile data encoded as base64url for URL safety.
- * No secrets, no sensitive data. Only public zodiac/numerology info.
+ * There's no backend for shared profiles (see lib/profile/hash.ts), so the
+ * URL itself is the storage: base64url is an *encoding*, not encryption —
+ * name and full birthDate (`n`, `b`) are plainly readable by anyone with the
+ * link. This is an accepted tradeoff (the app has no user DB), mitigated by
+ * `Referrer-Policy: strict-origin-when-cross-origin` in next.config.js,
+ * which stops the query string from leaking to third-party origins (Mercado
+ * Pago, PayPal, image CDNs) loaded on /profile. Don't log this URL
+ * server-side or forward it to analytics/third parties as a full string.
  */
 
 import type { UserProfile } from "@/types/user";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 
 /** Minimal data needed to reconstruct a shared profile view */
 export interface ShareableProfileData {
@@ -84,4 +91,36 @@ export function profileFromShareData(data: ShareableProfileData): Partial<UserPr
     soulNumber: data.sn,
     personalityNumber: data.pn,
   };
+}
+
+/**
+ * Same defaults ProfilePage fills in server-side for a fresh calculation —
+ * kept here too so hash-based reconstruction (client-only, see ProfileClient)
+ * produces an identical UserProfile shape without re-deriving it a third time.
+ */
+function hydrateSharedProfile(calculated: UserProfile, name: string, birthDate: string): UserProfile {
+  return {
+    ...calculated,
+    name,
+    birthDate,
+    birthPlace: "",
+    birthTime: undefined,
+    goal: "life" as const,
+    interests: [],
+    onboardingStep: 4,
+    completedSections: ["identity"],
+    theme: "light" as const,
+    language: "es" as const,
+    notifications: true,
+    cycles: calculated.cycles || { personalYear: 0, personalMonth: 0, personalDay: 0 },
+    recommendations: calculated.recommendations || { strengths: [], challenges: [], practices: [] },
+  };
+}
+
+/** Decode an encoded share string and recompute the full UserProfile from its birthDate. */
+export function profileFromEncoded(encoded: string): UserProfile | null {
+  const decoded = decodeProfileData(encoded);
+  if (!decoded?.b) return null;
+  const calculated = calculateUserProfile(decoded.n || "", decoded.b);
+  return hydrateSharedProfile(calculated, decoded.n || "", decoded.b);
 }

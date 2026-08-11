@@ -3,7 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import HoyClient from "@/components/hoy/HoyClient";
 
 export const metadata: Metadata = {
-  title: "Hoy — Molino",
+  title: "Hoy",
   description:
     "Tu mapa personal aplicado al día de hoy: energía, timing, convergencia y una decisión clara para actuar.",
   alternates: {

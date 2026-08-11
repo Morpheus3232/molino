@@ -5,6 +5,7 @@ import InsightsContent from "./InsightsContent";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
   title: "Mis patrones | Molino",
   description: "Tu exploración personal de patrones simbólicos. Conexiones, recomendaciones y descubrimientos según el zodíaco chino.",
   alternates: {

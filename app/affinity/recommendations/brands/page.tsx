@@ -3,6 +3,7 @@ import { siteUrl } from "@/lib/seo";
 import RecommendationContent from "@/components/affinity/RecommendationContent";
 
 export const metadata: Metadata = {
+  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
   title: "Marcas para priorizar este ciclo | Molino",
   description: "Prioridad del ciclo actual: qué marcas explorar ahora según tu perfil simbólico.",
   alternates: {

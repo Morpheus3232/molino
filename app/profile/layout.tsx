@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mi Mapa Personal | Molino",
+  title: "Mi Mapa Personal",
   description:
     "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos. Explorá tu mapa en Molino.",
   openGraph: {

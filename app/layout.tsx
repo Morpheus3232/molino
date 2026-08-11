@@ -18,6 +18,15 @@ const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display:
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 
+// REVIEW: title.template above stops applying past a certain route-segment
+// depth (reproduced on Next 16.3/Turbopack via curl against rendered
+// <title>): every static child under compatibility/*, herramientas/*,
+// affinity/recommendations/*, and profile/insights lost the "| Molino"
+// suffix entirely rather than merging it, while shallower routes (e.g.
+// /affinity, /herramientas, /guia) were unaffected. Worked around by
+// hardcoding the full title string on each affected route instead of
+// relying on the template — root-causing the actual Next.js metadata
+// resolution behavior needs more time than this pass budgeted.
 export const metadata: Metadata = {
   title: {
     default: "Molino — Mapa Personal de Autoconocimiento",
@@ -115,7 +124,12 @@ export default function RootLayout({
   ];
 
   return (
-    <html lang="es" suppressHydrationWarning className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
+    <html
+      lang="es"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
+    >
       <head>
         {jsonLd.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />

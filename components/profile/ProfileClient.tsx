@@ -1,15 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+import { encodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import { recordVisit } from "@/lib/session/discovery";
+import { fadeUp } from "@/lib/utils/motion";
 import ProfileHub from "@/components/profile/ProfileHub";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import Button from "@/components/ui/Button";
+import Badge from "@/components/ui/Badge";
 
 function buildFromLocal(): UserProfile | null {
   const stored = loadProfileFromStorage();
@@ -37,7 +41,6 @@ function buildFromLocal(): UserProfile | null {
 
 export default function ProfileClient({ serverProfile, initialTab, futureDateError }: ProfileClientProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
@@ -46,23 +49,58 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     setMounted(true);
     recordVisit();
 
-    if (searchParams.get("first") === "1") {
-      const url = new URL(window.location.href);
-      url.searchParams.delete("first");
-      router.replace(url.pathname + url.search, { scroll: false });
-    }
-
     if (serverProfile) {
       saveProfileToStorage(serverProfile);
       return;
     }
 
     if (!profile) {
+      // The hash never reaches the server (see the URL-sync effect below), so
+      // reconstructing a bookmarked /profile#<hash> only happens here.
+      const hash = window.location.hash.slice(1);
+      const fromHash = hash ? profileFromEncoded(hash) : null;
+      if (fromHash) {
+        setProfile(fromHash);
+        saveProfileToStorage(fromHash);
+        return;
+      }
       const local = buildFromLocal();
       if (local) setProfile(local);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverProfile]);
+
+  // The mount effect above only sees the hash on a genuine fresh page load.
+  // Editing just the fragment of an already-open /profile tab (address bar
+  // + Enter, or history back/forward between two shared links) is a
+  // same-document navigation — no remount, so nothing re-reads the hash
+  // without this listener.
+  useEffect(() => {
+    function syncFromHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+      const fromHash = profileFromEncoded(hash);
+      if (fromHash) {
+        setProfile(fromHash);
+        saveProfileToStorage(fromHash);
+      }
+    }
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  // Once a profile is on screen — however it got there (?dob= redirect from
+  // onboarding, localStorage, or an existing hash) — normalize the address
+  // bar to a self-contained /profile#<hash>. That URL needs no server lookup
+  // to redraw the map, so it's both a bookmark of "your own map" and a link
+  // you could hand to someone else without this session's ?dob= ever having
+  // touched a server log a second time.
+  useEffect(() => {
+    if (!mounted || !profile) return;
+    const encoded = encodeProfileData(profile);
+    if (window.location.hash.slice(1) === encoded && !window.location.search) return;
+    window.history.replaceState(null, "", `/profile#${encoded}`);
+  }, [mounted, profile]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
@@ -88,7 +126,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
+          <motion.div {...fadeUp} className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           {futureDateError ? (
             <div role="alert">
               <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
@@ -97,20 +135,32 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
               <p className="text-muted mb-8 max-w-md mx-auto">
                 La fecha de nacimiento no puede ser futura. Ingresá una fecha válida para generar tu mapa.
               </p>
+              <Button variant="accent" size="lg" onClick={() => router.push("/")}>
+                Ir a la portada
+              </Button>
             </div>
           ) : (
             <>
-              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
-                Todavía no creaste tu mapa
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
-                Ingresá tu fecha de nacimiento para generar tu mapa personal de autoconocimiento.
-              </p>
+              <motion.h1
+                {...fadeUp}
+                className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4"
+              >
+                Tu mapa se genera en la portada
+              </motion.h1>
+              <motion.p {...fadeUp} className="text-muted mb-8 max-w-md mx-auto">
+                Elegís tu fecha de nacimiento en la portada y volvés directo acá, a tu numerología, astrología y
+                zodíaco chino ya cruzados en un solo mapa.
+              </motion.p>
+              <motion.div {...fadeUp} className="flex justify-center mb-6">
+                <Badge variant="muted">Gratis · Sin registro</Badge>
+              </motion.div>
+              <motion.div {...fadeUp}>
+                <Button variant="accent" size="lg" onClick={() => router.push("/")}>
+                  Ir a la portada
+                </Button>
+              </motion.div>
             </>
           )}
-          <Button variant="primary" size="lg" onClick={() => router.push("/")}>
-            Crear mi mapa
-          </Button>
         </div>
       </div>
     );

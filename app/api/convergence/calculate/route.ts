@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { buildConvergence } from "@/lib/engines/convergentEngine";
-import { buildMomentState } from "@/lib/engines/synthesisEngine";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { buildConvergence, type Convergence, type ConvergentLayer } from "@/lib/engines/convergentEngine";
+import { isValidDate } from "@/lib/validation";
+import { buildMomentState, type MomentState } from "@/lib/engines/synthesisEngine";
+import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 
 interface RequestBody {
   dob: string;
   name?: string;
-}
-
-function isValidDate(date: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
-  const d = new Date(date);
-  return !isNaN(d.getTime());
 }
 
 export async function POST(req: NextRequest) {
@@ -41,9 +36,9 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function sanitizeConvergence(c: any) {
+function sanitizeConvergence(c: Convergence) {
   return {
-    layers: c.layers.map((l: any) => ({
+    layers: c.layers.map((l: ConvergentLayer) => ({
       id: l.id,
       name: l.name,
       value: l.value,
@@ -58,7 +53,7 @@ function sanitizeConvergence(c: any) {
   };
 }
 
-function sanitizeMomentState(state: any) {
+function sanitizeMomentState(state: MomentState) {
   return {
     energyScore: state.energyScore,
     energyTheme: state.energyTheme,
@@ -72,7 +67,7 @@ function sanitizeMomentState(state: any) {
   };
 }
 
-function sanitizeEnergy(energy: any) {
+function sanitizeEnergy(energy: DailyEnergyResult) {
   return {
     overallScore: energy.overallScore,
     theme: energy.theme,

@@ -15,7 +15,7 @@ const transitionVariants = {
 
 export default function AnalyticsPage() {
   const router = useRouter();
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<ReturnType<typeof analytics.getStats> | null>(null);
 
   useEffect(() => {
     setStats(analytics.getStats());

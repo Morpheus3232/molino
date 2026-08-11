@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Signo Solar",
+  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
+  title: "Signo Solar | Molino",
   description:
     "Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.",
   alternates: { canonical: siteUrl("/herramientas/signo-solar") },
