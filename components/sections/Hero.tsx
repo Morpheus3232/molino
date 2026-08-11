@@ -47,12 +47,12 @@ export default function Hero() {
           {...fadeUp}
           className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-3"
         >
-          Descubrí quién sos.
-          <br className="hidden sm:block" /> En un solo lugar.
+          Entendete mejor.
+          <br className="hidden sm:block" /> Decidí con más claridad.
         </motion.h1>
 
         <motion.p {...fadeUp} className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-6">
-          Numerología, astrología y zodíaco chino cruzados en tu mapa personal.
+          Un mapa personal que revela tus patrones, tus ciclos y tus afinidades — con base en tu fecha de nacimiento.
         </motion.p>
 
         <motion.div
@@ -75,7 +75,7 @@ export default function Hero() {
             aria-disabled={!isDateValid}
             className={`w-[90%] sm:w-auto ${!isDateValid ? "opacity-50" : ""}`}
           >
-            Generar mi mapa
+            Crear mi mapa personal
           </Button>
         </motion.div>
 
