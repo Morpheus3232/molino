@@ -7,7 +7,6 @@ import { fadeUp, hoverScale, numberReveal } from "@/lib/utils/motion";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import {
   buildPersonalRecommendations,
   hasPositiveAffinity,
@@ -15,14 +14,6 @@ import {
 import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
-import {
-  getDayRule,
-  YEAR_2026,
-  getDayActivity,
-  getUpcomingDayActivities,
-  getNextDayByCategory,
-  type DayActivity,
-} from "@/lib/data/symbolic-rules";
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 import { safeNumber } from "@/lib/utils/score";
