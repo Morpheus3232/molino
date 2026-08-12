@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
 import { captureOrder, validateOrder } from '@/lib/paypal';
-import { grantPremiumAccess, hasPremiumAccess, isPaymentProcessed, markPaymentProcessed, savePremiumToken } from '@/lib/kv';
+import { grantPremiumAccess, hasPremiumAccess, isPaymentProcessed, markPaymentProcessed, savePremiumToken, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
+import { isValidDate } from '@/lib/validation';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { orderId, name, birthDate } = await req.json();
+    const { orderId, name, birthDate, salt } = await req.json();
 
     if (!orderId || !birthDate) {
       return NextResponse.json(
@@ -19,8 +20,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (!isValidDate(birthDate)) {
+      return NextResponse.json(
+        { error: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)' },
+        { status: 400 },
+      );
+    }
+
     const cleanOrderId = String(orderId).trim();
-    const profileHash = hashProfile(name ?? '', birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate, salt);
 
     const alreadyProcessed = await isPaymentProcessed(cleanOrderId);
     const order = await captureOrder(cleanOrderId);
@@ -53,6 +61,7 @@ export async function POST(req: NextRequest) {
     }
 
     await grantPremiumAccess(profileHash, cleanOrderId);
+    if (salt) await saveProfileSalt(profileHash, salt);
     await markPaymentProcessed(cleanOrderId);
     const premiumToken = await savePremiumToken(profileHash);
 

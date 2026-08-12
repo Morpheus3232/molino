@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processPayment, hashProfile } from '@/lib/mercadopago';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
+import { isValidDate } from '@/lib/validation';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -8,7 +9,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, paymentData } = await req.json();
+    const { name, birthDate, paymentData, salt } = await req.json();
 
     if (!birthDate || !paymentData) {
       return NextResponse.json(
@@ -17,7 +18,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const profileHash = hashProfile(name ?? '', birthDate);
+    if (!isValidDate(birthDate)) {
+      return NextResponse.json(
+        { error: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)' },
+        { status: 400 },
+      );
+    }
+
+    const profileHash = hashProfile(name ?? '', birthDate, salt);
     const result = await processPayment({ profileHash, paymentData });
 
     return NextResponse.json(result);

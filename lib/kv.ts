@@ -244,6 +244,32 @@ export async function getProfileHashByPaymentId(paymentId: string): Promise<stri
   }
 }
 
+export async function saveProfileSalt(profileHash: string, salt: string): Promise<void> {
+  if (!salt) return;
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    // Persistido sin TTL: la recuperación de una compra futura (posiblemente
+    // desde otro device/navegador) necesita poder recomputar el hash salteado
+    // para verificar ownership.
+    await kv.set(`profile_salt:${profileHash}`, salt);
+  } catch (error) {
+    console.error('[KV] Error in saveProfileSalt:', error);
+  }
+}
+
+export async function getProfileSalt(profileHash: string): Promise<string | null> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return null;
+    const salt = await kv.get<string>(`profile_salt:${profileHash}`);
+    return salt || null;
+  } catch (error) {
+    console.error('[KV] Error in getProfileSalt:', error);
+    return null;
+  }
+}
+
 export async function revokeAccess(profileHash: string, paymentId: string): Promise<void> {
   try {
     const kv = await getKvClient();

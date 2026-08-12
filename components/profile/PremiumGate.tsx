@@ -10,6 +10,19 @@ import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 
+const PROFILE_SALT_KEY = 'molino-profile-salt';
+
+function getOrCreateProfileSalt(): string {
+  if (typeof window === 'undefined') return '';
+  let salt = localStorage.getItem(PROFILE_SALT_KEY);
+  if (!salt) {
+    // Generate UUID v4
+    salt = crypto.randomUUID();
+    localStorage.setItem(PROFILE_SALT_KEY, salt);
+  }
+  return salt;
+}
+
 interface PremiumGatePreview {
   lifePath: number;
   chineseZodiac: string;
@@ -125,7 +138,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const res = await fetch('/api/mp/check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, birthDate }),
+        body: JSON.stringify({ name, birthDate, salt: getOrCreateProfileSalt() }),
       });
       const data = await res.json();
       // Re-sync the device-bound token whenever the server confirms premium:
@@ -151,10 +164,11 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     if (paymentStatus === 'approved' && paymentMethod === 'paypal' && paypalOrderId) {
       setState('verifying_redirect');
 
+      const profileSalt = getOrCreateProfileSalt();
       fetch('/api/paypal/capture-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: paypalOrderId, name, birthDate }),
+        body: JSON.stringify({ orderId: paypalOrderId, name, birthDate, salt: profileSalt }),
       })
         .then(res => res.json())
         .then(data => {
@@ -184,7 +198,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       fetch('/api/mp/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId, name, birthDate }),
+        body: JSON.stringify({ paymentId, name, birthDate, salt: getOrCreateProfileSalt() }),
       })
         .then(res => res.json())
         .then(data => {
@@ -277,12 +291,14 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     setPayError(null);
     setState('paying');
 
+    const profileSalt = getOrCreateProfileSalt();
+
     try {
       if (method === 'paypal') {
         const res = await fetch('/api/paypal/create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, birthDate }),
+          body: JSON.stringify({ name, birthDate, salt: profileSalt }),
         });
 
         if (!res.ok) {
@@ -298,7 +314,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, birthDate, currencyId }),
+        body: JSON.stringify({ name, birthDate, currencyId, salt: profileSalt }),
       });
 
       if (!res.ok) {
@@ -332,7 +348,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate }),
+        body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate, salt: getOrCreateProfileSalt() }),
       });
       const data = await res.json();
 
@@ -363,7 +379,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const res = await fetch('/api/mp/coupon', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coupon: couponCode.trim(), name, birthDate }),
+        body: JSON.stringify({ coupon: couponCode.trim(), name, birthDate, salt: getOrCreateProfileSalt() }),
       });
       const data = await res.json();
       if (res.ok && data.valid) {

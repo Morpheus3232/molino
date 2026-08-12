@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate } = await req.json();
+    const { name, birthDate, salt } = await req.json();
 
     if (!birthDate) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const profileHash = hashProfile(name ?? '', birthDate);
+    const profileHash = hashProfile(name ?? '', birthDate, salt);
     const premium = await hasPremiumAccess(profileHash);
     // A device that already knows it's premium (returning visit) but lost
     // its device-bound token (localStorage cleared, new browser, token TTL

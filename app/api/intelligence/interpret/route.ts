@@ -63,6 +63,8 @@ interface RequestBody {
   readingContext?: ReadingContext;
   /** Device-bound premium token: proves the request comes from a paying device. */
   premiumToken?: string;
+  /** Device-bound random salt used to compute the profile HMAC. */
+  salt?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -72,7 +74,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken, salt } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
@@ -126,7 +128,7 @@ export async function POST(req: NextRequest) {
       // has been paid for, not that THIS device paid. The token lives
       // exclusively in localStorage of the paying device and never travels
       // in shareable URLs.
-      const profileHash = hashProfile(name || '', dob);
+      const profileHash = hashProfile(name || '', dob, salt);
       let premium = false;
       try {
         premium = await hasPremiumAccess(profileHash);
