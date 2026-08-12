@@ -7,7 +7,7 @@ import { ShieldCheck } from "lucide-react";
 const METRICS = [
   { value: "3", label: "Sistemas cruzados" },
   { value: "1", label: "Mapa personal" },
-  { value: "0", label: "Datos en servidores" },
+  { value: "0", label: "Registro obligatorio" },
 ];
 
 export default function TrustMetrics() {
@@ -46,7 +46,7 @@ export default function TrustMetrics() {
             Tu privacidad, primero
           </h3>
           <p className="text-sm text-muted/80 leading-relaxed mb-4">
-            Todo el cálculo se hace en tu navegador. Tu fecha de nacimiento nunca llega a nuestros servidores.
+            El mapa básico se calcula localmente en tu navegador. Las funciones Premium que requieren procesamiento remoto solo envían los datos necesarios para prestar ese servicio.
           </p>
 
           <details className="group text-left inline-block w-full">
@@ -55,8 +55,7 @@ export default function TrustMetrics() {
               <span className="transition-transform duration-200 group-open:rotate-180" aria-hidden="true">⌄</span>
             </summary>
             <p className="text-sm text-muted/70 leading-relaxed mt-3 text-center">
-              Usamos JavaScript del lado del cliente para calcular tu mapa. Nada se envía por internet.
-              Si cerrás la pestaña, los datos desaparecen.
+              El mapa básico se calcula en tu navegador, sin registro. Las funciones Premium que requieren procesamiento remoto solo envían lo necesario para prestar ese servicio.
             </p>
           </details>
 

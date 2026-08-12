@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 
@@ -21,28 +21,20 @@ const SITE_LINKS = [
 const PRIMARY = [
   { href: "/profile", label: "Mi mapa" },
   { href: "/circulo", label: "Círculo" },
-  { href: "/mundo", label: "Mundo" },
   { href: "/evolution", label: "Evolución" },
   { href: "/calendario", label: "Calendario" },
 ];
 
-/* ═══ Secondary: dentro del dropdown "Explorar" ═══ */
-const EXPLORE_ITEMS = [
-  { href: "/affinity", label: "Afinidad" },
-  { href: "/explore", label: "Explorar sistemas" },
-];
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [exploreOpen, setExploreOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const { scrollY } = useScroll();
 
@@ -64,14 +56,13 @@ export default function UniversityHeader() {
     };
   }, []);
 
-  useEffect(() => { setMenuOpen(false); setExploreOpen(false); }, [pathname]);
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (showConfirm) { setShowConfirm(false); triggerRef.current?.focus(); }
         setMenuOpen(false);
-        setExploreOpen(false);
       }
     };
     document.addEventListener("keydown", handleEscape);
@@ -93,16 +84,6 @@ export default function UniversityHeader() {
     modal.addEventListener("keydown", handleTab);
     return () => modal.removeEventListener("keydown", handleTab);
   }, [showConfirm]);
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setExploreOpen(false);
-      }
-    };
-    if (exploreOpen) document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [exploreOpen]);
 
   useEffect(() => {
     const handleClickOutsideMobileMenu = (e: MouseEvent) => {
@@ -176,50 +157,19 @@ export default function UniversityHeader() {
               </Link>
             ))}
 
-            {/* Explorar dropdown */}
-            <div className="relative" ref={dropdownRef}>
-              <button
-                type="button"
-                onClick={() => setExploreOpen(!exploreOpen)}
-                className={`flex items-center gap-1 px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
-                  EXPLORE_ITEMS.some((item) => isActive(item.href))
-                    ? "text-foreground bg-ink/[0.04]"
-                    : "text-muted hover:text-foreground"
-                }`}
-                aria-expanded={exploreOpen}
-                aria-haspopup="true"
-              >
-                Explorar
-                <ChevronDown aria-hidden="true" focusable="false" className={`w-3 h-3 transition-transform ${exploreOpen ? "rotate-180" : ""}`} />
-              </button>
+            {/* Afinidades -> /mundo */}
+            <Link
+              href="/mundo"
+              className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
+                isActive("/mundo")
+                  ? "text-foreground bg-ink/[0.04]"
+                  : "text-muted hover:text-foreground"
+              }`}
+              aria-current={pathname === "/mundo" ? "page" : undefined}
+            >
+              Afinidades
+            </Link>
 
-              <AnimatePresence>
-                {exploreOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-1 w-48 bg-background border border-ink/10 shadow-lg py-1 z-50"
-                  >
-                    {EXPLORE_ITEMS.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={`block px-4 py-2 text-sm transition-colors ${
-                          isActive(item.href)
-                            ? "text-accent bg-accent/5"
-                            : "text-foreground hover:text-accent hover:bg-ink/[0.02]"
-                        }`}
-                        onClick={() => setExploreOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </nav>
 
           {/* Right side: mobile hamburger */}
@@ -285,19 +235,15 @@ export default function UniversityHeader() {
 
                 <div className="border-t border-ink/10 my-2" />
 
-                <p className="px-3 py-1.5 text-xs font-mono tracking-[0.2em] text-muted uppercase">Explorar</p>
-                {EXPLORE_ITEMS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`block px-3 py-2.5 text-sm transition-colors ${
-                      isActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                <Link
+                  href="/mundo"
+                  className={`block px-3 py-2.5 text-sm transition-colors ${
+                    isActive("/mundo") ? "text-accent" : "text-foreground hover:text-accent"
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Afinidades
+                </Link>
 
                 <div className="border-t border-ink/10 my-2" />
 
