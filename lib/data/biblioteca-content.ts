@@ -19,12 +19,11 @@ export const CATEGORY_LABELS: Record<string, string> = {
   numerologia: "Numerología",
   astrologia: "Astrología",
   zodiaco: "Zodíaco chino",
-  tarot: "Tarot y simbolismo",
   personalidad: "Sistemas de personalidad",
   filosofia: "Misticismo y filosofía",
 };
 
-export const CATEGORY_ORDER = ["numerologia", "astrologia", "zodiaco", "tarot", "personalidad", "filosofia"];
+export const CATEGORY_ORDER = ["numerologia", "astrologia", "zodiaco", "personalidad", "filosofia"];
 
 export const SOURCES: BibliotecaSource[] = [
   {
@@ -58,23 +57,6 @@ export const SOURCES: BibliotecaSource[] = [
     tags: ["numerología", "caldeo"],
     metaDescription:
       "La numerología caldea es anterior a la pitagórica y asigna valores del 1 al 8 al alfabeto caldeo de origen babilónico.",
-  },
-  {
-    id: "gg33",
-    slug: "gg33",
-    title: "GG33 Numerología",
-    author: "Gary Grinberg",
-    year: "2020",
-    type: "sitio",
-    category: "numerologia",
-    era: "moderno",
-    description: "Sistema de numerología basado en patrones numéricos y astrología china.",
-    review: "GG33 es un enfoque contemporáneo que fusiona numerología occidental con astrología china. Grinberg argumenta que los números y los ciclos chinos están interconectados.",
-    summary: "Asigna un número de código basado en la fecha de nacimiento y lo cruza con el zodiaco chino. Propone 9 tipos numéricos con cualidades específicas.",
-    link: "https://gg33.com",
-    tags: ["numerología", "gg33"],
-    metaDescription:
-      "GG33 fusiona la numerología occidental con la astrología china: asigna un número de código a tu fecha de nacimiento y lo cruza con el zodiaco chino.",
   },
   {
     id: "astrologia",
@@ -188,38 +170,6 @@ export const SOURCES: BibliotecaSource[] = [
     tags: ["kabbalah", "misticismo"],
     metaDescription:
       "La Kabbalah y su Árbol de la Vida: 10 sefirot conectados por 22 caminos, un sistema místico de siglos usado para la meditación y la comprensión.",
-  },
-  {
-    id: "tarot-waite",
-    slug: "tarot-waite",
-    title: "The Pictorial Key to the Tarot",
-    author: "Arthur Edward Waite",
-    year: "1910",
-    type: "libro",
-    category: "tarot",
-    era: "ancestral",
-    description: "Guía clásica de los Arcanos Mayores y Menores del Tarot.",
-    review: "Waite creó el mazo más utilizado del mundo. Obra fundamental para entender el tarot moderno.",
-    summary: "Describe los 78 arcanos del tarot. Cada carta tiene un significado simbólico vinculado con la vida humana.",
-    tags: ["tarot", "simbolismo"],
-    metaDescription:
-      "The Pictorial Key to the Tarot, de Arthur Edward Waite, describe los 78 arcanos del mazo más utilizado del mundo y su significado simbólico.",
-  },
-  {
-    id: "tarot-bohemians",
-    slug: "tarot-bohemians",
-    title: "The Tarot of the Bohemians",
-    author: "Papus",
-    year: "1889",
-    type: "libro",
-    category: "tarot",
-    era: "ancestral",
-    description: "Tratado esotérico que vincula el tarot con la cábala, la numerología y la alquimia.",
-    review: "Papus sistematizó las correspondencias entre el tarot y otros sistemas simbólicos, creando una obra de referencia para el tarot esotérico.",
-    summary: "Establece las correspondencias entre los 22 Arcanos Mayores y las letras hebreas, los caminos del Árbol de la Vida y los signos zodiacales.",
-    tags: ["tarot", "simbolismo"],
-    metaDescription:
-      "Papus vinculó el tarot con la cábala, la numerología y la alquimia: las correspondencias de los 22 Arcanos Mayores con las letras hebreas y los caminos del Árbol de la Vida.",
   },
   {
     id: "eneagrama",

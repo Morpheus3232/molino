@@ -10,42 +10,27 @@ interface LogoProps {
   wind?: boolean;
 }
 
-const HUB = { x: 50, y: 38 };
+const HUB = { x: 50, y: 36 };
+const BLADE_D = "M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z";
 
-/** Un aspa (vela), dibujada apuntando hacia arriba desde el eje (0,0). */
 function Blade({ angle }: { angle: number }) {
   return (
     <g transform={`rotate(${angle})`}>
-      {/* halo de separación — para que el aspa se lea en frente de la torre */}
       <path
-        d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"
+        d={BLADE_D}
         fill="none"
         stroke="var(--color-paper, #0A0A0C)"
-        strokeWidth="2.4"
+        strokeWidth="2.2"
         strokeLinejoin="round"
       />
-      <path
-        d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"
-        fill="currentColor"
-        stroke="none"
-      />
-      {/* celosía — travesaños de la vela */}
-      <line x1="-3" y1="-5" x2="3" y2="-5" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
-      <line x1="-4" y1="-11" x2="4" y2="-11" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
-      <line x1="-2" y1="-20" x2="2" y2="-20" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.6" />
+      <path d={BLADE_D} fill="currentColor" stroke="none" />
+      <line x1="-4" y1="-4" x2="4" y2="-4" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
+      <line x1="-5.5" y1="-11" x2="5.5" y2="-11" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
+      <line x1="-3" y1="-20" x2="3" y2="-20" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
     </g>
   );
 }
 
-/**
- * Molino de viento — torre sólida y cuatro aspas con celosía.
- * Diseño moderno/minimalista/realista: silueta llena, no wireframe.
- * La torre y el gorro quedan quietos. Solo el rotor (4 aspas) gira.
- *
- * - wind: arranque con viento (easeInOut, el rotor acelera como una ráfaga)
- * - spinning: rotación lineal continua (procesos de carga reales)
- * - sin nada: quieto
- */
 export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProps) {
   const [globalLoading, setGlobalLoading] = useState(false);
   const reducedMotion = useReducedMotion();
@@ -73,30 +58,23 @@ export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProp
       className={className}
       aria-hidden="true"
     >
-      {/* ═══ BASE — línea de tierra ═══ */}
-      <line x1="24" y1="96.5" x2="80" y2="96.5" stroke="currentColor" strokeWidth="1" strokeOpacity="0.25" strokeLinecap="round" />
+      <line x1="22" y1="97" x2="82" y2="97" stroke="currentColor" strokeWidth="0.8" strokeOpacity="0.2" strokeLinecap="round" />
 
-      {/* ═══ TORRE — silueta cónica sólida, QUIETA ═══ */}
-      <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="currentColor" fillOpacity="0.95" stroke="none" />
-      {/* vetas sutiles de la torre */}
-      <line x1="38.5" y1="80" x2="61.5" y2="80" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.3" />
-      <line x1="41" y1="63" x2="59" y2="63" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.3" />
-      {/* puerta */}
-      <rect x="46" y="84" width="8" height="12" rx="1.5" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.45" />
+      <path d="M32,97 L68,97 L57,44 L43,44 Z" fill="currentColor" fillOpacity="0.95" stroke="none" />
+      <line x1="37" y1="78" x2="63" y2="78" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.25" />
+      <line x1="39.5" y1="61" x2="60.5" y2="61" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.25" />
+      <rect x="42" y="82" width="16" height="15" rx="2" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.35" />
+      <rect x="46" y="85" width="8" height="12" rx="1.5" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.5" />
 
-      {/* ═══ GORRO — cúpula redondeada, quieta ═══ */}
-      <path d={`M44,46 Q${HUB.x},34 56,46 Z`} fill="currentColor" stroke="none" />
+      <path d={`M43,44 Q${HUB.x},30 57,44 Z`} fill="currentColor" stroke="none" />
 
-      {/* ═══ ROTOR — el único elemento que gira (animación CSS, no framer-motion:
-           motion.g nunca aplicó la rotación sobre este <g> SVG en pruebas) ═══ */}
       <g style={rotorStyle}>
         <g transform={`translate(${HUB.x} ${HUB.y})`}>
           <Blade angle={45} />
           <Blade angle={135} />
           <Blade angle={225} />
           <Blade angle={315} />
-          {/* cubo central */}
-          <circle cx="0" cy="0" r="3.2" fill="currentColor" stroke="var(--color-paper, #0A0A0C)" strokeWidth="1" />
+          <circle cx="0" cy="0" r="3" fill="currentColor" stroke="var(--color-paper, #0A0A0C)" strokeWidth="1" />
         </g>
       </g>
     </svg>

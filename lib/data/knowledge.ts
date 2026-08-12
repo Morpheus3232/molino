@@ -73,14 +73,6 @@ export const CHINESE_COMPATIBILITY = [
   ["Cerdo", ["Gato", "Cabra", "Cerdo"], ["Serpiente", "Mono"]],
 ];
 
-export const TAROT_ARCANOS = [
-  { number: 0, name: "El Loco", keyword: "Inicio", description: "Nuevos comienzos, espontaneidad, fe en el futuro." },
-  { number: 1, name: "El Mago", keyword: "Manifestación", description: "Poder personal, concentración, determinación." },
-  { number: 2, name: "La Suma Sacerdotisa", keyword: "Intuición", description: "Conocimiento oculto, paciencia, sabiduría interior." },
-  { number: 3, name: "La Emperatriz", keyword: "Creatividad", description: "Abundancia, naturaleza, fertilidad." },
-  { number: 4, name: "El Emperador", keyword: "Autoridad", description: "Estructura, control, liderazgo." },
-];
-
 export const HUMAN_DESIGN_TYPES = [
   { type: "Generador", description: "Energía de trabajo y creación.", strategy: "Esperar a responder" },
   { type: "Proyector", description: "Energía de dirección y gestión.", strategy: "Esperar la invitación" },
@@ -134,7 +126,7 @@ export const KNOWLEDGE_BASE = {
       chaldean: "A=1, B=2, ... Z=7",
     },
     masterNumbers: [11, 22, 33],
-    sources: ["Pitágoras", "GG33", "Numerología Caldea"],
+    sources: ["Pitágoras", "Numerología Caldea"],
     topics: [
       { title: "Historia y orígenes", description: "Desde Babilonia hasta Pitágoras." },
       { title: "Tabla pitagórica", description: "Correspondencia letra-número." },
@@ -169,7 +161,6 @@ export const KNOWLEDGE_BASE = {
     ],
   },
   frameworks: [
-    { id: "tarot", name: "Tarot", description: "Arcanos mayores y menores.", icon: "🔮" },
     { id: "human-design", name: "Human Design", description: "Tipos y estrategias.", icon: "🧬" },
     { id: "eneagrama", name: "Eneagrama", description: "9 personalidades básicas.", icon: "🧩" },
     { id: "i-ching", name: "I Ching", description: "Hexagramas y cambio.", icon: "☯️" },

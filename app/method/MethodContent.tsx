@@ -103,9 +103,9 @@ export default function MethodContent() {
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Tarot, Human Design, Eneagrama</h3>
+                <h3 className="font-semibold text-foreground mb-2">Human Design, Eneagrama</h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  Cada uno tiene sus propias fuentes: el Tarot de Marsella y Rider-Waite, el sistema Human Design de Ra Uru Hu,
+                  Cada uno tiene sus propias fuentes: el sistema Human Design de Ra Uru Hu,
                   y las corrientes contemporáneas del Eneagrama. Se presentan como marcos orientativos.
                 </p>
               </div>
