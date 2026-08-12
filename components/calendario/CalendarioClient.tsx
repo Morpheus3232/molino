@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { getCalendarDayContent } from "@/lib/numerology/calendar";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { fadeUp } from "@/lib/utils/motion";
 
 const DAY_NAMES = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
@@ -35,7 +36,7 @@ export default function CalendarioClient() {
     setViewDate(new Date(year, month + delta, 1));
   };
 
-  const selectedContent = selected ? getCalendarDayContent(selected.getDate()) : null;
+  const selectedContent = selected ? getCalendarDayContent(toLocalDateKey(selected)) : null;
 
   return (
     <div>
@@ -74,7 +75,7 @@ export default function CalendarioClient() {
           if (day === null) return <div key={`empty-${i}`} className="h-14 sm:h-16" />;
 
           const date = new Date(year, month, day);
-          const content = getCalendarDayContent(day);
+          const content = getCalendarDayContent(toLocalDateKey(date));
           const isToday = isSameDay(date, today);
           const isSelected = selected ? isSameDay(date, selected) : false;
 

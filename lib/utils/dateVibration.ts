@@ -38,7 +38,8 @@ export function getDateVibration(dateStr: string): { sum: number; number: number
   const sum = digits.reduce((a, b) => a + b, 0);
 
   let num = sum;
-  while (num > 9 && num !== 11 && num !== 22) {
+  const MASTER = [11, 22, 28, 33];
+  while (num > 9 && !MASTER.includes(num)) {
     num = String(num)
       .split("")
       .reduce((a, b) => a + Number(b), 0);
