@@ -1,6 +1,7 @@
 import type { AIInterpretation } from './aiEngine';
 import type { UserProfile } from '@/types/user';
 import type { CompatibilityResult } from './compatibilityEngine';
+import { sanitizeNameForPrompt } from '@/lib/ai/piiSanitizer';
 
 export interface OmniRouteModel {
   id: string;
@@ -79,6 +80,31 @@ const BLOCKED_MODELS = new Set([
   'omniroute/zm/tencent/hy3-preview',
 ]);
 
+/**
+ * OmniRoute runs as a LOCAL proxy (default http://localhost:20128) — it only
+ * exists on the developer machine. There is no proxy inside Vercel's
+ * serverless runtime, so pointing AI_PRIMARY_PROVIDER=omniroute at production
+ * would attempt a dead localhost URL on every request before falling back.
+ * This resolver makes the base URL configurable via OMNIROUTE_BASE_URL and
+ * exposes a flag so the router can skip OmniRoute entirely when it isn't
+ * reachable/configured. Defaults to localhost so local dev (where OmniRoute
+ * is expected to run) keeps working with zero config.
+ */
+const OMNIROUTE_BASE_URL_DEFAULT = 'http://localhost:20128';
+
+export function getOmniRouteBaseUrl(): string {
+  return (process.env.OMNIROUTE_BASE_URL || OMNIROUTE_BASE_URL_DEFAULT).replace(/\/+$/, '');
+}
+
+export function isOmniRouteConfigured(): boolean {
+  // Explicitly configured base URL → trust it (proxy may be remote).
+  if (process.env.OMNIROUTE_BASE_URL) return true;
+  // Default (localhost): only meaningful in local dev, where the proxy is
+  // expected to be running. In a serverless runtime there is no localhost
+  // proxy to reach.
+  return process.env.VERCEL !== '1' && process.env.NODE_ENV !== 'production';
+}
+
 function getDefaultConfig(): OmniRouteConfig {
   return {
     models: DEFAULT_MODELS,
@@ -121,6 +147,7 @@ class OmniRouteRouter {
   }
 
   private startHealthCheck() {
+    if (!isOmniRouteConfigured()) return;
     this.healthCheckTimer = setInterval(() => {
       this.performHealthCheck();
     }, this.config.healthCheckIntervalMs);
@@ -152,7 +179,7 @@ class OmniRouteRouter {
 
   private async checkModelHealth(modelId: string): Promise<boolean> {
     try {
-      const response = await fetch('http://localhost:20128/v1/chat/completions', {
+      const response = await fetch(getOmniRouteBaseUrl() + '/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -259,6 +286,12 @@ export async function generateWithOmniRoute(
   template?: string,
   preferredModel?: string
 ): Promise<{ interpretation: AIInterpretation; modelUsed: string; fallbackUsed: boolean }> {
+  // OmniRoute is only reachable through its proxy (default: localhost). If it
+  // isn't configured/reachable in this runtime, fail fast so the router falls
+  // back to a real provider instead of waiting on a dead localhost TCP timeout.
+  if (!isOmniRouteConfigured()) {
+    throw new Error('OmniRoute not configured/reachable in this runtime');
+  }
   const router = getOmniRouteRouter();
   const fallbackChain = preferredModel ? [preferredModel, ...router.getHealthyFallbackChain().filter(m => m !== preferredModel)] : router.getHealthyFallbackChain();
 
@@ -299,7 +332,7 @@ async function callOmniRouteModel(
 ): Promise<AIInterpretation> {
   const prompt = template || buildOmniRoutePrompt(user, target, result);
 
-  const response = await fetch('http://localhost:20128/v1/chat/completions', {
+  const response = await fetch(getOmniRouteBaseUrl() + '/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -397,8 +430,9 @@ function parseSSE(text: string): string {
 }
 
 function buildOmniRoutePrompt(user: UserProfile, target: any, result: CompatibilityResult): string {
+  const userName = sanitizeNameForPrompt(user.name || '', user.birthDate || '');
   return `Usuario:
-- Nombre: ${user.name}
+- Nombre: ${userName}
 - Life Path: ${user.lifePath}
 - Arquetipo: ${user.archetype}
 - Signo Solar: ${user.sunSign} (${user.element})
@@ -468,11 +502,13 @@ function parseOmniRouteResponse(content: string): AIInterpretation {
 }
 
 export function getOmniRouteStatus() {
-  const router = getOmniRouteRouter();
+  const configured = isOmniRouteConfigured();
+  const router = configured ? getOmniRouteRouter() : null;
   return {
-    availableModels: router.getAvailableModels().map(m => m.id),
-    fallbackChain: router.getHealthyFallbackChain(),
-    health: router.getAllHealth(),
+    configured,
+    availableModels: configured ? router!.getAvailableModels().map(m => m.id) : [],
+    fallbackChain: configured ? router!.getHealthyFallbackChain() : [],
+    health: configured ? router!.getAllHealth() : [],
     blockedModels: Array.from(BLOCKED_MODELS),
   };
 }

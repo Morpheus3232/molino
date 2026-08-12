@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
@@ -11,132 +11,14 @@ import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import MapVisualization from "@/components/profile/MapVisualization";
-import ProfileSummaryTable from "@/components/profile/ProfileSummaryTable";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import LecturaProfunda from "@/components/profile/LecturaProfunda";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
-import ActionButtons from "@/components/profile/ActionButtons";
+import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 
-/* ═══════════════════════════════════════════════════
-   Capa de presentación local del hero.
-   Copy narrativo por arquetipo — NO toca engines ni
-   cálculos: solo da voz a un valor ya calculado.
-   Si un arquetipo no tiene texto, cae en el fallback.
-   ═══════════════════════════════════════════════════ */
-const ARCHETYPE_OPENINGS: Record<number, { opening: string[]; question: string; essence: string }> = {
-  1: {
-    opening: [
-      "Hay personas que esperan que el mundo les muestre el camino.",
-      "Otras lo construyen.",
-    ],
-    question: "¿Qué comienza cuando decidís ser el primero?",
-    essence: "Una identidad que encuentra impulso en los comienzos.",
-  },
-  2: {
-    opening: [
-      "Hay personas que imponen su verdad.",
-      "Otras encuentran el punto donde todos pueden verse.",
-    ],
-    question: "¿Qué se encuentra en el punto donde todos pueden verse?",
-    essence: "Una identidad que une lo que parece separado.",
-  },
-  3: {
-    opening: [
-      "Hay personas que guardan lo que sienten.",
-      "Otras lo convierten en palabra.",
-    ],
-    question: "¿Qué se vuelve posible cuando lo sentís en palabras?",
-    essence: "Una identidad que se vuelve visible cuando se expresa.",
-  },
-  4: {
-    opening: [
-      "Hay personas que imaginan posibilidades.",
-      "Otras tienen la energía para convertirlas en realidad.",
-    ],
-    question: "¿Qué se sostiene cuando empezás a construir?",
-    essence: "Una identidad que convierte ideas en cimientos.",
-  },
-  5: {
-    opening: [
-      "Hay personas que encuentran respuestas siguiendo caminos conocidos.",
-      "Otras necesitan explorar lo que todavía no existe.",
-    ],
-    question: "¿Dónde aparece tu energía?",
-    essence: "Una identidad que encuentra crecimiento cuando transforma el cambio en camino.",
-  },
-  6: {
-    opening: [
-      "Hay personas que buscan ser cuidadas.",
-      "Otras encuentran su fuerza cuidando lo cercano.",
-    ],
-    question: "¿Qué florece cuando cuidás lo cercano?",
-    essence: "Una identidad que se fortalece cuidando a quienes la rodean.",
-  },
-  7: {
-    opening: [
-      "Hay personas que se quedan en la superficie.",
-      "Otras necesitan llegar al fondo de las cosas.",
-    ],
-    question: "¿Qué se revela cuando llegás al fondo?",
-    essence: "Una identidad que busca el sentido detrás de lo visible.",
-  },
-  8: {
-    opening: [
-      "Hay personas que sueñan en pequeño.",
-      "Otras aprenden a construir lo que imaginan.",
-    ],
-    question: "¿Qué se materializa cuando dirigís tu fuerza?",
-    essence: "Una identidad que aprende a dirigir su propio poder.",
-  },
-  9: {
-    opening: [
-      "Hay personas que viven para sí.",
-      "Otras encuentran su sentido en lo colectivo.",
-    ],
-    question: "¿Qué queda cuando servís a algo más grande?",
-    essence: "Una identidad que se realiza en lo colectivo.",
-  },
-  11: {
-    opening: [
-      "Hay personas que siguen lo evidente.",
-      "Otras perciben lo que todavía no tiene forma.",
-    ],
-    question: "¿Qué percibís antes de que los demás lo vean?",
-    essence: "Una identidad que percibe antes de entender.",
-  },
-  22: {
-    opening: [
-      "Hay personas que imaginan grandes cosas.",
-      "Otras encuentran el modo de hacerlas reales.",
-    ],
-    question: "¿Qué se vuelve real cuando lo imaginás en grande?",
-    essence: "Una identidad que materializa lo que otros solo sueñan.",
-  },
-  33: {
-    opening: [
-      "Hay personas que aprenden para sí.",
-      "Otras aprenden para acompañar a otros.",
-    ],
-    question: "¿Qué despierta cuando acompañás a otros?",
-    essence: "Una identidad que guía elevando a quienes la rodean.",
-  },
-};
-
-const FALLBACK_OPENING = {
-  opening: [
-    "Hay personas que leen su historia en voz baja.",
-    "Otras la escuchan con atención.",
-  ],
-  question: "¿Dónde aparece tu energía?",
-  essence: "Una identidad que tu mapa invita a explorar.",
-};
-
-function getArchetypeCopy(lifePath: number) {
-  return ARCHETYPE_OPENINGS[lifePath] ?? FALLBACK_OPENING;
-}
-
-export default function ProfileHub({ profile }: ProfileHubProps) {
+export default function ProfileHub({ profile }: { profile: UserProfile }) {
   const reduceMotion = useSafeReducedMotion();
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
@@ -144,137 +26,145 @@ export default function ProfileHub({ profile }: ProfileHubProps) {
     typeof profile.chineseZodiacInfo?.element === "string"
       ? profile.chineseZodiacInfo.element
       : "";
-
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = archetype.name;
-  const { opening, question, essence } = getArchetypeCopy(lifePath);
 
   const worldCount = useMemo(() => {
     const results = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
     return results.filter((r) => r.score >= 60).length;
   }, [profile]);
 
-  const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  const allies = relationMap.friends.filter((f) => f.type === "triad").map((f) => f.animal);
+  const relationMap = useMemo(
+    () => getRelationshipMap(userAnimal),
+    [userAnimal]
+  );
+  const allies = relationMap.friends
+    .filter((f) => f.type === "triad")
+    .map((f) => f.animal);
+  const personalYear = profile.cycles?.personalYear;
+  const yearTheme =
+    typeof personalYear === "number" ? getYearTheme(personalYear) : null;
 
-  /* Motion — fade + translateY, 300-500ms, sin desplazamiento si
-     el usuario prefiere menos movimiento. */
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.3]);
+
   const heroItem = (delay: number) => ({
     initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: reduceMotion ? 0.1 : 0.45, delay, ease: [0.22, 1, 0.36, 1] as const },
+    transition: {
+      duration: reduceMotion ? 0.1 : 0.45,
+      delay,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
   });
-
-  const chapterReveal = {
-    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-100px" } as const,
-    transition: { duration: reduceMotion ? 0.1 : 0.5, ease: [0.22, 1, 0.36, 1] as const },
-  };
 
   return (
     <div className="min-h-screen bg-background">
       {/* ═══════════════════════════════════════════════
-          HERO — Dashboard visual, no novela.
-          Radar chart protagonista + datos concretos.
+          HERO — El instrumento. Silencioso, poderoso.
+          Una sola idea visual dominante: tu identidad.
           ═══════════════════════════════════════════════ */}
-      <header className="relative overflow-hidden border-b border-ink/10">
-        <div className="relative mx-auto max-w-[1080px] px-5 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-14 sm:pb-20">
-          {/* Two-column: Radar chart left + Identity right */}
-          <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-8 lg:gap-16 items-center">
-            {/* Radar chart — el protagonista */}
-            <motion.div {...heroItem(0.15)} className="flex justify-center">
-              <MapVisualization profile={profile} className="w-80 h-80 sm:w-96 sm:h-96" />
-            </motion.div>
+      <header
+        ref={heroRef}
+        className="relative overflow-hidden border-b border-ink/10"
+      >
+        <motion.div
+          style={{
+            scale: reduceMotion ? 1 : heroScale,
+            opacity: reduceMotion ? 1 : heroOpacity,
+          }}
+        >
+          <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-16 sm:pb-24">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-16 items-center">
+              {/* Identity — [PERSON_NAME] emocional */}
+              <div className="text-center lg:text-left">
+                <motion.div {...heroItem(0.15)}>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
+                    CAMINO DE VIDA {lifePath}
+                  </span>
+                </motion.div>
 
-            {/* Identity block */}
-            <div className="text-center lg:text-left">
-              {/* Archetype — large, immediate */}
-              <motion.div {...heroItem(0.3)}>
-                <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] sm:text-[clamp(3rem,7vw,5.5rem)] tracking-tight text-foreground leading-[0.9] uppercase">
-                  {archetypeName}
-                </h1>
-              </motion.div>
+                <motion.div {...heroItem(0.3)} className="mt-2">
+                  <h1 className="font-display text-[clamp(3rem,10vw,6rem)] tracking-tight text-foreground leading-[0.85] uppercase">
+                    {archetypeName}
+                  </h1>
+                </motion.div>
 
-              {/* Concrete data row */}
-              <motion.div {...heroItem(0.5)} className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2">
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
-                  <span className="font-mono text-sm text-foreground tracking-wide">Camino de Vida {lifePath}</span>
-                </span>
-                <span className="text-ink/20">|</span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
-                  <span className="font-mono text-sm text-foreground tracking-wide">{profile.sunSign}</span>
-                </span>
-                <span className="text-ink/20">|</span>
-                <span className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-muted" />
-                  <span className="font-mono text-sm text-foreground tracking-wide">{display.name} de {chineseElement}</span>
-                </span>
-              </motion.div>
+                <motion.p
+                  {...heroItem(0.5)}
+                  className="mt-4 text-sm sm:text-base text-muted leading-relaxed max-w-md italic"
+                >
+                  {archetype.description}
+                </motion.p>
 
-              {/* Essence — una línea, editorial */}
-              <motion.p {...heroItem(0.7)} className="mt-6 text-base sm:text-lg text-muted leading-relaxed max-w-lg italic">
-                {essence}
-              </motion.p>
+                {/* Compact identity strip */}
+                <motion.div
+                  {...heroItem(0.7)}
+                  className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-sm"
+                >
+                  <span className="font-mono text-muted tracking-wide">
+                    {profile.sunSign}
+                    {profile.sunSignInfo?.element
+                      ? ` · ${profile.sunSignInfo.element}`
+                      : ""}
+                  </span>
+                  <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
+                  <span className="font-mono text-muted tracking-wide">
+                    {display.name} de {chineseElement}
+                  </span>
+                  {yearTheme && (
+                    <>
+                      <span
+                        className="w-px h-4 bg-ink/10"
+                        aria-hidden="true"
+                      />
+                      <span className="font-mono text-accent tracking-wide">
+                        Año {personalYear} · {yearTheme}
+                      </span>
+                    </>
+                  )}
+                </motion.div>
+              </div>
 
-              {/* Poetic opening — sutil, al fondo */}
-              <motion.div {...heroItem(0.9)} className="mt-8 pt-6 border-t border-ink/10">
-                <p className="text-sm text-muted/70 leading-relaxed max-w-md">
-                  {opening[0]} {opening[1]}
-                </p>
+              {/* MapVisualization — [PERSON_NAME] */}
+              <motion.div
+                {...heroItem(0.2)}
+                className="flex justify-center lg:justify-end"
+              >
+                <MapVisualization
+                  profile={profile}
+                  className="w-72 h-72 sm:w-80 sm:h-80"
+                />
               </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </header>
 
       {/* ═══════════════════════════════════════════════
-          RESUMEN POR SISTEMA — Datos concretos
+          NAV — Dimensiones del mapa en una línea
           ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal} className="py-8 sm:py-12 border-t border-ink/10">
-        <ProfileSummaryTable profile={profile} />
-      </motion.div>
+      <SpaceIndex
+        profile={profile}
+        circleName={`${display.name} de ${chineseElement}`}
+        allyName={allies[0] ?? null}
+        worldCount={worldCount}
+      />
 
       {/* ═══════════════════════════════════════════════
-          TU ESPACIO — índice a Círculo/Mundo/Evolución,
-          reemplaza el scroll completo de esos capítulos.
+          LECTURA — Patrones + Principios + Momento
           ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <SpaceIndex
-          profile={profile}
-          circleName={`${display.name} de ${chineseElement}`}
-          allyName={allies[0] ?? null}
-          worldCount={worldCount}
-        />
-      </motion.div>
+      <LecturaProfunda profile={profile} />
 
       {/* ═══════════════════════════════════════════════
-          CAPÍTULO 04 · TU LECTURA PROFUNDA — Premium
+          TU PREGUNTA — Decisiones [ADDRESS]
           ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <LecturaProfunda profile={profile} />
-      </motion.div>
-
-      {/* ═══════════════════════════════════════════════
-          CAPÍTULO 05 · TU PREGUNTA
-          ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <DecisionMapSection profile={profile} />
-      </motion.div>
-
-      {/* ═══════════════════════════════════════════════
-          ACCIONES — Exportar, compartir, navegar
-          ═══════════════════════════════════════════════ */}
-      <motion.div {...chapterReveal}>
-        <ActionButtons profile={profile} />
-      </motion.div>
+      <DecisionMapSection profile={profile} />
     </div>
   );
-}
-
-interface ProfileHubProps {
-  profile: UserProfile;
 }

@@ -1,4 +1,5 @@
 import { extractJSON, looksLikeJSON } from './aiResponseParser';
+import { sanitizeNameForPrompt, pseudonymFor } from '@/lib/ai/piiSanitizer';
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
 
 export interface AIInterpretation {
@@ -458,8 +459,9 @@ export async function generateWithOpenRouter(
 }
 
 function buildPrompt(user: UserProfile, target: any, result: CompatibilityResult, template?: string): string {
+  const userName = sanitizeNameForPrompt(user.name || '', user.birthDate || '');
   const base = `Usuario:
-- Nombre: ${user.name}
+- Nombre: ${userName}
 - Life Path: ${user.lifePath}
 - Arquetipo: ${user.archetype}
 - Zodiaco Occidental: ${user.sunSign} (${user.sunSignInfo?.element || ''})
