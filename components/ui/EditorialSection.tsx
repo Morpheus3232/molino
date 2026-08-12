@@ -93,7 +93,10 @@ export default function EditorialSection({
   const Heading = as;
 
   return (
-    <section id={id} className={`relative overflow-hidden ${t.wrap} ${className}`}>
+    <section
+      id={id}
+      className={`relative ${texture !== "none" || isFullBleed ? "overflow-hidden" : ""} ${t.wrap} ${className}`}
+    >
       {texture !== "none" && (
         <div
           className={`pointer-events-none absolute -right-40 -top-40 w-[34rem] h-[34rem] ${

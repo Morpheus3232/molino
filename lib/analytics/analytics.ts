@@ -18,7 +18,8 @@ type EventType =
   | "checkout_started"
   | "payment_approved"
   | "premium_unlocked"
-  | "cognitive_lift";
+  | "cognitive_lift"
+  | "return_visit";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -27,6 +28,8 @@ interface AnalyticsEvent {
   userId?: string;
 }
 
+const LAST_VISIT_KEY = "molino-analytics-last-visit";
+
 class Analytics {
   private events: AnalyticsEvent[] = [];
   private userId: string | null = null;
@@ -34,6 +37,7 @@ class Analytics {
   constructor() {
     this.loadFromStorage();
     this.setUserId();
+    this.trackReturnVisit();
   }
 
   private setUserId() {
@@ -67,6 +71,41 @@ class Analytics {
     }
   }
 
+  /**
+   * Check if this is a return visit (second visit within 24h).
+   * Tracks once per calendar day. Uses localStorage to persist the last visit date.
+   * "return_visit" = the user visited the site on a different day than their last visit.
+   */
+  trackReturnVisit() {
+    if (typeof window === "undefined") return;
+
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+    const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
+
+if (!lastVisit) {
+      // First visit ever — just record the date, no event
+      localStorage.setItem(LAST_VISIT_KEY, today);
+      return;
+    }
+
+    if (lastVisit !== today) {
+      // Different day = return visit!
+      const daysSinceLastVisit = Math.floor(
+        (new Date(today).getTime() - new Date(lastVisit).getTime()) / (1000 * 60 * 60 * 24)
+      );
+      this.track({
+        type: "return_visit",
+        data: {
+          daysSinceLastVisit,
+          previousVisit: lastVisit,
+        },
+      });
+    }
+
+    // Always update to today
+    localStorage.setItem(LAST_VISIT_KEY, today);
+  }
+
   track(event: Omit<AnalyticsEvent, "timestamp" | "userId">) {
     const fullEvent: AnalyticsEvent = {
       ...event,
@@ -96,6 +135,7 @@ class Analytics {
       totalEvents: this.events.length,
       pageViews: this.getEventsByType("page_view").length,
       profileCreated: this.getEventsByType("profile_created").length,
+      returnVisits: this.getEventsByType("return_visit").length,
       aiQueries: this.getEventsByType("ai_query").length,
       decisions: this.getEventsByType("decision_made").length,
       features: {} as Record<string, number>,

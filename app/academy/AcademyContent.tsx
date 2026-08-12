@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -11,6 +12,7 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
+import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -113,7 +115,7 @@ const IconFlame = (props: IconProps) => (
   </IconBase>
 );
 
-const ICON_MAP: Record<string, React.FC<IconProps>> = {
+export const ICON_MAP: Record<string, React.FC<IconProps>> = {
   babilonia: IconKnowledge,
   pitagoras: IconNumbers,
   guematia: IconLetters,
@@ -131,7 +133,7 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   numerologia: IconNumbers,
   astrologia: IconStars,
   filosofia: IconBook,
-  // Claves usadas directamente por el campo `icon` de KNOWLEDGE_TREE/HOW_IT_WORKS/COURSES.
+  // Claves usadas directamente por el campo `icon` de ACADEMY_PIECES/HOW_IT_WORKS/COURSES.
   knowledge: IconKnowledge,
   numbers: IconNumbers,
   letters: IconLetters,
@@ -148,109 +150,6 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   clock: IconClock,
   map: IconMap,
 };
-
-const KNOWLEDGE_TREE = [
-  {
-    id: "babilonia",
-    era: "~3000 a.C.",
-    title: "Babilonia",
-    icon: "knowledge",
-    origin: "Mesopotamia (actual Irak)",
-    idea: "Los babilonios observaron los ciclos celestes y los conectaron con la vida terrestre.",
-    influence: ["Astronomía", "Ciclos planetarios", "Simbolismo celestial"],
-    molino: "Base del sistema de ciclos y timing",
-  },
-  {
-    id: "pitagoras",
-    era: "~570 a.C.",
-    title: "Pitágoras",
-    icon: "numbers",
-    origin: "Grecia antigua",
-    idea: "\"Todo es número\" — el universo tiene patrones matemáticos.",
-    influence: ["Numerología", "Tetraktys", "Música de las esferas"],
-    molino: "Base del sistema de números y Life Path",
-  },
-  {
-    id: "guematia",
-    era: "~300 a.C.",
-    title: "Guematría y Cábala",
-    icon: "letters",
-    origin: "Tradición hebrea",
-    idea: "Cada letra tiene un valor numérico. El nombre revela la esencia.",
-    influence: ["Valores numéricos", "Conexiones simbólicas", "Significado del nombre"],
-    molino: "Influencia en Expression Number y Soul Number",
-  },
-  {
-    id: "helenistica",
-    era: "Siglo I d.C.",
-    title: "Astrología helenística",
-    icon: "stars",
-    origin: "Roma/Egipto",
-    idea: "Fusión de babilónica + filosofía griega: signos, casas, aspectos.",
-    influence: ["Signos zodiacales", "Casas astrológicas", "Aspectos planetarios"],
-    molino: "Base del sistema de astrología occidental",
-  },
-  {
-    id: "zodiaco-chino",
-    era: "Siglo V",
-    title: "Zodíaco chino",
-    icon: "cycle",
-    origin: "China imperial",
-    idea: "12 animales, ciclos de 60 años, elementos Yin/Yang.",
-    influence: ["12 animales", "Ciclos de 60 años", "Elementos"],
-    molino: "Base del sistema de zodíaco chino y animales",
-  },
-  {
-    id: "balliett",
-    era: "~1905",
-    title: "L. Dow Balliett",
-    icon: "book",
-    origin: "Estados Unidos",
-    idea: "Popularizó la numerología moderna. Introdujo el Life Path como concepto central.",
-    influence: ["Life Path", "Números maestros", "Interpretación moderna"],
-    molino: "Formalización del cálculo de Camino de Vida",
-  },
-  {
-    id: "cheiro",
-    era: "~1920",
-    title: "Cheiro y Florence Campbell",
-    icon: "hand",
-    origin: "Irlanda/EE.UU.",
-    idea: "Popularización masiva de la numerología y la quiromancia.",
-    influence: ["Numerología popular", "Acessibilidad", "Cultura pop"],
-    molino: "Hizo la numerología accesible para el público general",
-  },
-  {
-    id: "jordan",
-    era: "~1960",
-    title: "Juno Jordan",
-    icon: "graduation",
-    origin: "Estados Unidos",
-    idea: "Formalizó la escuela de numerología pitagórica moderna.",
-    influence: ["Escuela pitagórica", "Análisis profundo", "Compatibilidad"],
-    molino: "Base del análisis de compatibilidad numérica",
-  },
-  {
-    id: "mccants",
-    era: "~2000",
-    title: "Glynis McCants",
-    icon: "computer",
-    origin: "Estados Unidos",
-    idea: "Numerología para la era digital. Ciclos personales y compatibilidad.",
-    influence: ["Ciclos personales", "Compatibilidad digital", "Aplicaciones modernas"],
-    molino: "Inspiración para ciclos personales y recomendaciones",
-  },
-  {
-    id: "molino",
-    era: "Hoy",
-    title: "Molino",
-    icon: "flame",
-    origin: "Plataforma global",
-    idea: "Tu mapa: combina tradiciones históricas en una lectura personal.",
-    influence: ["Numerología", "Astrología", "Zodíaco chino", "IA", "Recomendaciones"],
-    molino: "Convergencia de todas las tradiciones en una plataforma moderna",
-  },
-];
 
 // ════════════════════════════════════════════════════
 // HOW MOLINO WORKS
@@ -332,7 +231,7 @@ function KnowledgeNode({
   isExpanded,
   onToggle,
 }: {
-  node: typeof KNOWLEDGE_TREE[0];
+  node: AcademyPiece;
   index: number;
   isExpanded: boolean;
   onToggle: () => void;
@@ -370,6 +269,13 @@ function KnowledgeNode({
         <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{node.title}</h3>
         <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
       </button>
+
+      <Link
+        href={`/academy/${node.slug}`}
+        className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors mt-2"
+      >
+        Ver artículo completo →
+      </Link>
 
       <AnimatePresence>
         {isExpanded && (
@@ -444,7 +350,7 @@ export default function AcademyContent() {
           <section className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-px bg-border" aria-hidden="true" />
             <div className="space-y-8">
-              {KNOWLEDGE_TREE.map((node, i) => (
+              {ACADEMY_PIECES.map((node, i) => (
                 <KnowledgeNode
                   key={node.id}
                   node={node}

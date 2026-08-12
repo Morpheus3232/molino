@@ -255,6 +255,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-invalid={missingField === "dd"}
           autoComplete="off"
+          suppressHydrationWarning
         />
 
         <span className="text-2xl sm:text-3xl text-muted-foreground font-light select-none px-0.5">/</span>
@@ -276,6 +277,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
           aria-invalid={missingField === "mm"}
           autoComplete="off"
+          suppressHydrationWarning
         />
 
         <span className="text-2xl sm:text-3xl text-muted-foreground font-light select-none px-0.5">/</span>
@@ -297,6 +299,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           className={`${baseInput} text-3xl sm:text-4xl flex-1 min-w-0`}
           aria-invalid={missingField === "yyyy"}
           autoComplete="off"
+          suppressHydrationWarning
         />
       </div>
 

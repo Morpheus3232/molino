@@ -516,7 +516,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
               </blockquote>
             </div>
 
-            <div className="border-t border-ink/10 pt-10">
+            <div className="border-t border-ink/10 pt-5 pb-4 sticky bottom-0 z-30 bg-background/95 backdrop-blur-sm sm:static sm:pt-10 sm:pb-0 sm:bg-transparent sm:backdrop-blur-none">
               <p className="label-micro mb-4 text-muted">Tu síntesis completa</p>
 
               <div className="flex items-baseline gap-3 mb-2">

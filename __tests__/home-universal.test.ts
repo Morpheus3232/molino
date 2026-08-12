@@ -13,15 +13,13 @@ describe("Home page — universal access without profile", () => {
     const pagePath = path.resolve(__dirname, "..", "app", "page.tsx");
     const source = fs.readFileSync(pagePath, "utf8");
     expect(source).toBeTruthy();
-    expect(source).toContain("NumeroDia");
+    expect(source).toContain("PersonalizedHomeClient");
     expect(source).toContain("TresPasos");
     expect(source).toContain("QueDescubris");
     expect(source).toContain("TresSistemas");
     expect(source).toContain("CTAFinal");
     expect(source).toContain("Testimonial");
     expect(source).toContain("TrustMetrics");
-    const numeroDiaPath = path.resolve(__dirname, "..", "components", "sections", "NumeroDia.tsx");
-    const numeroDiaSource = fs.readFileSync(numeroDiaPath, "utf8");
-    expect(numeroDiaSource).toContain("CREAR MI MAPA");
+    expect(source).toContain("FAQ");
   });
 });

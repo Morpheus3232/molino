@@ -8,6 +8,7 @@ const sections = [
 - **Fecha de nacimiento** (obligatoria): Se ingresa en el navegador y se procesa localmente para calcular tu mapa personal. No se almacena en servidores de Molino para usuarios sin acceso Premium.
 - **Nombre** (opcional): Solo si lo proporcionás para activar cálculos adicionales de numerología (expresión, alma, personalidad).
 - **País de ubicación** (opcional): Para adaptar contenido cultural y afinidades geográficas. No usamos geolocalización automática.
+- **Eventos anónimos** (automático): Registramos eventos agregados y anónimos directamente en tu navegador (localStorage) para mejorar el producto. Estos eventos NO contienen datos personales — ver sección 7 para detalles.
 
 **Usuarios Premium:** Al activar Premium, se genera un hash SHA-256 de tu nombre + fecha de nacimiento para verificar tu acceso sin almacenar los datos en claro. Este hash se guarda en nuestra base de datos junto con el estado de tu suscripción.`,
   },
@@ -18,14 +19,14 @@ const sections = [
 - Calcular tu mapa personal de numerología, astrología y zodíaco chino (procesamiento 100% local en el navegador).
 - Procesar pagos Premium a través de Mercado Pago y PayPal (estos proveedores reciben solo los datos necesarios para la transacción: email, monto, hash de verificación).
 - Generar interpretaciones asistidas por IA (solo para usuarios Premium, a través de OpenAI y Anthropic, bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento).
-- Analítica de uso anónima y agregada (PostHog en modo cookieless) para mejorar la experiencia.
+- Analítica de uso anónima y agregada (eventos en localStorage, sin servidor) para mejorar la experiencia.
 
 **Base legal (RGPD Art. 6):**
 - Ejecución de contrato (Art. 6.1.b): procesamiento de pagos y entrega del servicio Premium.
 - Consentimiento (Art. 6.1.a): nombre opcional, país opcional, analítica (opt-in).
 - Interés legítimo (Art. 6.1.f): mejora del servicio con datos agregados anónimos.
 
-**Retención:** Los datos de pago los conservan los proveedores según sus políticas (mínimo 5-10 años por obligaciones fiscales). Tu perfil local (localStorage) persiste hasta que lo borrás. El hash de verificación Premium se elimina a los 30 días de cancelar la suscripción.`,
+**Retención:** Los datos de pago los conservan los proveedores según sus políticas (mínimo 5-10 años por obligaciones fiscales). Tu perfil local (localStorage) persiste hasta que lo borrás. El hash de verificación Premium se elimina a los 30 días de cancelar la suscripción. Los eventos de analítica se almacenan en localStorage de tu navegador y se borran cuando limpiás el almacenamiento.`,
   },
   {
     title: "3. Almacenamiento y seguridad",
@@ -53,8 +54,7 @@ const sections = [
 | PayPal | Procesamiento de pagos (Internacional) | Hash de perfil, monto, email | https://www.paypal.com/privacy |
 | OpenAI | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://openai.com/privacy |
 | Anthropic | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://www.anthropic.com/privacy |
-| Vercel | Hosting, edge functions, analytics | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |
-| PostHog | Analítica de uso (opcional, cookieless) | Eventos anónimos, sesión, dispositivo | https://posthog.com/privacy |
+| Vercel | Hosting y edge functions | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |
 
 Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas contractuales estándar para transferencias internacionales.`,
   },
@@ -81,30 +81,49 @@ Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas cont
 - No es accesible por terceros (same-origin policy).
 - No se envía automáticamente con cada request HTTP (a diferencia de cookies).
 
-**PostHog (analítica opcional):** Si se habilita, opera en **modo cookieless**:
-- No utiliza cookies ni localStorage para identificación.
-- Usa fingerprinting ligero (user-agent + IP truncada) solo para deduplicar sesiones anónimas.
-- IP se anonimiza (últimos octetos eliminados) antes de almacenar.
-- Es opt-in: no se carga hasta que aceptás en el banner o en Ajustes.
-
-**Sin banners innecesarios:** Al no usar cookies de rastreo ni datos personales sin consentimiento, no requerimos banner de cookies bajo ePrivacy/RGPD. Si activás analítica, verás un consentimiento granular.`,
+**Sin banners innecesarios:** Al no usar cookies de rastreo ni datos personales sin consentimiento, no requerimos banner de cookies bajo ePrivacy/RGPD.`,
   },
   {
-    title: "7. Menores de edad",
+    title: "7. Analítica anónima (localStorage)",
+    body: `Molino registra eventos de uso de forma **100% anónima y local** en tu navegador. No enviamos estos eventos a servidores. No utilizamos Google Analytics, PostHog, ni ningún servicio de rastreo de terceros.
+
+**Qué eventos registramos (solo en tu navegador):**
+- \`page_view\`: Qué páginas visitás (sin datos personales)
+- \`onboarding_completed\`: Si completás el onboarding
+- \`return_visit\`: Si volvés en un día diferente (medido por fecha en localStorage)
+- \`feature_used\`: Qué funciones usás (ej: "compartir", "descargar")
+- \`paywall_viewed\`, \`payment_approved\`, \`premium_unlocked\`: Eventos de compra
+
+**Qué NO registramos NUNCA:**
+- Tu fecha de nacimiento
+- Tu nombre
+- Tu país
+- Tu camino de vida, signo solar, zodiaco chino
+- Cualquier dato de tu perfil personal
+
+**Cómo verificar:** Abrí DevTools → Application → LocalStorage → busca \`molino-analytics-\`. Verás que los eventos solo contienen nombre del evento, timestamp y un ID de sesión anónimo. No hay datos del perfil.
+
+**Tus eventos, tu control:**
+- Podés borrar todos los eventos desde el panel en \`/analytics\`
+- Podés borrar el localStorage completo desde DevTools o Ajustes del navegador
+- Los eventos no se envían a ningún servidor — solo existen en tu navegador`,
+  },
+  {
+    title: "8. Menores de edad",
     body: `Molino no está dirigido a menores de 16 años. No recopilamos intencionalmente datos de menores.
 
 Si detectamos que un menor de 16 años ha proporcionado datos (ej. al comprar Premium), procederemos a eliminar la información y cancelar la suscripción. Los padres/tutores pueden contactarnos a privacidad@molino.app para solicitar supresión.`,
   },
   {
-    title: "8. Cambios en esta política",
+    title: "9. Cambios en esta política",
     body: `Nos reservamos el derecho de actualizar esta política de privacidad. Los cambios significativos se comunicarán a través del sitio web (banner en homepage) y, si tenés Premium activo, por email.
 
-**Última actualización:** 7 de agosto de 2025
+**Última actualización:** 11 de agosto de 2026
 
 **Historial de versiones:** Disponible en GitHub (repositorio público) para transparencia total.`,
   },
   {
-    title: "9. Contacto",
+    title: "10. Contacto",
     body: `Si tenés preguntas sobre esta política de privacidad o sobre el tratamiento de tus datos, contactanos a:
 
 **Responsable del tratamiento:** Molino (proyecto de código abierto)
