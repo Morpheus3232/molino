@@ -147,17 +147,8 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
       </header>
 
       {/* ═══════════════════════════════════════════════
-          NAV — Dimensiones del mapa en una línea
-          ═══════════════════════════════════════════════ */}
-      <SpaceIndex
-        profile={profile}
-        circleName={`${display.name} de ${chineseElement}`}
-        allyName={allies[0] ?? null}
-        worldCount={worldCount}
-      />
-
-      {/* ═══════════════════════════════════════════════
           LECTURA — Patrones + Principios + Momento
+          primero la señal, después la interpretación.
           ═══════════════════════════════════════════════ */}
       <LecturaProfunda profile={profile} />
 
@@ -165,6 +156,18 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
           TU PREGUNTA — Decisiones [ADDRESS]
           ═══════════════════════════════════════════════ */}
       <DecisionMapSection profile={profile} />
+
+      {/* ═══════════════════════════════════════════════
+          NAV — Dimensiones del mapa en una línea.
+          Exploración (Círculo/Mundo/Evolución): no interrumpe
+          la lectura, se ofrece después de la señal.
+          ═══════════════════════════════════════════════ */}
+      <SpaceIndex
+        profile={profile}
+        circleName={`${display.name} de ${chineseElement}`}
+        allyName={allies[0] ?? null}
+        worldCount={worldCount}
+      />
     </div>
   );
 }
