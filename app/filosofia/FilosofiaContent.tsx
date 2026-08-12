@@ -65,7 +65,6 @@ const ancientTraditions = [
   "Zodíaco chino (ciclo sexagenario, 12 animales, 5 elementos)",
   "I Ching y los 64 hexagramas",
   "Kabbalah y Árbol de la Vida",
-  "Tarot de Marsella y Rider-Waite",
   "Psicología arquetípica (Jung, Hillman)",
   "Eneagrama de la personalidad",
 ];
@@ -87,7 +86,7 @@ export default function FilosofiaContent() {
             Principios y fundamentos
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
-            Molino no es una app más de horóscopos. Es una herramienta de autoconocimiento construida
+            Molino no es una app más de predicciones. Es una herramienta de autoconocimiento construida
             sobre principios claros: libertad, privacidad, transparencia y honestidad intelectual.
           </p>
         </motion.section>

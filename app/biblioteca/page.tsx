@@ -4,7 +4,7 @@ import BibliotecaContent from "./BibliotecaContent";
 
 export const metadata: Metadata = {
   title: "Biblioteca — Fuentes y referencias",
-  description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, tarot, kabbalah y más sistemas simbólicos.",
+  description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, kabbalah y más sistemas simbólicos.",
   alternates: {
     canonical: siteUrl("/biblioteca"),
   },
