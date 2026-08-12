@@ -2,12 +2,11 @@
 
 import { useCallback, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import { fadeUp } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
 import MolinoField from "@/components/ui/MolinoField";
-import KeyRail from "@/components/ui/KeyRail";
 import RotorCore from "@/components/ui/RotorCore";
 import Logo from "@/components/ui/Logo";
 
@@ -29,32 +28,14 @@ function getFillProgress(dateValue: string): number {
   return digits.length / 8;
 }
 
-function getActiveDigitIndex(dateValue: string): number {
-  if (!dateValue) return -1;
-  const [year, month, day] = dateValue.split("-");
-  let filled = 0;
-  if (day.length >= 1) filled++;
-  if (day.length >= 2) filled++;
-  if (month.length >= 1) filled++;
-  if (month.length >= 2) filled++;
-  if (year.length >= 1) filled++;
-  if (year.length >= 2) filled++;
-  if (year.length >= 3) filled++;
-  if (year.length >= 4) filled++;
-  return filled;
-}
-
 export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
   const dateInputRef = useRef<DateInputHandle>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const reduceMotion = useReducedMotion();
 
   const isDateValid = isValidBirthDate(dateValue);
   const fillProgress = getFillProgress(dateValue);
-  const activeDigitIndex = getActiveDigitIndex(dateValue);
-  const digits = parseDigits(dateValue);
 
   const handleGenerate = useCallback(() => {
     if (!isDateValid) {
@@ -146,23 +127,18 @@ export default function HeroInstrument() {
                       ? "Detectando señales..."
                       : fillProgress > 0
                         ? "Ingresando clave..."
-                        : "Esperando clave..."}
+                        : "Ingresá tu fecha..."}
           </motion.p>
         </motion.div>
 
-        {/* CLAVE — KeyRail con 8 dígitos */}
+        {/* CLAVE — input real DD/MM/AAAA */}
         <motion.div
           {...fadeUp}
           className="mb-6"
           onKeyDown={handleKeyDown}
         >
-          <KeyRail digits={digits} />
-        </motion.div>
-
-        {/* INPUT OCULTO PERO FUNCIONAL — DateInput sigue manejando validación, guardado, navegación */}
-        <div className="sr-only" aria-hidden="true">
           <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
-        </div>
+        </motion.div>
 
         {/* BOTÓN DE ACCIÓN — el único CTA visible */}
         <motion.div {...fadeUp} className="flex justify-center mb-4">
