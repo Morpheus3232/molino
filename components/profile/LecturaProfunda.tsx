@@ -130,9 +130,27 @@ function TuMomento({
 }: {
   personalYear: number;
   yearTheme: string | null;
+  dailyEnergy?: {
+    areas: {
+      work: { score: number; label: string };
+      relationships: { score: number; label: string };
+      creativity: { score: number; label: string };
+      decisions: { score: number; label: string };
+    };
+  };
   elementColor: string;
 }) {
-  const areas = dailyEnergy?.areas ?? {};
+  const areas: {
+    work: { score: number; label: string };
+    relationships: { score: number; label: string };
+    creativity: { score: number; label: string };
+    decisions: { score: number; label: string };
+  } = dailyEnergy?.areas ?? {
+    work: { score: 0, label: "" },
+    relationships: { score: 0, label: "" },
+    creativity: { score: 0, label: "" },
+    decisions: { score: 0, label: "" },
+  };
 
   return (
     <div>
@@ -390,7 +408,7 @@ function LecturaProfundaDesbloqueada({
   );
 }
 
-export default function LecturaProfunda({ profile }: LecturaProfundaProps) {
+export default function LecturaProfunda({ profile }: { profile: UserProfile }) {
   const lifePath = safeNumber(profile.lifePath, 1);
   const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const name = typeof profile.name === "string" ? profile.name : undefined;
