@@ -3,6 +3,7 @@ import { buildPersonalCode, buildPatterns, buildDimensions, buildDateDimensions,
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
+import { getProfileSalt } from "@/lib/profile-salt";
 
 export interface SynthesisResult {
   personalCode: {
@@ -159,7 +160,7 @@ export async function fetchInterpretation(
   const response = await fetch("/api/intelligence/interpret", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ type, dob, name, ...params }),
+    body: JSON.stringify({ type, dob, name, salt: getProfileSalt(), ...params }),
   });
 
   if (!response.ok) {

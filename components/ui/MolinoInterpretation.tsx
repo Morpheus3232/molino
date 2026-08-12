@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import { getProfileSalt } from "@/lib/profile-salt";
 import type {
   InterpretationType,
   MolinoInterpretation,
@@ -125,6 +126,7 @@ export default function MolinoInterpretation({
         body: JSON.stringify({
           name: profile.name,
           dob: profile.birthDate,
+          salt: getProfileSalt(),
           type,
           question,
           premiumToken: getPremiumTokenClient(),

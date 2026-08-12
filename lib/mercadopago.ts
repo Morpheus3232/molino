@@ -67,11 +67,18 @@ export function normalizeName(name: string): string {
 // HMAC input, never parsed as a Date here), but a malformed value silently
 // produces a hash the user can't reproduce on recovery. Add the same
 // isValidDate() check to the payment routes before this call.
-export function hashProfile(name: string, birthDate: string): string {
+// `salt` es un UUID aleatorio generado en el cliente (guardado en localStorage
+// bajo "molino-profile-salt") que se envía junto a birthDate en el body de cada
+// request de pago. Al concatenarlo antes del HMAC, el hash deja de ser una
+// función pura de los datos personales: dos personas con la misma fecha de
+// nacimiento (e incluso el mismo nombre normalizado) producen hashes distintos.
+// Es opcional para no romper tests y call-sites que no tienen acceso al salt.
+export function hashProfile(name: string, birthDate: string, salt?: string): string {
   const secret = getWebhookSecret();
   const normalizedName = normalizeName(name);
+  const saltedBirthDate = salt ? `${salt}|${birthDate}` : birthDate;
   return createHmac('sha256', secret)
-    .update(`${normalizedName}|${birthDate}`)
+    .update(`${normalizedName}|${saltedBirthDate}`)
     .digest('hex')
     .slice(0, 16);
 }

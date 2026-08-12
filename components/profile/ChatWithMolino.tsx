@@ -6,6 +6,7 @@ import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import type { UserProfile } from "@/types/user";
 import type { MolinoInterpretation, ConversationTurn, ReadingContext } from "@/lib/engines/intelligenceEngine";
 import { usePremiumAccess } from "@/lib/hooks/usePremiumAccess";
+import { getProfileSalt } from "@/lib/profile-salt";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 
 interface ChatWithMolinoProps {
@@ -93,6 +94,7 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
             type: "question",
             dob: profile.birthDate,
             name: profile.name,
+            salt: getProfileSalt(),
             question,
             conversationHistory,
             readingContext,

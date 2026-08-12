@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
-import { getProfileHashByPaymentId, grantPremiumAccess, savePremiumToken } from '@/lib/kv';
+import { getProfileHashByPaymentId, getProfileSalt, grantPremiumAccess, savePremiumToken, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
+import { isValidDate } from '@/lib/validation';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { paymentId, name, birthDate } = await req.json();
+    const { paymentId, name, birthDate, salt } = await req.json();
 
     if (!paymentId) {
       return NextResponse.json(
@@ -26,7 +27,14 @@ export async function POST(req: NextRequest) {
       // profile (same normalized name+birthDate that produced the hash).
       // Without this check, anyone who knows a paymentId could claim access.
       if (name && birthDate) {
-        const requestedHash = hashProfile(name, birthDate);
+        if (!isValidDate(birthDate)) {
+          return NextResponse.json({
+            verified: false,
+            reason: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)',
+          }, { status: 400 });
+        }
+        const storedSalt = await getProfileSalt(existingHash);
+        const requestedHash = hashProfile(name, birthDate, storedSalt ?? salt);
         if (requestedHash !== existingHash) {
           return NextResponse.json({
             verified: false,
@@ -55,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     const profileHash =
       (payment.metadata?.profile_hash as string | undefined) ||
-      (name && birthDate ? hashProfile(name, birthDate) : undefined);
+      (name && birthDate ? hashProfile(name, birthDate, salt) : undefined);
 
     if (!profileHash) {
       return NextResponse.json({
@@ -64,6 +72,14 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
+    if (birthDate && !isValidDate(birthDate)) {
+      return NextResponse.json({
+        verified: false,
+        reason: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)',
+      }, { status: 400 });
+    }
+
+    if (salt) await saveProfileSalt(profileHash, salt);
     await grantPremiumAccess(profileHash, cleanPaymentId);
     const premiumToken = await savePremiumToken(profileHash);
 

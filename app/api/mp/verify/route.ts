@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
-import { hasPremiumAccess, grantPremiumAccess, savePremiumToken, getProfileHashByPaymentId } from '@/lib/kv';
+import { hasPremiumAccess, grantPremiumAccess, savePremiumToken, getProfileHashByPaymentId, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { paymentId, name, birthDate } = await req.json();
+    const { paymentId, name, birthDate, salt } = await req.json();
 
     if (!paymentId) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const calculatedHash = name && birthDate ? hashProfile(name, birthDate) : undefined;
+    const calculatedHash = name && birthDate ? hashProfile(name, birthDate, salt) : undefined;
 
     // Fast path: the paymentId is already linked to this profile in KV.
     // Only trust it when the requester proves ownership of the profile
@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
     }
 
     await grantPremiumAccess(targetHash, String(paymentId));
+    if (salt) await saveProfileSalt(targetHash, salt);
     const premiumToken = await savePremiumToken(targetHash);
 
     return NextResponse.json({
