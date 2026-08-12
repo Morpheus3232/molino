@@ -4,6 +4,8 @@ import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
+import { ACADEMY_PIECES } from "@/lib/data/academy-content";
+import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
 import { SITE_URL } from "@/lib/seo";
 
 const BASE_URL = SITE_URL;
@@ -89,5 +91,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/guia/compatibilidad-astrologica`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
   ];
 
-  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages];
+  // Academia — historia de las tradiciones (artículos individuales)
+  const academyPages = ACADEMY_PIECES.map((piece) => ({
+    url: `${BASE_URL}/academy/${piece.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  // Biblioteca — fichas de fuentes y referencias
+  const bibliotecaPages = BIBLIOTECA_SOURCES.map((source) => ({
+    url: `${BASE_URL}/biblioteca/${source.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages];
 }

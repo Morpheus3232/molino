@@ -9,6 +9,8 @@ export default function AnalyticsProvider() {
 
   useEffect(() => {
     analytics.trackPageView(pathname || "/");
+    // Check for return visit on first mount (once per session)
+    analytics.trackReturnVisit();
   }, [pathname]);
 
   return null;

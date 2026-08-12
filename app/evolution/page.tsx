@@ -1,15 +1,15 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { getHistoryForProfile, type DailySnapshot, type Orientation } from "@/lib/session/dailyHistory";
+import { getHistoryForProfile, type Orientation } from "@/lib/session/dailyHistory";
 import { getPersonalYear } from "@/lib/calculations";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
+import DailyTimeline from "@/components/profile/DailyTimeline";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { formatDate as formatI18nDate } from "@/lib/i18n/format";
 
 const ORIENTATION_ORDER: Orientation[] = ["ACTUAR", "ESPERAR", "OBSERVAR"];
 
@@ -19,19 +19,13 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-function formatDate(dateStr: string): string {
-  const date = new Date(`${dateStr}T00:00:00`);
-  return formatI18nDate(date, { weekday: "long", day: "numeric", month: "long" });
-}
-
 export default function EvolutionPage() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-  const [history, setHistory] = useState<DailySnapshot[]>([]);
 
-  useEffect(() => {
-    if (!profile) return;
-    setHistory(getHistoryForProfile(profile.birthDate));
+  const history = useMemo(() => {
+    if (!profile) return [];
+    return getHistoryForProfile(profile.birthDate);
   }, [profile]);
 
   const counts = ORIENTATION_ORDER.reduce<Record<Orientation, number>>(
@@ -186,36 +180,7 @@ export default function EvolutionPage() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <div className="space-y-px bg-ink/10 border-t border-ink/10 pt-6">
-                      <motion.div className="bg-background p-8 lg:p-12">
-                        <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground mb-4">
-                          Hitos que registraste · {history.length} {history.length === 1 ? "día" : "días"}
-                        </h2>
-                        <ul className="flex flex-wrap gap-x-8 gap-y-2">
-                          {ORIENTATION_ORDER.map((o) => (
-                            <li key={o} className="text-sm text-foreground">
-                              <span className="font-heading text-2xl font-bold tracking-tight mr-2">{counts[o]}</span>
-                              {o}
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-
-                      <div className="bg-background">
-                        {history.map((item) => (
-                          <div
-                            key={item.date}
-                            className="p-6 sm:p-8 border-b border-ink/10 last:border-b-0 flex items-center justify-between gap-4"
-                          >
-                            <div>
-                              <p className="label-micro mb-1">{formatDate(item.date)}</p>
-                              <p className="text-sm text-muted">{item.theme} · {item.energyLevel}</p>
-                            </div>
-                            <p className="font-heading text-xl text-foreground shrink-0">{item.orientation}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <DailyTimeline profile={profile} />
                   </motion.div>
                 )}
               </AnimatePresence>

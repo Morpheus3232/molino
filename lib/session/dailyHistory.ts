@@ -9,6 +9,9 @@
  * guardada para poder leerla mañana.
  */
 
+import type { UserProfile } from "@/types/user";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+
 const STORAGE_KEY = "molino.daily-history.v1";
 const MAX_ENTRIES = 90;
 
@@ -28,6 +31,38 @@ export interface DailySnapshot {
   overallScore?: number;
   /** Día personal numerológico (1-9/11/22) del día registrado. */
   personalDay?: number;
+}
+
+/**
+ * Construye un DailySnapshot a partir del perfil y una fecha dada.
+ * Mapea el resultado de calculateDailyEnergy a orientation/energyLevel
+ * de forma determinista (mismos inputs → mismo output).
+ */
+export function buildDailySnapshot(profile: UserProfile, date: Date = new Date()): DailySnapshot {
+  const daily = calculateDailyEnergy(profile, date);
+  return {
+    date: toLocalDateKey(date),
+    profileKey: profile.birthDate,
+    orientation: dayToOrientation(daily.personalDay),
+    energyLevel: scoreToLevel(daily.overallScore),
+    theme: daily.theme,
+    overallScore: daily.overallScore,
+    personalDay: daily.personalDay,
+  };
+}
+
+/** Determinista: mismo día personal → misma orientación. */
+function dayToOrientation(personalDay: number): Orientation {
+  if ([1, 3, 5, 8, 22].includes(personalDay)) return "ACTUAR";
+  if ([2, 4, 6, 33].includes(personalDay)) return "ESPERAR";
+  return "OBSERVAR"; // 7, 9, 11, y master numbers no mapeados
+}
+
+/** Umbral simple: ≥70 ALTA, 40-69 MEDIA, <40 BAJA. */
+function scoreToLevel(score: number): EnergyLevel {
+  if (score >= 70) return "ALTA";
+  if (score >= 40) return "MEDIA";
+  return "BAJA";
 }
 
 /**

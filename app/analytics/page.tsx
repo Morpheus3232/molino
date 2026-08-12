@@ -24,6 +24,7 @@ export default function AnalyticsPage() {
   const cards = [
     { label: "Eventos totales", value: stats?.totalEvents, icon: "📊" },
     { label: "Visitas de página", value: stats?.pageViews, icon: "👁️" },
+    { label: "Visitas de retorno", value: stats?.returnVisits, icon: "🔄" },
     { label: "Perfiles creados", value: stats?.profileCreated, icon: "👤" },
     { label: "Consultas a IA", value: stats?.aiQueries, icon: "🤖" },
     { label: "Decisiones tomadas", value: stats?.decisions, icon: "🎯" },
