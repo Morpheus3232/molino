@@ -1,6 +1,6 @@
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
 import { generateWithOpenAI, generateWithClaude, generateWithOpenRouter } from './aiEngine';
-import { generateWithOmniRoute, getOmniRouteRouter, getOmniRouteStatus } from './omnirouteRouter';
+import { generateWithOmniRoute, getOmniRouteRouter, getOmniRouteStatus, isOmniRouteConfigured } from './omnirouteRouter';
 
 export type Provider = 'openai' | 'claude' | 'openrouter' | 'omniroute';
 
@@ -126,12 +126,16 @@ export async function generateWithRouting(
   const primary = preferredProvider || config.primary;
 
   if (primary === 'omniroute') {
-    try {
-      const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template);
-      console.log(`[AI] result=success provider=omniroute model=${modelUsed} fallback=${fallbackUsed}`);
-      return { interpretation, providerUsed: 'omniroute', fallbackUsed };
-    } catch (error) {
-      console.error('[AI] provider=omniroute stage=attempt_failed message=' + (error instanceof Error ? error.message : String(error)));
+    if (isOmniRouteConfigured()) {
+      try {
+        const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template);
+        console.log(`[AI] result=success provider=omniroute model=${modelUsed} fallback=${fallbackUsed}`);
+        return { interpretation, providerUsed: 'omniroute', fallbackUsed };
+      } catch (error) {
+        console.error('[AI] provider=omniroute stage=attempt_failed message=' + (error instanceof Error ? error.message : String(error)));
+      }
+    } else {
+      console.warn('[AI] provider=omniroute stage=skipped reason=not_configured primary=omniroute');
     }
   }
 
@@ -171,8 +175,8 @@ export function getProviderStatus(): {
     primary: config.primary,
     fallback: config.fallback,
     fallbackEnabled: config.enableFallback,
-    primaryConfigured: config.primary === 'omniroute' ? true : !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : config.primary === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
-    fallbackConfigured: config.fallback === 'omniroute' ? true : !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : config.fallback === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
+    primaryConfigured: config.primary === 'omniroute' ? isOmniRouteConfigured() : !!process.env[config.primary === 'openai' ? 'OPENAI_API_KEY' : config.primary === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
+    fallbackConfigured: config.fallback === 'omniroute' ? isOmniRouteConfigured() : !!process.env[config.fallback === 'openai' ? 'OPENAI_API_KEY' : config.fallback === 'openrouter' ? 'OPENROUTER_API_KEY' : 'ANTHROPIC_API_KEY'],
     freeTierLimits: {
       openai: getFreeTierLimits('openai'),
       claude: getFreeTierLimits('claude'),

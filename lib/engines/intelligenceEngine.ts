@@ -17,6 +17,7 @@ import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
 import { buildPersonalCode, buildPatterns, buildTensions, buildRules, ELEMENT_PACE } from './synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
+import { sanitizeNameForPrompt, sanitizeUserText, pseudonymFor } from '@/lib/ai/piiSanitizer';
 
 // ============================================================
 // SHARED CONTEXT TYPES
@@ -235,12 +236,14 @@ export function buildMolinoContext(
 export function buildIntelligencePrompt(request: InterpretationRequest): string {
   const { type, context, question, template, conversationHistory, readingContext } = request;
   const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
+  const userName = sanitizeNameForPrompt(userProfile.name || '');
+  const safeQuestion = sanitizeUserText(question || '', userProfile.name || '');
 
   const conversationContext = conversationHistory?.length
     ? `\nCONVERSACIÓN PREVIA (misma sesión — la pregunta actual puede ser continuación de esto):\n${conversationHistory
         .map((turn, i) => {
           const highlights = turn.answerHighlights ? ` | clave: ${turn.answerHighlights}` : '';
-          return `${i + 1}. Usuario preguntó: "${turn.question}"\n   Molino respondió: "${turn.answer}${highlights}"`;
+          return `${i + 1}. Usuario preguntó: "${sanitizeUserText(turn.question, userProfile.name || '')}"\n   [ADDRESS] respondió: "${sanitizeUserText(turn.answer, userProfile.name || '')}${highlights}"`;
         })
         .join('\n')}\n`
     : '';
@@ -248,7 +251,7 @@ export function buildIntelligencePrompt(request: InterpretationRequest): string 
   const baseContext = `
 <user_context>
 CONTEXTO DEL USUARIO:
-- Nombre: ${userProfile.name}
+- Nombre: ${userName}
 - Life Path: ${userProfile.lifePath}
 - Arquetipo: ${userProfile.archetype}
 - Signo Solar: ${astrology.sunSign} (${astrology.element}, ${astrology.modality})
@@ -498,7 +501,7 @@ Generá una respuesta JSON con:
 
 ${baseContext}
 ${conversationContext}${decision ? `DECISIÓN:
-- Pregunta: ${decision.question}
+- Pregunta: ${sanitizeUserText(decision.question, userProfile.name || '')}
 - Categoría: ${decision.category}
 - Score general: ${decision.overallScore}/100
 - Alineación: ${decision.alignmentScore}/100
@@ -594,7 +597,7 @@ ${friends.length || challenging.length ? `RELACIONES REALES DE TU ANIMAL CHINO (
 ${dailyEnergy ? `MOMENTO ACTUAL: energía del día ${dailyEnergy.overallScore}/100, tema "${dailyEnergy.theme}"\n` : ''}
 ${timingCtx ? `TIMING (intención "${timingCtx.intention}"): score ${timingCtx.timingScore}/100 — ${timingCtx.explanation}\n` : ''}
 ${readingBlock}${conversationContext}
-PREGUNTA DEL USUARIO: "${question || ''}"
+PREGUNTA DEL USUARIO: "${safeQuestion || ''}"
 
 TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este es el chat contextual de Molino, no un asistente genérico.
 - Si recibiste CONTEXTO DE LA LECTURA PREMIUM: usalo como grounding para responder LA PREGUNTA específica, no para repetir la lectura. La respuesta debe sumar un ángulo nuevo sobre la pregunta, no resumir lo que el usuario ya leyó.

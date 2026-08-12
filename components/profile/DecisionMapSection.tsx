@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { analyzeDecision, CATEGORY_LABELS, type DecisionCategory, type DecisionResult } from "@/lib/engines/decisionsEngine";
-import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { smoothReveal, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
 import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 
 interface DecisionMapSectionProps {
@@ -18,19 +18,16 @@ const DECISION_CATEGORIES: {
   route: string;
   description: string;
 }[] = [
-  { id: "travel", title: "Viajes", route: "/affinity/recommendations/countries", description: "Explorá destinos compatibles con tu energía" },
-  { id: "career", title: "Entorno profesional", route: "/affinity/recommendations/brands", description: "Marcas y empresas con presencia en tu mapa" },
-  { id: "personal", title: "Lugares", route: "/affinity/recommendations/countries", description: "Ciudades y espacios con presencia en tu mapa" },
-  { id: "creativity", title: "Creatividad", route: "/affinity", description: "Entidades que potencian tu expresión" },
-  { id: "health", title: "Bienestar", route: "/affinity", description: "Símbolos de equilibrio y cuidado" },
-  { id: "education", title: "Aprendizaje", route: "/academy", description: "Rutas de conocimiento para tu perfil" },
+  { id: "travel", title: "Viajes", route: "/affinity/recommendations/countries", description: "Destinos compatibles" },
+  { id: "career", title: "Entorno profesional", route: "/affinity/recommendations/brands", description: "Marcas y empresas" },
+  { id: "personal", title: "Lugares", route: "/affinity/recommendations/countries", description: "Ciudades afines" },
+  { id: "creativity", title: "Creatividad", route: "/affinity", description: "Expresión creativa" },
+  { id: "health", title: "Bienestar", route: "/affinity", description: "Prácticas alineadas" },
+  { id: "education", title: "Formación", route: "/academy", description: "Rutas de conocimiento" },
 ];
 
 export default function DecisionMapSection({ profile }: DecisionMapSectionProps) {
-  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<DecisionCategory | null>(null);
-
-  // Pregunta libre
   const [question, setQuestion] = useState("");
   const [freeResult, setFreeResult] = useState<DecisionResult | null>(null);
 
@@ -60,18 +57,19 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
   };
 
   return (
-    <section className="py-12 sm:py-16 border-t border-ink/10">
+    <section className="py-12 sm:py-20 border-t border-ink/10">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-
-        {/* Header */}
         <motion.div {...smoothReveal}>
-          <h2 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-3">Tu pregunta</h2>
-          <p className="text-sm text-muted max-w-xl leading-relaxed">
-            Cualquier decisión puede leerse desde tu mapa. Escribí lo que estás por decidir o explorá una categoría.
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-4">Ahora</p>
+          <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.88] tracking-tight text-foreground uppercase max-w-xl">
+            Usá tu mapa para pensar mejor
+          </h2>
+          <p className="text-sm text-muted mt-4 max-w-lg leading-relaxed">
+            Cualquier decisión puede leerse desde tu mapa. Escribí lo que estás considerando o explorá una categoría.
           </p>
         </motion.div>
 
-        {/* ═══ PREGUNTA LIBRE — punto de entrada principal ═══ */}
+        {/* ═══ PREGUNTA LIBRE ═══ */}
         <AnimatePresence mode="wait">
           {!freeResult ? (
             <motion.form
@@ -81,25 +79,23 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.3 }}
               onSubmit={handleFreeQuestion}
-              className="mt-8 max-w-lg space-y-4"
+              className="mt-8 max-w-lg"
             >
-              <div>
-                <label htmlFor="decision-question" className="label-micro block mb-2">
-                  ¿Qué estás tratando de decidir?
-                </label>
-                <textarea
-                  id="decision-question"
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  placeholder="Ej: ¿Es buen momento para mudarme?"
-                  rows={3}
-                  className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-base placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-none"
-                />
-              </div>
+              <label htmlFor="decision-question" className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted block mb-3">
+                ¿Qué estás tratando de decidir?
+              </label>
+              <textarea
+                id="decision-question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Ej: ¿Es buen momento para mudarme?"
+                rows={2}
+                className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground text-sm placeholder:text-muted/60 focus:outline-none focus:border-accent transition-colors resize-none"
+              />
               <button
                 type="submit"
                 disabled={!question.trim()}
-                className="w-full text-center text-sm font-medium px-6 py-3 border border-accent text-accent hover:bg-accent hover:text-accent-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                className="mt-4 text-xs font-mono uppercase tracking-[0.2em] text-accent border border-accent px-5 py-2.5 hover:bg-accent hover:text-accent-foreground disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Analizar desde mi mapa
               </button>
@@ -123,7 +119,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
           )}
         </AnimatePresence>
 
-        {/* ═══ RESULTADO (pregunta libre o categoría) ═══ */}
+        {/* ═══ RESULTADO ═══ */}
         <AnimatePresence>
           {selectedResult && (
             <motion.div
@@ -140,39 +136,38 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* ═══ EXPLORAR POR CATEGORÍA ═══ */}
         {!freeResult && (
-          <div className="mt-10">
-            <p className="label-micro mb-4">O explorá por categoría</p>
-            <motion.div {...staggerApple}>
+          <div className="mt-10 max-w-xl">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4">Categorías</p>
+            <div className="border-t border-ink/10">
               {decisionResults.map((cat, i) => (
                 <motion.button
                   key={cat.id}
                   {...staggerItemSmooth}
-                  transition={{ delay: staggerDelay(i, 0.06), duration: 0.3 }}
+                  transition={{ delay: staggerDelay(i, 0.04), duration: 0.3 }}
                   onClick={() => setSelectedCategory(selectedCategory === cat.id ? null : cat.id)}
                   aria-expanded={selectedCategory === cat.id}
-                  className="w-full text-left py-5 border-b border-ink/10 last:border-b-0 group transition-all hover:pl-2"
+                  className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group transition-all"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0">
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{cat.title}</p>
-                      <p className="text-sm text-muted leading-relaxed mt-0.5">{cat.description}</p>
                     </div>
                     <span
-                      className="uppercase text-xs tracking-[0.2em] font-medium shrink-0"
+                      className="uppercase text-[10px] tracking-[0.2em] font-mono shrink-0"
                       style={{ color: getScoreColor(cat.result.overallScore) }}
                     >
                       {getScoreLabel(cat.result.overallScore)}
                     </span>
                   </div>
+                  <p className="text-xs text-muted mt-0.5">{cat.description}</p>
                 </motion.button>
               ))}
-            </motion.div>
+            </div>
           </div>
         )}
 
-        {/* Disclaimer */}
-        <motion.div {...smoothReveal} className="mt-6">
-          <p className="text-xs text-muted text-center italic">
+        <motion.div {...smoothReveal} className="mt-8">
+          <p className="text-xs text-muted leading-relaxed max-w-md italic">
             Herramienta de reflexión personal basada en tradiciones culturales. No constituye predicción científica.
           </p>
         </motion.div>
@@ -181,93 +176,69 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
   );
 }
 
-// ════════════════════════════════════════════════════
-// DECISION DETAIL COMPONENT
-// ════════════════════════════════════════════════════
-
 function DecisionDetail({ result, profile }: { result: DecisionResult; profile: UserProfile }) {
-  const router = useRouter();
   const scoreColor = getScoreColor(result.overallScore);
 
   return (
-    <div className="mt-2 py-6 border-t border-ink/10">
-      {/* Lectura general — una frase, no una grilla de tarjetas de score */}
-      <p className="text-lg sm:text-xl font-display tracking-tight mb-1" style={{ color: scoreColor }}>
+    <div className="mt-2 py-6 border-t border-ink/10 max-w-xl">
+      <p className="text-lg sm:text-xl font-heading tracking-tight mb-1" style={{ color: scoreColor }}>
         {getScoreLabel(result.overallScore)}
       </p>
-      <p className="uppercase text-xs tracking-[0.2em] text-muted mb-4">
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4">
         {result.category ? CATEGORY_LABELS[result.category as DecisionCategory] : ""}
         {result.category ? " · " : ""}
         Alineación {getScoreLabel(result.alignmentScore)} · Timing {getScoreLabel(result.timingScore)} · Energía {getScoreLabel(result.energyScore)}
       </p>
 
       {result.detectedIntent && (
-        <span className="inline-block mb-4 px-1.5 py-0.5 text-xs font-mono uppercase tracking-[0.2em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">
+        <span className="inline-block mb-4 px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-accent border border-accent/30 bg-accent/[0.06] leading-none">
           {result.detectedIntent.label}
         </span>
       )}
 
-      {/* Recomendación — la lectura accionable, separada del contexto que la explica */}
-      <div className="mb-6 p-4 rounded-md bg-accent/[0.05] border border-accent/20">
-        <p className="uppercase text-xs tracking-[0.2em] text-accent mb-2">Recomendación</p>
+      <div className="mb-5 p-4 bg-ink/[0.02] border-l-2 border-accent">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-2">Recomendación</p>
         <p className="text-sm text-foreground leading-relaxed">{result.recommendation}</p>
       </div>
 
-      {/* Explanation */}
-      <div className="mb-6">
-        <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Contexto</p>
+      <div className="mb-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">Contexto</p>
         <p className="text-sm text-foreground leading-relaxed">{result.reasoning}</p>
       </div>
 
-      {/* Considerations */}
       {result.considerations.length > 0 && (
-        <div className="mb-6">
-          <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">A considerar</p>
-          <div className="space-y-2">
+        <div className="mb-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">A considerar</p>
+          <ul className="space-y-1.5">
             {result.considerations.map((c, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <span className="text-xs text-accent mt-0.5">•</span>
-                <p className="text-sm text-foreground leading-relaxed">{c}</p>
-              </div>
+              <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
+                <span className="text-accent mt-1.5 w-1 h-1 rounded-full bg-accent shrink-0" />
+                <span>{c}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
 
-      {/* Next steps */}
       {result.nextSteps.length > 0 && (
-        <div className="mb-6">
-          <p className="uppercase text-xs tracking-[0.2em] text-muted mb-2">Próximos pasos</p>
-          <div className="space-y-2">
+        <div className="mb-5">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">Próximos pasos</p>
+          <ol className="space-y-1.5">
             {result.nextSteps.map((s, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <span className="text-sm text-muted mt-0.5">{i + 1}.</span>
-                <p className="text-sm text-foreground leading-relaxed">{s}</p>
-              </div>
+              <li key={i} className="text-sm text-foreground leading-relaxed flex items-start gap-2">
+                <span className="text-muted mt-0.5 shrink-0">{i + 1}.</span>
+                <span>{s}</span>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       )}
 
-      {/* Element influence */}
       <div className="p-3 bg-ink/[0.02] mb-4">
-        <p className="text-sm text-muted">
-          Tu elemento {profile.element} {result.elementInfluence}.
+        <p className="text-xs text-muted leading-relaxed">
+          Tu elemento {profile.element}: {result.elementInfluence}
         </p>
       </div>
-
-      {/* CTA */}
-        <button
-          type="button"
-          onClick={() => {
-            const cat = DECISION_CATEGORIES.find(c => c.id === result.category);
-            if (cat) router.push(cat.route);
-          }}
-          className="w-full text-center text-xs text-accent hover:underline font-medium inline-flex items-center justify-center gap-1"
-        >
-          Explorar {result.category}
-          <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-        </button>
     </div>
   );
 }

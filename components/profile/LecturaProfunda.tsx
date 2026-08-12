@@ -8,7 +8,7 @@ import {
   buildRules,
   buildPrinciples,
 } from "@/lib/engines/synthesisEngine";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -19,45 +19,243 @@ import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/eng
 import ChatWithMolino from "@/components/profile/ChatWithMolino";
 import EditorialSection from "@/components/ui/EditorialSection";
 
-interface LecturaProfundaProps {
-  profile: UserProfile;
+
+/**
+ * Número de capítulo + regla fina. Sin borde, sin glow: solo texto y
+ * una línea de 32px que marca el nivel sin ocupar espacio.
+ */
+function ChapterNumber({ number, color }: { number: string; color: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-6" aria-hidden="true">
+      <span className="font-mono text-[11px] uppercase tracking-[0.25em]" style={{ color }}>
+        {number}
+      </span>
+      <span className="h-px flex-1" style={{ backgroundColor: color, opacity: 0.15 }} />
+    </div>
+  );
 }
 
-/** Marca de sección discreta — número + regla fina, el mismo idioma de
- * capítulo que ya usa el resto de /profile (WorldConnections, CircleAlignment).
- * Nunca un kicker genérico: el número es parte de la secuencia real 01→07. */
-function SubHeader({
-  number,
-  title,
-  description,
+/**
+ * Patrón central — narrativa de una sola pieza.
+ * Primer patrón como ancla, tensión como conflicto.
+ */
+function PatronCentral({
+  pattern,
+  tension,
   elementColor,
 }: {
-  number: string;
-  title: string;
-  description: string;
+  pattern: { label: string; keyword: string; description: string; sources?: string[] };
+  tension: { title: string; evidence: string } | null;
   elementColor: string;
 }) {
   return (
-    <div className="mb-6 sm:mb-8 flex items-start gap-4 sm:gap-5">
-      <span
-        className="number-display text-xl sm:text-2xl leading-none pt-0.5 shrink-0"
-        style={{ color: elementColor }}
-        aria-hidden="true"
-      >
-        {number}
-      </span>
-      <div className="min-w-0">
-        <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground">{title}</h3>
-        <p className="text-sm text-muted mt-1">{description}</p>
+    <div>
+      <ChapterNumber number="01 · TU PATRÓN CENTRAL" color={elementColor} />
+      <div className="max-w-3xl">
+        {/* El motor — la pieza dominante */}
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">
+          {pattern.label}
+        </p>
+        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] tracking-tight text-foreground uppercase mb-4" style={{ color: elementColor }}>
+          {pattern.keyword}
+        </p>
+        <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
+          {pattern.description}
+        </p>
+
+        {/* Tensión — el pliegue del patrón */}
+        {tension && (
+          <div className="mt-10 pt-8 border-t border-ink/10">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3">Tu tensión</p>
+            <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
+              {tension.title}
+            </p>
+            <p className="text-sm text-muted leading-relaxed">
+              {tension.evidence}
+            </p>
+          </div>
+        )}
+
+        {/* Patrones secundarios — evidencia, no nuevas piezas */}
+        <div className="mt-6 text-xs text-muted leading-relaxed">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">Evidencias · </span>
+          Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
+        </div>
       </div>
     </div>
   );
 }
 
 /**
- * "Ver conexiones" — la trazabilidad de producto de la síntesis: qué piezas
- * ya calculadas (gratis, arriba) sustentan la interpretación paga. Un
- * esquema lineal, no un grafo. Nunca el prompt ni el razonamiento del modelo.
+ * Reglas personales — principios numerados, sin caja, sin borde por ítem.
+ */
+function Principios({
+  principles,
+  elementColor,
+}: {
+  principles: { title: string; body: string }[];
+  elementColor: string;
+}) {
+  if (principles.length === 0) return null;
+  return (
+    <div>
+      <ChapterNumber number="02 · TUS PRINCIPIOS" color={elementColor} />
+      <div className="max-w-2xl space-y-8">
+        {principles.map((p, i) => (
+          <div key={p.title} className="flex items-start gap-5">
+            <span className="font-mono text-xs text-muted leading-[1.7] shrink-0 w-5">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <p className="font-heading text-base sm:text-lg text-foreground leading-snug">
+                {p.title}
+              </p>
+              <p className="text-sm text-muted leading-relaxed mt-1.5">{p.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Evolución — tu momento ahora, conectado al patrón.
+ */
+function TuMomento({
+  personalYear,
+  yearTheme,
+  dailyEnergy,
+  elementColor,
+}: {
+  personalYear: number;
+  yearTheme: string | null;
+  elementColor: string;
+}) {
+  const areas = dailyEnergy?.areas ?? {};
+
+  return (
+    <div>
+      <ChapterNumber number="03 · TU MOMENTO" color={elementColor} />
+      <div className="max-w-2xl">
+        <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight" style={{ color: elementColor }}>
+          {personalYear}
+        </p>
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-2">
+          Año personal · {yearTheme ?? "—"}
+        </p>
+
+        {Object.keys(areas).length > 0 && (
+          <div className="mt-8 space-y-4">
+            {Object.entries(areas).map(([key, area]) => (
+              <div key={key}>
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-xs text-muted capitalize">
+                    {key === "relationships" ? "Relaciones" : key === "work" ? "Trabajo" : key === "creativity" ? "Creatividad" : key}
+                  </span>
+                  <span className="font-mono text-xs text-foreground">{area.score}%</span>
+                </div>
+                <div className="h-px bg-ink/10 overflow-hidden">
+                  <div
+                    className="h-full transition-all duration-500"
+                    style={{
+                      width: `${area.score}%`,
+                      backgroundColor:
+                        area.score >= 60
+                          ? "var(--score-excellent)"
+                          : area.score >= 45
+                            ? "var(--score-good)"
+                            : "var(--score-poor)",
+                    }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * FREE — piezas de lectura gratuita. Todas las piezas se calculan
+ * con engines determinísticos. Nunca se oculta contenido para forzar paywall.
+ */
+function PiezasLibres({
+  profile,
+  onData,
+}: {
+  profile: UserProfile;
+  onData: (data: {
+    patterns: ReturnType<typeof buildPatterns>;
+    rules: ReturnType<typeof buildRules>;
+    tensions: ReturnType<typeof buildTensions>;
+    dailyEnergy: ReturnType<typeof calculateDailyEnergy>;
+    timing: ReturnType<typeof analyzeTiming>;
+  }) => void;
+}) {
+  const [savedIntention, setSavedIntention] = useState<ReturnType<typeof loadTimingIntention>>(null);
+
+  useEffect(() => {
+    setSavedIntention(loadTimingIntention());
+  }, []);
+
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+
+  const dailyEnergy = calculateDailyEnergy(profile);
+  const patterns = buildPatterns(profile);
+  const tensions = buildTensions(profile);
+  const rules = buildRules(profile);
+  const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
+  const timing = analyzeTiming(profile, new Date(), savedIntention || "start_project");
+
+  useEffect(() => {
+    onData({ patterns, rules, tensions, dailyEnergy, timing });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile, savedIntention]);
+
+  const mainPattern = patterns[0] ?? null;
+  const mainTension = tensions[0] ?? null;
+
+  return (
+    <div className="space-y-20 sm:space-y-24">
+      {/* 01 · Patrón central + tensión */}
+      {mainPattern && (
+        <PatronCentral
+          pattern={mainPattern}
+          tension={mainTension}
+          elementColor={elementColor}
+        />
+      )}
+
+      {/* 02 · Principios */}
+      {principles.length > 0 && (
+        <Principios principles={principles} elementColor={elementColor} />
+      )}
+
+      {/* 03 · Momento — evolución integrada */}
+      <TuMomento
+        personalYear={dailyEnergy.personalYear}
+        yearTheme={dailyEnergy.theme}
+        dailyEnergy={dailyEnergy}
+        elementColor={elementColor}
+      />
+      {/* Puente hacia el gate */}
+      {mainTension && (
+        <div className="flex items-center gap-4 text-xs text-muted">
+          <span className="h-px flex-1 bg-ink/10" />
+          <span>Más abajo: qué hacer cuando {mainTension.title.toLowerCase()}.</span>
+          <span className="h-px flex-1 bg-ink/10" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Conexiones — trazabilidad de la lectura premium.
  */
 interface ConnectionNode {
   kind: string;
@@ -99,139 +297,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
 }
 
 /**
- * FREE — las piezas. Determinístico, sin IA: buildPatterns/buildRules/
- * buildMomentState/analyzeTiming/calculateDailyEnergy, los mismos engines
- * que ya son gratis en el resto del sitio. El usuario sin Premium tiene que
- * poder entender su mapa completo con esto — nunca se oculta para forzar el
- * paywall.
- */
-function PiezasLibres({
-  profile,
-  onData,
-}: {
-  profile: UserProfile;
-  onData: (data: { patterns: ReturnType<typeof buildPatterns>; rules: ReturnType<typeof buildRules>; tensions: ReturnType<typeof buildTensions>; dailyEnergy: ReturnType<typeof calculateDailyEnergy>; timing: ReturnType<typeof analyzeTiming> }) => void;
-}) {
-  const [savedIntention, setSavedIntention] = useState<ReturnType<typeof loadTimingIntention>>(null);
-
-  useEffect(() => {
-    setSavedIntention(loadTimingIntention());
-  }, []);
-
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
-
-  const dailyEnergy = calculateDailyEnergy(profile);
-  const patterns = buildPatterns(profile);
-  const tensions = buildTensions(profile);
-  const rules = buildRules(profile);
-  const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
-  // Misma intención por defecto que usa el resto del mapa cuando el usuario
-  // todavía no eligió una en /hoy — no altera analyzeTiming, solo qué
-  // intención se le pasa.
-  const timing = analyzeTiming(profile, new Date(), savedIntention || "start_project");
-
-  useEffect(() => {
-    onData({ patterns, rules, tensions, dailyEnergy, timing });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile, savedIntention]);
-
-  return (
-    <div className="space-y-20 sm:space-y-28">
-      {/* 01 · Tus patrones */}
-      {patterns.length > 0 && (
-        <div>
-          <SubHeader number="01" title="Tus patrones" description="Lo que hoy conviene tener presente" elementColor={elementColor} />
-          <div className="max-w-3xl space-y-8 sm:space-y-10">
-            {patterns.map((p) => (
-              <div key={p.label} className="py-2">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted mb-3">{p.label}</p>
-                <p className="font-heading text-xl sm:text-2xl tracking-tight mb-2" style={{ color: elementColor }}>
-                  {p.keyword}
-                </p>
-                <p className="text-base sm:text-lg text-foreground leading-relaxed">
-                  {p.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 02 · Tus reglas */}
-      <div>
-        <SubHeader number="02" title="Tus reglas" description="Principios para moverte mejor" elementColor={elementColor} />
-        <ol className="max-w-3xl">
-          {principles.map((p) => (
-            <li key={p.title} className="py-5 border-t border-ink/10 first:border-t-0">
-              <div className="flex items-start gap-4 sm:gap-5">
-                <div>
-                  <p className="font-heading text-base sm:text-lg leading-[1.5] text-foreground">
-                    {p.title}
-                  </p>
-                  <p className="text-sm sm:text-base text-muted leading-relaxed mt-2">{p.body}</p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      {/* 05 · Tu evolución — lectura de instrumento en mono, deliberadamente
-          más terrenal que la interpretación que sigue después del paywall. */}
-      <div>
-        <SubHeader number="05" title="Tu evolución" description="Cómo se conectan tus ciclos con tu camino" elementColor={elementColor} />
-        <p className="font-mono text-4xl sm:text-5xl" style={{ color: elementColor }}>
-          {dailyEnergy.personalYear}
-        </p>
-        <p className="text-sm text-muted mt-2">Año personal · {dailyEnergy.theme}</p>
-        <div className="mt-6 space-y-3">
-          {Object.entries(dailyEnergy.areas).map(([key, area]) => (
-            <div key={key}>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-xs text-muted capitalize">{key === "relationships" ? "Relaciones" : key}</span>
-                <span className="font-mono text-xs text-foreground">{area.score}%</span>
-              </div>
-              <div className="h-px bg-ink/10 overflow-hidden">
-                <div
-                  className="h-full"
-                  style={{
-                    width: `${area.score}%`,
-                    backgroundColor: area.score >= 60 ? "var(--score-excellent)" : area.score >= 45 ? "var(--score-good)" : "var(--score-poor)",
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        {/* Puente hacia el gate — solo cuando hay una tensión real que
-            nombrar, nunca una frase de relleno genérica. */}
-        {tensions[0] && (
-          <p className="text-sm text-muted mt-8 pt-6 border-t border-ink/10">
-            Más abajo: qué hacer cuando {tensions[0].title.toLowerCase()}.
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/**
- * PREMIUM — la conversación entre las piezas. Un único hijo de PremiumGate
- * (no una lista de secciones sueltas) para que el clonado de `justUnlocked`
- * en PremiumGate llegue a MolinoInterpretation en vez de filtrarse a un
- * <div> del DOM.
- *
- * Deliberadamente NO se fragmenta la interpretación de personal_profile en
- * 5 mini-secciones "01 patrones interpretados / 02 reglas interpretadas /
- * ...": eso exigiría o (a) llamar a la IA una vez por sección — 5-6 llamadas
- * por carga, contra el rate-limit y el cost-tracking ya pensados para UNA
- * llamada — o (b) mostrar los mismos campos de una única respuesta dos
- * veces bajo títulos distintos. Ambas opciones violan "no duplicar" y "no
- * inventar" al mismo tiempo. En cambio: una sola lectura dominante (06) que
- * ya conecta patrón central, comportamiento, tensión real y timing en un
- * mismo párrafo — exactamente "la conversación entre las piezas", no una
- * descripción más de cada pieza por separado.
+ * PREMIUM — interpretación y chat.
  */
 function LecturaProfundaDesbloqueada({
   profile,
@@ -239,7 +305,13 @@ function LecturaProfundaDesbloqueada({
   justUnlocked = false,
 }: {
   profile: UserProfile;
-  pieces: { patterns: ReturnType<typeof buildPatterns>; rules: ReturnType<typeof buildRules>; tensions: ReturnType<typeof buildTensions>; dailyEnergy: ReturnType<typeof calculateDailyEnergy>; timing: ReturnType<typeof analyzeTiming> } | null;
+  pieces: {
+    patterns: ReturnType<typeof buildPatterns>;
+    rules: ReturnType<typeof buildRules>;
+    tensions: ReturnType<typeof buildTensions>;
+    dailyEnergy: ReturnType<typeof calculateDailyEnergy>;
+    timing: ReturnType<typeof analyzeTiming>;
+  } | null;
   justUnlocked?: boolean;
 }) {
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretationType | null>(null);
@@ -257,25 +329,21 @@ function LecturaProfundaDesbloqueada({
     : [];
 
   return (
-    <div className="pt-10 sm:pt-14 space-y-20 sm:space-y-28">
-      {/* 06 · La conversación entre tus sistemas — la pieza dominante.
-          Rompe el ritmo del resto de la lectura con una superficie tonal
-          distinta (section-paper-alt, el mismo lenguaje que EditorialSection
-          usa para marcar contraste) y un halo suave del color del elemento —
-          el mismo motivo del hero de home, nunca decorativo puro: acá marca
-          el punto donde termina la descripción y empieza la interpretación. */}
+    <div className="space-y-20 sm:space-y-24">
+      {/* 04 · Interpretación — la conversación entre sistemas */}
       <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 py-16 sm:py-20 section-paper-alt overflow-hidden">
         <div
           className="absolute -left-1/4 top-0 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-[0.08] -z-10 pointer-events-none"
           style={{ background: `radial-gradient(circle, ${elementColor}, transparent 70%)` }}
           aria-hidden="true"
         />
-        <SubHeader
-          number="06"
-          title="La conversación entre tus sistemas"
-          description="Precisión sin falsa certeza — una interpretación, no un hecho"
-          elementColor={elementColor}
-        />
+        <ChapterNumber number="04 · LA LECTURA" color={elementColor} />
+        <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">
+          La conversación entre tus sistemas
+        </h3>
+        <p className="text-sm text-muted mb-8 max-w-xl leading-relaxed">
+          Precisión sin falsa certeza — una interpretación, no un hecho.
+        </p>
         <div className="max-w-2xl">
           <MolinoInterpretation
             profile={profile}
@@ -283,7 +351,7 @@ function LecturaProfundaDesbloqueada({
             dailyEnergy={pieces?.dailyEnergy}
             timing={pieces?.timing}
             label="Tu síntesis"
-            description="La lectura que conecta tus números, tu cielo y tus ciclos en una sola conclusión"
+            description="La lectura que conecta tus números, tus astros y tu momento en una sola conclusión"
             justUnlocked={justUnlocked}
             onInterpretationReady={setAiInterpretation}
           />
@@ -291,24 +359,32 @@ function LecturaProfundaDesbloqueada({
         </div>
       </div>
 
-      {/* 07 · Preguntale a tu Molino */}
+      {/* 05 · Preguntale a tu Molino */}
       <div>
-        <SubHeader number="07" title="Preguntale a tu Molino" description="Una pregunta concreta sobre tu momento, tu perfil o una decisión" elementColor={elementColor} />
-        <ChatWithMolino
-          profile={profile}
-          readingContext={
-            aiInterpretation
-              ? {
-                  corePattern: aiInterpretation.corePattern
-                    ? { what: aiInterpretation.corePattern.what, source: aiInterpretation.corePattern.source }
-                    : undefined,
-                  howYouOperate: aiInterpretation.howYouOperate,
-                  closingSynthesis: aiInterpretation.closingSynthesis,
-                  tensions: aiInterpretation.tensions?.length ? aiInterpretation.tensions : undefined,
-                }
-              : undefined
-          }
-        />
+        <ChapterNumber number="05 · PREGUNTALE A TU MAPA" color={elementColor} />
+        <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">
+          Ya conocés tu mapa. Ahora podés preguntarle qué significa.
+        </h3>
+        <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
+          Una pregunta concreta sobre tu momento, tu dirección o lo que estás sintiendo.
+        </p>
+        <div className="mt-8">
+          <ChatWithMolino
+            profile={profile}
+            readingContext={
+              aiInterpretation
+                ? {
+                    corePattern: aiInterpretation.corePattern
+                      ? { what: aiInterpretation.corePattern.what, source: aiInterpretation.corePattern.source }
+                      : undefined,
+                    howYouOperate: aiInterpretation.howYouOperate,
+                    closingSynthesis: aiInterpretation.closingSynthesis,
+                    tensions: aiInterpretation.tensions?.length ? aiInterpretation.tensions : undefined,
+                  }
+                : undefined
+            }
+          />
+        </div>
       </div>
     </div>
   );
@@ -328,10 +404,6 @@ export default function LecturaProfunda({ profile }: LecturaProfundaProps) {
     timing: ReturnType<typeof analyzeTiming>;
   } | null>(null);
 
-  // Preview gratuito: un único patrón (y, si existe, la única tensión real
-  // que calcula buildTensions) ya calculados gratis — no datos nuevos
-  // inventados para el paywall. Mismo contrato que preview usa en
-  // PremiumGate en el resto del sitio.
   const previewPattern = buildPatterns(profile)[0] ?? null;
   const previewTension = buildTensions(profile)[0] ?? null;
 
@@ -339,16 +411,14 @@ export default function LecturaProfunda({ profile }: LecturaProfundaProps) {
     <EditorialSection
       as="h2"
       tone="paper"
-      eyebrow="04 · La lectura profunda"
-      title="La conversación entre tus sistemas"
-      intro="Hasta ahora viste las piezas. Aquí aparece la conversación entre ellas — tu identidad, tus ciclos y tus patrones vistos como un solo sistema."
+      eyebrow="TU MAPA"
+      title={<>LEER TU MAPA<br />EN TRES MOVIMIENTOS.</>}
+      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad, tus patrones y tu momento vistos como un solo sistema."
     >
       <div className="pt-10 sm:pt-14">
-        {/* FREE — siempre visible, nunca detrás del paywall */}
         <PiezasLibres profile={profile} onData={setPieces} />
 
-        {/* PREMIUM — la interpretación */}
-        <div className="mt-20 sm:mt-28">
+        <div className="mt-20 sm:mt-24">
           <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension }}>
             <LecturaProfundaDesbloqueada profile={profile} pieces={pieces} />
           </PremiumGate>

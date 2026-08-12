@@ -13,86 +13,77 @@ interface SpaceIndexProps {
   worldCount: number;
 }
 
-interface SpaceCard {
-  label: string;
-  title: string;
-  teaser: string;
-  href: string | null;
-}
-
 export default function SpaceIndex({ profile, circleName, allyName, worldCount }: SpaceIndexProps) {
   const reduceMotion = useSafeReducedMotion();
   const personalYear = profile.cycles?.personalYear;
   const yearTheme = typeof personalYear === "number" ? getYearTheme(personalYear) : null;
 
-  const cards: SpaceCard[] = [
+  const items = [
     {
-      label: "Tu Mapa",
-      title: "Identidad",
-      teaser: "Estás acá — numerología, astrología y zodíaco chino cruzados.",
+      number: "01",
+      label: "Identidad",
+      teaser: "Tu sistema — numerología, astrología, zodíaco chino",
       href: null,
     },
     {
-      label: "Tu Círculo",
-      title: "Energías que amplifican",
-      teaser: allyName ? `Tu ${circleName} forma tríada con ${allyName}.` : `Explorá las energías alrededor de tu ${circleName}.`,
+      number: "02",
+      label: "Círculo",
+      teaser: allyName ? `${circleName} forma tríada con ${allyName}.` : "Energías alrededor de tu signo.",
       href: "/circulo",
     },
     {
-      label: "Tu Mundo",
-      title: "Conexiones resonantes",
-      teaser: `${worldCount} países, ciudades y marcas resuenan con tu mapa.`,
+      number: "03",
+      label: "Mundo",
+      teaser: `${worldCount} conexiones resonantes.`,
       href: "/mundo",
     },
     {
-      label: "Tu Evolución",
-      title: "Tu recorrido en el tiempo",
-      teaser: yearTheme ? `Este es ${yearTheme} para vos.` : "Seguí cómo cambia tu patrón día a día.",
+      number: "04",
+      label: "Evolución",
+      teaser: yearTheme ? `${yearTheme}` : "Tu línea de tiempo.",
       href: "/evolution",
     },
   ];
 
   const reveal = {
-    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
+    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 },
     whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-100px" } as const,
-    transition: { duration: reduceMotion ? 0.1 : 0.5, ease: [0.22, 1, 0.36, 1] as const },
+    viewport: { once: true, margin: "-40px" } as const,
+    transition: { duration: reduceMotion ? 0.1 : 0.4, ease: [0.22, 1, 0.36, 1] as const },
   };
 
   return (
-    <section className="py-10 sm:py-12 border-t border-ink/10" aria-labelledby="space-index-heading">
+    <nav className="border-t border-b border-ink/10" aria-label="Dimensiones de tu mapa">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.div {...reveal}>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">Tu espacio</p>
-          <h2 id="space-index-heading" className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[1.05] mb-8">
-            Cuatro formas de leer tu mapa
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {cards.map((card) => {
+        <motion.div {...reveal} className="py-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-ink/10">
+            {items.map((item) => {
               const content = (
-                <>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-2">{card.label}</p>
-                  <p className="font-medium text-foreground mb-2">{card.title}</p>
-                  <p className="text-sm text-muted leading-relaxed mb-4">{card.teaser}</p>
-                  {card.href ? (
-                    <span className="text-xs font-mono text-accent">Ver completo →</span>
-                  ) : (
-                    <span className="text-xs font-mono text-muted">Estás acá</span>
-                  )}
-                </>
+                <div className="flex items-start gap-3 py-3 px-3 h-full bg-background">
+                  <span className="font-mono text-[10px] text-accent leading-none pt-0.5 shrink-0">
+                    {item.number}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-heading text-sm font-semibold text-foreground tracking-tight">
+                      {item.label}
+                    </p>
+                    <p className="text-[11px] text-muted leading-relaxed mt-0.5 line-clamp-1">
+                      {item.teaser}
+                    </p>
+                  </div>
+                </div>
               );
 
-              return card.href ? (
+              return item.href ? (
                 <Link
-                  key={card.label}
-                  href={card.href}
-                  className="p-5 border border-ink/10 rounded-lg bg-background hover:border-accent/40 transition-colors"
+                  key={item.label}
+                  href={item.href}
+                  className="block hover:bg-ink/[0.02] transition-colors"
                 >
                   {content}
                 </Link>
               ) : (
-                <div key={card.label} className="p-5 border border-accent/30 bg-accent/[0.03] rounded-lg">
+                <div key={item.label} className="bg-accent/[0.03]">
                   {content}
                 </div>
               );
@@ -100,6 +91,6 @@ export default function SpaceIndex({ profile, circleName, allyName, worldCount }
           </div>
         </motion.div>
       </div>
-    </section>
+    </nav>
   );
 }
