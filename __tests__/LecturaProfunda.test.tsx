@@ -99,12 +99,14 @@ describe('LecturaProfunda', () => {
     global.fetch = originalFetch;
   });
 
-  it('always shows the "04 · La lectura profunda" header, even locked', async () => {
+  it('when locked shows the free-moves masthead but hides the premium "04" header', async () => {
     mockFetch(false);
     render(<LecturaProfunda profile={TEST_PROFILE} />);
 
-    expect(screen.getByText('La conversación entre tus sistemas')).toBeInTheDocument();
+    // El masthead de movimientos gratis es la única bajada que se mantiene.
     expect(screen.getByText(/Hasta ahora viste las piezas/)).toBeInTheDocument();
+    // La "conversación entre tus sistemas" (04) es contenido Premium: bloqueada.
+    expect(screen.queryByText('La conversación entre tus sistemas')).not.toBeInTheDocument();
   });
 
   it('usuario sin Premium: SÍ ve las piezas gratis (patrones/reglas/evolución), NO ve la interpretación ni el chat', async () => {
@@ -112,9 +114,9 @@ describe('LecturaProfunda', () => {
     render(<LecturaProfunda profile={TEST_PROFILE} />);
 
     // Piezas — determinísticas, nunca detrás del paywall.
-    expect(screen.getByText('Tus patrones')).toBeInTheDocument();
-    expect(screen.getByText('Tus reglas')).toBeInTheDocument();
-    expect(screen.getByText('Tu evolución')).toBeInTheDocument();
+    expect(screen.getByText(/PATRÓN CENTRAL/)).toBeInTheDocument();
+    expect(screen.getByText(/PRINCIPIOS/)).toBeInTheDocument();
+    expect(screen.getByText(/TU MOMENTO/)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/Pago único|Desbloque|Accedé/i)).toBeInTheDocument();
@@ -124,7 +126,7 @@ describe('LecturaProfunda', () => {
     // chat (07) — pagas. Se distingue del masthead (h2, siempre visible) por
     // su bajada exclusiva de la sección 06.
     expect(screen.queryByText(/Precisión sin falsa certeza/)).not.toBeInTheDocument();
-    expect(screen.queryByText('Preguntale a tu Molino')).not.toBeInTheDocument();
+    expect(screen.queryByText(/preguntarle qué significa/)).not.toBeInTheDocument();
   });
 
   it('usuario con Premium: ve la interpretación (06) y el chat (07), además de las piezas gratis', async () => {
@@ -132,13 +134,13 @@ describe('LecturaProfunda', () => {
     render(<LecturaProfunda profile={TEST_PROFILE} />);
 
     // Piezas gratis, igual que sin Premium.
-    expect(screen.getByText('Tus patrones')).toBeInTheDocument();
-    expect(screen.getByText('Tus reglas')).toBeInTheDocument();
+    expect(screen.getByText(/PATRÓN CENTRAL/)).toBeInTheDocument();
+    expect(screen.getByText(/PRINCIPIOS/)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/Precisión sin falsa certeza/)).toBeInTheDocument();
     });
-    expect(screen.getByText('Preguntale a tu Molino')).toBeInTheDocument();
+    expect(screen.getByText(/preguntarle qué significa/)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('Síntesis de prueba.')).toBeInTheDocument();
