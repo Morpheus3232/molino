@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import Hero from "@/components/sections/Hero";
+import HeroInstrument from "@/components/sections/HeroInstrument";
 
 const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
@@ -15,7 +15,7 @@ export default function Home() {
     <div className="min-h-screen bg-background relative">
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
-          <Hero />
+          <HeroInstrument />
           <QueDescubris />
           <TresPasos />
           <TresSistemas />
