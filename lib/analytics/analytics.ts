@@ -164,8 +164,10 @@ if (!lastVisit) {
     this.track({
       type: "profile_created",
       data: {
-        lifePath: profile.lifePath,
-        archetype: profile.archetype,
+        // Datos simbólicos removidos — solo métrica de que se creó un perfil
+        hasNumerology: !!profile.lifePath,
+        hasAstrology: !!profile.sunSign,
+        hasChineseZodiac: !!profile.chineseZodiac,
       },
     });
   }
