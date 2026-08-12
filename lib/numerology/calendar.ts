@@ -107,8 +107,24 @@ export function reduceDayNumber(day: number): number {
   return n;
 }
 
-export function getCalendarDayContent(day: number): CalendarDayContent {
-  const number = reduceDayNumber(day);
+/**
+ * Reduces a full date (YYYY-MM-DD) to its Pythagorean numerology number:
+ * sums all the digits of the complete date and reduces to a single digit,
+ * preserving master numbers 11, 22, 28, 33 unreduced.
+ */
+export function reduceDateNumber(dateStr: string): number {
+  const digits = dateStr.replace(/\D/g, "");
+  let n = digits.split("").reduce((acc, d) => acc + Number(d), 0);
+  if ((MASTER_NUMBERS as readonly number[]).includes(n)) return n;
+  while (n > 9) {
+    n = sumDigits(n);
+    if ((MASTER_NUMBERS as readonly number[]).includes(n)) return n;
+  }
+  return n;
+}
+
+export function getCalendarDayContent(dateStr: string): CalendarDayContent {
+  const number = reduceDateNumber(dateStr);
   const content = CONTENT[number];
   return { number, master: (MASTER_NUMBERS as readonly number[]).includes(number), ...content };
 }

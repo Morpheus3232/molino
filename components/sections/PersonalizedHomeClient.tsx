@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import { getCalendarDayContent } from "@/lib/numerology/calendar";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
@@ -25,7 +26,7 @@ export default function PersonalizedHomeClient() {
   const display = profile ? getZodiacDisplay(profile.chineseZodiac ?? "") : { emoji: "", name: "" };
   const lifePath = profile ? safeNumber(profile.lifePath, 1) : 1;
   const archetype = profile ? (ARCHETYPES[lifePath] || ARCHETYPES[1]) : ARCHETYPES[1];
-  const todayNumber = useMemo(() => getCalendarDayContent(new Date().getDate()), []);
+  const todayNumber = useMemo(() => getCalendarDayContent(toLocalDateKey(new Date())), []);
 
   if (!mounted) return null;
   if (!profile) return null;
