@@ -22,6 +22,7 @@ const SITE_LINKS = [
 /* ═══ Primary: siempre visibles en desktop ═══ */
 const PRIMARY = [
   { href: "/profile", label: "Mi mapa" },
+  { href: "/pareja", label: "Pareja" },
   { href: "/journal", label: "Journal" },
   { href: "/circulo", label: "Círculo" },
   { href: "/evolution", label: "Evolución" },
