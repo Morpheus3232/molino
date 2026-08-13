@@ -15,12 +15,14 @@ export default function CountUp({
   className = "",
   prefix = "",
   suffix = "",
+  format = (n: number) => String(n),
 }: {
   target: number;
   duration?: number;
   className?: string;
   prefix?: string;
   suffix?: string;
+  format?: (n: number) => string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reducedMotion = useReducedMotion();
@@ -62,7 +64,7 @@ export default function CountUp({
       transition={{ duration: reducedMotion ? 0 : 0.4, ease: [0.34, 1.56, 0.64, 1] }}
       className={className}
     >
-      {prefix}{count}{suffix}
+      {prefix}{format(count)}{suffix}
     </motion.span>
   );
 }

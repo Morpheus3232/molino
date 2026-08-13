@@ -48,7 +48,7 @@ describe("Hero — birth date entry", () => {
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
     await user.type(screen.getByPlaceholderText("AAAA"), "1990");
-    await user.click(screen.getByRole("button", { name: /crear mi mapa/i }));
+    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
 
     expect(push).toHaveBeenCalledWith("/onboarding");
     const saved = JSON.parse(localStorage.getItem("molino.onboarding.v1") || "{}");
@@ -62,7 +62,7 @@ describe("Hero — birth date entry", () => {
     // Day and month only — year left empty.
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
-    await user.click(screen.getByRole("button", { name: /crear mi mapa/i }));
+    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Completá el año de nacimiento.");
     expect(push).not.toHaveBeenCalled();
@@ -75,7 +75,7 @@ describe("Hero — birth date entry", () => {
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
     await user.type(screen.getByPlaceholderText("AAAA"), "2099");
-    await user.click(screen.getByRole("button", { name: /crear mi mapa/i }));
+    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
 
     expect(push).not.toHaveBeenCalled();
   });
