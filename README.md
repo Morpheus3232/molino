@@ -4,6 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/Morpheus3232/molino/actions/workflows/ci.yml/badge.svg)](https://github.com/Morpheus3232/molino/actions/workflows/ci.yml)
+[![Tests](https://github.com/Morpheus3232/molino/actions/workflows/test.yml/badge.svg)](https://github.com/Morpheus3232/molino/actions/workflows/test.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC)](https://tailwindcss.com/)

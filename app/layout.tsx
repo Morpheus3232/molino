@@ -11,7 +11,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display" });
@@ -32,8 +32,7 @@ export const metadata: Metadata = {
     default: "Molino — Mapa Personal de Autoconocimiento",
     template: "%s | Molino",
   },
-  description:
-    "Entendé tus patrones y decidí con más claridad. Un mapa personal con base en numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "autoconocimiento",
     "numerología",
@@ -55,16 +54,15 @@ export const metadata: Metadata = {
     locale: "es_419",
     alternateLocale: ["en_US", "pt_BR"],
     url: SITE_URL,
-    siteName: "Molino",
+    siteName: SITE_NAME,
     title: "Molino — Mapa Personal de Autoconocimiento",
-    description:
-      "Entendé tus patrones y decidí con más claridad. Un mapa personal con base en numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
+    description: SITE_DESCRIPTION,
+    images: [{ url: OG_IMAGE }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Molino — Mapa Personal de Autoconocimiento",
-    description:
-      "Entendé tus patrones y decidí con más claridad. Un mapa personal con base en numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
+    description: SITE_DESCRIPTION,
   },
   metadataBase: new URL(SITE_URL),
   alternates: {
