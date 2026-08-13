@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { fadeUp } from "@/lib/utils/motion";
+import Divider from "@/components/ui/Divider";
+import { fadeUpDelayed } from "@/lib/utils/motion";
 
 const benefits = [
   {
@@ -52,40 +53,54 @@ const benefits = [
 
 export default function QueDescubris() {
   return (
-    <section className="bg-background border-t border-ink/10 py-16 sm:py-20">
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.h2 {...fadeUp} className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-16 max-w-2xl mx-auto leading-[1.05]">
-          Entendé cómo decidís. Descubrí tus afinidades. Anticipá tus mejores momentos.
+    <section className="bg-background border-t border-ink/10 py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8 lg:px-12">
+        <motion.h2
+          {...fadeUpDelayed(0)}
+          className="type-h2 text-center mb-4"
+        >
+          Lo que descubrís en Molino
         </motion.h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        <motion.p
+          {...fadeUpDelayed(0.05)}
+          className="type-caption text-center text-muted mb-12"
+        >
+          Autoconocimiento práctico y verificable
+        </motion.p>
+
+        <Divider variant="star" className="mb-12" />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
           {benefits.map((benefit, i) => (
             <motion.div
               key={benefit.title}
-              {...fadeUp}
-              style={{ transitionDelay: `${i * 0.08}s` }}
-              className="text-center"
+              {...fadeUpDelayed(0.1 + i * 0.08)}
+              className="flex flex-col"
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-ink/5 text-accent mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-accent/8 text-accent mb-6 border border-accent/15">
                 {benefit.icon}
               </div>
-              <h3 className="font-heading text-lg sm:text-xl font-semibold text-foreground mb-3">
-                {benefit.title}
-              </h3>
-              <p className="text-sm text-muted/70 leading-relaxed max-w-xs mx-auto">
+              <h3 className="type-h4 mb-3">{benefit.title}</h3>
+              <p className="type-body text-muted/80 leading-relaxed flex-1">
                 {benefit.description}
               </p>
             </motion.div>
           ))}
         </div>
 
-        <motion.div {...fadeUp} className="text-center mt-16">
+        <Divider variant="accent" className="my-12" />
+
+        <motion.div
+          {...fadeUpDelayed(0.5)}
+          className="text-center"
+        >
           <Link
             href="/biblioteca"
-            className="inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent hover:text-accent/80 transition-colors"
+            className="inline-flex items-center gap-2 font-heading text-sm font-semibold tracking-wider uppercase text-accent hover:text-accent-light transition-colors"
           >
-            VER FUENTES Y REFERENCIAS
-            <ArrowRight className="w-3 h-3 inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true" />
+            Métodos y Fuentes
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 hover:translate-x-1" aria-hidden="true" />
           </Link>
         </motion.div>
       </div>
