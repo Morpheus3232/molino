@@ -14,6 +14,7 @@ import MapVisualization from "@/components/profile/MapVisualization";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import LecturaProfunda from "@/components/profile/LecturaProfunda";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import CalculationDetails from "@/components/profile/CalculationDetails";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 
 export default function ProfileHub({ profile }: { profile: UserProfile }) {
@@ -145,6 +146,13 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
           </div>
         </motion.div>
       </header>
+
+      {/* ═══════════════════════════════════════════════
+          CÁLCULO — Cómo se calculó esto (colapsable)
+          ═══════════════════════════════════════════════ */}
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
+        <CalculationDetails profile={profile} />
+      </div>
 
       {/* ═══════════════════════════════════════════════
           LECTURA — Patrones + Principios + Momento
