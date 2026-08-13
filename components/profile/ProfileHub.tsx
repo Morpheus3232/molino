@@ -15,6 +15,7 @@ import SpaceIndex from "@/components/profile/SpaceIndex";
 import LecturaProfunda from "@/components/profile/LecturaProfunda";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import CalculationDetails from "@/components/profile/CalculationDetails";
+import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 
 export default function ProfileHub({ profile }: { profile: UserProfile }) {
@@ -152,6 +153,7 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
           ═══════════════════════════════════════════════ */}
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
         <CalculationDetails profile={profile} />
+        <ActionButtons profile={profile} />
       </div>
 
       {/* ═══════════════════════════════════════════════

@@ -1,205 +1,408 @@
 "use client";
 
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
+import { getMoonSign, getElement } from "@/lib/engines/astrologyEngine";
+import { generateQrMatrix, qrMatrixToSvgPath } from "@/lib/utils/qrcode";
+import styles from "./ProfileDownloadImage.module.css";
+
+export type ExportFormat = "og" | "square";
 
 export interface ProfileDownloadImageHandle {
-  download: () => Promise<void>;
+  download: (format?: ExportFormat) => Promise<void>;
+  renderPng: (format?: ExportFormat) => Promise<string>;
 }
 
 interface ProfileDownloadImageProps {
   profile: UserProfile;
 }
 
-const W = 620;
+function sanitizeFilenamePart(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
-const C = {
-  bg: "#0A0A0C",
-  card: "#111114",
-  ink: "#F3F1EA",
-  muted: "#8A8880",
-  dim: "rgba(243,241,234,0.06)",
-  rule: "1px solid rgba(243,241,234,0.07)",
-  accent: "#7C8CFF",
-  num: "#8B6FA0",
-  ast: "#5A8AB4",
-  zod: "#D4A843",
-};
-
-const SYSTEMS = [
-  { key: "num", label: "NUMEROLOGÍA", color: C.num },
-  { key: "ast", label: "ASTROLOGÍA", color: C.ast },
-  { key: "zod", label: "ZODÍACO CHINO", color: C.zod },
-];
-
-function S({ l, v, c }: { l: string; v: string | number; c?: string }) {
+function MolinoIcon({ size = 22, color = "#F3F1EA" }: { size?: number; color?: string }) {
   return (
-    <div style={{ padding: "5px 0", borderBottom: C.rule, display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9px", letterSpacing: "0.16em", textTransform: "uppercase", color: C.muted }}>{l}</span>
-      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "13px", fontWeight: 600, color: c || C.ink, textAlign: "right" }}>{v}</span>
-    </div>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 32 32"
+      fill="none"
+      stroke={color}
+      strokeWidth="1.3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="11" y1="30" x2="14.5" y2="13" />
+      <line x1="21" y1="30" x2="17.5" y2="13" />
+      <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" />
+      <line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" />
+      <line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
+      <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
+      <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" />
+      <path d="M24 6 L24 11 L27 8.5 Z" fill={color} stroke="none" opacity="0.85" />
+      <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
+      <line x1="16" y1="8.5" x2="20.5" y2="8.5" strokeWidth="0.65" />
+      <line x1="16" y1="8.5" x2="18.36" y2="12.57" strokeWidth="0.65" />
+      <line x1="16" y1="8.5" x2="13.64" y2="12.57" strokeWidth="0.65" />
+      <line x1="16" y1="8.5" x2="11.5" y2="8.5" strokeWidth="0.65" />
+      <line x1="16" y1="8.5" x2="13.64" y2="4.43" strokeWidth="0.65" />
+      <line x1="16" y1="8.5" x2="18.36" y2="4.43" strokeWidth="0.65" />
+      <circle cx="16" cy="8.5" r="1" fill={color} stroke="none" />
+    </svg>
   );
 }
 
-function List({ t, items, c }: { t: string; items: string[]; c?: string }) {
-  if (!items.length) return null;
+function QrBlock({ size = 84 }: { size?: number }) {
+  const matrix = useMemo(() => generateQrMatrix("https://molino.app"), []);
+  const n = matrix.length;
+  const path = useMemo(() => qrMatrixToSvgPath(matrix), [matrix]);
+
   return (
-    <div style={{ marginBottom: "12px" }}>
-      <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.22em", textTransform: "uppercase", color: c || C.muted, margin: "0 0 6px 0", fontWeight: 600 }}>{t}</p>
-      {items.map((item, i) => (
-        <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontSize: "11px", lineHeight: "1.55", color: "#C0BEB8", margin: "0 0 3px 0", paddingLeft: "10px", position: "relative" }}>
-          <span style={{ position: "absolute", left: 0, color: C.accent, fontSize: "8px", top: "2px" }}>—</span>
-          {item}
-        </p>
-      ))}
+    <div className={styles.qrWrapper} style={{ width: size, height: size }}>
+      <svg
+        viewBox={`0 0 ${n} ${n}`}
+        width="100%"
+        height="100%"
+        shapeRendering="crispEdges"
+        aria-hidden="true"
+      >
+        <path d={path} fill="#09090D" />
+      </svg>
     </div>
   );
 }
 
 const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownloadImageProps>(
   ({ profile }, ref) => {
-    const cardRef = useRef<HTMLDivElement>(null);
+    const ogRef = useRef<HTMLDivElement>(null);
+    const squareRef = useRef<HTMLDivElement>(null);
     const [generating, setGenerating] = useState(false);
 
     const lifePath = safeNumber(profile.lifePath, 1);
+    const archetypeData = ARCHETYPES[lifePath] || ARCHETYPES[1];
+    const archetypeName = archetypeData?.name || profile.archetype || "El Caminante";
     const zodiacDisplay = getZodiacDisplay(profile.chineseZodiac);
-    const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
-    const archetypeData = ARCHETYPES[lifePath];
-    const birthDate = profile.birthDate
-      ? new Date(profile.birthDate + "T00:00:00").toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })
+    const sunSign = profile.sunSign || "Aries";
+    const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "♈";
+    const sunElement = profile.sunSignInfo?.element || getElement(sunSign);
+    const sunModality = profile.sunSignInfo?.modality || "";
+
+    const moonSign = getMoonSign(profile.birthDate, profile.birthTime);
+    const moonSymbol = ZODIAC_SYMBOLS[moonSign] || "🌙";
+    const moonElement = getElement(moonSign);
+
+    const chineseElement =
+      typeof profile.chineseZodiacInfo?.element === "string"
+        ? profile.chineseZodiacInfo.element
+        : profile.element || "";
+
+    const personalYear = profile.cycles?.personalYear;
+
+    const birthDateFormatted = profile.birthDate
+      ? new Date(profile.birthDate + "T00:00:00").toLocaleDateString("es-AR", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
       : "";
-    const strengths = profile.recommendations?.strengths || [];
-    const challenges = profile.recommendations?.challenges || [];
-    const practices = profile.recommendations?.practices || [];
 
-    const renderPng = useCallback(async (): Promise<string> => {
-      if (!cardRef.current) return "";
-      const { toPng } = await import("html-to-image");
-      return toPng(cardRef.current, { quality: 1, pixelRatio: 3, cacheBust: true, backgroundColor: C.bg, width: W });
-    }, []);
+    const renderPng = useCallback(
+      async (format: ExportFormat = "og"): Promise<string> => {
+        const targetRef = format === "square" ? squareRef.current : ogRef.current;
+        if (!targetRef) return "";
+        const { toPng } = await import("html-to-image");
+        const width = format === "square" ? 1080 : 1200;
+        const height = format === "square" ? 1080 : 630;
 
-    const download = useCallback(async () => {
-      if (!cardRef.current || generating) return;
-      setGenerating(true);
-      try {
-        const dataUrl = await renderPng();
-        const link = document.createElement("a");
-        link.download = `molino-mapa-${profile.birthDate || "personal"}.png`;
-        link.href = dataUrl;
-        link.click();
-      } catch (err) {
-        console.error("[Molino] Error generando la imagen:", err);
-      } finally {
-        setGenerating(false);
-      }
-    }, [generating, profile.birthDate, renderPng]);
+        return toPng(targetRef, {
+          quality: 1,
+          pixelRatio: 1,
+          cacheBust: true,
+          backgroundColor: "#09090D",
+          width,
+          height,
+        });
+      },
+      []
+    );
 
-    useImperativeHandle(ref, () => ({ download }), [download]);
+    const download = useCallback(
+      async (format: ExportFormat = "og") => {
+        if (generating) return;
+        setGenerating(true);
+        try {
+          const dataUrl = await renderPng(format);
+          if (!dataUrl) return;
+
+          const rawName =
+            profile.name?.trim() || archetypeData?.name || profile.archetype || "personal";
+          const namePart = sanitizeFilenamePart(rawName);
+          const datePart =
+            profile.birthDate || new Date().toISOString().split("T")[0];
+          const filename = namePart
+            ? `molino-mapa-${namePart}-${datePart}.png`
+            : `molino-mapa-${datePart}.png`;
+
+          const link = document.createElement("a");
+          link.download = filename;
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (err) {
+          console.error("[Molino] Error generando la imagen de alta calidad:", err);
+        } finally {
+          setGenerating(false);
+        }
+      },
+      [generating, profile.birthDate, profile.name, profile.archetype, archetypeData, renderPng]
+    );
+
+    useImperativeHandle(ref, () => ({ download, renderPng }), [download, renderPng]);
 
     return (
-      <div aria-hidden="true" style={{ position: "fixed", left: -9999, top: 0, pointerEvents: "none", zIndex: -1 }}>
-        <div
-          ref={cardRef}
-          style={{
-            width: W,
-            background: C.bg,
-            color: C.ink,
-            fontFamily: "'Inter', sans-serif",
-            lineHeight: 1.5,
-            WebkitFontSmoothing: "antialiased",
-          }}
-        >
+      <div aria-hidden="true" className={styles.offscreenContainer}>
+        {/* ═══════════════════════════════════════════════════════
+            FORMAT 1: 1200 x 630 px (Open Graph / Twitter Landscape)
+            ═══════════════════════════════════════════════════════ */}
+        <div ref={ogRef} className={styles.cardOg}>
           {/* Header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", borderBottom: C.rule, background: C.card }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <svg width="16" height="16" viewBox="0 0 32 32" fill="none" stroke={C.ink} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="11" y1="30" x2="14.5" y2="13" /><line x1="21" y1="30" x2="17.5" y2="13" />
-                <line x1="12" y1="26" x2="20" y2="26" strokeWidth="0.5" /><line x1="12.8" y1="22" x2="19.2" y2="22" strokeWidth="0.5" /><line x1="13.5" y1="18" x2="18.5" y2="18" strokeWidth="0.5" />
-                <line x1="14" y1="12.5" x2="18" y2="12.5" strokeWidth="1.6" />
-                <line x1="16" y1="8.5" x2="25" y2="8.5" strokeWidth="0.7" /><path d="M24 6 L24 11 L27 8.5 Z" fill={C.ink} stroke="none" opacity="0.7" />
-                <circle cx="16" cy="8.5" r="4.5" strokeWidth="0.9" />
-                <circle cx="16" cy="8.5" r="1" fill={C.ink} stroke="none" />
-              </svg>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "10px", letterSpacing: "0.28em", textTransform: "uppercase", color: C.ink, fontWeight: 500 }}>Molino</span>
+          <div className={styles.header}>
+            <div className={styles.brand}>
+              <MolinoIcon size={24} color="#F3F1EA" />
+              <span className={styles.brandText}>MOLINO</span>
+              <span className={styles.brandTag}>MAPA PERSONAL</span>
             </div>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: C.muted }}>Tu mapa personal</span>
+            <div className={styles.headerMeta}>
+              {birthDateFormatted ? `${birthDateFormatted} · ` : ""}molino.app
+            </div>
           </div>
 
-          {/* Hero — Archetype */}
-          <div style={{ padding: "20px 24px 14px" }}>
-            <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "9px", letterSpacing: "0.18em", textTransform: "uppercase", color: C.muted, margin: "0 0 6px 0" }}>
-              {zodiacDisplay.emoji} {zodiacDisplay.name} de {profile.chineseZodiacInfo?.element || ""} · {symbol} {profile.sunSign}
-            </p>
-            <h2 style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: "38px", lineHeight: 0.92, letterSpacing: "-0.02em", textTransform: "uppercase", color: C.ink, margin: 0 }}>
-              {archetypeData?.name || profile.archetype}
-            </h2>
-            {archetypeData?.quote && (
-              <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "13px", fontStyle: "italic", lineHeight: 1.5, color: C.muted, margin: "8px 0 0 0" }}>
-                &ldquo;{archetypeData.quote}&rdquo;
-              </p>
-            )}
-          </div>
+          {/* OG Body Grid */}
+          <div className={styles.ogBody}>
+            {/* Col 1: Hero Identity */}
+            <div className={styles.panelGlass} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <p className={styles.overline} style={{ color: "#D4A843" }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#D4A843", display: "inline-block" }} />
+                  NÚMERO DE VIDA {lifePath}
+                </p>
+                <h1 className={styles.heroTitle}>{archetypeName}</h1>
+                <p className={styles.heroSubtitle}>
+                  &ldquo;{archetypeData?.quote || archetypeData?.description || "Tu mapa de autoconocimiento y patrones."}&rdquo;
+                </p>
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginTop: 12 }}>
+                <span className={styles.heroNumber}>{lifePath}</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#9E9B91", textTransform: "uppercase", letterSpacing: "0.15em" }}>
+                  Camino Central
+                </span>
+              </div>
+            </div>
 
-          {/* Divider */}
-          <div style={{ margin: "0 24px", height: 1, background: C.dim }} />
-
-          {/* Systems — 3 columns, compact */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px", padding: "10px 24px 14px" }}>
-            {SYSTEMS.map((sys) => {
-              const stats: { l: string; v: string | number }[] =
-                sys.key === "num"
-                  ? [
-                      { l: "Camino", v: lifePath },
-                      { l: "Expresión", v: profile.expressionNumber ?? "—" },
-                      { l: "Alma", v: profile.soulNumber ?? "—" },
-                      { l: "Personalidad", v: profile.personalityNumber ?? "—" },
-                      { l: "Suerte", v: profile.luckyNumber ?? "—" },
-                    ]
-                  : sys.key === "ast"
-                    ? [
-                        { l: "Signo", v: `${symbol} ${profile.sunSign}` },
-                        { l: "Elemento", v: profile.sunSignInfo?.element || "—" },
-                        { l: "Modalidad", v: profile.sunSignInfo?.modality || "—" },
-                        { l: "Año pers.", v: profile.cycles?.personalYear ?? "—" },
-                        { l: "Mes pers.", v: profile.cycles?.personalMonth ?? "—" },
-                      ]
-                    : [
-                        { l: "Animal", v: `${zodiacDisplay.emoji} ${zodiacDisplay.name}` },
-                        { l: "Elemento", v: profile.chineseZodiacInfo?.element || "—" },
-                        { l: "Año", v: profile.birthDate?.split("-")[0] || "—" },
-                      ];
-              return (
-                <div key={sys.key} style={{ background: C.card, borderTop: `2px solid ${C.dim}`, padding: "8px 10px 4px" }}>
-                  <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.18em", textTransform: "uppercase", color: sys.color, fontWeight: 600, margin: "0 0 4px 0", display: "flex", alignItems: "center", gap: "5px" }}>
-                    <span style={{ display: "inline-block", width: 6, height: 6, borderRadius: "50%", background: sys.color, flexShrink: 0 }} />
-                    {sys.label}
-                  </p>
-                  {stats.map((s) => <S key={s.l} l={s.l} v={s.v} />)}
+            {/* Col 2: Essential Pillars */}
+            <div style={{ display: "grid", gridTemplateRows: "1fr 1fr 1fr", gap: 12 }}>
+              {/* Pillar 1: Signo Solar */}
+              <div className={styles.panel} style={{ borderLeft: "3px solid #EAB308" }}>
+                <p className={styles.overline}>
+                  <span>☀️</span> SIGNO SOLAR
+                </p>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 700, color: "#F3F1EA" }}>
+                    {sunSymbol} {sunSign}
+                  </span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "#EAB308", fontWeight: 600 }}>
+                    {sunElement} {sunModality ? `· ${sunModality}` : ""}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+              </div>
 
-          {/* Divider */}
-          <div style={{ margin: "0 24px", height: 1, background: C.dim }} />
+              {/* Pillar 2: Signo Lunar */}
+              <div className={styles.panel} style={{ borderLeft: "3px solid #60A5FA" }}>
+                <p className={styles.overline}>
+                  <span>🌙</span> SIGNO LUNAR
+                </p>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 700, color: "#F3F1EA" }}>
+                    {moonSymbol} {moonSign}
+                  </span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "#60A5FA", fontWeight: 600 }}>
+                    {moonElement} · Mundo interior
+                  </span>
+                </div>
+              </div>
 
-          {/* Recommendations — 2 col */}
-          <div style={{ padding: "10px 24px 6px", display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "0 20px" }}>
-            <List t="Fortalezas" items={strengths} c={C.num} />
-            <List t="Desafíos" items={challenges} c={C.ast} />
-          </div>
-          <div style={{ padding: "0 24px 12px" }}>
-            <List t="Prácticas recomendadas" items={practices} c={C.zod} />
+              {/* Pillar 3: Zodíaco Chino */}
+              <div className={styles.panel} style={{ borderLeft: "3px solid #34D399" }}>
+                <p className={styles.overline}>
+                  <span>🐉</span> ZODÍACO CHINO
+                </p>
+                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 700, color: "#F3F1EA" }}>
+                    {zodiacDisplay.emoji} {zodiacDisplay.name}
+                  </span>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: "#34D399", fontWeight: 600 }}>
+                    Elemento {chineseElement || "Madera"}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Col 3: QR Code & Call To Action */}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: 12 }}>
+              <div className={styles.qrCard}>
+                <QrBlock size={92} />
+                <p className={styles.qrLabel}>molino.app</p>
+                <p className={styles.qrSubtext}>Escaneá para explorar tu mapa</p>
+              </div>
+              {personalYear ? (
+                <div className={styles.panel} style={{ padding: "10px 12px", textAlign: "center" }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#A78BFA", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                    Año Personal {personalYear}
+                  </span>
+                </div>
+              ) : null}
+            </div>
           </div>
 
           {/* Footer */}
-          <div style={{ borderTop: C.rule, padding: "10px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: C.card }}>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.1em", color: C.muted }}>{birthDate}</span>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "8px", letterSpacing: "0.1em", color: C.muted }}>molino.app · Sin registro · Sin cookies</span>
+          <div className={styles.footer}>
+            <span>MOLINO · SÍNTESIS DE IDENTIDAD</span>
+            <span>SIN REGISTRO · PRIVADO Y ANÓNIMO</span>
+          </div>
+        </div>
+
+        {/* ═══════════════════════════════════════════════════════
+            FORMAT 2: 1080 x 1080 px (Instagram Square 1:1)
+            ═══════════════════════════════════════════════════════ */}
+        <div ref={squareRef} className={styles.cardSquare}>
+          {/* Header */}
+          <div className={styles.header} style={{ paddingBottom: 20 }}>
+            <div className={styles.brand}>
+              <MolinoIcon size={28} color="#F3F1EA" />
+              <span className={styles.brandText} style={{ fontSize: 15 }}>MOLINO</span>
+              <span className={styles.brandTag} style={{ fontSize: 11 }}>MAPA DE IDENTIDAD</span>
+            </div>
+            <div className={styles.headerMeta} style={{ fontSize: 12 }}>
+              {birthDateFormatted ? `${birthDateFormatted} · ` : ""}molino.app
+            </div>
+          </div>
+
+          {/* Hero Identity */}
+          <div className={styles.squareHero}>
+            <div style={{ flex: 1 }}>
+              <p className={styles.overline} style={{ color: "#D4A843", fontSize: 12, marginBottom: 8 }}>
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#D4A843", display: "inline-block" }} />
+                CAMINO DE VIDA {lifePath}
+              </p>
+              <h1 className={styles.heroTitle} style={{ fontSize: 38 }}>
+                {archetypeName}
+              </h1>
+              <p className={styles.heroSubtitle} style={{ fontSize: 15, marginTop: 12, maxWidth: 640 }}>
+                &ldquo;{archetypeData?.quote || archetypeData?.description}&rdquo;
+              </p>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "16px 28px" }}>
+              <span className={styles.heroNumber} style={{ fontSize: 80 }}>{lifePath}</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "#9E9B91", textTransform: "uppercase", letterSpacing: "0.2em" }}>
+                VIBRACIÓN
+              </span>
+            </div>
+          </div>
+
+          {/* 4 Pillars Grid (2x2) */}
+          <div className={styles.squareGrid}>
+            {/* Card 1: Signo Solar */}
+            <div className={styles.panelGlass} style={{ borderLeft: "4px solid #EAB308", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <p className={styles.overline} style={{ fontSize: 11 }}>☀️ SIGNO SOLAR</p>
+                <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 26, color: "#F3F1EA", marginTop: 6 }}>
+                  {sunSymbol} {sunSign}
+                </div>
+              </div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: "#EAB308", fontWeight: 600, marginTop: 12 }}>
+                Elemento {sunElement} {sunModality ? `(${sunModality})` : ""}
+              </div>
+            </div>
+
+            {/* Card 2: Signo Lunar */}
+            <div className={styles.panelGlass} style={{ borderLeft: "4px solid #60A5FA", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <p className={styles.overline} style={{ fontSize: 11 }}>🌙 SIGNO LUNAR</p>
+                <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 26, color: "#F3F1EA", marginTop: 6 }}>
+                  {moonSymbol} {moonSign}
+                </div>
+              </div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: "#60A5FA", fontWeight: 600, marginTop: 12 }}>
+                Elemento {moonElement} · Emoción e intuición
+              </div>
+            </div>
+
+            {/* Card 3: Zodíaco Chino */}
+            <div className={styles.panelGlass} style={{ borderLeft: "4px solid #34D399", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <p className={styles.overline} style={{ fontSize: 11 }}>🐉 ZODÍACO CHINO</p>
+                <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 26, color: "#F3F1EA", marginTop: 6 }}>
+                  {zodiacDisplay.emoji} {zodiacDisplay.name}
+                </div>
+              </div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: "#34D399", fontWeight: 600, marginTop: 12 }}>
+                Elemento {chineseElement || "Madera"}
+              </div>
+            </div>
+
+            {/* Card 4: Ciclo & Momento */}
+            <div className={styles.panelGlass} style={{ borderLeft: "4px solid #A78BFA", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <p className={styles.overline} style={{ fontSize: 11 }}>⚡ ENERGÍA & CICLO</p>
+                <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 26, color: "#F3F1EA", marginTop: 6 }}>
+                  {personalYear ? `Año ${personalYear}` : "Ritmo Personal"}
+                </div>
+              </div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: "#A78BFA", fontWeight: 600, marginTop: 12 }}>
+                {profile.cycles?.personalMonth ? `Mes personal ${profile.cycles.personalMonth} · ` : ""}Sincronicidad
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Card with QR Code */}
+          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <p style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 18, color: "#F3F1EA", margin: "0 0 4px 0" }}>
+                Descubrí tu mapa en molino.app
+              </p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: "#9E9B91", margin: 0 }}>
+                Astrología occidental, numerología y zodíaco chino integrados.
+              </p>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ textAlign: "right" }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "#D4A843", letterSpacing: "0.15em", textTransform: "uppercase", display: "block" }}>
+                  Escaneá el código
+                </span>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 9, color: "#7A7870" }}>
+                  100% en cliente
+                </span>
+              </div>
+              <QrBlock size={76} />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className={styles.footer} style={{ paddingTop: 16 }}>
+            <span>MOLINO · SISTEMA DE AUTOCONOCIMIENTO</span>
+            <span>SIN REGISTRO · SIN COOKIES</span>
           </div>
         </div>
       </div>
