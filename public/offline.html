@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Molino — Modo sin conexión</title>
+  <meta name="theme-color" content="#0A0A0C" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #0A0A0C;
+      color: #F3F1EA;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(243, 241, 234, 0.1);
+      border-radius: 20px;
+      padding: 40px 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .logo {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 24px;
+      display: block;
+    }
+    .tag {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #D4A843;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      color: #9E9B91;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: #F3F1EA;
+      color: #0A0A0C;
+      border: none;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: #F3F1EA;
+      border: 1px solid rgba(243, 241, 234, 0.15);
+    }
+    .footer {
+      margin-top: 24px;
+      font-family: ui-monospace, monospace;
+      font-size: 10px;
+      color: #7A7870;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="100" height="100" rx="20" fill="#141419"/>
+      <g fill="#F3F1EA">
+        <path d="M32,97 L68,97 L57,44 L43,44 Z" fill-opacity="0.95"/>
+        <path d="M43,44 Q50,30 57,44 Z"/>
+        <g transform="translate(50 36)">
+          <g transform="rotate(45)"><path d="M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z"/></g>
+          <g transform="rotate(135)"><path d="M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z"/></g>
+          <g transform="rotate(225)"><path d="M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z"/></g>
+          <g transform="rotate(315)"><path d="M0,0 L-4,-4 L-5.5,-11 L-3,-20 L0,-28 L3,-20 L5.5,-11 L4,-4 Z"/></g>
+          <circle cx="0" cy="0" r="3" fill="#0A0A0C" stroke="#F3F1EA" stroke-width="1"/>
+        </g>
+      </g>
+    </svg>
+
+    <span class="tag">Modo Offline</span>
+    <h1>Estás sin conexión</h1>
+    <p>
+      No tenés acceso a internet en este momento, pero podés seguir consultando tu mapa personal ya guardado en este dispositivo.
+    </p>
+
+    <div class="actions">
+      <a href="/profile" class="btn btn-primary">Ver mi mapa guardado</a>
+      <button type="button" onclick="window.location.reload()" class="btn btn-secondary">Reintentar conexión</button>
+    </div>
+
+    <div class="footer">
+      Molino · 100% en tu cliente
+    </div>
+  </div>
+</body>
+</html>

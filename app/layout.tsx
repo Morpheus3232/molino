@@ -11,6 +11,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
+import PWAProvider from "@/components/PWAProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE, siteUrl } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
@@ -33,6 +34,15 @@ export const metadata: Metadata = {
     template: "%s | Molino",
   },
   description: SITE_DESCRIPTION,
+  applicationName: "Molino",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Molino",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   keywords: [
     "autoconocimiento",
     "numerología",
@@ -91,9 +101,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#0A0A0C",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -150,17 +161,21 @@ export default function RootLayout({
         {jsonLd.map((schema, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
         ))}
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Molino" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-<body>
-          <div
-            aria-hidden="true"
-            style={{ display: "none" }}
-            dangerouslySetInnerHTML={{
-              __html: `<!--
+      <body>
+        <div
+          aria-hidden="true"
+          style={{ display: "none" }}
+          dangerouslySetInnerHTML={{
+            __html: `<!--
 THESIS: Molino no ilustra lo mistico, lo calcula en vivo -- el sitio se muestra
 como el instrumento que muele tres sistemas (numerologia, astrologia, zodiaco
 chino) en un mapa, y refusa el hero-metric estatico y el "neon sobre negro" generico.
@@ -177,11 +192,12 @@ seed 3b23cd2e), literalizando el molino del nombre como nucleo generativo.
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
 review, the verdict, and DESIGN.md.
 -->`,
-            }}
-          />
-          <SkipLink />
-          <SiteIntro />
-          <AnalyticsProvider />
+          }}
+        />
+        <SkipLink />
+        <SiteIntro />
+        <AnalyticsProvider />
+        <PWAProvider>
           <MotionProvider>
             <ScrollProgress />
             <UniversityHeader />
@@ -190,19 +206,20 @@ review, the verdict, and DESIGN.md.
               <UniversityFooter />
             </AppErrorBoundary>
           </MotionProvider>
-          {/* Sin theme="dark" caía al fondo blanco por defecto de sonner —
-              un toast de librería sin skin, roto contra el resto de la UI
-              (siempre oscura, sin theme toggle implementado). */}
-          <Toaster
-            position="bottom-right"
-            richColors
-            theme="dark"
-            toastOptions={{
-              classNames: {
-                toast: "!bg-background !text-foreground !border !border-ink/10 !font-sans",
-              },
-            }}
-          />
+        </PWAProvider>
+        {/* Sin theme="dark" caía al fondo blanco por defecto de sonner —
+            un toast de librería sin skin, roto contra el resto de la UI
+            (siempre oscura, sin theme toggle implementado). */}
+        <Toaster
+          position="bottom-right"
+          richColors
+          theme="dark"
+          toastOptions={{
+            classNames: {
+              toast: "!bg-background !text-foreground !border !border-ink/10 !font-sans",
+            },
+          }}
+        />
       </body>
     </html>
   );
