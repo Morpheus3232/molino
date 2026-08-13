@@ -1,7 +1,14 @@
-import { getChineseZodiac as getRealChineseZodiac } from '../data/chineseNewYearDates';
-import { ANIMALS, getRelation, type Animal } from '../data/animalRelations';
+import {
+  getChineseZodiac as getRealChineseZodiac,
+  getLunarYear,
+  getChineseNewYearDate,
+  CHINESE_NEW_YEAR_DATES,
+} from "@/lib/data/chinese-new-year";
+import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
 
-export function getChineseZodiac(birthDate: string): string {
+export { getChineseNewYearDate, getLunarYear, CHINESE_NEW_YEAR_DATES };
+
+export function getChineseZodiac(birthDate: string): Animal {
   return getRealChineseZodiac(birthDate);
 }
 
@@ -16,7 +23,7 @@ export function getChineseZodiac(birthDate: string): string {
 export function calculateAnimalFromDate(
   dateStr?: string,
   year?: number
-): { animal: string; isApproximate: boolean } {
+): { animal: Animal | ""; isApproximate: boolean } {
   if (dateStr) {
     return { animal: getRealChineseZodiac(dateStr), isApproximate: false };
   }
@@ -27,22 +34,28 @@ export function calculateAnimalFromDate(
   return { animal: "", isApproximate: true };
 }
 
-export function getChineseZodiacInfo(birthDate: string): { animal: string; element: string } {
-  const animal = getChineseZodiac(birthDate);
-  const year = parseInt(birthDate.split('-')[0], 10);
-  const element = getChineseElement(year);
-  return { animal, element };
+export function getChineseZodiacInfo(birthDate: string): {
+  animal: Animal;
+  element: string;
+  lunarYear: number;
+} {
+  const lunarYear = getLunarYear(birthDate);
+  const animal = getChineseAnimal(lunarYear);
+  const element = getChineseElement(lunarYear);
+  return { animal, element, lunarYear };
 }
 
-export function getChineseElement(year: number): string {
-  const elements = ['Metal', 'Agua', 'Madera', 'Fuego', 'Tierra'];
-  const index = Math.floor((((year - 1900) % 10) + 10) % 10 / 2);
+export function getChineseElement(yearOrDate: number | string): string {
+  const year = typeof yearOrDate === "string" ? getLunarYear(yearOrDate) : yearOrDate;
+  const elements = ["Metal", "Agua", "Madera", "Fuego", "Tierra"];
+  const index = Math.floor(((((year - 1900) % 10) + 10) % 10) / 2);
   return elements[index];
 }
 
-export function getChineseAnimal(year: number): string {
-  const index = (year - 1900) % 12;
-  return ANIMALS[index >= 0 ? index : index + 12];
+export function getChineseAnimal(yearOrDate: number | string): Animal {
+  const year = typeof yearOrDate === "string" ? getLunarYear(yearOrDate) : yearOrDate;
+  const index = ((year - 1900) % 12 + 12) % 12;
+  return ANIMALS[index];
 }
 
 export function calculateChineseCompatibility(userAnimal: string, targetAnimal: string): number {
