@@ -14,6 +14,7 @@ import MapVisualization from "@/components/profile/MapVisualization";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import LecturaProfunda from "@/components/profile/LecturaProfunda";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
+import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
@@ -166,6 +167,11 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
           TU PREGUNTA — Decisiones personales
           ═══════════════════════════════════════════════ */}
       <DecisionMapSection profile={profile} />
+
+      {/* ═══════════════════════════════════════════════
+          SINCRONICIDAD — ¿Con quién compartís tu mapa?
+          ═══════════════════════════════════════════════ */}
+      <FamousMatch profile={profile} />
 
       {/* ═══════════════════════════════════════════════
           NAV — Dimensiones del mapa en una línea.
