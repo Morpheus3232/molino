@@ -2,7 +2,7 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "accent" | "secondary" | "ghost" | "inverse";
+  variant?: "primary" | "accent" | "secondary" | "ghost" | "inverse" | "gold";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   asChild?: boolean;
@@ -20,15 +20,16 @@ export default function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none group";
+  const baseStyles = "inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed group";
   const isDisabled = disabled || loading;
 
   const variants = {
-    primary: "bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground hover:shadow-md hover:-translate-y-px active:translate-y-0",
-    accent: "bg-accent text-accent-foreground shadow-sm hover:opacity-95 hover:shadow-glow-accent hover:-translate-y-px active:translate-y-0",
-    secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent hover:shadow-sm",
-    ghost: "bg-transparent text-muted hover:text-foreground",
-    inverse: "bg-paper text-accent shadow-sm hover:bg-paper/90 hover:shadow-md hover:-translate-y-px active:translate-y-0",
+    primary: "bg-ink text-paper hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent active:scale-95",
+    accent: "bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-accent active:scale-95",
+    secondary: "bg-transparent text-secondary border border-border hover:border-accent hover:text-accent hover:bg-accent/5 focus-visible:ring-accent",
+    ghost: "bg-transparent text-muted hover:text-foreground hover:bg-ink/5 focus-visible:ring-accent",
+    inverse: "bg-paper text-ink hover:bg-paper/80 focus-visible:ring-accent active:scale-95",
+    gold: "bg-gold text-gold-foreground hover:bg-gold-hover focus-visible:ring-gold active:scale-95",
   };
 
   const sizes = {
