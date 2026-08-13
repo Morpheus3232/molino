@@ -4,8 +4,8 @@
   "description": "Tu mapa personal de autoconocimiento. Numerología, astrología, ciclos y arquetipos.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F7F5F0",
-  "theme_color": "#1A1A1A",
+  "background_color": "#0A0A0C",
+  "theme_color": "#F3F1EA",
   "lang": "es",
   "icons": [
     {

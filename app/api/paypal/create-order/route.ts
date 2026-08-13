@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, salt } = await req.json();
+    const { name, birthDate, salt, plan } = await req.json();
 
     if (!birthDate) {
       return NextResponse.json(
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     const profileHash = hashProfile(name ?? '', birthDate, salt);
-    const order = await createOrder(profileHash);
+    const order = await createOrder(profileHash, plan ?? null);
 
     return NextResponse.json(order);
   } catch (error) {

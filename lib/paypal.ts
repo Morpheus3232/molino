@@ -1,9 +1,28 @@
 import { hashProfile, getBaseUrl } from '@/lib/mercadopago';
+import { resolvePlanUsdPrice, type BillingCycle } from '@/components/pricing/pricing-data';
 
 const PRODUCT_ID = 'molino_premium';
 const PRODUCT_PRICE_USD = '8.00';
 const PRODUCT_CURRENCY = 'USD';
 const BRAND_NAME = process.env.PAYPAL_BRAND_NAME || 'Molino';
+
+/** reference_id para un plan pagado (ej. "molino_pro_monthly"). */
+export function planProductId(planId: string, cycle: BillingCycle): string {
+  return `molino_${planId}_${cycle}`;
+}
+
+const PLAN_PRODUCT_RE = /^molino_([a-z]+)_(monthly|yearly)$/;
+
+/** Precio USD esperado (string con 2 decimales) para un product id. */
+export function expectedAmountFor(product: string): string | null {
+  if (product === PRODUCT_ID) return PRODUCT_PRICE_USD;
+  const match = PLAN_PRODUCT_RE.exec(product);
+  if (match) {
+    const price = resolvePlanUsdPrice(match[1], match[2] as BillingCycle);
+    if (price > 0) return price.toFixed(2);
+  }
+  return null;
+}
 
 export interface PayPalAmount {
   currency_code: string;
@@ -114,7 +133,10 @@ export async function getAccessToken(): Promise<string> {
   return cachedToken.token;
 }
 
-export async function createOrder(profileHash: string): Promise<PayPalCreateOrderResult> {
+export async function createOrder(
+  profileHash: string,
+  plan?: { id: string; cycle: BillingCycle } | null,
+): Promise<PayPalCreateOrderResult> {
   const token = await getAccessToken();
   // Misma protección que Mercado Pago (getBaseUrl lanza en producción si no
   // está configurada) — antes caía en el mismo fallback silencioso a
@@ -125,14 +147,20 @@ export async function createOrder(profileHash: string): Promise<PayPalCreateOrde
   const returnUrl = `${baseUrl}/profile?payment_method=paypal&payment_status=approved`;
   const cancelUrl = `${baseUrl}/profile?payment_method=paypal&payment_status=cancelled`;
 
+  const isPlan = !!plan && plan.id !== 'gratis';
+  const referenceId = isPlan ? planProductId(plan!.id, plan!.cycle) : PRODUCT_ID;
+  const amount = expectedAmountFor(referenceId) ?? PRODUCT_PRICE_USD;
+
   const body = {
     intent: 'CAPTURE',
     purchase_units: [
       {
-        reference_id: PRODUCT_ID,
-        description: 'Molino — Premium: Síntesis completa',
+        reference_id: referenceId,
+        description: isPlan
+          ? `Molino — Plan ${plan!.id} (${plan!.cycle})`
+          : 'Molino — Premium: Síntesis completa',
         custom_id: profileHash,
-        amount: { currency_code: PRODUCT_CURRENCY, value: PRODUCT_PRICE_USD },
+        amount: { currency_code: PRODUCT_CURRENCY, value: amount },
       },
     ],
     application_context: {
@@ -237,8 +265,10 @@ export function validateOrder(order: PayPalOrder, profileHash: string): OrderVal
     return { valid: false, reason: 'Order is missing purchase units' };
   }
 
-  if (unit.reference_id !== PRODUCT_ID) {
-    return { valid: false, reason: `Product mismatch: got '${unit.reference_id ?? 'undefined'}', expected '${PRODUCT_ID}'` };
+  const referenceId = unit.reference_id ?? '';
+  const expectedAmount = expectedAmountFor(referenceId);
+  if (expectedAmount === null) {
+    return { valid: false, reason: `Product mismatch: got '${referenceId || 'undefined'}'` };
   }
 
   if (unit.custom_id !== profileHash) {
@@ -254,8 +284,8 @@ export function validateOrder(order: PayPalOrder, profileHash: string): OrderVal
     return { valid: false, reason: `Unexpected currency: ${amount.currency_code}` };
   }
 
-  if (amount.value !== PRODUCT_PRICE_USD) {
-    return { valid: false, reason: `Amount mismatch: got ${amount.value}, expected ${PRODUCT_PRICE_USD}` };
+  if (amount.value !== expectedAmount) {
+    return { valid: false, reason: `Amount mismatch: got ${amount.value}, expected ${expectedAmount}` };
   }
 
   const capture = unit.payments?.captures?.[0];

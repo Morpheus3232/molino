@@ -1,10 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
+import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
 import SocialCounter from "@/components/ui/SocialCounter";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
@@ -22,9 +23,7 @@ export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSticky, setShowSticky] = useState(false);
   const dateInputRef = useRef<DateInputHandle>(null);
-  const heroRef = useRef<HTMLElement>(null);
 
   const isDateValid = isValidBirthDate(dateValue);
 
@@ -50,23 +49,6 @@ export default function HeroInstrument() {
     setDateValue(value);
   }, []);
 
-  // Sticky CTA en mobile: aparece cuando el usuario scrollea por debajo del hero.
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el || typeof window === "undefined") return;
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-      setShowSticky(rect.bottom < 0);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
   const ctaClass = `
     group inline-flex items-center justify-center gap-3
     font-heading font-bold uppercase tracking-[0.08em]
@@ -82,7 +64,6 @@ export default function HeroInstrument() {
   return (
     <section
       id="mapa-form"
-      ref={heroRef}
       className="relative bg-background min-h-[calc(100dvh-4rem)] lg:h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
     >
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
@@ -173,32 +154,15 @@ export default function HeroInstrument() {
         </motion.p>
       </div>
 
-      {/* Sticky CTA mobile — solo aparece al scrollear por debajo del hero */}
-      <AnimatePresence>
-        {showSticky && (
-          <motion.div
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed bottom-0 inset-x-0 z-50 md:hidden p-4 pb-[max(1rem,env(safe-area-inset-bottom))] bg-background/90 backdrop-blur border-t border-ink/10"
-          >
-            <button
-              type="button"
-              onClick={handleGenerate}
-              aria-disabled={!isDateValid || isSubmitting}
-              aria-busy={isSubmitting}
-              className={`${ctaClass} px-6 py-3.5 text-base min-h-[52px] w-full`}
-            >
-              {isSubmitting ? "Generando tu mapa…" : CTA_LABEL}
-              {!isSubmitting && <ArrowRight className="w-5 h-5" aria-hidden="true" />}
-            </button>
-            <p className="mt-2 text-center font-mono text-[11px] text-muted/70">
-              Gratis · Sin registro
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Sticky CTA mobile — reusable, sincronizado con el input del hero */}
+      <StickyMobileCTA
+        value={dateValue}
+        onChange={handleDateChange}
+        onGenerate={handleGenerate}
+        canGenerate={isDateValid && !isSubmitting}
+        showAfter={1}
+        ctaLabel="Generar mapa"
+      />
     </section>
   );
 }
