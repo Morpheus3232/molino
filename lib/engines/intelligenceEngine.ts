@@ -243,7 +243,7 @@ export function buildIntelligencePrompt(request: InterpretationRequest): string 
     ? `\nCONVERSACIÓN PREVIA (misma sesión — la pregunta actual puede ser continuación de esto):\n${conversationHistory
         .map((turn, i) => {
           const highlights = turn.answerHighlights ? ` | clave: ${turn.answerHighlights}` : '';
-          return `${i + 1}. Usuario preguntó: "${sanitizeUserText(turn.question, userProfile.name || '')}"\n   [ADDRESS] respondió: "${sanitizeUserText(turn.answer, userProfile.name || '')}${highlights}"`;
+          return `${i + 1}. Usuario preguntó: "${sanitizeUserText(turn.question, userProfile.name || '')}"\n   Molino respondió: "${sanitizeUserText(turn.answer, userProfile.name || '')}${highlights}"`;
         })
         .join('\n')}\n`
     : '';
