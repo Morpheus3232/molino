@@ -78,6 +78,11 @@ const config: Config = {
           hover: "var(--color-accent-hover)",
           light: "rgb(var(--color-accent-light-rgb) / <alpha-value>)",
         },
+        gold: {
+          DEFAULT: "rgb(var(--color-gold-rgb) / <alpha-value>)",
+          foreground: "var(--color-gold-foreground)",
+          hover: "var(--color-gold-hover)",
+        },
         accentHover: "var(--color-accent-hover)",
         success: {
           DEFAULT: "var(--color-success)",

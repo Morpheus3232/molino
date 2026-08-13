@@ -14,12 +14,13 @@ describe("Home page — universal access without profile", () => {
     const source = fs.readFileSync(pagePath, "utf8");
     expect(source).toBeTruthy();
     expect(source).toContain("PersonalizedHomeClient");
+    expect(source).toContain("HeroInstrument");
     expect(source).toContain("TresPasos");
     expect(source).toContain("QueDescubris");
     expect(source).toContain("TresSistemas");
     expect(source).toContain("CTAFinal");
-    expect(source).toContain("Testimonial");
     expect(source).toContain("TrustMetrics");
+    expect(source).toContain("QuienHaceEsto");
     expect(source).toContain("FAQ");
   });
 });
