@@ -43,7 +43,7 @@ export default function UniversityFooter() {
               ))}
             </ul>
             <Link
-              href="https://github.com/molino-app/molino"
+              href="https://github.com/Morpheus3232/molino"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors"
