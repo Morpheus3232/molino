@@ -82,7 +82,7 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
         >
           <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-16 sm:pb-24">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-16 items-center">
-              {/* Identity — [PERSON_NAME] emocional */}
+              {/* Identity — núcleo emocional */}
               <div className="text-center lg:text-left">
                 <motion.div {...heroItem(0.15)}>
                   <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
@@ -132,7 +132,7 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
                 </motion.div>
               </div>
 
-              {/* MapVisualization — [PERSON_NAME] */}
+              {/* MapVisualization — el mapa visual */}
               <motion.div
                 {...heroItem(0.2)}
                 className="flex justify-center lg:justify-end"
@@ -161,7 +161,7 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
       <LecturaProfunda profile={profile} />
 
       {/* ═══════════════════════════════════════════════
-          TU PREGUNTA — Decisiones [ADDRESS]
+          TU PREGUNTA — Decisiones personales
           ═══════════════════════════════════════════════ */}
       <DecisionMapSection profile={profile} />
 
