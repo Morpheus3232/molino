@@ -9,6 +9,8 @@ import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
+import { loadSelectedPlan, clearSelectedPlan } from '@/lib/session/selectedPlan';
+import { resolvePlanUsdPrice, getPlanById, type BillingCycle } from '@/components/pricing/pricing-data';
 
 const PROFILE_SALT_KEY = 'molino-profile-salt';
 
@@ -122,8 +124,16 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [checkoutMethod, setCheckoutMethod] = useState<'mercadopago' | 'paypal' | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
+  // Plan elegido en /precios (persistido en localStorage). null → pago legacy
+  // de un solo producto premium ($8 USD), el flujo histórico.
+  const [selectedPlan, setSelectedPlan] = useState(() => loadSelectedPlan());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
+
+  // Precio a cobrar: el del plan guardado si hay uno, sino el precio fijo.
+  const chargePlanId = selectedPlan && selectedPlan.id !== 'gratis' ? selectedPlan.id : null;
+  const chargeCycle: BillingCycle = selectedPlan?.cycle ?? 'monthly';
+  const chargePriceUsd = chargePlanId ? resolvePlanUsdPrice(chargePlanId, chargeCycle) : flags.premiumPriceUsd;
 
   // Fetch feature flags from API (runtime-configurable, no rebuild needed)
   useEffect(() => {
@@ -175,6 +185,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           if (data.verified) {
             setState('unlocked');
             setJustUnlocked(true);
+            clearSelectedPlan();
             if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
             invalidatePremiumAccessCache(name, birthDate);
             analytics.trackPaymentApproved(paypalOrderId, 'paypal');
@@ -205,6 +216,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           if (data.verified) {
             setState('unlocked');
             setJustUnlocked(true);
+            clearSelectedPlan();
             if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
             invalidatePremiumAccessCache(name, birthDate);
             analytics.trackPremiumUnlocked();
@@ -298,7 +310,12 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         const res = await fetch('/api/paypal/create-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, birthDate, salt: profileSalt }),
+          body: JSON.stringify({
+            name,
+            birthDate,
+            salt: profileSalt,
+            ...(chargePlanId ? { plan: { id: chargePlanId, cycle: chargeCycle } } : {}),
+          }),
         });
 
         if (!res.ok) {
@@ -314,7 +331,13 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, birthDate, currencyId, salt: profileSalt }),
+        body: JSON.stringify({
+          name,
+          birthDate,
+          currencyId,
+          salt: profileSalt,
+          ...(chargePlanId ? { plan: { id: chargePlanId, cycle: chargeCycle } } : {}),
+        }),
       });
 
       if (!res.ok) {
@@ -355,6 +378,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       if (res.ok && data.verified) {
         setState('unlocked');
         setJustUnlocked(true);
+        clearSelectedPlan();
         if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
         invalidatePremiumAccessCache(name, birthDate);
         analytics.trackPremiumUnlocked();
@@ -385,6 +409,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       if (res.ok && data.valid) {
         setState('unlocked');
         setJustUnlocked(true);
+        clearSelectedPlan();
         if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
         invalidatePremiumAccessCache(name, birthDate);
         analytics.trackPremiumUnlocked();
@@ -537,7 +562,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
               <div className="flex items-baseline gap-3 mb-2">
                 <span className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
-                  ${flags.premiumPriceUsd} <span className="text-lg font-medium tracking-wider">{t.premium.priceSuffix}</span>
+                  ${chargePriceUsd} <span className="text-lg font-medium tracking-wider">{t.premium.priceSuffix}</span>
                 </span>
               </div>
 
@@ -726,7 +751,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                       size="lg"
                       onClick={() => handleCheckout(checkoutMethod ?? 'mercadopago')}
                     >
-                      Ir a pagar ${flags.premiumPriceUsd} USD
+                      Ir a pagar ${chargePriceUsd} USD
                     </Button>
                   </div>
                 )}

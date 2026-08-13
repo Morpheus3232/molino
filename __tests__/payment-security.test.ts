@@ -122,6 +122,71 @@ describe('Payment flow security', () => {
     });
   });
 
+  describe('validatePayment plan-aware (planes de /precios)', () => {
+    test('accepts a Pro monthly plan at its real price', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 4.99,
+        currency_id: 'USD',
+        metadata: { product: 'molino_pro_monthly' },
+      });
+      expect(result.valid).toBe(true);
+    });
+
+    test('accepts a Pro yearly plan at its annual price', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 39.99,
+        currency_id: 'USD',
+        metadata: { product: 'molino_pro_yearly' },
+      });
+      expect(result.valid).toBe(true);
+    });
+
+    test('accepts a Familiar monthly plan at its real price', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 9.99,
+        currency_id: 'USD',
+        metadata: { product: 'molino_familiar_monthly' },
+      });
+      expect(result.valid).toBe(true);
+    });
+
+    test('rejects a plan charged with the wrong amount (no rebaja de precio)', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 3.99, // intentó pagar menos que Pro mensual
+        currency_id: 'USD',
+        metadata: { product: 'molino_pro_monthly' },
+      });
+      expect(result.valid).toBe(false);
+      expect(result.reason).toContain('Amount mismatch');
+    });
+
+    test('rejects a plan in a non-USD currency', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 4.99,
+        currency_id: 'ARS',
+        metadata: { product: 'molino_pro_monthly' },
+      });
+      expect(result.valid).toBe(false);
+      expect(result.reason).toContain('currency');
+    });
+
+    test('rejects an unknown plan product id', () => {
+      const result = validatePayment({
+        status: 'approved',
+        transaction_amount: 4.99,
+        currency_id: 'USD',
+        metadata: { product: 'molino_hacker_monthly' },
+      });
+      expect(result.valid).toBe(false);
+      expect(result.reason).toContain('Product mismatch');
+    });
+  });
+
   describe('verifyWebhookSignature', () => {
     test('missing signature fails', () => {
       const result = verifyWebhookSignature(null, 'req-123', '123', '{}');

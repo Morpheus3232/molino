@@ -11,7 +11,7 @@ import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE } from "@/lib/seo";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE, siteUrl } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
 const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display" });
@@ -67,6 +67,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
+    // Hreflang — preparado para internacionalización. `es` (default) vive en
+    // la raíz; `en`/`pt` apuntan a rutas aún no servidas, listas para cuando
+    // se monten los locales. Si se publican antes de crearlas, quitar las
+    // entradas no-es para evitar hreflang a 404.
+    languages: {
+      "es": SITE_URL,
+      "en": siteUrl("/en"),
+      "pt": siteUrl("/pt"),
+    },
   },
   robots: {
     index: true,
@@ -99,6 +108,15 @@ export default function RootLayout({
       name: "Molino",
       url: SITE_URL,
       description: "Mapa Personal de Autoconocimiento: numerología, astrología, zodiaco chino y análisis de patrones.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Molino",
+      url: SITE_URL,
+      logo: `${SITE_URL}/favicon.svg`,
+      description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
+      sameAs: [],
     },
     {
       "@context": "https://schema.org",

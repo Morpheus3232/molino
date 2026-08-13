@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, currencyId, salt } = await req.json();
+    const { name, birthDate, currencyId, salt, plan } = await req.json();
 
     if (!birthDate) {
       return NextResponse.json(
@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
       name ?? '',
       currencyId,
       profileHash, // external_reference: deterministic per profile
+      plan ?? null,
     );
 
     if (result.preferenceId && result.checkoutUrl) {

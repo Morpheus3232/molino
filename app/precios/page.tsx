@@ -1,0 +1,129 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { siteUrl } from "@/lib/seo";
+import PricingSection from "@/components/pricing/PricingSection";
+import ComparisonTable from "@/components/pricing/ComparisonTable";
+import PricingFAQ from "@/components/pricing/PricingFAQ";
+import { PLANS, PRICING_FAQS } from "@/components/pricing/pricing-data";
+
+export const metadata: Metadata = {
+  title: "Precios — Planes Gratis, Pro y Familiar",
+  description:
+    "Tu mapa básico es gratuito. Planes Pro y Familiar con análisis de compatibilidad, ciclos anuales, informe PDF y sin anuncios. Sin registro, sin permanencia.",
+  alternates: {
+    canonical: siteUrl("/precios"),
+  },
+  openGraph: {
+    title: "Precios — Molino",
+    description:
+      "Tu mapa básico es gratuito. La claridad profunda, con planes Pro y Familiar.",
+    type: "website",
+    url: siteUrl("/precios"),
+    images: [siteUrl("/opengraph-image")],
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: PRICING_FAQS.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Molino Pro",
+  description:
+    "Mapa personal completo con análisis de compatibilidad, ciclos anuales, informe PDF descargable y sin anuncios.",
+  brand: { "@type": "Organization", name: "Molino" },
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "USD",
+    lowPrice: PLANS.find((p) => p.id === "gratis")?.price.monthly ?? 0,
+    highPrice: PLANS.find((p) => p.id === "familiar")?.price.yearly ?? 79.99,
+    offerCount: PLANS.length,
+    offers: PLANS.filter((p) => p.price.monthly > 0).map((plan) => ({
+      "@type": "Offer",
+      name: plan.name,
+      price: plan.price.monthly,
+      priceCurrency: plan.currency ?? "USD",
+      url: siteUrl("/precios"),
+    })),
+  },
+};
+
+export default function PreciosPage() {
+  const gratis = PLANS.find((p) => p.id === "gratis");
+  const pro = PLANS.find((p) => p.id === "pro");
+
+  return (
+    <main id="main-content" className="bg-background pt-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+
+      {/* Hero */}
+      <section className="border-b border-ink/10 py-16 sm:py-24 text-center px-4">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-5">
+          Planes simples · Sin permanencia · Sin registro
+        </p>
+        <h1 className="mx-auto max-w-3xl font-display text-[clamp(2rem,6vw,3.5rem)] font-bold tracking-tight text-foreground leading-[1.05]">
+          Tu mapa básico es gratuito.
+          <br className="hidden sm:block" />
+          <span className="text-accent">La claridad profunda tiene un valor.</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-xl text-base sm:text-lg text-muted/70 leading-relaxed">
+          Empezá gratis y subí de plan cuando quieras. El mapa esencial es y será tuyo sin pagar nada.
+        </p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href={gratis?.cta.href ?? "/onboarding"}
+            className="inline-flex items-center justify-center rounded-md bg-gold px-8 py-3.5 text-sm font-heading font-semibold uppercase tracking-[0.1em] text-gold-foreground transition-colors hover:bg-gold-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            Empezar gratis →
+          </Link>
+          <Link
+            href={pro?.cta.href ?? "/onboarding"}
+            className="inline-flex items-center justify-center rounded-md border border-ink/20 px-8 py-3.5 text-sm font-heading font-semibold uppercase tracking-[0.1em] text-foreground transition-colors hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            Ver Pro
+          </Link>
+        </div>
+      </section>
+
+      <PricingSection />
+
+      <ComparisonTable />
+
+      <PricingFAQ />
+
+      {/* Final CTA */}
+      <section className="bg-accent/[0.05] border-t border-ink/10 py-16 sm:py-24 text-center px-4">
+        <h2 className="font-display text-[clamp(1.75rem,4vw,3rem)] tracking-tight text-foreground leading-[1.05] mb-3">
+          Tu claridad está a un clic.
+        </h2>
+        <p className="mx-auto max-w-md text-base text-muted/70 leading-relaxed mb-8">
+          Generá tu mapa personal gratis hoy. Sin registro, sin tarjeta, sin compromiso.
+        </p>
+        <Link
+          href={gratis?.cta.href ?? "/onboarding"}
+          className="inline-flex items-center justify-center rounded-md bg-gold px-10 py-4 text-base font-heading font-semibold uppercase tracking-[0.1em] text-gold-foreground transition-colors hover:bg-gold-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          Empezar gratis →
+        </Link>
+      </section>
+    </main>
+  );
+}

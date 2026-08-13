@@ -43,13 +43,13 @@ const BIRTH = '1990-01-15';
 const HASH = hashProfile(NAME, BIRTH);
 const ORDER_ID = 'ORD-8S00000000000000';
 
-function completedOrder(customId = HASH, amount = '8.00', currency = 'USD', status = 'COMPLETED') {
+function completedOrder(customId = HASH, amount = '8.00', currency = 'USD', status = 'COMPLETED', referenceId = 'molino_premium') {
   return {
     id: ORDER_ID,
     status,
     purchase_units: [
       {
-        reference_id: 'molino_premium',
+        reference_id: referenceId,
         custom_id: customId,
         amount: { currency_code: currency, value: amount },
         payments: {
@@ -289,6 +289,63 @@ describe('PayPal validateOrder', () => {
   test('amount must be exactly 8.00 — rejects 8.0 string variants', () => {
     const validation = validateOrder(completedOrder(HASH, '8'), HASH);
     expect(validation.valid).toBe(false);
+  });
+});
+
+describe('PayPal validateOrder plan-aware (planes de /precios)', () => {
+  const planOrder = (referenceId: string, amount: string, customId = HASH) =>
+    completedOrder(customId, amount, 'USD', 'COMPLETED', referenceId);
+
+  test('accepts a Pro monthly order at its real price', () => {
+    const validation = validateOrder(planOrder('molino_pro_monthly', '4.99'), HASH);
+    expect(validation.valid).toBe(true);
+  });
+
+  test('accepts a Familiar yearly order at its annual price', () => {
+    const validation = validateOrder(planOrder('molino_familiar_yearly', '79.99'), HASH);
+    expect(validation.valid).toBe(true);
+  });
+
+  test('rejects a plan order with a discounted amount', () => {
+    const validation = validateOrder(planOrder('molino_pro_monthly', '4.00'), HASH);
+    expect(validation.valid).toBe(false);
+    expect(validation.reason).toContain('Amount mismatch');
+  });
+
+  test('rejects an unknown plan reference_id', () => {
+    const validation = validateOrder(planOrder('molino_bogus_monthly', '4.99'), HASH);
+    expect(validation.valid).toBe(false);
+    expect(validation.reason).toContain('Product mismatch');
+  });
+});
+
+describe('PayPal createOrder plan-aware', () => {
+  test('builds a plan order with the plan price and reference_id', async () => {
+    let capturedBody: any = null;
+    vi.stubGlobal('fetch', vi.fn<FetchImpl>(async (url, init) => {
+      if (String(url).endsWith('/v1/oauth2/token')) return jsonResponse({ access_token: 'tok', expires_in: 3600 });
+      capturedBody = JSON.parse(String(init?.body));
+      return jsonResponse({ id: ORDER_ID, status: 'CREATED', links: [{ rel: 'approve', href: 'https://paypal.example/approve' }] });
+    }));
+
+    await createOrder(HASH, { id: 'familiar', cycle: 'monthly' });
+
+    expect(capturedBody.purchase_units[0].reference_id).toBe('molino_familiar_monthly');
+    expect(capturedBody.purchase_units[0].amount).toEqual({ currency_code: 'USD', value: '9.99' });
+  });
+
+  test('drops plan for the free plan (falls back to legacy premium)', async () => {
+    let capturedBody: any = null;
+    vi.stubGlobal('fetch', vi.fn<FetchImpl>(async (url, init) => {
+      if (String(url).endsWith('/v1/oauth2/token')) return jsonResponse({ access_token: 'tok', expires_in: 3600 });
+      capturedBody = JSON.parse(String(init?.body));
+      return jsonResponse({ id: ORDER_ID, status: 'CREATED', links: [{ rel: 'approve', href: 'https://paypal.example/approve' }] });
+    }));
+
+    await createOrder(HASH, { id: 'gratis', cycle: 'monthly' });
+
+    expect(capturedBody.purchase_units[0].reference_id).toBe('molino_premium');
+    expect(capturedBody.purchase_units[0].amount.value).toBe('8.00');
   });
 });
 

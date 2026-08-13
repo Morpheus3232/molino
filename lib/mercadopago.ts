@@ -1,6 +1,7 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { SITE_URL } from '@/lib/seo';
+import { resolvePlanUsdPrice, type BillingCycle } from '@/components/pricing/pricing-data';
 
 function getRequiredEnv(name: string): string {
   const value = process.env[name];
@@ -15,6 +16,30 @@ const PRODUCT_PRICE_ARS = 11880;
 const PRODUCT_CURRENCY_USD = 'USD';
 const PRODUCT_CURRENCY_ARS = 'ARS';
 const PRODUCT_ID = 'molino_premium';
+
+/** Product id para un plan pagado (ej. "molino_pro_monthly"). */
+export function planProductId(planId: string, cycle: BillingCycle): string {
+  return `molino_${planId}_${cycle}`;
+}
+
+const PLAN_PRODUCT_RE = /^molino_([a-z]+)_(monthly|yearly)$/;
+
+/**
+ * Precio esperado (en la moneda dada) para un product id. Los planes pagos
+ * se cotizan en USD desde pricing-data; el producto legacy (molino_premium)
+ * conserva su precio fijo histórico en USD y ARS. Devuelve 0 si el product
+ * no es reconocido.
+ */
+export function expectedAmountFor(product: string | undefined, currencyId: string): number {
+  if (product === PRODUCT_ID) {
+    return currencyId === PRODUCT_CURRENCY_ARS ? PRODUCT_PRICE_ARS : PRODUCT_PRICE_USD;
+  }
+  const match = product ? PLAN_PRODUCT_RE.exec(product) : null;
+  if (match && currencyId === PRODUCT_CURRENCY_USD) {
+    return resolvePlanUsdPrice(match[1], match[2] as BillingCycle);
+  }
+  return 0;
+}
 
 export function getMpClient(): MercadoPagoConfig {
   const accessToken = getRequiredEnv('MP_ACCESS_TOKEN');
@@ -93,18 +118,25 @@ export async function createPreference(
   name: string,
   currencyId = 'USD',
   externalReference?: string,
+  plan?: { id: string; cycle: BillingCycle } | null,
 ) {
   const preference = new Preference(getMpClient());
 
-  const price = currencyId === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
+  const isPlan = !!plan && plan.id !== 'gratis';
+  const productId = isPlan ? planProductId(plan!.id, plan!.cycle) : PRODUCT_ID;
+  // Los planes se cobran en USD; el producto legacy respeta la moneda pasada.
+  const currency = isPlan ? PRODUCT_CURRENCY_USD : currencyId;
+  const price = expectedAmountFor(productId, currency);
 
   const item = {
-    id: `${PRODUCT_ID}_${profileHash}`,
-    title: 'Molino — Mapa Personal Completo',
+    id: `${productId}_${profileHash}`,
+    title: isPlan ? `Molino — Plan ${plan!.id}` : 'Molino — Mapa Personal Completo',
     quantity: 1,
     unit_price: price,
-    currency_id: currencyId,
-    description: 'Acceso completo: numerología profunda, afinidad geográfica, compatibilidad y timing.',
+    currency_id: currency,
+    description: isPlan
+      ? `Plan ${plan!.id} (${plan!.cycle}) — acceso completo: numerología profunda, afinidad geográfica, compatibilidad y timing.`
+      : 'Acceso completo: numerología profunda, afinidad geográfica, compatibilidad y timing.',
   };
 
   const baseUrl = getBaseUrl();
@@ -122,7 +154,8 @@ export async function createPreference(
       notification_url: `${baseUrl}/api/mp/webhook`,
       metadata: {
         profile_hash: profileHash,
-        product: PRODUCT_ID,
+        product: productId,
+        ...(isPlan ? { plan_id: plan!.id, plan_cycle: plan!.cycle } : {}),
         version: 'bricks_v1',
         customer_name: name,
       },
@@ -170,11 +203,21 @@ export function validatePayment(payment: {
     return { valid: false, reason: `Payment status is '${payment.status}', expected 'approved'` };
   }
 
-  if (payment.currency_id !== PRODUCT_CURRENCY_USD && payment.currency_id !== PRODUCT_CURRENCY_ARS) {
+  const product = payment.metadata?.product as string | undefined;
+
+  // Los planes se cotizan en USD; el producto legacy en USD o ARS.
+  const isPlan = !!product && product !== PRODUCT_ID;
+  if (isPlan && payment.currency_id !== PRODUCT_CURRENCY_USD) {
+    return { valid: false, reason: `Unexpected currency: ${payment.currency_id}` };
+  }
+  if (!isPlan && payment.currency_id !== PRODUCT_CURRENCY_USD && payment.currency_id !== PRODUCT_CURRENCY_ARS) {
     return { valid: false, reason: `Unexpected currency: ${payment.currency_id}` };
   }
 
-  const expectedAmount = payment.currency_id === PRODUCT_CURRENCY_USD ? PRODUCT_PRICE_USD : PRODUCT_PRICE_ARS;
+  const expectedAmount = expectedAmountFor(product, payment.currency_id);
+  if (expectedAmount === 0) {
+    return { valid: false, reason: `Product mismatch: got '${product ?? 'undefined'}'` };
+  }
   if (payment.transaction_amount !== expectedAmount) {
     return {
       valid: false,
@@ -182,9 +225,8 @@ export function validatePayment(payment: {
     };
   }
 
-  const product = payment.metadata?.product as string | undefined;
-  if (product !== PRODUCT_ID) {
-    return { valid: false, reason: `Product mismatch: got '${product ?? 'undefined'}', expected '${PRODUCT_ID}'` };
+  if (product !== PRODUCT_ID && (!product || !PLAN_PRODUCT_RE.test(product))) {
+    return { valid: false, reason: `Product mismatch: got '${product ?? 'undefined'}'` };
   }
 
   return { valid: true };
