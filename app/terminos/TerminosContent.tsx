@@ -31,7 +31,7 @@ Molino es una herramienta educativa de código abierto que explora sistemas simb
   },
   {
     title: "4. Propiedad intelectual",
-    body: `Molino es software libre licenciado bajo **MIT License**. El código fuente está disponible en GitHub: https://github.com/molino-app/molino
+    body: `Molino es software libre licenciado bajo **MIT License**. El código fuente está disponible en GitHub: https://github.com/Morpheus3232/molino
 
 El contenido educativo (textos, explicaciones, fuentes, metodologías) se distribuye bajo los mismos términos de la licencia MIT.
 
@@ -70,7 +70,7 @@ El uso continuado tras la notificación implica aceptación. Si no estás de acu
 **Privacidad:** privacidad@molino.app
 **Seguridad:** security@molino.app
 
-**Repositorio público:** https://github.com/molino-app/molino (issues para transparencia)`,
+**Repositorio público:** https://github.com/Morpheus3232/molino (issues para transparencia)`,
   },
 ];
 
