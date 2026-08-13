@@ -41,12 +41,32 @@ function loadUser(): UserProfile | null {
 export default function JournalClient() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
-  const { entries, addEntry, updateEntry, deleteEntry, loading } = useJournal();
+  const {
+    entries,
+    addEntry,
+    updateEntry,
+    deleteEntry,
+    loading,
+    storageSizeKB,
+    exportEntriesJSON,
+    importEntriesJSON,
+  } = useJournal();
 
   useEffect(() => {
     const user = loadUser();
     if (user) setProfile(user);
   }, []);
+
+  const handleExport = () => {
+    const jsonStr = exportEntriesJSON();
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `molino-journal-backup-${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const handleSave = async (
     data: Omit<JournalEntry, "id" | "createdAt" | "updatedAt">
@@ -158,11 +178,15 @@ export default function JournalClient() {
           <div className="lg:col-span-7">
             <JournalTimeline
               entries={entries}
+              loading={loading}
+              storageSizeKB={storageSizeKB}
               onEditEntry={(entry) => {
                 setEditingEntry(entry);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
               onDeleteEntry={deleteEntry}
+              onExportJSON={handleExport}
+              onImportJSON={importEntriesJSON}
             />
           </div>
         </div>

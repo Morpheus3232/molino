@@ -4,6 +4,8 @@ import HeroInstrument from "@/components/sections/HeroInstrument";
 const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
+const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
+const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true, loading: () => <div className="h-48 animate-pulse bg-ink/5" /> });
 const TrustSignals = dynamic(() => import("@/components/social/TrustSignals"), { ssr: true });
 const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
@@ -19,8 +21,10 @@ export default function Home() {
           <HeroInstrument />
           <MapPreviewDemo />
           <QueDescubris />
+          <ParejaTeaser />
           <TresPasos />
           <TresSistemas />
+          <PremiumTeaser />
           <TrustSignals />
           <CTAFinal />
           <PersonalizedHomeClient />

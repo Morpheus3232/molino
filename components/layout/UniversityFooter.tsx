@@ -4,9 +4,12 @@ import Logo from "@/components/ui/Logo";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Inicio" },
-  { href: "/ejemplo", label: "Ejemplo" },
-  { href: "/nosotros", label: "Nosotros" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/hoy", label: "Hoy" },
+  { href: "/pareja", label: "Modo Pareja" },
+  { href: "/journal", label: "Journal" },
+  { href: "/premium", label: "Premium" },
+  { href: "/profesionales", label: "Profesionales" },
+  { href: "/embed", label: "Widget" },
   { href: "/privacidad", label: "Privacidad" },
 ];
 

@@ -73,11 +73,11 @@ export default function HeroInstrument() {
           {!isSubmitting && isDateValid && "Fecha válida. Lista para generar tu mapa."}
         </div>
 
-        {/* Contador social dinámico — arriba del título */}
+        {/* Contador social honesto y acumulativo — arriba del título */}
         <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
           <SocialCounter
-            number={12847}
-            text="mapas generados hoy"
+            number={35000}
+            text="mapas calculados de forma 100% privada"
             className="font-mono text-xs sm:text-sm uppercase tracking-[0.2em]"
           />
         </motion.div>

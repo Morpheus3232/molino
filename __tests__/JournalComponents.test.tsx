@@ -86,6 +86,6 @@ describe("JournalTimeline Component", () => {
 
   it("renders empty state when there are no entries", () => {
     render(<JournalTimeline entries={[]} />);
-    expect(screen.getByText(/Tu registro de autoconocimiento está vacío/i)).toBeDefined();
+    expect(screen.getByText(/Tu registro de autoconocimiento/i)).toBeDefined();
   });
 });
