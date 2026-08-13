@@ -7,6 +7,7 @@ const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"),
 const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true, loading: () => <div className="h-48 animate-pulse bg-ink/5" /> });
 const TrustMetrics = dynamic(() => import("@/components/social/TrustMetrics"), { ssr: true });
 const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
+const MapPreviewDemo = dynamic(() => import("@/components/sections/MapPreviewDemo"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const QuienHaceEsto = dynamic(() => import("@/components/sections/QuienHaceEsto"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
 
@@ -16,6 +17,7 @@ export default function Home() {
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
           <HeroInstrument />
+          <MapPreviewDemo />
           <QueDescubris />
           <TresPasos />
           <TresSistemas />
