@@ -17,6 +17,7 @@ import {
   Loader2,
   BookOpen,
   Heart,
+  Sun,
 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import ProfileDownloadImage, {
@@ -350,6 +351,14 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
           </svg>
           Twitter
         </Button>
+
+        <Link
+          href="/hoy"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+        >
+          <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
+          Energía de hoy
+        </Link>
 
         <Link
           href={`/pareja?a=${profile.birthDate || ""}`}

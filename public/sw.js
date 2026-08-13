@@ -31,21 +31,33 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Notifications
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) {
+          client.navigate('/hoy');
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('/hoy');
+      }
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip non-GET requests and external origins
-  if (request.method !== 'GET' || url.origin !== self.location.origin) {
+  if (request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) {
     return;
   }
 
-  // Bypass API calls
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
-
-  // Navigation requests: Network-first, fallback to cache, then to /offline.html
+  // Navigation requests: Network-first, fallback to cache, then /offline.html
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -65,7 +77,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets (_next, fonts, images): Stale-While-Revalidate
+  // Static assets: Stale-While-Revalidate
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)
