@@ -81,6 +81,7 @@ export default function HeroInstrument() {
 
   return (
     <section
+      id="mapa-form"
       ref={heroRef}
       className="relative bg-background min-h-[calc(100dvh-4rem)] lg:h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
     >
