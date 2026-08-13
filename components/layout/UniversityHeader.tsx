@@ -13,6 +13,7 @@ import Logo from "@/components/ui/Logo";
 const SITE_LINKS = [
   { href: "/", label: "Inicio" },
   { href: "/ejemplo", label: "Ejemplo" },
+  { href: "/blog", label: "Blog" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/#faq", label: "FAQ" },
 ];
