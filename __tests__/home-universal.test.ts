@@ -19,7 +19,7 @@ describe("Home page — universal access without profile", () => {
     expect(source).toContain("QueDescubris");
     expect(source).toContain("TresSistemas");
     expect(source).toContain("CTAFinal");
-    expect(source).toContain("TrustMetrics");
+    expect(source).toContain("TrustSignals");
     expect(source).toContain("QuienHaceEsto");
     expect(source).toContain("FAQ");
   });
