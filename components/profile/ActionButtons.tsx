@@ -15,6 +15,7 @@ import {
   RectangleHorizontal,
   Square,
   Loader2,
+  BookOpen,
 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import ProfileDownloadImage, {
@@ -348,6 +349,14 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
           </svg>
           Twitter
         </Button>
+
+        <Link
+          href="/journal"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+        >
+          <BookOpen className="w-4 h-4" aria-hidden="true" />
+          Journal
+        </Link>
 
         <Link
           href="/calendario"
