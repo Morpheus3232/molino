@@ -95,10 +95,10 @@ export default function PreciosPage() {
             Empezar gratis →
           </Link>
           <Link
-            href={pro?.cta.href ?? "/onboarding"}
-            className="inline-flex items-center justify-center rounded-md border border-ink/20 px-8 py-3.5 text-sm font-heading font-semibold uppercase tracking-[0.1em] text-foreground transition-colors hover:border-accent hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            href="/premium"
+            className="inline-flex items-center justify-center rounded-md border border-accent/40 bg-accent/10 px-8 py-3.5 text-sm font-heading font-semibold uppercase tracking-[0.1em] text-accent transition-colors hover:bg-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            Ver Pro
+            Ver Detalle Premium ($8 USD)
           </Link>
         </div>
       </section>

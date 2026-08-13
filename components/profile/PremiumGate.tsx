@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef, isValidElement, cloneElement, type ReactElement } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analytics } from '@/lib/analytics/analytics';
 import Button from '@/components/ui/Button';
@@ -607,6 +608,15 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   {t.premium.paymentUnavailable}
                 </p>
               )}
+
+              <div className="mt-4 text-center">
+                <Link
+                  href="/premium"
+                  className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
+                >
+                  Ver qué incluye el acceso Premium y garantía de 7 días →
+                </Link>
+              </div>
             </div>
 
             <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
