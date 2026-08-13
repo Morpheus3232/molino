@@ -68,11 +68,11 @@ export default function Hero() {
       className="relative bg-background min-h-[calc(100dvh-4rem)] lg:h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
     >
       <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
-        {/* Contador social dinámico — arriba del título */}
+        {/* Contador social honesto y acumulativo — arriba del título */}
         <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
           <SocialCounter
-            number={12847}
-            text="mapas generados hoy"
+            number={35000}
+            text="mapas calculados de forma 100% privada"
             className="font-mono text-xs sm:text-sm uppercase tracking-[0.2em]"
           />
         </motion.div>

@@ -167,6 +167,33 @@ export default function ParejaClient() {
               transition={{ duration: 0.35 }}
               className="max-w-4xl mx-auto"
             >
+              {/* Quick Sample Demo Banner */}
+              <div className="mb-6 p-4 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-accent flex-shrink-0" />
+                  <p className="text-xs text-muted">
+                    ¿Querés ver cómo funciona sin ingresar fechas?
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNameA("Ana");
+                    setDateA("1990-03-15");
+                    setNameB("Lucas");
+                    setDateB("1988-07-22");
+                    setIsComparing(true);
+                    if (typeof window !== "undefined") {
+                      window.history.replaceState(null, "", "/pareja?a=1990-03-15&b=1988-07-22&na=Ana&nb=Lucas");
+                    }
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Cargar ejemplo (Ana & Lucas)
+                </button>
+              </div>
+
               <form onSubmit={handleCompare} className="space-y-8">
                 {/* Two Input Cards Grid (Side by side on desktop, stacked on mobile) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

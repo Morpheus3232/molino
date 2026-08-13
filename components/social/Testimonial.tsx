@@ -1,97 +1,98 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
+import { Compass, Sparkles, ArrowRight } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
+import Link from "next/link";
 
-/**
- * Ficticios por ahora (placeholder). Para reemplazar por reseñas reales,
- * solo hace falta actualizar este array — la estructura ya está lista:
- * cada item necesita name, location, text y opcionalmente photoUrl.
- */
-const TESTIMONIALS: { name: string; location: string; text: string; photoUrl?: string; color: string }[] = [
+const USE_CASES: {
+  archetype: string;
+  signature: string;
+  context: string;
+  insight: string;
+  color: string;
+}[] = [
   {
-    name: "Ana López",
-    location: "Buenos Aires, Argentina",
-    text: "Entré por curiosidad y me quedé por la profundidad. Es un acercamiento honesto — sin sensacionalismo, sin clickbait.",
+    archetype: "Transición Vocacional",
+    signature: "Camino de Vida 1 · Aries · Dragón",
+    context: "Momento de cambio de empleo o inicio de emprendimiento independiente.",
+    insight: "El mapa resalta la necesidad de autonomía y advierte sobre el agotamiento cuando se intenta controlar cada detalle operativo.",
     color: "var(--layer-identity)",
   },
   {
-    name: "Carlos Méndez",
-    location: "Madrid, España",
-    text: "Lo que más me gustó es que no guarda nada. Creás tu mapa, leés, y listo. No tenés que dar un mail ni descargar una app.",
+    archetype: "Dinámica de Vínculos & Pareja",
+    signature: "Camino de Vida 7 · Cáncer · Buey",
+    context: "Comprensión de diferencias de ritmo y comunicación en la pareja.",
+    insight: "Explica por qué los períodos de silencio reflexivo no son desapego, sino la forma natural de recargar energía e introspección.",
     color: "var(--layer-astrology)",
   },
   {
-    name: "Lucía Rojas",
-    location: "Ciudad de México, México",
-    text: "Te muestran la estructura detrás del mapa: por qué un número, por qué un signo. No te lo dan mágicamente, te explican.",
+    archetype: "Gestión de Múltiples Proyectos",
+    signature: "Camino de Vida 5 · Géminis · Caballo",
+    context: "Sensación de dispersión creativa y dificultad para cerrar ciclos.",
+    insight: "Brinda pautas para alinear inicios y cierres con el Año Personal y la Luna, canalizando la versatilidad sin perder constancia.",
     color: "var(--layer-cycles)",
   },
 ];
-
-function initials(name: string): string {
-  return name.charAt(0).toUpperCase();
-}
-
-function Avatar({ name, photoUrl, color }: { name: string; photoUrl?: string; color: string }) {
-  if (photoUrl) {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={photoUrl} alt={`Foto de perfil de ${name}`} className="w-12 h-12 rounded-full object-cover" />;
-  }
-  return (
-    <div
-      role="img"
-      aria-label={`Foto de perfil de ${name}`}
-      style={{ backgroundColor: `${color}26`, color }}
-      className="w-12 h-12 rounded-full flex items-center justify-center font-heading text-lg font-semibold shrink-0"
-    >
-      {initials(name)}
-    </div>
-  );
-}
-
-function StarRating() {
-  return (
-    <div className="flex items-center gap-0.5" role="img" aria-label="Calificación: 5 de 5 estrellas">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className="w-3.5 h-3.5 fill-accent text-accent" aria-hidden="true" />
-      ))}
-    </div>
-  );
-}
 
 export default function Testimonial() {
   return (
     <section className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.h2 {...fadeUp} className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-muted/70 text-center mb-12">
-          Lo que dicen quienes ya lo probaron
-        </motion.h2>
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            Casos de Uso & Aplicación Práctica
+          </span>
+          <motion.h2 {...fadeUp} className="font-display text-2xl sm:text-3xl text-foreground font-bold mt-2">
+            Cómo se traduce el mapa en decisiones reales
+          </motion.h2>
+          <p className="text-sm text-muted mt-2">
+            Cada lectura combina numerología pitagórica, astrología solar y zodíaco chino para ofrecer claridad aplicada.
+          </p>
+        </div>
 
         <ul className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 list-none">
-          {TESTIMONIALS.map((testimonial, i) => (
+          {USE_CASES.map((item, i) => (
             <motion.li
-              key={testimonial.name}
+              key={item.archetype}
               {...fadeUp}
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
-              <Card padding="lg" className="h-full flex flex-col">
-                <header className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
-                  <Avatar name={testimonial.name} photoUrl={testimonial.photoUrl} color={testimonial.color} />
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-foreground">{testimonial.name}</p>
-                    <p className="text-xs text-muted/70 mb-1">{testimonial.location}</p>
-                    <StarRating />
+              <Card padding="lg" className="h-full flex flex-col justify-between border-ink/10 bg-card">
+                <div>
+                  <header className="mb-4 pb-3 border-b border-ink/10">
+                    <span className="font-mono text-[11px] uppercase tracking-wider text-accent font-semibold">
+                      {item.signature}
+                    </span>
+                    <h3 className="font-heading text-lg font-bold text-foreground mt-1">
+                      {item.archetype}
+                    </h3>
+                  </header>
+
+                  <div className="space-y-3 text-xs sm:text-sm text-muted leading-relaxed">
+                    <div>
+                      <span className="text-[11px] font-mono uppercase tracking-wider text-foreground/70 font-bold block mb-1">
+                        Contexto de Consulta:
+                      </span>
+                      <p>{item.context}</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-ink/5">
+                      <span className="text-[11px] font-mono uppercase tracking-wider text-accent font-bold block mb-1">
+                        Claridad Aportada:
+                      </span>
+                      <p className="text-foreground/90">{item.insight}</p>
+                    </div>
                   </div>
-                </header>
+                </div>
 
-                <Quote className="w-8 h-8 text-accent/20 mb-4" aria-hidden="true" />
-
-                <blockquote className="text-sm sm:text-base text-foreground/80 leading-relaxed flex-1">
-                  &ldquo;{testimonial.text}&rdquo;
-                </blockquote>
+                <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-xs font-mono">
+                  <span className="text-muted">Cálculo local</span>
+                  <Link href="/onboarding" className="text-accent hover:underline inline-flex items-center gap-1">
+                    Ver mi mapa <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
               </Card>
             </motion.li>
           ))}

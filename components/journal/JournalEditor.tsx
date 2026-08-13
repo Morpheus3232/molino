@@ -139,8 +139,24 @@ export default function JournalEditor({
 
   return (
     <div
-      className={`rounded-2xl border border-ink/10 bg-card p-5 sm:p-7 shadow-sm transition-all ${className}`}
+      className={`relative rounded-2xl border border-ink/10 bg-card p-5 sm:p-7 shadow-sm transition-all ${className}`}
     >
+      {/* Toast de persistencia local */}
+      <AnimatePresence>
+        {savedSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -12, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -8, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-mono shadow-md backdrop-blur-sm"
+          >
+            <Check className="w-3.5 h-3.5" />
+            <span>Entrada guardada en tu navegador</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Editor Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
         <div className="flex items-center gap-2.5">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { JournalEntry, JournalMood } from "@/types/journal";
 import { MOOD_CONFIG } from "@/types/journal";
@@ -14,6 +14,11 @@ import {
   TrendingUp,
   Filter,
   Sparkles,
+  Download,
+  Upload,
+  HardDrive,
+  Check,
+  AlertCircle,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -23,11 +28,16 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import Button from "@/components/ui/Button";
 
 interface JournalTimelineProps {
   entries: JournalEntry[];
+  loading?: boolean;
+  storageSizeKB?: string;
   onEditEntry?: (entry: JournalEntry) => void;
   onDeleteEntry?: (id: string) => void;
+  onExportJSON?: () => void;
+  onImportJSON?: (rawJSON: string) => Promise<{ success: boolean; count: number; error?: string }>;
   className?: string;
 }
 
@@ -71,13 +81,19 @@ function CustomTooltip({ active, payload }: any) {
 
 export default function JournalTimeline({
   entries,
+  loading = false,
+  storageSizeKB = "0.0",
   onEditEntry,
   onDeleteEntry,
+  onExportJSON,
+  onImportJSON,
   className = "",
 }: JournalTimelineProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMood, setSelectedMood] = useState<JournalMood | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [importStatus, setImportStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -116,25 +132,141 @@ export default function JournalTimeline({
     }));
   }, [entries]);
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !onImportJSON) return;
+
+    try {
+      const text = await file.text();
+      const res = await onImportJSON(text);
+      if (res.success) {
+        setImportStatus({
+          type: "success",
+          message: `Se importaron ${res.count} entrada(s) correctamente.`,
+        });
+      } else {
+        setImportStatus({
+          type: "error",
+          message: res.error || "Error al importar el archivo.",
+        });
+      }
+    } catch {
+      setImportStatus({
+        type: "error",
+        message: "Error al leer el archivo JSON.",
+      });
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      setTimeout(() => setImportStatus(null), 4000);
+    }
+  };
+
+  // Estado de carga con Skeleton para evitar flash de "vacío"
+  if (loading) {
+    return (
+      <div className={`space-y-4 ${className} animate-pulse`}>
+        <div className="h-14 rounded-2xl bg-card border border-ink/10" />
+        <div className="h-44 rounded-2xl bg-card border border-ink/10" />
+        <div className="h-36 rounded-2xl bg-card border border-ink/10" />
+      </div>
+    );
+  }
+
   if (entries.length === 0) {
     return (
-      <div className={`rounded-2xl border border-ink/10 bg-card p-10 text-center ${className}`}>
+      <div className={`rounded-2xl border border-ink/10 bg-card p-8 sm:p-10 text-center ${className}`}>
         <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent mx-auto flex items-center justify-center mb-4">
           <Compass className="w-6 h-6" />
         </div>
         <h3 className="font-heading text-lg font-bold text-foreground">
-          Tu registro de autoconocimiento está vacío
+          Tu registro de autoconocimiento está listo
         </h3>
         <p className="text-xs sm:text-sm text-muted max-w-md mx-auto mt-2 leading-relaxed">
-          Escribí tu primer registro arriba. A medida que vayas sumando entradas, vas a poder ver la
-          correlación entre tu estado de ánimo y tus ciclos numerológicos y astrológicos.
+          Escribí tu primer registro a la izquierda. A medida que sumes entradas, se guardarán 100% en tu navegador y verás la evolución de tu energía.
         </p>
+
+        {/* Botón para restaurar backup si ya tenía antes */}
+        {onImportJSON && (
+          <div className="mt-6 pt-6 border-t border-ink/10 inline-flex flex-col items-center">
+            <span className="text-[11px] font-mono text-muted mb-2">¿Ya tenías un backup previo?</span>
+            <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-xs font-mono text-foreground transition-colors">
+              <Upload className="w-3.5 h-3.5 text-accent" />
+              <span>Importar Backup (JSON)</span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json,application/json"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className={`space-y-6 ${className}`}>
+      {/* Backup & Storage Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-card/60 border border-ink/10 text-xs font-mono">
+        <div className="flex items-center gap-2 text-muted">
+          <HardDrive className="w-3.5 h-3.5 text-accent" />
+          <span>Uso local: <strong>~{storageSizeKB} KB</strong></span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {onExportJSON && (
+            <button
+              type="button"
+              onClick={onExportJSON}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] transition-colors"
+              title="Descargar copia de seguridad en JSON"
+            >
+              <Download className="w-3 h-3 text-accent" />
+              <span>Exportar</span>
+            </button>
+          )}
+
+          {onImportJSON && (
+            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] transition-colors">
+              <Upload className="w-3 h-3 text-accent" />
+              <span>Importar</span>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".json,application/json"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+          )}
+        </div>
+      </div>
+
+      {/* Import Status Alert */}
+      <AnimatePresence>
+        {importStatus && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className={`p-3 rounded-xl text-xs font-mono flex items-center gap-2 border ${
+              importStatus.type === "success"
+                ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                : "bg-rose-500/10 border-rose-500/20 text-rose-400"
+            }`}
+          >
+            {importStatus.type === "success" ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <AlertCircle className="w-4 h-4" />
+            )}
+            <span>{importStatus.message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mood vs Time Chart Card */}
       {chartData.length >= 2 && (
         <div className="rounded-2xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">
