@@ -21,6 +21,12 @@ const nextConfig = {
         hostname: 'molino.app',
       },
     ],
+    // Las portadas del blog (public/blog/*.svg) son SVGs propios, servidos
+    // desde el mismo dominio. `dangerouslyAllowSVG` habilita que next/image
+    // las optimice/sirva; la CSP `sandbox` impide que un SVG malicioso ejecute
+    // scripts dentro de la imagen. Solo se aplica a nuestros assets estáticos.
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/avif', 'image/webp'],
   },
   compiler: {

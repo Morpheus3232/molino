@@ -6,6 +6,7 @@ import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
 import { ACADEMY_PIECES } from "@/lib/data/academy-content";
 import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
+import { BLOG_POSTS } from "@/lib/data/blog-content";
 import { SITE_URL } from "@/lib/seo";
 
 const BASE_URL = SITE_URL;
@@ -109,5 +110,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages];
+  // Blog — artículos SEO (alta prioridad para capturar tráfico orgánico)
+  const blogPages = [
+    { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    ...BLOG_POSTS.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt ?? post.date),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+  ];
+
+  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages];
 }
