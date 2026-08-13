@@ -3,6 +3,8 @@ import {
   calculateAnimalFromDate,
   getChineseElement,
   getChineseAnimal,
+  getChineseZodiac,
+  getChineseZodiacInfo,
   calculateChineseCompatibility,
 } from "../chineseZodiacEngine";
 
@@ -45,6 +47,39 @@ describe("Chinese Zodiac Engine", () => {
       const result = calculateAnimalFromDate(undefined, 2024);
       expect(result.animal).toBe("Dragón");
       expect(result.isApproximate).toBe(true);
+    });
+  });
+
+  describe("getChineseZodiacInfo & getChineseZodiac", () => {
+    it("returns correct animal and element for pre-CNY births", () => {
+      // 10/01/1990 -> before CNY 1990 (27/01/1990) -> Serpiente de Tierra (1989)
+      const info1 = getChineseZodiacInfo("1990-01-10");
+      expect(info1.animal).toBe("Serpiente");
+      expect(info1.element).toBe("Tierra");
+      expect(info1.lunarYear).toBe(1989);
+      expect(getChineseZodiac("1990-01-10")).toBe("Serpiente");
+
+      // 20/01/1993 -> before CNY 1993 (23/01/1993) -> Mono de Agua (1992)
+      const info2 = getChineseZodiacInfo("1993-01-20");
+      expect(info2.animal).toBe("Mono");
+      expect(info2.element).toBe("Agua");
+      expect(info2.lunarYear).toBe(1992);
+      expect(getChineseZodiac("1993-01-20")).toBe("Mono");
+    });
+
+    it("returns correct animal and element for post-CNY births", () => {
+      // 27/01/1990 -> CNY 1990 -> Caballo de Metal (1990)
+      const info1 = getChineseZodiacInfo("1990-01-27");
+      expect(info1.animal).toBe("Caballo");
+      expect(info1.element).toBe("Metal");
+      expect(info1.lunarYear).toBe(1990);
+      expect(getChineseZodiac("1990-01-27")).toBe("Caballo");
+
+      // 15/02/1990 -> Caballo de Metal
+      const info2 = getChineseZodiacInfo("1990-02-15");
+      expect(info2.animal).toBe("Caballo");
+      expect(info2.element).toBe("Metal");
+      expect(info2.lunarYear).toBe(1990);
     });
   });
 
@@ -111,7 +146,7 @@ describe("Chinese Zodiac Engine", () => {
     it("handles years before 1900 correctly per engine logic", () => {
       // 1899 = Pig (index 11)
       expect(getChineseAnimal(1899)).toBe("Cerdo");
-      // 1896 = Monkey (engine calculates differently)
+      // 1896 = Monkey
       expect(getChineseAnimal(1896)).toBe("Mono");
     });
   });

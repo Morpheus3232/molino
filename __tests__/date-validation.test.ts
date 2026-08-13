@@ -1,4 +1,10 @@
 import { describe, test, expect } from "vitest";
+import {
+  getChineseZodiac,
+  getChineseZodiacInfo,
+  getLunarYear,
+  getChineseNewYearDate,
+} from "@/lib/engines/chineseZodiacEngine";
 
 const getDaysInMonth = (month: string, year: string): number => {
   const m = parseInt(month, 10);
@@ -46,5 +52,54 @@ describe("getDaysInMonth", () => {
     expect(juneDays).toBe(30);
     expect(septemberDays).toBe(30);
     expect(novemberDays).toBe(30);
+  });
+});
+
+describe("Chinese Zodiac Date Validation & Boundary Edge Cases", () => {
+  test("10/01/1990 is before CNY 1990 (27/01/1990) -> Serpiente de Tierra (1989)", () => {
+    expect(getLunarYear("1990-01-10")).toBe(1989);
+    expect(getChineseZodiac("1990-01-10")).toBe("Serpiente");
+    const info = getChineseZodiacInfo("1990-01-10");
+    expect(info.animal).toBe("Serpiente");
+    expect(info.element).toBe("Tierra");
+  });
+
+  test("27/01/1990 is exact CNY 1990 day -> Caballo de Metal (1990)", () => {
+    expect(getLunarYear("1990-01-27")).toBe(1990);
+    expect(getChineseZodiac("1990-01-27")).toBe("Caballo");
+    const info = getChineseZodiacInfo("1990-01-27");
+    expect(info.animal).toBe("Caballo");
+    expect(info.element).toBe("Metal");
+  });
+
+  test("15/02/1990 is after CNY 1990 -> Caballo de Metal (1990)", () => {
+    expect(getLunarYear("1990-02-15")).toBe(1990);
+    expect(getChineseZodiac("1990-02-15")).toBe("Caballo");
+    const info = getChineseZodiacInfo("1990-02-15");
+    expect(info.animal).toBe("Caballo");
+    expect(info.element).toBe("Metal");
+  });
+
+  test("20/01/1993 is before CNY 1993 (23/01/1993) -> Mono de Agua (1992)", () => {
+    expect(getLunarYear("1993-01-20")).toBe(1992);
+    expect(getChineseZodiac("1993-01-20")).toBe("Mono");
+    const info = getChineseZodiacInfo("1993-01-20");
+    expect(info.animal).toBe("Mono");
+    expect(info.element).toBe("Agua");
+  });
+
+  test("23/01/1993 is exact CNY 1993 day -> Gallo de Agua (1993)", () => {
+    expect(getLunarYear("1993-01-23")).toBe(1993);
+    expect(getChineseZodiac("1993-01-23")).toBe("Gallo");
+    const info = getChineseZodiacInfo("1993-01-23");
+    expect(info.animal).toBe("Gallo");
+    expect(info.element).toBe("Agua");
+  });
+
+  test("getChineseNewYearDate returns accurate Date for any year 1900-2030", () => {
+    const d1990 = getChineseNewYearDate(1990);
+    expect(d1990.getFullYear()).toBe(1990);
+    expect(d1990.getMonth()).toBe(0); // Jan
+    expect(d1990.getDate()).toBe(27);
   });
 });
