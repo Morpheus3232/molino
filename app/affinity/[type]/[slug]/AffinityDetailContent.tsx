@@ -13,8 +13,9 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { sortLightEntities, lightAffinity } from "@/lib/affinity-light";
-import type { LightweightEntity } from "@/types/atlas";
+import type { LightweightEntity, VisualType } from "@/types/atlas";
 import ReadingNumber from "@/components/ui/ReadingNumber";
+import EntityVisual from "@/components/ui/EntityVisual";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
@@ -375,7 +376,7 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
                     className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xl shrink-0">{rel.emoji}</span>
+                          <EntityVisual visualType={rel.visualType as VisualType} emoji={rel.emoji} name={rel.name} countryISO={rel.countryISO} size={32} />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                           {rel.name}
@@ -481,9 +482,16 @@ function PremiumHero({
           animate={reducedMotion ? {} : { x: result.score >= 75 ? 12 : 0 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label={entity.name}>
-            {entity.emoji}
-          </span>
+          <EntityVisual
+            visualType={entity.visualType}
+            emoji={entity.emoji}
+            imageUrl={entity.imageUrl}
+            name={entity.name}
+            countryISO={entity.countryISO}
+            size={64}
+            shape="circle"
+            className="mx-auto mb-2"
+          />
           <p className="font-heading text-lg sm:text-xl font-semibold text-foreground leading-tight">
             {entity.name}
           </p>
@@ -819,7 +827,7 @@ function QuickAffinity({
             Cómo resuena · {meta.label}
           </p>
           <div className="flex items-center justify-center gap-4 mb-4">
-            <span className="text-5xl">{entity.emoji}</span>
+            <EntityVisual visualType={entity.visualType} emoji={entity.emoji} imageUrl={entity.imageUrl} name={entity.name} countryISO={entity.countryISO} size={56} shape="circle" />
             <div>
               <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
                 {entity.name}
@@ -980,7 +988,7 @@ function QuickAffinity({
                         className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-xl shrink-0">{rel.emoji}</span>
+                      <EntityVisual visualType={rel.visualType as VisualType} emoji={rel.emoji} name={rel.name} countryISO={rel.countryISO} size={32} />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                               {rel.name}

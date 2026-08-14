@@ -6,10 +6,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
-import type { LightweightEntity } from "@/types/atlas";
+import type { LightweightEntity, VisualType } from "@/types/atlas";
 import Button from "@/components/ui/Button";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
 import { resolveUserContext } from "@/lib/context/userContext";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 interface RecommendationContentProps {
   entityType: string;
@@ -290,7 +291,7 @@ function RecommendationCard({
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
         <div className="text-center shrink-0">
-          <span className="text-2xl block">{rec.emoji}</span>
+          <EntityVisual visualType={rec.visualType as VisualType} emoji={rec.emoji} name={rec.name} countryISO={rec.countryISO} size={40} />
           <span className="text-xs text-muted">{formatAnimalEmoji(rec.animal)}</span>
         </div>
 

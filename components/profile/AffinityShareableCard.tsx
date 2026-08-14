@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { formatAnimalSimple, formatAnimalWithEquivalent } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 interface AffinityShareableCardProps {
   result: AffinityResult;
@@ -143,7 +144,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           <div className="flex items-center justify-center gap-3 sm:gap-6 mb-6 overflow-hidden">
             {/* Entity animal */}
             <div className="text-center flex-1 min-w-0">
-              <span className="text-4xl sm:text-5xl block mb-2">{entity.emoji}</span>
+              <EntityVisual visualType={entity.visualType} emoji={entity.emoji} imageUrl={entity.imageUrl} name={entity.name} countryISO={entity.countryISO} size={56} shape="circle" className="mx-auto mb-2" />
               <p className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.entityAnimal)}</p>
               <p className="text-xs text-muted mt-1 truncate">{entity.name}</p>
             </div>

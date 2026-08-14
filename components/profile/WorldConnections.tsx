@@ -6,6 +6,7 @@ import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
 import { useMemo } from "react";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 const TIER_COLOR: Record<string, string> = {
   "resonancia-alta": "#2D5A3A",
@@ -45,7 +46,13 @@ function EntityCard({ entity, score, tier }: { entity: LightAffinityResult; scor
       className="p-4 border border-ink/10 rounded-lg bg-background"
     >
       <div className="flex items-start gap-3">
-        <span className="text-2xl shrink-0" aria-hidden="true">{entity.emoji || "📍"}</span>
+        <EntityVisual
+          visualType={entity.visualType as "emoji" | "logo" | "portrait" | "flag" | "album"}
+          emoji={entity.emoji}
+          name={entity.name}
+          countryISO={entity.countryISO}
+          size={24}
+        />
         <div className="flex-1 min-w-0">
           <p className="font-medium text-foreground truncate">{entity.name}</p>
           <div className="flex items-center gap-2 mt-1">

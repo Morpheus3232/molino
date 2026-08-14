@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
+import EntityVisual from "@/components/ui/EntityVisual";
 import type { LightweightEntity } from "@/types/atlas";
 
 type SelectionStep = "pick-a" | "pick-b";
@@ -102,7 +103,14 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
         {step === "pick-b" && selectedEntityA && (
           <motion.section {...fadeUp} className="mb-6">
             <div className="flex items-center gap-3 p-4 rounded-md border border-accent/30 bg-accent/5">
-              <span className="text-2xl">{selectedEntityA.emoji}</span>
+              <EntityVisual
+                visualType={selectedEntityA.visualType}
+                emoji={selectedEntityA.emoji}
+                name={selectedEntityA.name}
+                countryISO={selectedEntityA.countryISO}
+                imageUrl={selectedEntityA.imageUrl}
+                size={32}
+              />
               <div>
                 <p className="text-sm font-medium text-foreground">{selectedEntityA.name}</p>
                 <p className="text-xs text-muted">{TYPE_LABEL[selectedEntityA.type] ?? selectedEntityA.type} · {selectedEntityA.country}</p>
@@ -134,7 +142,14 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                 onClick={() => handleSelect(entity.id)}
                 className="w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent transition-all group flex items-center gap-4"
               >
-                <span className="text-xl shrink-0">{entity.emoji}</span>
+                <EntityVisual
+                  visualType={entity.visualType}
+                  emoji={entity.emoji}
+                  name={entity.name}
+                  countryISO={entity.countryISO}
+                  imageUrl={entity.imageUrl}
+                  size={32}
+                />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                     {entity.name}

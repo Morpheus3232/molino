@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import ReadingNumber from "@/components/ui/ReadingNumber";
+import EntityVisual from "@/components/ui/EntityVisual";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
@@ -94,9 +95,12 @@ export default function AffinityPreview({ highlights, onEnter }: AffinityPreview
                 className="group block focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
                 <div className="flex flex-col sm:flex-row sm:items-end gap-8">
-                  <span className="text-7xl sm:text-8xl leading-none" aria-hidden="true">
-                    {main.entity.emoji}
-                  </span>
+                  <EntityVisual
+                    visualType="emoji"
+                    emoji={main.entity.emoji}
+                    name={main.entity.name}
+                    size={96}
+                  />
                   <div className="flex-1 min-w-0">
                     <p className="label-micro mb-2">
                       {TYPE_LABEL[main.entity.type] ?? main.entity.type}
@@ -136,9 +140,12 @@ export default function AffinityPreview({ highlights, onEnter }: AffinityPreview
                   className="group block p-6 sm:p-8 bg-background hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                   <div className="flex items-start justify-between gap-4">
-                    <span className="text-4xl sm:text-5xl leading-none" aria-hidden="true">
-                      {result.entity.emoji}
-                    </span>
+                    <EntityVisual
+                      visualType="emoji"
+                      emoji={result.entity.emoji}
+                      name={result.entity.name}
+                      size={48}
+                    />
                     <span className="font-heading text-2xl text-foreground tabular-nums">
                       {result.score}
                     </span>
