@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
+import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
+import type { LightweightEntity } from "@/types/atlas";
 import InsightsContent from "./InsightsContent";
 
 export const dynamic = "force-dynamic";
@@ -20,5 +22,6 @@ export const metadata: Metadata = {
 };
 
 export default function InsightsPage() {
-  return <InsightsContent />;
+  const catalog: LightweightEntity[] = SYMBOLIC_ENTITIES.map(toLightweightEntity);
+  return <InsightsContent catalog={catalog} />;
 }

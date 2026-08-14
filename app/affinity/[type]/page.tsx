@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
-import { ENTITY_TYPES, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
+import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import AffinityTypeContent from "./AffinityTypeContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
@@ -37,8 +37,8 @@ export default async function AffinityTypePage({ params }: { params: Promise<{ t
   const { type } = await params;
   if (!VALID_TYPES.includes(type as EntityType)) notFound();
 
-  const entities = getEntitiesByType(type as EntityType);
   const meta = ENTITY_TYPES[type as EntityType];
+  const entities = getEntitiesByType(type as EntityType).map(toLightweightEntity);
 
   return <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} />;
 }

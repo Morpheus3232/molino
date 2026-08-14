@@ -18,8 +18,8 @@ import {
   getRelation,
   type Animal,
 } from "@/lib/data/animalRelations";
-import { calculateAllAffinity, getTierForScore, TIER_META } from "@/lib/engines/affinityEngine";
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { sortLightEntities } from "@/lib/affinity-light";
+import type { LightweightEntity } from "@/types/atlas";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import {
   formatAnimalSimple,
@@ -43,6 +43,21 @@ const transitionVariants = {
   enter: { opacity: 0, y: 8 },
   show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
+
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+const TIER_LABEL: Record<string, string> = {
+  "resonancia-alta": "Resonancia alta",
+  "afinidad-media": "Afinidad media",
+  complementarios: "Complementarios",
+  desafiante: "Desafiante",
+  distante: "Distante",
 };
 
 const ANIMAL_TRAITS: Record<string, string> = {
@@ -81,7 +96,7 @@ const DISCOVERIES_TEMPLATES: ((user: string, year: string) => { title: string; d
   }),
 ];
 
-export default function InsightsContent() {
+export default function InsightsContent({ catalog }: { catalog: LightweightEntity[] }) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
 
@@ -94,13 +109,13 @@ export default function InsightsContent() {
     [userAnimal, yearCycle.yearAnimal]
   );
   const relationMap = useMemo(() => getRelationshipMap(userAnimal), [userAnimal]);
-  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente que /affinity, /hoy y ProfileHub.
+  // Afinidad = exclusivamente zodíaco chino (affinity-light, misma fuente que /affinity, /hoy y ProfileHub).
   const recommendations = useMemo(() => {
     if (!profile) return [];
-    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
+    return sortLightEntities(profile.chineseZodiac || "", catalog)
       .filter(r => r.tier === "resonancia-alta" || r.tier === "afinidad-media")
       .slice(0, 5);
-  }, [profile]);
+  }, [profile, catalog]);
   const profile_ = useMemo(() => userAnimal ? getAnimalProfile(userAnimal) : null, [userAnimal]);
 
   if (!mounted) {
@@ -234,23 +249,23 @@ export default function InsightsContent() {
               <div className="space-y-3">
                 {recommendations.slice(0, 3).map((rec, i) => (
                   <motion.button
-                    key={rec.entity.id}
+                    key={rec.id}
                     initial={{ opacity: 0, x: -12 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: staggerDelay(i, 0.1), duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
+                    onClick={() => router.push(`/affinity/${rec.type}/${rec.id}`)}
                     className="w-full text-left p-4 rounded-md bg-background/50 hover:bg-background transition-all duration-200 ease-out hover:-translate-y-[2px] group flex items-center gap-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
-                    <span className="text-2xl shrink-0">{rec.entity.emoji}</span>
+                    <span className="text-2xl shrink-0">{rec.emoji}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                        {rec.entity.name}
+                        {rec.name}
                       </p>
-                      <p className="text-xs text-muted truncate">{rec.explanation}</p>
+                      <p className="text-xs text-muted truncate">{rec.relationship}</p>
                     </div>
-                    <p className="text-xs uppercase tracking-[0.2em] shrink-0" style={{ color: TIER_META[getTierForScore(rec.score)].color }}>
-                      {TIER_META[getTierForScore(rec.score)].label}
+                    <p className="text-xs uppercase tracking-[0.2em] shrink-0" style={{ color: TIER_COLOR[rec.tier] }}>
+                      {TIER_LABEL[rec.tier]}
                     </p>
                   </motion.button>
                 ))}

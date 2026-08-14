@@ -8,12 +8,12 @@ import { toast } from "sonner";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { calculateAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
-import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
-import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import type { EntityType, HistoricalEvent, SymbolicEntity } from "@/lib/data/symbolic-entities";
+import { sortLightEntities, lightAffinity } from "@/lib/affinity-light";
+import type { LightweightEntity } from "@/types/atlas";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
@@ -35,9 +35,18 @@ interface AffinityDetailContentProps {
   entity: SymbolicEntity;
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
+  /** Lightweight projections of ALL entities (for the discovery loop). */
+  catalog: LightweightEntity[];
+  /** Lightweight projections of same-type entities (for the quick selector). */
+  sameType: LightweightEntity[];
 }
 
-export default function AffinityDetailContent({ entity, meta, type }: AffinityDetailContentProps) {
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca", city: "Ciudad", country: "País", university: "Universidad",
+  team: "Equipo", movie: "Película", artist: "Artista",
+};
+
+export default function AffinityDetailContent({ entity, meta, type, catalog, sameType }: AffinityDetailContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const [showOtherEvents, setShowOtherEvents] = useState(false);
@@ -50,10 +59,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
   // Discovery loop — top 3 related entities across all types (excluding current)
   const relatedEntities = useMemo(() => {
     if (!profile || !result) return [];
-    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
-      .filter(r => r.entity.id !== entity.id)
+    const userAnimal = profile.chineseZodiac || "";
+    return sortLightEntities(userAnimal, catalog)
+      .filter(r => r.id !== entity.id)
       .slice(0, 3);
-  }, [profile, entity, result]);
+  }, [profile, entity, result, catalog]);
 
   if (!mounted) {
     return (
@@ -80,7 +90,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   if (!profile) {
     return (
-      <QuickAffinity entity={entity} meta={meta} type={type} />
+      <QuickAffinity entity={entity} meta={meta} type={type} catalog={catalog} />
     );
   }
 
@@ -110,7 +120,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Quick selector — same type entities */}
         {result && profile && (
-          <AnimalQuickSelector profile={profile} currentEntity={entity} type={type} />
+          <AnimalQuickSelector profile={profile} currentEntityId={entity.id} type={type} entities={sameType} />
         )}
 
          {/* Compartir esta afinidad — visible without scrolling */}
@@ -356,22 +366,22 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
             <div className="space-y-3">
               {relatedEntities.map((rel, idx) => {
                 const relTier = TIER_META[rel.tier];
-                const typeMeta = ENTITY_TYPES[rel.entity.type];
+                const typeLabel = TYPE_LABEL[rel.type] ?? rel.type;
                 return (
                   <Link
-                    key={rel.entity.id}
-                    href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
-                    onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
+                    key={rel.id}
+                    href={`/affinity/${rel.type}/${rel.id}`}
+                    onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.id, idx)}
                     className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xl shrink-0">{rel.entity.emoji}</span>
+                      <span className="text-xl shrink-0">{rel.emoji}</span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                          {rel.entity.name}
+                          {rel.name}
                         </p>
                         <p className="text-xs text-muted">
-                          {typeMeta?.label ?? rel.entity.type}
+                          {typeLabel}
                           <span aria-hidden="true"> · </span>
                           {rel.relationship}
                         </p>
@@ -649,10 +659,12 @@ function QuickAffinity({
   entity,
   meta,
   type,
+  catalog,
 }: {
   entity: SymbolicEntity;
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
+  catalog: LightweightEntity[];
 }) {
   const router = useRouter();
   const reducedMotion = useReducedMotion();
@@ -724,10 +736,10 @@ function QuickAffinity({
     }
     if (!birthDate) return [];
     const profile = calculateUserProfile("", birthDate);
-    return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
-      .filter(r => r.entity.id !== entity.id)
+    return sortLightEntities(profile.chineseZodiac || "", catalog)
+      .filter(r => r.id !== entity.id)
       .slice(0, 3);
-  }, [day, month, year, entity, result]);
+  }, [day, month, year, entity, result, catalog]);
 
   const handleSubmit = useCallback(() => {
     setError("");
@@ -959,22 +971,22 @@ function QuickAffinity({
                 <div className="space-y-3">
                   {relatedEntities.map((rel, idx) => {
                     const relTier = TIER_META[rel.tier];
-                    const typeMeta = ENTITY_TYPES[rel.entity.type];
+                    const typeLabel = TYPE_LABEL[rel.type] ?? rel.type;
                     return (
                       <Link
-                        key={rel.entity.id}
-                        href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
-                        onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
+                        key={rel.id}
+                        href={`/affinity/${rel.type}/${rel.id}`}
+                        onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.id, idx)}
                         className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-xl shrink-0">{rel.entity.emoji}</span>
+                          <span className="text-xl shrink-0">{rel.emoji}</span>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                              {rel.entity.name}
+                              {rel.name}
                             </p>
                             <p className="text-xs text-muted">
-                              {typeMeta?.label ?? rel.entity.type}
+                              {typeLabel}
                               <span aria-hidden="true"> · </span>
                               {rel.relationship}
                             </p>

@@ -3,9 +3,9 @@
 import { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { UserProfile } from "@/types/user";
+import type { LightweightEntity } from "@/types/atlas";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { sortLightEntities } from "@/lib/affinity-light";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
@@ -22,7 +22,37 @@ import { Sun, Heart, BookOpen, Calendar, ArrowRight, Compass, Sparkles } from "l
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 
-export default function ProfileHub({ profile }: { profile: UserProfile }) {
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+const TIER_LABEL: Record<string, string> = {
+  "resonancia-alta": "Resonancia alta",
+  "afinidad-media": "Afinidad media",
+  complementarios: "Complementarios",
+  desafiante: "Desafiante",
+  distante: "Distante",
+};
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca",
+  city: "Ciudad",
+  country: "País",
+  university: "Universidad",
+  team: "Equipo",
+  movie: "Película",
+  artist: "Artista",
+};
+
+export default function ProfileHub({
+  profile,
+  catalog,
+}: {
+  profile: UserProfile;
+  catalog?: LightweightEntity[];
+}) {
   const reduceMotion = useSafeReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -37,9 +67,10 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
   const archetypeName = archetype.name;
 
   const worldCount = useMemo(() => {
-    const results = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
+    if (!catalog || catalog.length === 0) return 0;
+    const results = sortLightEntities(profile.chineseZodiac || "", catalog);
     return results.filter((r) => r.score >= 60).length;
-  }, [profile]);
+  }, [profile, catalog]);
 
   const relationMap = useMemo(
     () => getRelationshipMap(userAnimal),
