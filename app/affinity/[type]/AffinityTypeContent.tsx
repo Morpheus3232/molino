@@ -8,8 +8,9 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { sortLightEntities, tierForScore, type LightAffinityResult, type LightTier } from "@/lib/affinity-light";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import type { LightweightEntity } from "@/types/atlas";
+import type { LightweightEntity, VisualType } from "@/types/atlas";
 import type { EntityType } from "@/lib/data/symbolic-entities";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -228,7 +229,7 @@ function ResultRow({
       className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-center gap-4">
-        <span className="text-2xl shrink-0" aria-hidden="true">{result.emoji}</span>
+        <EntityVisual visualType={result.visualType as VisualType} emoji={result.emoji} name={result.name} countryISO={result.countryISO} size={40} />
         <div className="flex-1 min-w-0">
           <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
             {result.name}

@@ -20,6 +20,7 @@ const TYPE_LABEL: Record<string, string> = {
 };
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import Button from "@/components/ui/Button";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -176,7 +177,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                 <div className="p-6 border border-ink/10 bg-transparent">
                   <div className="flex items-center justify-center gap-4 sm:gap-8 mb-6">
                     <div className="text-center">
-                      <span className="text-3xl block mb-2">{entityA.emoji}</span>
+                      <EntityVisual visualType={entityA.visualType} emoji={entityA.emoji} imageUrl={entityA.imageUrl} name={entityA.name} countryISO={entityA.countryISO} size={48} shape="circle" className="mx-auto mb-2" />
                       <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultA.entityAnimal)}</p>
                       <p className="text-xs text-muted mt-1">{entityA.name}</p>
                     </div>
@@ -191,7 +192,7 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                     </div>
 
                     <div className="text-center">
-                      <span className="text-3xl block mb-2">{entityB.emoji}</span>
+                      <EntityVisual visualType={entityB.visualType} emoji={entityB.emoji} imageUrl={entityB.imageUrl} name={entityB.name} countryISO={entityB.countryISO} size={48} shape="circle" className="mx-auto mb-2" />
                       <p className="font-heading text-xl font-bold text-foreground">{formatAnimalSimple(resultB.entityAnimal)}</p>
                       <p className="text-xs text-muted mt-1">{entityB.name}</p>
                     </div>
@@ -340,7 +341,7 @@ function EntityBaseCard({
   return (
     <div className="p-6 border border-ink/10 bg-transparent">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl">{entity.emoji}</span>
+        <EntityVisual visualType={entity.visualType} emoji={entity.emoji} imageUrl={entity.imageUrl} name={entity.name} countryISO={entity.countryISO} size={36} />
         <div>
           <p className="font-heading text-lg font-semibold text-foreground">{entity.name}</p>
           <p className="text-xs text-muted">{typeLabel} · {entity.country}</p>

@@ -13,6 +13,7 @@
  */
 
 import { getRelation, type Animal } from "@/lib/data/animalRelations";
+import type { VisualType } from "@/types/atlas";
 
 export type LightTier =
   | "resonancia-alta"
@@ -34,7 +35,8 @@ export interface LightAffinityResult {
   name: string;
   animal: string;
   emoji?: string;
-  visualType: string;
+  visualType: VisualType;
+  imageUrl?: string;
   country?: string;
   countryISO?: string;
   type: string;
@@ -74,6 +76,7 @@ export function sortLightEntities(
         animal: e.animal,
         emoji: e.emoji,
         visualType: e.visualType,
+        imageUrl: e.imageUrl,
         country: e.country,
         countryISO: e.countryISO,
         type: e.type,
@@ -91,7 +94,8 @@ type LightweightLike = {
   name: string;
   animal: string;
   emoji?: string;
-  visualType: string;
+  visualType: VisualType;
+  imageUrl?: string;
   country?: string;
   countryISO?: string;
   type: string;

@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { motion } from "framer-motion";
 import { sortLightEntities } from "@/lib/affinity-light";
-import type { LightweightEntity } from "@/types/atlas";
+import type { LightweightEntity, VisualType } from "@/types/atlas";
 import type { UserProfile } from "@/types/user";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 interface AnimalQuickSelectorProps {
   profile: UserProfile;
@@ -62,7 +63,7 @@ export default function AnimalQuickSelector({ profile, currentEntityId, type, en
               }`}
               aria-current={isCurrent ? "page" : undefined}
             >
-              <span className="text-base">{result.emoji}</span>
+              <EntityVisual visualType={result.visualType as VisualType} emoji={result.emoji} name={result.name} countryISO={result.countryISO} size={28} />
               <span className="font-medium truncate max-w-[80px]">{result.name}</span>
               <span
                 className="text-xs font-semibold px-1.5 py-0.5 rounded-sm shrink-0"
