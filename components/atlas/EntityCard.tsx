@@ -4,19 +4,27 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
+import type { ResonanceInfo } from "@/lib/resonance";
 
 interface EntityCardProps {
   entity: LightweightEntity;
   countryISO: string;
   category: string;
+  /** Optional resonance classification vs the active reference animal. */
+  resonance?: ResonanceInfo;
 }
 
-/**
- * A single entity card in the category listing. Uses EntityVisual for the
- * correct asset (flag/logo/portrait/album/fallback) and links to the entity's
- * affinity page. Receives only LightweightEntity.
- */
-export default function EntityCard({ entity, countryISO, category }: EntityCardProps) {
+// Sober, analytical tone — no cheap esotericism. Green-ish for harmony,
+// warm/amber for tension, muted for neutral.
+const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
+  affine: { label: "Afinidad", className: "text-emerald-400 bg-emerald-500/10 border-emerald-500/25" },
+  tension: { label: "Tensión", className: "text-amber-400 bg-amber-500/10 border-amber-500/25" },
+  neutral: { label: "Neutro", className: "text-muted bg-ink/[0.04] border-ink/10" },
+};
+
+export default function EntityCard({ entity, countryISO, category, resonance }: EntityCardProps) {
+  const resonanceStyle = resonance ? RESONANCE_STYLE[resonance.bucket] : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -41,6 +49,16 @@ export default function EntityCard({ entity, countryISO, category }: EntityCardP
           </p>
           <p className="text-xs text-muted mt-0.5">{entity.animal}</p>
         </div>
+
+        {resonanceStyle && resonance && (
+          <span
+            className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium uppercase tracking-wider border ${resonanceStyle.className}`}
+            title={resonance.label}
+          >
+            {resonanceStyle.label}
+          </span>
+        )}
+
         <span className="text-accent group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true">
           →
         </span>
