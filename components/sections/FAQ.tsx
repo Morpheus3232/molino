@@ -5,36 +5,36 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 
-const FAQS = [
+export const FAQS = [
   {
-    question: "¿Es científico lo que hace Molino?",
+    question: "¿Por qué el mapa esencial es 100% gratuito y sin registro?",
     answer:
-      "Molino cruza tres sistemas simbólicos —numerología, astrología y zodíaco chino— que han sido usados durante siglos para reflexionar sobre la personalidad. No es ciencia en el sentido experimental, pero sí es una herramienta honesta de autoconocimiento.",
+      "Porque el autoconocimiento de base debe ser libre y accesible. Generás tu lectura completa de numerología, astrología y zodíaco chino al instante en tu pantalla sin tener que crear cuentas, sin dejar tu email y sin publicidad intrusiva.",
   },
   {
-    question: "¿Por qué cruzan tres sistemas diferentes?",
+    question: "¿Qué incluye el acceso Premium de $8 USD y cómo funciona la garantía?",
     answer:
-      "Cada sistema mira tu identidad desde un ángulo distinto. Juntos, ofrecen una imagen más completa que cualquiera por separado.",
+      "El acceso Premium (pago único de por vida) incluye la síntesis profunda descargable en PDF de alta resolución (25 páginas), pronóstico de ciclos anuales 2026–2030, desglose de tensiones arquetípicas y preguntas interactivas. Cuenta con garantía incondicional de devolución de 7 días.",
   },
   {
-    question: "¿Qué pasa con mis datos?",
+    question: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
     answer:
-      "Tu mapa se calcula enteramente en tu navegador: la fecha de nacimiento nunca sale de tu dispositivo ni se guarda en ninguna base de datos. La única excepción es si pedís una interpretación con IA — ahí sí tu perfil viaja a nuestro servidor para generarla, sin guardarse.",
+      "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers. Tu fecha de nacimiento se procesa en tu CPU local y no se transmite ni se almacena en ninguna base de datos externa.",
   },
   {
-    question: "¿Necesito registrarme?",
+    question: "¿Puedo comparar mi mapa con mi pareja o guardar varios perfiles?",
     answer:
-      "No. Podés generar tu mapa sin crear cuenta, sin email y sin contraseña.",
+      "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas (pareja, familia, socios) en tu navegador sin crear cuentas.",
   },
   {
-    question: "¿Puedo compartir mi mapa?",
+    question: "¿Qué pasa si cambio de dispositivo o borro los datos de mi navegador?",
     answer:
-      "Sí. Una vez generado, podés descargarlo o compartir el link. El mapa es tuyo.",
+      "Al ser almacenamiento 100% privado en tu cliente, los datos residen en tu navegador. Si adquiriste el acceso Premium, podés restaurarlo en cualquier nuevo dispositivo con un solo clic usando tu ID de pago.",
   },
   {
-    question: "¿Es gratis?",
+    question: "¿Cómo se calculan el Camino de Vida y los sistemas simbólicos?",
     answer:
-      "Sí. Generar tu mapa personal es completamente gratuito.",
+      "Aplicamos el método pitagórico clásico reduciendo día, mes y año (respetando los Números Maestros 11, 22 y 33), cálculo solar astronómico para la astrología y el ciclo sexagenario lunar para el animal y elemento del zodíaco chino.",
   },
 ];
 
@@ -99,7 +99,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-20">
+    <section id="faq" className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12">
         <motion.h2
           {...fadeUp}

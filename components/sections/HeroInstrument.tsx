@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles, Bookmark } from "lucide-react";
+import Link from "next/link";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
-import SocialCounter from "@/components/ui/SocialCounter";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
+import { loadProfileFromStorage } from "@/lib/session/localStorage";
+import type { UserProfile } from "@/types/user";
 
 function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -23,7 +25,15 @@ export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [savedProfile, setSavedProfile] = useState<{ name?: string; birthDate: string } | null>(null);
   const dateInputRef = useRef<DateInputHandle>(null);
+
+  useEffect(() => {
+    const profile = loadProfileFromStorage();
+    if (profile && profile.birthDate) {
+      setSavedProfile({ name: profile.name, birthDate: profile.birthDate });
+    }
+  }, []);
 
   const isDateValid = isValidBirthDate(dateValue);
 
@@ -73,13 +83,22 @@ export default function HeroInstrument() {
           {!isSubmitting && isDateValid && "Fecha válida. Lista para generar tu mapa."}
         </div>
 
-        {/* Contador social honesto y acumulativo — arriba del título */}
+        {/* Saved Profile Quick Access or Privacy Badge */}
         <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
-          <SocialCounter
-            number={35000}
-            text="mapas calculados de forma 100% privada"
-            className="font-mono text-xs sm:text-sm uppercase tracking-[0.2em]"
-          />
+          {savedProfile ? (
+            <Link
+              href="/profile"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent hover:bg-accent/25 transition-all text-xs font-mono font-bold shadow-sm"
+            >
+              <Bookmark className="w-3.5 h-3.5" />
+              <span>Tu mapa está listo ({savedProfile.name || "Mi Mapa"}) → Ver resultado</span>
+            </Link>
+          ) : (
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>100% en tu navegador · Sin registro · Sin tracking</span>
+            </div>
+          )}
         </motion.div>
 
         {/* Headline emocional */}
@@ -148,9 +167,9 @@ export default function HeroInstrument() {
         </motion.p>
 
         <motion.p {...fadeUpDelayed(0.3)} className="font-mono text-xs text-muted/70 tracking-wide">
-          <a href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Ver un ejemplo
-          </a>
+          <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
+            Ver un ejemplo interactivo
+          </Link>
         </motion.p>
       </div>
 

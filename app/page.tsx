@@ -51,50 +51,50 @@ const homeSchemas = [
     mainEntity: [
       {
         "@type": "Question",
-        name: "¿Es científico lo que hace Molino?",
+        name: "¿Por qué el mapa esencial es 100% gratuito y sin registro?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Molino cruza tres sistemas simbólicos —numerología pitagórica, astrología solar y zodíaco chino— que han sido usados durante siglos para reflexionar sobre la personalidad y los ciclos. No es ciencia en el sentido experimental, sino una herramienta honesta y estructurada de autoconocimiento.",
+          text: "Porque el autoconocimiento de base debe ser libre y accesible. Generás tu lectura completa de numerología, astrología y zodíaco chino al instante sin crear cuentas, sin dejar tu email y sin publicidad intrusiva.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Por qué cruzan tres sistemas diferentes?",
+        name: "¿Qué incluye el acceso Premium de $8 USD y cómo funciona la garantía?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Cada sistema mira tu identidad desde un ángulo distinto. Juntos, ofrecen una perspectiva más completa y tridimensional que cualquiera por separado.",
+          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda descargable en PDF de alta resolución (25 páginas), pronóstico de ciclos anuales 2026–2030, desglose de tensiones arquetípicas y garantía de devolución total de 7 días sin preguntas.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Qué pasa con mis datos personales?",
+        name: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Tu mapa se calcula enteramente en tu navegador: la fecha de nacimiento nunca sale de tu dispositivo ni se guarda en ninguna base de datos ni servidores.",
+          text: "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers. Tu fecha de nacimiento se procesa en tu CPU local y no se transmite ni se almacena en ninguna base de datos externa.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Necesito registrarme o crear una cuenta?",
+        name: "¿Puedo comparar mi mapa con mi pareja o guardar varios perfiles?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "No. Podés generar tu mapa sin crear cuenta, sin dejar tu email y sin contraseña. La privacidad es total por diseño.",
+          text: "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas en tu navegador sin crear cuentas.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Puedo compartir o descargar mi mapa?",
+        name: "¿Qué pasa si cambio de dispositivo o borro los datos de mi navegador?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Sí. Una vez generado, podés descargarlo como imagen de alta resolución o compartir el enlace directo con quien vos elijas.",
+          text: "Al ser almacenamiento 100% privado en tu cliente, los datos residen en tu navegador. Si adquiriste el acceso Premium, podés restaurarlo en cualquier nuevo dispositivo con un solo clic usando tu ID de pago.",
         },
       },
       {
         "@type": "Question",
-        name: "¿Tiene algún costo generar mi mapa?",
+        name: "¿Cómo se calculan el Camino de Vida y los sistemas simbólicos?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "El mapa esencial es 100% gratuito y sin publicidad. Existe un acceso Premium opcional de pago único para quienes deseen descargar el informe completo en PDF.",
+          text: "Aplicamos el método pitagórico clásico reduciendo día, mes y año (respetando los Números Maestros 11, 22 y 33), cálculo solar astronómico para la astrología y el ciclo sexagenario lunar para el animal y elemento del zodíaco chino.",
         },
       },
     ],

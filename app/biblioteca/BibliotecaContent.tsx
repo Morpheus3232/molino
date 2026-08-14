@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
 import Chip from "@/components/ui/Chip";
+import { BookOpen, Sparkles, Compass, ArrowRight } from "lucide-react";
+import Card from "@/components/ui/Card";
 import {
   SOURCES,
   CATEGORY_LABELS,
@@ -19,6 +21,33 @@ export const TYPE_META = {
   video: { label: "Video", color: "#897095" },
   sitio: { label: "Sitio web", color: "#708F7B" },
 };
+
+const CONTEXT_PATHS = [
+  {
+    title: "Numerología & Camino de Vida",
+    desc: "Para entender la reducción pitagórica, los Números Maestros y la estructura vibratoria del tiempo.",
+    authors: "Pitágoras · Juno Jordan · Guematria Clásica",
+    tag: "numerologia",
+  },
+  {
+    title: "Astrología Psicológica & Elementos",
+    desc: "Para profundizar en la interacción entre los cuatro elementos y las polaridades solares sin determinismo.",
+    authors: "Stephen Arroyo · Dane Rudhyar · Liz Greene",
+    tag: "astrologia",
+  },
+  {
+    title: "Arquetipos & Sincronicidad",
+    desc: "Para explorar la teoría del inconsciente colectivo y por qué los símbolos resuenan en la psique humana.",
+    authors: "Carl G. Jung · Marie-Louise von Franz",
+    tag: "psicologia",
+  },
+  {
+    title: "Ciclo Sexagenario & Zodíaco Chino",
+    desc: "Para estudiar los ritmos lunares, las 12 ramas terrestres y la armonía de los cinco elementos orientales.",
+    authors: "I Ching · Richard Wilhelm · Astrología BaZi",
+    tag: "zodiaco-chino",
+  },
+];
 
 export default function BibliotecaContent() {
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -58,20 +87,59 @@ export default function BibliotecaContent() {
 
   return (
     <div className="min-h-screen bg-background">
-
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca de Fuentes</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
-            Fuentes y referencias
+            Fuentes, Autores & Contexto
           </h1>
-          <p className="text-base sm:text-lg text-muted mt-6 max-w-xl leading-relaxed">
-            Molino calcula tu mapa a partir de tres sistemas: numerología, astrología y zodíaco chino. Esta es
-            lectura adicional sobre esos sistemas y sobre otras tradiciones simbólicas relacionadas — no todo lo
-            que aparece acá alimenta tu mapa.
+          <p className="text-base sm:text-lg text-muted mt-4 max-w-2xl leading-relaxed">
+            Molino integra tres sistemas simbólicos tradicionales: <strong>numerología pitagórica</strong>, <strong>astrología solar</strong> y <strong>zodíaco chino</strong>. Esta biblioteca documenta las obras y corrientes teóricas que fundamentan nuestros algoritmos de lectura.
           </p>
         </motion.section>
+
+        {/* Tu mapa en contexto — Guía de lectura temática */}
+        <section className="mb-14">
+          <div className="flex items-center gap-2 mb-4">
+            <Compass className="w-4 h-4 text-accent" />
+            <h2 className="font-heading text-sm font-bold uppercase tracking-wider text-accent">
+              Tu mapa en contexto: cómo orientar tu lectura
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {CONTEXT_PATHS.map((item) => (
+              <div
+                key={item.title}
+                role="button"
+                tabIndex={0}
+                className="p-5 rounded-2xl bg-card/70 border border-ink/10 hover:border-accent/30 transition-all cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                onClick={() => {
+                  setActiveTag(item.tag);
+                  document.getElementById("biblioteca-search")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setActiveTag(item.tag);
+                    document.getElementById("biblioteca-search")?.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
+              >
+                <h3 className="font-heading text-sm font-bold text-foreground mb-1">
+                  {item.title}
+                </h3>
+                <p className="text-xs text-muted leading-relaxed mb-3">
+                  {item.desc}
+                </p>
+                <div className="text-[11px] font-mono text-accent flex items-center justify-between pt-2 border-t border-ink/5">
+                  <span>{item.authors}</span>
+                  <span className="hover:underline">Filtrar obras →</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* Filter + Search */}
         <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
@@ -118,7 +186,7 @@ export default function BibliotecaContent() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {sources.map((source, i) => {
-                    const meta = TYPE_META[source.type];
+                    const meta = TYPE_META[source.type as keyof typeof TYPE_META] || TYPE_META.libro;
                     return (
                       <motion.div
                         key={source.id}
@@ -126,95 +194,42 @@ export default function BibliotecaContent() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-20px" }}
                         transition={{ delay: i * 0.03, duration: 0.35 }}
-                        className="p-6 border border-ink/10 bg-background flex flex-col"
+                        className="p-6 rounded-2xl border border-ink/10 bg-card flex flex-col justify-between hover:border-ink/25 transition-all"
                       >
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <Link
-                            href={`/biblioteca/${source.slug}`}
-                            className="font-heading text-sm text-foreground hover:text-accent transition-colors"
-                          >
-                            {source.title}
-                          </Link>
-                          <span
-                            className="font-mono text-xs font-semibold tracking-wider uppercase px-2 py-0.5 shrink-0"
-                            style={{ background: `${meta.color}15`, color: meta.color }}
-                          >
-                            {meta.label}
-                          </span>
-                        </div>
-                        <p className="text-xs text-muted mb-2">{source.author} · {source.year}</p>
-
-                        {/* Era badge */}
-                        <span
-                          className={`self-start font-mono text-xs tracking-wider uppercase px-2 py-0.5 mb-3 ${
-                            source.era === "ancestral"
-                              ? "bg-accent/10 text-accent"
-                              : "bg-ink/5 text-muted"
-                          }`}
-                        >
-                          {source.era === "ancestral" ? "Tradición ancestral" : "Contemporáneo"}
-                        </span>
-
-                        <p className="text-sm text-muted mb-3 flex-1 leading-relaxed">{source.description}</p>
-
-                        <div className="flex flex-wrap gap-1 mb-3">
-                          {(source.tags || []).map((tag) => (
+                        <div>
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <Link
+                              href={`/biblioteca/${source.slug}`}
+                              className="font-heading text-sm font-bold text-foreground hover:text-accent transition-colors"
+                            >
+                              {source.title}
+                            </Link>
                             <span
-                              key={tag}
-                              className="font-mono text-xs tracking-wider uppercase bg-background border border-ink/10 px-2 py-0.5 text-muted"
+                              className="font-mono text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full shrink-0"
+                              style={{ backgroundColor: `${meta.color}20`, color: meta.color }}
                             >
-                              #{tag}
+                              {meta.label}
                             </span>
-                          ))}
+                          </div>
+
+                          <p className="text-xs font-mono text-muted mb-3">
+                            {source.author} {source.year ? `(${source.year})` : ""}
+                          </p>
+
+                          <p className="text-xs text-muted leading-relaxed">
+                            {source.description}
+                          </p>
                         </div>
 
-                        {(source.review || source.summary) && (
-                          <div className="mt-auto pt-3 border-t border-ink/10">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setExpandedDescription(
-                                  expandedDescription === source.id ? null : source.id
-                                )
-                              }
-                              className={`w-full text-left px-3 py-2.5 font-mono text-xs font-semibold tracking-wider uppercase transition-all min-h-[40px] ${
-                                expandedDescription === source.id
-                                  ? "bg-accent text-accent-foreground"
-                                  : "bg-background border border-ink/10 text-muted hover:text-foreground hover:border-ink/30"
-                              }`}
-                            >
-                              {expandedDescription === source.id ? "Cerrar" : "Descripción"}
-                            </button>
+                        {source.tags && source.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-ink/5">
+                            {source.tags.map((t) => (
+                              <span key={t} className="text-[10px] font-mono text-muted/70 bg-background px-1.5 py-0.5 rounded border border-ink/5">
+                                #{t}
+                              </span>
+                            ))}
                           </div>
                         )}
-
-                        {expandedDescription === source.id && (source.review || source.summary) && (
-                          <div className="mt-3 p-3 bg-background border border-ink/10 space-y-3">
-                            {source.summary && (
-                              <div>
-                                <p className="font-mono text-xs font-semibold tracking-wider uppercase text-muted mb-1">
-                                  Método
-                                </p>
-                                <p className="text-xs text-muted leading-relaxed">{source.summary}</p>
-                              </div>
-                            )}
-                            {source.review && (
-                              <div>
-                                <p className="font-mono text-xs font-semibold tracking-wider uppercase text-muted mb-1">
-                                  Reseña
-                                </p>
-                                <p className="text-xs text-muted leading-relaxed">{source.review}</p>
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                        <Link
-                          href={`/biblioteca/${source.slug}`}
-                          className="mt-4 inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors"
-                        >
-                          Ver ficha completa →
-                        </Link>
                       </motion.div>
                     );
                   })}
@@ -223,21 +238,11 @@ export default function BibliotecaContent() {
             );
           })
         ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-center py-16"
-          >
-            <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin fuentes</h2>
-            <p className="text-sm text-muted mb-6 max-w-md mx-auto">
-              No se encontraron fuentes para los filtros seleccionados.
-            </p>
-          </motion.div>
+          <div className="p-12 text-center rounded-2xl border border-dashed border-ink/15 text-muted font-mono text-xs">
+            No se encontraron obras para los filtros seleccionados.
+          </div>
         )}
       </main>
-
     </div>
   );
 }
