@@ -4,20 +4,16 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Logo from "@/components/ui/Logo";
 
-// 1100ms alcanza para una ráfaga completa del molino (ver Logo.tsx: el
-// rotor con wind tarda 1.8s/vuelta, así que esto cubre más de media vuelta
-// visible) sin sumar de más al LCP del primer visitante — medido con
-// Lighthouse: el valor anterior (2200ms) hacía que el intro por sí solo
-// explicara casi todo el LCP de ~3.6s de la home.
-const MIN_DISPLAY_MS = 1100;
-const FADE_MS = 500;
+// Intro ultra-liviano y no bloqueante: objetivo <=250ms con fade rápido.
+// Pointer-events-none para nunca bloquear clics o LCP del usuario en el hero.
+const MIN_DISPLAY_MS = 250;
+const FADE_MS = 200;
 const SESSION_KEY = "molino-intro-seen";
 
 /**
- * Intro de carga del sitio: un molino grande recibe el viento y sus aspas
- * aceleran mientras la página termina de cargar. Se desvanece al llegar
- * el evento window "load" (con un mínimo de visualización para que la
- * ráfaga se aprecie). Solo aparece una vez por sesión.
+ * Intro de carga del sitio: brand intro sutil y no bloqueante.
+ * Desaparece rápidamente tras el primer paint sin retrasar LCP ni interactividad.
+ * Solo aparece una vez por sesión y respeta prefers-reduced-motion.
  */
 export default function SiteIntro() {
   const reducedMotion = useReducedMotion();
@@ -29,18 +25,21 @@ export default function SiteIntro() {
       return;
     }
 
-    if (typeof window !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
+    try {
+      if (typeof window !== "undefined" && sessionStorage.getItem(SESSION_KEY)) {
+        setPhase("gone");
+        return;
+      }
+    } catch {
       setPhase("gone");
       return;
     }
 
     let minTimer: ReturnType<typeof setTimeout> | null = null;
-    let loadTimer: ReturnType<typeof setTimeout> | null = null;
     let fadeTimer: ReturnType<typeof setTimeout> | null = null;
 
     const startFade = () => {
-      if (phase === "gone") return;
-      setPhase("fade");
+      setPhase((prev) => (prev === "gone" ? "gone" : "fade"));
       fadeTimer = setTimeout(() => {
         setPhase("gone");
         try {
@@ -50,37 +49,30 @@ export default function SiteIntro() {
     };
 
     minTimer = setTimeout(() => {
-      if (document.readyState === "complete") {
-        startFade();
-      } else {
-        window.addEventListener("load", startFade, { once: true });
-      }
+      startFade();
     }, MIN_DISPLAY_MS);
 
     return () => {
       if (minTimer) clearTimeout(minTimer);
-      if (loadTimer) clearTimeout(loadTimer);
       if (fadeTimer) clearTimeout(fadeTimer);
-      window.removeEventListener("load", startFade);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion]);
 
-  if (phase === "gone") return null;
+  if (phase === "gone" || reducedMotion) return null;
 
   return (
     <AnimatePresence>
       <motion.div
         key="site-intro"
-        className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-background"
+        className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-background pointer-events-none"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: phase === "fade" ? 0 : 1 }}
         exit={{ opacity: 0, transition: { duration: FADE_MS / 1000, ease: "easeOut" } }}
+        transition={{ duration: FADE_MS / 1000, ease: "easeOut" }}
         aria-hidden="true"
       >
         {/* Líneas de viento */}
-        <motion.div
-          className="absolute inset-0 overflow-hidden pointer-events-none"
-          aria-hidden="true"
-        >
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           {[0, 1, 2, 3].map((i) => (
             <motion.div
               key={i}
@@ -92,56 +84,49 @@ export default function SiteIntro() {
               }}
               animate={{ x: ["0vw", "130vw"], opacity: [0, 0.7, 0] }}
               transition={{
-                duration: 2.6 + i * 0.6,
+                duration: 1.8 + i * 0.4,
                 repeat: Infinity,
-                delay: i * 0.45,
+                delay: i * 0.2,
                 ease: "linear",
               }}
             />
           ))}
-        </motion.div>
+        </div>
 
-        {/* Molino con aspas acelerando */}
+        {/* Molino con aspas */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative flex flex-col items-center gap-8"
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="relative flex flex-col items-center gap-6"
         >
-          <motion.div
-            animate={{ rotate: [0, 6, 0, -6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            className="relative"
-          >
-            <Logo wind className="w-32 h-32 sm:w-40 sm:h-40 text-ink" />
-            {/* Halo de viento detrás del molino */}
+          <div className="relative">
+            <Logo wind className="w-24 h-24 sm:w-32 sm:h-32 text-ink" />
+            {/* Halo detrás del molino */}
             <div
-              className="absolute inset-0 rounded-full blur-3xl opacity-25 -z-10"
+              className="absolute inset-0 rounded-full blur-2xl opacity-20 -z-10"
               style={{ background: "radial-gradient(circle, var(--color-accent), transparent 70%)" }}
               aria-hidden="true"
             />
-          </motion.div>
+          </div>
 
           <div className="text-center">
-            <p className="font-display text-3xl sm:text-4xl tracking-tight uppercase text-ink">Molino</p>
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-muted mt-3">
+            <p className="font-display text-2xl sm:text-3xl tracking-tight uppercase text-ink">Molino</p>
+            <p className="font-mono text-[0.6rem] uppercase tracking-[0.35em] text-muted mt-2">
               Mapa personal de autoconocimiento
             </p>
           </div>
         </motion.div>
 
         {/* Progreso de carga */}
-        <motion.div
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 w-40 h-px bg-ink/10 overflow-hidden"
-          aria-hidden="true"
-        >
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-32 h-px bg-ink/10 overflow-hidden" aria-hidden="true">
           <motion.div
             className="h-full bg-accent"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: MIN_DISPLAY_MS / 1000, ease: "easeInOut" }}
           />
-        </motion.div>
+        </div>
       </motion.div>
     </AnimatePresence>
   );

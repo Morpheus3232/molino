@@ -59,10 +59,7 @@ export const metadata: Metadata = {
   creator: "Molino",
   openGraph: {
     type: "website",
-    // es_419: español latinoamericano neutro (no atado a un país). Cuando
-    // existan en/pt-BR reales, esto se vuelve dinámico por locale de ruta.
     locale: "es_419",
-    alternateLocale: ["en_US", "pt_BR"],
     url: SITE_URL,
     siteName: SITE_NAME,
     title: "Molino — Mapa Personal de Autoconocimiento",
@@ -77,14 +74,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
-    // Hreflang — preparado para internacionalización. `es` (default) vive en
-    // la raíz; `en`/`pt` apuntan a rutas aún no servidas, listas para cuando
-    // se monten los locales. Si se publican antes de crearlas, quitar las
-    // entradas no-es para evitar hreflang a 404.
     languages: {
       "es": SITE_URL,
-      "en": siteUrl("/en"),
-      "pt": siteUrl("/pt"),
     },
   },
   robots: {
@@ -127,7 +118,6 @@ export default function RootLayout({
       url: SITE_URL,
       logo: `${SITE_URL}/favicon.svg`,
       description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
-      sameAs: [],
     },
     {
       "@context": "https://schema.org",
@@ -171,29 +161,6 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body>
-        <div
-          aria-hidden="true"
-          style={{ display: "none" }}
-          dangerouslySetInnerHTML={{
-            __html: `<!--
-THESIS: Molino no ilustra lo mistico, lo calcula en vivo -- el sitio se muestra
-como el instrumento que muele tres sistemas (numerologia, astrologia, zodiaco
-chino) en un mapa, y refusa el hero-metric estatico y el "neon sobre negro" generico.
-OWN-WORLD: fondo casi negro (#0A0A0C) + textura de grano (Grainient dorado/marron,
-ya en el repo) + un nucleo de turbina de 3 aspas, cada una con el color de un
-sistema (oro numerologia, indigo astrologia, jade zodiaco); Archivo Black para
-cifras/titulos, JetBrains Mono para lecturas/datos.
-STORY: el visitante ve su fecha entrar como grano y salir como numero del dia;
-entiende que cada cifra es trazable, no decorativa, y arranca el onboarding.
-FIRST VIEWPORT: hero full-bleed, turbina girando a la derecha/detras, numero del
-dia "molido" a la izquierda con su calculo visible, CTA "Crear mi mapa" debajo.
-FORM: Molino / Turbina Viva -- direccion asignada por concept-seed (candidato 5/7,
-seed 3b23cd2e), literalizando el molino del nombre como nucleo generativo.
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
-review, the verdict, and DESIGN.md.
--->`,
-          }}
-        />
         <SkipLink />
         <SiteIntro />
         <AnalyticsProvider />

@@ -24,6 +24,7 @@ const CTA_LABEL = "Descubrí tu mapa";
 export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
+  const dateValueRef = useRef("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [savedProfile, setSavedProfile] = useState<{ name?: string; birthDate: string } | null>(null);
   const dateInputRef = useRef<DateInputHandle>(null);
@@ -37,25 +38,35 @@ export default function HeroInstrument() {
 
   const isDateValid = isValidBirthDate(dateValue);
 
-  const handleGenerate = useCallback(() => {
-    if (!isDateValid) {
+  const handleGenerate = useCallback((explicitDate?: string) => {
+    let targetDate = typeof explicitDate === "string" && explicitDate ? explicitDate : dateValueRef.current || dateValue;
+    if (typeof document !== "undefined") {
+      const d = (document.querySelector("input[name='birthdate-day']") as HTMLInputElement)?.value?.replace(/\D/g, "") || "";
+      const m = (document.querySelector("input[name='birthdate-month']") as HTMLInputElement)?.value?.replace(/\D/g, "") || "";
+      const y = (document.querySelector("input[name='birthdate-year']") as HTMLInputElement)?.value?.replace(/\D/g, "") || "";
+      if (d.length >= 1 && m.length >= 1 && y.length === 4) {
+        targetDate = `${y.padStart(4, "0")}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+      }
+    }
+    if (!isValidBirthDate(targetDate)) {
       dateInputRef.current?.reportIncomplete();
       return;
     }
     setIsSubmitting(true);
-    const [year, month, day] = dateValue.split("-");
-    saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
+    const [year, month, day] = targetDate.split("-");
+    saveOnboardingData({ day, month, year, dateValue: targetDate, dateOfBirth: targetDate });
     router.push("/onboarding");
-  }, [dateValue, isDateValid, router]);
+  }, [dateValue, router]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" && isDateValid) handleGenerate();
+      if (e.key === "Enter") handleGenerate();
     },
-    [isDateValid, handleGenerate]
+    [handleGenerate]
   );
 
   const handleDateChange = useCallback((value: string) => {
+    dateValueRef.current = value;
     setDateValue(value);
   }, []);
 
@@ -117,46 +128,54 @@ export default function HeroInstrument() {
           Tu mapa personal revela quién sos, cómo decidís y cuándo actuar. En 30 segundos.
         </motion.p>
 
-        {/* FECHA — input real DD/MM/AAAA */}
-        <motion.div {...fadeUpDelayed(0.15)} className="mb-5" onKeyDown={handleKeyDown}>
-          <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
-        </motion.div>
+        {/* Formulario de Fecha y Generación */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleGenerate();
+          }}
+          className="w-full"
+        >
+          {/* FECHA — input real DD/MM/AAAA */}
+          <motion.div {...fadeUpDelayed(0.15)} className="mb-5">
+            <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
+          </motion.div>
 
-        {/* CTA principal — grande, dorado, con estado disabled */}
-        <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-3">
-          <button
-            type="button"
-            onClick={handleGenerate}
-            aria-disabled={!isDateValid || isSubmitting}
-            aria-busy={isSubmitting}
-            className={`${ctaClass} px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto`}
-          >
-            {isSubmitting ? (
-              <>
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                  className="w-5 h-5"
-                  aria-hidden="true"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                    <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
-                    <path d="M12 2a10 10 0 0 1 10 10" strokeOpacity="1" />
-                  </svg>
-                </motion.span>
-                Generando tu mapa…
-              </>
-            ) : (
-              <>
-                {CTA_LABEL}
-                <ArrowRight
-                  className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </>
-            )}
-          </button>
-        </motion.div>
+          {/* CTA principal — grande, dorado */}
+          <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-3">
+            <button
+              type="button"
+              onClick={() => handleGenerate()}
+              aria-busy={isSubmitting}
+              className={`${ctaClass} px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto`}
+            >
+              {isSubmitting ? (
+                <>
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-5 h-5"
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <circle cx="12" cy="12" r="10" strokeOpacity="0.25" />
+                      <path d="M12 2a10 10 0 0 1 10 10" strokeOpacity="1" />
+                    </svg>
+                  </motion.span>
+                  Generando tu mapa…
+                </>
+              ) : (
+                <>
+                  {CTA_LABEL}
+                  <ArrowRight
+                    className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  />
+                </>
+              )}
+            </button>
+          </motion.div>
+        </form>
 
         {/* Microcopy de urgencia */}
         <motion.p

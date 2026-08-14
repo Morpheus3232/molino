@@ -45,12 +45,12 @@ export interface PublicShareData {
 export function encodeProfileData(profile: UserProfile): string {
   const data: ShareableProfileData = {
     n: profile.name || '',
-    b: profile.birthDate,
-    l: profile.lifePath,
-    s: profile.sunSign,
-    e: profile.element,
-    c: profile.chineseZodiac,
-    a: profile.archetype,
+    b: profile.birthDate || '',
+    l: profile.lifePath || 1,
+    s: profile.sunSign || '',
+    e: profile.element || (profile.sunSignInfo?.element) || '',
+    c: profile.chineseZodiac || (profile.chineseZodiacInfo?.animal) || '',
+    a: profile.archetype || (profile.archetypeInfo?.name) || '',
   };
   if (profile.expressionNumber) data.en = profile.expressionNumber;
   if (profile.soulNumber) data.sn = profile.soulNumber;

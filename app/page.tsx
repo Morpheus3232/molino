@@ -2,17 +2,17 @@ import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import { SITE_URL } from "@/lib/seo";
 
-const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true, loading: () => <div className="h-48 animate-pulse bg-ink/5" /> });
+const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true });
+const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true });
+const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true });
+const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true });
+const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true });
+const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true });
 const TrustSignals = dynamic(() => import("@/components/social/TrustSignals"), { ssr: true });
-const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const MapPreviewDemo = dynamic(() => import("@/components/sections/MapPreviewDemo"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const QuienHaceEsto = dynamic(() => import("@/components/sections/QuienHaceEsto"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
-const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true, loading: () => <div className="h-64 animate-pulse bg-ink/5" /> });
+const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true });
+const MapPreviewDemo = dynamic(() => import("@/components/sections/MapPreviewDemo"), { ssr: true });
+const QuienHaceEsto = dynamic(() => import("@/components/sections/QuienHaceEsto"), { ssr: true });
+const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true });
 
 const homeSchemas = [
   {

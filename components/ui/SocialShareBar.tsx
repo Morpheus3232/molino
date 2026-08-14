@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Share2, Copy, Check, MessageCircle } from "lucide-react";
 
 interface SocialShareBarProps {
@@ -17,11 +17,18 @@ export default function SocialShareBar({
   className = "",
 }: SocialShareBarProps) {
   const [copied, setCopied] = useState(false);
+  const [hasNativeShare, setHasNativeShare] = useState(false);
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined" && typeof navigator.share === "function") {
+      setHasNativeShare(true);
+    }
+  }, []);
 
   const getShareUrl = () => {
     if (url) return url;
     if (typeof window !== "undefined") return window.location.href;
-    return "https://molino.app";
+    return "https://www.molino.app";
   };
 
   const handleCopy = () => {
@@ -48,11 +55,9 @@ export default function SocialShareBar({
     }
   };
 
-  const shareUrl = getShareUrl();
+  const shareUrl = url || "https://www.molino.app";
   const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${text} ${shareUrl}`)}`;
   const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
-
-  const hasNativeShare = typeof navigator !== "undefined" && "share" in navigator;
 
   return (
     <div
