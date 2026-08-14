@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
+import { getMemberCount } from "@/lib/metrics";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Inicio" },
@@ -10,11 +11,16 @@ const FOOTER_LINKS = [
   { href: "/premium", label: "Premium" },
   { href: "/profesionales", label: "Profesionales" },
   { href: "/embed", label: "Widget" },
+  { href: "/transparencia", label: "Transparencia" },
   { href: "/changelog", label: "Changelog" },
   { href: "/privacidad", label: "Privacidad" },
 ];
 
-export default function UniversityFooter() {
+const CONTACT_EMAIL = "versionlimitada@proton.me";
+
+export default async function UniversityFooter() {
+  const memberCount = await getMemberCount();
+
   return (
     <footer className="bg-[#0F0F10] border-t border-ink/10 text-foreground">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
@@ -31,6 +37,15 @@ export default function UniversityFooter() {
             <p className="text-sm text-muted mt-3 leading-relaxed">
               Autoconocimiento sin ruido.
             </p>
+            {/* Contador ético: solo se muestra tras superar 500 miembros reales
+                (payments validados). Mientras tanto, la transparencia se
+                comunica de forma sobria sin números inflados. */}
+            {memberCount > 500 && (
+              <p className="mt-4 inline-flex items-center gap-2 text-xs font-mono text-muted">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                {memberCount.toLocaleString("es-AR")} miembros · pagos validados
+              </p>
+            )}
           </div>
 
           <nav aria-label="Navegación del pie de página" className="flex flex-col items-center md:items-end gap-6">
@@ -58,7 +73,28 @@ export default function UniversityFooter() {
           </nav>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/20">
+        {/* Contacto — transparencia y privacidad explícita */}
+        <section className="mt-12 pt-8 border-t border-white/20 text-center" aria-label="Contacto">
+          <h4 className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground">
+            ¿Hablamos?
+          </h4>
+          <p className="mt-2 text-sm text-muted">
+            Escribinos a{" "}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="inline-flex items-center gap-1 text-accent hover:underline"
+            >
+              <Mail className="w-3.5 h-3.5" aria-hidden="true" />
+              {CONTACT_EMAIL}
+            </a>
+          </p>
+          <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted font-mono">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+            🛡️ No vendemos tus datos. Tu privacidad importa.
+          </p>
+        </section>
+
+        <div className="mt-10 pt-6 border-t border-white/20">
           <p className="text-center text-xs text-white/70 font-mono tracking-wider">
             © 2026 Molino. Todos los derechos reservados.
           </p>

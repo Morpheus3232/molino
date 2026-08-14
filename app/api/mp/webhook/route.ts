@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
 import { grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
+import { incrementMemberCount } from '@/lib/metrics';
 
 export async function POST(req: NextRequest) {
   try {
@@ -73,6 +74,10 @@ export async function POST(req: NextRequest) {
       if (!hasAccess) {
         await grantPremiumAccess(profileHash, paymentId);
       }
+    } else {
+      // Only count on the FIRST successful grant of this payment, so the
+      // transparent member counter reflects real, validated purchases.
+      await incrementMemberCount(profileHash);
     }
 
     return NextResponse.json({ received: true });
