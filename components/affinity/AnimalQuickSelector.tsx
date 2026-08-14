@@ -4,35 +4,37 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { motion } from "framer-motion";
-import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
-import { calculateAffinity, TIER_META } from "@/lib/engines/affinityEngine";
+import { sortLightEntities } from "@/lib/affinity-light";
+import type { LightweightEntity } from "@/types/atlas";
 import type { UserProfile } from "@/types/user";
-import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 
 interface AnimalQuickSelectorProps {
   profile: UserProfile;
-  currentEntity: SymbolicEntity;
-  type: EntityType;
+  currentEntityId: string;
+  type: string;
+  entities: LightweightEntity[];
 }
+
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
 
 /**
  * Horizontal quick-selector showing entities of the same type.
  * Highlights current entity. Shows animal emoji + score chip.
  * Scrollable on mobile with snap.
  */
-export default function AnimalQuickSelector({ profile, currentEntity, type }: AnimalQuickSelectorProps) {
+export default function AnimalQuickSelector({ profile, currentEntityId, type, entities }: AnimalQuickSelectorProps) {
   const reducedMotion = useReducedMotion();
 
   const siblings = useMemo(() => {
-    return SYMBOLIC_ENTITIES
-      .filter(e => e.type === type)
-      .map(e => ({
-        entity: e,
-        result: calculateAffinity(profile, e),
-      }))
-      .sort((a, b) => b.result.score - a.result.score);
-  }, [profile, type]);
+    const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
+    return sortLightEntities(userAnimal, entities);
+  }, [profile, entities]);
 
   if (siblings.length <= 1) return null;
 
@@ -46,13 +48,13 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
       transition={{ duration: reducedMotion ? 0 : 0.4, ease: "easeOut" }}
     >
       <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
-        {siblings.map(({ entity, result }) => {
-          const isCurrent = entity.id === currentEntity.id;
-          const tierMeta = TIER_META[result.tier];
+        {siblings.map((result) => {
+          const isCurrent = result.id === currentEntityId;
+          const tierColor = TIER_COLOR[result.tier];
           return (
             <Link
-              key={entity.id}
-              href={`/affinity/${entity.type}/${entity.id}`}
+              key={result.id}
+              href={`/affinity/${result.type}/${result.id}`}
               className={`snap-start shrink-0 flex items-center gap-2 px-3 py-2 rounded-md border text-sm transition-all min-h-[40px] ${
                 isCurrent
                   ? "border-accent bg-accent/10 text-foreground"
@@ -60,11 +62,11 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
               }`}
               aria-current={isCurrent ? "page" : undefined}
             >
-              <span className="text-base">{entity.emoji}</span>
-              <span className="font-medium truncate max-w-[80px]">{entity.name}</span>
+              <span className="text-base">{result.emoji}</span>
+              <span className="font-medium truncate max-w-[80px]">{result.name}</span>
               <span
                 className="text-xs font-semibold px-1.5 py-0.5 rounded-sm shrink-0"
-                style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
+                style={{ color: tierColor, backgroundColor: `${tierColor}12` }}
               >
                 {result.score}
               </span>

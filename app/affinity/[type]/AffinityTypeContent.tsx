@@ -5,21 +5,16 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import {
-  calculateAllAffinityForAnimal,
-  getRepresentativeAffinitySet,
-  TIER_META,
-  type AffinityResult,
-} from "@/lib/engines/affinityEngine";
+import { sortLightEntities, tierForScore, type LightAffinityResult, type LightTier } from "@/lib/affinity-light";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
-import { focusEntitiesByCountry, type EntityType, type SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import { useUserContext } from "@/lib/hooks/useUserContext";
+import type { LightweightEntity } from "@/types/atlas";
+import type { EntityType } from "@/lib/data/symbolic-entities";
 
 interface AffinityTypeContentProps {
   type: EntityType;
   meta: { label: string; plural: string; icon: string; description: string };
-  entities: SymbolicEntity[];
+  entities: LightweightEntity[];
 }
 
 const transitionVariants = {
@@ -34,49 +29,54 @@ const GROUPS: { key: "positive" | "mixed" | "negative"; label: string; symbol: s
   { key: "negative", label: "Contraste", symbol: "○" },
 ];
 
+/** Pick 8 representative results out of an already-sorted list. */
+function representativeSet(sorted: LightAffinityResult[]): { positive: LightAffinityResult[]; mixed: LightAffinityResult[]; negative: LightAffinityResult[] } {
+  if (sorted.length < 8) return { positive: sorted, mixed: [], negative: [] };
+  const positive = sorted.slice(0, 5);
+  const negative = sorted.slice(-1);
+  const remaining = sorted.slice(5, -1);
+  const midStart = Math.max(0, Math.floor(remaining.length / 2) - 1);
+  const mixed = remaining.slice(midStart, midStart + 2);
+  return { positive, mixed, negative };
+}
+
+const TIER_COLOR: Record<LightTier, string> = {
+  "resonancia-alta": "#2D5A3D",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+
 export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
-  const userCountry = useUserContext().country;
 
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const activeAnimal: Animal = selectedAnimal
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
-  // El score queda intacto (afinidad zodiacal pura). El país del usuario
-  // acota QUÉ entidades se muestran (ciudades/artistas/universidades/equipos
-  // de su propio país en vez de una mezcla global de docenas de países) —
-  // nunca cómo se puntúan.
-  const focusedEntities = useMemo(
-    () => focusEntitiesByCountry(entities, type, userCountry),
-    [entities, type, userCountry]
+  const sorted = useMemo(
+    () => sortLightEntities(activeAnimal, entities),
+    [activeAnimal, entities]
   );
 
-  const sorted = useMemo(
-    () => calculateAllAffinityForAnimal(activeAnimal, focusedEntities),
-    [activeAnimal, focusedEntities]
-  );
-  
   // Filter results based on search query
   const filteredSorted = useMemo(() => {
     if (!searchQuery.trim()) return sorted;
     const query = searchQuery.toLowerCase().trim();
-    return sorted.filter(r => 
-      r.entity.name.toLowerCase().includes(query) ||
-      r.entity.country.toLowerCase().includes(query) ||
-      r.entityAnimal.toLowerCase().includes(query)
+    return sorted.filter(r =>
+      r.name.toLowerCase().includes(query) ||
+      (r.country || "").toLowerCase().includes(query) ||
+      r.animal.toLowerCase().includes(query)
     );
   }, [sorted, searchQuery]);
-  
-  const set = useMemo(() => getRepresentativeAffinitySet(filteredSorted), [filteredSorted]);
+
+  const set = useMemo(() => representativeSet(filteredSorted), [filteredSorted]);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
-          esperando para siempre a que la animación de salida del skeleton
-          termine — reproducido en local, la página no pasa nunca de
-          "Cargando afinidades...". Sin mode="wait" cross-fadea y sí commitea. */}
       <AnimatePresence>
         {!mounted ? (
           <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
@@ -109,11 +109,6 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 <p className="text-sm text-muted mt-4 max-w-xl">
                   Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} aparecen sus patrones.
                 </p>
-                {userCountry && focusedEntities.length < entities.length && (
-                  <p className="text-xs text-accent mt-3">
-                    Mostrando {meta.plural.toLowerCase()} de {userCountry}, tu país en Molino.
-                  </p>
-                )}
               </motion.div>
 
               {/* Contexto editorial — qué es y qué no es la resonancia */}
@@ -194,7 +189,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
-                            <ResultRow key={result.entity.id} result={result} type={type} onClick={() => router.push(`/affinity/${type}/${result.entity.id}`)} />
+                            <ResultRow key={result.id} result={result} onClick={() => router.push(`/affinity/${type}/${result.id}`)} />
                           ))}
                         </div>
                       </div>
@@ -212,20 +207,19 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
 
 function ResultRow({
   result,
-  type,
   onClick,
 }: {
-  result: AffinityResult;
-  type: EntityType;
+  result: LightAffinityResult;
   onClick: () => void;
 }) {
-  const tierMeta = TIER_META[result.tier];
   // Presentación editorial: el label del engine se mantiene, el color pasa
   // a tonos de marca (accent/muted) — nunca semáforo verde/rojo.
   const tierColor =
     result.tier === "resonancia-alta" || result.tier === "afinidad-media"
       ? "var(--color-accent)"
       : "var(--color-muted)";
+
+  const tierLabel = result.relationship;
 
   return (
     <button
@@ -234,22 +228,19 @@ function ResultRow({
       className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-center gap-4">
-        <span className="text-2xl shrink-0" aria-hidden="true">{result.entity.emoji}</span>
+        <span className="text-2xl shrink-0" aria-hidden="true">{result.emoji}</span>
         <div className="flex-1 min-w-0">
           <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
-            {result.entity.name}
+            {result.name}
           </p>
           <p className="text-xs text-muted mt-0.5">
-            {formatAnimalSimple(result.entityAnimal)}
+            {formatAnimalSimple(result.animal)}
           </p>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierMeta.label}</p>
+          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierLabel}</p>
         </div>
       </div>
-      {result.explanation && (
-        <p className="text-sm text-muted leading-relaxed mt-2 ml-10">{result.explanation}</p>
-      )}
     </button>
   );
 }

@@ -5,18 +5,44 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { getRecommendationsByType, type Recommendation } from "@/lib/engines/recommendationEngine";
-import type { EntityType } from "@/lib/data/symbolic-entities";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
+import type { LightweightEntity } from "@/types/atlas";
 import Button from "@/components/ui/Button";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
 import { resolveUserContext } from "@/lib/context/userContext";
 
 interface RecommendationContentProps {
-  entityType: EntityType;
+  entityType: string;
+  catalog: LightweightEntity[];
   title: string;
   subtitle: string;
 }
+
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+
+const TIER_LABEL: Record<string, string> = {
+  "resonancia-alta": "Resonancia alta",
+  "afinidad-media": "Afinidad media",
+  complementarios: "Complementarios",
+  desafiante: "Desafiante",
+  distante: "Distante",
+};
+
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca",
+  city: "Ciudad",
+  country: "País",
+  university: "Universidad",
+  team: "Equipo",
+  movie: "Película",
+  artist: "Artista",
+};
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -24,24 +50,25 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-export default function RecommendationContent({ entityType, title, subtitle }: RecommendationContentProps) {
+export default function RecommendationContent({ entityType, catalog, title, subtitle }: RecommendationContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
 
   const recommendations = useMemo(() => {
     if (!profile) return [];
-    const recs = getRecommendationsByType(profile, entityType, 10);
+    const userAnimal = profile.chineseZodiac ?? "";
+    const recs = sortLightEntities(userAnimal, catalog);
     // El score no cambia (afinidad zodiacal pura). El país del usuario solo
     // adelanta entidades de su país como tiebreaker de presentación.
     const country = resolveUserContext().country;
     if (!country) return recs;
     return [...recs].sort((a, b) => {
-      if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
-      const aMatch = a.entity.country === country ? 1 : 0;
-      const bMatch = b.entity.country === country ? 1 : 0;
+      if (b.score !== a.score) return b.score - a.score;
+      const aMatch = a.country === country ? 1 : 0;
+      const bMatch = b.country === country ? 1 : 0;
       return bMatch - aMatch;
     });
-  }, [profile, entityType]);
+  }, [profile, catalog]);
 
   if (!mounted) {
     return (
@@ -89,12 +116,11 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
   }
 
   const userAnimal = profile.chineseZodiac ?? "";
-  const meta = ENTITY_TYPES[entityType];
 
-  const tripleResonance = recommendations.filter(r => r.category === "triple-resonance");
-  const aligned = recommendations.filter(r => r.category === "recommended");
-  const compatible = recommendations.filter(r => r.category === "compatible");
-  const strategic = recommendations.filter(r => r.category === "strategic");
+  const tripleResonance = recommendations.filter(r => r.tier === "resonancia-alta");
+  const aligned = recommendations.filter(r => r.tier === "afinidad-media");
+  const compatible = recommendations.filter(r => r.tier === "complementarios");
+  const strategic = recommendations.filter(r => r.tier === "desafiante" || r.tier === "distante");
 
   return (
     <div className="min-h-screen bg-background">
@@ -114,7 +140,7 @@ export default function RecommendationContent({ entityType, title, subtitle }: R
         {/* Hero */}
         <motion.section {...fadeUp} className="mb-12">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
-            Recomendaciones Simbólicas · {meta?.plural ?? entityType}
+            Recomendaciones Simbólicas · {TYPE_LABEL[entityType] ?? entityType}
           </p>
           <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
             {title}
@@ -215,7 +241,7 @@ function RecommendationGroup({
 }: {
   title: string;
   subtitle: string;
-  recommendations: Recommendation[];
+  recommendations: LightAffinityResult[];
   accentColor: string;
   router: ReturnType<typeof useRouter>;
   transitionDelay?: number;
@@ -236,7 +262,7 @@ function RecommendationGroup({
       <p className="text-xs text-muted mb-4 ml-11">{subtitle}</p>
       <motion.div {...staggerContainer} className="space-y-3">
         {recommendations.map((rec, i) => (
-          <RecommendationCard key={rec.entity.id} rec={rec} router={router} index={i} />
+          <RecommendationCard key={rec.id} rec={rec} router={router} index={i} />
         ))}
       </motion.div>
     </motion.section>
@@ -248,7 +274,7 @@ function RecommendationCard({
   router,
   index,
 }: {
-  rec: Recommendation;
+  rec: LightAffinityResult;
   router: ReturnType<typeof useRouter>;
   index: number;
 }) {
@@ -258,30 +284,30 @@ function RecommendationCard({
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03 }}
-      onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
+      onClick={() => router.push(`/affinity/${rec.type}/${rec.id}`)}
       className="w-full text-left py-5 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start gap-4">
         {/* Emoji + animal */}
         <div className="text-center shrink-0">
-          <span className="text-2xl block">{rec.entity.emoji}</span>
-          <span className="text-xs text-muted">{formatAnimalEmoji(rec.entityAnimal)}</span>
+          <span className="text-2xl block">{rec.emoji}</span>
+          <span className="text-xs text-muted">{formatAnimalEmoji(rec.animal)}</span>
         </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
-              {rec.entity.name}
+              {rec.name}
             </h3>
-            {rec.isTripleResonance && (
+            {rec.tier === "resonancia-alta" && (
               <span className="text-xs font-medium uppercase tracking-wider text-accent">
                 triple alineación
               </span>
             )}
           </div>
-          <p className="text-xs text-muted mb-1">{rec.title}</p>
-          <p className="text-xs text-muted leading-relaxed line-clamp-2">{rec.explanation}</p>
+          <p className="text-xs text-muted mb-1">{rec.relationship}</p>
+          <p className="text-xs text-muted leading-relaxed line-clamp-2">{TIER_LABEL[rec.tier]}</p>
         </div>
       </div>
     </motion.button>

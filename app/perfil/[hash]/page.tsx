@@ -4,6 +4,7 @@ import { verifyShareToken } from "@/lib/share";
 import { resolveShareProfile } from "@/lib/kv";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import ProfileHub from "@/components/profile/ProfileHub";
+import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import { siteUrl } from "@/lib/seo";
 
 /**
@@ -76,5 +77,7 @@ export default async function SharedProfilePage({ params }: Props) {
     );
   }
 
-  return <ProfileHub profile={profile} />;
+  const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
+
+  return <ProfileHub profile={profile} catalog={catalog} />;
 }

@@ -13,7 +13,11 @@ import {
   type AnimalComparison,
 } from "@/lib/engines/affinityEngine";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
+
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca", city: "Ciudad", country: "País", university: "Universidad",
+  team: "Equipo", movie: "Película", artist: "Artista",
+};
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import Button from "@/components/ui/Button";
 
@@ -52,8 +56,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
   const tierA = resultA ? TIER_META[resultA.tier] : null;
   const tierB = resultB ? TIER_META[resultB.tier] : null;
   const compTier = entityComparison ? TIER_META[entityComparison.tier] : null;
-  const metaA = ENTITY_TYPES[entityA.type];
-  const metaB = ENTITY_TYPES[entityB.type];
+  const metaA = { label: TYPE_LABEL[entityA.type] ?? entityA.type };
+  const metaB = { label: TYPE_LABEL[entityB.type] ?? entityB.type };
 
   return (
     <div className="min-h-screen bg-background">

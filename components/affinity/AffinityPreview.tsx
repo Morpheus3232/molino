@@ -1,36 +1,61 @@
 "use client";
 
-import { useMemo } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { UserProfile } from "@/types/user";
-import {
-  getTopAffinityHighlights,
-  TIER_META,
-  type AffinityResult,
-} from "@/lib/engines/affinityEngine";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import ReadingNumber from "@/components/ui/ReadingNumber";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
-import { useUserContext } from "@/lib/hooks/useUserContext";
+
+interface LightHighlight {
+  tier: string;
+  score: number;
+  explanation?: string;
+  summary?: string;
+  userAnimal?: string;
+  entityAnimal?: string;
+  entity: {
+    id: string;
+    name: string;
+    type: string;
+    emoji?: string;
+  };
+}
 
 interface AffinityPreviewProps {
-  profile: UserProfile;
+  highlights: LightHighlight[];
   onEnter: () => void;
 }
 
-export default function AffinityPreview({ profile, onEnter }: AffinityPreviewProps) {
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+const TIER_LABEL: Record<string, string> = {
+  "resonancia-alta": "Resonancia alta",
+  "afinidad-media": "Afinidad media",
+  complementarios: "Complementarios",
+  desafiante: "Desafiante",
+  distante: "Distante",
+};
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca",
+  city: "Ciudad",
+  country: "País",
+  university: "Universidad",
+  team: "Equipo",
+  movie: "Película",
+  artist: "Artista",
+};
+
+export default function AffinityPreview({ highlights, onEnter }: AffinityPreviewProps) {
   const reducedMotion = useReducedMotion();
-  const userCountry = useUserContext().country;
-  const highlights = useMemo(() => getTopAffinityHighlights(profile, userCountry), [profile, userCountry]);
 
-  const main: AffinityResult | null = highlights[0] ?? null;
+  const main: LightHighlight | null = highlights[0] ?? null;
   const secondary = highlights.slice(1, 3);
-
-  const userAnimal = formatAnimalSimple(profile.chineseZodiac);
-  const element = profile.chineseZodiacInfo?.element ?? "";
 
   const sectionAnim = reducedMotion ? {} : staggerContainer;
   const itemAnim = reducedMotion ? {} : staggerItem;
@@ -57,9 +82,8 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
           </motion.h1>
 
           <motion.p {...itemAnim} className="mt-6 text-base sm:text-lg text-muted max-w-xl leading-relaxed">
-            {userAnimal}
-            {element && <> de {element}</>} · Tu animal del zodíaco chino conecta tu energía con
-            marcas, ciudades y países según la fecha en que nacieron. Estas son tus primeras afinidades.
+            Tu animal del zodíaco chino conecta tu energía con marcas, ciudades y países según la fecha
+            en que nacieron. Estas son tus primeras afinidades.
           </motion.p>
 
           {/* Main entity — dominant */}
@@ -75,13 +99,14 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="label-micro mb-2">
-                      {ENTITY_TYPES[main.entity.type]?.label ?? main.entity.type}
+                      {TYPE_LABEL[main.entity.type] ?? main.entity.type}
                     </p>
                     <h2 className="font-display uppercase text-4xl sm:text-6xl leading-[0.95] tracking-tight text-foreground">
                       {main.entity.name}
                     </h2>
                     <p className="mt-4 text-sm text-muted">
-                      {formatAnimalSimple(main.userAnimal)} ↔ {formatAnimalSimple(main.entityAnimal)}
+                      {formatAnimalSimple(main.userAnimal ?? "")} ↔{" "}
+                      {formatAnimalSimple(main.entityAnimal ?? "")}
                     </p>
                     <p className="mt-2 text-sm text-foreground leading-relaxed max-w-md">
                       {main.explanation || main.summary}
@@ -91,8 +116,8 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                     <ReadingNumber
                       value={main.score}
                       label="Afinidad"
-                      color={TIER_META[main.tier].color}
-                      context={TIER_META[main.tier].label}
+                      color={TIER_COLOR[main.tier]}
+                      context={TIER_LABEL[main.tier]}
                       size="xl"
                     />
                   </div>
@@ -119,7 +144,7 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                     </span>
                   </div>
                   <p className="mt-4 label-micro">
-                    {ENTITY_TYPES[result.entity.type]?.label ?? result.entity.type}
+                    {TYPE_LABEL[result.entity.type] ?? result.entity.type}
                   </p>
                   <h3 className="mt-1 font-display uppercase text-2xl sm:text-3xl text-foreground leading-tight">
                     {result.entity.name}
@@ -127,13 +152,13 @@ export default function AffinityPreview({ profile, onEnter }: AffinityPreviewPro
                   <div className="flex items-center gap-2 mt-4">
                     <span
                       className="inline-block w-1.5 h-1.5 shrink-0"
-                      style={{ backgroundColor: TIER_META[result.tier].color }}
+                      style={{ backgroundColor: TIER_COLOR[result.tier] }}
                     />
                     <span
                       className="text-xs uppercase tracking-wider"
-                      style={{ color: TIER_META[result.tier].color }}
+                      style={{ color: TIER_COLOR[result.tier] }}
                     >
-                      {TIER_META[result.tier].label}
+                      {TIER_LABEL[result.tier]}
                     </span>
                   </div>
                 </Link>

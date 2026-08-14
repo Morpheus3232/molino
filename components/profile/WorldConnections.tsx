@@ -3,23 +3,40 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import type { UserProfile } from "@/types/user";
-import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
-import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import type { LightweightEntity } from "@/types/atlas";
+import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
 import { useMemo } from "react";
+
+const TIER_COLOR: Record<string, string> = {
+  "resonancia-alta": "#2D5A3A",
+  "afinidad-media": "#4A6FA5",
+  complementarios: "#D4A843",
+  desafiante: "#B45309",
+  distante: "#838C95",
+};
+const TIER_LABEL: Record<string, string> = {
+  "resonancia-alta": "Resonancia alta",
+  "afinidad-media": "Afinidad media",
+  complementarios: "Complementarios",
+  desafiante: "Desafiante",
+  distante: "Distante",
+};
+const TYPE_LABEL: Record<string, string> = {
+  brand: "Marca",
+  city: "Ciudad",
+  country: "País",
+  university: "Universidad",
+  team: "Equipo",
+  movie: "Película",
+  artist: "Artista",
+};
 
 interface WorldConnectionsProps {
   profile: UserProfile;
+  catalog: LightweightEntity[];
 }
 
-function EntityCard({ entity, score, tier, type }: { entity: any; score: number; tier: string; type: string }) {
-  const tierColors: Record<string, string> = {
-    resonante: "var(--tier-resonante)",
-    afin: "var(--tier-afin)",
-    neutral: "var(--tier-neutral)",
-    desafiante: "var(--tier-desafiante)",
-    distante: "var(--tier-distante)",
-  };
-
+function EntityCard({ entity, score, tier }: { entity: LightAffinityResult; score: number; tier: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -32,10 +49,10 @@ function EntityCard({ entity, score, tier, type }: { entity: any; score: number;
         <div className="flex-1 min-w-0">
           <p className="font-medium text-foreground truncate">{entity.name}</p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs font-mono" style={{ color: tierColors[tier] || "var(--tier-neutral)" }}>
-              {tier.toUpperCase()} · {score}%
+            <span className="text-xs font-mono" style={{ color: TIER_COLOR[tier] || "var(--tier-neutral)" }}>
+              {TIER_LABEL[tier] || tier} · {score}%
             </span>
-            <span className="text-xs text-muted">{type}</span>
+            <span className="text-xs text-muted">{TYPE_LABEL[entity.type] || entity.type}</span>
           </div>
         </div>
       </div>
@@ -48,7 +65,7 @@ function EntityRank({
   entities,
 }: {
   title: string;
-  entities: Array<{ entity: any; score: number; tier: string }>;
+  entities: LightAffinityResult[];
 }) {
   return (
     <motion.div
@@ -61,11 +78,10 @@ function EntityRank({
       <div className="space-y-2">
         {entities.slice(0, 5).map((item, i) => (
           <EntityCard
-            key={`${item.entity.id}-${i}`}
-            entity={item.entity}
+            key={`${item.id}-${i}`}
+            entity={item}
             score={item.score}
             tier={item.tier}
-            type={item.entity.type}
           />
         ))}
       </div>
@@ -73,14 +89,14 @@ function EntityRank({
   );
 }
 
-export default function WorldConnections({ profile }: WorldConnectionsProps) {
+export default function WorldConnections({ profile, catalog }: WorldConnectionsProps) {
   const { countryResonances, cityResonances, brandResonances } = useMemo(() => {
-    const all = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
-    const countries = all.filter((r) => r.entity.type === "country").sort((a, b) => b.score - a.score);
-    const cities = all.filter((r) => r.entity.type === "city").sort((a, b) => b.score - a.score);
-    const brands = all.filter((r) => r.entity.type === "brand").sort((a, b) => b.score - a.score);
+    const all = sortLightEntities(profile.chineseZodiac || "", catalog);
+    const countries = all.filter((r) => r.type === "country").sort((a, b) => b.score - a.score);
+    const cities = all.filter((r) => r.type === "city").sort((a, b) => b.score - a.score);
+    const brands = all.filter((r) => r.type === "brand").sort((a, b) => b.score - a.score);
     return { countryResonances: countries, cityResonances: cities, brandResonances: brands };
-  }, [profile]);
+  }, [profile, catalog]);
 
   const totalConnections = countryResonances.length + cityResonances.length + brandResonances.length;
 

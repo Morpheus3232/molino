@@ -7,8 +7,9 @@ import { toast } from "sonner";
 import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { ENTITY_TYPES, getAvailableTypes, getEntitiesByType, focusEntitiesByCountry, type EntityType } from "@/lib/data/symbolic-entities";
-import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
+import type { LightweightEntity } from "@/types/atlas";
+import type { EntityType } from "@/lib/data/symbolic-entities";
+import { lightAffinity } from "@/lib/affinity-light";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
@@ -27,7 +28,12 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-export default function AffinityHub() {
+interface AffinityClientProps {
+  byType: Record<string, LightweightEntity[]>;
+  typeMeta: Record<string, { label: string; plural: string; icon: string; description: string }>;
+}
+
+export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
@@ -39,30 +45,20 @@ export default function AffinityHub() {
     }
   }, [mounted, loading, profile, router]);
 
-  const availableTypes = getAvailableTypes();
-
-  // Los conteos reflejan lo mismo que se ve al entrar a cada categoría:
-  // acotado al país del usuario cuando hay cobertura local (ciudad, artista,
-  // universidad, equipo) — nunca una cifra global que después se reduce.
-  const focusedEntitiesByType = Object.fromEntries(
-    availableTypes.map((type) => [type, focusEntitiesByCountry(getEntitiesByType(type), type, userCountry)])
-  ) as Record<EntityType, ReturnType<typeof getEntitiesByType>>;
+  const availableTypes = (Object.keys(byType) as EntityType[]).filter((t) => byType[t].length > 0);
 
   const personalizedCounts = profile ? (() => {
+    const userAnimal = profile.chineseZodiac || "";
     const counts: Record<string, number> = {};
     availableTypes.forEach(type => {
-      const results = calculateAllAffinity(profile, focusedEntitiesByType[type]);
-      counts[type] = results.filter(r => r.score >= 50).length;
+      const list = byType[type] || [];
+      counts[type] = list.filter(e => lightAffinity(userAnimal, e).score >= 50).length;
     });
     return counts;
   })() : null;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
-          esperando para siempre a que la animación de salida del skeleton
-          termine — reproducido en local, la página no pasa nunca de
-          "Preparando tu afinidad...". Sin mode="wait" cross-fadea y sí commitea. */}
       <AnimatePresence>
         {!mounted || loading || !profile ? (
           <motion.div
@@ -73,7 +69,7 @@ export default function AffinityHub() {
             exit="exit"
           >
             <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-              <p className="sr-only" role="status" aria-label="Preparando tu afinity...">
+              <p className="sr-only" role="status" aria-label="Preparando tu afinidad...">
                 Preparando tu afinidad...
               </p>
               <div className="animate-pulse">
@@ -131,9 +127,9 @@ export default function AffinityHub() {
                 </div>
                 <motion.div {...staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {availableTypes.map((type, i) => {
-                    const meta = ENTITY_TYPES[type];
-                    const Icon = TYPE_ICONS[type];
-                    const totalCount = focusedEntitiesByType[type].length;
+                    const meta = typeMeta[type] || { label: type, plural: type, icon: "", description: "" };
+                    const Icon = TYPE_ICONS[type] ?? Sparkles;
+                    const totalCount = (byType[type] || []).length;
                     const personalCount = personalizedCounts?.[type] ?? null;
 
                     return (

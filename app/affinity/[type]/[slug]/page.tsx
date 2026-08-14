@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
-import { ENTITY_TYPES, getEntityById, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
+import { ENTITY_TYPES, getEntityById, getEntitiesByType, SYMBOLIC_ENTITIES, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import AffinityDetailContent from "./AffinityDetailContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
@@ -38,9 +38,6 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
       type: "website",
       url: siteUrl(`/affinity/${type}/${slug}`),
-      // Sin `images`: hereda el opengraph-image.tsx dinámico de la raíz
-      // (PNG 1200x630 real). El og-image.svg viejo no renderiza en la
-      // mayoría de los previews (WhatsApp, Twitter/X, LinkedIn no leen SVG).
     },
     twitter: {
       card: "summary_large_image",
@@ -59,6 +56,12 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   if (entity.type !== type) notFound();
 
   const meta = ENTITY_TYPES[type as EntityType];
+  // Client needs the full entity (for the affinity explanation) plus the
+  // lightweight projections of ALL entities (for the discovery loop across
+  // types) and same-type entities (for the quick selector). The rich data
+  // layer never reaches the client bundle — only these props do.
+  const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
+  const sameType = getEntitiesByType(type as EntityType).map(toLightweightEntity);
 
-  return <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} />;
+  return <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />;
 }
