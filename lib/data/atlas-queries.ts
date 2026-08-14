@@ -11,7 +11,7 @@
 import "server-only";
 
 import type { LightweightEntity } from "@/types/atlas";
-import { SYMBOLIC_ENTITIES, toLightweightEntity, ENTITY_TYPES, type EntityType } from "./symbolic-entities";
+import { SYMBOLIC_ENTITIES, toLightweightEntity, ENTITY_TYPES, getCountryISO, type EntityType } from "./symbolic-entities";
 
 /** Categories we expose in the drill-down (skip the "country" type itself). */
 const DRILL_DOWN_TYPES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
@@ -102,4 +102,44 @@ export function getAllCountryISOs(): string[] {
  */
 export function getCountryName(iso: string): string {
   return getAtlasCountries().find((c) => c.iso === iso)?.name ?? iso;
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// PERSONALIZACIÓN POR PAÍS DEL USUARIO
+//
+// El Atlas debe acoplar su inteligencia al país del usuario (que se elige en
+// onboarding/settings, nunca se adivina por IP). Estas funciones toman el
+// nombre de país del UserContext y lo traducen a ISO / a una posición
+// prioritaria en el hub. NUNCA participan del score de afinidad (que sigue
+// siendo 100% zodíaco chino): solo ordenan y destacan la presentación.
+// ════════════════════════════════════════════════════════════════════════
+
+/** Traduce el nombre de país del usuario (UserContext.country) a ISO si existe en el Atlas. */
+export function getUserCountryISO(countryName?: string): string | null {
+  if (!countryName) return null;
+  const iso = getCountryISO(countryName);
+  if (!iso) return null;
+  // Solo devolver ISO si el país realmente tiene entidades en el Atlas.
+  return getAtlasCountries().some((c) => c.iso === iso) ? iso : null;
+}
+
+/**
+ * Ordena los países del hub colocando el país del usuario primero (si tiene
+ * cobertura), manteniendo el resto alfabético. Puramente presentacional.
+ */
+export function orderCountriesForUser(countries: AtlasCountry[], userCountryISO?: string | null): AtlasCountry[] {
+  if (!userCountryISO) return countries;
+  const copy = [...countries];
+  const idx = copy.findIndex((c) => c.iso === userCountryISO);
+  if (idx <= 0) return copy;
+  const [userCountry] = copy.splice(idx, 1);
+  return [userCountry, ...copy];
+}
+
+/**
+ * Top-N países con más entidades — sugerencia útil cuando el país del usuario
+ * no tiene cobertura en el Atlas (evita páginas vacías).
+ */
+export function topCountriesByCount(countries: AtlasCountry[], n = 10): AtlasCountry[] {
+  return [...countries].sort((a, b) => b.count - a.count).slice(0, n);
 }
