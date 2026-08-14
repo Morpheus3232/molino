@@ -12,6 +12,8 @@ interface EntityCardProps {
   category: string;
   /** Optional resonance classification vs the active reference animal. */
   resonance?: ResonanceInfo;
+  /** Optional Molino-voice reasoning for the resonance (refutable observation). */
+  reasoning?: string;
 }
 
 // Sober, analytical tone — no cheap esotericism. Green-ish for harmony,
@@ -22,7 +24,7 @@ const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
   neutral: { label: "Neutro", className: "text-muted bg-ink/[0.04] border-ink/10" },
 };
 
-export default function EntityCard({ entity, countryISO, category, resonance }: EntityCardProps) {
+export default function EntityCard({ entity, countryISO, category, resonance, reasoning }: EntityCardProps) {
   const resonanceStyle = resonance ? RESONANCE_STYLE[resonance.bucket] : null;
 
   return (
@@ -48,6 +50,11 @@ export default function EntityCard({ entity, countryISO, category, resonance }: 
             {entity.name}
           </p>
           <p className="text-xs text-muted mt-0.5">{entity.animal}</p>
+          {reasoning && (
+            <p className="text-xs text-muted mt-1 leading-relaxed line-clamp-2">
+              {reasoning}
+            </p>
+          )}
         </div>
 
         {resonanceStyle && resonance && (

@@ -6,39 +6,53 @@ import type { AtlasCountry } from "@/lib/data/atlas-queries";
 
 interface CountryGridProps {
   countries: AtlasCountry[];
+  /** ISO del país del usuario (para marcarlo). Puramente presentacional. */
+  userCountryISO?: string | null;
 }
 
 /**
  * Atlas global hub — grid of country tiles linking to each country's Atlas.
  * Receives plain metadata (iso/name/flag/count) from the Server Component;
- * no rich data reaches the client.
+ * no rich data reaches the client. Marks the user's country when present.
  */
-export default function CountryGrid({ countries }: CountryGridProps) {
+export default function CountryGrid({ countries, userCountryISO }: CountryGridProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-      {countries.map((country, i) => (
-        <motion.div
-          key={country.iso}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.4), ease: "easeOut" }}
-        >
-          <Link
-            href={`/atlas/${country.iso}`}
-            className="group flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors text-center min-h-[120px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+      {countries.map((country, i) => {
+        const isUserCountry = country.iso === userCountryISO;
+        return (
+          <motion.div
+            key={country.iso}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.4), ease: "easeOut" }}
           >
-            <span className="text-4xl leading-none" role="img" aria-label={country.name}>
-              {country.flag}
-            </span>
-            <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
-              {country.name}
-            </span>
-            <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
-              {country.count} entidades
-            </span>
-          </Link>
-        </motion.div>
-      ))}
+            <Link
+              href={`/atlas/${country.iso}`}
+              className={`group relative flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border transition-colors text-center min-h-[120px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+                isUserCountry
+                  ? "border-accent/50 bg-accent/[0.04] hover:border-accent"
+                  : "border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02]"
+              }`}
+            >
+              {isUserCountry && (
+                <span className="absolute top-2 right-3 font-mono text-[10px] uppercase tracking-wider text-accent">
+                  Tu país
+                </span>
+              )}
+              <span className="text-4xl leading-none" role="img" aria-label={country.name}>
+                {country.flag}
+              </span>
+              <span className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
+                {country.name}
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-wider text-muted">
+                {country.count} entidades
+              </span>
+            </Link>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { LightweightEntity } from "@/types/atlas";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { bucketEntitiesByResonance, type ResonanceBucket } from "@/lib/resonance";
+import { bucketEntitiesByResonance, resonanceReasoning, type ResonanceBucket } from "@/lib/resonance";
 import { useProfile } from "@/lib/hooks/useProfile";
 import EntityCard from "@/components/atlas/EntityCard";
 
@@ -109,6 +109,7 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
                   countryISO={countryISO}
                   category={category}
                   resonance={entity.resonance}
+                  reasoning={resonanceReasoning(activeAnimal, entity.animal, entity.name)}
                 />
               ))}
             </div>
