@@ -1,18 +1,75 @@
 /**
  * Profile Share — Encode/decode profile data for shareable URLs.
  *
- * There's no backend for shared profiles (see lib/profile/hash.ts), so the
- * URL itself is the storage: base64url is an *encoding*, not encryption —
- * name and full birthDate (`n`, `b`) are plainly readable by anyone with the
- * link. This is an accepted tradeoff (the app has no user DB), mitigated by
- * `Referrer-Policy: strict-origin-when-cross-origin` in next.config.js,
- * which stops the query string from leaking to third-party origins (Mercado
- * Pago, PayPal, image CDNs) loaded on /profile. Don't log this URL
- * server-side or forward it to analytics/third parties as a full string.
+ * NEW (preferred): the PII-free path. Use `buildEphemeralShareUrl` /
+ * `resolveEphemeralShare` which talk to `/api/profile/share`. The token
+ * (JWT, 24h TTL, stored in KV) travels in the URL — never name or birthDate.
+ * Call `buildEphemeralShareUrl` to mint a share and `resolveEphemeralShare`
+ * to turn the `?share=` param back into a profile.
+ *
+ * LEGACY (kept for backward compatibility with already-shared links): the
+ * base64url functions below embed name and full birthDate (`n`, `b`) plainly
+ * in the URL — an *encoding*, not encryption. Do not create NEW links with
+ * them; keep only to decode links shared before the JWT migration.
  */
 
 import type { UserProfile } from "@/types/user";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+
+// ════════════════════════════════════════════════════════════════════════
+// PII-FREE SHARE — JWT token backed by KV (preferred)
+// ════════════════════════════════════════════════════════════════════════
+
+/**
+ * Mint a PII-free ephemeral share for a profile via /api/profile/share.
+ * Returns the full URL to share (or null on failure).
+ */
+export async function buildEphemeralShareUrl(
+  profile: UserProfile,
+): Promise<string | null> {
+  try {
+    const res = await fetch("/api/profile/share", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: profile.name || "", birthDate: profile.birthDate || "" }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.url || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Resolve an ephemeral share token (`?share=<token>`) into a UserProfile,
+ * or null if invalid/expired/unreachable.
+ */
+export async function resolveEphemeralShare(token: string): Promise<UserProfile | null> {
+  try {
+    const res = await fetch(`/api/profile/share?token=${encodeURIComponent(token)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.profile || null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Legacy decode fallback for `?data=` links: returns the token if it's a
+ * JWT-shaped share token, otherwise delegates to base64url decode. This lets
+ * ProfileClient accept BOTH the old `?data=` base64 and the new `?share=`
+ * token without branching at every call site.
+ */
+export function decodeShareParam(value: string): ShareableProfileData | null {
+  if (value.includes(".") && value.split(".").length === 3) {
+    // JWT-shaped token — not decodable client-side; caller should resolve
+    // via resolveEphemeralShare.
+    return null;
+  }
+  return decodeProfileData(value);
+}
 
 /** Minimal data needed to reconstruct a shared profile view */
 export interface ShareableProfileData {
@@ -41,7 +98,11 @@ export interface PublicShareData {
   ce?: string;    // chineseZodiac element (optional, derived from year)
 }
 
-/** Encode profile data to a URL-safe base64 string */
+/**
+ * @deprecated Embedding name + birthDate in the URL exposes PII. Use
+ * `buildEphemeralShareUrl` instead (JWT token backed by KV).
+ * Encode profile data to a URL-safe base64 string
+ */
 export function encodeProfileData(profile: UserProfile): string {
   const data: ShareableProfileData = {
     n: profile.name || '',
@@ -63,7 +124,11 @@ export function encodeProfileData(profile: UserProfile): string {
   return encoded.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-/** Decode profile data from a URL-safe base64 string */
+/**
+ * @deprecated Legacy base64 path — decodes PII from the URL. Prefer
+ * `resolveEphemeralShare` for new shares.
+ * Decode profile data from a URL-safe base64 string
+ */
 export function decodeProfileData(encoded: string): ShareableProfileData | null {
   try {
     // Restore base64 characters

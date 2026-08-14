@@ -1,86 +1,80 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import type { Metadata } from "next";
 import type { UserProfile } from "@/types/user";
-import { decodeProfileHash } from "@/lib/profile/hash";
+import { verifyShareToken } from "@/lib/share";
+import { resolveShareProfile } from "@/lib/kv";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import ProfileHub from "@/components/profile/ProfileHub";
+import { siteUrl } from "@/lib/seo";
 
-const transitionVariants = {
-  enter: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
-  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
-};
+/**
+ * /perfil/[hash] — resolves a shared profile.
+ *
+ * [hash] is now an ephemeral JWT share token (see lib/share.ts). The profile
+ * is resolved server-side from KV (24h TTL) — no PII in the URL, no
+ * LocalStorage round trip. The legacy `decodeProfileHash` (LocalStorage) path
+ * in lib/profile/hash.ts is @deprecated and no longer used here.
+ */
 
-export default function SharedProfilePage() {
-  const params = useParams<{ hash: string }>();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
+interface Props {
+  params: Promise<{ hash: string }>;
+}
 
-  useEffect(() => {
-    const hash = params.hash;
-    if (!hash) {
-      setLoading(false);
-      return;
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { hash } = await params;
+  const payload = verifyShareToken(hash);
+  if (!payload) {
+    return { title: "Perfil compartido", robots: { index: false, follow: true } };
+  }
+  return {
+    title: "Mapa personal compartido — Molino",
+    description: "Mapa personal de autoconocimiento compartido: numerología, astrología y zodíaco chino.",
+    robots: { index: false, follow: true },
+    alternates: { canonical: siteUrl(`/perfil/${hash}`) },
+  };
+}
+
+export default async function SharedProfilePage({ params }: Props) {
+  const { hash } = await params;
+
+  let profile: UserProfile | null = null;
+
+  const payload = verifyShareToken(hash);
+  if (payload) {
+    const shared = await resolveShareProfile(payload.tid);
+    if (shared) {
+      const calculated = calculateUserProfile(shared.n || "", shared.b);
+      profile = {
+        ...calculated,
+        name: shared.n || "",
+        birthDate: shared.b,
+        birthPlace: "",
+        goal: "life" as const,
+        interests: [],
+        onboardingStep: 4,
+        completedSections: ["identity"],
+        theme: "light" as const,
+        language: "es" as const,
+        notifications: true,
+        cycles: calculated.cycles || { personalYear: 0, personalMonth: 0, personalDay: 0 },
+        recommendations: calculated.recommendations || { strengths: [], challenges: [], practices: [] },
+      };
     }
-    const found = decodeProfileHash(hash as string);
-    setProfile(found);
-    setLoading(false);
-  }, [params.hash]);
+  }
 
-  return (
-    <div className="min-h-screen bg-background">
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <motion.div
-            key="loading"
-            variants={transitionVariants}
-            initial="enter"
-            animate="show"
-            exit="exit"
-          >
-            <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
-              <p className="sr-only" role="status" aria-label="Cargando perfil compartido...">
-                Cargando perfil compartido...
-              </p>
-              <div className="animate-pulse">
-                <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
-                <div className="h-9 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
-                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
-                <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
-              </div>
-            </div>
-          </motion.div>
-        ) : !profile ? (
-          <motion.div
-            key="not-found"
-            variants={transitionVariants}
-            initial="enter"
-            animate="show"
-            exit="exit"
-          >
-            <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-                Este perfil compartido no existe
-              </h1>
-              <p className="text-muted mb-8 max-w-md mx-auto">
-                El enlace que seguiste podría estar vencido o mal formado.
-              </p>
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="content"
-            variants={transitionVariants}
-            initial="enter"
-            animate="show"
-            exit="exit"
-          >
-            <ProfileHub profile={profile} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+  if (!profile) {
+    return (
+      <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center min-h-screen">
+        <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
+          Este perfil compartido no existe
+        </h1>
+        <p className="text-muted mb-8 max-w-md mx-auto">
+          El enlace que seguiste podría estar vencido (expira a las 24 horas) o mal formado.
+        </p>
+      </div>
+    );
+  }
+
+  return <ProfileHub profile={profile} />;
 }

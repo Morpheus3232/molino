@@ -2,21 +2,21 @@ import type { UserProfile } from "@/types/user";
 import { getPersonalNumber } from "@/lib/numerology/personal";
 
 /**
- * ⚠️ NO CONECTADO A LA UI TODAVÍA — y con un bug conocido si se conecta tal cual.
+ * @deprecated Estrategia de compartir basada en LocalStorage — REEMPLAZADA
+ * por tokens JWT efímeros (lib/share.ts) + almacenamiento en KV
+ * (lib/kv.ts::storeShareProfile / resolveShareProfile), resueltos server-side
+ * en `/api/profile/share` y `/perfil/[hash]`.
  *
- * `storeSharedProfile` guarda el perfil en el localStorage del navegador que
- * generó el hash. `decodeProfileHash` lee de ESE MISMO localStorage. Como
- * localStorage no es compartido entre navegadores/dispositivos, un link
- * `/perfil/[hash]` compartido con otra persona no funciona: su navegador
- * nunca tuvo esa entrada guardada.
+ * `storeSharedProfile`/`decodeProfileHash` guardan/leen el perfil en el
+ * localStorage del navegador que generó el hash. Como localStorage no se
+ * comparte entre navegadores/dispositivos, un link `/perfil/[hash]`
+ * compartido con otra persona no funcionaba: su navegador nunca tuvo esa
+ * entrada guardada. La síntesis/complejidad nunca debe persistir en el
+ * cliente (filosofía de privacidad radical + PII en URLs).
  *
- * El mecanismo de "compartir perfil" que SÍ funciona hoy en producción es
- * lib/utils/profileShare.ts (buildShareableUrl), que codifica el perfil
- * completo en la URL (base64url) en vez de depender de un storage local.
- *
- * Si en el futuro se quiere usar la ruta /perfil/[hash] con URLs cortas,
- * hace falta un backend real que guarde hash -> perfil (ej. la misma KV que
- * ya usamos para el paywall en lib/kv.ts), no localStorage.
+ * NO usar las funciones de almacenamiento de este archivo en código nuevo.
+ * `generateProfileHash` se conserva exclusivamente por compatibilidad con
+ * tests existentes y como ID secundario.
  */
 
 async function sha256Hex(message: string): Promise<string> {
