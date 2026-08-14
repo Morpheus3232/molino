@@ -5,43 +5,43 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
-/* ═══ Sitio: siempre visibles, en desktop y mobile ═══ */
-const SITE_LINKS = [
+/* ═══ Navegación Principal (5 esenciales) ═══ */
+const PRIMARY_NAV = [
   { href: "/", label: "Inicio" },
-  { href: "/ejemplo", label: "Ejemplo" },
-  { href: "/precios", label: "Precios" },
-  { href: "/blog", label: "Blog" },
-  { href: "/nosotros", label: "Nosotros" },
-  { href: "/#faq", label: "FAQ" },
-];
-
-/* ═══ Primary: siempre visibles en desktop ═══ */
-const PRIMARY = [
-  { href: "/profile", label: "Mi mapa" },
+  { href: "/profile", label: "Mi Mapa" },
   { href: "/hoy", label: "Hoy" },
   { href: "/pareja", label: "Pareja" },
   { href: "/journal", label: "Journal" },
-  { href: "/circulo", label: "Círculo" },
-  { href: "/evolution", label: "Evolución" },
-  { href: "/calendario", label: "Calendario" },
 ];
 
+/* ═══ Navegación Secundaria (Menú Explorar) ═══ */
+const EXPLORE_NAV = [
+  { href: "/mundo", label: "Afinidades", desc: "Marcas, ciudades y países afines" },
+  { href: "/calendario", label: "Calendario", desc: "Ciclos y vibración mensual" },
+  { href: "/biblioteca", label: "Biblioteca", desc: "Fuentes clásicas y autores" },
+  { href: "/precios", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
+  { href: "/blog", label: "Blog", desc: "Artículos y análisis simbólico" },
+  { href: "/docs", label: "API / Docs", desc: "Endpoints para desarrolladores" },
+  { href: "/nosotros", label: "Nosotros", desc: "Manifiesto y código abierto" },
+];
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [exploreOpen, setExploreOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
+  const exploreRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
 
   const isActive = (href: string) =>
@@ -62,13 +62,20 @@ export default function UniversityHeader() {
     };
   }, []);
 
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    setMenuOpen(false);
+    setExploreOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (showConfirm) { setShowConfirm(false); triggerRef.current?.focus(); }
+        if (showConfirm) {
+          setShowConfirm(false);
+          triggerRef.current?.focus();
+        }
         setMenuOpen(false);
+        setExploreOpen(false);
       }
     };
     document.addEventListener("keydown", handleEscape);
@@ -76,32 +83,22 @@ export default function UniversityHeader() {
   }, [showConfirm]);
 
   useEffect(() => {
-    if (!showConfirm || !modalRef.current) return;
-    const modal = modalRef.current;
-    const focusable = modal.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    first?.focus();
-    const handleTab = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
-      if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last?.focus(); } }
-      else { if (document.activeElement === last) { e.preventDefault(); first?.focus(); } }
-    };
-    modal.addEventListener("keydown", handleTab);
-    return () => modal.removeEventListener("keydown", handleTab);
-  }, [showConfirm]);
-
-  useEffect(() => {
-    const handleClickOutsideMobileMenu = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (exploreRef.current && !exploreRef.current.contains(e.target as Node)) {
+        setExploreOpen(false);
+      }
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
       }
     };
-    if (menuOpen) document.addEventListener("mousedown", handleClickOutsideMobileMenu);
-    return () => document.removeEventListener("mousedown", handleClickOutsideMobileMenu);
-  }, [menuOpen]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const handleNewProfile = useCallback(() => { setShowConfirm(true); }, []);
+  const handleNewProfile = useCallback(() => {
+    setShowConfirm(true);
+  }, []);
+
   const confirmNewProfile = useCallback(() => {
     clearStoredProfile();
     setShowConfirm(false);
@@ -115,13 +112,13 @@ export default function UniversityHeader() {
       <motion.header
         ref={headerRef}
         className={`fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 ${
-          scrolled ? "border-b border-ink/10" : "border-b border-transparent"
+          scrolled ? "border-b border-ink/10 shadow-sm" : "border-b border-transparent"
         }`}
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group" aria-label="Molino — Ir al inicio">
-            <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10">
+            <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl">
               <Logo className="w-6 h-6" />
             </span>
             <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
@@ -129,16 +126,16 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
-          {/* Desktop primary nav + dropdown */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Navegación principal">
-            {SITE_LINKS.map((link) => (
+          {/* Desktop primary nav (5 links + Explorar dropdown) */}
+          <nav className="hidden md:flex items-center gap-1.5" aria-label="Navegación principal">
+            {PRIMARY_NAV.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
+                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors rounded-xl ${
                   isActive(link.href)
-                    ? "text-foreground bg-ink/[0.04]"
-                    : "text-muted hover:text-foreground"
+                    ? "text-foreground bg-ink/[0.06] font-bold"
+                    : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
                 }`}
                 aria-current={pathname === link.href ? "page" : undefined}
               >
@@ -146,36 +143,61 @@ export default function UniversityHeader() {
               </Link>
             ))}
 
-            <div className="w-px h-4 bg-ink/10 mx-1" aria-hidden="true" />
-
-            {PRIMARY.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
-                  isActive(link.href)
-                    ? "text-foreground bg-ink/[0.04]"
-                    : "text-muted hover:text-foreground"
+            {/* Explorar Dropdown Menu */}
+            <div ref={exploreRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setExploreOpen(!exploreOpen)}
+                className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.15em] uppercase transition-colors rounded-xl inline-flex items-center gap-1 ${
+                  exploreOpen
+                    ? "text-accent bg-accent/10"
+                    : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
                 }`}
-                aria-current={pathname === link.href ? "page" : undefined}
+                aria-expanded={exploreOpen}
+                aria-label="Menú explorar más secciones"
               >
-                {link.label}
-              </Link>
-            ))}
+                <span>Explorar</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                    exploreOpen ? "rotate-180 text-accent" : ""
+                  }`}
+                />
+              </button>
 
-            {/* Afinidades -> /mundo */}
-            <Link
-              href="/mundo"
-              className={`px-3 py-1.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase transition-colors rounded-sm ${
-                isActive("/mundo")
-                  ? "text-foreground bg-ink/[0.04]"
-                  : "text-muted hover:text-foreground"
-              }`}
-              aria-current={pathname === "/mundo" ? "page" : undefined}
-            >
-              Afinidades
-            </Link>
-
+              <AnimatePresence>
+                {exploreOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-card border border-ink/15 p-2 shadow-2xl z-50"
+                  >
+                    <div className="space-y-0.5">
+                      {EXPLORE_NAV.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setExploreOpen(false)}
+                          className={`block p-2.5 rounded-xl transition-colors ${
+                            isActive(item.href)
+                              ? "bg-accent/10 text-accent"
+                              : "hover:bg-ink/5 text-foreground"
+                          }`}
+                        >
+                          <span className="font-heading text-xs font-bold block">
+                            {item.label}
+                          </span>
+                          <span className="text-[11px] font-mono text-muted block mt-0.5">
+                            {item.desc}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </nav>
 
           {/* Right side: saved profiles vault & mobile hamburger */}
@@ -186,7 +208,7 @@ export default function UniversityHeader() {
 
             <button
               type="button"
-              className="md:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
+              className="md:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
@@ -208,18 +230,16 @@ export default function UniversityHeader() {
               transition={{ duration: 0.2 }}
               className="md:hidden overflow-hidden border-t border-ink/10 bg-background"
             >
-              {/* max-h + overflow-y-auto: el header es fixed, así que su
-                  altura no se recorta al viewport sola — sin esto, en
-                  pantallas cortas los últimos items (Explorar, CTA) quedan
-                  fuera de pantalla e inalcanzables, porque un elemento fixed
-                  no se mueve con el scroll de la página. */}
               <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
-                {SITE_LINKS.map((link) => (
+                <p className="px-3 py-1 text-[11px] font-mono tracking-[0.2em] text-muted uppercase font-bold">
+                  Navegación Principal
+                </p>
+                {PRIMARY_NAV.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`block px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
+                    className={`block px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+                      isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground hover:text-accent"
                     }`}
                     onClick={() => setMenuOpen(false)}
                   >
@@ -229,61 +249,43 @@ export default function UniversityHeader() {
 
                 <div className="border-t border-ink/10 my-2" />
 
-                <p className="px-3 py-1.5 text-xs font-mono tracking-[0.2em] text-muted uppercase">Tu mapa</p>
-                {PRIMARY.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`block px-3 py-2.5 text-sm transition-colors ${
-                      isActive(link.href) ? "text-accent" : "text-foreground hover:text-accent"
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-
-                <div className="border-t border-ink/10 my-2" />
-
-                <Link
-                  href="/mundo"
-                  className={`block px-3 py-2.5 text-sm transition-colors ${
-                    isActive("/mundo") ? "text-accent" : "text-foreground hover:text-accent"
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Afinidades
-                </Link>
-
-                <div className="px-3 py-2">
+                <div className="px-3 py-1.5">
                   <SavedProfilesDrawer className="w-full justify-center !py-2.5" />
                 </div>
 
                 <div className="border-t border-ink/10 my-2" />
 
+                <p className="px-3 py-1 text-[11px] font-mono tracking-[0.2em] text-muted uppercase font-bold">
+                  Explorar Más
+                </p>
+                {EXPLORE_NAV.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`block px-3 py-1.5 text-xs text-muted hover:text-foreground transition-colors`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                <div className="border-t border-ink/10 my-2" />
+
                 {hasProfile ? (
-                  <>
-                    <Link
-                      href="/profile"
-                      className={`block px-3 py-2.5 text-sm font-medium transition-colors ${
-                        isActive("/profile") ? "text-accent" : "text-foreground hover:text-accent"
-                      }`}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Mi mapa
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => { setMenuOpen(false); handleNewProfile(); }}
-                      className="block w-full text-left px-3 py-2.5 text-sm text-muted hover:text-foreground transition-colors"
-                    >
-                      Crear nuevo perfil
-                    </button>
-                  </>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      handleNewProfile();
+                    }}
+                    className="block w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
+                  >
+                    Reiniciar perfil actual
+                  </button>
                 ) : (
                   <Link
                     href="/onboarding"
-                    className="block mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center"
+                    className="block mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
                     onClick={() => setMenuOpen(false)}
                   >
                     CREAR MI MAPA
@@ -298,30 +300,26 @@ export default function UniversityHeader() {
       {/* Confirm new profile modal */}
       <AnimatePresence>
         {showConfirm && (
-          <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+          <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
             <motion.div
-              className="absolute inset-0 bg-ink/50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.2 }}
-              onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }}
-            />
-            <motion.div
-              className="relative bg-background border border-ink/10 p-8 sm:p-10 max-w-sm mx-4 w-full"
-              initial={{ opacity: 0, scale: 0.97 }}
+              className="relative bg-card border border-ink/10 p-6 sm:p-8 max-w-sm w-full rounded-3xl shadow-2xl"
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <h3 id="confirm-title" className="font-heading text-lg text-foreground mb-2 uppercase">CREAR NUEVO PERFIL</h3>
-              <p className="text-sm text-muted mb-6">Se eliminará el perfil actual. Podés crear uno nuevo después.</p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button variant="ghost" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
-                  CANCELAR
+              <h3 id="confirm-title" className="font-heading text-lg font-bold text-foreground mb-2">
+                ¿Crear nuevo mapa?
+              </h3>
+              <p className="text-xs text-muted mb-6 leading-relaxed">
+                Se limpiará la fecha activa. Si querés conservarla, guardala primero en tu Bóveda Local.
+              </p>
+              <div className="flex gap-3">
+                <Button variant="ghost" size="sm" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
+                  Cancelar
                 </Button>
-                <Button variant="primary" onClick={confirmNewProfile} className="flex-1">
-                  CREAR NUEVO PERFIL
+                <Button variant="primary" size="sm" onClick={confirmNewProfile} className="flex-1">
+                  Confirmar
                 </Button>
               </div>
             </motion.div>

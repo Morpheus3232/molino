@@ -1,103 +1,70 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Hash, Sun, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, Hash, Sun, Compass, ArrowRight, ShieldCheck, Check } from "lucide-react";
+import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 
-const SECTIONS = [
+const DEMO_PROFILES = [
   {
-    id: "numerologia",
-    label: "Numerología",
-    color: "var(--layer-numerology)",
-    icon: Hash,
-    value: "Número de Vida: 6",
-    hint: "Reducís tu fecha a un dígito maestro: el 6 habla de armonía, responsabilidad y cuidar a los demás.",
+    name: "Ana",
+    birthDate: "15/03/1990",
+    lifePath: 1,
+    archetype: "El Iniciador",
+    quote: "La fuerza de abrir caminos donde otros solo ven límites.",
+    sunSign: "Piscis",
+    element: "Agua",
+    modality: "Mutable",
+    chineseAnimal: "Caballo de Metal",
+    chineseTraits: ["Independencia", "Ritmo acelerado", "Estructura"],
+    yearCycle: 9,
+    yearTheme: "Cierre y Liberación",
+    insight: "Combina el impulso pionero del Camino 1 con la intuición empática de Piscis y la resistencia del Caballo de Metal. Ideal para liderar proyectos con propósito humano.",
+    strengths: ["Iniciativa rápida", "Percepción no verbal", "Autonomía"],
+    challenges: ["Tendencia a asumir todo sola", "Dificultad para soltar el control"],
   },
   {
-    id: "astrologia",
-    label: "Astrología",
-    color: "var(--layer-astrology)",
-    icon: Sun,
-    value: "Sol en Piscis · Luna en Géminis",
-    hint: "El Sol marca tu esencia y la Luna tu mundo emocional: intuición sensible, mente curiosa y comunicativa.",
+    name: "Lucas",
+    birthDate: "22/07/1988",
+    lifePath: 7,
+    archetype: "El Sabio Analítico",
+    quote: "El entendimiento profundo que nace del silencio y la observación.",
+    sunSign: "Cáncer",
+    element: "Agua",
+    modality: "Cardinal",
+    chineseAnimal: "Dragón de Tierra",
+    chineseTraits: ["Magnetismo", "Visión sólida", "Pragmatismo"],
+    yearCycle: 7,
+    yearTheme: "Introspección y Sabiduría",
+    insight: "Mente investigadora que necesita espacios de soledad para procesar decisiones. El Dragón de Tierra le da un anclaje realista a su alta sensibilidad emocional.",
+    strengths: ["Capacidad analítica", "Lealtad incondicional", "Visión estratégica"],
+    challenges: ["Aislamiento excesivo", "Rumiación de pensamientos"],
   },
   {
-    id: "zodiaco",
-    label: "Zodíaco Chino",
-    color: "var(--element-wood)",
-    icon: Sparkles,
-    value: "Caballo de Metal",
-    hint: "El Caballo es movimiento e independencia; el Metal agrega determinación y estructura a esa energía.",
+    name: "Sofía",
+    birthDate: "11/11/1995",
+    lifePath: 11,
+    archetype: "El Visionario Intuitivo",
+    quote: "Canalizar inspiración elevada hacia transformaciones tangibles.",
+    sunSign: "Escorpio",
+    element: "Agua",
+    modality: "Fijo",
+    chineseAnimal: "Cerdo de Madera",
+    chineseTraits: ["Generosidad", "Empatía", "Creatividad"],
+    yearCycle: 6,
+    yearTheme: "Armonía y Relaciones",
+    insight: "Número Maestro 11 con doble intensidad intuitiva. Su gran desafío es no absorber el estrés ajeno y canalizar su visión en arte, enseñanza o mentoría.",
+    strengths: ["Alta intuición", "Poder transformador", "Magnetismo auténtico"],
+    challenges: ["Sobrecarga sensorial", "Autoexigencia desmedida"],
   },
-] as const;
-
-type Section = (typeof SECTIONS)[number];
-
-function Tooltip({ section, active }: { section: Section; active: boolean }) {
-  return (
-    <AnimatePresence>
-      {active && (
-        <motion.span
-          role="tooltip"
-          id={`map-preview-tip-${section.id}`}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 6 }}
-          transition={{ duration: 0.15, ease: "easeOut" }}
-          className="pointer-events-none absolute left-1/2 -top-2 z-20 w-56 -translate-x-1/2 -translate-y-full rounded-md border border-ink/15 bg-card px-3 py-2 text-xs leading-relaxed text-foreground/90 shadow-lg"
-        >
-          <span className="block font-mono text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: section.color }}>
-            {section.label}
-          </span>
-          {section.hint}
-        </motion.span>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function DemoSection({ section }: { section: Section }) {
-  const [tip, setTip] = useState(false);
-  const Icon = section.icon;
-
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-describedby={tip ? `map-preview-tip-${section.id}` : undefined}
-      onMouseEnter={() => setTip(true)}
-      onMouseLeave={() => setTip(false)}
-      onFocus={() => setTip(true)}
-      onBlur={() => setTip(false)}
-      className="group relative rounded-md border border-ink/10 bg-background p-4 transition-colors duration-200 hover:border-ink/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      style={{ ["--sec-color" as string]: section.color }}
-    >
-      <Tooltip section={section} active={tip} />
-
-      <div className="flex items-start gap-3">
-        <span
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
-          style={{ color: section.color, backgroundColor: `color-mix(in srgb, ${section.color} 15%, transparent)` }}
-        >
-          <Icon className="h-5 w-5" aria-hidden="true" />
-        </span>
-        <div className="min-w-0">
-          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted/70">{section.label}</p>
-          <p className="font-heading text-base font-semibold leading-snug text-foreground mt-1">
-            {section.value}
-          </p>
-          <p className="mt-2 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.15em] text-muted/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
-            ¿Qué significa?
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
+];
 
 export default function MapPreviewDemo() {
-  const [open, setOpen] = useState(false);
+  const [activeProfileIndex, setActiveProfileIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<"general" | "numerologia" | "astrologia" | "zodiaco">("general");
+
+  const current = DEMO_PROFILES[activeProfileIndex];
 
   const scrollToForm = () => {
     const form = document.getElementById("mapa-form");
@@ -105,90 +72,245 @@ export default function MapPreviewDemo() {
   };
 
   return (
-    <section
-      aria-label="Ejemplo de mapa personal"
-      className="bg-card border-t border-ink/10 py-16 sm:py-20"
-    >
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0, margin: "60px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative mx-auto max-w-3xl"
-        >
-          <div className="absolute right-0 top-0 z-10">
-            <Badge variant="outline">Ejemplo</Badge>
-          </div>
-
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent mb-3">Así se ve tu mapa</p>
-          <h2 className="font-display text-[clamp(1.5rem,4vw,2.25rem)] tracking-tight text-foreground leading-[1.05] mb-2">
-            El mapa de Ana
+    <section aria-label="Demostración interactiva de mapa personal" className="bg-card border-t border-ink/10 py-16 sm:py-24">
+      <div className="mx-auto max-w-5xl px-4 sm:px-8 lg:px-12">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <Badge variant="outline" className="mb-3">
+            Demostración en Vivo
+          </Badge>
+          <h2 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
+            Así se lee tu mapa simbólico
           </h2>
-          <p className="font-mono text-xs text-muted/70 tracking-wide mb-6">Nacida el 15/03/1990</p>
+          <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
+            Cada lectura cruza tres dimensiones para mostrarte patrones que operan en simultáneo. Seleccioná un perfil para ver cómo cambia la dinámica:
+          </p>
 
-          {/* Toggle solo mobile — colapsado por defecto, expandido en desktop */}
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-controls="map-preview-content"
-            onClick={() => setOpen((v) => !v)}
-            className="mb-4 inline-flex w-full items-center justify-between rounded-md border border-ink/10 px-4 py-3 font-heading text-sm font-semibold uppercase tracking-[0.15em] text-foreground transition-colors hover:border-ink/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent md:hidden"
-          >
-            Ver el ejemplo
-            <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-              <ChevronDown className="h-4 w-4" aria-hidden="true" />
-            </motion.span>
-          </button>
+          {/* Profile Switcher Pills */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+            {DEMO_PROFILES.map((p, idx) => (
+              <button
+                key={p.name}
+                type="button"
+                onClick={() => {
+                  setActiveProfileIndex(idx);
+                  setActiveTab("general");
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-mono transition-all border ${
+                  activeProfileIndex === idx
+                    ? "bg-accent text-background font-bold border-accent shadow-sm"
+                    : "bg-background text-muted border-ink/10 hover:border-ink/25 hover:text-foreground"
+                }`}
+              >
+                {p.name} ({p.birthDate})
+              </button>
+            ))}
+          </div>
+        </div>
 
-          <div id="map-preview-content">
-            {/* Mobile: accordion animado */}
-            <AnimatePresence initial={false}>
-              {open && (
-                <motion.div
-                  key="content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="overflow-hidden md:hidden"
-                >
-                  <DemoGrid />
-                </motion.div>
-              )}
-            </AnimatePresence>
+        {/* Interactive Map Showcase Card */}
+        <div className="rounded-3xl border border-accent/25 bg-background p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+          {/* Ambient Glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Desktop: siempre visible */}
-            <div className="hidden md:block">
-              <DemoGrid />
+          {/* Top Bar of Profile */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-ink/10">
+            <div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+                CAMINO DE VIDA {current.lifePath} · {current.archetype}
+              </span>
+              <h3 className="font-display text-2xl sm:text-3xl font-bold text-foreground mt-1">
+                {current.name}
+              </h3>
+              <p className="text-xs text-muted italic mt-0.5">
+                &ldquo;{current.quote}&rdquo;
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="px-3 py-1 rounded-xl bg-ink/5 border border-ink/10 text-xs font-mono text-muted">
+                {current.sunSign} ({current.element})
+              </span>
+              <span className="px-3 py-1 rounded-xl bg-ink/5 border border-ink/10 text-xs font-mono text-muted">
+                {current.chineseAnimal}
+              </span>
             </div>
           </div>
 
-          <div className="mt-8 text-center">
+          {/* 3 Pillars Selector Tabs */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 my-6">
+            <button
+              type="button"
+              onClick={() => setActiveTab("general")}
+              className={`p-3 rounded-2xl border text-left transition-all ${
+                activeTab === "general"
+                  ? "bg-accent/15 border-accent text-accent font-bold"
+                  : "bg-card border-ink/5 text-muted hover:text-foreground"
+              }`}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-wider block text-muted">01 · Síntesis</span>
+              <span className="text-xs font-heading font-semibold block mt-0.5">Visión Integral</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("numerologia")}
+              className={`p-3 rounded-2xl border text-left transition-all ${
+                activeTab === "numerologia"
+                  ? "bg-accent/15 border-accent text-accent font-bold"
+                  : "bg-card border-ink/5 text-muted hover:text-foreground"
+              }`}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-wider block text-muted">02 · Numerología</span>
+              <span className="text-xs font-heading font-semibold block mt-0.5">Camino {current.lifePath}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("astrologia")}
+              className={`p-3 rounded-2xl border text-left transition-all ${
+                activeTab === "astrologia"
+                  ? "bg-accent/15 border-accent text-accent font-bold"
+                  : "bg-card border-ink/5 text-muted hover:text-foreground"
+              }`}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-wider block text-muted">03 · Astrología</span>
+              <span className="text-xs font-heading font-semibold block mt-0.5">Sol en {current.sunSign}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveTab("zodiaco")}
+              className={`p-3 rounded-2xl border text-left transition-all ${
+                activeTab === "zodiaco"
+                  ? "bg-accent/15 border-accent text-accent font-bold"
+                  : "bg-card border-ink/5 text-muted hover:text-foreground"
+              }`}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-wider block text-muted">04 · Zodíaco Chino</span>
+              <span className="text-xs font-heading font-semibold block mt-0.5">{current.chineseAnimal}</span>
+            </button>
+          </div>
+
+          {/* Dynamic Content Panel */}
+          <div className="p-5 sm:p-6 rounded-2xl bg-card border border-ink/10">
+            <AnimatePresence mode="wait">
+              {activeTab === "general" && (
+                <motion.div
+                  key="general"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="space-y-4"
+                >
+                  <p className="text-xs sm:text-sm text-foreground leading-relaxed">
+                    {current.insight}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-ink/5">
+                    <div>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-emerald-400 font-bold block mb-1">
+                        ✓ Fortalezas Clave
+                      </span>
+                      <ul className="space-y-1 text-xs text-muted">
+                        {current.strengths.map((s) => (
+                          <li key={s} className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            <span>{s}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-amber-400 font-bold block mb-1">
+                        ⚠ Punto de Atención
+                      </span>
+                      <ul className="space-y-1 text-xs text-muted">
+                        {current.challenges.map((c) => (
+                          <li key={c} className="flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                            <span>{c}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "numerologia" && (
+                <motion.div
+                  key="numerologia"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="space-y-3"
+                >
+                  <h4 className="font-heading text-sm font-bold text-foreground">
+                    El Propósito del Camino {current.lifePath}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                    El Camino de Vida describe el aprendizaje central de esta encarnación. En el caso de {current.name}, la lección radica en desarrollar {current.archetype.toLowerCase()} con madurez y constancia.
+                  </p>
+                  <div className="p-3 rounded-xl bg-background border border-ink/5 text-xs font-mono text-accent">
+                    Ciclo Anual 2026: Año Personal {current.yearCycle} ({current.yearTheme})
+                  </div>
+                </motion.div>
+              )}
+
+              {activeTab === "astrologia" && (
+                <motion.div
+                  key="astrologia"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="space-y-3"
+                >
+                  <h4 className="font-heading text-sm font-bold text-foreground">
+                    Sol en {current.sunSign} · Elemento {current.element}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                    El Sol indica la fuente de vitalidad y cómo la persona busca autorrealizarse. La modalidad {current.modality} determina el modo en que procesa los cambios y la toma de iniciativa.
+                  </p>
+                </motion.div>
+              )}
+
+              {activeTab === "zodiaco" && (
+                <motion.div
+                  key="zodiaco"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="space-y-3"
+                >
+                  <h4 className="font-heading text-sm font-bold text-foreground">
+                    {current.chineseAnimal}
+                  </h4>
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                    El zodíaco chino refleja los ritmos instintivos y la interacción con el entorno social. Rasgos característicos: {current.chineseTraits.join(", ")}.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* CTA Footer */}
+          <div className="mt-8 pt-6 border-t border-ink/10 text-center">
             <button
               type="button"
               onClick={scrollToForm}
-              className="group inline-flex items-center gap-2 rounded-md bg-gold px-8 py-4 font-heading text-base font-bold uppercase tracking-[0.08em] text-gold-foreground transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_0_35px_rgba(245,176,34,0.35)] active:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gold"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-gold-hover transition-colors shadow-md"
             >
-              Generar mi propio mapa
-              <Sparkles className="h-5 w-5 transition-transform duration-200 group-hover:rotate-12" aria-hidden="true" />
+              <Sparkles className="w-4 h-4" />
+              <span>Calcular mi propio mapa en 30 segundos</span>
             </button>
-            <p className="mt-3 font-mono text-xs text-muted/70 tracking-wide">
-              Con tu propia fecha. Gratis · Sin registro
+            <p className="font-mono text-[11px] text-muted mt-2">
+              100% privado en tu navegador · Sin registro ni costo
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
-  );
-}
-
-function DemoGrid() {
-  return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      {SECTIONS.map((section) => (
-        <DemoSection key={section.id} section={section} />
-      ))}
-    </div>
   );
 }

@@ -18,6 +18,9 @@ import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
+import { Sun, Heart, BookOpen, Calendar, ArrowRight, Compass, Sparkles } from "lucide-react";
+import Link from "next/link";
+import Card from "@/components/ui/Card";
 
 export default function ProfileHub({ profile }: { profile: UserProfile }) {
   const reduceMotion = useSafeReducedMotion();
@@ -174,9 +177,110 @@ export default function ProfileHub({ profile }: { profile: UserProfile }) {
       <FamousMatch profile={profile} />
 
       {/* ═══════════════════════════════════════════════
+          ¿Y AHORA QUÉ? — Plan de Acción & Próximos Pasos
+          ═══════════════════════════════════════════════ */}
+      <section className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-16 border-t border-ink/10">
+        <div className="max-w-2xl mb-8">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
+            Integración de tu mapa
+          </span>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
+            ¿Y ahora qué? Tu plan de acción
+          </h2>
+          <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
+            Un mapa no es para guardarlo en un cajón. Es una brújula práctica para navegar tus decisiones cotidianas.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Link
+            href="/hoy"
+            className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Sun className="w-4 h-4" />
+              </div>
+              <h3 className="font-heading text-base font-bold text-foreground mb-1">
+                Foco & Vibración de Hoy
+              </h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Consultá cómo influye la energía diaria y la fase lunar en tu Camino {lifePath}.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
+              <span>Ir a Hoy</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+
+          <Link
+            href="/journal"
+            className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <h3 className="font-heading text-base font-bold text-foreground mb-1">
+                Journal de Consciencia
+              </h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Registrá reflexiones y estados de ánimo correlacionados con tus ciclos personales.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
+              <span>Escribir entrada</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+
+          <Link
+            href={`/pareja?a=${profile.birthDate || ""}`}
+            className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Heart className="w-4 h-4" />
+              </div>
+              <h3 className="font-heading text-base font-bold text-foreground mb-1">
+                Modo Pareja
+              </h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Compará tu mapa con el de tu pareja, socio o familiar para ver complementariedad.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
+              <span>Comparar mapas</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+
+          <Link
+            href="/calendario"
+            className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <h3 className="font-heading text-base font-bold text-foreground mb-1">
+                Calendario de Ciclos
+              </h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Planificá el momento oportuno para iniciar o cerrar etapas este año.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
+              <span>Ver calendario</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════
           NAV — Dimensiones del mapa en una línea.
-          Exploración (Círculo/Mundo/Evolución): no interrumpe
-          la lectura, se ofrece después de la señal.
           ═══════════════════════════════════════════════ */}
       <SpaceIndex
         profile={profile}
