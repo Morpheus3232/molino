@@ -121,3 +121,65 @@ describe('Affinity coverage per animal (report)', () => {
     expect(gaps).toEqual([]);
   });
 });
+
+/**
+ * Schema integrity gate (Fase 1 — Atlas Visual):
+ * 1. No entity may carry the deprecated `foundingYear`.
+ * 2. Every entity must have a primary event with a valid numeric `year`.
+ * 3. The animal computed from that year/date must be a real Chinese zodiac
+ *    animal — the declared data must be internally consistent with the engine.
+ */
+import { getPrimaryEvent } from '@/lib/data/entity-events';
+import { calculateAnimalFromDate } from '@/lib/engines/chineseZodiacEngine';
+
+describe('Atlas schema integrity', () => {
+  it('no entity uses the deprecated foundingYear', () => {
+    const offenders = SYMBOLIC_ENTITIES.filter((e) => 'foundingYear' in (e as unknown as Record<string, unknown>));
+    expect(offenders.map((e) => e.id)).toEqual([]);
+  });
+
+  it('every entity has a primary event with a valid numeric year', () => {
+    const invalid: string[] = [];
+    for (const entity of SYMBOLIC_ENTITIES) {
+      const primary = getPrimaryEvent(entity);
+      if (!primary || typeof primary.year !== 'number' || !Number.isFinite(primary.year)) {
+        invalid.push(`${entity.id}: no primary event year`);
+        continue;
+      }
+      // Historical entities include ancient cities (Dublín ~988, El Cairo
+      // ~969); allow a broad plausible range, reject clearly bad data.
+      if (primary.year < 800 || primary.year > new Date().getFullYear()) {
+        invalid.push(`${entity.id}: year ${primary.year} out of plausible range`);
+      }
+    }
+    expect(invalid).toEqual([]);
+  });
+
+  it('the entity year resolves to a real Chinese zodiac animal via the engine', () => {
+    const invalid: string[] = [];
+    for (const entity of SYMBOLIC_ENTITIES) {
+      const primary = getPrimaryEvent(entity);
+      if (!primary) {
+        invalid.push(`${entity.id}: no primary event`);
+        continue;
+      }
+      const { animal } = calculateAnimalFromDate(primary.date, primary.year);
+      if (!animal || !ANIMALS.includes(animal as Animal)) {
+        invalid.push(`${entity.id}: resolved animal "${animal}" is not a valid zodiac animal`);
+      }
+    }
+    expect(invalid).toEqual([]);
+  });
+
+  it('every entity has a visualType and (for countries) a countryISO', () => {
+    const missingVisual: string[] = [];
+    for (const entity of SYMBOLIC_ENTITIES) {
+      if (!entity.visualType) missingVisual.push(entity.id);
+    }
+    expect(missingVisual).toEqual([]);
+    // Countries should resolve an ISO code (spot-check a handful).
+    const countries = getEntitiesByType('country');
+    const withISO = countries.filter((c) => c.countryISO).length;
+    expect(withISO).toBeGreaterThan(0);
+  });
+});

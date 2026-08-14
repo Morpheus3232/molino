@@ -1,11 +1,11 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Artistas peruanos — fechas de nacimiento verificadas.
  */
-export const ARTISTS_PERU: SymbolicEntity[] = [
+export const ARTISTS_PERU: AtlasEntityInput[] = [
   {
-    id: "cesar-vallejo", name: "César Vallejo", type: "artist", foundingYear: 1892, country: "Perú",
+    id: "cesar-vallejo", name: "César Vallejo", type: "artist", country: "Perú",
     emoji: "📜",
     description: "César Vallejo es uno de los poetas más importantes del siglo XX en español, autor de 'Los heraldos negros' y 'Trilce'.",
     keyThemes: ["Poesía", "Vanguardia", "Dolor", "Universalidad"],
@@ -26,7 +26,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mario-vargas-llosa", name: "Mario Vargas Llosa", type: "artist", foundingYear: 1936, country: "Perú",
+    id: "mario-vargas-llosa", name: "Mario Vargas Llosa", type: "artist", country: "Perú",
     emoji: "📚",
     description: "Mario Vargas Llosa, Nobel de Literatura 2010, es maestro de la novela latinoamericana con obras como 'La ciudad y los perros'.",
     keyThemes: ["Novela", "Nobel", "Realismo", "Libertad"],
@@ -47,7 +47,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "chabuca-granda", name: "Chabuca Granda", type: "artist", foundingYear: 1920, country: "Perú",
+    id: "chabuca-granda", name: "Chabuca Granda", type: "artist", country: "Perú",
     emoji: "🎵",
     description: "Chabuca Granda, 'la dama de la canción criolla', reinventó el vals peruano con 'La flor de la canela' y 'José Antonio'.",
     keyThemes: ["Vals criollo", "Innovación", "Lima", "Tradición"],
@@ -68,7 +68,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "susana-baca", name: "Susana Baca", type: "artist", foundingYear: 1944, country: "Perú",
+    id: "susana-baca", name: "Susana Baca", type: "artist", country: "Perú",
     emoji: "🎤",
     description: "Susana Baca, Grammy Latino 2002, es la gran investigadora e intérprete de la música afroperuana y ministra de Cultura (2011).",
     keyThemes: ["Afroperuana", "Investigación", "Cultura", "Memoria"],
@@ -89,7 +89,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "eva-ayllon", name: "Eva Ayllón", type: "artist", foundingYear: 1956, country: "Perú",
+    id: "eva-ayllon", name: "Eva Ayllón", type: "artist", country: "Perú",
     emoji: "🎤",
     description: "Eva Ayllón, 'la reina del landó', es la voz más emblemática de la música criolla y afroperuana contemporánea.",
     keyThemes: ["Criolla", "Landó", "Voz", "Tradición"],
@@ -110,7 +110,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "gianmarco", name: "Gian Marco", type: "artist", foundingYear: 1970, country: "Perú",
+    id: "gianmarco", name: "Gian Marco", type: "artist", country: "Perú",
     emoji: "🎵",
     description: "Gian Marco, tres veces Grammy Latino, es el cantautor peruano más exitoso internacionalmente, autor de 'Hoy' y 'Se me olvidó'.",
     keyThemes: ["Cantautor", "Pop", "Internacional", "Grammy"],
@@ -131,7 +131,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "victor-delfin", name: "Víctor Delfín", type: "artist", foundingYear: 1927, country: "Perú",
+    id: "victor-delfin", name: "Víctor Delfín", type: "artist", country: "Perú",
     emoji: "🎨",
     description: "Víctor Delfín es escultor y pintor, creador de 'El beso' en el Parque del Amor de Miraflores, ícono del arte público limeño.",
     keyThemes: ["Escultura", "Público", "Amor", "Miraflores"],
@@ -152,7 +152,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "fernando-de-szmyszlo", name: "Fernando de Szyszlo", type: "artist", foundingYear: 1925, country: "Perú",
+    id: "fernando-de-szmyszlo", name: "Fernando de Szyszlo", type: "artist", country: "Perú",
     emoji: "🎨",
     description: "Fernando de Szyszlo, padre de la abstracción peruana, fusionó arte precolombino y modernidad en una poética única.",
     keyThemes: ["Abstracción", "Precolombino", "Modernidad", "Identidad"],
@@ -173,7 +173,7 @@ export const ARTISTS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "jose-maria-arguedas", name: "José María Arguedas", type: "artist", foundingYear: 1911, country: "Perú",
+    id: "jose-maria-arguedas", name: "José María Arguedas", type: "artist", country: "Perú",
     emoji: "📖",
     description: "José María Arguedas, novelista y antropólogo, dio voz al mundo andino y quechua en obras como 'Los ríos profundos'.",
     keyThemes: ["Andino", "Quechua", "Antropología", "Mundo indígena"],

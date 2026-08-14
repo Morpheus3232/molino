@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Artistas chilenos — fechas de nacimiento verificadas.
  * Complementa a Violeta Parra y Pablo Neruda, ya presentes en symbolic-entities.ts.
  */
-export const ARTISTS_CHILE: SymbolicEntity[] = [
+export const ARTISTS_CHILE: AtlasEntityInput[] = [
   {
-    id: "victor-jara", name: "Víctor Jara", type: "artist", foundingYear: 1932, country: "Chile",
+    id: "victor-jara", name: "Víctor Jara", type: "artist", country: "Chile",
     emoji: "🎵",
     description: "Víctor Jara fue cantautor, director teatral y símbolo del canto nuevo chileno. Su legado trasciende la música como voz de los sin voz.",
     keyThemes: ["Canto nuevo", "Compromiso", "Teatro", "Memoria"],
@@ -27,7 +27,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "gabriela-mistral", name: "Gabriela Mistral", type: "artist", foundingYear: 1889, country: "Chile",
+    id: "gabriela-mistral", name: "Gabriela Mistral", type: "artist", country: "Chile",
     emoji: "📜",
     description: "Gabriela Mistral, primera latinoamericana en ganar el Nobel de Literatura (1945), poeta de la infancia, la naturaleza y el dolor.",
     keyThemes: ["Poesía", "Nobel", "Infancia", "Universalidad"],
@@ -48,7 +48,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "nicanor-parra", name: "Nicanor Parra", type: "artist", foundingYear: 1914, country: "Chile",
+    id: "nicanor-parra", name: "Nicanor Parra", type: "artist", country: "Chile",
     emoji: "📝",
     description: "Nicanor Parra, creador de la 'antipoesía', revolucionó la poesía en español con humor, ironía y lenguaje coloquial.",
     keyThemes: ["Antipoesía", "Innovación", "Humor", "Ruptura"],
@@ -69,7 +69,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "isabel-allende", name: "Isabel Allende", type: "artist", foundingYear: 1942, country: "Chile",
+    id: "isabel-allende", name: "Isabel Allende", type: "artist", country: "Chile",
     emoji: "📚",
     description: "Isabel Allende es la escritora viva más leída en español, maestra del realismo mágico y la memoria familiar.",
     keyThemes: ["Realismo mágico", "Memoria", "Femenino", "Bestseller"],
@@ -90,7 +90,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "roberto-bolano", name: "Roberto Bolaño", type: "artist", foundingYear: 1953, country: "Chile",
+    id: "roberto-bolano", name: "Roberto Bolaño", type: "artist", country: "Chile",
     emoji: "📖",
     description: "Roberto Bolaño, autor de 'Los detectives salvajes' y '2666', es la voz más influyente de la narrativa chilena reciente.",
     keyThemes: ["Narrativa", "Exilio", "Vanguardia", "Legado"],
@@ -111,7 +111,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "jorge-gonzalez", name: "Jorge González", type: "artist", foundingYear: 1964, country: "Chile",
+    id: "jorge-gonzalez", name: "Jorge González", type: "artist", country: "Chile",
     emoji: "🎤",
     description: "Jorge González, líder de Los Prisioneros, definió el sonido del pop/rock chileno de los 80 con letras de crítica social.",
     keyThemes: ["Rock chileno", "Crítica social", "Pop", "Los Prisioneros"],
@@ -132,7 +132,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "ana-tijoux", name: "Ana Tijoux", type: "artist", foundingYear: 1977, country: "Chile",
+    id: "ana-tijoux", name: "Ana Tijoux", type: "artist", country: "Chile",
     emoji: "🎤",
     description: "Ana Tijoux, referente del hip hop latinoamericano, fusiona rap, jazz y raíces andinas con conciencia social.",
     keyThemes: ["Hip hop", "Raíces", "Conciencia", "Fusión"],
@@ -153,7 +153,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "claudio-bravo", name: "Claudio Bravo", type: "artist", foundingYear: 1936, country: "Chile",
+    id: "claudio-bravo", name: "Claudio Bravo", type: "artist", country: "Chile",
     emoji: "🎨",
     description: "Claudio Bravo fue maestro del hiperrealismo, pintor de objetos cotidianos con una técnica que desafía la percepción.",
     keyThemes: ["Hiperrealismo", "Técnica", "Objetos", "Percepción"],
@@ -174,7 +174,7 @@ export const ARTISTS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "roberto-matta", name: "Roberto Matta", type: "artist", foundingYear: 1911, country: "Chile",
+    id: "roberto-matta", name: "Roberto Matta", type: "artist", country: "Chile",
     emoji: "🎨",
     description: "Roberto Matta, surrealista chileno, exploró el inconsciente y la psicología morfológica en lienzos de escala cósmica.",
     keyThemes: ["Surrealismo", "Inconsciente", "Morfología", "Cósmico"],

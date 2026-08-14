@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Universidades chilenas — fechas de fundación/reconocimiento verificadas
  * (fuentes: sitios institucionales, Wikipedia, boletines oficiales, CNED).
  */
-export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
+export const UNIVERSITIES_CHILE: AtlasEntityInput[] = [
   {
-    id: "uchile", name: "Universidad de Chile", type: "university", foundingYear: 1842, country: "Chile",
+    id: "uchile", name: "Universidad de Chile", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La Universidad de Chile es la institución de educación superior más antigua y prestigiosa del país, cuna de premios Nobel y presidentes.",
     keyThemes: ["Tradición", "Excelencia", "Pública", "Referente"],
@@ -26,7 +26,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "puc-chile", name: "Pontificia Universidad Católica de Chile", type: "university", foundingYear: 1888, country: "Chile",
+    id: "puc-chile", name: "Pontificia Universidad Católica de Chile", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UC es una de las universidades más prestigiosas de Latinoamérica, reconocida por su excelencia académica y su campus San Joaquín.",
     keyThemes: ["Excelencia", "Católica", "Investigación", "Prestigio"],
@@ -46,7 +46,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "usach", name: "Universidad de Santiago de Chile", type: "university", foundingYear: 1849, country: "Chile",
+    id: "usach", name: "Universidad de Santiago de Chile", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La Usach, heredera de la Escuela de Artes y Oficios, es referente en ingeniería, tecnología y ciencias aplicadas.",
     keyThemes: ["Tecnología", "Ingeniería", "Aplicada", "Pública"],
@@ -66,7 +66,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "uconcepcion", name: "Universidad de Concepción", type: "university", foundingYear: 1919, country: "Chile",
+    id: "uconcepcion", name: "Universidad de Concepción", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UdeC es la principal universidad del sur de Chile, con fuerte tradición en ciencias forestales, agronomía y oceanografía.",
     keyThemes: ["Región", "Ciencias", "Forestal", "Sur"],
@@ -86,7 +86,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "uvalparaiso", name: "Universidad de Valparaíso", type: "university", foundingYear: 1981, country: "Chile",
+    id: "uvalparaiso", name: "Universidad de Valparaíso", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UV es una universidad estatal porteña, destacada en medicina, derecho y ciencias del mar.",
     keyThemes: ["Puerto", "Medicina", "Derecho", "Mar"],
@@ -106,7 +106,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "utaustral", name: "Universidad Austral de Chile", type: "university", foundingYear: 1954, country: "Chile",
+    id: "utaustral", name: "Universidad Austral de Chile", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UACh, en Valdivia, es referente en ciencias veterinarias, forestales y arquitectura, en un entorno de selva valdiviana.",
     keyThemes: ["Valdivia", "Veterinaria", "Bosque", "Patrimonio"],
@@ -126,7 +126,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "utem", name: "Universidad Tecnológica Metropolitana", type: "university", foundingYear: 1993, country: "Chile",
+    id: "utem", name: "Universidad Tecnológica Metropolitana", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UTEM es una universidad estatal enfocada en tecnología, ingeniería y gestión, heredera de institutos técnicos tradicionales.",
     keyThemes: ["Tecnología", "Gestión", "Estatal", "Metropolitana"],
@@ -146,7 +146,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "uandes", name: "Universidad de los Andes", type: "university", foundingYear: 1989, country: "Chile",
+    id: "uandes", name: "Universidad de los Andes", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UANDES es una universidad privada de inspiración católica, reconocida por sus programas de medicina, derecho y negocios.",
     keyThemes: ["Privada", "Católica", "Medicina", "Negocios"],
@@ -166,7 +166,7 @@ export const UNIVERSITIES_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "uai", name: "Universidad Adolfo Ibáñez", type: "university", foundingYear: 1988, country: "Chile",
+    id: "uai", name: "Universidad Adolfo Ibáñez", type: "university", country: "Chile",
     emoji: "🎓",
     description: "La UAI es una universidad privada líder en negocios, psicología y gobierno, con campus en Santiago y Viña del Mar.",
     keyThemes: ["Negocios", "Psicología", "Gobierno", "Privada"],

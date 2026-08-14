@@ -1,10 +1,10 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
-export const BRANDS_60: SymbolicEntity[] = [
+export const BRANDS_60: AtlasEntityInput[] = [
   // ──── MARCAS (60) ────
   // RATA
   {
-    id: "amazon", name: "Amazon", type: "brand", foundingYear: 1900, country: "Estados Unidos",
+    id: "amazon", name: "Amazon", type: "brand", country: "Estados Unidos",
     emoji: "📦",
     description: "Amazon revolucionó el comercio minorista creando un mercado global donde se puede comprar casi cualquier producto con entrega rápida.",
     keyThemes: ["Innovación", "Escalabilidad", "Obsesión", "Eficiencia"],
@@ -12,7 +12,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada por Jeff Bezos el 5 de julio de 1994 en Seattle, Washington.",
   },
   {
-    id: "airbnb", name: "Airbnb", type: "brand", foundingYear: 1912, country: "Estados Unidos",
+    id: "airbnb", name: "Airbnb", type: "brand", country: "Estados Unidos",
     emoji: "🏠",
     description: "Airbnb transformó la industria hotelera conectando viajeros con anfitriones locales en más de 220 países.",
     keyThemes: ["Comunidad", "Confianza", "Pertenencia", "Aventura"],
@@ -20,7 +20,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en agosto de 2008 por Brian Chesky, Joe Gebbia y Nathan Blecharczyk en San Francisco.",
   },
   {
-    id: "uber", name: "Uber", type: "brand", foundingYear: 1924, country: "Estados Unidos",
+    id: "uber", name: "Uber", type: "brand", country: "Estados Unidos",
     emoji: "🚗",
     description: "Uber reinventó la movilidad urbana conectando pasajeros con conductores a través de una aplicación.",
     keyThemes: ["Movilidad", "Disrupción", "Acceso", "Eficiencia"],
@@ -28,7 +28,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en marzo de 2009 por Garrett Camp y Travis Kalanick en San Francisco.",
   },
   {
-    id: "paypal", name: "PayPal", type: "brand", foundingYear: 1936, country: "Estados Unidos",
+    id: "paypal", name: "PayPal", type: "brand", country: "Estados Unidos",
     emoji: "💳",
     description: "PayPal democratizó los pagos digitales permitiendo transferencias seguras entre personas y negocios.",
     keyThemes: ["Confianza", "Seguridad", "Accesibilidad", "Innovación"],
@@ -36,7 +36,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en diciembre de 1998 por Max Levchin, Peter Thiel y Luke Nosek como Confinity.",
   },
   {
-    id: "ebay", name: "eBay", type: "brand", foundingYear: 1948, country: "Estados Unidos",
+    id: "ebay", name: "eBay", type: "brand", country: "Estados Unidos",
     emoji: "🏷️",
     description: "eBay creó el primer gran mercado de subastas en línea donde cualquier persona puede comprar y vender.",
     keyThemes: ["Subasta", "Comercio", "Comunidad", "Oportunidad"],
@@ -46,7 +46,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // BUEY
   {
-    id: "toyota", name: "Toyota", type: "brand", foundingYear: 1901, country: "Japón",
+    id: "toyota", name: "Toyota", type: "brand", country: "Japón",
     emoji: "🚗",
     description: "Toyota perfeccionó el sistema de producción justo a tiempo para convertirse en el mayor fabricante de automóviles del mundo.",
     keyThemes: ["Calidad", "Mejora", "Eficiencia", "Confiabilidad"],
@@ -54,7 +54,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 28 de agosto de 1937 por Kiichiro Toyoda en Toyota, Japón.",
   },
   {
-    id: "honda", name: "Honda", type: "brand", foundingYear: 1913, country: "Japón",
+    id: "honda", name: "Honda", type: "brand", country: "Japón",
     emoji: "🏍️",
     description: "Honda construyó su reputación en motores confiables desde motocicletas hasta automóviles y robótica.",
     keyThemes: ["Ingeniería", "Confiabilidad", "Innovación", "Respeto"],
@@ -62,7 +62,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 24 de septiembre de 1948 por Soichiro Honda y Takeo Fujisawa en Hamamatsu, Japón.",
   },
   {
-    id: "ibm", name: "IBM", type: "brand", foundingYear: 1925, country: "Estados Unidos",
+    id: "ibm", name: "IBM", type: "brand", country: "Estados Unidos",
     emoji: "🖥️",
     description: "IBM lideró la revolución de la computación empresarial durante más de un siglo con innovación constante.",
     keyThemes: ["Tecnología", "Confianza", "Empresa", "Legado"],
@@ -70,7 +70,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 16 de junio de 1911 por Charles Ranlett Flint como Computing-Tabulating-Recording Company.",
   },
   {
-    id: "ford", name: "Ford", type: "brand", foundingYear: 1937, country: "Estados Unidos",
+    id: "ford", name: "Ford", type: "brand", country: "Estados Unidos",
     emoji: "🚘",
     description: "Ford democratizó el automóvil con la cadena de montaje transformando la industria y el trabajo moderno.",
     keyThemes: ["Industria", "Innovación", "Trabajo", "Legado"],
@@ -78,7 +78,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 16 de junio de 1903 por Henry Ford en Detroit, Míchigan.",
   },
   {
-    id: "nestle", name: "Nestlé", type: "brand", foundingYear: 1949, country: "Suiza",
+    id: "nestle", name: "Nestlé", type: "brand", country: "Suiza",
     emoji: "🍫",
     description: "Nestlé es la compañía de alimentos más grande del mundo presente en casi todos los hogares del planeta.",
     keyThemes: ["Nutrición", "Tradición", "Global", "Calidad"],
@@ -88,7 +88,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // TIGRE
   {
-    id: "tesla-motors", name: "Tesla", type: "brand", foundingYear: 1902, country: "Estados Unidos",
+    id: "tesla-motors", name: "Tesla", type: "brand", country: "Estados Unidos",
     emoji: "⚡",
     description: "Tesla aceleró la transición hacia la energía sostenible con vehículos eléctricos de alto rendimiento.",
     keyThemes: ["Futuro", "Sostenibilidad", "Rebelde", "Visión"],
@@ -96,7 +96,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en julio de 2003 por Martin Eberhard y Marc Tarpenning en San Carlos, California.",
   },
   {
-    id: "netflix", name: "Netflix", type: "brand", foundingYear: 1914, country: "Estados Unidos",
+    id: "netflix", name: "Netflix", type: "brand", country: "Estados Unidos",
     emoji: "📺",
     description: "Netflix transformó el entretenimiento con streaming bajo demanda y contenido original galardonado.",
     keyThemes: ["Entretenimiento", "Innovación", "Disfrute", "Audacia"],
@@ -104,7 +104,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 29 de agosto de 1997 por Reed Hastings y Marc Randolph en Scotts Valley, California.",
   },
   {
-    id: "red-bull", name: "Red Bull", type: "brand", foundingYear: 1926, country: "Austria",
+    id: "red-bull", name: "Red Bull", type: "brand", country: "Austria",
     emoji: "🥤",
     description: "Red Bull creó la categoría de bebidas energéticas con un marketing audaz basado en deportes extremos.",
     keyThemes: ["Energía", "Audacia", "Extremo", "Vitalidad"],
@@ -112,7 +112,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1987 por Dietrich Mateschitz en Fuschl am See, Austria.",
   },
   {
-    id: "nike-brand", name: "Nike", type: "brand", foundingYear: 1938, country: "Estados Unidos",
+    id: "nike-brand", name: "Nike", type: "brand", country: "Estados Unidos",
     emoji: "👟",
     description: "Nike inspira a los atletas de todo el mundo con innovación en calzado y un espíritu de superación.",
     keyThemes: ["Competencia", "Superación", "Vitalidad", "Rebeldía"],
@@ -120,7 +120,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 25 de enero de 1964 por Phil Knight y Bill Bowerman como Blue Ribbon Sports en Oregón.",
   },
   {
-    id: "spacex", name: "SpaceX", type: "brand", foundingYear: 1950, country: "Estados Unidos",
+    id: "spacex", name: "SpaceX", type: "brand", country: "Estados Unidos",
     emoji: "🚀",
     description: "SpaceX revolucionó la exploración espacial con cohetes reutilizables y la visión de colonizar Marte.",
     keyThemes: ["Exploración", "Innovación", "Visión", "Audacia"],
@@ -130,7 +130,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // GATO
   {
-    id: "chanel", name: "Chanel", type: "brand", foundingYear: 1903, country: "Francia",
+    id: "chanel", name: "Chanel", type: "brand", country: "Francia",
     emoji: "👛",
     description: "Chanel liberó a la mujer moderna con diseños atemporales que combinan elegancia y rebeldía.",
     keyThemes: ["Elegancia", "Rebeldía", "Atemporal", "Lujo"],
@@ -138,7 +138,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1910 por Coco Chanel en París, Francia.",
   },
   {
-    id: "louis-vuitton", name: "Louis Vuitton", type: "brand", foundingYear: 1915, country: "Francia",
+    id: "louis-vuitton", name: "Louis Vuitton", type: "brand", country: "Francia",
     emoji: "👜",
     description: "Louis Vuitton es el ícono del lujo francés con baúles y bolsos que simbolizan estatus y artesanía.",
     keyThemes: ["Lujo", "Artesanía", "Estatus", "Tradición"],
@@ -146,7 +146,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1854 por Louis Vuitton en París, Francia.",
   },
   {
-    id: "dior", name: "Dior", type: "brand", foundingYear: 1927, country: "Francia",
+    id: "dior", name: "Dior", type: "brand", country: "Francia",
     emoji: "💄",
     description: "Dior revolucionó la alta costura con el New Look y sigue siendo sinónimo de sofisticación parisina.",
     keyThemes: ["Sofisticación", "Feminidad", "Arte", "Elegancia"],
@@ -154,7 +154,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 16 de diciembre de 1946 por Christian Dior en París, Francia.",
   },
   {
-    id: "hermes", name: "Hermès", type: "brand", foundingYear: 1939, country: "Francia",
+    id: "hermes", name: "Hermès", type: "brand", country: "Francia",
     emoji: "🧣",
     description: "Hermès representa la excelencia artesanal francesa desde sus arneses ecuestres hasta sus icónicos bolsos.",
     keyThemes: ["Artesanía", "Exclusividad", "Tradición", "Excelencia"],
@@ -162,7 +162,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1837 por Thierry Hermès en París, Francia.",
   },
   {
-    id: "cartier", name: "Cartier", type: "brand", foundingYear: 1951, country: "Francia",
+    id: "cartier", name: "Cartier", type: "brand", country: "Francia",
     emoji: "💍",
     description: "Cartier es el joyero de los reyes con piezas que combinan artesanía excepcional y diseño visionario.",
     keyThemes: ["Joyería", "Prestigio", "Arte", "Legado"],
@@ -172,7 +172,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // DRAGÓN
   {
-    id: "google", name: "Google", type: "brand", foundingYear: 1904, country: "Estados Unidos",
+    id: "google", name: "Google", type: "brand", country: "Estados Unidos",
     emoji: "🔍",
     description: "Google organiza la información del mundo haciéndola accesible y útil para todas las personas.",
     keyThemes: ["Conocimiento", "Búsqueda", "Innovación", "Escala"],
@@ -180,7 +180,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 4 de septiembre de 1998 por Larry Page y Sergey Brin en Menlo Park, California.",
   },
   {
-    id: "microsoft", name: "Microsoft", type: "brand", foundingYear: 1916, country: "Estados Unidos",
+    id: "microsoft", name: "Microsoft", type: "brand", country: "Estados Unidos",
     emoji: "💻",
     description: "Microsoft llevó una computadora a cada hogar con Windows y Office transformando la productividad global.",
     keyThemes: ["Tecnología", "Productividad", "Innovación", "Visión"],
@@ -188,7 +188,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 4 de abril de 1975 por Bill Gates y Paul Allen en Albuquerque, Nuevo México.",
   },
   {
-    id: "apple-tech", name: "Apple", type: "brand", foundingYear: 1928, country: "Estados Unidos",
+    id: "apple-tech", name: "Apple", type: "brand", country: "Estados Unidos",
     emoji: "🍎",
     description: "Apple revolucionó la informática personal y la experiencia digital con productos de diseño icónico.",
     keyThemes: ["Innovación", "Diseño", "Simplicidad", "Rebelde"],
@@ -196,7 +196,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 1 de abril de 1976 por Steve Jobs, Steve Wozniak y Ronald Wayne en Los Altos, California.",
   },
   {
-    id: "samsung", name: "Samsung", type: "brand", foundingYear: 1940, country: "Corea del Sur",
+    id: "samsung", name: "Samsung", type: "brand", country: "Corea del Sur",
     emoji: "📱",
     description: "Samsung pasó de ser una tienda de comestibles a liderar la electrónica de consumo global.",
     keyThemes: ["Tecnología", "Innovación", "Global", "Calidad"],
@@ -204,7 +204,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 1 de marzo de 1938 por Lee Byung-chul en Daegu, Corea del Sur.",
   },
   {
-    id: "alibaba", name: "Alibaba", type: "brand", foundingYear: 1952, country: "China",
+    id: "alibaba", name: "Alibaba", type: "brand", country: "China",
     emoji: "🌐",
     description: "Alibaba transformó el comercio electrónico en China conectando fabricantes con compradores globales.",
     keyThemes: ["Comercio", "Innovación", "Escala", "Visión"],
@@ -214,7 +214,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // SERPIENTE
   {
-    id: "goldman-sachs", name: "Goldman Sachs", type: "brand", foundingYear: 1905, country: "Estados Unidos",
+    id: "goldman-sachs", name: "Goldman Sachs", type: "brand", country: "Estados Unidos",
     emoji: "🏦",
     description: "Goldman Sachs es el banco de inversión más influyente de Wall Street asesorando a gobiernos y corporaciones.",
     keyThemes: ["Inversión", "Poder", "Estrategia", "Discreción"],
@@ -222,7 +222,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1869 por Marcus Goldman y Samuel Sachs en Nueva York.",
   },
   {
-    id: "blackrock", name: "BlackRock", type: "brand", foundingYear: 1917, country: "Estados Unidos",
+    id: "blackrock", name: "BlackRock", type: "brand", country: "Estados Unidos",
     emoji: "📊",
     description: "BlackRock es el gestor de activos más grande del mundo moviendo billones en inversiones globales.",
     keyThemes: ["Inversión", "Escala", "Tecnología", "Influencia"],
@@ -230,7 +230,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1988 por Larry Fink, Robert Kapito y otros siete socios en Nueva York.",
   },
   {
-    id: "pfizer", name: "Pfizer", type: "brand", foundingYear: 1929, country: "Estados Unidos",
+    id: "pfizer", name: "Pfizer", type: "brand", country: "Estados Unidos",
     emoji: "💊",
     description: "Pfizer desarrolla medicamentos que salvan vidas desde su fundación incluyendo la primera vacuna contra COVID-19.",
     keyThemes: ["Salud", "Ciencia", "Innovación", "Vida"],
@@ -238,7 +238,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1849 por Charles Pfizer y Charles Erhart en Brooklyn, Nueva York.",
   },
   {
-    id: "lockheed-martin", name: "Lockheed Martin", type: "brand", foundingYear: 1941, country: "Estados Unidos",
+    id: "lockheed-martin", name: "Lockheed Martin", type: "brand", country: "Estados Unidos",
     emoji: "✈️",
     description: "Lockheed Martin es el contratista de defensa y aeroespacial más grande del mundo impulsando tecnología de vanguardia.",
     keyThemes: ["Defensa", "Innovación", "Tecnología", "Sigilo"],
@@ -246,7 +246,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1912 por Allan y Malcolm Loughead en Santa Bárbara, California.",
   },
   {
-    id: "mckinsey", name: "McKinsey", type: "brand", foundingYear: 1953, country: "Estados Unidos",
+    id: "mckinsey", name: "McKinsey", type: "brand", country: "Estados Unidos",
     emoji: "📋",
     description: "McKinsey es la consultora estratégica más prestigiosa asesorando a las empresas más poderosas del mundo.",
     keyThemes: ["Estrategia", "Conocimiento", "Influencia", "Excelencia"],
@@ -256,7 +256,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // CABALLO
   {
-    id: "ferrari", name: "Ferrari", type: "brand", foundingYear: 1906, country: "Italia",
+    id: "ferrari", name: "Ferrari", type: "brand", country: "Italia",
     emoji: "🏎️",
     description: "Ferrari es el símbolo del automovilismo de lujo con una herencia imbatible en la Fórmula 1.",
     keyThemes: ["Velocidad", "Pasión", "Exclusividad", "Legado"],
@@ -264,7 +264,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1939 por Enzo Ferrari como Auto Avio Costruzioni en Módena, Italia.",
   },
   {
-    id: "jeep", name: "Jeep", type: "brand", foundingYear: 1918, country: "Estados Unidos",
+    id: "jeep", name: "Jeep", type: "brand", country: "Estados Unidos",
     emoji: "🧭",
     description: "Jeep nació como vehículo militar en la Segunda Guerra Mundial y se convirtió en ícono de aventura.",
     keyThemes: ["Aventura", "Libertad", "Robustez", "Exploración"],
@@ -272,7 +272,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Creado en 1941 por Willys-Overland para el ejército estadounidense en Toledo, Ohio.",
   },
   {
-    id: "virgin", name: "Virgin", type: "brand", foundingYear: 1930, country: "Reino Unido",
+    id: "virgin", name: "Virgin", type: "brand", country: "Reino Unido",
     emoji: "🎵",
     description: "Virgin expandió su espíritu rebelde desde la música hasta aerolíneas y viajes espaciales.",
     keyThemes: ["Rebelde", "Aventura", "Diversidad", "Innovación"],
@@ -280,7 +280,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1970 por Richard Branson y Nik Powell en Londres, Reino Unido.",
   },
   {
-    id: "puma", name: "Puma", type: "brand", foundingYear: 1942, country: "Alemania",
+    id: "puma", name: "Puma", type: "brand", country: "Alemania",
     emoji: "🐆",
     description: "Puma nació de una rivalidad fraternal y se convirtió en marca deportiva global asociada a la velocidad.",
     keyThemes: ["Deporte", "Velocidad", "Estilo", "Cultura"],
@@ -288,7 +288,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1948 por Rudolf Dassler en Herzogenaurach, Alemania.",
   },
   {
-    id: "harley-davidson", name: "Harley-Davidson", type: "brand", foundingYear: 1954, country: "Estados Unidos",
+    id: "harley-davidson", name: "Harley-Davidson", type: "brand", country: "Estados Unidos",
     emoji: "🏍️",
     description: "Harley-Davidson es el ícono de la libertad sobre dos ruedas con más de un siglo de tradición motociclista.",
     keyThemes: ["Libertad", "Rebeldía", "Ruta", "Hermandad"],
@@ -298,7 +298,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // CABRA
   {
-    id: "disney", name: "Disney", type: "brand", foundingYear: 1907, country: "Estados Unidos",
+    id: "disney", name: "Disney", type: "brand", country: "Estados Unidos",
     emoji: "🐭",
     description: "Disney creó el entretenimiento familiar mágico con personajes que han marcado generaciones enteras.",
     keyThemes: ["Magia", "Imaginación", "Infancia", "Narrativa"],
@@ -306,7 +306,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 16 de octubre de 1923 por Walt y Roy Disney en Los Ángeles, California.",
   },
   {
-    id: "pixar", name: "Pixar", type: "brand", foundingYear: 1919, country: "Estados Unidos",
+    id: "pixar", name: "Pixar", type: "brand", country: "Estados Unidos",
     emoji: "💡",
     description: "Pixar revolucionó la animación digital con historias emocionantes que conectan con todas las edades.",
     keyThemes: ["Creatividad", "Emoción", "Tecnología", "Narrativa"],
@@ -314,7 +314,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1986 por Ed Catmull y Alvy Ray Smith tras ser comprada por Steve Jobs en Richmond, California.",
   },
   {
-    id: "lego", name: "Lego", type: "brand", foundingYear: 1931, country: "Dinamarca",
+    id: "lego", name: "Lego", type: "brand", country: "Dinamarca",
     emoji: "🧱",
     description: "Lego despertó la imaginación de niños y adultos con sus icónicos ladrillos de construcción desde Dinamarca.",
     keyThemes: ["Creatividad", "Juego", "Imaginación", "Aprendizaje"],
@@ -322,7 +322,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 10 de agosto de 1932 por Ole Kirk Christiansen en Billund, Dinamarca.",
   },
   {
-    id: "nintendo", name: "Nintendo", type: "brand", foundingYear: 1943, country: "Japón",
+    id: "nintendo", name: "Nintendo", type: "brand", country: "Japón",
     emoji: "🎮",
     description: "Nintendo pasó de hacer naipes a crear las franquicias de videojuegos más queridas del mundo.",
     keyThemes: ["Juego", "Innovación", "Magia", "Diversión"],
@@ -330,7 +330,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 23 de septiembre de 1889 por Fusajiro Yamauchi en Kioto, Japón.",
   },
   {
-    id: "playstation", name: "PlayStation", type: "brand", foundingYear: 1955, country: "Japón",
+    id: "playstation", name: "PlayStation", type: "brand", country: "Japón",
     emoji: "🕹️",
     description: "PlayStation redefinió el entretenimiento interactivo con franquicias exclusivas y tecnología de vanguardia.",
     keyThemes: ["Juego", "Innovación", "Inmersión", "Comunidad"],
@@ -340,7 +340,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // MONO
   {
-    id: "tiktok", name: "TikTok", type: "brand", foundingYear: 1908, country: "China",
+    id: "tiktok", name: "TikTok", type: "brand", country: "China",
     emoji: "🎵",
     description: "TikTok transformó las redes sociales con videos cortos virales y un algoritmo de recomendación adictivo.",
     keyThemes: ["Creatividad", "Viral", "Música", "Juventud"],
@@ -348,7 +348,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Lanzada en septiembre de 2016 por ByteDance en Pekín, China.",
   },
   {
-    id: "spotify-streaming", name: "Spotify", type: "brand", foundingYear: 1920, country: "Suecia",
+    id: "spotify-streaming", name: "Spotify", type: "brand", country: "Suecia",
     emoji: "🎧",
     description: "Spotify transformó la industria musical con streaming personalizado y descubrimiento algorítmico.",
     keyThemes: ["Música", "Conectividad", "Descubrimiento", "Innovación"],
@@ -356,7 +356,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 2006 por Daniel Ek y Martin Lorentzon en Estocolmo, Suecia.",
   },
   {
-    id: "zoom", name: "Zoom", type: "brand", foundingYear: 1932, country: "Estados Unidos",
+    id: "zoom", name: "Zoom", type: "brand", country: "Estados Unidos",
     emoji: "📹",
     description: "Zoom redefinió la comunicación remota con videoconferencias simples y confiables para el mundo.",
     keyThemes: ["Conexión", "Simplicidad", "Remoto", "Comunicación"],
@@ -364,7 +364,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 21 de abril de 2011 por Eric Yuan en San José, California.",
   },
   {
-    id: "snapchat", name: "Snapchat", type: "brand", foundingYear: 1944, country: "Estados Unidos",
+    id: "snapchat", name: "Snapchat", type: "brand", country: "Estados Unidos",
     emoji: "👻",
     description: "Snapchat popularizó el contenido efímero cambiando la forma en que las generaciones jóvenes se comunican.",
     keyThemes: ["Efímero", "Creatividad", "Juventud", "Diversión"],
@@ -372,7 +372,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Lanzada en septiembre de 2011 por Evan Spiegel, Bobby Murphy y Reggie Brown en Los Ángeles.",
   },
   {
-    id: "android", name: "Android", type: "brand", foundingYear: 1956, country: "Estados Unidos",
+    id: "android", name: "Android", type: "brand", country: "Estados Unidos",
     emoji: "🤖",
     description: "Android democratizó los smartphones con un sistema operativo abierto usado por miles de millones.",
     keyThemes: ["Apertura", "Innovación", "Accesibilidad", "Personalización"],
@@ -382,7 +382,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // GALLO
   {
-    id: "rolex", name: "Rolex", type: "brand", foundingYear: 1909, country: "Suiza",
+    id: "rolex", name: "Rolex", type: "brand", country: "Suiza",
     emoji: "⌚",
     description: "Rolex es el reloj de lujo más reconocido del mundo símbolo de precisión estatus y legado.",
     keyThemes: ["Precisión", "Estatus", "Legado", "Excelencia"],
@@ -390,7 +390,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1905 por Hans Wilsdorf y Alfred Davis en Londres, Reino Unido.",
   },
   {
-    id: "bmw", name: "BMW", type: "brand", foundingYear: 1921, country: "Alemania",
+    id: "bmw", name: "BMW", type: "brand", country: "Alemania",
     emoji: "🚗",
     description: "BMW es sinónimo de ingeniería de precisión alemana con vehículos que combinan lujo y rendimiento.",
     keyThemes: ["Ingeniería", "Precisión", "Lujo", "Rendimiento"],
@@ -398,7 +398,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 7 de marzo de 1916 como Bayerische Flugzeugwerke en Múnich, Alemania.",
   },
   {
-    id: "siemens", name: "Siemens", type: "brand", foundingYear: 1933, country: "Alemania",
+    id: "siemens", name: "Siemens", type: "brand", country: "Alemania",
     emoji: "⚙️",
     description: "Siemens es el gigante industrial alemán que impulsó la electrificación y automatización global.",
     keyThemes: ["Industria", "Tecnología", "Innovación", "Eficiencia"],
@@ -406,7 +406,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 1 de octubre de 1847 por Werner von Siemens en Berlín, Alemania.",
   },
   {
-    id: "fedex", name: "FedEx", type: "brand", foundingYear: 1945, country: "Estados Unidos",
+    id: "fedex", name: "FedEx", type: "brand", country: "Estados Unidos",
     emoji: "📬",
     description: "FedEx revolucionó la logística global con entregas exprés confiables y seguimiento en tiempo real.",
     keyThemes: ["Logística", "Confiabilidad", "Velocidad", "Precisión"],
@@ -414,7 +414,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1971 por Frederick W. Smith en Memphis, Tennessee.",
   },
   {
-    id: "american-express", name: "American Express", type: "brand", foundingYear: 1957, country: "Estados Unidos",
+    id: "american-express", name: "American Express", type: "brand", country: "Estados Unidos",
     emoji: "💳",
     description: "American Express es la tarjeta de crédito premium que ofrece servicios financieros exclusivos a nivel global.",
     keyThemes: ["Exclusividad", "Confianza", "Viajes", "Prestigio"],
@@ -424,7 +424,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // PERRO
   {
-    id: "patagonia-outdoor", name: "Patagonia", type: "brand", foundingYear: 1910, country: "Estados Unidos",
+    id: "patagonia-outdoor", name: "Patagonia", type: "brand", country: "Estados Unidos",
     emoji: "🏔️",
     description: "Patagonia lidera la responsabilidad ambiental corporativa mientras fabrica ropa outdoor de alta calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
@@ -432,7 +432,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1973 por Yvon Chouinard en Ventura, California.",
   },
   {
-    id: "north-face", name: "The North Face", type: "brand", foundingYear: 1922, country: "Estados Unidos",
+    id: "north-face", name: "The North Face", type: "brand", country: "Estados Unidos",
     emoji: "🧥",
     description: "The North Face equipa a exploradores y alpinistas con el mejor equipo técnico para condiciones extremas.",
     keyThemes: ["Exploración", "Resistencia", "Naturaleza", "Aventura"],
@@ -440,7 +440,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1966 por Douglas Tompkins y Kenneth Klopp en San Francisco, California.",
   },
   {
-    id: "volvo", name: "Volvo", type: "brand", foundingYear: 1934, country: "Suecia",
+    id: "volvo", name: "Volvo", type: "brand", country: "Suecia",
     emoji: "🚗",
     description: "Volvo es pionera mundial en seguridad automotriz con el objetivo de que nadie muera en un Volvo.",
     keyThemes: ["Seguridad", "Confiabilidad", "Familia", "Sostenibilidad"],
@@ -448,7 +448,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 14 de abril de 1927 por Assar Gabrielsson y Gustav Larson en Gotemburgo, Suecia.",
   },
   {
-    id: "john-deere", name: "John Deere", type: "brand", foundingYear: 1946, country: "Estados Unidos",
+    id: "john-deere", name: "John Deere", type: "brand", country: "Estados Unidos",
     emoji: "🚜",
     description: "John Deere es el fabricante de maquinaria agrícola más icónico que alimenta al mundo con innovación.",
     keyThemes: ["Trabajo", "Tierra", "Confiabilidad", "Tradición"],
@@ -456,7 +456,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1837 por John Deere en Grand Detour, Illinois.",
   },
   {
-    id: "rei", name: "REI", type: "brand", foundingYear: 1958, country: "Estados Unidos",
+    id: "rei", name: "REI", type: "brand", country: "Estados Unidos",
     emoji: "🏕️",
     description: "REI es la cooperativa de equipamiento outdoor más grande de Estados Unidos propiedad de sus miembros.",
     keyThemes: ["Comunidad", "Naturaleza", "Cooperación", "Aventura"],
@@ -466,7 +466,7 @@ export const BRANDS_60: SymbolicEntity[] = [
 
   // CERDO
   {
-    id: "coca-cola-beverage", name: "Coca-Cola", type: "brand", foundingYear: 1911, country: "Estados Unidos",
+    id: "coca-cola-beverage", name: "Coca-Cola", type: "brand", country: "Estados Unidos",
     emoji: "🥤",
     description: "Coca-Cola es la bebida más reconocida del planeta símbolo de felicidad y momentos compartidos.",
     keyThemes: ["Felicidad", "Tradición", "Celebración", "Compartir"],
@@ -474,7 +474,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Creada el 8 de mayo de 1886 por John Pemberton en Atlanta, Georgia.",
   },
   {
-    id: "mcdonalds", name: "McDonald's", type: "brand", foundingYear: 1923, country: "Estados Unidos",
+    id: "mcdonalds", name: "McDonald's", type: "brand", country: "Estados Unidos",
     emoji: "🍔",
     description: "McDonald's es la cadena de comida rápida más grande del mundo famosa por sus hamburguesas y su alcance global.",
     keyThemes: ["Placer", "Familia", "Accesibilidad", "Estandarización"],
@@ -482,7 +482,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 15 de abril de 1955 por Ray Kroc en Des Plaines, Illinois.",
   },
   {
-    id: "ben-and-jerrys", name: "Ben & Jerry's", type: "brand", foundingYear: 1935, country: "Estados Unidos",
+    id: "ben-and-jerrys", name: "Ben & Jerry's", type: "brand", country: "Estados Unidos",
     emoji: "🍦",
     description: "Ben & Jerry's es famoso por sus helados artesanales creativos y su activismo social comprometido.",
     keyThemes: ["Placer", "Creatividad", "Justicia", "Disfrute"],
@@ -490,7 +490,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada el 5 de mayo de 1978 por Ben Cohen y Jerry Greenfield en Burlington, Vermont.",
   },
   {
-    id: "hersheys", name: "Hershey's", type: "brand", foundingYear: 1947, country: "Estados Unidos",
+    id: "hersheys", name: "Hershey's", type: "brand", country: "Estados Unidos",
     emoji: "🍫",
     description: "Hershey's endulzó Estados Unidos con su chocolate con leche creando un imperio de confitería.",
     keyThemes: ["Placer", "Tradición", "Dulzura", "Nostalgia"],
@@ -498,7 +498,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     sourceNote: "Fundada en 1894 por Milton S. Hershey en Hershey, Pensilvania.",
   },
   {
-    id: "dominos", name: "Domino's", type: "brand", foundingYear: 1959, country: "Estados Unidos",
+    id: "dominos", name: "Domino's", type: "brand", country: "Estados Unidos",
     emoji: "🍕",
     description: "Domino's revolucionó la entrega de pizza a domicilio con un sistema de seguimiento y garantía de tiempo.",
     keyThemes: ["Placer", "Comodidad", "Velocidad", "Disfrute"],
@@ -510,7 +510,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // RATA
   {
     id: "zara", name: "Zara", type: "brand",
-    foundingYear: 1960, country: "España", emoji: "👗",
+    country: "España", emoji: "👗",
     category: "ropa",
     description: "La marca de moda más rápida del mundo, pionera del fast fashion desde España.",
     keyThemes: ["Moda", "Velocidad", "Tendencia", "Accesibilidad"],
@@ -519,7 +519,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "h-and-m", name: "H&M", type: "brand",
-    foundingYear: 1972, country: "Suecia", emoji: "👕",
+    country: "Suecia", emoji: "👕",
     category: "ropa",
     description: "Minorista de moda sueca que democratizó el estilo con ropa asequible y trendy.",
     keyThemes: ["Moda", "Accesibilidad", "Sostenibilidad", "Tendencia"],
@@ -528,7 +528,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "uniqlo", name: "Uniqlo", type: "brand",
-    foundingYear: 1984, country: "Japón", emoji: "🧥",
+    country: "Japón", emoji: "🧥",
     category: "ropa",
     description: "Marca japonesa de ropa casual que combina simplicidad y tecnología textil.",
     keyThemes: ["Simplicidad", "Tecnología", "Calidad", "Comodidad"],
@@ -537,7 +537,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "levi-strauss", name: "Levi's", type: "brand",
-    foundingYear: 1996, country: "Estados Unidos", emoji: "👖",
+    country: "Estados Unidos", emoji: "👖",
     category: "ropa",
     description: "Los inventores del jean azul, icono de la moda americana y la rebeldía juvenil.",
     keyThemes: ["Rebeldía", "Jeans", "América", "Durabilidad"],
@@ -546,7 +546,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "gucci", name: "Gucci", type: "brand",
-    foundingYear: 2008, country: "Italia", emoji: "👛",
+    country: "Italia", emoji: "👛",
     category: "ropa",
     description: "Casa de moda italiana de lujo, símbolo de estatus y artesanía florentina.",
     keyThemes: ["Lujo", "Artesanía", "Estatus", "Moda"],
@@ -556,7 +556,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // BUEY
   {
     id: "burberry", name: "Burberry", type: "brand",
-    foundingYear: 1961, country: "Reino Unido", emoji: "🧥",
+    country: "Reino Unido", emoji: "🧥",
     category: "ropa",
     description: "Marca británica icónica por sus gabardinas y el patrón check.",
     keyThemes: ["Tradición", "Elegancia", "Británico", "Calidad"],
@@ -565,7 +565,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "ralph-lauren", name: "Ralph Lauren", type: "brand",
-    foundingYear: 1973, country: "Estados Unidos", emoji: "🤠",
+    country: "Estados Unidos", emoji: "🤠",
     category: "ropa",
     description: "Marca que vende el sueño americano con un estilo preppy y sofisticado.",
     keyThemes: ["Preppy", "América", "Elegancia", "Estilo"],
@@ -574,7 +574,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "tommy-hilfiger", name: "Tommy Hilfiger", type: "brand",
-    foundingYear: 1985, country: "Estados Unidos", emoji: "🇺🇸",
+    country: "Estados Unidos", emoji: "🇺🇸",
     category: "ropa",
     description: "Marca de moda americana que fusiona estilo preppy con cultura pop.",
     keyThemes: ["Americano", "Preppy", "Pop", "Juventud"],
@@ -583,7 +583,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "mango", name: "Mango", type: "brand",
-    foundingYear: 1997, country: "España", emoji: "👚",
+    country: "España", emoji: "👚",
     category: "ropa",
     description: "Marca de moda barcelonesa conocida por su estilo urbano y femenino.",
     keyThemes: ["Urbano", "Femenino", "Diseño", "Accesibilidad"],
@@ -592,7 +592,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "superdry", name: "Superdry", type: "brand",
-    foundingYear: 2009, country: "Reino Unido", emoji: "🏷️",
+    country: "Reino Unido", emoji: "🏷️",
     category: "ropa",
     description: "Marca británica que mezcla estética japonesa con ropa informal.",
     keyThemes: ["Informal", "Japonés", "Británico", "Estilo"],
@@ -602,7 +602,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // TIGRE
   {
     id: "off-white", name: "Off-White", type: "brand",
-    foundingYear: 1962, country: "Estados Unidos", emoji: "⬛",
+    country: "Estados Unidos", emoji: "⬛",
     category: "ropa",
     description: "Marca de moda urbana de lujo que revolucionó el streetwear.",
     keyThemes: ["Streetwear", "Lujo", "Rebelde", "Arte"],
@@ -611,7 +611,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "supreme", name: "Supreme", type: "brand",
-    foundingYear: 1974, country: "Estados Unidos", emoji: "🔴",
+    country: "Estados Unidos", emoji: "🔴",
     category: "ropa",
     description: "Marca de streetwear neoyorquina que se convirtió en fenómeno cultural.",
     keyThemes: ["Streetwear", "Cultura", "Rebelde", "Exclusividad"],
@@ -620,7 +620,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "versace", name: "Versace", type: "brand",
-    foundingYear: 1986, country: "Italia", emoji: "💫",
+    country: "Italia", emoji: "💫",
     category: "ropa",
     description: "Casa de moda italiana conocida por sus estampados barrocos y audacia.",
     keyThemes: ["Audacia", "Barroco", "Lujo", "Pasión"],
@@ -629,7 +629,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "diesel", name: "Diesel", type: "brand",
-    foundingYear: 1998, country: "Italia", emoji: "🔥",
+    country: "Italia", emoji: "🔥",
     category: "ropa",
     description: "Marca italiana de denim que desafió las convenciones con marketing provocador.",
     keyThemes: ["Rebelde", "Denim", "Provocación", "Estilo"],
@@ -638,7 +638,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "carhartt", name: "Carhartt", type: "brand",
-    foundingYear: 2010, country: "Estados Unidos", emoji: "🧢",
+    country: "Estados Unidos", emoji: "🧢",
     category: "ropa",
     description: "Ropa de trabajo que se convirtió en icono del streetwear y la cultura obrera.",
     keyThemes: ["Trabajo", "Durabilidad", "Streetwear", "Autenticidad"],
@@ -648,7 +648,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // GATO
   {
     id: "prada", name: "Prada", type: "brand",
-    foundingYear: 1963, country: "Italia", emoji: "👜",
+    country: "Italia", emoji: "👜",
     category: "ropa",
     description: "Casa de moda milanesa de lujo, conocida por su elegancia minimalista y vanguardista.",
     keyThemes: ["Elegancia", "Minimalismo", "Lujo", "Vanguardia"],
@@ -657,7 +657,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "saint-laurent", name: "Saint Laurent", type: "brand",
-    foundingYear: 1975, country: "Francia", emoji: "💋",
+    country: "Francia", emoji: "💋",
     category: "ropa",
     description: "Casa de alta costura parisina que vistió a la mujer moderna.",
     keyThemes: ["Elegancia", "París", "Modernidad", "Vanguardia"],
@@ -666,7 +666,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "givenchy", name: "Givenchy", type: "brand",
-    foundingYear: 1987, country: "Francia", emoji: "✨",
+    country: "Francia", emoji: "✨",
     category: "ropa",
     description: "Marca de lujo francesa conocida por su elegancia aristocrática.",
     keyThemes: ["Elegancia", "Lujo", "París", "Arte"],
@@ -675,7 +675,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "valentino", name: "Valentino", type: "brand",
-    foundingYear: 1999, country: "Italia", emoji: "❤️",
+    country: "Italia", emoji: "❤️",
     category: "ropa",
     description: "Casa de moda italiana famosa por sus vestidos rojos y alta costura.",
     keyThemes: ["Elegancia", "Alta Costura", "Pasión", "Arte"],
@@ -684,7 +684,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "armani", name: "Armani", type: "brand",
-    foundingYear: 2011, country: "Italia", emoji: "🤵",
+    country: "Italia", emoji: "🤵",
     category: "ropa",
     description: "Marca italiana de moda que redefinió la elegancia masculina y femenina.",
     keyThemes: ["Elegancia", "Diseño", "Italiano", "Sofisticación"],
@@ -694,7 +694,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // DRAGÓN
   {
     id: "boss", name: "Hugo Boss", type: "brand",
-    foundingYear: 1964, country: "Alemania", emoji: "👔",
+    country: "Alemania", emoji: "👔",
     category: "ropa",
     description: "Marca alemana de moda masculina de alta gama, símbolo de poder y elegancia.",
     keyThemes: ["Poder", "Elegancia", "Masculino", "Calidad"],
@@ -703,7 +703,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "calvin-klein", name: "Calvin Klein", type: "brand",
-    foundingYear: 1976, country: "Estados Unidos", emoji: "🩲",
+    country: "Estados Unidos", emoji: "🩲",
     category: "ropa",
     description: "Marca americana que revolucionó la moda con su estética minimalista y provocativa.",
     keyThemes: ["Minimalismo", "Provocación", "Americano", "Estilo"],
@@ -712,7 +712,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "dolce-gabbana", name: "Dolce & Gabbana", type: "brand",
-    foundingYear: 1988, country: "Italia", emoji: "🍋",
+    country: "Italia", emoji: "🍋",
     category: "ropa",
     description: "Marca siciliana que celebra la pasión mediterránea y la artesanía italiana.",
     keyThemes: ["Pasión", "Sicilia", "Lujo", "Artesanía"],
@@ -721,7 +721,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "balenciaga", name: "Balenciaga", type: "brand",
-    foundingYear: 2000, country: "Francia", emoji: "👟",
+    country: "Francia", emoji: "👟",
     category: "ropa",
     description: "Casa de moda vasca que innova desde la alta costura hasta el streetwear.",
     keyThemes: ["Innovación", "Vanguardia", "Arte", "Excentricidad"],
@@ -730,7 +730,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "fendi", name: "Fendi", type: "brand",
-    foundingYear: 2012, country: "Italia", emoji: "🦊",
+    country: "Italia", emoji: "🦊",
     category: "ropa",
     description: "Marca romana de lujo famosa por sus pieles y artículos de cuero.",
     keyThemes: ["Lujo", "Artesanía", "Piel", "Elegancia"],
@@ -740,7 +740,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // SERPIENTE
   {
     id: "comme-garcons", name: "Comme des Garçons", type: "brand",
-    foundingYear: 1965, country: "Japón", emoji: "⚫",
+    country: "Japón", emoji: "⚫",
     category: "ropa",
     description: "Marca japonesa de vanguardia que desafía las convenciones de la moda.",
     keyThemes: ["Vanguardia", "Arte", "Rebelde", "Innovación"],
@@ -749,7 +749,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "issey-miyake", name: "Issey Miyake", type: "brand",
-    foundingYear: 1977, country: "Japón", emoji: "👗",
+    country: "Japón", emoji: "👗",
     category: "ropa",
     description: "Diseñador japonés conocido por sus plisados y tecnología textil.",
     keyThemes: ["Tecnología", "Arte", "Plisados", "Innovación"],
@@ -758,7 +758,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "yohji-yamamoto", name: "Yohji Yamamoto", type: "brand",
-    foundingYear: 1989, country: "Japón", emoji: "🖤",
+    country: "Japón", emoji: "🖤",
     category: "ropa",
     description: "Diseñador japonés de moda vanguardista conocido por sus siluetas asimétricas.",
     keyThemes: ["Vanguardia", "Asimetría", "Arte", "Rebelde"],
@@ -767,7 +767,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "rick-owens", name: "Rick Owens", type: "brand",
-    foundingYear: 2001, country: "Estados Unidos", emoji: "🦇",
+    country: "Estados Unidos", emoji: "🦇",
     category: "ropa",
     description: "Diseñador estadounidense de moda oscura y vanguardista.",
     keyThemes: ["Oscuro", "Vanguardia", "Arte", "Rebelde"],
@@ -776,7 +776,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "ann-demeulemeester", name: "Ann Demeulemeester", type: "brand",
-    foundingYear: 2013, country: "Bélgica", emoji: "🕊️",
+    country: "Bélgica", emoji: "🕊️",
     category: "ropa",
     description: "Diseñadora belga conocida por su estética poética y deconstructivista.",
     keyThemes: ["Poético", "Deconstructivista", "Arte", "Elegancia"],
@@ -786,7 +786,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // CABALLO
   {
     id: "reebok", name: "Reebok", type: "brand",
-    foundingYear: 1966, country: "Reino Unido", emoji: "👟",
+    country: "Reino Unido", emoji: "👟",
     category: "ropa",
     description: "Marca deportiva que revolucionó el fitness con zapatillas de aeróbic.",
     keyThemes: ["Deporte", "Fitness", "Velocidad", "Libertad"],
@@ -795,7 +795,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "converse", name: "Converse", type: "brand",
-    foundingYear: 1978, country: "Estados Unidos", emoji: "👟",
+    country: "Estados Unidos", emoji: "👟",
     category: "ropa",
     description: "Las zapatillas más icónicas del mundo, nacidas en una cancha de básquet.",
     keyThemes: ["Clásico", "Básquet", "Rebelde", "Cultura"],
@@ -804,7 +804,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "vans", name: "Vans", type: "brand",
-    foundingYear: 1990, country: "Estados Unidos", emoji: "🛹",
+    country: "Estados Unidos", emoji: "🛹",
     category: "ropa",
     description: "Zapatillas de skate que se convirtieron en símbolo de la cultura juvenil.",
     keyThemes: ["Skate", "Juventud", "Rebelde", "Aventura"],
@@ -813,7 +813,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "timberland", name: "Timberland", type: "brand",
-    foundingYear: 2002, country: "Estados Unidos", emoji: "🥾",
+    country: "Estados Unidos", emoji: "🥾",
     category: "ropa",
     description: "Botas robustas que pasaron de la obra al streetwear.",
     keyThemes: ["Aventura", "Durabilidad", "Naturaleza", "Estilo"],
@@ -822,7 +822,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "columbia", name: "Columbia", type: "brand",
-    foundingYear: 2014, country: "Estados Unidos", emoji: "🧥",
+    country: "Estados Unidos", emoji: "🧥",
     category: "ropa",
     description: "Ropa outdoor que equipa a aventureros desde hace décadas.",
     keyThemes: ["Aventura", "Naturaleza", "Exterior", "Durabilidad"],
@@ -832,7 +832,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // CABRA
   {
     id: "marni", name: "Marni", type: "brand",
-    foundingYear: 1967, country: "Italia", emoji: "🎨",
+    country: "Italia", emoji: "🎨",
     category: "ropa",
     description: "Marca italiana conocida por sus estampados artísticos y siluetas creativas.",
     keyThemes: ["Arte", "Creatividad", "Color", "Originalidad"],
@@ -841,7 +841,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "etro", name: "Etro", type: "brand",
-    foundingYear: 1979, country: "Italia", emoji: "🧣",
+    country: "Italia", emoji: "🧣",
     category: "ropa",
     description: "Marca italiana de lujo famosa por sus estampados paisley.",
     keyThemes: ["Arte", "Pañuelos", "Lujo", "Creatividad"],
@@ -850,7 +850,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "kenzo", name: "Kenzo", type: "brand",
-    foundingYear: 1991, country: "Francia", emoji: "🌺",
+    country: "Francia", emoji: "🌺",
     category: "ropa",
     description: "Marca francesa de origen japonés que combina colores y estampados salvajes.",
     keyThemes: ["Color", "Naturaleza", "Creatividad", "Diversidad"],
@@ -859,7 +859,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "marc-jacobs", name: "Marc Jacobs", type: "brand",
-    foundingYear: 2003, country: "Estados Unidos", emoji: "🌟",
+    country: "Estados Unidos", emoji: "🌟",
     category: "ropa",
     description: "Diseñador americano que fusiona arte, moda y cultura pop.",
     keyThemes: ["Arte", "Cultura", "Pop", "Creatividad"],
@@ -868,7 +868,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "vivienne-westwood", name: "Vivienne Westwood", type: "brand",
-    foundingYear: 2015, country: "Reino Unido", emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    country: "Reino Unido", emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
     category: "ropa",
     description: "Diseñadora punk que revolucionó la moda con su rebeldía creativa.",
     keyThemes: ["Punk", "Rebelde", "Creatividad", "Arte"],
@@ -878,7 +878,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // MONO
   {
     id: "jordan", name: "Air Jordan", type: "brand",
-    foundingYear: 1968, country: "Estados Unidos", emoji: "🏀",
+    country: "Estados Unidos", emoji: "🏀",
     category: "ropa",
     description: "La marca de zapatillas más icónica, nacida de la leyenda de Michael Jordan.",
     keyThemes: ["Básquet", "Innovación", "Cultura", "Estilo"],
@@ -887,7 +887,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "yeezy", name: "Yeezy", type: "brand",
-    foundingYear: 1980, country: "Estados Unidos", emoji: "👟",
+    country: "Estados Unidos", emoji: "👟",
     category: "ropa",
     description: "Marca de zapatillas y moda que revolucionó la industria con drops limitados.",
     keyThemes: ["Innovación", "Exclusividad", "Futuro", "Cultura"],
@@ -896,7 +896,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "stone-island", name: "Stone Island", type: "brand",
-    foundingYear: 1992, country: "Italia", emoji: "🧭",
+    country: "Italia", emoji: "🧭",
     category: "ropa",
     description: "Marca italiana de innovación textil con su icónico parche en el brazo.",
     keyThemes: ["Innovación", "Tecnología", "Diseño", "Estilo"],
@@ -905,7 +905,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "acne-studios", name: "Acne Studios", type: "brand",
-    foundingYear: 2004, country: "Suecia", emoji: "😎",
+    country: "Suecia", emoji: "😎",
     category: "ropa",
     description: "Marca sueca de moda contemporánea conocida por su estética minimalista.",
     keyThemes: ["Minimalismo", "Diseño", "Suecia", "Creatividad"],
@@ -914,7 +914,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "moncler", name: "Moncler", type: "brand",
-    foundingYear: 2016, country: "Francia", emoji: "⛷️",
+    country: "Francia", emoji: "⛷️",
     category: "ropa",
     description: "Marca francesa de plumíferos de lujo que viste a esquiadores y fashionistas.",
     keyThemes: ["Lujo", "Deporte", "Invierno", "Estilo"],
@@ -924,7 +924,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // GALLO
   {
     id: "brooks-brothers", name: "Brooks Brothers", type: "brand",
-    foundingYear: 1969, country: "Estados Unidos", emoji: "👔",
+    country: "Estados Unidos", emoji: "👔",
     category: "ropa",
     description: "La marca de ropa más antigua de Estados Unidos, sinónimo de elegancia clásica.",
     keyThemes: ["Tradición", "Elegancia", "Clásico", "Precisión"],
@@ -933,7 +933,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "hackett", name: "Hackett", type: "brand",
-    foundingYear: 1981, country: "Reino Unido", emoji: "🏏",
+    country: "Reino Unido", emoji: "🏏",
     category: "ropa",
     description: "Marca británica de ropa masculina clásica con espíritu deportivo.",
     keyThemes: ["Británico", "Clásico", "Deporte", "Elegancia"],
@@ -942,7 +942,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "fred-perry", name: "Fred Perry", type: "brand",
-    foundingYear: 1993, country: "Reino Unido", emoji: "🏓",
+    country: "Reino Unido", emoji: "🏓",
     category: "ropa",
     description: "Marca británica nacida del tenis, adoptada por subculturas juveniles.",
     keyThemes: ["Deporte", "Subcultura", "Británico", "Estilo"],
@@ -951,7 +951,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "benetton", name: "United Colors of Benetton", type: "brand",
-    foundingYear: 2005, country: "Italia", emoji: "🌈",
+    country: "Italia", emoji: "🌈",
     category: "ropa",
     description: "Marca italiana de colores que unió moda y activismo social.",
     keyThemes: ["Color", "Diversidad", "Activismo", "Estilo"],
@@ -960,7 +960,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "lacoste", name: "Lacoste", type: "brand",
-    foundingYear: 2017, country: "Francia", emoji: "🐊",
+    country: "Francia", emoji: "🐊",
     category: "ropa",
     description: "Marca francesa del cocodrilo, pionera de la ropa deportiva elegante.",
     keyThemes: ["Deporte", "Elegancia", "Clásico", "Francés"],
@@ -970,7 +970,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // PERRO
   {
     id: "patagonia-wear", name: "Patagonia", type: "brand",
-    foundingYear: 1970, country: "Estados Unidos", emoji: "🏔️",
+    country: "Estados Unidos", emoji: "🏔️",
     category: "ropa",
     description: "Ropa outdoor que lidera la responsabilidad ambiental y la calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
@@ -979,7 +979,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "north-face-wear", name: "The North Face", type: "brand",
-    foundingYear: 1982, country: "Estados Unidos", emoji: "🧥",
+    country: "Estados Unidos", emoji: "🧥",
     category: "ropa",
     description: "Equipo técnico para exploradores que desafían los límites.",
     keyThemes: ["Exploración", "Resistencia", "Naturaleza", "Aventura"],
@@ -988,7 +988,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "llbean", name: "L.L.Bean", type: "brand",
-    foundingYear: 1994, country: "Estados Unidos", emoji: "🎣",
+    country: "Estados Unidos", emoji: "🎣",
     category: "ropa",
     description: "Marca de ropa outdoor americana conocida por su calidad y garantía.",
     keyThemes: ["Naturaleza", "Calidad", "Tradición", "Confiabilidad"],
@@ -997,7 +997,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "eddie-bauer", name: "Eddie Bauer", type: "brand",
-    foundingYear: 2006, country: "Estados Unidos", emoji: "🏕️",
+    country: "Estados Unidos", emoji: "🏕️",
     category: "ropa",
     description: "Pionero americano de ropa outdoor y plumíferos.",
     keyThemes: ["Aventura", "Naturaleza", "Innovación", "Calidad"],
@@ -1006,7 +1006,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "helly-hansen", name: "Helly Hansen", type: "brand",
-    foundingYear: 2018, country: "Noruega", emoji: "⛵",
+    country: "Noruega", emoji: "⛵",
     category: "ropa",
     description: "Marca noruega de ropa técnica para condiciones extremas.",
     keyThemes: ["Naturaleza", "Técnica", "Resistencia", "Mar"],
@@ -1016,7 +1016,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   // CERDO
   {
     id: "superga", name: "Superga", type: "brand",
-    foundingYear: 1971, country: "Italia", emoji: "👟",
+    country: "Italia", emoji: "👟",
     category: "ropa",
     description: "Las clásicas zapatillas de lona italianas, cómodas y con estilo.",
     keyThemes: ["Comodidad", "Clásico", "Italiano", "Estilo"],
@@ -1025,7 +1025,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "kappa", name: "Kappa", type: "brand",
-    foundingYear: 1983, country: "Italia", emoji: "👕",
+    country: "Italia", emoji: "👕",
     category: "ropa",
     description: "Marca deportiva italiana con el icónico logo del hombre y mujer.",
     keyThemes: ["Deporte", "Italiano", "Clásico", "Comodidad"],
@@ -1034,7 +1034,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "fila", name: "Fila", type: "brand",
-    foundingYear: 1995, country: "Italia", emoji: "🎾",
+    country: "Italia", emoji: "🎾",
     category: "ropa",
     description: "Marca deportiva italiana que se convirtió en icono del estilo juvenil.",
     keyThemes: ["Deporte", "Italiano", "Estilo", "Tenis"],
@@ -1043,7 +1043,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "champion", name: "Champion", type: "brand",
-    foundingYear: 2007, country: "Estados Unidos", emoji: "🏆",
+    country: "Estados Unidos", emoji: "🏆",
     category: "ropa",
     description: "Marca americana de ropa deportiva, famosa por sus hoodies.",
     keyThemes: ["Deporte", "Comodidad", "Clásico", "Americano"],
@@ -1052,7 +1052,7 @@ export const BRANDS_60: SymbolicEntity[] = [
   },
   {
     id: "hanes", name: "Hanes", type: "brand",
-    foundingYear: 2019, country: "Estados Unidos", emoji: "🩳",
+    country: "Estados Unidos", emoji: "🩳",
     category: "ropa",
     description: "Marca americana de ropa interior y básicos, conocida por su comodidad.",
     keyThemes: ["Comodidad", "Básico", "Americano", "Calidad"],

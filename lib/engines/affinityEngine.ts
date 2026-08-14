@@ -13,7 +13,7 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent, SYMBOLIC_ENTITIES, focusEntitiesByCountry } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent } from "@/lib/data/entity-events";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { ANIMALS, SAN_HE_TRIADS, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { t } from "@/lib/i18n";
@@ -188,7 +188,7 @@ function resolveEntityAnimal(entity: SymbolicEntity): { animal: string; isApprox
   const primaryEvent = getPrimaryEvent(entity);
   return primaryEvent
     ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year)
-    : calculateAnimalFromDate(undefined, entity.foundingYear);
+    : { animal: "", isApproximate: true };
 }
 
 // ════════════════════════════════════════════════════
@@ -287,7 +287,7 @@ function buildFallbackResult(
     id: "fallback",
     type: "fecha-tradicional",
     label: "Sin evento definido",
-    year: entity.foundingYear,
+    year: getPrimaryEvent(entity)?.year ?? 0,
     description: reason,
     source: "Sistema",
     confidence: "baja",
@@ -300,7 +300,7 @@ function buildFallbackResult(
     otherEvents: entity.events,
     userYear,
     userAnimal,
-    entityYear: entity.foundingYear,
+    entityYear: getPrimaryEvent(entity)?.year ?? 0,
     entityAnimal: "",
     score: 0,
     tier: "distante",
@@ -413,26 +413,6 @@ export function getRepresentativeAffinitySet(
   const midStart = Math.max(0, Math.floor(remaining.length / 2) - 1);
   const mixed = remaining.slice(midStart, midStart + 2);
   return { positive, mixed, negative };
-}
-
-/** Get top affinity highlight per category for the profile summary */
-export type AffinityHighlightType = "brand" | "city" | "country";
-
-/**
- * userCountry acota "city" a las ciudades del propio país cuando hay
- * cobertura local (ver focusEntitiesByCountry) — el highlight de un
- * visitante de Chile debería poder ser una ciudad chilena, no siempre la
- * ciudad global con mejor puntaje.
- */
-export function getTopAffinityHighlights(profile: UserProfile, userCountry?: string): AffinityResult[] {
-  const highlightTypes: AffinityHighlightType[] = ["brand", "city", "country"];
-  return highlightTypes
-    .map((type) => {
-      const entities = focusEntitiesByCountry(SYMBOLIC_ENTITIES.filter((e) => e.type === type), type, userCountry);
-      if (entities.length === 0) return null;
-      return calculateAllAffinity(profile, entities)[0];
-    })
-    .filter((r): r is AffinityResult => r !== null);
 }
 
 /** Compare two entities side by side */

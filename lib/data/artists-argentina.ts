@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Figuras artísticas argentinas — fechas de nacimiento verificadas.
@@ -6,9 +6,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * famousPeople.ts no incluye artistas argentinos (solo Messi y Che Guevara,
  * ninguno con campo "artista"), de ahí que estas entradas se agreguen directamente.
  */
-export const ARTISTS_ARGENTINA: SymbolicEntity[] = [
+export const ARTISTS_ARGENTINA: AtlasEntityInput[] = [
   {
-    id: "julio-cortazar", name: "Julio Cortázar", type: "artist", foundingYear: 1914, country: "Argentina",
+    id: "julio-cortazar", name: "Julio Cortázar", type: "artist", country: "Argentina",
     emoji: "📚",
     description: "Julio Cortázar es una de las voces centrales de la literatura latinoamericana, referente del boom con \"Rayuela\".",
     keyThemes: ["Literatura", "Vanguardia", "Fantástico", "Latinoamérica"],
@@ -29,7 +29,7 @@ export const ARTISTS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "astor-piazzolla", name: "Astor Piazzolla", type: "artist", foundingYear: 1921, country: "Argentina",
+    id: "astor-piazzolla", name: "Astor Piazzolla", type: "artist", country: "Argentina",
     emoji: "🎵",
     description: "Astor Piazzolla revolucionó el tango con el \"tango nuevo\", fusionando tradición porteña y música de vanguardia.",
     keyThemes: ["Tango", "Innovación", "Fusión", "Bandoneón"],
@@ -50,7 +50,7 @@ export const ARTISTS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mercedes-sosa", name: "Mercedes Sosa", type: "artist", foundingYear: 1935, country: "Argentina",
+    id: "mercedes-sosa", name: "Mercedes Sosa", type: "artist", country: "Argentina",
     emoji: "🎤",
     description: "Mercedes Sosa, \"la Negra\", fue la voz mayor del folklore latinoamericano y referente del movimiento del Nuevo Cancionero.",
     keyThemes: ["Folklore", "Voz", "Latinoamérica", "Compromiso"],
@@ -71,7 +71,7 @@ export const ARTISTS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "jorge-luis-borges", name: "Jorge Luis Borges", type: "artist", foundingYear: 1899, country: "Argentina",
+    id: "jorge-luis-borges", name: "Jorge Luis Borges", type: "artist", country: "Argentina",
     emoji: "📖",
     description: "Jorge Luis Borges es uno de los escritores más influyentes del siglo XX, maestro del cuento fantástico y el ensayo.",
     keyThemes: ["Literatura", "Laberintos", "Erudición", "Universalidad"],
@@ -92,7 +92,7 @@ export const ARTISTS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "charly-garcia", name: "Charly García", type: "artist", foundingYear: 1951, country: "Argentina",
+    id: "charly-garcia", name: "Charly García", type: "artist", country: "Argentina",
     emoji: "🎸",
     description: "Charly García es una figura fundacional del rock en español, con una obra que atraviesa Sui Generis, Serú Girán y su carrera solista.",
     keyThemes: ["Rock nacional", "Innovación", "Provocación", "Poesía"],

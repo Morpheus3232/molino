@@ -12,7 +12,7 @@ import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { getSunSign } from "@/lib/engines/astrologyEngine";
 import { getChineseZodiac } from "@/lib/engines/chineseZodiacEngine";
 import { FAMOUS_BY_ANIMAL, type FamousPerson } from "./famousPeople";
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 import type { UserProfile } from "@/types/user";
 
 export type FamousField =
@@ -832,13 +832,12 @@ function findPerson(sel: Selection): FamousPerson {
   return person;
 }
 
-function personToEntity(person: FamousPerson): SymbolicEntity {
+function personToEntity(person: FamousPerson): AtlasEntityInput {
   const id = `person-${slugify(person.name)}`;
   return {
     id,
     name: person.name,
     type: "artist",
-    foundingYear: person.year,
     country: person.country,
     emoji: person.emoji,
     description: `${person.name} es una figura de referencia en ${person.field.toLowerCase()}, nacida en ${person.year}.`,
@@ -860,6 +859,6 @@ function personToEntity(person: FamousPerson): SymbolicEntity {
   };
 }
 
-export const FAMOUS_PEOPLE_ENTITIES: SymbolicEntity[] = SELECTED_PEOPLE.map((sel) =>
+export const FAMOUS_PEOPLE_ENTITIES: AtlasEntityInput[] = SELECTED_PEOPLE.map((sel) =>
   personToEntity(findPerson(sel))
 );

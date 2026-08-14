@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Clubes de fútbol peruanos — fechas de fundación verificadas
  * (fuentes: sitios oficiales de los clubes, Wikipedia, FPF, CONMEBOL).
  */
-export const TEAMS_PERU: SymbolicEntity[] = [
+export const TEAMS_PERU: AtlasEntityInput[] = [
   {
-    id: "universitario", name: "Universitario de Deportes", type: "team", foundingYear: 1924, country: "Perú",
+    id: "universitario", name: "Universitario de Deportes", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Universitario, la 'U', es el club más popular y laureado del Perú, con 27 títulos nacionales y dos finales de Copa Libertadores (1972).",
     keyThemes: ["Popular", "Campeón", "Historia", "Crema"],
@@ -26,7 +26,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "alianza-lima", name: "Alianza Lima", type: "team", foundingYear: 1901, country: "Perú",
+    id: "alianza-lima", name: "Alianza Lima", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Alianza Lima, el 'Íntimo', es el rival histórico de Universitario, con 25 títulos y una identidad de barrio obrero.",
     keyThemes: ["Íntimo", "Barrio", "Rivalidad", "Tradición"],
@@ -46,7 +46,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "sporting-cristal", name: "Sporting Cristal", type: "team", foundingYear: 1955, country: "Perú",
+    id: "sporting-cristal", name: "Sporting Cristal", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Sporting Cristal, la 'Máquina Celeste', nació de la fusión de clubes cerveceros y es tricampeón de Copa Libertadores (1962, 1997, 2003).",
     keyThemes: ["Celeste", "Cervecero", "Tricampeón", "Fusión"],
@@ -66,7 +66,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "cienciano", name: "Cienciano del Cusco", type: "team", foundingYear: 1901, country: "Perú",
+    id: "cienciano", name: "Cienciano del Cusco", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Cienciano, el 'Papá', es el único club peruano en ganar torneos internacionales oficiales: Copa Sudamericana 2003 y Recopa 2004.",
     keyThemes: ["Cusco", "Internacional", "Altura", "Historia"],
@@ -86,7 +86,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "melgar", name: "FBC Melgar", type: "team", foundingYear: 1915, country: "Perú",
+    id: "melgar", name: "FBC Melgar", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Melgar, el 'Dominó', es el gran club de Arequipa, bicampeón nacional (1981, 2015) y semifinalista de Libertadores 1982.",
     keyThemes: ["Arequipa", "Dominó", "Sur", "Altura"],
@@ -106,7 +106,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "sport-boys", name: "Sport Boys", type: "team", foundingYear: 1927, country: "Perú",
+    id: "sport-boys", name: "Sport Boys", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Sport Boys, la 'Misilera', es el club del Callao, primer campeón profesional peruano (1951) y cuna de grandes figuras.",
     keyThemes: ["Callao", "Misilera", "Puerto", "Historia"],
@@ -126,7 +126,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "deportivo-municipal", name: "Deportivo Municipal", type: "team", foundingYear: 1935, country: "Perú",
+    id: "deportivo-municipal", name: "Deportivo Municipal", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Deportivo Municipal, la 'Academia', es club histórico de Lima, tetracampeón en los años 40 y cantera de la selección mundialista 1970.",
     keyThemes: ["Academia", "Cantera", "Historia", "Lima"],
@@ -146,7 +146,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "atletico-grau", name: "Atlético Grau", type: "team", foundingYear: 1919, country: "Perú",
+    id: "atletico-grau", name: "Atlético Grau", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Atlético Grau, el 'Patrimonio de Piura', es el club más representativo del norte peruano, campeón de Copa Bicentenario 2021.",
     keyThemes: ["Piura", "Norte", "Patrimonio", "Copa"],
@@ -166,7 +166,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "carlos-mannucci", name: "Carlos A. Mannucci", type: "team", foundingYear: 1959, country: "Perú",
+    id: "carlos-mannucci", name: "Carlos A. Mannucci", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Mannucci, la 'Tricolor', es el club de Trujillo, con fuerte identidad liberteña y participación histórica en torneos internacionales.",
     keyThemes: ["Trujillo", "Libertad", "Tricolor", "Norte"],
@@ -186,7 +186,7 @@ export const TEAMS_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "juan-aurich", name: "Juan Aurich", type: "team", foundingYear: 1922, country: "Perú",
+    id: "juan-aurich", name: "Juan Aurich", type: "team", country: "Perú",
     emoji: "⚽",
     description: "Juan Aurich, el 'Ciclón del Norte', es club de Chiclayo, campeón nacional 2011 y símbolo de la región Lambayeque.",
     keyThemes: ["Chiclayo", "Ciclón", "Lambayeque", "Campeón"],
