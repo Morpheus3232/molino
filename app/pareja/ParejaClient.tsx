@@ -16,6 +16,9 @@ import {
   ArrowRight,
   ShieldCheck,
   Zap,
+  Share2,
+  Copy,
+  Check,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -64,6 +67,7 @@ export default function ParejaClient() {
   const [dateB, setDateB] = useState(urlDateB);
   const [nameA, setNameA] = useState(urlNameA);
   const [nameB, setNameB] = useState(urlNameB);
+  const [copiedInvite, setCopiedInvite] = useState(false);
   const [isComparing, setIsComparing] = useState(
     Boolean(urlDateA && urlDateB && isValidDate(urlDateA) && isValidDate(urlDateB))
   );
@@ -266,18 +270,47 @@ export default function ParejaClient() {
                   </div>
                 </div>
 
-                {/* Submit button */}
-                <div className="text-center pt-2">
+                {/* Submit & P2P Invite Buttons */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
                   <Button
                     type="submit"
                     variant="accent"
                     size="lg"
                     disabled={!isValidDate(dateA) || !isValidDate(dateB)}
-                    className="w-full sm:w-auto min-w-[280px] text-base py-4"
+                    className="w-full sm:w-auto min-w-[240px] text-base py-4"
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Comparar mapas
                   </Button>
+
+                  {isValidDate(dateA) && !isValidDate(dateB) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const origin = typeof window !== "undefined" ? window.location.origin : "https://molino.app";
+                        const inviteUrl = `${origin}/pareja?a=${dateA}${nameA ? `&na=${encodeURIComponent(nameA)}` : ""}`;
+                        navigator.clipboard.writeText(
+                          `¡Hola! Creé mi mapa en Molino y quiero ver nuestra compatibilidad. Entrá acá y completá tu fecha: ${inviteUrl}`
+                        );
+                        setCopiedInvite(true);
+                        setTimeout(() => setCopiedInvite(false), 2500);
+                      }}
+                      className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-accent/10 hover:bg-accent/20 border border-accent/25 text-accent font-mono text-xs font-semibold inline-flex items-center justify-center gap-2 transition-colors"
+                      title="Copiar invitación P2P para tu pareja"
+                    >
+                      {copiedInvite ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-400" />
+                          <span className="text-emerald-400">¡Invitación copiada!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Share2 className="w-4 h-4" />
+                          <span>Invitar a tu pareja a completar</span>
+                        </>
+                      )}
+                    </button>
+                  )}
                 </div>
 
                 {/* Privacy & Methodology Footer note */}
