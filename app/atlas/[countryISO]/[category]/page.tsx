@@ -5,6 +5,7 @@ import { getAllCountryISOs, getCategoriesByCountry, getCountryName, getEntitiesB
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import EntityCard from "@/components/atlas/EntityCard";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
+import AtlasSharePanel from "@/components/atlas/AtlasSharePanel";
 
 const VALID_CATEGORIES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
 
@@ -27,10 +28,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = getCountryName(countryISO.toUpperCase());
   const catLabel = categoryLabel(category);
   if (!name || !catLabel) return { title: "No encontrado | Molino" };
+  const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}/${category}`);
   return {
     title: `${catLabel} de ${name} — Atlas | Molino`,
     description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
-    alternates: { canonical: siteUrl(`/atlas/${countryISO.toUpperCase()}/${category}`) },
+    alternates: { canonical },
+    openGraph: {
+      title: `${catLabel} de ${name} — Atlas | Molino`,
+      description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
+      type: "website",
+      url: canonical,
+    },
   };
 }
 
@@ -82,6 +90,8 @@ export default async function CategoryPage({ params }: Props) {
             <EntityCard key={entity.id} entity={entity} countryISO={iso} category={category} />
           ))}
         </section>
+
+        <AtlasSharePanel entities={entities} category={category} />
       </div>
     </main>
   );
