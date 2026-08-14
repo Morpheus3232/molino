@@ -565,9 +565,19 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                 <span className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
                   ${chargePriceUsd} <span className="text-lg font-medium tracking-wider">{t.premium.priceSuffix}</span>
                 </span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
+                  Pago Único · De por vida
+                </span>
               </div>
 
-              <p className="text-sm text-muted mb-8">{t.premium.priceNote}</p>
+              <div className="p-3.5 rounded-2xl bg-accent/5 border border-accent/20 mb-6 space-y-1.5 text-xs">
+                <div className="flex items-center gap-1.5 font-bold text-accent">
+                  <span>☕ Menos de un café de especialidad</span>
+                </div>
+                <p className="text-muted leading-relaxed">
+                  Acceso permanente a tu síntesis completa, informe de 25 páginas en PDF y proyecciones 2026–2030 sin suscripciones mensuales. Garantía de devolución de 7 días.
+                </p>
+              </div>
 
               {flags.mercadoPagoEnabled && (
                 <div className="flex flex-col sm:flex-row gap-3">
