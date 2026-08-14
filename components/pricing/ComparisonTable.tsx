@@ -119,6 +119,41 @@ export default function ComparisonTable() {
             </tbody>
           </table>
         </motion.div>
+
+        {/* Value Anchor Box */}
+        <motion.div {...fadeUp} className="mt-12 rounded-3xl border border-accent/20 bg-card/60 p-6 sm:p-8">
+          <div className="text-center sm:text-left mb-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
+              Ancla de Valor & Transparencia
+            </span>
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+              ¿Cómo se compara con otras opciones?
+            </h3>
+            <p className="text-xs text-muted mt-1 leading-relaxed">
+              Diseñamos Molino para que el autoconocimiento riguroso no dependa de suscripciones mensuales recurrentes:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+              <span className="text-[11px] font-mono text-muted block">Consulta Personal Tradicional</span>
+              <span className="text-sm font-bold text-foreground line-through opacity-60">$50 – $120 USD</span>
+              <p className="text-xs text-muted leading-relaxed">Sesión de 1 hora, sin reporte interactivo ni actualizaciones permanentes.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+              <span className="text-[11px] font-mono text-muted block">Apps con Suscripción Mensual</span>
+              <span className="text-sm font-bold text-foreground line-through opacity-60">$10 – $15 / mes</span>
+              <p className="text-xs text-muted leading-relaxed">Pagos recurrentes que suman $120 al año y recopilan datos para publicidad.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1">
+              <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
+              <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
+              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio permanente, informe de 25 páginas y 0 tracking.</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

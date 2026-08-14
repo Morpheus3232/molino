@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, FileText, Calendar, Users, ShieldCheck, ArrowRight, Check } from "lucide-react";
+import { Sparkles, FileText, Calendar, Users, ShieldCheck, ArrowRight, Check, Coffee } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
 
@@ -49,12 +49,12 @@ export default function PremiumTeaser() {
           </motion.h2>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong> con garantía de satisfacción de 7 días.
+            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong> (menos de lo que cuesta un café de especialidad) con garantía total de 7 días.
           </p>
         </div>
 
         {/* 3 Perks Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {PREMIUM_PERKS.map((perk, i) => {
             const Icon = perk.icon;
             return (
@@ -78,6 +78,41 @@ export default function PremiumTeaser() {
               </motion.div>
             );
           })}
+        </div>
+
+        {/* Value Anchor Comparison Box */}
+        <div className="max-w-4xl mx-auto mb-10 rounded-3xl border border-accent/20 bg-card/60 p-6 sm:p-8">
+          <div className="text-center sm:text-left mb-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
+              Comparativa de Inversión
+            </span>
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+              ¿Por qué $8 USD en pago único?
+            </h3>
+            <p className="text-xs text-muted mt-1">
+              Diseñamos Molino para que el autoconocimiento riguroso no sea un lujo mensual.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+              <span className="text-[11px] font-mono text-muted block">Consulta Tradicional</span>
+              <span className="text-sm font-bold text-foreground line-through opacity-60">$50 – $120 USD</span>
+              <p className="text-xs text-muted leading-relaxed">Sesión única de 1 hora, sin reporte interactivo ni actualizaciones.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+              <span className="text-[11px] font-mono text-muted block">Apps con Suscripción</span>
+              <span className="text-sm font-bold text-foreground line-through opacity-60">$10 – $15 / mes</span>
+              <p className="text-xs text-muted leading-relaxed">Pagos recurrentes forzados ($120/año) y notificaciones de retención.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1 relative">
+              <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
+              <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
+              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio, informe de 25 páginas y 0 tracking.</p>
+            </div>
+          </div>
         </div>
 
         {/* CTA Banner */}
