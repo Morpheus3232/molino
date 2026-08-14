@@ -8,6 +8,7 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import CoupleComparison from "@/components/couple/CoupleComparison";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
+import { buildInviteMessage } from "@/lib/viral/invite";
 import {
   Heart,
   Sparkles,
@@ -287,11 +288,8 @@ export default function ParejaClient() {
                     <button
                       type="button"
                       onClick={() => {
-                        const origin = typeof window !== "undefined" ? window.location.origin : "https://molino.app";
-                        const inviteUrl = `${origin}/pareja?a=${dateA}${nameA ? `&na=${encodeURIComponent(nameA)}` : ""}`;
-                        navigator.clipboard.writeText(
-                          `¡Hola! Creé mi mapa en Molino y quiero ver nuestra compatibilidad. Entrá acá y completá tu fecha: ${inviteUrl}`
-                        );
+                        const inviteMsg = buildInviteMessage({ birthDate: dateA, name: nameA.trim() || undefined });
+                        navigator.clipboard.writeText(inviteMsg);
                         setCopiedInvite(true);
                         setTimeout(() => setCopiedInvite(false), 2500);
                       }}
