@@ -6,7 +6,33 @@
  * decodes name+birthDate from a shared link can check hasPremiumAccess(),
  * but cannot produce the token that lives only in the paying device's
  * localStorage.
+ *
+ * This module is safe to import from both client and server. The client
+ * helpers (`savePremiumTokenClient`, `getPremiumTokenClient`,
+ * `clearPremiumTokenClient`) are browser-only; `isPremium` is strictly
+ * server-only (it reads KV) and guards against being called from the client,
+ * so the `@vercel/kv` dependency never leaks into the client bundle.
  */
+
+// ════════════════════════════════════════════════════════════════════════
+// SERVER-SIDE — premium entitlement backed by @vercel/kv (no PII)
+// ════════════════════════════════════════════════════════════════════════
+
+/**
+ * Server-side premium check backed by @vercel/kv. Stores only the profile
+ * hash + device token — never PII. Returns true when the profile has an
+ * active grant (and, when a token is supplied, that the device-bound token
+ * matches). Guarded so calling it from a client component is a no-op instead
+ * of a build/runtime failure.
+ */
+export async function isPremium(profileHash: string, token?: string): Promise<boolean> {
+  if (typeof window !== "undefined") return false;
+  const { hasPremiumAccess, verifyPremiumToken } = await import("@/lib/kv");
+  const hasAccess = await hasPremiumAccess(profileHash);
+  if (!hasAccess) return false;
+  if (!token) return true;
+  return verifyPremiumToken(profileHash, token);
+}
 
 const TOKEN_KEY = "molino.premium-token";
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess, grantPremiumAccess, savePremiumToken, getProfileHashByPaymentId, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
+import { paymentIdentitySchema, birthDateSchema, paypalOrderIdSchema } from '@/lib/validation/payments';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -9,8 +10,14 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { paymentId, name, birthDate, salt } = await req.json();
+    const body = await req.json();
 
+    const identity = paymentIdentitySchema.safeParse(body);
+    if (!identity.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
+    const paymentId = typeof body?.paymentId === 'string' ? body.paymentId.trim() : '';
     if (!paymentId) {
       return NextResponse.json(
         { error: 'paymentId is required' },
@@ -18,6 +25,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const { name, birthDate, salt } = identity.data;
     const calculatedHash = name && birthDate ? hashProfile(name, birthDate, salt) : undefined;
 
     // Fast path: the paymentId is already linked to this profile in KV.
