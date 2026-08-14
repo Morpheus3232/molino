@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Universidades peruanas — fechas de fundación/reconocimiento verificadas
  * (fuentes: sitios institucionales, Wikipedia, SUNEDU, boletines oficiales).
  */
-export const UNIVERSITIES_PERU: SymbolicEntity[] = [
+export const UNIVERSITIES_PERU: AtlasEntityInput[] = [
   {
-    id: "unmsm", name: "Universidad Nacional Mayor de San Marcos", type: "university", foundingYear: 1551, country: "Perú",
+    id: "unmsm", name: "Universidad Nacional Mayor de San Marcos", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UNMSM, 'Decana de América', es la universidad más antigua del Perú y de América, fundada por Real Cédula de Carlos V.",
     keyThemes: ["Decana", "Antigüedad", "Historia", "Referente"],
@@ -26,7 +26,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "pucp", name: "Pontificia Universidad Católica del Perú", type: "university", foundingYear: 1917, country: "Perú",
+    id: "pucp", name: "Pontificia Universidad Católica del Perú", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La PUCP es la universidad privada más prestigiosa del Perú, líder en investigación, derecho, ingeniería y ciencias sociales.",
     keyThemes: ["Excelencia", "Investigación", "Católica", "Prestigio"],
@@ -46,7 +46,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unfv", name: "Universidad Nacional Federico Villarreal", type: "university", foundingYear: 1963, country: "Perú",
+    id: "unfv", name: "Universidad Nacional Federico Villarreal", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UNFV es una de las universidades públicas más grandes del Perú, con fuerte presencia en ciencias de la salud e ingeniería.",
     keyThemes: ["Pública", "Salud", "Ingeniería", "Masiva"],
@@ -66,7 +66,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unap", name: "Universidad Nacional de la Amazonía Peruana", type: "university", foundingYear: 1961, country: "Perú",
+    id: "unap", name: "Universidad Nacional de la Amazonía Peruana", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UNAP, en Iquitos, es la universidad de la Amazonía peruana, referente en biodiversidad, medicina tropical y ciencias forestales.",
     keyThemes: ["Amazonía", "Biodiversidad", "Tropical", "Iquitos"],
@@ -86,7 +86,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unsa", name: "Universidad Nacional de San Agustín", type: "university", foundingYear: 1828, country: "Perú",
+    id: "unsa", name: "Universidad Nacional de San Agustín", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UNSA, en Arequipa, es una de las universidades públicas más antiguas del sur peruano, destacada en ingeniería y arquitectura.",
     keyThemes: ["Arequipa", "Sur", "Ingeniería", "Arquitectura"],
@@ -106,7 +106,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "untrujillo", name: "Universidad Nacional de Trujillo", type: "university", foundingYear: 1824, country: "Perú",
+    id: "untrujillo", name: "Universidad Nacional de Trujillo", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UNT, en Trujillo, es la primera universidad fundada en la República del Perú, cuna de la independencia intelectual del norte.",
     keyThemes: ["Trujillo", "Norte", "República", "Libertad"],
@@ -126,7 +126,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "upch", name: "Universidad Peruana Cayetano Heredia", type: "university", foundingYear: 1961, country: "Perú",
+    id: "upch", name: "Universidad Peruana Cayetano Heredia", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UPCH es la universidad líder en ciencias biomédicas y salud pública del Perú, referente en investigación médica latinoamericana.",
     keyThemes: ["Biomédicas", "Salud", "Investigación", "Médica"],
@@ -146,7 +146,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "up", name: "Universidad del Pacífico", type: "university", foundingYear: 1962, country: "Perú",
+    id: "up", name: "Universidad del Pacífico", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La Universidad del Pacífico es la universidad privada líder en economía, negocios y derecho, con acreditación internacional AACSB/AMBA/EQUIS.",
     keyThemes: ["Economía", "Negocios", "Triple corona", "Investigación"],
@@ -166,7 +166,7 @@ export const UNIVERSITIES_PERU: SymbolicEntity[] = [
     ],
   },
   {
-    id: "utec", name: "Universidad de Ingeniería y Tecnología", type: "university", foundingYear: 2011, country: "Perú",
+    id: "utec", name: "Universidad de Ingeniería y Tecnología", type: "university", country: "Perú",
     emoji: "🎓",
     description: "La UTEC es una universidad privada innovadora enfocada en ingeniería, tecnología y emprendimiento, con campus vanguardista en Barranco.",
     keyThemes: ["Ingeniería", "Tecnología", "Innovación", "Emprendimiento"],

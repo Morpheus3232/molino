@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Clubes de fútbol argentinos — fechas de fundación verificadas
@@ -6,9 +6,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * Complementa las 3 entidades "team" ya existentes en symbolic-entities.ts
  * (Boca Juniors, FC Barcelona, Real Madrid).
  */
-export const TEAMS_ARGENTINA: SymbolicEntity[] = [
+export const TEAMS_ARGENTINA: AtlasEntityInput[] = [
   {
-    id: "river-plate", name: "River Plate", type: "team", foundingYear: 1901, country: "Argentina",
+    id: "river-plate", name: "River Plate", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "River Plate es uno de los dos clubes más populares de Argentina. Su historia está marcada por el éxito continuo y el apodo \"Millonario\".",
     keyThemes: ["Ambición", "Elegancia", "Constancia", "Grandeza"],
@@ -28,7 +28,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "racing-club", name: "Racing Club", type: "team", foundingYear: 1903, country: "Argentina",
+    id: "racing-club", name: "Racing Club", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Racing Club, \"la Academia\", fue el primer campeón argentino en ganar cinco títulos consecutivos y el primer club sudamericano en salir campeón del mundo.",
     keyThemes: ["Academia", "Pionero", "Orgullo", "Historia"],
@@ -48,7 +48,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "independiente", name: "Independiente", type: "team", foundingYear: 1905, country: "Argentina",
+    id: "independiente", name: "Independiente", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Independiente es el club más laureado en copas internacionales de América. Su identidad está ligada a la Copa Libertadores.",
     keyThemes: ["Internacional", "Orgullo", "Tradición", "Prestigio"],
@@ -68,7 +68,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "san-lorenzo", name: "San Lorenzo", type: "team", foundingYear: 1908, country: "Argentina",
+    id: "san-lorenzo", name: "San Lorenzo", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "San Lorenzo de Almagro nació de la mano del padre Lorenzo Massa, que buscaba dar a los chicos del barrio un lugar seguro para jugar.",
     keyThemes: ["Comunidad", "Fe", "Barrio", "Pasión"],
@@ -88,7 +88,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "velez-sarsfield", name: "Vélez Sarsfield", type: "team", foundingYear: 1910, country: "Argentina",
+    id: "velez-sarsfield", name: "Vélez Sarsfield", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Vélez Sarsfield se destaca por su cantera de jugadores y su gestión deportiva sostenida en el tiempo.",
     keyThemes: ["Disciplina", "Cantera", "Gestión", "Constancia"],
@@ -108,7 +108,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "estudiantes-lp", name: "Estudiantes de La Plata", type: "team", foundingYear: 1905, country: "Argentina",
+    id: "estudiantes-lp", name: "Estudiantes de La Plata", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Estudiantes de La Plata es sinónimo de inteligencia táctica. Campeón intercontinental en 1968 ante el Manchester United.",
     keyThemes: ["Inteligencia", "Estrategia", "Estudio", "Rebeldía"],
@@ -128,7 +128,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "gimnasia-lp", name: "Gimnasia y Esgrima La Plata", type: "team", foundingYear: 1887, country: "Argentina",
+    id: "gimnasia-lp", name: "Gimnasia y Esgrima La Plata", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Gimnasia y Esgrima La Plata, \"el Lobo\", es uno de los clubes más antiguos de Argentina, con una identidad forjada en la resistencia.",
     keyThemes: ["Antigüedad", "Resistencia", "Identidad", "Lealtad"],
@@ -148,7 +148,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "rosario-central", name: "Rosario Central", type: "team", foundingYear: 1889, country: "Argentina",
+    id: "rosario-central", name: "Rosario Central", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Rosario Central es el club canalla de Rosario, protagonista de uno de los clásicos más intensos del fútbol argentino.",
     keyThemes: ["Rivalidad", "Identidad", "Pasión", "Ciudad"],
@@ -168,7 +168,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "newells", name: "Newell's Old Boys", type: "team", foundingYear: 1903, country: "Argentina",
+    id: "newells", name: "Newell's Old Boys", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Newell's Old Boys, \"la Lepra\", es cuna de figuras históricas del fútbol argentino y protagonista del clásico rosarino.",
     keyThemes: ["Cantera", "Formación", "Ciudad", "Legado"],
@@ -188,7 +188,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "lanus", name: "Lanús", type: "team", foundingYear: 1915, country: "Argentina",
+    id: "lanus", name: "Lanús", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Club Atlético Lanús es el \"Granate\" del sur del conurbano bonaerense, campeón de la Copa Sudamericana en 2013.",
     keyThemes: ["Trabajo", "Constancia", "Comunidad", "Superación"],
@@ -208,7 +208,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "argentinos-juniors", name: "Argentinos Juniors", type: "team", foundingYear: 1904, country: "Argentina",
+    id: "argentinos-juniors", name: "Argentinos Juniors", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Argentinos Juniors es reconocido por su formación de talentos, entre ellos Diego Maradona.",
     keyThemes: ["Formación", "Talento", "Cantera", "Descubrimiento"],
@@ -228,7 +228,7 @@ export const TEAMS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "huracan", name: "Huracán", type: "team", foundingYear: 1908, country: "Argentina",
+    id: "huracan", name: "Huracán", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Huracán, \"el Globo\", es un clásico del barrio de Parque Patricios, con una hinchada reconocida por su fidelidad.",
     keyThemes: ["Fidelidad", "Barrio", "Identidad", "Pasión"],

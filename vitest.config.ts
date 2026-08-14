@@ -7,6 +7,9 @@ const config = {
   resolve: {
     alias: {
       '@': __dirname,
+      // `server-only` throws outside a React Server runtime; in vitest we want
+      // to import the data/engine modules directly, so point it at a no-op.
+      'server-only': path.join(__dirname, 'test/server-only-stub.ts'),
     },
   },
   test: {

@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Ciudades argentinas — fechas de fundación verificadas.
@@ -7,9 +7,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * documentada (se formó de manera espontánea desde fines del siglo XVII), por lo
  * que no cumple el criterio de fecha verificable del proyecto.
  */
-export const CITIES_ARGENTINA: SymbolicEntity[] = [
+export const CITIES_ARGENTINA: AtlasEntityInput[] = [
   {
-    id: "cordoba-ar", name: "Córdoba", type: "city", foundingYear: 1573, country: "Argentina",
+    id: "cordoba-ar", name: "Córdoba", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Córdoba es la segunda ciudad más grande de Argentina, cuna de la universidad más antigua del país y de una fuerte tradición estudiantil.",
     keyThemes: ["Tradición", "Estudio", "Cultura", "Sierras"],
@@ -29,7 +29,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mendoza-ar", name: "Mendoza", type: "city", foundingYear: 1561, country: "Argentina",
+    id: "mendoza-ar", name: "Mendoza", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Mendoza es la capital argentina del vino, al pie de la Cordillera de los Andes.",
     keyThemes: ["Vino", "Montaña", "Tradición", "Paisaje"],
@@ -49,7 +49,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "la-plata-ar", name: "La Plata", type: "city", foundingYear: 1882, country: "Argentina",
+    id: "la-plata-ar", name: "La Plata", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "La Plata es una ciudad planificada, capital de la provincia de Buenos Aires, conocida por su trazado geométrico y su vida universitaria.",
     keyThemes: ["Planificación", "Universidad", "Orden", "Juventud"],
@@ -69,7 +69,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mar-del-plata", name: "Mar del Plata", type: "city", foundingYear: 1874, country: "Argentina",
+    id: "mar-del-plata", name: "Mar del Plata", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Mar del Plata es el balneario más popular de Argentina, punto de encuentro veraniego para millones de personas.",
     keyThemes: ["Verano", "Mar", "Encuentro", "Descanso"],
@@ -89,7 +89,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "tucuman-ar", name: "San Miguel de Tucumán", type: "city", foundingYear: 1565, country: "Argentina",
+    id: "tucuman-ar", name: "San Miguel de Tucumán", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Tucumán es cuna de la independencia argentina y corazón del noroeste del país.",
     keyThemes: ["Independencia", "Historia", "Noroeste", "Identidad"],
@@ -109,7 +109,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "salta-ar", name: "Salta", type: "city", foundingYear: 1582, country: "Argentina",
+    id: "salta-ar", name: "Salta", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Salta \"la linda\" conserva una fuerte identidad colonial en el noroeste argentino.",
     keyThemes: ["Colonial", "Tradición", "Noroeste", "Identidad"],
@@ -129,7 +129,7 @@ export const CITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "bariloche", name: "San Carlos de Bariloche", type: "city", foundingYear: 1902, country: "Argentina",
+    id: "bariloche", name: "San Carlos de Bariloche", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Bariloche es el destino patagónico por excelencia, entre lagos, montañas y chocolate.",
     keyThemes: ["Montaña", "Patagonia", "Naturaleza", "Aventura"],

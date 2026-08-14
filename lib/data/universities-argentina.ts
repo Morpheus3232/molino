@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Universidades argentinas — fechas de fundación/reconocimiento verificadas
@@ -6,9 +6,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * Complementa las 3 entidades "university" ya existentes en symbolic-entities.ts
  * (UBA, MIT, Oxford).
  */
-export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
+export const UNIVERSITIES_ARGENTINA: AtlasEntityInput[] = [
   {
-    id: "unc", name: "Universidad Nacional de Córdoba", type: "university", foundingYear: 1613, country: "Argentina",
+    id: "unc", name: "Universidad Nacional de Córdoba", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UNC es la universidad más antigua de Argentina y una de las más antiguas de América, fundada por la Compañía de Jesús.",
     keyThemes: ["Tradición", "Rigor", "Legado", "Conocimiento"],
@@ -28,7 +28,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unlp", name: "Universidad Nacional de La Plata", type: "university", foundingYear: 1905, country: "Argentina",
+    id: "unlp", name: "Universidad Nacional de La Plata", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UNLP es una de las universidades públicas más grandes de Argentina, reconocida por su tradición en ciencia e ingeniería.",
     keyThemes: ["Ciencia", "Excelencia", "Compromiso", "Innovación"],
@@ -48,7 +48,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unr", name: "Universidad Nacional de Rosario", type: "university", foundingYear: 1968, country: "Argentina",
+    id: "unr", name: "Universidad Nacional de Rosario", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UNR es una de las universidades públicas más importantes del centro de Argentina, con fuerte presencia en salud e ingeniería.",
     keyThemes: ["Investigación", "Región", "Formación", "Compromiso"],
@@ -68,7 +68,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "utn", name: "Universidad Tecnológica Nacional", type: "university", foundingYear: 1959, country: "Argentina",
+    id: "utn", name: "Universidad Tecnológica Nacional", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UTN es la universidad pública con mayor despliegue territorial de Argentina, especializada en ingeniería y tecnología.",
     keyThemes: ["Ingeniería", "Tecnología", "Territorio", "Trabajo"],
@@ -88,7 +88,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "uca", name: "Universidad Católica Argentina", type: "university", foundingYear: 1958, country: "Argentina",
+    id: "uca", name: "Universidad Católica Argentina", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UCA es la principal universidad católica de Argentina, con sedes en Buenos Aires, Rosario, Mendoza y Paraná.",
     keyThemes: ["Humanismo", "Tradición", "Formación", "Comunidad"],
@@ -108,7 +108,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "austral", name: "Universidad Austral", type: "university", foundingYear: 1991, country: "Argentina",
+    id: "austral", name: "Universidad Austral", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La Universidad Austral es una universidad privada argentina reconocida por sus programas de negocios, derecho y medicina.",
     keyThemes: ["Excelencia", "Formación", "Negocios", "Rigor"],
@@ -128,7 +128,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "di-tella", name: "Universidad Torcuato Di Tella", type: "university", foundingYear: 1991, country: "Argentina",
+    id: "di-tella", name: "Universidad Torcuato Di Tella", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La Universidad Di Tella es reconocida por sus programas de economía, ciencia política y negocios, heredera del espíritu innovador del Instituto Di Tella.",
     keyThemes: ["Innovación", "Pensamiento", "Vanguardia", "Rigor"],
@@ -147,7 +147,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "san-andres", name: "Universidad de San Andrés", type: "university", foundingYear: 1988, country: "Argentina",
+    id: "san-andres", name: "Universidad de San Andrés", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La Universidad de San Andrés es una universidad privada laica sin fines de lucro, reconocida por sus programas de economía y ciencias sociales.",
     keyThemes: ["Excelencia", "Pensamiento crítico", "Comunidad", "Rigor"],
@@ -166,7 +166,7 @@ export const UNIVERSITIES_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "unt", name: "Universidad Nacional de Tucumán", type: "university", foundingYear: 1914, country: "Argentina",
+    id: "unt", name: "Universidad Nacional de Tucumán", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "La UNT es la universidad pública más importante del norte argentino, con fuerte tradición en ciencias exactas y humanidades.",
     keyThemes: ["Región", "Formación", "Comunidad", "Rigor"],

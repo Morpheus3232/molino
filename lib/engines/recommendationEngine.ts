@@ -208,7 +208,7 @@ function buildRecommendation(
   const primaryEvent = getPrimaryEvent(entity);
   const entityAnimal = primaryEvent
     ? calculateAnimalFromDate(primaryEvent.date, primaryEvent.year).animal as Animal
-    : calculateAnimalFromDate(undefined, entity.foundingYear).animal as Animal;
+    : "" as Animal;
 
   // Symbolic recommendation
   const symbolic = calculateSymbolicRecommendation(
@@ -407,7 +407,8 @@ function buildCopy(
 // IMPORTS & EXPORTS
 // ════════════════════════════════════════════════════
 
-import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent } from "@/lib/data/entity-events";
+import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
 
 /**
  * Get recommendations filtered by entity type, sorted by score.

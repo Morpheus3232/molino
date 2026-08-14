@@ -1,14 +1,20 @@
 /**
- * Symbolic Entities — Unified schema for the Affinity System.
+ * Symbolic Entities — Unified schema for the Affinity System (Atlas Visual).
  *
- * Every entity has the minimum data the engine needs:
- *   foundingYear → Chinese zodiac animal + element (auto-calculated)
- *   type → category for filtering and SEO
+ * SERVER-ONLY: this module is the rich data layer and must never be imported
+ * by Client Components. It aggregates the raw entity inputs, enriches each
+ * with deterministic visual metadata (visualType, countryISO), and exposes
+ * lightweight projections for the client. The affinity date comes EXCLUSIVELY
+ * from `events[primary].year` — there is no `foundingYear` anywhere.
  *
  * All data is REAL and verifiable. No invented facts.
  */
 
+import "server-only";
+
 import { getChineseAnimal, getChineseElement, calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
+import { getPrimaryEvent } from "./entity-events";
+import type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType } from "@/types/atlas";
 import { BRANDS_60 } from "./brands-60";
 import { BRANDS_AUTOS_60 } from "./brands-autos-60";
 import { BRANDS_ARGENTINA } from "./brands-argentina";
@@ -38,6 +44,19 @@ export type EntityType =
   | "movie"
   | "artist";
 
+/** Visual kind by entity type — deterministic mapping, no per-entity hacks. */
+export const VISUAL_TYPE_BY_TYPE: Record<EntityType, VisualType> = {
+  brand: "logo",
+  city: "emoji",
+  country: "flag",
+  university: "logo",
+  team: "logo",
+  movie: "album",
+  artist: "portrait",
+};
+
+export type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType };
+
 // ════════════════════════════════════════════════════
 // HISTORICAL EVENT TYPES
 // ════════════════════════════════════════════════════
@@ -61,44 +80,90 @@ export type ConfidenceLevel =
   | "baja"       // uncertain dating
   | "tradicion"; // mythological/traditional date
 
-/** A documented historical event of an entity */
-export interface HistoricalEvent {
-  id: string;
-  type: EventType;
-  label: string;
-  /** ISO date string, e.g. "1976-04-01". Optional when only year is known. */
-  date?: string;
-  /** Year — always required */
-  year: number;
-  description: string;
-  source: string;
-  confidence: ConfidenceLevel;
-  /** Whether this event participates in the affinity calculation. Only 1 per entity. */
-  primaryForAffinity: boolean;
-  /** Chinese zodiac animal auto-calculated from date/year. Populated at runtime. */
-  calculatedAnimal?: string;
-  /** True if the animal was calculated from a year-only fallback (no exact date). */
-  isApproximate?: boolean;
+/** Back-compat alias: the enriched entity shape is now AtlasEntity. */
+export type HistoricalEvent = AtlasHistoricalEvent;
+/** Back-compat alias: the full entity is now AtlasEntity. */
+export type SymbolicEntity = AtlasEntity;
+
+// ════════════════════════════════════════════════════
+// ENTITY SCHEMA — see types/atlas.ts (AtlasEntity / AtlasEntityInput)
+// ════════════════════════════════════════════════════
+
+/** ISO 3166-1 alpha-2 by common country name. Facts, not opinions. */
+const COUNTRY_ISO: Record<string, string> = {
+  Alemania: "DE", "Arabia Saudita": "SA", Argentina: "AR", Australia: "AU",
+  Austria: "AT", Bangladesh: "BD", Brasil: "BR", Bulgaria: "BG",
+  Bélgica: "BE", Canadá: "CA", Chile: "CL", China: "CN", Colombia: "CO",
+  "Corea del Sur": "KR", "Costa Rica": "CR", "Croacia / Serbia": "RS", Cuba: "CU",
+  Dinamarca: "DK", Egipto: "EG", "Emiratos Árabes Unidos": "AE", España: "ES",
+  "Estados Unidos": "US", Filipinas: "PH", Finlandia: "FI", Francia: "FR",
+  Ghana: "GH", Grecia: "GR", Hungría: "HU", India: "IN", Indonesia: "ID",
+  Irlanda: "IE", Irán: "IR", Israel: "IL", Italia: "IT", Jamaica: "JM",
+  Japón: "JP", Kenia: "KE", Malasia: "MY", Marruecos: "MA", Mongolia: "MN",
+  México: "MX", Nigeria: "NG", Noruega: "NO", "Nueva Zelanda": "NZ", Panamá: "PA",
+  "Países Bajos": "NL", Perú: "PE", Polonia: "PL", Portugal: "PT",
+  "Reino Unido": "GB", "Reino Unido / Bélgica": "GB", "República Checa": "CZ",
+  Rumania: "RO", Rusia: "RU", Singapur: "SG", "Sudáfrica": "ZA", Suecia: "SE",
+  Suiza: "CH", Tailandia: "TH", Taiwán: "TW", Turquía: "TR", Uruguay: "UY",
+  Vietnam: "VN",
+};
+
+/** Derive the ISO country code from a country name, if known. */
+export function getCountryISO(country: string): string | undefined {
+  return COUNTRY_ISO[country] ?? COUNTRY_ISO[country.split(" / ")[0]];
 }
 
-// ════════════════════════════════════════════════════
-// ENTITY SCHEMA
-// ════════════════════════════════════════════════════
+/**
+ * Enrich a raw entity input into a full AtlasEntity: attach the deterministic
+ * visualType (by entity type) and countryISO (from the country name). No
+ * per-entity hand-written visual data — the mapping is the source of truth.
+ */
+export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
+  const type = input.type as EntityType;
+  return {
+    ...input,
+    visualType: VISUAL_TYPE_BY_TYPE[type] ?? "emoji",
+    countryISO: getCountryISO(input.country),
+  };
+}
 
-export interface SymbolicEntity {
-  id: string;
-  name: string;
-  type: EntityType;
-  /** @deprecated Use events.find(e => e.primaryForAffinity).year instead. Kept for backward compat. */
-  foundingYear: number;
-  country: string;
-  emoji?: string;
-  description: string;
-  keyThemes: string[];
-  category?: string;
-  /** Documented historical events. At least one must have primaryForAffinity=true. */
-  events: HistoricalEvent[];
-  sourceNote?: string;
+/**
+ * Resolve the Chinese zodiac animal for an entity from its primary event.
+ * Uses the real Chinese New Year boundary when an exact date exists; falls
+ * back to year-only (marked approximate) otherwise. This is the ONLY place
+ * the affinity date is derived — never `foundingYear`.
+ */
+export function resolveEntityAnimalData(input: Pick<AtlasEntityInput, "events">): {
+  animal: string;
+  year: number;
+  isApproximate: boolean;
+} {
+  const primary = getPrimaryEvent(input);
+  const { animal, isApproximate } = primary
+    ? calculateAnimalFromDate(primary.date, primary.year)
+    : { animal: "", isApproximate: true };
+  return { animal, year: primary?.year ?? 0, isApproximate };
+}
+
+/**
+ * Project a full entity to the minimal `LightweightEntity` shape safe for the
+ * client: id/name/animal/visualType/emoji. No events, no prose.
+ */
+export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity {
+  const enriched = enrichEntity(input);
+  const { animal, isApproximate } = resolveEntityAnimalData(input);
+  return {
+    id: enriched.id,
+    name: enriched.name,
+    animal,
+    isApproximate,
+    visualType: enriched.visualType,
+    emoji: enriched.emoji,
+    imageUrl: enriched.imageUrl,
+    country: enriched.country,
+    countryISO: enriched.countryISO,
+    type: enriched.type,
+  };
 }
 
 /** Metadata for each entity type (UI labels, icons, SEO) */
@@ -124,11 +189,11 @@ export function getEntityElement(year: number): string {
 
 /**
  * Get the primary event for affinity calculation from an entity.
- * Returns the event marked primaryForAffinity, or falls back to the first event.
+ * Pure selector — defined in the client-safe module lib/data/entity-events.ts
+ * and re-exported here for backward compatibility (this module is server-only,
+ * but the function itself is importable by engines via entity-events).
  */
-export function getPrimaryEvent(entity: SymbolicEntity): HistoricalEvent | undefined {
-  return entity.events.find(e => e.primaryForAffinity) ?? entity.events[0];
-}
+export { getPrimaryEvent } from "./entity-events";
 
 /**
  * Calculate and populate the animal for a historical event.
@@ -147,7 +212,6 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...BRANDS_60,
   ...BRANDS_AUTOS_60,
   ...BRANDS_ARGENTINA,
-
   ...COUNTRIES_60,
   ...CITIES_60,
   ...CITIES_ARGENTINA,
@@ -169,7 +233,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── UNIVERSIDADES (3) ────
   {
-    id: "uba", name: "Universidad de Buenos Aires", type: "university", foundingYear: 1821, country: "Argentina",
+    id: "uba", name: "Universidad de Buenos Aires", type: "university", country: "Argentina",
     emoji: "\ud83c\udf93",
     description: "La UBA es la universidad p\u00fablica m\u00e1s prestigiosa de Latinoam\u00e9rica. Ha producido 5 premios Nobel.",
     keyThemes: ["Conocimiento", "Excelencia", "Accesibilidad", "Compromiso"],
@@ -189,7 +253,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mit", name: "MIT", type: "university", foundingYear: 1861, country: "Estados Unidos",
+    id: "mit", name: "MIT", type: "university", country: "Estados Unidos",
     emoji: "\ud83d\udd2c",
     description: "El Massachusetts Institute of Technology es l\u00edder mundial en ciencia, ingenier\u00eda e innovaci\u00f3n tecnol\u00f3gica.",
     keyThemes: ["Innovaci\u00f3n", "Ciencia", "Visi\u00f3n", "Impacto"],
@@ -219,7 +283,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "oxford", name: "Universidad de Oxford", type: "university", foundingYear: 1096, country: "Reino Unido",
+    id: "oxford", name: "Universidad de Oxford", type: "university", country: "Reino Unido",
     emoji: "\ud83d\udcd6",
     description: "Oxford es la universidad de habla inglesa m\u00e1s antigua del mundo. M\u00e1s de 900 a\u00f1os de continuaci\u00f3n acad\u00e9mica.",
     keyThemes: ["Legado", "Sabidur\u00eda", "Tradici\u00f3n", "Rigor"],
@@ -239,7 +303,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   },
 
   {
-    id: "salamanca", name: "Universidad de Salamanca", type: "university", foundingYear: 1218, country: "España",
+    id: "salamanca", name: "Universidad de Salamanca", type: "university", country: "España",
     emoji: "📖",
     description: "Salamanca es la universidad más antigua del mundo hispanohablante. Referencia histórica del pensamiento jurídico y humanista.",
     keyThemes: ["Legado", "Sabiduría", "Tradición", "Humanismo"],
@@ -260,7 +324,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── EQUIPOS (3) ────
   {
-    id: "boca-juniors", name: "Boca Juniors", type: "team", foundingYear: 1905, country: "Argentina",
+    id: "boca-juniors", name: "Boca Juniors", type: "team", country: "Argentina",
     emoji: "\u26bd",
     description: "Boca Juniors es el club m\u00e1s ic\u00f3nico del f\u00fatbol argentino. Fundado por inmigrantes italianos en La Boca.",
     keyThemes: ["Pasión", "Identidad", "Garra", "Comunidad"],
@@ -280,7 +344,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "fc-barcelona", name: "FC Barcelona", type: "team", foundingYear: 1899, country: "Espa\u00f1a",
+    id: "fc-barcelona", name: "FC Barcelona", type: "team", country: "Espa\u00f1a",
     emoji: "\u26bd",
     description: "El FC Barcelona es m\u00e1s que un club. Su lema \u00abM\u00e9s que un club\u00bb refleja su identidad cultural.",
     keyThemes: ["Identidad", "Excelencia", "Cultura", "Rebelde"],
@@ -300,7 +364,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "real-madrid", name: "Real Madrid", type: "team", foundingYear: 1902, country: "Espa\u00f1a",
+    id: "real-madrid", name: "Real Madrid", type: "team", country: "Espa\u00f1a",
     emoji: "\u26bd",
     description: "Real Madrid es el club con m\u00e1s t\u00edtulos de la Champions League. S\u00edmbolo de excelencia deportiva global.",
     keyThemes: ["Excellence", "Ambici\u00f3n", "Legado", "Glory"],
@@ -331,7 +395,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   },
 
   {
-    id: "sporting-cp", name: "Sporting CP", type: "team", foundingYear: 1906, country: "Portugal",
+    id: "sporting-cp", name: "Sporting CP", type: "team", country: "Portugal",
     emoji: "⚽",
     description: "Sporting Clube de Portugal es uno de los tres grandes del fútbol portugués, cantera histórica de figuras como Cristiano Ronaldo.",
     keyThemes: ["Cantera", "Identidad", "Tradición", "Formación"],
@@ -353,7 +417,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── PEL\u00cdCULAS (3) ────
   {
-    id: "matrix", name: "The Matrix", type: "movie", foundingYear: 1999, country: "Estados Unidos",
+    id: "matrix", name: "The Matrix", type: "movie", country: "Estados Unidos",
     emoji: "\ud83d\udcbb",
     description: "The Matrix cuestiona la naturaleza de la realidad. Una obra que fusiona filosof\u00eda, ciencia ficci\u00f3n y acci\u00f3n.",
     keyThemes: ["Realidad", "Despertar", "Libertad", "Filosof\u00eda"],
@@ -373,7 +437,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "interstellar", name: "Interstellar", type: "movie", foundingYear: 2014, country: "Estados Unidos",
+    id: "interstellar", name: "Interstellar", type: "movie", country: "Estados Unidos",
     emoji: "\ud83c\udf0c",
     description: "Interstellar explora el amor como fuerza que trasciende el espacio y el tiempo. Ciencia rigurosa y emoci\u00f3n humana.",
     keyThemes: ["Amor", "Tiempo", "Espacio", "Esperanza"],
@@ -393,7 +457,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "amelie", name: "Am\u00e9lie", type: "movie", foundingYear: 2001, country: "Francia",
+    id: "amelie", name: "Am\u00e9lie", type: "movie", country: "Francia",
     emoji: "\ud83c\udf35",
     description: "Am\u00e9lie es una ode a la fantas\u00eda cotidiana. Una pel\u00edcula que celebra los peque\u00f1os gestos de humanidad.",
     keyThemes: ["Fantas\u00eda", "Bondad", "Soledad", "Conexi\u00f3n"],
@@ -415,7 +479,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── ARTISTAS (3) ────
   {
-    id: "frida-kahlo", name: "Frida Kahlo", type: "artist", foundingYear: 1907, country: "M\u00e9xico",
+    id: "frida-kahlo", name: "Frida Kahlo", type: "artist", country: "M\u00e9xico",
     emoji: "\ud83c\udfa8",
     description: "Frida Kahlo transform\u00f3 el dolor en arte. Su obra es un acto de identidad, resistencia y vulnerabilidad.",
     keyThemes: ["Identidad", "Resistencia", "Vulnerabilidad", "Arte"],
@@ -435,7 +499,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "david-bowie", name: "David Bowie", type: "artist", foundingYear: 1947, country: "Reino Unido",
+    id: "david-bowie", name: "David Bowie", type: "artist", country: "Reino Unido",
     emoji: "\ud83c\udfa4",
     description: "David Bowie reinvencion\u00f3 la identidad art\u00edstica. Cada \u00e1lbum era una nueva persona, una nueva exploraci\u00f3n.",
     keyThemes: ["Reinvenci\u00f3n", "Creatividad", "Oscurecimiento", "Vanguardia"],
@@ -455,7 +519,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "soda-stereo", name: "Soda Stereo", type: "artist", foundingYear: 1982, country: "Argentina",
+    id: "soda-stereo", name: "Soda Stereo", type: "artist", country: "Argentina",
     emoji: "🎸",
     description: "Soda Stereo es la banda de rock en español más influyente de Latinoamérica, referencia ineludible del new wave y el rock latino.",
     keyThemes: ["Reinvención", "Vanguardia", "Latinoamérica", "Elegancia"],
@@ -474,7 +538,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "tango", name: "Carlos Gardel", type: "artist", foundingYear: 1890, country: "Argentina",
+    id: "tango", name: "Carlos Gardel", type: "artist", country: "Argentina",
     emoji: "\ud83c\udfb5",
     description: "Carlos Gardel es la voz m\u00edtica del tango. Su figura trasciende la m\u00fAsica para convertirse en s\u00edmbolo cultural.",
     keyThemes: ["Tango", "Melancol\u00eda", "Nostalgia", "Leyenda"],
@@ -492,7 +556,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
       },
     ],
   },
-];
+].map(enrichEntity);
 
 /** Helper: get all entities of a given type */
 export function getEntitiesByType(type: EntityType): SymbolicEntity[] {
@@ -506,7 +570,7 @@ export function getEntityById(id: string): SymbolicEntity | undefined {
 
 /** Helper: get all available types that have at least one entity */
 export function getAvailableTypes(): EntityType[] {
-  const types = new Set(SYMBOLIC_ENTITIES.map(e => e.type));
+  const types = new Set<EntityType>(SYMBOLIC_ENTITIES.map(e => e.type as EntityType));
   return Array.from(types);
 }
 

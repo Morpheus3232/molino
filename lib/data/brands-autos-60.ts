@@ -1,10 +1,10 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
-export const BRANDS_AUTOS_60: SymbolicEntity[] = [
+export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Rata
   {
     id: "dodge-autos", name: "Dodge", type: "brand",
-    foundingYear: 1900, country: "Estados Unidos", emoji: "🚙",
+    country: "Estados Unidos", emoji: "🚙",
     category: "autos",
     description: "La voz rugiente de Detroit, Dodge moldea la rebeldía americana en muscle cars y camionetas que no piden permiso en la carretera.",
     keyThemes: ["Potencia", "Muscle", "Americano", "Durabilidad"],
@@ -14,7 +14,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Rata
   {
     id: "mg-autos", name: "MG", type: "brand",
-    foundingYear: 1924, country: "Reino Unido", emoji: "🚗",
+    country: "Reino Unido", emoji: "🚗",
     category: "autos",
     description: "Nacida en los talleres de Morris Garages, MG hizo del roadster británico un lujo accesible y hoy renace enchufada a la electricidad.",
     keyThemes: ["Británico", "Deportivo", "Clásico", "Accesible"],
@@ -24,7 +24,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Rata
   {
     id: "land-rover-autos", name: "Land Rover", type: "brand",
-    foundingYear: 1948, country: "Reino Unido", emoji: "🚙",
+    country: "Reino Unido", emoji: "🚙",
     category: "autos",
     description: "Forjado en las granjas de posguerra para cruzar donde otros se rinden, Land Rover convirtió la aventura británica en máquina infatigable.",
     keyThemes: ["Aventura", "Británico", "Capacidad", "Exploración"],
@@ -34,7 +34,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Rata
   {
     id: "honda-motor-autos", name: "Honda Motor", type: "brand",
-    foundingYear: 1948, country: "Japón", emoji: "🏍️",
+    country: "Japón", emoji: "🏍️",
     category: "autos",
     description: "De motorizar bicicletas con excedentes de guerra a dominar el mundo, Honda convirtió la ingeniería japonesa en pura obstinación y genio.",
     keyThemes: ["Japón", "Innovación", "Motocicletas", "Confiabilidad"],
@@ -44,7 +44,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "fiat-1899-autos", name: "Fiat", type: "brand",
-    foundingYear: 1899, country: "Italia", emoji: "🚗",
+    country: "Italia", emoji: "🚗",
     category: "autos",
     description: "Nacida en Turín para poner a Italia en movimiento, Fiat hizo del auto pequeño un lienzo de diseño que cabía en cada callejón.",
     keyThemes: ["Italiano", "Compacto", "Diseño", "Accesibilidad"],
@@ -54,7 +54,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "gmc-autos", name: "GMC", type: "brand",
-    foundingYear: 1901, country: "Estados Unidos", emoji: "🚛",
+    country: "Estados Unidos", emoji: "🚛",
     category: "autos",
     description: "Del taller pionero de camiones de Max Grabowski al corazón de la autopista, GMC es la fuerza americana hecha capacidad y músculo.",
     keyThemes: ["Americano", "Capacidad", "Durabilidad", "Potencia"],
@@ -64,7 +64,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "aston-martin-autos", name: "Aston Martin", type: "brand",
-    foundingYear: 1913, country: "Reino Unido", emoji: "007",
+    country: "Reino Unido", emoji: "007",
     category: "autos",
     description: "El auto de James Bond, lujo británico con alma deportiva.",
     keyThemes: ["Lujo", "Británico", "Elegancia", "Deportivo"],
@@ -74,7 +74,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "chrysler-autos", name: "Chrysler", type: "brand",
-    foundingYear: 1925, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "Walter Chrysler resucitó una marca moribunda y la convirtió en el tercer gigante de Detroit, donde la aerodinámica se vestía de arte americano.",
     keyThemes: ["Americano", "Innovación", "Diseño", "Potencia"],
@@ -84,7 +84,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "toyota-autos", name: "Toyota", type: "brand",
-    foundingYear: 1937, country: "Japón", emoji: "🚗",
+    country: "Japón", emoji: "🚗",
     category: "autos",
     description: "Del telar al asfalto, Toyota convirtió la obsesión por la mejora continua en el mayor imperio automotriz del planeta.",
     keyThemes: ["Japón", "Calidad", "Innovación", "Confiabilidad"],
@@ -94,7 +94,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "morgan-autos", name: "Morgan", type: "brand",
-    foundingYear: 1909, country: "Reino Unido", emoji: "🚗",
+    country: "Reino Unido", emoji: "🚗",
     category: "autos",
     description: "En Malvern, Morgan sigue doblando madera y martillando aluminio como en 1909, una reliquia viva de la artesanía británica sobre ruedas.",
     keyThemes: ["Británico", "Artesanal", "Clásico", "Deportivo"],
@@ -104,7 +104,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Tigre
   {
     id: "cadillac-autos", name: "Cadillac", type: "brand",
-    foundingYear: 1902, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "Desde los albores del automóvil, Cadillac definió el lujo americano con la precisión obsesiva de Henry Leland y las aletas del sueño de posguerra.",
     keyThemes: ["Lujo", "Americano", "Elegancia", "Estatus"],
@@ -114,7 +114,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Tigre
   {
     id: "maserati-autos", name: "Maserati", type: "brand",
-    foundingYear: 1914, country: "Italia", emoji: "🔱",
+    country: "Italia", emoji: "🔱",
     category: "autos",
     description: "Bajo el tridente robado a la fuente de Neptuno, Maserati teje elegancia italiana con un rugido de competición reservado a pocos.",
     keyThemes: ["Lujo", "Italiano", "Elegancia", "Deportivo"],
@@ -124,7 +124,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Tigre
   {
     id: "mercedes-autos", name: "Mercedes-Benz", type: "brand",
-    foundingYear: 1926, country: "Alemania", emoji: "🚗",
+    country: "Alemania", emoji: "🚗",
     category: "autos",
     description: "Hija de los propios inventores del automóvil, Mercedes-Benz convierte la ingeniería alemana en elegancia que envejece como el mejor de los orgullos.",
     keyThemes: ["Lujo", "Innovación", "Ingeniería", "Elegancia"],
@@ -134,7 +134,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Tigre
   {
     id: "seat-autos", name: "SEAT", type: "brand",
-    foundingYear: 1950, country: "España", emoji: "🚗",
+    country: "España", emoji: "🚗",
     category: "autos",
     description: "La marca que puso a España sobre ruedas, de la Barcelona industrial al orgullo joven, fusiona la sobriedad latina con carácter mediterráneo.",
     keyThemes: ["España", "Accesibilidad", "Diseño", "Juventud"],
@@ -144,7 +144,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Tigre
   {
     id: "acura-autos", name: "Acura", type: "brand",
-    foundingYear: 1986, country: "Japón", emoji: "🔧",
+    country: "Japón", emoji: "🔧",
     category: "autos",
     description: "La primera marca de lujo japonesa en América, Acura llevó la precisión de Honda al asfalto con el cuchillo afilado del deportivo NSX.",
     keyThemes: ["Japón", "Precisión", "Deportivo", "Lujo"],
@@ -154,7 +154,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "ford-autos", name: "Ford", type: "brand",
-    foundingYear: 1903, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "Revolucionó el mundo con la cadena de montaje y el Ford T.",
     keyThemes: ["Innovación", "Americano", "Tradición", "Accesibilidad"],
@@ -164,7 +164,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "buick-autos", name: "Buick", type: "brand",
-    foundingYear: 1903, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "Fundada por un escocés obsesionado con los motores de válvulas, Buick se ganó ser la piedra fundacional del imperio de General Motors.",
     keyThemes: ["Americano", "Lujo", "Tradición", "Confiabilidad"],
@@ -174,7 +174,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "harley-autos", name: "Harley-Davidson", type: "brand",
-    foundingYear: 1903, country: "Estados Unidos", emoji: "🏍️",
+    country: "Estados Unidos", emoji: "🏍️",
     category: "autos",
     description: "Nacida en un cobertizo de Milwaukee, Harley-Davidson es más que una moto: el rugido de una nación que aprendió a ser libre sobre dos ruedas.",
     keyThemes: ["Americano", "Libertad", "Rebeldía", "Tradición"],
@@ -184,7 +184,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "volvo-autos", name: "Volvo", type: "brand",
-    foundingYear: 1927, country: "Suecia", emoji: "🛡️",
+    country: "Suecia", emoji: "🛡️",
     category: "autos",
     description: "Marcada por la seguridad obsesiva nacida en los fiordos de Suecia, cada Volvo es una promesa silenciosa de proteger lo que más importa.",
     keyThemes: ["Seguridad", "Suecia", "Confiabilidad", "Diseño"],
@@ -194,7 +194,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "lamborghini-autos", name: "Lamborghini", type: "brand",
-    foundingYear: 1963, country: "Italia", emoji: "🐂",
+    country: "Italia", emoji: "🐂",
     category: "autos",
     description: "Nacidos de la afrenta de un fabricante de tractores despreciado por Ferrari, los Lamborghini son el rugido de un toro que nunca se rinde.",
     keyThemes: ["Audacia", "Potencia", "Lujo", "Rebeldía"],
@@ -204,7 +204,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "mclaren-autos", name: "McLaren", type: "brand",
-    foundingYear: 1963, country: "Reino Unido", emoji: "🏁",
+    country: "Reino Unido", emoji: "🏁",
     category: "autos",
     description: "Del genio de un piloto neozelandés a la cúspide de la Fórmula 1, McLaren convierte cada pista en laboratorio y cada curva en vértigo.",
     keyThemes: ["Velocidad", "Competencia", "Innovación", "Británico"],
@@ -214,7 +214,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Dragón
   {
     id: "bmw-autos", name: "BMW", type: "brand",
-    foundingYear: 1916, country: "Alemania", emoji: "🚘",
+    country: "Alemania", emoji: "🚘",
     category: "autos",
     description: "De los motores de aviación de Múnich a la carretera, BMW convirtió la precisión bávara en el placer de conducir sin concesiones.",
     keyThemes: ["Deportivo", "Lujo", "Ingeniería", "Precisión"],
@@ -224,7 +224,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Dragón
   {
     id: "isuzu-autos", name: "Isuzu", type: "brand",
-    foundingYear: 1916, country: "Japón", emoji: "🚛",
+    country: "Japón", emoji: "🚛",
     category: "autos",
     description: "Nacida de los astilleros Ishikawajima, Isuzu forjó camiones y todoterrenos con la durabilidad indestructible del acero de un navío japonés.",
     keyThemes: ["Japón", "Durabilidad", "Camiones", "Confiabilidad"],
@@ -234,7 +234,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Dragón
   {
     id: "panoz-autos", name: "Panoz", type: "brand",
-    foundingYear: 1988, country: "Estados Unidos", emoji: "🏎️",
+    country: "Estados Unidos", emoji: "🏎️",
     category: "autos",
     description: "Del rancho de un empresario georgiano, Panoz moldeó deportivos de aluminio que llevan la pura esencia americana a la pista y a la carretera.",
     keyThemes: ["Deportivo", "Americano", "Innovación", "Potencia"],
@@ -244,7 +244,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "ferrari-autos", name: "Ferrari", type: "brand",
-    foundingYear: 1947, country: "Italia", emoji: "🏎️",
+    country: "Italia", emoji: "🏎️",
     category: "autos",
     description: "Del circuito de Maranello a los sueños de velocidad, el cavallino rampante encarna la pasión italiana por la belleza mecánica.",
     keyThemes: ["Pasión", "Velocidad", "Lujo", "Excelencia"],
@@ -254,7 +254,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gato
   {
     id: "mclaren-racing", name: "McLaren Racing", type: "brand",
-    foundingYear: 1963, country: "Reino Unido", emoji: "🏁",
+    country: "Reino Unido", emoji: "🏁",
     category: "autos",
     description: "La escudería fundada por Bruce McLaren convirtió la guerra por milésimas de la Fórmula 1 en una escuela de superdeportivos extremos.",
     keyThemes: ["Velocidad", "Competencia", "Innovación", "Británico"],
@@ -264,7 +264,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "mitsubishi-autos", name: "Mitsubishi", type: "brand",
-    foundingYear: 1917, country: "Japón", emoji: "🚙",
+    country: "Japón", emoji: "🚙",
     category: "autos",
     description: "Heredera de los astilleros que construyeron el primer auto japonés, Mitsubishi forjó su leyenda en todoterrenos que sobreviven a cualquier desierto.",
     keyThemes: ["Japón", "Tecnología", "Durabilidad", "Tradición"],
@@ -274,7 +274,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "jeep-autos", name: "Jeep", type: "brand",
-    foundingYear: 1941, country: "Estados Unidos", emoji: "🦅",
+    country: "Estados Unidos", emoji: "🦅",
     category: "autos",
     description: "Héroe anónimo de la guerra, el Jeep se convirtió en el vehículo que enseñó al mundo que la aventura no tiene fronteras.",
     keyThemes: ["Aventura", "Libertad", "Americano", "Durabilidad"],
@@ -284,7 +284,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "subaru-autos", name: "Subaru", type: "brand",
-    foundingYear: 1953, country: "Japón", emoji: "⭐",
+    country: "Japón", emoji: "⭐",
     category: "autos",
     description: "Bautizada con las estrellas de las Pléyades, Subaru unió motores bóxer y tracción integral para que ningún camino quede sin conquistar.",
     keyThemes: ["Japón", "Confiabilidad", "Aventura", "Tecnología"],
@@ -294,7 +294,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "lexus-autos", name: "Lexus", type: "brand",
-    foundingYear: 1989, country: "Japón", emoji: "L",
+    country: "Japón", emoji: "L",
     category: "autos",
     description: "Nacida en secreto de los laboratorios de Toyota, Lexus demostró que el lujo japonés podía ser silencioso, impecable y deslumbrante a la vez.",
     keyThemes: ["Lujo", "Japón", "Confiabilidad", "Innovación"],
@@ -304,7 +304,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "infiniti-autos", name: "Infiniti", type: "brand",
-    foundingYear: 1989, country: "Japón", emoji: "♾️",
+    country: "Japón", emoji: "♾️",
     category: "autos",
     description: "El horizonte infinito del lujo japonés, Infiniti elevó a Nissan hacia una elegancia que se siente antes de verse.",
     keyThemes: ["Japón", "Lujo", "Rendimiento", "Diseño"],
@@ -314,7 +314,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Caballo
   {
     id: "rolls-royce-autos", name: "Rolls-Royce", type: "brand",
-    foundingYear: 1906, country: "Reino Unido", emoji: "👑",
+    country: "Reino Unido", emoji: "👑",
     category: "autos",
     description: "El pacto entre un piloto aristócrata y un ingeniero obsesivo dio al mundo autos tan silenciosos que solo se escucha el tic-tac del reloj.",
     keyThemes: ["Lujo", "Excelencia", "Artesanía", "Estatus"],
@@ -324,7 +324,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "bugatti-autos", name: "Bugatti", type: "brand",
-    foundingYear: 1909, country: "Francia", emoji: "🏁",
+    country: "Francia", emoji: "🏁",
     category: "autos",
     description: "Del genio italiano Ettore Bugatti en Alsacia nació un ideal: autos que son esculturas rodantes, más rápidos que el relámpago y más escasos que las obras maestras.",
     keyThemes: ["Velocidad", "Lujo", "Innovación", "Excelencia"],
@@ -334,7 +334,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "suzuki-autos", name: "Suzuki", type: "brand",
-    foundingYear: 1909, country: "Japón", emoji: "🚙",
+    country: "Japón", emoji: "🚙",
     category: "autos",
     description: "De los telares de seda de Hamamatsu a las calles del mundo, Suzuki demostró que lo pequeño, bien hecho, puede conquistarlo todo.",
     keyThemes: ["Japón", "Versatilidad", "Accesibilidad", "Compacto"],
@@ -344,7 +344,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "audi-autos", name: "Audi", type: "brand",
-    foundingYear: 1909, country: "Alemania", emoji: "🔗",
+    country: "Alemania", emoji: "🔗",
     category: "autos",
     description: "Nacida cuando August Horch tuvo que traducir su propio nombre al latín, Audi unió cuatro fábricas bajo cuatro aros de promesa alemana.",
     keyThemes: ["Tecnología", "Alemán", "Innovación", "Diseño"],
@@ -354,7 +354,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "nissan-autos", name: "Nissan", type: "brand",
-    foundingYear: 1933, country: "Japón", emoji: "🚘",
+    country: "Japón", emoji: "🚘",
     category: "autos",
     description: "Del legado de los autos Datsun al Leaf que corre sin gasolina, Nissan ha convertido la innovación japonesa en progreso cotidiano para el mundo.",
     keyThemes: ["Innovación", "Japón", "Tecnología", "Confiabilidad"],
@@ -364,7 +364,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "porsche-autos", name: "Porsche", type: "brand",
-    foundingYear: 1931, country: "Alemania", emoji: "🏎️",
+    country: "Alemania", emoji: "🏎️",
     category: "autos",
     description: "De un despacho de ingeniería en Stuttgart a las victorias de Le Mans, Porsche perfeccionó la idea de que el auto deportivo es una obra de precisión.",
     keyThemes: ["Deportivo", "Lujo", "Alemán", "Precisión"],
@@ -374,7 +374,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "bentley-autos", name: "Bentley", type: "brand",
-    foundingYear: 1919, country: "Reino Unido", emoji: "🅱️",
+    country: "Reino Unido", emoji: "🅱️",
     category: "autos",
     description: "Forjada por un hombre que diseñaba motores de avión, Bentley unió las victorias de Le Mans con la artesanía más exquisita de la isla.",
     keyThemes: ["Lujo", "Británico", "Velocidad", "Artesanía"],
@@ -384,7 +384,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "citroen-autos", name: "Citroën", type: "brand",
-    foundingYear: 1919, country: "Francia", emoji: "🚘",
+    country: "Francia", emoji: "🚘",
     category: "autos",
     description: "Del fabricante de engranajes André Citroën al de doble cheurón, Citroën convirtió la carretera en una nube y el diseño en vanguardia francesa.",
     keyThemes: ["Innovación", "Francés", "Diseño", "Comodidad"],
@@ -394,7 +394,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Rata
   {
     id: "porsche-cabra", name: "Porsche 356", type: "brand",
-    foundingYear: 1948, country: "Alemania", emoji: "🏎️",
+    country: "Alemania", emoji: "🏎️",
     category: "autos",
     description: "Construido en un aserradero de Gmünd por Ferry Porsche, el 356 fue la primera nota de una sinfonía que sigue afinando la esencia del deportivo.",
     keyThemes: ["Deportivo", "Clásico", "Alemán", "Innovación"],
@@ -404,7 +404,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "hyundai-autos", name: "Hyundai", type: "brand",
-    foundingYear: 1967, country: "Corea del Sur", emoji: "🚙",
+    country: "Corea del Sur", emoji: "🚙",
     category: "autos",
     description: "Del imperio de la construcción al asfalto, Hyundai encarnó el milagro coreano convirtiendo modestos comienzos en un gigante global de la movilidad.",
     keyThemes: ["Crecimiento", "Innovación", "Confiabilidad", "Calidad"],
@@ -414,7 +414,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "tesla-autos", name: "Tesla", type: "brand",
-    foundingYear: 2003, country: "Estados Unidos", emoji: "⚡",
+    country: "Estados Unidos", emoji: "⚡",
     category: "autos",
     description: "Nacida en Silicon Valley para reinventar el automóvil, cada Tesla carga la audacia de creer que el futuro no emite gases.",
     keyThemes: ["Innovación", "Sostenibilidad", "Tecnología", "Futuro"],
@@ -424,7 +424,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Mono
   {
     id: "gm-autos", name: "General Motors", type: "brand",
-    foundingYear: 1908, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "William Durant tejió en Flint un imperio de marcas rivales unidas bajo un mismo techo, dando al mundo el primer gigante automotriz americano.",
     keyThemes: ["Americano", "Gigante", "Innovación", "Tradición"],
@@ -434,7 +434,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Mono
   {
     id: "mazda-autos", name: "Mazda", type: "brand",
-    foundingYear: 1920, country: "Japón", emoji: "🌀",
+    country: "Japón", emoji: "🌀",
     category: "autos",
     description: "De los telares de Hiroshima a la carretera, Mazda siguió la luz de Ahura Mazda y encontró su alma en un motor rotativo imposiblemente único.",
     keyThemes: ["Innovación", "Japón", "Deportivo", "Diseño"],
@@ -444,7 +444,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Mono
   {
     id: "pagani-autos", name: "Pagani", type: "brand",
-    foundingYear: 1992, country: "Italia", emoji: "✨",
+    country: "Italia", emoji: "✨",
     category: "autos",
     description: "Del argentino que soñaba con esculturas a toda velocidad, Pagani fabrica hiperautos de fibra de carbono que son galerías de arte en movimiento.",
     keyThemes: ["Arte", "Lujo", "Innovación", "Exclusividad"],
@@ -454,7 +454,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Mono
   {
     id: "piaggio-autos", name: "Piaggio", type: "brand",
-    foundingYear: 1884, country: "Italia", emoji: "🛵",
+    country: "Italia", emoji: "🛵",
     category: "autos",
     description: "Del taller naval de Génova a la posguerra italiana, Piaggio transformó el devastado país en movilidad elegante sobre el zumbido de una avispa.",
     keyThemes: ["Italiano", "Innovación", "Movilidad", "Tradición"],
@@ -464,7 +464,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "renault-autos", name: "Renault", type: "brand",
-    foundingYear: 1898, country: "Francia", emoji: "🚘",
+    country: "Francia", emoji: "🚘",
     category: "autos",
     description: "Cuando Louis Renault subió su primer coche por la calle de Lepic en París, sembró una estirpe francesa de innovación y diseño que nunca se detuvo.",
     keyThemes: ["Francés", "Innovación", "Diseño", "Historia"],
@@ -474,7 +474,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "oldsmobile-autos", name: "Oldsmobile", type: "brand",
-    foundingYear: 1897, country: "Estados Unidos", emoji: "🚗",
+    country: "Estados Unidos", emoji: "🚗",
     category: "autos",
     description: "Ransom Olds inventó la producción en serie antes que Ford, y su Curved Dash encendió el camino de un siglo de autos americanos.",
     keyThemes: ["Americano", "Tradición", "Historia", "Innovación"],
@@ -484,7 +484,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "saab-autos", name: "Saab", type: "brand",
-    foundingYear: 1945, country: "Suecia", emoji: "✈️",
+    country: "Suecia", emoji: "✈️",
     category: "autos",
     description: "Con alma de aeronave y cabina de caza, Saab diseñó autos suecos tan singulares que volar en carretera parecía lo más natural del mundo.",
     keyThemes: ["Suecia", "Innovación", "Seguridad", "Diseño"],
@@ -494,7 +494,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "opel-autos", name: "Opel", type: "brand",
-    foundingYear: 1862, country: "Alemania", emoji: "⚡",
+    country: "Alemania", emoji: "⚡",
     category: "autos",
     description: "De máquinas de coser a rayo de luz, Opel lleva siglo y medio dando a Alemania autos honestos, accesibles y eternamente confiables.",
     keyThemes: ["Alemán", "Tradición", "Accesibilidad", "Confiabilidad"],
@@ -504,7 +504,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "triumph-autos", name: "Triumph", type: "brand",
-    foundingYear: 1885, country: "Reino Unido", emoji: "🏍️",
+    country: "Reino Unido", emoji: "🏍️",
     category: "autos",
     description: "De Coventry al corazón de la cultura británica, Triumph canta el rugido de motos que hicieron de la rebeldía un arte en dos ruedas.",
     keyThemes: ["Británico", "Clásico", "Estilo", "Motocicletas"],
@@ -514,7 +514,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Gallo
   {
     id: "daimler-autos", name: "Daimler", type: "brand",
-    foundingYear: 1885, country: "Alemania", emoji: "⭐",
+    country: "Alemania", emoji: "⭐",
     category: "autos",
     description: "Gottlieb Daimler encendió el primer motor de alta velocidad y, con él, el motor mismo de la industria automotriz moderna.",
     keyThemes: ["Alemán", "Tradición", "Ingeniería", "Historia"],
@@ -524,7 +524,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "alfa-romeo-autos", name: "Alfa Romeo", type: "brand",
-    foundingYear: 1910, country: "Italia", emoji: "🍀",
+    country: "Italia", emoji: "🍀",
     category: "autos",
     description: "De las cenizas de una fábrica fallida en Milán, Alfa Romeo nació con un trébol de la suerte y un corazón que late en italiano.",
     keyThemes: ["Pasión", "Italiano", "Diseño", "Deportivo"],
@@ -534,7 +534,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "range-rover-autos", name: "Range Rover", type: "brand",
-    foundingYear: 1970, country: "Reino Unido", emoji: "🚙",
+    country: "Reino Unido", emoji: "🚙",
     category: "autos",
     description: "El lujo se hizo todoterreno en 1970 cuando Range Rover inventó la idea de cruzar la sabana vestido de primera clase.",
     keyThemes: ["Lujo", "Capacidad", "Británico", "Aventura"],
@@ -544,7 +544,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "koenigsegg-autos", name: "Koenigsegg", type: "brand",
-    foundingYear: 1994, country: "Suecia", emoji: "⚡",
+    country: "Suecia", emoji: "⚡",
     category: "autos",
     description: "Un joven sueco de 22 años soñó el hiperauto definitivo, y Koenigsegg lleva décadas demostrando que la imaginación fría del norte puede volar más rápido.",
     keyThemes: ["Velocidad", "Innovación", "Suecia", "Tecnología"],
@@ -554,7 +554,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "vespa-autos", name: "Vespa", type: "brand",
-    foundingYear: 1946, country: "Italia", emoji: "🛵",
+    country: "Italia", emoji: "🛵",
     category: "autos",
     description: "Diseñada por un ingeniero aeronáutico en la posguerra, la Vespa zumbó sobre las calles rotas de Italia y se volvió sinónimo de estilo y libertad.",
     keyThemes: ["Italiano", "Diseño", "Libertad", "Estilo"],
@@ -564,7 +564,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "ktm-autos", name: "KTM", type: "brand",
-    foundingYear: 1934, country: "Austria", emoji: "🏍️",
+    country: "Austria", emoji: "🏍️",
     category: "autos",
     description: "Del taller de reparaciones de Trunkenpolz en Mattighofen, KTM forjó motos naranjas que muerden el polvo, la piedra y el barro sin piedad.",
     keyThemes: ["Austria", "Deportivo", "Motocicletas", "Aventura"],
@@ -574,7 +574,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "chevrolet-autos", name: "Chevrolet", type: "brand",
-    foundingYear: 1911, country: "Estados Unidos", emoji: "🚘",
+    country: "Estados Unidos", emoji: "🚘",
     category: "autos",
     description: "Del lazo dorado de Louis Chevrolet nació la marca que montó el sueño americano sobre cuatro ruedas y lo llevó por cada autopista del país.",
     keyThemes: ["Americano", "Tradición", "Potencia", "Libertad"],
@@ -584,7 +584,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "jaguar-autos", name: "Jaguar", type: "brand",
-    foundingYear: 1935, country: "Reino Unido", emoji: "🐆",
+    country: "Reino Unido", emoji: "🐆",
     category: "autos",
     description: "Con la mirada de un felino y la suavidad del paño inglés, Jaguar convierte cada carretera en un paseo de elegancia depredadora.",
     keyThemes: ["Lujo", "Elegancia", "Británico", "Velocidad"],
@@ -594,7 +594,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "mini-autos", name: "Mini", type: "brand",
-    foundingYear: 1959, country: "Reino Unido", emoji: "🚗",
+    country: "Reino Unido", emoji: "🚗",
     category: "autos",
     description: "Alec Issigonis empujó las ruedas hasta las esquinas y creó un pequeño británico con alma de go-kart que conquistó el mundo en dos tamaños.",
     keyThemes: ["Británico", "Compacto", "Estilo", "Diversión"],
@@ -604,7 +604,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cerdo
   {
     id: "proton-autos", name: "Proton", type: "brand",
-    foundingYear: 1983, country: "Malasia", emoji: "🚘",
+    country: "Malasia", emoji: "🚘",
     category: "autos",
     description: "El auto nacional de Malasia, Proton puso a una nación joven sobre ruedas propias y convirtió el orgullo asiático en industria.",
     keyThemes: ["Malasia", "Crecimiento", "Accesibilidad", "Industria"],
@@ -614,7 +614,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Caballo
   {
     id: "peugeot-autos", name: "Peugeot", type: "brand",
-    foundingYear: 1810, country: "Francia", emoji: "🚘",
+    country: "Francia", emoji: "🚘",
     category: "autos",
     description: "Del acero del siglo XIX al león rampante, Peugeot ha acompañado a Francia desde los carruajes hasta el asfalto de hoy.",
     keyThemes: ["Tradición", "Francés", "Diseño", "Historia"],
@@ -624,7 +624,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "vw-autos", name: "Volkswagen", type: "brand",
-    foundingYear: 1937, country: "Alemania", emoji: "🚗",
+    country: "Alemania", emoji: "🚗",
     category: "autos",
     description: "El gigante alemán que democratizó el automóvil con el Escarabajo.",
     keyThemes: ["Confiabilidad", "Tradición", "Accesibilidad", "Ingeniería"],
@@ -634,7 +634,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Buey
   {
     id: "chery-autos", name: "Chery", type: "brand",
-    foundingYear: 1997, country: "China", emoji: "🚗",
+    country: "China", emoji: "🚗",
     category: "autos",
     description: "Nacida en Wuhu con ambición estatal, Chery convirtió motores y diseño en el emblema de un gigante que aprendió a cruzar las fronteras del mundo.",
     keyThemes: ["China", "Crecimiento", "Innovación", "Accesibilidad"],
@@ -644,7 +644,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Serpiente
   {
     id: "ferrari-racing", name: "Scuderia Ferrari", type: "brand",
-    foundingYear: 1929, country: "Italia", emoji: "🏎️",
+    country: "Italia", emoji: "🏎️",
     category: "autos",
     description: "La escuadra donde el cavallino rampante aprendió a correr, Scuderia Ferrari lleva casi un siglo tiñendo de rojo el altar de la Fórmula 1.",
     keyThemes: ["Pasión", "Velocidad", "Competencia", "Historia"],
@@ -654,7 +654,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Caballo
   {
     id: "lancia-autos", name: "Lancia", type: "brand",
-    foundingYear: 1906, country: "Italia", emoji: "🚗",
+    country: "Italia", emoji: "🚗",
     category: "autos",
     description: "El ingeniero Vincenzo Lancia dejó FIAT para inventar autos con alma propia, sembrando una innovación técnica que hoy vive en las leyendas del rally.",
     keyThemes: ["Italiano", "Innovación", "Diseño", "Historia"],
@@ -664,7 +664,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Perro
   {
     id: "changan-autos", name: "Changan", type: "brand",
-    foundingYear: 1862, country: "China", emoji: "🚗",
+    country: "China", emoji: "🚗",
     category: "autos",
     description: "Del arsenal de Shanghái en 1862 a los motores de Chongqing, Changan guarda en su nombre la larga memoria industrial de China.",
     keyThemes: ["China", "Tradición", "Crecimiento", "Innovación"],
@@ -674,7 +674,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Cabra
   {
     id: "skoda-autos", name: "Škoda", type: "brand",
-    foundingYear: 1895, country: "República Checa", emoji: "🚗",
+    country: "República Checa", emoji: "🚗",
     category: "autos",
     description: "De dos mecánicos que armaron bicicletas en Bohemia, Škoda escaló hasta convertirse en el orgullo checo que conquista Europa con ingeniería seria.",
     keyThemes: ["Tradición", "Accesibilidad", "Ingeniería", "Calidad"],
@@ -684,7 +684,7 @@ export const BRANDS_AUTOS_60: SymbolicEntity[] = [
   // Mono
   {
     id: "kia-autos", name: "Kia", type: "brand",
-    foundingYear: 1944, country: "Corea del Sur", emoji: "🚗",
+    country: "Corea del Sur", emoji: "🚗",
     category: "autos",
     description: "De piezas de bicicleta en la Seúl de posguerra al diseño más atrevido de Corea, Kia pasó de imitar a marcar el paso.",
     keyThemes: ["Corea", "Calidad", "Innovación", "Accesibilidad"],

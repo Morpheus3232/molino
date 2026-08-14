@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Películas — fechas de estreno verificadas.
@@ -7,9 +7,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * categoría "movie" (ver __tests__/affinity-coverage.test.ts), priorizando cine
  * argentino cuando hay una película real y verificable que encaje.
  */
-export const MOVIES: SymbolicEntity[] = [
+export const MOVIES: AtlasEntityInput[] = [
   {
-    id: "el-padrino", name: "El Padrino", type: "movie", foundingYear: 1972, country: "Estados Unidos",
+    id: "el-padrino", name: "El Padrino", type: "movie", country: "Estados Unidos",
     emoji: "🎬",
     description: "El Padrino redefinió el cine de gángsters y el drama familiar. Una obra maestra sobre poder, lealtad y herencia.",
     keyThemes: ["Poder", "Familia", "Lealtad", "Herencia"],
@@ -29,7 +29,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "amadeus", name: "Amadeus", type: "movie", foundingYear: 1984, country: "Estados Unidos",
+    id: "amadeus", name: "Amadeus", type: "movie", country: "Estados Unidos",
     emoji: "🎼",
     description: "Amadeus retrata la rivalidad entre Mozart y Salieri como una meditación sobre el genio, la envidia y el destino.",
     keyThemes: ["Genio", "Envidia", "Música", "Destino"],
@@ -49,7 +49,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "independence-day", name: "Independence Day", type: "movie", foundingYear: 1996, country: "Estados Unidos",
+    id: "independence-day", name: "Independence Day", type: "movie", country: "Estados Unidos",
     emoji: "🛸",
     description: "Independence Day marcó una era del blockbuster de ciencia ficción, con una invasión alienígena a escala global.",
     keyThemes: ["Resistencia", "Unión", "Ciencia ficción", "Escala"],
@@ -69,7 +69,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "empire-strikes-back", name: "El Imperio Contraataca", type: "movie", foundingYear: 1980, country: "Estados Unidos",
+    id: "empire-strikes-back", name: "El Imperio Contraataca", type: "movie", country: "Estados Unidos",
     emoji: "🚀",
     description: "El Imperio Contraataca profundizó la saga de Star Wars con un tono más oscuro y un giro narrativo icónico.",
     keyThemes: ["Épica", "Conflicto", "Revelación", "Mito"],
@@ -89,7 +89,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "aladdin", name: "Aladdín", type: "movie", foundingYear: 1992, country: "Estados Unidos",
+    id: "aladdin", name: "Aladdín", type: "movie", country: "Estados Unidos",
     emoji: "🧞",
     description: "Aladdín combina animación, comedia y aventura en un clásico del renacimiento de Disney.",
     keyThemes: ["Aventura", "Deseo", "Transformación", "Fantasía"],
@@ -109,7 +109,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "titanic", name: "Titanic", type: "movie", foundingYear: 1997, country: "Estados Unidos",
+    id: "titanic", name: "Titanic", type: "movie", country: "Estados Unidos",
     emoji: "🚢",
     description: "Titanic combina romance y catástrofe histórica en una de las películas más taquilleras de la historia.",
     keyThemes: ["Amor", "Tragedia", "Clase social", "Memoria"],
@@ -129,7 +129,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "el-secreto-de-sus-ojos", name: "El Secreto de sus Ojos", type: "movie", foundingYear: 2009, country: "Argentina",
+    id: "el-secreto-de-sus-ojos", name: "El Secreto de sus Ojos", type: "movie", country: "Argentina",
     emoji: "🎬",
     description: "El Secreto de sus Ojos, ganadora del Oscar a mejor película extranjera, entrelaza un crimen sin resolver con una historia de amor postergado.",
     keyThemes: ["Justicia", "Memoria", "Amor postergado", "Obsesión"],
@@ -149,7 +149,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "spider-man-2002", name: "Spider-Man", type: "movie", foundingYear: 2002, country: "Estados Unidos",
+    id: "spider-man-2002", name: "Spider-Man", type: "movie", country: "Estados Unidos",
     emoji: "🕷️",
     description: "Spider-Man (2002) definió el molde del superhéroe moderno en cine, con Peter Parker como origen emocional central.",
     keyThemes: ["Responsabilidad", "Origen", "Identidad", "Heroísmo"],
@@ -169,7 +169,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "home-alone", name: "Mi Pobre Angelito", type: "movie", foundingYear: 1990, country: "Estados Unidos",
+    id: "home-alone", name: "Mi Pobre Angelito", type: "movie", country: "Estados Unidos",
     emoji: "🎄",
     description: "Mi Pobre Angelito convirtió a un niño olvidado en Navidad en uno de los íconos de comedia familiar más queridos.",
     keyThemes: ["Ingenio", "Familia", "Navidad", "Autonomía"],
@@ -189,7 +189,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "robocop", name: "RoboCop", type: "movie", foundingYear: 1987, country: "Estados Unidos",
+    id: "robocop", name: "RoboCop", type: "movie", country: "Estados Unidos",
     emoji: "🤖",
     description: "RoboCop mezcla ciencia ficción y sátira social en la historia de un policía reconstruido como máquina.",
     keyThemes: ["Identidad", "Justicia", "Sátira", "Reconstrucción"],
@@ -209,7 +209,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "harry-potter-dh2", name: "Harry Potter y las Reliquias de la Muerte: Parte 2", type: "movie", foundingYear: 2011, country: "Reino Unido",
+    id: "harry-potter-dh2", name: "Harry Potter y las Reliquias de la Muerte: Parte 2", type: "movie", country: "Reino Unido",
     emoji: "⚡",
     description: "El cierre de la saga de Harry Potter culmina ocho películas sobre amistad, sacrificio y mayoría de edad.",
     keyThemes: ["Sacrificio", "Amistad", "Cierre", "Mayoría de edad"],
@@ -229,7 +229,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "saving-private-ryan", name: "Rescatando al Soldado Ryan", type: "movie", foundingYear: 1998, country: "Estados Unidos",
+    id: "saving-private-ryan", name: "Rescatando al Soldado Ryan", type: "movie", country: "Estados Unidos",
     emoji: "🎖️",
     description: "Rescatando al Soldado Ryan redefinió el cine bélico con su representación cruda del desembarco de Normandía.",
     keyThemes: ["Sacrificio", "Camaradería", "Guerra", "Deber"],
@@ -249,7 +249,7 @@ export const MOVIES: SymbolicEntity[] = [
     ],
   },
   {
-    id: "el-aura", name: "El Aura", type: "movie", foundingYear: 2005, country: "Argentina",
+    id: "el-aura", name: "El Aura", type: "movie", country: "Argentina",
     emoji: "🎬",
     description: "El Aura, del director de Nueve Reinas, sigue a un taxidermista epiléptico envuelto en un robo que se le escapa de las manos.",
     keyThemes: ["Precisión", "Fatalidad", "Introspección", "Suspenso"],

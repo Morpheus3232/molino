@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Clubes de fútbol uruguayos — fechas de fundación verificadas
  * (fuentes: sitios oficiales de los clubes, Wikipedia, AUF, CONMEBOL).
  */
-export const TEAMS_URUGUAY: SymbolicEntity[] = [
+export const TEAMS_URUGUAY: AtlasEntityInput[] = [
   {
-    id: "nacional", name: "Nacional", type: "team", foundingYear: 1899, country: "Uruguay",
+    id: "nacional", name: "Nacional", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Nacional, el 'Bolso' o 'Tricolor', es el club más laureado de Uruguay y tricampeón de América (1971, 1980, 1988).",
     keyThemes: ["Tricolor", "Historia", "Campeón", "Bolso"],
@@ -26,7 +26,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "penarol", name: "Peñarol", type: "team", foundingYear: 1891, country: "Uruguay",
+    id: "penarol", name: "Peñarol", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Peñarol, el 'Carbonero' o 'Manyas', es el rival histórico de Nacional, pentacampeón de América (1960, 1961, 1966, 1982, 1987).",
     keyThemes: ["Carbonero", "Historia", "Pentacampeón", "Manyas"],
@@ -46,7 +46,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "danubio", name: "Danubio", type: "team", foundingYear: 1932, country: "Uruguay",
+    id: "danubio", name: "Danubio", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Danubio, la 'Franja', es el tercer grande del fútbol uruguayo, tetracampeón uruguayo y semifinalista de Libertadores 1989.",
     keyThemes: ["Franja", "Tercer grande", "Semifinalista", "Jardines"],
@@ -66,7 +66,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "defensor", name: "Defensor Sporting", type: "team", foundingYear: 1913, country: "Uruguay",
+    id: "defensor", name: "Defensor Sporting", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Defensor Sporting, el 'Violeta' o 'Tuque', es club histórico de Montevideo, campeón uruguayo 1976, 1987, 1991, 2008.",
     keyThemes: ["Violeta", "Tuque", "Historia", "Cantera"],
@@ -86,7 +86,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "liverpool", name: "Liverpool", type: "team", foundingYear: 1915, country: "Uruguay",
+    id: "liverpool", name: "Liverpool", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Liverpool, el 'Negriazul', es club de Montevideo campeón uruguayo 2023, reconocido por su cantera y proyecto deportivo.",
     keyThemes: ["Negriazul", "Cantera", "Proyecto", "Campeón 2023"],
@@ -106,7 +106,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "cerro", name: "Cerro", type: "team", foundingYear: 1922, country: "Uruguay",
+    id: "cerro", name: "Cerro", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Cerro, el 'Villerito', es el club del barrio Cerro de Montevideo, único equipo uruguayo en ganar un clásico en Argentina (vs Boca 1963).",
     keyThemes: ["Villerito", "Cerro", "Barrio", "Hazaña"],
@@ -126,7 +126,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "wanderers", name: "Wanderers", type: "team", foundingYear: 1902, country: "Uruguay",
+    id: "wanderers", name: "Wanderers", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Wanderers, el 'Bohemio', es uno de los clubes más antiguos de Uruguay, campeón 1906, 1909, 1931, 1937.",
     keyThemes: ["Bohemio", "Antigüedad", "Historia", "Pionero"],
@@ -146,7 +146,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "racing", name: "Racing", type: "team", foundingYear: 1919, country: "Uruguay",
+    id: "racing", name: "Racing", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Racing, la 'Escuelita', es club de Sayago (Montevideo), reconocido por su cantera y filosofía formativa.",
     keyThemes: ["Escuelita", "Cantera", "Formativa", "Sayago"],
@@ -166,7 +166,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "boston-river", name: "Boston River", type: "team", foundingYear: 1939, country: "Uruguay",
+    id: "boston-river", name: "Boston River", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Boston River, el 'Sastre', es club de Florida (interior) que llegó a Primera en 2016 y clasificó a Libertadores 2020.",
     keyThemes: ["Sastre", "Interior", "Florida", "Ascenso"],
@@ -186,7 +186,7 @@ export const TEAMS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "plaza-colonia", name: "Plaza Colonia", type: "team", foundingYear: 1917, country: "Uruguay",
+    id: "plaza-colonia", name: "Plaza Colonia", type: "team", country: "Uruguay",
     emoji: "⚽",
     description: "Plaza Colonia, el 'Patablanca', es club de Colonia del Sacramento, campeón uruguayo 2016 (Apertura) y 2021 (Clausura).",
     keyThemes: ["Patablanca", "Colonia", "Interior", "Campeón"],

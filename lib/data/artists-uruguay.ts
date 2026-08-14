@@ -1,11 +1,11 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Artistas uruguayos — fechas de nacimiento verificadas.
  */
-export const ARTISTS_URUGUAY: SymbolicEntity[] = [
+export const ARTISTS_URUGUAY: AtlasEntityInput[] = [
   {
-    id: "juan-carlos-onetti", name: "Juan Carlos Onetti", type: "artist", foundingYear: 1909, country: "Uruguay",
+    id: "juan-carlos-onetti", name: "Juan Carlos Onetti", type: "artist", country: "Uruguay",
     emoji: "📖",
     description: "Juan Carlos Onetti, maestro de la narrativa rioplatense, creó el mítico pueblo de Santa María en obras como 'El astillero'.",
     keyThemes: ["Narrativa", "Santa María", "Existencialismo", "Rioplatense"],
@@ -26,7 +26,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "mario-benedetti", name: "Mario Benedetti", type: "artist", foundingYear: 1920, country: "Uruguay",
+    id: "mario-benedetti", name: "Mario Benedetti", type: "artist", country: "Uruguay",
     emoji: "📜",
     description: "Mario Benedetti, 'el poeta de la gente', es la voz más querida de la literatura uruguaya, autor de 'La tregua' y 'Gracias por el fuego'.",
     keyThemes: ["Poesía", "Cotidiano", "Exilio", "Amor"],
@@ -47,7 +47,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "idea-vilariño", name: "Idea Vilariño", type: "artist", foundingYear: 1920, country: "Uruguay",
+    id: "idea-vilariño", name: "Idea Vilariño", type: "artist", country: "Uruguay",
     emoji: "📝",
     description: "Idea Vilariño, poeta y traductora, fue voz esencial de la Generación del 45 y autora de 'No' y 'Poemas de amor'.",
     keyThemes: ["Poesía", "Generación del 45", "Amor", "Traducción"],
@@ -68,7 +68,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "jorge-drexler", name: "Jorge Drexler", type: "artist", foundingYear: 1964, country: "Uruguay",
+    id: "jorge-drexler", name: "Jorge Drexler", type: "artist", country: "Uruguay",
     emoji: "🎵",
     description: "Jorge Drexler, Oscar 2005 por 'Al otro lado del río', fusiona canción de autor, electrónica y ritmos rioplatenses.",
     keyThemes: ["Canción de autor", "Oscar", "Fusión", "Rioplatense"],
@@ -89,7 +89,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "ruben-rada", name: "Rubén Rada", type: "artist", foundingYear: 1943, country: "Uruguay",
+    id: "ruben-rada", name: "Rubén Rada", type: "artist", country: "Uruguay",
     emoji: "🎤",
     description: "Rubén Rada, 'el Negro', es pionero del candombe beat y la fusión afro-uruguaya, voz de 'Las Manos' y 'Ayer te vi'.",
     keyThemes: ["Candombe", "Fusión", "Afro", "Pionero"],
@@ -110,7 +110,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "daniel-viglietti", name: "Daniel Viglietti", type: "artist", foundingYear: 1939, country: "Uruguay",
+    id: "daniel-viglietti", name: "Daniel Viglietti", type: "artist", country: "Uruguay",
     emoji: "🎵",
     description: "Daniel Viglietti, referente del canto popular uruguayo, autor de 'A desalambrar' y voz comprometida con la justicia social.",
     keyThemes: ["Canto popular", "Compromiso", "Justicia", "Exilio"],
@@ -131,7 +131,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "los-shakers", name: "Los Shakers", type: "artist", foundingYear: 1963, country: "Uruguay",
+    id: "los-shakers", name: "Los Shakers", type: "artist", country: "Uruguay",
     emoji: "🎸",
     description: "Los Shakers, 'los Beatles uruguayos', fueron pioneros del rock en español en los 60 con 'Break It All'.",
     keyThemes: ["Rock", "Beat", "Pioneros", "Años 60"],
@@ -152,7 +152,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "carlos-paez-vilaro", name: "Carlos Páez Vilaró", type: "artist", foundingYear: 1923, country: "Uruguay",
+    id: "carlos-paez-vilaro", name: "Carlos Páez Vilaró", type: "artist", country: "Uruguay",
     emoji: "🎨",
     description: "Carlos Páez Vilaró, pintor, escultor y constructor de Casapueblo, creó un lenguaje visual propio entre el arte y la vida.",
     keyThemes: ["Casapueblo", "Pintura", "Escultura", "Vida-arte"],
@@ -173,7 +173,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "joaquin-torres-garcia", name: "Joaquín Torres García", type: "artist", foundingYear: 1874, country: "Uruguay",
+    id: "joaquin-torres-garcia", name: "Joaquín Torres García", type: "artist", country: "Uruguay",
     emoji: "🎨",
     description: "Joaquín Torres García, padre del constructivismo universalista, fundó el Taller Torres García y dio vuelta el mapa: 'El sur es nuestro norte'.",
     keyThemes: ["Constructivismo", "Universalismo", "Taller", "Sur"],
@@ -194,7 +194,7 @@ export const ARTISTS_URUGUAY: SymbolicEntity[] = [
     ],
   },
   {
-    id: "juan-manuel-blanes", name: "Juan Manuel Blanes", type: "artist", foundingYear: 1830, country: "Uruguay",
+    id: "juan-manuel-blanes", name: "Juan Manuel Blanes", type: "artist", country: "Uruguay",
     emoji: "🎨",
     description: "Juan Manuel Blanes, 'pintor de la patria', retrató la historia uruguaya en 'El juramento de los Treinta y Tres' y 'La batalla de Las Piedras'.",
     keyThemes: ["Historia", "Patria", "Retrato", "Batallas"],

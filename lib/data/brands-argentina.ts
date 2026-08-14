@@ -1,4 +1,4 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Marcas argentinas — fechas de fundación verificadas.
@@ -7,9 +7,9 @@ import type { SymbolicEntity } from "./symbolic-entities";
  * cubre las marcas argentinas más reconocibles con fecha documentada;
  * queda como base para ampliar en una siguiente pasada.
  */
-export const BRANDS_ARGENTINA: SymbolicEntity[] = [
+export const BRANDS_ARGENTINA: AtlasEntityInput[] = [
   {
-    id: "mercado-libre", name: "Mercado Libre", type: "brand", foundingYear: 1999, country: "Argentina",
+    id: "mercado-libre", name: "Mercado Libre", type: "brand", country: "Argentina",
     emoji: "🛒",
     description: "Mercado Libre es la plataforma de comercio electrónico más grande de América Latina, nacida en Argentina.",
     keyThemes: ["Comercio", "Escalabilidad", "Innovación", "Región"],
@@ -30,7 +30,7 @@ export const BRANDS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "ypf", name: "YPF", type: "brand", foundingYear: 1922, country: "Argentina",
+    id: "ypf", name: "YPF", type: "brand", country: "Argentina",
     emoji: "⛽",
     description: "YPF es la principal empresa de energía de Argentina, pionera estatal del petróleo en América Latina.",
     keyThemes: ["Energía", "Estado", "Industria", "Soberanía"],
@@ -51,7 +51,7 @@ export const BRANDS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "arcor", name: "Arcor", type: "brand", foundingYear: 1951, country: "Argentina",
+    id: "arcor", name: "Arcor", type: "brand", country: "Argentina",
     emoji: "🍬",
     description: "Arcor es el mayor productor de golosinas y alimentos de Argentina, con alcance global.",
     keyThemes: ["Industria", "Dulzura", "Familia", "Expansión"],
@@ -71,7 +71,7 @@ export const BRANDS_ARGENTINA: SymbolicEntity[] = [
     ],
   },
   {
-    id: "quilmes", name: "Quilmes", type: "brand", foundingYear: 1890, country: "Argentina",
+    id: "quilmes", name: "Quilmes", type: "brand", country: "Argentina",
     emoji: "🍺",
     description: "Quilmes es la cerveza más consumida de Argentina, símbolo de encuentros y celebraciones populares.",
     keyThemes: ["Encuentro", "Tradición", "Celebración", "Identidad"],

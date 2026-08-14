@@ -1,12 +1,12 @@
-import type { SymbolicEntity } from "./symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 
 /**
  * Clubes de fútbol chilenos — fechas de fundación verificadas
  * (fuentes: sitios oficiales de los clubes, Wikipedia, ANFP, CONMEBOL).
  */
-export const TEAMS_CHILE: SymbolicEntity[] = [
+export const TEAMS_CHILE: AtlasEntityInput[] = [
   {
-    id: "colo-colo", name: "Colo-Colo", type: "team", foundingYear: 1925, country: "Chile",
+    id: "colo-colo", name: "Colo-Colo", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Colo-Colo es el club más popular y laureado de Chile, único equipo chileno en ganar la Copa Libertadores (1991).",
     keyThemes: ["Popular", "Campeón", "Historia", "Pasion"],
@@ -26,7 +26,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "universidad-de-chile", name: "Universidad de Chile", type: "team", foundingYear: 1927, country: "Chile",
+    id: "universidad-de-chile", name: "Universidad de Chile", type: "team", country: "Chile",
     emoji: "⚽",
     description: "La 'U' es uno de los clubes más grandes de Chile, reconocido por su 'Ballet Azul' y su histórica Copa Sudamericana 2011.",
     keyThemes: ["Ballet", "Azul", "Historia", "Pasión"],
@@ -46,7 +46,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "universidad-catolica", name: "Universidad Católica", type: "team", foundingYear: 1937, country: "Chile",
+    id: "universidad-catolica", name: "Universidad Católica", type: "team", country: "Chile",
     emoji: "⚽",
     description: "La 'Franja' es el club más laureado en torneos locales del siglo XXI, con fuerte identidad universitaria.",
     keyThemes: ["Franja", "Universitario", "Títulos", "Identidad"],
@@ -66,7 +66,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "cobreloa", name: "Cobreloa", type: "team", foundingYear: 1977, country: "Chile",
+    id: "cobreloa", name: "Cobreloa", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Cobreloa, el 'Zorro del Desierto', nació en Calama y rápidamente llegó a dos finales de Copa Libertadores (1981, 1982).",
     keyThemes: ["Desierto", "Zorro", "Finalista", "Norte"],
@@ -86,7 +86,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "union-espanola", name: "Unión Española", type: "team", foundingYear: 1897, country: "Chile",
+    id: "union-espanola", name: "Unión Española", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Unión Española, la 'Furia Roja', es uno de los clubes más antiguos de Chile, fundado por la colonia española.",
     keyThemes: ["Historia", "Colonia", "Tradición", "Furia"],
@@ -106,7 +106,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "audax-italiano", name: "Audax Italiano", type: "team", foundingYear: 1910, country: "Chile",
+    id: "audax-italiano", name: "Audax Italiano", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Audax Italiano, el 'Tano', representa a la colonia italiana en Chile con más de un siglo de historia.",
     keyThemes: ["Colonia", "Italia", "Tradición", "Tano"],
@@ -126,7 +126,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "palestino", name: "Palestino", type: "team", foundingYear: 1920, country: "Chile",
+    id: "palestino", name: "Palestino", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Palestino es el club de la colonia palestina en Chile, símbolo de identidad y resistencia cultural.",
     keyThemes: ["Identidad", "Colonia", "Resistencia", "Cultura"],
@@ -146,7 +146,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "everton", name: "Everton de Viña del Mar", type: "team", foundingYear: 1909, country: "Chile",
+    id: "everton", name: "Everton de Viña del Mar", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Everton, la 'Regla de Oro', es el gran club de la Quinta Región, campeón de Copa Chile 1984.",
     keyThemes: ["Viña", "Tradición", "Costa", "Historia"],
@@ -166,7 +166,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "santiago-wanderers", name: "Santiago Wanderers", type: "team", foundingYear: 1892, country: "Chile",
+    id: "santiago-wanderers", name: "Santiago Wanderers", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Santiago Wanderers, el 'Decano', es el club más antiguo de Chile, fundado en Valparaíso.",
     keyThemes: ["Decano", "Antigüedad", "Valparaíso", "Historia"],
@@ -186,7 +186,7 @@ export const TEAMS_CHILE: SymbolicEntity[] = [
     ],
   },
   {
-    id: "huachipato", name: "Huachipato", type: "team", foundingYear: 1947, country: "Chile",
+    id: "huachipato", name: "Huachipato", type: "team", country: "Chile",
     emoji: "⚽",
     description: "Huachipato, el 'Acerero', es el club de la industria del acero en Talcahuano, campeón 2012 y 2023.",
     keyThemes: ["Acero", "Industria", "Talcahuano", "Campeón"],

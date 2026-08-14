@@ -1,15 +1,15 @@
 import { FAMOUS_BY_ANIMAL, FAMOUS_BY_SIGN, type FamousPerson } from "../data/famousPeople";
 import { MOVIES } from "../data/movies";
-import type { SymbolicEntity } from "../data/symbolic-entities";
+import type { AtlasEntityInput } from "@/types/atlas";
 import { BRANDS, type BrandData } from "../data/brands";
 import { ENTITIES, type EntityProfile, type EntityCategory } from "../data/entities";
 import { COUNTRIES, type CountryData } from "../data/countries";
-import { getEntityAnimal } from "../data/symbolic-entities";
+import { resolveEntityAnimalData } from "../data/symbolic-entities";
 
 export interface CountryContent {
   country: string;
   famousPeople: FamousPerson[];
-  movies: SymbolicEntity[];
+  movies: AtlasEntityInput[];
   brands: BrandData[];
   entities: EntityProfile[];
 }
@@ -34,7 +34,7 @@ export function getFamousPeopleByCountry(countryName: string): FamousPerson[] {
   return Array.from(uniquePeople.values()).filter(p => normalizeCountryName(p.country) === normalized);
 }
 
-export function getMoviesByCountry(countryName: string): SymbolicEntity[] {
+export function getMoviesByCountry(countryName: string): AtlasEntityInput[] {
   const normalized = normalizeCountryName(countryName);
   return MOVIES.filter(m => normalizeCountryName(m.country) === normalized);
 }
@@ -88,11 +88,11 @@ export function getCountryFamousBySign(countryName: string, sign: string, userYe
   return filtered;
 }
 
-export function getCountryMoviesByAnimal(countryName: string, animal: string): SymbolicEntity[] {
+export function getCountryMoviesByAnimal(countryName: string, animal: string): AtlasEntityInput[] {
   const normalized = normalizeCountryName(countryName);
   return MOVIES.filter(m => 
     normalizeCountryName(m.country) === normalized && 
-    getEntityAnimal(m.foundingYear) === animal
+    resolveEntityAnimalData(m).animal === animal
   );
 }
 
