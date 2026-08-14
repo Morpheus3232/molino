@@ -77,7 +77,7 @@ function getLocalDevKvClient(): KvLike {
   };
 }
 
-async function getKvClient(): Promise<KvLike | null> {
+export async function getKvClient(): Promise<KvLike | null> {
   try {
     const mod = await import('@vercel/kv');
     const url =
