@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, salt } = await req.json();
+    const { name, birthDate, salt } = await req.json().catch(() => ({}));
 
     if (!birthDate) {
       return NextResponse.json(

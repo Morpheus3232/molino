@@ -29,97 +29,110 @@ interface AnalyticsEvent {
 }
 
 const LAST_VISIT_KEY = "molino-analytics-last-visit";
+const EVENTS_STORAGE_KEY = "molino-analytics-events";
+const MAX_EVENTS = 200;
 
 class Analytics {
   private events: AnalyticsEvent[] = [];
-  private userId: string | null = null;
 
   constructor() {
     this.loadFromStorage();
-    this.setUserId();
     this.trackReturnVisit();
-  }
-
-  private setUserId() {
-    if (typeof window === "undefined") return;
-    let userId = localStorage.getItem("molino-analytics-user-id");
-    if (!userId) {
-      userId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
-      localStorage.setItem("molino-analytics-user-id", userId);
-    }
-    this.userId = userId;
   }
 
   private loadFromStorage() {
     if (typeof window === "undefined") return;
     try {
-      const stored = localStorage.getItem("molino-analytics-events");
+      const stored = localStorage.getItem(EVENTS_STORAGE_KEY);
       if (stored) {
-        this.events = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          this.events = parsed.slice(-MAX_EVENTS);
+        }
       }
-    } catch (error) {
-      console.error("Error loading analytics:", error);
+    } catch {
+      // Storage might be disabled, full, or blocked in private browsing
+      this.events = [];
     }
   }
 
   private saveToStorage() {
     if (typeof window === "undefined") return;
     try {
-      localStorage.setItem("molino-analytics-events", JSON.stringify(this.events));
+      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(this.events));
     } catch (error) {
-      console.error("Error saving analytics:", error);
+      // Handle QuotaExceededError or restricted storage:
+      // Trim to last 50 events and retry once, or silently degrade
+      try {
+        this.events = this.events.slice(-50);
+        localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(this.events));
+      } catch {
+        // Silently continue in-memory only without throwing
+      }
     }
   }
 
   /**
    * Check if this is a return visit (second visit within 24h).
-   * Tracks once per calendar day. Uses localStorage to persist the last visit date.
-   * "return_visit" = the user visited the site on a different day than their last visit.
+   * Tracks once per calendar day. Uses localStorage safely.
    */
   trackReturnVisit() {
     if (typeof window === "undefined") return;
 
-    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-    const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
+    try {
+      const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+      const lastVisit = localStorage.getItem(LAST_VISIT_KEY);
 
-if (!lastVisit) {
-      // First visit ever — just record the date, no event
+      if (!lastVisit) {
+        localStorage.setItem(LAST_VISIT_KEY, today);
+        return;
+      }
+
+      if (lastVisit !== today) {
+        const daysSinceLastVisit = Math.floor(
+          (new Date(today).getTime() - new Date(lastVisit).getTime()) / (1000 * 60 * 60 * 24)
+        );
+        this.track({
+          type: "return_visit",
+          data: {
+            daysSinceLastVisit,
+            previousVisit: lastVisit,
+          },
+        });
+      }
+
       localStorage.setItem(LAST_VISIT_KEY, today);
-      return;
+    } catch {
+      // Storage unavailable / private mode
     }
-
-    if (lastVisit !== today) {
-      // Different day = return visit!
-      const daysSinceLastVisit = Math.floor(
-        (new Date(today).getTime() - new Date(lastVisit).getTime()) / (1000 * 60 * 60 * 24)
-      );
-      this.track({
-        type: "return_visit",
-        data: {
-          daysSinceLastVisit,
-          previousVisit: lastVisit,
-        },
-      });
-    }
-
-    // Always update to today
-    localStorage.setItem(LAST_VISIT_KEY, today);
   }
 
   track(event: Omit<AnalyticsEvent, "timestamp" | "userId">) {
-    const fullEvent: AnalyticsEvent = {
-      ...event,
-      timestamp: new Date().toISOString(),
-      userId: this.userId || undefined,
-    };
+    try {
+      const fullEvent: AnalyticsEvent = {
+        ...event,
+        timestamp: new Date().toISOString(),
+      };
 
-    this.events.push(fullEvent);
-    this.saveToStorage();
-    if (process.env.NODE_ENV !== "production") {
-      console.log("📊 Analytics:", fullEvent);
+      this.events.push(fullEvent);
+      if (this.events.length > MAX_EVENTS) {
+        this.events = this.events.slice(-MAX_EVENTS);
+      }
+
+      this.saveToStorage();
+
+      if (process.env.NODE_ENV !== "production") {
+        console.log("📊 Analytics:", fullEvent);
+      }
+
+      return fullEvent;
+    } catch {
+      // Analytics must NEVER crash any application feature
+      return {
+        ...event,
+        timestamp: new Date().toISOString(),
+      };
     }
-
-    return fullEvent;
   }
 
   getEvents(): AnalyticsEvent[] {
@@ -153,7 +166,11 @@ if (!lastVisit) {
 
   clearEvents() {
     this.events = [];
-    this.saveToStorage();
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem(EVENTS_STORAGE_KEY);
+      } catch {}
+    }
   }
 
   trackPageView(page: string) {
@@ -164,10 +181,9 @@ if (!lastVisit) {
     this.track({
       type: "profile_created",
       data: {
-        // Datos simbólicos removidos — solo métrica de que se creó un perfil
-        hasNumerology: !!profile.lifePath,
-        hasAstrology: !!profile.sunSign,
-        hasChineseZodiac: !!profile.chineseZodiac,
+        hasNumerology: !!profile?.lifePath,
+        hasAstrology: !!profile?.sunSign,
+        hasChineseZodiac: !!profile?.chineseZodiac,
       },
     });
   }
@@ -189,7 +205,7 @@ if (!lastVisit) {
   trackAIQuery(query: string) {
     this.track({
       type: "ai_query",
-      data: { queryLength: query.length },
+      data: { queryLength: query?.length ?? 0 },
     });
   }
 

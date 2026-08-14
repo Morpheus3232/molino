@@ -33,9 +33,10 @@ function daysInMonth(month: number, year: number) {
  * "a ciegas".
  */
 function focusAndReveal(ref: React.RefObject<HTMLInputElement | null>) {
-  ref.current?.focus();
-  ref.current?.select();
-  ref.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+  if (!ref.current) return;
+  try {
+    ref.current.focus();
+  } catch {}
 }
 
 /**
@@ -59,38 +60,82 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   const [yyyy, setYyyy] = useState(initial[0] === "0000" ? "" : initial[0]);
   const [missingField, setMissingField] = useState<"dd" | "mm" | "yyyy" | null>(null);
 
+  const valuesRef = useRef({
+    dd: initial[2] === "00" ? "" : initial[2],
+    mm: initial[1] === "00" ? "" : initial[1],
+    yyyy: initial[0] === "0000" ? "" : initial[0],
+  });
+
   const ddRef = useRef<HTMLInputElement>(null);
   const mmRef = useRef<HTMLInputElement>(null);
   const yyyyRef = useRef<HTMLInputElement>(null);
   const errorId = `${id}-error`;
 
-  const emit = useCallback(
-    (d: string, m: string, y: string) => {
+  const emit = useCallback(() => {
+    const d = (ddRef.current?.value || valuesRef.current.dd || "").replace(/\D/g, "");
+    const m = (mmRef.current?.value || valuesRef.current.mm || "").replace(/\D/g, "");
+    const y = (yyyyRef.current?.value || valuesRef.current.yyyy || "").replace(/\D/g, "");
+
+    if (d.length >= 1 && m.length >= 1 && y.length === 4) {
       const pd = d.padStart(2, "0");
       const pm = m.padStart(2, "0");
       const py = y.padStart(4, "0");
-      if (d.length === 2 && m.length === 2 && y.length === 4) {
+      const yNum = parseInt(py, 10);
+      const mNum = parseInt(pm, 10);
+      const dNum = parseInt(pd, 10);
+      if (
+        yNum >= 1900 &&
+        yNum <= 2100 &&
+        mNum >= 1 &&
+        mNum <= 12 &&
+        dNum >= 1 &&
+        dNum <= 31
+      ) {
         onChange(`${py}-${pm}-${pd}`);
+        return;
       }
-    },
-    [onChange]
-  );
+    } else if (!d && !m && !y) {
+      onChange("");
+    }
+  }, [onChange]);
+
+  useEffect(() => {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      const [y, m, d] = value.split("-");
+      valuesRef.current = { dd: d, mm: m, yyyy: y };
+      setDd(d);
+      setMm(m);
+      setYyyy(y);
+    }
+  }, [value]);
 
   // ── DAY ──────────────────────────────────────────────────────────────────────
   const handleDdChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = e.target.value.replace(/\D/g, "").slice(0, 2);
-      setDd(raw);
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 2);
+    valuesRef.current.dd = raw;
+    setDd(raw);
       if (raw.length === 2) {
-        const n = clamp(parseInt(raw), 1, 31);
+        const n = clamp(parseInt(raw, 10), 1, 31);
         const fixed = String(n).padStart(2, "0");
+        valuesRef.current.dd = fixed;
         setDd(fixed);
-        emit(fixed, mm, yyyy);
         focusAndReveal(mmRef);
       }
+      emit();
     },
-    [mm, yyyy, emit]
+    [emit]
   );
+
+  const handleDdBlur = useCallback(() => {
+    const cur = ddRef.current?.value.replace(/\D/g, "") || valuesRef.current.dd;
+    if (cur.length === 1 && parseInt(cur, 10) >= 1) {
+      const fixed = cur.padStart(2, "0");
+      valuesRef.current.dd = fixed;
+      setDd(fixed);
+      emit();
+    }
+  }, [emit]);
 
   const handleDdKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -106,25 +151,38 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   const handleMmChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value.replace(/\D/g, "").slice(0, 2);
+      valuesRef.current.mm = raw;
       setMm(raw);
       if (raw.length === 2) {
-        const n = clamp(parseInt(raw), 1, 12);
+        const n = clamp(parseInt(raw, 10), 1, 12);
         const fixed = String(n).padStart(2, "0");
+        valuesRef.current.mm = fixed;
         setMm(fixed);
-        // Clamp day if necessary
-        if (yyyy.length === 4 && dd.length === 2) {
-          const maxD = daysInMonth(n, parseInt(yyyy));
-          const clampedD = String(clamp(parseInt(dd), 1, maxD)).padStart(2, "0");
+        // Clamp day if year and month exist
+        const yVal = yyyyRef.current?.value.replace(/\D/g, "") || valuesRef.current.yyyy;
+        const dVal = ddRef.current?.value.replace(/\D/g, "") || valuesRef.current.dd;
+        if (yVal.length === 4 && dVal.length >= 1) {
+          const maxD = daysInMonth(n, parseInt(yVal, 10));
+          const clampedD = String(clamp(parseInt(dVal, 10), 1, maxD)).padStart(2, "0");
+          valuesRef.current.dd = clampedD;
           setDd(clampedD);
-          emit(clampedD, fixed, yyyy);
-        } else {
-          emit(dd, fixed, yyyy);
         }
         focusAndReveal(yyyyRef);
       }
+      emit();
     },
-    [dd, yyyy, emit]
+    [emit]
   );
+
+  const handleMmBlur = useCallback(() => {
+    const cur = mmRef.current?.value.replace(/\D/g, "") || valuesRef.current.mm;
+    if (cur.length === 1 && parseInt(cur, 10) >= 1) {
+      const fixed = cur.padStart(2, "0");
+      valuesRef.current.mm = fixed;
+      setMm(fixed);
+      emit();
+    }
+  }, [emit]);
 
   const handleMmKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -148,16 +206,11 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   const handleYyyyChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
+      valuesRef.current.yyyy = raw;
       setYyyy(raw);
-      if (raw.length === 4) {
-        const y = parseInt(raw);
-        const currentYear = new Date().getFullYear();
-        if (y >= 1900 && y <= currentYear) {
-          emit(dd, mm, raw);
-        }
-      }
+      emit();
     },
-    [dd, mm, emit]
+    [emit]
   );
 
   const handleYyyyKeyDown = useCallback(
@@ -185,24 +238,25 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   // Determina el primer campo incompleto, marca el error y le lleva el foco.
   // Devuelve true si la fecha ya está completa (nada que reportar).
   const reportIncomplete = useCallback(() => {
-    if (dd.length < 2) {
+    const { dd: d, mm: m, yyyy: y } = valuesRef.current;
+    if (d.length < 2) {
       setMissingField("dd");
       focusAndReveal(ddRef);
       return false;
     }
-    if (mm.length < 2) {
+    if (m.length < 2) {
       setMissingField("mm");
       focusAndReveal(mmRef);
       return false;
     }
-    if (yyyy.length < 4) {
+    if (y.length < 4) {
       setMissingField("yyyy");
       focusAndReveal(yyyyRef);
       return false;
     }
     setMissingField(null);
     return true;
-  }, [dd, mm, yyyy]);
+  }, []);
 
   useImperativeHandle(ref, () => ({ reportIncomplete: () => { reportIncomplete(); } }), [reportIncomplete]);
 
@@ -217,7 +271,8 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
   const handleGroupKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key !== "Enter") return;
-      const isComplete = dd.length === 2 && mm.length === 2 && yyyy.length === 4;
+      const { dd: d, mm: m, yyyy: y } = valuesRef.current;
+      const isComplete = d.length >= 1 && m.length >= 1 && y.length === 4;
       if (!isComplete) {
         e.preventDefault();
         e.stopPropagation();
@@ -226,7 +281,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
       // Fecha completa: se deja pasar el Enter para que el onKeyDown del
       // formulario (fuera de este componente) dispare el submit existente.
     },
-    [dd, mm, yyyy, reportIncomplete]
+    [reportIncomplete]
   );
 
   return (
@@ -250,6 +305,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           placeholder="DD"
           value={dd}
           onChange={handleDdChange}
+          onBlur={handleDdBlur}
           onKeyDown={handleDdKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}
@@ -272,6 +328,7 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
           placeholder="MM"
           value={mm}
           onChange={handleMmChange}
+          onBlur={handleMmBlur}
           onKeyDown={handleMmKeyDown}
           onFocus={e => { e.target.select(); e.target.scrollIntoView({ block: "center", behavior: "smooth" }); }}
           className={`${baseInput} text-3xl sm:text-4xl w-16 sm:w-20`}

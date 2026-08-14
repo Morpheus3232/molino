@@ -10,10 +10,10 @@ test.describe('Premium Funnel E2E', () => {
     await page.waitForLoadState('networkidle');
 
     // Las piezas gratis (siempre visibles, sin paywall) — confirma que
-    // llegamos al capítulo correcto antes de buscar el gate.
-    await expect(page.getByRole('heading', { name: 'Tus patrones' })).toBeVisible({ timeout: 15000 });
+    // llegamos a la sección de patrones antes de buscar el gate.
+    await expect(page.getByText(/TU PATRÓN CENTRAL/i).first()).toBeVisible({ timeout: 15000 });
 
-    // El paywall — headline real del diccionario (t.premium.headline).
+    // El paywall — headline real del gate de lectura profunda
     await expect(page.locator('h3:has-text("Ya conocés tus piezas")').first()).toBeVisible({ timeout: 15000 });
   });
 
@@ -39,23 +39,20 @@ test.describe('Premium Funnel E2E', () => {
 
   test('Formulario de recuperación visible y funcional', async ({ page }) => {
     await page.goto('/profile?dob=1990-01-15');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
-    // Sin force: esperamos a que el botón esté realmente hidratado y
-    // clickeable — con force:true el click puede "pasar" antes de que
-    // React adjunte el listener, dejando el estado sin cambiar.
-    await page.locator('button:has-text("Recuperar acceso")').first().click();
+    const recoverBtn = page.getByRole('button', { name: /Recuperar acceso/i }).first();
+    await recoverBtn.scrollIntoViewIfNeeded();
+    await recoverBtn.click();
 
-    // Labels ahora asociados vía htmlFor/id (antes el placeholder no
-    // contenía "pago" ni "ID" — el locator original nunca podía matchear).
-    await expect(page.getByLabel('Mercado Pago ID:')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#recover-mp-id')).toBeVisible({ timeout: 10000 });
   });
 
   test('Usuario sin Premium no ve "Preguntale a tu Molino" ni la interpretación (06)', async ({ page }) => {
     await page.goto('/profile?dob=1990-01-15');
     await page.waitForLoadState('networkidle');
 
-    await expect(page.getByRole('heading', { name: 'Tus patrones' })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/TU PATRÓN CENTRAL/i).first()).toBeVisible({ timeout: 15000 });
     await expect(page.getByRole('heading', { name: 'Preguntale a tu Molino' })).toHaveCount(0);
   });
 });

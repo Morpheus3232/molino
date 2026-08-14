@@ -31,14 +31,15 @@ interface ActionButtonsProps {
   profile: UserProfile;
 }
 
+import { SITE_URL } from "@/lib/seo";
+
 function generateShareText(profile: UserProfile): string {
   const displayName = profile.name || "Tu Mapa";
   return `${displayName} — ${profile.archetype || "Mapa de Autoconocimiento"} · Camino ${profile.lifePath} · ${profile.sunSign} · ${profile.chineseZodiac}`;
 }
 
 function generateShareUrl(profile: UserProfile): string {
-  const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-  return `${baseUrl}/profile?dob=${profile.birthDate}`;
+  return `${SITE_URL}/profile?dob=${profile.birthDate}`;
 }
 
 async function copyToClipboard(text: string) {

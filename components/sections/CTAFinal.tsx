@@ -59,7 +59,7 @@ export default function CTAFinal() {
             variant="accent"
             size="lg"
             onClick={handleGenerate}
-            aria-disabled={!isDateValid}
+            aria-disabled={!isDateValid ? "true" : undefined}
             className={`w-[90%] sm:w-auto ${!isDateValid ? "opacity-50" : ""}`}
           >
             Crear mi mapa personal

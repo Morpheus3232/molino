@@ -75,19 +75,21 @@ interface OnboardingData {
 
 export function saveOnboardingData(data: OnboardingData): void {
   if (typeof window !== "undefined") {
-    localStorage.setItem(ONBOARDING_KEY, JSON.stringify(data));
+    try {
+      localStorage.setItem(ONBOARDING_KEY, JSON.stringify(data));
+    } catch {}
   }
 }
 
 export function loadOnboardingData(): OnboardingData | null {
   if (typeof window !== "undefined") {
-    const stored = localStorage.getItem(ONBOARDING_KEY);
-    if (stored) {
-      try {
+    try {
+      const stored = localStorage.getItem(ONBOARDING_KEY);
+      if (stored) {
         return JSON.parse(stored);
-      } catch {
-        return null;
       }
+    } catch {
+      return null;
     }
   }
   return null;
@@ -95,6 +97,8 @@ export function loadOnboardingData(): OnboardingData | null {
 
 export function clearOnboardingData(): void {
   if (typeof window !== "undefined") {
-    localStorage.removeItem(ONBOARDING_KEY);
+    try {
+      localStorage.removeItem(ONBOARDING_KEY);
+    } catch {}
   }
 }

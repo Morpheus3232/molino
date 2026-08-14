@@ -95,7 +95,9 @@ export default function StickyMobileCTA({
                 ref={dateRef}
                 type="date"
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value) onChange(e.target.value);
+                }}
                 aria-label="Fecha de nacimiento"
                 className="w-full rounded-md border border-ink/10 bg-ink/[0.04] py-2.5 pl-9 pr-3 text-sm text-foreground focus:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
               />
@@ -105,7 +107,7 @@ export default function StickyMobileCTA({
             <button
               type="button"
               onClick={onGenerate}
-              aria-disabled={!canGenerate}
+              aria-disabled={!canGenerate ? "true" : undefined}
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-gold px-4 py-2.5 text-xs font-heading font-bold uppercase tracking-[0.08em] text-gold-foreground transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {ctaLabel}

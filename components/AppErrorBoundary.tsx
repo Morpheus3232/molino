@@ -23,7 +23,17 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
   }
 
   componentDidCatch(error: Error, errorInfo: { componentStack?: string }) {
-    console.error("[Molino Error Boundary]", error, errorInfo);
+    const errorReport = {
+      level: "error",
+      name: error.name || "Error",
+      message: error.message || "Unknown error",
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+      route: typeof window !== "undefined" ? window.location.pathname : undefined,
+      timestamp: new Date().toISOString(),
+      version: "0.1.0",
+    };
+    console.error("[Molino Error Boundary]", JSON.stringify(errorReport));
   }
 
   handleRetry = () => {
@@ -32,7 +42,7 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
 
   handleGoHome = () => {
     if (typeof window !== "undefined") {
-      window.location.href = "/";
+      window.location.assign("/");
     }
   };
 

@@ -238,7 +238,7 @@ export async function processPayment({
 }: {
   profileHash: string;
   paymentData: {
-    transaction_amount: number;
+    transaction_amount?: number;
     payment_method_id: string;
     token: string;
     installments?: number;
@@ -248,9 +248,13 @@ export async function processPayment({
 }) {
   const payment = new Payment(getMpClient());
 
+  // Server is the sole authority on the price
+  const expectedAmount = expectedAmountFor(PRODUCT_ID, PRODUCT_CURRENCY_ARS);
+
   const response = await payment.create({
     body: {
       ...paymentData,
+      transaction_amount: expectedAmount,
       description: 'Molino — Mapa Personal Completo',
       metadata: {
         profile_hash: profileHash,
