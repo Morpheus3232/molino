@@ -34,6 +34,9 @@ import { ARTISTS_CHILE } from "./artists-chile";
 import { ARTISTS_PERU } from "./artists-peru";
 import { ARTISTS_URUGUAY } from "./artists-uruguay";
 import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
+import { CITIES_MEXICO, TEAMS_MEXICO, UNIVERSITIES_MEXICO, BRANDS_MEXICO, ARTISTS_MEXICO } from "./atlas/mexico";
+import { CITIES_COLOMBIA, TEAMS_COLOMBIA, UNIVERSITIES_COLOMBIA, BRANDS_COLOMBIA, ARTISTS_COLOMBIA } from "./atlas/colombia";
+import { CITIES_ESPANA, TEAMS_ESPANA, UNIVERSITIES_ESPANA, BRANDS_ESPANA, ARTISTS_ESPANA } from "./atlas/espana";
 
 export type EntityType =
   | "brand"
@@ -230,6 +233,25 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...ARTISTS_PERU,
   ...ARTISTS_URUGUAY,
   ...FAMOUS_PEOPLE_ENTITIES,
+
+  // ──── ATLAS VISUAL — México, Colombia, España (Fase 2) ────
+  ...CITIES_MEXICO,
+  ...TEAMS_MEXICO,
+  ...UNIVERSITIES_MEXICO,
+  ...BRANDS_MEXICO,
+  ...ARTISTS_MEXICO,
+
+  ...CITIES_COLOMBIA,
+  ...TEAMS_COLOMBIA,
+  ...UNIVERSITIES_COLOMBIA,
+  ...BRANDS_COLOMBIA,
+  ...ARTISTS_COLOMBIA,
+
+  ...CITIES_ESPANA,
+  ...TEAMS_ESPANA,
+  ...UNIVERSITIES_ESPANA,
+  ...BRANDS_ESPANA,
+  ...ARTISTS_ESPANA,
 
   // ──── UNIVERSIDADES (3) ────
   {

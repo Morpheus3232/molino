@@ -182,4 +182,17 @@ describe('Atlas schema integrity', () => {
     const withISO = countries.filter((c) => c.countryISO).length;
     expect(withISO).toBeGreaterThan(0);
   });
+
+  it('has substantial representation for Mexico, Colombia and Spain (no poor countries)', () => {
+    const requiredISO = ['MX', 'CO', 'ES'];
+    const report: Record<string, number> = {};
+    for (const iso of requiredISO) {
+      const count = SYMBOLIC_ENTITIES.filter((e) => e.countryISO === iso).length;
+      report[iso] = count;
+      // At least ~15 entities per country prevents "poor country" regressions.
+      expect(count, `${iso} representation`).toBeGreaterThanOrEqual(15);
+    }
+    console.log('\n=== ATLAS POR PAÍS (Fase 2) ===');
+    console.log(JSON.stringify(report, null, 2));
+  });
 });
