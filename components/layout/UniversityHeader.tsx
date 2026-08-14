@@ -21,7 +21,7 @@ const PRIMARY_NAV = [
 
 /* ═══ Navegación Secundaria (Menú Explorar) ═══ */
 const EXPLORE_NAV = [
-  { href: "/mundo", label: "Afinidades", desc: "Marcas, ciudades y países afines" },
+  { href: "/atlas", label: "Atlas", desc: "Explora afinidades por país" },
   { href: "/calendario", label: "Calendario", desc: "Ciclos y vibración mensual" },
   { href: "/biblioteca", label: "Biblioteca", desc: "Fuentes clásicas y autores" },
   { href: "/precios", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
