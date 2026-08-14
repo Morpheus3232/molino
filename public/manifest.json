@@ -1,7 +1,7 @@
 {
   "name": "Molino",
   "short_name": "Molino",
-  "description": "Tu mapa personal de autoconocimiento",
+  "description": "Tu mapa personal de autoconocimiento: numerología, astrología y zodíaco chino 100% privado en tu navegador.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,7 +9,7 @@
   "theme_color": "#0A0A0C",
   "orientation": "portrait-primary",
   "lang": "es",
-  "categories": ["lifestyle", "utilities"],
+  "categories": ["lifestyle", "utilities", "education"],
   "icons": [
     {
       "src": "/favicon.svg",
@@ -35,5 +35,34 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Energía de Hoy",
+      "short_name": "Hoy",
+      "url": "/hoy",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Modo Pareja",
+      "short_name": "Pareja",
+      "url": "/pareja",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Journal",
+      "short_name": "Journal",
+      "url": "/journal",
+      "icons": [{ "src": "/icon-192.svg", "sizes": "192x192" }]
+    }
+  ],
+  "share_target": {
+    "action": "/pareja",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }
