@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
 import { getAllCountryISOs, getCategoriesByCountry, getCountryName, getEntitiesByTaxonomy } from "@/lib/data/atlas-queries";
 import type { EntityType } from "@/lib/data/symbolic-entities";
-import EntityCard from "@/components/atlas/EntityCard";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
+import AtlasCategoryListing from "@/components/atlas/AtlasCategoryListing";
 import AtlasSharePanel from "@/components/atlas/AtlasSharePanel";
 
 const VALID_CATEGORIES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
@@ -81,15 +81,11 @@ export default async function CategoryPage({ params }: Props) {
             {catLabel} de {name}
           </h1>
           <p className="text-sm text-muted mt-2">
-            {entities.length} {entities.length === 1 ? "entidad verificada" : "entidades verificadas"}.
+            {entities.length} {entities.length === 1 ? "entidad verificada" : "entidades verificadas"} — clasificadas por tu animal del zodíaco chino.
           </p>
         </header>
 
-        <section aria-label={`Lista de ${catLabel.toLowerCase()}`} className="space-y-3">
-          {entities.map((entity) => (
-            <EntityCard key={entity.id} entity={entity} countryISO={iso} category={category} />
-          ))}
-        </section>
+        <AtlasCategoryListing entities={entities} countryISO={iso} category={category} />
 
         <AtlasSharePanel entities={entities} category={category} />
       </div>
