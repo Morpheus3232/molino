@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { detectarNudo, type NudoInput, type NudoContext } from "@/lib/engines/nudoEngine";
 import { CATEGORY_LABELS, type DecisionCategory } from "@/lib/engines/decisionsEngine";
@@ -22,6 +23,7 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const COMPATIBILITY_SAMPLE_TARGET = { lifePath: 4, sunSign: "Tauro", chineseZodiac: "Buey", archetype: "El Constructor", element: "Tierra" };
 
 export default function NudoPage() {
+  const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const [selectedContext, setSelectedContext] = useState<NudoContext>("decision");
   const [submitted, setSubmitted] = useState(false);
@@ -100,7 +102,7 @@ export default function NudoPage() {
           <p className="text-muted mb-8 max-w-md mx-auto">
             Primero necesitás crear tu perfil personal para detectar nudos.
           </p>
-          <Button variant="primary" size="lg" onClick={() => window.location.href = "/onboarding"}>
+          <Button variant="primary" size="lg" onClick={() => router.push("/onboarding")}>
             Crear mi perfil
           </Button>
         </main>

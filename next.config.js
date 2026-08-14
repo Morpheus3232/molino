@@ -93,7 +93,7 @@ const nextConfig = {
           "style-src 'self' 'unsafe-inline'",
           "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com https://*.paypalobjects.com",
           "font-src 'self'",
-`connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com https://api-m.paypal.com https://api-m.sandbox.paypal.com https://api.openai.com https://api.anthropic.com${__impeccableLiveDev}`,
+          "connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com https://api-m.paypal.com https://api-m.sandbox.paypal.com${__impeccableLiveDev}",
           "frame-src https://www.mercadopago.com.ar https://www.mercadopago.com https://checkout.mercadopago.com https://www.paypal.com https://*.paypal.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
@@ -115,4 +115,10 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+// Bundle analysis (opt-in): ANALYZE=true npm run analyze.
+const withBundleAnalyzer =
+  process.env.ANALYZE === 'true'
+    ? require('@next/bundle-analyzer')({ enabled: true })
+    : (config) => config;
+
+module.exports = withBundleAnalyzer(nextConfig);

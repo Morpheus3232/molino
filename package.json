@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rm -rf .next && next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "analyze": "ANALYZE=true next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "stop": "lsof -ti :3000 | xargs kill",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.0",
+    "@next/bundle-analyzer": "^16.3.1",
     "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
