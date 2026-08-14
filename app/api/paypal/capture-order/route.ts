@@ -4,6 +4,7 @@ import { captureOrder, validateOrder } from '@/lib/paypal';
 import { grantPremiumAccess, hasPremiumAccess, isPaymentProcessed, markPaymentProcessed, savePremiumToken, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
 import { isValidDate } from '@/lib/validation';
+import { paymentIdentitySchema, paypalOrderIdSchema } from '@/lib/validation/payments';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -11,14 +12,26 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { orderId, name, birthDate, salt } = await req.json();
+    const body = await req.json();
 
-    if (!orderId || !birthDate) {
+    const identity = paymentIdentitySchema.safeParse(body);
+    if (!identity.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
+    const orderId = typeof body?.orderId === 'string' ? body.orderId.trim() : '';
+    if (!orderId) {
       return NextResponse.json(
         { error: 'orderId and birthDate are required' },
         { status: 400 },
       );
     }
+
+    if (!paypalOrderIdSchema.safeParse(orderId).success) {
+      return NextResponse.json({ error: 'Invalid orderId format' }, { status: 400 });
+    }
+
+    const { name, birthDate, salt } = identity.data;
 
     if (!isValidDate(birthDate)) {
       return NextResponse.json(
