@@ -10,6 +10,7 @@ const FOOTER_LINKS = [
   { href: "/premium", label: "Premium" },
   { href: "/profesionales", label: "Profesionales" },
   { href: "/embed", label: "Widget" },
+  { href: "/changelog", label: "Changelog" },
   { href: "/privacidad", label: "Privacidad" },
 ];
 

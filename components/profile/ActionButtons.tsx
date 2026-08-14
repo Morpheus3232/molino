@@ -24,6 +24,8 @@ import ProfileDownloadImage, {
   type ProfileDownloadImageHandle,
   type ExportFormat,
 } from "@/components/profile/ProfileDownloadImage";
+import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
+import SocialShareBar from "@/components/ui/SocialShareBar";
 
 interface ActionButtonsProps {
   profile: UserProfile;
@@ -31,7 +33,7 @@ interface ActionButtonsProps {
 
 function generateShareText(profile: UserProfile): string {
   const displayName = profile.name || "Tu Mapa";
-  return `${displayName} — ${profile.archetype} · Camino ${profile.lifePath} · ${profile.sunSign} · ${profile.chineseZodiac}`;
+  return `${displayName} — ${profile.archetype || "Mapa de Autoconocimiento"} · Camino ${profile.lifePath} · ${profile.sunSign} · ${profile.chineseZodiac}`;
 }
 
 function generateShareUrl(profile: UserProfile): string {
@@ -266,12 +268,6 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
     }
   };
 
-  const handleTwitterShare = () => {
-    const tweetText = encodeURIComponent(`${shareText}\n\nVer en Molino:`);
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(shareUrl)}`;
-    window.open(tweetUrl, "_blank", "width=550,height=420");
-  };
-
   const executeShare = useCallback(async () => {
     if (navigator.share) {
       try {
@@ -318,82 +314,85 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
-        className="flex flex-wrap items-center justify-center gap-3 py-8 border-t border-ink/10"
-        role="group"
-        aria-label="Acciones para tu mapa"
+        className="space-y-4 py-8 border-t border-ink/10"
       >
-        <Button
-          variant="primary"
-          onClick={handleOpenDownloadModal}
-          className="flex items-center gap-2"
+        <div
+          className="flex flex-wrap items-center justify-center gap-3"
+          role="group"
+          aria-label="Acciones para tu mapa"
         >
-          <Download className="w-4 h-4" aria-hidden="true" />
-          Descargar mapa
-        </Button>
+          <Button
+            variant="primary"
+            onClick={handleOpenDownloadModal}
+            className="flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" aria-hidden="true" />
+            Descargar mapa
+          </Button>
 
-        <Button
-          variant="ghost"
-          onClick={handleShare}
-          className="flex items-center gap-2"
-        >
-          <Share2 className="w-4 h-4" aria-hidden="true" />
-          Compartir
-        </Button>
+          <Button
+            variant="ghost"
+            onClick={handleShare}
+            className="flex items-center gap-2"
+          >
+            <Share2 className="w-4 h-4" aria-hidden="true" />
+            Compartir
+          </Button>
 
-        <Button
-          variant="ghost"
-          onClick={handleTwitterShare}
-          className="flex items-center gap-2"
-          aria-label="Compartir en Twitter"
-        >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          Twitter
-        </Button>
+          <SavedProfilesDrawer currentProfile={profile} />
 
-        <Link
-          href="/hoy"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-        >
-          <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
-          Energía de hoy
-        </Link>
+          <Link
+            href="/hoy"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
+            Energía de hoy
+          </Link>
 
-        <Link
-          href={`/pareja?a=${profile.birthDate || ""}`}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-        >
-          <Heart className="w-4 h-4 text-accent" aria-hidden="true" />
-          Modo Pareja
-        </Link>
+          <Link
+            href={`/pareja?a=${profile.birthDate || ""}`}
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            <Heart className="w-4 h-4 text-accent" aria-hidden="true" />
+            Modo Pareja
+          </Link>
 
-        <Link
-          href="/journal"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-        >
-          <BookOpen className="w-4 h-4" aria-hidden="true" />
-          Journal
-        </Link>
+          <Link
+            href="/journal"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            <BookOpen className="w-4 h-4" aria-hidden="true" />
+            Journal
+          </Link>
 
-        <Link
-          href="/calendario"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-        >
-          <CalendarDays className="w-4 h-4" aria-hidden="true" />
-          Calendario
-        </Link>
+          <Link
+            href="/calendario"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            <CalendarDays className="w-4 h-4" aria-hidden="true" />
+            Calendario
+          </Link>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleCopyLink}
-          className="flex items-center gap-1"
-          aria-label="Copiar enlace al perfil"
-        >
-          <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-          <span className="hidden sm:inline">Enlace</span>
-        </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleCopyLink}
+            className="flex items-center gap-1"
+            aria-label="Copiar enlace al perfil"
+          >
+            <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+            <span className="hidden sm:inline">Enlace</span>
+          </Button>
+        </div>
+
+        {/* Social Share Bar */}
+        <div className="flex items-center justify-center pt-2">
+          <SocialShareBar
+            title={`Mapa de ${profile.name || "Autoconocimiento"}`}
+            text={shareText}
+            url={shareUrl}
+          />
+        </div>
       </motion.div>
 
       {showShareWarning && (

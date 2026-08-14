@@ -26,6 +26,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
+import SocialShareBar from "@/components/ui/SocialShareBar";
 
 interface CoupleComparisonProps {
   profileA: UserProfile;
@@ -244,6 +245,15 @@ export default function CoupleComparison({
               Nueva comparación
             </Button>
           )}
+        </div>
+
+        {/* Social Share Bar */}
+        <div className="mt-4 flex items-center justify-center">
+          <SocialShareBar
+            title={`Sinergia de Pareja (${result.score}%): ${result.level}`}
+            text={`Comparativa en Molino: ${result.summary}`}
+            url={shareUrl}
+          />
         </div>
       </motion.div>
 

@@ -22,7 +22,11 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
   const glowId = `radar-glow-${uid}`;
 
   return (
-    <div className="relative w-full h-80">
+    <div
+      className="relative w-full h-80"
+      role="region"
+      aria-label="Gráfico de radar con las dimensiones del perfil"
+    >
       <div
         className="absolute inset-0 rounded-full blur-3xl opacity-[0.14] pointer-events-none"
         style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }}
@@ -34,7 +38,7 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
             el contenedor monta con tamaño 0 (tab animado con AnimatePresence),
             lo que rompía la pantalla con "Cannot read properties of undefined
             (reading 'focus')". */}
-          <RadarChart data={data} accessibilityLayer={false} margin={{ top: 40, right: 60, bottom: 32, left: 60 }}>
+        <RadarChart data={data} accessibilityLayer={false} margin={{ top: 40, right: 60, bottom: 32, left: 60 }}>
           <defs>
             <radialGradient id={gradientId} cx="50%" cy="50%" r="75%">
               <stop offset="0%" stopColor={color} stopOpacity={0.4} />
@@ -58,6 +62,25 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
           />
         </RadarChart>
       </ResponsiveContainer>
+
+      {/* Accesibilidad (a11y): Tabla semántica oculta visualmente para lectores de pantalla */}
+      <table className="sr-only">
+        <caption>Puntajes y dimensiones del perfil de autoconocimiento</caption>
+        <thead>
+          <tr>
+            <th scope="col">Dimensión</th>
+            <th scope="col">Intensidad (0 a 100)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((d, i) => (
+            <tr key={i}>
+              <td>{d.subject}</td>
+              <td>{d.value} de 100</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
