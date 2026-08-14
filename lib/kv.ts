@@ -311,6 +311,55 @@ export async function markPaymentProcessed(paymentId: string): Promise<boolean> 
   }
 }
 
+// ── Ephemeral profile share storage (lib/share.ts) ────────────────────────
+//
+// The share token itself carries no PII; the profile data lives here keyed by
+// the token id with a 24h TTL. This is what lets share URLs stay PII-free.
+
+export interface StoredShareProfile {
+  /** name (optional — onboarding is birthDate-first) */
+  n?: string;
+  /** birthDate YYYY-MM-DD */
+  b: string;
+  /** profile hash (kept as ID / recovery handle) */
+  h: string;
+}
+
+const SHARE_TTL = 24 * 60 * 60; // 24 hours
+
+/**
+ * Store a shared profile under a token id. Returns true on success.
+ */
+export async function storeShareProfile(tid: string, profile: StoredShareProfile): Promise<boolean> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return false;
+    await kv.set(`share:${tid}`, JSON.stringify(profile), { ex: SHARE_TTL });
+    return true;
+  } catch (error) {
+    console.error('[KV] Error in storeShareProfile:', error);
+    return false;
+  }
+}
+
+/**
+ * Resolve a shared profile by token id. Returns null if missing/expired.
+ */
+export async function resolveShareProfile(tid: string): Promise<StoredShareProfile | null> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return null;
+    const raw = await kv.get<string>(`share:${tid}`);
+    if (!raw) return null;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) as StoredShareProfile : raw as StoredShareProfile;
+    if (!parsed?.b) return null;
+    return parsed;
+  } catch (error) {
+    console.error('[KV] Error in resolveShareProfile:', error);
+    return null;
+  }
+}
+
 /**
  * Best-effort running total of estimated AI spend, bucketed by UTC day.
  * NOT billing-critical (no atomic increment in the KvLike interface, so this
