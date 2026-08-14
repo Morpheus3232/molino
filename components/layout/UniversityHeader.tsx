@@ -8,6 +8,7 @@ import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage
 import { Menu, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
+import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
 /* ═══ Sitio: siempre visibles, en desktop y mobile ═══ */
 const SITE_LINKS = [
@@ -177,8 +178,12 @@ export default function UniversityHeader() {
 
           </nav>
 
-          {/* Right side: mobile hamburger */}
+          {/* Right side: saved profiles vault & mobile hamburger */}
           <div className="flex items-center gap-2">
+            <div className="hidden sm:block">
+              <SavedProfilesDrawer className="!py-1 !px-2.5 !text-[11px]" />
+            </div>
+
             <button
               type="button"
               className="md:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors"
@@ -249,6 +254,10 @@ export default function UniversityHeader() {
                 >
                   Afinidades
                 </Link>
+
+                <div className="px-3 py-2">
+                  <SavedProfilesDrawer className="w-full justify-center !py-2.5" />
+                </div>
 
                 <div className="border-t border-ink/10 my-2" />
 

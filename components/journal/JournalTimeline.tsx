@@ -220,8 +220,9 @@ export default function JournalTimeline({
             <button
               type="button"
               onClick={onExportJSON}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
               title="Descargar copia de seguridad en JSON"
+              aria-label="Exportar copia de seguridad en JSON"
             >
               <Download className="w-3 h-3 text-accent" />
               <span>Exportar</span>
@@ -229,7 +230,7 @@ export default function JournalTimeline({
           )}
 
           {onImportJSON && (
-            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] transition-colors">
+            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-within:ring-2 focus-within:ring-accent transition-colors">
               <Upload className="w-3 h-3 text-accent" />
               <span>Importar</span>
               <input
@@ -238,6 +239,7 @@ export default function JournalTimeline({
                 accept=".json,application/json"
                 onChange={handleFileChange}
                 className="hidden"
+                aria-label="Subir archivo JSON para importar"
               />
             </label>
           )}
@@ -282,7 +284,11 @@ export default function JournalTimeline({
             </span>
           </div>
 
-          <div className="w-full h-44 sm:h-52">
+          <div
+            className="w-full h-44 sm:h-52"
+            role="region"
+            aria-label="Gráfico de evolución de energía y estado de ánimo a lo largo del tiempo"
+          >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
                 <defs>
@@ -319,6 +325,27 @@ export default function JournalTimeline({
                 />
               </AreaChart>
             </ResponsiveContainer>
+
+            {/* Accesibilidad (a11y): Tabla oculta visualmente para lectores de pantalla */}
+            <table className="sr-only">
+              <caption>Historial cronológico de nivel de energía y estado de ánimo</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Nivel de Energía (1 a 5)</th>
+                  <th scope="col">Tema Simbólico</th>
+                </tr>
+              </thead>
+              <tbody>
+                {chartData.map((d, i) => (
+                  <tr key={i}>
+                    <td>{d.formattedDate}</td>
+                    <td>{d.mood} de 5</td>
+                    <td>{d.theme ? `Día ${d.personalDay}: ${d.theme}` : "Sin tema"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
@@ -333,13 +360,15 @@ export default function JournalTimeline({
             placeholder="Buscar por palabra, tag o energía..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-background border border-ink/10 text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent"
+            className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-background border border-ink/10 text-xs text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus-visible:ring-1 focus-visible:ring-accent"
+            aria-label="Buscar en las entradas del journal"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-foreground text-xs"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-foreground text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded p-0.5"
+              aria-label="Borrar búsqueda"
             >
               ✕
             </button>
@@ -357,12 +386,14 @@ export default function JournalTimeline({
                 key={m}
                 type="button"
                 onClick={() => setSelectedMood(active ? null : m)}
-                className={`px-2 py-1 rounded-lg text-xs font-mono transition-all border ${
+                className={`px-2 py-1 rounded-lg text-xs font-mono transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   active
                     ? "border-accent bg-accent/20 text-accent font-bold"
                     : "border-ink/10 bg-background text-muted hover:text-foreground"
                 }`}
                 title={cfg.label}
+                aria-label={`Filtrar por estado de ánimo: ${cfg.label}`}
+                aria-pressed={active}
               >
                 {cfg.emoji}
               </button>
@@ -378,7 +409,7 @@ export default function JournalTimeline({
                 setSelectedTag(null);
                 setSearchQuery("");
               }}
-              className="px-2.5 py-1 text-[11px] font-mono text-accent hover:underline ml-1"
+              className="px-2.5 py-1 text-[11px] font-mono text-accent hover:underline ml-1 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded"
             >
               Limpiar
             </button>
@@ -399,11 +430,13 @@ export default function JournalTimeline({
                 key={tag}
                 type="button"
                 onClick={() => setSelectedTag(active ? null : tag)}
-                className={`px-2.5 py-0.5 rounded-md text-[11px] font-mono transition-all border ${
+                className={`px-2.5 py-0.5 rounded-md text-[11px] font-mono transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                   active
                     ? "bg-accent text-background font-bold border-accent"
                     : "bg-card text-muted border-ink/10 hover:border-ink/20 hover:text-foreground"
                 }`}
+                aria-pressed={active}
+                aria-label={`Filtrar por etiqueta ${tag}`}
               >
                 #{tag}
               </button>
@@ -457,7 +490,7 @@ export default function JournalTimeline({
                         <button
                           type="button"
                           onClick={() => onEditEntry(entry)}
-                          className="p-1.5 text-muted hover:text-foreground rounded-lg hover:bg-ink/5 transition-colors"
+                          className="p-1.5 text-muted hover:text-foreground rounded-lg hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                           aria-label="Editar entrada"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -471,7 +504,7 @@ export default function JournalTimeline({
                               onDeleteEntry(entry.id);
                             }
                           }}
-                          className="p-1.5 text-muted hover:text-red-400 rounded-lg hover:bg-ink/5 transition-colors"
+                          className="p-1.5 text-muted hover:text-red-400 rounded-lg hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 transition-colors"
                           aria-label="Eliminar entrada"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
