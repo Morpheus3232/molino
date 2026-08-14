@@ -8,6 +8,7 @@ import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { getMoonSign, getElement } from "@/lib/engines/astrologyEngine";
 import { generateQrMatrix, qrMatrixToSvgPath } from "@/lib/utils/qrcode";
+import { nodeToPng, sanitizeFilenamePart, downloadPng } from "@/lib/utils/exportImage";
 import styles from "./ProfileDownloadImage.module.css";
 
 export type ExportFormat = "og" | "square";
@@ -19,15 +20,6 @@ export interface ProfileDownloadImageHandle {
 
 interface ProfileDownloadImageProps {
   profile: UserProfile;
-}
-
-function sanitizeFilenamePart(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
 }
 
 function MolinoIcon({ size = 22, color = "#F3F1EA" }: { size?: number; color?: string }) {
@@ -121,18 +113,9 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
       async (format: ExportFormat = "og"): Promise<string> => {
         const targetRef = format === "square" ? squareRef.current : ogRef.current;
         if (!targetRef) return "";
-        const { toPng } = await import("html-to-image");
-        const width = format === "square" ? 1080 : 1200;
-        const height = format === "square" ? 1080 : 630;
-
-        return toPng(targetRef, {
-          quality: 1,
-          pixelRatio: 1,
-          cacheBust: true,
-          backgroundColor: "#09090D",
-          width,
-          height,
-        });
+        // nodeToPng lazy-imports html-to-image and renders at pixelRatio 2
+        // for crisp, shareable, high-DPI output.
+        return nodeToPng(targetRef, format);
       },
       []
     );
@@ -154,12 +137,7 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
             ? `molino-mapa-${namePart}-${datePart}.png`
             : `molino-mapa-${datePart}.png`;
 
-          const link = document.createElement("a");
-          link.download = filename;
-          link.href = dataUrl;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          downloadPng(dataUrl, filename);
         } catch (err) {
           console.error("[Molino] Error generando la imagen de alta calidad:", err);
         } finally {
