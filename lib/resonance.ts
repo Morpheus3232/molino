@@ -9,6 +9,12 @@
  *
  * Purely algorithmic over the existing engine — no DB, no trackers, no LLM.
  * Client-safe so the Atlas can re-sort/classify on animal selection.
+ *
+ * VOZ (artículos 20 y 22 del blog): el razonamiento de resonancia debe ser una
+ * observación REFUTABLE — "este patrón tuyo se cruza con esta entidad de esta
+ * forma" — nunca una validación genérica que aplique a cualquiera (barnum).
+ * Si una frase pudiera aplicarse a cualquier usuario, es barnum; si describe
+ * un cruce específico que el usuario puede confirmar o refutar, es afinidad.
  */
 
 import { getRelation, type Animal, type RelationType } from "@/lib/data/animalRelations";
@@ -67,6 +73,44 @@ export function classifyResonance(
     label: RELATION_LABELS[rel.type],
     score: rel.score,
   };
+}
+
+/**
+ * Generate a refutable, observational "why" for a resonance — the Molino voice
+ * from articles 20 (refutability) and 22 (pattern crossing entity). The phrase
+ * names the crossing between the reference animal and the entity's animal and
+ * can be confirmed or refuted by the user. It never validates ("this is you"),
+ * it observes a specific dynamic.
+ *
+ * `entityAnimal` is required so the observation is specific; `entityName`
+ * optional to embed the entity in the sentence naturally.
+ */
+export function resonanceReasoning(
+  referenceAnimal: string,
+  entityAnimal: string,
+  entityName?: string,
+): string {
+  if (!referenceAnimal || !entityAnimal) {
+    return "No hay suficiente información para cruzar estos dos puntos.";
+  }
+  const info = classifyResonance(referenceAnimal, entityAnimal);
+  const base = (name: string) =>
+    name ? `Tu ${referenceAnimal} se cruza con ${entityName || name}` : `Tu ${referenceAnimal} y su ${entityAnimal}`;
+
+  switch (info.relationType) {
+    case "same":
+      return `${base(entityAnimal)}: mismo animal, lo que puede leerse como afinidad de ritmo — o como quedar atrapado en los mismos puntos ciegos que ya conocés.`;
+    case "triad":
+      return `${base(entityAnimal)} comparten la energía de una tríada: se potencian en lo que cada uno ya sabe hacer. La pregunta es si esa potencia se traduce en movimiento.`;
+    case "harmonious":
+      return `${base(entityAnimal)} forman un par armonioso según la tradición: cubren lo que el otro tiende a descuidar.`;
+    case "clash":
+      return `${base(entityAnimal)} están en oposición directa: lo que uno empuja, el otro frena. Puede ser tensión que desgasta o contraste que obliga a definir una postura.`;
+    case "harm":
+      return `${base(entityAnimal)} tienen una relación de atención: no se bloquean, pero exigen cuidado para no rozar un punto sensible.`;
+    default:
+      return `${base(entityAnimal)} no tienen una relación marcada según la tradición: ni se potencian ni se chocan. Eso no es un veredicto, solo ausencia de señal.`;
+  }
 }
 
 /**

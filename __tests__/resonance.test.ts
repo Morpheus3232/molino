@@ -6,6 +6,7 @@ import {
   classifyResonance,
   bucketEntitiesByResonance,
   bucketForRelation,
+  resonanceReasoning,
   type ResonanceBucket,
 } from '@/lib/resonance';
 
@@ -86,5 +87,38 @@ describe('bucketEntitiesByResonance', () => {
     // same (95) beats triad (85).
     const { affine } = bucketEntitiesByResonance('Rata', entities);
     expect(affine[0].id).toBe('a');
+  });
+});
+
+describe('resonanceReasoning (voz Molino)', () => {
+  test('produces a specific, refutable observation — not generic validation', () => {
+    const r = resonanceReasoning('Rata', 'Caballo', 'Boca Juniors');
+    // Must reference the crossing specifically, not "this is you".
+    expect(r).toContain('Rata');
+    expect(r).toContain('Boca Juniors');
+    // Must be refutable language (a claim that could be false), not a compliment.
+    expect(r).not.toMatch(/perfecto para vos|sos muy|te va a encantar/i);
+  });
+
+  test('same animal reasoning names the shared point-blind-spot dynamic', () => {
+    const r = resonanceReasoning('Rata', 'Rata', 'X');
+    expect(r).toContain('mismo animal');
+    expect(r).toContain('puntos ciegos');
+  });
+
+  test('clash reasoning describes a tension, not a verdict', () => {
+    const r = resonanceReasoning('Rata', 'Caballo', 'X');
+    expect(r).toMatch(/oposición|tensión/);
+    expect(r).toMatch(/puede/i); // conditional, refutable language
+  });
+
+  test('neutral reasoning avoids overclaiming', () => {
+    const r = resonanceReasoning('Rata', 'Tigre', 'X');
+    expect(r).toContain('no es un veredicto');
+  });
+
+  test('missing animal returns an honest no-data line', () => {
+    const r = resonanceReasoning('', 'Rata');
+    expect(r).toContain('No hay suficiente');
   });
 });
