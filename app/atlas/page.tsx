@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
-import { getAtlasCountries } from "@/lib/data/atlas-queries";
-import CountryGrid from "@/components/atlas/CountryGrid";
+import { getAtlasCountries, topCountriesByCount } from "@/lib/data/atlas-queries";
+import AtlasHub from "@/components/atlas/AtlasHub";
 
 export const metadata: Metadata = {
   title: "Atlas — Explora Afinidades por País | Molino",
@@ -18,10 +18,12 @@ export const metadata: Metadata = {
 
 /**
  * Atlas hub — global country grid. Server Component; only plain metadata
- * (iso/name/flag/count) reaches the client.
+ * (iso/name/flag/count) reaches the client. The client AtlasHub resolves the
+ * user's country and personalizes presentation.
  */
 export default function AtlasPage() {
   const countries = getAtlasCountries();
+  const topCountries = topCountriesByCount(countries);
 
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
@@ -44,7 +46,7 @@ export default function AtlasPage() {
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Países</h2>
           </div>
-          <CountryGrid countries={countries} />
+          <AtlasHub countries={countries} topCountries={topCountries} />
         </section>
       </div>
     </main>
