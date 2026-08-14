@@ -42,6 +42,11 @@ export default class AppErrorBoundary extends Component<ErrorBoundaryProps, Erro
 
   handleGoHome = () => {
     if (typeof window !== "undefined") {
+      // Hard navigation is intentional: an error boundary may sit above/below
+      // the App Router context and the render is already broken, so a full
+      // reload to home is the only reliable recovery. useRouter() is not
+      // available in a class component without context plumbing.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.assign("/");
     }
   };

@@ -15,6 +15,7 @@ export function useAsyncCalculation() {
 
   // Initialize Worker on mount if supported
   useEffect(() => {
+    const pending = pendingRequests.current;
     if (typeof window !== "undefined" && typeof Worker !== "undefined") {
       try {
         const worker = new Worker(new URL("../workers/calculationWorker.ts", import.meta.url), {
@@ -23,25 +24,25 @@ export function useAsyncCalculation() {
 
         worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
           const { id, success, data, error: workerErr } = event.data;
-          const pending = pendingRequests.current.get(id);
-          if (pending) {
-            pendingRequests.current.delete(id);
-            if (pendingRequests.current.size === 0) {
+          const request = pending.get(id);
+          if (request) {
+            pending.delete(id);
+            if (pending.size === 0) {
               setIsCalculating(false);
             }
             if (success) {
-              pending.resolve(data);
+              request.resolve(data);
             } else {
               setError(workerErr || "Error en el cálculo");
-              pending.reject(new Error(workerErr || "Error en cálculo"));
+              request.reject(new Error(workerErr || "Error en cálculo"));
             }
           }
         };
 
         worker.onerror = (err) => {
           console.warn("[CalculationWorker] Worker error fallback:", err);
-          pendingRequests.current.forEach(({ reject }) => reject(err));
-          pendingRequests.current.clear();
+          pending.forEach(({ reject }) => reject(err));
+          pending.clear();
           setIsCalculating(false);
         };
 
@@ -52,11 +53,12 @@ export function useAsyncCalculation() {
     }
 
     return () => {
-      if (workerRef.current) {
-        workerRef.current.terminate();
+      const worker = workerRef.current;
+      if (worker) {
+        worker.terminate();
         workerRef.current = null;
       }
-      pendingRequests.current.clear();
+      pending.clear();
     };
   }, []);
 

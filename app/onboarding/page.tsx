@@ -37,7 +37,6 @@ export default function OnboardingPage() {
       setDateValue(stored.dateValue);
       setStep("preview");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isDateValid = Boolean(
