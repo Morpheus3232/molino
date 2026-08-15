@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import type { LightweightEntity } from "@/types/atlas";
 import type { AtlasCountry } from "@/lib/data/atlas-queries";
 import { getCountryISO } from "@/lib/data/country-iso";
-import { getCuratedLocalFromPool, getCurationCategoryLabel, CURATION_SECTION_ORDER, FEATURED_COUNTRY_ISOS } from "@/lib/data/atlas-curation-helpers";
+import { getCuratedLocalFromPool, getCurationCategoryLabel, CURATION_SECTION_ORDER, WORLD_SECTION_ORDER, FEATURED_COUNTRY_ISOS } from "@/lib/data/atlas-curation-helpers";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { sortLightEntities, selectAtlasRecommendations, type LightAffinityResult, type AtlasRecommendations } from "@/lib/affinity-light";
@@ -19,15 +19,13 @@ interface AtlasHubProps {
 }
 
 const BUCKET_LABELS: Record<keyof AtlasRecommendations, { title: string; subtitle: string }> = {
-  high:   { title: "Resonancia Alta", subtitle: "Entidades cuya energía se cruza con la tuya." },
-  medium: { title: "Afinidad Media", subtitle: "Energías independientes con puntos en común." },
-  enemy:  { title: "Desafiantes", subtitle: "Oposición que invita a definir una postura." },
+  most:  { title: "Más Compatibles", subtitle: "Entidades que comparten tu mismo animal del zodíaco chino." },
+  least: { title: "Menos Compatibles", subtitle: "Energías opuestas en el ciclo zodiacal." },
 };
 
 const BUCKET_STYLE: Record<keyof AtlasRecommendations, string> = {
-  high:   "border-emerald-500/20 bg-emerald-500/[0.03]",
-  medium: "border-amber-500/15 bg-amber-500/[0.02]",
-  enemy:  "border-red-500/15 bg-red-500/[0.02]",
+  most:  "border-emerald-500/20 bg-emerald-500/[0.03]",
+  least: "border-red-500/15 bg-red-500/[0.02]",
 };
 
 function SectionHeader({ label }: { label: string }) {
@@ -189,10 +187,12 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
       {/* 1. AFFINITY RECOMMENDATIONS */}
       {recommendations && (
         <section aria-label="Recomendaciones personalizadas" className="mb-16">
-          <SectionHeader label={`Recomendaciones — ${userAnimal}`} />
+          <h2 className="text-sm font-semibold text-foreground mb-6">
+            Tu Atlas — {userAnimal}
+          </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {(["high", "medium", "enemy"] as (keyof AtlasRecommendations)[]).map((bucket) => {
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {(["most", "least"] as (keyof AtlasRecommendations)[]).map((bucket) => {
               const items = recommendations[bucket];
               if (items.length === 0) return null;
               const { title, subtitle } = BUCKET_LABELS[bucket];
@@ -212,38 +212,38 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         </section>
       )}
 
-      {/* 2. CURATED GLOBAL SECTIONS */}
+      {/* 2. DESCUBRÍ EL MUNDO — small curated selection */}
       {showGlobal && (
-        <section aria-label="Entidades del mundo" className="mb-16">
-          <h2 className="text-sm font-semibold text-foreground mb-6">Entidades del mundo</h2>
-          {CURATION_SECTION_ORDER.map((type) => (
+        <section aria-label="Descubrí el mundo" className="mb-16">
+          <h2 className="text-sm font-semibold text-foreground mb-6">Descubrí el mundo</h2>
+          {WORLD_SECTION_ORDER.map((type) => (
             <CuratedChips
               key={`global-${type}`}
-              entities={globalCurated[type] ?? []}
+              entities={(globalCurated[type] ?? []).slice(0, 4)}
               label={getCurationCategoryLabel(type)}
             />
           ))}
         </section>
       )}
 
-      {/* 3. CURATED LOCAL SECTIONS */}
+      {/* 3. CERCA DE VOS — small local selection */}
       {showLocal && (
-        <section aria-label="Entidades de tu país" className="mb-16">
+        <section aria-label="Cerca de vos" className="mb-16">
           <h2 className="text-sm font-semibold text-foreground mb-6">
-            {country ? `Entidades de ${country}` : "Entidades de tu país"}
+            {country ? `Cerca de vos — ${country}` : "Cerca de vos"}
           </h2>
           {CURATION_SECTION_ORDER.map((type) => (
             <CuratedChips
               key={`local-${type}`}
-              entities={localCurated[type] ?? []}
+              entities={(localCurated[type] ?? []).slice(0, 4)}
               label={getCurationCategoryLabel(type)}
             />
           ))}
         </section>
       )}
 
-      {/* 4. COUNTRIES — compact, collapsible */}
-      <section aria-label="Explorar por país" className="mt-16 border-t border-ink/10 pt-12">
+      {/* 4. EXPLORAR TODO EL ATLAS — catalog, compact, collapsible */}
+      <section aria-label="Explorar todo el Atlas" className="mt-16 border-t border-ink/10 pt-12">
         <button
           type="button"
           onClick={() => setCountriesExpanded((v) => !v)}
@@ -252,7 +252,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         >
           <div className="w-8 h-px bg-border" aria-hidden="true" />
           <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
-            Explorar por país
+            Explorar todo el Atlas
           </h2>
           <span className={`text-[10px] text-muted transition-transform ${countriesExpanded ? "rotate-90" : "rotate-0"}`} aria-hidden="true">
             ›
@@ -268,7 +268,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         )}
         {!countriesExpanded && (
           <p className="text-xs text-muted mt-2">
-            {countries.length} países con entidades verificadas. Desplegá para navegar por país.
+            {countries.length} países con entidades verificadas. Desplegá para navegar por país y categoría.
           </p>
         )}
       </section>
