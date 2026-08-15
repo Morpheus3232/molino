@@ -8,7 +8,7 @@ import Card from "@/components/ui/Card";
 export const metadata: Metadata = {
   title: "Molino para Profesionales — Coaches y Facilitadores",
   description:
-    "Utilizá la matriz simbólica de Molino como herramienta de reflexión en tus sesiones. 100% privado y sin almacenamiento en servidores.",
+    "Herramienta rigurosa de reflexión para enriquecer tus sesiones: arquetipos, ciclos y dinámicas sin sesgos. 100% privado, cálculo local, sin bases de datos.",
   alternates: {
     canonical: siteUrl("/profesionales"),
   },
@@ -18,17 +18,17 @@ const PILLARS = [
   {
     icon: Lock,
     title: "Privacidad Ética & Total",
-    desc: "Ningún dato de tus consultantes queda almacenado en bases de datos externas. Todo el cálculo se ejecuta en el navegador de tu sesión.",
+    desc: "Cero almacenamiento en servidores. Todo el cálculo se ejecuta en el navegador. Tu consultante nunca queda registrado, ni siquiera si paga.",
   },
   {
     icon: Compass,
-    title: "Encuadre Arquetípico Rápido",
-    desc: "Obtené en 30 segundos un mapa estructurado de arquetipos, ritmos y polaridades para enriquecer el diálogo inicial.",
+    title: "Marco Riguroso, No Determinista",
+    desc: "Arquetipos, ciclos y dinámicas como herramienta de reflexión estructurada. Describe patrones, no predice resultados. Tú sostenés el encuadre.",
   },
   {
     icon: Users,
-    title: "Dinámica de Parejas y Equipos",
-    desc: "Visualizá los puntos de complementariedad, trigonos elementales y posibles fricciones entre dos personas en tiempo real.",
+    title: "Análisis de Dinámicas Vincular",
+    desc: "Comparativa clara de arquetipos, ciclos y polaridades entre dos personas. Despersonaliza tensiones y facilita el diálogo sin sesgos.",
   },
 ];
 
@@ -46,11 +46,11 @@ export default function ProfesionalesPage() {
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.08] text-foreground">
-            Estructura simbólica para acompañar tus sesiones profesionales
+            Marco de reflexión riguroso para tus sesiones
           </h1>
 
           <p className="text-base sm:text-lg text-muted mt-5 leading-relaxed">
-            Una herramienta rigurosa, no determinista y 100% privada para facilitar el autoconocimiento, la exploración de patrones y la resolución de conflictos vinculares.
+            Molino es rigurosa pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. 100% privado, cálculo local, cero datos en servidor.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">

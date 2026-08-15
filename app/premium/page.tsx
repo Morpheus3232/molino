@@ -5,14 +5,14 @@ import PremiumClient from "./PremiumClient";
 export const metadata: Metadata = {
   title: "Premium — Tu Síntesis Completa de Autoconocimiento",
   description:
-    "Desbloqueá la lectura cruzada completa de tus 3 sistemas: numerología, astrología y zodíaco chino. Pago único de $8 USD de por vida con garantía de devolución de 7 días.",
+    "Conectá los 3 sistemas en una lectura única: numerología, astrología y zodíaco chino. Explorá tus ciclos, rituales y decisiones sin sesgos. $8 USD de acceso permanente.",
   alternates: {
     canonical: siteUrl("/premium"),
   },
   openGraph: {
-    title: "Molino Premium — Claridad y Síntesis Sin Límites",
+    title: "Molino Premium — Síntesis Rigurosa de Arquetipos",
     description:
-      "Descubrí qué significa la combinación exacta de tus arquetipos, ciclos de vida y tensiones ocultas por $8 USD de por vida.",
+      "Entendé tu mapa completo: arquetipos, ciclos de vida y dinámicas ocultas. Herramienta de reflexión honesta, no oráculo.",
     type: "website",
     url: siteUrl("/premium"),
   },
