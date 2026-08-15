@@ -73,7 +73,7 @@ const FEATURES: FeatureItem[] = [
   },
   {
     category: "Herramientas & IA",
-    name: "Chat y oráculo interactivo con Molino AI",
+    name: "Preguntale a Molino (chat de IA)",
     free: false,
     premium: true,
     highlight: true,

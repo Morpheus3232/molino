@@ -6,9 +6,9 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Molino para Profesionales — Coaches, Terapeutas y Psicólogos",
+  title: "Molino para Profesionales — Coaches, Terapeutas y Facilitadores",
   description:
-    "Utilizá la matriz simbólica de Molino como herramienta complementaria de diagnóstico y encuadre en tus sesiones. 100% privado y sin almacenamiento en servidores.",
+    "Utilizá la matriz simbólica de Molino como herramienta complementaria de exploración y encuadre en tus sesiones. 100% privado y sin almacenamiento en servidores.",
   alternates: {
     canonical: siteUrl("/profesionales"),
   },
@@ -41,12 +41,12 @@ export default function ProfesionalesPage() {
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
-              Uso Profesional & Clínico
+              Herramienta de Reflexión para Profesionales
             </span>
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.08] text-foreground">
-            Estructura simbólica para tus sesiones de coaching y terapia
+            Estructura simbólica para acompañar tus sesiones profesionales
           </h1>
 
           <p className="text-base sm:text-lg text-muted mt-5 leading-relaxed">
@@ -117,7 +117,7 @@ export default function ProfesionalesPage() {
               <CheckCircle2 className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
               <div>
                 <strong className="text-foreground block font-semibold mb-0.5">
-                  2. Terapia de Vínculos & Pareja
+                  2. Trabajo Vincular y de Pareja
                 </strong>
                 <p>
                   Utilizá el Modo Pareja en pantalla compartida para despersonalizar tensiones y observar de forma neutral las polaridades entre ambos.
@@ -132,7 +132,7 @@ export default function ProfesionalesPage() {
                   3. Widget Embebible en tu Propio Sitio
                 </strong>
                 <p>
-                  Podés insertar nuestro widget en tu página web profesional para que tus pacientes lleguen a la primera sesión con su mapa ya explorado.
+                  Podés insertar nuestro widget en tu página web profesional para que quienes te consultan lleguen a la primera sesión con su mapa ya explorado.
                 </p>
               </div>
             </div>

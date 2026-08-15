@@ -118,14 +118,14 @@ export default function HeroInstrument() {
           className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-4"
         >
           ¿Por qué repetís los mismos patrones?
-          <br className="hidden sm:block" /> Tu fecha de nacimiento tiene la respuesta.
+          <br className="hidden sm:block" /> Tu mapa te ayuda a verlos.
         </motion.h1>
 
         <motion.p
           {...fadeUpDelayed(0.1)}
           className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
         >
-          Tu mapa personal revela quién sos, cómo decidís y cuándo actuar. En 30 segundos.
+          Cruza numerología, astrología y zodíaco chino en una sola lectura. No decide por vos — te da más claridad para decidir. En 30 segundos.
         </motion.p>
 
         {/* Formulario de Fecha y Generación */}

@@ -48,7 +48,7 @@ export default function PremiumClient() {
 
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
             Tu mapa básico es gratuito para siempre. El acceso Premium conecta los 3 sistemas en una sola lectura,
-            detecta tus tensiones ocultas y te da acceso al oráculo interactivo.
+            detecta tus tensiones ocultas y te deja preguntarle a Molino sobre tus propias decisiones.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
