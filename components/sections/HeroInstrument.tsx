@@ -107,7 +107,7 @@ export default function HeroInstrument() {
           ) : (
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>100% en tu navegador · Sin registro · Sin tracking</span>
+              <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
             </div>
           )}
         </motion.div>
@@ -117,15 +117,15 @@ export default function HeroInstrument() {
           {...fadeUpDelayed(0.05)}
           className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-4"
         >
-          ¿Por qué repetís los mismos patrones?
-          <br className="hidden sm:block" /> Tu mapa te ayuda a verlos.
+          Entendete mejor.
+          <br className="hidden sm:block" /> Decidí con más claridad.
         </motion.h1>
 
         <motion.p
           {...fadeUpDelayed(0.1)}
           className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
         >
-          Cruza numerología, astrología y zodíaco chino en una sola lectura. No decide por vos — te da más claridad para decidir. En 30 segundos.
+          Una matriz rigurosa de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
         </motion.p>
 
         {/* Formulario de Fecha y Generación */}

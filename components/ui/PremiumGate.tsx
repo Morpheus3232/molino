@@ -28,7 +28,7 @@ const DEFAULT_FEATURES = [
   "Síntesis completa de tus 3 sistemas (numerología, astrología, zodíaco chino)",
   "Tensiones y patrones ocultos que no aparecen gratis",
   "Proyecciones y timing para tu momento actual",
-  "Chat con Molino sobre tu mapa",
+  "Preguntale a Molino sobre tu mapa",
   "Acceso permanente, pago único",
 ];
 
