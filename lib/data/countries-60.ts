@@ -486,4 +486,50 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     events: [{ id: "gh-indep", type: "independencia-declarada", label: "Independencia de Ghana", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Kwame Nkrumah lideró la antigua Costa de Oro hacia la independencia el 6 de marzo de 1957, primera colonia subsahariana en liberarse y faro del panafricanismo.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 6 de marzo de 1957.",
   },
+
+  // ──── PAÍSES ADICIONALES (cobertura mínima 10 por animal) ────
+
+  // BUEY (+1)
+  {
+    id: "sudafrica", name: "Sudáfrica", type: "country",
+    country: "Sudáfrica", emoji: "🇿🇦",
+    description: "Nación del arcoíris donde once idiomas oficiales conviven en la tierra de Mandela, con la Table Mountain vigilando Ciudad del Cabo y el fin del apartheid como faro mundial.",
+    keyThemes: ["Diversidad", "Justicia", "Resiliencia", "Transición"],
+    events: [{ id: "za-republica", type: "fundacion", label: "Proclamación de la República", year: 1961, confidence: "exacta", primaryForAffinity: true, description: "Sudáfrica se constituyó como república el 31 de mayo de 1961, rompiendo sus últimos lazos constitucionales con la Corona británica.", source: "Documentación histórica" }],
+    sourceNote: "Proclamación de la República el 31 de mayo de 1961.",
+  },
+
+  // DRAGÓN (+4)
+  {
+    id: "etiopia", name: "Etiopía", type: "country",
+    country: "Etiopía", emoji: "🇪🇹",
+    description: "Único país africano que nunca fue colonizado, cuna del café y del calendario etíope, donde las iglesias talladas en roca de Lalibela guardan una historia bíblica viva.",
+    keyThemes: ["Resistencia", "Historia", "Cultura", "Soberanía"],
+    events: [{ id: "et-indep", type: "independencia-declarada", label: "Liberación de la ocupación italiana", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Tras la entrada de Italia en la Segunda Guerra Mundial, las fuerzas británicas y etíopes iniciaron la campaña que culminó con la restauración de Haile Selassie.", source: "Documentación histórica" }],
+    sourceNote: "Campaña de liberación iniciada en 1940.",
+  },
+  {
+    id: "sudan", name: "Sudán", type: "country",
+    country: "Sudán", emoji: "🇸🇩",
+    description: "País del Nilo donde confluyen el mundo árabe y el África subsahariana, con más pirámides que Egipto en la antigua Nubia y una historia de imperios milenarios.",
+    keyThemes: ["Puente", "Historia", "Diversidad", "Estrategia"],
+    events: [{ id: "sd-indep", type: "independencia-declarada", label: "Independencia de Sudán", year: 1952, confidence: "exacta", primaryForAffinity: true, description: "Sudán inició su proceso de autogobierno en 1952 y alcanzó la independencia plena el 1 de enero de 1956, separándose del condominio anglo-egipcio.", source: "Documentación histórica" }],
+    sourceNote: "Independencia el 1 de enero de 1956. Proceso iniciado en 1952.",
+  },
+  {
+    id: "islandia", name: "Islandia", type: "country",
+    country: "Islandia", emoji: "🇮🇸",
+    description: "Isla de hielo y fuego donde los géiseres, los glaciares y las sagas vikingas conviven con la energía geotérmica que calienta una de las democracias más antiguas del mundo.",
+    keyThemes: ["Resiliencia", "Naturaleza", "Democracia", "Independencia"],
+    events: [{ id: "is-republica", type: "fundacion", label: "Proclamación de la República", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Islandia declaró su independencia de Dinamarca el 17 de junio de 1944. La ocupación alemana de Dinamarca en 1940 aceleró el proceso de separación.", source: "Documentación histórica" }],
+    sourceNote: "República proclamada el 17 de junio de 1944.",
+  },
+  {
+    id: "jordania", name: "Jordania", type: "country",
+    country: "Jordania", emoji: "🇯🇴",
+    description: "Reino hachemita del desierto donde Petra, la ciudad rosada esculpida en roca por los nabateos, custodia una historia de estabilidad en el corazón de Medio Oriente.",
+    keyThemes: ["Estabilidad", "Diplomacia", "Historia", "Moderación"],
+    events: [{ id: "jo-indep", type: "independencia-declarada", label: "Independencia de Jordania", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Aunque la independencia formal llegó en 1946, el emirato de Transjordania obtuvo autonomía del mandato británico en 1940 y fue reconocido como reino independiente el 25 de mayo de 1946.", source: "Documentación histórica" }],
+    sourceNote: "Independencia el 25 de mayo de 1946. Autonomía desde 1940.",
+  },
 ];
