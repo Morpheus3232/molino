@@ -17,7 +17,7 @@ Molino es una plataforma educativa de código abierto que explora sistemas simb�
 ### Principios
 
 - 📚 **Conocimiento libre**: Todo el contenido se basa en fuentes públicas.
-- 🔒 **Privacidad radical**: No persistimos datos en servidores. Tu perfil se procesa localmente y vive en tu navegador (localStorage).
+- 🔒 **Privacidad radical**: Tu mapa gratuito se procesa 100% localmente (localStorage), sin persistir datos en servidores. Si activás Premium o IA, se envía únicamente un hash HMAC-SHA256 de tu perfil (nunca la fecha de nacimiento en claro ni el nombre) para validar el acceso.
 - 🔍 **Transparencia total**: Cada cálculo está explicado con sus fórmulas y fuentes.
 - 💻 **Código abierto**: Todo el código está disponible en GitHub (licencia MIT).
 - 🚫 **Sin tracking invasivo**: Sin píxeles, sin fingerprinting, sin cookies de rastreo. Solo métricas de uso agregadas y anónimas.
