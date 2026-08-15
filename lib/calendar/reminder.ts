@@ -140,10 +140,6 @@ export function checkAndSendReminder(): void {
 
   sendNotification("Tu día numerológico en Molino ✨", {
     body: `Hoy es tu día numerológico ${significantDay}. Explorá tu energía en Molino.`,
-    actions: [
-      { action: "open", title: "Abrir Molino" },
-      { action: "dismiss", title: "Recordar después" },
-    ],
   });
 }
 
