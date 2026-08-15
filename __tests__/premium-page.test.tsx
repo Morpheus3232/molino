@@ -31,7 +31,7 @@ describe("Premium Experience Components", () => {
     expect(screen.getByText(/Qué dicen quienes ya desbloquearon su mapa/i)).toBeDefined();
     expect(screen.getByText(/Sofía R./i)).toBeDefined();
     expect(screen.getByText(/El Modo Pareja nos cambió la mirada/i)).toBeDefined();
-    expect(screen.getAllByText(/Acceso Verificado/i).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText(/Cliente Premium/i).length).toBeGreaterThanOrEqual(2);
   });
 
   it("renders PremiumCheckout with 7-day guarantee and payment options", () => {

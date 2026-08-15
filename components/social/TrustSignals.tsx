@@ -134,10 +134,18 @@ export default function TrustSignals() {
             {...fadeUpDelayed(0.05)}
             className="font-display text-2xl sm:text-4xl lg:text-5xl tracking-tight text-foreground"
           >
-            Tus datos no salen de tu dispositivo
+            Cálculo local por diseño
           </motion.h2>
           <motion.p {...fadeUpDelayed(0.1)} className="text-sm sm:text-base text-muted mt-3 leading-relaxed">
-            Molino fue creado bajo una premisa innegociable: no requerimos cuentas, no guardamos tu fecha en bases de datos y el código es 100% auditable.
+            Tu mapa se calcula en tu dispositivo: no requerimos cuentas y no guardamos tu fecha en bases de datos. Si activás una función que lo necesita —Premium o el asistente de IA— compartimos solo lo mínimo indispensable con proveedores bajo acuerdo de confidencialidad, nunca para entrenar modelos. Todo el código es 100% auditable en{" "}
+            <Link href="https://github.com/Morpheus3232/molino" target="_blank" rel="noopener noreferrer" className="underline hover:text-accent">
+              GitHub
+            </Link>
+            {" "}y el detalle completo está en{" "}
+            <Link href="/privacidad" className="underline hover:text-accent">
+              nuestra política de privacidad
+            </Link>
+            .
           </motion.p>
         </div>
 

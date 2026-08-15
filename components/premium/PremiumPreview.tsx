@@ -148,9 +148,9 @@ export default function PremiumPreview({
                 </div>
                 <div className="p-3.5 rounded-xl bg-accent/10 border border-accent/20 text-foreground mr-6 leading-relaxed">
                   <p className="font-semibold text-accent mb-1">Molino:</p>
-                  Estás en tu Año Personal {profile.cycles?.personalYear || 7} (Introspección y Estrategia).
-                  Es ideal para planificar y estructurar acuerdos, pero la ejecución conviene acelerarla en el
-                  próximo mes personal.
+                  Estás en tu Año Personal {profile.cycles?.personalYear || 7} (Introspección y Estrategia),
+                  un ciclo que muchas personas usan para planificar antes de actuar. Esto no determina si es
+                  buen momento para vos — es una perspectiva más para sumar a lo que ya sabés de tu situación.
                 </div>
               </div>
             </div>
