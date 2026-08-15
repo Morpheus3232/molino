@@ -17,11 +17,11 @@ const PRIMARY_NAV = [
   { href: "/hoy", label: "Hoy" },
   { href: "/pareja", label: "Pareja" },
   { href: "/journal", label: "Journal" },
+  { href: "/atlas", label: "Atlas" },
 ];
 
 /* ═══ Navegación Secundaria (Menú Explorar) ═══ */
 const EXPLORE_NAV = [
-  { href: "/atlas", label: "Atlas", desc: "Explora afinidades por país" },
   { href: "/calendario", label: "Calendario", desc: "Ciclos y vibración mensual" },
   { href: "/biblioteca", label: "Biblioteca", desc: "Fuentes clásicas y autores" },
   { href: "/academy", label: "Academia", desc: "La historia de las tradiciones simbólicas" },
