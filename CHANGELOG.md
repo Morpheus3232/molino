@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ---
 
+## [2.1.1] - 2026-08-15
+
+### Seguridad
+- **Pepper dedicado para `hashProfile()` (`PROFILE_HASH_SECRET`):** hasta esta versión, `MP_WEBHOOK_SECRET` cumplía doble función — validar la firma de los webhooks de Mercado Pago y servir de pepper HMAC del hash de perfil (`lib/mercadopago.ts`). Rotar ese secreto en el dashboard de Mercado Pago invalidaba silenciosamente todos los hashes de perfil ya emitidos, rompiendo la recuperación de compras de usuarios ya pagos. Ahora `getProfileHashSecret()` usa `PROFILE_HASH_SECRET` como secreto independiente (con fallback automático a `MP_WEBHOOK_SECRET` si no está seteada, sin migración necesaria ni ruptura de compatibilidad).
+
+### Quitado
+- **Carga condicional de Plausible/Umami (`AnalyticsProvider`):** el componente tenía un bloque que podía inyectar el script de Plausible o Umami si se seteaban `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` / `NEXT_PUBLIC_UMAMI_WEBSITE_ID`. Nunca estuvo activo en producción, pero contradecía la promesa de "sin tracking de terceros" (`/filosofia`) si alguien seteaba esas variables sin también actualizar la Content-Security-Policy. Se eliminó el bloque entero; el componente conserva su función real (trackear pageviews locales en `localStorage`, nunca enviados a un servidor).
+
+### Corregido
+- **Copy de privacidad más preciso:** `/filosofia` ahora distingue explícitamente el mapa gratuito (100% local) del flujo Premium/IA (que sí envía un hash HMAC-SHA256 del perfil — nunca la fecha de nacimiento en claro ni el nombre — para validar el pago). El badge "Sin cookies de rastreo" en la home acota su claim a navegación/marketing, consistente con esa misma distinción.
+
+---
+
 ## [2.1.0] - 2026-08-14
 
 ### Agregado
