@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
-import { getAtlasCountries, topCountriesByCount, getAllAtlasEntities } from "@/lib/data/atlas-queries";
+import { getAtlasCountries, topCountriesByCount, getAllAtlasEntitiesWithCountries } from "@/lib/data/atlas-queries";
 import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function AtlasPage() {
   const countries = getAtlasCountries();
   const topCountries = topCountriesByCount(countries);
-  const allEntities = getAllAtlasEntities();
+  const allEntities = getAllAtlasEntitiesWithCountries();
   const globalCurated = getCuratedGlobalEntities();
 
   return (

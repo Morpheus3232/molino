@@ -155,6 +155,18 @@ export function getAllAtlasEntities(): LightweightEntity[] {
 }
 
 /**
+ * All entities across the entire Atlas, INCLUDING "country"-type entities.
+ * Used by the animal-grouped views (AtlasHub, /atlas/explorar/[animal]),
+ * where "country" is a category like any other. Do not use this for the
+ * country-container drill-down (/atlas/[countryISO]/...), where "country"
+ * as a category within a country would be recursive/confusing —
+ * getAllAtlasEntities() above stays the right choice there.
+ */
+export function getAllAtlasEntitiesWithCountries(): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES.map(toLightweightEntity);
+}
+
+/**
  * All 12 Chinese Zodiac animals for `generateStaticParams`.
  */
 export function getAllAnimalNames(): string[] {
@@ -172,6 +184,17 @@ export function getAllAnimalNames(): string[] {
 export function getEntitiesByAnimal(animal: string): LightweightEntity[] {
   return SYMBOLIC_ENTITIES
     .filter((e) => e.type !== "country")
+    .map(toLightweightEntity)
+    .filter((e) => e.animal === animal);
+}
+
+/**
+ * Entities filtered by Chinese Zodiac animal, INCLUDING "country"-type
+ * entities. See getAllAtlasEntitiesWithCountries() for why this is a
+ * separate function rather than a change to getEntitiesByAnimal().
+ */
+export function getEntitiesByAnimalWithCountries(animal: string): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES
     .map(toLightweightEntity)
     .filter((e) => e.animal === animal);
 }
