@@ -63,6 +63,17 @@ export function getWebhookSecret(): string {
 }
 
 /**
+ * Pepper dedicado para hashProfile(). Separado de MP_WEBHOOK_SECRET para que
+ * rotar el secreto del webhook (ej. tras reconfigurar en el dashboard de MP)
+ * no invalide silenciosamente los hashes de perfil ya emitidos. Si
+ * PROFILE_HASH_SECRET no está seteada, cae a MP_WEBHOOK_SECRET — mismo
+ * comportamiento que hoy, sin migración necesaria.
+ */
+function getProfileHashSecret(): string {
+  return process.env.PROFILE_HASH_SECRET || getWebhookSecret();
+}
+
+/**
  * Base URL for the webhook `notification_url` MP calls back on and the
  * `back_urls`/`return_url`/`cancel_url` the user is redirected to after
  * paying (PayPal's lib/paypal.ts reuses this same function). Previously read
@@ -99,7 +110,7 @@ export function normalizeName(name: string): string {
 // nacimiento (e incluso el mismo nombre normalizado) producen hashes distintos.
 // Es opcional para no romper tests y call-sites que no tienen acceso al salt.
 export function hashProfile(name: string, birthDate: string, salt?: string): string {
-  const secret = getWebhookSecret();
+  const secret = getProfileHashSecret();
   const normalizedName = normalizeName(name);
   const saltedBirthDate = salt ? `${salt}|${birthDate}` : birthDate;
   return createHmac('sha256', secret)
