@@ -12,6 +12,7 @@ import {
   type AtlasSections,
 } from "@/lib/affinity-light";
 import { getAnimalProfile, ANIMALS } from "@/lib/data/animalRelations";
+import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
 import type { Animal } from "@/lib/data/animalRelations";
 import CountryGrid from "@/components/atlas/CountryGrid";
 import Link from "next/link";
@@ -331,13 +332,13 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
         {userCountryISO && (
           <div className="mt-8 flex flex-wrap gap-2">
-            {["city", "brand", "team", "university"].map((cat) => (
+            {(["city", "brand", "team", "university", "artist", "movie"] as const).map((cat) => (
               <Link
                 key={cat}
                 href={`/atlas/${userCountryISO}/${cat}`}
                 className="px-3 py-1.5 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 hover:text-accent transition-colors"
               >
-                {cat === "city" ? "Ciudades" : cat === "brand" ? "Marcas" : cat === "team" ? "Equipos" : "Universidades"}
+                {ENTITY_TYPES[cat].plural}
               </Link>
             ))}
           </div>
