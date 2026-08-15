@@ -27,7 +27,7 @@ export default function AtlasTeaser() {
             </motion.h2>
 
             <motion.p {...fadeUp} className="text-sm sm:text-base text-muted leading-relaxed">
-              Descubrí qué marcas, ciudades, equipos, universidades, artistas y películas comparten tu animal del zodíaco chino — 58 países mapeados según su fecha de origen.
+              Explorá tu mapa en el mundo: marcas, ciudades, equipos, universidades, artistas y películas que comparten tu animal del zodíaco chino.
             </motion.p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -87,7 +87,7 @@ export default function AtlasTeaser() {
                   <span>Afinidad por año de origen</span>
                 </div>
                 <p className="text-muted leading-relaxed">
-                  Cada entidad tiene un animal calculado a partir de su fecha real de fundación o creación, igual que el tuyo.
+                  Cada entidad tiene un animal asignado según su fecha de fundación o creación, igual que el tuyo.
                 </p>
               </div>
             </div>
