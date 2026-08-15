@@ -6,9 +6,9 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Molino para Profesionales — Coaches, Terapeutas y Facilitadores",
+  title: "Molino para Profesionales — Coaches y Facilitadores",
   description:
-    "Utilizá la matriz simbólica de Molino como herramienta complementaria de exploración y encuadre en tus sesiones. 100% privado y sin almacenamiento en servidores.",
+    "Utilizá la matriz simbólica de Molino como herramienta de reflexión en tus sesiones. 100% privado y sin almacenamiento en servidores.",
   alternates: {
     canonical: siteUrl("/profesionales"),
   },

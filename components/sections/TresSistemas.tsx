@@ -22,7 +22,7 @@ const systems = [
     title: "Astrología",
     subtitle: "Tu lugar en el cosmos te da un mapa energético único.",
     href: "/conocimiento/astrologia",
-    description: "Geográfico, visual. Tu signo solar y, si sumás hora y lugar de nacimiento, también tu luna y tu ascendente.",
+    description: "Geográfico, visual. Tu signo solar determinado por tu fecha de nacimiento.",
     badge: "astrology" as const,
     badgeLabel: "COSMOS",
   },
