@@ -151,9 +151,12 @@ export default function ProfileHub({
                       : ""}
                   </span>
                   <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
-                  <span className="font-mono text-muted tracking-wide">
+                  <Link
+                    href={`/atlas/explorar/${userAnimal}`}
+                    className="font-mono text-muted tracking-wide hover:text-accent transition-colors underline decoration-dotted underline-offset-4"
+                  >
                     {display.name} de {chineseElement}
-                  </span>
+                  </Link>
                   {yearTheme && (
                     <>
                       <span
@@ -223,7 +226,7 @@ export default function ProfileHub({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <Link
             href="/hoy"
             className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
@@ -304,6 +307,27 @@ export default function ProfileHub({
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
               <span>Ver calendario</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Link>
+
+          <Link
+            href={`/atlas/explorar/${userAnimal}`}
+            className="p-5 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Compass className="w-4 h-4" />
+              </div>
+              <h3 className="font-heading text-base font-bold text-foreground mb-1">
+                Atlas de {display.name}
+              </h3>
+              <p className="text-xs text-muted leading-relaxed">
+                Descubrí ciudades, marcas, equipos y artistas que comparten tu energía en el mundo.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-accent mt-4 pt-3 border-t border-ink/5 group-hover:underline">
+              <span>Explorar Atlas</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </span>
           </Link>
