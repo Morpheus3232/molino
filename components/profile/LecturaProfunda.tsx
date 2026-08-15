@@ -169,7 +169,7 @@ function TuMomento({
               <div key={key}>
                 <div className="flex justify-between items-center mb-1.5">
                   <span className="text-xs text-muted capitalize">
-                    {key === "relationships" ? "Relaciones" : key === "work" ? "Trabajo" : key === "creativity" ? "Creatividad" : key}
+                    {key === "relationships" ? "Relaciones" : key === "work" ? "Trabajo" : key === "creativity" ? "Creatividad" : key === "decisions" ? "Decisiones" : key}
                   </span>
                   <span className="font-mono text-xs text-foreground">{area.score}%</span>
                 </div>
@@ -408,23 +408,25 @@ function LecturaProfundaDesbloqueada({
   );
 }
 
-export default function LecturaProfunda({ profile }: { profile: UserProfile }) {
-  const lifePath = safeNumber(profile.lifePath, 1);
-  const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const name = typeof profile.name === "string" ? profile.name : undefined;
-  const birthDate = typeof profile.birthDate === "string" ? profile.birthDate : "";
+export interface LecturaPieces {
+  patterns: ReturnType<typeof buildPatterns>;
+  rules: ReturnType<typeof buildRules>;
+  tensions: ReturnType<typeof buildTensions>;
+  dailyEnergy: ReturnType<typeof calculateDailyEnergy>;
+  timing: ReturnType<typeof analyzeTiming>;
+}
 
-  const [pieces, setPieces] = useState<{
-    patterns: ReturnType<typeof buildPatterns>;
-    rules: ReturnType<typeof buildRules>;
-    tensions: ReturnType<typeof buildTensions>;
-    dailyEnergy: ReturnType<typeof calculateDailyEnergy>;
-    timing: ReturnType<typeof analyzeTiming>;
-  } | null>(null);
-
-  const previewPattern = buildPatterns(profile)[0] ?? null;
-  const previewTension = buildTensions(profile)[0] ?? null;
-
+/**
+ * Movimientos 01→03, siempre gratis. Se renderiza cerca del hero para que
+ * la lectura arranque sin interrupciones de paywall en el medio.
+ */
+export function LecturaLibre({
+  profile,
+  onData,
+}: {
+  profile: UserProfile;
+  onData: (data: LecturaPieces) => void;
+}) {
   return (
     <EditorialSection
       as="h2"
@@ -434,14 +436,56 @@ export default function LecturaProfunda({ profile }: { profile: UserProfile }) {
       intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad, tus patrones y tu momento vistos como un solo sistema."
     >
       <div className="pt-10 sm:pt-14">
-        <PiezasLibres profile={profile} onData={setPieces} />
-
-        <div className="mt-20 sm:mt-24">
-          <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension }}>
-            <LecturaProfundaDesbloqueada profile={profile} pieces={pieces} />
-          </PremiumGate>
-        </div>
+        <PiezasLibres profile={profile} onData={onData} />
       </div>
     </EditorialSection>
+  );
+}
+
+/**
+ * Movimientos 04→05, premium. Se ubica después de las decisiones y la
+ * sincronicidad, como cierre de la lectura — no interrumpiendo el flujo
+ * gratuito de "tres movimientos".
+ */
+export function LecturaPremium({
+  profile,
+  pieces,
+}: {
+  profile: UserProfile;
+  pieces: LecturaPieces | null;
+}) {
+  const lifePath = safeNumber(profile.lifePath, 1);
+  const chineseZodiac = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
+  const name = typeof profile.name === "string" ? profile.name : undefined;
+  const birthDate = typeof profile.birthDate === "string" ? profile.birthDate : "";
+
+  const previewPattern = buildPatterns(profile)[0] ?? null;
+  const previewTension = buildTensions(profile)[0] ?? null;
+
+  return (
+    <EditorialSection
+      as="h2"
+      tone="paper"
+      eyebrow="TU MAPA"
+      title={<>PROFUNDIZÁ<br />TU LECTURA.</>}
+      intro="La síntesis entre tus sistemas y una conversación abierta con tu mapa."
+    >
+      <div className="pt-10 sm:pt-14">
+        <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension }}>
+          <LecturaProfundaDesbloqueada profile={profile} pieces={pieces} />
+        </PremiumGate>
+      </div>
+    </EditorialSection>
+  );
+}
+
+export default function LecturaProfunda({ profile }: { profile: UserProfile }) {
+  const [pieces, setPieces] = useState<LecturaPieces | null>(null);
+
+  return (
+    <>
+      <LecturaLibre profile={profile} onData={setPieces} />
+      <LecturaPremium profile={profile} pieces={pieces} />
+    </>
   );
 }

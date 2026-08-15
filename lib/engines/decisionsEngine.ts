@@ -90,16 +90,20 @@ export function analyzeDecision(
   const alignmentScore = calculateAlignmentScore(profile, category);
 
   // Calculate timing score (is now a good time?)
-  const timingScore = calculateTimingScore(personalDay, personalYear, moonPhase.phase, category);
+  const timingScore = calculateTimingScore(personalDay, personalYear, moonPhase.phase);
 
   // Energy score from today's energy
   const energyScore = energy.overallScore;
 
-  // Overall score (weighted average)
+  // Overall score (weighted average). alignmentScore es la única de las tres
+  // que varía por categoría (timing/energía son el mismo número para las 6
+  // categorías en un mismo día) — pesarla más es lo que hace que las
+  // categorías se distingan entre sí en vez de caer todas en el mismo bucket
+  // de getScoreLabel.
   const overallScore = Math.round(
-    alignmentScore * 0.4 +
-    timingScore * 0.3 +
-    energyScore * 0.3
+    alignmentScore * 0.6 +
+    timingScore * 0.2 +
+    energyScore * 0.2
   );
 
   const detectedIntent = detectDecisionIntent(question, category);
@@ -176,8 +180,7 @@ function calculateAlignmentScore(profile: UserProfile, category: DecisionCategor
 function calculateTimingScore(
   personalDay: number,
   personalYear: number,
-  moonPhase: string,
-  category: DecisionCategory
+  moonPhase: string
 ): number {
   let score = 50;
 
