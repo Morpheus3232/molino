@@ -42,13 +42,12 @@ export default function PremiumClient() {
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
-            Entendé tu mapa completo <br className="hidden sm:inline" />
-            <span className="text-accent">antes de tomar una decisión</span>
+            Explorá tu mapa completo <br className="hidden sm:inline" />
+            <span className="text-accent">con rigor, sin determinismo</span>
           </h1>
 
           <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
-            Tu mapa básico es gratuito para siempre. El acceso Premium conecta los 3 sistemas en una sola lectura,
-            detecta tus tensiones ocultas y te deja preguntarle a Molino sobre tus propias decisiones.
+            Tu mapa básico es gratuito siempre. Premium conecta numerología, astrología y zodíaco chino en una síntesis única: descubrí arquetipos, ciclos de vida y dinámicas ocultas. Una herramienta de reflexión honesta, no un oráculo.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">

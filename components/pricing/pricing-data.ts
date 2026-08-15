@@ -69,13 +69,14 @@ export const PLANS: Plan[] = [
   {
     id: "pro",
     name: "Pro",
-    tagline: "La claridad profunda, sin límites.",
+    tagline: "Síntesis rigurosa de tus arquetipos.",
     price: { monthly: 4.99, yearly: 39.99 },
     cta: { label: "Ir a Pro", href: "/onboarding" },
     features: [
       "Todo lo del plan Gratis",
-      "Análisis de compatibilidad completo",
-      "Ciclos anuales personales",
+      "Síntesis cruzada: numerología + astrología + zodíaco chino",
+      "Análisis de compatibilidad riguroso",
+      "Ciclos anuales y dinámicas personales",
       "Informe PDF descargable",
       "Sin anuncios",
     ],
@@ -85,14 +86,15 @@ export const PLANS: Plan[] = [
   {
     id: "familiar",
     name: "Familiar",
-    tagline: "Autoconocimiento para toda la casa.",
+    tagline: "Exploración colectiva sin sesgos.",
     price: { monthly: 9.99, yearly: 79.99 },
     cta: { label: "Elegir Familiar", href: "/onboarding" },
     features: [
       "Todo lo del plan Pro",
-      "Hasta 5 mapas",
-      "Comparativa de compatibilidad entre miembros",
-      "Informes grupales",
+      "Hasta 5 mapas simultáneos",
+      "Comparativa de dinámicas entre miembros",
+      "Síntesis grupal de arquetipos",
+      "Análisis de ciclos compartidos",
     ],
   },
 ];
@@ -104,9 +106,10 @@ export const COMPARISON_ROWS: Array<{
   pro: PlanFeature["included"];
 }> = [
   { label: "Mapa básico (numerología + astrología + zodíaco chino)", gratis: "yes", pro: "yes" },
-  { label: "Cálculo local, sin registro", gratis: "yes", pro: "yes" },
-  { label: "Análisis de compatibilidad", gratis: "no", pro: "yes" },
-  { label: "Ciclos anuales personales", gratis: "no", pro: "yes" },
+  { label: "Cálculo local en tu navegador, sin servidor", gratis: "yes", pro: "yes" },
+  { label: "Síntesis cruzada de los 3 sistemas", gratis: "no", pro: "yes" },
+  { label: "Análisis de dinámicas y compatibilidad", gratis: "no", pro: "yes" },
+  { label: "Ciclos anuales y energías personales", gratis: "no", pro: "yes" },
   { label: "Informe PDF descargable", gratis: "no", pro: "yes" },
   { label: "Sin anuncios", gratis: "partial", pro: "yes" },
 ];
@@ -120,31 +123,36 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿El plan Gratis es gratis para siempre?",
     answer:
-      "Sí. Generar tu mapa básico es y será gratuito, sin tarjeta y sin registro. El plan Pro solo suma profundidad: análisis de compatibilidad, ciclos y el informe PDF.",
+      "Sí. Tu mapa básico es y será gratuito, sin tarjeta y sin registro. Pro suma síntesis rigurosa: conecta los 3 sistemas, análisis de dinámicas, ciclos personales e informe PDF.",
   },
   {
-    question: "¿Puedo cancelar el plan Pro en cualquier momento?",
+    question: "¿Puedo cancelar el plan Pro o Familiar en cualquier momento?",
     answer:
-      "Sí. Podés cancelar cuando quieras desde tu cuenta y seguís teniendo acceso hasta el final del período ya pagado. Sin permanencia.",
+      "Sí. Podés cancelar cuando quieras desde tu cuenta. Seguís teniendo acceso hasta el final del período pagado. Sin permanencia, sin sorpresas.",
   },
   {
     question: "¿Qué diferencia hay entre Pro y Familiar?",
     answer:
-      "Pro es para una sola persona. Familiar incluye hasta 5 mapas, la comparativa de compatibilidad entre miembros y los informes grupales: ideal para parejas y familias.",
+      "Pro es la síntesis completa para una persona. Familiar agrega hasta 5 mapas simultáneos, comparativa de dinámicas entre miembros y análisis de ciclos compartidos: para parejas, familias y equipos.",
   },
   {
-    question: "¿Se guardan mis datos si pago?",
+    question: "¿Qué pasa con mis datos de nacimiento?",
     answer:
-      "Tu mapa se calcula en tu navegador. Los datos de tu pago los procesan Mercado Pago o PayPal de forma segura; nosotros no guardamos tu fecha de nacimiento en servidores.",
+      "Tu mapa se calcula 100% en tu navegador. Tu fecha de nacimiento nunca se envía a nuestros servidores. Los datos de pago los procesan Mercado Pago o PayPal de forma segura; nosotros nunca guardamos información personal.",
   },
   {
     question: "¿El descuento anual es automático?",
     answer:
-      "Sí. Al elegir el plan anual obtenés el equivalente a 2 meses gratis: el precio mensual cae un 20% y se cobra una sola vez al año.",
+      "Sí. Al elegir el plan anual obtenés 2 meses de descuento: el precio mensual cae un 20% y se cobra una sola vez al año.",
   },
   {
     question: "¿Qué métodos de pago aceptan?",
     answer:
-      "Aceptamos Mercado Pago y PayPal. Ambos permiten pagar de forma segura y recuperar tu acceso con el ID de la compra.",
+      "Mercado Pago y PayPal. Ambos procesan pagos de forma segura y te permiten acceder a tu síntesis usando el ID de compra.",
+  },
+  {
+    question: "¿Es una herramienta determinista o un oráculo?",
+    answer:
+      "Ni una ni otro. Molino es rigurosa pero no determinista: te muestra arquetipos, ciclos y dinámicas como marco de reflexión. Los arquetipos describen, no predicen. Las decisiones son tuyas.",
   },
 ];
