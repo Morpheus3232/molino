@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
+import { buildEntityListJsonLd } from "@/lib/seo-jsonld";
 import { getAllAnimalNames, getEntitiesByAnimalAndCategory } from "@/lib/data/atlas-queries";
 import { getAnimalProfile } from "@/lib/data/animalRelations";
 import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
@@ -45,6 +46,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       url: canonical,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${meta.plural} de ${animal} — Atlas | Molino`,
+      description: `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} según el Zodiaco Chino.`,
+    },
   };
 }
 
@@ -55,6 +61,15 @@ export default async function AnimalCategoryPage({ params }: Props) {
   if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category as EntityType)) notFound();
 
   const entities = getEntitiesByAnimalAndCategory(animal, category as EntityType);
+  const jsonLd = buildEntityListJsonLd(entities);
 
-  return <AnimalCategoryListing animal={animal} category={category} entities={entities} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AnimalCategoryListing animal={animal} category={category} entities={entities} />
+    </>
+  );
 }

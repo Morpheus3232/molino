@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
+import { buildEntityJsonLd } from "@/lib/seo-jsonld";
 import { ENTITY_TYPES, getEntityById, getEntitiesByType, SYMBOLIC_ENTITIES, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import AffinityDetailContent from "./AffinityDetailContent";
 
@@ -62,6 +63,15 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   // layer never reaches the client bundle — only these props do.
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
   const sameType = getEntitiesByType(type as EntityType).map(toLightweightEntity);
+  const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
 
-  return <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />
+    </>
+  );
 }
