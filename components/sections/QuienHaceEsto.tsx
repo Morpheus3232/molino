@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Github } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
 
 const GITHUB_USER = "Morpheus3232";
 const GITHUB_REPO = "Morpheus3232/molino";
 const REPO_URL = `https://github.com/${GITHUB_REPO}`;
+const CONTACT_EMAIL = "versionlimitada@proton.me";
 
 export default function QuienHaceEsto() {
   return (
@@ -38,11 +39,17 @@ export default function QuienHaceEsto() {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-foreground mb-0.5">
-                  Creado por {GITHUB_USER}
+                  Molino es un proyecto independiente creado por Franco Viegas
                 </p>
                 <p className="text-xs text-muted/70 mb-3">
-                  Proyecto personal de autoconocimiento, privacidad radical y
-                  transparencia total.
+                  ¿Preguntas o soporte?{" "}
+                  <Link
+                    href={`mailto:${CONTACT_EMAIL}`}
+                    className="inline-flex items-center gap-1 text-accent hover:underline"
+                  >
+                    <Mail className="w-3 h-3" aria-hidden="true" />
+                    {CONTACT_EMAIL}
+                  </Link>
                 </p>
 
                 <ul className="flex flex-wrap gap-2 text-xs font-mono">
