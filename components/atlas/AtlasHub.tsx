@@ -38,9 +38,6 @@ function CategoryPreview({
 }) {
   if (entities.length === 0) return null;
 
-  const searchParams = new URLSearchParams();
-  searchParams.set("animal", userAnimal);
-
   return (
     <motion.div className="group" {...fadeUp}>
       <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground uppercase mb-3">
@@ -67,7 +64,7 @@ function CategoryPreview({
       </div>
 
       <Link
-        href={`/explore?category=${type}&${searchParams.toString()}`}
+        href={`/atlas/explorar/${userAnimal}/${type}`}
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
       >
         <span>Ver {label.toLowerCase()}</span>
@@ -244,7 +241,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               </h2>
             </div>
             <Link
-              href={`/explore?animal=${enemyName}`}
+              href={`/atlas/explorar/${enemyName}?enemy=1`}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-accent transition-colors group shrink-0"
             >
               <span>Explorar energía opuesta</span>
