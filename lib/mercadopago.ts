@@ -58,6 +58,18 @@ export function isTestCredentials(): boolean {
   return accessToken.startsWith('TEST-');
 }
 
+/**
+ * Valida la firma de los webhooks entrantes de Mercado Pago (`x-signature`).
+ *
+ * Históricamente esta misma variable también servía de pepper para
+ * hashProfile() más abajo — un solo secreto cumpliendo dos funciones. Eso
+ * era un riesgo operativo (P1): rotar MP_WEBHOOK_SECRET en el dashboard de
+ * Mercado Pago invalidaba silenciosamente todos los hashes de perfil ya
+ * emitidos, rompiendo la recuperación de compras de usuarios ya pagos.
+ * getProfileHashSecret() ahora usa PROFILE_HASH_SECRET como pepper dedicado
+ * (con fallback a este secreto si no está seteada), así que MP_WEBHOOK_SECRET
+ * puede rotarse libremente sin afectar hashes existentes. Ver CHANGELOG.md.
+ */
 export function getWebhookSecret(): string {
   return getRequiredEnv('MP_WEBHOOK_SECRET');
 }
