@@ -13,7 +13,6 @@ import {
   ChevronRight,
   Github,
   Code2,
-  CheckCircle2,
 } from "lucide-react";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
@@ -224,10 +223,7 @@ export default function TrustSignals() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-ink/10 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-muted">
-            <span className="inline-flex items-center gap-1.5 text-emerald-400">
-              <CheckCircle2 className="w-4 h-4" />
-              Verificado sin telemetría de terceros
-            </span>
+            <span>Sin telemetría de terceros</span>
             <span>·</span>
             <Link
               href="https://github.com/Morpheus3232/molino"
