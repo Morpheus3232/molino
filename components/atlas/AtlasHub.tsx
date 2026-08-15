@@ -175,7 +175,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
             >
-              <span className="font-display text-[clamp(3.5rem,8vw,6.5rem)] font-bold tracking-tighter text-foreground/[0.06] leading-none">
+              <span className="font-display text-[clamp(3.5rem,8vw,6.5rem)] font-bold tracking-tighter text-foreground/[0.15] leading-none">
                 {userAnimal.toUpperCase()}
               </span>
               {animalEmoji && (
