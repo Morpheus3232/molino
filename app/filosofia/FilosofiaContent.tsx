@@ -36,7 +36,7 @@ const principles = [
   {
     id: "sin-tracking",
     title: "Sin tracking invasivo",
-    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. El único registro de uso (qué páginas visitás) vive exclusivamente en tu dispositivo —vos podés verlo y borrarlo en /analytics— y nunca sale de tu navegador: no llega a ningún servidor de Molino ni de terceros.",
+    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. El único registro de uso (qué páginas visitás) vive exclusivamente en tu dispositivo —vos podés verlo y borrarlo en /analytics— y nunca sale de tu navegador. Tu mapa gratuito se calcula 100% local: no llega a ningún servidor de Molino ni de terceros. Si activás Premium o IA, sí se envía un hash HMAC-SHA256 de tu perfil —nunca tu fecha de nacimiento en claro ni tu nombre— para validar el pago y habilitar el acceso.",
   },
 ];
 

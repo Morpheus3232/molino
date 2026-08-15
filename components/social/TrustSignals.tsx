@@ -30,7 +30,7 @@ const BADGES: { icon: BadgeIcon; title: string; detail: string }[] = [
   {
     icon: SlashedCookie,
     title: "Sin cookies de rastreo",
-    detail: "Cero cookies de marketing o publicidad. Tu actividad no se monitorea.",
+    detail: "Cero cookies de marketing o publicidad. Tu navegación no se rastrea.",
   },
   {
     icon: MonitorSmartphone,
