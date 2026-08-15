@@ -12,7 +12,7 @@
  * the same rule, no new formula.
  */
 
-import { getRelation, type Animal } from "@/lib/data/animalRelations";
+import { getRelation, getAnimalProfile, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import type { VisualType } from "@/types/atlas";
 
 export type LightTier =
@@ -47,12 +47,11 @@ export interface LightAffinityResult {
 }
 
 /** Buckets used by the Atlas recommendation section. */
-export type AffinityBucket = "high" | "medium" | "enemy";
+export type AffinityBucket = "most" | "least";
 
 export interface AtlasRecommendations {
-  high: LightAffinityResult[];
-  medium: LightAffinityResult[];
-  enemy: LightAffinityResult[];
+  most: LightAffinityResult[];
+  least: LightAffinityResult[];
 }
 
 /**
@@ -112,26 +111,53 @@ type LightweightLike = {
 };
 
 /**
- * Selects top 5 high-affinity (score >= 75), 3 medium (45 <= score < 75),
- * and 2 enemy (score < 45) entities from a score-sorted list.
+ * Returns the canonical enemy animal for a given user animal.
  *
- * Tie-breaking within each bucket: entities matching `userCountryISO` are
- * promoted above those from other countries — country is a presentation
- * priority, never a score modifier. Deterministic stable sort ensures same
- * input yields same output every time.
+ * Enemy = Liu Chong (Six Clashes), the single animal in direct opposition.
+ * Uses ANIMAL_PROFILES.challengingRelations as the source of truth.
+ */
+export function getEnemyAnimal(userAnimal: string): string | null {
+  if (!userAnimal || !ANIMALS.includes(userAnimal as Animal)) return null;
+  const profile = getAnimalProfile(userAnimal as Animal);
+  return profile.challengingRelations[0] ?? null;
+}
+
+/**
+ * Selects entities into two buckets:
+ *
+ *   most  → entity.animal === userAnimal (same Chinese zodiac)
+ *   least → entity.animal === enemyAnimal(userAnimal) (canonical Liu Chong enemy)
+ *
+ * Country tie-breaking promotes entities from the user's country first within
+ * each bucket, but never changes which bucket an entity belongs to.
  */
 export function selectAtlasRecommendations(
   ranked: LightAffinityResult[],
   userCountryISO?: string | null,
 ): AtlasRecommendations {
-  const high: LightAffinityResult[] = [];
-  const medium: LightAffinityResult[] = [];
-  const enemy: LightAffinityResult[] = [];
+  let userAnimal: string | null = null;
+  for (const e of ranked) {
+    if (e.relationship === "mismo animal" && e.score === 95) {
+      userAnimal = e.animal;
+      break;
+    }
+  }
+
+  if (!userAnimal) {
+    return { most: [], least: [] };
+  }
+
+  const enemy = getEnemyAnimal(userAnimal);
+
+  const most: LightAffinityResult[] = [];
+  const least: LightAffinityResult[] = [];
 
   for (const e of ranked) {
-    if (e.score >= 75) high.push(e);
-    else if (e.score >= 45) medium.push(e);
-    else enemy.push(e);
+    if (e.animal === userAnimal) {
+      most.push(e);
+    } else if (enemy && e.animal === enemy) {
+      least.push(e);
+    }
   }
 
   const byCountryTieBreak = (a: LightAffinityResult, b: LightAffinityResult) => {
@@ -141,14 +167,11 @@ export function selectAtlasRecommendations(
     return bMatch - aMatch;
   };
 
-  // Sort each bucket: first by country priority, then stable (keeps original score order).
-  high.sort(byCountryTieBreak);
-  medium.sort(byCountryTieBreak);
-  enemy.sort(byCountryTieBreak);
+  most.sort(byCountryTieBreak);
+  least.sort(byCountryTieBreak);
 
   return {
-    high: high.slice(0, 5),
-    medium: medium.slice(0, 3),
-    enemy: enemy.slice(0, 2),
+    most: most.slice(0, 5),
+    least: least.slice(0, 5),
   };
 }

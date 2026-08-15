@@ -7,24 +7,24 @@
 
 import type { LightweightEntity } from "@/types/atlas";
 
-/** How many entities to show per category in the global section. */
+/** How many entities to show per category in the global section (editorial selection). */
 export const GLOBAL_LIMITS: Record<string, number> = {
-  city: 10,
-  brand: 12,
-  team: 8,
-  university: 8,
-  artist: 8,
-  movie: 6,
+  city: 6,
+  brand: 6,
+  team: 4,
+  university: 4,
+  artist: 4,
+  movie: 4,
 };
 
 /** How many entities to show per category in the local section. */
 export const LOCAL_LIMITS: Record<string, number> = {
-  city: 6,
-  brand: 6,
-  team: 6,
-  university: 4,
-  artist: 4,
-  movie: 4,
+  city: 4,
+  brand: 4,
+  team: 4,
+  university: 3,
+  artist: 3,
+  movie: 3,
 };
 
 /** Get localized entities from the lightweight pool, excluding those already in global. */
@@ -64,6 +64,9 @@ export function getCurationCategoryLabel(type: string): string {
 
 /** Order of sections in the curated display. */
 export const CURATION_SECTION_ORDER: string[] = ["city", "brand", "team", "university", "artist", "movie"];
+
+/** Order of sections for "Descubrí el mundo" — only the 4 editorial categories. */
+export const WORLD_SECTION_ORDER: string[] = ["city", "brand", "team", "university"];
 
 /** Compact list of ISO codes for the country row. */
 export const FEATURED_COUNTRY_ISOS: string[] = ["AR", "MX", "ES", "CL", "CO", "UY", "PE"];
