@@ -74,9 +74,6 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: SITE_URL,
-    languages: {
-      "es": SITE_URL,
-    },
   },
   robots: {
     index: true,
