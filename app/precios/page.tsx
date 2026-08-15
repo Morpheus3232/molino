@@ -9,7 +9,7 @@ import { PLANS, PRICING_FAQS } from "@/components/pricing/pricing-data";
 export const metadata: Metadata = {
   title: "Precios — Planes Gratis, Pro y Familiar",
   description:
-    "Tu mapa básico es gratuito siempre. Planes Pro y Familiar con síntesis estructurada, análisis de dinámicas, ciclos personales e informe PDF. Sin registro, sin permanencia.",
+    "Tu mapa básico es gratuito siempre. Planes Pro y Familiar con síntesis estructurada, análisis de dinámicas, ciclos personales e informe con narrativa de IA. Sin registro, sin permanencia.",
   alternates: {
     canonical: siteUrl("/precios"),
   },
@@ -41,7 +41,7 @@ const productJsonLd = {
   "@type": "Product",
   name: "Molino Pro",
   description:
-    "Mapa personal completo con análisis de compatibilidad, ciclos anuales, informe PDF descargable y sin anuncios.",
+    "Mapa personal completo con análisis de compatibilidad, ciclos anuales, informe con narrativa de IA y sin anuncios.",
   brand: { "@type": "Organization", name: "Molino" },
   offers: {
     "@type": "AggregateOffer",

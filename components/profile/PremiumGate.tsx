@@ -575,7 +575,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   <span>☕ Menos de un café de especialidad</span>
                 </div>
                 <p className="text-muted leading-relaxed">
-                  Acceso permanente a tu síntesis completa, informe de 25 páginas en PDF y proyecciones 2026–2030 sin suscripciones mensuales. Garantía de devolución de 7 días.
+                  Acceso permanente a tu síntesis completa, informe con narrativa de IA y proyecciones 2026–2030 sin suscripciones mensuales. Garantía de devolución de 7 días.
                 </p>
               </div>
 
