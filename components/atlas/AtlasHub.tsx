@@ -11,7 +11,7 @@ import {
   type LightAffinityResult,
   type AtlasSections,
 } from "@/lib/affinity-light";
-import { getAnimalProfile } from "@/lib/data/animalRelations";
+import { getAnimalProfile, ANIMALS } from "@/lib/data/animalRelations";
 import type { Animal } from "@/lib/data/animalRelations";
 import CountryGrid from "@/components/atlas/CountryGrid";
 import Link from "next/link";
@@ -74,6 +74,46 @@ function CategoryPreview({
   );
 }
 
+function AnimalSelector({
+  selected,
+  onSelect,
+}: {
+  selected: string | null;
+  onSelect: (animal: Animal) => void;
+}) {
+  return (
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
+        {selected ? "Cambiar animal" : "Elegí tu animal para explorar"}
+      </p>
+      <div className="grid grid-cols-3 gap-2">
+        {ANIMALS.map((animal) => {
+          const isActive = animal === selected;
+          const emoji = getAnimalProfile(animal)?.emoji ?? "";
+          return (
+            <button
+              key={animal}
+              type="button"
+              onClick={() => onSelect(animal)}
+              aria-pressed={isActive}
+              className={`flex min-w-0 items-center gap-1.5 px-2.5 py-2 rounded-xl border text-xs font-medium transition-colors ${
+                isActive
+                  ? "border-accent bg-accent/10 text-accent"
+                  : "border-ink/10 text-foreground hover:border-accent/40"
+              }`}
+            >
+              <span className="text-base leading-none" aria-hidden="true">
+                {emoji}
+              </span>
+              <span className="truncate">{animal}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function NoCoverageBanner({ country, topCountries }: { country: string; topCountries: AtlasCountry[] }) {
   return (
     <div className="mb-8 p-4 rounded-2xl border border-ink/10 bg-card">
@@ -125,15 +165,16 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
     setSections(buildAtlasSections(animal, allEntities, userCountryISO));
   }, [allEntities, userCountryISO]);
 
-  const enemyName = sections?.enemyAnimalName ?? null;
-  const animalEmoji = useMemo(() => {
-    if (!userAnimal) return "";
-    try {
-      return getAnimalProfile(userAnimal as Animal)?.emoji ?? "";
-    } catch {
-      return "";
+  const handleSelectAnimal = (animal: Animal) => {
+    setUserAnimal(animal);
+    if (allEntities.length === 0) {
+      setSections(null);
+      return;
     }
-  }, [userAnimal]);
+    setSections(buildAtlasSections(animal, allEntities, userCountryISO));
+  };
+
+  const enemyName = sections?.enemyAnimalName ?? null;
 
   return (
     <div>
@@ -168,23 +209,14 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
             </motion.p>
           </div>
 
-          {userAnimal && (
-            <motion.div
-              className="shrink-0 select-none lg:pb-2"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            >
-              <span className="font-display text-[clamp(3.5rem,8vw,6.5rem)] font-bold tracking-tighter text-foreground/[0.15] leading-none">
-                {userAnimal.toUpperCase()}
-              </span>
-              {animalEmoji && (
-                <span className="block text-[clamp(1.5rem,3vw,2.25rem)] leading-none mt-1 opacity-30">
-                  {animalEmoji}
-                </span>
-              )}
-            </motion.div>
-          )}
+          <motion.div
+            className="shrink-0 w-full lg:w-[320px]"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+          >
+            <AnimalSelector selected={userAnimal} onSelect={handleSelectAnimal} />
+          </motion.div>
         </div>
 
         {/* Subtle bottom rule */}
