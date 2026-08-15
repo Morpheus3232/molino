@@ -1,23 +1,17 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import Button from "@/components/ui/Button";
 import {
   Download,
   Share2,
-  CalendarDays,
-  Copy,
   AlertCircle,
   Check,
   X,
   RectangleHorizontal,
   Square,
   Loader2,
-  BookOpen,
-  Heart,
-  Sun,
 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import ProfileDownloadImage, {
@@ -40,19 +34,6 @@ function generateShareText(profile: UserProfile): string {
 
 function generateShareUrl(profile: UserProfile): string {
   return `${SITE_URL}/profile?dob=${profile.birthDate}`;
-}
-
-async function copyToClipboard(text: string) {
-  if (navigator.clipboard) {
-    await navigator.clipboard.writeText(text);
-  } else {
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
-  }
 }
 
 function ShareWarningModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {
@@ -252,7 +233,7 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
   const [showShareWarning, setShowShareWarning] = useState(false);
   const [showFormatModal, setShowFormatModal] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"share" | "copy" | null>(null);
+  const [shareRevealed, setShareRevealed] = useState(false);
 
   const handleOpenDownloadModal = () => {
     setShowFormatModal(true);
@@ -269,43 +250,18 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
     }
   };
 
-  const executeShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Mi Mapa Molino", text: shareText, url: shareUrl });
-        return;
-      } catch {}
-    }
-    await copyToClipboard(`${shareText}\n${shareUrl}`);
-  }, [shareText, shareUrl]);
-
-  const executeCopy = useCallback(async () => {
-    await copyToClipboard(shareUrl);
-  }, [shareUrl]);
-
   const handleShare = () => {
-    setPendingAction("share");
-    setShowShareWarning(true);
-  };
-
-  const handleCopyLink = () => {
-    setPendingAction("copy");
+    if (shareRevealed) return;
     setShowShareWarning(true);
   };
 
   const handleConfirm = () => {
-    if (pendingAction === "share") {
-      executeShare();
-    } else if (pendingAction === "copy") {
-      executeCopy();
-    }
+    setShareRevealed(true);
     setShowShareWarning(false);
-    setPendingAction(null);
   };
 
   const handleCancel = () => {
     setShowShareWarning(false);
-    setPendingAction(null);
   };
 
   return (
@@ -331,69 +287,29 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
             Descargar mapa
           </Button>
 
-          <Button
-            variant="ghost"
-            onClick={handleShare}
-            className="flex items-center gap-2"
-          >
-            <Share2 className="w-4 h-4" aria-hidden="true" />
-            Compartir
-          </Button>
+          {!shareRevealed && (
+            <Button
+              variant="ghost"
+              onClick={handleShare}
+              className="flex items-center gap-2"
+            >
+              <Share2 className="w-4 h-4" aria-hidden="true" />
+              Compartir
+            </Button>
+          )}
 
           <SavedProfilesDrawer currentProfile={profile} />
-
-          <Link
-            href="/hoy"
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-          >
-            <Sun className="w-4 h-4 text-amber-400" aria-hidden="true" />
-            Energía de hoy
-          </Link>
-
-          <Link
-            href={`/pareja?a=${profile.birthDate || ""}`}
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-          >
-            <Heart className="w-4 h-4 text-accent" aria-hidden="true" />
-            Modo Pareja
-          </Link>
-
-          <Link
-            href="/journal"
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-          >
-            <BookOpen className="w-4 h-4" aria-hidden="true" />
-            Journal
-          </Link>
-
-          <Link
-            href="/calendario"
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
-          >
-            <CalendarDays className="w-4 h-4" aria-hidden="true" />
-            Calendario
-          </Link>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleCopyLink}
-            className="flex items-center gap-1"
-            aria-label="Copiar enlace al perfil"
-          >
-            <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-            <span className="hidden sm:inline">Enlace</span>
-          </Button>
         </div>
 
-        {/* Social Share Bar */}
-        <div className="flex items-center justify-center pt-2">
-          <SocialShareBar
-            title={`Mapa de ${profile.name || "Autoconocimiento"}`}
-            text={shareText}
-            url={shareUrl}
-          />
-        </div>
+        {shareRevealed && (
+          <div className="flex items-center justify-center pt-2">
+            <SocialShareBar
+              title={`Mapa de ${profile.name || "Autoconocimiento"}`}
+              text={shareText}
+              url={shareUrl}
+            />
+          </div>
+        )}
       </motion.div>
 
       {showShareWarning && (
