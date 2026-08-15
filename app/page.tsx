@@ -150,11 +150,11 @@ export default function Home() {
           <ParejaTeaser />
           <TresPasos />
           <TresSistemas />
-          <AtlasTeaser />
           <PremiumTeaser />
           <TrustSignals />
           <CTAFinal />
           <PersonalizedHomeClient />
+          <AtlasTeaser />
           <QuienHaceEsto />
           <FAQ />
         </main>
