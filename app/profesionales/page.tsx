@@ -18,7 +18,7 @@ const PILLARS = [
   {
     icon: Lock,
     title: "Privacidad Ética & Total",
-    desc: "Cero almacenamiento en servidores. Todo el cálculo se ejecuta en el navegador. Tu consultante nunca queda registrado, ni siquiera si paga.",
+    desc: "Cálculo básico 100% en el navegador, sin servidor. Para IA: datos se envían bajo acuerdo de confidencialidad, nunca para entrenar modelos. Tu consultante nunca queda registrado.",
   },
   {
     icon: Compass,
@@ -50,7 +50,7 @@ export default function ProfesionalesPage() {
           </h1>
 
           <p className="text-base sm:text-lg text-muted mt-5 leading-relaxed">
-            Molino es rigurosa pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. 100% privado, cálculo local, cero datos en servidor.
+            Molino es rigurosa pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. <strong>Mapa básico:</strong> 100% local, sin servidor. <strong>Para interpretaciones IA:</strong> el perfil simbólico se envía a proveedores bajo Data Processing Agreements, nunca para entrenar modelos.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
