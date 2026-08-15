@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteUrl } from "@/lib/seo";
-import { getEntitiesByAnimal, getAllAnimalNames } from "@/lib/data/atlas-queries";
+import { getEntitiesByAnimalWithCountries, getAllAnimalNames } from "@/lib/data/atlas-queries";
 import { getAnimalProfile } from "@/lib/data/animalRelations";
 import type { Animal } from "@/lib/data/animalRelations";
 import AnimalExplorer from "@/components/atlas/AnimalExplorer";
@@ -44,7 +44,7 @@ export default async function AnimalExplorerPage({ params, searchParams }: Props
 
   if (!getAllAnimalNames().includes(decoded)) notFound();
 
-  const entities = getEntitiesByAnimal(decoded);
+  const entities = getEntitiesByAnimalWithCountries(decoded);
   if (entities.length === 0) {
     return (
       <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">

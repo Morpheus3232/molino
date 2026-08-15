@@ -9,7 +9,7 @@ import type { EntityType } from "@/lib/data/symbolic-entities";
 import type { Animal } from "@/lib/data/animalRelations";
 import AnimalCategoryListing from "@/components/atlas/AnimalCategoryListing";
 
-const VALID_CATEGORIES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie"];
+const VALID_CATEGORIES: EntityType[] = ["brand", "city", "team", "university", "artist", "movie", "country"];
 
 interface Props {
   params: Promise<{ animal: string; category: string }>;
