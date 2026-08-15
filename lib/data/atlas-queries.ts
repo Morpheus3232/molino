@@ -143,3 +143,13 @@ export function orderCountriesForUser(countries: AtlasCountry[], userCountryISO?
 export function topCountriesByCount(countries: AtlasCountry[], n = 10): AtlasCountry[] {
   return [...countries].sort((a, b) => b.count - a.count).slice(0, n);
 }
+
+/**
+ * All non-country entities across the entire Atlas as LightweightEntity[].
+ * Used to build a global ranking for personalized recommendations.
+ */
+export function getAllAtlasEntities(): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES
+    .filter((e) => e.type !== "country")
+    .map(toLightweightEntity);
+}
