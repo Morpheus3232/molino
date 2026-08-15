@@ -11,8 +11,12 @@ import {
   type LightAffinityResult,
   type AtlasSections,
 } from "@/lib/affinity-light";
+import { getAnimalProfile } from "@/lib/data/animalRelations";
+import type { Animal } from "@/lib/data/animalRelations";
 import CountryGrid from "@/components/atlas/CountryGrid";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 
 interface AtlasHubProps {
   countries: AtlasCountry[];
@@ -21,38 +25,7 @@ interface AtlasHubProps {
   globalCurated: Record<string, LightweightEntity[]>;
 }
 
-const CATEGORY_LINK_MAP: Record<string, string> = {
-  country: "country",
-  city: "city",
-  brand: "brand",
-  team: "team",
-  university: "university",
-  artist: "artist",
-  movie: "movie",
-};
-
-function EntityRow({ entity }: { entity: LightAffinityResult }) {
-  return (
-    <Link
-      href={`/affinity/${entity.type}/${entity.id}`}
-      className="flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-lg hover:bg-ink/[0.03] transition-colors group"
-    >
-      <span className="text-lg leading-none shrink-0 select-none" role="img" aria-label={entity.name}>
-        {entity.emoji || "🔮"}
-      </span>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-          {entity.name}
-        </p>
-      </div>
-      <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
-        {entity.country || ""}
-      </span>
-    </Link>
-  );
-}
-
-function CategorySection({
+function CategoryPreview({
   label,
   entities,
   type,
@@ -69,22 +42,38 @@ function CategorySection({
   searchParams.set("animal", userAnimal);
 
   return (
-    <div className="mb-10">
-      <div className="flex items-end justify-between mb-4">
-        <h3 className="text-sm font-semibold text-foreground">{label}</h3>
-        <Link
-          href={`/explore?category=${type}&${searchParams.toString()}`}
-          className="text-xs text-muted hover:text-accent transition-colors whitespace-nowrap"
-        >
-          Ver {label.toLowerCase()} {userAnimal} →
-        </Link>
-      </div>
-      <div className="divide-y divide-ink/[0.06]">
-        {entities.map((e) => (
-          <EntityRow key={e.id} entity={e} />
+    <motion.div className="group" {...fadeUp}>
+      <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-foreground uppercase mb-3">
+        {label}
+      </h3>
+
+      <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5 mb-3">
+        {entities.map((e, i) => (
+          <span key={e.id} className="inline-flex items-center">
+            <Link
+              href={`/affinity/${e.type}/${e.id}`}
+              className="inline-flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors py-1 px-2 -mx-2 rounded-md hover:bg-ink/[0.04]"
+            >
+              <span className="text-base leading-none shrink-0" role="img" aria-label={e.name}>
+                {e.emoji || "🔮"}
+              </span>
+              <span className="truncate max-w-[200px]">{e.name}</span>
+            </Link>
+            {i < entities.length - 1 && (
+              <span className="text-muted/30 mx-0.5 select-none" aria-hidden="true">·</span>
+            )}
+          </span>
         ))}
       </div>
-    </div>
+
+      <Link
+        href={`/explore?category=${type}&${searchParams.toString()}`}
+        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
+      >
+        <span>Ver {label.toLowerCase()}</span>
+        <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+      </Link>
+    </motion.div>
   );
 }
 
@@ -127,7 +116,6 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
   const [sections, setSections] = useState<AtlasSections | null>(null);
   const [userAnimal, setUserAnimal] = useState<string | null>(null);
   const [countriesExpanded, setCountriesExpanded] = useState(false);
-  const [enemyExpanded, setEnemyExpanded] = useState(false);
 
   useEffect(() => {
     const profile = loadProfileFromStorage();
@@ -141,128 +129,191 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
   }, [allEntities, userCountryISO]);
 
   const enemyName = sections?.enemyAnimalName ?? null;
+  const animalEmoji = useMemo(() => {
+    if (!userAnimal) return "";
+    try {
+      return getAnimalProfile(userAnimal as Animal)?.emoji ?? "";
+    } catch {
+      return "";
+    }
+  }, [userAnimal]);
 
   return (
     <div>
-      {/* 1. TU ATLAS — same-animal categories */}
-      {sections && sections.sameAnimal.length > 0 && (
-        <section aria-label="Tu Atlas" className="mb-20">
-          <div className="mb-8">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground uppercase mb-2">
-              Tu mundo {userAnimal}
-            </h2>
-            <p className="text-sm text-muted max-w-xl leading-relaxed">
-              Explorá lugares, marcas y entidades que comparten tu mismo animal del Zodiaco Chino.
-            </p>
+      {/* ═══════════ HERO ═══════════ */}
+      <section aria-label="Atlas — tu mapa de afinidades" className="relative mb-20 sm:mb-28">
+        <motion.p
+          className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-8"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          Atlas
+        </motion.p>
+
+        <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
+          <div className="flex-1">
+            <motion.h2
+              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.92]"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+            >
+              Tu mapa de afinidades
+            </motion.h2>
+            <motion.p
+              className="text-sm sm:text-base text-muted mt-4 max-w-lg leading-relaxed"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            >
+              Explorá el mundo a través de tu animal del Zodiaco Chino.
+            </motion.p>
           </div>
 
-          {sections.sameAnimal.map((section) => (
-            <CategorySection
-              key={section.type}
-              label={section.label}
-              entities={section.entities}
-              type={section.type}
-              userAnimal={userAnimal!}
-            />
-          ))}
-        </section>
-      )}
-
-      {/* 2. ENERGÍA OPUESTA — collapsed */}
-      {sections && enemyName && sections.enemyAnimal.length > 0 && (
-        <section aria-label="Energía opuesta" className="mb-20 border-t border-ink/10 pt-12">
-          <button
-            type="button"
-            onClick={() => setEnemyExpanded((v) => !v)}
-            className="flex items-center gap-3 mb-4 w-full text-left group"
-            aria-expanded={enemyExpanded}
-          >
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <div>
-              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
-                Energía opuesta
-              </h2>
-              <p className="text-sm text-muted mt-0.5">
-                {enemyName} — Explorá entidades asociadas a tu animal enemigo en el ciclo zodiacal.
-              </p>
-            </div>
-            <span
-              className={`ml-auto text-[10px] text-muted transition-transform ${enemyExpanded ? "rotate-90" : "rotate-0"}`}
-              aria-hidden="true"
+          {userAnimal && (
+            <motion.div
+              className="shrink-0 select-none lg:pb-2"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
             >
-              ›
-            </span>
-          </button>
-
-          {enemyExpanded && (
-            <div className="mt-6 pl-11">
-              {sections.enemyAnimal.map((section) => (
-                <CategorySection
-                  key={section.type}
-                  label={section.label}
-                  entities={section.entities}
-                  type={section.type}
-                  userAnimal={enemyName!}
-                />
-              ))}
-            </div>
+              <span className="font-display text-[clamp(3.5rem,8vw,6.5rem)] font-bold tracking-tighter text-foreground/[0.06] leading-none">
+                {userAnimal.toUpperCase()}
+              </span>
+              {animalEmoji && (
+                <span className="block text-[clamp(1.5rem,3vw,2.25rem)] leading-none mt-1 opacity-30">
+                  {animalEmoji}
+                </span>
+              )}
+            </motion.div>
           )}
+        </div>
+
+        {/* Subtle bottom rule */}
+        <motion.div
+          className="mt-12 h-px bg-ink/10"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+          style={{ transformOrigin: "left" }}
+        />
+      </section>
+
+      {/* ═══════════ CATEGORÍAS — TU ANIMAL ═══════════ */}
+      {sections && sections.sameAnimal.length > 0 && (
+        <section aria-label="Tu mundo" className="relative mb-24">
+          {/* Visual connector — thin accent line */}
+          <div className="absolute left-0 top-0 bottom-0 w-px bg-accent/15 hidden sm:block" aria-hidden="true" />
+
+          <div className="sm:pl-10 space-y-14 sm:space-y-16">
+            {sections.sameAnimal.map((section) => (
+              <CategoryPreview
+                key={section.type}
+                label={section.label}
+                entities={section.entities}
+                type={section.type}
+                userAnimal={userAnimal!}
+              />
+            ))}
+          </div>
         </section>
       )}
 
-      {/* 3. EXPLORAR TODO EL ATLAS — catalog, compact */}
-      <section
+      {/* ═══════════ ENERGÍA OPUESTA ═══════════ */}
+      {sections && enemyName && sections.enemyAnimal.length > 0 && (
+        <motion.section
+          aria-label="Energía opuesta"
+          className="relative mb-24"
+          {...fadeUp}
+        >
+          {/* Editorial divider */}
+          <div className="flex items-center gap-4 mb-10" aria-hidden="true">
+            <div className="h-px flex-1 bg-ink/10" />
+            <div className="w-1.5 h-1.5 rounded-full bg-accent/30" />
+            <div className="h-px flex-1 bg-ink/10" />
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">
+                Energía opuesta
+              </p>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground/60 uppercase">
+                {enemyName}
+              </h2>
+            </div>
+            <Link
+              href={`/explore?animal=${enemyName}`}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-accent transition-colors group shrink-0"
+            >
+              <span>Explorar energía opuesta</span>
+              <span className="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+            </Link>
+          </div>
+
+          <p className="text-sm text-muted max-w-lg leading-relaxed">
+            Explorá entidades asociadas al animal opuesto en el ciclo zodiacal. Otra forma de recorrer el Atlas.
+          </p>
+        </motion.section>
+      )}
+
+      {/* ═══════════ EXPLORAR TODO EL ATLAS ═══════════ */}
+      <motion.section
         aria-label="Explorar todo el Atlas"
         className="border-t border-ink/10 pt-12"
+        {...fadeUp}
       >
-        <button
-          type="button"
-          onClick={() => setCountriesExpanded((v) => !v)}
-          className="flex items-center gap-3 mb-6 w-full text-left group"
-          aria-expanded={countriesExpanded}
-        >
-          <div className="w-8 h-px bg-border" aria-hidden="true" />
-          <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-medium">
             Explorar todo el Atlas
           </h2>
-          <span
-            className={`text-[10px] text-muted transition-transform ${countriesExpanded ? "rotate-90" : "rotate-0"}`}
-            aria-hidden="true"
-          >
-            ›
-          </span>
-        </button>
+          {!countriesExpanded && (
+            <button
+              type="button"
+              onClick={() => setCountriesExpanded(true)}
+              className="text-xs text-muted hover:text-accent transition-colors"
+            >
+              {countries.length} países →
+            </button>
+          )}
+        </div>
 
         {!hasCoverage && country && (
           <NoCoverageBanner country={country} topCountries={topCountries} />
         )}
 
-        {countriesExpanded && (
-          <div className="mb-8">
+        {countriesExpanded ? (
+          <div className="mb-6">
             <CountryGrid countries={countries} userCountryISO={userCountryISO} />
+            <button
+              type="button"
+              onClick={() => setCountriesExpanded(false)}
+              className="mt-4 text-xs text-muted hover:text-accent transition-colors"
+            >
+              Colapsar ↑
+            </button>
           </div>
-        )}
-        {!countriesExpanded && (
-          <p className="text-xs text-muted mt-2">
+        ) : (
+          <p className="text-xs text-muted">
             {countries.length} países con entidades verificadas. Desplegá para navegar por país y categoría.
           </p>
         )}
 
-        {/* Quick links to country drill-downs */}
         {userCountryISO && (
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-2">
             {["city", "brand", "team", "university"].map((cat) => (
               <Link
                 key={cat}
                 href={`/atlas/${userCountryISO}/${cat}`}
-                className="px-3 py-2 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 transition-colors"
+                className="px-3 py-1.5 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 hover:text-accent transition-colors"
               >
                 {cat === "city" ? "Ciudades" : cat === "brand" ? "Marcas" : cat === "team" ? "Equipos" : "Universidades"}
               </Link>
             ))}
           </div>
         )}
-      </section>
+      </motion.section>
     </div>
   );
 }

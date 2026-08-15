@@ -129,7 +129,8 @@ const CATEGORY_ORDER: { type: string; label: string; singular: string }[] = [
 ];
 
 /** Max entities to show per category in the hub before "Ver todas →". */
-const PER_CATEGORY_PREVIEW = 4;
+const PER_CATEGORY_PREVIEW = 3;
+const MAX_LOCAL_PER_CATEGORY = 2;
 
 /**
  * Build categorized Atlas sections filtered by animal match.
@@ -137,8 +138,10 @@ const PER_CATEGORY_PREVIEW = 4;
  *   sameAnimal  → entity.animal === userAnimal, grouped by category
  *   enemyAnimal → entity.animal === enemyAnimal(userAnimal), grouped by category
  *
- * Country tie-breaking promotes entities from the user's country first
- * within each category. Categories with zero entities are excluded.
+ * Curation: within each category, up to 2 entities from the user's country
+ * are shown first, then international entities of the same animal fill the
+ * remaining slots (up to PER_CATEGORY_PREVIEW total). Categories with zero
+ * entities are excluded.
  */
 export function buildAtlasSections(
   userAnimal: string | null,
@@ -158,37 +161,34 @@ export function buildAtlasSections(
     ? ranked.filter((e) => e.animal === enemy)
     : [];
 
-  const byCountryTieBreak = (a: LightAffinityResult, b: LightAffinityResult) => {
-    if (!userCountryISO) return 0;
-    const aMatch = a.countryISO === userCountryISO ? 1 : 0;
-    const bMatch = b.countryISO === userCountryISO ? 1 : 0;
-    return bMatch - aMatch;
-  };
-
   const sameAnimal: AtlasSection[] = [];
   const enemyAnimal: AtlasSection[] = [];
+
+  function curateCategory(pool: LightAffinityResult[]): LightAffinityResult[] {
+    if (!userCountryISO) return pool.slice(0, PER_CATEGORY_PREVIEW);
+    const local = pool.filter((e) => e.countryISO === userCountryISO);
+    const international = pool.filter((e) => e.countryISO !== userCountryISO);
+    return [...local.slice(0, MAX_LOCAL_PER_CATEGORY), ...international]
+      .slice(0, PER_CATEGORY_PREVIEW);
+  }
 
   for (const { type, label } of CATEGORY_ORDER) {
     const pool = sameAnimalEntities.filter((e) => e.type === type);
     if (pool.length === 0) continue;
-    const sorted = [...pool];
-    sorted.sort(byCountryTieBreak);
     sameAnimal.push({
       type,
       label,
-      entities: sorted.slice(0, PER_CATEGORY_PREVIEW),
+      entities: curateCategory(pool),
     });
   }
 
   for (const { type, label } of CATEGORY_ORDER) {
     const pool = enemyEntities.filter((e) => e.type === type);
     if (pool.length === 0) continue;
-    const sorted = [...pool];
-    sorted.sort(byCountryTieBreak);
     enemyAnimal.push({
       type,
       label,
-      entities: sorted.slice(0, PER_CATEGORY_PREVIEW),
+      entities: curateCategory(pool),
     });
   }
 
