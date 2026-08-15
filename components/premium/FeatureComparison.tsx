@@ -88,10 +88,10 @@ const FEATURES: FeatureItem[] = [
   },
   {
     category: "Privacidad & Acceso",
-    name: "100% privado en tu navegador (sin cookies invasivas)",
+    name: "Sin cookies invasivas ni tracking de comportamiento",
     free: true,
     premium: true,
-    description: "Tus datos nunca se venden ni se guardan en bases de datos publicitarias.",
+    description: "Tus datos nunca se venden ni se guardan en bases de datos publicitarias. Premium usa un hash de tu perfil para validar el acceso — nunca tu fecha de nacimiento en claro.",
   },
   {
     category: "Privacidad & Acceso",
