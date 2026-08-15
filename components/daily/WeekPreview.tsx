@@ -23,7 +23,7 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
           </div>
           <div>
             <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
-              Pronóstico de los Próximos 3 Días
+              Vista de los Próximos 3 Días
             </h3>
             <p className="text-xs text-muted">
               Anticipá la energía y el ritmo de los próximos días.

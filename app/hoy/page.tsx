@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Tu Energía de Hoy — Molino",
     description:
-      "Vibración diaria, pronóstico de 3 días y foco de acción según tu numerología y astrología.",
+      "Vibración diaria, vista de 3 días y foco de acción según tu numerología y astrología.",
     type: "website",
     url: siteUrl("/hoy"),
   },

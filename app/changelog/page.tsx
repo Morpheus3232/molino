@@ -95,7 +95,7 @@ export default function ChangelogPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Cada cambio en Molino responde a dos principios innegociables: <strong>privacidad total sin cuentas</strong> y <strong>claridad simbólica rigurosa</strong>.
+            Cada cambio en Molino responde a dos principios innegociables: <strong>privacidad total sin cuentas</strong> y <strong>claridad simbólica estructurada</strong>.
           </p>
         </div>
 

@@ -15,7 +15,7 @@ const benefits = [
       </svg>
     ),
     title: "Comprendé cómo decidís",
-    description: "Tu número de vida revela patrones de decisión que ya están operando en tu día a día.",
+    description: "Tu número de vida ofrece una perspectiva sobre patrones de decisión que ya están operando en tu día a día.",
   },
   {
     icon: (
@@ -37,7 +37,7 @@ const benefits = [
       </svg>
     ),
     title: "Orientate con claridad",
-    description: "Elegí los momentos justos para avanzar, descansar y conectar.",
+    description: "Elegí los momentos que podés explorar para avanzar, descansar y conectar.",
   },
   {
     icon: (
@@ -66,7 +66,7 @@ export default function QueDescubris() {
           {...fadeUpDelayed(0.05)}
           className="type-caption text-center text-muted mb-12"
         >
-          Autoconocimiento práctico y verificable
+          Autoconocimiento práctico y estructurado
         </motion.p>
 
         <Divider variant="star" className="mb-12" />

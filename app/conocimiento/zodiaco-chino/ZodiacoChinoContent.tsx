@@ -47,7 +47,7 @@ export default function ZodiacoChinoContent() {
             <div className="p-6 border border-ink/10 mt-6">
               <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
-                El zod&#237;aco chino es un sistema de data cultural verificable. No es un sistema de predicciones, sino un modelo c&#237;clico que estructura el tiempo de una cultura.
+                El zod&#237;aco chino es un sistema de data cultural estructurada. No es un sistema de predicciones, sino un modelo c&#237;clico que estructura el tiempo de una cultura.
               </p>
             </div>
           </div>

@@ -125,7 +125,7 @@ export default function HeroInstrument() {
           {...fadeUpDelayed(0.1)}
           className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
         >
-          Una matriz rigurosa de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
+          Una matriz estructurada de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
         </motion.p>
 
         {/* Formulario de Fecha y Generación */}

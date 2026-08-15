@@ -9,14 +9,14 @@ import { PLANS, PRICING_FAQS } from "@/components/pricing/pricing-data";
 export const metadata: Metadata = {
   title: "Precios — Planes Gratis, Pro y Familiar",
   description:
-    "Tu mapa básico es gratuito siempre. Planes Pro y Familiar con síntesis rigurosa, análisis de dinámicas, ciclos personales e informe PDF. Sin registro, sin permanencia.",
+    "Tu mapa básico es gratuito siempre. Planes Pro y Familiar con síntesis estructurada, análisis de dinámicas, ciclos personales e informe PDF. Sin registro, sin permanencia.",
   alternates: {
     canonical: siteUrl("/precios"),
   },
   openGraph: {
     title: "Precios — Molino",
     description:
-      "Tu mapa básico es gratuito. Pro y Familiar: síntesis rigurosa de arquetipos, ciclos y dinámicas. Herramientas de reflexión, no oráculos.",
+      "Tu mapa básico es gratuito. Pro y Familiar: síntesis estructurada de arquetipos, ciclos y dinámicas. Herramientas de reflexión, no oráculos.",
     type: "website",
     url: siteUrl("/precios"),
     images: [siteUrl("/opengraph-image")],
