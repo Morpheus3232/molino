@@ -64,9 +64,9 @@ function getNumerologyScore(userLifePath: number, targetYear: number, targetName
 }
 
 // ─── Final score ───
-// 100% zodiac (animal↔animal via getRelation). Numerology excluded.
-function calculateFinalScore(zodiac: number, _numerology: number): number {
-  return zodiac;
+// 70% zodiac (animal↔animal via getRelation) + 30% numerology
+function calculateFinalScore(zodiac: number, numerology: number): number {
+  return Math.round(zodiac * 0.7 + numerology * 0.3);
 }
 
 // ─── Reason generation ───
