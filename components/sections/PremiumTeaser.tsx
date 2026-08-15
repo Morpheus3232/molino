@@ -9,8 +9,8 @@ import Card from "@/components/ui/Card";
 const PREMIUM_PERKS = [
   {
     icon: FileText,
-    title: "Informe PDF de 25 Páginas",
-    desc: "Tu mapa completo maquetado en alta resolución para leer con calma, imprimir o guardar.",
+    title: "Informe con Narrativa de IA",
+    desc: "Tu mapa completo interpretado por IA — narrativa personal y chat interactivo para profundizar en tu síntesis.",
   },
   {
     icon: Calendar,
@@ -110,7 +110,7 @@ export default function PremiumTeaser() {
             <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1 relative">
               <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
               <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
-              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio, informe de 25 páginas y 0 tracking.</p>
+              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio, informe con narrativa de IA y 0 tracking.</p>
             </div>
           </div>
         </div>

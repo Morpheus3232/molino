@@ -14,7 +14,7 @@ export const FAQS = [
   {
     question: "¿Qué incluye el acceso Premium de $8 USD y cómo funciona la garantía?",
     answer:
-      "El acceso Premium (pago único de por vida) incluye la síntesis profunda descargable en PDF de alta resolución (25 páginas), ciclos personales 2026–2030, desglose de tensiones arquetípicas y preguntas interactivas. Cuenta con garantía incondicional de devolución de 7 días.",
+      "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa de IA, ciclos personales 2026–2030, desglose de tensiones arquetípicas y preguntas interactivas. Cuenta con garantía incondicional de devolución de 7 días.",
   },
   {
     question: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",

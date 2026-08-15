@@ -77,7 +77,7 @@ export const PLANS: Plan[] = [
       "Síntesis cruzada: numerología + astrología + zodíaco chino",
       "Análisis de compatibilidad estructurado",
       "Ciclos anuales y dinámicas personales",
-      "Informe PDF descargable",
+      "Informe con narrativa de IA",
       "Sin anuncios",
     ],
     highlighted: true,
@@ -110,7 +110,7 @@ export const COMPARISON_ROWS: Array<{
   { label: "Síntesis cruzada de los 3 sistemas", gratis: "no", pro: "yes" },
   { label: "Análisis de dinámicas y compatibilidad", gratis: "no", pro: "yes" },
   { label: "Ciclos anuales y energías personales", gratis: "no", pro: "yes" },
-  { label: "Informe PDF descargable", gratis: "no", pro: "yes" },
+  { label: "Informe con narrativa de IA", gratis: "no", pro: "yes" },
   { label: "Sin anuncios", gratis: "partial", pro: "yes" },
 ];
 
@@ -123,7 +123,7 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿El plan Gratis es gratis para siempre?",
     answer:
-      "Sí. Tu mapa básico es y será gratuito, sin tarjeta y sin registro. Pro suma síntesis estructurada: conecta los 3 sistemas, análisis de dinámicas, ciclos personales e informe PDF.",
+      "Sí. Tu mapa básico es y será gratuito, sin tarjeta y sin registro. Pro suma síntesis estructurada: conecta los 3 sistemas, análisis de dinámicas, ciclos personales e informe con narrativa de IA.",
   },
   {
     question: "¿Puedo cancelar el plan Pro o Familiar en cualquier momento?",
