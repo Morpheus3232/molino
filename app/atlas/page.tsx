@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
-import { getAtlasCountries, topCountriesByCount } from "@/lib/data/atlas-queries";
+import { getAtlasCountries, topCountriesByCount, getAllAtlasEntities } from "@/lib/data/atlas-queries";
 import AtlasHub from "@/components/atlas/AtlasHub";
 
 export const metadata: Metadata = {
@@ -17,13 +17,14 @@ export const metadata: Metadata = {
 };
 
 /**
- * Atlas hub — global country grid. Server Component; only plain metadata
- * (iso/name/flag/count) reaches the client. The client AtlasHub resolves the
- * user's country and personalizes presentation.
+ * Atlas hub — global country grid + personalized affinity recommendations.
+ * Server Component; lightweight entity catalog + country metadata reach the
+ * client. AtlasHub resolves the user's animal and builds the ranking.
  */
 export default function AtlasPage() {
   const countries = getAtlasCountries();
   const topCountries = topCountriesByCount(countries);
+  const allEntities = getAllAtlasEntities();
 
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
@@ -41,13 +42,11 @@ export default function AtlasPage() {
           </p>
         </header>
 
-        <section aria-label="Países del Atlas">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Países</h2>
-          </div>
-          <AtlasHub countries={countries} topCountries={topCountries} />
-        </section>
+        <AtlasHub
+          countries={countries}
+          topCountries={topCountries}
+          allEntities={allEntities}
+        />
       </div>
     </main>
   );

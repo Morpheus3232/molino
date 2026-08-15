@@ -46,6 +46,15 @@ export interface LightAffinityResult {
   isApproximate: boolean;
 }
 
+/** Buckets used by the Atlas recommendation section. */
+export type AffinityBucket = "high" | "medium" | "enemy";
+
+export interface AtlasRecommendations {
+  high: LightAffinityResult[];
+  medium: LightAffinityResult[];
+  enemy: LightAffinityResult[];
+}
+
 /**
  * Compute the affinity score for a single entity given the user's animal.
  * Mirrors affinityEngine's score exactly.
@@ -101,3 +110,45 @@ type LightweightLike = {
   type: string;
   isApproximate?: boolean;
 };
+
+/**
+ * Selects top 5 high-affinity (score >= 75), 3 medium (45 <= score < 75),
+ * and 2 enemy (score < 45) entities from a score-sorted list.
+ *
+ * Tie-breaking within each bucket: entities matching `userCountryISO` are
+ * promoted above those from other countries — country is a presentation
+ * priority, never a score modifier. Deterministic stable sort ensures same
+ * input yields same output every time.
+ */
+export function selectAtlasRecommendations(
+  ranked: LightAffinityResult[],
+  userCountryISO?: string | null,
+): AtlasRecommendations {
+  const high: LightAffinityResult[] = [];
+  const medium: LightAffinityResult[] = [];
+  const enemy: LightAffinityResult[] = [];
+
+  for (const e of ranked) {
+    if (e.score >= 75) high.push(e);
+    else if (e.score >= 45) medium.push(e);
+    else enemy.push(e);
+  }
+
+  const byCountryTieBreak = (a: LightAffinityResult, b: LightAffinityResult) => {
+    if (!userCountryISO) return 0;
+    const aMatch = a.countryISO === userCountryISO ? 1 : 0;
+    const bMatch = b.countryISO === userCountryISO ? 1 : 0;
+    return bMatch - aMatch;
+  };
+
+  // Sort each bucket: first by country priority, then stable (keeps original score order).
+  high.sort(byCountryTieBreak);
+  medium.sort(byCountryTieBreak);
+  enemy.sort(byCountryTieBreak);
+
+  return {
+    high: high.slice(0, 5),
+    medium: medium.slice(0, 3),
+    enemy: enemy.slice(0, 2),
+  };
+}
