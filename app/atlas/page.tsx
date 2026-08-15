@@ -31,19 +31,6 @@ export default function AtlasPage() {
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
-      <header className="mb-12">
-        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-3">
-          Atlas
-        </p>
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
-          Tu mapa, tu animal
-        </h1>
-        <p className="text-sm sm:text-base text-muted mt-4 max-w-2xl leading-relaxed">
-          Descubrí países, ciudades, marcas y entidades que comparten tu mismo animal del zodíaco chino.
-          Más abajo podés explorar la energía opuesta y el catálogo completo por país.
-        </p>
-      </header>
-
         <AtlasHub
           countries={countries}
           topCountries={topCountries}
