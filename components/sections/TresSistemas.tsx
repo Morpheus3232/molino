@@ -12,7 +12,7 @@ import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 const systems = [
   {
     title: "Numerología",
-    subtitle: "Tu fecha y hora revelan patrones que ya estás viviendo.",
+    subtitle: "Tu fecha de nacimiento revela patrones que ya estás viviendo.",
     href: "/conocimiento/numerologia",
     description: "Directo, cuantificable. Tu número de vida, tu expresión, tu año personal.",
     badge: "numerology" as const,
@@ -22,7 +22,7 @@ const systems = [
     title: "Astrología",
     subtitle: "Tu lugar en el cosmos te da un mapa energético único.",
     href: "/conocimiento/astrologia",
-    description: "Geográfico, visual. Tu sol, tu luna, tu ascendente. El cielo de tu nacimiento.",
+    description: "Geográfico, visual. Tu signo solar y, si sumás hora y lugar de nacimiento, también tu luna y tu ascendente.",
     badge: "astrology" as const,
     badgeLabel: "COSMOS",
   },

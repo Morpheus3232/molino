@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Star, Quote, ShieldCheck } from "lucide-react";
 
 interface Testimonial {
@@ -62,7 +63,11 @@ export default function PremiumTestimonials({ className = "" }: { className?: st
             Qué dicen quienes ya desbloquearon su mapa
           </h2>
           <p className="text-xs sm:text-sm text-muted mt-2 max-w-xl mx-auto">
-            Más de 14.000 mapas calculados en América Latina y España.
+            Más de 14.000 mapas calculados (gratis + Premium) en América Latina y España desde el lanzamiento. Es un número distinto de los miembros Premium pagos, que podés ver validados uno por uno en{" "}
+            <Link href="/transparencia" className="underline hover:text-accent">
+              Transparencia
+            </Link>
+            .
           </p>
         </div>
 
@@ -102,7 +107,7 @@ export default function PremiumTestimonials({ className = "" }: { className?: st
                 </div>
                 <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">
                   <ShieldCheck className="w-3 h-3" />
-                  <span>Acceso Verificado</span>
+                  <span>Cliente Premium</span>
                 </div>
               </div>
             </div>
