@@ -15,7 +15,7 @@ const PREMIUM_PERKS = [
   {
     icon: Calendar,
     title: "Ciclos Anuales 2026–2030",
-    desc: "Pronóstico extendido de Años y Meses Personales para planificar decisiones importantes.",
+    desc: "Ciclos personales extendidos de Años y Meses para planificar decisiones importantes.",
   },
   {
     icon: Users,
@@ -90,7 +90,7 @@ export default function PremiumTeaser() {
               ¿Por qué $8 USD en pago único?
             </h3>
             <p className="text-xs text-muted mt-1">
-              Diseñamos Molino para que el autoconocimiento riguroso no sea un lujo mensual.
+              Diseñamos Molino para que el autoconocimiento estructurado no sea un lujo mensual.
             </p>
           </div>
 

@@ -63,7 +63,7 @@ const homeSchemas = [
         name: "¿Qué incluye el acceso Premium de $8 USD y cómo funciona la garantía?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda descargable en PDF de alta resolución (25 páginas), pronóstico de ciclos anuales 2026–2030, desglose de tensiones arquetípicas y garantía de devolución total de 7 días sin preguntas.",
+          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda descargable en PDF de alta resolución (25 páginas), ciclos personales 2026–2030, desglose de tensiones arquetípicas y garantía de devolución total de 7 días sin preguntas.",
         },
       },
       {

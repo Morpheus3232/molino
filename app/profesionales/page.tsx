@@ -8,7 +8,7 @@ import Card from "@/components/ui/Card";
 export const metadata: Metadata = {
   title: "Molino para Profesionales — Coaches y Facilitadores",
   description:
-    "Herramienta rigurosa de reflexión para enriquecer tus sesiones: arquetipos, ciclos y dinámicas sin sesgos. 100% privado, cálculo local, sin bases de datos.",
+    "Herramienta estructurada de reflexión para enriquecer tus sesiones: arquetipos, ciclos y dinámicas sin sesgos. 100% privado, cálculo local, sin bases de datos.",
   alternates: {
     canonical: siteUrl("/profesionales"),
   },
@@ -22,7 +22,7 @@ const PILLARS = [
   },
   {
     icon: Compass,
-    title: "Marco Riguroso, No Determinista",
+    title: "Marco Estructurado, No Determinista",
     desc: "Arquetipos, ciclos y dinámicas como herramienta de reflexión estructurada. Describe patrones, no predice resultados. Tú sostenés el encuadre.",
   },
   {
@@ -46,11 +46,11 @@ export default function ProfesionalesPage() {
           </div>
 
           <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.08] text-foreground">
-            Marco de reflexión riguroso para tus sesiones
+            Marco de reflexión estructurado para tus sesiones
           </h1>
 
           <p className="text-base sm:text-lg text-muted mt-5 leading-relaxed">
-            Molino es rigurosa pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. <strong>Mapa básico:</strong> 100% local, sin servidor. <strong>Para interpretaciones IA:</strong> el perfil simbólico se envía a proveedores bajo Data Processing Agreements, nunca para entrenar modelos.
+            Molino es estructurada pero no determinista: te da arquetipos, ciclos y dinámicas como herramienta de estructura, no como predicción. <strong>Mapa básico:</strong> 100% local, sin servidor. <strong>Para interpretaciones IA:</strong> el perfil simbólico se envía a proveedores bajo Data Processing Agreements, nunca para entrenar modelos.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">

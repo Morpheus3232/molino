@@ -12,9 +12,9 @@ import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 const systems = [
   {
     title: "Numerología",
-    subtitle: "Tu fecha de nacimiento revela patrones que ya estás viviendo.",
+    subtitle: "Tu fecha de nacimiento ofrece una perspectiva sobre patrones que ya estás viviendo.",
     href: "/conocimiento/numerologia",
-    description: "Directo, cuantificable. Tu número de vida, tu expresión, tu año personal.",
+    description: "Concreto y personal. Tu número de vida, tu expresión, tu año personal.",
     badge: "numerology" as const,
     badgeLabel: "NÚMEROS",
   },
@@ -28,7 +28,7 @@ const systems = [
   },
   {
     title: "Zodiaco Chino",
-    subtitle: "Tu año define un ciclo que guía tus decisiones.",
+    subtitle: "Tu año define un ciclo que aporta contexto para tus decisiones.",
     href: "/conocimiento/zodiaco-chino",
     description: "Tradicional, simbólico. Tu animal, tu elemento, tu pilar del año.",
     badge: "zodiac" as const,

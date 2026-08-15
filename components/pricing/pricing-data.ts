@@ -69,13 +69,13 @@ export const PLANS: Plan[] = [
   {
     id: "pro",
     name: "Pro",
-    tagline: "Síntesis rigurosa de tus arquetipos.",
+    tagline: "Síntesis estructurada de tus arquetipos.",
     price: { monthly: 4.99, yearly: 39.99 },
     cta: { label: "Ir a Pro", href: "/onboarding" },
     features: [
       "Todo lo del plan Gratis",
       "Síntesis cruzada: numerología + astrología + zodíaco chino",
-      "Análisis de compatibilidad riguroso",
+      "Análisis de compatibilidad estructurado",
       "Ciclos anuales y dinámicas personales",
       "Informe PDF descargable",
       "Sin anuncios",
@@ -123,7 +123,7 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿El plan Gratis es gratis para siempre?",
     answer:
-      "Sí. Tu mapa básico es y será gratuito, sin tarjeta y sin registro. Pro suma síntesis rigurosa: conecta los 3 sistemas, análisis de dinámicas, ciclos personales e informe PDF.",
+      "Sí. Tu mapa básico es y será gratuito, sin tarjeta y sin registro. Pro suma síntesis estructurada: conecta los 3 sistemas, análisis de dinámicas, ciclos personales e informe PDF.",
   },
   {
     question: "¿Puedo cancelar el plan Pro o Familiar en cualquier momento?",
@@ -153,6 +153,6 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿Es una herramienta determinista o un oráculo?",
     answer:
-      "Ni una ni otro. Molino es rigurosa pero no determinista: te muestra arquetipos, ciclos y dinámicas como marco de reflexión. Los arquetipos describen, no predicen. Las decisiones son tuyas.",
+      "Ni una ni otro. Molino es estructurada pero no determinista: te muestra arquetipos, ciclos y dinámicas como marco de reflexión. Los arquetipos describen, no predicen. Las decisiones son tuyas.",
   },
 ];

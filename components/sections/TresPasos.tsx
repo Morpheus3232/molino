@@ -14,7 +14,7 @@ const steps = [
   {
     number: 2,
     title: "Cruzamos los patrones",
-    description: "Tres sistemas convergen en una sola lectura, sin contradecirse.",
+    description: "Tres sistemas convergen en una lectura integrada.",
     subtitle: "Numerología, astrología, zodíaco chino",
   },
   {

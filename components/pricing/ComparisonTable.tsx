@@ -130,7 +130,7 @@ export default function ComparisonTable() {
               ¿Cómo se compara con otras opciones?
             </h3>
             <p className="text-xs text-muted mt-1 leading-relaxed">
-              Diseñamos Molino para que el autoconocimiento riguroso no dependa de suscripciones mensuales recurrentes:
+              Diseñamos Molino para que el autoconocimiento estructurado no dependa de suscripciones mensuales recurrentes:
             </p>
           </div>
 

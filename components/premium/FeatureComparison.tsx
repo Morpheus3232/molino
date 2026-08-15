@@ -48,7 +48,7 @@ const FEATURES: FeatureItem[] = [
     name: "Calendario de energía diaria completa y fases lunares",
     free: false,
     premium: true,
-    description: "Pronóstico simbólico día a día para planificar decisiones clave.",
+    description: "Lectura simbólica día a día para planificar decisiones clave.",
   },
   {
     category: "Tiempo & Ciclos",
