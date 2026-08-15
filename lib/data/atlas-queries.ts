@@ -153,3 +153,36 @@ export function getAllAtlasEntities(): LightweightEntity[] {
     .filter((e) => e.type !== "country")
     .map(toLightweightEntity);
 }
+
+/**
+ * All 12 Chinese Zodiac animals for `generateStaticParams`.
+ */
+export function getAllAnimalNames(): string[] {
+  return [
+    "Rata", "Buey", "Tigre", "Gato", "Dragón",
+    "Serpiente", "Caballo", "Cabra", "Mono", "Gallo",
+    "Perro", "Cerdo",
+  ];
+}
+
+/**
+ * Non-country entities filtered by Chinese Zodiac animal.
+ * Used by the animal exploration pages (/atlas/explorar/[animal]).
+ */
+export function getEntitiesByAnimal(animal: string): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES
+    .filter((e) => e.type !== "country")
+    .map(toLightweightEntity)
+    .filter((e) => e.animal === animal);
+}
+
+/**
+ * Entities of a given category whose primary event maps to the specified
+ * Chinese Zodiac animal. Used by /atlas/explorar/[animal]/[category].
+ */
+export function getEntitiesByAnimalAndCategory(animal: string, category: EntityType): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES
+    .filter((e) => e.type === category)
+    .map(toLightweightEntity)
+    .filter((e) => e.animal === animal);
+}
