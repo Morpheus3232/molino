@@ -89,7 +89,11 @@ export default function Hero() {
           {...fadeUpDelayed(0.1)}
           className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
         >
-          Una matriz estructurada de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
+          Una{" "}
+          <Link href="/metodos-y-fuentes" className="underline decoration-dotted underline-offset-2 hover:text-accent transition-colors">
+            matriz estructurada
+          </Link>{" "}
+          de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
         </motion.p>
 
         <motion.div

@@ -12,6 +12,7 @@ const FOOTER_LINKS = [
   { href: "/premium", label: "Premium" },
   { href: "/profesionales", label: "Profesionales" },
   { href: "/embed", label: "Widget" },
+  { href: "/metodos-y-fuentes", label: "Métodos y Fuentes" },
   { href: "/transparencia", label: "Transparencia" },
   { href: "/changelog", label: "Changelog" },
   { href: "/privacidad", label: "Privacidad" },
