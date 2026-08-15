@@ -239,7 +239,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                   href="/profile"
                   className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-gold text-gold-foreground hover:bg-gold-hover min-h-[44px] transition-colors"
                 >
-                  Generá tu mapa gratuito →
+                  Crear mi mapa →
                 </Link>
               </div>
             </motion.section>

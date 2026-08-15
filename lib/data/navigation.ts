@@ -24,6 +24,7 @@ export const footerColumns: FooterColumn[] = [
       { href: "/affinity", label: "AFINIDAD" },
       { href: "/explore", label: "EXPLORAR" },
       { href: "/biblioteca", label: "BIBLIOTECA" },
+      { href: "/academy", label: "ACADEMIA" },
     ],
   },
   {

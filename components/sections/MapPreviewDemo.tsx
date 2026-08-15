@@ -303,7 +303,7 @@ export default function MapPreviewDemo() {
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-gold-hover transition-colors shadow-md"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Calcular mi propio mapa en 30 segundos</span>
+              <span>Crear mi mapa</span>
             </button>
             <p className="font-mono text-[11px] text-muted mt-2">
               100% privado en tu navegador · Sin registro ni costo

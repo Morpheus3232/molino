@@ -109,7 +109,7 @@ export default function TresSistemas() {
             onClick={() => router.push("/onboarding")}
             className="group inline-flex items-center gap-2"
           >
-            Generá tu mapa personal
+            Crear mi mapa
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </Button>
         </motion.div>

@@ -62,7 +62,7 @@ export default function CTAFinal() {
             aria-disabled={!isDateValid ? "true" : undefined}
             className={`w-[90%] sm:w-auto ${!isDateValid ? "opacity-50" : ""}`}
           >
-            Crear mi mapa personal
+            Crear mi mapa
           </Button>
         </motion.div>
 
