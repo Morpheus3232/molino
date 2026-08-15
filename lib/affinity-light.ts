@@ -46,12 +46,17 @@ export interface LightAffinityResult {
   isApproximate: boolean;
 }
 
-/** Buckets used by the Atlas recommendation section. */
-export type AffinityBucket = "most" | "least";
+export interface AtlasSection {
+  type: string;
+  label: string;
+  entities: LightAffinityResult[];
+}
 
-export interface AtlasRecommendations {
-  most: LightAffinityResult[];
-  least: LightAffinityResult[];
+export interface AtlasSections {
+  sameAnimal: AtlasSection[];
+  enemyAnimal: AtlasSection[];
+  userAnimal: string | null;
+  enemyAnimalName: string | null;
 }
 
 /**
@@ -111,6 +116,86 @@ type LightweightLike = {
 };
 
 /**
+ * Category display order and labels for the Atlas hub.
+ */
+const CATEGORY_ORDER: { type: string; label: string; singular: string }[] = [
+  { type: "country", label: "Países", singular: "país" },
+  { type: "city", label: "Ciudades", singular: "ciudad" },
+  { type: "brand", label: "Marcas", singular: "marca" },
+  { type: "team", label: "Equipos", singular: "equipo" },
+  { type: "university", label: "Universidades", singular: "universidad" },
+  { type: "artist", label: "Artistas", singular: "artista" },
+  { type: "movie", label: "Películas", singular: "película" },
+];
+
+/** Max entities to show per category in the hub before "Ver todas →". */
+const PER_CATEGORY_PREVIEW = 4;
+
+/**
+ * Build categorized Atlas sections filtered by animal match.
+ *
+ *   sameAnimal  → entity.animal === userAnimal, grouped by category
+ *   enemyAnimal → entity.animal === enemyAnimal(userAnimal), grouped by category
+ *
+ * Country tie-breaking promotes entities from the user's country first
+ * within each category. Categories with zero entities are excluded.
+ */
+export function buildAtlasSections(
+  userAnimal: string | null,
+  entities: LightweightLike[],
+  userCountryISO?: string | null,
+): AtlasSections {
+  if (!userAnimal) {
+    return { sameAnimal: [], enemyAnimal: [], userAnimal: null, enemyAnimalName: null };
+  }
+
+  const enemy = getEnemyAnimal(userAnimal);
+
+  const ranked = sortLightEntities(userAnimal, entities);
+
+  const sameAnimalEntities = ranked.filter((e) => e.animal === userAnimal);
+  const enemyEntities = enemy
+    ? ranked.filter((e) => e.animal === enemy)
+    : [];
+
+  const byCountryTieBreak = (a: LightAffinityResult, b: LightAffinityResult) => {
+    if (!userCountryISO) return 0;
+    const aMatch = a.countryISO === userCountryISO ? 1 : 0;
+    const bMatch = b.countryISO === userCountryISO ? 1 : 0;
+    return bMatch - aMatch;
+  };
+
+  const sameAnimal: AtlasSection[] = [];
+  const enemyAnimal: AtlasSection[] = [];
+
+  for (const { type, label } of CATEGORY_ORDER) {
+    const pool = sameAnimalEntities.filter((e) => e.type === type);
+    if (pool.length === 0) continue;
+    const sorted = [...pool];
+    sorted.sort(byCountryTieBreak);
+    sameAnimal.push({
+      type,
+      label,
+      entities: sorted.slice(0, PER_CATEGORY_PREVIEW),
+    });
+  }
+
+  for (const { type, label } of CATEGORY_ORDER) {
+    const pool = enemyEntities.filter((e) => e.type === type);
+    if (pool.length === 0) continue;
+    const sorted = [...pool];
+    sorted.sort(byCountryTieBreak);
+    enemyAnimal.push({
+      type,
+      label,
+      entities: sorted.slice(0, PER_CATEGORY_PREVIEW),
+    });
+  }
+
+  return { sameAnimal, enemyAnimal, userAnimal, enemyAnimalName: enemy };
+}
+
+/**
  * Returns the canonical enemy animal for a given user animal.
  *
  * Enemy = Liu Chong (Six Clashes), the single animal in direct opposition.
@@ -120,58 +205,4 @@ export function getEnemyAnimal(userAnimal: string): string | null {
   if (!userAnimal || !ANIMALS.includes(userAnimal as Animal)) return null;
   const profile = getAnimalProfile(userAnimal as Animal);
   return profile.challengingRelations[0] ?? null;
-}
-
-/**
- * Selects entities into two buckets:
- *
- *   most  → entity.animal === userAnimal (same Chinese zodiac)
- *   least → entity.animal === enemyAnimal(userAnimal) (canonical Liu Chong enemy)
- *
- * Country tie-breaking promotes entities from the user's country first within
- * each bucket, but never changes which bucket an entity belongs to.
- */
-export function selectAtlasRecommendations(
-  ranked: LightAffinityResult[],
-  userCountryISO?: string | null,
-): AtlasRecommendations {
-  let userAnimal: string | null = null;
-  for (const e of ranked) {
-    if (e.relationship === "mismo animal" && e.score === 95) {
-      userAnimal = e.animal;
-      break;
-    }
-  }
-
-  if (!userAnimal) {
-    return { most: [], least: [] };
-  }
-
-  const enemy = getEnemyAnimal(userAnimal);
-
-  const most: LightAffinityResult[] = [];
-  const least: LightAffinityResult[] = [];
-
-  for (const e of ranked) {
-    if (e.animal === userAnimal) {
-      most.push(e);
-    } else if (enemy && e.animal === enemy) {
-      least.push(e);
-    }
-  }
-
-  const byCountryTieBreak = (a: LightAffinityResult, b: LightAffinityResult) => {
-    if (!userCountryISO) return 0;
-    const aMatch = a.countryISO === userCountryISO ? 1 : 0;
-    const bMatch = b.countryISO === userCountryISO ? 1 : 0;
-    return bMatch - aMatch;
-  };
-
-  most.sort(byCountryTieBreak);
-  least.sort(byCountryTieBreak);
-
-  return {
-    most: most.slice(0, 5),
-    least: least.slice(0, 5),
-  };
 }
