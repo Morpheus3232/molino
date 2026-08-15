@@ -691,4 +691,15 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     events: [{ id: "kia-autos-fund", type: "fundacion", label: "Fundación", year: 1944, confidence: "media", primaryForAffinity: true, description: "Nacida como Kyungsung Precision Industry en Seúl, Kia empezó fabricando tubos de acero y piezas de bicicleta.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1944.",
   },
+
+  // ──── AUTOS ADICIONALES ────
+  {
+    id: "honda-autos", name: "Honda", type: "brand",
+    country: "Japón", emoji: "🔴",
+    category: "autos",
+    description: "De un taller de motores para bicicletas a una de las marcas más confiables del mundo, Honda encarna la precisión y el ingenio japonés en cada motor.",
+    keyThemes: ["Ingenio", "Precisión", "Japón", "Motor"],
+    events: [{ id: "honda-autos-fund", type: "fundacion", label: "Fundación", year: 1948, confidence: "media", primaryForAffinity: true, description: "Soichiro Honda fundó la compañía en Hamamatsu, Japón, empezando con motores para bicicletas y soñando con la Fórmula 1.", source: "Documentación histórica" }],
+    sourceNote: "Fundada en 1948.",
+  },
 ];

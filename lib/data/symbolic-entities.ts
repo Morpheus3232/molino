@@ -17,9 +17,13 @@ import { getPrimaryEvent } from "./entity-events";
 import type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType } from "@/types/atlas";
 import { BRANDS_60 } from "./brands-60";
 import { BRANDS_AUTOS_60 } from "./brands-autos-60";
+import { AUTOS_ATLAS } from "./autos-atlas";
+import { ROPA_ATLAS } from "./ropa-atlas";
 import { BRANDS_ARGENTINA } from "./brands-argentina";
 import { COUNTRIES_60 } from "./countries-60";
+import { COUNTRIES_ATLAS } from "./countries-atlas";
 import { CITIES_60 } from "./cities-60";
+import { CITIES_ATLAS } from "./cities-atlas";
 import { CITIES_ARGENTINA } from "./cities-argentina";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
 import { TEAMS_CHILE } from "./teams-chile";
@@ -194,9 +198,13 @@ export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
 export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...BRANDS_60,
   ...BRANDS_AUTOS_60,
+  ...AUTOS_ATLAS,
+  ...ROPA_ATLAS,
   ...BRANDS_ARGENTINA,
   ...COUNTRIES_60,
+  ...COUNTRIES_ATLAS,
   ...CITIES_60,
+  ...CITIES_ATLAS,
   ...CITIES_ARGENTINA,
 
   ...TEAMS_ARGENTINA,
