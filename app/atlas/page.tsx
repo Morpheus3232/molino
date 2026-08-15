@@ -34,11 +34,12 @@ export default function AtlasPage() {
             Atlas Visual
           </p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
-            Explora el mundo según tu mapa
+            Tu mapa, tus afinidades
           </h1>
           <p className="text-sm sm:text-base text-muted mt-4 max-w-2xl leading-relaxed">
-            Ciudades, clubes, universidades, marcas y artistas de cada país, organizados por su afinidad
-            simbólica. Elegí un país para descubrir sus categorías.
+            Entidades recomendadas según la resonancia entre tu animal del zodíaco chino y el de cada
+            ciudad, club, universidad, marca o artista. Más abajo podés explorar el catálogo completo
+            por país.
           </p>
         </header>
 

@@ -97,6 +97,7 @@ export default function AtlasHub({ countries, topCountries, allEntities }: Atlas
 
   const [recommendations, setRecommendations] = useState<AtlasRecommendations | null>(null);
   const [userAnimal, setUserAnimal] = useState<string | null>(null);
+  const [countriesExpanded, setCountriesExpanded] = useState(true);
 
   useEffect(() => {
     const profile = loadProfileFromStorage();
@@ -109,6 +110,10 @@ export default function AtlasHub({ countries, topCountries, allEntities }: Atlas
     const ranked = sortLightEntities(animal, allEntities);
     setRecommendations(selectAtlasRecommendations(ranked, userCountryISO));
   }, [allEntities, userCountryISO]);
+
+  useEffect(() => {
+    if (recommendations) setCountriesExpanded(false);
+  }, [recommendations]);
 
   return (
     <div>
@@ -142,17 +147,34 @@ export default function AtlasHub({ countries, topCountries, allEntities }: Atlas
         </section>
       )}
 
-      <section aria-label="Países del Atlas">
-        <div className="flex items-center gap-3 mb-6">
+      <section aria-label="Explorar por país" className="mt-16">
+        <button
+          type="button"
+          onClick={() => setCountriesExpanded((v) => !v)}
+          className="flex items-center gap-3 mb-6 w-full text-left group"
+          aria-expanded={countriesExpanded}
+        >
           <div className="w-8 h-px bg-border" aria-hidden="true" />
-          <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Países</h2>
-        </div>
+          <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
+            Explorar por país
+          </h2>
+          <span className={`text-[10px] text-muted transition-transform ${countriesExpanded ? "rotate-90" : "rotate-0"}`} aria-hidden="true">
+            ›
+          </span>
+        </button>
 
         {!hasCoverage && country && (
           <NoCoverageBanner country={country} topCountries={topCountries} />
         )}
 
-        <CountryGrid countries={ordered} userCountryISO={userCountryISO} />
+        {countriesExpanded && (
+          <CountryGrid countries={ordered} userCountryISO={userCountryISO} />
+        )}
+        {!countriesExpanded && (
+          <p className="text-xs text-muted mt-2">
+            {countries.length} países con entidades verificadas. Desplegá para navegar por país.
+          </p>
+        )}
       </section>
     </div>
   );
