@@ -29,6 +29,15 @@ export interface PersonalTimeline {
   timeline: { year: number; label: string; isCurrent: boolean }[];
 }
 
+export interface PersonalYearCycle {
+  year: number;
+  personalYear: number;
+  yearAnimal: Animal;
+  cycleType: string;
+  cycleLabel: string;
+  cycleDescription: string;
+}
+
 // ════════════════════════════════════════════════════
 // MAIN ENGINE
 // ════════════════════════════════════════════════════
@@ -86,6 +95,33 @@ export function buildPersonalTimeline(profile: UserProfile): PersonalTimeline {
     nextSimilarCycle: nextSimilar,
     timeline,
   };
+}
+
+/**
+ * Build one cycle entry per year in [startYear, endYear] (inclusive).
+ * Reuses the same per-year primitives buildPersonalTimeline() calls for
+ * the current year (calculatePersonalYear, resolveYearCycle) — no new
+ * math, just iterated over an explicit range instead of a single year.
+ */
+export function buildPersonalTimelineRange(
+  profile: UserProfile,
+  startYear: number,
+  endYear: number,
+): PersonalYearCycle[] {
+  const years: PersonalYearCycle[] = [];
+  for (let year = startYear; year <= endYear; year++) {
+    const personalYear = calculatePersonalYear(profile.birthDate, year);
+    const yearCycle = resolveYearCycle(profile.chineseZodiac as Animal, year);
+    years.push({
+      year,
+      personalYear,
+      yearAnimal: yearCycle.yearAnimal,
+      cycleType: yearCycle.cycleType,
+      cycleLabel: yearCycle.label,
+      cycleDescription: yearCycle.explanation,
+    });
+  }
+  return years;
 }
 
 // ════════════════════════════════════════════════════

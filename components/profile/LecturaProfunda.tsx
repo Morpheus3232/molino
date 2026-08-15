@@ -17,6 +17,7 @@ import PremiumGate from "@/components/profile/PremiumGate";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/engines/intelligenceEngine";
 import ChatWithMolino from "@/components/profile/ChatWithMolino";
+import AnnualCyclesPreview from "@/components/profile/AnnualCyclesPreview";
 import EditorialSection from "@/components/ui/EditorialSection";
 
 
@@ -348,14 +349,20 @@ function LecturaProfundaDesbloqueada({
 
   return (
     <div className="space-y-20 sm:space-y-24">
-      {/* 04 · Interpretación — la conversación entre sistemas */}
+      {/* 04 · Ciclos anuales — deterministic, extiende "03 · TU MOMENTO" hacia adelante */}
+      <div>
+        <ChapterNumber number="04 · CICLOS ANUALES" color={elementColor} />
+        <AnnualCyclesPreview profile={profile} />
+      </div>
+
+      {/* 05 · Interpretación — la conversación entre sistemas */}
       <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 py-16 sm:py-20 section-paper-alt overflow-hidden">
         <div
           className="absolute -left-1/4 top-0 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-[0.08] -z-10 pointer-events-none"
           style={{ background: `radial-gradient(circle, ${elementColor}, transparent 70%)` }}
           aria-hidden="true"
         />
-        <ChapterNumber number="04 · LA LECTURA" color={elementColor} />
+        <ChapterNumber number="05 · LA LECTURA" color={elementColor} />
         <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">
           La conversación entre tus sistemas
         </h3>
@@ -379,7 +386,7 @@ function LecturaProfundaDesbloqueada({
 
       {/* 05 · Preguntale a tu Molino */}
       <div>
-        <ChapterNumber number="05 · PREGUNTALE A TU MAPA" color={elementColor} />
+        <ChapterNumber number="06 · PREGUNTALE A TU MAPA" color={elementColor} />
         <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">
           Ya conocés tu mapa. Ahora podés preguntarle qué significa.
         </h3>
@@ -443,7 +450,7 @@ export function LecturaLibre({
 }
 
 /**
- * Movimientos 04→05, premium. Se ubica después de las decisiones y la
+ * Movimientos 04→06, premium. Se ubica después de las decisiones y la
  * sincronicidad, como cierre de la lectura — no interrumpiendo el flujo
  * gratuito de "tres movimientos".
  */
