@@ -11,6 +11,7 @@ import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
 import { safeNumber } from "@/lib/utils/score";
 import { fadeUp } from "@/lib/utils/motion";
+import ReminderOptIn from "@/components/calendar/ReminderOptIn";
 
 /* ═══ Personalized home (with profile) — Client Island ═══ */
 
@@ -33,6 +34,7 @@ export default function PersonalizedHomeClient() {
 
   return (
     <>
+      <ReminderOptIn birthDate={profile?.birthDate} />
       <section className="bg-background">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp} className="border-t border-ink/10 pt-10 pb-6 flex items-center gap-3">
