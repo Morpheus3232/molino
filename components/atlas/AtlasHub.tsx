@@ -4,10 +4,13 @@ import { useMemo, useState, useEffect } from "react";
 import type { LightweightEntity } from "@/types/atlas";
 import type { AtlasCountry } from "@/lib/data/atlas-queries";
 import { getCountryISO } from "@/lib/data/country-iso";
-import { getCuratedLocalFromPool, getCurationCategoryLabel, CURATION_SECTION_ORDER, WORLD_SECTION_ORDER, FEATURED_COUNTRY_ISOS } from "@/lib/data/atlas-curation-helpers";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
-import { sortLightEntities, selectAtlasRecommendations, type LightAffinityResult, type AtlasRecommendations } from "@/lib/affinity-light";
+import {
+  buildAtlasSections,
+  type LightAffinityResult,
+  type AtlasSections,
+} from "@/lib/affinity-light";
 import CountryGrid from "@/components/atlas/CountryGrid";
 import Link from "next/link";
 
@@ -18,54 +21,67 @@ interface AtlasHubProps {
   globalCurated: Record<string, LightweightEntity[]>;
 }
 
-const BUCKET_LABELS: Record<keyof AtlasRecommendations, { title: string; subtitle: string }> = {
-  most:  { title: "Más Compatibles", subtitle: "Entidades que comparten tu mismo animal del zodíaco chino." },
-  least: { title: "Menos Compatibles", subtitle: "Energías opuestas en el ciclo zodiacal." },
+const CATEGORY_LINK_MAP: Record<string, string> = {
+  country: "country",
+  city: "city",
+  brand: "brand",
+  team: "team",
+  university: "university",
+  artist: "artist",
+  movie: "movie",
 };
 
-const BUCKET_STYLE: Record<keyof AtlasRecommendations, string> = {
-  most:  "border-emerald-500/20 bg-emerald-500/[0.03]",
-  least: "border-red-500/15 bg-red-500/[0.02]",
-};
-
-function SectionHeader({ label }: { label: string }) {
-  return (
-    <div className="flex items-center gap-3 mb-4">
-      <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h3 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">{label}</h3>
-    </div>
-  );
-}
-
-function EntityChip({ entity }: { entity: LightweightEntity }) {
+function EntityRow({ entity }: { entity: LightAffinityResult }) {
   return (
     <Link
       href={`/affinity/${entity.type}/${entity.id}`}
-      className="flex items-center gap-2 px-3 py-2 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors group"
+      className="flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-lg hover:bg-ink/[0.03] transition-colors group"
     >
-      <span className="text-lg leading-none shrink-0" role="img" aria-label={entity.name}>
+      <span className="text-lg leading-none shrink-0 select-none" role="img" aria-label={entity.name}>
         {entity.emoji || "🔮"}
       </span>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-medium text-foreground group-hover:text-accent transition-colors truncate">
+        <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
           {entity.name}
         </p>
-        <p className="text-[10px] text-muted truncate">
-          {entity.animal}{entity.country ? ` · ${entity.country}` : ""}
-        </p>
       </div>
+      <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
+        {entity.country || ""}
+      </span>
     </Link>
   );
 }
 
-function CuratedChips({ entities, label }: { entities: LightweightEntity[]; label: string }) {
+function CategorySection({
+  label,
+  entities,
+  type,
+  userAnimal,
+}: {
+  label: string;
+  entities: LightAffinityResult[];
+  type: string;
+  userAnimal: string;
+}) {
   if (entities.length === 0) return null;
+
+  const searchParams = new URLSearchParams();
+  searchParams.set("animal", userAnimal);
+
   return (
-    <div className="mb-6">
-      <SectionHeader label={label} />
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-        {entities.map((entity) => (
-          <EntityChip key={entity.id} entity={entity} />
+    <div className="mb-10">
+      <div className="flex items-end justify-between mb-4">
+        <h3 className="text-sm font-semibold text-foreground">{label}</h3>
+        <Link
+          href={`/explore?category=${type}&${searchParams.toString()}`}
+          className="text-xs text-muted hover:text-accent transition-colors whitespace-nowrap"
+        >
+          Ver {label.toLowerCase()} {userAnimal} →
+        </Link>
+      </div>
+      <div className="divide-y divide-ink/[0.06]">
+        {entities.map((e) => (
+          <EntityRow key={e.id} entity={e} />
         ))}
       </div>
     </div>
@@ -96,47 +112,6 @@ function NoCoverageBanner({ country, topCountries }: { country: string; topCount
   );
 }
 
-function RecommendationCard({ item }: { item: LightAffinityResult }) {
-  return (
-    <Link
-      href={`/affinity/${item.type}/${item.id}`}
-      className="flex items-center gap-3 p-3 rounded-xl border border-ink/10 bg-card/60 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors group"
-    >
-      <span className="text-2xl leading-none shrink-0" role="img" aria-label={item.name}>
-        {item.emoji || "🔮"}
-      </span>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-          {item.name}
-        </p>
-        <p className="text-[11px] text-muted mt-0.5">
-          {item.animal}{item.country ? ` · ${item.country}` : ""}
-        </p>
-      </div>
-      <span className="shrink-0 font-mono text-xs text-muted tabular-nums">{item.score}</span>
-    </Link>
-  );
-}
-
-/** Order countries: user first, then featured, then the rest alphabetically. */
-function orderCountryGrid(
-  countries: AtlasCountry[],
-  userCountryISO: string | null,
-): AtlasCountry[] {
-  const userIdx = userCountryISO ? countries.findIndex((c) => c.iso === userCountryISO) : -1;
-  const userCountry = userIdx >= 0 ? countries[userIdx] : null;
-  const rest = countries.filter((c) => c.iso !== userCountryISO);
-
-  const featured = rest.filter((c) => FEATURED_COUNTRY_ISOS.includes(c.iso));
-  const others = rest.filter((c) => !FEATURED_COUNTRY_ISOS.includes(c.iso));
-
-  const result: AtlasCountry[] = [];
-  if (userCountry) result.push(userCountry);
-  result.push(...featured);
-  result.push(...others);
-  return result;
-}
-
 export default function AtlasHub({ countries, topCountries, allEntities, globalCurated }: AtlasHubProps) {
   const { country } = useUserContext();
 
@@ -149,101 +124,97 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
   const hasCoverage = userCountryISO !== null;
 
-  const ordered = useMemo(
-    () => orderCountryGrid(countries, userCountryISO),
-    [countries, userCountryISO],
-  );
-
-  const localCurated = useMemo(() => {
-    if (!userCountryISO) return {};
-    return getCuratedLocalFromPool(allEntities, userCountryISO, globalCurated);
-  }, [userCountryISO, allEntities, globalCurated]);
-
-  const [recommendations, setRecommendations] = useState<AtlasRecommendations | null>(null);
+  const [sections, setSections] = useState<AtlasSections | null>(null);
   const [userAnimal, setUserAnimal] = useState<string | null>(null);
   const [countriesExpanded, setCountriesExpanded] = useState(false);
+  const [enemyExpanded, setEnemyExpanded] = useState(false);
 
   useEffect(() => {
     const profile = loadProfileFromStorage();
     const animal = profile?.chineseZodiac || null;
     setUserAnimal(animal);
     if (!animal || allEntities.length === 0) {
-      setRecommendations(null);
+      setSections(null);
       return;
     }
-    const ranked = sortLightEntities(animal, allEntities);
-    setRecommendations(selectAtlasRecommendations(ranked, userCountryISO));
+    setSections(buildAtlasSections(animal, allEntities, userCountryISO));
   }, [allEntities, userCountryISO]);
 
-  const showGlobal = CURATION_SECTION_ORDER.some(
-    (type) => (globalCurated[type]?.length ?? 0) > 0,
-  );
-  const showLocal = CURATION_SECTION_ORDER.some(
-    (type) => (localCurated[type]?.length ?? 0) > 0,
-  );
+  const enemyName = sections?.enemyAnimalName ?? null;
 
   return (
     <div>
-      {/* 1. AFFINITY RECOMMENDATIONS */}
-      {recommendations && (
-        <section aria-label="Recomendaciones personalizadas" className="mb-16">
-          <h2 className="text-sm font-semibold text-foreground mb-6">
-            Tu Atlas — {userAnimal}
-          </h2>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {(["most", "least"] as (keyof AtlasRecommendations)[]).map((bucket) => {
-              const items = recommendations[bucket];
-              if (items.length === 0) return null;
-              const { title, subtitle } = BUCKET_LABELS[bucket];
-              return (
-                <div key={bucket} className={`rounded-2xl border ${BUCKET_STYLE[bucket]} p-5`}>
-                  <h3 className="text-sm font-semibold text-foreground mb-1">{title}</h3>
-                  <p className="text-xs text-muted mb-4">{subtitle}</p>
-                  <div className="space-y-3">
-                    {items.map((item) => (
-                      <RecommendationCard key={item.id} item={item} />
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+      {/* 1. TU ATLAS — same-animal categories */}
+      {sections && sections.sameAnimal.length > 0 && (
+        <section aria-label="Tu Atlas" className="mb-20">
+          <div className="mb-8">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground uppercase mb-2">
+              Tu mundo {userAnimal}
+            </h2>
+            <p className="text-sm text-muted max-w-xl leading-relaxed">
+              Explorá lugares, marcas y entidades que comparten tu mismo animal del Zodiaco Chino.
+            </p>
           </div>
-        </section>
-      )}
 
-      {/* 2. DESCUBRÍ EL MUNDO — small curated selection */}
-      {showGlobal && (
-        <section aria-label="Descubrí el mundo" className="mb-16">
-          <h2 className="text-sm font-semibold text-foreground mb-6">Descubrí el mundo</h2>
-          {WORLD_SECTION_ORDER.map((type) => (
-            <CuratedChips
-              key={`global-${type}`}
-              entities={(globalCurated[type] ?? []).slice(0, 4)}
-              label={getCurationCategoryLabel(type)}
+          {sections.sameAnimal.map((section) => (
+            <CategorySection
+              key={section.type}
+              label={section.label}
+              entities={section.entities}
+              type={section.type}
+              userAnimal={userAnimal!}
             />
           ))}
         </section>
       )}
 
-      {/* 3. CERCA DE VOS — small local selection */}
-      {showLocal && (
-        <section aria-label="Cerca de vos" className="mb-16">
-          <h2 className="text-sm font-semibold text-foreground mb-6">
-            {country ? `Cerca de vos — ${country}` : "Cerca de vos"}
-          </h2>
-          {CURATION_SECTION_ORDER.map((type) => (
-            <CuratedChips
-              key={`local-${type}`}
-              entities={(localCurated[type] ?? []).slice(0, 4)}
-              label={getCurationCategoryLabel(type)}
-            />
-          ))}
+      {/* 2. ENERGÍA OPUESTA — collapsed */}
+      {sections && enemyName && sections.enemyAnimal.length > 0 && (
+        <section aria-label="Energía opuesta" className="mb-20 border-t border-ink/10 pt-12">
+          <button
+            type="button"
+            onClick={() => setEnemyExpanded((v) => !v)}
+            className="flex items-center gap-3 mb-4 w-full text-left group"
+            aria-expanded={enemyExpanded}
+          >
+            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <div>
+              <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
+                Energía opuesta
+              </h2>
+              <p className="text-sm text-muted mt-0.5">
+                {enemyName} — Explorá entidades asociadas a tu animal enemigo en el ciclo zodiacal.
+              </p>
+            </div>
+            <span
+              className={`ml-auto text-[10px] text-muted transition-transform ${enemyExpanded ? "rotate-90" : "rotate-0"}`}
+              aria-hidden="true"
+            >
+              ›
+            </span>
+          </button>
+
+          {enemyExpanded && (
+            <div className="mt-6 pl-11">
+              {sections.enemyAnimal.map((section) => (
+                <CategorySection
+                  key={section.type}
+                  label={section.label}
+                  entities={section.entities}
+                  type={section.type}
+                  userAnimal={enemyName!}
+                />
+              ))}
+            </div>
+          )}
         </section>
       )}
 
-      {/* 4. EXPLORAR TODO EL ATLAS — catalog, compact, collapsible */}
-      <section aria-label="Explorar todo el Atlas" className="mt-16 border-t border-ink/10 pt-12">
+      {/* 3. EXPLORAR TODO EL ATLAS — catalog, compact */}
+      <section
+        aria-label="Explorar todo el Atlas"
+        className="border-t border-ink/10 pt-12"
+      >
         <button
           type="button"
           onClick={() => setCountriesExpanded((v) => !v)}
@@ -254,7 +225,10 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
           <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium group-hover:text-foreground transition-colors">
             Explorar todo el Atlas
           </h2>
-          <span className={`text-[10px] text-muted transition-transform ${countriesExpanded ? "rotate-90" : "rotate-0"}`} aria-hidden="true">
+          <span
+            className={`text-[10px] text-muted transition-transform ${countriesExpanded ? "rotate-90" : "rotate-0"}`}
+            aria-hidden="true"
+          >
             ›
           </span>
         </button>
@@ -264,12 +238,29 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
         )}
 
         {countriesExpanded && (
-          <CountryGrid countries={ordered} userCountryISO={userCountryISO} />
+          <div className="mb-8">
+            <CountryGrid countries={countries} userCountryISO={userCountryISO} />
+          </div>
         )}
         {!countriesExpanded && (
           <p className="text-xs text-muted mt-2">
             {countries.length} países con entidades verificadas. Desplegá para navegar por país y categoría.
           </p>
+        )}
+
+        {/* Quick links to country drill-downs */}
+        {userCountryISO && (
+          <div className="mt-8 flex flex-wrap gap-3">
+            {["city", "brand", "team", "university"].map((cat) => (
+              <Link
+                key={cat}
+                href={`/atlas/${userCountryISO}/${cat}`}
+                className="px-3 py-2 rounded-lg border border-ink/10 text-xs font-medium text-foreground hover:border-accent/40 transition-colors"
+              >
+                {cat === "city" ? "Ciudades" : cat === "brand" ? "Marcas" : cat === "team" ? "Equipos" : "Universidades"}
+              </Link>
+            ))}
+          </div>
         )}
       </section>
     </div>

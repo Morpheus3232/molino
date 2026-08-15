@@ -5,13 +5,13 @@ import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
 
 export const metadata: Metadata = {
-  title: "Atlas — Explora Afinidades por País | Molino",
+  title: "Atlas — Tu mundo según el Zodiaco Chino | Molino",
   description:
-    "Explorá el Atlas Visual de Molino: países, ciudades, clubes, universidades, marcas y artistas, organizados geográficamente según el zodíaco chino.",
+    "Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu animal del zodíaco chino, organizados por categoría y país.",
   alternates: { canonical: siteUrl("/atlas") },
   openGraph: {
-    title: "Atlas — Explora Afinidades por País | Molino",
-    description: "El Atlas Visual de Molino: exploración geográfica de afinidades simbólicas.",
+    title: "Atlas — Tu mundo según el Zodiaco Chino | Molino",
+    description: "El Atlas de Molino: exploración personal por animal del zodíaco chino.",
     type: "website",
     url: siteUrl("/atlas"),
   },
@@ -31,19 +31,18 @@ export default function AtlasPage() {
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
-        <header className="mb-12">
-          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-3">
-            Atlas Visual
-          </p>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
-            Tu mapa, tus afinidades
-          </h1>
-          <p className="text-sm sm:text-base text-muted mt-4 max-w-2xl leading-relaxed">
-            Entidades recomendadas según la resonancia entre tu animal del zodíaco chino y el de cada
-            ciudad, club, universidad, marca o artista. Más abajo podés explorar el catálogo completo
-            por país.
-          </p>
-        </header>
+      <header className="mb-12">
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold mb-3">
+          Atlas
+        </p>
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
+          Tu mapa, tu animal
+        </h1>
+        <p className="text-sm sm:text-base text-muted mt-4 max-w-2xl leading-relaxed">
+          Descubrí países, ciudades, marcas y entidades que comparten tu mismo animal del zodíaco chino.
+          Más abajo podés explorar la energía opuesta y el catálogo completo por país.
+        </p>
+      </header>
 
         <AtlasHub
           countries={countries}
