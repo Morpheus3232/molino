@@ -5,6 +5,7 @@ import { getMemberCount } from "@/lib/metrics";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Inicio" },
+  { href: "/atlas", label: "Atlas" },
   { href: "/hoy", label: "Hoy" },
   { href: "/pareja", label: "Modo Pareja" },
   { href: "/journal", label: "Journal" },
