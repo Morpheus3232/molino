@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { getAtlasCountries, topCountriesByCount, getAllAtlasEntities } from "@/lib/data/atlas-queries";
+import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
 
 export const metadata: Metadata = {
@@ -17,14 +18,15 @@ export const metadata: Metadata = {
 };
 
 /**
- * Atlas hub — global country grid + personalized affinity recommendations.
- * Server Component; lightweight entity catalog + country metadata reach the
- * client. AtlasHub resolves the user's animal and builds the ranking.
+ * Atlas hub — personalized affinity recommendations + curated global + local browsing.
+ * Server Component; entity catalogs reach the client. AtlasHub resolves the user's
+ * animal and renders the sections.
  */
 export default function AtlasPage() {
   const countries = getAtlasCountries();
   const topCountries = topCountriesByCount(countries);
   const allEntities = getAllAtlasEntities();
+  const globalCurated = getCuratedGlobalEntities();
 
   return (
     <main id="main-content" className="bg-background pt-20 sm:pt-24 pb-24 text-foreground">
@@ -47,6 +49,7 @@ export default function AtlasPage() {
           countries={countries}
           topCountries={topCountries}
           allEntities={allEntities}
+          globalCurated={globalCurated}
         />
       </div>
     </main>
