@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/seo";
 const TresPasos = dynamic(() => import("@/components/sections/TresPasos"), { ssr: true });
 const QueDescubris = dynamic(() => import("@/components/sections/QueDescubris"), { ssr: true });
 const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true });
+const AtlasTeaser = dynamic(() => import("@/components/sections/AtlasTeaser"), { ssr: true });
 const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true });
 const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true });
 const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true });
@@ -149,6 +150,7 @@ export default function Home() {
           <ParejaTeaser />
           <TresPasos />
           <TresSistemas />
+          <AtlasTeaser />
           <PremiumTeaser />
           <TrustSignals />
           <CTAFinal />
