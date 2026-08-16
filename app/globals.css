@@ -221,7 +221,7 @@
   --mystical-astrology: #2E5C8A;
 
   /* Chinese zodiac accent */
-  --mystical-zodiac: #C49A2A;
+  --mystical-zodiac: #85681D;
 
   /* ═══════════════════════════════════════════════════════════════
      INTERACTION STATES — Hover, active, focus, disabled
@@ -252,45 +252,45 @@
 
   /* Element colors */
   --element-fire: #1E3AFF;
-  --element-earth: #059669;
+  --element-earth: #047D58;
   --element-air: #7C3AED;
-  --element-water: #0284C7;
-  --element-metal: #838C95;
-  --element-wood: #10B981;
+  --element-water: #0273AE;
+  --element-metal: #5E666E;
+  --element-wood: #0A7350;
 
   /* Map layer colors */
   --layer-identity: #1E3AFF;
-  --layer-patterns: #3B82F6;
+  --layer-patterns: #0B63F3;
   --layer-numerology: #2563EB;
   --layer-astrology: #7C3AED;
-  --layer-cycles: #059669;
-  --layer-moment: #DC2626;
+  --layer-cycles: #047D58;
+  --layer-moment: #C82020;
 
   /* Category colors */
   --cat-country: #1E3AFF;
   --cat-city: #4B5563;
   --cat-brand: #7C3AED;
-  --cat-band: #DC2626;
+  --cat-band: #C82020;
   --cat-movie: #2563EB;
-  --cat-book: #059669;
+  --cat-book: #047D58;
   --cat-philosophy: #7C3AED;
   --cat-event: #1E3AFF;
-  --cat-food: #EA580C;
-  --cat-color: #EC4899;
-  --cat-crystal: #14B8A6;
-  --cat-deity: #F59E0B;
+  --cat-food: #B9460A;
+  --cat-color: #D21673;
+  --cat-crystal: #0C7368;
+  --cat-deity: #945F06;
 
   /* Tier colors — afinidad de entidades (mundo/perfil) */
   --tier-resonante: var(--color-success);
-  --tier-afin: #3B82F6;
+  --tier-afin: #0B63F3;
   --tier-neutral: var(--element-metal);
-  --tier-desafiante: #F59E0B;
+  --tier-desafiante: #945F06;
   --tier-distante: var(--color-error);
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
-  --score-excellent: #AEB8FF;
-  --score-good: #7C8CFF;
-  --score-neutral: #A6A69C;
+  --score-excellent: #2F48FF;
+  --score-good: #3049FF;
+  --score-neutral: #66665C;
   --score-poor: #6B6B63;
 
   /* Overlay */
