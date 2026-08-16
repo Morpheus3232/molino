@@ -628,6 +628,31 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     shortBio: "Primer presidente afroamericano de EE.UU. y premio Nobel de la Paz.",
     emoji: "🗽",
   },
+  {
+    name: "Denzel Washington",
+    birthDate: "1954-12-28",
+    field: "Cine",
+    country: "Estados Unidos",
+    shortBio: "Actor y director con dos premios Óscar, ícono de la actuación seria.",
+    emoji: "🎬",
+  },
+  {
+    name: "Neil Armstrong",
+    birthDate: "1930-08-05",
+    field: "Ciencia",
+    country: "Estados Unidos",
+    shortBio: "Primer hombre en caminar sobre la Luna, comandante del Apolo 11.",
+    emoji: "🌙",
+    quote: "Un pequeño paso para el hombre, un gran salto para la humanidad.",
+  },
+  {
+    name: "Tom Hanks",
+    birthDate: "1956-07-09",
+    field: "Cine",
+    country: "Estados Unidos",
+    shortBio: "Actor y productor ganador de dos Óscar, cara del cine norteamericano.",
+    emoji: "🎬",
+  },
 ];
 
 function getInitials(name: string): string {
@@ -772,15 +797,11 @@ export function findFamousMatches(
   // Sort by rarityScore desc
   matches.sort((a, b) => b.rarityScore - a.rarityScore);
 
-  // El zodíaco chino es el criterio principal de esta sección: los
-  // candidatos con el mismo animal van primero, sin importar que su
-  // rarityScore individual (solo-zodíaco = 210) sea menor al de un
-  // solo-Life-Path (320). Solo se completa con matches sin animal
-  // compartido si el animal del usuario no tiene suficientes figuras
-  // registradas (hoy: Caballo y Mono, con apenas 2 cada uno).
-  const zodiacMatches = matches.filter((m) => m.matchChineseZodiac);
-  const otherMatches = matches.filter((m) => !m.matchChineseZodiac);
-  const ordered = [...zodiacMatches, ...otherMatches];
+  // El zodíaco chino es el criterio excluyente de esta sección: solo se
+  // muestran figuras con el MISMO animal del usuario, nunca un animal distinto.
+  // Si el usuario no define animal, se usan todas las coincidencias.
+  const ordered =
+    userAnimal !== null ? matches.filter((m) => m.matchChineseZodiac) : matches;
 
   // Pick up to limit with field diversity if possible
   const selected: FamousMatchResult[] = [];
