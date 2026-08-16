@@ -81,7 +81,7 @@ export default async function CategoryPage({ params }: Props) {
             {catLabel} de {name}
           </h1>
           <p className="text-sm text-muted mt-2">
-            {entities.length} {entities.length === 1 ? "entidad verificada" : "entidades verificadas"} — clasificadas por tu animal del zodíaco chino.
+            {entities.length} {entities.length === 1 ? "entidad" : "entidades"} — clasificadas por tu animal del zodíaco chino.
           </p>
         </header>
 

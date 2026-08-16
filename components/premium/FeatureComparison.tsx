@@ -81,7 +81,7 @@ const FEATURES: FeatureItem[] = [
   },
   {
     category: "Herramientas & IA",
-    name: "Exportación en alta calidad PNG y PDF sin marcas",
+    name: "Exportación en alta calidad PNG sin marcas",
     free: true,
     premium: true,
     description: "Tarjetas optimizadas para Instagram, OpenGraph e informes personales.",
@@ -277,7 +277,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
             <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1">
               <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
               <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
-              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio permanente, informe de 25 páginas y 0 tracking.</p>
+              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio permanente, informe con narrativa de IA y 0 tracking.</p>
             </div>
           </div>
         </div>

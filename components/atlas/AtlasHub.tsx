@@ -325,7 +325,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
           </div>
         ) : (
           <p className="text-xs text-muted">
-            {countries.length} países con entidades verificadas. Desplegá para navegar por país y categoría.
+            {countries.length} países con entidades. Desplegá para navegar por país y categoría.
           </p>
         )}
 
