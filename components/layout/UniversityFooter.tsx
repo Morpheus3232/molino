@@ -24,7 +24,7 @@ export default async function UniversityFooter() {
   const memberCount = await getMemberCount();
 
   return (
-    <footer className="bg-[#0F0F10] border-t border-ink/10 text-foreground">
+    <footer className="bg-ink border-t border-ink/10 text-foreground">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
         <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-between md:gap-8">
           <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xs">
