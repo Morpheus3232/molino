@@ -1,16 +1,14 @@
 "use client";
 
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Sparkles, Bookmark } from "lucide-react";
+import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
-import { loadProfileFromStorage } from "@/lib/session/localStorage";
-import type { UserProfile } from "@/types/user";
 
 function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -26,15 +24,7 @@ export default function HeroInstrument() {
   const [dateValue, setDateValue] = useState("");
   const dateValueRef = useRef("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [savedProfile, setSavedProfile] = useState<{ name?: string; birthDate: string } | null>(null);
   const dateInputRef = useRef<DateInputHandle>(null);
-
-  useEffect(() => {
-    const profile = loadProfileFromStorage();
-    if (profile && profile.birthDate) {
-      setSavedProfile({ name: profile.name, birthDate: profile.birthDate });
-    }
-  }, []);
 
   const isDateValid = isValidBirthDate(dateValue);
 
@@ -94,22 +84,12 @@ export default function HeroInstrument() {
           {!isSubmitting && isDateValid && "Fecha válida. Lista para generar tu mapa."}
         </div>
 
-        {/* Saved Profile Quick Access or Privacy Badge */}
+        {/* Privacy Badge */}
         <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
-          {savedProfile ? (
-            <Link
-              href="/profile"
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent hover:bg-accent/25 transition-all text-xs font-mono font-bold shadow-sm"
-            >
-              <Bookmark className="w-3.5 h-3.5" />
-              <span>Tu mapa está listo ({savedProfile.name || "Mi Mapa"}) → Ver resultado</span>
-            </Link>
-          ) : (
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
-            </div>
-          )}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
+          </div>
         </motion.div>
 
         {/* Headline emocional */}
