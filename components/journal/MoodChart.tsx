@@ -31,7 +31,7 @@ function CustomTooltip({ active, payload }: any) {
     const data = payload[0].payload;
     const moodCfg = MOOD_CONFIG[data.mood as JournalMood];
     return (
-      <div className="bg-[#0F0F14] border border-ink/15 rounded-xl p-3 shadow-xl text-xs">
+      <div className="bg-paper-alt border border-ink/15 rounded-xl p-3 shadow-xl text-xs">
         <div className="font-mono text-muted text-[10px] mb-1">{data.formattedDate}</div>
         <div className="flex items-center gap-1.5 font-bold text-foreground">
           <span>{moodCfg?.emoji}</span>
@@ -87,8 +87,8 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
             strokeWidth={2.5}
             fillOpacity={1}
             fill="url(#moodGradient)"
-            dot={{ fill: "#D4A843", r: 3, strokeWidth: 1, stroke: "#09090D" }}
-            activeDot={{ r: 5, fill: "#F3F1EA" }}
+            dot={{ fill: "#D4A843", r: 3, strokeWidth: 1, stroke: "var(--color-paper)" }}
+            activeDot={{ r: 5, fill: "var(--color-ink)" }}
           />
         </AreaChart>
       </ResponsiveContainer>
