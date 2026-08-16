@@ -55,6 +55,9 @@ function CategoryPreview({
                 {e.emoji || "🔮"}
               </span>
               <span className="truncate max-w-[200px]">{e.name}</span>
+              {e.origin && (
+                <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {e.origin}</span>
+              )}
             </Link>
             {i < entities.length - 1 && (
               <span className="text-muted/30 mx-0.5 select-none" aria-hidden="true">·</span>

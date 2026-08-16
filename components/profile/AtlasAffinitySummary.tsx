@@ -52,6 +52,9 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
                     >
                       <span aria-hidden="true">{e.emoji || "🔮"}</span>
                       {e.name}
+                      {e.origin && (
+                        <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {e.origin}</span>
+                      )}
                     </Link>
                     {i < section.entities.length - 1 && (
                       <span className="text-muted/30 mx-1.5" aria-hidden="true">·</span>

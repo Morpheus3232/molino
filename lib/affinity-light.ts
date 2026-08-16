@@ -44,6 +44,7 @@ export interface LightAffinityResult {
   tier: LightTier;
   relationship: string;
   isApproximate: boolean;
+  origin?: string;
 }
 
 export interface AtlasSection {
@@ -97,6 +98,7 @@ export function sortLightEntities(
         tier,
         relationship,
         isApproximate: e.isApproximate ?? false,
+        origin: e.origin,
       };
     })
     .sort((a, b) => b.score - a.score);
@@ -113,6 +115,7 @@ type LightweightLike = {
   countryISO?: string;
   type: string;
   isApproximate?: boolean;
+  origin?: string;
 };
 
 /**
