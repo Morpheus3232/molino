@@ -5,7 +5,9 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { sortLightEntities } from "@/lib/affinity-light";
+import { sortLightEntities, buildAtlasSections } from "@/lib/affinity-light";
+import { getCountryISO } from "@/lib/data/country-iso";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
@@ -19,6 +21,7 @@ import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
+import AtlasAffinitySummary from "@/components/profile/AtlasAffinitySummary";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import Link from "next/link";
 
@@ -76,6 +79,14 @@ export default function ProfileHub({
     const results = sortLightEntities(profile.chineseZodiac || "", catalog);
     return results.filter((r) => r.score >= 60).length;
   }, [profile, catalog]);
+
+  const { country } = useUserContext();
+  const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
+  const atlasSections = useMemo(() => {
+    if (!catalog || catalog.length === 0) return [];
+    const sections = buildAtlasSections(profile.chineseZodiac || "", catalog, userCountryISO).sameAnimal;
+    return [...sections].sort((a, b) => b.entities.length - a.entities.length).slice(0, 3);
+  }, [profile, catalog, userCountryISO]);
 
   const relationMap = useMemo(
     () => getRelationshipMap(userAnimal),
@@ -212,6 +223,12 @@ export default function ProfileHub({
           SINCRONICIDAD — ¿Con quién compartís tu mapa?
           ═══════════════════════════════════════════════ */}
       <FamousMatch profile={profile} />
+
+      {/* ═══════════════════════════════════════════════
+          ATLAS — Resumen compacto de afinidad con marcas,
+          ciudades y demás entidades del mismo animal.
+          ═══════════════════════════════════════════════ */}
+      <AtlasAffinitySummary sections={atlasSections} animalSlug={userAnimal} animalName={display.name} />
 
       {/* ═══════════════════════════════════════════════
           LECTURA PREMIUM — Cierre de la lectura: síntesis

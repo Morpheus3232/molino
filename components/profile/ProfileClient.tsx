@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
+import type { LightweightEntity } from "@/types/atlas";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
@@ -39,7 +40,7 @@ function buildFromLocal(): UserProfile | null {
   return null;
 }
 
-export default function ProfileClient({ serverProfile, initialTab, futureDateError }: ProfileClientProps) {
+export default function ProfileClient({ serverProfile, initialTab, futureDateError, catalog }: ProfileClientProps) {
   const router = useRouter();
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
@@ -175,7 +176,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
           </div>
         )}
 
-        <ProfileHub profile={profile} />
+        <ProfileHub profile={profile} catalog={catalog} />
       </main>
 
     </div>
@@ -186,4 +187,5 @@ interface ProfileClientProps {
   serverProfile: UserProfile | null;
   initialTab: string | null;
   futureDateError?: boolean;
+  catalog?: LightweightEntity[];
 }
