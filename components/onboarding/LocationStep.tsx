@@ -77,7 +77,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         transition={{ duration: 0.4 }}
         className="text-center mb-10"
       >
-        <p className="text-xs font-medium uppercase tracking-wide text-muted mb-3">Paso 3 de 3</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-muted mb-3">Paso 2 de 2</p>
         <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
           ¿Dónde estás ahora?
         </h1>
