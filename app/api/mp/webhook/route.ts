@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
-import { grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
+import { createRecoveryLinkToken, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
 import { incrementMemberCount } from '@/lib/metrics';
+import { sendPremiumConfirmationEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
   try {
@@ -78,6 +79,16 @@ export async function POST(req: NextRequest) {
       // Only count on the FIRST successful grant of this payment, so the
       // transparent member counter reflects real, validated purchases.
       await incrementMemberCount(profileHash);
+
+      // Best-effort confirmation email — never blocks the webhook response.
+      if (payment.payerEmail) {
+        const claimToken = await createRecoveryLinkToken(profileHash);
+        await sendPremiumConfirmationEmail({
+          to: payment.payerEmail,
+          paymentId,
+          claimToken,
+        });
+      }
     }
 
     return NextResponse.json({ received: true });

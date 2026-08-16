@@ -6,7 +6,6 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import {
   Sparkles,
-  ShieldCheck,
   Check,
   CreditCard,
   KeyRound,
@@ -50,6 +49,7 @@ export default function PremiumCheckout({
   // Recovery & coupon states
   const [showRecover, setShowRecover] = useState(false);
   const [recoverPaymentId, setRecoverPaymentId] = useState("");
+  const [recoverBirthDate, setRecoverBirthDate] = useState(birthDate);
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
 
@@ -105,8 +105,7 @@ export default function PremiumCheckout({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           paymentId: recoverPaymentId.trim(),
-          name,
-          birthDate: birthDate || "",
+          birthDate: recoverBirthDate || "",
           salt: getOrCreateProfileSalt(),
         }),
       });
@@ -114,7 +113,7 @@ export default function PremiumCheckout({
 
       if (res.ok && data.verified) {
         if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
-        invalidatePremiumAccessCache(name, birthDate);
+        invalidatePremiumAccessCache(name, recoverBirthDate);
         if (onUnlocked) onUnlocked();
         analytics.trackPremiumUnlocked();
       } else {
@@ -190,20 +189,6 @@ export default function PremiumCheckout({
           <p className="text-xs text-muted mt-2">
             Sin suscripciones mensuales ni débitos automáticos. Pagás una vez y queda habilitado para siempre.
           </p>
-        </div>
-
-        {/* Guarantee Banner */}
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-left flex items-start gap-3">
-          <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div className="text-xs">
-            <span className="font-bold text-emerald-400 block mb-0.5">
-              Garantía de Satisfacción de 7 Días
-            </span>
-            <span className="text-muted leading-relaxed">
-              Si leés tu síntesis y sentís que no te aportó valor o claridad, te devolvemos el 100% de tu dinero
-              sin hacer ninguna pregunta.
-            </span>
-          </div>
         </div>
 
         {/* Checkout Buttons */}
@@ -286,19 +271,27 @@ export default function PremiumCheckout({
                 </button>
               </div>
               <p className="text-[11px] text-muted">
-                Ingresá el ID de pago de Mercado Pago que figura en el email de tu recibo:
+                Ingresá el ID de pago de Mercado Pago (figura en el email de tu recibo) y tu fecha de nacimiento:
               </p>
-              <div className="flex gap-2">
+              <div className="space-y-2">
                 <input
                   type="text"
-                  placeholder="Ej: 123456789"
+                  placeholder="ID de pago, ej: 123456789"
                   value={recoverPaymentId}
                   onChange={(e) => setRecoverPaymentId(e.target.value)}
-                  className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
+                  className="w-full rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
                 />
-                <Button type="submit" variant="primary" size="sm" disabled={isRecovering}>
-                  {isRecovering ? "..." : "Verificar"}
-                </Button>
+                <div className="flex gap-2">
+                  <input
+                    type="date"
+                    value={recoverBirthDate}
+                    onChange={(e) => setRecoverBirthDate(e.target.value)}
+                    className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"
+                  />
+                  <Button type="submit" variant="primary" size="sm" disabled={isRecovering}>
+                    {isRecovering ? "..." : "Verificar"}
+                  </Button>
+                </div>
               </div>
               {recoverError && <p className="text-xs text-red-400">{recoverError}</p>}
             </motion.form>

@@ -37,7 +37,7 @@ export default function PremiumGateUI({
   onActivate,
   checkoutUrl,
   title = "Tu síntesis completa",
-  description = "Un pago único de por vida. Sin suscripciones, sin letra chica, y con garantía de devolución de 7 días.",
+  description = "Un pago único de por vida. Sin suscripciones, sin letra chica.",
 }: PremiumGateUIProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -112,7 +112,7 @@ export default function PremiumGateUI({
       <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-muted">
         <span className="inline-flex items-center gap-1.5">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
-          Garantía de devolución de 7 días
+          Pago único, sin suscripción
         </span>
         <span className="inline-flex items-center gap-1.5">
           <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />

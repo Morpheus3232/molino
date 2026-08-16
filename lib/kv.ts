@@ -411,6 +411,49 @@ export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   }
 }
 
+// ── One-time recovery link (magic link sent in the confirmation email) ──
+//
+// The confirmation email never carries the real premium_token — only this
+// short-lived, single-use token, which /api/premium/claim exchanges for the
+// real token server-side. Prevents the permanent token from ever sitting in
+// plaintext in an inbox.
+
+const RECOVERY_LINK_TTL = 15 * 60; // 15 minutes
+
+/**
+ * Mint a one-time recovery link token for profileHash and store it.
+ * Returns the raw token to embed in the confirmation email URL.
+ */
+export async function createRecoveryLinkToken(profileHash: string): Promise<string> {
+  const token = generateToken();
+  try {
+    const kv = await getKvClient();
+    if (!kv) return token;
+    await kv.set(`recovery_link:${token}`, profileHash, { ex: RECOVERY_LINK_TTL });
+  } catch (error) {
+    console.error('[KV] Error in createRecoveryLinkToken:', error);
+  }
+  return token;
+}
+
+/**
+ * Consume a recovery link token: returns the profileHash and deletes the key
+ * so the link can't be reused. Returns null if missing/expired.
+ */
+export async function consumeRecoveryLinkToken(rawToken: string): Promise<string | null> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return null;
+    const profileHash = await kv.get<string>(`recovery_link:${rawToken}`);
+    if (!profileHash) return null;
+    await kv.del(`recovery_link:${rawToken}`);
+    return profileHash;
+  } catch (error) {
+    console.error('[KV] Error in consumeRecoveryLinkToken:', error);
+    return null;
+  }
+}
+
 // ── Preference dedup (prevents double-charge from double-click) ─────
 
 const PENDING_PREFERENCE_TTL = 30 * 60; // 30 minutes

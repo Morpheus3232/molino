@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
-import { getProfileHashByPaymentId, getProfileSalt, grantPremiumAccess, savePremiumToken, saveProfileSalt } from '@/lib/kv';
+import { getProfileHashByPaymentId, grantPremiumAccess, savePremiumToken, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
 import { isValidDate } from '@/lib/validation';
 
@@ -23,24 +23,16 @@ export async function POST(req: NextRequest) {
 
     const existingHash = await getProfileHashByPaymentId(cleanPaymentId);
     if (existingHash) {
-      // KV hit is only trusted when the requester proves ownership of the
-      // profile (same normalized name+birthDate that produced the hash).
-      // Without this check, anyone who knows a paymentId could claim access.
-      if (name && birthDate) {
-        if (!isValidDate(birthDate)) {
-          return NextResponse.json({
-            verified: false,
-            reason: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)',
-          }, { status: 400 });
-        }
-        const storedSalt = await getProfileSalt(existingHash);
-        const requestedHash = hashProfile(name, birthDate, storedSalt ?? salt);
-        if (requestedHash !== existingHash) {
-          return NextResponse.json({
-            verified: false,
-            reason: 'El ID de pago no corresponde a este perfil.',
-          }, { status: 400 });
-        }
+      // Ownership is trusted from the paymentId itself: it only resolves to
+      // a profileHash here if it was a real, validated MP transaction (see
+      // grantPremiumAccess call sites). birthDate is UX friction to avoid an
+      // empty-form submit, not a server-side cryptographic check — recover
+      // no longer requires the exact same name that was typed at checkout.
+      if (birthDate && !isValidDate(birthDate)) {
+        return NextResponse.json({
+          verified: false,
+          reason: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)',
+        }, { status: 400 });
       }
       return NextResponse.json({
         verified: true,

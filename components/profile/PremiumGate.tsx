@@ -507,7 +507,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   <span>$8 USD, pago único</span>
                 </div>
                 <p className="text-muted leading-relaxed">
-                  Acceso permanente a tu síntesis completa, informe con narrativa de IA y proyecciones 2026–2030 sin suscripciones mensuales. Garantía de devolución de 7 días.
+                  Acceso permanente a tu síntesis completa, informe con narrativa de IA y proyecciones 2026–2030 sin suscripciones mensuales.
                 </p>
               </div>
 
@@ -533,7 +533,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   href="/premium"
                   className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
                 >
-                  Ver qué incluye el acceso Premium y garantía de 7 días →
+                  Ver qué incluye el acceso Premium →
                 </Link>
               </div>
             </div>
