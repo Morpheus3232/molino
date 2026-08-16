@@ -56,3 +56,5 @@ kilo.json
 playwright-report/
 test-results/
 validation-results/
+
+.superpowers/
