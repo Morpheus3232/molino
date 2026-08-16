@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
@@ -9,6 +9,8 @@ import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
+import { getOrCreateProfile } from "@/lib/hooks/useProfile";
+import type { UserProfile } from "@/types/user";
 
 function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -25,6 +27,13 @@ export default function HeroInstrument() {
   const dateValueRef = useRef("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dateInputRef = useRef<DateInputHandle>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setProfile(getOrCreateProfile());
+  }, []);
 
   const isDateValid = isValidBirthDate(dateValue);
 
@@ -64,6 +73,60 @@ export default function HeroInstrument() {
         : "bg-ink/10 text-muted cursor-not-allowed"
     }
   `;
+
+  // Server y primer render de cliente no conocen el perfil local (localStorage
+  // solo es legible tras el mount) — hasta entonces se muestra el formulario,
+  // igual que PersonalizedHomeClient acepta el mismo parpadeo breve.
+  const isReturningUser = mounted && Boolean(profile?.birthDate);
+
+  if (isReturningUser) {
+    return (
+      <section
+        id="mapa-form"
+        className="relative bg-background min-h-[calc(100dvh-4rem)] lg:h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
+      >
+        <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
+          <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
+            </div>
+          </motion.div>
+
+          <motion.h1
+            {...fadeUpDelayed(0.05)}
+            className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-4"
+          >
+            Tu mapa ya está listo.
+          </motion.h1>
+
+          <motion.p
+            {...fadeUpDelayed(0.1)}
+            className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
+          >
+            Volvé a tu lectura completa — patrones, momento actual y decisiones.
+          </motion.p>
+
+          <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-5">
+            <Link
+              href="/profile"
+              className="group inline-flex items-center justify-center gap-3 font-heading font-bold uppercase tracking-[0.08em] rounded-md transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold bg-gold text-gold-foreground shadow-[0_0_35px_rgba(245,176,34,0.35)] hover:bg-gold-hover hover:shadow-[0_0_45px_rgba(245,176,34,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto"
+            >
+              Ver mi mapa
+              <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+            </Link>
+          </motion.div>
+
+          <motion.p {...fadeUpDelayed(0.25)} className="font-mono text-xs text-muted/70 tracking-wide">
+            Sin registro ·{" "}
+            <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
+              Ver un ejemplo interactivo
+            </Link>
+          </motion.p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
