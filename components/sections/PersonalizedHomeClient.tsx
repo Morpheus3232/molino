@@ -8,6 +8,7 @@ import { getCalendarDayContent } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
 import type { UserProfile } from "@/types/user";
 import { safeNumber } from "@/lib/utils/score";
 import { fadeUp } from "@/lib/utils/motion";
@@ -28,6 +29,12 @@ export default function PersonalizedHomeClient() {
   const lifePath = profile ? safeNumber(profile.lifePath, 1) : 1;
   const archetype = profile ? (ARCHETYPES[lifePath] || ARCHETYPES[1]) : ARCHETYPES[1];
   const todayNumber = useMemo(() => getCalendarDayContent(toLocalDateKey(new Date())), []);
+  const element = typeof profile?.element === "string" ? profile.element : "";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const activities = useMemo(
+    () => todayNumber.purpose.split(",").map((a) => a.trim()).filter(Boolean),
+    [todayNumber.purpose]
+  );
 
   if (!mounted) return null;
   if (!profile) return null;
@@ -45,27 +52,41 @@ export default function PersonalizedHomeClient() {
           </motion.div>
 
           <motion.div {...fadeUp} className="pb-16 lg:pb-20">
-            <Link
-              href="/calendario"
-              className="group grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-8 lg:gap-16 items-center border border-ink/10 p-8 lg:p-12 transition-colors hover:bg-ink/[0.02]"
-            >
-              <div>
-                <p className="label-micro mb-4">Hoy es día</p>
-                <p className="text-5xl sm:text-6xl font-heading font-bold tracking-tight text-accent">
-                  {todayNumber.number}
-                </p>
-                <p className="text-sm text-muted mt-2">{todayNumber.title}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-8 lg:gap-16 items-center border border-ink/10 p-8 lg:p-12">
+              <div className="flex items-center gap-6">
+                <div className="relative shrink-0" aria-hidden="true">
+                  <div
+                    className="absolute inset-0 rounded-full blur-2xl opacity-25 pointer-events-none"
+                    style={{ background: `radial-gradient(circle, ${elementColor}, transparent 70%)` }}
+                  />
+                  <span className="relative block text-6xl sm:text-7xl leading-none">{display.emoji}</span>
+                </div>
+                <div>
+                  <p className="label-micro mb-2">Hoy es día</p>
+                  <p
+                    className="text-5xl sm:text-6xl font-heading font-bold tracking-tight"
+                    style={{ color: elementColor }}
+                  >
+                    {todayNumber.number}
+                  </p>
+                  <p className="label-micro mt-4 mb-1">Arquetipo del día</p>
+                  <p className="text-base sm:text-lg font-heading text-foreground">{todayNumber.title}</p>
+                </div>
               </div>
               <div>
-                <p className="text-lg sm:text-xl font-heading text-foreground leading-relaxed max-w-xl">
-                  {todayNumber.purpose}
+                <p className="text-sm sm:text-base text-muted leading-relaxed max-w-xl">
+                  {activities.join(" · ")}
                 </p>
-                <span className="mt-6 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent">
+                <Link
+                  href="/calendario"
+                  className="group mt-6 inline-flex items-center gap-2 font-mono text-xs font-semibold tracking-[0.2em] uppercase hover:underline underline-offset-4"
+                  style={{ color: elementColor }}
+                >
                   Ver calendario numerológico
                   <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
-                </span>
+                </Link>
               </div>
-            </Link>
+            </div>
           </motion.div>
         </div>
       </section>
