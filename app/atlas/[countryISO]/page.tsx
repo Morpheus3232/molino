@@ -57,7 +57,7 @@ export default async function CountryPage({ params }: Props) {
             </h1>
           </div>
           <p className="text-sm sm:text-base text-muted max-w-2xl leading-relaxed">
-            Categorías de {name} con entidades verificadas. Explorá cada una para descubrir su resonancia
+            Categorías de {name}. Explorá cada una para descubrir su resonancia
             simbólica con tu mapa.
           </p>
         </header>

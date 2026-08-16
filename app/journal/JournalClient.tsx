@@ -169,7 +169,7 @@ export default function JournalClient() {
               </div>
               <p>
                 No necesitás escribir párrafos largos. Una frase sobre cómo te sentís o qué decisión tomaste
-                hoy es suficiente para revelar patrones cuando mires hacia atrás.
+                hoy es suficiente para ofrecer una perspectiva sobre patrones cuando mires hacia atrás.
               </p>
             </div>
           </div>
