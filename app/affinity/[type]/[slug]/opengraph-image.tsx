@@ -15,7 +15,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
     return new ImageResponse(
       (
         <div style={{ width: "100%", height: "100%", background: "#F5F0E4", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ color: "#B0B0A6", fontSize: 24, fontFamily: "sans-serif" }}>Molino</span>
+          <span style={{ color: "#6B6252", fontSize: 24, fontFamily: "sans-serif" }}>Molino</span>
         </div>
       ),
       { ...size }
@@ -64,7 +64,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
               <g transform="translate(50 38) rotate(315)"><path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#241F17" /></g>
               <circle cx="50" cy="38" r="3.2" fill="#241F17" />
             </svg>
-            <span style={{ color: "#B0B0A6", fontSize: 15, fontWeight: 500 }}>Molino</span>
+            <span style={{ color: "#6B6252", fontSize: 15, fontWeight: 500 }}>Molino</span>
           </div>
           <span style={{
             color: "#9A4A18", fontSize: 12, fontWeight: 600,
@@ -91,7 +91,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
           {/* Center — Arrow + CTA */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
             <span style={{ color: "#9A4A18", fontSize: 48 }}>→</span>
-            <span style={{ color: "#B0B0A6", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
+            <span style={{ color: "#6B6252", fontSize: 14, textAlign: "center", maxWidth: 120, lineHeight: 1.3 }}>
               ¿Cuál es tu animal?
             </span>
           </div>
@@ -102,7 +102,7 @@ export default async function Image({ params }: { params: Promise<{ type: string
             <span style={{ color: "#241F17", fontSize: 32, fontWeight: 700, fontFamily: "sans-serif" }}>
               ?
             </span>
-            <span style={{ color: "#B0B0A6", fontSize: 18 }}>
+            <span style={{ color: "#6B6252", fontSize: 18 }}>
               Vos
             </span>
           </div>
@@ -112,12 +112,12 @@ export default async function Image({ params }: { params: Promise<{ type: string
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 32, height: 2, background: "#9A4A18", borderRadius: 1 }} />
-            <span style={{ color: "#B0B0A6", fontSize: 14 }}>
+            <span style={{ color: "#6B6252", fontSize: 14 }}>
               Descubrí tu afinidad con {entity.name} en
             </span>
             <span style={{ color: "#241F17", fontSize: 14, fontWeight: 600 }}>Molino</span>
           </div>
-          <span style={{ color: "#B0B0A6", fontSize: 12 }}>
+          <span style={{ color: "#6B6252", fontSize: 12 }}>
             Según el zodíaco chino
           </span>
         </div>

@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
           style={{
             fontSize: 22,
             fontWeight: 500,
-            color: "#B0B0A6",
+            color: "#6B6252",
             letterSpacing: "0.15em",
             marginTop: 8,
             textAlign: "center",

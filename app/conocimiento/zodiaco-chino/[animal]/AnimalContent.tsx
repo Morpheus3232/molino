@@ -101,14 +101,14 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
           texture="spiral"
         >
           <div className="flex flex-wrap">
-            <div className={`w-full lg:w-1/2 ${cellPad} lg:border-r border-ink/15`}>
-              <p className="text-base lg:text-lg text-ink/80 leading-relaxed">{animal.meaning}</p>
+            <div className={`w-full lg:w-1/2 ${cellPad} lg:border-r border-paper/15`}>
+              <p className="text-base lg:text-lg text-paper/80 leading-relaxed">{animal.meaning}</p>
             </div>
-            <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-ink/15`}>
+            <div className={`w-full lg:w-1/2 ${cellPad} border-t lg:border-t-0 border-paper/15`}>
               <p className="font-mono text-xs font-semibold tracking-[0.2em] uppercase text-accent-light mb-6">
                 HISTORIA Y SIMBOLISMO
               </p>
-              <p className="text-sm lg:text-base text-ink/70 leading-relaxed">{animal.history}</p>
+              <p className="text-sm lg:text-base text-paper/70 leading-relaxed">{animal.history}</p>
             </div>
           </div>
         </EditorialSection>

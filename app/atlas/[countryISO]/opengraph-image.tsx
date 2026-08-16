@@ -56,7 +56,7 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
           Afinidades simbólicas
         </span>
 
-        <span style={{ color: "#B0B0A6", fontSize: 16, marginTop: 40 }}>Explorá el Atlas de {name} en Molino</span>
+        <span style={{ color: "#6B6252", fontSize: 16, marginTop: 40 }}>Explorá el Atlas de {name} en Molino</span>
       </div>
     ),
     { ...size }
