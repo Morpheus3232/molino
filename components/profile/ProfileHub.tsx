@@ -17,7 +17,6 @@ import { buildDimensions } from "@/lib/engines/synthesisEngine";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/profile/LecturaProfunda";
-import DecisionMapSection from "@/components/profile/DecisionMapSection";
 import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
@@ -213,11 +212,6 @@ export default function ProfileHub({
           gratis corren completos antes de pedir nada.
           ═══════════════════════════════════════════════ */}
       <LecturaLibre profile={profile} onData={setPieces} />
-
-      {/* ═══════════════════════════════════════════════
-          TU PREGUNTA — Decisiones personales
-          ═══════════════════════════════════════════════ */}
-      <DecisionMapSection profile={profile} />
 
       {/* ═══════════════════════════════════════════════
           SINCRONICIDAD — ¿Con quién compartís tu mapa?
