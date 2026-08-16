@@ -38,6 +38,24 @@ interface MolinoInterpretationProps {
   onInterpretationReady?: (interpretation: MolinoInterpretation | null) => void;
 }
 
+// "Intensidad del patrón" (junto a corePattern, síntesis premium) — el único
+// indicador cuantitativo del rediseño. Se alimenta del campo `confidence`
+// real que ya devuelve el server (mismo dato que el footer "Confianza: ..."),
+// no de un número inventado. `confidence` es texto libre del modelo de IA
+// (o "Media" fijo del fallback), así que cualquier variante no reconocida
+// cae a "media" en vez de romper el indicador.
+function normalizeConfidence(confidence: string): "alta" | "media" | "baja" {
+  const c = confidence.trim().toLowerCase();
+  if (c.startsWith("alta")) return "alta";
+  if (c.startsWith("baja")) return "baja";
+  return "media";
+}
+const CONFIDENCE_METER: Record<"alta" | "media" | "baja", { pct: number; color: string }> = {
+  alta: { pct: 100, color: "var(--score-excellent)" },
+  media: { pct: 60, color: "var(--score-good)" },
+  baja: { pct: 30, color: "var(--score-poor)" },
+};
+
 function LoadingSkeleton() {
   return (
     <div className="animate-pulse" aria-hidden="true">
@@ -254,6 +272,14 @@ export default function MolinoInterpretation({
     const epistemologicalNote = interpretation.limitations.find(
       (l) => !/datos locales/i.test(l)
     );
+    // Redesign scoped to "Tu síntesis" (type=personal_profile) only — this
+    // component also renders daily_energy/timing/compatibility/decision/
+    // question, which weren't part of this design pass and keep their
+    // original treatment.
+    const isPersonalProfile = type === "personal_profile";
+    const patternIntensity = interpretation.corePattern
+      ? CONFIDENCE_METER[normalizeConfidence(interpretation.confidence)]
+      : null;
     return (
       <motion.div
         key={`${isUsingAI ? "ai" : "local"}-${contentVersion}`}
@@ -273,51 +299,88 @@ export default function MolinoInterpretation({
           </motion.div>
         )}
 
-        {/* 1. INSIGHT PRINCIPAL — lede editorial, jerarquía de titular */}
+        {/* 1. INSIGHT PRINCIPAL — ancla visual: font-display en la síntesis
+            premium (mismo lenguaje que el numeral de "TU MOMENTO"), tratamiento
+            original en el resto de los tipos de interpretación. */}
         <motion.div
           variants={itemVariants}
           className={
             interpretation.opening
-              ? "py-6 sm:py-8"
+              ? isPersonalProfile
+                ? "pt-8 sm:pt-12 pb-8 sm:pb-10"
+                : "py-6 sm:py-8"
               : "pt-10 sm:pt-14 pb-8 sm:pb-10"
           }
         >
-          <p className="font-heading text-lg sm:text-xl leading-[1.65] text-foreground">
+          <p
+            className={
+              isPersonalProfile
+                ? "font-display text-xl sm:text-2xl leading-[1.4] text-foreground max-w-xl"
+                : "font-heading text-lg sm:text-xl leading-[1.65] text-foreground"
+            }
+          >
             {interpretation.summary}
           </p>
         </motion.div>
 
-        {/* 01. Tu patrón central */}
+        {/* 01. Tu patrón central — evidencia/contexto: eyebrow formalizado,
+            cuerpo sin cambio de tamaño, + el único indicador cuantitativo del
+            rediseño ("Intensidad del patrón", derivado de confidence real). */}
         {interpretation.corePattern && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               Tu patrón central · {interpretation.corePattern.source}
             </p>
+            {isPersonalProfile && patternIntensity && (
+              <div className="flex items-center gap-3 mb-4">
+                <span className="label-micro shrink-0">Intensidad del patrón</span>
+                <span className="h-px w-16 bg-ink/10 overflow-hidden shrink-0" aria-hidden="true">
+                  <span
+                    className="block h-full"
+                    style={{ width: `${patternIntensity.pct}%`, backgroundColor: patternIntensity.color }}
+                  />
+                </span>
+                <span className="text-xs font-mono text-muted">{interpretation.confidence}</span>
+              </div>
+            )}
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
               {interpretation.corePattern.whyItMatters}
             </p>
           </motion.div>
         )}
 
-        {/* 2. Qué significa */}
+        {/* 2. Qué significa — insight accionable en la síntesis premium: cuerpo
+            un nivel más grande que evidencia/contexto. */}
         {interpretation.alignment && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               {type === "compatibility" ? "Qué significa esta compatibilidad" : "Qué significa"}
             </p>
-            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+            <p
+              className={
+                isPersonalProfile
+                  ? "text-base leading-[1.75] sm:text-lg text-foreground"
+                  : "text-sm leading-[1.75] sm:text-base text-foreground"
+              }
+            >
               {interpretation.alignment}
             </p>
           </motion.div>
         )}
 
-        {/* 3. Por qué importa */}
+        {/* 3. Por qué importa — mismo criterio: insight accionable. */}
         {interpretation.timing && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               {type === "timing" ? "Por qué importa este momento" : "Por qué importa"}
             </p>
-            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+            <p
+              className={
+                isPersonalProfile
+                  ? "text-base leading-[1.75] sm:text-lg text-foreground"
+                  : "text-sm leading-[1.75] sm:text-base text-foreground"
+              }
+            >
               {interpretation.timing}
             </p>
           </motion.div>
@@ -326,7 +389,7 @@ export default function MolinoInterpretation({
         {/* 3.5 Timing para la intención elegida — usa el TimingResult real, no el string genérico de arriba */}
         {timing && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               Timing para {INTENTION_LABELS[timing.intention]}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -355,7 +418,7 @@ export default function MolinoInterpretation({
         {/* Tensions */}
         {interpretation.tensions.length > 0 && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
+            <p className="label-micro mb-4">
               {type === "compatibility" ? "Tensiones o puntos de fricción" : "Zonas de atención"}
             </p>
             <div className="space-y-3">
@@ -372,7 +435,7 @@ export default function MolinoInterpretation({
         {/* 03. Cómo funcionás */}
         {interpretation.howYouOperate && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               Cómo funcionás
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -384,7 +447,7 @@ export default function MolinoInterpretation({
         {/* 04. Tus relaciones — solo si hay datos reales de afinidad de zodiaco chino */}
         {interpretation.relationalNote && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
+            <p className="label-micro mb-3">
               Tus relaciones
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
@@ -393,9 +456,10 @@ export default function MolinoInterpretation({
           </motion.div>
         )}
 
-        {/* 4. Recomendación práctica — único acento de color, punto + regla fina en vez de borde izquierdo */}
+        {/* 4. Recomendación práctica — insight accionable + más aire arriba
+            para separarla del bloque anterior (única, junto al summary). */}
         {interpretation.suggestedNextStep && (
-          <motion.div variants={itemVariants} className="py-6 sm:py-8 mt-2">
+          <motion.div variants={itemVariants} className={isPersonalProfile ? "py-6 sm:py-8 mt-4 sm:mt-6" : "py-6 sm:py-8 mt-2"}>
             <div className="flex items-center gap-2 mb-3" aria-hidden="true">
               <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
               <span className="h-px flex-1 bg-ink/10" />
@@ -403,19 +467,32 @@ export default function MolinoInterpretation({
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
               {type === "compatibility" ? "Recomendación práctica" : "Recomendación"}
             </p>
-            <p className="text-sm leading-[1.75] sm:text-base text-foreground font-medium">
+            <p
+              className={
+                isPersonalProfile
+                  ? "text-base leading-[1.75] sm:text-lg text-foreground font-medium"
+                  : "text-sm leading-[1.75] sm:text-base text-foreground font-medium"
+              }
+            >
               {interpretation.suggestedNextStep}
             </p>
           </motion.div>
         )}
 
-        {/* 07. Síntesis — cierre memorable, pensado para compartir */}
+        {/* 07. Síntesis — cierre memorable, pensado para compartir; columna
+            angosta igual que el summary (los dos "bookends" del rediseño). */}
         {interpretation.closingSynthesis && (
           <motion.div variants={itemVariants} className="py-8 sm:py-12 mt-2 border-t border-ink/10">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-5">
+            <p className="label-micro mb-5">
               Tu síntesis
             </p>
-            <blockquote className="font-heading text-lg sm:text-xl leading-[1.6] text-foreground italic">
+            <blockquote
+              className={
+                isPersonalProfile
+                  ? "font-heading text-lg sm:text-xl leading-[1.6] text-foreground italic max-w-xl"
+                  : "font-heading text-lg sm:text-xl leading-[1.6] text-foreground italic"
+              }
+            >
               &ldquo;{interpretation.closingSynthesis}&rdquo;
             </blockquote>
           </motion.div>
@@ -424,7 +501,7 @@ export default function MolinoInterpretation({
         {/* 5. Qué considerar */}
         {interpretation.whatToConsider.length > 0 && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">
+            <p className="label-micro mb-4">
               Qué considerar
             </p>
             <div className="space-y-3">

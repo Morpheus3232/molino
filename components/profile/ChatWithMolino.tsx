@@ -240,7 +240,10 @@ export default function ChatWithMolino({ profile, readingContext }: ChatWithMoli
 
               {/* Respuesta — la voz de Molino, espacio editorial amplio, nunca una burbuja */}
               {turn.answer && (
-                <div className="mt-4 pl-4 sm:pl-6 border-l border-ink/15 max-w-2xl">
+                <div
+                  className="mt-4 pl-4 sm:pl-6 border-l-[3px] max-w-2xl"
+                  style={{ borderColor: elementColor }}
+                >
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: elementColor }} aria-hidden="true" />
                     <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Molino</span>

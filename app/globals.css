@@ -287,9 +287,12 @@
   --tier-desafiante: #945F06;
   --tier-distante: var(--color-error);
 
-  /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
-  --score-excellent: #3355F0;
-  --score-good: #1B2E9E;
+  /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo.
+     excellent/good recalibrados de azul/índigo (sobrevivientes de la paleta
+     oscura anterior) al acento terracota de "Almanaque Cálido" — neutral/poor
+     ya eran tonos cálidos y no hacía falta tocarlos. */
+  --score-excellent: var(--color-accent-light);
+  --score-good: var(--color-accent);
   --score-neutral: #736B5F;
   --score-poor: #4A453C;
 
@@ -414,6 +417,19 @@
     font-weight: 400;
     line-height: 1.4;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Eyebrow mono usado en toda la síntesis premium y el chat — existía como
+     className en 9+ archivos sin ninguna regla que lo respaldara. Formaliza
+     el patrón `font-mono text-xs uppercase tracking-[0.2em] text-muted` que
+     ya se repetía inline en MolinoInterpretation.tsx. */
+  .label-micro {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-muted);
   }
 
   h1, h2, h3, h4 {
