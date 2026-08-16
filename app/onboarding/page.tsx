@@ -10,17 +10,15 @@ import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, loadOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 import { markOnboardingCompleted } from "@/lib/session/discovery";
 import LocationStep from "@/components/onboarding/LocationStep";
-import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 
 const STEPS = [
   { id: "date", label: "Fecha", description: "Tu fecha de nacimiento — la base de todo" },
-  { id: "preview", label: "Adelanto", description: "Vos ya tenés dimensiones, sin dar tu nombre" },
   { id: "location", label: "Ubicación", description: "País actual (opcional) para afinidades culturales" },
 ];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [step, setStep] = useState<"date" | "preview" | "location">("date");
+  const [step, setStep] = useState<"date" | "location">("date");
   const [dateValue, setDateValue] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const dateInputRef = useRef<DateInputHandle>(null);
@@ -35,7 +33,7 @@ export default function OnboardingPage() {
     const stored = loadOnboardingData();
     if (stored?.dateValue && /^\d{4}-\d{2}-\d{2}$/.test(stored.dateValue)) {
       setDateValue(stored.dateValue);
-      setStep("preview");
+      setStep("location");
     }
   }, []);
 
@@ -54,10 +52,10 @@ export default function OnboardingPage() {
       dateInputRef.current?.reportIncomplete();
       return;
     }
-    changeStep("preview");
+    changeStep("location");
   };
 
-  const changeStep = (next: "date" | "preview" | "location") => {
+  const changeStep = (next: "date" | "location") => {
     setStep(next);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
@@ -165,34 +163,6 @@ export default function OnboardingPage() {
                 className={!isDateValid ? "opacity-50" : ""}
               >
                 Continuar
-                <ArrowRight className="w-5 h-5" aria-hidden="true" />
-              </Button>
-            </motion.div>
-          </>
-        ) : step === "preview" ? (
-          <>
-            <motion.div
-              initial={{ opacity: 0, y: -12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-center mb-6"
-            >
-              <h1 className="font-display text-3xl sm:text-4xl tracking-tight text-foreground leading-[0.95]">
-                Esto ya dice algo de vos
-              </h1>
-              <p className="mt-2 text-sm text-muted">Y todavía no sabemos tu nombre.</p>
-            </motion.div>
-
-            <DimensionsPreview birthDate={dateValue} />
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className="flex justify-center"
-            >
-              <Button variant="accent" size="lg" onClick={() => changeStep("location")}>
-                Ver mi mapa completo
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Button>
             </motion.div>
