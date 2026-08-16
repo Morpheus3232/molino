@@ -14,32 +14,51 @@ const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), {
   loading: () => <div className="h-80" aria-hidden="true" />,
 });
 
+type Dimensions = SynthesisResult["dimensions"];
+
 interface DimensionsPreviewProps {
-  /** Fecha en formato YYYY-MM-DD. Debe estar ya validada. */
-  birthDate: string;
+  /** Fecha en formato YYYY-MM-DD. Requerida solo si no se pasan `dimensions` ya calculadas. */
+  birthDate?: string;
+  /** Dimensiones ya calculadas (p.ej. buildDimensions(profile) en Mi Mapa). Si vienen, no hay fetch/cache/loading. */
+  dimensions?: Dimensions;
+  /** Color del elemento para el radar. Si no se pasa, se deriva de birthDate. */
+  elementColor?: string;
+  /** Filas clickeables tipo accordion (onboarding) o siempre expandidas (Mi Mapa). Default true. */
+  expandable?: boolean;
 }
 
-const DIMENSIONS_PREVIEW_CACHE = new Map<string, SynthesisResult['dimensions']>();
+const DIMENSIONS_PREVIEW_CACHE = new Map<string, Dimensions>();
 
 /**
- * Adelanto de "Tus dimensiones" en el onboarding: en cuanto la fecha es
- * valida se calcula todo en el navegador y se muestra el radar, sin esperar
- * a generar el perfil completo. Es la primera devolucion concreta que recibe
- * el usuario por haber puesto su fecha.
+ * "Tus dimensiones": radar + desglose. En el onboarding calcula todo desde
+ * `birthDate` (fetch en cliente, con cache y loading state) porque el perfil
+ * recién se está armando. Cuando el perfil ya existe (Mi Mapa) se le pasan
+ * `dimensions` directo y ese camino se salta entero.
  */
-export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps) {
+export default function DimensionsPreview({
+  birthDate,
+  dimensions: dimensionsProp,
+  elementColor: elementColorProp,
+  expandable = true,
+}: DimensionsPreviewProps) {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const [dimensions, setDimensions] = useState<SynthesisResult['dimensions'] | null>(
-    DIMENSIONS_PREVIEW_CACHE.get(birthDate) || null
+  const [fetchedDimensions, setFetchedDimensions] = useState<Dimensions | null>(
+    dimensionsProp ?? (birthDate ? DIMENSIONS_PREVIEW_CACHE.get(birthDate) ?? null : null)
   );
 
-  const profile = useMemo(() => calculateUserProfile("", birthDate), [birthDate]);
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element as keyof typeof ELEMENT_COLORS] ?? "var(--color-accent)";
+  const elementColor = useMemo(() => {
+    if (elementColorProp) return elementColorProp;
+    if (!birthDate) return "var(--color-accent)";
+    const profile = calculateUserProfile("", birthDate);
+    const element = typeof profile.element === "string" ? profile.element : "";
+    return ELEMENT_COLORS[element as keyof typeof ELEMENT_COLORS] ?? "var(--color-accent)";
+  }, [elementColorProp, birthDate]);
 
   useEffect(() => {
+    if (dimensionsProp || !birthDate) return;
+
     if (DIMENSIONS_PREVIEW_CACHE.has(birthDate)) {
-      setDimensions(DIMENSIONS_PREVIEW_CACHE.get(birthDate) || null);
+      setFetchedDimensions(DIMENSIONS_PREVIEW_CACHE.get(birthDate) || null);
       return;
     }
 
@@ -54,7 +73,7 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
           // punto del onboarding.
           const dims = data.dateDimensions;
           DIMENSIONS_PREVIEW_CACHE.set(birthDate, dims);
-          setDimensions(dims);
+          setFetchedDimensions(dims);
         }
       })
       .catch((err) => {
@@ -66,7 +85,9 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
     return () => {
       cancelled = true;
     };
-  }, [birthDate]);
+  }, [birthDate, dimensionsProp]);
+
+  const dimensions = dimensionsProp ?? fetchedDimensions;
 
   const radarData = useMemo(
     () => (dimensions || []).map((d) => ({ subject: d.dimension, value: d.value })),
@@ -133,6 +154,28 @@ export default function DimensionsPreview({ birthDate }: DimensionsPreviewProps)
 
         <div className="border-t border-border">
           {dimensions.map((dim) => {
+            if (!expandable) {
+              return (
+                <div key={dim.dimension} className="border-b border-border last:border-b-0 px-6 py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground">{dim.dimension}</p>
+                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-0.5 truncate">
+                        {dim.influences.filter(Boolean).join(" + ")}
+                      </p>
+                    </div>
+                    <span
+                      className="text-xs uppercase tracking-[0.2em] font-medium shrink-0"
+                      style={{ color: elementColor }}
+                    >
+                      {getScoreLabel(dim.value)}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm text-muted leading-relaxed">{dim.explanation}</p>
+                </div>
+              );
+            }
+
             const isOpen = expanded === dim.dimension;
             return (
               <div key={dim.dimension} className="border-b border-border last:border-b-0">

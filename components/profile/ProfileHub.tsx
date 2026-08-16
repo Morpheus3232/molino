@@ -10,7 +10,9 @@ import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
-import MapVisualization from "@/components/profile/MapVisualization";
+import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
+import { buildDimensions } from "@/lib/engines/synthesisEngine";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/profile/LecturaProfunda";
 import DecisionMapSection from "@/components/profile/DecisionMapSection";
@@ -64,6 +66,10 @@ export default function ProfileHub({
   const lifePath = safeNumber(profile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = archetype.name;
+
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const dimensions = useMemo(() => buildDimensions(profile), [profile]);
 
   const worldCount = useMemo(() => {
     if (!catalog || catalog.length === 0) return 0;
@@ -169,17 +175,6 @@ export default function ProfileHub({
                   )}
                 </motion.div>
               </div>
-
-              {/* MapVisualization — el mapa visual */}
-              <motion.div
-                {...heroItem(0.2)}
-                className="flex justify-center lg:justify-end"
-              >
-                <MapVisualization
-                  profile={profile}
-                  className="w-72 h-72 sm:w-80 sm:h-80"
-                />
-              </motion.div>
             </div>
           </div>
         </motion.div>
@@ -191,6 +186,14 @@ export default function ProfileHub({
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
         <CalculationDetails profile={profile} />
         <ActionButtons profile={profile} />
+      </div>
+
+      {/* ═══════════════════════════════════════════════
+          TUS DIMENSIONES — radar + desglose, siempre
+          expandido (sin accordion, a diferencia del onboarding).
+          ═══════════════════════════════════════════════ */}
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+        <DimensionsPreview dimensions={dimensions} elementColor={elementColor} expandable={false} />
       </div>
 
       {/* ═══════════════════════════════════════════════
