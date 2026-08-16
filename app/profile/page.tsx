@@ -5,6 +5,7 @@ import { decodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare"
 import ProfileClient from "@/components/profile/ProfileClient";
 import type { UserProfile } from "@/types/user";
 import { formatDate } from "@/lib/i18n/format";
+import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 
 export const dynamic = "force-dynamic";
 
@@ -104,5 +105,7 @@ export default async function ProfilePage({ searchParams }: Props) {
     } catch {}
   }
 
-  return <ProfileClient serverProfile={profile} initialTab={tab} />;
+  const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
+
+  return <ProfileClient serverProfile={profile} initialTab={tab} catalog={catalog} />;
 }
