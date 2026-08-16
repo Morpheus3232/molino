@@ -64,6 +64,11 @@ export async function POST(req: NextRequest) {
         await grantPremiumAccess(profileHash, cleanOrderId);
       }
       const premiumToken = await savePremiumToken(profileHash);
+      if (!premiumToken) {
+        return NextResponse.json({
+          error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+        }, { status: 503 });
+      }
       return NextResponse.json({
         verified: true,
         status: order.status,
@@ -77,6 +82,11 @@ export async function POST(req: NextRequest) {
     if (salt) await saveProfileSalt(profileHash, salt);
     await markPaymentProcessed(cleanOrderId);
     const premiumToken = await savePremiumToken(profileHash);
+    if (!premiumToken) {
+      return NextResponse.json({
+        error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+      }, { status: 503 });
+    }
 
     return NextResponse.json({
       verified: true,

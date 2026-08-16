@@ -39,6 +39,11 @@ export async function POST(req: NextRequest) {
         const inKv = await hasPremiumAccess(calculatedHash);
         if (inKv) {
           const premiumToken = await savePremiumToken(calculatedHash);
+          if (!premiumToken) {
+            return NextResponse.json({
+              error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+            }, { status: 503 });
+          }
           return NextResponse.json({
             verified: true,
             source: 'kv',
@@ -86,6 +91,11 @@ export async function POST(req: NextRequest) {
     await grantPremiumAccess(targetHash, String(paymentId));
     if (salt) await saveProfileSalt(targetHash, salt);
     const premiumToken = await savePremiumToken(targetHash);
+    if (!premiumToken) {
+      return NextResponse.json({
+        error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+      }, { status: 503 });
+    }
 
     return NextResponse.json({
       verified: true,

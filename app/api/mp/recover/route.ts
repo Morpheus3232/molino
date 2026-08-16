@@ -34,10 +34,16 @@ export async function POST(req: NextRequest) {
           reason: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)',
         }, { status: 400 });
       }
+      const kvPremiumToken = await savePremiumToken(existingHash);
+      if (!kvPremiumToken) {
+        return NextResponse.json({
+          error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+        }, { status: 503 });
+      }
       return NextResponse.json({
         verified: true,
         profileHash: existingHash,
-        premiumToken: await savePremiumToken(existingHash),
+        premiumToken: kvPremiumToken,
         source: 'kv',
       });
     }
@@ -74,6 +80,11 @@ export async function POST(req: NextRequest) {
     if (salt) await saveProfileSalt(profileHash, salt);
     await grantPremiumAccess(profileHash, cleanPaymentId);
     const premiumToken = await savePremiumToken(profileHash);
+    if (!premiumToken) {
+      return NextResponse.json({
+        error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+      }, { status: 503 });
+    }
 
     return NextResponse.json({
       verified: true,
