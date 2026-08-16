@@ -286,7 +286,7 @@ export default function MolinoInterpretation({
         {interpretation.timing && (
           <motion.div variants={itemVariants} className="py-5 sm:py-6">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">
-              {type === "timing" ? "Qué tipo de acciones favorece" : "Por qué importa"}
+              {type === "timing" ? "Por qué importa este momento" : "Por qué importa"}
             </p>
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
               {interpretation.timing}
