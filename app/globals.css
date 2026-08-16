@@ -4,19 +4,20 @@
 
 :root {
   /* ═══════════════════════════════════════════════════════════════
-     REBUILD — base oscura premium (reemplaza la base clara anterior).
-     "ink" sigue siendo el color de la marca legible, "paper" sigue
-     siendo la superficie — solo se invirtieron los valores, así que
-     TODA utilidad existente (bg-background, text-foreground, border-ink/10,
-     bg-ink/[0.04], text-paper/70, etc.) hereda el cambio sin tocar
-     componentes uno por uno.
+     ALMANAQUE CÁLIDO — base clara editorial (reemplaza la base oscura
+     "panel de instrumento"). "ink" es el color de texto/marca oscuro,
+     "paper" es la superficie clara. Toda utilidad existente
+     (bg-background, text-foreground, border-ink/10, bg-ink/[0.04],
+     text-paper/70, etc.) hereda el cambio sin tocar componentes uno
+     por uno. Contraste verificado (fórmula WCAG, relative luminance):
+     ink/paper = 14.4:1, muted/paper = 5.3:1, accent/paper = 5.2:1.
      ═══════════════════════════════════════════════════════════════ */
-  --color-ink: #F3F1EA;
-  --color-paper: #0A0A0C;
-  --color-paper-alt: #16161A;
-  --color-accent: #7C8CFF;
-  --color-accent-hover: #94A0FF;
-  --color-accent-light: #AEB8FF;
+  --color-ink: #241F17;
+  --color-paper: #F5F0E4;
+  --color-paper-alt: #EDE5D2;
+  --color-accent: #9A4A18;
+  --color-accent-hover: #7E3B12;
+  --color-accent-light: #D98F52;
   /* --color-gold: acento dorado para CTAs de alta urgencia — contrasta fuerte
      sobre el fondo oscuro (--color-paper #0A0A0C).
      --color-gold-foreground: texto sobre gold — tinta oscura para AA≥7:1. */
@@ -24,13 +25,10 @@
   --color-gold-hover: #FCC044;
   --color-gold-foreground: #1A1200;
   --color-gold-rgb: 245 176 34;
-  /* B0B0A6 en vez de A6A69C: el valor anterior hacía que text-muted/70 (el
-     uso más común para texto secundario en todo el sitio) cayera a ~4.3:1
-     sobre los fondos oscuros del sitio, por debajo del mínimo WCAG AA de
-     4.5:1 para texto normal. Este valor deja text-muted/70 en ~4.7:1+
-     verificado contra bg-card (#131315, el fondo más oscuro en uso) sin
-     cambiar perceptiblemente el carácter "apagado" del tono. */
-  --color-muted: #B0B0A6;
+  /* #6B6252 verificado a 5.28:1 sobre --color-paper (#F5F0E4) — por
+     encima del mínimo WCAG AA de 4.5:1 para texto normal, con margen
+     similar al que ya regía en la base oscura. */
+  --color-muted: #6B6252;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -38,29 +36,29 @@
      plano, Tailwind no puede aplicar la opacidad y la clase queda sin
      efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
      en varias secciones del sitio. Ver tailwind.config.ts. */
-  --color-ink-rgb: 243 241 234;
-  --color-paper-rgb: 10 10 12;
-  --color-accent-rgb: 124 140 255;
-  --color-accent-light-rgb: 174 184 255;
+  --color-ink-rgb: 36 31 23;
+  --color-paper-rgb: 245 240 228;
+  --color-accent-rgb: 154 74 24;
+  --color-accent-light-rgb: 217 143 82;
   --color-gold-rgb: 245 176 34;
-  --color-border: #2A2A2E;
+  --color-border: #E0D6C0;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: #131315;
+  --color-card: var(--color-paper-alt);
   --color-card-border: var(--color-border);
-  --color-surface-elevated: #1B1B1E;
+  --color-surface-elevated: #F0E9DA;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
   --color-accent-foreground: var(--color-paper);
-  --color-success: #10B981;
-  --color-success-foreground: var(--color-ink);
-  --color-warning: #7C8CFF;
+  --color-success: #1F7A4D;
+  --color-success-foreground: var(--color-paper);
+  --color-warning: #9A4A18;
   --color-warning-foreground: var(--color-paper);
-  --color-error: #EF4444;
-  --color-error-foreground: var(--color-ink);
+  --color-error: #B3261E;
+  --color-error-foreground: var(--color-paper);
 
   /*
    * Radios — sistema hibrido.
@@ -117,7 +115,7 @@
      Caption  (0.875rem, 14px)          →  font-sans,    lh 1.5
      Overline (0.7rem,   11px)          →  font-mono,    lh 1.0
      ═══════════════════════════════════════════════════════════════ */
-  --font-display: 'Archivo Black', sans-serif;
+  --font-display: 'Newsreader', serif;
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -125,16 +123,17 @@
   --tracking-tight: -0.02em;
 
   /*
-   * Sombras — el sistema no usa sombras decorativas. La jerarquía se
-   * expresa con borde de 1px, no con profundidad simulada.
+   * Sombras — "papel levantado": sombra sutil con tinte cálido (marrón,
+   * no gris neutro), sin blur agresivo ni halo. Reemplaza el sistema
+   * anterior de "sin sombras decorativas / todo con borde de 1px" del
+   * panel oscuro — sobre un fondo claro tipo papel, una sombra muy sutil
+   * comunica elevación mejor que un borde solo.
    */
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-xl: none;
-  --shadow-glow: none;
-  --shadow-glow-accent: none;
-  --shadow-inner: none;
+  --shadow-sm: 0 1px 2px rgba(36, 31, 23, 0.06);
+  --shadow-md: 0 2px 6px rgba(36, 31, 23, 0.08);
+  --shadow-lg: 0 4px 12px rgba(36, 31, 23, 0.10);
+  --shadow-xl: 0 8px 24px rgba(36, 31, 23, 0.12);
+  --shadow-inner: inset 0 1px 2px rgba(36, 31, 23, 0.06);
 
   --max-width-content: 680px;
   --max-input: 480px;
@@ -151,12 +150,12 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(243, 241, 234, 0.25);
-  --color-ink-alpha-03: rgba(243, 241, 234, 0.05);
-  --color-accent-alpha-04: rgba(124, 140, 255, 0.1);
-  --color-accent-alpha-10: rgba(124, 140, 255, 0.16);
-  --color-accent-alpha-20: rgba(124, 140, 255, 0.22);
-  --color-accent-glow: rgba(124, 140, 255, 0.08);
+  --color-ink-alpha-25: rgba(36, 31, 23, 0.25);
+  --color-ink-alpha-03: rgba(36, 31, 23, 0.05);
+  --color-accent-alpha-04: rgba(154, 74, 24, 0.1);
+  --color-accent-alpha-10: rgba(154, 74, 24, 0.16);
+  --color-accent-alpha-20: rgba(154, 74, 24, 0.22);
+  --color-accent-glow: rgba(154, 74, 24, 0.08);
 
   /* ═══════════════════════════════════════════════════════════════
      MOLINO 2.0 — Nueva identidad visual — Sistema de tokens completo
@@ -175,11 +174,11 @@
   --step-10-text: 7.5rem;
 
   /* New surface tokens */
-  --color-surface-raised: #18181C;
-  --color-surface-overlay: rgba(10, 10, 12, 0.92);
+  --color-surface-raised: #F0E9DA;
+  --color-surface-overlay: rgba(245, 240, 228, 0.92);
 
   /* Border glow accent */
-  --border-accent-alpha: rgba(124, 140, 255, 0.35);
+  --border-accent-alpha: rgba(154, 74, 24, 0.35);
 
   /* ═══════════════════════════════════════════════════════════════
      COLOR REFINEMENTS — Variantes de los colores base
@@ -195,15 +194,16 @@
   --color-gold-muted: #D4A00F;
   --color-gold-rgb: 245 176 34;
 
-  /* Accent blue refinements */
-  --color-accent-soft: rgba(124, 140, 255, 0.08);
-  --color-accent-subtle: rgba(124, 140, 255, 0.12);
-  --color-accent-medium: rgba(124, 140, 255, 0.2);
+  /* Accent terracota refinements */
+  --color-accent-soft: rgba(154, 74, 24, 0.08);
+  --color-accent-subtle: rgba(154, 74, 24, 0.12);
+  --color-accent-medium: rgba(154, 74, 24, 0.2);
 
-  /* Mystical depth — tonos que sugieren profundidad sin ser clichés */
-  --color-deep-ink: #E8E6DE;
-  --color-veil: rgba(10, 10, 12, 0.4);
-  --color-veil-strong: rgba(10, 10, 12, 0.6);
+  /* Deep ink — tono intermedio entre ink y muted, para texto que necesita
+     ser más suave que ink pero más presente que muted */
+  --color-deep-ink: #3A3226;
+  --color-veil: rgba(245, 240, 228, 0.4);
+  --color-veil-strong: rgba(245, 240, 228, 0.6);
 
   /* ═══════════════════════════════════════════════════════════════
      MYSTICAL ELEMENTS — Constelaciones, símbolos, patrones
@@ -221,7 +221,7 @@
   --mystical-astrology: #2E5C8A;
 
   /* Chinese zodiac accent */
-  --mystical-zodiac: #C49A2A;
+  --mystical-zodiac: #85681D;
 
   /* ═══════════════════════════════════════════════════════════════
      INTERACTION STATES — Hover, active, focus, disabled
@@ -252,46 +252,46 @@
 
   /* Element colors */
   --element-fire: #1E3AFF;
-  --element-earth: #059669;
+  --element-earth: #047D58;
   --element-air: #7C3AED;
-  --element-water: #0284C7;
-  --element-metal: #838C95;
-  --element-wood: #10B981;
+  --element-water: #0273AE;
+  --element-metal: #5E666E;
+  --element-wood: #0A7350;
 
   /* Map layer colors */
   --layer-identity: #1E3AFF;
-  --layer-patterns: #3B82F6;
+  --layer-patterns: #0B63F3;
   --layer-numerology: #2563EB;
   --layer-astrology: #7C3AED;
-  --layer-cycles: #059669;
-  --layer-moment: #DC2626;
+  --layer-cycles: #047D58;
+  --layer-moment: #C82020;
 
   /* Category colors */
   --cat-country: #1E3AFF;
   --cat-city: #4B5563;
   --cat-brand: #7C3AED;
-  --cat-band: #DC2626;
+  --cat-band: #C82020;
   --cat-movie: #2563EB;
-  --cat-book: #059669;
+  --cat-book: #047D58;
   --cat-philosophy: #7C3AED;
   --cat-event: #1E3AFF;
-  --cat-food: #EA580C;
-  --cat-color: #EC4899;
-  --cat-crystal: #14B8A6;
-  --cat-deity: #F59E0B;
+  --cat-food: #B9460A;
+  --cat-color: #D21673;
+  --cat-crystal: #0C7368;
+  --cat-deity: #945F06;
 
   /* Tier colors — afinidad de entidades (mundo/perfil) */
   --tier-resonante: var(--color-success);
-  --tier-afin: #3B82F6;
+  --tier-afin: #0B63F3;
   --tier-neutral: var(--element-metal);
-  --tier-desafiante: #F59E0B;
+  --tier-desafiante: #945F06;
   --tier-distante: var(--color-error);
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
-  --score-excellent: #AEB8FF;
-  --score-good: #7C8CFF;
-  --score-neutral: #A6A69C;
-  --score-poor: #6B6B63;
+  --score-excellent: #3355F0;
+  --score-good: #1B2E9E;
+  --score-neutral: #736B5F;
+  --score-poor: #4A453C;
 
   /* Overlay */
   --overlay: rgba(0, 0, 0, 0.6);
@@ -464,7 +464,7 @@
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.24);
+    box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.24);
   }
 
   .skip-link {
@@ -486,7 +486,7 @@
   }
 
   ::selection {
-    background: rgba(124, 140, 255, 0.28);
+    background: rgba(var(--color-accent-rgb), 0.28);
     color: var(--color-foreground);
   }
 
@@ -808,7 +808,7 @@
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(135deg,
-      rgba(124, 140, 255, 0.05) 0%,
+      rgba(154, 74, 24, 0.05) 0%,
       transparent 100%
     );
     pointer-events: none;

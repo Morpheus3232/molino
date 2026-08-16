@@ -157,7 +157,7 @@ export default function MotoresContent() {
                       <tr key={f.name} className={`border-b border-border ${i % 2 === 0 ? "bg-background" : "bg-muted/30"}`}>
                         <td className="px-4 py-3 font-mono text-sm text-foreground">{f.name}</td>
                         <td className="px-4 py-3 text-sm text-muted">{f.formula}</td>
-                        <td className="px-4 py-3 font-mono text-sm text-accent-light">{f.example}</td>
+                        <td className="px-4 py-3 font-mono text-sm text-accent">{f.example}</td>
                       </tr>
                     ))}
                   </tbody>

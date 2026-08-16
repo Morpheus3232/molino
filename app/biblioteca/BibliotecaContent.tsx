@@ -16,10 +16,10 @@ import {
 } from "@/lib/data/biblioteca-content";
 
 export const TYPE_META = {
-  libro: { label: "Libro", color: "#D4A843" },
-  articulo: { label: "Artículo", color: "#77808E" },
-  video: { label: "Video", color: "#897095" },
-  sitio: { label: "Sitio web", color: "#708F7B" },
+  libro: { label: "Libro", color: "#7B5E1C" },
+  articulo: { label: "Artículo", color: "#5F6773" },
+  video: { label: "Video", color: "#7C6487" },
+  sitio: { label: "Sitio web", color: "#5A7262" },
 };
 
 const CONTEXT_PATHS = [

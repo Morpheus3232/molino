@@ -97,7 +97,7 @@ export default function QueDescubris() {
         >
           <Link
             href="/biblioteca"
-            className="inline-flex items-center gap-2 font-heading text-sm font-semibold tracking-wider uppercase text-accent hover:text-accent-light transition-colors"
+            className="inline-flex items-center gap-2 font-heading text-sm font-semibold tracking-wider uppercase text-accent hover:text-accent-hover transition-colors"
           >
             Métodos y Fuentes
             <ArrowRight className="w-4 h-4 transition-transform duration-200 hover:translate-x-1" aria-hidden="true" />
