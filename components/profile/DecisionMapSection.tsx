@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { analyzeDecision, type DecisionCategory } from "@/lib/engines/decisionsEngine";
 import { smoothReveal, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
+import { getScoreColor } from "@/lib/utils/score";
+import { ELEMENT_COLORS } from "@/lib/data/constants";
 
 interface DecisionMapSectionProps {
   profile: UserProfile;
@@ -33,7 +34,25 @@ function firstSentence(recommendation: string): string {
   return sentence.endsWith(".") ? sentence : `${sentence}.`;
 }
 
+/**
+ * Encabezado de capítulo — mismo criterio que la lectura:
+ * mono uppercase + regla fina, sin caja ni glow.
+ */
+function ChapterNumber({ number, color }: { number: string; color: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-6" aria-hidden="true">
+      <span className="font-mono text-[11px] uppercase tracking-[0.25em]" style={{ color }}>
+        {number}
+      </span>
+      <span className="h-px flex-1" style={{ backgroundColor: color, opacity: 0.15 }} />
+    </div>
+  );
+}
+
 export default function DecisionMapSection({ profile }: DecisionMapSectionProps) {
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+
   const decisionResults = useMemo(() => {
     return DECISION_CATEGORIES.map(cat => ({
       ...cat,
@@ -56,7 +75,7 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
 
         {/* ═══ CATEGORÍAS ═══ */}
         <div className="mt-10 max-w-xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-4">Categorías</p>
+          <ChapterNumber number="04 · CATEGORÍAS" color={elementColor} />
           <div className="border-t border-ink/10">
             {decisionResults.map((cat, i) => (
               <motion.div
@@ -68,10 +87,10 @@ export default function DecisionMapSection({ profile }: DecisionMapSectionProps)
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-sm font-medium text-foreground">{cat.title}</p>
                   <span
-                    className="uppercase text-[10px] tracking-[0.2em] font-mono shrink-0"
+                    className="font-mono text-sm font-semibold tabular-nums shrink-0"
                     style={{ color: getScoreColor(cat.result.overallScore) }}
                   >
-                    {getScoreLabel(cat.result.overallScore)}
+                    {Math.round(cat.result.overallScore)}%
                   </span>
                 </div>
                 <p className="text-xs text-muted mt-0.5">{firstSentence(cat.result.recommendation)}</p>
