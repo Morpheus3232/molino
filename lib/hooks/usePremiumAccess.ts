@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useCachedFetch } from "@/lib/hooks/useCachedFetch";
 import { savePremiumTokenClient } from "@/lib/premium";
+import { getProfileSalt } from "@/lib/profile-salt";
 
 const PREMIUM_STATUS_CACHE = new Map<string, boolean>();
 
@@ -48,7 +49,7 @@ export function usePremiumAccess(name: string | undefined, birthDate: string): {
     const res = await fetch("/api/mp/check", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, birthDate }),
+      body: JSON.stringify({ name, birthDate, salt: getProfileSalt() }),
     });
     const json = await res.json();
     if (json.premium === true && json.premiumToken) {
