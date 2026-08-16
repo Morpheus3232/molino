@@ -12,7 +12,7 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
   if (!entity) {
     return new ImageResponse(
       <div style={{ width: "100%", height: "100%", background: "#F5F0E4", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ color: "#B0B0A6", fontSize: 24 }}>Molino</span>
+        <span style={{ color: "#6B6252", fontSize: 24 }}>Molino</span>
       </div>,
       { ...size }
     );
@@ -60,7 +60,7 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
           <span style={{ color: "#9A4A18", fontSize: 40 }}>→</span>
-          <span style={{ color: "#B0B0A6", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>
+          <span style={{ color: "#6B6252", fontSize: 13, textAlign: "center", maxWidth: 140, lineHeight: 1.4 }}>
             ¿Qué tan compatible sos?
           </span>
         </div>
@@ -73,19 +73,19 @@ export default async function Image({ params }: { params: Promise<{ entity: stri
           }}>
             <span style={{ fontSize: 32, color: "#F5F0E4" }}>?</span>
           </div>
-          <span style={{ color: "#B0B0A6", fontSize: 20, fontWeight: 500 }}>Vos</span>
+          <span style={{ color: "#6B6252", fontSize: 20, fontWeight: 500 }}>Vos</span>
         </div>
       </div>
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 40 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ width: 28, height: 2, background: "#9A4A18", borderRadius: 1 }} />
-          <span style={{ color: "#B0B0A6", fontSize: 14 }}>
+          <span style={{ color: "#6B6252", fontSize: 14 }}>
             Análisis multi-factor en
           </span>
           <span style={{ color: "#241F17", fontSize: 14, fontWeight: 600 }}>Molino</span>
         </div>
-        <span style={{ color: "#B0B0A6", fontSize: 12 }}>
+        <span style={{ color: "#6B6252", fontSize: 12 }}>
           Numerología · Astrología · Zodiaco Chino
         </span>
       </div>

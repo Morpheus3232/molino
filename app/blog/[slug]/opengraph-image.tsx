@@ -52,7 +52,7 @@ export default async function OgImage({ params }: Props) {
         >
           {post?.title ?? "Artículo de Molino"}
         </div>
-        <div style={{ fontSize: 24, color: "#B0B0A6", letterSpacing: "0.15em", marginTop: 40 }}>
+        <div style={{ fontSize: 24, color: "#6B6252", letterSpacing: "0.15em", marginTop: 40 }}>
           MOLINO — AUTOCONOCIMIENTO
         </div>
       </div>

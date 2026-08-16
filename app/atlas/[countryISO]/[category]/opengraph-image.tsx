@@ -59,8 +59,8 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
 
         <span style={{ fontSize: 96, lineHeight: 1 }}>{isoToFlagEmoji(iso)}</span>
         <span style={{ color: "#241F17", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
-        <span style={{ color: "#AEB8FF", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
-        <span style={{ color: "#B0B0A6", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
+        <span style={{ color: "#9A4A18", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
+        <span style={{ color: "#6B6252", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
       </div>
     ),
     { ...size }
