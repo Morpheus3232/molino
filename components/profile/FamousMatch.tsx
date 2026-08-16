@@ -7,26 +7,14 @@ import {
   findFamousMatches,
   type FamousMatchResult,
 } from "@/lib/data/famousPeopleToEntities";
-import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
+import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { Sparkles, Users, Award, Compass, Star } from "lucide-react";
+import { Sparkles, Users, Award, Compass, Star, Check } from "lucide-react";
 
 interface FamousMatchProps {
   profile: UserProfile;
   className?: string;
 }
-
-const FIELD_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  Ciencia: { bg: "bg-blue-500/10", text: "text-blue-400", border: "border-blue-500/20" },
-  Tecnología: { bg: "bg-cyan-500/10", text: "text-cyan-400", border: "border-cyan-500/20" },
-  Música: { bg: "bg-purple-500/10", text: "text-purple-400", border: "border-purple-500/20" },
-  Arte: { bg: "bg-amber-500/10", text: "text-amber-400", border: "border-amber-500/20" },
-  Cine: { bg: "bg-rose-500/10", text: "text-rose-400", border: "border-rose-500/20" },
-  Literatura: { bg: "bg-emerald-500/10", text: "text-emerald-400", border: "border-emerald-500/20" },
-  Filosofía: { bg: "bg-indigo-500/10", text: "text-indigo-400", border: "border-indigo-500/20" },
-  Deporte: { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/20" },
-  Política: { bg: "bg-yellow-500/10", text: "text-yellow-400", border: "border-yellow-500/20" },
-};
 
 function FamousAvatar({
   initials,
@@ -38,17 +26,9 @@ function FamousAvatar({
   emoji: string;
   field: string;
 }) {
-  const theme = FIELD_COLORS[field] || {
-    bg: "bg-ink/5",
-    text: "text-foreground",
-    border: "border-ink/10",
-  };
-
   return (
     <div className="relative flex-shrink-0">
-      <div
-        className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border ${theme.border} ${theme.bg} flex items-center justify-center shadow-inner relative select-none`}
-      >
+      <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-ink/10 bg-ink/5 flex items-center justify-center shadow-inner relative select-none">
         <span className="font-mono text-base sm:text-lg font-black text-foreground tracking-tight">
           {initials}
         </span>
@@ -64,13 +44,16 @@ function FamousAvatar({
   );
 }
 
-function MatchCard({ match, index }: { match: FamousMatchResult; index: number }) {
+function MatchCard({
+  match,
+  index,
+  elementColor,
+}: {
+  match: FamousMatchResult;
+  index: number;
+  elementColor: string;
+}) {
   const { person, matchLifePath, matchSunSign, matchChineseZodiac, matchCount, headline } = match;
-  const fieldTheme = FIELD_COLORS[person.field] || {
-    bg: "bg-ink/5",
-    text: "text-muted",
-    border: "border-ink/10",
-  };
   const zodiacDisplay = getZodiacDisplay(person.chineseZodiac);
   const sunSymbol = ZODIAC_SYMBOLS[person.sunSign] || "☀️";
 
@@ -108,9 +91,7 @@ function MatchCard({ match, index }: { match: FamousMatchResult; index: number }
           />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border ${fieldTheme.bg} ${fieldTheme.text} ${fieldTheme.border}`}
-              >
+              <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md border bg-ink/5 text-muted border-ink/10">
                 {person.field}
               </span>
               <span className="text-xs text-muted">
@@ -144,53 +125,46 @@ function MatchCard({ match, index }: { match: FamousMatchResult; index: number }
         )}
       </div>
 
-      {/* Pillars Breakdown */}
-      <div className="mt-5 pt-4 border-t border-ink/10 grid grid-cols-3 gap-1.5 text-center">
-        {/* Life Path */}
+      {/* Pillars Breakdown — Zodíaco chino primero y más grande: es el pilar
+          que organiza toda la sección. Camino/Solar quedan neutros, con un
+          check cuando coinciden, sin color propio. */}
+      <div className="mt-5 pt-4 border-t border-ink/10 grid grid-cols-[2fr_1fr_1fr] gap-1.5 text-center">
+        {/* Chinese Zodiac — pilar principal */}
         <div
           className={`p-2 rounded-lg border transition-colors ${
-            matchLifePath
-              ? "bg-accent/10 border-accent/30 text-accent font-semibold"
-              : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
+            matchChineseZodiac ? "font-semibold" : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
           }`}
+          style={
+            matchChineseZodiac
+              ? { backgroundColor: `${elementColor}1a`, borderColor: `${elementColor}4d`, color: elementColor }
+              : undefined
+          }
         >
-          <span className="block font-mono text-[9px] uppercase tracking-wider">
-            Camino
+          <span className="block font-mono text-[9px] uppercase tracking-wider">Zodíaco</span>
+          <span className="font-mono text-sm sm:text-base font-bold truncate block">
+            {zodiacDisplay.emoji} {zodiacDisplay.name}
           </span>
-          <span className="font-mono text-xs sm:text-sm font-bold">
+        </div>
+
+        {/* Life Path */}
+        <div className="p-2 rounded-lg border bg-ink/[0.02] border-ink/5 text-muted">
+          <span className="flex items-center justify-center gap-1 font-mono text-[9px] uppercase tracking-wider">
+            Camino
+            {matchLifePath && <Check className="w-2.5 h-2.5 text-foreground" aria-label="Coincide" />}
+          </span>
+          <span className={`font-mono text-xs sm:text-sm font-bold ${matchLifePath ? "text-foreground" : ""}`}>
             {person.lifePath}
           </span>
         </div>
 
         {/* Sun Sign */}
-        <div
-          className={`p-2 rounded-lg border transition-colors ${
-            matchSunSign
-              ? "bg-amber-500/10 border-amber-500/30 text-amber-500 font-semibold"
-              : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
-          }`}
-        >
-          <span className="block font-mono text-[9px] uppercase tracking-wider">
+        <div className="p-2 rounded-lg border bg-ink/[0.02] border-ink/5 text-muted">
+          <span className="flex items-center justify-center gap-1 font-mono text-[9px] uppercase tracking-wider">
             Solar
+            {matchSunSign && <Check className="w-2.5 h-2.5 text-foreground" aria-label="Coincide" />}
           </span>
-          <span className="font-mono text-xs sm:text-sm font-bold truncate block">
+          <span className={`font-mono text-xs sm:text-sm font-bold truncate block ${matchSunSign ? "text-foreground" : ""}`}>
             {sunSymbol} {person.sunSign}
-          </span>
-        </div>
-
-        {/* Chinese Zodiac */}
-        <div
-          className={`p-2 rounded-lg border transition-colors ${
-            matchChineseZodiac
-              ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500 font-semibold"
-              : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
-          }`}
-        >
-          <span className="block font-mono text-[9px] uppercase tracking-wider">
-            Zodíaco
-          </span>
-          <span className="font-mono text-xs sm:text-sm font-bold truncate block">
-            {zodiacDisplay.emoji} {zodiacDisplay.name}
           </span>
         </div>
       </div>
@@ -207,6 +181,8 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
 
   const primaryMatch = matches[0];
   const totalMatchesAvailable = matches.length;
+  const element = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
+  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
   return (
     <section
@@ -243,7 +219,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         {/* Grid of Matches (up to 3) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {matches.map((match, idx) => (
-            <MatchCard key={match.person.id} match={match} index={idx} />
+            <MatchCard key={match.person.id} match={match} index={idx} elementColor={elementColor} />
           ))}
         </div>
 
