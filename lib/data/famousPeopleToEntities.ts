@@ -772,12 +772,22 @@ export function findFamousMatches(
   // Sort by rarityScore desc
   matches.sort((a, b) => b.rarityScore - a.rarityScore);
 
+  // El zodíaco chino es el criterio principal de esta sección: los
+  // candidatos con el mismo animal van primero, sin importar que su
+  // rarityScore individual (solo-zodíaco = 210) sea menor al de un
+  // solo-Life-Path (320). Solo se completa con matches sin animal
+  // compartido si el animal del usuario no tiene suficientes figuras
+  // registradas (hoy: Caballo y Mono, con apenas 2 cada uno).
+  const zodiacMatches = matches.filter((m) => m.matchChineseZodiac);
+  const otherMatches = matches.filter((m) => !m.matchChineseZodiac);
+  const ordered = [...zodiacMatches, ...otherMatches];
+
   // Pick up to limit with field diversity if possible
   const selected: FamousMatchResult[] = [];
   const usedFields = new Set<string>();
 
   // Pass 1: pick top matches preferring distinct fields
-  for (const m of matches) {
+  for (const m of ordered) {
     if (selected.length >= limit) break;
     if (!usedFields.has(m.person.field) || m.matchCount >= 2) {
       selected.push(m);
@@ -787,7 +797,7 @@ export function findFamousMatches(
 
   // Pass 2: fill remaining slots if needed
   if (selected.length < limit) {
-    for (const m of matches) {
+    for (const m of ordered) {
       if (selected.length >= limit) break;
       if (!selected.some((s) => s.person.id === m.person.id)) {
         selected.push(m);
