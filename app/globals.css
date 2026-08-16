@@ -117,7 +117,7 @@
      Caption  (0.875rem, 14px)          →  font-sans,    lh 1.5
      Overline (0.7rem,   11px)          →  font-mono,    lh 1.0
      ═══════════════════════════════════════════════════════════════ */
-  --font-display: 'Archivo Black', sans-serif;
+  --font-display: 'Newsreader', serif;
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Space Grotesk', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Archivo_Black, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, Newsreader, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import SiteIntro from "@/components/ui/SiteIntro";
@@ -15,7 +15,7 @@ import PWAProvider from "@/components/PWAProvider";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE, siteUrl } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
-const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display" });
+const newsreader = Newsreader({ subsets: ["latin"], style: ["italic"], display: "swap", variable: "--font-display" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 
@@ -142,7 +142,7 @@ export default function RootLayout({
       lang="es"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
+      className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
     >
       <head>
         {jsonLd.map((schema, i) => (
