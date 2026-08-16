@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, FileText, Calendar, Users, ShieldCheck, ArrowRight, Check, Coffee } from "lucide-react";
+import { Sparkles, FileText, Calendar, Users, ShieldCheck, ArrowRight, Check } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
 
@@ -49,7 +49,7 @@ export default function PremiumTeaser() {
           </motion.h2>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong> (menos de lo que cuesta un café de especialidad) con garantía total de 7 días.
+            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong>, con garantía total de 7 días.
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default function PremiumTeaser() {
             <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1 relative">
               <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
               <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
-              <p className="text-xs text-foreground/90 leading-relaxed">Menos de un café. Acceso vitalicio, informe con narrativa de IA y 0 tracking.</p>
+              <p className="text-xs text-foreground/90 leading-relaxed">$8 USD. Acceso vitalicio, informe con narrativa de IA y 0 tracking.</p>
             </div>
           </div>
         </div>

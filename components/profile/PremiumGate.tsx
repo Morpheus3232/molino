@@ -572,7 +572,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
               <div className="p-3.5 rounded-2xl bg-accent/5 border border-accent/20 mb-6 space-y-1.5 text-xs">
                 <div className="flex items-center gap-1.5 font-bold text-accent">
-                  <span>☕ Menos de un café de especialidad</span>
+                  <span>$8 USD, pago único</span>
                 </div>
                 <p className="text-muted leading-relaxed">
                   Acceso permanente a tu síntesis completa, informe con narrativa de IA y proyecciones 2026–2030 sin suscripciones mensuales. Garantía de devolución de 7 días.
