@@ -99,8 +99,12 @@ export default function SavedProfilesDrawer({
         title="Ver y cambiar entre mapas guardados en este navegador"
         aria-label="Abrir bóveda de perfiles locales"
       >
-        <Bookmark className="w-3.5 h-3.5 text-accent" />
-        <span>Bóveda Local ({vault.length})</span>
+        {vault.length > 0 ? (
+          <Bookmark className="w-3.5 h-3.5 text-accent" />
+        ) : (
+          <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
+        )}
+        <span>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
       </button>
 
       {/* Drawer Modal Backdrop */}
