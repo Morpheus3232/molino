@@ -164,15 +164,19 @@ function generateToken(): string {
  * Called after every successful grantPremiumAccess().
  * Returns the raw token that must be delivered to the client.
  */
-export async function savePremiumToken(profileHash: string): Promise<string> {
+export async function savePremiumToken(profileHash: string): Promise<string | null> {
   const token = generateToken();
   try {
     const kv = await getKvClient();
-    if (!kv) return token;
+    if (!kv) {
+      console.error('[KV_WRITE_FAILED] savePremiumToken: no KV client available');
+      return null;
+    }
     // 180-day TTL — re-granted on each new payment.
     await kv.set(`premium_token:${profileHash}`, token, { ex: 180 * 86400 });
   } catch (error) {
-    console.error('[KV] Error in savePremiumToken:', error);
+    console.error('[KV_WRITE_FAILED] Error in savePremiumToken:', error);
+    return null;
   }
   return token;
 }
@@ -194,14 +198,18 @@ export async function savePremiumToken(profileHash: string): Promise<string> {
  * saved to localStorage moments earlier by a real unlock could already be
  * invalid by the time it was used.
  */
-export async function getOrCreatePremiumToken(profileHash: string): Promise<string> {
+export async function getOrCreatePremiumToken(profileHash: string): Promise<string | null> {
   try {
     const kv = await getKvClient();
-    if (!kv) return '';
+    if (!kv) {
+      console.error('[KV_WRITE_FAILED] getOrCreatePremiumToken: no KV client available');
+      return null;
+    }
     const existing = await kv.get<string>(`premium_token:${profileHash}`);
     if (existing) return existing;
   } catch (error) {
-    console.error('[KV] Error in getOrCreatePremiumToken:', error);
+    console.error('[KV_WRITE_FAILED] Error in getOrCreatePremiumToken:', error);
+    return null;
   }
   return savePremiumToken(profileHash);
 }
