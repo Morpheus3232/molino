@@ -48,13 +48,6 @@ export default function HeroInstrument() {
     router.push("/onboarding");
   }, [dateValue, router]);
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter") handleGenerate();
-    },
-    [handleGenerate]
-  );
-
   const handleDateChange = useCallback((value: string) => {
     dateValueRef.current = value;
     setDateValue(value);
@@ -128,8 +121,7 @@ export default function HeroInstrument() {
           {/* CTA principal — grande, dorado */}
           <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-3">
             <button
-              type="button"
-              onClick={() => handleGenerate()}
+              type="submit"
               aria-busy={isSubmitting}
               className={`${ctaClass} px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto`}
             >
