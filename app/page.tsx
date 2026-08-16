@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import { SITE_URL } from "@/lib/seo";
 
-const TresSistemas = dynamic(() => import("@/components/sections/TresSistemas"), { ssr: true });
 const AtlasTeaser = dynamic(() => import("@/components/sections/AtlasTeaser"), { ssr: true });
 const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true });
 const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true });
@@ -146,7 +145,6 @@ export default function Home() {
           <PersonalizedHomeClient />
           <MapPreviewDemo />
           <ParejaTeaser />
-          <TresSistemas />
           <PremiumTeaser />
           <TrustSignals />
           <CTAFinal />
