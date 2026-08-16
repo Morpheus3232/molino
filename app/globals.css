@@ -4,19 +4,20 @@
 
 :root {
   /* ═══════════════════════════════════════════════════════════════
-     REBUILD — base oscura premium (reemplaza la base clara anterior).
-     "ink" sigue siendo el color de la marca legible, "paper" sigue
-     siendo la superficie — solo se invirtieron los valores, así que
-     TODA utilidad existente (bg-background, text-foreground, border-ink/10,
-     bg-ink/[0.04], text-paper/70, etc.) hereda el cambio sin tocar
-     componentes uno por uno.
+     ALMANAQUE CÁLIDO — base clara editorial (reemplaza la base oscura
+     "panel de instrumento"). "ink" es el color de texto/marca oscuro,
+     "paper" es la superficie clara. Toda utilidad existente
+     (bg-background, text-foreground, border-ink/10, bg-ink/[0.04],
+     text-paper/70, etc.) hereda el cambio sin tocar componentes uno
+     por uno. Contraste verificado (fórmula WCAG, relative luminance):
+     ink/paper = 14.4:1, muted/paper = 5.3:1, accent/paper = 5.2:1.
      ═══════════════════════════════════════════════════════════════ */
-  --color-ink: #F3F1EA;
-  --color-paper: #0A0A0C;
-  --color-paper-alt: #16161A;
-  --color-accent: #7C8CFF;
-  --color-accent-hover: #94A0FF;
-  --color-accent-light: #AEB8FF;
+  --color-ink: #241F17;
+  --color-paper: #F5F0E4;
+  --color-paper-alt: #EDE5D2;
+  --color-accent: #9A4A18;
+  --color-accent-hover: #7E3B12;
+  --color-accent-light: #D98F52;
   /* --color-gold: acento dorado para CTAs de alta urgencia — contrasta fuerte
      sobre el fondo oscuro (--color-paper #0A0A0C).
      --color-gold-foreground: texto sobre gold — tinta oscura para AA≥7:1. */
@@ -24,13 +25,10 @@
   --color-gold-hover: #FCC044;
   --color-gold-foreground: #1A1200;
   --color-gold-rgb: 245 176 34;
-  /* B0B0A6 en vez de A6A69C: el valor anterior hacía que text-muted/70 (el
-     uso más común para texto secundario en todo el sitio) cayera a ~4.3:1
-     sobre los fondos oscuros del sitio, por debajo del mínimo WCAG AA de
-     4.5:1 para texto normal. Este valor deja text-muted/70 en ~4.7:1+
-     verificado contra bg-card (#131315, el fondo más oscuro en uso) sin
-     cambiar perceptiblemente el carácter "apagado" del tono. */
-  --color-muted: #B0B0A6;
+  /* #6B6252 verificado a 5.28:1 sobre --color-paper (#F5F0E4) — por
+     encima del mínimo WCAG AA de 4.5:1 para texto normal, con margen
+     similar al que ya regía en la base oscura. */
+  --color-muted: #6B6252;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -38,29 +36,29 @@
      plano, Tailwind no puede aplicar la opacidad y la clase queda sin
      efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
      en varias secciones del sitio. Ver tailwind.config.ts. */
-  --color-ink-rgb: 243 241 234;
-  --color-paper-rgb: 10 10 12;
-  --color-accent-rgb: 124 140 255;
-  --color-accent-light-rgb: 174 184 255;
+  --color-ink-rgb: 36 31 23;
+  --color-paper-rgb: 245 240 228;
+  --color-accent-rgb: 154 74 24;
+  --color-accent-light-rgb: 217 143 82;
   --color-gold-rgb: 245 176 34;
-  --color-border: #2A2A2E;
+  --color-border: #E0D6C0;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: #131315;
+  --color-card: var(--color-paper-alt);
   --color-card-border: var(--color-border);
-  --color-surface-elevated: #1B1B1E;
+  --color-surface-elevated: #F0E9DA;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
   --color-accent-foreground: var(--color-paper);
-  --color-success: #10B981;
-  --color-success-foreground: var(--color-ink);
-  --color-warning: #7C8CFF;
+  --color-success: #1F7A4D;
+  --color-success-foreground: var(--color-paper);
+  --color-warning: #9A4A18;
   --color-warning-foreground: var(--color-paper);
-  --color-error: #EF4444;
-  --color-error-foreground: var(--color-ink);
+  --color-error: #B3261E;
+  --color-error-foreground: var(--color-paper);
 
   /*
    * Radios — sistema hibrido.
