@@ -150,12 +150,12 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(243, 241, 234, 0.25);
-  --color-ink-alpha-03: rgba(243, 241, 234, 0.05);
-  --color-accent-alpha-04: rgba(124, 140, 255, 0.1);
-  --color-accent-alpha-10: rgba(124, 140, 255, 0.16);
-  --color-accent-alpha-20: rgba(124, 140, 255, 0.22);
-  --color-accent-glow: rgba(124, 140, 255, 0.08);
+  --color-ink-alpha-25: rgba(36, 31, 23, 0.25);
+  --color-ink-alpha-03: rgba(36, 31, 23, 0.05);
+  --color-accent-alpha-04: rgba(154, 74, 24, 0.1);
+  --color-accent-alpha-10: rgba(154, 74, 24, 0.16);
+  --color-accent-alpha-20: rgba(154, 74, 24, 0.22);
+  --color-accent-glow: rgba(154, 74, 24, 0.08);
 
   /* ═══════════════════════════════════════════════════════════════
      MOLINO 2.0 — Nueva identidad visual — Sistema de tokens completo
@@ -174,11 +174,11 @@
   --step-10-text: 7.5rem;
 
   /* New surface tokens */
-  --color-surface-raised: #18181C;
-  --color-surface-overlay: rgba(10, 10, 12, 0.92);
+  --color-surface-raised: #F0E9DA;
+  --color-surface-overlay: rgba(245, 240, 228, 0.92);
 
   /* Border glow accent */
-  --border-accent-alpha: rgba(124, 140, 255, 0.35);
+  --border-accent-alpha: rgba(154, 74, 24, 0.35);
 
   /* ═══════════════════════════════════════════════════════════════
      COLOR REFINEMENTS — Variantes de los colores base
@@ -194,15 +194,16 @@
   --color-gold-muted: #D4A00F;
   --color-gold-rgb: 245 176 34;
 
-  /* Accent blue refinements */
-  --color-accent-soft: rgba(124, 140, 255, 0.08);
-  --color-accent-subtle: rgba(124, 140, 255, 0.12);
-  --color-accent-medium: rgba(124, 140, 255, 0.2);
+  /* Accent terracota refinements */
+  --color-accent-soft: rgba(154, 74, 24, 0.08);
+  --color-accent-subtle: rgba(154, 74, 24, 0.12);
+  --color-accent-medium: rgba(154, 74, 24, 0.2);
 
-  /* Mystical depth — tonos que sugieren profundidad sin ser clichés */
-  --color-deep-ink: #E8E6DE;
-  --color-veil: rgba(10, 10, 12, 0.4);
-  --color-veil-strong: rgba(10, 10, 12, 0.6);
+  /* Deep ink — tono intermedio entre ink y muted, para texto que necesita
+     ser más suave que ink pero más presente que muted */
+  --color-deep-ink: #3A3226;
+  --color-veil: rgba(245, 240, 228, 0.4);
+  --color-veil-strong: rgba(245, 240, 228, 0.6);
 
   /* ═══════════════════════════════════════════════════════════════
      MYSTICAL ELEMENTS — Constelaciones, símbolos, patrones
