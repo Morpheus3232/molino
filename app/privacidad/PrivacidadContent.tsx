@@ -15,7 +15,7 @@ const sections = [
     body: `Tus datos se utilizan exclusivamente para:
 
 - Calcular tu mapa personal de numerología, astrología y zodíaco chino (procesamiento 100% local en el navegador).
-- Procesar pagos Premium a través de Mercado Pago y PayPal (estos proveedores reciben solo los datos necesarios para la transacción: email, monto, hash de verificación).
+- Procesar pagos Premium a través de Mercado Pago (este proveedor recibe solo los datos necesarios para la transacción: email, monto, hash de verificación).
 - Generar interpretaciones asistidas por IA (solo para usuarios Premium, a través de OpenRouter (routing) y DeepSeek v4 (modelo de IA), bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento).
 - Analítica de uso anónima y agregada (eventos en localStorage, sin servidor) para mejorar la experiencia.
 
@@ -48,8 +48,7 @@ const sections = [
 
 | Proveedor | Propósito | Datos recibidos | Política de privacidad |
 |-----------|-----------|-----------------|------------------------|
-| Mercado Pago | Procesamiento de pagos (LatAm) | Email, hash de perfil, monto, país | https://www.mercadopago.com.ar/privacy |
-| PayPal | Procesamiento de pagos (Internacional) | Hash de perfil, monto, email | https://www.paypal.com/privacy |
+| Mercado Pago | Procesamiento de pagos | Email, hash de perfil, monto, país | https://www.mercadopago.com.ar/privacy |
 | OpenRouter (routing) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://openrouter.ai/privacy |
 | DeepSeek v4 (modelo de IA) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://api-docs.deepseek.com |
 | Vercel | Hosting y edge functions | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |

@@ -108,7 +108,7 @@ export default function TrustSignals() {
             Cálculo local por diseño
           </motion.h2>
           <motion.p {...fadeUpDelayed(0.1)} className="text-sm sm:text-base text-muted mt-3 leading-relaxed">
-            <strong>Mapa básico:</strong> 100% en tu navegador, sin cuentas, sin datos guardados. <strong>Premium e IA:</strong> si activás estas funciones, tu hash y perfil simbólico se envían a Mercado Pago, PayPal, OpenRouter y DeepSeek bajo acuerdos de confidencialidad (nunca para entrenar modelos). Todo el código es fuente pública y auditable en{" "}
+            <strong>Mapa básico:</strong> 100% en tu navegador, sin cuentas, sin datos guardados. <strong>Premium e IA:</strong> si activás estas funciones, tu hash y perfil simbólico se envían a Mercado Pago, OpenRouter y DeepSeek bajo acuerdos de confidencialidad (nunca para entrenar modelos). Todo el código es fuente pública y auditable en{" "}
             <Link href="https://github.com/Morpheus3232/molino" target="_blank" rel="noopener noreferrer" className="underline hover:text-accent">
               GitHub
             </Link>

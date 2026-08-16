@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
@@ -45,7 +45,6 @@ export default function PremiumCheckout({
   className = "",
 }: PremiumCheckoutProps) {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [method, setMethod] = useState<"mercadopago" | "paypal" | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Recovery & coupon states
@@ -59,38 +58,15 @@ export default function PremiumCheckout({
   const [couponError, setCouponError] = useState<string | null>(null);
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
 
-  const handleCheckout = async (checkoutMethod: "mercadopago" | "paypal") => {
+  const handleCheckout = async () => {
     if (checkoutLoading) return;
     setCheckoutLoading(true);
-    setMethod(checkoutMethod);
     setErrorMsg(null);
 
     const salt = getOrCreateProfileSalt();
-    analytics.trackCheckoutStarted("USD", checkoutMethod);
+    analytics.trackCheckoutStarted("USD", "mercadopago");
 
     try {
-      if (checkoutMethod === "paypal") {
-        const res = await fetch("/api/paypal/create-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            birthDate: birthDate || new Date().toISOString().split("T")[0],
-            salt,
-          }),
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || "Error al conectar con PayPal");
-        }
-
-        const data = await res.json();
-        window.location.href = data.approveUrl;
-        return;
-      }
-
-      // Mercado Pago
       const res = await fetch("/api/mp/preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,10 +100,7 @@ export default function PremiumCheckout({
     setRecoverError(null);
 
     try {
-      const isPaypalId = recoverPaymentId.startsWith("PAYID") || recoverPaymentId.length > 15;
-      const endpoint = isPaypalId ? "/api/paypal/recover" : "/api/mp/recover";
-
-      const res = await fetch(endpoint, {
+      const res = await fetch("/api/mp/recover", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -239,31 +212,19 @@ export default function PremiumCheckout({
             <div className="p-6 rounded-2xl bg-ink/5 border border-ink/10 flex flex-col items-center justify-center gap-3">
               <Logo className="w-8 h-8 text-accent animate-spin" />
               <p className="text-xs font-mono text-muted">
-                Conectando con {method === "paypal" ? "PayPal" : "Mercado Pago"} de forma segura...
+                Conectando con Mercado Pago de forma segura...
               </p>
             </div>
           ) : (
-            <>
-              <Button
-                variant="accent"
-                size="lg"
-                fullWidth
-                onClick={() => handleCheckout("mercadopago")}
-                className="py-4 text-base font-bold shadow-lg"
-              >
-                Pagar con Mercado Pago / Tarjeta ($8 USD)
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                fullWidth
-                onClick={() => handleCheckout("paypal")}
-                className="py-3.5 text-sm font-semibold border border-ink/15"
-              >
-                Pagar con PayPal ($8 USD)
-              </Button>
-            </>
+            <Button
+              variant="accent"
+              size="lg"
+              fullWidth
+              onClick={handleCheckout}
+              className="py-4 text-base font-bold shadow-lg"
+            >
+              Pagar con Mercado Pago / Tarjeta ($8 USD)
+            </Button>
           )}
 
           {errorMsg && (
@@ -325,12 +286,12 @@ export default function PremiumCheckout({
                 </button>
               </div>
               <p className="text-[11px] text-muted">
-                Ingresá el ID de pago de Mercado Pago o PayPal que figura en el email de tu recibo:
+                Ingresá el ID de pago de Mercado Pago que figura en el email de tu recibo:
               </p>
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Ej: 123456789 o PAYID-..."
+                  placeholder="Ej: 123456789"
                   value={recoverPaymentId}
                   onChange={(e) => setRecoverPaymentId(e.target.value)}
                   className="flex-1 rounded-xl bg-card border border-ink/10 px-3 py-2 text-xs text-foreground focus:outline-none focus:border-accent"

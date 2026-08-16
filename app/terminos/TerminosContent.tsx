@@ -22,7 +22,7 @@ Molino es una herramienta educativa de código abierto que explora sistemas simb
     title: "3. Cuenta Premium",
     body: `Molino ofrece una capa Premium opcional que incluye interpretaciones asistidas por IA y funcionalidades adicionales.
 
-- El acceso Premium se activa mediante pago único a través de Mercado Pago (Argentina/LatAm) o PayPal (internacional).
+- El acceso Premium se activa mediante pago único a través de Mercado Pago.
 - El precio (USD 8) y las condiciones se muestran claramente antes del pago. No hay suscripciones recurrentes ni cargos ocultos.
 - El acceso se vincula a un hash SHA-256 de tu perfil (nombre + fecha de nacimiento) y persiste mientras exista el registro en nuestro sistema.
 - **Política de reembolsos:** Al ser un servicio digital de entrega inmediata (interpretación IA generada al momento), no ofrecemos reembolsos salvo error técnico comprobable (duplicidad de cargo, fallo de generación). Contactá a pagos@molino.app en 48hs.

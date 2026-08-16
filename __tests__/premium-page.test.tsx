@@ -40,6 +40,5 @@ describe("Premium Experience Components", () => {
     expect(screen.getAllByText(/\$8/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Garantía de Satisfacción de 7 Días/i)).toBeDefined();
     expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeDefined();
-    expect(screen.getByText(/Pagar con PayPal/i)).toBeDefined();
   });
 });
