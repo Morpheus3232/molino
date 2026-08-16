@@ -10,8 +10,7 @@ import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
-import { loadSelectedPlan, clearSelectedPlan } from '@/lib/session/selectedPlan';
-import { resolvePlanUsdPrice, getPlanById, type BillingCycle } from '@/components/pricing/pricing-data';
+import { clearSelectedPlan } from '@/lib/session/selectedPlan';
 
 const PROFILE_SALT_KEY = 'molino-profile-salt';
 
@@ -125,16 +124,12 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [checkoutMethod, setCheckoutMethod] = useState<'mercadopago' | 'paypal' | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
-  // Plan elegido en /precios (persistido en localStorage). null → pago legacy
-  // de un solo producto premium ($8 USD), el flujo histórico.
-  const [selectedPlan, setSelectedPlan] = useState(() => loadSelectedPlan());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
 
-  // Precio a cobrar: el del plan guardado si hay uno, sino el precio fijo.
-  const chargePlanId = selectedPlan && selectedPlan.id !== 'gratis' ? selectedPlan.id : null;
-  const chargeCycle: BillingCycle = selectedPlan?.cycle ?? 'monthly';
-  const chargePriceUsd = chargePlanId ? resolvePlanUsdPrice(chargePlanId, chargeCycle) : flags.premiumPriceUsd;
+  // Único producto activo: pago único de $8 USD (Opción A — Pro/Familiar
+  // desactivados, ver components/pricing/pricing-data.ts).
+  const chargePriceUsd = flags.premiumPriceUsd;
 
   // Fetch feature flags from API (runtime-configurable, no rebuild needed)
   useEffect(() => {
@@ -315,7 +310,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
             name,
             birthDate,
             salt: profileSalt,
-            ...(chargePlanId ? { plan: { id: chargePlanId, cycle: chargeCycle } } : {}),
           }),
         });
 
@@ -337,7 +331,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           birthDate,
           currencyId,
           salt: profileSalt,
-          ...(chargePlanId ? { plan: { id: chargePlanId, cycle: chargeCycle } } : {}),
         }),
       });
 
