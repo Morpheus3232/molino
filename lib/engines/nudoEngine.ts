@@ -194,8 +194,8 @@ function detectRealTension(
     return {
       hasRealTension: true,
       fuerzaA: 'Necesidad de actuar',
-      fuerzaB: 'Condiciones desfavorables',
-      tension: `Tu intención de avanzar choca con un momento que no la acompaña (score: ${contextScore}/100).`,
+      fuerzaB: 'Señales del momento actual',
+      tension: 'Tu intención de avanzar y las señales de tu momento actual no están apuntando en la misma dirección.',
       preguntaLlave: '¿Es mejor esperar una ventana más favorable o avanzar con la fricción actual?',
       sources: [...Array.from(allSources), contextSource],
     };

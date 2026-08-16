@@ -420,7 +420,7 @@ Generá una respuesta JSON con:
 {
   "summary": "Síntesis de la energía del día en 2-3 oraciones",
   "alignment": "Cómo la energía se conecta con el perfil del usuario",
-  "timing": "Qué tipo de acciones favorece hoy",
+  "timing": "Por qué la energía de hoy importa dentro de tu identidad (archetype, elemento) — no qué acción conviene tomar",
   "strengths": ["fortaleza 1", "fortaleza 2"],
   "tensions": ["tensión 1"],
   "whatToConsider": ["consideración 1", "consideración 2"],
@@ -449,7 +449,7 @@ Generá una respuesta JSON con:
 {
   "summary": "Síntesis del timing en 2-3 oraciones",
   "alignment": "Cómo el timing se conecta con el perfil",
-  "timing": "Qué tipo de acciones favorece este momento",
+  "timing": "Por qué este momento importa dentro de tu identidad (archetype, elemento) para la intención elegida — no qué acción conviene tomar",
   "strengths": ["fortaleza 1", "fortaleza 2"],
   "tensions": ["tensión 1"],
   "whatToConsider": ["consideración 1", "consideración 2"],
@@ -486,7 +486,7 @@ Generá una respuesta JSON con:
 {
   "summary": "Síntesis de la compatibilidad en 2-3 oraciones",
   "alignment": "Cómo se conectan el perfil y la entidad",
-  "timing": "Qué sugiere la compatibilidad para el momento actual",
+  "timing": "Por qué el momento actual importa dentro de esta relación — no qué acción conviene tomar con la otra parte",
   "strengths": ["fortaleza 1", "fortaleza 2"],
   "tensions": ["tensión 1"],
   "whatToConsider": ["consideración 1", "consideración 2"],
@@ -635,7 +635,7 @@ Generá una respuesta JSON con:
 {
   "summary": "Síntesis de los patrones en 2-3 oraciones",
   "alignment": "Cómo los patrones se conectan entre sí",
-  "timing": "Qué sugieren los ciclos sobre los patrones",
+  "timing": "Por qué los ciclos actuales importan para estos patrones — no qué acción favorecen",
   "strengths": ["patrón 1", "patrón 2"],
   "tensions": ["tensión 1"],
   "whatToConsider": ["consideración 1", "consideración 2"],
@@ -655,7 +655,7 @@ Generá una respuesta JSON con:
 {
   "summary": "Síntesis en 2-3 oraciones",
   "alignment": "Cómo se conectan los datos",
-  "timing": "Qué sugieren los ciclos",
+  "timing": "Por qué los ciclos actuales importan — no qué acción favorecen",
   "strengths": ["fortaleza 1"],
   "tensions": ["tensión 1"],
   "whatToConsider": ["consideración 1"],
