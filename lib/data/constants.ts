@@ -17,12 +17,12 @@ export const ZODIAC_SYMBOLS: Record<string, string> = {
 };
 
 export const ELEMENT_COLORS: Record<string, string> = {
-  Fuego: "#C49A2A",
+  Fuego: "#85691D",
   Tierra: "#2D5A3D",
   Aire: "#6B4C7A",
   Agua: "#2E5C8A",
-  Metal: "#7A8A99",
-  Madera: "#8FBC8F",
+  Metal: "#566470",
+  Madera: "#436F43",
 };
 
 export const ARCHETYPE_DESCRIPTIONS: Record<number, string> = {
