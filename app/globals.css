@@ -288,10 +288,10 @@
   --tier-distante: var(--color-error);
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
-  --score-excellent: #2F48FF;
-  --score-good: #3049FF;
-  --score-neutral: #66665C;
-  --score-poor: #6B6B63;
+  --score-excellent: #3355F0;
+  --score-good: #1B2E9E;
+  --score-neutral: #736B5F;
+  --score-poor: #4A453C;
 
   /* Overlay */
   --overlay: rgba(0, 0, 0, 0.6);
@@ -808,7 +808,7 @@
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(135deg,
-      rgba(124, 140, 255, 0.05) 0%,
+      rgba(154, 74, 24, 0.05) 0%,
       transparent 100%
     );
     pointer-events: none;

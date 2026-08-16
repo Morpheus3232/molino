@@ -86,12 +86,12 @@ const SECTIONS = [
             href="https://github.com/Morpheus3232/molino"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent underline hover:text-accent-light"
+            className="text-accent underline hover:text-accent-hover"
           >
             nuestro repositorio en GitHub
           </Link>
           , o el detalle técnico de cada motor en{" "}
-          <Link href="/docs/motores" className="text-accent underline hover:text-accent-light">
+          <Link href="/docs/motores" className="text-accent underline hover:text-accent-hover">
             Motores de Cálculo
           </Link>
           .
@@ -154,7 +154,7 @@ export default function MetodosYFuentesPage() {
 
           <p className="text-xs text-muted mt-10 text-center">
             Para lecturas y referencias externas, ver{" "}
-            <Link href="/biblioteca" className="text-accent underline hover:text-accent-light">
+            <Link href="/biblioteca" className="text-accent underline hover:text-accent-hover">
               Biblioteca
             </Link>
             .{" "}

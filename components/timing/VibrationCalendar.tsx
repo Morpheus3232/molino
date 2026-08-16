@@ -132,9 +132,9 @@ export default function VibrationCalendar({ topic, dates }: VibrationCalendarPro
                 <span
                   className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center font-mono text-xs font-bold border leading-none"
                   style={{
-                    borderColor: vibration.favorable ? vibration.color : "rgba(243,241,234,0.12)",
+                    borderColor: vibration.favorable ? vibration.color : "rgba(36,31,23,0.12)",
                     color: vibration.favorable ? (isTodayCell ? "var(--color-background)" : vibration.color) : isTodayCell ? "var(--color-foreground)" : "var(--color-muted)",
-                    backgroundColor: vibration.favorable ? (isTodayCell ? vibration.color : `${vibration.color}1a`) : isTodayCell ? "rgba(243,241,234,0.08)" : "transparent",
+                    backgroundColor: vibration.favorable ? (isTodayCell ? vibration.color : `${vibration.color}1a`) : isTodayCell ? "rgba(36,31,23,0.08)" : "transparent",
                   }}
                 >
                   {vibration.number}

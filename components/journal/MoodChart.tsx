@@ -69,7 +69,7 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
             stroke="#7A7870"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: "rgba(243,241,234,0.1)" }}
+            axisLine={{ stroke: "rgba(36,31,23,0.1)" }}
           />
           <YAxis
             domain={[1, 5]}
@@ -77,7 +77,7 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
             stroke="#7A7870"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: "rgba(243,241,234,0.1)" }}
+            axisLine={{ stroke: "rgba(36,31,23,0.1)" }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Area

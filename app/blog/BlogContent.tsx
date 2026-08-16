@@ -48,7 +48,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
         <p className="text-sm text-muted leading-relaxed mb-4 flex-1">{post.excerpt}</p>
         <div className="flex items-center justify-between text-xs text-muted/70 pt-4 border-t border-border">
           <time dateTime={post.date}>{formatDate(post.date)}</time>
-          <Link href={`/blog/${post.slug}`} className="text-accent hover:text-accent-light font-medium">
+          <Link href={`/blog/${post.slug}`} className="text-accent hover:text-accent-hover font-medium">
             Leer artículo →
           </Link>
         </div>
