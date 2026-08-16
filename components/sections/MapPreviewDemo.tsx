@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Hash, Sun, Compass, ArrowRight, ShieldCheck, Check } from "lucide-react";
+import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 
@@ -310,6 +311,21 @@ export default function MapPreviewDemo() {
             </p>
           </div>
         </div>
+
+        <p className="text-center mt-8 font-mono text-xs text-muted">
+          Profundizá:{" "}
+          <Link href="/conocimiento/numerologia" className="underline decoration-muted/40 underline-offset-2 hover:text-accent transition-colors">
+            Numerología
+          </Link>
+          {" · "}
+          <Link href="/conocimiento/astrologia" className="underline decoration-muted/40 underline-offset-2 hover:text-accent transition-colors">
+            Astrología
+          </Link>
+          {" · "}
+          <Link href="/conocimiento/zodiaco-chino" className="underline decoration-muted/40 underline-offset-2 hover:text-accent transition-colors">
+            Zodíaco Chino
+          </Link>
+        </p>
       </div>
     </section>
   );
