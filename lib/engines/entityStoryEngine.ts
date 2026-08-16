@@ -150,11 +150,11 @@ export function getRelationColor(relationType: RelationType): string {
   switch (relationType) {
     case "same": return "#2D5A3D";
     case "triad": return "#2D5A3D";
-    case "harmonious": return "#4A6FA5";
-    case "neutral": return "#838C95";
-    case "clash": return "#B45309";
-    case "harm": return "#B45309";
-    default: return "#838C95";
+    case "harmonious": return "#426393";
+    case "neutral": return "#5E666E";
+    case "clash": return "#9C4808";
+    case "harm": return "#9C4808";
+    default: return "#5E666E";
   }
 }
 

@@ -55,10 +55,10 @@ export type AffinityTier =
 // acá y no en el diccionario (lib/i18n solo tiene label/description).
 const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
   "resonancia-alta": "#2D5A3D",
-  "afinidad-media": "#4A6FA5",
-  "complementarios": "#D4A843",
-  "desafiante": "#B45309",
-  "distante": "#838C95",
+  "afinidad-media": "#426393",
+  "complementarios": "#7B5E1C",
+  "desafiante": "#9C4808",
+  "distante": "#5E666E",
 };
 
 // Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +
