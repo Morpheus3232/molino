@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteUrl } from "@/lib/seo";
-import PricingSection from "@/components/pricing/PricingSection";
-import ComparisonTable from "@/components/pricing/ComparisonTable";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { PLANS, PRICING_FAQS } from "@/components/pricing/pricing-data";
 
 export const metadata: Metadata = {
-  title: "Precios — Planes Gratis, Pro y Familiar",
+  title: "Precios — Gratis y Premium",
   description:
-    "Tu mapa básico es gratuito siempre. Planes Pro y Familiar con síntesis estructurada, análisis de dinámicas, ciclos personales e informe con narrativa de IA. Sin registro, sin permanencia.",
+    "Tu mapa básico es gratuito siempre. Premium suma síntesis estructurada, análisis de dinámicas, ciclos personales e informe con narrativa de IA por $8 USD, pago único. Sin registro, sin permanencia.",
   alternates: {
     canonical: siteUrl("/precios"),
   },
   openGraph: {
     title: "Precios — Molino",
     description:
-      "Tu mapa básico es gratuito. Pro y Familiar: síntesis estructurada de arquetipos, ciclos y dinámicas. Herramientas de reflexión, no oráculos.",
+      "Tu mapa básico es gratuito. Premium: síntesis estructurada de arquetipos, ciclos y dinámicas por $8 USD, pago único. Herramientas de reflexión, no oráculos.",
     type: "website",
     url: siteUrl("/precios"),
     images: [siteUrl("/opengraph-image")],
@@ -39,29 +37,25 @@ const faqJsonLd = {
 const productJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Molino Pro",
+  name: "Molino Premium",
   description:
-    "Mapa personal completo con análisis de compatibilidad, ciclos anuales, informe con narrativa de IA y sin anuncios.",
+    "Mapa personal completo con síntesis cruzada, narrativa de IA, ciclos personales 2026–2030 y chat interactivo.",
   brand: { "@type": "Organization", name: "Molino" },
   offers: {
     "@type": "AggregateOffer",
     priceCurrency: "USD",
-    lowPrice: PLANS.find((p) => p.id === "gratis")?.price.monthly ?? 0,
-    highPrice: PLANS.find((p) => p.id === "familiar")?.price.yearly ?? 79.99,
-    offerCount: PLANS.length,
-    offers: PLANS.filter((p) => p.price.monthly > 0).map((plan) => ({
-      "@type": "Offer",
-      name: plan.name,
-      price: plan.price.monthly,
-      priceCurrency: plan.currency ?? "USD",
-      url: siteUrl("/precios"),
-    })),
+    lowPrice: 0,
+    highPrice: 8,
+    offerCount: 2,
+    offers: [
+      { "@type": "Offer", name: "Gratis", price: 0, priceCurrency: "USD", url: siteUrl("/precios") },
+      { "@type": "Offer", name: "Premium", price: 8, priceCurrency: "USD", url: siteUrl("/premium") },
+    ],
   },
 };
 
 export default function PreciosPage() {
   const gratis = PLANS.find((p) => p.id === "gratis");
-  const pro = PLANS.find((p) => p.id === "pro");
 
   return (
     <main id="main-content" className="bg-background pt-16">
@@ -103,11 +97,9 @@ export default function PreciosPage() {
         </div>
       </section>
 
-      <PricingSection />
-
-      <ComparisonTable />
-
-      <PricingFAQ />
+      <PricingFAQ
+        items={PRICING_FAQS.filter((f) => !/pro|familiar|descuento anual/i.test(f.question))}
+      />
 
       {/* Final CTA */}
       <section className="bg-accent/[0.05] border-t border-ink/10 py-16 sm:py-24 text-center px-4">
