@@ -278,8 +278,9 @@ const DateInput = forwardRef<DateInputHandle, DateInputProps>(function DateInput
         e.stopPropagation();
         reportIncomplete();
       }
-      // Fecha completa: se deja pasar el Enter para que el onKeyDown del
-      // formulario (fuera de este componente) dispare el submit existente.
+      // Fecha completa: se deja pasar el Enter para que el submit nativo del
+      // <form> (fuera de este componente) dispare el submit existente — el
+      // botón debe ser type="submit" para que el navegador lo capture.
     },
     [reportIncomplete]
   );
