@@ -49,7 +49,10 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
           <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
             {entity.name}
           </p>
-          <p className="text-xs text-muted mt-0.5">{entity.animal}</p>
+          <p className="text-xs text-muted mt-0.5">
+            {entity.animal}
+            {entity.origin ? ` · ${entity.origin}` : ""}
+          </p>
           {reasoning && (
             <p className="text-xs text-muted mt-1 leading-relaxed line-clamp-2">
               {reasoning}

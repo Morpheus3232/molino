@@ -136,6 +136,9 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                           {e.name}
                         </p>
+                        {e.origin && (
+                          <p className="text-[11px] text-muted mt-0.5 truncate">{e.origin}</p>
+                        )}
                       </div>
                       <span className="shrink-0 text-[11px] text-muted truncate max-w-[120px] text-right">
                         {e.country || ""}

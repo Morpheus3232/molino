@@ -76,4 +76,6 @@ export interface LightweightEntity {
   country?: string;
   countryISO?: string;
   type: string;
+  /** Breve origen: momento de fundación/creación, p. ej. "Fundación · 1905". Derivado (server-side) del evento primario. */
+  origin?: string;
 }
