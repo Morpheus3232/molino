@@ -62,7 +62,6 @@ const POLL_MAX_ATTEMPTS = 10;
 
 interface FeatureFlags {
   premiumEnabled: boolean;
-  paypalEnabled: boolean;
   mercadoPagoEnabled: boolean;
   premiumPriceUsd: number;
 }
@@ -70,7 +69,6 @@ interface FeatureFlags {
 function getDefaultFlags(): FeatureFlags {
   return {
     premiumEnabled: true,
-    paypalEnabled: false,
     mercadoPagoEnabled: true,
     premiumPriceUsd: 8,
   };
@@ -121,7 +119,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [checkoutMethod, setCheckoutMethod] = useState<'mercadopago' | 'paypal' | null>(null);
   const [verificationError, setVerificationError] = useState<string | null>(null);
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -163,41 +160,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
   useEffect(() => {
     const paymentStatus = getSearchParam('payment_status');
-    const paymentMethod = getSearchParam('payment_method');
-    const paypalOrderId = getSearchParam('token');
     const paymentId = getSearchParam('payment_id') || getSearchParam('collection_id');
-
-    if (paymentStatus === 'approved' && paymentMethod === 'paypal' && paypalOrderId) {
-      setState('verifying_redirect');
-
-      const profileSalt = getOrCreateProfileSalt();
-      fetch('/api/paypal/capture-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId: paypalOrderId, name, birthDate, salt: profileSalt }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.verified) {
-            setState('unlocked');
-            setJustUnlocked(true);
-            clearSelectedPlan();
-            if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
-            invalidatePremiumAccessCache(name, birthDate);
-            analytics.trackPaymentApproved(paypalOrderId, 'paypal');
-            analytics.trackPremiumUnlocked();
-            cleanUrlParams();
-          } else {
-            setVerificationError(data.reason || 'No se pudo confirmar el pago de PayPal');
-            setState('pay_error');
-          }
-        })
-        .catch(() => {
-          setVerificationError('Error al confirmar el pago de PayPal');
-          setState('pay_error');
-        });
-      return;
-    }
 
     if (paymentStatus === 'approved' && paymentId) {
       setState('verifying_redirect');
@@ -241,7 +204,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
 
   // El molino del header gira mientras se confirma un pago real — refuerza
   // la metáfora de "procesando" justo en el momento de mayor ansiedad del
-  // flujo (después de volver de Mercado Pago/PayPal).
+  // flujo (después de volver de Mercado Pago).
   useEffect(() => {
     if (state !== 'verifying' && state !== 'verifying_redirect') return;
     startLoading();
@@ -285,16 +248,14 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     };
   }, [state, checkServer]);
 
-  const handleCheckout = async (method: 'mercadopago' | 'paypal') => {
+  const handleCheckout = async () => {
     if (checkoutLoading) return; // Prevent double-click
     // Defensa contra CTAs que quedaron habilitados por un estado stale de
-    // `flags` (fetch todavía en vuelo) o un método invocado fuera del botón
-    // visible: el flag es la fuente de verdad, no la presencia del botón.
-    if (method === 'mercadopago' && !flags.mercadoPagoEnabled) return;
-    if (method === 'paypal' && !flags.paypalEnabled) return;
+    // `flags` (fetch todavía en vuelo): el flag es la fuente de verdad, no
+    // la presencia del botón.
+    if (!flags.mercadoPagoEnabled) return;
 
-    analytics.trackCheckoutStarted('USD', method);
-    setCheckoutMethod(method);
+    analytics.trackCheckoutStarted('USD', 'mercadopago');
     setCheckoutLoading(true);
     setPayError(null);
     setState('paying');
@@ -302,27 +263,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     const profileSalt = getOrCreateProfileSalt();
 
     try {
-      if (method === 'paypal') {
-        const res = await fetch('/api/paypal/create-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            birthDate,
-            salt: profileSalt,
-          }),
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || 'Error al crear el pago');
-        }
-
-        const data = await res.json();
-        window.location.href = data.approveUrl;
-        return;
-      }
-
       const res = await fetch('/api/mp/preference', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -353,7 +293,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     }
   };
 
-  const handleRecover = async (e: React.FormEvent, method: 'mercadopago' | 'paypal') => {
+  const handleRecover = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!recoverPaymentId.trim()) return;
 
@@ -361,8 +301,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     setRecoverError(null);
 
     try {
-      const endpoint = method === 'mercadopago' ? '/api/mp/recover' : '/api/paypal/recover';
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/mp/recover', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate, salt: getOrCreateProfileSalt() }),
@@ -572,41 +511,18 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                 </p>
               </div>
 
-              {flags.mercadoPagoEnabled && (
+              {flags.mercadoPagoEnabled ? (
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     variant="accent"
                     size="lg"
                     fullWidth
-                    onClick={() => handleCheckout('mercadopago')}
+                    onClick={() => handleCheckout()}
                   >
                     {t.premium.payWithMercadoPago}
                   </Button>
                 </div>
-              )}
-
-              {flags.mercadoPagoEnabled && flags.paypalEnabled && (
-                <div className="flex items-center gap-4 my-6" aria-hidden="true">
-                  <span className="h-px flex-1 bg-ink/10" />
-                  <span className="text-xs uppercase tracking-[0.2em] text-muted">o</span>
-                  <span className="h-px flex-1 bg-ink/10" />
-                </div>
-              )}
-
-              {flags.paypalEnabled && (
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    variant="secondary"
-                    size="lg"
-                    fullWidth
-                    onClick={() => handleCheckout('paypal')}
-                  >
-                    {t.premium.payWithPaypal}
-                  </Button>
-                </div>
-              )}
-
-              {!flags.mercadoPagoEnabled && !flags.paypalEnabled && (
+              ) : (
                 <p className="text-sm text-muted border border-ink/10 bg-ink/[0.02] px-4 py-3">
                   {t.premium.paymentUnavailable}
                 </p>
@@ -633,52 +549,27 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                 </button>
               ) : (
                 <div className="space-y-3 w-full sm:w-auto">
-                  <p className="text-xs text-muted">Recuperar por:</p>
                   <p className="text-xs text-muted/70 leading-relaxed">Lo encontrás en el email de confirmación de tu pago.</p>
-                  <div className="flex flex-wrap gap-4">
-                    <form onSubmit={e => handleRecover(e, 'mercadopago')} className="space-y-2 w-full sm:w-[220px]">
-                      <label htmlFor="recover-mp-id" className="text-xs text-muted block">Mercado Pago ID:</label>
-                      <div className="flex gap-2">
-                        <input
-                          id="recover-mp-id"
-                          type="text"
-                          value={recoverPaymentId}
-                          onChange={e => setRecoverPaymentId(e.target.value)}
-                          placeholder="Ej: 123456789"
-                          className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
-                        />
-                        <button
-                          type="submit"
-                          disabled={isRecovering}
-                          className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
-                        >
-                          {isRecovering ? '…' : 'OK'}
-                        </button>
-                      </div>
-                    </form>
-                    {flags.paypalEnabled && (
-                      <form onSubmit={e => handleRecover(e, 'paypal')} className="space-y-2 w-full sm:w-[220px]">
-                        <label htmlFor="recover-paypal-id" className="text-xs text-muted block">PayPal Order ID:</label>
-                        <div className="flex gap-2">
-                          <input
-                            id="recover-paypal-id"
-                            type="text"
-                            value={recoverPaymentId}
-                            onChange={e => setRecoverPaymentId(e.target.value)}
-                            placeholder="Ej: 5O123456AB789"
-                            className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
-                          />
-                          <button
-                            type="submit"
-                            disabled={isRecovering}
-                            className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
-                          >
-                            {isRecovering ? '…' : 'OK'}
-                          </button>
-                        </div>
-                      </form>
-                    )}
-                  </div>
+                  <form onSubmit={handleRecover} className="space-y-2 w-full sm:w-[220px]">
+                    <label htmlFor="recover-mp-id" className="text-xs text-muted block">Mercado Pago ID:</label>
+                    <div className="flex gap-2">
+                      <input
+                        id="recover-mp-id"
+                        type="text"
+                        value={recoverPaymentId}
+                        onChange={e => setRecoverPaymentId(e.target.value)}
+                        placeholder="Ej: 123456789"
+                        className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                      />
+                      <button
+                        type="submit"
+                        disabled={isRecovering}
+                        className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
+                      >
+                        {isRecovering ? '…' : 'OK'}
+                      </button>
+                    </div>
+                  </form>
                   {recoverError && (
                     <p className="text-xs text-red-600">{recoverError}</p>
                   )}
@@ -742,7 +633,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           <AnimatePresence mode="wait">
             {state === 'paying' && (
               <motion.div key="paying" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-                <p className="label-micro mb-3">Pago seguro · {checkoutMethod === 'paypal' ? 'PayPal' : 'Mercado Pago'}</p>
+                <p className="label-micro mb-3">Pago seguro · Mercado Pago</p>
                 <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Tu síntesis completa</h3>
                 <p className="text-sm text-muted mb-6">Pago único · Acceso permanente</p>
 
@@ -750,7 +641,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   <div className="flex flex-col items-center py-12 gap-3">
                     <Logo className="w-8 h-8 text-accent" spinning />
                     <p className="text-sm text-muted">
-                      Redirigiendo a {checkoutMethod === 'paypal' ? 'PayPal' : 'Mercado Pago'}...
+                      Redirigiendo a Mercado Pago...
                     </p>
                   </div>
                 ) : (
@@ -762,7 +653,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                     <Button
                       variant="accent"
                       size="lg"
-                      onClick={() => handleCheckout(checkoutMethod ?? 'mercadopago')}
+                      onClick={() => handleCheckout()}
                     >
                       Ir a pagar ${chargePriceUsd} USD
                     </Button>
@@ -840,20 +731,16 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
               </motion.div>
             )}
 
-            {state === 'verifying_redirect' && (() => {
-              const redirectMethod = getSearchParam('payment_method');
-              const providerLabel = redirectMethod === 'paypal' ? 'PayPal' : 'Mercado Pago';
-              return (
-                <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
-                  <Logo className="w-8 h-8 text-accent mb-6" spinning />
-                  <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
-                  <p className="text-sm text-muted">Volviste de {providerLabel}. Confirmando tu compra.</p>
-                  {verificationError && (
-                    <p className="mt-4 text-sm text-red-600">{verificationError}</p>
-                  )}
-                </motion.div>
-              );
-            })()}
+            {state === 'verifying_redirect' && (
+              <motion.div key="verifying_redirect" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+                <Logo className="w-8 h-8 text-accent mb-6" spinning />
+                <h3 className="font-heading text-xl font-semibold text-foreground mb-1">Verificando tu pago…</h3>
+                <p className="text-sm text-muted">Volviste de Mercado Pago. Confirmando tu compra.</p>
+                {verificationError && (
+                  <p className="mt-4 text-sm text-red-600">{verificationError}</p>
+                )}
+              </motion.div>
+            )}
           </AnimatePresence>
         </motion.div>
       )}

@@ -138,7 +138,7 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿Qué pasa con mis datos de nacimiento?",
     answer:
-      "Tu mapa se calcula 100% en tu navegador. Tu fecha de nacimiento nunca se envía a nuestros servidores. Los datos de pago los procesan Mercado Pago o PayPal de forma segura; nosotros nunca guardamos información personal.",
+      "Tu mapa se calcula 100% en tu navegador. Tu fecha de nacimiento nunca se envía a nuestros servidores. Los datos de pago los procesa Mercado Pago de forma segura; nosotros nunca guardamos información personal.",
   },
   {
     question: "¿El descuento anual es automático?",
@@ -148,7 +148,7 @@ export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿Qué métodos de pago aceptan?",
     answer:
-      "Mercado Pago y PayPal. Ambos procesan pagos de forma segura y te permiten acceder a tu síntesis usando el ID de compra.",
+      "Mercado Pago. Procesa pagos de forma segura y te permite acceder a tu síntesis usando el ID de compra.",
   },
   {
     question: "¿Es una herramienta determinista o un oráculo?",
