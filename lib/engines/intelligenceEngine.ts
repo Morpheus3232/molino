@@ -783,7 +783,7 @@ export function generateFallbackInterpretation(
       const friends = getFriends(animal);
       const challengingRelations = getChallenging(animal);
 
-      summary = `${userProfile.name ? `${userProfile.name}, tu` : 'Tu'} Life Path ${userProfile.lifePath} (${personalCode.lifePath.name}) es la nota base de tu perfil: ${personalCode.lifePath.meaning} Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} lo modulan.`;
+      summary = `${userProfile.name ? `${userProfile.name}, tu` : 'Tu'} Life Path ${userProfile.lifePath} (${personalCode.lifePath.name}) es la nota base de tu perfil: ${personalCode.lifePath.meaning}. Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} lo modulan.`;
       // "Qué significa" tiene que agregar una capa distinta de "Tu patrón
       // central" (corePattern.whyItMatters usa motorPattern.description más
       // abajo) — reusar el mismo texto acá era literal, no una repetición
