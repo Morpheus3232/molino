@@ -98,6 +98,12 @@ export default function StickyMobileCTA({
                 onChange={(e) => {
                   if (e.target.value) onChange(e.target.value);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    onGenerate();
+                  }
+                }}
                 aria-label="Fecha de nacimiento"
                 className="w-full rounded-md border border-ink/10 bg-ink/[0.04] py-2.5 pl-9 pr-3 text-sm text-foreground focus:border-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
               />
