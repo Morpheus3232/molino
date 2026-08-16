@@ -3,10 +3,11 @@ import {
   calculateExpressionNumber,
   calculateSoulNumber,
   calculateBirthDayNumber,
+  calculateLuckyNumber,
 } from "./numerologyEngine";
 import { getSunSign, getSunSignInfo, getMoonSign, getElement, getModality } from "./astrologyEngine";
 import { getChineseZodiac, getChineseZodiacInfo, getLunarYear } from "./chineseZodiacEngine";
-import { getPersonalYear, getPersonalDayForDate, calculateLuckyNumber } from "@/lib/calculations";
+import { getPersonalYear, getPersonalDayForDate } from "@/lib/calculations";
 import type { UserProfileData, InterpretedUserProfile } from "@/types/profile";
 import type { UserProfile } from "@/types/user";
 import { ProfileInterpreter } from "@/lib/interpreter/profileInterpreter";

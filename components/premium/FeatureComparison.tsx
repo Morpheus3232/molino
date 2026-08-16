@@ -37,6 +37,13 @@ const FEATURES: FeatureItem[] = [
     description: "Análisis de desfasajes entre tu elemento occidental y ritmo lunar.",
   },
   {
+    category: "Identidad & Síntesis",
+    name: "Número de la Suerte",
+    free: false,
+    premium: true,
+    description: "Un número de referencia personal calculado a partir de tu mes y año de nacimiento, con la fórmula siempre visible — no una promesa de fortuna.",
+  },
+  {
     category: "Tiempo & Ciclos",
     name: "Energía del día actual",
     free: true,

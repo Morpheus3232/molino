@@ -179,30 +179,6 @@ export function getMoonPhase(date: Date): { phase: string; emoji: string; descri
   return { phase: "Menguante", emoji: "🌘", description: "Descanso, introspección y cierre." };
 }
 
-/**
- * Calculate the Lucky Number (Número de la Suerte) from birth month and year.
- * Day does NOT participate.
- * Rules:
- *   1. Take the first digit of the birth month.
- *   2. From the birth year, take the last non-zero digit (ignore trailing zeros).
- *   3. Concatenate both digits to form the number.
- * Example: 18/04/1990 → month=04 → first digit=4, year=1990 → last non-zero=9 → 49.
- */
-export function calculateLuckyNumber(month: number, year: number): number {
-  const firstDigitOfMonth = Math.floor(month / 10) || month;
-  const yearStr = String(year);
-  let lastNonZeroDigit = 0;
-  for (let i = yearStr.length - 1; i >= 0; i--) {
-    const d = parseInt(yearStr[i], 10);
-    if (d !== 0) {
-      lastNonZeroDigit = d;
-      break;
-    }
-  }
-  if (lastNonZeroDigit === 0) lastNonZeroDigit = 1;
-  return firstDigitOfMonth * 10 + lastNonZeroDigit;
-}
-
 export function getPlanetaryPositions(date: Date): { name: string; emoji: string; sign: string }[] {
   const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
 

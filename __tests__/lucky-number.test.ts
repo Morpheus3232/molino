@@ -1,9 +1,28 @@
 import { describe, it, expect } from 'vitest';
-import { calculateLuckyNumber } from '@/lib/calculations';
+import { calculateLuckyNumber } from '@/lib/engines/numerologyEngine';
 
 describe('calculateLuckyNumber', () => {
   it('18/04/1990 → 49', () => {
     expect(calculateLuckyNumber(4, 1990)).toBe(49);
+  });
+
+  it('17/02/1963 → 23', () => {
+    expect(calculateLuckyNumber(2, 1963)).toBe(23);
+  });
+
+  it('mes sin cero: octubre (10) → primer dígito no-cero es 1', () => {
+    expect(calculateLuckyNumber(10, 1955)).toBe(15);
+  });
+
+  it('año termina en "00": 1900 → retrocede hasta el primer no-cero (9)', () => {
+    expect(calculateLuckyNumber(6, 1900)).toBe(69);
+  });
+
+  it('mes mal formado (0, negativo, NaN) no rompe — nunca tira excepción', () => {
+    expect(() => calculateLuckyNumber(0, 1990)).not.toThrow();
+    expect(() => calculateLuckyNumber(-3, 1990)).not.toThrow();
+    expect(() => calculateLuckyNumber(NaN, 1990)).not.toThrow();
+    expect(Number.isNaN(calculateLuckyNumber(NaN, 1990))).toBe(true);
   });
 
   it('25/07/1980 → 78', () => {

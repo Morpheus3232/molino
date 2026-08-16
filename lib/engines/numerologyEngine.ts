@@ -214,6 +214,30 @@ export function calculateBirthDayNumber(day: number): number {
   return sum;
 }
 
+/**
+ * Calculate the Lucky Number (Número de la Suerte) from birth month and year.
+ * Day does NOT participate.
+ * Rules:
+ *   1. Take the first digit of the birth month.
+ *   2. From the birth year, take the last non-zero digit (ignore trailing zeros).
+ *   3. Concatenate both digits to form the number.
+ * Example: 18/04/1990 → month=04 → first digit=4, year=1990 → last non-zero=9 → 49.
+ */
+export function calculateLuckyNumber(month: number, year: number): number {
+  const firstDigitOfMonth = Math.floor(month / 10) || month;
+  const yearStr = String(year);
+  let lastNonZeroDigit = 0;
+  for (let i = yearStr.length - 1; i >= 0; i--) {
+    const d = parseInt(yearStr[i], 10);
+    if (d !== 0) {
+      lastNonZeroDigit = d;
+      break;
+    }
+  }
+  if (lastNonZeroDigit === 0) lastNonZeroDigit = 1;
+  return firstDigitOfMonth * 10 + lastNonZeroDigit;
+}
+
 export function getArchetypeInfo(lifePath: number) {
   return ARCHETYPE_DESCRIPTIONS[lifePath] || {
     name: 'El Buscador',

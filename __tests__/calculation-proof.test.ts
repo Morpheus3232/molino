@@ -1,5 +1,6 @@
 import { describe, test, expect } from "vitest";
-import { calculateLifePath, calculateLuckyNumber } from "@/lib/calculations";
+import { calculateLifePath } from "@/lib/calculations";
+import { calculateLuckyNumber } from "@/lib/engines/numerologyEngine";
 import { buildLifePathProof, buildLuckyNumberProof } from "@/lib/calculations/proof";
 
 describe("buildLifePathProof — parity with calculateLifePath", () => {
