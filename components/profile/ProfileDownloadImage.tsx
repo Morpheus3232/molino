@@ -209,7 +209,7 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
               {/* Pillar 2: Signo Lunar */}
               <div className={styles.panel} style={{ borderLeft: "3px solid #60A5FA" }}>
                 <p className={styles.overline}>
-                  <span>🌙</span> SIGNO LUNAR
+                  <span>🌙</span> SIGNO LUNAR*
                 </p>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
                   <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 700, color: "#F3F1EA" }}>
@@ -259,6 +259,9 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
             <span>MOLINO · SÍNTESIS DE IDENTIDAD</span>
             <span>SIN REGISTRO · PRIVADO Y ANÓNIMO</span>
           </div>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#7A7870", textAlign: "center", margin: "4px 0 0 0" }}>
+            * Signo lunar calculado con hora estimada — puede variar con tu hora exacta de nacimiento
+          </p>
         </div>
 
         {/* ═══════════════════════════════════════════════════════
@@ -317,7 +320,7 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
             {/* Card 2: Signo Lunar */}
             <div className={styles.panelGlass} style={{ borderLeft: "4px solid #60A5FA", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
-                <p className={styles.overline} style={{ fontSize: 11 }}>🌙 SIGNO LUNAR</p>
+                <p className={styles.overline} style={{ fontSize: 11 }}>🌙 SIGNO LUNAR*</p>
                 <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 26, color: "#F3F1EA", marginTop: 6 }}>
                   {moonSymbol} {moonSign}
                 </div>
@@ -382,6 +385,9 @@ const ProfileDownloadImage = forwardRef<ProfileDownloadImageHandle, ProfileDownl
             <span>MOLINO · SISTEMA DE AUTOCONOCIMIENTO</span>
             <span>SIN REGISTRO · SIN COOKIES</span>
           </div>
+          <p style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#7A7870", textAlign: "center", margin: "4px 0 0 0" }}>
+            * Signo lunar calculado con hora estimada — puede variar con tu hora exacta de nacimiento
+          </p>
         </div>
       </div>
     );

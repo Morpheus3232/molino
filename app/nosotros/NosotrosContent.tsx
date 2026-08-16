@@ -95,7 +95,7 @@ export default function NosotrosContent() {
           </p>
           <Button variant="accent" size="lg" asChild>
             <Link href="/">
-              Crear mi mapa
+              Generá tu mapa
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </Button>

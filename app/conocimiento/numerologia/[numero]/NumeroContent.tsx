@@ -209,7 +209,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         {/* Herramienta relacionada */}
         <motion.section {...fadeUp} className="mb-12">
           <div className="p-6 border border-ink/10">
-            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Calculá tu mapa numérico</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Generá tu mapa</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad.
             </p>
