@@ -15,6 +15,11 @@ vi.mock('@/lib/kv', () => ({
   hasPremiumAccess: mockHasPremiumAccess,
   verifyPremiumToken: mockVerifyPremiumToken,
   incrementDailyCost: vi.fn(async () => {}),
+  // Regenerate quota: default to "never used today" so existing tests (none
+  // of which exercise the limit) keep hitting the real AI/fallback path.
+  getRegenerationCount: vi.fn(async () => 0),
+  incrementRegenerationCount: vi.fn(async () => 1),
+  REGENERATE_DAILY_LIMIT: 5,
 }));
 
 const mockGenerateWithRouting = vi.fn();

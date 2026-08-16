@@ -406,6 +406,44 @@ export async function getDailyCost(day: string): Promise<number> {
   }
 }
 
+/** Daily cap on explicit "Regenerar" clicks on the premium synthesis (see
+ * MolinoInterpretation's handleRegenerate) — each click is a fresh real
+ * OpenRouter call with real cost, unlike the automatic first generation
+ * a user gets just by opening the reading. Per-profileHash, resets daily. */
+export const REGENERATE_DAILY_LIMIT = 5;
+
+/** Same read-modify-write caveat as incrementDailyCost (no atomic increment
+ * in KvLike) — acceptable here too: a soft UX cap, not a billing-critical
+ * or security boundary. Never throws: losing a counter increment must never
+ * fail the regenerate request it's tracking. */
+export async function incrementRegenerationCount(profileHash: string): Promise<number> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 0;
+    const day = new Date().toISOString().slice(0, 10);
+    const key = `regen_count:${day}:${profileHash}`;
+    const next = ((await kv.get<number>(key)) || 0) + 1;
+    // 2-day TTL: comfortably past UTC midnight rollover without lingering.
+    await kv.set(key, next, { ex: 2 * 86400 });
+    return next;
+  } catch (error) {
+    console.error('[KV] Error in incrementRegenerationCount:', error);
+    return 0;
+  }
+}
+
+export async function getRegenerationCount(profileHash: string): Promise<number> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 0;
+    const day = new Date().toISOString().slice(0, 10);
+    return (await kv.get<number>(`regen_count:${day}:${profileHash}`)) || 0;
+  } catch (error) {
+    console.error('[KV] Error in getRegenerationCount:', error);
+    return 0;
+  }
+}
+
 export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

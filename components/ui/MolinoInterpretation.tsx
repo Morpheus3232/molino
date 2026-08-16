@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { getProfileSalt } from "@/lib/profile-salt";
@@ -103,6 +103,21 @@ export default function MolinoInterpretation({
   const [error, setError] = useState<string | null>(null);
   const [premiumRequired, setPremiumRequired] = useState(false);
   const [hasAttemptedAI, setHasAttemptedAI] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  // Daily regenerate quota for the premium synthesis (type "personal_profile"
+  // only) — the server returns this on every fetch (initial load included)
+  // so the counter is accurate from the first render, not just after a click.
+  const [regenerateStatus, setRegenerateStatus] = useState<{ used: number; limit: number; remaining: number } | null>(null);
+  // Set right before triggering a regenerate fetch, read (and reset) inside
+  // fetchInterpretation — the only way to tell that generic, effect-driven
+  // fetch apart from the automatic first-load fetch without changing its
+  // signature/deps.
+  const isRegenerateRequestRef = useRef(false);
+  // Bumped every time a fetch resolves into a new interpretation — forces the
+  // content motion.div to remount (see `key` below) so a regenerate is
+  // visible even when isUsingAI doesn't change (ai -> ai), which otherwise
+  // updates the DOM in place with no animation at all.
+  const [contentVersion, setContentVersion] = useState(0);
   // React batches setFallbackInterpretation/setAiInterpretation/setIsInterpreting
   // together in the same render (they all happen in one fetch callback), so
   // `interpretation` and `!isInterpreting` become true in the SAME tick —
@@ -117,6 +132,8 @@ export default function MolinoInterpretation({
   // Fetch the interpretation. Separated from the effect that triggers it to
   // avoid re-creating the callback on every render (it closes over profile).
   const fetchInterpretation = useCallback(async () => {
+    const isRegenerateRequest = isRegenerateRequestRef.current;
+    isRegenerateRequestRef.current = false;
     try {
       setIsInterpreting(true);
       const { getPremiumTokenClient } = await import('@/lib/premium');
@@ -130,9 +147,13 @@ export default function MolinoInterpretation({
           type,
           question,
           premiumToken: getPremiumTokenClient(),
+          isRegenerate: isRegenerateRequest,
         }),
       });
       const data = await res.json();
+      if (data.regenerateStatus) {
+        setRegenerateStatus(data.regenerateStatus);
+      }
       if (!res.ok) {
         if (res.status === 403) {
           setPremiumRequired(true);
@@ -146,9 +167,11 @@ export default function MolinoInterpretation({
       if (data.ai) {
         setAiInterpretation(data.ai as MolinoInterpretation);
         setError(null);
+        setContentVersion((v) => v + 1);
       } else if (data.fallback) {
         setFallbackInterpretation(data.fallback as MolinoInterpretation);
         setError(data.error ?? null);
+        setContentVersion((v) => v + 1);
       } else {
         setError("No recibimos una interpretación válida.");
       }
@@ -158,6 +181,7 @@ export default function MolinoInterpretation({
       setHasAttemptedAI(true);
     } finally {
       setIsInterpreting(false);
+      setIsRegenerating(false);
     }
   }, [profile.name, profile.birthDate, type, question]);
 
@@ -176,12 +200,17 @@ export default function MolinoInterpretation({
   }, []);
 
   // Regenerate: clear the AI result so `interpretation` falls back to the
-  // local synthesis while the new fetch runs, then re-fetch.
+  // local synthesis while the new fetch runs, then re-fetch. isRegenerating
+  // is separate from isInterpreting (which also covers the very first load,
+  // when there's no previous content to show a "regenerating" state over).
   const handleRegenerate = useCallback(async () => {
+    if (isRegenerating || (regenerateStatus && regenerateStatus.remaining <= 0)) return;
+    isRegenerateRequestRef.current = true;
+    setIsRegenerating(true);
     setAiInterpretation(null);
     setError(null);
     setHasAttemptedAI(false);
-  }, []);
+  }, [isRegenerating, regenerateStatus]);
 
   const interpretation = aiInterpretation || fallbackInterpretation;
   const isUsingAI = !!aiInterpretation;
@@ -227,7 +256,7 @@ export default function MolinoInterpretation({
     );
     return (
       <motion.div
-        key={isUsingAI ? "ai" : "local"}
+        key={`${isUsingAI ? "ai" : "local"}-${contentVersion}`}
         variants={containerVariants}
         initial={prefersReducedMotion ? false : "hidden"}
         animate="show"
@@ -446,16 +475,34 @@ export default function MolinoInterpretation({
               Local
             </span>
           )}
-          {hasAttemptedAI && !isInterpreting && (
-            <button
-              type="button"
-              onClick={handleRegenerate}
-              className="text-xs uppercase tracking-[0.2em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors"
-              aria-label="Regenerar interpretación"
-            >
-              Regenerar
-            </button>
-          )}
+          {(hasAttemptedAI || isRegenerating) && (() => {
+            const atLimit = !isRegenerating && !!regenerateStatus && regenerateStatus.remaining <= 0;
+            const label = isRegenerating
+              ? "Regenerando…"
+              : atLimit
+              ? "Sin regeneraciones hoy"
+              : regenerateStatus
+              ? `Regenerar (${regenerateStatus.used}/${regenerateStatus.limit} hoy)`
+              : "Regenerar";
+            return (
+              <button
+                type="button"
+                onClick={handleRegenerate}
+                disabled={isRegenerating || atLimit}
+                title={atLimit ? "Ya usaste tus regeneraciones de hoy — mañana tenés más." : undefined}
+                className="flex items-center gap-1.5 text-xs uppercase tracking-[0.2em] text-muted hover:text-accent font-medium underline-offset-4 hover:underline transition-colors disabled:opacity-50 disabled:hover:no-underline disabled:hover:text-muted disabled:cursor-default"
+                aria-label={label}
+              >
+                {isRegenerating && (
+                  <span
+                    className="w-2.5 h-2.5 rounded-full border-[1.5px] border-current border-t-transparent animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+                {label}
+              </button>
+            );
+          })()}
         </div>
       </div>
 

@@ -13,7 +13,13 @@ import { generateWithOpenAI, generateWithClaude, OPENROUTER_MODEL_DEFAULT } from
 import { extractJSON, isValidMolinoInterpretation, validateMolinoInterpretationSemantics } from '@/lib/engines/aiResponseParser';
 import { generateWithRouting, getProviderStatus, type Provider } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
-import { hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
+import {
+  hasPremiumAccess,
+  verifyPremiumToken,
+  getRegenerationCount,
+  incrementRegenerationCount,
+  REGENERATE_DAILY_LIMIT,
+} from '@/lib/kv';
 import { recordGeneration } from '@/lib/ai/costTracking';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
 
@@ -65,6 +71,10 @@ interface RequestBody {
   premiumToken?: string;
   /** Device-bound random salt used to compute the profile HMAC. */
   salt?: string;
+  /** True only for an explicit "Regenerar" click on the premium synthesis —
+   * never set on the automatic first generation. Only this flag consumes
+   * the daily regenerate quota (see REGENERATE_DAILY_LIMIT below). */
+  isRegenerate?: boolean;
 }
 
 export async function POST(req: NextRequest) {
@@ -74,7 +84,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken, salt } = body as RequestBody;
+    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken, salt, isRegenerate } = body as RequestBody;
 
     if (!dob) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
@@ -122,6 +132,8 @@ export async function POST(req: NextRequest) {
         }
       : undefined;
 
+    let regenerateStatus: { used: number; limit: number; remaining: number } | null = null;
+
     if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
       // Device-bound token verification: prevents share-URL bypass.
       // hasPremiumAccess alone is NOT enough — it only proves the profile
@@ -146,6 +158,34 @@ export async function POST(req: NextRequest) {
       const tokenValid = await verifyPremiumToken(profileHash, premiumToken);
       if (!tokenValid) {
         return premiumError('premium_token_invalid', 'Invalid premium token');
+      }
+
+      // Regenerate quota: only the explicit "Regenerar" click on the premium
+      // synthesis consumes it — the automatic first generation (isRegenerate
+      // unset) never counts, it only reads the current count so the client
+      // can render "Regenerar (2/5 hoy)" from the very first load. "question"
+      // (the chat) has its own separate cap (MAX_QUESTIONS_PER_SESSION,
+      // client-side) and isn't gated here.
+      if (type === 'personal_profile') {
+        const currentCount = await getRegenerationCount(profileHash);
+        if (isRegenerate) {
+          if (currentCount >= REGENERATE_DAILY_LIMIT) {
+            return NextResponse.json(
+              {
+                error: {
+                  code: 'regenerate_limit_reached',
+                  message: `Ya usaste tus ${REGENERATE_DAILY_LIMIT} regeneraciones de hoy — mañana tenés ${REGENERATE_DAILY_LIMIT} más.`,
+                },
+                regenerateStatus: { used: currentCount, limit: REGENERATE_DAILY_LIMIT, remaining: 0 },
+              },
+              { status: 429, headers: PRIVATE_NO_STORE }
+            );
+          }
+          const used = await incrementRegenerationCount(profileHash);
+          regenerateStatus = { used, limit: REGENERATE_DAILY_LIMIT, remaining: Math.max(0, REGENERATE_DAILY_LIMIT - used) };
+        } else {
+          regenerateStatus = { used: currentCount, limit: REGENERATE_DAILY_LIMIT, remaining: Math.max(0, REGENERATE_DAILY_LIMIT - currentCount) };
+        }
       }
     }
 
@@ -351,6 +391,7 @@ export async function POST(req: NextRequest) {
       // above / [premium_ai_invalid] log).
       aiStatus: aiResult ? 'valid' : aiError ? 'error' : 'invalid',
       ...(aiError && { error: aiError }),
+      ...(regenerateStatus && { regenerateStatus }),
     }, { headers: PRIVATE_NO_STORE });
   } catch (error) {
     console.error('[/api/intelligence/interpret] Error:', error);
