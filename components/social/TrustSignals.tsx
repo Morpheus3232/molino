@@ -43,34 +43,6 @@ const BADGES: { icon: BadgeIcon; title: string; detail: string }[] = [
   },
 ];
 
-export interface ArchetypeCaseProps {
-  archetype: string;
-  signature: string;
-  insight: string;
-  takeaway: string;
-}
-
-const ARCHETYPE_CASES: ArchetypeCaseProps[] = [
-  {
-    archetype: "El Innovador",
-    signature: "Camino de Vida 1 · Aries · Dragón",
-    insight: "Tendencia a sobrecargarse de proyectos simultáneos e iniciar sin delegar.",
-    takeaway: "Le permitió reconocer que su fortaleza está en el impulso pionero y necesita estructuras de apoyo para no agotarse.",
-  },
-  {
-    archetype: "El Estratega Intuitivo",
-    signature: "Camino de Vida 7 · Cáncer · Buey",
-    insight: "Necesidad de períodos de retiro y silencio para procesar decisiones complejas.",
-    takeaway: "Validó que sus tiempos de pausa no son indecisión, sino su método natural para ver lo que otros pasan por alto.",
-  },
-  {
-    archetype: "El Comunicador Dinámico",
-    signature: "Camino de Vida 5 · Géminis · Caballo",
-    insight: "Multiplicidad de intereses con riesgo de dispersión y abandono en la fase final.",
-    takeaway: "Aprendió a sincronizar sus ciclos de cambio con sus años y meses personales para culminar proyectos clave.",
-  },
-];
-
 const PRIVACY_STEPS: { icon: BadgeIcon; title: string; detail: string }[] = [
   {
     icon: CalendarDays,
@@ -154,50 +126,7 @@ export default function TrustSignals() {
           ))}
         </div>
 
-        {/* 2 — Casos de estudio arquetípicos (Social proof honesto y didáctico) */}
-        <div className="mb-10 text-center max-w-2xl mx-auto">
-          <h3 className="font-heading text-lg sm:text-2xl font-bold text-foreground">
-            Casos de Estudio Simbólicos
-          </h3>
-          <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
-            Ejemplos representativos de cómo el cruce entre numerología, astrología y zodíaco chino aporta claridad en situaciones cotidianas.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
-          {ARCHETYPE_CASES.map((item, i) => (
-            <motion.div
-              key={item.archetype}
-              {...fadeUp}
-              style={{ transitionDelay: `${i * 0.08}s` }}
-              className="h-full"
-            >
-              <Card padding="lg" hover={false} className="h-full flex flex-col border-ink/10 bg-card/70">
-                <div className="mb-4 pb-3 border-b border-ink/10">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold">
-                    {item.signature}
-                  </span>
-                  <h4 className="font-heading text-base font-bold text-foreground mt-1">
-                    {item.archetype}
-                  </h4>
-                </div>
-
-                <div className="space-y-3 text-xs leading-relaxed flex-1">
-                  <div>
-                    <strong className="text-foreground/90 font-semibold block mb-0.5">Patrón recurrente:</strong>
-                    <p className="text-muted">{item.insight}</p>
-                  </div>
-                  <div>
-                    <strong className="text-accent font-semibold block mb-0.5">Claridad práctica:</strong>
-                    <p className="text-foreground/90">{item.takeaway}</p>
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* 3 — Cómo funciona el flujo de privacidad */}
+        {/* 2 — Cómo funciona el flujo de privacidad */}
         <div className="rounded-3xl border border-ink/10 bg-card/40 p-6 sm:p-10">
           <h3 className="font-heading text-base sm:text-xl font-bold text-foreground text-center mb-8">
             El ciclo de procesamiento local en 3 pasos
