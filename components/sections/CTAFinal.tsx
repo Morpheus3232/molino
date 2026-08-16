@@ -35,7 +35,7 @@ export default function CTAFinal() {
         <motion.div {...fadeUp} className="flex justify-center mb-3">
           <Button variant="accent" size="lg" asChild className="w-[90%] sm:w-auto">
             <Link href={isReturningUser ? "/profile" : "/onboarding"}>
-              {isReturningUser ? "Ver mi mapa" : "Crear mi mapa"}
+              {isReturningUser ? "Ver mi mapa" : "Generá tu mapa"}
             </Link>
           </Button>
         </motion.div>

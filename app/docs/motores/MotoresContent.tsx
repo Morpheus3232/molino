@@ -35,14 +35,11 @@ const PYTHAGOREAN: Record<string, number> = {
     icon: Sun,
     title: "Motor de Astrología Tropical",
     slug: "astrologia",
-    description: "Calcula signo solar, lunar, ascendente, casas, aspectos y posiciones planetarias usando efemérides suizas (Swiss Ephemeris) para precisión astronómica.",
+    description: "Calcula signo solar y lunar a partir de tu fecha de nacimiento.",
     formulas: [
       { name: "Signo Solar", formula: "Posición geocéntrica del Sol en el zodíaco tropical al momento exacto de nacimiento", example: "Sol a 23°15' Aries → Signo: Aries, Grado: 23°15'" },
       { name: "Signo Lunar", formula: "Posición geocéntrica de la Luna (rápida: ~13°/día, requiere hora exacta)", example: "Luna a 12°40' Cáncer → Signo: Cáncer" },
-      { name: "Ascendente (ASC)", formula: "Punto del eclíptico que surge en el horizonte este al nacer (depende de lat/lon/hora)", example: "ASC a 5°30' Libra → Casa 1 en Libra" },
-      { name: "Casas (Placidus)", formula: "División temporal del espacio local en 12 casas desiguales", example: "Casa 10 (MC) a 5°30' Capricornio" },
-      { name: "Aspectos mayores", formula: "Ángulos entre planetas: Conjunción(0°), Oposición(180°), Cuadratura(90°), Trígono(120°), Sextil(60°)", example: "Sol 23° Aries □ Luna 12° Cáncer (orbe ~8°)" },
-      { name: "Elementos / Modalidades", formula: "Conteo de planetas en Fuego/Tierra/Aire/Agua y Cardinal/Fijo/Mutable", example: "Fuego: 4, Tierra: 2, Aire: 3, Agua: 1 → Dominante: Fuego" },
+      { name: "Elemento / Modalidad", formula: "Mapeo directo signo → elemento (Fuego/Tierra/Aire/Agua) y signo → modalidad (Cardinal/Fijo/Mutable)", example: "Aries → Elemento: Fuego, Modalidad: Cardinal" },
     ],
     codeExample: `// Cálculo signo solar (aprox., sin efemérides)
 function sunSign(day: number, month: number): string {

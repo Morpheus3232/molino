@@ -39,7 +39,6 @@ const profile = calculateUserProfile("María", "1990-03-15", { birthPlace: "Buen
 const archetypeIntro = ARCHETYPE_INTRO[profile.lifePath as keyof typeof ARCHETYPE_INTRO];
 const caballo = ANIMAL_PROFILES.Caballo;
 const moonSign = "Cáncer";
-const risingSign = "Escorpio";
 
 export default function EjemploPage() {
   return (
@@ -84,8 +83,8 @@ export default function EjemploPage() {
               </p>
               <p>
                 Su Sol en {profile.sunSign} suaviza ese impulso con intuición y sensibilidad: no lidera a fuerza de
-                imponerse, sino leyendo lo que no se dice. Su Luna en {moonSign} profundiza esa escucha emocional,
-                y un Ascendente en {risingSign} le da la determinación para sostener lo que empieza.
+                imponerse, sino leyendo lo que no se dice. Su Luna en {moonSign} profundiza esa escucha emocional
+                y le da la determinación para sostener lo que empieza.
               </p>
               <p>
                 El {profile.chineseZodiacInfo.animal} de {profile.chineseZodiacInfo.element} completa el cruce:
@@ -155,7 +154,7 @@ export default function EjemploPage() {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
               <Card padding="lg" className="text-center">
                 <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Signo solar</p>
                 <p className="text-4xl mb-2" aria-hidden="true">{ZODIAC_SYMBOLS[profile.sunSign]}</p>
@@ -168,20 +167,14 @@ export default function EjemploPage() {
                 <p className="font-heading text-lg font-semibold text-foreground">{moonSign}</p>
                 <p className="text-sm text-muted mt-1">Agua</p>
               </Card>
-              <Card padding="lg" className="text-center">
-                <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Ascendente</p>
-                <p className="text-4xl mb-2" aria-hidden="true">{ZODIAC_SYMBOLS[risingSign]}</p>
-                <p className="font-heading text-lg font-semibold text-foreground">{risingSign}</p>
-                <p className="text-sm text-muted mt-1">Agua</p>
-              </Card>
             </div>
 
             <p className="text-sm text-muted/80 text-center max-w-xl mx-auto leading-relaxed mb-3">
-              Con el Sol en {profile.sunSign}, María percibe lo que otros no dicen. {moonSign} en la Luna amplifica esa sensibilidad emocional, mientras {risingSign} como Ascendente le da la profundidad para sostener lo que siente y transformarlo en decisión.
+              Con el Sol en {profile.sunSign}, María percibe lo que otros no dicen. {moonSign} en la Luna amplifica esa sensibilidad emocional y le da la profundidad para sostener lo que siente y transformarlo en decisión.
             </p>
 
             <p className="text-xs text-muted/70 text-center max-w-xl mx-auto leading-relaxed">
-              * Luna y Ascendente son ilustrativos en este ejemplo: calcularlos con precisión requiere la hora exacta de nacimiento.
+              * La Luna es ilustrativa en este ejemplo: calcularla con precisión requiere la hora exacta de nacimiento.
             </p>
           </section>
 
@@ -230,7 +223,7 @@ export default function EjemploPage() {
           </p>
           <Button variant="accent" size="lg" asChild>
             <Link href="/">
-              Crear mi mapa
+              Generá tu mapa
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
           </Button>

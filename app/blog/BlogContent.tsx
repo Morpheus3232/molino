@@ -132,7 +132,7 @@ export default function BlogContent() {
               href="/profile"
               className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
             >
-              Crear mi mapa
+              Generá tu mapa
             </Link>
           </div>
         </motion.section>
