@@ -14,8 +14,8 @@ describe("PWA Configuration", () => {
     expect(manifestContent.short_name).toBe("Molino");
     expect(manifestContent.display).toBe("standalone");
     expect(manifestContent.start_url).toBe("/");
-    expect(manifestContent.theme_color).toBe("#0A0A0C");
-    expect(manifestContent.background_color).toBe("#0A0A0C");
+    expect(manifestContent.theme_color).toBe("#F5F0E4");
+    expect(manifestContent.background_color).toBe("#F5F0E4");
     expect(Array.isArray(manifestContent.icons)).toBe(true);
     expect(manifestContent.icons.length).toBeGreaterThanOrEqual(2);
   });

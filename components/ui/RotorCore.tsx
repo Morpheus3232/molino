@@ -163,7 +163,7 @@ export default function RotorCore({ fillProgress, isSubmitting, isComplete }: Ro
       fill="none"
       className="w-[min(48vh,480px)] h-[min(48vh,480px)]"
       aria-hidden="true"
-      style={{ filter: "drop-shadow(0 0 40px rgba(124, 140, 255, 0.08))" }}
+      style={{ filter: "drop-shadow(0 0 40px rgba(154, 74, 24, 0.08))" }}
     >
       {/* Anillos concéntricos de detección */}
       {[60, 110, 160, 210].map((r, i) => (

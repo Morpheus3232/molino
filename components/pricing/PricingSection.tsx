@@ -93,7 +93,7 @@ export default function PricingSection({
                 transition={{ ...fadeUp.transition, delay: i * 0.08 }}
                 className={`relative flex flex-col rounded-md border p-6 sm:p-8 ${
                   plan.highlighted
-                    ? "border-accent/50 bg-accent/[0.04] shadow-[0_0_40px_rgba(124,140,255,0.08)]"
+                    ? "border-accent/50 bg-accent/[0.04] shadow-[0_0_40px_rgba(154,74,24,0.08)]"
                     : "border-ink/10 bg-ink/[0.02]"
                 }`}
               >
