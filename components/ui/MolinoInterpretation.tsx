@@ -16,6 +16,8 @@ import type { DecisionResult } from "@/lib/engines/decisionsEngine";
 import type { EntityProfile } from "@/lib/data/entities";
 import BuildingMolino from "@/components/ui/BuildingMolino";
 import MolinoReveal from "@/components/ui/MolinoReveal";
+import CalculationProof from "@/components/shared/CalculationProof";
+import { buildLuckyNumberProof } from "@/lib/calculations/proof";
 
 interface MolinoInterpretationProps {
   profile: UserProfile;
@@ -280,6 +282,13 @@ export default function MolinoInterpretation({
     const patternIntensity = interpretation.corePattern
       ? CONFIDENCE_METER[normalizeConfidence(interpretation.confidence)]
       : null;
+    // Mismo parseo liviano de birthDate ("YYYY-MM-DD") que profileBuilder.ts
+    // usa para alimentar calculateLuckyNumber — profile.luckyNumber ya viene
+    // calculado, esto es solo para reconstruir los mismos inputs y alimentar
+    // buildLuckyNumberProof (que no importa el engine, replica el algoritmo).
+    const birthParts = profile.birthDate.split("-").map((p) => parseInt(p, 10));
+    const luckyNumberYear = birthParts[0];
+    const luckyNumberMonth = birthParts[1];
     return (
       <motion.div
         key={`${isUsingAI ? "ai" : "local"}-${contentVersion}`}
@@ -453,6 +462,28 @@ export default function MolinoInterpretation({
             <p className="text-sm leading-[1.75] sm:text-base text-foreground">
               {interpretation.relationalNote}
             </p>
+          </motion.div>
+        )}
+
+        {/* 05. Tu número de la suerte — dato determinista (mes + año de
+            nacimiento), independiente de la IA/fallback. CalculationProof
+            expone el mismo paso a paso transparente que el resto del sitio. */}
+        {isPersonalProfile && Number.isFinite(luckyNumberMonth) && Number.isFinite(luckyNumberYear) && (
+          <motion.div variants={itemVariants} className="py-5 sm:py-6">
+            <p className="label-micro mb-3">
+              Tu número de la suerte
+            </p>
+            <p className="font-heading text-2xl sm:text-3xl text-accent mb-3">
+              {profile.luckyNumber}
+            </p>
+            <p className="text-sm leading-[1.75] sm:text-base text-foreground">
+              Sale de combinar la primera cifra de tu mes de nacimiento con la última cifra distinta de cero de tu año. Es un número de referencia personal, no una predicción: algunas personas lo usan como ancla simbólica en decisiones chicas del día a día — un pequeño punto de atención, no una garantía de resultado.
+            </p>
+            <CalculationProof
+              label="Número de la suerte"
+              data={buildLuckyNumberProof(luckyNumberMonth, luckyNumberYear)}
+              className="mt-4"
+            />
           </motion.div>
         )}
 
