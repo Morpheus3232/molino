@@ -464,7 +464,7 @@
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.24);
+    box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.24);
   }
 
   .skip-link {
@@ -486,7 +486,7 @@
   }
 
   ::selection {
-    background: rgba(124, 140, 255, 0.28);
+    background: rgba(var(--color-accent-rgb), 0.28);
     color: var(--color-foreground);
   }
 
