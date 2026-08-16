@@ -26,7 +26,7 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
         style={{
           width: "100%",
           height: "100%",
-          background: "linear-gradient(160deg, #0A0A0C 0%, #16161A 100%)",
+          background: "#F5F0E4",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -48,19 +48,19 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
           style={{
             position: "absolute", bottom: -120, left: -120,
             width: 360, height: 360, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(124,140,255,0.10) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(154,74,24,0.10) 0%, transparent 70%)",
           }}
         />
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 36 }}>
           <span style={{ fontSize: 32 }}>M</span>
-          <span style={{ color: "#F3F1EA", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
+          <span style={{ color: "#241F17", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
         </div>
 
         <span style={{ fontSize: 96, lineHeight: 1 }}>{isoToFlagEmoji(iso)}</span>
-        <span style={{ color: "#F3F1EA", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
-        <span style={{ color: "#AEB8FF", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
-        <span style={{ color: "#B0B0A6", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
+        <span style={{ color: "#241F17", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
+        <span style={{ color: "#9A4A18", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
+        <span style={{ color: "#6B6252", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
       </div>
     ),
     { ...size }

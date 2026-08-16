@@ -248,7 +248,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
             <div className="mt-12 pt-6 border-t border-border">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent-light transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-accent hover:text-accent-hover transition-colors"
               >
                 <span aria-hidden="true">&larr;</span> Volver al blog
               </Link>

@@ -12,14 +12,14 @@ function Blade({ angle }: { angle: number }) {
       <path
         d={BLADE_D}
         fill="none"
-        stroke="var(--color-paper, #0A0A0C)"
+        stroke="var(--color-paper, #F5F0E4)"
         strokeWidth="2.5"
         strokeLinejoin="round"
       />
       <path d={BLADE_D} fill="currentColor" stroke="none" />
-      <line x1="-6" y1="-6" x2="6" y2="-6" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.5" />
-      <line x1="-8" y1="-22" x2="8" y2="-22" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.5" />
-      <line x1="-4" y1="-40" x2="4" y2="-40" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-6" y1="-6" x2="6" y2="-6" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-8" y1="-22" x2="8" y2="-22" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-4" y1="-40" x2="4" y2="-40" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
     </g>
   );
 }
@@ -163,7 +163,7 @@ export default function RotorCore({ fillProgress, isSubmitting, isComplete }: Ro
       fill="none"
       className="w-[min(48vh,480px)] h-[min(48vh,480px)]"
       aria-hidden="true"
-      style={{ filter: "drop-shadow(0 0 40px rgba(124, 140, 255, 0.08))" }}
+      style={{ filter: "drop-shadow(0 0 40px rgba(154, 74, 24, 0.08))" }}
     >
       {/* Anillos concéntricos de detección */}
       {[60, 110, 160, 210].map((r, i) => (

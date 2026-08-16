@@ -124,8 +124,6 @@ const config: Config = {
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
         xl: "var(--shadow-xl)",
-        "glow": "var(--shadow-glow)",
-        "glow-accent": "var(--shadow-glow-accent)",
         inner: "var(--shadow-inner)",
       },
       maxWidth: {

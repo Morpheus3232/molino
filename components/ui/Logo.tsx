@@ -19,14 +19,14 @@ function Blade({ angle }: { angle: number }) {
       <path
         d={BLADE_D}
         fill="none"
-        stroke="var(--color-paper, #0A0A0C)"
+        stroke="var(--color-paper, #F5F0E4)"
         strokeWidth="2.2"
         strokeLinejoin="round"
       />
       <path d={BLADE_D} fill="currentColor" stroke="none" />
-      <line x1="-4" y1="-4" x2="4" y2="-4" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
-      <line x1="-5.5" y1="-11" x2="5.5" y2="-11" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
-      <line x1="-3" y1="-20" x2="3" y2="-20" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.5" />
+      <line x1="-4" y1="-4" x2="4" y2="-4" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.7" strokeOpacity="0.5" />
+      <line x1="-5.5" y1="-11" x2="5.5" y2="-11" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.7" strokeOpacity="0.5" />
+      <line x1="-3" y1="-20" x2="3" y2="-20" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.7" strokeOpacity="0.5" />
     </g>
   );
 }
@@ -61,10 +61,10 @@ export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProp
       <line x1="22" y1="97" x2="82" y2="97" stroke="currentColor" strokeWidth="0.8" strokeOpacity="0.2" strokeLinecap="round" />
 
       <path d="M32,97 L68,97 L57,44 L43,44 Z" fill="currentColor" fillOpacity="0.95" stroke="none" />
-      <line x1="37" y1="78" x2="63" y2="78" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.25" />
-      <line x1="39.5" y1="61" x2="60.5" y2="61" stroke="var(--color-paper, #0A0A0C)" strokeWidth="0.7" strokeOpacity="0.25" />
-      <rect x="42" y="82" width="16" height="15" rx="2" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.35" />
-      <rect x="46" y="85" width="8" height="12" rx="1.5" fill="var(--color-paper, #0A0A0C)" fillOpacity="0.5" />
+      <line x1="37" y1="78" x2="63" y2="78" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.7" strokeOpacity="0.25" />
+      <line x1="39.5" y1="61" x2="60.5" y2="61" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.7" strokeOpacity="0.25" />
+      <rect x="42" y="82" width="16" height="15" rx="2" fill="var(--color-paper, #F5F0E4)" fillOpacity="0.35" />
+      <rect x="46" y="85" width="8" height="12" rx="1.5" fill="var(--color-paper, #F5F0E4)" fillOpacity="0.5" />
 
       <path d={`M43,44 Q${HUB.x},30 57,44 Z`} fill="currentColor" stroke="none" />
 
@@ -74,7 +74,7 @@ export default function Logo({ className = "w-6 h-6", spinning, wind }: LogoProp
           <Blade angle={135} />
           <Blade angle={225} />
           <Blade angle={315} />
-          <circle cx="0" cy="0" r="3" fill="currentColor" stroke="var(--color-paper, #0A0A0C)" strokeWidth="1" />
+          <circle cx="0" cy="0" r="3" fill="currentColor" stroke="var(--color-paper, #F5F0E4)" strokeWidth="1" />
         </g>
       </g>
     </svg>
