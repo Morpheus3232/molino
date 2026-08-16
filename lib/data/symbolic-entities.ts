@@ -134,11 +134,15 @@ export function resolveEntityAnimalData(input: Pick<AtlasEntityInput, "events">)
 
 /**
  * Project a full entity to the minimal `LightweightEntity` shape safe for the
- * client: id/name/animal/visualType/emoji. No events, no prose.
+ * client: id/name/animal/visualType/emoji. No events, no prose. Agrega
+ * `origin` (etiqueta del evento primario + año) para mostrar de un vistazo
+ * el momento de fundación/creación de la entidad.
  */
 export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity {
   const enriched = enrichEntity(input);
   const { animal, isApproximate } = resolveEntityAnimalData(input);
+  const primary = getPrimaryEvent(input);
+  const origin = primary && primary.year ? `${primary.label} · ${primary.year}` : undefined;
   return {
     id: enriched.id,
     name: enriched.name,
@@ -150,6 +154,7 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
     country: enriched.country,
     countryISO: enriched.countryISO,
     type: enriched.type,
+    origin,
   };
 }
 
