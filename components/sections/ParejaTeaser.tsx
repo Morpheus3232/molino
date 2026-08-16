@@ -1,12 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Heart, Sparkles, ArrowRight, ShieldCheck, Zap } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 import Card from "@/components/ui/Card";
+import { getOrCreateProfile } from "@/lib/hooks/useProfile";
+import type { UserProfile } from "@/types/user";
 
 export default function ParejaTeaser() {
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setProfile(getOrCreateProfile());
+  }, []);
+
+  // Con perfil guardado, el ejemplo ficticio (Ana/Lucas) es ruido — el link
+  // a /pareja sigue disponible desde el nav, esta sección es solo el teaser.
+  if (mounted && profile?.birthDate) return null;
+
   return (
     <section className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-24">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">

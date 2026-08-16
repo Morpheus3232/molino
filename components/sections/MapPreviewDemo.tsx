@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Hash, Sun, Compass, ArrowRight, ShieldCheck, Check } from "lucide-react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import { getOrCreateProfile } from "@/lib/hooks/useProfile";
+import type { UserProfile } from "@/types/user";
 
 const DEMO_PROFILES = [
   {
@@ -64,6 +66,13 @@ const DEMO_PROFILES = [
 export default function MapPreviewDemo() {
   const [activeProfileIndex, setActiveProfileIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<"general" | "numerologia" | "astrologia" | "zodiaco">("general");
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    setProfile(getOrCreateProfile());
+  }, []);
 
   const current = DEMO_PROFILES[activeProfileIndex];
 
@@ -71,6 +80,10 @@ export default function MapPreviewDemo() {
     const form = document.getElementById("mapa-form");
     form?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Demo ficticia para convencer a quien todavía no generó su mapa — para
+  // quien ya tiene perfil guardado, mostrar a "Ana" es ruido, no un ejemplo.
+  if (mounted && profile?.birthDate) return null;
 
   return (
     <section aria-label="Demostración interactiva de mapa personal" className="bg-card border-t border-ink/10 py-16 sm:py-24">
