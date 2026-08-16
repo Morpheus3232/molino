@@ -653,6 +653,15 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     shortBio: "Actor y productor ganador de dos Óscar, cara del cine norteamericano.",
     emoji: "🎬",
   },
+  {
+    name: "Bruce Lee",
+    birthDate: "1940-11-27",
+    field: "Cine",
+    country: "Hong Kong / Estados Unidos",
+    shortBio: "Artista marcial y actor, leyenda del cine de acción.",
+    emoji: "🥋",
+    quote: "No temas al que practica más, sino al que entrena con propósito.",
+  },
 ];
 
 function getInitials(name: string): string {
