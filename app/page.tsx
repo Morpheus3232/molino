@@ -144,6 +144,7 @@ export default function Home() {
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
           <HeroInstrument />
+          <PersonalizedHomeClient />
           <MapPreviewDemo />
           <QueDescubris />
           <ParejaTeaser />
@@ -151,7 +152,6 @@ export default function Home() {
           <PremiumTeaser />
           <TrustSignals />
           <CTAFinal />
-          <PersonalizedHomeClient />
           <AtlasTeaser />
           <QuienHaceEsto />
           <FAQ />
