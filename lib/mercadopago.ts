@@ -208,6 +208,7 @@ export async function getPaymentStatus(paymentId: string) {
     date_approved: response.date_approved,
     metadata: response.metadata as Record<string, unknown> | undefined,
     external_reference: response.external_reference as string | undefined,
+    payerEmail: response.payer?.email,
   };
 }
 

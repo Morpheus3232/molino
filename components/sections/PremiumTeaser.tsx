@@ -49,7 +49,7 @@ export default function PremiumTeaser() {
           </motion.h2>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong>, con garantía total de 7 días.
+            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong>.
           </p>
         </div>
 
@@ -124,7 +124,7 @@ export default function PremiumTeaser() {
             <h4 className="font-heading text-lg font-bold text-foreground">
               Explorá la vista previa del informe Premium
             </h4>
-            <p className="text-xs text-muted">Garantía incondicional de 7 días. 100% de devolución si no te aporta valor.</p>
+            <p className="text-xs text-muted">Acceso de por vida, sin pagos recurrentes.</p>
           </div>
 
           <div className="flex items-center gap-3 flex-shrink-0">

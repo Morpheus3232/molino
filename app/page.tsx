@@ -58,10 +58,10 @@ const homeSchemas = [
       },
       {
         "@type": "Question",
-        name: "¿Qué incluye el acceso Premium de $8 USD y cómo funciona la garantía?",
+        name: "¿Qué incluye el acceso Premium de $8 USD?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa de IA y chat interactivo con tu mapa, ciclos personales 2026–2030, desglose de tensiones arquetípicas y garantía de devolución total de 7 días sin preguntas.",
+          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa de IA y chat interactivo con tu mapa, ciclos personales 2026–2030 y desglose de tensiones arquetípicas.",
         },
       },
       {

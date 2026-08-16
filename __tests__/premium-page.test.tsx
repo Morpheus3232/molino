@@ -34,11 +34,11 @@ describe("Premium Experience Components", () => {
     expect(screen.getAllByText(/Cliente Premium/i).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("renders PremiumCheckout with 7-day guarantee and payment options", () => {
+  it("renders PremiumCheckout with payment options and no refund guarantee", () => {
     render(<PremiumCheckout name="Franco" birthDate="1990-04-18" />);
 
     expect(screen.getAllByText(/\$8/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/Garantía de Satisfacción de 7 Días/i)).toBeDefined();
     expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeDefined();
+    expect(screen.queryByText(/Garantía de Satisfacción de 7 Días/i)).toBeNull();
   });
 });
