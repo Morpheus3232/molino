@@ -107,20 +107,46 @@ export function reduceDayNumber(day: number): number {
   return n;
 }
 
+export interface DateNumberBreakdown {
+  /** Cada dígito de la fecha completa (YYYYMMDD), en orden. */
+  digits: number[];
+  /** Suma de todos los dígitos — primer paso de la reducción. */
+  total: number;
+  /** Sumas intermedias sucesivas hasta llegar a un solo dígito o a un número maestro. */
+  reductions: number[];
+  /** Resultado final: 1-9, o el maestro (11/22/28/33) donde se frenó la reducción. */
+  final: number;
+  isMaster: boolean;
+}
+
+/**
+ * Desglosa paso a paso cómo se reduce una fecha completa (YYYY-MM-DD) a su
+ * número pitagórico, preservando los maestros 11, 22, 28 y 33 sin reducir.
+ * `reduceDateNumber` es un atajo sobre esto — una sola fuente de verdad para
+ * el algoritmo, para poder mostrar la cuenta además de solo el resultado.
+ */
+export function getDateNumberBreakdown(dateStr: string): DateNumberBreakdown {
+  const digits = dateStr.replace(/\D/g, "").split("").map(Number);
+  const total = digits.reduce((acc, d) => acc + d, 0);
+  const reductions: number[] = [];
+  let n = total;
+  if (!(MASTER_NUMBERS as readonly number[]).includes(n)) {
+    while (n > 9) {
+      n = sumDigits(n);
+      reductions.push(n);
+      if ((MASTER_NUMBERS as readonly number[]).includes(n)) break;
+    }
+  }
+  return { digits, total, reductions, final: n, isMaster: (MASTER_NUMBERS as readonly number[]).includes(n) };
+}
+
 /**
  * Reduces a full date (YYYY-MM-DD) to its Pythagorean numerology number:
  * sums all the digits of the complete date and reduces to a single digit,
  * preserving master numbers 11, 22, 28, 33 unreduced.
  */
 export function reduceDateNumber(dateStr: string): number {
-  const digits = dateStr.replace(/\D/g, "");
-  let n = digits.split("").reduce((acc, d) => acc + Number(d), 0);
-  if ((MASTER_NUMBERS as readonly number[]).includes(n)) return n;
-  while (n > 9) {
-    n = sumDigits(n);
-    if ((MASTER_NUMBERS as readonly number[]).includes(n)) return n;
-  }
-  return n;
+  return getDateNumberBreakdown(dateStr).final;
 }
 
 export function getCalendarDayContent(dateStr: string): CalendarDayContent {

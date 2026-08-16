@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
+import TodayNumberBanner from "@/components/sections/TodayNumberBanner";
 import { SITE_URL } from "@/lib/seo";
 
 const AtlasTeaser = dynamic(() => import("@/components/sections/AtlasTeaser"), { ssr: true });
@@ -141,6 +142,7 @@ export default function Home() {
       ))}
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
+          <TodayNumberBanner />
           <HeroInstrument />
           <PersonalizedHomeClient />
           <MapPreviewDemo />
