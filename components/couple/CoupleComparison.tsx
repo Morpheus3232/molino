@@ -7,7 +7,6 @@ import {
   calculateCoupleCompatibility,
   type CoupleCompatibilityResult,
 } from "@/lib/engines/coupleEngine";
-import CoupleShareCard, { type CoupleShareCardHandle } from "./CoupleShareCard";
 import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
@@ -15,7 +14,6 @@ import { safeNumber } from "@/lib/utils/score";
 import {
   Sparkles,
   Heart,
-  Download,
   Share2,
   Copy,
   Check,
@@ -129,9 +127,7 @@ export default function CoupleComparison({
   onReset,
   className = "",
 }: CoupleComparisonProps) {
-  const downloadRef = useRef<CoupleShareCardHandle>(null);
   const [copied, setCopied] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
 
   const result = useMemo<CoupleCompatibilityResult>(
     () => calculateCoupleCompatibility(profileA, profileB),
@@ -142,16 +138,6 @@ export default function CoupleComparison({
     if (typeof window === "undefined") return "";
     return `${window.location.origin}/pareja?a=${profileA.birthDate}&b=${profileB.birthDate}`;
   }, [profileA.birthDate, profileB.birthDate]);
-
-  const handleDownloadImage = async () => {
-    if (isDownloading) return;
-    setIsDownloading(true);
-    try {
-      await downloadRef.current?.download();
-    } finally {
-      setIsDownloading(false);
-    }
-  };
 
   const handleShareLink = useCallback(async () => {
     const text = `Comparativa de mapas en Molino: ${result.summary}\nMirá el resultado acá:`;
@@ -174,9 +160,6 @@ export default function CoupleComparison({
 
   return (
     <div className={`space-y-8 ${className}`}>
-      {/* Hidden Download Card */}
-      <CoupleShareCard ref={downloadRef} result={result} />
-
       {/* Hero Synergy Section */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -207,16 +190,6 @@ export default function CoupleComparison({
 
         {/* Actions Bar */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3 pt-6 border-t border-ink/10">
-          <Button
-            variant="primary"
-            onClick={handleDownloadImage}
-            disabled={isDownloading}
-            className="flex items-center gap-2 px-5"
-          >
-            <Download className="w-4 h-4" />
-            {isDownloading ? "Generando imagen..." : "Descargar imagen"}
-          </Button>
-
           <Button
             variant="ghost"
             onClick={handleShareLink}

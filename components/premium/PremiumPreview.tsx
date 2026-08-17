@@ -35,7 +35,7 @@ export default function PremiumPreview({
     const stored = loadProfileFromStorage();
     if (stored) return stored as UserProfile;
     // High quality sample profile (El Investigador / Piscis / Caballo)
-    return calculateUserProfile("Franco", "1990-04-18");
+    return calculateUserProfile("Alex", "1990-04-18");
   }, []);
 
   const lifePath = safeNumber(profile.lifePath, 1);

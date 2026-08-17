@@ -39,7 +39,7 @@ export default function QuienHaceEsto() {
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-foreground mb-0.5">
-                  Molino es un proyecto independiente creado por Franco Viegas
+                  Molino es un proyecto personal, hecho por un desarrollador independiente
                 </p>
                 <p className="text-xs text-muted/70 mb-3">
                   ¿Preguntas o soporte?{" "}

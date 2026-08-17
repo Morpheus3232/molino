@@ -1,12 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
 import { formatAnimalSimple, formatAnimalWithEquivalent } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
 import EntityVisual from "@/components/ui/EntityVisual";
-import { nodeToPng, downloadPng, sanitizeFilenamePart } from "@/lib/utils/exportImage";
 
 interface AffinityShareableCardProps {
   result: AffinityResult;
@@ -80,9 +79,7 @@ function buildCardExplanation(result: AffinityResult): string {
 }
 
 export default function AffinityShareableCard({ result }: AffinityShareableCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
-  const [downloading, setDownloading] = useState(false);
 
   const tierMeta = TIER_META[result.tier];
   const entity = result.entity;
@@ -120,26 +117,10 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
     }
   };
 
-  const handleDownload = async () => {
-    if (downloading || !cardRef.current) return;
-    setDownloading(true);
-    try {
-      const dataUrl = await nodeToPng(cardRef.current, "square");
-      const namePart = sanitizeFilenamePart(entity.name);
-      downloadPng(dataUrl, `molino-afinidad-${namePart || "entidad"}.png`);
-      toast.success("Tarjeta descargada");
-    } catch {
-      toast.error("No pudimos generar la tarjeta.");
-    } finally {
-      setDownloading(false);
-    }
-  };
-
   return (
     <div className="space-y-4">
       {/* The card */}
       <div
-        ref={cardRef}
         className="relative overflow-hidden rounded-md border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
@@ -268,7 +249,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
         </div>
       </div>
 
-      {/* Actions: share + download */}
+      {/* Actions: share */}
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
@@ -294,20 +275,6 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
               Compartir
             </>
           )}
-        </button>
-
-        <button
-          type="button"
-          onClick={handleDownload}
-          disabled={downloading}
-          className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] disabled:opacity-60"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-          {downloading ? "Generando…" : "Descargar tarjeta"}
         </button>
       </div>
     </div>

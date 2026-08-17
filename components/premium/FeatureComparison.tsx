@@ -87,13 +87,6 @@ const FEATURES: FeatureItem[] = [
     description: "Consultas ilimitadas sobre tus decisiones, momentos y arquetipo.",
   },
   {
-    category: "Herramientas & IA",
-    name: "Exportación en alta calidad PNG sin marcas",
-    free: true,
-    premium: true,
-    description: "Tarjetas optimizadas para Instagram, OpenGraph e informes personales.",
-  },
-  {
     category: "Privacidad & Acceso",
     name: "Sin cookies invasivas ni tracking de comportamiento",
     free: true,

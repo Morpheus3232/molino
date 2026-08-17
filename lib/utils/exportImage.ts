@@ -44,7 +44,8 @@ export async function nodeToPng(
   });
 }
 
-/** Sanitize a profile name into a safe filename fragment. */
+/** Sanitize a profile name into a safe filename fragment (used for the
+ * File name attached to a native share, not for a local download). */
 export function sanitizeFilenamePart(text: string): string {
   return text
     .toLowerCase()
@@ -52,16 +53,4 @@ export function sanitizeFilenamePart(text: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-/**
- * Trigger a browser download for a PNG data URL with a descriptive filename.
- */
-export function downloadPng(dataUrl: string, filename: string): void {
-  const link = document.createElement("a");
-  link.download = filename;
-  link.href = dataUrl;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 }

@@ -2,19 +2,21 @@
 
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Download, Share2, Check, Copy } from "lucide-react";
+import { Share2, Check, Copy } from "lucide-react";
 import EntityVisual from "@/components/ui/EntityVisual";
-import { nodeToPng, downloadPng, sanitizeFilenamePart } from "@/lib/utils/exportImage";
+import { nodeToPng, sanitizeFilenamePart } from "@/lib/utils/exportImage";
 import type { LightweightEntity } from "@/types/atlas";
 
 /**
- * AtlasShareCard — a shareable, download-ready visual card for an Atlas entity
- * or an affinity finding. Square "story/post" format.
+ * AtlasShareCard — a shareable visual card for an Atlas entity or an affinity
+ * finding. Square "story/post" format.
  *
  * Rendering is on-demand (only on click): the heavy html-to-image module is
  * imported lazily inside nodeToPng, so it never penalizes initial load. Native
- * Web Share (navigator.share) is used when available; otherwise the generated
- * PNG + link fall back to clipboard copy with a subtle toast. No third-party
+ * Web Share (navigator.share) is used when available, with the rendered PNG
+ * attached as a file; otherwise it falls back to copying the link with a
+ * subtle toast. No local download — the image is never persisted to disk,
+ * only handed to the native share sheet or discarded. No third-party
  * tracking SDKs.
  */
 
@@ -47,22 +49,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
     if (!cardRef.current) return null;
     // nodeToPng lazy-imports html-to-image and renders at pixelRatio 2.
     return nodeToPng(cardRef.current, "square");
-  };
-
-  const handleDownload = async () => {
-    if (busy) return;
-    setBusy(true);
-    try {
-      const dataUrl = await renderPng();
-      if (!dataUrl) return;
-      const namePart = sanitizeFilenamePart(entity.name);
-      downloadPng(dataUrl, `molino-${namePart || "atlas"}.png`);
-      toast.success("Tarjeta descargada");
-    } catch {
-      toast.error("No pudimos generar la tarjeta.");
-    } finally {
-      setBusy(false);
-    }
   };
 
   const handleShare = async () => {
@@ -156,16 +142,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
 
       {/* Actions */}
       <div className="flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={handleDownload}
-          disabled={busy}
-          className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground min-h-[44px] disabled:opacity-60"
-        >
-          <Download className="w-4 h-4" />
-          {busy ? "Generando…" : "Descargar tarjeta"}
-        </button>
-
         <button
           type="button"
           onClick={handleShare}
