@@ -305,6 +305,44 @@ export async function hasPremiumAccess(profileHash: string): Promise<boolean> {
   }
 }
 
+// ── Generic short-lived lock (prevents TOCTOU races across concurrent requests) ──
+//
+// Used where a request needs to read-then-act on state that a concurrent
+// duplicate request (double-click, client retry) could also be reading at
+// the same time — e.g. PayPal capture-order reads isPaymentProcessed()
+// before calling the PayPal API, and grantPremiumAccess()/
+// markPaymentProcessed() several awaits later.
+
+/**
+ * Acquire a short-lived lock via SETNX. Returns true if the caller now
+ * holds the lock, false if someone else holds it (caller should treat this
+ * as "another request is already processing this — retry shortly").
+ */
+export async function acquireLock(key: string, ttlSeconds: number): Promise<boolean> {
+  try {
+    const kv = await getKvClient();
+    // No KV client (local dev without KV/Upstash configured): fail-open so
+    // dev keeps working unlocked, same posture as the rest of lib/kv.ts.
+    if (!kv) return true;
+    const set = await kv.set(`lock:${key}`, '1', { nx: true, ex: ttlSeconds });
+    return set === 'OK';
+  } catch (error) {
+    console.error('[KV] Error in acquireLock:', error);
+    return false;
+  }
+}
+
+/** Release a lock acquired via acquireLock(). Always call from a `finally`. */
+export async function releaseLock(key: string): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    await kv.del(`lock:${key}`);
+  } catch (error) {
+    console.error('[KV] Error in releaseLock:', error);
+  }
+}
+
 export async function markPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

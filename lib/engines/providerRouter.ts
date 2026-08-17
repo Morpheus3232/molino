@@ -1,4 +1,5 @@
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
+import type { CompatibilityTarget } from '@/types/compatibility';
 import { generateWithOpenAI, generateWithClaude, generateWithOpenRouter } from './aiEngine';
 import { generateWithOmniRoute, getOmniRouteRouter, getOmniRouteStatus, isOmniRouteConfigured } from './omnirouteRouter';
 
@@ -75,7 +76,7 @@ async function sleep(ms: number): Promise<void> {
 async function tryLegacyProvider(
   provider: Provider,
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
   attempt: number = 1,
@@ -113,7 +114,7 @@ async function tryLegacyProvider(
 
 export async function generateWithRouting(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
   preferredProvider?: Provider

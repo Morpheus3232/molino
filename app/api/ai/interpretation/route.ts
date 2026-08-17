@@ -3,6 +3,7 @@ import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
 import { generateWithRouting, getProviderStatus } from '@/lib/engines/providerRouter';
 import { buildIntelligencePrompt, generateFallbackInterpretation, type MolinoContext, type InterpretationType } from '@/lib/engines/intelligenceEngine';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
+import type { CompatibilityTarget } from '@/types/compatibility';
 
 const PREMIUM_TYPES = new Set<InterpretationType>(['personal_profile', 'question']);
 
@@ -79,7 +80,7 @@ async function handleIntelligenceRequest(body: {
 
 async function handleLegacyRequest(body: {
   user: any;
-  target: any;
+  target: CompatibilityTarget;
   result: any;
   provider?: 'openai' | 'claude' | 'openrouter';
   template?: string;

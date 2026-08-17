@@ -4,11 +4,14 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { generateAIInterpretation } from "@/lib/engines/aiEngine";
 import type { AIInterpretation } from "@/lib/engines/aiEngine";
+import type { CompatibilityTarget } from "@/types/compatibility";
+import type { UserProfile } from "@/types/user";
+import type { CompatibilityResult } from "@/lib/engines/compatibilityEngine";
 
 interface AIInterpretationProps {
-  user: any;
-  target: any;
-  result: any;
+  user: UserProfile;
+  target: CompatibilityTarget;
+  result: CompatibilityResult;
   provider?: 'openai' | 'claude';
   template?: string;
 }

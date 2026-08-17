@@ -4,6 +4,7 @@ import { analyzeDecision, type DecisionResult } from './decisionsEngine';
 import { analyzeTiming, type TimingResult } from './timingEngine';
 import { calculateDailyEnergy, type DailyEnergyResult } from './dailyEnergyEngine';
 import { calculateCompatibility, type CompatibilityResult } from './compatibilityEngine';
+import type { CompatibilityTarget } from '@/types/compatibility';
 import { buildMolinoContext } from './intelligenceEngine';
 
 export type NudoContext = 'decision' | 'timing' | 'daily_energy' | 'compatibility' | 'free_text';
@@ -100,7 +101,7 @@ function getCurrentSignal(profile: UserProfile, context: NudoContext, payload: u
       return calculateDailyEnergy(profile, targetDate || new Date());
     }
     case 'compatibility': {
-      const { target } = payload as { target: any };
+      const { target } = payload as { target: CompatibilityTarget };
       return calculateCompatibility(profile, target);
     }
     case 'free_text': {
