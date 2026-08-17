@@ -61,6 +61,19 @@ export const pageEnter = {
   transition: { duration: 0.3, ease: "easeOut" as const },
 };
 
+// Fade in from below, triggered on MOUNT (not viewport) — para contenido
+// above-the-fold, donde whileInView depende de que IntersectionObserver
+// dispare en el instante exacto del primer render. Si eso falla (hiccup de
+// hidratación), el contenido queda en opacity:0 hasta que el usuario
+// scrollee o refresque (ver staggerItemSmooth en premiumMotion.ts, mismo
+// failure mode ya documentado ahí). Usar acá para lo que ya es visible al
+// cargar; below-the-fold puede seguir usando fadeUp/whileInView sin riesgo.
+export const fadeUpMount = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: "easeOut" as const },
+};
+
 // Stagger section reveal (use on section wrapper)
 export const staggerSection = {
   initial: {},
