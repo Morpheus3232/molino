@@ -9,6 +9,42 @@ memoria efímera. Monetiza exclusivamente con MercadoPago (`lib/mercadopago.ts`,
 ninguno de los dos tenía credenciales configuradas en producción ni UI que
 los ofreciera como opción de pago.
 
+## Estado tras la sesión de 2026-08-17 (refactors + cache + latencia)
+
+Sesión larga de hardening: 27 commits, ver detalle completo en
+`.claude/execution-logs/session-closure-report.md`. Resumen para orientarse
+rápido:
+
+- **Refactors god-component → módulos** (mismo comportamiento, validado con
+  la suite completa en cada paso): `intelligenceEngine.ts` (1123 → 489
+  líneas + 6 módulos en `lib/engines/intelligence/`),
+  `AffinityDetailContent.tsx` (1024 → 140 líneas), `PremiumGate.tsx`
+  (748 → 287 líneas + hooks en `lib/hooks/` + componentes en
+  `components/premium/`).
+- **Motor de IA con feature flag**: `buildIntelligencePrompt()` en
+  `intelligenceEngine.ts` lee `INTELLIGENCE_ENGINE_V2_ENABLED` y delega a
+  `buildIntelligencePromptV2` (`lib/engines/intelligence/promptBuilder.ts`)
+  o a la legacy verbatim — **activo en Production** desde esta sesión.
+  Rollback: ver `.claude/execution-logs/v2-rollback-procedure.md`.
+- **Cache de interpretaciones** (`lib/cache/interpretationCache.ts`, Vercel
+  KV): antes, cada visita al mapa/perfil disparaba una llamada real a IA,
+  incluso repetida. Ahora se cachea por
+  `profileHash + type + hash(prompt)`, con expiración por tipo
+  (`daily_energy` a medianoche UTC, `timing` 24h, el resto sin TTL — solo
+  invalida si cambia el prompt o el usuario pide "Regenerar"). Diseño
+  completo en `.claude/execution-logs/interpretation-cache-design.md`.
+- **Fixes de latencia en `lib/engines/aiEngine.ts` / `providerRouter.ts`**:
+  coordinación de reintentos (antes se multiplicaban 2×2 entre capas),
+  timeout diferenciado por tipo (20s liviano / 55s para
+  `personal_profile`/`question`), timeout global con fallback local
+  garantizado (65s/35s). **Hallazgo pendiente de aplicar**: el
+  `AbortController` actual solo cubre `fetch()` hasta que llegan los
+  headers, no la lectura del body (`response.json()`) — con tráfico real
+  se midió ~61s de esa fase sola, sin protección de timeout. Ver
+  "Fix adicional propuesto" en
+  `.claude/execution-logs/latency-final-validation.md` antes de dar este
+  tema por cerrado.
+
 ## Stack
 
 - Next.js 16 (custom — ver warning más abajo, App Router) + React 19 + TypeScript 5
