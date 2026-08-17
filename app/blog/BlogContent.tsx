@@ -38,7 +38,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
       <div className="flex flex-col flex-1 p-6">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-xs font-mono uppercase tracking-[0.2em] text-accent">{post.category}</span>
-          <span className="text-xs text-muted/70">{readTime} min de lectura</span>
+          <span className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70">{readTime} min de lectura</span>
         </div>
         <h2 className="font-heading text-xl font-semibold text-foreground leading-snug mb-2">
           <Link href={`/blog/${post.slug}`} className="hover:text-accent transition-colors">
@@ -46,8 +46,10 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
           </Link>
         </h2>
         <p className="text-sm text-muted leading-relaxed mb-4 flex-1">{post.excerpt}</p>
-        <div className="flex items-center justify-between text-xs text-muted/70 pt-4 border-t border-border">
-          <time dateTime={post.date}>{formatDate(post.date)}</time>
+        <div className="flex items-center justify-between pt-4 border-t border-border">
+          <time dateTime={post.date} className="text-xs font-mono uppercase tracking-[0.2em] text-muted/70">
+            {formatDate(post.date)}
+          </time>
           <Link href={`/blog/${post.slug}`} className="text-accent hover:text-accent-hover font-medium">
             Leer artículo →
           </Link>
