@@ -3,9 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
-import { loadProfileFromStorage } from "@/lib/session/localStorage";
-import { getSession } from "@/lib/session/ephemeral";
+import { saveProfileToStorage } from "@/lib/session/localStorage";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+import { useProfile } from "@/lib/hooks/useProfile";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { useStreak } from "@/lib/hooks/useStreak";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
@@ -25,32 +25,13 @@ import {
   Check,
 } from "lucide-react";
 
-function loadUser(): UserProfile | null {
-  const stored = loadProfileFromStorage();
-  if (stored) return stored as UserProfile;
-  const session = getSession();
-  if (session?.name && session?.birthDate) {
-    const calculated = calculateUserProfile(session.name, session.birthDate);
-    return {
-      ...calculated,
-      birthPlace: session.birthPlace || "",
-      birthTime: session.birthTime,
-      goal: (session.goal as UserProfile["goal"]) || "life",
-      interests: session.interests || [],
-      onboardingStep: session.onboardingStep || 1,
-      completedSections: session.completedSections || ["identity"],
-      theme: (session.theme as UserProfile["theme"]) || "light",
-      language: (session.language as UserProfile["language"]) || "es",
-      notifications: session.notifications ?? true,
-      cycles: calculated.cycles || { personalYear: 0, personalMonth: 0, personalDay: 0 },
-      recommendations: calculated.recommendations || { strengths: [], challenges: [], practices: [] },
-    } as UserProfile;
-  }
-  return null;
-}
-
 export default function HoyClient() {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const { profile: storedProfile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+  // El perfil recién creado acá (form de fecha) se guarda en localStorage,
+  // pero useProfile() solo lee storage al montar — sin este override local,
+  // la tarjeta de energía no aparecería hasta el próximo mount.
+  const [manualProfile, setManualProfile] = useState<UserProfile | null>(null);
+  const profile = manualProfile ?? storedProfile;
   const [manualDate, setManualDate] = useState("");
   const [notificationPermission, setNotificationPermission] = useState<string>("default");
   const [notificationSuccess, setNotificationSuccess] = useState(false);
@@ -58,10 +39,6 @@ export default function HoyClient() {
   const { streakDays, badge } = useStreak();
 
   useEffect(() => {
-    const user = loadUser();
-    if (user) {
-      setProfile(user);
-    }
     if (typeof window !== "undefined" && "Notification" in window) {
       setNotificationPermission(Notification.permission);
     }
@@ -99,8 +76,14 @@ export default function HoyClient() {
     e.preventDefault();
     if (!manualDate || manualDate.length !== 10) return;
     const user = calculateUserProfile("", manualDate);
-    setProfile(user);
+    saveProfileToStorage(user);
+    setManualProfile(user);
   };
+
+  // Esperar a que useProfile() resuelva localStorage/sesión antes de decidir
+  // si hace falta pedir la fecha — evita un flash del form cuando el perfil
+  // ya existe pero todavía no se leyó.
+  if (!mounted || loading) return null;
 
   // If no profile, show friendly onboarding prompt
   if (!profile) {
