@@ -88,6 +88,30 @@ function LoadingSkeleton() {
   );
 }
 
+// Escalón de mensajes según cuánto lleva esperando — un skeleton estático
+// por minutos se lee como "esto se rompió"; el mensaje progresivo confirma
+// que sigue en curso sin fingir una animación de trabajo que no existe.
+const LOADING_MESSAGE_STEPS: Array<{ afterMs: number; message: string }> = [
+  { afterMs: 2000, message: "Analizando tus números…" },
+  { afterMs: 5000, message: "Consultando la sabiduría de tu mapa…" },
+  { afterMs: 10000, message: "Esto está tomando más de lo usual, gracias por tu paciencia…" },
+];
+
+function useProgressiveLoadingMessage(active: boolean): string {
+  const [message, setMessage] = useState("");
+  useEffect(() => {
+    if (!active) {
+      setMessage("");
+      return;
+    }
+    const timers = LOADING_MESSAGE_STEPS.map((step) =>
+      setTimeout(() => setMessage(step.message), step.afterMs)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [active]);
+  return message;
+}
+
 /**
  * Unified interpretation component for Molino.
  *
@@ -153,6 +177,9 @@ export default function MolinoInterpretation({
   const [revealReady, setRevealReady] = useState(!justUnlocked);
 
   const prefersReducedMotion = useSafeReducedMotion();
+  // Solo aplica al loading "normal" (no justUnlocked, que ya tiene su propia
+  // coreografía en BuildingMolino) — ver JSX abajo.
+  const loadingMessage = useProgressiveLoadingMessage(!justUnlocked && isInterpreting && !aiInterpretation && !fallbackInterpretation);
 
   // Fetch the interpretation. Separated from the effect that triggers it to
   // avoid re-creating the callback on every render (it closes over profile).
@@ -655,6 +682,15 @@ export default function MolinoInterpretation({
               transition={{ duration: 0.3 }}
             >
               <LoadingSkeleton />
+              {loadingMessage && (
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className="font-mono text-xs uppercase tracking-[0.2em] text-muted text-center -mt-6 sm:-mt-8"
+                >
+                  {loadingMessage}
+                </p>
+              )}
             </motion.div>
           )
         )}
