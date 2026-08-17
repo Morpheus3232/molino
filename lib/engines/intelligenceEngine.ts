@@ -15,9 +15,20 @@ import type { DailyEnergyResult } from './dailyEnergyEngine';
 import type { TimingResult } from './timingEngine';
 import type { DecisionResult } from './decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules, ELEMENT_PACE } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules } from './synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 import { sanitizeNameForPrompt, sanitizeUserText, pseudonymFor } from '@/lib/ai/piiSanitizer';
+import { ELEMENT_TONE, getOperatingPattern, getOperatingAction } from './intelligence/fallbackNarrative';
+import {
+  getDayTheme,
+  getYearTheme,
+  getDayAlignment,
+  getDayAction,
+  getTimingAdvice,
+  getProfileTimingAlignment,
+  getDecisionAdvice,
+  getDayDecisionTiming,
+} from './intelligence/fallbackThemes';
 
 import type {
   MolinoContext,
@@ -755,198 +766,3 @@ export function generateFallbackInterpretation(
   };
 }
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-/**
- * Translates the profile into observable behavior ("cuando tenés que elegir
- * entre X e Y, tu patrón tiende a...") instead of an abstract trait label.
- * Branches on lifePath group first (the dominant signal), then modulates
- * with element — same discipline as decisionsEngine's per-lifePath text,
- * so two different lifePaths never collapse into the same sentence.
- */
-// ELEMENT_PACE (fast/slow/fluid per element) now lives in synthesisEngine.ts
-// as the single source of truth — buildTensions() there uses the exact same
-// mapping to detect a structural pace mismatch, so the narrative here and
-// the "Tus Tensiones" section always agree on what counts as a contradiction.
-
-const ELEMENT_TONE: Record<string, string> = {
-  Fuego: 'actuás primero y ajustás sobre la marcha',
-  Tierra: 'necesitás ver el terreno antes de moverte',
-  Aire: 'necesitás poder explicarlo con palabras antes de comprometerte',
-  Agua: 'seguís lo que sentís aunque no puedas justificarlo todavía',
-  Metal: 'buscás la versión más precisa antes de avanzar',
-};
-
-/**
- * Combines a lifePath's directional claim ("tiende a moverte primero") with
- * an element's pace. When they point the same way, joins with "y" (reinforces);
- * when they don't, joins with "aunque" (names the real tension instead of
- * producing a sentence that asserts both "you move fast" and "you need to
- * check the terrain first" as if they were the same thing).
- */
-function combineWithElement(branchPace: 'fast' | 'slow', element: string): string {
-  const tone = ELEMENT_TONE[element] || 'tu forma de avanzar es propia, no calca un patrón fijo';
-  const elementPace = ELEMENT_PACE[element];
-  if (!elementPace || elementPace === 'fluid') return `y tu elemento ${element} lo atraviesa a su manera: ${tone}`;
-  return elementPace === branchPace
-    ? `y tu elemento ${element} lo refuerza: ${tone}`
-    : `aunque tu elemento ${element} tira para el otro lado: ${tone}`;
-}
-
-/**
- * The [1,8] / [2,6] / [3,5] / [4,7] / [9,11,22,33] grouping is a real
- * numerological convergence, not an arbitrary bucket: 1&8 are the two
- * "material action" numbers, 2&6 the two relational/caretaking numbers,
- * 3&5 the two expression/freedom numbers, 4&7 the two structure numbers,
- * and 9/11/22/33 are the master/completion numbers. Sharing the underlying
- * BEHAVIORAL SHAPE across a group is legitimate — but each member still has
- * its own real archetype challenge/strength (ARCHETYPE_DESCRIPTIONS), so the
- * specific risk and the specific gift named in the sentence must come from
- * THIS profile's actual data, not a placeholder shared by the whole group.
- */
-function getOperatingPattern(element: string, lifePath: number, personalDay: number, challenge?: string, strength?: string): string {
-  const risk = challenge?.toLowerCase() || 'perder de vista tu propio límite';
-  const gift = strength?.toLowerCase() || 'tu forma de encarar las cosas';
-  if ([1, 8].includes(lifePath)) {
-    return `Cuando tenés que elegir entre esperar una señal externa o moverte por tu cuenta, tu patrón tiende a moverte primero — es tu ${gift} en acción, ${combineWithElement('fast', element)}. El riesgo específico en tu caso es tu ${risk}: no es la duda lo que te frena, es no delegar a tiempo cuando tu ${risk} toma el volante.`;
-  }
-  if ([2, 6].includes(lifePath)) {
-    return `Cuando tenés que elegir entre lo que necesitás vos y lo que necesita el grupo, tu patrón tiende a priorizar el equilibrio del conjunto — tu ${gift} lo hace posible: ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. El riesgo específico es que tu ${risk} te haga posponer tu propia necesidad hasta que se vuelve urgente.`;
-  }
-  if ([3, 5].includes(lifePath)) {
-    return `Cuando tenés que elegir entre profundizar en una sola cosa o mantener varias opciones abiertas, tu patrón tiende a mantener el movimiento — tu ${gift} necesita ese espacio, ${combineWithElement('fast', element)}. El riesgo específico es que tu ${risk} disperse la energía antes de que algo madure.`;
-  }
-  if ([4, 7].includes(lifePath)) {
-    return `Cuando tenés que elegir entre avanzar con lo que ya sabés o seguir analizando, tu patrón tiende a seguir analizando un poco más — ahí aparece tu ${gift}, ${combineWithElement('slow', element)}. El riesgo específico es que tu ${risk} confunda preparación con postergación.`;
-  }
-  if ([9, 11, 22, 33].includes(lifePath)) {
-    return `Cuando tenés que elegir entre tu propio proceso y lo que el entorno necesita de vos, tu patrón tiende a inclinarte hacia lo colectivo — tu ${gift} te lo pide: ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. El riesgo específico es que tu ${risk} diluya tu propio criterio en el de otros.`;
-  }
-  return `Cuando tenés que decidir entre avanzar o esperar, ${ELEMENT_TONE[element] || 'tu forma de avanzar es propia'}. Tu día personal (${personalDay}) modula cuánto pesa esa tendencia hoy en particular.`;
-}
-
-/**
- * Concrete next action — same grouping logic as getOperatingPattern, but the
- * action itself names this profile's real challenge/strength so it reads as
- * "patrón detectado → tensión → acción" instead of a generic tip that could
- * apply to anyone in the group.
- */
-function getOperatingAction(element: string, lifePath: number, personalDay: number, challenge?: string, strength?: string): string {
-  const risk = challenge?.toLowerCase();
-  const gift = strength?.toLowerCase();
-  if ([1, 8].includes(lifePath)) {
-    return risk && gift
-      ? `La próxima vez que notes tu ${risk} empujando, dejá pasar un día antes de decidir — tu ${gift} no necesita la urgencia para funcionar.`
-      : 'Antes de tu próxima decisión importante, identificá un paso que puedas delegar en vez de asumirlo vos.';
-  }
-  if ([2, 6].includes(lifePath)) {
-    return risk
-      ? `Esta semana, nombrá en voz alta una necesidad tuya antes de que tu ${risk} la convierta en resentimiento.`
-      : 'Esta semana, nombrá en voz alta una necesidad tuya antes de que se vuelva urgente.';
-  }
-  if ([3, 5].includes(lifePath)) {
-    return risk
-      ? `Elegí una sola cosa de las que tenés abiertas y llevala un paso más allá — notá cuándo tu ${risk} te empuja a saltar a la siguiente.`
-      : 'Elegí una sola cosa de las que tenés abiertas y llevala un paso más allá de donde la dejaste.';
-  }
-  if ([4, 7].includes(lifePath)) {
-    return risk
-      ? `Ponete un límite de tiempo explícito para dejar de analizar — tu ${risk} va a pedir "un poco más", ignorala esta vez.`
-      : 'Ponete un límite de tiempo explícito para dejar de analizar y avanzar con lo que ya sabés.';
-  }
-  if ([9, 11, 22, 33].includes(lifePath)) {
-    return risk
-      ? `Antes de responder a lo que el entorno te pide, chequeá si es una necesidad real tuya o tu ${risk} actuando por costumbre.`
-      : 'Antes de responder a lo que el entorno te pide, chequeá qué es lo que vos necesitás en esto.';
-  }
-  return `Usá tu día personal (${personalDay}) como referencia para elegir si es momento de actuar o de observar.`;
-}
-
-function getDayTheme(personalDay: number): string {
-  const themes: Record<number, string> = {
-    1: 'iniciación y acción',
-    2: 'cooperación y conexión',
-    3: 'expresión y creatividad',
-    4: 'construcción y disciplina',
-    5: 'cambio y aventura',
-    6: 'armonía y cuidado',
-    7: 'introspección y sabiduría',
-    8: 'manifestación y poder',
-    9: 'cierre y compasión',
-    11: 'intuición elevada',
-    22: 'construcción a gran escala',
-    33: 'servicio y amor',
-  };
-  return themes[personalDay] || 'energía mixta';
-}
-
-function getYearTheme(personalYear: number): string {
-  const themes: Record<number, string> = {
-    1: 'nuevos comienzos',
-    2: 'cooperación y relaciones',
-    3: 'expresión y creatividad',
-    4: 'trabajo y estabilidad',
-    5: 'cambio y aventura',
-    6: 'responsabilidad y hogar',
-    7: 'introspección y sabiduría',
-    8: 'manifestación y poder',
-    9: 'cierre y compasión',
-    11: 'intuición elevada',
-    22: 'construcción a gran escala',
-    33: 'servicio y amor',
-  };
-  return themes[personalYear] || 'crecimiento';
-}
-
-function getDayAlignment(personalDay: number): string {
-  if ([1, 4, 8].includes(personalDay)) return 'constructiva';
-  if ([2, 6].includes(personalDay)) return 'cooperativa';
-  if ([3, 5].includes(personalDay)) return 'expresiva';
-  if ([7, 9].includes(personalDay)) return 'reflectiva';
-  return 'equilibrada';
-}
-
-function getDayAction(personalDay: number): string {
-  const actions: Record<number, string> = {
-    1: 'comenzar algo nuevo',
-    2: 'conectar con otros',
-    3: 'comunicar y crear',
-    4: 'organizar y trabajar',
-    5: 'explorar y adaptarse',
-    6: 'cuidar de quienes te rodean',
-    7: 'mirar hacia adentro',
-    8: 'asumir liderazgo',
-    9: 'completar y soltar',
-  };
-  return actions[personalDay] || 'reflexionar y actuar con consciencia';
-}
-
-function getTimingAdvice(personalDay: number, personalYear: number): string {
-  if (personalDay === 1 || personalDay === 8) return 'un momento favorable para acciones importantes';
-  if (personalDay === 7 || personalDay === 9) return 'un momento para reflexionar antes de actuar';
-  if (personalDay === 5) return 'un momento de cambio e imprevisibilidad';
-  return 'un momento equilibrado para avanzar';
-}
-
-function getProfileTimingAlignment(personalDay: number): string {
-  if ([1, 4, 8].includes(personalDay)) return 'alinea bien';
-  if ([2, 6].includes(personalDay)) return 'necesita cooperación';
-  if ([7, 9].includes(personalDay)) return 'requiere reflexión';
-  return 'está en equilibrio';
-}
-
-function getDecisionAdvice(lifePath: number, personalDay: number): string {
-  if (lifePath === 1 || lifePath === 8) return 'confianza en tu capacidad de decisión';
-  if (lifePath === 2 || lifePath === 6) return 'considerar a otros en tu proceso';
-  if (lifePath === 7) return 'análisis profundo antes de decidir';
-  return 'un enfoque equilibrado';
-}
-
-function getDayDecisionTiming(personalDay: number): string {
-  if ([1, 8].includes(personalDay)) return 'favorece las decisiones firmes';
-  if ([2, 6].includes(personalDay)) return 'favorece las decisiones cooperativas';
-  if ([7, 9].includes(personalDay)) return 'favorece la reflexión antes de decidir';
-  return 'ofrece un equilibrio para decidir';
-}
