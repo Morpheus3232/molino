@@ -28,10 +28,9 @@ export default function EphemeralWarning({ onDismiss }: EphemeralWarningProps) {
           <p className="text-sm text-amber-700 mt-1 leading-relaxed">
             Esta lectura se almacena <strong>solo en tu navegador</strong> (localStorage).
             No se guarda en ningún servidor. Si limpias los datos del sitio, usas otro
-            dispositivo o navegas en modo incógnito, tu mapa desaparecerá.
-          </p>
-          <p className="text-sm text-amber-700 mt-2 leading-relaxed">
-            Usá el botón <strong>&ldquo;Descargar como imagen&rdquo;</strong> para guardar una copia permanente.
+            dispositivo o navegas en modo incógnito, tu mapa desaparecerá — no hay forma
+            de recuperarlo desde acá, tendrías que volver a generarlo con tu fecha de
+            nacimiento.
           </p>
         </div>
         <button

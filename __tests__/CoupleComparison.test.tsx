@@ -16,6 +16,6 @@ describe("CoupleComparison Component", () => {
     expect(screen.getByText(/Puntos de Conexión & Sinergia/i)).toBeDefined();
     expect(screen.getByText(/Puntos de Atención & Desafíos/i)).toBeDefined();
     expect(screen.getByText(/Síntesis para la Dinámica Cotidiana/i)).toBeDefined();
-    expect(screen.getByRole("button", { name: /Descargar imagen/i })).toBeDefined();
+    expect(screen.getByRole("button", { name: /Compartir comparativa/i })).toBeDefined();
   });
 });
