@@ -132,13 +132,25 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
  * giving up. One retry layer, one bounded budget: see
  * providerRouter.ts's isRetryableError.
  */
-async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: number = AI_TIMEOUT_MS): Promise<Response> {
+// `read` runs INSIDE the AbortController's window, before clearTimeout —
+// body reads (response.json()/.text()) are streamed and can hang long after
+// headers arrive (measured ~61s in production), so leaving them outside the
+// timeout means the abort protects the request but not the response. Callers
+// pass their whole post-fetch handling (status check, body read, logging) as
+// `read` so both the error and success paths stay covered.
+async function fetchWithTimeout<T = Response>(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number = AI_TIMEOUT_MS,
+  read?: (res: Response) => Promise<T>
+): Promise<T> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, { ...init, signal: controller.signal });
     if (res.status >= 500) throw new Error(`Transient upstream error: ${res.status}`);
-    return res;
+    if (read) return await read(res);
+    return res as unknown as T;
   } finally {
     clearTimeout(timeout);
   }
@@ -197,7 +209,7 @@ export async function generateWithOpenAI(
   const prompt = buildPrompt(user, target, result, template);
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeout('https://api.openai.com/v1/chat/completions', {
+  const data = await fetchWithTimeout('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -234,17 +246,17 @@ export async function generateWithOpenAI(
       temperature: 0.7,
       max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
     }),
-  }, timeoutMs);
-  const duration = Date.now() - startedAt;
+  }, timeoutMs, async (response) => {
+    const duration = Date.now() - startedAt;
+    if (!response.ok) {
+      const bodyText = await response.text().catch(() => '');
+      logProviderRequest('openai', model, response.status, duration, response.statusText, bodyText);
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
+    logProviderRequest('openai', model, response.status, duration);
+    return response.json();
+  });
 
-  if (!response.ok) {
-    const bodyText = await response.text().catch(() => '');
-    logProviderRequest('openai', model, response.status, duration, response.statusText, bodyText);
-    throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
-  }
-  logProviderRequest('openai', model, response.status, duration);
-
-  const data = await response.json();
   const content = data.choices?.[0]?.message?.content || '';
   const interpretation = parseAIResponse(content);
   if (data.usage) {
@@ -276,7 +288,7 @@ export async function generateWithClaude(
   const prompt = buildPrompt(user, target, result, template);
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
+  const data = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -311,17 +323,17 @@ export async function generateWithClaude(
         },
       ],
     }),
-  }, timeoutMs);
-  const duration = Date.now() - startedAt;
+  }, timeoutMs, async (response) => {
+    const duration = Date.now() - startedAt;
+    if (!response.ok) {
+      const bodyText = await response.text().catch(() => '');
+      logProviderRequest('claude', model, response.status, duration, response.statusText, bodyText);
+      throw new Error(`Claude API error: ${response.status} ${response.statusText}`);
+    }
+    logProviderRequest('claude', model, response.status, duration);
+    return response.json();
+  });
 
-  if (!response.ok) {
-    const bodyText = await response.text().catch(() => '');
-    logProviderRequest('claude', model, response.status, duration, response.statusText, bodyText);
-    throw new Error(`Claude API error: ${response.status} ${response.statusText}`);
-  }
-  logProviderRequest('claude', model, response.status, duration);
-
-  const data = await response.json();
   const content = data.content?.[0]?.text || '';
   const interpretation = parseAIResponse(content);
   if (data.usage) {
@@ -411,29 +423,29 @@ export async function generateWithOpenRouter(
   }
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
+  const data = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(requestBody),
-  }, timeoutMs);
-  const duration = Date.now() - startedAt;
+  }, timeoutMs, async (response) => {
+    const duration = Date.now() - startedAt;
+    // Not every OpenRouter-routed model/provider supports json_schema
+    // structured outputs — support is provider-dependent and OPENROUTER_MODEL
+    // is a runtime secret this code can't introspect. If the provider rejects
+    // response_format, fail loud (existing catch/fallback path in route.ts
+    // handles this safely already) instead of silently retrying without it.
+    if (!response.ok) {
+      const bodyText = await response.text().catch(() => '');
+      logProviderRequest('openrouter', model, response.status, duration, response.statusText, bodyText);
+      throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
+    }
+    logProviderRequest('openrouter', model, response.status, duration);
+    return response.json();
+  });
 
-  // Not every OpenRouter-routed model/provider supports json_schema
-  // structured outputs — support is provider-dependent and OPENROUTER_MODEL
-  // is a runtime secret this code can't introspect. If the provider rejects
-  // response_format, fail loud (existing catch/fallback path in route.ts
-  // handles this safely already) instead of silently retrying without it.
-  if (!response.ok) {
-    const bodyText = await response.text().catch(() => '');
-    logProviderRequest('openrouter', model, response.status, duration, response.statusText, bodyText);
-    throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
-  }
-  logProviderRequest('openrouter', model, response.status, duration);
-
-  const data = await response.json();
   const message = data.choices?.[0]?.message;
   const content = message?.content || '';
   if (!content) {
