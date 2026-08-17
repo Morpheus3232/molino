@@ -1,6 +1,7 @@
 import type { UserProfile } from '@/types/user';
 import { buildPersonalCode, buildPatterns } from '../synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
+import { getMasterNumbers, getMasterPositionMeaning, MASTER_POSITION_LABELS_ES } from '../numerologyEngine';
 import { ELEMENT_TONE, getOperatingPattern, getOperatingAction } from './fallbackNarrative';
 import {
   getDayTheme,
@@ -118,6 +119,14 @@ export function generateFallbackInterpretation(
       whatToConsider = [
         'Interpretá esto como una lente, no como un diagnóstico: señala una tendencia, no un destino fijo.',
       ];
+      const masters = getMasterNumbers(numerology);
+      if (masters.length > 0) {
+        whatToConsider.push(
+          ...masters.map(
+            (m) => `Número maestro — ${MASTER_POSITION_LABELS_ES[m.position]} ${m.number}: ${getMasterPositionMeaning(m.number, m.position)}`
+          )
+        );
+      }
 
       narrativeExtension = {
         opening: `${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}`,

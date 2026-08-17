@@ -320,3 +320,10 @@ export const MASTER_POSITION_MEANINGS: Record<MasterNumber, Record<MasterPositio
 export function getMasterPositionMeaning(number: MasterNumber, position: MasterPosition): string {
   return MASTER_POSITION_MEANINGS[number][position];
 }
+
+export const MASTER_POSITION_LABELS_ES: Record<MasterPosition, string> = {
+  lifePath: 'Camino de Vida',
+  expression: 'Expresión',
+  soul: 'Alma',
+  personality: 'Personalidad',
+};
