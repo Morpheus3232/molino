@@ -74,7 +74,7 @@ async function sleep(ms: number): Promise<void> {
 }
 
 async function tryLegacyProvider(
-  provider: Provider,
+  provider: Exclude<Provider, 'omniroute'>,
   user: UserProfile,
   target: CompatibilityTarget,
   result: CompatibilityResult,
@@ -112,6 +112,19 @@ async function tryLegacyProvider(
   }
 }
 
+/**
+ * 'omniroute' is only reachable through a local proxy (see
+ * isOmniRouteConfigured) — never in the Vercel serverless runtime.
+ * tryLegacyProvider has no 'omniroute' branch, so calling it with
+ * 'omniroute' as `provider` silently executes generateWithOpenAI while
+ * every log line still says `provider=omniroute` — a real request going
+ * out under a fake label. Resolving to the actual legacy provider BEFORE
+ * logging/calling is what makes `[AI] provider=...` trustworthy again.
+ */
+function resolveEffectiveProvider(provider: Provider): Exclude<Provider, 'omniroute'> {
+  return provider === 'omniroute' ? 'openai' : provider;
+}
+
 export async function generateWithRouting(
   user: UserProfile,
   target: CompatibilityTarget,
@@ -136,19 +149,21 @@ export async function generateWithRouting(
         console.error('[AI] provider=omniroute stage=attempt_failed message=' + (error instanceof Error ? error.message : String(error)));
       }
     } else {
-      console.warn('[AI] provider=omniroute stage=skipped reason=not_configured primary=omniroute');
+      const effective = resolveEffectiveProvider(primary);
+      console.warn(`[AI] provider=omniroute stage=skipped reason=not_configured effectivePrimary=${effective}`);
     }
   }
 
-  const primaryResult = await tryLegacyProvider(primary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
+  const effectivePrimary = resolveEffectiveProvider(primary);
+  const primaryResult = await tryLegacyProvider(effectivePrimary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
   if (primaryResult) {
-    console.log(`[AI] result=success provider=${primary} fallback=false`);
-    return { interpretation: primaryResult, providerUsed: primary, fallbackUsed: false };
+    console.log(`[AI] result=success provider=${effectivePrimary} fallback=false`);
+    return { interpretation: primaryResult, providerUsed: effectivePrimary, fallbackUsed: false };
   }
 
   if (config.enableFallback) {
-    const fallback = config.fallback;
-    console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${primary}`);
+    const fallback = resolveEffectiveProvider(config.fallback);
+    console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${effectivePrimary}`);
     const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs);
     if (fallbackResult) {
       console.log(`[AI] result=success provider=${fallback} fallback=true`);
@@ -156,8 +171,9 @@ export async function generateWithRouting(
     }
   }
 
-  console.error(`[AI] result=local_fallback reason=all_providers_failed primary=${primary} fallbackEnabled=${config.enableFallback}`);
-  throw new Error(`All providers failed (primary: ${primary}${config.enableFallback ? `, fallback: ${config.fallback}` : ''})`);
+  const effectiveFallback = resolveEffectiveProvider(config.fallback);
+  console.error(`[AI] result=local_fallback reason=all_providers_failed primary=${effectivePrimary} fallbackEnabled=${config.enableFallback}`);
+  throw new Error(`All providers failed (primary: ${effectivePrimary}${config.enableFallback ? `, fallback: ${effectiveFallback}` : ''})`);
 }
 
 export function getProviderStatus(): { 
