@@ -1,4 +1,5 @@
 import Link from "next/link";
+import MasterNumberPersonalization from "@/components/guia/MasterNumberPersonalization";
 
 export default function GuiaContent() {
   return (
@@ -17,6 +18,8 @@ export default function GuiaContent() {
         <p className="font-heading text-2xl sm:text-3xl text-foreground/80 leading-tight mb-12">
           11, 22, 33 — las frecuencias que no se reducen
         </p>
+
+        <MasterNumberPersonalization />
 
         <div className="space-y-10 text-base sm:text-lg text-foreground/80 leading-relaxed">
           <section>
@@ -77,7 +80,7 @@ export default function GuiaContent() {
           </section>
         </div>
 
-        <div className="mt-16 pt-10 border-t border-neutral-200/60">
+        <div className="mt-16 pt-10 border-t border-ink/10">
           <Link href="/guia" className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors">
             ← Todos los artículos
           </Link>
