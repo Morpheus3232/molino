@@ -1,4 +1,4 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { createRouteMetadata, siteUrl } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
   title: "Camino de Vida",
@@ -10,6 +10,23 @@ export const metadata = createRouteMetadata({
   image: "/opengraph-image",
 });
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Molino — Calculadora de Camino de Vida",
+  description:
+    "Calculá tu número de Camino de Vida con la fecha de nacimiento. Significado del 1 al 9 y números maestros 11, 22, 33.",
+  url: siteUrl("/herramientas/camino-de-vida"),
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Web",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
 export default function CaminoDeVidaLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {children}
+    </>
+  );
 }
