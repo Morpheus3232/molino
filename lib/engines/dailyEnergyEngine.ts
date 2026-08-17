@@ -79,6 +79,180 @@ const CAUTIONS_BY_PERSONAL_DAY: Record<number, string[]> = {
   33: ["Autosacrificio", "Carga emocional", "Agotamiento"],
 };
 
+export interface PersonalYearMeaning {
+  theme: string;
+  focus: string;
+  challenges: string;
+  opportunities: string;
+  keywords: string[];
+}
+
+/**
+ * Ciclo de 9 años (más 11/22/33 como variantes intensificadas de 2/4/6) que
+ * se repite mientras dura la vida — cada Año Personal retoma el tema del
+ * mismo número anterior, con el acumulado de los ciclos previos.
+ */
+export const PERSONAL_YEAR_MEANINGS: Record<number, PersonalYearMeaning> = {
+  1: {
+    theme: "Año de Comienzos",
+    focus: "Es el primer año del ciclo de nueve: lo que siembres ahora define el tono de los próximos ocho. Favorece decisiones propias, proyectos que arrancan de cero y cortar con lo que ya no tiene sentido continuar.",
+    challenges: "La ansiedad por arrancar todo a la vez, o el miedo a moverte sin tener el camino completo resuelto de antemano — nunca lo vas a tener, y esperar a tenerlo es la forma más común de perder el año.",
+    opportunities: "Cambios de rumbo (trabajo, ciudad, vínculo) que en otro momento del ciclo costarían más caro. La energía acompaña la iniciativa, no la espera.",
+    keywords: ["inicio", "independencia", "coraje"],
+  },
+  2: {
+    theme: "Año de Vínculos y Paciencia",
+    focus: "Después de sembrar, toca esperar — un año de construir en sociedad, cuidar acuerdos y desarrollar lo que empezaste el año anterior sin forzar resultados inmediatos.",
+    challenges: "La frustración de un ritmo que no depende solo de vos, y la tentación de sobreadaptarte para no generar fricción — ceder de más acá se paga en resentimiento acumulado.",
+    opportunities: "Sociedades, negociaciones y vínculos (personales o de trabajo) que maduran mejor con tiempo que con apuro. Es un año fuerte para pedir ayuda sin que eso sea debilidad.",
+    keywords: ["cooperación", "paciencia", "equilibrio"],
+  },
+  3: {
+    theme: "Año de Expresión",
+    focus: "La energía se vuelve social y creativa — hablar, escribir, mostrar trabajo, ampliar el círculo. Lo que en el 1 y el 2 se gestó en privado, ahora busca salida.",
+    challenges: "Dispersar energía en demasiados frentes sociales o creativos a la vez, o usar la expresión para evitar temas de fondo que siguen sin resolverse.",
+    opportunities: "Visibilidad: es un buen año para lanzar algo, aparecer, comunicar. La gente responde mejor a lo que decís este año que en otros del ciclo.",
+    keywords: ["expresión", "creatividad", "sociabilidad"],
+  },
+  4: {
+    theme: "Año de Estructura",
+    focus: "El ciclo pide orden después de la expansión del 3 — trabajo metódico, organización de lo material (finanzas, salud, rutinas), bases que sostengan lo que sigue.",
+    challenges: "La rigidez de querer controlar cada variable, o el desánimo de un año que se siente más lento y menos glamoroso que los anteriores — es lento porque es el que sostiene al resto.",
+    opportunities: "Todo lo que necesita disciplina sostenida (estudio largo, ahorro, tratamiento de salud, reorganización real) rinde más este año que en cualquier otro del ciclo.",
+    keywords: ["orden", "disciplina", "bases"],
+  },
+  5: {
+    theme: "Año de Cambio",
+    focus: "El punto medio del ciclo — la estructura del 4 se pone a prueba con movimiento: viajes, cambios de planes, oportunidades que no estaban en el guion.",
+    challenges: "La inconstancia de abandonar compromisos reales por la novedad, o decisiones tomadas por impulso que comprometen la estabilidad recién construida en el año anterior.",
+    opportunities: "Es el año más flexible del ciclo para probar algo distinto sin culpa — un cambio de trabajo, de ciudad, de forma de vivir, con menos costo que en un año 4 u 8.",
+    keywords: ["libertad", "cambio", "adaptación"],
+  },
+  6: {
+    theme: "Año de Responsabilidad y Cuidado",
+    focus: "Después del movimiento del 5, la energía vuelve hacia el hogar y los vínculos cercanos — familia, pareja, compromisos que requieren presencia sostenida, no solo intención.",
+    challenges: "El autosacrificio de cargar responsabilidades ajenas hasta el agotamiento, o el control disfrazado de cuidado — la diferencia entre las dos cosas se nota en si el otro pidió ayuda o no.",
+    opportunities: "Fortalecer vínculos que venían descuidados, resolver temas familiares o del hogar pendientes, y — si corresponde — decisiones de largo plazo en pareja.",
+    keywords: ["hogar", "compromiso", "armonía"],
+  },
+  7: {
+    theme: "Año de Introspección",
+    focus: "Un año menos orientado a resultados externos y más a comprensión — estudio, análisis, revisión honesta de en qué punto del camino estás realmente parado.",
+    challenges: "El aislamiento que se vuelve evitación, o el escepticismo que impide confiar incluso en lo que sí funciona — la introspección sirve si vuelve a la acción, no si se queda dando vueltas.",
+    opportunities: "Formación profunda, terapia, escritura, cualquier trabajo que requiera silencio sostenido rinde más este año — es el momento del ciclo para entender antes de decidir el próximo movimiento.",
+    keywords: ["introspección", "análisis", "silencio"],
+  },
+  8: {
+    theme: "Año de Poder Personal",
+    focus: "La comprensión del año 7 se convierte en acción con peso real — dinero, autoridad, negociaciones, resultados materiales de lo que se viene construyendo desde el 1.",
+    challenges: "El materialismo que pierde de vista para qué se buscaba el poder en primer lugar, o el uso de la autoridad para intimidar en vez de liderar.",
+    opportunities: "Negociaciones salariales, inversiones, ascensos, cierre de proyectos grandes — este año recompensa la ambición ejecutada con estrategia, no solo con esfuerzo.",
+    keywords: ["poder", "estrategia", "resultados"],
+  },
+  9: {
+    theme: "Año de Cierre",
+    focus: "El último del ciclo de nueve — soltar lo que ya cumplió su función, completar lo que quedó abierto, hacer lugar para que el próximo año 1 pueda arrancar de verdad.",
+    challenges: "Aferrarte a algo (un vínculo, un trabajo, una identidad) que ya terminó su ciclo por miedo al vacío que deja soltarlo, o postergar despedidas necesarias.",
+    opportunities: "Es el año más fértil del ciclo para terapia de cierre, mudanzas, finales de etapa, perdón — lo que se suelta bien acá no vuelve a pesar en el ciclo siguiente.",
+    keywords: ["cierre", "soltar", "culminación"],
+  },
+  11: {
+    theme: "Año Maestro de Intuición",
+    focus: "Variante intensificada del 2: la cooperación y la paciencia del ciclo base se combinan con una sensibilidad elevada — percibís cambios y oportunidades antes de que sean evidentes para el resto.",
+    challenges: "La misma intensidad que agudiza la percepción puede saturarla — ansiedad, sobreestimulación, dificultad para distinguir una corazonada real de un miedo proyectado.",
+    opportunities: "Decisiones que dependen de leer una situación antes de tener todos los datos — negociaciones, vínculos, proyectos donde la intuición bien aterrizada vale más que el análisis exhaustivo.",
+    keywords: ["intuición", "sensibilidad", "visión"],
+  },
+  22: {
+    theme: "Año Maestro Constructor",
+    focus: "Variante intensificada del 4: no es solo ordenar, es la capacidad de llevar una visión grande a una estructura real y duradera — la escala del proyecto importa este año.",
+    challenges: "El peso de la propia ambición puede paralizar antes de empezar — la distancia entre lo que se imagina construir y el primer paso concreto se vuelve abrumadora si no se divide en partes ejecutables.",
+    opportunities: "El mejor año del ciclo para lanzar algo que necesite fundamentos sólidos desde el día uno — un negocio, una obra, una organización pensada para durar, no para el corto plazo.",
+    keywords: ["visión", "estructura", "manifestación"],
+  },
+  33: {
+    theme: "Año Maestro de Servicio",
+    focus: "Variante intensificada del 6: el cuidado del ciclo base se vuelve vocación — sostener, enseñar o sanar a otros ocupa un lugar central, más allá de lo que el año pediría en su forma reducida.",
+    challenges: "El autosacrificio llevado al extremo — dar tanto que no queda margen para las propias necesidades, confundiendo servicio genuino con la obligación de resolver todo lo ajeno.",
+    opportunities: "Roles de cuidado, enseñanza o acompañamiento (formales o no) rinden en un nivel distinto este año — pero solo si se sostienen con límites, no desde el vaciamiento.",
+    keywords: ["servicio", "compasión", "sanación"],
+  },
+};
+
+export interface PersonalMonthMeaning {
+  theme: string;
+  energy: 'Alta' | 'Media' | 'Baja';
+  advice: string;
+}
+
+/**
+ * El Mes Personal aplica el mismo tema del número al recorte de un mes
+ * dentro del Año Personal vigente — la energía del año se expresa distinto
+ * mes a mes según en qué número del ciclo mensual (1-9, 11, 22, 33) caiga.
+ */
+export const PERSONAL_MONTH_MEANINGS: Record<number, PersonalMonthMeaning> = {
+  1: {
+    theme: "Mes de Impulso",
+    energy: 'Alta',
+    advice: "Es el mejor mes del ciclo para arrancar algo puntual — una conversación pendiente, un primer paso concreto. La energía acompaña, no esperes el momento perfecto.",
+  },
+  2: {
+    theme: "Mes de Espera Activa",
+    energy: 'Media',
+    advice: "No es un mes para forzar decisiones — es para escuchar, ajustar acuerdos y dejar que lo que iniciaste el mes anterior encuentre su ritmo sin apurarlo.",
+  },
+  3: {
+    theme: "Mes de Comunicación",
+    energy: 'Alta',
+    advice: "Buen momento para hablar de lo que venías postergando, mostrar un trabajo o ampliar contactos — la palabra tiene más peso de lo habitual este mes.",
+  },
+  4: {
+    theme: "Mes de Orden",
+    energy: 'Baja',
+    advice: "Un mes menos vistoso, más de trabajo de base — ordenar finanzas, agenda o rutinas. Rinde más de lo que parece mientras lo estás haciendo.",
+  },
+  5: {
+    theme: "Mes de Imprevistos",
+    energy: 'Alta',
+    advice: "Los planes tienden a cambiar — dejá margen en la agenda en vez de resistirte al cambio. Es un mes flexible, no uno para atarse a lo fijo.",
+  },
+  6: {
+    theme: "Mes de Vínculos Cercanos",
+    energy: 'Media',
+    advice: "La atención se corre hacia el hogar y la gente cercana — buen mes para resolver un tema familiar pendiente, no tan bueno para aislarte en lo propio.",
+  },
+  7: {
+    theme: "Mes de Pausa",
+    energy: 'Baja',
+    advice: "Bajá el ritmo social si podés — es un mes que rinde más en silencio (leer, estudiar, pensar) que en agenda llena. Forzar actividad social este mes suele salir caro en energía.",
+  },
+  8: {
+    theme: "Mes de Resultados",
+    energy: 'Alta',
+    advice: "Buen mes para cerrar negociaciones, pedir lo que corresponde o tomar decisiones de peso económico — la energía sostiene la asertividad, no la pasividad.",
+  },
+  9: {
+    theme: "Mes de Cierre",
+    energy: 'Media',
+    advice: "Terminá lo que quedó a medias antes de arrancar algo nuevo — este mes premia soltar, no acumular un proyecto más sobre los que ya están abiertos.",
+  },
+  11: {
+    theme: "Mes Maestro de Intuición",
+    energy: 'Alta',
+    advice: "Prestá atención a corazonadas puntuales sobre decisiones concretas de este mes — pero contrastalas con algo tangible antes de actuar, la intensidad puede confundir percepción con ansiedad.",
+  },
+  22: {
+    theme: "Mes Maestro de Construcción",
+    energy: 'Alta',
+    advice: "Si tenés un proyecto grande en marcha, este es el mes para darle estructura real — un plan concreto, no solo la visión. La ambición sin pasos ejecutables se estanca.",
+  },
+  33: {
+    theme: "Mes Maestro de Cuidado",
+    energy: 'Media',
+    advice: "Es un mes fuerte para sostener a otros, pero cuidá no vaciarte en el intento — poner un límite este mes no es egoísmo, es lo que te permite seguir sosteniendo después.",
+  },
+};
+
 /**
  * Calculate daily energy for a user on a specific date.
  * Deterministic: same inputs always produce the same output.
