@@ -1,17 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl } from "@/lib/seo";
 import { Sparkles, GitBranch, ShieldCheck, Zap, Heart, BookOpen, Code2, ArrowRight, Bookmark } from "lucide-react";
 import Card from "@/components/ui/Card";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Changelog & Novedades — Molino",
   description:
     "Registro público de mejoras técnicas, nuevas funcionalidades, motores de cálculo y actualizaciones de privacidad en Molino.",
-  alternates: {
-    canonical: siteUrl("/changelog"),
-  },
-};
+  path: "/changelog",
+});
 
 const RELEASES = [
   {

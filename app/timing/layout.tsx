@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Timing",
-  robots: { index: false },
-};
+  noIndex: true,
+});
 
 export default function TimingLayout({ children }: { children: React.ReactNode }) {
   return children;

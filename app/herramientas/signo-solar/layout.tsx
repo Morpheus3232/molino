@@ -1,24 +1,14 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Signo Solar",
   description:
     "Calculá tu signo solar con tu fecha de nacimiento. Conocé los 12 signos del zodíaco occidental, sus elementos y modalidades.",
-  alternates: { canonical: siteUrl("/herramientas/signo-solar") },
-  openGraph: {
-    type: "website",
-    url: siteUrl("/herramientas/signo-solar"),
-    title: "Calculá tu Signo Solar — Molino",
-    description: "Signo zodiacal occidental a partir de tu fecha de nacimiento.",
-    images: [siteUrl("/opengraph-image")],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Calculá tu Signo Solar — Molino",
-    description: "Signo zodiacal occidental a partir de tu fecha de nacimiento.",
-  },
-};
+  path: "/herramientas/signo-solar",
+  ogTitle: "Calculá tu Signo Solar — Molino",
+  ogDescription: "Signo zodiacal occidental a partir de tu fecha de nacimiento.",
+  image: "/opengraph-image",
+});
 
 export default function SignoSolarLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

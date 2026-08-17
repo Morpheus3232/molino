@@ -1,17 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl, SITE_URL } from "@/lib/seo";
+import { siteUrl, SITE_URL, createRouteMetadata } from "@/lib/seo";
 import { Sparkles, ArrowRight, Zap, Sun, Heart, Smartphone, Moon, ExternalLink, Check, Copy } from "lucide-react";
 import Card from "@/components/ui/Card";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Atajos de Apple (Siri Shortcuts) & Automatizaciones — Molino",
   description:
     "Configurá Atajos de iOS, rutinas de Siri y webhooks para consultar tu vibración diaria, fases lunares y sinastría automáticamente.",
-  alternates: {
-    canonical: siteUrl("/shortcuts"),
-  },
-};
+  path: "/shortcuts",
+});
 
 const SHORTCUTS = [
   {

@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { createRouteMetadata } from "@/lib/seo";
 import { getMemberCount, getMonthlyMemberCounts } from "@/lib/metrics";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Transparencia — Molino",
   description:
     "Métricas públicas y honestas de Molino: cuántos miembros reales (pagos validados) hay, mes a mes, y cómo financiamos el proyecto sin vender tus datos.",
-  alternates: { canonical: siteUrl("/transparencia") },
-};
+  path: "/transparencia",
+});
 
 const CONTACT_EMAIL = "versionlimitada@proton.me";
 

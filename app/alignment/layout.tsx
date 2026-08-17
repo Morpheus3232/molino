@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Alineación",
   description: "Explorá tu alineación y equilibrio energético.",
-  robots: { index: false, follow: false },
-};
+  noIndex: true,
+  noFollow: true,
+});
 
 export default function AlignmentLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

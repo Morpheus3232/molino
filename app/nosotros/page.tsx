@@ -1,21 +1,14 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import NosotrosContent from "./NosotrosContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Quiénes somos",
   description: "Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.",
-  alternates: {
-    canonical: siteUrl("/nosotros"),
-  },
-  openGraph: {
-    title: "Quiénes somos — Molino",
-    description: "La historia y los valores detrás de Molino: por qué lo construimos y en qué creemos.",
-    type: "article",
-    url: siteUrl("/nosotros"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/nosotros",
+  ogTitle: "Quiénes somos — Molino",
+  ogDescription: "La historia y los valores detrás de Molino: por qué lo construimos y en qué creemos.",
+  image: "/opengraph-image",
+});
 
 const jsonLd = [
   {

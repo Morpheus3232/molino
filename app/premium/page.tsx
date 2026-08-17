@@ -1,22 +1,14 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import PremiumClient from "./PremiumClient";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Premium — Tu Síntesis Completa de Autoconocimiento",
   description:
     "Conectá los 3 sistemas en una lectura única: numerología, astrología y zodíaco chino. Explorá tus ciclos, rituales y decisiones sin sesgos. $8 USD de acceso permanente.",
-  alternates: {
-    canonical: siteUrl("/premium"),
-  },
-  openGraph: {
-    title: "Molino Premium — Síntesis Rigurosa de Arquetipos",
-    description:
-      "Entendé tu mapa completo: arquetipos, ciclos de vida y dinámicas ocultas. Herramienta de reflexión honesta, no oráculo.",
-    type: "website",
-    url: siteUrl("/premium"),
-  },
-};
+  path: "/premium",
+  ogTitle: "Molino Premium — Síntesis Rigurosa de Arquetipos",
+  ogDescription: "Entendé tu mapa completo: arquetipos, ciclos de vida y dinámicas ocultas. Herramienta de reflexión honesta, no oráculo.",
+});
 
 export default function PremiumPage() {
   return <PremiumClient />;

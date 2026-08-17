@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import BibliotecaContent from "./BibliotecaContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Biblioteca — Fuentes y referencias",
   description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, kabbalah y más sistemas simbólicos.",
-  alternates: {
-    canonical: siteUrl("/biblioteca"),
-  },
-  openGraph: {
-    title: "Biblioteca — Molino",
-    description: "Fuentes y referencias sobre numerología, astrología, zodiaco chino y otros sistemas simbólicos.",
-    type: "article",
-    url: siteUrl("/biblioteca"),
-  },
-};
+  path: "/biblioteca",
+  ogTitle: "Biblioteca — Molino",
+  ogDescription: "Fuentes y referencias sobre numerología, astrología, zodiaco chino y otros sistemas simbólicos.",
+});
 
 const jsonLd = [
   {

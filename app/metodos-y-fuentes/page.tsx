@@ -1,25 +1,16 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import { BookMarked, Compass, Github, Sparkles } from "lucide-react";
 import Card from "@/components/ui/Card";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Métodos y Fuentes — Molino",
   description:
     "Qué son la numerología, la astrología y el zodíaco chino, cómo Molino los calcula y por qué los tratamos como herramienta de reflexión y no como ciencia ni predicción.",
-  alternates: {
-    canonical: siteUrl("/metodos-y-fuentes"),
-  },
-  openGraph: {
-    title: "Métodos y Fuentes — Molino",
-    description:
-      "Sistemas simbólicos, cálculo determinista y código abierto: la metodología completa detrás de Molino.",
-    type: "article",
-    url: siteUrl("/metodos-y-fuentes"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/metodos-y-fuentes",
+  ogDescription: "Sistemas simbólicos, cálculo determinista y código abierto: la metodología completa detrás de Molino.",
+  image: "/opengraph-image",
+});
 
 const jsonLd = [
   {

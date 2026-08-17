@@ -1,24 +1,14 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Compatibilidad con marcas",
   description:
     "Descubrí la compatibilidad entre tu energía y la de las marcas más importantes del mundo, usando numerología y zodíaco chino.",
-  alternates: { canonical: siteUrl("/compatibility/brands") },
-  openGraph: {
-    type: "website",
-    url: siteUrl("/compatibility/brands"),
-    title: "Compatibilidad con marcas — Molino",
-    description: "Compatibilidad entre tu energía y la de las marcas del mundo.",
-    images: [siteUrl("/opengraph-image")],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Compatibilidad con marcas — Molino",
-    description: "Compatibilidad entre tu energía y la de las marcas del mundo.",
-  },
-};
+  path: "/compatibility/brands",
+  ogTitle: "Compatibilidad con marcas — Molino",
+  ogDescription: "Compatibilidad entre tu energía y la de las marcas del mundo.",
+  image: "/opengraph-image",
+});
 
 export default function BrandsLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

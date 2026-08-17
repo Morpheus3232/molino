@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import FuentesContent from "./FuentesContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Fuentes y metodología",
   description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino. Transparencia académica y rigor.",
-  alternates: {
-    canonical: siteUrl("/conocimiento/fuentes"),
-  },
-  openGraph: {
-    title: "Fuentes y metodología — Molino",
-    description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
-    type: "article",
-    url: siteUrl("/conocimiento/fuentes"),
-  },
-};
+  path: "/conocimiento/fuentes",
+  ogTitle: "Fuentes y metodología — Molino",
+  ogDescription: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
+});
 
 const jsonLd = [
   {

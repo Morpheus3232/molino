@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import GuiaContent from "./GuiaContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Camino de Vida 7 — El buscador de la verdad",
   description: "Guía completa del Camino de Vida 7 en numerología: significado, personalidad, fortalezas, desafíos, relaciones y crecimiento personal.",
-  alternates: {
-    canonical: siteUrl("/guia/camino-de-vida-7"),
-  },
-  openGraph: {
-    title: "Camino de Vida 7 — El buscador de la verdad | Guía | Molino",
-    description: "Significado, personalidad y camino de crecimiento del número 7 en numerología.",
-    type: "article",
-    url: siteUrl("/guia/camino-de-vida-7"),
-  },
-};
+  path: "/guia/camino-de-vida-7",
+  ogTitle: "Camino de Vida 7 — El buscador de la verdad | Guía | Molino",
+  ogDescription: "Significado, personalidad y camino de crecimiento del número 7 en numerología.",
+});
 
 const jsonLd = [
   {

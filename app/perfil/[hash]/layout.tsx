@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Mi mapa",
   description: "Tu mapa personal de autoconocimiento.",
-  robots: { index: false, follow: false },
-};
+  noIndex: true,
+  noFollow: true,
+});
 
 export default function PerfilLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

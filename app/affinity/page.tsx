@@ -1,22 +1,16 @@
-import { siteUrl } from "@/lib/seo";
 import type { LightweightEntity } from "@/types/atlas";
 import { ENTITY_TYPES, getEntitiesByType, getAvailableTypes, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
 import AffinityClient from "./AffinityClient";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = createRouteMetadata({
   title: "Afinidad",
   description: "Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.",
-  alternates: {
-    canonical: siteUrl("/affinity"),
-  },
-  openGraph: {
-    title: "Afinidad — Molino",
-    description: "Afinidad simbólica entre vos y el mundo.",
-    type: "website",
-    url: siteUrl("/affinity"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/affinity",
+  ogTitle: "Afinidad — Molino",
+  ogDescription: "Afinidad simbólica entre vos y el mundo.",
+  image: "/opengraph-image",
+});
 
 /**
  * Server Component: builds the lightweight per-type projections (no events,
