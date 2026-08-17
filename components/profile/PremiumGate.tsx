@@ -8,22 +8,10 @@ import Button from '@/components/ui/Button';
 import Logo from '@/components/ui/Logo';
 import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
-import { savePremiumTokenClient } from '@/lib/premium';
+import { savePremiumTokenClient, getOrCreateProfileSalt } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 import { useCommitPremiumUnlock, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
-
-const PROFILE_SALT_KEY = 'molino-profile-salt';
-
-function getOrCreateProfileSalt(): string {
-  if (typeof window === 'undefined') return '';
-  let salt = localStorage.getItem(PROFILE_SALT_KEY);
-  if (!salt) {
-    // Generate UUID v4
-    salt = crypto.randomUUID();
-    localStorage.setItem(PROFILE_SALT_KEY, salt);
-  }
-  return salt;
-}
+import { usePremiumCoupon } from '@/lib/hooks/usePremiumCoupon';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -96,10 +84,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [recoverPaymentId, setRecoverPaymentId] = useState('');
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
-  const [showCoupon, setShowCoupon] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
-  const [couponError, setCouponError] = useState<string | null>(null);
-  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [verificationError, setVerificationError] = useState<string | null>(null);
@@ -108,6 +92,15 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const pollAttemptsRef = useRef(0);
 
   const commitUnlock = useCommitPremiumUnlock({ setState, setJustUnlocked, name, birthDate });
+  const {
+    showCoupon,
+    setShowCoupon,
+    couponCode,
+    setCouponCode,
+    couponError,
+    isApplyingCoupon,
+    handleApplyCoupon,
+  } = usePremiumCoupon({ name, birthDate, commitUnlock });
 
   // Único producto activo: pago único de $8 USD (Opción A — Pro/Familiar
   // desactivados, ver components/pricing/pricing-data.ts).
@@ -296,32 +289,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       setRecoverError('Error al intentar recuperar la compra');
     } finally {
       setIsRecovering(false);
-    }
-  };
-
-  const handleApplyCoupon = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!couponCode.trim()) return;
-
-    setIsApplyingCoupon(true);
-    setCouponError(null);
-
-    try {
-      const res = await fetch('/api/mp/coupon', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coupon: couponCode.trim(), name, birthDate, salt: getOrCreateProfileSalt() }),
-      });
-      const data = await res.json();
-      if (res.ok && data.valid) {
-        commitUnlock(data.premiumToken);
-      } else {
-        setCouponError(data.reason || 'Código inválido');
-      }
-    } catch {
-      setCouponError('Error al aplicar el cupón');
-    } finally {
-      setIsApplyingCoupon(false);
     }
   };
 
