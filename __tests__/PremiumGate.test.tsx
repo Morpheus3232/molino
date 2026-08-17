@@ -60,7 +60,7 @@ describe('PremiumGate', () => {
     });
     
     // Should show paywall content
-    expect(screen.getByText(/Desbloque|Accedé|Pago único/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeInTheDocument();
   });
 
   it('TEST 2: API check = true → PremiumGate unlocked → children in DOM', async () => {
@@ -141,7 +141,7 @@ describe('PremiumGate', () => {
     });
     
     // Should show error/paywall
-    expect(screen.getByText(/Desbloque|Accedé|Error|error|Pago único/i)).toBeInTheDocument();
+    expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeInTheDocument();
   });
 
   it('TEST 5: premiumEnabled = false flag → children render without paywall (bypass)', async () => {

@@ -119,7 +119,7 @@ describe('LecturaProfunda', () => {
     expect(screen.getByText(/TU MOMENTO/)).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/Pago único|Desbloque|Accedé/i)).toBeInTheDocument();
+      expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeInTheDocument();
     });
 
     // Interpretación (06, misma frase que el masthead pero como h3 propio) y
