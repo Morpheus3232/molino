@@ -9,6 +9,7 @@ import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import type { UserProfile } from "@/types/user";
 import { fadeUpDelayed } from "@/lib/utils/motion";
+import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 
 /** "2+0+2+6+0+8+1+6 = 25 → 2+5 = 7" — la cuenta completa, no solo el resultado. */
 function formatBreakdown(breakdown: ReturnType<typeof getDateNumberBreakdown>): string {
@@ -40,6 +41,9 @@ export default function TodayNumberBanner() {
   const todayKey = useMemo(() => toLocalDateKey(new Date()), []);
   const todayNumber = useMemo(() => getCalendarDayContent(todayKey), [todayKey]);
   const breakdown = useMemo(() => getDateNumberBreakdown(todayKey), [todayKey]);
+  // Mismo hook que usa /hoy (HoyClient.tsx) — null-safe, no requiere perfil
+  // no nulo. Se llama sin condicionar (regla de hooks) antes del early return.
+  const daily = useDailyEnergy(profile);
 
   if (!mounted || !profile?.birthDate) return null;
 
@@ -77,6 +81,43 @@ export default function TodayNumberBanner() {
         >
           {todayNumber.description}
         </motion.p>
+
+        {/* Fase lunar — dato puntual, mismo lenguaje que el meter de
+            "Intensidad del patrón" de la síntesis paga: label-micro + texto,
+            sin card. El emoji es dato de contenido, no ícono de UI. */}
+        {daily?.moonPhase && (
+          <motion.p {...fadeUpDelayed(0.22)} className="mt-6 flex items-center justify-center gap-2">
+            <span className="label-micro">Fase lunar</span>
+            <span className="text-sm text-foreground">
+              {daily.moonPhase.emoji} {daily.moonPhase.phase}
+            </span>
+          </motion.p>
+        )}
+
+        {/* Tu foco de hoy / Evitá hoy — mismo trazo accent/border que ya usan
+            Fortalezas/Zonas de atención en la síntesis paga (MolinoInterpretation.tsx),
+            sin el bloque de Consejo del Momento ni el CTA al Journal de DailyFocus.tsx. */}
+        {daily && (
+          <motion.div
+            {...fadeUpDelayed(0.24)}
+            className="mt-8 pt-6 border-t border-ink/10 grid grid-cols-1 sm:grid-cols-2 gap-6 text-left max-w-lg mx-auto"
+          >
+            <div>
+              <p className="label-micro mb-3">Tu foco de hoy</p>
+              <div className="flex items-start gap-3">
+                <span className="w-4 h-px bg-accent mt-[0.65em] shrink-0" aria-hidden="true" />
+                <p className="text-base text-foreground leading-relaxed">{daily.focusAction}</p>
+              </div>
+            </div>
+            <div>
+              <p className="label-micro mb-3">Evitá hoy</p>
+              <div className="flex items-start gap-3">
+                <span className="w-4 h-px bg-border mt-[0.65em] shrink-0" aria-hidden="true" />
+                <p className="text-base text-muted leading-relaxed">{daily.avoidAction}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         <motion.p {...fadeUpDelayed(0.25)} className="text-sm text-muted mt-4">
           {todayNumber.tags.join(" · ")}
