@@ -138,6 +138,11 @@ export default function MolinoInterpretation({
   // visible even when isUsingAI doesn't change (ai -> ai), which otherwise
   // updates the DOM in place with no animation at all.
   const [contentVersion, setContentVersion] = useState(0);
+  // True cuando la última respuesta vino de lib/cache/interpretationCache.ts
+  // (server: `cached: true`) en vez de una llamada real a IA — permite
+  // saltar la coreografía de "generando" (BuildingMolino) cuando el
+  // contenido ya está listo, sin esperar una animación que finge trabajo.
+  const [isFromCache, setIsFromCache] = useState(false);
   // React batches setFallbackInterpretation/setAiInterpretation/setIsInterpreting
   // together in the same render (they all happen in one fetch callback), so
   // `interpretation` and `!isInterpreting` become true in the SAME tick —
@@ -171,6 +176,8 @@ export default function MolinoInterpretation({
         }),
       });
       const data = await res.json();
+      const cameFromCache = data.cached === true;
+      setIsFromCache(cameFromCache);
       if (data.regenerateStatus) {
         setRegenerateStatus(data.regenerateStatus);
       }
@@ -218,6 +225,13 @@ export default function MolinoInterpretation({
   const handleRevealComplete = useCallback(() => {
     setRevealReady(true);
   }, []);
+
+  // Un cache hit nunca renderiza BuildingMolino (ver JSX abajo), así que
+  // nada más dispararía handleRevealComplete — sin esto, un justUnlocked
+  // servido desde cache se quedaría sin mostrar el contenido nunca.
+  useEffect(() => {
+    if (isFromCache) setRevealReady(true);
+  }, [isFromCache]);
 
   // Regenerate: clear the AI result so `interpretation` falls back to the
   // local synthesis while the new fetch runs, then re-fetch. isRegenerating
@@ -614,10 +628,13 @@ export default function MolinoInterpretation({
         </div>
       </div>
 
-      {/* Loading state — BuildingMolino solo en el flujo post-pago */}
+      {/* Loading state — BuildingMolino solo en el flujo post-pago, y solo si
+          el contenido no vino ya resuelto del cache (isFromCache): mostrar
+          la coreografía de "generando" sobre algo que ya está listo sería
+          fingir un trabajo que no se hizo. */}
       <AnimatePresence mode="wait">
         {justUnlocked ? (
-          !revealReady && (
+          !revealReady && !isFromCache && (
             <motion.div
               key="building"
               initial={{ opacity: 0 }}
