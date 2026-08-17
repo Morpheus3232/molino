@@ -1,59 +1,20 @@
 /**
- * Molino Intelligence Engine
- *
- * Central layer that aggregates deterministic data from all modules
- * and provides structured context for AI interpretation.
- *
- * PRINCIPLE: Deterministic data → Structured context → AI interpretation → Actionable explanation
- *
- * The AI never invents calculations. It interprets data that Molino already computed.
+ * Prompt Builder V2 — moved verbatim from intelligenceEngine.ts (Paso 7 of
+ * the intelligenceEngine refactor). CERO EDICIÓN DE PROSA: not a single
+ * word of the prompt text was changed in this move — only import paths
+ * and the function name differ from the legacy version
+ * (buildIntelligencePromptLegacy in intelligenceEngine.ts). Guarded behind
+ * INTELLIGENCE_ENGINE_V2_ENABLED until prompt-builder-content.test.ts
+ * confirms byte-identical output on both paths.
  */
 
 import type { UserProfile } from '@/types/user';
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules } from '../synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
-import { sanitizeNameForPrompt, sanitizeUserText, pseudonymFor } from '@/lib/ai/piiSanitizer';
-import { buildIntelligencePromptV2 } from './intelligence/promptBuilder';
+import { sanitizeNameForPrompt, sanitizeUserText } from '@/lib/ai/piiSanitizer';
+import type { InterpretationRequest } from './types';
 
-import type {
-  MolinoContext,
-  InterpretationType,
-  ConversationTurn,
-  ReadingContext,
-  InterpretationRequest,
-  MolinoInterpretation,
-} from './intelligence/types';
-export type {
-  MolinoContext,
-  InterpretationType,
-  ConversationTurn,
-  ReadingContext,
-  InterpretationRequest,
-  MolinoInterpretation,
-} from './intelligence/types';
-
-export { buildMolinoContext } from './intelligence/contextBuilder';
-
-// ============================================================
-// PROMPT BUILDER
-// ============================================================
-
-/**
- * Build a structured prompt for AI interpretation.
- * The prompt includes all deterministic data from MolinoContext.
- * The AI's role is to INTERPRET, not to CALCULATE.
- *
- * Thin wrapper behind INTELLIGENCE_ENGINE_V2_ENABLED (default off): delegates
- * to buildIntelligencePromptV2 (lib/engines/intelligence/promptBuilder.ts) or
- * to the legacy implementation below, unchanged. Flip the flag off in any
- * environment for an instant rollback with no redeploy.
- */
-export function buildIntelligencePrompt(request: InterpretationRequest): string {
-  const useV2 = process.env.INTELLIGENCE_ENGINE_V2_ENABLED === 'true';
-  return useV2 ? buildIntelligencePromptV2(request) : buildIntelligencePromptLegacy(request);
-}
-
-function buildIntelligencePromptLegacy(request: InterpretationRequest): string {
+export function buildIntelligencePromptV2(request: InterpretationRequest): string {
   const { type, context, question, template, conversationHistory, readingContext } = request;
   const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
   const userName = sanitizeNameForPrompt(userProfile.name || '');
@@ -485,5 +446,3 @@ Generá una respuesta JSON con:
 }`;
   }
 }
-
-export { generateFallbackInterpretation } from './intelligence/fallbackInterpretation';
