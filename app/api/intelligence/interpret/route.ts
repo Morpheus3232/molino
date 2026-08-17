@@ -22,6 +22,7 @@ import {
 } from '@/lib/kv';
 import { recordGeneration } from '@/lib/ai/costTracking';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
+import { generatePromptHash, getCachedInterpretation, setCachedInterpretation, invalidateCache, getCacheExpiry } from '@/lib/cache/interpretationCache';
 
 // "personal_profile" is the paid synthesis shown behind PremiumGate on
 // /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
@@ -134,13 +135,16 @@ export async function POST(req: NextRequest) {
 
     let regenerateStatus: { used: number; limit: number; remaining: number } | null = null;
 
+    // Computed for every type (not just premium): also the cache key's
+    // identity — see lib/cache/interpretationCache.ts.
+    const profileHash = hashProfile(name || '', dob, salt);
+
     if (PREMIUM_INTERPRETATION_TYPES.has(type)) {
       // Device-bound token verification: prevents share-URL bypass.
       // hasPremiumAccess alone is NOT enough — it only proves the profile
       // has been paid for, not that THIS device paid. The token lives
       // exclusively in localStorage of the paying device and never travels
       // in shareable URLs.
-      const profileHash = hashProfile(name || '', dob, salt);
       let premium = false;
       try {
         premium = await hasPremiumAccess(profileHash);
@@ -199,6 +203,23 @@ export async function POST(req: NextRequest) {
     });
 
     const fallback = generateFallbackInterpretation({ type, context, question });
+    const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext });
+    const promptHash = generatePromptHash(prompt);
+
+    if (isRegenerate) {
+      // "Regenerar" siempre debe producir contenido nuevo: tira el cache
+      // vigente en vez de servir lo mismo que ya se le mostró al usuario.
+      await invalidateCache(profileHash, type);
+    } else {
+      const cached = await getCachedInterpretation(profileHash, type, promptHash);
+      if (cached) {
+        const cachedBody = JSON.parse(cached.response);
+        return NextResponse.json(
+          { ...cachedBody, cached: true, ...(regenerateStatus && { regenerateStatus }) },
+          { headers: PRIVATE_NO_STORE }
+        );
+      }
+    }
 
     let aiResult: MolinoInterpretation | null = null;
     let aiError: string | null = null;
@@ -207,8 +228,6 @@ export async function POST(req: NextRequest) {
     const generationStartedAt = Date.now();
 
     try {
-      const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext });
-
       const compatResult = compatibility || {
         user: profile,
         target: {},
@@ -381,7 +400,7 @@ export async function POST(req: NextRequest) {
       }));
     }
 
-    return NextResponse.json({
+    const responseBody = {
       fallback: sanitizeInterpretation(fallback),
       ai: aiResult ? sanitizeInterpretation(aiResult) : null,
       // Explicit status so callers never have to infer "was this real AI?"
@@ -391,8 +410,27 @@ export async function POST(req: NextRequest) {
       // above / [premium_ai_invalid] log).
       aiStatus: aiResult ? 'valid' : aiError ? 'error' : 'invalid',
       ...(aiError && { error: aiError }),
-      ...(regenerateStatus && { regenerateStatus }),
-    }, { headers: PRIVATE_NO_STORE });
+    };
+
+    // Solo se cachea una interpretación real: un error transitorio del
+    // proveedor o contenido inválido no debe quedar pegado sirviéndose por
+    // el resto del TTL — la próxima visita reintenta contra IA de nuevo.
+    if (aiResult) {
+      const ttl = getCacheExpiry(type);
+      await setCachedInterpretation({
+        profileHash,
+        interpretationType: type,
+        promptHash,
+        response: JSON.stringify(responseBody),
+        createdAt: Date.now(),
+        expiresAt: ttl ? Date.now() + ttl * 1000 : null,
+      });
+    }
+
+    return NextResponse.json(
+      { ...responseBody, ...(regenerateStatus && { regenerateStatus }) },
+      { headers: PRIVATE_NO_STORE }
+    );
   } catch (error) {
     console.error('[/api/intelligence/interpret] Error:', error);
     return NextResponse.json({ error: 'Internal error' }, { status: 500 });
