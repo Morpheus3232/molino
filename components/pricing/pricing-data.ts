@@ -17,7 +17,7 @@ export function getPlanById(id: string): Plan | undefined {
  * Precio USD único a cobrar por un plan+cycle (pago único del precio del
  * plan elegido — ver FAQ "se cobra una sola vez al año"). Devuelve 0 para el
  * plan Gratis. Fuente de verdad compartida entre la página /precios y la
- * validación server-side (lib/mercadopago.ts / lib/paypal.ts), así el precio
+ * validación server-side (lib/mercadopago.ts), así el precio
  * que ve el usuario y el que valida el webhook nunca divergen.
  */
 export function resolvePlanUsdPrice(planId: string, cycle: BillingCycle): number {
