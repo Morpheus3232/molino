@@ -55,8 +55,10 @@ components/
 
 lib/
   engines/                # 27 motores de cálculo (ver abajo)
+    intelligence/          # Prompt builder V2 del motor de IA (ver sección propia)
     __tests__/            # Tests unitarios
   ai/                      # Interpretación asistida por LLM
+  cache/                   # interpretationCache.ts — cache de interpretaciones (Vercel KV)
   session/                 # Persistencia: ephemeral.ts, localStorage.ts, multiProfiles.ts, dailyHistory.ts
   data/                    # Datos públicos estáticos (countries-atlas.ts, brands-60.ts, famousPeopleToEntities.ts)
   interpreter/, numerology/, calculations/, context/, i18n/, viral/, workers/
@@ -121,6 +123,74 @@ AffinitySectionPrimitives.tsx      SectionHeader, CollapsibleSection, DataRow,
 Detalle del análisis de responsabilidades y decisiones de extracción en
 `.claude/execution-logs/affinity-responsibilities.md` y
 `.claude/execution-logs/affinity-refactor.diff`.
+
+## Motor de IA — `intelligenceEngine.ts` + feature flag V2 (`lib/engines/intelligence/`)
+
+Refactorizado 2026-08-17 (`intelligenceEngine.ts` pasó de 1123 a 489
+líneas). `buildIntelligencePrompt()` es un wrapper delgado que lee
+`process.env.INTELLIGENCE_ENGINE_V2_ENABLED === 'true'` y delega:
+
+```
+buildIntelligencePrompt(request)
+  ├─ V2 (flag=true)  → lib/engines/intelligence/promptBuilder.ts (buildIntelligencePromptV2)
+  └─ legacy (default) → buildIntelligencePromptLegacy() (queda completo dentro de intelligenceEngine.ts)
+```
+
+Módulos extraídos junto al prompt builder (todos en
+`lib/engines/intelligence/`): `types.ts` (tipos compartidos, incl.
+`InterpretationType`), `contextBuilder.ts`, `fallbackThemes.ts`,
+`fallbackNarrative.ts`, `fallbackInterpretation.ts`. El contenido del
+prompt es **byte-idéntico** entre V2 y legacy (verificado con tests de
+contenido generados programáticamente,
+`prompt-builder-content.test.ts`) — el flag es puramente estructural, no
+cambia el output. Activo en Production desde esta sesión; procedimiento de
+rollback (solo env var, sin revertir código) en
+`.claude/execution-logs/v2-rollback-procedure.md`.
+
+## Cache de interpretaciones (`lib/cache/interpretationCache.ts`)
+
+Antes de esta sesión, cada visita a una página que renderiza
+`components/ui/MolinoInterpretation.tsx` disparaba una llamada real (y
+paga) al proveedor de IA, sin importar si ya se había generado la misma
+interpretación antes. `app/api/intelligence/interpret/route.ts` ahora
+cachea en Vercel KV antes de llamar al proveedor:
+
+```
+key:   interp:${profileHash}:${type}:${version}:${hash(prompt)}
+TTL:   daily_energy → hasta medianoche UTC
+       timing       → 24h fijas
+       resto        → sin TTL (invalida solo si cambia el prompt o la versión)
+```
+
+`profileHash` reusa el mismo identificador pseudónimo que ya usa
+`lib/kv.ts` para premium/tokens — no es un `userId` nuevo. `version` es un
+contador por `profileHash+type` que "Regenerar" (`isRegenerate: true` en
+el body) incrementa para invalidar el cache vigente sin necesitar conocer
+el `promptHash` exacto a borrar. Diseño completo en
+`.claude/execution-logs/interpretation-cache-design.md`.
+
+## Cadena de proveedores de IA (`lib/engines/aiEngine.ts` + `providerRouter.ts`)
+
+`generateWithRouting()` (`providerRouter.ts`) intenta un proveedor
+primario y, si falla, uno de fallback (`openai`/`claude`/`openrouter`;
+`omniroute` solo es alcanzable en dev local vía proxy — en producción cae
+automáticamente al proveedor real, con logging correcto desde esta
+sesión). Cada intento pasa por `fetchWithTimeout` (`aiEngine.ts`), con un
+único nivel de reintento coordinado en el router (no dos capas
+multiplicándose) y un timeout por intento diferenciado: 20s para tipos
+livianos, 55s para `personal_profile`/`question` (prompt ~4x más largo,
+exige razonamiento multi-sistema). `app/api/intelligence/interpret/route.ts`
+además corre la llamada completa contra un timeout global (65s/35s según
+el tipo) que garantiza servir el fallback local determinista si se agota.
+
+**Limitación conocida, no resuelta todavía**: el timeout por intento solo
+protege hasta que llegan los headers de la respuesta HTTP
+(`fetch()` resuelve) — la lectura del body (`response.json()`) corre sin
+esa protección. Con tráfico real se midió esa fase sola tardando ~61s
+(ver `.claude/execution-logs/latency-final-validation.md`). El timeout
+global de la request sigue siendo la única red de seguridad real para
+este caso hasta que se aplique el fix propuesto (extender el
+`AbortSignal` para cubrir también la lectura del body).
 
 ## Flujo de datos
 
