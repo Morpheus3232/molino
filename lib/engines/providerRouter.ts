@@ -61,12 +61,32 @@ export function getFreeTierLimits(provider: Provider): FreeTierLimits {
 function isRateLimitError(error: unknown): boolean {
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
-    return message.includes('rate limit') || 
-           message.includes('429') || 
+    return message.includes('rate limit') ||
+           message.includes('429') ||
            message.includes('quota') ||
            message.includes('insufficient_quota');
   }
   return false;
+}
+
+/**
+ * Covers rate limits AND the transient failures fetchWithTimeout's removed
+ * internal retry used to handle (timeout/abort, 5xx) — this is now the
+ * ONLY retry layer, so it has to catch everything worth retrying, not just
+ * 429s. Still excludes 4xx/parse/validation errors: retrying a wrong
+ * request changes nothing but cost.
+ */
+function isRetryableError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  if (isRateLimitError(error)) return true;
+  const message = error.message.toLowerCase();
+  const name = 'name' in error ? String(error.name).toLowerCase() : '';
+  return (
+    message.includes('transient upstream error') ||
+    name === 'aborterror' ||
+    message.includes('abort') ||
+    message.includes('timeout')
+  );
 }
 
 async function sleep(ms: number): Promise<void> {
@@ -91,7 +111,7 @@ async function tryLegacyProvider(
         : await generateWithOpenAI(user, target, result, template);
     return interpretation;
   } catch (error) {
-    const isRateLimit = isRateLimitError(error);
+    const retryable = isRetryableError(error);
     const message = error instanceof Error ? error.message : String(error);
     // console.error, not .warn: this is the only place the real provider
     // failure reason (status/statusText/body, logged inside aiEngine.ts) is
@@ -99,9 +119,9 @@ async function tryLegacyProvider(
     // failed" — Vercel's runtime log capture was observed dropping .warn
     // lines from this exact catch in production, so .error is what actually
     // reaches `vercel logs`.
-    console.error(`[AI] provider=${provider} stage=attempt_failed attempt=${attempt} rateLimit=${isRateLimit} message=${message}`);
+    console.error(`[AI] provider=${provider} stage=attempt_failed attempt=${attempt} retryable=${retryable} message=${message}`);
 
-    if (isRateLimit && attempt < maxRetries) {
+    if (retryable && attempt < maxRetries) {
       const delay = retryDelayMs * attempt;
       console.log(`[AI] provider=${provider} stage=retry attempt=${attempt + 1} delayMs=${delay}`);
       await sleep(delay);
