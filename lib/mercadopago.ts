@@ -88,7 +88,7 @@ function getProfileHashSecret(): string {
 /**
  * Base URL for the webhook `notification_url` MP calls back on and the
  * `back_urls`/`return_url`/`cancel_url` the user is redirected to after
- * paying (PayPal's lib/paypal.ts reuses this same function). Previously read
+ * paying. Previously read
  * from NEXT_PUBLIC_BASE_URL — an env var that turned out unreliable to keep
  * correctly set in Vercel, and didn't need the NEXT_PUBLIC_ prefix in the
  * first place (both call sites are server-only, never bundled to the
@@ -109,7 +109,7 @@ export function normalizeName(name: string): string {
 }
 
 // TODO(security, medium): birthDate reaches here unvalidated from the payment
-// routes (mp/coupon, mp/preference, mp/process, mp/recover, paypal/*) — only
+// routes (mp/coupon, mp/preference, mp/process, mp/recover) — only
 // the /api/{synthesis,compatibility,convergence}/calculate routes check
 // isValidDate() before use. Not exploitable today (birthDate is just opaque
 // HMAC input, never parsed as a Date here), but a malformed value silently

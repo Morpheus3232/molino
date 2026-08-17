@@ -1,8 +1,7 @@
 /**
  * Route-level Mercado Pago tests — simulates MP's SDK responses (no real
- * network calls, no LIVE transactions). Mirrors the pattern already used in
- * paypal.test.ts, but for /api/mp/* which previously only had lib-level
- * unit tests (payment-security.test.ts), not route-level ones.
+ * network calls, no LIVE transactions), for /api/mp/* which previously only
+ * had lib-level unit tests (payment-security.test.ts), not route-level ones.
  */
 import { vi, describe, test, expect, beforeEach } from 'vitest';
 import { createHmac } from 'crypto';
