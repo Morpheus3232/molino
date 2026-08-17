@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import FeatureComparison from '@/components/premium/FeatureComparison';
 import type { Dictionary } from '@/lib/i18n/dictionaries/es';
 
 const blockVariants = {
@@ -67,6 +70,8 @@ export default function PremiumPaywallContent({
   isApplyingCoupon,
   handleApplyCoupon,
 }: PremiumPaywallContentProps) {
+  const [showComparison, setShowComparison] = useState(false);
+
   return (
     <motion.div
       key="locked"
@@ -197,17 +202,49 @@ export default function PremiumPaywallContent({
             </p>
           )}
 
-          <div className="mt-4 text-center">
+          <p className="mt-3 text-xs text-muted/80 text-center sm:text-left">
+            Tus datos son tuyos: exportá tu perfil cuando quieras, sin suscripciones ocultas.
+          </p>
+
+          <div className="mt-4 text-center sm:text-left flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2">
             <Link
               href="/premium"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline justify-center sm:justify-start"
             >
               Ver qué incluye el acceso Premium →
+            </Link>
+            <Link
+              href="/transparencia"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors justify-center sm:justify-start"
+            >
+              Ver nuestras métricas reales →
             </Link>
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
+        <div className="mt-8 pt-6 border-t border-ink/10">
+          <button
+            type="button"
+            onClick={() => setShowComparison((v) => !v)}
+            aria-expanded={showComparison}
+            className="w-full flex items-center justify-between text-left group"
+          >
+            <span className="label-micro text-muted group-hover:text-accent transition-colors">
+              ¿Qué incluye Premium, comparado con lo gratis?
+            </span>
+            <ChevronDown
+              className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180' : ''}`}
+              aria-hidden="true"
+            />
+          </button>
+          {showComparison && (
+            <div className="-mx-4 sm:-mx-8">
+              <FeatureComparison />
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
           {!showRecover ? (
             <button
               type="button"
