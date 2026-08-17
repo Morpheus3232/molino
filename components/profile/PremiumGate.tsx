@@ -10,7 +10,7 @@ import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
-import { clearSelectedPlan } from '@/lib/session/selectedPlan';
+import { useCommitPremiumUnlock, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
 
 const PROFILE_SALT_KEY = 'molino-profile-salt';
 
@@ -55,8 +55,6 @@ interface PremiumGateProps {
   currencyId?: 'ARS' | 'USD';
 }
 
-type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked' | 'pay_error' | 'verifying_redirect';
-
 const POLL_SCHEDULE_MS = [5000, 10000, 20000, 30000]; // Exponential backoff: 5→10→20→30s
 const POLL_MAX_ATTEMPTS = 10;
 
@@ -86,21 +84,6 @@ function getSearchParam(key: string): string | null {
   return params.get(key);
 }
 
-function cleanUrlParams() {
-  if (typeof window === 'undefined') return;
-  const url = new URL(window.location.href);
-  url.searchParams.delete('payment_status');
-  url.searchParams.delete('payment_id');
-  url.searchParams.delete('collection_id');
-  url.searchParams.delete('collection_status');
-  url.searchParams.delete('external_reference');
-  url.searchParams.delete('preference_id');
-  url.searchParams.delete('payment_method');
-  url.searchParams.delete('token');
-  url.searchParams.delete('PayerID');
-  window.history.replaceState({}, '', url.pathname + url.search);
-}
-
 export default function PremiumGate({ name, birthDate, preview, children, currencyId = 'ARS' }: PremiumGateProps) {
   const t = useDictionary();
   const [state, setState] = useState<GateState>('locked');
@@ -123,6 +106,8 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
+
+  const commitUnlock = useCommitPremiumUnlock({ setState, setJustUnlocked, name, birthDate });
 
   // Único producto activo: pago único de $8 USD (Opción A — Pro/Familiar
   // desactivados, ver components/pricing/pricing-data.ts).
@@ -173,13 +158,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         .then(res => res.json())
         .then(data => {
           if (data.verified) {
-            setState('unlocked');
-            setJustUnlocked(true);
-            clearSelectedPlan();
-            if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
-            invalidatePremiumAccessCache(name, birthDate);
-            analytics.trackPremiumUnlocked();
-            cleanUrlParams();
+            commitUnlock(data.premiumToken, { cleanUrl: true });
           } else {
             setVerificationError(data.reason || 'No se pudo verificar el pago');
             setState('pay_error');
@@ -309,12 +288,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       const data = await res.json();
 
       if (res.ok && data.verified) {
-        setState('unlocked');
-        setJustUnlocked(true);
-        clearSelectedPlan();
-        if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
-        invalidatePremiumAccessCache(name, birthDate);
-        analytics.trackPremiumUnlocked();
+        commitUnlock(data.premiumToken);
       } else {
         setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
       }
@@ -340,12 +314,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       });
       const data = await res.json();
       if (res.ok && data.valid) {
-        setState('unlocked');
-        setJustUnlocked(true);
-        clearSelectedPlan();
-        if (data.premiumToken) savePremiumTokenClient(data.premiumToken);
-        invalidatePremiumAccessCache(name, birthDate);
-        analytics.trackPremiumUnlocked();
+        commitUnlock(data.premiumToken);
       } else {
         setCouponError(data.reason || 'Código inválido');
       }
