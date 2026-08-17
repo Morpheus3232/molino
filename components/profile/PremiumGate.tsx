@@ -12,6 +12,7 @@ import { savePremiumTokenClient, getOrCreateProfileSalt } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 import { useCommitPremiumUnlock, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
 import { usePremiumCoupon } from '@/lib/hooks/usePremiumCoupon';
+import { usePremiumRecovery } from '@/lib/hooks/usePremiumRecovery';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -80,10 +81,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   // el momento de revelación; un usuario que vuelve no necesita la fanfarria.
   const [justUnlocked, setJustUnlocked] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
-  const [showRecover, setShowRecover] = useState(false);
-  const [recoverPaymentId, setRecoverPaymentId] = useState('');
-  const [recoverError, setRecoverError] = useState<string | null>(null);
-  const [isRecovering, setIsRecovering] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [verificationError, setVerificationError] = useState<string | null>(null);
@@ -101,6 +98,16 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     isApplyingCoupon,
     handleApplyCoupon,
   } = usePremiumCoupon({ name, birthDate, commitUnlock });
+  const {
+    showRecover,
+    setShowRecover,
+    recoverPaymentId,
+    setRecoverPaymentId,
+    recoverError,
+    isRecovering,
+    handleRecover,
+    cancel: cancelRecover,
+  } = usePremiumRecovery({ name, birthDate, commitUnlock });
 
   // Único producto activo: pago único de $8 USD (Opción A — Pro/Familiar
   // desactivados, ver components/pricing/pricing-data.ts).
@@ -262,33 +269,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       setPayError(msg);
       setCheckoutLoading(false);
       setState('pay_error');
-    }
-  };
-
-  const handleRecover = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!recoverPaymentId.trim()) return;
-
-    setIsRecovering(true);
-    setRecoverError(null);
-
-    try {
-      const res = await fetch('/api/mp/recover', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentId: recoverPaymentId.trim(), name, birthDate, salt: getOrCreateProfileSalt() }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.verified) {
-        commitUnlock(data.premiumToken);
-      } else {
-        setRecoverError(data.error || data.reason || 'No se encontró una compra válida para este ID');
-      }
-    } catch {
-      setRecoverError('Error al intentar recuperar la compra');
-    } finally {
-      setIsRecovering(false);
     }
   };
 
@@ -511,7 +491,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                   )}
                   <button
                     type="button"
-                    onClick={() => { setShowRecover(false); setRecoverError(null); setRecoverPaymentId(''); }}
+                    onClick={cancelRecover}
                     className="text-xs text-muted hover:text-accent transition-colors"
                   >
                     Cancelar
