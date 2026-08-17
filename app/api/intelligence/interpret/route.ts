@@ -244,7 +244,18 @@ export async function POST(req: NextRequest) {
       // pensado para los demás tipos las aborta antes de tiempo la mayoría
       // de las veces, disparando reintentos que no hacían falta.
       const timeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? AI_HEAVY_TIMEOUT_MS : AI_TIMEOUT_MS;
-      const { interpretation: aiResponse, providerUsed: usedProvider, fallbackUsed: usedFallback } = await generateWithRouting(
+
+      // Techo duro de espera para el usuario, independiente de cuántos
+      // proveedores/reintentos queden por debajo: si generateWithRouting no
+      // resolvió a tiempo, esta carrera gana y cae al catch de abajo, que ya
+      // sirve el fallback local determinista. GLOBAL_AI_TIMEOUT_MS > timeoutMs
+      // (con margen) para no cortar un único intento que iba a completar bien
+      // — ver la nota sobre PASO 4 en latency-fixes-validation.md: un techo
+      // fijo de 30-40s para TODOS los tipos habría anulado el aumento de
+      // timeout que este mismo cambio le acaba de dar a personal_profile/
+      // question en el paso anterior, así que el techo también es por tipo.
+      const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 65_000 : 35_000;
+      const routingPromise = generateWithRouting(
         profile,
         entity || { name: 'Análisis' },
         compatResult,
@@ -252,6 +263,11 @@ export async function POST(req: NextRequest) {
         provider,
         timeoutMs
       );
+      const globalTimeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('global_ai_timeout')), globalTimeoutMs);
+      });
+      const { interpretation: aiResponse, providerUsed: usedProvider, fallbackUsed: usedFallback } =
+        await Promise.race([routingPromise, globalTimeoutPromise]);
       providerUsed = usedProvider;
       fallbackUsed = usedFallback;
 
@@ -379,7 +395,15 @@ export async function POST(req: NextRequest) {
         }));
       }
     } catch (err) {
-      console.error('[/api/intelligence/interpret] AI error:', err);
+      const isGlobalTimeout = err instanceof Error && err.message === 'global_ai_timeout';
+      if (isGlobalTimeout) {
+        // Separado de la traza genérica de abajo para poder medir en
+        // producción con qué frecuencia el techo duro entra en juego (grep
+        // por esta línea) — sirve el fallback local igual, no un error.
+        console.error(`[ai_global_timeout] type=${type} durationMs=${Date.now() - generationStartedAt}`);
+      } else {
+        console.error('[/api/intelligence/interpret] AI error:', err);
+      }
       aiError = 'AI interpretation unavailable';
       await recordGeneration({
         type,
