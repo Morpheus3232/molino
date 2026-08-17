@@ -9,7 +9,7 @@
  */
 
 import type { UserProfile } from '@/types/user';
-import { getPersonalDayForDate, getPersonalYear, getMoonPhase, calculateLifePath } from '@/lib/calculations';
+import { getPersonalDayForDate, getPersonalYear, getMoonPhase, calculateLifePath, reduceToSingleDigit } from '@/lib/calculations';
 import { getSunSign } from './astrologyEngine';
 import { getChineseZodiac } from './chineseZodiacEngine';
 
@@ -95,7 +95,10 @@ export function calculateDailyEnergy(
   // Calculate personal cycles for the target date
   const personalDay = getPersonalDayForDate(birthDay, birthMonth, birthYear, targetDate);
   const personalYear = getPersonalYear(birthDay, birthMonth, birthYear, targetDate.getFullYear());
-  const personalMonth = getPersonalYear(birthDay, birthMonth, birthYear, targetDate.getFullYear(), undefined, targetDate.getMonth() + 1);
+  // personalMonth = reduce(personalYear + mes actual) — mismo fix que
+  // profileBuilder.ts: NO getPersonalYear con el mes en el slot de
+  // currentYear (descartaba el año real).
+  const personalMonth = reduceToSingleDigit(personalYear + (targetDate.getMonth() + 1));
 
   // Get moon phase
   const moonPhase = getMoonPhase(targetDate);

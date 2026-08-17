@@ -7,7 +7,7 @@ import {
 } from "./numerologyEngine";
 import { getSunSign, getSunSignInfo, getMoonSign, getElement, getModality } from "./astrologyEngine";
 import { getChineseZodiac, getChineseZodiacInfo, getLunarYear } from "./chineseZodiacEngine";
-import { getPersonalYear, getPersonalDayForDate } from "@/lib/calculations";
+import { getPersonalYear, getPersonalDayForDate, reduceToSingleDigit } from "@/lib/calculations";
 import type { UserProfileData, InterpretedUserProfile } from "@/types/profile";
 import type { UserProfile } from "@/types/user";
 import { ProfileInterpreter } from "@/lib/interpreter/profileInterpreter";
@@ -46,14 +46,10 @@ export function calculateUserProfileData(
   const birthYear = Number.isFinite(birthParts[0]) ? birthParts[0] : now.getFullYear();
 
   const personalYear = getPersonalYear(birthDay, birthMonth, birthYear, now.getFullYear());
-  const personalMonth = getPersonalYear(
-    birthDay,
-    birthMonth,
-    birthYear,
-    now.getFullYear(),
-    undefined,
-    now.getMonth() + 1
-  );
+  // personalMonth = reduce(personalYear + mes actual) — NO getPersonalYear con
+  // el mes en el slot de currentYear (bug: descartaba el año real, el mismo
+  // mes calendario daba igual personalMonth en cualquier año).
+  const personalMonth = reduceToSingleDigit(personalYear + (now.getMonth() + 1));
   const personalDay = getPersonalDayForDate(birthDay, birthMonth, birthYear, now);
   const luckyNumber = calculateLuckyNumber(birthMonth, birthYear);
 
