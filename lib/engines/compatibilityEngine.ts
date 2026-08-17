@@ -3,6 +3,9 @@ export { calculateUserProfile, type UserProfile } from './profileBuilder';
 import { calculateNumerologyCompatibility } from './numerologyEngine';
 import { calculateChineseCompatibility } from './chineseZodiacEngine';
 import type { UserProfile } from '@/types/user';
+import type { CompatibilityTarget } from '@/types/compatibility';
+
+export type { CompatibilityTarget } from '@/types/compatibility';
 
 export interface CompatibilityScore {
   numerology: number;
@@ -15,7 +18,7 @@ export interface CompatibilityScore {
 
 export interface CompatibilityResult {
   user: UserProfile;
-  target: any;
+  target: CompatibilityTarget;
   scores: CompatibilityScore;
   strengths: string[];
   challenges: string[];
@@ -25,15 +28,7 @@ export interface CompatibilityResult {
 
 export function calculateCompatibility(
   user: UserProfile,
-  target: {
-    lifePath?: number;
-    birthDate?: string;
-    sunSign?: string;
-    chineseZodiac?: string;
-    archetype?: string;
-    element?: string;
-    name?: string;
-  }
+  target: CompatibilityTarget
 ): CompatibilityResult {
   const scores: CompatibilityScore = {
     numerology: calculateNumerologyCompatibility(user.lifePath, target.lifePath || 5),

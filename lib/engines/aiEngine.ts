@@ -1,6 +1,7 @@
 import { extractJSON, looksLikeJSON } from './aiResponseParser';
 import { sanitizeNameForPrompt, pseudonymFor } from '@/lib/ai/piiSanitizer';
 import type { CompatibilityResult, UserProfile } from './compatibilityEngine';
+import type { CompatibilityTarget } from '@/types/compatibility';
 
 export interface AIInterpretation {
   narrative: string;
@@ -146,7 +147,7 @@ async function fetchWithTimeoutAndRetry(url: string, init: RequestInit): Promise
 
 export async function generateAIInterpretation(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   provider: 'openai' | 'claude' = 'openai',
   template?: string
@@ -182,7 +183,7 @@ export async function generateAIInterpretation(
 // It accesses process.env which should never be exposed to client-side code
 export async function generateWithOpenAI(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string
 ): Promise<AIInterpretation> {
@@ -260,7 +261,7 @@ export async function generateWithOpenAI(
 // It accesses process.env which should never be exposed to client-side code
 export async function generateWithClaude(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string
 ): Promise<AIInterpretation> {
@@ -336,7 +337,7 @@ export async function generateWithClaude(
 // It accesses process.env which should never be exposed to client-side code
 export async function generateWithOpenRouter(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string
 ): Promise<AIInterpretation> {
@@ -458,7 +459,7 @@ export async function generateWithOpenRouter(
   return interpretation;
 }
 
-function buildPrompt(user: UserProfile, target: any, result: CompatibilityResult, template?: string): string {
+function buildPrompt(user: UserProfile, target: CompatibilityTarget, result: CompatibilityResult, template?: string): string {
   const userName = sanitizeNameForPrompt(user.name || '', user.birthDate || '');
   const base = `Usuario:
 - Nombre: ${userName}
@@ -558,7 +559,7 @@ function parseAIResponse(content: string): AIInterpretation {
 
 export function generateFallbackInterpretation(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult
 ): AIInterpretation {
   const score = result.scores.overall;
@@ -592,7 +593,7 @@ export function generateFallbackInterpretation(
 
 export function generateSEOInterpretation(
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult
 ): string {
   const score = result.scores.overall;

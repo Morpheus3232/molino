@@ -1,6 +1,7 @@
 import type { AIInterpretation } from './aiEngine';
 import type { UserProfile } from '@/types/user';
 import type { CompatibilityResult } from './compatibilityEngine';
+import type { CompatibilityTarget } from '@/types/compatibility';
 import { sanitizeNameForPrompt } from '@/lib/ai/piiSanitizer';
 
 export interface OmniRouteModel {
@@ -274,14 +275,7 @@ export function getOmniRouteRouter(config?: Partial<OmniRouteConfig>): OmniRoute
 
 export async function generateWithOmniRoute(
   user: UserProfile,
-  // REVIEW: target is CompatibilityResult["target"] in practice (a partial
-  // UserProfile-shaped object for person-to-person compatibility, or an
-  // EntityProfile-shaped object for person-to-entity), but the two call
-  // sites pass different partial shapes and nothing here has ever modeled
-  // that union — typing it for real means writing that union type once and
-  // threading it through omnirouteRouter/providerRouter together, not a
-  // one-line fix.
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
   preferredModel?: string
@@ -326,7 +320,7 @@ export async function generateWithOmniRoute(
 async function callOmniRouteModel(
   modelId: string,
   user: UserProfile,
-  target: any,
+  target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string
 ): Promise<AIInterpretation> {
@@ -429,7 +423,7 @@ function parseSSE(text: string): string {
   return raw;
 }
 
-function buildOmniRoutePrompt(user: UserProfile, target: any, result: CompatibilityResult): string {
+function buildOmniRoutePrompt(user: UserProfile, target: CompatibilityTarget, result: CompatibilityResult): string {
   const userName = sanitizeNameForPrompt(user.name || '', user.birthDate || '');
   return `Usuario:
 - Nombre: ${userName}
