@@ -34,7 +34,12 @@ export function createRouteMetadata({
   const canonicalUrl = siteUrl(path);
 
   return {
-    title: fullTitle,
+    // { absolute } (no un string plano) le dice a Next.js que NO aplique
+    // el title.template de ningún layout ancestro sobre este título — sin
+    // esto, fullTitle (que ya incluye "| Molino" vía formatTitle) queda
+    // envuelto una segunda vez por el template del layout padre,
+    // produciendo "X | Molino | Molino".
+    title: { absolute: fullTitle },
     description,
     alternates: noIndex ? undefined : { canonical: canonicalUrl },
     robots: noIndex

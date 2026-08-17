@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mi Mapa Personal",
+  // { default, template } — ver nota en app/herramientas/layout.tsx.
+  title: { default: "Mi Mapa Personal", template: "%s | Molino" },
   description:
     "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos. Explorá tu mapa en Molino.",
   openGraph: {
