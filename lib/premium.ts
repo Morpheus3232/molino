@@ -65,3 +65,21 @@ export function clearPremiumTokenClient(): void {
     // ignore
   }
 }
+
+const PROFILE_SALT_KEY = "molino-profile-salt";
+
+/**
+ * Device-bound UUID sent alongside birthDate on every payment request
+ * (checkout/recover/coupon) — see hashProfile() in lib/mercadopago.ts for
+ * why it's concatenated before the HMAC (two people with the same birth
+ * date get different profile hashes).
+ */
+export function getOrCreateProfileSalt(): string {
+  if (typeof window === "undefined") return "";
+  let salt = window.localStorage.getItem(PROFILE_SALT_KEY);
+  if (!salt) {
+    salt = crypto.randomUUID();
+    window.localStorage.setItem(PROFILE_SALT_KEY, salt);
+  }
+  return salt;
+}
