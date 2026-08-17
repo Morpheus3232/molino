@@ -253,6 +253,89 @@ export const PERSONAL_MONTH_MEANINGS: Record<number, PersonalMonthMeaning> = {
   },
 };
 
+export interface UniversalDailyEnergy {
+  date: string;
+  dailyNumber: number;
+  overallScore: number;
+  theme: string;
+  description: string;
+  strengths: string[];
+  cautions: string[];
+  moonPhase: { phase: string; emoji: string; description: string };
+}
+
+/**
+ * Número del día — sin fecha de nacimiento, igual para cualquier visitante
+ * el mismo día calendario. Mismo algoritmo de reducción que calculateLifePath
+ * (preserva 11/22/33), aplicado a la fecha de hoy en vez de a un nacimiento.
+ * No confundir con getDailyNumber() en lib/calculations.ts — esa función
+ * tiene un caso especial (28 = "riqueza") ajeno al resto del sitio, que
+ * solo usa 1-9/11/22/33; esta se mantiene consistente con esa convención.
+ */
+function calculateDailyNumber(targetDate: Date): number {
+  const dateStr = `${targetDate.getDate()}${targetDate.getMonth() + 1}${targetDate.getFullYear()}`;
+  let sum = 0;
+  for (const char of dateStr) sum += parseInt(char, 10);
+  return reduceToSingleDigit(sum);
+}
+
+// Contenido propio, en voz colectiva ("hoy", no "tu día personal") — el
+// mismo texto lo lee cualquier visitante sin perfil, así que no puede
+// hablar de un patrón individual que no calculamos para esa persona.
+const UNIVERSAL_DAY_THEMES: Record<number, { theme: string; description: string; strengths: string[]; cautions: string[] }> = {
+  1: { theme: "Impulso", description: "Un día que favorece arrancar algo nuevo — la energía colectiva empuja hacia adelante, no hacia la espera.", strengths: ["Iniciativa", "Claridad", "Decisión"], cautions: ["Apuro", "Individualismo excesivo"] },
+  2: { theme: "Cooperación", description: "Un día que rinde más en conjunto que en soledad — los acuerdos y la escucha activa tienen más peso de lo habitual.", strengths: ["Diplomacia", "Paciencia", "Escucha"], cautions: ["Indecisión", "Dependencia del otro"] },
+  3: { theme: "Expresión", description: "Un día que favorece comunicar, mostrar trabajo y decir lo que se venía postergando.", strengths: ["Creatividad", "Comunicación", "Sociabilidad"], cautions: ["Dispersión", "Exageración"] },
+  4: { theme: "Orden", description: "Un día menos vistoso pero de base sólida — rinde en tareas metódicas más que en golpes de efecto.", strengths: ["Disciplina", "Organización", "Constancia"], cautions: ["Rigidez", "Resistencia al cambio"] },
+  5: { theme: "Movimiento", description: "Un día con más variables de las esperadas — mejor dejar margen en la agenda que forzar un plan cerrado.", strengths: ["Adaptabilidad", "Curiosidad", "Apertura"], cautions: ["Impulsividad", "Inconstancia"] },
+  6: { theme: "Cuidado", description: "Un día que empuja la atención hacia el entorno cercano — vínculos, hogar, responsabilidades compartidas.", strengths: ["Empatía", "Responsabilidad", "Armonía"], cautions: ["Autosacrificio", "Control"] },
+  7: { theme: "Pausa", description: "Un día que rinde más en silencio que en agenda llena — buen momento para pensar antes de decidir.", strengths: ["Análisis", "Introspección", "Sabiduría"], cautions: ["Aislamiento", "Escepticismo"] },
+  8: { theme: "Resultados", description: "Un día con energía orientada a lo concreto — negociaciones, decisiones de peso, avances medibles.", strengths: ["Estrategia", "Liderazgo", "Determinación"], cautions: ["Materialismo", "Rigidez de control"] },
+  9: { theme: "Cierre", description: "Un día que favorece terminar lo que quedó a medias antes de sumar algo nuevo a la lista.", strengths: ["Compasión", "Capacidad de soltar", "Perspectiva"], cautions: ["Apego al pasado", "Postergar despedidas"] },
+  11: { theme: "Intuición elevada", description: "Un día donde señales sutiles pesan más de lo habitual — vale la pena prestarles atención, con los pies en la tierra.", strengths: ["Intuición", "Inspiración", "Sensibilidad"], cautions: ["Ansiedad", "Sobreestimulación"] },
+  22: { theme: "Construcción a gran escala", description: "Un día que favorece dar estructura real a algo grande — un plan concreto rinde más que la sola intención.", strengths: ["Visión", "Capacidad de ejecución", "Ambición con método"], cautions: ["Perfeccionismo paralizante", "Presión autoimpuesta"] },
+  33: { theme: "Servicio", description: "Un día donde sostener a otros ocupa un lugar central — con un límite claro para no vaciarse en el intento.", strengths: ["Compasión", "Sanación", "Generosidad"], cautions: ["Desgaste emocional", "Descuido propio"] },
+};
+
+function calculateUniversalScore(dailyNumber: number, moonPhase: string): number {
+  let score = 50;
+  if (dailyNumber >= 1 && dailyNumber <= 9) {
+    score = 40 + dailyNumber * 6;
+  } else if (dailyNumber === 11) {
+    score = 85;
+  } else if (dailyNumber === 22) {
+    score = 90;
+  } else if (dailyNumber === 33) {
+    score = 95;
+  }
+  if (moonPhase === "Llena" || moonPhase === "Creciente") score += 5;
+  else if (moonPhase === "Menguante" || moonPhase === "Cuarto Menguante") score -= 3;
+  return Math.min(100, Math.max(1, score));
+}
+
+/**
+ * Energía del día sin perfil — el único cálculo del motor que no depende
+ * de una fecha de nacimiento. Mismo resultado para cualquier visitante en
+ * la misma fecha calendario.
+ */
+export function calculateUniversalDailyEnergy(targetDate: Date = new Date()): UniversalDailyEnergy {
+  const dailyNumber = calculateDailyNumber(targetDate);
+  const moonPhase = getMoonPhase(targetDate);
+  const themeData = UNIVERSAL_DAY_THEMES[dailyNumber] || UNIVERSAL_DAY_THEMES[1];
+  const overallScore = calculateUniversalScore(dailyNumber, moonPhase.phase);
+
+  return {
+    date: targetDate.toISOString().split('T')[0],
+    dailyNumber,
+    overallScore,
+    theme: themeData.theme,
+    description: themeData.description,
+    strengths: themeData.strengths,
+    cautions: themeData.cautions,
+    moonPhase,
+  };
+}
+
 export interface PersonalDayMeaning {
   theme: string;
   description: string;

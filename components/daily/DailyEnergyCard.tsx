@@ -7,7 +7,7 @@ import type { StreakBadge } from "@/lib/hooks/useStreak";
 import { Sparkles, Moon, Compass, Zap, Flame, Shield, TrendingUp } from "lucide-react";
 
 interface DailyEnergyCardProps {
-  profile: UserProfile;
+  profile: UserProfile | null;
   daily: EnrichedDailyEnergy;
   streakDays?: number;
   streakBadge?: StreakBadge;
@@ -61,9 +61,11 @@ export default function DailyEnergyCard({
             </span>
             <span className="font-mono text-sm text-muted">/100</span>
           </div>
-          <span className="font-mono text-xs text-muted">
-            Día Personal {daily.personalDay} · Mes {daily.personalMonth} · Año {daily.personalYear}
-          </span>
+          {daily.isPersonalized && (
+            <span className="font-mono text-xs text-muted">
+              Año Personal {daily.personalYear}
+            </span>
+          )}
         </div>
 
         {/* Right: Theme & Description */}
@@ -95,31 +97,49 @@ export default function DailyEnergyCard({
           </div>
         </div>
 
-        {/* Elemental Influence */}
-        <div className="p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
-          <Flame className="w-4 h-4 text-amber-400 shrink-0" />
-          <div className="min-w-0">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
-              Elemento
-            </span>
-            <span className="font-semibold text-foreground truncate block">
-              {profile.element || "Fuego"} en sintonía
-            </span>
-          </div>
-        </div>
+        {profile ? (
+          <>
+            {/* Elemental Influence */}
+            <div className="p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
+              <Flame className="w-4 h-4 text-amber-400 shrink-0" />
+              <div className="min-w-0">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+                  Elemento
+                </span>
+                <span className="font-semibold text-foreground truncate block">
+                  {profile.element || "Fuego"} en sintonía
+                </span>
+              </div>
+            </div>
 
-        {/* Archetype Resonance */}
-        <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
-          <Compass className="w-4 h-4 text-accent shrink-0" />
-          <div className="min-w-0">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
-              Tu Arquetipo
-            </span>
-            <span className="font-semibold text-foreground truncate block">
-              {profile.archetype}
-            </span>
+            {/* Archetype Resonance */}
+            <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
+              <Compass className="w-4 h-4 text-accent shrink-0" />
+              <div className="min-w-0">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+                  Tu Arquetipo
+                </span>
+                <span className="font-semibold text-foreground truncate block">
+                  {profile.archetype}
+                </span>
+              </div>
+            </div>
+          </>
+        ) : (
+          // Sin perfil no hay elemento ni arquetipo que mostrar — el mismo
+          // grid de 3 pilares se completa con lo que sí es universal ese día.
+          <div className="col-span-2 sm:col-span-2 p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
+            <Compass className="w-4 h-4 text-accent shrink-0" />
+            <div className="min-w-0">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
+                Favorece hoy
+              </span>
+              <span className="font-semibold text-foreground truncate block">
+                {daily.strengths?.[0] || "Claridad"}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
