@@ -61,7 +61,7 @@ const TEST_PROFILE: UserProfile = {
   recommendations: { strengths: [], challenges: [], practices: [] },
 };
 
-const FLAGS = { premiumEnabled: true, paypalEnabled: false, mercadoPagoEnabled: true, premiumPriceUsd: 8 };
+const FLAGS = { premiumEnabled: true, mercadoPagoEnabled: true, premiumPriceUsd: 8 };
 const FALLBACK_INTERPRETATION = {
   summary: 'Síntesis de prueba.',
   alignment: 'Alineación de prueba.',

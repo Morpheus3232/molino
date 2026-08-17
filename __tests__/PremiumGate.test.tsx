@@ -16,7 +16,7 @@ describe('PremiumGate', () => {
   });
 
   // Helper to mock feature flags and premium check
-  const setupMocks = (premiumResult: { premium: boolean } | Error, flags = { premiumEnabled: true, paypalEnabled: false, mercadoPagoEnabled: true, premiumPriceUsd: 8 }) => {
+  const setupMocks = (premiumResult: { premium: boolean } | Error, flags = { premiumEnabled: true, mercadoPagoEnabled: true, premiumPriceUsd: 8 }) => {
     global.fetch = vi.fn(async (input: RequestInfo | URL, options?: RequestInit) => {
       const urlStr = input.toString();
       
@@ -88,7 +88,7 @@ describe('PremiumGate', () => {
       const urlStr = input.toString();
       
       if (urlStr.includes('/api/features/flags')) {
-        return new Response(JSON.stringify({ premiumEnabled: true, paypalEnabled: false, mercadoPagoEnabled: true, premiumPriceUsd: 8 }), {
+        return new Response(JSON.stringify({ premiumEnabled: true, mercadoPagoEnabled: true, premiumPriceUsd: 8 }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' }
         });
@@ -145,7 +145,7 @@ describe('PremiumGate', () => {
   });
 
   it('TEST 5: premiumEnabled = false flag → children render without paywall (bypass)', async () => {
-    setupMocks({ premium: false }, { premiumEnabled: false, paypalEnabled: false, mercadoPagoEnabled: true, premiumPriceUsd: 8 });
+    setupMocks({ premium: false }, { premiumEnabled: false, mercadoPagoEnabled: true, premiumPriceUsd: 8 });
 
     const PremiumChild = () => <div data-testid="premium-child">PREMIUM CONTENT</div>;
     
