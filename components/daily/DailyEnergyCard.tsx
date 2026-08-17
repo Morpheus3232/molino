@@ -62,7 +62,7 @@ export default function DailyEnergyCard({
             <span className="font-mono text-sm text-muted">/100</span>
           </div>
           <span className="font-mono text-xs text-muted">
-            Día Personal {daily.personalDay} · Año {daily.personalYear}
+            Día Personal {daily.personalDay} · Mes {daily.personalMonth} · Año {daily.personalYear}
           </span>
         </div>
 
