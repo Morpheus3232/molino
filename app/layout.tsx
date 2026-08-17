@@ -19,15 +19,13 @@ const newsreader = Newsreader({ subsets: ["latin"], style: ["italic"], display: 
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 
-// REVIEW: title.template above stops applying past a certain route-segment
-// depth (reproduced on Next 16.3/Turbopack via curl against rendered
-// <title>): every static child under compatibility/*, herramientas/*,
-// affinity/recommendations/*, and profile/insights lost the "| Molino"
-// suffix entirely rather than merging it, while shallower routes (e.g.
-// /affinity, /herramientas, /guia) were unaffected. Worked around by
-// hardcoding the full title string on each affected route instead of
-// relying on the template — root-causing the actual Next.js metadata
-// resolution behavior needs more time than this pass budgeted.
+// Root-caused 2026-08-17: title.template above stopped applying past
+// certain route segments because 4 intermediate layouts (herramientas,
+// compatibility, affinity, profile) declared `title` as a plain string
+// instead of `{ default, template }` — a plain string title on an
+// intermediate layout breaks template inheritance for everything below
+// it, no matter the depth. Fixed at each of those 4 layouts instead of
+// hardcoding the full title on every leaf route.
 export const metadata: Metadata = {
   title: {
     default: "Molino — Mapa Personal de Autoconocimiento",

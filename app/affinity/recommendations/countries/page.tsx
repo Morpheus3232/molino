@@ -9,8 +9,7 @@ const catalog: LightweightEntity[] = SYMBOLIC_ENTITIES
   .map(toLightweightEntity);
 
 export const metadata: Metadata = {
-  // See REVIEW note in app/layout.tsx — title.template doesn't reach this depth.
-  title: "Destinos para priorizar este ciclo | Molino",
+  title: "Destinos para priorizar este ciclo",
   description: "Prioridad del ciclo actual: qué destinos explorar ahora según tu perfil simbólico.",
   alternates: {
     canonical: siteUrl("/affinity/recommendations/countries"),

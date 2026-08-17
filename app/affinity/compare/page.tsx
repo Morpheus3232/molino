@@ -1,6 +1,14 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
 import ComparePicker from "./ComparePickerClient";
+
+export const metadata: Metadata = createRouteMetadata({
+  title: "Comparar afinidad",
+  description: "Elegí dos marcas, países, ciudades o personas históricas y comparalos con tu perfil simbólico.",
+  path: "/affinity/compare",
+});
 
 export default function ComparePickerPage() {
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);

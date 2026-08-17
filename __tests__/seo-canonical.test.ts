@@ -44,7 +44,10 @@ describe("Technical SEO & Canonical URLs", () => {
       path: "/filosofia",
     });
 
-    expect(meta.title).toBe("Filosofía | Molino");
+    // { absolute } — no un string plano — para que el title.template de un
+    // layout ancestro no vuelva a envolver un título que formatTitle() ya
+    // completó, lo que producía "X | Molino | Molino".
+    expect(meta.title).toEqual({ absolute: "Filosofía | Molino" });
     expect(meta.description).toBe("Nuestra visión del autoconocimiento.");
     expect(meta.alternates?.canonical).toBe(`${SITE_URL}/filosofia`);
     expect(meta.robots).toEqual({ index: true, follow: true });

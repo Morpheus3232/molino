@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Compatibilidad",
+  // { default, template } — ver nota en app/herramientas/layout.tsx.
+  title: { default: "Compatibilidad", template: "%s | Molino" },
   description:
     "Descubrí la compatibilidad entre tu energía y la de países, marcas y personas usando numerología y zodiaco chino.",
   alternates: { canonical: siteUrl("/compatibility") },

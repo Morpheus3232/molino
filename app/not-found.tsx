@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Compass, Sparkles, Sun, Heart, BookOpen, ArrowRight, Home } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "404 — Coordenada Fuera de Órbita | Molino",
+  title: "404 — Coordenada Fuera de Órbita",
   description: "Esta página no se encuentra en el mapa simbólico actual. Descubrí tu camino de vuelta.",
 };
 
