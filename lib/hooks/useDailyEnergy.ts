@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import type { UserProfile } from "@/types/user";
-import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, calculateUniversalDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { safeNumber } from "@/lib/utils/score";
 
 export interface DayForecast {
@@ -20,6 +20,13 @@ export interface EnrichedDailyEnergy extends DailyEnergyResult {
   avoidAction: string;
   dailyAdvice: string;
   nextDaysForecast: DayForecast[];
+  /** false cuando no hay perfil — el tema/score vienen de
+   * calculateUniversalDailyEnergy (mismo para cualquier visitante ese día),
+   * no de personalDay/personalYear/personalMonth. Esos 3 campos igual están
+   * poblados (con dailyNumber/0) solo para que el resto de los componentes
+   * (WeekPreview, FOCUS_BY_PERSONAL_DAY) no tengan que ramificar por null —
+   * la UI decide qué mostrar leyendo este flag, no esos números. */
+  isPersonalized: boolean;
 }
 
 const FOCUS_BY_PERSONAL_DAY: Record<number, { focus: string; avoid: string }> = {
@@ -80,9 +87,55 @@ export function useDailyEnergy(
   targetDate: Date = new Date()
 ): EnrichedDailyEnergy | null {
   return useMemo(() => {
-    if (!profile) return null;
-
     try {
+      if (!profile) {
+        const universal = calculateUniversalDailyEnergy(targetDate);
+        const actions = FOCUS_BY_PERSONAL_DAY[universal.dailyNumber] || FOCUS_BY_PERSONAL_DAY[1];
+        const dailyAdvice = `Hoy es un día de ${universal.theme.toLowerCase()} bajo la luna ${universal.moonPhase.phase.toLowerCase()} — vale la pena ${actions.focus.toLowerCase().slice(0, 100)}...`;
+
+        const nextDaysForecast: DayForecast[] = [];
+        for (let i = 1; i <= 3; i++) {
+          const nextDate = new Date(targetDate);
+          nextDate.setDate(nextDate.getDate() + i);
+          const nextUniversal = calculateUniversalDailyEnergy(nextDate);
+          nextDaysForecast.push({
+            date: nextUniversal.date,
+            dayName: DAY_NAMES_ES[nextDate.getDay()],
+            dayNumber: nextDate.getDate(),
+            personalDay: nextUniversal.dailyNumber,
+            theme: nextUniversal.theme,
+            score: nextUniversal.overallScore,
+            moonEmoji: nextUniversal.moonPhase?.emoji || "🌙",
+          });
+        }
+
+        return {
+          date: universal.date,
+          overallScore: universal.overallScore,
+          theme: universal.theme,
+          description: universal.description,
+          strengths: universal.strengths,
+          cautions: universal.cautions,
+          areas: {
+            work: { score: universal.overallScore, label: "Trabajo" },
+            relationships: { score: universal.overallScore, label: "Relaciones" },
+            creativity: { score: universal.overallScore, label: "Creatividad" },
+            decisions: { score: universal.overallScore, label: "Decisiones" },
+          },
+          moonPhase: universal.moonPhase,
+          personalDay: universal.dailyNumber,
+          personalYear: 0,
+          personalMonth: 0,
+          elementInfluence: "",
+          explanation: universal.description,
+          isPersonalized: false,
+          focusAction: actions.focus,
+          avoidAction: actions.avoid,
+          dailyAdvice,
+          nextDaysForecast,
+        };
+      }
+
       const daily = calculateDailyEnergy(profile, targetDate);
       const personalDay = daily.personalDay || 1;
       const lifePath = safeNumber(profile.lifePath, 1);
@@ -115,6 +168,7 @@ export function useDailyEnergy(
 
       return {
         ...daily,
+        isPersonalized: true,
         focusAction: actions.focus,
         avoidAction: actions.avoid,
         dailyAdvice,

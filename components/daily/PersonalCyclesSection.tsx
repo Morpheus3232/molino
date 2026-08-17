@@ -3,12 +3,8 @@
 import { useState } from "react";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
-import {
-  PERSONAL_YEAR_MEANINGS,
-  PERSONAL_MONTH_MEANINGS,
-  getPersonalDayMeaning,
-} from "@/lib/engines/dailyEnergyEngine";
-import { ChevronDown, CalendarDays, CalendarRange, Sun } from "lucide-react";
+import { PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";
+import { ChevronDown, CalendarRange } from "lucide-react";
 
 interface PersonalCyclesSectionProps {
   profile: UserProfile;
@@ -57,49 +53,32 @@ function CycleCard({ icon, label, number, theme, children }: CycleCardProps) {
 }
 
 /**
- * Tres ciclos personales (Año/Mes/Día) como cards colapsables debajo de
- * DailyEnergyCard — el número y el tema ya son visibles en la card
- * principal (Día Personal X · Mes Y · Año Z), esto agrega la interpretación
- * completa de cada uno sin saturar la card de arriba. Solo se renderiza si
- * el perfil tiene birthDate (siempre lo tiene si daily existe, ya que
- * useDailyEnergy devuelve null sin perfil) — ver guard en HoyClient.tsx.
+ * Año Personal como card colapsable debajo de DailyEnergyCard — el único
+ * ciclo que se muestra en /hoy. Mes y Día Personal dejaron de mostrarse acá
+ * (2026-08-17): el resto de la tarjeta ya muestra energía universal del día
+ * (igual para cualquier visitante, ver calculateUniversalDailyEnergy en
+ * dailyEnergyEngine.ts) — mezclar eso con un Mes/Día Personal individual
+ * generaba confusión sobre qué dato era de quién. personalMonth/personalDay
+ * se siguen calculando y usando en decisionsEngine/timingEngine/journal, no
+ * se tocaron — esto es un cambio de qué se muestra en esta card puntual,
+ * no del motor.
  */
 export default function PersonalCyclesSection({ profile, daily }: PersonalCyclesSectionProps) {
   if (!profile.birthDate) return null;
 
   const yearMeaning = PERSONAL_YEAR_MEANINGS[daily.personalYear];
-  const monthMeaning = PERSONAL_MONTH_MEANINGS[daily.personalMonth];
-  const dayMeaning = getPersonalDayMeaning(daily.personalDay);
-
-  if (!yearMeaning && !monthMeaning && !dayMeaning) return null;
+  if (!yearMeaning) return null;
 
   return (
     <div className="rounded-3xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 shadow-xl">
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">
-        Tus ciclos personales
+        Tu año personal
       </p>
-      <div className="space-y-3">
-        {yearMeaning && (
-          <CycleCard icon={<CalendarRange className="w-4 h-4" />} label="Año Personal" number={daily.personalYear} theme={yearMeaning.theme}>
-            <p><span className="text-foreground font-medium">Enfoque: </span>{yearMeaning.focus}</p>
-            <p><span className="text-foreground font-medium">Desafíos: </span>{yearMeaning.challenges}</p>
-            <p><span className="text-foreground font-medium">Oportunidades: </span>{yearMeaning.opportunities}</p>
-          </CycleCard>
-        )}
-        {monthMeaning && (
-          <CycleCard icon={<CalendarDays className="w-4 h-4" />} label="Mes Personal" number={daily.personalMonth} theme={monthMeaning.theme}>
-            <p><span className="text-foreground font-medium">Energía: </span>{monthMeaning.energy}</p>
-            <p><span className="text-foreground font-medium">Consejo: </span>{monthMeaning.advice}</p>
-          </CycleCard>
-        )}
-        {dayMeaning && (
-          <CycleCard icon={<Sun className="w-4 h-4" />} label="Día Personal" number={daily.personalDay} theme={dayMeaning.theme}>
-            <p>{dayMeaning.description}</p>
-            <p><span className="text-foreground font-medium">Fortalezas: </span>{dayMeaning.strengths.join(", ")}</p>
-            <p><span className="text-foreground font-medium">Cuidado con: </span>{dayMeaning.cautions.join(", ")}</p>
-          </CycleCard>
-        )}
-      </div>
+      <CycleCard icon={<CalendarRange className="w-4 h-4" />} label="Año Personal" number={daily.personalYear} theme={yearMeaning.theme}>
+        <p><span className="text-foreground font-medium">Enfoque: </span>{yearMeaning.focus}</p>
+        <p><span className="text-foreground font-medium">Desafíos: </span>{yearMeaning.challenges}</p>
+        <p><span className="text-foreground font-medium">Oportunidades: </span>{yearMeaning.opportunities}</p>
+      </CycleCard>
     </div>
   );
 }
