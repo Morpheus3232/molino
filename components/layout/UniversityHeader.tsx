@@ -209,7 +209,7 @@ export default function UniversityHeader() {
 
             <button
               type="button"
-              className="md:hidden p-2 text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
+              className="md:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
@@ -239,7 +239,7 @@ export default function UniversityHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`block px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+                    className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
                       isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground hover:text-accent"
                     }`}
                     onClick={() => setMenuOpen(false)}
@@ -251,7 +251,7 @@ export default function UniversityHeader() {
                 <div className="border-t border-ink/10 my-2" />
 
                 <div className="px-3 py-1.5">
-                  <SavedProfilesDrawer className="w-full justify-center !py-2.5" />
+                  <SavedProfilesDrawer className="w-full justify-center !min-h-[44px] !py-2.5" />
                 </div>
 
                 <div className="border-t border-ink/10 my-2" />
@@ -263,7 +263,7 @@ export default function UniversityHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`block px-3 py-1.5 text-xs text-muted hover:text-foreground transition-colors`}
+                    className={`flex items-center min-h-[44px] px-3 py-1.5 text-xs text-muted hover:text-foreground transition-colors`}
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.label}
@@ -279,14 +279,14 @@ export default function UniversityHeader() {
                       setMenuOpen(false);
                       handleNewProfile();
                     }}
-                    className="block w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
+                    className="flex items-center min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
                   >
                     Reiniciar perfil actual
                   </button>
                 ) : (
                   <Link
                     href="/onboarding"
-                    className="block mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
+                    className="flex items-center justify-center min-h-[44px] mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
                     onClick={() => setMenuOpen(false)}
                   >
                     CREAR MI MAPA

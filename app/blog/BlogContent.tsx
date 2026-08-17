@@ -99,7 +99,7 @@ export default function BlogContent() {
                 type="button"
                 onClick={() => setFilter(f)}
                 aria-pressed={active}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold uppercase tracking-[0.2em] rounded-sm border transition-colors min-h-[36px] ${
+                className={`px-3 py-1.5 text-xs font-mono font-semibold uppercase tracking-[0.2em] rounded-sm border transition-colors min-h-[44px] ${
                   active
                     ? "bg-accent text-accent-foreground border-accent"
                     : "border-border text-muted hover:text-foreground hover:border-accent/50"
