@@ -6,6 +6,8 @@ import {
   calculatePersonalityNumber,
   calculateBirthDayNumber,
   getArchetypeInfo,
+  getMasterNumbers,
+  getMasterPositionMeaning,
 } from "../numerologyEngine";
 
 describe("Numerology Engine", () => {
@@ -138,6 +140,63 @@ describe("getArchetypeInfo", () => {
     it("returns fallback for unknown life path", () => {
       const archetype = getArchetypeInfo(999);
       expect(archetype.name).toBe("El Buscador");
+    });
+  });
+
+  describe("getMasterNumbers", () => {
+    it("detects a master life path", () => {
+      const hits = getMasterNumbers({ lifePath: 11, expressionNumber: 3, soulNumber: 5, personalityNumber: 7 });
+      expect(hits).toEqual([{ position: "lifePath", number: 11 }]);
+    });
+
+    it("detects a master soul number", () => {
+      const hits = getMasterNumbers({ lifePath: 4, expressionNumber: 6, soulNumber: 22, personalityNumber: 8 });
+      expect(hits).toEqual([{ position: "soul", number: 22 }]);
+    });
+
+    it("detects a master expression number", () => {
+      const hits = getMasterNumbers({ lifePath: 4, expressionNumber: 33, soulNumber: 6, personalityNumber: 8 });
+      expect(hits).toEqual([{ position: "expression", number: 33 }]);
+    });
+
+    it("detects a master personality number", () => {
+      const hits = getMasterNumbers({ lifePath: 4, expressionNumber: 6, soulNumber: 8, personalityNumber: 11 });
+      expect(hits).toEqual([{ position: "personality", number: 11 }]);
+    });
+
+    it("detects multiple master numbers across positions", () => {
+      const hits = getMasterNumbers({ lifePath: 11, expressionNumber: 22, soulNumber: 5, personalityNumber: 33 });
+      expect(hits).toEqual([
+        { position: "lifePath", number: 11 },
+        { position: "expression", number: 22 },
+        { position: "personality", number: 33 },
+      ]);
+    });
+
+    it("returns an empty array when there are no master numbers", () => {
+      const hits = getMasterNumbers({ lifePath: 4, expressionNumber: 6, soulNumber: 8, personalityNumber: 9 });
+      expect(hits).toEqual([]);
+    });
+
+    it("ignores undefined optional fields", () => {
+      const hits = getMasterNumbers({ lifePath: 4 });
+      expect(hits).toEqual([]);
+    });
+  });
+
+  describe("getMasterPositionMeaning", () => {
+    it("returns distinct, non-empty text for every master number and position", () => {
+      const numbers = [11, 22, 33] as const;
+      const positions = ["lifePath", "expression", "soul", "personality"] as const;
+      const seen = new Set<string>();
+      for (const n of numbers) {
+        for (const p of positions) {
+          const text = getMasterPositionMeaning(n, p);
+          expect(text.length).toBeGreaterThan(20);
+          expect(seen.has(text)).toBe(false);
+          seen.add(text);
+        }
+      }
     });
   });
 });
