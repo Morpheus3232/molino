@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUp, fadeUpMount } from "@/lib/utils/motion";
 import { getBlogPostBySlug, getReadingTime, type BlogPost } from "@/lib/data/blog-content";
 
 function formatDate(iso: string): string {
@@ -139,8 +139,8 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
           {/* Contenido principal (~70%) */}
           <div className="min-w-0">
-            {/* Hero */}
-            <motion.header {...fadeUp} className="mb-10">
+            {/* Hero — above the fold, dispara al montar (no whileInView, ver fadeUpMount) */}
+            <motion.header {...fadeUpMount} className="mb-10">
               <span className="inline-block text-xs font-mono uppercase tracking-[0.2em] text-accent mb-4">
                 {post.category}
               </span>
@@ -157,8 +157,8 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               </div>
             </motion.header>
 
-            {/* Portada */}
-            <motion.div {...fadeUp} className="mb-10">
+            {/* Portada — above the fold, dispara al montar */}
+            <motion.div {...fadeUpMount} className="mb-10">
               <div className="relative aspect-[16/9] overflow-hidden rounded-md border border-border bg-paper-alt">
                 <Image
                   src={post.image}

@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
+import { staggerApple, staggerDelay } from "@/lib/utils/premiumMotion";
+import { fadeUpMount } from "@/lib/utils/motion";
 import { BLOG_POSTS, BLOG_CATEGORIES, getReadingTime, type BlogCategory, type BlogPost } from "@/lib/data/blog-content";
 
 type Filter = BlogCategory | "Todos";
@@ -22,7 +23,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
   const readTime = getReadingTime(post);
   return (
     <motion.article
-      {...staggerItemSmooth}
+      {...fadeUpMount}
       transition={{ delay: staggerDelay(index, 0.08), duration: 0.4 }}
       className="card group flex flex-col h-full overflow-hidden hover:border-accent/50 transition-colors"
     >
@@ -70,24 +71,24 @@ export default function BlogContent() {
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24" id="main-content">
-        {/* Hero */}
-        <motion.section {...staggerApple} className="mb-12">
+        {/* Hero — above the fold, dispara al montar (no whileInView, ver fadeUpMount) */}
+        <div className="mb-12">
           <motion.h1
-            {...staggerItemSmooth}
+            {...fadeUpMount}
             transition={{ duration: 0.5 }}
             className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.05] mb-5"
           >
             Blog de autoconocimiento
           </motion.h1>
           <motion.p
-            {...staggerItemSmooth}
-            transition={{ duration: 0.5 }}
+            {...fadeUpMount}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="text-base text-muted max-w-2xl leading-relaxed"
           >
             Numerología, astrología y zodíaco chino explicados con claridad. Aprendé a leer los
             patrones que ya están en tu fecha de nacimiento.
           </motion.p>
-        </motion.section>
+        </div>
 
         {/* Filtros por categoría */}
         <nav className="flex flex-wrap gap-2 mb-10" aria-label="Filtrar artículos por categoría">
