@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
+import { getMasterNumbers } from "@/lib/engines/numerologyEngine";
 
 interface ProfileSummaryTableProps {
   profile: UserProfile;
@@ -13,6 +14,7 @@ interface StatItem {
   label: string;
   value: string | number;
   icon?: React.ReactNode;
+  isMaster?: boolean;
 }
 
 function SystemCard({ title, stats, children }: { title: string; stats: StatItem[]; children?: React.ReactNode }) {
@@ -31,9 +33,14 @@ function SystemCard({ title, stats, children }: { title: string; stats: StatItem
         {stats.map((stat, i) => (
           <div key={i} className="flex justify-between items-start gap-4">
             <dt className="text-sm text-muted">{stat.label}</dt>
-            <dd className="font-mono text-base font-semibold text-foreground text-right min-w-[40%]">
+            <dd className={`font-mono text-base font-semibold text-right min-w-[40%] ${stat.isMaster ? "text-accent" : "text-foreground"}`}>
               {stat.icon && <span className="mr-2" aria-hidden="true">{stat.icon}</span>}
               {stat.value}
+              {stat.isMaster && (
+                <span className="ml-2 text-[10px] uppercase tracking-[0.2em] font-medium px-1.5 py-0.5 rounded-sm border border-accent/20 text-accent/60 align-middle">
+                  Maestro
+                </span>
+              )}
             </dd>
           </div>
         ))}
@@ -47,11 +54,13 @@ export default function ProfileSummaryTable({ profile }: ProfileSummaryTableProp
   const display = getZodiacDisplay(profile.chineseZodiac);
   const symbol = ZODIAC_SYMBOLS[profile.sunSign] || "";
 
-  const numerologyStats = [
-    { label: "Camino de Vida", value: profile.lifePath },
-    { label: "Número de Expresión", value: profile.expressionNumber ?? "—" },
-    { label: "Número del Alma", value: profile.soulNumber ?? "—" },
-    { label: "Día de Nacimiento", value: profile.personalityNumber ?? "—" },
+  const masterPositions = new Set(getMasterNumbers(profile).map((h) => h.position));
+
+  const numerologyStats: StatItem[] = [
+    { label: "Camino de Vida", value: profile.lifePath, isMaster: masterPositions.has("lifePath") },
+    { label: "Número de Expresión", value: profile.expressionNumber ?? "—", isMaster: masterPositions.has("expression") },
+    { label: "Número del Alma", value: profile.soulNumber ?? "—", isMaster: masterPositions.has("soul") },
+    { label: "Día de Nacimiento", value: profile.personalityNumber ?? "—", isMaster: masterPositions.has("personality") },
     { label: "Número de la Suerte", value: profile.luckyNumber ?? "—" },
   ];
 

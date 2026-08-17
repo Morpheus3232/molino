@@ -13,6 +13,13 @@ import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { safeNumber } from "@/lib/utils/score";
+import Link from "next/link";
+import {
+  getMasterNumbers,
+  getMasterPositionMeaning,
+  type MasterNumberHit,
+  type MasterPosition,
+} from "@/lib/engines/numerologyEngine";
 import PremiumGate from "@/components/profile/PremiumGate";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/engines/intelligenceEngine";
@@ -40,13 +47,62 @@ function ChapterNumber({ number, color }: { number: string; color: string }) {
  * Patrón central — narrativa de una sola pieza.
  * Primer patrón como ancla, tensión como conflicto.
  */
+const MASTER_POSITION_LABELS: Record<MasterPosition, string> = {
+  lifePath: "Camino de Vida",
+  expression: "Expresión",
+  soul: "Alma",
+  personality: "Personalidad",
+};
+
+/**
+ * Números maestros — contenido 100% determinista (getMasterNumbers no
+ * llama IA ni depende de premium), así que vive en la zona gratis, como
+ * addendum del patrón central en vez de un capítulo nuevo — evita
+ * renumerar los capítulos 02-06 por un agregado cosmético.
+ */
+function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elementColor: string }) {
+  if (hits.length === 0) return null;
+  return (
+    <div className="mt-10 pt-8 border-t border-ink/10">
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-5">
+        ✦ Tus números maestros
+      </p>
+      <div className="space-y-6">
+        {hits.map((hit) => (
+          <div key={hit.position}>
+            <div className="flex items-baseline gap-3 mb-2">
+              <span className="font-heading text-2xl sm:text-3xl" style={{ color: elementColor }}>
+                {hit.number}
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+                {MASTER_POSITION_LABELS[hit.position]}
+              </span>
+            </div>
+            <p className="text-sm text-foreground leading-relaxed max-w-2xl">
+              {getMasterPositionMeaning(hit.number, hit.position)}
+            </p>
+          </div>
+        ))}
+      </div>
+      <Link
+        href="/guia/numeros-maestros"
+        className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:underline underline-offset-4"
+      >
+        Profundizá en los números maestros →
+      </Link>
+    </div>
+  );
+}
+
 function PatronCentral({
   pattern,
   tension,
+  masterNumbers,
   elementColor,
 }: {
   pattern: { label: string; keyword: string; description: string; sources?: string[] };
   tension: { title: string; evidence: string } | null;
+  masterNumbers: MasterNumberHit[];
   elementColor: string;
 }) {
   return (
@@ -82,6 +138,8 @@ function PatronCentral({
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">Evidencias · </span>
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
         </div>
+
+        <NumerosMaestros hits={masterNumbers} elementColor={elementColor} />
       </div>
     </div>
   );
@@ -229,6 +287,7 @@ function PiezasLibres({
   const rules = buildRules(profile);
   const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
   const timing = analyzeTiming(profile, new Date(), savedIntention || "start_project");
+  const masterNumbers = getMasterNumbers(profile);
 
   useEffect(() => {
     onData({ patterns, rules, tensions, dailyEnergy, timing });
@@ -245,6 +304,7 @@ function PiezasLibres({
         <PatronCentral
           pattern={mainPattern}
           tension={mainTension}
+          masterNumbers={masterNumbers}
           elementColor={elementColor}
         />
       )}
