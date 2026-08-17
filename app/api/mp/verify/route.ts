@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, hashProfile } from '@/lib/mercadopago';
 import { hasPremiumAccess, grantPremiumAccess, savePremiumToken, getProfileHashByPaymentId, saveProfileSalt } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
-import { paymentIdentitySchema, birthDateSchema, paypalOrderIdSchema } from '@/lib/validation/payments';
+import { paymentIdentitySchema, birthDateSchema } from '@/lib/validation/payments';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
