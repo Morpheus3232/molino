@@ -19,7 +19,14 @@ export interface AIInterpretation {
   model?: string;
 }
 
-const AI_TIMEOUT_MS = 20_000;
+export const AI_TIMEOUT_MS = 20_000;
+/** Timeout for prompts that require deep multi-system reasoning
+ * (personal_profile, question) — see .claude/execution-logs/
+ * latency-root-cause-hypothesis.md Fix 1. A 4x longer, much harder prompt
+ * routinely needs more than 20s to complete; aborting it early only to
+ * retry (or fail over to a second provider) wastes time instead of saving
+ * it. Other types keep the tighter AI_TIMEOUT_MS. */
+export const AI_HEAVY_TIMEOUT_MS = 55_000;
 
 /**
  * The structured MolinoInterpretation schema (used whenever `template` is
@@ -177,7 +184,8 @@ export async function generateWithOpenAI(
   user: UserProfile,
   target: CompatibilityTarget,
   result: CompatibilityResult,
-  template?: string
+  template?: string,
+  timeoutMs?: number
 ): Promise<AIInterpretation> {
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
@@ -226,7 +234,7 @@ export async function generateWithOpenAI(
       temperature: 0.7,
       max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
     }),
-  });
+  }, timeoutMs);
   const duration = Date.now() - startedAt;
 
   if (!response.ok) {
@@ -255,7 +263,8 @@ export async function generateWithClaude(
   user: UserProfile,
   target: CompatibilityTarget,
   result: CompatibilityResult,
-  template?: string
+  template?: string,
+  timeoutMs?: number
 ): Promise<AIInterpretation> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
@@ -302,7 +311,7 @@ export async function generateWithClaude(
         },
       ],
     }),
-  });
+  }, timeoutMs);
   const duration = Date.now() - startedAt;
 
   if (!response.ok) {
@@ -331,7 +340,8 @@ export async function generateWithOpenRouter(
   user: UserProfile,
   target: CompatibilityTarget,
   result: CompatibilityResult,
-  template?: string
+  template?: string,
+  timeoutMs?: number
 ): Promise<AIInterpretation> {
   const apiKey = process.env.OPENROUTER_API_KEY;
   const model = process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT;
@@ -408,7 +418,7 @@ export async function generateWithOpenRouter(
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(requestBody),
-  });
+  }, timeoutMs);
   const duration = Date.now() - startedAt;
 
   // Not every OpenRouter-routed model/provider supports json_schema
