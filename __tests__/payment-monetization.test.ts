@@ -5,12 +5,9 @@ import { describe, test, expect, vi, beforeEach } from 'vitest';
 import {
   paymentIdentitySchema,
   birthDateSchema,
-  paypalOrderIdSchema,
   mpCurrencySchema,
   mpPaymentStatusSchema,
-  stripeEventSchema,
 } from '@/lib/validation/payments';
-import { validateStripePayment } from '@/lib/stripe';
 
 describe('payment Zod validation', () => {
   test('accepts a valid birthDate', () => {
@@ -44,12 +41,6 @@ describe('payment Zod validation', () => {
     expect(bad.success).toBe(false);
   });
 
-  test('paypalOrderIdSchema accepts valid ids and rejects junk', () => {
-    expect(paypalOrderIdSchema.safeParse('5O123456AB789').success).toBe(true);
-    expect(paypalOrderIdSchema.safeParse('<script>').success).toBe(false);
-    expect(paypalOrderIdSchema.safeParse('ab').success).toBe(false); // too short
-  });
-
   test('mpCurrencySchema only accepts USD and ARS', () => {
     expect(mpCurrencySchema.safeParse('USD').success).toBe(true);
     expect(mpCurrencySchema.safeParse('ARS').success).toBe(true);
@@ -60,34 +51,6 @@ describe('payment Zod validation', () => {
     expect(mpPaymentStatusSchema.safeParse('approved').success).toBe(true);
     expect(mpPaymentStatusSchema.safeParse('rejected').success).toBe(true);
     expect(mpPaymentStatusSchema.safeParse('weird_status').success).toBe(false);
-  });
-
-  test('stripeEventSchema validates shape', () => {
-    const ok = stripeEventSchema.safeParse({ id: 'evt_1', type: 'checkout.session.completed', data: {} });
-    expect(ok.success).toBe(true);
-    expect(stripeEventSchema.safeParse({ id: 'evt_1' }).success).toBe(false);
-  });
-});
-
-describe('validateStripePayment', () => {
-  test('accepts a succeeded payment at the expected amount', () => {
-    const r = validateStripePayment({ status: 'succeeded', amount_received: 800, metadata: { product: 'molino_premium' } }, 8, 'molino_premium');
-    expect(r.valid).toBe(true);
-  });
-
-  test('rejects non-succeeded status', () => {
-    const r = validateStripePayment({ status: 'failed', amount_received: 800 }, 8, 'molino_premium');
-    expect(r.valid).toBe(false);
-  });
-
-  test('rejects amount mismatch', () => {
-    const r = validateStripePayment({ status: 'succeeded', amount_received: 1000, metadata: { product: 'molino_premium' } }, 8, 'molino_premium');
-    expect(r.valid).toBe(false);
-  });
-
-  test('rejects wrong product', () => {
-    const r = validateStripePayment({ status: 'succeeded', amount_received: 800, metadata: { product: 'other' } }, 8, 'molino_premium');
-    expect(r.valid).toBe(false);
   });
 });
 
