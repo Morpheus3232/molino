@@ -7,7 +7,6 @@ import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import FeatureComparison from "@/components/premium/FeatureComparison";
 import PremiumPreview from "@/components/premium/PremiumPreview";
-import PremiumTestimonials from "@/components/premium/PremiumTestimonials";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { Sparkles, ShieldCheck, ArrowDown, Compass, Heart } from "lucide-react";
@@ -84,10 +83,7 @@ export default function PremiumClient() {
         {/* 2. Transparent Feature Comparison */}
         <FeatureComparison />
 
-        {/* 3. Real User Testimonials */}
-        <PremiumTestimonials />
-
-        {/* 4. Checkout Box with Guarantee */}
+        {/* 3. Checkout Box with Guarantee */}
         <div className="py-12 max-w-2xl mx-auto">
           <PremiumCheckout
             name={profile?.name}
