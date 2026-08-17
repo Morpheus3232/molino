@@ -253,6 +253,30 @@ export const PERSONAL_MONTH_MEANINGS: Record<number, PersonalMonthMeaning> = {
   },
 };
 
+export interface PersonalDayMeaning {
+  theme: string;
+  description: string;
+  strengths: string[];
+  cautions: string[];
+}
+
+/**
+ * Wrapper público de las tablas THEME/STRENGTHS/CAUTIONS_BY_PERSONAL_DAY,
+ * que quedan privadas — mantiene el mismo encapsulamiento que
+ * PERSONAL_YEAR_MEANINGS/PERSONAL_MONTH_MEANINGS exponen directamente, sin
+ * atar a los consumidores externos a la forma interna de 3 tablas separadas.
+ */
+export function getPersonalDayMeaning(dayNumber: number): PersonalDayMeaning | null {
+  const themeData = THEME_BY_PERSONAL_DAY[dayNumber];
+  if (!themeData) return null;
+  return {
+    theme: themeData.theme,
+    description: themeData.description,
+    strengths: STRENGTHS_BY_PERSONAL_DAY[dayNumber] || [],
+    cautions: CAUTIONS_BY_PERSONAL_DAY[dayNumber] || [],
+  };
+}
+
 /**
  * Calculate daily energy for a user on a specific date.
  * Deterministic: same inputs always produce the same output.

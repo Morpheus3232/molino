@@ -9,6 +9,7 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { useStreak } from "@/lib/hooks/useStreak";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
+import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
 import DateInput from "@/components/ui/DateInput";
@@ -176,6 +177,9 @@ export default function HoyClient() {
             streakBadge={badge}
           />
         )}
+
+        {/* 1.5 Personal Cycles (Year/Month/Day, expandible) */}
+        {daily && <PersonalCyclesSection profile={profile} daily={daily} />}
 
         {/* 2. Daily Focus vs Avoid & Journal Callout */}
         {daily && <DailyFocus daily={daily} />}
