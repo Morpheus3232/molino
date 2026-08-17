@@ -87,7 +87,7 @@ describe('user-country personalization', () => {
     expect(ordered[0].iso).toBe(iso);
     // Preserves all countries (and does not mutate the input).
     expect(ordered.length).toBe(countries.length);
-    expect(countries.length).toBe(57); // input untouched
+    expect(countries.length).toBe(58); // input untouched
   });
 
   test('orderCountriesForUser is a no-op when the country is already first', () => {

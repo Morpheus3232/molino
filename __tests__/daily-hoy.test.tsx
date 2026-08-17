@@ -128,7 +128,7 @@ describe("Daily Energy & Retention System", () => {
 
     render(<WeekPreview forecast={forecast} />);
 
-    expect(screen.getByText(/Pronóstico de los Próximos 3 Días/i)).toBeDefined();
+    expect(screen.getByText(/Vista de los Próximos 3 Días/i)).toBeDefined();
     expect(screen.getByText("Mañana")).toBeDefined();
     expect(screen.getByText("Domingo")).toBeDefined();
     expect(screen.getByText("Cooperación")).toBeDefined();
