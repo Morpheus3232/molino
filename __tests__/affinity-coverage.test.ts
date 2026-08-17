@@ -132,6 +132,34 @@ describe('Affinity coverage per animal (report)', () => {
 import { getPrimaryEvent } from '@/lib/data/entity-events';
 import { calculateAnimalFromDate } from '@/lib/engines/chineseZodiacEngine';
 
+/**
+ * Entities whose primary event year is documented, verified history —
+ * not a data-entry typo — but falls below the general "plausible year"
+ * floor (800) used to catch actual bad data. Each entry pins the exact
+ * expected year: if a future edit changes the entity's year without
+ * updating this allowlist, the gate still fails (the allowlist does not
+ * blanket-exempt the id, only this specific documented value).
+ */
+const KNOWN_HISTORICAL_ENTITIES: Record<string, number> = {
+  // San Marino — fundación como estado en 301 d.C., el estado soberano más
+  // antiguo del mundo. Fuente: countries-atlas.ts sourceNote ("Fundación en 301.").
+  'country-san-marino': 301,
+  // Kioto — capital imperial de Japón (Heian-kyō) desde 794 d.C.
+  // Fuente: cities-atlas.ts sourceNote ("Fundación en 794.").
+  'city-kioto': 794,
+};
+
+/**
+ * Pure check extracted so it's unit-testable in isolation (see the two
+ * `it` blocks right below the main gate) instead of only exercised
+ * indirectly through the full SYMBOLIC_ENTITIES loop.
+ */
+function checkEntityYearPlausibility(id: string, year: number): string | null {
+  if (year >= 800 && year <= new Date().getFullYear()) return null;
+  if (KNOWN_HISTORICAL_ENTITIES[id] === year) return null;
+  return `${id}: year ${year} out of plausible range`;
+}
+
 describe('Atlas schema integrity', () => {
   it('no entity uses the deprecated foundingYear', () => {
     const offenders = SYMBOLIC_ENTITIES.filter((e) => 'foundingYear' in (e as unknown as Record<string, unknown>));
@@ -147,12 +175,31 @@ describe('Atlas schema integrity', () => {
         continue;
       }
       // Historical entities include ancient cities (Dublín ~988, El Cairo
-      // ~969); allow a broad plausible range, reject clearly bad data.
-      if (primary.year < 800 || primary.year > new Date().getFullYear()) {
-        invalid.push(`${entity.id}: year ${primary.year} out of plausible range`);
-      }
+      // ~969); allow a broad plausible range, reject clearly bad data —
+      // except documented pre-800 dates in KNOWN_HISTORICAL_ENTITIES above.
+      const issue = checkEntityYearPlausibility(entity.id, primary.year);
+      if (issue) invalid.push(issue);
     }
     expect(invalid).toEqual([]);
+  });
+
+  it('the year-plausibility gate still rejects an unlisted entity below the floor', () => {
+    // Preserves the gate: a low year WITHOUT a matching allowlist entry
+    // (e.g. a real data-entry typo like year `5`) must still fail.
+    expect(checkEntityYearPlausibility('country-unknown-typo', 5)).toBe(
+      'country-unknown-typo: year 5 out of plausible range',
+    );
+  });
+
+  it('the year-plausibility gate permits documented historical entities', () => {
+    // Both allowlisted ids pass at their exact documented year...
+    expect(checkEntityYearPlausibility('country-san-marino', 301)).toBeNull();
+    expect(checkEntityYearPlausibility('city-kioto', 794)).toBeNull();
+    // ...but the allowlist pins the value: a different (wrong) year for the
+    // same id still fails, so a future typo on these ids is still caught.
+    expect(checkEntityYearPlausibility('country-san-marino', 250)).toBe(
+      'country-san-marino: year 250 out of plausible range',
+    );
   });
 
   it('the entity year resolves to a real Chinese zodiac animal via the engine', () => {
