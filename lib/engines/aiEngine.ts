@@ -117,31 +117,23 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
 } as const;
 
 /**
- * Single retry on transient failures only (network error, timeout, or a 5xx
- * — never on 4xx, which means the request itself is wrong and retrying
- * changes nothing but cost). One retry, not a backoff loop: this runs
- * inside a user-facing request, so a long retry chain would just make a
- * failing call feel like a hang instead of degrading to the deterministic
- * fallback that already exists for exactly this case.
+ * Single attempt, no internal retry. Retrying transient failures is
+ * providerRouter's job (tryLegacyProvider's rate-limit/timeout-aware retry
+ * with backoff) — this function used to ALSO retry once on its own,
+ * unconditionally, which meant a real request could fire up to 2 (this
+ * layer) × 2 (tryLegacyProvider) = 4 HTTP attempts per provider before
+ * giving up. One retry layer, one bounded budget: see
+ * providerRouter.ts's isRetryableError.
  */
-async function fetchWithTimeoutAndRetry(url: string, init: RequestInit): Promise<Response> {
-  const attempt = async (): Promise<Response> => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
-    try {
-      return await fetch(url, { ...init, signal: controller.signal });
-    } finally {
-      clearTimeout(timeout);
-    }
-  };
-
+async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: number = AI_TIMEOUT_MS): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const res = await attempt();
+    const res = await fetch(url, { ...init, signal: controller.signal });
     if (res.status >= 500) throw new Error(`Transient upstream error: ${res.status}`);
     return res;
-  } catch (err) {
-    console.warn('[aiEngine] First attempt failed, retrying once:', err instanceof Error ? err.message : err);
-    return attempt();
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -197,7 +189,7 @@ export async function generateWithOpenAI(
   const prompt = buildPrompt(user, target, result, template);
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeoutAndRetry('https://api.openai.com/v1/chat/completions', {
+  const response = await fetchWithTimeout('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -275,7 +267,7 @@ export async function generateWithClaude(
   const prompt = buildPrompt(user, target, result, template);
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeoutAndRetry('https://api.anthropic.com/v1/messages', {
+  const response = await fetchWithTimeout('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -409,7 +401,7 @@ export async function generateWithOpenRouter(
   }
 
   const startedAt = Date.now();
-  const response = await fetchWithTimeoutAndRetry('https://openrouter.ai/api/v1/chat/completions', {
+  const response = await fetchWithTimeout('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
