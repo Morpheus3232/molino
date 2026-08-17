@@ -13,6 +13,7 @@ import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 import { useCommitPremiumUnlock, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
 import { usePremiumCoupon } from '@/lib/hooks/usePremiumCoupon';
 import { usePremiumRecovery } from '@/lib/hooks/usePremiumRecovery';
+import { usePremiumCheckout } from '@/lib/hooks/usePremiumCheckout';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -80,9 +81,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   // entrar" (checkServer() en el mount inicial) — solo el primer caso merece
   // el momento de revelación; un usuario que vuelve no necesita la fanfarria.
   const [justUnlocked, setJustUnlocked] = useState(false);
-  const [payError, setPayError] = useState<string | null>(null);
   const [pollTimedOut, setPollTimedOut] = useState(false);
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [verificationError, setVerificationError] = useState<string | null>(null);
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -108,6 +107,13 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     handleRecover,
     cancel: cancelRecover,
   } = usePremiumRecovery({ name, birthDate, commitUnlock });
+  const {
+    checkoutLoading,
+    setCheckoutLoading,
+    payError,
+    setPayError,
+    startCheckout,
+  } = usePremiumCheckout({ name, birthDate, currencyId, mercadoPagoEnabled: flags.mercadoPagoEnabled, setState });
 
   // Único producto activo: pago único de $8 USD (Opción A — Pro/Familiar
   // desactivados, ver components/pricing/pricing-data.ts).
@@ -226,51 +232,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       if (currentTimeout) clearTimeout(currentTimeout);
     };
   }, [state, checkServer]);
-
-  const handleCheckout = async () => {
-    if (checkoutLoading) return; // Prevent double-click
-    // Defensa contra CTAs que quedaron habilitados por un estado stale de
-    // `flags` (fetch todavía en vuelo): el flag es la fuente de verdad, no
-    // la presencia del botón.
-    if (!flags.mercadoPagoEnabled) return;
-
-    analytics.trackCheckoutStarted('USD', 'mercadopago');
-    setCheckoutLoading(true);
-    setPayError(null);
-    setState('paying');
-
-    const profileSalt = getOrCreateProfileSalt();
-
-    try {
-      const res = await fetch('/api/mp/preference', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          birthDate,
-          currencyId,
-          salt: profileSalt,
-        }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Error al crear el pago');
-      }
-
-      const data = await res.json();
-      // El server ya resolvió cuál URL corresponde (ver isTestCredentials en
-      // lib/mercadopago.ts) — MP devuelve sandbox_init_point poblado siempre,
-      // sin importar el modo del token, así que decidir acá con "¿vino el
-      // campo?" mandaba usuarios reales a sandbox.
-      window.location.href = data.checkoutUrl;
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : 'Error al iniciar el pago';
-      setPayError(msg);
-      setCheckoutLoading(false);
-      setState('pay_error');
-    }
-  };
 
   if (!flags.premiumEnabled) {
     return <>{children}</>;
@@ -433,7 +394,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                     variant="accent"
                     size="lg"
                     fullWidth
-                    onClick={() => handleCheckout()}
+                    onClick={() => startCheckout()}
                   >
                     {t.premium.payWithMercadoPago}
                   </Button>
@@ -569,7 +530,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
                     <Button
                       variant="accent"
                       size="lg"
-                      onClick={() => handleCheckout()}
+                      onClick={() => startCheckout()}
                     >
                       Ir a pagar ${chargePriceUsd} USD
                     </Button>
