@@ -1,6 +1,16 @@
-const CACHE_NAME = 'molino-cache-v3';
+const CACHE_NAME = 'molino-cache-v4';
 const STATIC = ['/offline.html','/manifest.json','/favicon.svg','/favicon.ico','/apple-touch-icon.svg','/icon-192.svg','/icon-512.svg'];
 const OPEN = () => caches.open(CACHE_NAME);
+
+// Next.js App Router client-side navigation (click en <Link>, prefetch) no
+// dispara request.mode === 'navigate' — es un fetch same-origin normal con
+// estos headers. Si cae en el handler stale-while-revalidate de abajo, una
+// sección puede quedar sirviendo un payload RSC viejo (de una sesión o build
+// anterior) hasta que el usuario hace un refresh real. Debe ir siempre a red.
+const isNextRouterRequest = (request) =>
+  request.headers.get('RSC') === '1' ||
+  request.headers.get('Next-Router-State-Tree') !== null ||
+  request.headers.get('Next-Router-Prefetch') !== null;
 
 self.addEventListener('install', (e) => {
   e.waitUntil(OPEN().then((c) => c.addAll(STATIC)));
@@ -32,6 +42,14 @@ self.addEventListener('fetch', (e) => {
         .then((res) => { if (res && res.status === 200) { const c = res.clone(); OPEN().then((cache) => cache.put(request, c)); } return res; })
         .catch(async () => (await caches.match(request)) || (await caches.match('/offline.html')) || new Response('Offline', { status: 503, headers: { 'Content-Type': 'text/plain' } }))
     );
+    return;
+  }
+
+  // Next.js router fetches (RSC payloads for client-side navigation and
+  // prefetch) — same-origin, never request.mode 'navigate', but must stay
+  // network-only. See isNextRouterRequest above.
+  if (isNextRouterRequest(request)) {
+    e.respondWith(fetch(request));
     return;
   }
 
