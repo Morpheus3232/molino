@@ -29,7 +29,6 @@
     "resend": "^6.20.0",
     "server-only": "^0.0.1",
     "sonner": "^2.0.7",
-    "stripe": "^22.5.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
