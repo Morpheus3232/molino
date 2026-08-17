@@ -666,65 +666,6 @@ Generá una respuesta JSON con:
   }
 }
 
-// ============================================================
-// AI INTERPRETATION (Server-side only)
-// ============================================================
-
-/**
- * Generate AI interpretation using structured context.
- * This function calls the API route which handles the actual AI call.
- * Client-side safe.
- */
-export async function generateIntelligenceInterpretation(
-  request: InterpretationRequest,
-  provider: 'openai' | 'claude' = 'openai'
-): Promise<MolinoInterpretation> {
-  try {
-    const response = await fetch('/api/ai/interpretation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user: request.context.userProfile,
-        target: request.context.entity || { name: 'Análisis general' },
-        result: request.context.compatibility || {
-          user: request.context.userProfile,
-          target: {},
-          scores: { numerology: 50, westernAstrology: 50, chineseAstrology: 50, archetype: 50, element: 50, overall: 50 },
-          strengths: [],
-          challenges: [],
-          narrative: '',
-          insight: '',
-        },
-        provider,
-        template: request.template || buildIntelligencePrompt(request),
-      }),
-    });
-
-    if (!response.ok) throw new Error(`API error: ${response.status}`);
-
-    const data = await response.json();
-    const interpretation = data.interpretation;
-
-    return {
-      summary: interpretation.narrative || '',
-      alignment: interpretation.detailedInsights?.[0] || '',
-      timing: interpretation.detailedInsights?.[1] || '',
-      // recommendations[0] ya se usa en suggestedNextStep — strengths toma el resto
-      // para no repetir literalmente el mismo texto en dos bloques distintos.
-      strengths: interpretation.recommendations?.slice(1, 4) || [],
-      tensions: interpretation.reflectionQuestions?.slice(0, 2) || [],
-      whatToConsider: interpretation.detailedInsights?.slice(2, 5) || [],
-      suggestedNextStep: interpretation.recommendations?.[0] || '',
-      confidence: 'Media',
-      limitations: ['Interpretación basada en sistemas simbólicos, no predicciones científicas.'],
-      rawContext: request.context,
-    };
-  } catch (error) {
-    console.error('Error en Intelligence Engine:', error);
-    return generateFallbackInterpretation(request);
-  }
-}
-
 /**
  * Generate fallback interpretation when AI is unavailable.
  * Uses deterministic data to create a structured response.
