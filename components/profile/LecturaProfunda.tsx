@@ -17,8 +17,8 @@ import Link from "next/link";
 import {
   getMasterNumbers,
   getMasterPositionMeaning,
+  MASTER_POSITION_LABELS_ES,
   type MasterNumberHit,
-  type MasterPosition,
 } from "@/lib/engines/numerologyEngine";
 import PremiumGate from "@/components/profile/PremiumGate";
 import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
@@ -47,13 +47,6 @@ function ChapterNumber({ number, color }: { number: string; color: string }) {
  * Patrón central — narrativa de una sola pieza.
  * Primer patrón como ancla, tensión como conflicto.
  */
-const MASTER_POSITION_LABELS: Record<MasterPosition, string> = {
-  lifePath: "Camino de Vida",
-  expression: "Expresión",
-  soul: "Alma",
-  personality: "Personalidad",
-};
-
 /**
  * Números maestros — contenido 100% determinista (getMasterNumbers no
  * llama IA ni depende de premium), así que vive en la zona gratis, como
@@ -75,7 +68,7 @@ function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elem
                 {hit.number}
               </span>
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-                {MASTER_POSITION_LABELS[hit.position]}
+                {MASTER_POSITION_LABELS_ES[hit.position]}
               </span>
             </div>
             <p className="text-sm text-foreground leading-relaxed max-w-2xl">

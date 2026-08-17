@@ -12,7 +12,23 @@ import type { UserProfile } from '@/types/user';
 import { buildPersonalCode, buildPatterns, buildTensions, buildRules } from '../synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 import { sanitizeNameForPrompt, sanitizeUserText } from '@/lib/ai/piiSanitizer';
-import type { InterpretationRequest } from './types';
+import { getMasterNumbers, MASTER_POSITION_LABELS_ES } from '../numerologyEngine';
+import type { InterpretationRequest, MolinoContext } from './types';
+
+/**
+ * Bloque condicional para el prompt cuando el perfil tiene números maestros
+ * (11/22/33) en alguna posición — sin esto la IA recibe los números como
+ * datos crudos y los trata igual que cualquier otro dígito 1-9.
+ */
+function buildMasterNumbersBlock(numerology: MolinoContext['numerology']): string {
+  const masters = getMasterNumbers(numerology);
+  if (masters.length === 0) return '';
+  const masterList = masters.map(m => `${m.number} en ${MASTER_POSITION_LABELS_ES[m.position]}`).join(', ');
+  return `
+NÚMEROS MAESTROS DETECTADOS: ${masterList}
+IMPORTANTE: Este perfil tiene números maestros. Los maestros (11/22/33) NO deben tratarse como sus reducciones (2/4/6) — tienen vibración propia y elevada. Para cada número maestro mencionado, profundizá su significado específico en esa posición. Explicá cómo el maestro influye en esa área específica de la vida del consultante, con matices y tensiones reales (no solo aspectos positivos).
+`;
+}
 
 export function buildIntelligencePromptV2(request: InterpretationRequest): string {
   const { type, context, question, template, conversationHistory, readingContext } = request;
@@ -87,6 +103,7 @@ CÓDIGO PERSONAL (numerología completa):
 - Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
 ${personalCode.expression.number ? `- Expresión ${personalCode.expression.number} — ${personalCode.expression.name}: ${personalCode.expression.meaning}` : ''}
 ${personalCode.soul.number ? `- Alma ${personalCode.soul.number} — ${personalCode.soul.name}: ${personalCode.soul.meaning}` : ''}
+${buildMasterNumbersBlock(numerology)}
 ${relationsBlock}
 ${dailyEnergy ? `MOMENTO ACTUAL:
 - Score de energía de hoy: ${dailyEnergy.overallScore}/100
@@ -370,6 +387,7 @@ ${readingContext.whatToConsider?.length ? `- Consideraciones: ${readingContext.w
 ${baseContext}
 CÓDIGO PERSONAL:
 - Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
+${buildMasterNumbersBlock(numerology)}
 PATRONES YA CALCULADOS:
 ${patterns.map(p => `- ${p.label}: ${p.keyword} (${p.sources.join(' + ')})`).join('\n')}
 ${questionTensions.length ? `TENSIONES YA DETECTADAS:\n${questionTensions.map(t => `- ${t.title}: ${t.evidence}`).join('\n')}\n` : ''}
