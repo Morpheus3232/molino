@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Decisiones",
   description: "Registrá y revisá tus decisiones con el marco de Molino.",
-  robots: { index: false, follow: false },
-};
+  noIndex: true,
+  noFollow: true,
+});
 
 export default function DecisionsLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

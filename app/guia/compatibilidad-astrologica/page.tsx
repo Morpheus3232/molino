@@ -1,10 +1,11 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Compatibilidad Astrológica",
   description: "Cómo se relacionan los signos según sus elementos y modalidades. Fuego, Tierra, Aire y Agua en acción.",
-};
+  path: "/guia/compatibilidad-astrologica",
+});
 
 export default function CompatibilidadAstrologicaPage() {
   return (

@@ -22,16 +22,26 @@ export function createRouteMetadata({
   description = SITE_DESCRIPTION,
   path = "",
   noIndex = false,
+  noFollow = false,
   image = OG_IMAGE,
+  ogTitle,
+  ogDescription,
 }: {
   title: string;
   description?: string;
   path?: string;
   noIndex?: boolean;
+  /** Solo tiene efecto junto a noIndex: true — rutas indexables siempre son follow. */
+  noFollow?: boolean;
   image?: string;
+  /** Copy de OG/Twitter cuando difiere del title/description de la página (p.ej. variantes con "—" en vez de "|"). */
+  ogTitle?: string;
+  ogDescription?: string;
 }): Metadata {
   const fullTitle = formatTitle(title);
   const canonicalUrl = siteUrl(path);
+  const socialTitle = ogTitle ?? fullTitle;
+  const socialDescription = ogDescription ?? description;
 
   return {
     // { absolute } (no un string plano) le dice a Next.js que NO aplique
@@ -43,11 +53,11 @@ export function createRouteMetadata({
     description,
     alternates: noIndex ? undefined : { canonical: canonicalUrl },
     robots: noIndex
-      ? { index: false, follow: true }
+      ? { index: false, follow: !noFollow }
       : { index: true, follow: true },
     openGraph: {
-      title: fullTitle,
-      description,
+      title: socialTitle,
+      description: socialDescription,
       url: canonicalUrl,
       siteName: SITE_NAME,
       images: [{ url: image }],
@@ -56,8 +66,8 @@ export function createRouteMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: fullTitle,
-      description,
+      title: socialTitle,
+      description: socialDescription,
     },
   };
 }

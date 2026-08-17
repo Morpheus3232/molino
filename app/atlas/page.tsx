@@ -1,21 +1,15 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import { getAtlasCountries, topCountriesByCount, getAllAtlasEntitiesWithCountries } from "@/lib/data/atlas-queries";
 import { getCuratedGlobalEntities } from "@/lib/data/atlas-curation";
 import AtlasHub from "@/components/atlas/AtlasHub";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Atlas — Tu mundo según el Zodiaco Chino | Molino",
+export const metadata = createRouteMetadata({
+  title: "Atlas — Tu mundo según el Zodiaco Chino",
   description:
     "Explorá el Atlas de Molino: navegá lugares, marcas y entidades que comparten tu animal del zodíaco chino, organizados por categoría y país.",
-  alternates: { canonical: siteUrl("/atlas") },
-  openGraph: {
-    title: "Atlas — Tu mundo según el Zodiaco Chino | Molino",
-    description: "El Atlas de Molino: exploración personal por animal del zodíaco chino.",
-    type: "website",
-    url: siteUrl("/atlas"),
-  },
-};
+  path: "/atlas",
+  ogDescription: "El Atlas de Molino: exploración personal por animal del zodíaco chino.",
+});
 
 /**
  * Atlas hub — personalized affinity recommendations + curated global + local browsing.

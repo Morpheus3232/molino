@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Onboarding",
   description: "Completá tu perfil en Molino.",
-  robots: { index: false, follow: false },
-};
+  noIndex: true,
+  noFollow: true,
+});
 
 export default function OnboardingLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;

@@ -1,18 +1,15 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl } from "@/lib/seo";
+import { createRouteMetadata } from "@/lib/seo";
 import { ShieldCheck, Users, Sparkles, BookOpen, Lock, Compass, CheckCircle2, ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Molino para Profesionales — Coaches y Facilitadores",
   description:
     "Herramienta estructurada de reflexión para enriquecer tus sesiones: arquetipos, ciclos y dinámicas sin sesgos. 100% privado, cálculo local, sin bases de datos.",
-  alternates: {
-    canonical: siteUrl("/profesionales"),
-  },
-};
+  path: "/profesionales",
+});
 
 const PILLARS = [
   {

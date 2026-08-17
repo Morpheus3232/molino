@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import AcademyContent from "./AcademyContent";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "La Academia",
   description: "La historia de las tradiciones simbólicas: desde Babilonia y Pitágoras hasta el zodíaco chino moderno.",
-  alternates: {
-    canonical: siteUrl("/academy"),
-  },
-  openGraph: {
-    title: "La Academia — Molino",
-    description: "La historia de las tradiciones simbólicas que alimentan tu mapa personal.",
-    type: "website",
-    url: siteUrl("/academy"),
-  },
-};
+  path: "/academy",
+  ogTitle: "La Academia — Molino",
+  ogDescription: "La historia de las tradiciones simbólicas que alimentan tu mapa personal.",
+});
 
 export default function AcademyPage() {
   return <AcademyContent />;

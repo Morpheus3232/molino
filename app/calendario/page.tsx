@@ -1,22 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl } from "@/lib/seo";
 import CalendarioClient from "@/components/calendario/CalendarioClient";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Calendario Numerológico",
   description:
     "Cada día del mes reducido a su número y su propósito: descubrí la energía numerológica de cualquier fecha del calendario.",
-  alternates: {
-    canonical: siteUrl("/calendario"),
-  },
-  openGraph: {
-    title: "Calendario Numerológico — Molino",
-    description: "Cada día del mes reducido a su número y su propósito.",
-    type: "website",
-    url: siteUrl("/calendario"),
-  },
-};
+  path: "/calendario",
+  ogDescription: "Cada día del mes reducido a su número y su propósito.",
+});
 
 export default function CalendarioPage() {
   return (

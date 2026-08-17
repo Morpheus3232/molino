@@ -1,25 +1,13 @@
 import Link from "next/link";
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Guía",
   description: "Artículos, tutoriales y guías completas sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
-  alternates: {
-    canonical: siteUrl("/guia"),
-  },
-  openGraph: {
-    title: "Guía — Molino",
-    description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
-    type: "website",
-    url: siteUrl("/guia"),
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Guía — Molino",
-    description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
-  },
-};
+  path: "/guia",
+  ogTitle: "Guía — Molino",
+  ogDescription: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
+});
 
 const articles = [
   { slug: "camino-de-vida-7", title: "Camino de Vida 7", subtitle: "El buscador de la verdad", description: "Todo sobre el número 7: su significado, personalidad, desafíos y caminos de crecimiento.", icon: "7" },

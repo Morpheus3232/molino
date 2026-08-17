@@ -1,17 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl, SITE_URL } from "@/lib/seo";
+import { siteUrl, SITE_URL, createRouteMetadata } from "@/lib/seo";
 import { Code2, ArrowRight, ShieldCheck, Terminal, Sparkles, Cpu, Layers, Heart, Sun } from "lucide-react";
 import Card from "@/components/ui/Card";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "API Pública & Documentación para Desarrolladores — Molino",
   description:
     "Documentación completa de la API REST v1 de Molino. Endpoints con soporte CORS para consultar mapas simbólicos, compatibilidad y energía diaria en JSON.",
-  alternates: {
-    canonical: siteUrl("/docs"),
-  },
-};
+  path: "/docs",
+});
 
 const ENDPOINTS = [
   {

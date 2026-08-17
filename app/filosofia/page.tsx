@@ -1,21 +1,14 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import FilosofiaContent from "./FilosofiaContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Filosofía",
   description: "La filosofía detrás de Molino: autoconocimiento sin dogmas, código abierto, privacidad radical y síntesis de tradiciones simbólicas milenarias.",
-  alternates: {
-    canonical: siteUrl("/filosofia"),
-  },
-  openGraph: {
-    title: "Filosofía — Molino",
-    description: "Autoconocimiento sin dogmas, código abierto, privacidad radical. La síntesis de tradiciones simbólicas milenarias en una herramienta moderna.",
-    type: "article",
-    url: siteUrl("/filosofia"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/filosofia",
+  ogTitle: "Filosofía — Molino",
+  ogDescription: "Autoconocimiento sin dogmas, código abierto, privacidad radical. La síntesis de tradiciones simbólicas milenarias en una herramienta moderna.",
+  image: "/opengraph-image",
+});
 
 const jsonLd = [
   {

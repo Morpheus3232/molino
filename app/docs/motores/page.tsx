@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import MotoresContent from "./MotoresContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Motores y fórmulas",
   description: "Documentación técnica de los motores de cálculo: fórmulas de numerología (Camino de Vida, Expresión), astronomía de precisión (Swiss Ephemeris) y calendario chino (ciclo sexagenario).",
-  alternates: {
-    canonical: siteUrl("/docs/motores"),
-  },
-  openGraph: {
-    title: "Motores y fórmulas — Molino",
-    description: "Fórmulas y algoritmos detrás de Molino: numerología, astrología de precisión, zodíaco chino. Código abierto y auditable.",
-    type: "article",
-    url: siteUrl("/docs/motores"),
-  },
-};
+  path: "/docs/motores",
+  ogTitle: "Motores y fórmulas — Molino",
+  ogDescription: "Fórmulas y algoritmos detrás de Molino: numerología, astrología de precisión, zodíaco chino. Código abierto y auditable.",
+});
 
 const jsonLd = [
   {

@@ -1,25 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
-import { siteUrl } from "@/lib/seo";
+import { siteUrl, createRouteMetadata } from "@/lib/seo";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { PLANS, PRICING_FAQS } from "@/components/pricing/pricing-data";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Precios — Gratis y Premium",
   description:
     "Tu mapa básico es gratuito siempre. Premium suma síntesis estructurada, análisis de dinámicas, ciclos personales e informe con narrativa de IA por $8 USD, pago único. Sin registro, sin permanencia.",
-  alternates: {
-    canonical: siteUrl("/precios"),
-  },
-  openGraph: {
-    title: "Precios — Molino",
-    description:
-      "Tu mapa básico es gratuito. Premium: síntesis estructurada de arquetipos, ciclos y dinámicas por $8 USD, pago único. Herramientas de reflexión, no oráculos.",
-    type: "website",
-    url: siteUrl("/precios"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/precios",
+  ogTitle: "Precios — Molino",
+  ogDescription: "Tu mapa básico es gratuito. Premium: síntesis estructurada de arquetipos, ciclos y dinámicas por $8 USD, pago único. Herramientas de reflexión, no oráculos.",
+  image: "/opengraph-image",
+});
 
 const faqJsonLd = {
   "@context": "https://schema.org",

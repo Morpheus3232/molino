@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import NumerologiaContent from "./NumerologiaContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Numerología — El lenguaje simbólico de los números",
   description: "Aprendé sobre numerología: Camino de Vida, Expresión, Alma, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
-  alternates: {
-    canonical: siteUrl("/conocimiento/numerologia"),
-  },
-  openGraph: {
-    title: "Numerología — Molino",
-    description: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
-    type: "article",
-    url: siteUrl("/conocimiento/numerologia"),
-  },
-};
+  path: "/conocimiento/numerologia",
+  ogTitle: "Numerología — Molino",
+  ogDescription: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
+});
 
 const jsonLd = [
   {

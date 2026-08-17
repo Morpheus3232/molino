@@ -1,22 +1,15 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import ParejaClient from "./ParejaClient";
 import { Suspense } from "react";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Modo Pareja — Comparativa de Mapas",
   description:
     "Compará dos mapas personales en Molino: descubrí sinergias, puntos de conexión, compatibilidad elemental y desafíos entre dos fechas de nacimiento.",
-  alternates: {
-    canonical: siteUrl("/pareja"),
-  },
-  openGraph: {
-    title: "Modo Pareja — Comparativa de Mapas en Molino",
-    description:
-      "Descubrí qué tan compatibles son dos mapas personales: numerología, signos solares, química elemental y zodíaco chino.",
-    type: "website",
-  },
-};
+  path: "/pareja",
+  ogTitle: "Modo Pareja — Comparativa de Mapas en Molino",
+  ogDescription: "Descubrí qué tan compatibles son dos mapas personales: numerología, signos solares, química elemental y zodíaco chino.",
+});
 
 export default function ParejaPage() {
   return (

@@ -1,20 +1,13 @@
-import type { Metadata } from "next";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import AstrologiaContent from "./AstrologiaContent";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Astrología — El lenguaje de los astros",
   description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía. Un sistema simbólico con 4000 años de historia.",
-  alternates: {
-    canonical: siteUrl("/conocimiento/astrologia"),
-  },
-  openGraph: {
-    title: "Astrología — Molino",
-    description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
-    type: "article",
-    url: siteUrl("/conocimiento/astrologia"),
-  },
-};
+  path: "/conocimiento/astrologia",
+  ogTitle: "Astrología — Molino",
+  ogDescription: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
+});
 
 const jsonLd = [
   {

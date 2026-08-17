@@ -1,21 +1,12 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import TerminosContent from "./TerminosContent";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Términos y Condiciones",
   description: "Términos y condiciones de uso de Molino.",
-  alternates: {
-    canonical: siteUrl("/terminos"),
-  },
-  openGraph: {
-    title: "Términos y Condiciones — Molino",
-    description: "Términos y condiciones de uso de Molino.",
-    type: "article",
-    url: siteUrl("/terminos"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/terminos",
+  image: "/opengraph-image",
+});
 
 export default function TerminosPage() {
   return <TerminosContent />;

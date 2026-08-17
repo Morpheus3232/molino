@@ -1,7 +1,6 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Hash, Sun, ArrowRight } from "lucide-react";
-import { SITE_URL, siteUrl } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { ARCHETYPE_DESCRIPTIONS as ARCHETYPE_INTRO, ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { ANIMAL_PROFILES } from "@/lib/data/animalRelations";
@@ -9,20 +8,13 @@ import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Ejemplo de mapa personal",
   description: "Mirá cómo se ve un mapa personal de Molino: una persona, un mapa, muchas señales. Numerología, astrología y zodíaco chino cruzados, con el perfil ficticio de María.",
-  alternates: {
-    canonical: siteUrl("/ejemplo"),
-  },
-  openGraph: {
-    title: "Ejemplo de mapa personal — Molino",
-    description: "Una persona, un mapa, muchas señales: numerología, astrología y zodíaco chino cruzados en un mapa personal. Este es un ejemplo ficticio de cómo se ve el tuyo.",
-    type: "article",
-    url: siteUrl("/ejemplo"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/ejemplo",
+  ogDescription: "Una persona, un mapa, muchas señales: numerología, astrología y zodíaco chino cruzados en un mapa personal. Este es un ejemplo ficticio de cómo se ve el tuyo.",
+  image: "/opengraph-image",
+});
 
 const jsonLd = [
   {

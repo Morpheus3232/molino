@@ -1,21 +1,14 @@
-import type { Metadata } from "next";
-import { siteUrl } from "@/lib/seo";
 import PrivacidadContent from "./PrivacidadContent";
+import { createRouteMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createRouteMetadata({
   title: "Política de Privacidad",
   description: "Política de privacidad de Molino. Cómo recopilamos, usamos y protegemos tu información.",
-  alternates: {
-    canonical: siteUrl("/privacidad"),
-  },
-  openGraph: {
-    title: "Política de Privacidad — Molino",
-    description: "Política de privacidad de Molino.",
-    type: "article",
-    url: siteUrl("/privacidad"),
-    images: [siteUrl("/opengraph-image")],
-  },
-};
+  path: "/privacidad",
+  ogTitle: "Política de Privacidad — Molino",
+  ogDescription: "Política de privacidad de Molino.",
+  image: "/opengraph-image",
+});
 
 export default function PrivacidadPage() {
   return <PrivacidadContent />;
