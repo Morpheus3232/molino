@@ -171,60 +171,62 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               </div>
             </motion.div>
 
-            {/* Intro */}
-            <div className="space-y-4 mb-10">
-              {post.intro.map((p) => (
-                <p key={p.slice(0, 40)} className="text-base sm:text-lg text-foreground leading-relaxed">
-                  {p}
-                </p>
-              ))}
-            </div>
+            <div className="max-w-prose">
+              {/* Intro */}
+              <div className="space-y-4 mb-10">
+                {post.intro.map((p) => (
+                  <p key={p.slice(0, 40)} className="text-base sm:text-lg text-foreground leading-relaxed">
+                    {p}
+                  </p>
+                ))}
+              </div>
 
-            {/* Secciones */}
-            {post.sections.map((section) => (
-              <motion.section key={section.id} {...fadeUp} id={section.id} className="mb-12 scroll-mt-24">
-                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
-                  {section.heading}
-                </h2>
-                <div className="space-y-4">
-                  {section.paragraphs.map((p) => (
-                    <p key={p.slice(0, 40)} className="text-base text-muted leading-relaxed">
-                      {p}
-                    </p>
-                  ))}
-                </div>
-                {section.list && (
-                  <ul className="mt-5 space-y-2.5">
-                    {section.list.map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-base text-foreground leading-relaxed">
-                        <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                        {item}
-                      </li>
+              {/* Secciones */}
+              {post.sections.map((section) => (
+                <motion.section key={section.id} {...fadeUp} id={section.id} className="mb-12 scroll-mt-24">
+                  <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
+                    {section.heading}
+                  </h2>
+                  <div className="space-y-4">
+                    {section.paragraphs.map((p) => (
+                      <p key={p.slice(0, 40)} className="text-base text-muted leading-relaxed">
+                        {p}
+                      </p>
                     ))}
-                  </ul>
-                )}
-              </motion.section>
-            ))}
+                  </div>
+                  {section.list && (
+                    <ul className="mt-5 space-y-2.5">
+                      {section.list.map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-base text-foreground leading-relaxed">
+                          <span className="mt-2 w-1.5 h-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.section>
+              ))}
 
-            {/* FAQ */}
-            {post.faq && post.faq.length > 0 && (
-              <motion.section {...fadeUp} className="mb-12">
-                <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
-                  Preguntas frecuentes
-                </h2>
-                <div className="space-y-3">
-                  {post.faq.map((faq) => (
-                    <details key={faq.q} className="group rounded-md border border-border p-5">
-                      <summary className="cursor-pointer text-sm font-medium text-foreground list-none flex items-center justify-between gap-3">
-                        {faq.q}
-                        <span aria-hidden="true" className="text-accent transition-transform group-open:rotate-45 text-lg leading-none">+</span>
-                      </summary>
-                      <p className="text-sm text-muted leading-relaxed mt-3">{faq.a}</p>
-                    </details>
-                  ))}
-                </div>
-              </motion.section>
-            )}
+              {/* FAQ */}
+              {post.faq && post.faq.length > 0 && (
+                <motion.section {...fadeUp} className="mb-12">
+                  <h2 className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-foreground leading-tight mb-4">
+                    Preguntas frecuentes
+                  </h2>
+                  <div className="space-y-3">
+                    {post.faq.map((faq) => (
+                      <details key={faq.q} className="group rounded-md border border-border p-5">
+                        <summary className="cursor-pointer text-sm font-medium text-foreground list-none flex items-center justify-between gap-3">
+                          {faq.q}
+                          <span aria-hidden="true" className="text-accent transition-transform group-open:rotate-45 text-lg leading-none">+</span>
+                        </summary>
+                        <p className="text-sm text-muted leading-relaxed mt-3">{faq.a}</p>
+                      </details>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+            </div>
 
             {/* CTA contextual al final */}
             <motion.section {...fadeUp} className="text-center">
@@ -237,7 +239,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                 </p>
                 <Link
                   href="/profile"
-                  className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-gold text-gold-foreground hover:bg-gold-hover min-h-[44px] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
                 >
                   Generá tu mapa →
                 </Link>
