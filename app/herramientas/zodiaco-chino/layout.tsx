@@ -1,4 +1,4 @@
-import { createRouteMetadata } from "@/lib/seo";
+import { createRouteMetadata, siteUrl } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
   title: "Zodiaco Chino",
@@ -10,6 +10,23 @@ export const metadata = createRouteMetadata({
   image: "/opengraph-image",
 });
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Molino — Calculadora de Zodiaco Chino",
+  description:
+    "Calculá tu animal del zodíaco chino con tu fecha de nacimiento. Conocé los 12 animales, los 5 elementos y las compatibilidades.",
+  url: siteUrl("/herramientas/zodiaco-chino"),
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Web",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
+
 export default function ZodiacoChinoLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {children}
+    </>
+  );
 }
