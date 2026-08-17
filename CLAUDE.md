@@ -9,11 +9,15 @@ memoria efímera. Monetiza exclusivamente con MercadoPago (`lib/mercadopago.ts`,
 ninguno de los dos tenía credenciales configuradas en producción ni UI que
 los ofreciera como opción de pago.
 
-## Estado tras la sesión de 2026-08-17 (refactors + cache + latencia)
+## Sesión del 2026-08-17
 
-Sesión larga de hardening: 27 commits, ver detalle completo en
-`.claude/execution-logs/session-closure-report.md`. Resumen para orientarse
-rápido:
+Sesión larga en dos tramos: hardening técnico (mañana) + funcionalidades
+diferenciadoras y fixes críticos (tarde). ~40 commits totales. Detalle
+completo por tema en `.claude/execution-logs/` (ver nombres de archivo
+citados abajo); resumen ejecutivo del tramo de la tarde en
+`.claude/execution-logs/session-summary-2026-08-17.md`.
+
+### Tramo 1 — Refactors, cache, latencia
 
 - **Refactors god-component → módulos** (mismo comportamiento, validado con
   la suite completa en cada paso): `intelligenceEngine.ts` (1123 → 489
@@ -24,26 +28,70 @@ rápido:
 - **Motor de IA con feature flag**: `buildIntelligencePrompt()` en
   `intelligenceEngine.ts` lee `INTELLIGENCE_ENGINE_V2_ENABLED` y delega a
   `buildIntelligencePromptV2` (`lib/engines/intelligence/promptBuilder.ts`)
-  o a la legacy verbatim — **activo en Production** desde esta sesión.
-  Rollback: ver `.claude/execution-logs/v2-rollback-procedure.md`.
+  o a la legacy verbatim — **activo en Production**. Rollback: ver
+  `.claude/execution-logs/v2-rollback-procedure.md`.
 - **Cache de interpretaciones** (`lib/cache/interpretationCache.ts`, Vercel
-  KV): antes, cada visita al mapa/perfil disparaba una llamada real a IA,
-  incluso repetida. Ahora se cachea por
-  `profileHash + type + hash(prompt)`, con expiración por tipo
-  (`daily_energy` a medianoche UTC, `timing` 24h, el resto sin TTL — solo
-  invalida si cambia el prompt o el usuario pide "Regenerar"). Diseño
-  completo en `.claude/execution-logs/interpretation-cache-design.md`.
-- **Fixes de latencia en `lib/engines/aiEngine.ts` / `providerRouter.ts`**:
-  coordinación de reintentos (antes se multiplicaban 2×2 entre capas),
-  timeout diferenciado por tipo (20s liviano / 55s para
-  `personal_profile`/`question`), timeout global con fallback local
-  garantizado (65s/35s). **Hallazgo pendiente de aplicar**: el
-  `AbortController` actual solo cubre `fetch()` hasta que llegan los
-  headers, no la lectura del body (`response.json()`) — con tráfico real
-  se midió ~61s de esa fase sola, sin protección de timeout. Ver
-  "Fix adicional propuesto" en
-  `.claude/execution-logs/latency-final-validation.md` antes de dar este
-  tema por cerrado.
+  KV): se cachea por `profileHash + type + hash(prompt)`, con expiración
+  por tipo (`daily_energy` a medianoche UTC, `timing` 24h, el resto sin
+  TTL — solo invalida si cambia el prompt o el usuario pide "Regenerar").
+  Diseño completo en `.claude/execution-logs/interpretation-cache-design.md`.
+- **Fixes de latencia en `providerRouter.ts`**: coordinación de reintentos
+  (antes se multiplicaban 2×2 entre capas), timeout diferenciado por tipo
+  (20s liviano / 55s para `personal_profile`/`question`), timeout global
+  con fallback local garantizado (65s/35s).
+- **Body-read sin timeout en `aiEngine.ts` — resuelto** (quedaba pendiente
+  al cierre del tramo 1, arreglado en el tramo 2): `fetchWithTimeout`
+  limpiaba el `AbortController` apenas llegaban los headers, dejando
+  `response.json()`/`.text()` sin protección (~61s de espera sin abortar
+  en producción). Ahora acepta un callback `read` que corre dentro de la
+  ventana del abort — ver commit `b257538`.
+
+### Tramo 2 — SEO, funcionalidades diferenciadoras, bugs críticos
+
+- **SEO**: 62 rutas migradas a `createRouteMetadata()` (vs 8 antes), 31
+  con JSON-LD (vs 24), bug de `title.template` duplicado en 4 layouts
+  intermedios eliminado.
+- **Números Maestros (11/22/33)**: `getMasterNumbers()`/
+  `MASTER_POSITION_MEANINGS` en `lib/engines/numerologyEngine.ts` —
+  detecta maestros en Life Path/Expresión/Alma/Personalidad (no solo Life
+  Path como antes) y da significado específico por posición. Badge en
+  `ProfileSummaryTable.tsx`, sección gratis en `LecturaProfunda.tsx`
+  (capítulo 01, no premium — el contenido es determinista), instrucción
+  condicional en el prompt de IA, guía pública conectada al perfil.
+- **Personal Year/Month/Day**: el cálculo ya existía (`lib/calculations.ts`)
+  pero `personalMonth` tenía un bug real — `profileBuilder.ts`/
+  `dailyEnergyEngine.ts` pasaban el mes en el slot `currentYear` de
+  `getPersonalYear()`, descartando el año real. Corregido con
+  `reduceToSingleDigit(personalYear + mes)`. `PERSONAL_YEAR_MEANINGS`/
+  `PERSONAL_MONTH_MEANINGS` (24 descripciones reales) +
+  `PersonalCyclesSection.tsx` nuevo en `/hoy` (3 cards colapsables).
+- **Service worker interceptando navegación RSC**: `public/sw.js` cacheaba
+  con stale-while-revalidate las peticiones de navegación client-side de
+  Next.js (headers `RSC`/`Next-Router-*`), sirviendo payloads viejos hasta
+  que el usuario hacía F5. `isNextRouterRequest()` las excluye del cache
+  (`molino-cache-v4`).
+- **Blog cargando en blanco**: `BlogContent.tsx`/`BlogArticleContent.tsx`
+  animaban prácticamente todo el contenido above-the-fold con
+  `whileInView` (depende de `IntersectionObserver` disparando en el
+  instante exacto del mount — un hiccup lo deja en `opacity:0`
+  permanente). `fadeUpMount` (nuevo en `lib/utils/motion.ts`) usa
+  `animate` en vez de `whileInView` para lo que ya es visible al cargar.
+- **Persistencia de perfil en "HOY"**: `HoyClient.tsx` duplicaba la carga
+  de perfil y nunca persistía el que se creaba desde su propio form —
+  unificado con `useProfile()` + `saveProfileToStorage()`.
+- **Loading progresivo en `MolinoInterpretation.tsx`**: mensajes
+  escalonados (2s/5s/10s) bajo el skeleton mientras la IA responde.
+
+### Estado de verificación
+
+El tramo 2 se validó por tests/build/deploy y por grep de los bundles JS
+reales servidos en producción (confirma que el código correcto llegó a
+producción) — **no hubo verificación visual interactiva** en ninguno de
+sus cambios (sin extensión de Chrome conectada durante toda la sesión).
+Antes de construir funcionalidades nuevas sobre Números Maestros/Personal
+Cycles, confirmar visualmente que se ven y funcionan como se espera. Ver
+`.claude/execution-logs/session-verification.md` para el detalle exacto
+de qué se pudo y no se pudo confirmar.
 
 ## Stack
 
