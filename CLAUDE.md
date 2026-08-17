@@ -1,3 +1,52 @@
+## Identidad del proyecto
+
+**molino.app**: app simbólica de autoconocimiento (numerología, astrología,
+zodíaco chino, afinidad) en español rioplatense (`lang="es-AR"`, vos). Sin
+backend propio ni base de datos: los motores de cálculo son funciones puras
+y la persistencia del perfil vive en localStorage / URL (share por hash) /
+memoria efímera. Monetiza exclusivamente con MercadoPago (`lib/mercadopago.ts`,
+`lib/premium.ts`) — Stripe y PayPal se eliminaron por completo (2026-08-17):
+ninguno de los dos tenía credenciales configuradas en producción ni UI que
+los ofreciera como opción de pago.
+
+## Stack
+
+- Next.js 16 (custom — ver warning más abajo, App Router) + React 19 + TypeScript 5
+- Tailwind CSS + CSS Variables, Framer Motion, next-themes (dark vía `.dark`)
+- Vitest (unit, `lib/**/__tests__`) + Playwright (`e2e/`, `playwright.config.ts`)
+- Resend (email transaccional), Vercel KV, recharts (dataviz)
+- Analytics interno propio (`lib/analytics/`), sin terceros
+
+## Estructura (86 rutas en `app/`, ~600 archivos — ver `graphify-out/GRAPH_REPORT.md` para el mapa completo)
+
+```
+app/            rutas App Router (page.tsx, layout.tsx, error.tsx por segmento)
+components/     por dominio: profile/, affinity/, compatibility/, atlas/, ui/, sections/
+lib/engines/    motores de cálculo puros y deterministas (numerología, astrología, zodíaco, compatibilidad)
+lib/session/    persistencia (ephemeral.ts, localStorage.ts, multiProfiles.ts)
+lib/data/       datos públicos estáticos
+types/          tipos TypeScript compartidos
+```
+
+`ARCHITECTURE.md` documenta el flujo de datos y la estructura completa —
+confiar en el código y en graphify antes que en ese doc para detalles finos.
+
+## Convenciones
+
+- Español rioplatense (vos), `lang="es-AR"` en todo el sitio
+- `font-heading` (Space Grotesk) para títulos, `font-sans` (Inter) para cuerpo
+- Sin `border-radius` salvo casos puntuales; sin sombras salvo dark mode
+- `"use client"` solo en componentes que realmente necesitan interactividad
+- Motores de cálculo (`lib/engines/`) son funciones puras: misma fecha de entrada → mismo resultado, sin I/O
+- Sin servidor de estado para el perfil del usuario: todo vive en localStorage, URL, o sesión efímera — no agregar una base de datos para esto sin justificarlo explícitamente
+
+## Reglas de arquitectura
+
+- No introducir un backend/DB para el perfil de usuario: es una decisión de producto (privacidad, sin fricción), no una limitación técnica a "arreglar"
+- Nuevo motor de cálculo → función pura en `lib/engines/`, con tests en `__tests__` junto al motor, siguiendo el patrón de `numerologyEngine.ts`
+- Único proveedor de pago: MercadoPago. No reintroducir Stripe/PayPal sin una decisión de producto explícita — se eliminaron a propósito, no por descuido
+- Después de cambios estructurales, correr `graphify update .`
+
 ## graphify
 
 This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
