@@ -1,11 +1,11 @@
 /**
  * Hardened Zod validation for payment payloads.
  *
- * Server-only. MP/PayPal webhooks and capture endpoints must validate every
- * field with these schemas before trusting any value (amount, currency,
- * product id, profile hash, status). This is the single source of truth for
- * "what a legitimate payment looks like" so the payment routes stop trusting
- * shape inferred from arbitrary JSON.
+ * Server-only. MP webhook and capture endpoints must validate every field
+ * with these schemas before trusting any value (amount, currency, product
+ * id, profile hash, status). This is the single source of truth for "what a
+ * legitimate payment looks like" so the payment routes stop trusting shape
+ * inferred from arbitrary JSON.
  */
 
 import { z } from 'zod';
@@ -39,9 +39,6 @@ export const mpPaymentStatusSchema = z.enum(['approved', 'rejected', 'pending', 
 
 export const mpCurrencySchema = z.enum(['USD', 'ARS']);
 
-/** PayPal order id — alphanumeric with hyphens, bounded length. */
-export const paypalOrderIdSchema = z.string().trim().min(6).max(64).regex(/^[A-Za-z0-9-]+$/);
-
 /** Device-bound premium token (64 hex chars, as minted in lib/kv.ts). */
 export const premiumTokenSchema = z.string().regex(/^[0-9a-f]{64}$/);
 
@@ -49,22 +46,13 @@ export const premiumTokenSchema = z.string().regex(/^[0-9a-f]{64}$/);
 export const saltSchema = z.string().regex(/^[0-9a-f-]{0,64}$/).optional();
 
 /**
- * Shared body for the /api/mp/verify, /api/mp/recover, /api/paypal/capture-order
- * style endpoints: whatever identifies the profile + the idempotency key.
+ * Shared body for the /api/mp/verify, /api/mp/recover style endpoints:
+ * whatever identifies the profile + the idempotency key.
  */
 export const paymentIdentitySchema = z.object({
   name: z.string().max(120).optional().default(''),
   birthDate: birthDateSchema,
   salt: saltSchema,
-});
-
-/** Stripe webhook event — minimal fields we trust. */
-export const stripeEventSchema = z.object({
-  id: z.string().min(1),
-  type: z.string().min(1),
-  data: z.object({
-    object: z.record(z.string(), z.unknown()).optional(),
-  }),
 });
 
 export type PaymentIdentityInput = z.input<typeof paymentIdentitySchema>;

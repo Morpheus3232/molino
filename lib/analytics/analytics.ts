@@ -265,14 +265,14 @@ class Analytics {
     });
   }
 
-  trackCheckoutStarted(currencyId: string, paymentMethod: "mercadopago" | "paypal" = "mercadopago") {
+  trackCheckoutStarted(currencyId: string, paymentMethod: "mercadopago" = "mercadopago") {
     this.track({
       type: "checkout_started",
       data: { currencyId, paymentMethod, amount: currencyId === "USD" ? 8 : 8100 },
     });
   }
 
-  trackPaymentApproved(paymentId: string, paymentMethod: "mercadopago" | "paypal" = "mercadopago") {
+  trackPaymentApproved(paymentId: string, paymentMethod: "mercadopago" = "mercadopago") {
     this.track({
       type: "payment_approved",
       data: { paymentId, paymentMethod },
