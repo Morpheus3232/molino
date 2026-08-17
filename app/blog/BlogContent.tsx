@@ -112,14 +112,21 @@ export default function BlogContent() {
           })}
         </nav>
 
-        {/* Grid de tarjetas */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Grid de tarjetas — sin `layout` en el contenedor: esa prop dispara
+            una animación FLIP que, en navegación client-side de Next.js,
+            puede medir la posición contra el layout de la página anterior
+            todavía no descartado y calcular un translateY gigante (~2600px
+            en producción, empujando el grid entero fuera de pantalla, sin
+            resolver nunca — la causa real del blog "en blanco"). AnimatePresence
+            solo en los hijos sigue animando entrada/salida al filtrar por
+            categoría sin ese riesgo. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
             {posts.map((post, i) => (
               <BlogCard key={post.slug} post={post} index={i} />
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         {posts.length === 0 && (
           <p className="text-center text-muted mt-16">Todavía no hay artículos en esta categoría.</p>
