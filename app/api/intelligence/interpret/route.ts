@@ -9,7 +9,7 @@ import {
   type ConversationTurn,
   type ReadingContext,
 } from '@/lib/engines/intelligenceEngine';
-import { generateWithOpenAI, generateWithClaude, OPENROUTER_MODEL_DEFAULT } from '@/lib/engines/aiEngine';
+import { generateWithOpenAI, generateWithClaude, OPENROUTER_MODEL_DEFAULT, AI_TIMEOUT_MS, AI_HEAVY_TIMEOUT_MS } from '@/lib/engines/aiEngine';
 import { extractJSON, isValidMolinoInterpretation, validateMolinoInterpretationSemantics } from '@/lib/engines/aiResponseParser';
 import { generateWithRouting, getProviderStatus, type Provider } from '@/lib/engines/providerRouter';
 import { hashProfile } from '@/lib/mercadopago';
@@ -238,12 +238,19 @@ export async function POST(req: NextRequest) {
         insight: '',
       };
 
+      // personal_profile/question demandan una síntesis con razonamiento
+      // multi-sistema mucho más pesada (prompt ~4x más largo, ver
+      // .claude/execution-logs/latency-comparison.md) — el timeout de 20s
+      // pensado para los demás tipos las aborta antes de tiempo la mayoría
+      // de las veces, disparando reintentos que no hacían falta.
+      const timeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? AI_HEAVY_TIMEOUT_MS : AI_TIMEOUT_MS;
       const { interpretation: aiResponse, providerUsed: usedProvider, fallbackUsed: usedFallback } = await generateWithRouting(
         profile,
         entity || { name: 'Análisis' },
         compatResult,
         prompt,
-        provider
+        provider,
+        timeoutMs
       );
       providerUsed = usedProvider;
       fallbackUsed = usedFallback;
