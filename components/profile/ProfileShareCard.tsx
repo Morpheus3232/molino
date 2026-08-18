@@ -9,7 +9,7 @@ import { PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";
 import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { safeNumber } from "@/lib/utils/score";
-import { nodeToPng, sanitizeFilenamePart, type ExportSize } from "@/lib/utils/exportImage";
+import { nodeToPng, dataUrlToBlob, sanitizeFilenamePart, type ExportSize } from "@/lib/utils/exportImage";
 
 /**
  * ProfileShareCard — tarjeta compartible del mapa personal, en 4 variantes.
@@ -115,7 +115,7 @@ export default function ProfileShareCard({ profile, variant, compact = false }: 
     try {
       const dataUrl = await nodeToPng(cardRef.current, content.format);
       if (typeof navigator !== "undefined" && navigator.share) {
-        const blob = await (await fetch(dataUrl)).blob();
+        const blob = dataUrlToBlob(dataUrl);
         const file = new File([blob], `molino-${sanitizeFilenamePart(variant)}.png`, { type: "image/png" });
         try {
           await navigator.share({
@@ -189,7 +189,14 @@ export default function ProfileShareCard({ profile, variant, compact = false }: 
   if (compact) {
     return (
       <>
-        <div className="absolute opacity-0 pointer-events-none -z-10 -left-[9999px]" aria-hidden="true">
+        {/* w-full en la card necesita un ancho real del padre para no resolver
+            a 0px (html-to-image tira un canvas vacío si lo hace) — por eso
+            fixed + un ancho explícito acá, no solo "oculto con opacity-0". */}
+        <div
+          className="fixed top-0 opacity-0 pointer-events-none -z-10 -left-[9999px]"
+          style={{ width: content.format === "story" ? 280 : 480 }}
+          aria-hidden="true"
+        >
           {card}
         </div>
         <button
