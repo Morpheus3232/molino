@@ -44,6 +44,22 @@ export async function nodeToPng(
   });
 }
 
+/**
+ * Convert a data URL to a Blob without `fetch()` — the CSP `connect-src`
+ * directive (next.config.js) doesn't allow the `data:` scheme, so
+ * `fetch(dataUrl)` throws "Failed to fetch" in Chrome even though the
+ * conversion never leaves the browser. Decoding the base64 payload directly
+ * has no network dependency and works regardless of CSP.
+ */
+export function dataUrlToBlob(dataUrl: string): Blob {
+  const [header, base64] = dataUrl.split(",");
+  const mime = header.match(/:(.*?);/)?.[1] ?? "image/png";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new Blob([bytes], { type: mime });
+}
+
 /** Sanitize a profile name into a safe filename fragment (used for the
  * File name attached to a native share, not for a local download). */
 export function sanitizeFilenamePart(text: string): string {

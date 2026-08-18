@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Share2, Check, Copy } from "lucide-react";
 import EntityVisual from "@/components/ui/EntityVisual";
-import { nodeToPng, sanitizeFilenamePart } from "@/lib/utils/exportImage";
+import { nodeToPng, dataUrlToBlob, sanitizeFilenamePart } from "@/lib/utils/exportImage";
 import type { LightweightEntity } from "@/types/atlas";
 
 /**
@@ -62,7 +62,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
       }
       // Try native Web Share with the image file if supported.
       if (typeof navigator !== "undefined" && navigator.share) {
-        const blob = await (await fetch(dataUrl)).blob();
+        const blob = dataUrlToBlob(dataUrl);
         const file = new File([blob], `molino-${sanitizeFilenamePart(entity.name) || "atlas"}.png`, { type: "image/png" });
         try {
           await navigator.share({
