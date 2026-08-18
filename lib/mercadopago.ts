@@ -1,5 +1,5 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHmac, timingSafeEqual, randomBytes } from 'crypto';
 import { SITE_URL } from '@/lib/seo';
 import { resolvePlanUsdPrice, type BillingCycle } from '@/components/pricing/pricing-data';
 
@@ -191,6 +191,69 @@ export async function createPreference(
     // Un único campo `checkoutUrl`, ya resuelto server-side según el modo
     // real del token (ver isTestCredentials) — el cliente no vuelve a tener
     // que elegir entre init_point/sandbox_init_point.
+    checkoutUrl: isTestCredentials() ? response.sandbox_init_point : response.init_point,
+  };
+}
+
+/** Alfabeto sin ambigüedad visual: sin 0/O, 1/I/L. */
+const GIFT_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+
+/** MOLINO-XXXX-XXXX — 8 caracteres aleatorios (~40 bits), agrupados para
+ * que sea fácil de leer/tipear cuando se comparte por WhatsApp/email. */
+export function generateGiftCode(): string {
+  const bytes = randomBytes(8);
+  let chars = '';
+  for (let i = 0; i < 8; i++) {
+    chars += GIFT_CODE_ALPHABET[bytes[i] % GIFT_CODE_ALPHABET.length];
+  }
+  return `MOLINO-${chars.slice(0, 4)}-${chars.slice(4, 8)}`;
+}
+
+/**
+ * Preferencia de pago para un regalo: mismo producto/precio ($8, PRODUCT_ID)
+ * que createPreference(), pero sin profile_hash — el comprador no conoce la
+ * fecha de nacimiento del destinatario, así que no hay profileHash que
+ * calcular todavía. metadata.gift_code es lo único que el webhook necesita
+ * para dejar el código listo para canjear (ver app/api/mp/webhook/route.ts).
+ * No reemplaza ni modifica createPreference() — función hermana separada
+ * a propósito, para no tocar el flujo de pago normal.
+ */
+export async function createGiftPreference(giftCode: string) {
+  const preference = new Preference(getMpClient());
+  const price = expectedAmountFor(PRODUCT_ID, PRODUCT_CURRENCY_USD);
+
+  const item = {
+    id: `gift_${giftCode}`,
+    title: 'Molino — Regalo: Mapa Personal Completo',
+    quantity: 1,
+    unit_price: price,
+    currency_id: PRODUCT_CURRENCY_USD,
+    description: 'Regalo canjeable: mapa personal completo — numerología, astrología y zodíaco chino.',
+  };
+
+  const baseUrl = getBaseUrl();
+
+  const response = await preference.create({
+    body: {
+      items: [item],
+      external_reference: giftCode,
+      back_urls: {
+        success: `${baseUrl}/regalar/comprado?code=${giftCode}`,
+        failure: `${baseUrl}/regalar?status=failed`,
+        pending: `${baseUrl}/regalar?status=pending`,
+      },
+      notification_url: `${baseUrl}/api/mp/webhook`,
+      metadata: {
+        gift_code: giftCode,
+        product: PRODUCT_ID,
+        version: 'bricks_v1',
+      },
+      statement_descriptor: 'MOLINO',
+    },
+  });
+
+  return {
+    preferenceId: response.id,
     checkoutUrl: isTestCredentials() ? response.sandbox_init_point : response.init_point,
   };
 }

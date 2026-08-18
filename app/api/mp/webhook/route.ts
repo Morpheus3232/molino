@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
-import { createRecoveryLinkToken, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess } from '@/lib/kv';
+import { createRecoveryLinkToken, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess, storeGiftCode } from '@/lib/kv';
 import { incrementMemberCount } from '@/lib/metrics';
 import { sendPremiumConfirmationEmail } from '@/lib/email';
 
@@ -56,6 +56,20 @@ export async function POST(req: NextRequest) {
     if (!validation.valid) {
       console.warn(`[MP Webhook] Payment validation failed for ${paymentId}: ${validation.reason}`);
       return NextResponse.json({ received: true, valid: false, reason: validation.reason });
+    }
+
+    // Regalo: el comprador no tiene el profileHash del destinatario (no
+    // conoce su fecha de nacimiento), así que la preferencia se creó con
+    // gift_code en vez de profile_hash (ver createGiftPreference en
+    // lib/mercadopago.ts). Acá solo se deja el código listo para canjear —
+    // grantPremiumAccess se llama recién en /api/gift/[codigo]/redeem,
+    // cuando el destinatario aporta su propia fecha. Esta rama resuelve y
+    // retorna ANTES de tocar la lógica de profile_hash de abajo, así que el
+    // flujo de pago normal queda intacto.
+    const giftCode = payment.metadata?.gift_code as string | undefined;
+    if (giftCode) {
+      await storeGiftCode(giftCode, paymentId);
+      return NextResponse.json({ received: true, gift: true });
     }
 
     if (!profileHash) {

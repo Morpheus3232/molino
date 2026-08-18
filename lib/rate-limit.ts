@@ -91,6 +91,10 @@ export const COUPON_RATE_LIMIT: RateLimitConfig = { maxRequests: 3, windowMs: 30
 /** Check/verify: 10 per minute (premium gate checks are frequent). */
 export const CHECK_RATE_LIMIT: RateLimitConfig = { maxRequests: 10, windowMs: 60_000 };
 
+/** Gift code redemption: 5 attempts per 5 minutes (anti brute-force sobre el
+ * espacio de ~40 bits del código — mismo criterio que COUPON_RATE_LIMIT). */
+export const GIFT_REDEEM_RATE_LIMIT: RateLimitConfig = { maxRequests: 5, windowMs: 300_000 };
+
 // ── Next.js response helpers ──────────────────────────────────────
 
 import { NextResponse } from "next/server";

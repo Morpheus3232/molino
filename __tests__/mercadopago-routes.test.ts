@@ -58,13 +58,17 @@ vi.mock('mercadopago', () => ({
 }));
 
 import { hashProfile } from '@/lib/mercadopago';
-import { grantPremiumAccess, hasPremiumAccess, verifyPremiumToken } from '@/lib/kv';
+import { grantPremiumAccess, hasPremiumAccess, verifyPremiumToken, storeGiftCode, getGiftCode, redeemGiftCode } from '@/lib/kv';
 import { POST as preferenceRoute } from '@/app/api/mp/preference/route';
 import { POST as webhookRoute } from '@/app/api/mp/webhook/route';
 import { POST as verifyRoute } from '@/app/api/mp/verify/route';
 import { POST as recoverRoute } from '@/app/api/mp/recover/route';
 import { POST as checkRoute } from '@/app/api/mp/check/route';
 import { POST as couponRoute } from '@/app/api/mp/coupon/route';
+import { POST as giftCreateRoute } from '@/app/api/gift/create/route';
+import { GET as giftValidRoute } from '@/app/api/gift/[codigo]/route';
+import { GET as giftStatusRoute } from '@/app/api/gift/[codigo]/status/route';
+import { POST as giftRedeemRoute } from '@/app/api/gift/[codigo]/redeem/route';
 
 const NAME = 'Juan Perez';
 const BIRTH = '1990-01-15';
@@ -379,5 +383,152 @@ describe('Regresión: /api/mp/check no debe rotar un token ya emitido', () => {
 
     expect(checkToken).toBe(couponToken);
     expect(await verifyPremiumToken(HASH, couponToken)).toBe(true);
+  });
+});
+
+// ── Gifting (regalar Molino) ────────────────────────────────────────────
+//
+// El comprador no conoce la fecha de nacimiento del destinatario, así que
+// la preferencia de un regalo se crea con gift_code en vez de profile_hash
+// (createGiftPreference, lib/mercadopago.ts). El webhook deja el código
+// listo para canjear sin otorgar acceso a nadie; grantPremiumAccess recién
+// se llama en /api/gift/[codigo]/redeem, cuando el destinatario aporta su
+// propia fecha.
+
+function getRequestTo(url: string): NextRequest {
+  requestSeq += 1;
+  return new NextRequest(url, {
+    method: 'GET',
+    headers: { 'x-forwarded-for': `198.51.100.${requestSeq % 254}` },
+  });
+}
+
+const GIFT_CODE = 'MOLINO-TEST-CODE';
+const GIFT_PAYMENT_ID = '999888777';
+
+describe('lib/kv.ts — storeGiftCode / getGiftCode / redeemGiftCode', () => {
+  test('un código recién guardado existe y no está canjeado', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    const stored = await getGiftCode(GIFT_CODE);
+    expect(stored).not.toBeNull();
+    expect(stored?.redeemed).toBe(false);
+    expect(stored?.paymentId).toBe(GIFT_PAYMENT_ID);
+  });
+
+  test('canjear un código válido devuelve success y el paymentId original', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    const result = await redeemGiftCode(GIFT_CODE, HASH);
+    expect(result.success).toBe(true);
+    if (result.success) expect(result.paymentId).toBe(GIFT_PAYMENT_ID);
+
+    const stored = await getGiftCode(GIFT_CODE);
+    expect(stored?.redeemed).toBe(true);
+    expect(stored?.redeemedProfileHash).toBe(HASH);
+  });
+
+  test('canjear el mismo código dos veces falla la segunda vez con already_redeemed', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    await redeemGiftCode(GIFT_CODE, HASH);
+
+    const second = await redeemGiftCode(GIFT_CODE, 'otro-hash-distinto');
+    expect(second.success).toBe(false);
+    if (!second.success) expect(second.reason).toBe('already_redeemed');
+  });
+
+  test('canjear un código inexistente falla con not_found', async () => {
+    const result = await redeemGiftCode('MOLINO-NUNCA-EXISTIO', HASH);
+    expect(result.success).toBe(false);
+    if (!result.success) expect(result.reason).toBe('not_found');
+  });
+});
+
+describe('Webhook — rama gift_code', () => {
+  test('pago aprobado con gift_code (sin profile_hash) deja el código listo, sin otorgar premium a nadie', async () => {
+    mpState.paymentResponse = approvedPayment({ metadata: { gift_code: GIFT_CODE, product: 'molino_premium' }, external_reference: GIFT_CODE });
+
+    const res = await webhookRoute(webhookRequest(GIFT_PAYMENT_ID));
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.gift).toBe(true);
+
+    const stored = await getGiftCode(GIFT_CODE);
+    expect(stored?.redeemed).toBe(false);
+    expect(await hasPremiumAccess(HASH)).toBe(false); // nadie recibe acceso todavía
+  });
+
+  test('el flujo normal (profile_hash, sin gift_code) sigue funcionando sin cambios', async () => {
+    mpState.paymentResponse = approvedPayment();
+    const res = await webhookRoute(webhookRequest(PAYMENT_ID));
+    expect(res.status).toBe(200);
+    expect(await hasPremiumAccess(HASH)).toBe(true);
+  });
+});
+
+describe('API routes de gifting', () => {
+  test('POST /api/gift/create genera un gift_code y una preferencia', async () => {
+    mpState.preferenceResponse = { id: 'pref-gift-1', init_point: 'https://mp.example/gift-checkout', sandbox_init_point: 'https://mp.example/gift-sandbox' };
+
+    const res = await giftCreateRoute(requestTo('http://localhost/api/gift/create', {}));
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.giftCode).toMatch(/^MOLINO-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+    expect(data.checkoutUrl).toBe('https://mp.example/gift-checkout');
+  });
+
+  test('GET /api/gift/[codigo] — válido cuando existe y no fue canjeado', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    const res = await giftValidRoute(getRequestTo(`http://localhost/api/gift/${GIFT_CODE}`), { params: Promise.resolve({ codigo: GIFT_CODE }) });
+    const data = await res.json();
+    expect(data.valid).toBe(true);
+  });
+
+  test('GET /api/gift/[codigo] — inválido cuando no existe', async () => {
+    const res = await giftValidRoute(getRequestTo('http://localhost/api/gift/NOPE'), { params: Promise.resolve({ codigo: 'NOPE' }) });
+    const data = await res.json();
+    expect(data.valid).toBe(false);
+    expect(data.reason).toBe('not_found');
+  });
+
+  test('POST /api/gift/[codigo]/redeem otorga premium al hash calculado con la fecha del destinatario', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+
+    const res = await giftRedeemRoute(
+      requestTo(`http://localhost/api/gift/${GIFT_CODE}/redeem`, { name: NAME, birthDate: BIRTH }),
+      { params: Promise.resolve({ codigo: GIFT_CODE }) }
+    );
+    const data = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(data.redeemed).toBe(true);
+    expect(typeof data.premiumToken).toBe('string');
+    expect(await hasPremiumAccess(HASH)).toBe(true);
+  });
+
+  test('POST /api/gift/[codigo]/redeem con código ya canjeado devuelve 400', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    await giftRedeemRoute(requestTo(`http://localhost/api/gift/${GIFT_CODE}/redeem`, { name: NAME, birthDate: BIRTH }), { params: Promise.resolve({ codigo: GIFT_CODE }) });
+
+    const second = await giftRedeemRoute(
+      requestTo(`http://localhost/api/gift/${GIFT_CODE}/redeem`, { name: 'Otra Persona', birthDate: '1985-03-20' }),
+      { params: Promise.resolve({ codigo: GIFT_CODE }) }
+    );
+    expect(second.status).toBe(400);
+    const data = await second.json();
+    expect(data.reason).toBe('already_redeemed');
+  });
+
+  test('GET /api/gift/[codigo]/status refleja el estado de canje para el comprador, sin exponer el hash del destinatario', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    const before = await giftStatusRoute(getRequestTo(`http://localhost/api/gift/${GIFT_CODE}/status`), { params: Promise.resolve({ codigo: GIFT_CODE }) });
+    expect((await before.json()).redeemed).toBe(false);
+
+    await redeemGiftCode(GIFT_CODE, HASH);
+
+    const after = await giftStatusRoute(getRequestTo(`http://localhost/api/gift/${GIFT_CODE}/status`), { params: Promise.resolve({ codigo: GIFT_CODE }) });
+    const afterData = await after.json();
+    expect(afterData.redeemed).toBe(true);
+    expect(afterData.redeemedProfileHash).toBeUndefined();
   });
 });
