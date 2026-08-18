@@ -102,26 +102,28 @@ export default function UniversityHeader() {
         }`}
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label="Molino — Ir al inicio">
+          {/* Logo — el wordmark "Molino" se esconde en el rango 1024-1279px
+              para darle ese espacio al nav (9 links necesitan margen para
+              quedar legibles ahí); el ícono solo ya identifica la marca. */}
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Molino — Ir al inicio">
             <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl">
               <Logo className="w-6 h-6" />
             </span>
-            <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
+            <span className="hidden xl:inline font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
               Molino
             </span>
           </Link>
 
-          {/* Desktop nav — todos los links visibles, sin dropdown. Tracking
-              normal (no wide) y fuente chica: con 9 items, el letter-spacing
-              ancho que usa el resto del sitio no entra en un laptop de
-              1024-1280px sin forzar zoom — medido en vivo con devtools. */}
-          <nav className="hidden lg:flex items-center gap-0.5 2xl:gap-1.5" aria-label="Navegación principal">
+          {/* Desktop nav — todos los links visibles, sin dropdown, en una
+              sola línea desde 1024px. Con 9 items no entra con el tracking
+              ancho/padding que usaba el header viejo de 4 links — un solo
+              tamaño legible (text-xs, 12px) en vez de achicar la fuente. */}
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Navegación principal">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-1.5 2xl:px-3 py-1.5 text-[10px] 2xl:text-xs font-mono font-semibold tracking-normal 2xl:tracking-[0.1em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+                className={`px-2 xl:px-2.5 py-1.5 text-xs font-mono font-semibold tracking-[0.05em] xl:tracking-[0.1em] uppercase transition-colors rounded-xl whitespace-nowrap ${
                   isActive(link.href)
                     ? "text-foreground bg-ink/[0.06] font-bold"
                     : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
