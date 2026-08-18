@@ -18,7 +18,7 @@ const FEATURES: FeatureItem[] = [
     name: "Mapa básico (Camino de Vida, Signo Solar, Animal Chino)",
     free: true,
     premium: true,
-    description: "Cálculo fáctico y exacto de tus tres coordenadas simbólicas.",
+    description: "Cálculo determinista de tus tres coordenadas simbólicas.",
   },
   {
     category: "Identidad & Síntesis",
@@ -26,11 +26,11 @@ const FEATURES: FeatureItem[] = [
     free: false,
     premium: true,
     highlight: true,
-    description: "Lectura personalizada que explica qué significa la combinación exacta de tus energías.",
+    description: "Lectura personalizada que explica qué significa la combinación de tus energías.",
   },
   {
     category: "Identidad & Síntesis",
-    name: "Detección de patrones y tensiones ocultas",
+    name: "Detección de dinámicas y tensiones entre sistemas",
     free: false,
     premium: true,
     highlight: true,
