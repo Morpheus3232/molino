@@ -5,6 +5,7 @@ import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { StreakBadge } from "@/lib/hooks/useStreak";
 import { Sparkles, Moon, Compass, Zap, Flame, Shield, TrendingUp } from "lucide-react";
+import { getScoreLabel } from "@/lib/utils/score";
 
 interface DailyEnergyCardProps {
   profile: UserProfile | null;
@@ -56,10 +57,9 @@ export default function DailyEnergyCard({
             Vibración Diaria
           </span>
           <div className="flex items-baseline gap-1 my-1">
-            <span className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
-              {daily.overallScore}
+            <span className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
+              {getScoreLabel(daily.overallScore)}
             </span>
-            <span className="font-mono text-sm text-muted">/100</span>
           </div>
           {daily.isPersonalized && (
             <span className="font-mono text-xs text-muted">

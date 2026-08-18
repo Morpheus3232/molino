@@ -65,7 +65,7 @@ describe("Daily Energy & Retention System", () => {
       />
     );
 
-    expect(screen.getByText("84")).toBeDefined();
+    expect(screen.getByText("Alta")).toBeDefined();
     expect(screen.getByText(/Energía de Iniciación/i)).toBeDefined();
     expect(screen.getByText(/5 días seguidos/i)).toBeDefined();
   });
