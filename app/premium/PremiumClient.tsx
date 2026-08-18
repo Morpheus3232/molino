@@ -10,6 +10,7 @@ import FeatureComparison from "@/components/premium/FeatureComparison";
 import PremiumPreview from "@/components/premium/PremiumPreview";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
+import { PREMIUM_FAQS } from "@/components/pricing/pricing-data";
 import { Sparkles, ShieldCheck, ArrowDown, Compass, Heart } from "lucide-react";
 import Button from "@/components/ui/Button";
 
@@ -110,7 +111,7 @@ export default function PremiumClient() {
         </div>
 
         {/* 5. Specific FAQ */}
-        <PricingFAQ />
+        <PricingFAQ items={PREMIUM_FAQS} subtitle="Sobre el pago y tus datos." />
       </div>
     </div>
   );

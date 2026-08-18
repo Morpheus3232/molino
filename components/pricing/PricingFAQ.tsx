@@ -8,6 +8,7 @@ import { PRICING_FAQS, type PricingFAQItem } from "./pricing-data";
 
 interface PricingFAQProps {
   items?: PricingFAQItem[];
+  subtitle?: string;
 }
 
 function FAQItem({
@@ -67,7 +68,7 @@ function FAQItem({
   );
 }
 
-export default function PricingFAQ({ items = PRICING_FAQS }: PricingFAQProps) {
+export default function PricingFAQ({ items = PRICING_FAQS, subtitle = "Sobre planes, pagos y cancelación." }: PricingFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -80,7 +81,7 @@ export default function PricingFAQ({ items = PRICING_FAQS }: PricingFAQProps) {
           Preguntas frecuentes
         </motion.h2>
         <motion.p {...fadeUp} className="text-center text-muted text-sm sm:text-base mb-12">
-          Sobre planes, pagos y cancelación.
+          {subtitle}
         </motion.p>
 
         <motion.div {...fadeUp}>
