@@ -13,7 +13,7 @@ import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dail
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { safeNumber } from "@/lib/utils/score";
+import { safeNumber, getScoreLabel, getScoreColor } from "@/lib/utils/score";
 import Link from "next/link";
 import {
   getMasterNumbers,
@@ -28,7 +28,6 @@ import ChatWithMolino from "@/components/profile/ChatWithMolino";
 import AnnualCyclesPreview from "@/components/profile/AnnualCyclesPreview";
 import EditorialSection from "@/components/ui/EditorialSection";
 import ProfileShareCard from "@/components/profile/ProfileShareCard";
-import ProfileSharePanel from "@/components/profile/ProfileSharePanel";
 
 
 /**
@@ -231,19 +230,16 @@ function TuMomento({
                   <span className="text-xs text-muted capitalize">
                     {key === "relationships" ? "Relaciones" : key === "work" ? "Trabajo" : key === "creativity" ? "Creatividad" : key === "decisions" ? "Decisiones" : key}
                   </span>
-                  <span className="font-mono text-xs text-foreground">{area.score}%</span>
+                  <span className="font-mono text-xs" style={{ color: getScoreColor(area.score) }}>
+                    {getScoreLabel(area.score)}
+                  </span>
                 </div>
                 <div className="h-px bg-ink/10 overflow-hidden">
                   <div
                     className="h-full transition-all duration-500"
                     style={{
                       width: `${area.score}%`,
-                      backgroundColor:
-                        area.score >= 60
-                          ? "var(--score-excellent)"
-                          : area.score >= 45
-                            ? "var(--score-good)"
-                            : "var(--score-poor)",
+                      backgroundColor: getScoreColor(area.score),
                     }}
                   />
                 </div>
@@ -350,7 +346,11 @@ function CompartirMiMapa({ profile }: { profile: UserProfile }) {
       >
         {open ? "Ocultar" : "Compartir mi mapa →"}
       </button>
-      {open && <ProfileSharePanel profile={profile} />}
+      {open && (
+        <div className="mt-6 max-w-[480px]">
+          <ProfileShareCard profile={profile} variant="pattern" />
+        </div>
+      )}
     </div>
   );
 }
