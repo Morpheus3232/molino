@@ -119,6 +119,44 @@ export interface PricingFAQItem {
   answer: string;
 }
 
+/**
+ * FAQ real de /premium — el único producto pago que hoy existe de verdad
+ * (pago único, sin tiers). PRICING_FAQS de abajo describe el pricing ladder
+ * de /precios (suscripción mensual/anual, cancelación), que está pausado
+ * porque el backend no lo implementa: ver .claude/execution-logs/
+ * pricing-ladder-audit.md. No reusar PRICING_FAQS en /premium mientras
+ * /precios siga desconectado — describe términos de facturación que no
+ * existen (contradice "pago único, sin suscripciones").
+ */
+export const PREMIUM_FAQS: PricingFAQItem[] = [
+  {
+    question: "¿Premium es una suscripción?",
+    answer:
+      "No. Es un pago único de $8 USD con acceso permanente de por vida. Sin renovaciones, sin cargos recurrentes — no hay nada que cancelar.",
+  },
+  {
+    question: "¿Qué pasa con mis datos de nacimiento?",
+    answer:
+      "Tu mapa se calcula 100% en tu navegador. Tu fecha de nacimiento nunca se envía a nuestros servidores. Los datos de pago los procesa Mercado Pago de forma segura; nosotros nunca guardamos información personal.",
+  },
+  {
+    question: "¿Qué métodos de pago aceptan?",
+    answer:
+      "Mercado Pago. Procesa pagos de forma segura y te permite recuperar acceso usando el ID de tu compra.",
+  },
+  {
+    question: "¿Es una herramienta determinista o un oráculo?",
+    answer:
+      "Ni una ni otro. Molino es estructurada pero no determinista: te muestra arquetipos, ciclos y dinámicas como marco de reflexión. Los arquetipos describen, no predicen. Las decisiones son tuyas.",
+  },
+];
+
+/**
+ * FAQ del pricing ladder de 3 planes en /precios — describe suscripción
+ * mensual/anual con cancelación. /precios está pausado (redirige a
+ * /premium) hasta que el backend soporte tiers reales; no usar este array
+ * en ninguna página que sí procesa pagos hoy.
+ */
 export const PRICING_FAQS: PricingFAQItem[] = [
   {
     question: "¿El plan Gratis es gratis para siempre?",

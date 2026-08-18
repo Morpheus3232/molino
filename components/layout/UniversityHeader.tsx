@@ -24,7 +24,7 @@ const EXPLORE_NAV = [
   { href: "/calendario", label: "Calendario", desc: "Ciclos y vibración mensual" },
   { href: "/biblioteca", label: "Biblioteca", desc: "Fuentes clásicas y autores" },
   { href: "/academy", label: "Academia", desc: "La historia de las tradiciones simbólicas" },
-  { href: "/precios", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
+  { href: "/premium", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
   { href: "/blog", label: "Blog", desc: "Artículos y análisis simbólico" },
   { href: "/docs", label: "API / Docs", desc: "Endpoints para desarrolladores" },
   { href: "/atlas", label: "Atlas", desc: "Explorá tu mapa en el mundo" },
