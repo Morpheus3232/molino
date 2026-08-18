@@ -166,10 +166,10 @@ export default function JournalTimeline({
         {/* Botón para restaurar backup si ya tenía antes */}
         {onImportJSON && (
           <div className="mt-6 pt-6 border-t border-ink/10 inline-flex flex-col items-center">
-            <span className="text-[11px] font-mono text-muted mb-2">¿Ya tenías un backup previo?</span>
+            <span className="text-[11px] font-mono text-muted mb-2">¿Ya tenías una copia de tus entradas?</span>
             <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-xs font-mono text-foreground transition-colors">
               <Upload className="w-3.5 h-3.5 text-accent" />
-              <span>Importar Backup (JSON)</span>
+              <span>Restaurar copia</span>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -187,41 +187,46 @@ export default function JournalTimeline({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Backup & Storage Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-card/60 border border-ink/10 text-xs font-mono">
-        <div className="flex items-center gap-2 text-muted">
-          <HardDrive className="w-3.5 h-3.5 text-accent" />
-          <span>Uso local: <strong>~{storageSizeKB} KB</strong></span>
-        </div>
+      <div className="p-3 rounded-2xl bg-card/60 border border-ink/10 text-xs font-mono space-y-2">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-muted">
+            <HardDrive className="w-3.5 h-3.5 text-accent" />
+            <span>Uso local: <strong>~{storageSizeKB} KB</strong></span>
+          </div>
 
-        <div className="flex items-center gap-2">
-          {onExportJSON && (
-            <button
-              type="button"
-              onClick={onExportJSON}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-              title="Descargar copia de seguridad en JSON"
-              aria-label="Exportar copia de seguridad en JSON"
-            >
-              <Download className="w-3 h-3 text-accent" />
-              <span>Exportar</span>
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {onExportJSON && (
+              <button
+                type="button"
+                onClick={onExportJSON}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                title="Descargar una copia de tus entradas en un archivo"
+                aria-label="Descargar copia de seguridad del journal"
+              >
+                <Download className="w-3 h-3 text-accent" />
+                <span>Descargar copia</span>
+              </button>
+            )}
 
-          {onImportJSON && (
-            <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-within:ring-2 focus-within:ring-accent transition-colors">
-              <Upload className="w-3 h-3 text-accent" />
-              <span>Importar</span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".json,application/json"
-                onChange={handleFileChange}
-                className="hidden"
-                aria-label="Subir archivo JSON para importar"
-              />
-            </label>
-          )}
+            {onImportJSON && (
+              <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-within:ring-2 focus-within:ring-accent transition-colors">
+                <Upload className="w-3 h-3 text-accent" />
+                <span>Restaurar copia</span>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json,application/json"
+                  onChange={handleFileChange}
+                  className="hidden"
+                  aria-label="Subir archivo para restaurar entradas del journal"
+                />
+              </label>
+            )}
+          </div>
         </div>
+        <p className="text-[11px] text-muted/80 leading-relaxed">
+          Tus entradas viven solo en este navegador — Molino no las guarda en ningún servidor. Descargá una copia de vez en cuando para no perderlas si cambiás de dispositivo o borrás los datos del sitio.
+        </p>
       </div>
 
       {/* Import Status Alert */}
