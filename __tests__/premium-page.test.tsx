@@ -10,7 +10,7 @@ describe("Premium Experience Components", () => {
 
     expect(screen.getByText(/Gratis vs Premium/i)).toBeDefined();
     expect(screen.getAllByText(/Síntesis profunda cruzada/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/Detección de patrones y tensiones ocultas/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Detección de dinámicas y tensiones entre sistemas/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Calendario energético y mapa de evolución/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Acceso permanente de por vida/i).length).toBeGreaterThanOrEqual(1);
   });
