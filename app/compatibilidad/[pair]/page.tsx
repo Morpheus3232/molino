@@ -95,8 +95,7 @@ export default async function CompatibilidadPage({ params }: Props) {
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
             Índice de Afinidad Elemental
           </span>
-          <div className="font-display text-6xl font-bold my-2">{synergy.score}%</div>
-          <p className="font-mono text-sm text-accent font-semibold mb-2">{synergy.level}</p>
+          <div className="font-display text-4xl font-bold my-2 leading-tight">{synergy.level}</div>
           <p className="text-xs text-muted max-w-xl mx-auto leading-relaxed">{synergy.desc}</p>
         </div>
 

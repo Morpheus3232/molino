@@ -84,7 +84,7 @@ export default function ParejaTeaser() {
               <div className="grid grid-cols-2 gap-4 my-6">
                 {/* Persona A */}
                 <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 text-center space-y-1">
-                  <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest block font-bold">
+                  <span className="text-[10px] font-mono text-amber-700 uppercase tracking-widest block font-bold">
                     Ana (15/03/1990)
                   </span>
                   <div className="font-display text-lg text-foreground font-bold">Camino 1 · Piscis</div>

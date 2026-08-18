@@ -180,12 +180,9 @@ export default async function SinastriaPage({ params }: PageProps) {
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
             Índice de Afinidad Elemental
           </span>
-          <div className="font-display text-6xl sm:text-7xl font-bold text-foreground my-2">
-            {synergy.score}%
-          </div>
-          <p className="font-mono text-sm sm:text-base text-accent font-semibold mb-3">
+          <div className="font-display text-4xl sm:text-5xl font-bold text-foreground my-2 leading-tight">
             {synergy.level}
-          </p>
+          </div>
           <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed">
             {synergy.desc}
           </p>
@@ -207,7 +204,7 @@ export default async function SinastriaPage({ params }: PageProps) {
           <Card padding="lg" className="border-amber-500/30 bg-card space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-3xl">{signA.symbol}</span>
-              <span className="font-mono text-[10px] uppercase bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full font-bold">
+              <span className="font-mono text-[10px] uppercase bg-amber-500/10 text-amber-700 px-2.5 py-1 rounded-full font-bold">
                 {signA.dates}
               </span>
             </div>

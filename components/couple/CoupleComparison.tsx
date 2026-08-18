@@ -174,14 +174,11 @@ export default function CoupleComparison({
           </span>
         </div>
 
-        {/* Score Number Display */}
+        {/* Level Display — sin número crudo, el nivel ya es descriptivo */}
         <div className="my-4 flex flex-col items-center justify-center">
-          <div className="font-display text-6xl sm:text-7xl lg:text-8xl tracking-tight text-foreground">
-            {result.score}%
-          </div>
-          <span className="font-mono text-sm sm:text-base text-accent font-semibold mt-1 max-w-md">
+          <div className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground max-w-lg leading-tight">
             {result.level}
-          </span>
+          </div>
         </div>
 
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
@@ -223,7 +220,7 @@ export default function CoupleComparison({
         {/* Social Share Bar */}
         <div className="mt-4 flex items-center justify-center">
           <SocialShareBar
-            title={`Sinergia de Pareja (${result.score}%): ${result.level}`}
+            title={`Sinergia de Pareja: ${result.level}`}
             text={`Comparativa en Molino: ${result.summary}`}
             url={shareUrl}
           />
@@ -314,7 +311,7 @@ export default function CoupleComparison({
               className="p-4 sm:p-5 rounded-2xl bg-background border border-ink/5 space-y-2"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-amber-400 font-semibold">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-amber-700 font-semibold">
                   Área: {ch.area}
                 </span>
               </div>
