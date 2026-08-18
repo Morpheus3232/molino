@@ -254,7 +254,7 @@ function KnowledgeNode({
       <div
         aria-hidden="true"
         className={`absolute left-4 top-1 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors pointer-events-none ${
-          isExpanded ? "border-accent bg-accent/10" : "border-border bg-background"
+          isExpanded ? "border-accent bg-accent/10" : "border-ink/10 bg-background"
         }`}
       >
         <span className="text-sm">
@@ -292,7 +292,7 @@ function KnowledgeNode({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-6 rounded-md border border-border bg-background shadow-sm/50 space-y-3">
+            <div className="mt-4 p-6 rounded-2xl border border-ink/10 bg-background space-y-3">
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Origen</p>
                 <p className="text-xs text-foreground">{node.origin}</p>
@@ -301,7 +301,7 @@ function KnowledgeNode({
                 <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
-                    <span key={inf} className="text-xs px-2 py-0.5 rounded-sm bg-accent/10 text-accent">
+                    <span key={inf} className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent">
                       {inf}
                     </span>
                   ))}
@@ -328,13 +328,15 @@ export default function AcademyContent() {
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* ═══════════════════════════════════════════════
-            HERO
+            HERO — mismo criterio que Biblioteca/Atlas: eyebrow
+            + font-display grande + bajada.
             ═══════════════════════════════════════════════ */}
         <motion.section {...heroReveal} className="mb-16">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
+          <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Academia</p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             De dónde viene este sistema
           </h1>
-          <p className="text-base text-muted max-w-xl leading-relaxed">
+          <p className="text-base sm:text-lg text-muted mt-4 max-w-xl leading-relaxed">
             Aprendé las raíces históricas detrás de tu mapa personal.
             Molino conecta tradiciones de miles de años en una experiencia moderna.
           </p>
@@ -345,7 +347,7 @@ export default function AcademyContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">El árbol del conocimiento</h2>
           </div>
 
@@ -354,7 +356,7 @@ export default function AcademyContent() {
           </p>
 
           <section className="relative">
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-border" aria-hidden="true" />
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-ink/10" aria-hidden="true" />
             <div className="space-y-8">
               {ACADEMY_PIECES.map((node, i) => (
                 <KnowledgeNode
@@ -374,7 +376,7 @@ export default function AcademyContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Cómo funciona Molino</h2>
           </div>
 
@@ -384,7 +386,7 @@ export default function AcademyContent() {
                 key={step.step}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.1), duration: 0.4 }}
-                className="p-6 rounded-md border border-border bg-card shadow-sm"
+                className="p-6 rounded-2xl border border-ink/10 bg-card"
               >
                 <div className="flex items-start gap-4">
                   <span className="text-2xl shrink-0">
@@ -401,7 +403,7 @@ export default function AcademyContent() {
                     <p className="text-xs text-muted leading-relaxed mb-2">{step.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {step.items.map((item) => (
-                        <span key={item} className="text-xs px-2 py-0.5 rounded-md bg-background text-muted">
+                        <span key={item} className="text-xs px-2 py-0.5 rounded-full bg-background text-muted">
                           {item}
                         </span>
                       ))}
@@ -418,7 +420,7 @@ export default function AcademyContent() {
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Rutas de aprendizaje</h2>
           </div>
 
@@ -428,7 +430,7 @@ export default function AcademyContent() {
                 key={course.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.4 }}
-                className="p-6 rounded-md border border-border bg-card shadow-sm"
+                className="p-6 rounded-2xl border border-ink/10 bg-card"
               >
                 <span className="text-2xl block mb-3">
                   {(() => {
@@ -460,7 +462,7 @@ export default function AcademyContent() {
             DISCLAIMER PREMIUM
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
-          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+          <div className="p-6 rounded-2xl border border-ink/10 bg-card">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
             <p className="text-sm text-foreground leading-relaxed mb-3">
               Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.
@@ -476,7 +478,7 @@ export default function AcademyContent() {
             CTA
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="text-center">
-          <div className="p-8 rounded-md border border-border bg-card shadow-sm">
+          <div className="p-8 rounded-2xl border border-ink/10 bg-card">
             <p className="text-sm text-muted mb-4">
               ¿Querés ver cómo se aplican estas tradiciones en tu perfil?
             </p>
