@@ -11,6 +11,7 @@
 import type { UserProfile } from "@/types/user";
 import { ARCHETYPES, ENERGY_TYPES, YEAR_TYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
+import { getMasterNumbers, getMasterPositionMeaning, MASTER_POSITION_LABELS_ES } from "@/lib/engines/numerologyEngine";
 
 export interface DimensionInsight {
   dimension: string;
@@ -742,4 +743,56 @@ export function buildPrinciples(
         : "Tu ciclo actual tiene un ritmo propio — dejalo fluir sin forzar.",
     },
   ];
+}
+
+export interface PaywallHook {
+  question: string;
+  context: string;
+}
+
+/**
+ * Gancho contextual para el paywall: reformula un dato YA calculado gratis
+ * como pregunta abierta, en vez de repetirlo como afirmación cerrada (ver
+ * .claude/execution-logs/paywall-redesign-proposal.md). Nunca inventa un
+ * dato nuevo — solo cambia cómo se presenta uno que el perfil ya tiene.
+ *
+ * Prioridad (de más a menos específico): tensión real de ritmo > número
+ * maestro > convergencia real entre 2 sistemas > patterns[1] ("Tu tensión")
+ * como fallback universal. buildTensions() devuelve tensión en pocos
+ * perfiles; buildPatterns() siempre devuelve 3 items, así que patterns[1]
+ * es la única rama garantizada de cubrir todo perfil.
+ */
+export function generatePaywallHook(profile: UserProfile): PaywallHook {
+  const tension = buildTensions(profile)[0];
+  if (tension) {
+    return {
+      question: `Tu ${tension.sources[0]} tira para un lado. Tu ${tension.sources[1]} tira para otro. ¿Notaste esa fricción, o todavía no la nombraste?`,
+      context: tension.evidence,
+    };
+  }
+
+  const masters = getMasterNumbers(profile);
+  if (masters.length > 0) {
+    const hit = masters[0];
+    const label = MASTER_POSITION_LABELS_ES[hit.position];
+    return {
+      question: `Tenés un Número Maestro ${hit.number} en tu ${label}. No es un número más — ¿sabés qué implica realmente?`,
+      context: getMasterPositionMeaning(hit.number, hit.position),
+    };
+  }
+
+  const patterns = buildPatterns(profile);
+  const convergent = patterns.find((p) => p.sources.length > 1);
+  if (convergent) {
+    return {
+      question: `${convergent.sources.join(" y ")} coinciden en ${convergent.keyword}. Cuando dos sistemas distintos dicen lo mismo, suele importar. ¿Sabés por qué coinciden?`,
+      context: convergent.description,
+    };
+  }
+
+  const fallback = patterns[1];
+  return {
+    question: `Tu ${fallback.sources[0]} señala ${fallback.keyword}. Es un solo sistema hablando — ¿los otros dos coinciden o contradicen?`,
+    context: fallback.description,
+  };
 }

@@ -7,6 +7,7 @@ import {
   buildTensions,
   buildRules,
   buildPrinciples,
+  generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
@@ -521,6 +522,7 @@ export function LecturaPremium({
 
   const previewPattern = buildPatterns(profile)[0] ?? null;
   const previewTension = buildTensions(profile)[0] ?? null;
+  const hook = generatePaywallHook(profile);
 
   return (
     <EditorialSection
@@ -531,7 +533,7 @@ export function LecturaPremium({
       intro="La síntesis entre tus sistemas y una conversación abierta con tu mapa."
     >
       <div className="pt-10 sm:pt-14">
-        <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension }}>
+        <PremiumGate name={name} birthDate={birthDate} preview={{ lifePath, chineseZodiac, pattern: previewPattern, tension: previewTension, hook }}>
           <LecturaProfundaDesbloqueada profile={profile} pieces={pieces} />
         </PremiumGate>
       </div>
