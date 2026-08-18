@@ -422,8 +422,7 @@ export default function AcademyContent() {
                 key={course.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.4 }}
-                className="p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent/50 transition-colors cursor-pointer group"
-                onClick={() => {}}
+                className="p-6 rounded-md border border-border bg-card shadow-sm"
               >
                 <span className="text-2xl block mb-3">
                   {(() => {
@@ -431,11 +430,11 @@ export default function AcademyContent() {
                     return Icon ? <Icon className="w-6 h-6" /> : null;
                   })()}
                 </span>
-                <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors mb-1">
+                <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
                   {course.title}
                 </h3>
                 <p className="text-xs text-muted leading-relaxed mb-2">{course.description}</p>
-                <p className="text-xs text-accent font-medium">{course.lessons} lecciones →</p>
+                <p className="text-[10px] uppercase tracking-wider text-muted/70 font-mono font-medium">Próximamente</p>
               </motion.div>
             ))}
           </motion.div>
