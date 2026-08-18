@@ -104,7 +104,7 @@ export const BLOG_POSTS: BlogPost[] = [
         a: "No. Como se calcula con tu fecha de nacimiento, es fijo para toda la vida. Lo que sí cambia es cómo lo vivís según la etapa y el año personal en el que estés.",
       },
     ],
-    related: ["signo-astral-personalidad", "zodiaco-chino-animal-personalidad", "numerologia-ano-personal"],
+    related: ["numerologia-numeros-maestros", "signo-astral-personalidad", "numerologia-ano-personal"],
   },
   {
     slug: "zodiaco-chino-animal-personalidad",
@@ -575,6 +575,76 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
     related: ["zodiaco-chino-animal-personalidad", "numerologia-astrologia-herramientas-no-oraculo"],
+  },
+  {
+    slug: "numerologia-numeros-maestros",
+    title: "Números Maestros: qué significan el 11, el 22 y el 33",
+    excerpt:
+      "Los números maestros (11, 22 y 33) no se reducen como el resto y pueden aparecer en cuatro lugares distintos de tu mapa. Aprendé qué representan y por qué el mismo maestro se lee distinto según dónde cae.",
+    metaDescription:
+      "Qué son los números maestros 11, 22 y 33 en numerología, por qué no se reducen, en qué cuatro posiciones de tu mapa pueden aparecer y cómo se lee cada uno según dónde cae.",
+    category: "Numerología",
+    date: "2026-08-18",
+    image: "/blog/numerologia-numeros-maestros.svg",
+    author: "Equipo Molino",
+    intro: [
+      "En numerología, casi todos los cálculos terminan en una cifra del 1 al 9: se suman los dígitos y se reduce el total hasta llegar a un número simple. Los números maestros son la excepción. Cuando la suma intermedia da 11, 22 o 33, la reducción se detiene ahí — no se sigue sumando hasta obtener un dígito único.",
+      "Esa pausa no es un capricho del cálculo: la tradición numerológica lee esos tres números como una intensificación de su versión reducida (2, 4 y 6 respectivamente), no como un número más en la lista. Este artículo explica dónde pueden aparecer en tu mapa, qué representa cada uno y por qué el mismo maestro no se lee igual en todas partes.",
+    ],
+    sections: [
+      {
+        id: "por-que-no-se-reducen",
+        heading: "Por qué el 11, el 22 y el 33 no se reducen",
+        paragraphs: [
+          "La reducción numerológica busca siempre la cifra más simple porque cada número del 1 al 9 representa una energía arquetípica completa. Los números maestros rompen esa regla porque la tradición los interpreta como un doble dígito con carga propia: el 11 duplica el 1 (individualidad, iniciativa), el 22 duplica el 2 elevado a escala de construcción, y el 33 combina la intuición del 11 con la capacidad de estructura del 22, orientada al cuidado de otros.",
+          "En la práctica esto significa que un cálculo que en cualquier otro caso seguiría sumando dígitos (11 → 1+1 = 2) se detiene apenas aparece uno de los tres. Si tu fecha o tu nombre producen un 11, un 22 o un 33 en algún paso intermedio, ese es el número que se queda — no su reducción.",
+        ],
+      },
+      {
+        id: "cuatro-posiciones",
+        heading: "Las cuatro posiciones donde puede aparecer un maestro",
+        paragraphs: [
+          "Un error común es pensar que los números maestros solo aparecen en el Número de Vida. En realidad pueden salir en cualquiera de los cuatro números centrales de un mapa numerológico, y cada posición describe una parte distinta de la persona.",
+        ],
+        list: [
+          "Camino de Vida: la trayectoria completa — se calcula con la fecha de nacimiento entera.",
+          "Expresión: cómo te comunicás y te mostrás hacia afuera — se calcula con el nombre completo.",
+          "Alma: tu motivación interna, lo que buscás aunque no lo digas — se calcula con las vocales del nombre.",
+          "Personalidad: la primera impresión que das — se calcula con las consonantes del nombre.",
+        ],
+      },
+      {
+        id: "el-mismo-numero-distinto-lugar",
+        heading: "Por qué el mismo maestro se lee distinto según dónde cae",
+        paragraphs: [
+          "Un 11 en el Camino de Vida describe una trayectoria completa marcada por la intuición y la sensibilidad elevada — es el eje de toda la vida. El mismo 11 en el número de Alma no describe tu trayectoria: describe una motivación interna, el tipo de sentido que buscás aunque no se note desde afuera. Y en Personalidad describe algo todavía más acotado: la impresión que generás en los primeros minutos de conocer a alguien.",
+          "Por eso tener un número maestro no es 'tener más energía' en general, sino tenerla concentrada en una zona específica del mapa. Dos personas con un 22 —una en su Camino de Vida, otra en su número de Expresión— comparten el arquetipo del 'constructor a gran escala', pero lo viven en dominios distintos: una como el sentido de toda su vida, la otra como un matiz de cómo se comunica.",
+        ],
+      },
+      {
+        id: "como-leerlo-sin-presion",
+        heading: "Cómo leer un número maestro sin que se convierta en presión",
+        paragraphs: [
+          "La tradición asocia los números maestros con más potencial, pero también con más exigencia — la lectura popular suele exagerar esto último hasta convertirlo en una carga ('tenés una misión especial que cumplir'). Es una forma de leerlo que genera más ansiedad que perspectiva.",
+          "Una lectura más útil trata el maestro como una intensidad, no como una obligación: si te tocó un 11 en Expresión, no significa que tengas que inspirar a las masas — significa que tu forma de comunicar tiende a tener un matiz de claridad inusual, y que vale la pena prestarle atención a esa tendencia en vez de forzarla a un molde ajeno.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Es mejor tener un número maestro que uno reducido?",
+        a: "No. La numerología no jerarquiza los números del 1 al 9 ni los maestros por encima de ellos — cada uno describe un arquetipo distinto, no una escala de calidad. Un maestro implica más intensidad y más exigencia en esa posición específica, no una ventaja general.",
+      },
+      {
+        q: "¿Puedo tener varios números maestros a la vez?",
+        a: "Sí. Como el Camino de Vida, la Expresión, el Alma y la Personalidad se calculan por separado, es posible (aunque poco común) que más de una posición dé un número maestro. Cada una se lee de forma independiente según lo que representa esa posición.",
+      },
+      {
+        q: "¿Por qué algunas lecturas también muestran la versión reducida (2, 4 o 6)?",
+        a: "Porque muchos numerólogos leen el maestro y su reducción juntos: el maestro como la energía elevada y su reducción como el 'piso' al que se puede volver cuando esa intensidad pesa demasiado. Ambas lecturas son complementarias, no contradictorias.",
+      },
+    ],
+    related: ["numerologia-numero-de-vida", "signo-astral-personalidad", "numerologia-ano-personal"],
   },
 ];
 
