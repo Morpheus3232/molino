@@ -12,7 +12,6 @@ import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
 /* ═══ Navegación Principal (5 esenciales) ═══ */
 const PRIMARY_NAV = [
-  { href: "/", label: "Inicio" },
   { href: "/profile", label: "Mi Mapa" },
   { href: "/hoy", label: "Hoy" },
   { href: "/pareja", label: "Pareja" },
@@ -24,10 +23,8 @@ const EXPLORE_NAV = [
   { href: "/calendario", label: "Calendario", desc: "Ciclos y vibración mensual" },
   { href: "/biblioteca", label: "Biblioteca", desc: "Fuentes clásicas y autores" },
   { href: "/academy", label: "Academia", desc: "La historia de las tradiciones simbólicas" },
-  { href: "/premium", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
   { href: "/blog", label: "Blog", desc: "Artículos y análisis simbólico" },
   { href: "/atlas", label: "Atlas", desc: "Explorá tu mapa en el mundo" },
-  { href: "/nosotros", label: "Nosotros", desc: "Manifiesto y código abierto" },
 ];
 
 export default function UniversityHeader() {

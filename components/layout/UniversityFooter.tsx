@@ -9,6 +9,7 @@ const FOOTER_LINKS = [
   { href: "/pareja", label: "Modo Pareja" },
   { href: "/journal", label: "Journal" },
   { href: "/premium", label: "Premium" },
+  { href: "/nosotros", label: "Nosotros" },
   { href: "/profesionales", label: "Profesionales" },
   { href: "/embed", label: "Widget" },
   { href: "/docs", label: "API / Docs" },
