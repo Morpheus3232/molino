@@ -116,12 +116,7 @@ export function useDailyEnergy(
           description: universal.description,
           strengths: universal.strengths,
           cautions: universal.cautions,
-          areas: {
-            work: { score: universal.overallScore, label: "Trabajo" },
-            relationships: { score: universal.overallScore, label: "Relaciones" },
-            creativity: { score: universal.overallScore, label: "Creatividad" },
-            decisions: { score: universal.overallScore, label: "Decisiones" },
-          },
+          areas: universal.areas,
           moonPhase: universal.moonPhase,
           personalDay: universal.dailyNumber,
           personalYear: 0,

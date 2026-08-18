@@ -261,6 +261,7 @@ export interface UniversalDailyEnergy {
   description: string;
   strengths: string[];
   cautions: string[];
+  areas: DailyEnergyResult['areas'];
   moonPhase: { phase: string; emoji: string; description: string };
 }
 
@@ -332,6 +333,9 @@ export function calculateUniversalDailyEnergy(targetDate: Date = new Date()): Un
     description: themeData.description,
     strengths: themeData.strengths,
     cautions: themeData.cautions,
+    // Sin perfil no hay elemento natal — se computa igual con el resto de
+    // señales del día (número + luna), solo se omite el bonus de elemento.
+    areas: calculateAreaScores(dailyNumber, '', moonPhase.phase),
     moonPhase,
   };
 }
