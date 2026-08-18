@@ -197,6 +197,48 @@ export const UNIVERSITIES_COLOMBIA: AtlasEntityInput[] = [
       },
     ],
   },
+  {
+    id: "urosario", name: "Universidad del Rosario", type: "university", country: "Colombia", emoji: "🎓",
+    description: "El Rosario es una de las universidades más antiguas de América, reconocida por sus programas de derecho y ciencia política.",
+    keyThemes: ["Tradición", "Derecho", "Política", "Legado"],
+    sourceNote: "Fundada en 1653 por el Arzobispo Fray Cristóbal de Torres. Fecha exacta no documentada de forma unívoca; se usa el año.",
+    events: [
+      {
+        id: "urosario-fundacion", type: "fundacion", label: "Fundación",
+        year: 1653,
+        description: "Fray Cristóbal de Torres funda el Colegio Mayor de Nuestra Señora del Rosario.",
+        source: "Universidad del Rosario — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "eafit", name: "Universidad EAFIT", type: "university", country: "Colombia", emoji: "🎓",
+    description: "EAFIT es una universidad privada de Medellín, referente en negocios, ingeniería y economía.",
+    keyThemes: ["Negocios", "Ingeniería", "Innovación", "Región"],
+    sourceNote: "Fundada en 1960. Fecha exacta no documentada de forma unívoca; se usa el año.",
+    events: [
+      {
+        id: "eafit-fundacion", type: "fundacion", label: "Fundación",
+        year: 1960,
+        description: "Se funda la Escuela de Administración y Finanzas, origen de EAFIT.",
+        source: "Universidad EAFIT — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "externado", name: "Universidad Externado de Colombia", type: "university", country: "Colombia", emoji: "🎓",
+    description: "El Externado es una universidad privada bogotana de fuerte tradición jurídica y en ciencias sociales.",
+    keyThemes: ["Derecho", "Tradición", "Pensamiento", "Formación"],
+    sourceNote: "Fundada en 1886. Fecha exacta no documentada de forma unívoca; se usa el año.",
+    events: [
+      {
+        id: "externado-fundacion", type: "fundacion", label: "Fundación",
+        year: 1886,
+        description: "Se funda la Universidad Externado de Colombia en Bogotá.",
+        source: "Universidad Externado de Colombia — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
 ];
 
 // ─── MARCAS ───────────────────────────────────────────────

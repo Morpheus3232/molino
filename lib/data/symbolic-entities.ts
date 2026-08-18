@@ -32,6 +32,7 @@ import { TEAMS_URUGUAY } from "./teams-uruguay";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
 import { UNIVERSITIES_CHILE } from "./universities-chile";
 import { UNIVERSITIES_PERU } from "./universities-peru";
+import { UNIVERSITIES_URUGUAY } from "./universities-uruguay";
 import { MOVIES } from "./movies";
 import { ARTISTS_ARGENTINA } from "./artists-argentina";
 import { ARTISTS_CHILE } from "./artists-chile";
@@ -153,6 +154,7 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
     imageUrl: enriched.imageUrl,
     country: enriched.country,
     countryISO: enriched.countryISO,
+    city: enriched.city,
     type: enriched.type,
     origin,
   };
@@ -219,6 +221,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...UNIVERSITIES_ARGENTINA,
   ...UNIVERSITIES_CHILE,
   ...UNIVERSITIES_PERU,
+  ...UNIVERSITIES_URUGUAY,
 
   ...MOVIES,
   ...ARTISTS_ARGENTINA,
@@ -248,7 +251,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── UNIVERSIDADES (3) ────
   {
-    id: "uba", name: "Universidad de Buenos Aires", type: "university", country: "Argentina",
+    id: "uba", name: "Universidad de Buenos Aires", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "\ud83c\udf93",
     description: "La UBA es la universidad p\u00fablica m\u00e1s prestigiosa de Latinoam\u00e9rica. Ha producido 5 premios Nobel.",
     keyThemes: ["Conocimiento", "Excelencia", "Accesibilidad", "Compromiso"],

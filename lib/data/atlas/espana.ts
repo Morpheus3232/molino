@@ -197,6 +197,76 @@ export const UNIVERSITIES_ESPANA: AtlasEntityInput[] = [
       },
     ],
   },
+  {
+    id: "uv-valencia", name: "Universidad de Valencia", type: "university", country: "España", emoji: "🎓",
+    description: "La Universitat de València es una de las universidades más antiguas de España, con fuerte tradición en medicina y humanidades.",
+    keyThemes: ["Tradición", "Medicina", "Humanismo", "Levante"],
+    sourceNote: "Fundada en 1499 por bula papal, sobre la base del Estudi General valenciano.",
+    events: [
+      {
+        id: "uv-fundacion", type: "fundacion", label: "Fundación",
+        year: 1499,
+        description: "Se funda el Estudi General de Valencia, origen de la Universitat de València.",
+        source: "Universitat de València — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "uam-espana", name: "Universidad Autónoma de Madrid", type: "university", country: "España", emoji: "🎓",
+    description: "La UAM es una de las universidades públicas más prestigiosas de España, referente en ciencias, economía y humanidades.",
+    keyThemes: ["Pública", "Excelencia", "Investigación", "Capital"],
+    sourceNote: "Fundada en 1968.",
+    events: [
+      {
+        id: "uam-espana-fundacion", type: "fundacion", label: "Fundación",
+        year: 1968,
+        description: "Se funda la Universidad Autónoma de Madrid, dentro de la reforma universitaria de 1968.",
+        source: "Universidad Autónoma de Madrid — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "uab", name: "Universidad Autónoma de Barcelona", type: "university", country: "España", emoji: "🎓",
+    description: "La UAB es una de las universidades públicas más prestigiosas de Cataluña, con fuerte proyección internacional.",
+    keyThemes: ["Pública", "Investigación", "Internacional", "Cataluña"],
+    sourceNote: "Fundada en 1968.",
+    events: [
+      {
+        id: "uab-fundacion", type: "fundacion", label: "Fundación",
+        year: 1968,
+        description: "Se funda la Universidad Autónoma de Barcelona, dentro de la reforma universitaria de 1968.",
+        source: "Universidad Autónoma de Barcelona — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "comillas", name: "Universidad Pontificia Comillas", type: "university", country: "España", emoji: "🎓",
+    description: "Comillas es una universidad jesuita madrileña reconocida por sus programas de derecho, económicas e ingeniería.",
+    keyThemes: ["Jesuita", "Humanismo", "Formación", "Capital"],
+    sourceNote: "Fundada en 1890.",
+    events: [
+      {
+        id: "comillas-fundacion", type: "fundacion", label: "Fundación",
+        year: 1890,
+        description: "La Compañía de Jesús funda la Universidad Pontificia Comillas.",
+        source: "Universidad Pontificia Comillas — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "deusto", name: "Universidad de Deusto", type: "university", country: "España", emoji: "🎓",
+    description: "Deusto es una universidad jesuita bilbaína, referente en derecho, negocios y ciencias sociales en el norte de España.",
+    keyThemes: ["Jesuita", "Tradición", "Región", "Formación"],
+    sourceNote: "Fundada en 1886.",
+    events: [
+      {
+        id: "deusto-fundacion", type: "fundacion", label: "Fundación",
+        year: 1886,
+        description: "La Compañía de Jesús funda la Universidad de Deusto en Bilbao.",
+        source: "Universidad de Deusto — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
 ];
 
 // ─── MARCAS ───────────────────────────────────────────────

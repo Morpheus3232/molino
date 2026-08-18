@@ -88,7 +88,7 @@ export const UNIVERSITIES_ARGENTINA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "uca", name: "Universidad Católica Argentina", type: "university", country: "Argentina",
+    id: "uca", name: "Universidad Católica Argentina", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "🎓",
     description: "La UCA es la principal universidad católica de Argentina, con sedes en Buenos Aires, Rosario, Mendoza y Paraná.",
     keyThemes: ["Humanismo", "Tradición", "Formación", "Comunidad"],
@@ -108,7 +108,7 @@ export const UNIVERSITIES_ARGENTINA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "austral", name: "Universidad Austral", type: "university", country: "Argentina",
+    id: "austral", name: "Universidad Austral", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "🎓",
     description: "La Universidad Austral es una universidad privada argentina reconocida por sus programas de negocios, derecho y medicina.",
     keyThemes: ["Excelencia", "Formación", "Negocios", "Rigor"],
@@ -128,7 +128,7 @@ export const UNIVERSITIES_ARGENTINA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "di-tella", name: "Universidad Torcuato Di Tella", type: "university", country: "Argentina",
+    id: "di-tella", name: "Universidad Torcuato Di Tella", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "🎓",
     description: "La Universidad Di Tella es reconocida por sus programas de economía, ciencia política y negocios, heredera del espíritu innovador del Instituto Di Tella.",
     keyThemes: ["Innovación", "Pensamiento", "Vanguardia", "Rigor"],
@@ -147,7 +147,7 @@ export const UNIVERSITIES_ARGENTINA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "san-andres", name: "Universidad de San Andrés", type: "university", country: "Argentina",
+    id: "san-andres", name: "Universidad de San Andrés", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "🎓",
     description: "La Universidad de San Andrés es una universidad privada laica sin fines de lucro, reconocida por sus programas de economía y ciencias sociales.",
     keyThemes: ["Excelencia", "Pensamiento crítico", "Comunidad", "Rigor"],

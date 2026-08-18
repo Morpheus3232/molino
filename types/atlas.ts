@@ -44,6 +44,8 @@ export interface AtlasEntityInput {
   name: string;
   type: string;
   country: string;
+  /** Ciudad de sede/fundación — solo se usa hoy para priorizar universidades de la capital dentro del mismo país. */
+  city?: string;
   emoji?: string;
   description: string;
   keyThemes: string[];
@@ -75,6 +77,7 @@ export interface LightweightEntity {
   imageUrl?: string;
   country?: string;
   countryISO?: string;
+  city?: string;
   type: string;
   /** Breve origen: momento de fundación/creación, p. ej. "Fundación · 1905". Derivado (server-side) del evento primario. */
   origin?: string;
