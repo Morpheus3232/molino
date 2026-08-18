@@ -1,4 +1,4 @@
-const CACHE_NAME = 'molino-cache-v4';
+const CACHE_NAME = 'molino-cache-v5';
 const STATIC = ['/offline.html','/manifest.json','/favicon.svg','/favicon.ico','/apple-touch-icon.svg','/icon-192.svg','/icon-512.svg'];
 const OPEN = () => caches.open(CACHE_NAME);
 
