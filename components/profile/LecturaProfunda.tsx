@@ -464,6 +464,20 @@ function LecturaProfundaDesbloqueada({
             }
           />
         </div>
+        <div className="mt-8 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
+          <Link
+            href="/journal"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
+          >
+            ¿Querés registrar cómo te sentís con esta lectura? Anotar en mi Journal →
+          </Link>
+          <Link
+            href="/hoy"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            Tu mapa también tiene ritmo diario — ver tu energía de hoy →
+          </Link>
+        </div>
       </div>
     </div>
   );

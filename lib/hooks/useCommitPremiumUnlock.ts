@@ -20,6 +20,7 @@ function cleanUrlParams() {
   url.searchParams.delete('payment_method');
   url.searchParams.delete('token');
   url.searchParams.delete('PayerID');
+  url.searchParams.delete('claimed');
   window.history.replaceState({}, '', url.pathname + url.search);
 }
 

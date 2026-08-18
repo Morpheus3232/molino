@@ -178,6 +178,14 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       return;
     }
 
+    // Vuelta de /premium/claim (recuperación por link, otro dispositivo): el
+    // token ya se guardó ahí — solo falta reflejar el desbloqueo acá, mismo
+    // tratamiento que un pago o una recuperación por cupón.
+    if (getSearchParam('claimed') === '1') {
+      commitUnlock(undefined, { cleanUrl: true });
+      return;
+    }
+
     checkServer().then(premium => {
       if (premium) {
         setState('unlocked');
@@ -187,6 +195,20 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
       }
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Un desbloqueo real (pago, recover, cupón, claim) vuelve como carga de
+  // página nueva cuando viene de un redirect externo (Mercado Pago) — el
+  // navegador no preserva el scroll, así que el usuario aparece arriba de
+  // /profile con 4-6 pantallas de contenido ya visto antes de llegar a lo
+  // que acaba de desbloquear. El delay deja terminar el mount de
+  // PremiumUnlockReveal (fade + slide, ~0.55s) antes de scrollear.
+  useEffect(() => {
+    if (state !== 'unlocked' || !justUnlocked) return;
+    const id = setTimeout(() => {
+      document.getElementById('lectura-premium-reveal')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
+    return () => clearTimeout(id);
+  }, [state, justUnlocked]);
 
   // El molino del header gira mientras se confirma un pago real — refuerza
   // la metáfora de "procesando" justo en el momento de mayor ansiedad del
