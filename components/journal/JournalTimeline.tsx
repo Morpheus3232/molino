@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { JournalEntry, JournalMood } from "@/types/journal";
 import { MOOD_CONFIG } from "@/types/journal";
+import JournalInsights from "@/components/journal/JournalInsights";
 import {
   Search,
   Tag,
@@ -264,6 +265,10 @@ export default function JournalTimeline({
           <MoodChart chartData={chartData} />
         </div>
       )}
+
+      {/* Insights — promedios de mood agrupados, solo si hay al menos un
+          patrón real (≥2 entradas en algún grupo) */}
+      <JournalInsights entries={entries} />
 
       {/* Filter Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3.5 rounded-2xl bg-card border border-ink/10">

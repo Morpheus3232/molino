@@ -7,9 +7,12 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { getHistoryForProfile, type Orientation } from "@/lib/session/dailyHistory";
 import { getPersonalYear } from "@/lib/calculations";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
+import { useJournal } from "@/lib/hooks/useJournal";
+import { MOOD_CONFIG } from "@/types/journal";
 import DailyTimeline from "@/components/profile/DailyTimeline";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 
 const ORIENTATION_ORDER: Orientation[] = ["ACTUAR", "ESPERAR", "OBSERVAR"];
 
@@ -22,6 +25,8 @@ const transitionVariants = {
 export default function EvolutionPage() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
+  const { entries: journalEntries } = useJournal();
+  const recentJournalEntries = useMemo(() => journalEntries.slice(0, 3), [journalEntries]);
 
   const history = useMemo(() => {
     if (!profile) return [];
@@ -184,6 +189,53 @@ export default function EvolutionPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
+
+              {/* Journal real — el timeline de arriba es orientación automática
+                  (ACTUAR/ESPERAR/OBSERVAR); esto son las entradas que el usuario
+                  realmente escribió, para que "tu recorrido" no sea solo lo que
+                  Molino calculó, también lo que vos registraste. */}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-10 border-t border-ink/10 pt-10">
+                <div className="flex items-center justify-between gap-3 mb-5">
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-foreground flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-accent" />
+                    Tu Journal
+                  </h2>
+                  <Link href="/journal" className="text-xs font-mono text-accent hover:underline whitespace-nowrap">
+                    Ver todo →
+                  </Link>
+                </div>
+
+                {recentJournalEntries.length === 0 ? (
+                  <div className="rounded-2xl border border-ink/10 bg-card p-6 text-center">
+                    <p className="text-sm text-muted mb-4">Todavía no registraste ninguna entrada en tu Journal.</p>
+                    <Link href="/journal">
+                      <Button variant="accent" size="sm">Escribir mi primera entrada</Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {recentJournalEntries.map((entry) => {
+                      const cfg = MOOD_CONFIG[entry.mood];
+                      return (
+                        <Link
+                          key={entry.id}
+                          href="/journal"
+                          className="block rounded-2xl border border-ink/10 bg-card p-4 hover:border-accent/40 transition-colors"
+                        >
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span>{cfg.emoji}</span>
+                            <span className="text-xs font-mono text-muted">{entry.date}</span>
+                            {entry.cycleContext?.dayEnergy?.theme && (
+                              <span className="text-xs font-mono text-accent">· {entry.cycleContext.dayEnergy.theme}</span>
+                            )}
+                          </div>
+                          <p className="text-sm text-foreground/90 leading-relaxed line-clamp-2">{entry.content}</p>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </motion.div>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.15 }} className="mt-8 border-t border-ink/10 pt-8 flex flex-col sm:flex-row gap-3">
                 <Button variant="primary" fullWidth onClick={() => router.push("/calendario")}>
