@@ -190,34 +190,40 @@ const HOW_IT_WORKS = [
 // COURSES
 // ════════════════════════════════════════════════════
 
+function piecesFor(slugs: string[]): AcademyPiece[] {
+  return slugs
+    .map((slug) => ACADEMY_PIECES.find((p) => p.slug === slug))
+    .filter((p): p is AcademyPiece => Boolean(p));
+}
+
 const COURSES = [
   {
     id: "intro",
     title: "Introducción a tu mapa personal",
     icon: "target",
-    lessons: 5,
     description: "Los conceptos fundamentales detrás de tu mapa personal.",
+    pieces: piecesFor(["babilonia", "molino"]),
   },
   {
     id: "numerologia",
     title: "Numerología: de Pitágoras al presente",
     icon: "numbers",
-    lessons: 8,
     description: "La historia completa de cómo los números se convirtieron en herramienta de autoconocimiento.",
+    pieces: piecesFor(["pitagoras", "guematia", "balliett", "cheiro", "jordan", "mccants"]),
+  },
+  {
+    id: "astrologia",
+    title: "Astrología occidental",
+    icon: "stars",
+    description: "De la observación babilónica del cielo a la astrología helenística que define signos y casas.",
+    pieces: piecesFor(["babilonia", "helenistica"]),
   },
   {
     id: "zodiaco",
     title: "Zodíaco oriental y ciclos",
     icon: "cycle",
-    lessons: 6,
     description: "Los 12 animales, los elementos y los ciclos de 60 años.",
-  },
-  {
-    id: "mapa",
-    title: "Cómo leer tu mapa personal",
-    icon: "map",
-    lessons: 4,
-    description: "Guía práctica para interpretar tu mapa personal.",
+    pieces: piecesFor(["zodiaco-chino"]),
   },
 ];
 
@@ -433,8 +439,18 @@ export default function AcademyContent() {
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
                   {course.title}
                 </h3>
-                <p className="text-xs text-muted leading-relaxed mb-2">{course.description}</p>
-                <p className="text-[10px] uppercase tracking-wider text-muted/70 font-mono font-medium">Próximamente</p>
+                <p className="text-xs text-muted leading-relaxed mb-3">{course.description}</p>
+                <div className="flex flex-col gap-1.5">
+                  {course.pieces.map((piece) => (
+                    <Link
+                      key={piece.slug}
+                      href={`/academy/${piece.slug}`}
+                      className="text-xs text-accent hover:underline"
+                    >
+                      {piece.title} →
+                    </Link>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </motion.div>
