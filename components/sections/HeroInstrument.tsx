@@ -95,14 +95,14 @@ export default function HeroInstrument() {
 
           <motion.h1
             {...fadeUpDelayed(0.05)}
-            className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-4"
+            className="font-display text-[clamp(2.25rem,6.5vw,4.5rem)] font-bold tracking-tight text-foreground leading-[1.02] mb-5"
           >
             Tu mapa ya está listo.
           </motion.h1>
 
           <motion.p
             {...fadeUpDelayed(0.1)}
-            className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
+            className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-lg mx-auto mb-8"
           >
             Volvé a tu lectura completa — patrones, momento actual y decisiones.
           </motion.p>
@@ -151,7 +151,7 @@ export default function HeroInstrument() {
         {/* Headline emocional */}
         <motion.h1
           {...fadeUpDelayed(0.05)}
-          className="font-display text-[clamp(2rem,5vw,3.25rem)] font-bold tracking-tight text-foreground leading-[1.05] mb-4"
+          className="font-display text-[clamp(2.25rem,6.5vw,4.5rem)] font-bold tracking-tight text-foreground leading-[1.02] mb-5"
         >
           Entendete mejor.
           <br className="hidden sm:block" /> Decidí con más claridad.
@@ -159,7 +159,7 @@ export default function HeroInstrument() {
 
         <motion.p
           {...fadeUpDelayed(0.1)}
-          className="text-base sm:text-lg text-muted/70 leading-relaxed max-w-md mx-auto mb-8"
+          className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-lg mx-auto mb-8"
         >
           Una{" "}
           <Link href="/metodos-y-fuentes" className="underline decoration-dotted underline-offset-2 hover:text-accent transition-colors">
