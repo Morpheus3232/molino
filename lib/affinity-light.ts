@@ -12,7 +12,7 @@
  * the same rule, no new formula.
  */
 
-import { getRelation, getAnimalProfile, ANIMALS, type Animal } from "@/lib/data/animalRelations";
+import { getRelation, getAnimalProfile, getFriends, ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import type { VisualType } from "@/types/atlas";
 
 export type LightTier =
@@ -39,6 +39,7 @@ export interface LightAffinityResult {
   imageUrl?: string;
   country?: string;
   countryISO?: string;
+  city?: string;
   type: string;
   score: number;
   tier: LightTier;
@@ -93,6 +94,7 @@ export function sortLightEntities(
         imageUrl: e.imageUrl,
         country: e.country,
         countryISO: e.countryISO,
+        city: e.city,
         type: e.type,
         score,
         tier,
@@ -113,6 +115,7 @@ type LightweightLike = {
   imageUrl?: string;
   country?: string;
   countryISO?: string;
+  city?: string;
   type: string;
   isApproximate?: boolean;
   origin?: string;
@@ -175,7 +178,42 @@ export function buildAtlasSections(
       .slice(0, PER_CATEGORY_PREVIEW);
   }
 
+  // Universidades: a diferencia del resto de categorías, nunca se muestran
+  // internacionales — solo del país del usuario. Si no hay ninguna del
+  // mismo animal, se recomiendan las de los animales "amigos" (San He).
+  // Dentro del país, las de Buenos Aires (único dato de ciudad cargado hoy)
+  // se priorizan primero.
+  function sortByCityThenScore(pool: LightAffinityResult[]): LightAffinityResult[] {
+    return [...pool].sort((a, b) => {
+      const aBA = a.city === "Buenos Aires" ? 0 : 1;
+      const bBA = b.city === "Buenos Aires" ? 0 : 1;
+      if (aBA !== bBA) return aBA - bBA;
+      return b.score - a.score;
+    });
+  }
+
+  function curateUniversitySection(targetAnimal: string): LightAffinityResult[] {
+    if (!userCountryISO) return [];
+    const countryPool = ranked.filter(
+      (e) => e.type === "university" && e.countryISO === userCountryISO
+    );
+    if (countryPool.length === 0) return [];
+    let pool = countryPool.filter((e) => e.animal === targetAnimal);
+    if (pool.length === 0 && ANIMALS.includes(targetAnimal as Animal)) {
+      const friendAnimals = new Set<string>(getFriends(targetAnimal as Animal).map((f) => f.animal));
+      pool = countryPool.filter((e) => friendAnimals.has(e.animal));
+    }
+    if (pool.length === 0) return [];
+    return sortByCityThenScore(pool).slice(0, PER_CATEGORY_PREVIEW);
+  }
+
   for (const { type, label } of CATEGORY_ORDER) {
+    if (type === "university") {
+      const entities = curateUniversitySection(userAnimal);
+      if (entities.length === 0) continue;
+      sameAnimal.push({ type, label, entities });
+      continue;
+    }
     const pool = sameAnimalEntities.filter((e) => e.type === type);
     if (pool.length === 0) continue;
     sameAnimal.push({
@@ -186,6 +224,15 @@ export function buildAtlasSections(
   }
 
   for (const { type, label } of CATEGORY_ORDER) {
+    if (type === "university") {
+      if (!userCountryISO || !enemy) continue;
+      const pool = ranked.filter(
+        (e) => e.type === "university" && e.countryISO === userCountryISO && e.animal === enemy
+      );
+      if (pool.length === 0) continue;
+      enemyAnimal.push({ type, label, entities: sortByCityThenScore(pool).slice(0, PER_CATEGORY_PREVIEW) });
+      continue;
+    }
     const pool = enemyEntities.filter((e) => e.type === type);
     if (pool.length === 0) continue;
     enemyAnimal.push({

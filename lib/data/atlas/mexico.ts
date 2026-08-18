@@ -197,6 +197,62 @@ export const UNIVERSITIES_MEXICO: AtlasEntityInput[] = [
       },
     ],
   },
+  {
+    id: "udg", name: "Universidad de Guadalajara", type: "university", country: "México", emoji: "🎓",
+    description: "La UdeG es una de las universidades públicas más grandes de México, eje académico y cultural del occidente del país.",
+    keyThemes: ["Región", "Cultura", "Pública", "Tradición"],
+    sourceNote: "Refundada el 12 de mayo de 1925, sobre la base de la universidad colonial de 1791.",
+    events: [
+      {
+        id: "udg-fundacion", type: "fundacion", label: "Refundación",
+        date: "1925-05-12", year: 1925,
+        description: "Se refunda la Universidad de Guadalajara en su forma moderna.",
+        source: "Universidad de Guadalajara — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "ibero", name: "Universidad Iberoamericana", type: "university", country: "México", emoji: "🎓",
+    description: "La Ibero es una universidad jesuita privada, reconocida por sus programas de comunicación, diseño y ciencias sociales.",
+    keyThemes: ["Jesuita", "Humanismo", "Comunicación", "Privada"],
+    sourceNote: "Fundada en 1943 por la Compañía de Jesús. Fecha exacta no documentada públicamente; se usa el año.",
+    events: [
+      {
+        id: "ibero-fundacion", type: "fundacion", label: "Fundación",
+        year: 1943,
+        description: "La Compañía de Jesús funda la Universidad Iberoamericana.",
+        source: "Universidad Iberoamericana — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "uanl", name: "Universidad Autónoma de Nuevo León", type: "university", country: "México", emoji: "🎓",
+    description: "La UANL es la principal universidad pública del norte de México, con fuerte presencia en ingeniería y medicina.",
+    keyThemes: ["Región", "Autonomía", "Pública", "Formación"],
+    sourceNote: "Fundada en 1933 como Universidad de Nuevo León. Fecha exacta no documentada de forma unívoca; se usa el año.",
+    events: [
+      {
+        id: "uanl-fundacion", type: "fundacion", label: "Fundación",
+        year: 1933,
+        description: "Se funda la Universidad de Nuevo León, origen de la UANL.",
+        source: "UANL — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "buap", name: "Benemérita Universidad Autónoma de Puebla", type: "university", country: "México", emoji: "🎓",
+    description: "La BUAP es una de las universidades públicas más antiguas de México, con fuerte tradición humanista y científica.",
+    keyThemes: ["Tradición", "Autonomía", "Humanismo", "Pública"],
+    sourceNote: "Origen colonial en 1587; adopta autonomía y su nombre actual en 1956. Fecha exacta no documentada de forma unívoca; se usa el año.",
+    events: [
+      {
+        id: "buap-fundacion", type: "fundacion", label: "Autonomía universitaria",
+        year: 1956,
+        description: "La universidad poblana adopta su régimen autónomo y el nombre de BUAP.",
+        source: "BUAP — Historia institucional", confidence: "media", primaryForAffinity: true,
+      },
+    ],
+  },
 ];
 
 // ─── MARCAS ───────────────────────────────────────────────
