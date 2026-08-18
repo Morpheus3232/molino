@@ -52,17 +52,10 @@ const FEATURES: FeatureItem[] = [
   },
   {
     category: "Tiempo & Ciclos",
-    name: "Calendario de energía diaria completa y fases lunares",
+    name: "Calendario energético y mapa de evolución",
     free: false,
     premium: true,
-    description: "Lectura simbólica día a día para planificar decisiones clave.",
-  },
-  {
-    category: "Tiempo & Ciclos",
-    name: "Mapa de evolución temporal y ciclos anuales",
-    free: false,
-    premium: true,
-    description: "Lectura de tu Año Personal actual y proyección a 5 años.",
+    description: "Lectura simbólica de tus ciclos personales, proyección de tu Año Personal actual y los próximos 5 años, con fases lunares para planificar decisiones clave.",
   },
   {
     category: "Relaciones & Conexiones",

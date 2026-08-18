@@ -11,7 +11,7 @@ describe("Premium Experience Components", () => {
     expect(screen.getByText(/Gratis vs Premium/i)).toBeDefined();
     expect(screen.getAllByText(/Síntesis profunda cruzada/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Detección de patrones y tensiones ocultas/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/Calendario de energía diaria/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Calendario energético y mapa de evolución/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Acceso permanente de por vida/i).length).toBeGreaterThanOrEqual(1);
   });
 
