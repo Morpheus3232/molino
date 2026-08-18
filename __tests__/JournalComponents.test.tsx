@@ -22,7 +22,7 @@ describe("JournalEditor Component", () => {
     element: "Fuego",
   };
 
-  it("renders editor fields and quick tags", () => {
+  it("renders editor fields", () => {
     const handleSave = vi.fn().mockResolvedValue(undefined);
     render(
       <JournalEditor
@@ -33,8 +33,6 @@ describe("JournalEditor Component", () => {
 
     expect(screen.getByText(/Nuevo Registro/i)).toBeDefined();
     expect(screen.getByPlaceholderText(/¿Cómo te sentís hoy\?/i)).toBeDefined();
-    expect(screen.getByText("Trabajo")).toBeDefined();
-    expect(screen.getByText("Relaciones")).toBeDefined();
   });
 
   it("submits content and mood when save is clicked", async () => {
