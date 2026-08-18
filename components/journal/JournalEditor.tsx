@@ -8,13 +8,11 @@ import {
   type JournalCycleContext,
   type JournalEntry,
   MOOD_CONFIG,
-  QUICK_TAGS,
 } from "@/types/journal";
-import { calculateDailyEnergy, getYearTheme, PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
-import { generatePaywallHook } from "@/lib/engines/synthesisEngine";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Sparkles, Calendar, Plus, X, Check, PenLine, Compass } from "lucide-react";
+import { Sparkles, Calendar, Check, PenLine } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface JournalEditorProps {
@@ -42,8 +40,7 @@ export default function JournalEditor({
 }: JournalEditorProps) {
   const [content, setContent] = useState(editingEntry?.content || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
-  const [tags, setTags] = useState<string[]>(editingEntry?.tags || []);
-  const [customTag, setCustomTag] = useState("");
+  const tags = useMemo(() => editingEntry?.tags || [], [editingEntry]);
   const [date, setDate] = useState<string>(
     editingEntry?.date || new Date().toISOString().split("T")[0]
   );
@@ -93,68 +90,9 @@ export default function JournalEditor({
     }
   }, [profile, date]);
 
-  // Prompts estructurados: cada uno reformula un dato ya calculado
-  // (cycleContext acá arriba, o generatePaywallHook de Fase 2) como pregunta
-  // — nunca inventa un dato nuevo. Solo cambia el placeholder del textarea,
-  // igual que el contextualPrompt de Fase 6: el usuario sigue partiendo de
-  // una hoja en blanco.
-  const promptOptions = useMemo(() => {
-    const opts: { key: string; label: string; text: string }[] = [];
-
-    if (cycleContext.dayEnergy?.theme) {
-      opts.push({
-        key: "day",
-        label: "Energía del día",
-        text: `Hoy tu mapa destaca ${cycleContext.dayEnergy.theme}. ¿Dónde apareció?`,
-      });
-    }
-
-    const personalYear = cycleContext.yearCycle?.personalYear;
-    if (personalYear !== undefined) {
-      const meaning = PERSONAL_YEAR_MEANINGS[personalYear];
-      opts.push({
-        key: "year",
-        label: "Año Personal",
-        text: meaning
-          ? `Estás en tu Año Personal ${personalYear} — ${meaning.theme}. ¿Qué observás?`
-          : `Estás en tu Año Personal ${personalYear}. ¿Qué observás?`,
-      });
-    }
-
-    if (profile) {
-      try {
-        opts.push({ key: "tension", label: "Tensión del mapa", text: generatePaywallHook(profile).question });
-      } catch {
-        // Perfil incompleto para calcular la síntesis — se omite esta opción.
-      }
-    }
-
-    return opts;
-  }, [cycleContext, profile]);
-
-  const [selectedPromptKey, setSelectedPromptKey] = useState<string | null>(null);
-  const selectedPrompt = promptOptions.find((p) => p.key === selectedPromptKey)?.text;
   const effectivePlaceholder =
-    selectedPrompt ||
     contextualPrompt ||
     "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día...";
-
-  const toggleTag = (t: string) => {
-    if (tags.includes(t)) {
-      setTags(tags.filter((item) => item !== t));
-    } else {
-      setTags([...tags, t]);
-    }
-  };
-
-  const handleAddCustomTag = () => {
-    const trimmed = customTag.trim();
-    if (!trimmed) return;
-    if (!tags.includes(trimmed)) {
-      setTags([...tags, trimmed]);
-    }
-    setCustomTag("");
-  };
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -176,7 +114,6 @@ export default function JournalEditor({
 
         if (!editingEntry) {
           setContent("");
-          setTags([]);
           setMood(3);
         } else if (onCancelEdit) {
           onCancelEdit();
@@ -239,27 +176,6 @@ export default function JournalEditor({
         </div>
       </div>
 
-      {/* Dynamic Active Cycle Pill */}
-      {cycleContext.dayEnergy && (
-        <div className="mt-4 p-3 rounded-xl bg-background/80 border border-ink/5 flex items-center justify-between flex-wrap gap-2 text-xs">
-          <div className="flex items-center gap-2">
-            <Compass className="w-4 h-4 text-accent flex-shrink-0" />
-            <span className="font-mono text-[11px] text-foreground">
-              {cycleContext.dayEnergy.personalDay
-                ? `Día Personal ${cycleContext.dayEnergy.personalDay} · `
-                : ""}
-              <strong className="text-accent">{cycleContext.dayEnergy.theme}</strong>
-              {cycleContext.dayEnergy.moonPhase ? ` · Luna ${cycleContext.dayEnergy.moonPhase}` : ""}
-            </span>
-          </div>
-          {cycleContext.yearCycle?.personalYear && (
-            <span className="font-mono text-[10px] text-muted bg-ink/5 px-2 py-0.5 rounded">
-              Año {cycleContext.yearCycle.personalYear}
-            </span>
-          )}
-        </div>
-      )}
-
       <form onSubmit={handleSubmit} className="mt-5 space-y-5">
         {/* Mood Selector (1 to 5) */}
         <div>
@@ -301,33 +217,12 @@ export default function JournalEditor({
 
         {/* Content Textarea */}
         <div>
-          <div className="flex items-center justify-between gap-3 mb-2">
-            <label
-              htmlFor="journal-content"
-              className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
-            >
-              Reflexión
-            </label>
-            {promptOptions.length > 0 && (
-              <div className="flex items-center gap-1 flex-wrap justify-end">
-                {promptOptions.map((opt) => (
-                  <button
-                    key={opt.key}
-                    type="button"
-                    onClick={() => setSelectedPromptKey((current) => (current === opt.key ? null : opt.key))}
-                    aria-pressed={selectedPromptKey === opt.key}
-                    className={`px-2 py-0.5 rounded-lg text-[10px] font-mono transition-all border ${
-                      selectedPromptKey === opt.key
-                        ? "bg-accent text-background font-bold border-accent"
-                        : "bg-background text-muted border-ink/10 hover:border-ink/20 hover:text-foreground"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <label
+            htmlFor="journal-content"
+            className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold mb-2"
+          >
+            Reflexión
+          </label>
           <textarea
             id="journal-content"
             rows={4}
@@ -340,78 +235,6 @@ export default function JournalEditor({
           <div className="flex justify-between items-center text-[11px] text-muted font-mono mt-1 px-1">
             <span>{content.length} caracteres</span>
             <span>100% privado en tu navegador</span>
-          </div>
-        </div>
-
-        {/* Tags Selector */}
-        <div>
-          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-2 font-semibold">
-            Áreas & Temas
-          </label>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {QUICK_TAGS.map((tag) => {
-              const isChecked = tags.includes(tag);
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleTag(tag)}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-all border ${
-                    isChecked
-                      ? "bg-accent text-background font-bold border-accent shadow-sm"
-                      : "bg-background text-muted border-ink/10 hover:border-ink/20 hover:text-foreground"
-                  }`}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-
-            {/* Custom tags entered */}
-            {tags
-              .filter((t) => !QUICK_TAGS.includes(t as typeof QUICK_TAGS[number]))
-              .map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono bg-accent/20 text-accent border border-accent/40"
-                >
-                  {t}
-                  <button
-                    type="button"
-                    onClick={() => toggleTag(t)}
-                    className="hover:text-red-400 p-0.5"
-                    aria-label={`Eliminar tag ${t}`}
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              ))}
-
-            {/* Add custom tag input */}
-            <div className="inline-flex items-center gap-1 bg-background border border-ink/10 rounded-lg px-2 py-0.5 text-xs">
-              <input
-                type="text"
-                placeholder="+ tag"
-                value={customTag}
-                onChange={(e) => setCustomTag(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddCustomTag();
-                  }
-                }}
-                className="bg-transparent border-none text-foreground font-mono text-xs w-16 focus:outline-none placeholder:text-muted/50"
-              />
-              {customTag.trim() && (
-                <button
-                  type="button"
-                  onClick={handleAddCustomTag}
-                  className="text-accent hover:opacity-80 p-0.5"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
           </div>
         </div>
 
