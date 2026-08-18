@@ -533,7 +533,7 @@ export function LecturaLibre({
   return (
     <EditorialSection
       as="h2"
-      tone="paper"
+      tone="paperAlt"
       eyebrow="TU MAPA"
       title={<>LEER TU MAPA<br />EN TRES MOVIMIENTOS.</>}
       intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad, tus patrones y tu momento vistos como un solo sistema."

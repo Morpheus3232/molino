@@ -201,9 +201,14 @@ export default function ProfileHub({
       {/* ═══════════════════════════════════════════════
           TUS DIMENSIONES — radar + desglose, siempre
           expandido (sin accordion, a diferencia del onboarding).
+          Mismo tono section-paper-alt que "01 · TU MAPA" más abajo
+          (y que la tarjeta compartible) — un solo bloque de fondo
+          continuo entre ambas secciones en vez de dos criterios.
           ═══════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <DimensionsPreview dimensions={dimensions} elementColor={elementColor} expandable={false} />
+      <div className="section-paper-alt border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-10 sm:pt-14">
+          <DimensionsPreview dimensions={dimensions} elementColor={elementColor} expandable={false} />
+        </div>
       </div>
 
       {/* ═══════════════════════════════════════════════
