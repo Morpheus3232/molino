@@ -368,6 +368,87 @@ export async function resolveShareProfile(tid: string): Promise<StoredShareProfi
   }
 }
 
+// ── Gift codes (regalar Molino) ────────────────────────────────────────────
+//
+// El comprador de un regalo no conoce la fecha de nacimiento del
+// destinatario, así que no puede calcular su profileHash en el momento de
+// la compra (ver hashProfile en lib/mercadopago.ts). El pago solo puede
+// dejar un código canjeable; grantPremiumAccess recién se llama en el
+// canje, cuando el destinatario aporta su propia fecha. Mismo patrón que
+// storeShareProfile/resolveShareProfile arriba (guardar-por-clave con TTL),
+// solo que acá el registro es mutable una vez (no-canjeado → canjeado).
+
+export interface StoredGiftCode {
+  paymentId: string;
+  createdAt: number;
+  redeemed: boolean;
+  redeemedProfileHash?: string;
+  redeemedAt?: number;
+}
+
+const GIFT_TTL = 30 * 24 * 60 * 60; // 30 días sin canjear
+
+/** Guarda un código de regalo recién pagado como válido y no canjeado. */
+export async function storeGiftCode(code: string, paymentId: string): Promise<boolean> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return false;
+    const data: StoredGiftCode = { paymentId, createdAt: Date.now(), redeemed: false };
+    await kv.set(`gift:${code}`, JSON.stringify(data), { ex: GIFT_TTL });
+    return true;
+  } catch (error) {
+    console.error('[KV] Error in storeGiftCode:', error);
+    return false;
+  }
+}
+
+/** Estado actual de un código de regalo. null si no existe o expiró. */
+export async function getGiftCode(code: string): Promise<StoredGiftCode | null> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return null;
+    const raw = await kv.get<string>(`gift:${code}`);
+    if (!raw) return null;
+    return typeof raw === 'string' ? (JSON.parse(raw) as StoredGiftCode) : (raw as StoredGiftCode);
+  } catch (error) {
+    console.error('[KV] Error in getGiftCode:', error);
+    return null;
+  }
+}
+
+/**
+ * Canjea un código para `profileHash`. No es atómico (read-then-write, igual
+ * que el resto de este archivo — ver incrementDailyCost más abajo): dos
+ * canjes simultáneos del mismo código son un caso de probabilidad
+ * despreciable para un código comprado por una sola persona, no vale la
+ * complejidad de una operación atómica para evitarlo.
+ */
+export async function redeemGiftCode(
+  code: string,
+  profileHash: string
+): Promise<{ success: true; paymentId: string } | { success: false; reason: 'not_found' | 'already_redeemed' }> {
+  const existing = await getGiftCode(code);
+  if (!existing) return { success: false, reason: 'not_found' };
+  if (existing.redeemed) return { success: false, reason: 'already_redeemed' };
+
+  try {
+    const kv = await getKvClient();
+    if (kv) {
+      const updated: StoredGiftCode = {
+        ...existing,
+        redeemed: true,
+        redeemedProfileHash: profileHash,
+        redeemedAt: Date.now(),
+      };
+      await kv.set(`gift:${code}`, JSON.stringify(updated), { ex: GIFT_TTL });
+    }
+  } catch (error) {
+    console.error('[KV] Error marking gift code redeemed:', error);
+  }
+
+  return { success: true, paymentId: existing.paymentId };
+}
+
 /**
  * Best-effort running total of estimated AI spend, bucketed by UTC day.
  * NOT billing-critical (no atomic increment in the KvLike interface, so this
