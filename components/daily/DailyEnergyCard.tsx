@@ -132,7 +132,7 @@ export default function DailyEnergyCard({
             <Compass className="w-4 h-4 text-accent shrink-0" />
             <div className="min-w-0">
               <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
-                Favorece hoy
+                Fortaleza del día
               </span>
               <span className="font-semibold text-foreground truncate block">
                 {daily.strengths?.[0] || "Claridad"}

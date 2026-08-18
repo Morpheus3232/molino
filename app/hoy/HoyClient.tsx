@@ -114,7 +114,7 @@ export default function HoyClient() {
         {/* 1.5 Personal Year — solo con perfil (contenido determinista, no depende de IA ni pago) */}
         {daily?.isPersonalized && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
 
-        {/* 2. Daily Focus vs Avoid & Journal Callout */}
+        {/* 2. Daily Focus vs Avoid, desglose "Favorece hoy" por área & Journal Callout */}
         {daily && (
           <DailyFocus daily={daily} todayEntry={todayEntry} journalStreak={journalStreak} />
         )}
