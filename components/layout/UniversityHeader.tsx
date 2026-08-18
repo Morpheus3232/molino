@@ -112,13 +112,16 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
-          {/* Desktop nav — todos los links visibles, sin dropdown */}
-          <nav className="hidden xl:flex items-center gap-1" aria-label="Navegación principal">
+          {/* Desktop nav — todos los links visibles, sin dropdown. Tracking
+              normal (no wide) y fuente chica: con 9 items, el letter-spacing
+              ancho que usa el resto del sitio no entra en un laptop de
+              1024-1280px sin forzar zoom — medido en vivo con devtools. */}
+          <nav className="hidden lg:flex items-center gap-0.5 2xl:gap-1.5" aria-label="Navegación principal">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-2 xl:px-2.5 py-1.5 text-[11px] xl:text-xs font-mono font-semibold tracking-[0.1em] xl:tracking-[0.15em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+                className={`px-1.5 2xl:px-3 py-1.5 text-[10px] 2xl:text-xs font-mono font-semibold tracking-normal 2xl:tracking-[0.1em] uppercase transition-colors rounded-xl whitespace-nowrap ${
                   isActive(link.href)
                     ? "text-foreground bg-ink/[0.06] font-bold"
                     : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
@@ -133,12 +136,12 @@ export default function UniversityHeader() {
           {/* Right side: saved profiles vault & mobile hamburger */}
           <div className="flex items-center gap-2">
             <div className="hidden sm:block">
-              <SavedProfilesDrawer className="!py-1 !px-2.5 !text-[11px]" />
+              <SavedProfilesDrawer compact className="!py-1 !px-2.5 !text-[11px]" />
             </div>
 
             <button
               type="button"
-              className="xl:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
+              className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
@@ -158,7 +161,7 @@ export default function UniversityHeader() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="xl:hidden overflow-hidden border-t border-ink/10 bg-background"
+              className="lg:hidden overflow-hidden border-t border-ink/10 bg-background"
             >
               <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
                 {NAV_LINKS.map((link) => (

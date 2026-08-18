@@ -23,11 +23,16 @@ import Link from "next/link";
 interface SavedProfilesDrawerProps {
   currentProfile?: UserProfile | null;
   className?: string;
+  /** Oculta el texto del botón trigger hasta 2xl — solo para el header, donde
+   * el espacio es escaso con los 9 links de nav. En el resto de usos el
+   * texto siempre se muestra. */
+  compact?: boolean;
 }
 
 export default function SavedProfilesDrawer({
   currentProfile,
   className = "",
+  compact = false,
 }: SavedProfilesDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [vault, setVault] = useState<VaultProfileItem[]>([]);
@@ -104,7 +109,7 @@ export default function SavedProfilesDrawer({
         ) : (
           <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
         )}
-        <span>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
+        <span className={compact ? "hidden 2xl:inline" : ""}>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
       </button>
 
       {/* Drawer Modal Backdrop */}
