@@ -62,7 +62,7 @@ export const es = {
   // connotación de bueno/malo. Único lugar para esta escala en todo el sitio.
   scoreLabels: {
     excellent: "Alta",
-    good: "Marcada",
+    good: "Notable",
     neutral: "Moderada",
     poor: "Sutil",
   },
