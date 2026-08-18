@@ -4,18 +4,25 @@ import { useState, useEffect } from "react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { useStreak } from "@/lib/hooks/useStreak";
+import { useJournal } from "@/lib/hooks/useJournal";
+import { computeJournalStreak, findEntryForDate } from "@/lib/utils/journalStreak";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
 import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
 import Link from "next/link";
-import { Bell, BellRing } from "lucide-react";
+import { Bell, BellRing, TrendingUp } from "lucide-react";
 
 export default function HoyClient() {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
   const [notificationPermission, setNotificationPermission] = useState<string>("default");
 
   const { streakDays, badge } = useStreak();
+  const { entries: journalEntries } = useJournal();
+  const todayKey = toLocalDateKey(new Date());
+  const todayEntry = findEntryForDate(journalEntries, todayKey);
+  const journalStreak = computeJournalStreak(journalEntries);
 
   useEffect(() => {
     if (typeof window !== "undefined" && "Notification" in window) {
@@ -108,10 +115,24 @@ export default function HoyClient() {
         {daily?.isPersonalized && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
 
         {/* 2. Daily Focus vs Avoid & Journal Callout */}
-        {daily && <DailyFocus daily={daily} />}
+        {daily && (
+          <DailyFocus daily={daily} todayEntry={todayEntry} journalStreak={journalStreak} />
+        )}
 
         {/* 3. Week Preview (3-day forecast) */}
         {daily?.nextDaysForecast && <WeekPreview forecast={daily.nextDaysForecast} />}
+
+        {/* 4. Link a la vista de patrones ya construida — sin esto, /evolution
+            queda aislada del loop diario */}
+        <div className="text-center pt-2">
+          <Link
+            href="/evolution"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
+          >
+            <TrendingUp className="w-3.5 h-3.5" />
+            Ver tus patrones →
+          </Link>
+        </div>
       </div>
     </div>
   );
