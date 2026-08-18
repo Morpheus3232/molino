@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { decodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
+import { verifyShareToken } from "@/lib/share";
+import { resolveShareProfile } from "@/lib/kv";
 import ProfileClient from "@/components/profile/ProfileClient";
 import type { UserProfile } from "@/types/user";
 import { formatDate } from "@/lib/i18n/format";
@@ -10,7 +12,7 @@ import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-enti
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ dob?: string; data?: string; tab?: string }>;
+  searchParams: Promise<{ dob?: string; data?: string; share?: string; tab?: string }>;
 }
 
 function buildProfile(calculated: UserProfile, name: string, birthDate: string): UserProfile {
@@ -36,10 +38,23 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;
+  const shareToken = params.share;
   let name = "";
   let birthDate = dob || "";
 
-  if (dataParam) {
+  // `?share=` (JWT, PII-free) es el flujo de compartir preferido — el token
+  // no lleva nombre ni fecha, solo un id que resuelve contra KV server-side.
+  // Antes de este cambio esta rama no generaba metadata dinámica y caía al
+  // fallback genérico, mientras que el `?data=` legacy (que sí expone PII en
+  // la URL) sí la tenía — priorizar el share seguro es la dirección correcta.
+  if (shareToken) {
+    const payload = verifyShareToken(shareToken);
+    const stored = payload ? await resolveShareProfile(payload.tid) : null;
+    if (stored) {
+      name = stored.n || "";
+      birthDate = stored.b;
+    }
+  } else if (dataParam) {
     try {
       const decoded = decodeProfileData(dataParam);
       if (decoded) {
@@ -49,7 +64,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
     } catch {}
   }
 
-  const hasData = Boolean(dob || dataParam);
+  const hasData = Boolean(shareToken || dob || dataParam);
   const dateStr = birthDate
     ? formatDate(new Date(birthDate + "T00:00:00"), { day: "numeric", month: "long", year: "numeric" })
     : "";
@@ -57,23 +72,57 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   // no hay nombre, "Tu Mapa" en vez de "Mapa de tu" (que no cierra en español).
   const titleBase = name ? `Mapa de ${name}` : "Tu Mapa";
 
+  // lifePath y archetype ya se tratan como dato público compartible en
+  // /circulo y /mundo (ver PublicShareData en lib/utils/profileShare.ts) —
+  // usarlos en el title/OG de un mapa compartido no expone nada nuevo.
+  let lifePath: number | null = null;
+  let archetype = "";
+  if (hasData && birthDate) {
+    try {
+      const calculated = calculateUserProfile(name, birthDate);
+      lifePath = calculated.lifePath ?? null;
+      archetype = calculated.archetype || calculated.archetypeInfo?.name || "";
+    } catch {}
+  }
+
+  const socialTitle = lifePath
+    ? `El Camino de Vida de ${name || "este mapa"} es ${lifePath} 🔮`
+    : hasData
+      ? `${titleBase} — Molino`
+      : "Tu Mapa Personal — Molino";
+  const socialDescription = hasData
+    ? `Descubrí la síntesis de numerología, astrología y zodíaco chino${name ? ` de ${name}` : ""}. 100% privado y gratuito en Molino.app.`
+    : "Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.";
+  const ogImage = lifePath
+    ? siteUrl(
+        `/api/og?l=${lifePath}${name ? `&n=${encodeURIComponent(name)}` : ""}${
+          archetype ? `&a=${encodeURIComponent(archetype)}` : ""
+        }`,
+      )
+    : undefined;
+
   return {
-    title: hasData ? titleBase : "Tu Mapa Personal",
+    title: hasData ? (lifePath ? `Camino de Vida ${lifePath}${name ? ` de ${name}` : ""}` : titleBase) : "Tu Mapa Personal",
     description: hasData
       ? `Mapa personal de autoconocimiento${name ? ` de ${name}` : ""}, nacido el ${dateStr}. Numerología, astrología y zodíaco chino en un solo perfil.`
       : "Tu perfil de autoconocimiento: identidad simbólica, afinidades y conexiones profundas. Descubrí tu mapa en Molino.",
-    // Un perfil con datos (?dob= o ?data=) es contenido personal de una
-    // sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
+    // Un perfil con datos (?dob=, ?data= o ?share=) es contenido personal de
+    // una sola persona -- no tiene sentido indexarlo ni canonicalizarlo entre
     // sí con los de otros usuarios. Solo la landing "vacía" es indexable.
     ...(hasData
       ? { robots: { index: false, follow: true } }
       : { alternates: { canonical: siteUrl("/profile") } }),
     openGraph: {
-      title: hasData ? `${titleBase} — Molino` : "Tu Mapa Personal — Molino",
-      description: hasData
-        ? `Perfil completo${name ? ` de ${name}` : ""}: Camino de Vida, signo solar y animal del zodíaco chino.`
-        : "Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.",
+      title: socialTitle,
+      description: socialDescription,
       type: "profile",
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: socialTitle,
+      description: socialDescription,
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
   };
 }

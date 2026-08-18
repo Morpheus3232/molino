@@ -99,7 +99,10 @@ de qué se pudo y no se pudo confirmar.
 - Tailwind CSS + CSS Variables, Framer Motion, next-themes (dark vía `.dark`)
 - Vitest (unit, `lib/**/__tests__`) + Playwright (`e2e/`, `playwright.config.ts`)
 - Resend (email transaccional), Vercel KV, recharts (dataviz)
-- Analytics interno propio (`lib/analytics/`), sin terceros
+- Analytics interno propio (`lib/analytics/`, 100% local/localStorage, sin
+  servidor) + Vercel Web Analytics (agregado, cookieless, sin fingerprinting,
+  sin perfil por persona — activado 2026-08-18) para conteos de visitas por
+  página. Ningún otro proveedor de analytics/tracking de terceros.
 
 ## Estructura (86 rutas en `app/`, ~600 archivos — ver `graphify-out/GRAPH_REPORT.md` para el mapa completo)
 

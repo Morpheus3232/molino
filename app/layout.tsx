@@ -12,7 +12,8 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import PWAProvider from "@/components/PWAProvider";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, OG_IMAGE, siteUrl } from "@/lib/seo";
+import { SITE_URL, SITE_NAME, OG_IMAGE, siteUrl } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
 const newsreader = Newsreader({ subsets: ["latin"], style: ["italic"], display: "swap", variable: "--font-display" });
@@ -28,10 +29,11 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variab
 // hardcoding the full title on every leaf route.
 export const metadata: Metadata = {
   title: {
-    default: "Molino — Mapa Personal de Autoconocimiento",
+    default: "Numerología, Astrología y Zodiaco Gratis | Molino",
     template: "%s | Molino",
   },
-  description: SITE_DESCRIPTION,
+  description:
+    "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
   applicationName: "Molino",
   appleWebApp: {
     capable: true,
@@ -60,14 +62,16 @@ export const metadata: Metadata = {
     locale: "es_419",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Molino — Mapa Personal de Autoconocimiento",
-    description: SITE_DESCRIPTION,
+    title: "Numerología, Astrología y Zodiaco Gratis | Molino",
+    description:
+      "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
     images: [{ url: OG_IMAGE }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Mapa Personal de Autoconocimiento",
-    description: SITE_DESCRIPTION,
+    title: "Numerología, Astrología y Zodiaco Gratis | Molino",
+    description:
+      "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
   },
   metadataBase: new URL(SITE_URL),
   alternates: {
@@ -104,30 +108,53 @@ export default function RootLayout({
       "@type": "WebSite",
       name: "Molino",
       url: SITE_URL,
-      description: "Mapa Personal de Autoconocimiento: numerología, astrología, zodiaco chino y análisis de patrones.",
+      description:
+        "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
     },
     {
+      // Entidad "empresa/proyecto": describe la misión, no el producto.
+      // No se agrega foundingDate — no hay una fecha de fundación real
+      // documentada en el repo y schema.org exige que sea un dato genuino.
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "Molino",
       url: SITE_URL,
       logo: `${SITE_URL}/favicon.svg`,
-      description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
+      description:
+        "Molino: plataforma de autoconocimiento estructurado que integra numerología, astrología y zodiaco chino. Privacidad radical, código abierto, sin backend.",
+      // Único perfil externo real encontrado en el sitio (footer). No se
+      // inventan redes sociales que no existen.
+      sameAs: ["https://github.com/Morpheus3232/molino"],
     },
     {
+      // Entidad "producto": describe la funcionalidad, no la misión.
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       name: "Molino",
       url: SITE_URL,
-      applicationCategory: "EducationalApplication",
-      operatingSystem: "Web",
-      description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
-      offers: {
-        "@type": "Offer",
-        price: "8",
-        priceCurrency: "USD",
-        description: "Premium — síntesis completa. Pago único, acceso permanente.",
-      },
+      applicationCategory: "LifestyleApplication",
+      operatingSystem: "Web Browser",
+      description:
+        "Calculadora de mapas simbólicos que cruza numerología, astrología occidental y zodiaco chino. Cálculo 100% local en el navegador, sin registro.",
+      offers: [
+        {
+          // Plan gratuito: mapa esencial sin costo.
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+          description: "Mapa esencial gratuito: numerología, astrología y zodiaco chino sin registro.",
+          availability: "https://schema.org/InStock",
+        },
+        {
+          // Plan premium: se preserva textualmente "$8 USD" y "pago único"
+          // por pedido explícito — no reemplazar por copy genérico.
+          "@type": "Offer",
+          price: "8",
+          priceCurrency: "USD",
+          description: "Acceso Premium: pago único de $8 USD, sin suscripción, acceso vitalicio a la síntesis completa con IA.",
+          availability: "https://schema.org/InStock",
+        },
+      ],
       author: {
         "@type": "Organization",
         name: "Molino",
@@ -182,6 +209,7 @@ export default function RootLayout({
             },
           }}
         />
+        <Analytics />
       </body>
     </html>
   );

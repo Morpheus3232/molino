@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
 import { useDictionary } from "@/lib/i18n/useDictionary";
@@ -36,7 +37,7 @@ const principles = [
   {
     id: "sin-tracking",
     title: "Sin tracking invasivo",
-    description: "No hay píxeles de Facebook, no hay Google Analytics, no hay fingerprinting ni cookies de rastreo. El único registro de uso (qué páginas visitás) vive exclusivamente en tu dispositivo —vos podés verlo y borrarlo en /analytics— y nunca sale de tu navegador. Tu mapa gratuito se calcula 100% local: no llega a ningún servidor de Molino ni de terceros. Si activás Premium o IA, sí se envía un hash HMAC-SHA256 de tu perfil —nunca tu fecha de nacimiento en claro ni tu nombre— para validar el pago y habilitar el acceso.",
+    description: "No hay píxeles de Facebook, no hay fingerprinting ni cookies de rastreo. Un registro de uso detallado (qué páginas visitás) vive exclusivamente en tu dispositivo —vos podés verlo y borrarlo en /analytics— y nunca sale de tu navegador. Además usamos Vercel Web Analytics para contar visitas de forma agregada y anónima (sin cookies, sin fingerprinting, sin perfil por persona) — solo para saber qué páginas se usan más, nunca para identificarte. Tu mapa gratuito se calcula 100% local: no llega a ningún servidor de Molino ni de terceros. Si activás Premium o IA, sí se envía un hash HMAC-SHA256 de tu perfil —nunca tu fecha de nacimiento en claro ni tu nombre— para validar el pago y habilitar el acceso.",
   },
 ];
 
@@ -89,6 +90,12 @@ export default function FilosofiaContent() {
             Molino no es una app más de predicciones. Es una herramienta de autoconocimiento construida
             sobre principios claros: libertad, privacidad, transparencia y honestidad intelectual.
           </p>
+          <Link
+            href="/nosotros"
+            className="inline-flex items-center gap-1.5 mt-4 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+          >
+            Conocé más sobre nuestro equipo →
+          </Link>
         </motion.section>
 
         {/* Principles */}
