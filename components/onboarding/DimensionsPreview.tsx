@@ -94,6 +94,15 @@ export default function DimensionsPreview({
     [dimensions]
   );
 
+  // En el onboarding (expandable) es un adelanto dentro de una card propia —
+  // en Mi Mapa (!expandable) ya es el mapa completo, no un adelanto, y debe
+  // integrarse visualmente con las secciones sin caja de LecturaProfunda en
+  // vez de quedar como una card aparte con su propio borde/sombra/fondo.
+  const wrapperClass = expandable
+    ? "rounded-lg border border-border bg-card shadow-md overflow-hidden"
+    : "";
+  const headerClass = expandable ? "px-6 pt-6 pb-2 text-center" : "pb-2 text-center";
+
   if (!dimensions) {
     return (
       <motion.section
@@ -103,11 +112,13 @@ export default function DimensionsPreview({
         className="mb-10"
         aria-labelledby="dimensions-preview-heading"
       >
-        <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
-          <div className="px-6 pt-6 pb-2 text-center">
-            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
-              Adelanto
-            </p>
+        <div className={wrapperClass}>
+          <div className={headerClass}>
+            {expandable && (
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
+                Adelanto
+              </p>
+            )}
             <h2
               id="dimensions-preview-heading"
               className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground"
@@ -134,11 +145,13 @@ export default function DimensionsPreview({
       className="mb-10"
       aria-labelledby="dimensions-preview-heading"
     >
-      <div className="rounded-lg border border-border bg-card shadow-md overflow-hidden">
-        <div className="px-6 pt-6 pb-2 text-center">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
-            Adelanto
-          </p>
+      <div className={wrapperClass}>
+        <div className={headerClass}>
+          {expandable && (
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-2">
+              Adelanto
+            </p>
+          )}
           <h2
             id="dimensions-preview-heading"
             className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground"

@@ -37,31 +37,29 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
           </div>
         </motion.div>
 
-        <div className="space-y-6 max-w-2xl">
+        <div className="space-y-8">
           {sections.map((section) => (
             <div key={section.type}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3">
                 {section.label}
               </p>
-              <p className="text-sm text-foreground leading-relaxed">
-                {section.entities.map((e, i) => (
-                  <span key={e.id}>
-                    <Link
-                      href={`/affinity/${e.type}/${e.id}`}
-                      className="inline-flex items-center gap-1 hover:text-accent transition-colors"
-                    >
-                      <span aria-hidden="true">{e.emoji || "🔮"}</span>
-                      {e.name}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {section.entities.map((e) => (
+                  <Link
+                    key={e.id}
+                    href={`/affinity/${e.type}/${e.id}`}
+                    className="flex items-center gap-3 p-4 rounded-2xl border border-ink/10 bg-card hover:border-accent/40 transition-colors"
+                  >
+                    <span className="text-2xl shrink-0" aria-hidden="true">{e.emoji || "🔮"}</span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-foreground truncate">{e.name}</p>
                       {e.origin && (
-                        <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {e.origin}</span>
+                        <p className="text-[11px] text-muted truncate">{e.origin}</p>
                       )}
-                    </Link>
-                    {i < section.entities.length - 1 && (
-                      <span className="text-muted/30 mx-1.5" aria-hidden="true">·</span>
-                    )}
-                  </span>
+                    </div>
+                  </Link>
                 ))}
-              </p>
+              </div>
             </div>
           ))}
         </div>

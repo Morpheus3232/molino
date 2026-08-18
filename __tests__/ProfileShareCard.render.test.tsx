@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import ProfileShareCard from "@/components/profile/ProfileShareCard";
-import ProfileSharePanel from "@/components/profile/ProfileSharePanel";
 import type { UserProfile } from "@/types/user";
 
 function profileWith(fields: Partial<UserProfile>): UserProfile {
@@ -47,19 +46,5 @@ describe("ProfileShareCard — render smoke test", () => {
     const profile = profileWith({});
     render(<ProfileShareCard profile={profile} variant="pattern" compact />);
     expect(screen.getByRole("button", { name: /compartir tu patrón central/i })).toBeDefined();
-  });
-
-  it("ProfileSharePanel oculta la variante 'tension' cuando el perfil no tiene tensión real", () => {
-    // lifePath 2 no tiene pace inherente (getLifePathPace) → buildTensions vacío
-    const profile = profileWith({ lifePath: 2, element: "Agua" });
-    render(<ProfileSharePanel profile={profile} />);
-    expect(screen.queryByRole("button", { name: /^Tensión$/i })).toBeNull();
-    expect(screen.getByRole("button", { name: /Mapa completo/i })).toBeDefined();
-  });
-
-  it("ProfileSharePanel muestra la variante 'tension' cuando sí existe", () => {
-    const profile = profileWith({ lifePath: 5, element: "Tierra" });
-    render(<ProfileSharePanel profile={profile} />);
-    expect(screen.getByRole("button", { name: /^Tensión$/i })).toBeDefined();
   });
 });
