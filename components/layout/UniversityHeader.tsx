@@ -26,7 +26,6 @@ const EXPLORE_NAV = [
   { href: "/academy", label: "Academia", desc: "La historia de las tradiciones simbólicas" },
   { href: "/premium", label: "Precios & Premium", desc: "Acceso y síntesis completa" },
   { href: "/blog", label: "Blog", desc: "Artículos y análisis simbólico" },
-  { href: "/docs", label: "API / Docs", desc: "Endpoints para desarrolladores" },
   { href: "/atlas", label: "Atlas", desc: "Explorá tu mapa en el mundo" },
   { href: "/nosotros", label: "Nosotros", desc: "Manifiesto y código abierto" },
 ];

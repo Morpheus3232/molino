@@ -5,13 +5,13 @@ import { getMemberCount } from "@/lib/metrics";
 
 const FOOTER_LINKS = [
   { href: "/", label: "Inicio" },
-  { href: "/atlas", label: "Atlas" },
   { href: "/hoy", label: "Hoy" },
   { href: "/pareja", label: "Modo Pareja" },
   { href: "/journal", label: "Journal" },
   { href: "/premium", label: "Premium" },
   { href: "/profesionales", label: "Profesionales" },
   { href: "/embed", label: "Widget" },
+  { href: "/docs", label: "API / Docs" },
   { href: "/metodos-y-fuentes", label: "Métodos y Fuentes" },
   { href: "/transparencia", label: "Transparencia" },
   { href: "/changelog", label: "Changelog" },
