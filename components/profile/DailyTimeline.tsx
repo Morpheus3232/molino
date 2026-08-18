@@ -18,6 +18,7 @@ import { getPersonalYear } from "@/lib/calculations";
 import { formatDate as formatI18nDate } from "@/lib/i18n/format";
 import Button from "@/components/ui/Button";
 import { Flame, TrendingUp, TrendingDown, Minus, ChevronRight } from "lucide-react";
+import { getScoreLabel } from "@/lib/utils/score";
 
 const ORIENTATION_COLORS: Record<Orientation, string> = {
   ACTUAR: "var(--color-accent)",
@@ -277,7 +278,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                   />
                 </div>
                 <span className="text-xs font-mono text-muted">
-                  {selectedSnapshot.overallScore}/100
+                  {getScoreLabel(selectedSnapshot.overallScore)}
                 </span>
               </div>
             </div>

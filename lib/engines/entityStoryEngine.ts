@@ -11,6 +11,7 @@ import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { getRelation, type Animal, type RelationType } from "@/lib/data/animalRelations";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getScoreLabel } from "@/lib/utils/score";
 
 export interface EntityConnectionStory {
   /** User's zodiac animal */
@@ -125,7 +126,7 @@ export function buildEntityConnectionStory(
   const explanation = historicalContext
     ? `${historicalContext} ${relation.description}`
     : relation.description;
-  const shareText = `${userDisplay.name}: ${headline}. ${relation.score}/100 de resonancia simbólica. Descubrí la tuya en Molino.`;
+  const shareText = `${userDisplay.name}: ${headline}. Resonancia simbólica ${getScoreLabel(relation.score).toLowerCase()}. Descubrí la tuya en Molino.`;
   const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
 
   return {

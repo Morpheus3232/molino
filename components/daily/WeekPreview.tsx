@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import type { DayForecast } from "@/lib/hooks/useDailyEnergy";
 import { CalendarDays, ArrowRight, Sparkles } from "lucide-react";
 import Button from "@/components/ui/Button";
+import { getScoreLabel } from "@/lib/utils/score";
 
 interface WeekPreviewProps {
   forecast: DayForecast[];
@@ -70,7 +71,7 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
             </div>
 
             <div className="mt-4 pt-3 border-t border-ink/5 flex items-center justify-between text-[11px] font-mono text-muted">
-              <span>Energía: {f.score}%</span>
+              <span>Energía: {getScoreLabel(f.score)}</span>
               <span className="text-accent">●</span>
             </div>
           </div>
