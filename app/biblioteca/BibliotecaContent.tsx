@@ -26,26 +26,26 @@ const CONTEXT_PATHS = [
   {
     title: "Numerología & Camino de Vida",
     desc: "Para entender la reducción pitagórica, los Números Maestros y la estructura vibratoria del tiempo.",
-    authors: "Pitágoras · Juno Jordan · Guematria Clásica",
-    tag: "numerologia",
+    authors: "Pitágoras · Numerología Caldea",
+    tag: "numerología",
   },
   {
     title: "Astrología Psicológica & Elementos",
     desc: "Para profundizar en la interacción entre los cuatro elementos y las polaridades solares sin determinismo.",
     authors: "Stephen Arroyo · Dane Rudhyar · Liz Greene",
-    tag: "astrologia",
+    tag: "psicología",
   },
   {
     title: "Arquetipos & Sincronicidad",
     desc: "Para explorar la teoría del inconsciente colectivo y por qué los símbolos resuenan en la psique humana.",
-    authors: "Carl G. Jung · Marie-Louise von Franz",
-    tag: "psicologia",
+    authors: "Carl G. Jung",
+    tag: "arquetipos",
   },
   {
     title: "Ciclo Sexagenario & Zodíaco Chino",
     desc: "Para estudiar los ritmos lunares, las 12 ramas terrestres y la armonía de los cinco elementos orientales.",
-    authors: "I Ching · Richard Wilhelm · Astrología BaZi",
-    tag: "zodiaco-chino",
+    authors: "Zodiaco Chino Tradicional · I Ching",
+    tag: "zodiaco chino",
   },
 ];
 
