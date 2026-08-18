@@ -237,7 +237,7 @@ export default function MapPreviewDemo() {
                     </div>
 
                     <div>
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-amber-400 font-bold block mb-1">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-amber-700 font-bold block mb-1">
                         ⚠ Punto de Atención
                       </span>
                       <ul className="space-y-1 text-xs text-muted">

@@ -149,7 +149,7 @@ export default function DailyFocus({ daily, todayEntry, journalStreak = 0, class
             &ldquo;{daily.dailyAdvice}&rdquo;
           </blockquote>
           {journalStreak >= 2 && (
-            <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-400">
+            <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-700">
               <Flame className="w-3.5 h-3.5" />
               {journalStreak} días escribiendo en tu Journal
             </p>

@@ -20,7 +20,7 @@ interface EntityCardProps {
 // warm/amber for tension, muted for neutral.
 const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
   affine: { label: "Afinidad", className: "text-emerald-400 bg-emerald-500/10 border-emerald-500/25" },
-  tension: { label: "Tensión", className: "text-amber-400 bg-amber-500/10 border-amber-500/25" },
+  tension: { label: "Tensión", className: "text-amber-700 bg-amber-500/10 border-amber-500/25" },
   neutral: { label: "Neutro", className: "text-muted bg-ink/[0.04] border-ink/10" },
 };
 

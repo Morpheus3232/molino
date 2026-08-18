@@ -23,7 +23,7 @@ export default function RootGlobalError({
             <AlertCircle className="w-7 h-7" />
           </div>
 
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-amber-400 font-semibold">
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-amber-700 font-semibold">
             Error Crítico
           </span>
 

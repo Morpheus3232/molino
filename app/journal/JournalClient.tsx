@@ -130,7 +130,7 @@ export default function JournalClient() {
                     <span className="text-muted">entradas</span>
                   </div>
                   <div className="px-2 py-1 bg-ink/5 rounded">
-                    <span className="text-amber-400 font-bold">{stats.avgMood}</span>{" "}
+                    <span className="text-amber-700 font-bold">{stats.avgMood}</span>{" "}
                     <span className="text-muted">promedio</span>
                   </div>
                 </div>

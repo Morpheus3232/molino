@@ -42,7 +42,7 @@ export default function DailyEnergyCard({
         </div>
 
         {streakDays >= 1 && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 font-mono text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 font-mono text-xs font-bold">
             <span>{streakBadge?.emoji || "⚡"}</span>
             <span>{streakDays} {streakDays === 1 ? "día conociéndote" : "días seguidos"}</span>
           </div>

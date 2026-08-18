@@ -179,7 +179,7 @@ export default function DocsPage() {
                             <span
                               className={`px-1.5 py-0.5 rounded text-[10px] ${
                                 p.required
-                                  ? "bg-amber-500/10 text-amber-400"
+                                  ? "bg-amber-500/10 text-amber-700"
                                   : "bg-ink/5 text-muted"
                               }`}
                             >
