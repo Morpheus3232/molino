@@ -27,7 +27,6 @@ import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/eng
 import ChatWithMolino from "@/components/profile/ChatWithMolino";
 import AnnualCyclesPreview from "@/components/profile/AnnualCyclesPreview";
 import EditorialSection from "@/components/ui/EditorialSection";
-import ProfileShareCard from "@/components/profile/ProfileShareCard";
 
 
 /**
@@ -90,13 +89,11 @@ function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elem
 }
 
 function PatronCentral({
-  profile,
   pattern,
   tension,
   masterNumbers,
   elementColor,
 }: {
-  profile: UserProfile;
   pattern: { label: string; keyword: string; description: string; sources?: string[] };
   tension: { title: string; evidence: string } | null;
   masterNumbers: MasterNumberHit[];
@@ -104,10 +101,7 @@ function PatronCentral({
 }) {
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <ChapterNumber number="01 · TU PATRÓN CENTRAL" color={elementColor} />
-        <ProfileShareCard profile={profile} variant="pattern" compact />
-      </div>
+      <ChapterNumber number="01 · TU PATRÓN CENTRAL" color={elementColor} />
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">
@@ -299,7 +293,6 @@ function PiezasLibres({
       {/* 01 · Patrón central + tensión */}
       {mainPattern && (
         <PatronCentral
-          profile={profile}
           pattern={mainPattern}
           tension={mainTension}
           masterNumbers={masterNumbers}
@@ -319,36 +312,12 @@ function PiezasLibres({
         dailyEnergy={dailyEnergy}
         elementColor={elementColor}
       />
-      {/* Compartir — antes del paywall, con el mapa gratuito ya visible */}
-      <CompartirMiMapa profile={profile} />
-
       {/* Puente hacia el gate */}
       {mainTension && (
         <div className="flex items-center gap-4 text-xs text-muted">
           <span className="h-px flex-1 bg-ink/10" />
           <span>Más abajo: qué hacer cuando {mainTension.title.toLowerCase()}.</span>
           <span className="h-px flex-1 bg-ink/10" />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function CompartirMiMapa({ profile }: { profile: UserProfile }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline"
-      >
-        {open ? "Ocultar" : "Compartir mi mapa →"}
-      </button>
-      {open && (
-        <div className="mt-6 max-w-[480px]">
-          <ProfileShareCard profile={profile} variant="pattern" />
         </div>
       )}
     </div>
