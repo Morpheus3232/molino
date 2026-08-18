@@ -72,7 +72,7 @@ const AREA_ADVICE: Record<AreaKey, Record<string, string>> = {
 export default function DailyFocus({ daily, todayEntry, journalStreak = 0, className = "" }: DailyFocusProps) {
   const journalHref = todayEntry
     ? "/journal"
-    : `/journal?prompt=${encodeURIComponent(`Hoy tu mapa destaca ${daily.theme}. ¿Dónde apareció?`)}`;
+    : `/journal?prompt=${encodeURIComponent(daily.dailyAdvice)}`;
 
   return (
     <div className={`space-y-6 ${className}`}>

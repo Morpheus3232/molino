@@ -91,7 +91,7 @@ export function useDailyEnergy(
       if (!profile) {
         const universal = calculateUniversalDailyEnergy(targetDate);
         const actions = FOCUS_BY_PERSONAL_DAY[universal.dailyNumber] || FOCUS_BY_PERSONAL_DAY[1];
-        const dailyAdvice = `Hoy es un día de ${universal.theme.toLowerCase()} bajo la luna ${universal.moonPhase.phase.toLowerCase()} — vale la pena ${actions.focus.toLowerCase().slice(0, 100)}...`;
+        const dailyAdvice = `Hoy es un día de ${universal.theme.toLowerCase()} bajo la luna ${universal.moonPhase.phase.toLowerCase()} — vale la pena ${actions.focus.toLowerCase()}`;
 
         const nextDaysForecast: DayForecast[] = [];
         for (let i = 1; i <= 3; i++) {
@@ -139,7 +139,7 @@ export function useDailyEnergy(
         FOCUS_BY_PERSONAL_DAY[personalDay] || FOCUS_BY_PERSONAL_DAY[1];
 
       // Contextual personalized advice
-      const dailyAdvice = `Combinando tu vibración natal (${lifePath}) con la energía de ${daily.theme.toLowerCase()} (Día ${personalDay}) bajo la luna ${daily.moonPhase?.phase.toLowerCase() || "actual"}, el universo te invita a ${actions.focus.toLowerCase().slice(0, 100)}...`;
+      const dailyAdvice = `Combinando tu vibración natal (${lifePath}) con la energía de ${daily.theme.toLowerCase()} (Día ${personalDay}) bajo la luna ${daily.moonPhase?.phase.toLowerCase() || "actual"}, el universo te invita a ${actions.focus.toLowerCase()}`;
 
       // 3-day forecast
       const nextDaysForecast: DayForecast[] = [];
