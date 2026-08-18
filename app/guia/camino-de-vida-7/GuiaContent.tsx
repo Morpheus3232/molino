@@ -111,7 +111,10 @@ export default function GuiaContent() {
               La lección del 7 es aprender a bajar del mundo de las ideas al mundo de la acción. El conocimiento sin aplicación se vuelve esterilidad. El 7 crece cuando comparte lo que descubre, cuando confía en su intuición sin necesidad de pruebas absolutas, y cuando permite que otros vean su mundo interior.
             </p>
             <p className="mt-4">
-              Practicar la vulnerabilidad, tomar decisiones sin tener toda la información, y compartir el conocimiento generosamente son las llaves de su evolución personal.
+              Practicar la vulnerabilidad, tomar decisiones sin tener toda la información, y compartir el conocimiento generosamente son las llaves de su evolución personal. Si tu Camino de Vida es 11, 22 o 33, tu lectura tiene una capa adicional — mirá la guía de{" "}
+              <Link href="/guia/numeros-maestros" className="text-accent underline underline-offset-2 hover:text-accent/80 transition-colors">
+                Números Maestros
+              </Link>.
             </p>
           </section>
         </div>
@@ -122,6 +125,18 @@ export default function GuiaContent() {
           </Link>
           <Link href="/onboarding" className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors ml-8">
             Calcular mi Camino de Vida →
+          </Link>
+        </div>
+
+        <div className="mt-8 p-6 sm:p-8 rounded-2xl bg-accent/5 border border-accent/20 text-center">
+          <p className="font-heading text-lg sm:text-xl text-foreground mb-4">
+            ¿Querés ver tu Camino de Vida ahora?
+          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors"
+          >
+            Generá tu mapa gratuito
           </Link>
         </div>
       </main>

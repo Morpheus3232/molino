@@ -181,6 +181,13 @@ export default function JournalClient() {
                 hoy es suficiente para ofrecer una perspectiva sobre patrones cuando mires hacia atrás.
               </p>
             </div>
+
+            <Link
+              href="/hoy"
+              className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
+            >
+              Explorá cómo tus ciclos de hoy influyen en tu energía →
+            </Link>
           </div>
 
           {/* Timeline & Analysis Column */}

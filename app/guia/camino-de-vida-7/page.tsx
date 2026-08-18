@@ -1,4 +1,4 @@
-import { SITE_URL, siteUrl, createRouteMetadata } from "@/lib/seo";
+import { SITE_URL, siteUrl, createRouteMetadata, OG_IMAGE } from "@/lib/seo";
 import GuiaContent from "./GuiaContent";
 
 export const metadata = createRouteMetadata({
@@ -15,6 +15,7 @@ const jsonLd = [
     "@type": "Article",
     headline: "Camino de Vida 7 — El buscador de la verdad",
     description: "Guía completa del Camino de Vida 7 en numerología: significado, personalidad, fortalezas y desafíos.",
+    image: siteUrl(OG_IMAGE),
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
     datePublished: "2025-01-01",

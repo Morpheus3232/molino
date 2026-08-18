@@ -2,12 +2,13 @@ import JournalClient from "./JournalClient";
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
-  title: "Journal de Autoconocimiento",
+  title: "Journal de Autoconocimiento | Molino",
   description:
-    "Espacio de registro y reflexión personal en Molino. Escribí tus vivencias y cruzalas con tus ciclos numerológicos y astrológicos. 100% privado en tu navegador.",
+    "Registrá tus reflexiones y cruzalas con tus ciclos personales en tu diario simbólico. 100% privado, cálculo local, sin registro. Empezá a escribir hoy.",
   path: "/journal",
-  ogTitle: "Journal de Autoconocimiento — Molino",
-  ogDescription: "Registrá tu estado de ánimo, decisiones y reflexiones cruzadas con tu mapa y ciclos personales. 100% privado y sin backend.",
+  ogTitle: "Journal de Autoconocimiento | Molino",
+  ogDescription:
+    "Registrá tus reflexiones y cruzalas con tus ciclos personales en tu diario simbólico. 100% privado, cálculo local, sin registro. Empezá a escribir hoy.",
 });
 
 export default function JournalPage() {
