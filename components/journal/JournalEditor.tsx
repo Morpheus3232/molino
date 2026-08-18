@@ -10,8 +10,9 @@ import {
   MOOD_CONFIG,
   QUICK_TAGS,
 } from "@/types/journal";
-import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, getYearTheme, PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
+import { generatePaywallHook } from "@/lib/engines/synthesisEngine";
 import type { Animal } from "@/lib/data/animalRelations";
 import { Sparkles, Calendar, Plus, X, Check, PenLine, Compass } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -91,6 +92,52 @@ export default function JournalEditor({
       return {};
     }
   }, [profile, date]);
+
+  // Prompts estructurados: cada uno reformula un dato ya calculado
+  // (cycleContext acá arriba, o generatePaywallHook de Fase 2) como pregunta
+  // — nunca inventa un dato nuevo. Solo cambia el placeholder del textarea,
+  // igual que el contextualPrompt de Fase 6: el usuario sigue partiendo de
+  // una hoja en blanco.
+  const promptOptions = useMemo(() => {
+    const opts: { key: string; label: string; text: string }[] = [];
+
+    if (cycleContext.dayEnergy?.theme) {
+      opts.push({
+        key: "day",
+        label: "Energía del día",
+        text: `Hoy tu mapa destaca ${cycleContext.dayEnergy.theme}. ¿Dónde apareció?`,
+      });
+    }
+
+    const personalYear = cycleContext.yearCycle?.personalYear;
+    if (personalYear !== undefined) {
+      const meaning = PERSONAL_YEAR_MEANINGS[personalYear];
+      opts.push({
+        key: "year",
+        label: "Año Personal",
+        text: meaning
+          ? `Estás en tu Año Personal ${personalYear} — ${meaning.theme}. ¿Qué observás?`
+          : `Estás en tu Año Personal ${personalYear}. ¿Qué observás?`,
+      });
+    }
+
+    if (profile) {
+      try {
+        opts.push({ key: "tension", label: "Tensión del mapa", text: generatePaywallHook(profile).question });
+      } catch {
+        // Perfil incompleto para calcular la síntesis — se omite esta opción.
+      }
+    }
+
+    return opts;
+  }, [cycleContext, profile]);
+
+  const [selectedPromptKey, setSelectedPromptKey] = useState<string | null>(null);
+  const selectedPrompt = promptOptions.find((p) => p.key === selectedPromptKey)?.text;
+  const effectivePlaceholder =
+    selectedPrompt ||
+    contextualPrompt ||
+    "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día...";
 
   const toggleTag = (t: string) => {
     if (tags.includes(t)) {
@@ -254,18 +301,39 @@ export default function JournalEditor({
 
         {/* Content Textarea */}
         <div>
-          <label
-            htmlFor="journal-content"
-            className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-2 font-semibold"
-          >
-            Reflexión
-          </label>
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <label
+              htmlFor="journal-content"
+              className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
+            >
+              Reflexión
+            </label>
+            {promptOptions.length > 0 && (
+              <div className="flex items-center gap-1 flex-wrap justify-end">
+                {promptOptions.map((opt) => (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    onClick={() => setSelectedPromptKey((current) => (current === opt.key ? null : opt.key))}
+                    aria-pressed={selectedPromptKey === opt.key}
+                    className={`px-2 py-0.5 rounded-lg text-[10px] font-mono transition-all border ${
+                      selectedPromptKey === opt.key
+                        ? "bg-accent text-background font-bold border-accent"
+                        : "bg-background text-muted border-ink/10 hover:border-ink/20 hover:text-foreground"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <textarea
             id="journal-content"
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder={contextualPrompt || "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día..."}
+            placeholder={effectivePlaceholder}
             className="w-full rounded-xl bg-background border border-ink/10 p-3.5 text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
             required
           />
