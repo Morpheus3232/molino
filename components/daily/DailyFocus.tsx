@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
+import type { JournalEntry } from "@/types/journal";
 import {
   Target,
   AlertOctagon,
@@ -10,15 +11,24 @@ import {
   BookOpen,
   Sparkles,
   ArrowRight,
+  Flame,
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface DailyFocusProps {
   daily: EnrichedDailyEnergy;
+  /** Entrada de Journal de hoy, si ya existe — cambia el CTA de "Anotar" a "Ver". */
+  todayEntry?: JournalEntry;
+  /** Racha de journaling (días consecutivos con entrada) — 0 o 1 no se muestra. */
+  journalStreak?: number;
   className?: string;
 }
 
-export default function DailyFocus({ daily, className = "" }: DailyFocusProps) {
+export default function DailyFocus({ daily, todayEntry, journalStreak = 0, className = "" }: DailyFocusProps) {
+  const journalHref = todayEntry
+    ? "/journal"
+    : `/journal?prompt=${encodeURIComponent(`Hoy tu mapa destaca ${daily.theme}. ¿Dónde apareció?`)}`;
+
   return (
     <div className={`space-y-6 ${className}`}>
       {/* 2-Card Grid: Focus vs Avoid */}
@@ -62,18 +72,24 @@ export default function DailyFocus({ daily, className = "" }: DailyFocusProps) {
           <blockquote className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-3 py-0.5">
             &ldquo;{daily.dailyAdvice}&rdquo;
           </blockquote>
+          {journalStreak >= 2 && (
+            <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-400">
+              <Flame className="w-3.5 h-3.5" />
+              {journalStreak} días escribiendo en tu Journal
+            </p>
+          )}
         </div>
 
         {/* Journal CTA */}
         <div className="flex-shrink-0">
-          <Link href="/journal">
+          <Link href={journalHref}>
             <Button
               variant="accent"
               size="md"
               className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
             >
               <BookOpen className="w-4 h-4" />
-              <span>Anotar en mi Journal</span>
+              <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi Journal"}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </Link>

@@ -23,6 +23,11 @@ interface JournalEditorProps {
   ) => Promise<JournalEntry | void>;
   editingEntry?: JournalEntry | null;
   onCancelEdit?: () => void;
+  /** Pregunta contextual del día (viene de /hoy vía ?prompt=) — reemplaza el
+   * placeholder genérico del textarea, nunca precarga el contenido: el
+   * usuario sigue partiendo de una hoja en blanco, solo con menos fricción
+   * para arrancar. */
+  contextualPrompt?: string;
   className?: string;
 }
 
@@ -31,6 +36,7 @@ export default function JournalEditor({
   onSaveEntry,
   editingEntry = null,
   onCancelEdit,
+  contextualPrompt,
   className = "",
 }: JournalEditorProps) {
   const [content, setContent] = useState(editingEntry?.content || "");
@@ -259,7 +265,7 @@ export default function JournalEditor({
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día..."
+            placeholder={contextualPrompt || "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día..."}
             className="w-full rounded-xl bg-background border border-ink/10 p-3.5 text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
             required
           />

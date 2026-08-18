@@ -41,6 +41,11 @@ function loadUser(): UserProfile | null {
 export default function JournalClient() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
+  // Pregunta contextual pasada desde /hoy (?prompt=...) — leída directo de
+  // window.location en vez de useSearchParams para no forzar un boundary de
+  // Suspense en una página que hoy no lo necesita (mismo patrón que
+  // getSearchParam en PremiumGate.tsx).
+  const [contextualPrompt, setContextualPrompt] = useState<string | undefined>(undefined);
   const {
     entries,
     addEntry,
@@ -55,6 +60,9 @@ export default function JournalClient() {
   useEffect(() => {
     const user = loadUser();
     if (user) setProfile(user);
+
+    const prompt = new URLSearchParams(window.location.search).get("prompt");
+    if (prompt) setContextualPrompt(prompt);
   }, []);
 
   const handleExport = () => {
@@ -159,6 +167,7 @@ export default function JournalClient() {
               onSaveEntry={handleSave}
               editingEntry={editingEntry}
               onCancelEdit={() => setEditingEntry(null)}
+              contextualPrompt={contextualPrompt}
             />
 
             {/* Reflection Tip Card */}
