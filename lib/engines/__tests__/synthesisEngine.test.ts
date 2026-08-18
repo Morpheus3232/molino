@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildPrinciples, hasCircularSources } from "../synthesisEngine";
-import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo } from "../numerologyEngine";
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildPrinciples, hasCircularSources, generatePaywallHook } from "../synthesisEngine";
+import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo, getMasterNumbers } from "../numerologyEngine";
 import type { UserProfile } from "@/types/user";
 
 // buildPersonalCode es el único punto de entrada público que expone el
@@ -432,5 +432,76 @@ describe("buildPrinciples — sintetiza los datos reales del perfil, no inventa"
     const a = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
     const b = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
     expect(a).toEqual(b);
+  });
+});
+
+// generatePaywallHook reformula un dato ya calculado gratis como pregunta
+// abierta — nunca inventa un dato nuevo. Prioridad: tensión real de ritmo >
+// número maestro > convergencia entre 2 sistemas > patterns[1] (fallback
+// universal). Ver .claude/execution-logs/paywall-redesign-proposal.md.
+describe("generatePaywallHook", () => {
+  it("usa la tensión real de ritmo cuando existe (máxima prioridad)", () => {
+    const profile = profileWith({ lifePath: 5, element: "Tierra", chineseZodiac: "Gato", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
+    const tension = buildTensions(profile)[0];
+    expect(tension).toBeDefined(); // confirma que este fixture realmente dispara buildTensions
+    const hook = generatePaywallHook(profile);
+    expect(hook.context).toBe(tension.evidence);
+    expect(hook.question).toContain(tension.sources[0]);
+    expect(hook.question).toContain(tension.sources[1]);
+  });
+
+  it("usa un Número Maestro cuando no hay tensión de ritmo (11/22/33 no tienen pace inherente)", () => {
+    const profile = profileWith({ lifePath: 22, element: "Agua", chineseZodiac: "Cerdo", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
+    expect(buildTensions(profile)).toHaveLength(0); // 22 no tiene pace inherente: nunca puede generar tensión
+    const masters = getMasterNumbers(profile);
+    expect(masters[0]).toEqual({ position: "lifePath", number: 22 });
+    const hook = generatePaywallHook(profile);
+    expect(hook.question).toContain("22");
+    expect(hook.question).toContain("Camino de Vida");
+  });
+
+  it("usa una convergencia real entre 2 sistemas cuando no hay tensión ni número maestro", () => {
+    const LIFE_PATHS = [1, 2, 3, 4, 6, 7, 9]; // sin maestros, con y sin pace
+    const CHINESE_ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+    let found: { profile: UserProfile; convergent: ReturnType<typeof buildPatterns>[number] } | null = null;
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of CHINESE_ANIMALS) {
+        const profile = profileWith({ lifePath, chineseZodiac, element: "Agua", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
+        if (buildTensions(profile).length > 0 || getMasterNumbers(profile).length > 0) continue;
+        const convergent = buildPatterns(profile).find((p) => p.sources.length > 1);
+        if (convergent) { found = { profile, convergent }; break; }
+      }
+      if (found) break;
+    }
+    expect(found).not.toBeNull();
+    const hook = generatePaywallHook(found!.profile);
+    expect(hook.context).toBe(found!.convergent.description);
+    expect(hook.question).toContain(found!.convergent.keyword);
+  });
+
+  it("cae en patterns[1] como fallback universal cuando no hay tensión, maestro ni convergencia", () => {
+    const LIFE_PATHS = [1, 2, 4, 6, 7, 9];
+    const CHINESE_ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+    let found: UserProfile | null = null;
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of CHINESE_ANIMALS) {
+        const profile = profileWith({ lifePath, chineseZodiac, element: "Agua", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
+        if (buildTensions(profile).length > 0 || getMasterNumbers(profile).length > 0) continue;
+        if (buildPatterns(profile).some((p) => p.sources.length > 1)) continue;
+        found = profile;
+        break;
+      }
+      if (found) break;
+    }
+    expect(found).not.toBeNull();
+    const patterns = buildPatterns(found!);
+    const hook = generatePaywallHook(found!);
+    expect(hook.context).toBe(patterns[1].description);
+    expect(hook.question).toContain(patterns[1].keyword);
+  });
+
+  it("determinismo: mismo perfil produce siempre el mismo hook", () => {
+    const profile = profileWith({ lifePath: 5, element: "Tierra", chineseZodiac: "Gato", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
+    expect(generatePaywallHook(profile)).toEqual(generatePaywallHook(profile));
   });
 });

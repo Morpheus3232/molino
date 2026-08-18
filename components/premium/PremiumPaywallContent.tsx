@@ -19,6 +19,7 @@ interface PremiumGatePreview {
   chineseZodiac: string;
   pattern: { keyword: string; sources: string[] } | null;
   tension: { title: string; evidence: string } | null;
+  hook: { question: string; context: string };
 }
 
 interface PremiumPaywallContentProps {
@@ -98,36 +99,12 @@ export default function PremiumPaywallContent({
 
         {preview && (
           <div className="border border-ink/10 bg-ink/[0.02] px-6 py-5 mb-10 max-w-xl">
-            {preview.tension ? (
-              <>
-                <p className="text-sm text-foreground leading-relaxed">
-                  Detectamos una tensión real en tu perfil:{" "}
-                  <span className="font-semibold">{preview.tension.title.toLowerCase()}</span>. {preview.tension.evidence}
-                </p>
-                <p className="text-sm text-muted leading-relaxed mt-2">
-                  La lectura completa explica qué hacer con ese desfasaje en tu momento actual.
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-sm text-foreground leading-relaxed">
-                  Tu Camino de Vida es <span className="font-semibold">{preview.lifePath}</span>. Tu animal chino es{" "}
-                  <span className="font-semibold">{preview.chineseZodiac}</span>.
-                  {preview.pattern && preview.pattern.sources.length > 1 ? (
-                    <>
-                      {" "}
-                      <span className="font-semibold">{preview.pattern.sources.join(" y ")}</span> coinciden en{" "}
-                      <span className="font-semibold">{preview.pattern.keyword}</span>.
-                    </>
-                  ) : (
-                    " Dos sistemas distintos, calculados por separado."
-                  )}
-                </p>
-                <p className="text-sm text-muted leading-relaxed mt-2">
-                  La síntesis completa explica qué significa esa combinación en tu caso — no qué son por separado.
-                </p>
-              </>
-            )}
+            <p className="text-sm text-foreground leading-relaxed font-semibold">
+              {preview.hook.question}
+            </p>
+            <p className="text-sm text-muted leading-relaxed mt-2">
+              {preview.hook.context}
+            </p>
           </div>
         )}
 

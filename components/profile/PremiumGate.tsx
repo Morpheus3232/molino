@@ -34,6 +34,13 @@ interface PremiumGatePreview {
    * ritmo-elemento no es universal, y no se inventa uno cuando no lo hay.
    */
   tension: { title: string; evidence: string } | null;
+  /**
+   * generatePaywallHook(profile) (synthesisEngine.ts) — reformula el mismo
+   * pattern/tension de arriba como pregunta abierta en vez de resumen.
+   * Reemplaza el preview de PremiumPaywallContent; pattern/tension se
+   * conservan porque PremiumUnlockReveal los usa por separado post-pago.
+   */
+  hook: { question: string; context: string };
 }
 
 interface PremiumGateProps {

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
+import { generatePaywallHook } from "@/lib/engines/synthesisEngine";
 import FeatureComparison from "@/components/premium/FeatureComparison";
 import PremiumPreview from "@/components/premium/PremiumPreview";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
@@ -20,6 +21,8 @@ export default function PremiumClient() {
     const stored = loadProfileFromStorage();
     if (stored) setProfile(stored as UserProfile);
   }, []);
+
+  const hook = profile ? generatePaywallHook(profile) : null;
 
   const scrollToCheckout = () => {
     const el = document.getElementById("checkout-box");
@@ -40,14 +43,26 @@ export default function PremiumClient() {
             </span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
-            Explorá tu mapa completo <br className="hidden sm:inline" />
-            <span className="text-accent">con rigor, sin determinismo</span>
-          </h1>
-
-          <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
-            Tu mapa básico es gratuito siempre. Premium conecta numerología, astrología y zodíaco chino en una síntesis única: descubrí arquetipos, ciclos de vida y dinámicas ocultas. Una herramienta de reflexión honesta, no un oráculo.
-          </p>
+          {hook ? (
+            <>
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
+                {hook.question}
+              </h1>
+              <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
+                {hook.context}
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground uppercase tracking-tight leading-[1.05]">
+                Explorá tu mapa completo <br className="hidden sm:inline" />
+                <span className="text-accent">sin determinismo</span>
+              </h1>
+              <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mt-4 leading-relaxed">
+                Tu mapa básico es gratuito siempre. Premium conecta numerología, astrología y zodíaco chino en una síntesis única: descubrí arquetipos, ciclos de vida y dinámicas entre tus energías. Una herramienta de reflexión honesta, no un oráculo.
+              </p>
+            </>
+          )}
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Button
