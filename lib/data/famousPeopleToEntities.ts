@@ -653,6 +653,295 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     shortBio: "Actor y productor ganador de dos Óscar, cara del cine norteamericano.",
     emoji: "🎬",
   },
+  // ──── ARGENTINA ────
+  {
+    name: "Fito Páez",
+    birthDate: "1963-03-13",
+    field: "Música",
+    country: "Argentina",
+    shortBio: "Cantautor de Rosario, referente absoluto del rock en español.",
+    emoji: "🎹",
+  },
+  {
+    name: "Mercedes Sosa",
+    birthDate: "1935-07-09",
+    field: "Música",
+    country: "Argentina",
+    shortBio: "\"La Voz de América Latina\", ícono del folclore y la canción popular.",
+    emoji: "🎤",
+  },
+  {
+    name: "Astor Piazzolla",
+    birthDate: "1921-03-11",
+    field: "Música",
+    country: "Argentina",
+    shortBio: "Creador del tango nuevo, revolucionó el bandoneón a nivel mundial.",
+    emoji: "🪗",
+  },
+  {
+    name: "Eva Perón",
+    birthDate: "1919-05-07",
+    field: "Política",
+    country: "Argentina",
+    shortBio: "Líder política y social, una de las figuras más influyentes del siglo XX argentino.",
+    emoji: "🌹",
+  },
+  {
+    name: "Che Guevara",
+    birthDate: "1928-06-14",
+    field: "Política",
+    country: "Argentina",
+    shortBio: "Médico y revolucionario rosarino, símbolo global de lucha política.",
+    emoji: "⭐",
+  },
+  {
+    name: "Manu Ginóbili",
+    birthDate: "1977-07-28",
+    field: "Deporte",
+    country: "Argentina",
+    shortBio: "Base bahiense, campeón de la NBA y leyenda del básquet argentino.",
+    emoji: "🏀",
+  },
+  {
+    name: "Juan Román Riquelme",
+    birthDate: "1978-06-24",
+    field: "Deporte",
+    country: "Argentina",
+    shortBio: "Mediocampista de Boca, uno de los mejores enganches de su generación.",
+    emoji: "⚽",
+  },
+  {
+    name: "Sergio Agüero",
+    birthDate: "1988-06-02",
+    field: "Deporte",
+    country: "Argentina",
+    shortBio: "\"Kun\" Agüero, goleador histórico del Manchester City y la Selección.",
+    emoji: "⚽",
+  },
+  {
+    name: "Ricardo Darín",
+    birthDate: "1957-01-16",
+    field: "Cine",
+    country: "Argentina",
+    shortBio: "Actor más premiado del cine argentino contemporáneo.",
+    emoji: "🎬",
+  },
+  {
+    name: "Adolfo Bioy Casares",
+    birthDate: "1914-09-15",
+    field: "Literatura",
+    country: "Argentina",
+    shortBio: "Escritor clave de la literatura fantástica argentina, autor de La invención de Morel.",
+    emoji: "📖",
+  },
+  // ──── MÉXICO ────
+  {
+    name: "Diego Rivera",
+    birthDate: "1886-12-08",
+    field: "Arte",
+    country: "México",
+    shortBio: "Muralista mexicano, referente del arte político latinoamericano del siglo XX.",
+    emoji: "🎨",
+  },
+  {
+    name: "Octavio Paz",
+    birthDate: "1914-03-31",
+    field: "Literatura",
+    country: "México",
+    shortBio: "Poeta y ensayista, Premio Nobel de Literatura 1990.",
+    emoji: "📖",
+  },
+  {
+    name: "Guillermo del Toro",
+    birthDate: "1964-10-09",
+    field: "Cine",
+    country: "México",
+    shortBio: "Director tapatío, Óscar por El laberinto del fauno y La forma del agua.",
+    emoji: "🎬",
+  },
+  {
+    name: "Salma Hayek",
+    birthDate: "1966-09-02",
+    field: "Cine",
+    country: "México",
+    shortBio: "Actriz y productora, primera mexicana nominada al Óscar a mejor actriz.",
+    emoji: "🎬",
+  },
+  {
+    name: "Luis Miguel",
+    birthDate: "1970-04-19",
+    field: "Música",
+    country: "México",
+    shortBio: "\"El Sol de México\", una de las voces más importantes de la música en español.",
+    emoji: "🎤",
+  },
+  // ──── ESPAÑA ────
+  {
+    name: "Rafael Nadal",
+    birthDate: "1986-06-03",
+    field: "Deporte",
+    country: "España",
+    shortBio: "\"El Rey de la Tierra Batida\", 22 títulos de Grand Slam.",
+    emoji: "🎾",
+  },
+  {
+    name: "Antonio Banderas",
+    birthDate: "1960-08-10",
+    field: "Cine",
+    country: "España",
+    shortBio: "Actor malagueño, el rostro español más reconocido de Hollywood.",
+    emoji: "🎬",
+  },
+  {
+    name: "Penélope Cruz",
+    birthDate: "1974-04-28",
+    field: "Cine",
+    country: "España",
+    shortBio: "Actriz manchega, primera española en ganar un Óscar de interpretación.",
+    emoji: "🎬",
+  },
+  {
+    name: "Pedro Almodóvar",
+    birthDate: "1949-09-25",
+    field: "Cine",
+    country: "España",
+    shortBio: "Director manchego, máximo referente del cine español contemporáneo.",
+    emoji: "🎬",
+  },
+  // ──── CHILE ────
+  {
+    name: "Pablo Neruda",
+    birthDate: "1904-07-12",
+    field: "Literatura",
+    country: "Chile",
+    shortBio: "Poeta, Premio Nobel de Literatura 1971, autor de Veinte poemas de amor.",
+    emoji: "📖",
+    quote: "Podrán cortar todas las flores, pero no podrán detener la primavera.",
+  },
+  {
+    name: "Gabriela Mistral",
+    birthDate: "1889-04-07",
+    field: "Literatura",
+    country: "Chile",
+    shortBio: "Poeta y diplomática, primera latinoamericana en ganar el Nobel de Literatura.",
+    emoji: "📖",
+  },
+  {
+    name: "Isabel Allende",
+    birthDate: "1942-08-02",
+    field: "Literatura",
+    country: "Chile",
+    shortBio: "Autora de La casa de los espíritus, una de las novelistas más leídas en español.",
+    emoji: "📖",
+  },
+  {
+    name: "Alexis Sánchez",
+    birthDate: "1988-12-19",
+    field: "Deporte",
+    country: "Chile",
+    shortBio: "\"Niño Maravilla\", máximo goleador histórico de la Selección chilena.",
+    emoji: "⚽",
+  },
+  // ──── COLOMBIA ────
+  {
+    name: "Sofía Vergara",
+    birthDate: "1972-07-10",
+    field: "Cine",
+    country: "Colombia",
+    shortBio: "Actriz barranquillera, una de las latinas mejor pagadas de la TV estadounidense.",
+    emoji: "🎬",
+  },
+  {
+    name: "Juanes",
+    birthDate: "1972-08-09",
+    field: "Música",
+    country: "Colombia",
+    shortBio: "Cantautor paisa, uno de los artistas latinos más premiados en los Grammy.",
+    emoji: "🎸",
+  },
+  {
+    name: "James Rodríguez",
+    birthDate: "1991-07-12",
+    field: "Deporte",
+    country: "Colombia",
+    shortBio: "Mediocampista cucuteño, Bota de Oro en el Mundial 2014.",
+    emoji: "⚽",
+  },
+  // ──── URUGUAY ────
+  {
+    name: "Luis Suárez",
+    birthDate: "1987-01-24",
+    field: "Deporte",
+    country: "Uruguay",
+    shortBio: "\"El Pistolero\", máximo goleador histórico de la Selección uruguaya.",
+    emoji: "⚽",
+  },
+  {
+    name: "Mario Benedetti",
+    birthDate: "1920-09-14",
+    field: "Literatura",
+    country: "Uruguay",
+    shortBio: "Escritor y poeta, una de las voces más queridas de la literatura rioplatense.",
+    emoji: "📖",
+  },
+  {
+    name: "Eduardo Galeano",
+    birthDate: "1940-09-03",
+    field: "Literatura",
+    country: "Uruguay",
+    shortBio: "Autor de Las venas abiertas de América Latina, cronista del continente.",
+    emoji: "📖",
+  },
+  {
+    name: "José Mujica",
+    birthDate: "1935-05-20",
+    field: "Política",
+    country: "Uruguay",
+    shortBio: "\"El Pepe\", ex presidente conocido mundialmente por su austeridad y filosofía de vida.",
+    emoji: "🌻",
+  },
+  // ──── PERÚ ────
+  {
+    name: "Mario Vargas Llosa",
+    birthDate: "1936-03-28",
+    field: "Literatura",
+    country: "Perú",
+    shortBio: "Novelista arequipeño, Premio Nobel de Literatura 2010.",
+    emoji: "📖",
+  },
+  // ──── INTERNACIONAL (diversidad adicional) ────
+  {
+    name: "Cristiano Ronaldo",
+    birthDate: "1985-02-05",
+    field: "Deporte",
+    country: "Portugal",
+    shortBio: "Uno de los máximos goleadores de la historia del fútbol.",
+    emoji: "⚽",
+  },
+  {
+    name: "Rihanna",
+    birthDate: "1988-02-20",
+    field: "Música",
+    country: "Barbados",
+    shortBio: "Cantante y empresaria, una de las artistas más influyentes de su generación.",
+    emoji: "🎤",
+  },
+  {
+    name: "Novak Djokovic",
+    birthDate: "1987-05-22",
+    field: "Deporte",
+    country: "Serbia",
+    shortBio: "Tenista serbio, poseedor del récord histórico de títulos de Grand Slam.",
+    emoji: "🎾",
+  },
+  {
+    name: "Leonardo DiCaprio",
+    birthDate: "1974-11-11",
+    field: "Cine",
+    country: "Estados Unidos",
+    shortBio: "Actor y productor, Óscar por El renacido, activista ambiental.",
+    emoji: "🎬",
+  },
 ];
 
 function getInitials(name: string): string {
@@ -703,9 +992,51 @@ export interface FamousMatchResult {
  * Calculates matching famous personalities for a user profile,
  * prioritizing the rarest triple and double resonances.
  */
+function selectDiverse(
+  pool: FamousMatchResult[],
+  limit: number,
+  exclude: Set<string>
+): FamousMatchResult[] {
+  const selected: FamousMatchResult[] = [];
+  const usedFields = new Set<string>();
+
+  // Pass 1: pick top matches preferring distinct fields
+  for (const m of pool) {
+    if (selected.length >= limit) break;
+    if (exclude.has(m.person.id)) continue;
+    if (!usedFields.has(m.person.field) || m.matchCount >= 2) {
+      selected.push(m);
+      usedFields.add(m.person.field);
+    }
+  }
+
+  // Pass 2: fill remaining slots if needed
+  if (selected.length < limit) {
+    for (const m of pool) {
+      if (selected.length >= limit) break;
+      if (exclude.has(m.person.id)) continue;
+      if (!selected.some((s) => s.person.id === m.person.id)) {
+        selected.push(m);
+      }
+    }
+  }
+
+  return selected;
+}
+
+/**
+ * Calculates matching famous personalities for a user profile,
+ * prioritizing the rarest triple and double resonances.
+ *
+ * Si se pasa `userCountry`, prioriza 5 figuras del mismo país y 3
+ * internacionales (sobre un límite de 8) — best-effort: si no hay
+ * suficientes coincidencias en el país del usuario, se completa con
+ * internacionales, y viceversa.
+ */
 export function findFamousMatches(
   profile: Partial<UserProfile>,
-  limit: number = 3
+  limit: number = 8,
+  userCountry?: string | null
 ): FamousMatchResult[] {
   if (!profile) return [];
 
@@ -803,30 +1134,30 @@ export function findFamousMatches(
   const ordered =
     userAnimal !== null ? matches.filter((m) => m.matchChineseZodiac) : matches;
 
-  // Pick up to limit with field diversity if possible
-  const selected: FamousMatchResult[] = [];
-  const usedFields = new Set<string>();
-
-  // Pass 1: pick top matches preferring distinct fields
-  for (const m of ordered) {
-    if (selected.length >= limit) break;
-    if (!usedFields.has(m.person.field) || m.matchCount >= 2) {
-      selected.push(m);
-      usedFields.add(m.person.field);
-    }
+  if (!userCountry) {
+    return selectDiverse(ordered, limit, new Set());
   }
 
-  // Pass 2: fill remaining slots if needed
-  if (selected.length < limit) {
-    for (const m of ordered) {
-      if (selected.length >= limit) break;
-      if (!selected.some((s) => s.person.id === m.person.id)) {
-        selected.push(m);
-      }
-    }
+  // 5 de 8 (proporcionalmente) del país del usuario, el resto internacionales.
+  const domesticTarget = Math.round((limit * 5) / 8);
+  const internationalTarget = limit - domesticTarget;
+
+  const domesticPool = ordered.filter((m) => m.person.country === userCountry);
+  const internationalPool = ordered.filter((m) => m.person.country !== userCountry);
+
+  const domesticSelected = selectDiverse(domesticPool, domesticTarget, new Set());
+  const usedIds = new Set(domesticSelected.map((m) => m.person.id));
+  const internationalSelected = selectDiverse(internationalPool, internationalTarget, usedIds);
+
+  let combined = [...domesticSelected, ...internationalSelected];
+
+  // Si algún pool quedó corto, completar con lo que quede disponible.
+  if (combined.length < limit) {
+    const usedIds2 = new Set(combined.map((m) => m.person.id));
+    combined = [...combined, ...selectDiverse(ordered, limit - combined.length, usedIds2)];
   }
 
-  return selected;
+  return combined;
 }
 
 // ═══════════════════════════════════════════════════════════

@@ -31,7 +31,7 @@ describe("FamousMatch Component", () => {
     // Should find at least one match for Life Path 5 / Aries / Caballo (e.g. Marlon Brando, Vincent van Gogh, etc.)
     const matchesFound = screen.getAllByRole("heading", { level: 3 });
     expect(matchesFound.length).toBeGreaterThanOrEqual(1);
-    expect(matchesFound.length).toBeLessThanOrEqual(3);
+    expect(matchesFound.length).toBeLessThanOrEqual(8);
   });
 
   it("returns null when no profile or no match exists", () => {
