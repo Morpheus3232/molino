@@ -35,7 +35,7 @@ function PremiumClaimContent() {
         }
         savePremiumTokenClient(data.premiumToken);
         invalidatePremiumAccessCache(undefined, "");
-        router.replace("/profile");
+        router.replace("/profile?claimed=1");
       })
       .catch(() => setError("No se pudo validar el link."));
   }, [searchParams, router]);
