@@ -31,7 +31,7 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-2">
               Tu animal en el mundo
             </p>
-            <h2 id="atlas-affinity-title" className="font-display text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
+            <h2 id="atlas-affinity-title" className="font-heading text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
               {totalEntities} afinidades para {animalName}
             </h2>
           </div>
