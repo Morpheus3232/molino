@@ -8,7 +8,7 @@
  * runs (onClick).
  */
 
-export type ExportSize = "og" | "square";
+export type ExportSize = "og" | "square" | "story";
 
 export interface ExportDimensions {
   width: number;
@@ -17,9 +17,9 @@ export interface ExportDimensions {
 }
 
 export function exportDimensions(format: ExportSize = "og"): ExportDimensions {
-  return format === "square"
-    ? { width: 1080, height: 1080, pixelRatio: 2 }
-    : { width: 1200, height: 630, pixelRatio: 2 };
+  if (format === "square") return { width: 1080, height: 1080, pixelRatio: 2 };
+  if (format === "story") return { width: 1080, height: 1920, pixelRatio: 2 };
+  return { width: 1200, height: 630, pixelRatio: 2 };
 }
 
 /**
