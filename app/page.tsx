@@ -144,8 +144,8 @@ export default function Home() {
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
           <TodayNumberBanner />
-          <NewInsightsTeaser />
           <HeroInstrument />
+          <NewInsightsTeaser />
           <PersonalizedHomeClient />
           <MapPreviewDemo />
           <ParejaTeaser />

@@ -34,9 +34,13 @@ export default function TodayNumberBanner() {
   // no nulo. Se llama sin condicionar (regla de hooks) antes del early return.
   const daily = useDailyEnergy(profile);
 
-  if (!mounted || !profile?.birthDate) return null;
+  // El banner del número del día es una constante del calendario, no del
+  // perfil: debe verse arriba de todo incluso para visitantes nuevos. Solo
+  // las sub-secciones que derivan del perfil (fase lunar, foco/evitá, color
+  // de elemento) se muestran cuando existe un perfil guardado.
+  if (!mounted) return null;
 
-  const element = typeof profile.element === "string" ? profile.element : "";
+  const element = typeof profile?.element === "string" ? profile.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
   return (
