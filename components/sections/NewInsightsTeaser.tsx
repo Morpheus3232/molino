@@ -42,7 +42,7 @@ export default function NewInsightsTeaser() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-            Nuevo en tu mapa
+            Analizamos distintas áreas que influyen en tu día a día
           </span>
           <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground font-bold tracking-tight mt-2">
             Todo esto se calcula junto con tu fecha

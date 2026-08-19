@@ -94,7 +94,7 @@ export default function MapPreviewDemo() {
             Demostración en Vivo
           </Badge>
           <h2 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-            Así se lee tu mapa simbólico
+            Así se vería tu mapa
           </h2>
           <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
             Cada lectura cruza tres dimensiones para mostrarte patrones que operan en simultáneo. Seleccioná un perfil para ver cómo cambia la dinámica:
