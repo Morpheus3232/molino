@@ -67,30 +67,27 @@ export function buildEntityConnectionStory(
   let subtitle: string;
   let isPositive: boolean;
 
-  // Historical grounding — unique per entity thanks to event description + year
+  // Historical grounding — unique per entity thanks to event description + year.
+  // Solo se usa en `explanation` (párrafo). `headline` se mantiene siempre
+  // corto — antes insertaba el párrafo histórico entero acá también,
+  // duplicando el mismo texto dos veces en la misma tarjeta.
   const eventDescription = primaryEvent?.description;
   const eventYear = primaryEvent?.year;
   const hasUniqueEvent = eventDescription && eventDescription !== primaryEvent?.label;
 
   switch (relation.type) {
     case "same":
-      headline = eventYear && hasUniqueEvent
-        ? `${eventDescription} (${eventYear}). Energía del ${entityDisplay.name}, como tu ${userDisplay.name}.`
-        : `${entity.name} quedó definida por ${primaryEvent?.label?.toLowerCase() || "su origen"} de ${eventYear || ""}. Energía del ${entityDisplay.name}.`;
+      headline = `Energía del ${entityDisplay.name}, como tu ${userDisplay.name}.`;
       subtitle = `Compartís el mismo animal zodiacal: ${entityDisplay.name}`;
       isPositive = true;
       break;
     case "triad":
-      headline = hasUniqueEvent
-        ? `${eventDescription} (${eventYear}). ${entityDisplay.name} y ${userDisplay.name} comparten un elemento oculto.`
-        : `${entity.name} y tu ${userDisplay.name} comparten un elemento oculto de la tríada.`;
+      headline = `${entity.name} y tu ${userDisplay.name} comparten un elemento oculto de la tríada.`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} comparten un elemento oculto`;
       isPositive = true;
       break;
     case "harmonious":
-      headline = hasUniqueEvent
-        ? `${eventDescription} (${eventYear}). Energía de ${entityDisplay.name} que complementa tu ${userDisplay.name}.`
-        : `${entity.name} conecta con tu ${userDisplay.name} de forma natural.`;
+      headline = `${entity.name} conecta con tu ${userDisplay.name} de forma natural.`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} se complementan naturalmente`;
       isPositive = true;
       break;
@@ -100,16 +97,12 @@ export function buildEntityConnectionStory(
       isPositive = true;
       break;
     case "clash":
-      headline = hasUniqueEvent
-        ? `${eventDescription} (${eventYear}). Energía del ${entityDisplay.name}, opuesta a tu ${userDisplay.name}.`
-        : `${entity.name} entra en tensión con tu ${userDisplay.name}.`;
+      headline = `${entity.name} entra en tensión con tu ${userDisplay.name}.`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} son opuestos en el ciclo`;
       isPositive = false;
       break;
     case "harm":
-      headline = hasUniqueEvent
-        ? `${eventDescription} (${eventYear}). Energía del ${entityDisplay.name}, con atención hacia tu ${userDisplay.name}.`
-        : `${entity.name} tiene una relación de atención con tu ${userDisplay.name}.`;
+      headline = `${entity.name} tiene una relación de atención con tu ${userDisplay.name}.`;
       subtitle = `${userDisplay.name} y ${entityDisplay.name} tienen una tensión según la tradición`;
       isPositive = false;
       break;

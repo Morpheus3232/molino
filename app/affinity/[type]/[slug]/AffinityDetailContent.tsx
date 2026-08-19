@@ -13,8 +13,6 @@ import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
 import AffinityDiscoveryList from "@/components/affinity/AffinityDiscoveryList";
 import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm";
-import { SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
-import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 
@@ -101,14 +99,6 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
         {result && profile && (
           <AnimalQuickSelector profile={profile} currentEntityId={entity.id} type={type} entities={sameType} />
         )}
-
-         {/* Compartir esta afinidad — visible without scrolling */}
-         {result && (
-           <motion.section {...fadeUp} className="mb-12">
-             <SectionHeader title="Compartí esta resonancia" />
-             <AffinityShareableCard result={result} />
-           </motion.section>
-         )}
 
         {/* Deep-dive content — calc basis, relationship, why, other events, documented data, disclaimer, connection story */}
         {result && profile && (
