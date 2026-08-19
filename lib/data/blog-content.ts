@@ -710,6 +710,129 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     related: ["autoconocimiento-que-es-que-no", "numerologia-astrologia-herramientas-no-oraculo"],
   },
+  {
+    slug: "mes-personal-dia-personal-numerologia",
+    title: "Mes Personal y Día Personal: el zoom que le falta a tu Año Personal",
+    excerpt:
+      "Tu Año Personal te dice el clima general del año. El Mes y el Día Personal son el zoom: la energía puntual de esta semana, de hoy. Así se calculan y así se leen juntos.",
+    metaDescription:
+      "Qué son el Mes Personal y el Día Personal en numerología, cómo se calculan a partir de tu Año Personal (no de tu fecha de nacimiento sola) y cómo usarlos para leer el momento exacto que estás viviendo.",
+    category: "Numerología",
+    date: "2026-08-19",
+    image: "/blog/mes-personal-dia-personal-numerologia.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Si ya conocés tu Año Personal, seguro notaste que describe un clima amplio — todo un año de una sola tacada. Útil para planificar, pero demasiado grueso para una pregunta como '¿hoy es buen día para esa conversación difícil?'. Ahí es donde entran el Mes Personal y el Día Personal: la misma lógica numerológica, aplicada con más resolución.",
+      "La parte que casi nadie explica bien —y que en Molino tuvimos que corregir en nuestro propio motor de cálculo— es que el Mes Personal no sale de sumar tu fecha de nacimiento con el mes del calendario. Sale de tu Año Personal. Esa diferencia cambia el resultado.",
+    ],
+    sections: [
+      {
+        id: "por-que-no-alcanza-el-ano",
+        heading: "Por qué el Año Personal solo no alcanza",
+        paragraphs: [
+          "El Año Personal reduce tu día y mes de nacimiento sumados al año calendario actual a un solo dígito (o a un número maestro). Te da el tema general del año: si es de inicios, de consolidación, de cierre. Pero un año entero tiene 365 días adentro, y no todos pesan igual.",
+          "El Mes Personal achica esa ventana a cuatro o cinco semanas. El Día Personal la achica a 24 horas. Cuanto más corta la ventana, más específica (y más volátil) la lectura — un buen Año Personal puede tener meses flojos adentro, y un mes flojo puede tener un día excelente.",
+        ],
+      },
+      {
+        id: "como-se-calcula",
+        heading: "Cómo se calcula el Mes Personal (la parte que solemos ver mal)",
+        paragraphs: [
+          "La fórmula correcta es: Mes Personal = reducir(Año Personal + número del mes calendario actual). No es tu fecha de nacimiento otra vez — es tu Año Personal ya calculado, sumado al mes en curso.",
+          "Ejemplo: si tu Año Personal 2026 es un 6, y estamos en agosto (mes 8), tu Mes Personal es 6 + 8 = 14 → 1 + 4 = 5. Ese 5 es el que rige agosto para vos este año — no el que regiría agosto en cualquier otro año, porque depende de qué Año Personal estés transitando.",
+          "El error común (y el que tuvimos que corregir en nuestro propio código) es calcular el Mes Personal directamente desde tu fecha de nacimiento y el mes calendario, sin pasar por el Año Personal primero. Con ese método, agosto te daría siempre el mismo Mes Personal sin importar en qué año personal estés — lo cual contradice la lógica de capas que tiene todo el sistema: cada nivel se apoya en el anterior.",
+        ],
+      },
+      {
+        id: "dia-personal",
+        heading: "El Día Personal: la misma lógica, un escalón más abajo",
+        paragraphs: [
+          "El Día Personal sigue el mismo principio de capas, pero parte de tu Camino de Vida en vez de tu Año Personal: se suma tu Camino de Vida al día, mes y año calendario de hoy, y se reduce. Es la unidad más chica y la más específica — la que responde '¿hoy?' en vez de '¿este año?' o '¿este mes?'.",
+          "Por eso en Molino el Día Personal se actualiza todos los días en /hoy, mientras que el Año Personal solo cambia una vez al año: son la misma familia de cálculo, aplicada a distintas escalas de tiempo.",
+        ],
+      },
+      {
+        id: "como-leerlos-juntos",
+        heading: "Cómo leer los tres juntos",
+        paragraphs: [
+          "Ninguno de los tres reemplaza a los otros — se leen en capas, de más ancho a más angosto. El Año Personal te da el contexto ('este es un año de cierre'), el Mes Personal ajusta ese contexto a las próximas semanas, y el Día Personal te dice si hoy en particular conviene forzar o esperar.",
+          "Un Día Personal 'flojo' dentro de un Año Personal fuerte no invalida el año — es solo una mala hora dentro de una buena temporada. La utilidad está en no leer ninguno de los tres de forma aislada.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿El Mes Personal cambia si cambio de Año Personal?",
+        a: "Sí, necesariamente — el Mes Personal se calcula a partir de tu Año Personal, así que el mismo mes calendario (por ejemplo, agosto) te va a dar un Mes Personal distinto según en qué Año Personal estés parado ese año.",
+      },
+      {
+        q: "¿Puedo calcular mi Mes Personal de un año futuro?",
+        a: "Sí: primero calculás tu Año Personal para ese año futuro, y después le sumás el número del mes que te interesa. El orden importa — no se puede saltear el paso del Año Personal.",
+      },
+      {
+        q: "¿Por qué el Día Personal usa el Camino de Vida y no el Año Personal?",
+        a: "Porque el Camino de Vida es el número más estable de tu mapa (no cambia nunca), y el Día Personal necesita una base fija para poder compararse día a día. Si usara el Año Personal como base, el cálculo se volvería circular y perdería sentido dentro del mismo año.",
+      },
+    ],
+    related: ["numerologia-ano-personal", "numerologia-numero-de-vida", "numerologia-numeros-maestros"],
+  },
+  {
+    slug: "como-molino-calcula-compatibilidad-de-pareja",
+    title: "Cómo Molino calcula la compatibilidad de pareja: las 5 capas detrás del número",
+    excerpt:
+      "El % que ves en Modo Pareja no sale de un solo sistema — es un promedio ponderado de cinco capas distintas. Así se arma ese número, capa por capa, sin caja negra.",
+    metaDescription:
+      "Cómo se calcula el porcentaje de compatibilidad en el Modo Pareja de Molino: las 5 capas (numerología, astrología occidental, zodíaco chino, arquetipo y elemento) y el peso real de cada una en el resultado final.",
+    category: "Autoconocimiento",
+    date: "2026-08-19",
+    image: "/blog/como-molino-calcula-compatibilidad-de-pareja.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Cuando dos personas usan el Modo Pareja de Molino, el resultado final es un solo número — un porcentaje de compatibilidad. Es tentador tratarlo como una caja negra ('el algoritmo dijo 78%'), pero no lo es: ese número sale de promediar cinco capas distintas, cada una con un peso específico, y las cinco están calculadas con datos reales de las dos personas, no con un puntaje al azar.",
+      "Publicamos esta desagregación porque creemos que un número sin su método detrás no sirve para nada — y porque un score de compatibilidad que no podés desarmar es indistinguible de una tirada de dados.",
+    ],
+    sections: [
+      {
+        id: "las-cinco-capas",
+        heading: "Las cinco capas y su peso real",
+        paragraphs: [
+          "El score final combina cinco capas con estos pesos: numerología 25%, astrología occidental 25%, zodíaco chino 20%, arquetipo 20% y elemento 10%. Ninguna capa por sí sola define el resultado — por diseño, para que un choque fuerte en una sola dimensión no hunda todo el score, y una afinidad fuerte en una sola tampoco lo infle artificialmente.",
+          "Numerología y astrología occidental pesan lo mismo (25% cada una) porque en Molino se tratan como las dos capas más estructurales del mapa de una persona. Zodíaco chino y arquetipo pesan un poco menos (20% cada uno) porque describen patrones más generales. El elemento astrológico pesa menos (10%) porque ya está parcialmente reflejado en las otras capas — pondera bajo para no duplicar señal.",
+        ],
+      },
+      {
+        id: "que-mide-cada-capa",
+        heading: "Qué mide cada capa, en criollo",
+        paragraphs: [
+          "Numerología compara los números centrales de cada mapa (Camino de Vida, Expresión, entre otros) y evalúa qué tan alineados están. Astrología occidental compara signos solares y sus relaciones tradicionales (elementos compatibles, tensiones clásicas entre signos). Zodíaco chino hace lo mismo pero con los animales del ciclo de 12 años — las tríadas y pares armoniosos que ya explicamos en otra nota.",
+          "Arquetipo compara los perfiles de personalidad que Molino deriva del mapa completo — busca si hay complementariedad (opuestos que se equilibran) o resonancia (afinidades directas). Elemento compara el elemento astrológico dominante de cada persona (fuego, tierra, aire, agua) como una capa adicional, más fina, sobre la astrología occidental.",
+        ],
+      },
+      {
+        id: "por-que-desagregado",
+        heading: "Por qué te mostramos las cinco capas, no solo el promedio",
+        paragraphs: [
+          "Un 65% de compatibilidad puede significar cosas muy distintas según de dónde venga. Si sale de una numerología altísima (95%) y una astrología muy floja (30%), el desafío de esa pareja probablemente esté en la forma de comunicarse y no en los valores de fondo. Si el mismo 65% sale de cinco capas todas moderadas, es un panorama completamente distinto: parejo, sin picos ni valles marcados.",
+          "El promedio solo no distingue estos dos escenarios — por eso Modo Pareja siempre muestra el desglose completo, no solo el número final. Fortalezas y tensiones se generan automáticamente a partir de qué capas quedaron por encima o por debajo de ciertos umbrales, así que el texto que ves también sale del mismo desglose, no de una interpretación separada.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Un score bajo significa que la relación no funciona?",
+        a: "No. Es una lectura simbólica de patrones, no una predicción ni un diagnóstico de la relación real. Un score bajo en Modo Pareja describe tensión en ciertos patrones sistémicos — cómo dos personas terminan resolviendo esa tensión depende de factores que ningún sistema simbólico puede medir.",
+      },
+      {
+        q: "¿Por qué la astrología occidental pesa lo mismo que la numerología?",
+        a: "Es una decisión de diseño de Molino, no una verdad universal de ningún sistema tradicional — elegimos ponderarlas igual porque consideramos que ambas capas describen estructura profunda de la personalidad, a diferencia de capas más superficiales como el elemento.",
+      },
+      {
+        q: "¿Se puede cambiar la ponderación de las capas?",
+        a: "Hoy no es configurable desde la interfaz — es un valor fijo en el motor de cálculo. Lo documentamos acá justamente para que quede claro qué estás viendo, aunque no puedas ajustarlo vos mismo todavía.",
+      },
+    ],
+    related: ["compatibilidad-zodiaco-chino", "numerologia-numero-de-vida", "autoconocimiento-que-es-que-no"],
+  },
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
