@@ -34,7 +34,11 @@ export default function AnimalQuickSelector({ profile, currentEntityId, type, en
 
   const siblings = useMemo(() => {
     const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-    return sortLightEntities(userAnimal, entities);
+    // `sm:flex-wrap` de acá abajo hace que en desktop esto deje de ser una
+    // tira horizontal y se convierta en una grilla completa — sin este
+    // límite mostraba las ~26+ entidades del catálogo de una sola vez,
+    // apenas debajo del hero y antes de cualquier contenido de diagnóstico.
+    return sortLightEntities(userAnimal, entities).slice(0, 12);
   }, [profile, entities]);
 
   if (siblings.length <= 1) return null;
@@ -48,6 +52,9 @@ export default function AnimalQuickSelector({ profile, currentEntityId, type, en
       viewport={{ once: true, margin: "-20px" }}
       transition={{ duration: reducedMotion ? 0 : 0.4, ease: "easeOut" }}
     >
+      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3 text-center sm:text-left">
+        Otras entidades del mismo tipo
+      </p>
       <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
         {siblings.map((result) => {
           const isCurrent = result.id === currentEntityId;
