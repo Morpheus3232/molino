@@ -103,7 +103,7 @@ function LoadingSkeleton() {
 const LOADING_MESSAGE_STEPS: Array<{ afterMs: number; message: string }> = [
   { afterMs: 2000, message: "Analizando tus números…" },
   { afterMs: 5000, message: "Consultando la sabiduría de tu mapa…" },
-  { afterMs: 10000, message: "Esto está tomando más de lo usual, gracias por tu paciencia…" },
+  { afterMs: 10000, message: "Estamos armando tu mapa. Ojalá te sirva tanto como a nosotros nos sirvió descubrir el nuestro." },
 ];
 
 function useProgressiveLoadingMessage(active: boolean): string {
@@ -695,7 +695,7 @@ export default function MolinoInterpretation({
                 <p
                   role="status"
                   aria-live="polite"
-                  className="font-mono text-xs uppercase tracking-[0.2em] text-muted text-center -mt-6 sm:-mt-8"
+                  className="font-heading text-sm italic text-muted text-center leading-relaxed max-w-sm mx-auto -mt-6 sm:-mt-8"
                 >
                   {loadingMessage}
                 </p>

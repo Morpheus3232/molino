@@ -301,9 +301,9 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
             initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: reduceMotion ? 0 : 0.4 }}
-            className="mt-4 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted"
+            className="mt-4 text-center font-heading text-sm italic text-muted leading-relaxed max-w-sm mx-auto"
           >
-            Esto está tomando más de lo usual, gracias por tu paciencia…
+            Estamos armando tu mapa. Ojalá te sirva tanto como a nosotros nos sirvió descubrir el nuestro.
           </motion.p>
         )}
       </motion.div>
