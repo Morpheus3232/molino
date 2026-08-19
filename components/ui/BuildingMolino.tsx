@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import Logo from "@/components/ui/Logo";
 
 interface BuildingMolinoProps {
   /** True once the real fetch has settled (success or error) and the
@@ -72,6 +73,21 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     doneRef.current = done;
     onCompleteRef.current = onComplete;
   }, [done, onComplete]);
+
+  // El checklist deja de avanzar en el penúltimo paso hasta que `done` sea
+  // real — si la IA tarda (puede pasar), esos ~10s+ se sentían como un
+  // bloque vacío y estático. Este mensaje confirma que sigue en curso, sin
+  // fingir progreso que no existe. Mismo copy/umbral que el loading no-premium
+  // (ver LOADING_MESSAGE_STEPS en MolinoInterpretation.tsx) para consistencia.
+  const [showReassurance, setShowReassurance] = useState(false);
+  useEffect(() => {
+    if (done) {
+      setShowReassurance(false);
+      return;
+    }
+    const timer = setTimeout(() => setShowReassurance(true), 10000);
+    return () => clearTimeout(timer);
+  }, [done]);
 
   useEffect(() => {
     // Walks through the steps on its own pace, but never advances past the
@@ -155,6 +171,13 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           },
         }}
       >
+        {/* Molino girando — ancla visual mientras se arma la lectura; antes
+            esta pantalla era 100% texto en una columna angosta, con mucho
+            aire alrededor que se leía como "se rompió" en esperas largas. */}
+        <motion.div variants={fadeIn(0.4)} className="mb-5 flex justify-center">
+          <Logo spinning className="h-12 w-12 text-accent" />
+        </motion.div>
+
         {/* Overline — framing the process, not the price */}
         <motion.p
           variants={fadeIn(0.4)}
@@ -272,6 +295,17 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
             );
           })}
         </motion.ul>
+
+        {showReassurance && !isReady && (
+          <motion.p
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 0.4 }}
+            className="mt-4 text-center font-mono text-xs uppercase tracking-[0.2em] text-muted"
+          >
+            Esto está tomando más de lo usual, gracias por tu paciencia…
+          </motion.p>
+        )}
       </motion.div>
     </div>
   );

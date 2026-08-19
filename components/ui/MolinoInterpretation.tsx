@@ -16,6 +16,7 @@ import type { DecisionResult } from "@/lib/engines/decisionsEngine";
 import type { EntityProfile } from "@/lib/data/entities";
 import BuildingMolino from "@/components/ui/BuildingMolino";
 import MolinoReveal from "@/components/ui/MolinoReveal";
+import Logo from "@/components/ui/Logo";
 import CalculationProof from "@/components/shared/CalculationProof";
 import { buildLuckyNumberProof } from "@/lib/calculations/proof";
 
@@ -60,29 +61,37 @@ const CONFIDENCE_METER: Record<"alta" | "media" | "baja", { pct: number; color: 
 
 function LoadingSkeleton() {
   return (
-    <div className="animate-pulse" aria-hidden="true">
-      {/* Apertura — aire editorial antes del contenido */}
-      <div className="pt-10 sm:pt-14 pb-10 sm:pb-14">
-        <div className="h-1.5 bg-border/40 rounded w-14 mb-6" />
-        <div className="h-5 bg-border/40 rounded w-3/4 mb-3" />
-        <div className="h-5 bg-border/40 rounded w-2/5" />
+    <div aria-hidden="true">
+      {/* Molino girando — antes esta pantalla era solo barras grises, sin
+          nada que confirme que sigue en curso durante esperas largas. */}
+      <div className="flex justify-center pt-10 sm:pt-14">
+        <Logo spinning className="h-10 w-10 text-accent" />
       </div>
 
-      {/* Lede — resumen en jerarquía de titular */}
-      <div className="pb-8 sm:pb-10">
-        <div className="h-4 bg-border/40 rounded w-full mb-3" />
-        <div className="h-4 bg-border/40 rounded w-4/5" />
-      </div>
+      <div className="animate-pulse">
+        {/* Apertura — aire editorial antes del contenido */}
+        <div className="pt-6 sm:pt-8 pb-10 sm:pb-14">
+          <div className="h-1.5 bg-border/40 rounded w-14 mb-6" />
+          <div className="h-5 bg-border/40 rounded w-3/4 mb-3" />
+          <div className="h-5 bg-border/40 rounded w-2/5" />
+        </div>
 
-      {/* Secciones de cuerpo */}
-      <div className="space-y-8 sm:space-y-10">
-        {[0.6, 0.75, 0.5].map((w, i) => (
-          <div key={i} className="py-5">
-            <div className="h-1 bg-border/30 rounded w-16 mb-4" />
-            <div className="h-3 bg-border/40 rounded w-full mb-2" />
-            <div className="h-3 bg-border/40 rounded" style={{ width: `${w * 100}%` }} />
-          </div>
-        ))}
+        {/* Lede — resumen en jerarquía de titular */}
+        <div className="pb-8 sm:pb-10">
+          <div className="h-4 bg-border/40 rounded w-full mb-3" />
+          <div className="h-4 bg-border/40 rounded w-4/5" />
+        </div>
+
+        {/* Secciones de cuerpo */}
+        <div className="space-y-8 sm:space-y-10">
+          {[0.6, 0.75, 0.5].map((w, i) => (
+            <div key={i} className="py-5">
+              <div className="h-1 bg-border/30 rounded w-16 mb-4" />
+              <div className="h-3 bg-border/40 rounded w-full mb-2" />
+              <div className="h-3 bg-border/40 rounded" style={{ width: `${w * 100}%` }} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
