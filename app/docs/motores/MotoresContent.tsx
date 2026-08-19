@@ -37,7 +37,7 @@ const PYTHAGOREAN: Record<string, number> = {
     slug: "astrologia",
     description: "Calcula signo solar y lunar a partir de tu fecha de nacimiento.",
     formulas: [
-      { name: "Signo Solar", formula: "Posición geocéntrica del Sol en el zodíaco tropical al momento exacto de nacimiento", example: "Sol a 23°15' Aries → Signo: Aries, Grado: 23°15'" },
+      { name: "Signo Solar", formula: "Posición geocéntrica del Sol en el zodíaco al momento exacto de nacimiento", example: "Sol a 23°15' Aries → Signo: Aries, Grado: 23°15'" },
       { name: "Signo Lunar", formula: "Posición geocéntrica de la Luna (rápida: ~13°/día, requiere hora exacta)", example: "Luna a 12°40' Cáncer → Signo: Cáncer" },
       { name: "Elemento / Modalidad", formula: "Mapeo directo signo → elemento (Fuego/Tierra/Aire/Agua) y signo → modalidad (Cardinal/Fijo/Mutable)", example: "Aries → Elemento: Fuego, Modalidad: Cardinal" },
     ],

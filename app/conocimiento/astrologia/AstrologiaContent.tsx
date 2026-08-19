@@ -55,7 +55,7 @@ export default function AstrologiaContent() {
               <strong>No es astronomía.</strong> La astronomía es la ciencia que estudia los cuerpos celestes. La astrología es un sistema interpretativo que utiliza los mismos cuerpos celestes como símbolos, no como causas.
             </p>
             <p className="text-base text-foreground leading-relaxed">
-              Molino utiliza la astrología occidental (zodíaco tropical) como uno de los sistemas que componen tu mapa personal.
+              Molino utiliza la astrología occidental como uno de los sistemas que componen tu mapa personal.
             </p>
           </div>
         </Reveal>

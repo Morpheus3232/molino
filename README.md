@@ -12,7 +12,7 @@
 
 ## Filosofía
 
-Molino es una plataforma educativa de código abierto que explora sistemas simbólicos (numerología pitagórica, astrología tropical, zodíaco chino/ciclo sexagenario) con total transparencia y privacidad. Sin registro, sin cookies, sin tracking invasivo.
+Molino es una plataforma educativa de código abierto que explora sistemas simbólicos (numerología pitagórica, astrología, zodíaco chino/ciclo sexagenario) con total transparencia y privacidad. Sin registro, sin cookies, sin tracking invasivo.
 
 ### Principios
 

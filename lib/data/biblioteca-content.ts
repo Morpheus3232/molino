@@ -72,7 +72,7 @@ export const SOURCES: BibliotecaSource[] = [
     summary: "Asocia la posición del sol con 12 signos zodiacales. Cada signo tiene un elemento y una modalidad.",
     tags: ["astrología", "signos"],
     metaDescription:
-      "La astrología tropical asocia la posición del sol con 12 signos zodiacales. Es el sistema más utilizado en occidente y la base del signo solar de tu mapa.",
+      "La astrología asocia la posición del sol con 12 signos zodiacales. Es el sistema más utilizado en occidente y la base del signo solar de tu mapa.",
   },
   {
     id: "tetrabiblos",

@@ -7,6 +7,9 @@ export interface CalendarDayContent {
   description: string;
   tags: string[];
   master: boolean;
+  /** Acciones concretas recomendadas para el día — solo definido para los
+   * números asociados a manifestación material (8 y 28). */
+  recommendations?: string[];
 }
 
 const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
@@ -55,8 +58,9 @@ const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
   8: {
     title: "El Poder",
     purpose: "Emprender, gestionar, ambición, resultados",
-    description: "El poder viene de la acción, no del deseo. Alinear el propósito con lo que se hace es lo que abre paso a los resultados.",
+    description: "El poder viene de la acción, no del deseo. Alinear el propósito con lo que se hace es lo que abre paso a los resultados. Tradicionalmente asociado a la manifestación material y el equilibrio entre dar y recibir.",
     tags: ["Emprender", "Gestionar", "Ambición", "Resultados"],
+    recommendations: ["Pagar deudas", "Pagar a tu equipo", "Cortarte el pelo", "Empezar proyectos"],
   },
   9: {
     title: "El Adaptable",
@@ -77,10 +81,11 @@ const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
     tags: ["Manifestar", "Construir", "Visión", "Legado"],
   },
   28: {
-    title: "Número Kármico",
-    purpose: "Karma, transformación, lección, cambio",
-    description: "Número maestro. Día de autoridad silenciosa: tomar la iniciativa en las decisiones importantes sin esperar permiso de nadie.",
-    tags: ["Karma", "Transformación", "Lección", "Cambio"],
+    title: "Número de Abundancia",
+    purpose: "Abundancia material, riqueza a largo plazo, autoridad, resultados",
+    description: "Número maestro. Comparte la energía de manifestación material del 8, con una base más sólida y sostenida en el tiempo: día de autoridad silenciosa, ideal para decisiones importantes sin esperar permiso de nadie.",
+    tags: ["Abundancia", "Riqueza", "Autoridad", "Resultados"],
+    recommendations: ["Pagar deudas", "Pagar a tu equipo", "Cortarte el pelo", "Empezar proyectos"],
   },
   33: {
     title: "El Maestro Maestro",
