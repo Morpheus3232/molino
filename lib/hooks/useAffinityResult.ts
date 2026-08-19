@@ -28,7 +28,7 @@ export function useAffinityResult(
     const userAnimal = profile.chineseZodiac || "";
     return sortLightEntities(userAnimal, catalog)
       .filter((r) => r.id !== entity.id)
-      .slice(0, 3);
+      .slice(0, 6);
   }, [profile, entity, result, catalog]);
 
   return { result, relatedEntities };
