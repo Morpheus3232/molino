@@ -177,12 +177,22 @@ export default function FilosofiaContent() {
         <motion.section {...fadeUpDelayed(0.15)} className="mb-20">
           <div className="mb-10">
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
-              Tradiciones que nos nutren
+              Nuestras fuentes
             </h2>
+            <p className="text-muted max-w-xl mb-4">
+              Molino se basa en la tradición de numerología pitagórica, un sistema de conocimiento
+              simbólico con más de 2.500 años de historia que pertenece al dominio público. Combinamos
+              esta tradición con astrología tropical y zodíaco chino para crear una herramienta de
+              autoconocimiento estructurada y accesible.
+            </p>
+            <p className="text-muted max-w-xl mb-4">
+              Molino sintetiza múltiples corrientes, pero tu mapa se calcula únicamente a partir de esas
+              tres: numerología, astrología y zodíaco chino. El resto es contexto y lectura que enriquece
+              la interpretación — no alimenta el cálculo.
+            </p>
             <p className="text-muted max-w-xl">
-              Molino sintetiza múltiples corrientes, pero tu mapa se calcula únicamente a partir de tres:
-              numerología, astrología y zodíaco chino. El resto es contexto y lectura que enriquece la
-              interpretación — no alimenta el cálculo.
+              Si querés profundizar en el estudio formal de estas tradiciones, recomendamos buscar
+              fuentes académicas y profesionales certificados.
             </p>
           </div>
 
