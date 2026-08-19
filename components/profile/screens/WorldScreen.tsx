@@ -1,20 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import type { UserProfile } from "@/types/user";
-import { getTopAffinityHighlights, TIER_META } from "@/lib/engines/affinityEngine";
-import { ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import { formatAnimalSimple, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getTopAffinityHighlights, calculateAllAffinity, getTierForScore, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { ENTITY_TYPES, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { smoothReveal, staggerApple, staggerItemSmooth, staggerDelay } from "@/lib/utils/premiumMotion";
-import {
-  buildPersonalRecommendations,
-  hasPositiveAffinity,
-  type PersonalRecommendation,
-} from "@/lib/engines/personalRecommendationEngine";
-import CrossLinks from "@/components/profile/CrossLinks";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import type { ProfileTab } from "@/components/profile/ProfileTabs";
 
 interface WorldScreenProps {
@@ -25,22 +20,54 @@ interface WorldScreenProps {
 export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
   const router = useRouter();
   const userAnimal = (profile.chineseZodiac ?? "") as string;
+  const userCountry = useUserContext().country;
 
-  const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile), [profile]);
-  const map = useMemo(() => buildPersonalRecommendations(profile), [profile]);
+  // Orden de presentación: score primero (afinidad zodiacal intacta), y
+  // como tiebreaker la relevancia cultural — el país del usuario adelanta
+  // entidades de su país sin tocar ningún scoring.
+  const withCountryPreference = useCallback((results: AffinityResult[]) => {
+    const country = userCountry;
+    if (!country) return results;
+    return [...results].sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const aMatch = a.entity.country === country ? 1 : 0;
+      const bMatch = b.entity.country === country ? 1 : 0;
+      return bMatch - aMatch;
+    });
+  }, [userCountry]);
 
-  // Get top 10 countries and top 10 brands with positive affinity only
+  const affinityHighlights = useMemo(() => getTopAffinityHighlights(profile, userCountry), [profile, userCountry]);
+
+  // Cuántas de TODAS las entidades conocidas resuenan con el animal
+  // del usuario — un hecho real y agregado (varía según el animal: cada uno
+  // tiene una posición distinta en el ciclo respecto al resto de entidades),
+  // no una lista más: es la cifra que abre la sección, antes de listar nada.
+  // Umbral score>=60 (afinidad-media o mejor) — no "complementarios": la
+  // mayoría de las entidades caen ahí por ser relación "neutral" (score~50),
+  // así que incluirlas hacía que ~80% de las 383 entidades "resonaran",
+  // vaciando de sentido la cifra.
+  const resonanceStats = useMemo(() => {
+    const all = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
+    const resonant = all.filter(r => r.score >= 60);
+    return { resonant: resonant.length, total: all.length };
+  }, [profile]);
+
+  // Afinidad = exclusivamente zodíaco chino (affinityEngine), misma fuente
+  // que usa toda la superficie /affinity/*. "Positiva" = tier afinidad-media
+  // o mejor, el mismo umbral (score >= 60) que ya define getTierForScore.
   const topCountries = useMemo(
-    () => (map.byCategory["country"] ?? [])
-      .filter(r => hasPositiveAffinity(r.priority))
-      .slice(0, 10),
-    [map]
+    () => withCountryPreference(
+        calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "country"))
+      ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
+      .slice(0, 6),
+    [profile, withCountryPreference]
   );
   const topBrands = useMemo(
-    () => (map.byCategory["brand"] ?? [])
-      .filter(r => hasPositiveAffinity(r.priority))
-      .slice(0, 10),
-    [map]
+    () => withCountryPreference(
+        calculateAllAffinity(profile, SYMBOLIC_ENTITIES.filter(e => e.type === "brand"))
+      ).filter(r => r.tier !== "desafiante" && r.tier !== "distante")
+      .slice(0, 6),
+    [profile, withCountryPreference]
   );
 
   const userDisplay = getZodiacDisplay(userAnimal);
@@ -53,33 +80,38 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
     >
       {/* Hero */}
       <section className="py-12 sm:pt-16 pb-8">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
           <motion.div {...fadeUp}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-3">Tu Mundo</p>
-            <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
-              Descubrí qué resuena con vos
+            <p className="label-micro mb-3">Tu Mundo</p>
+            <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.05]">
+              Cómo te proyectás hacia afuera
             </h1>
             <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-              Marcas, destinos y ciudades que conectan con tu perfil de{" "}
+              Lugares, marcas y entornos — no personas — que conectan con tu perfil de{" "}
               <span className="font-medium text-foreground">{userDisplay.name}</span>.
             </p>
+            {resonanceStats.total > 0 && (
+              <p className="text-sm text-accent mt-5">
+                De las {resonanceStats.total} conexiones conocidas, tu {userDisplay.name.toLowerCase()} tiene presencia en {resonanceStats.resonant} — ese es tu mundo, no el de cualquiera.
+              </p>
+            )}
           </motion.div>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════
-          TOP HIGHLIGHTS — The 3 best matches
+          TOP HIGHLIGHTS — Lo que más resuena
           ═══════════════════════════════════════════════ */}
       {affinityHighlights.length > 0 && (
         <section className="py-6 sm:py-8">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Tus mejores matches</h2>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Lo que más presencia tiene en tu mapa</h2>
               </div>
             </motion.div>
-            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
               {affinityHighlights.map((result, i) => {
                 const tierMeta = TIER_META[result.tier];
                 return (
@@ -88,22 +120,21 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                     {...staggerItemSmooth}
                     transition={{ ...staggerDelay, delay: i * 0.08 }}
                     onClick={() => router.push(`/affinity/${result.entity.type}/${result.entity.id}`)}
-                    className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
+                    className="text-left p-6 bg-background hover:bg-ink/[0.02] transition-colors group"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-2xl">{result.entity.emoji}</span>
-                      <span className="font-serif text-2xl font-bold text-foreground">{result.score}</span>
                     </div>
-                    <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
+                    <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                       {result.entity.name}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="inline-block w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: tierMeta.color }} />
-                      <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: tierMeta.color }}>
+                      <span className="inline-block w-1.5 h-1.5 shrink-0" style={{ backgroundColor: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }} />
+                      <span className="uppercase text-xs tracking-wider" style={{ color: result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)" }}>
                         {tierMeta.label}
                       </span>
                     </div>
-                    <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-2">
+                    <p className="text-sm text-muted mt-2 leading-relaxed line-clamp-2">
                       {result.explanation || result.summary}
                     </p>
                   </motion.button>
@@ -118,21 +149,21 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           TOP PAÍSES — Inline, with data
           ═══════════════════════════════════════════════ */}
       {topCountries.length > 0 && (
-        <section className="py-8 sm:py-12 border-t border-border">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Países que resuenan con vos</h2>
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Lugares con mayor presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Estos países tienen mayor afinidad simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
+                Estos lugares tienen una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>.
               </p>
             </motion.div>
 
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
               {topCountries.map((rec, i) => (
-                <CountryCard key={rec.entity.id} rec={rec} index={i} />
+                <EntityCard key={rec.entity.id} rec={rec} index={i} />
               ))}
             </div>
 
@@ -142,7 +173,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 onClick={() => router.push("/affinity/recommendations/countries")}
                 className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
               >
-                Ver todos los países &rarr;
+                Ver recomendaciones del ciclo actual &rarr;
               </button>
             </motion.div>
           </div>
@@ -153,32 +184,32 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
           TOP MARCAS — Inline, grouped by category
           ═══════════════════════════════════════════════ */}
       {topBrands.length > 0 && (() => {
-        const grouped = topBrands.reduce<Record<string, PersonalRecommendation[]>>((acc, rec) => {
+        const grouped = topBrands.reduce<Record<string, AffinityResult[]>>((acc, rec) => {
           const cat = rec.entity.category || "Otros";
           if (!acc[cat]) acc[cat] = [];
           acc[cat].push(rec);
           return acc;
         }, {});
         return (
-        <section className="py-8 sm:py-12 border-t border-border">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+        <section className="py-8 sm:py-12 border-t border-ink/10">
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
             <motion.div {...smoothReveal}>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-px bg-border" aria-hidden="true" />
-                <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Marcas que vibran con vos</h2>
+                <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+                <h2 className="font-heading text-xl sm:text-2xl uppercase tracking-tight text-foreground font-semibold">Marcas con presencia en tu mapa</h2>
               </div>
               <p className="text-sm text-muted mb-6 max-w-xl">
-                Marcas con mayor resonancia según tu energía y el ciclo actual, organizadas por rubro.
+                Marcas con una conexión simbólica con tu perfil de <span className="font-medium text-foreground">{userDisplay.name}</span>, organizadas por rubro.
               </p>
             </motion.div>
 
             <div className="space-y-8">
               {Object.entries(grouped).map(([category, recs]) => (
                 <div key={category}>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
-                  <div className="space-y-3">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">{category}</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {recs.map((rec, i) => (
-                      <BrandCard key={rec.entity.id} rec={rec} index={i} />
+                      <EntityCard key={rec.entity.id} rec={rec} index={i} />
                     ))}
                   </div>
                 </div>
@@ -191,7 +222,7 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
                 onClick={() => router.push("/affinity/recommendations/brands")}
                 className="text-sm font-medium text-accent hover:text-accent/80 transition-colors"
               >
-                Ver todas las marcas &rarr;
+                Ver recomendaciones del ciclo actual &rarr;
               </button>
             </motion.div>
           </div>
@@ -199,61 +230,25 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
         );
       })()}
 
-      {/* ═══════════════════════════════════════════════
-          EXPLORAR MÁS
-          ═══════════════════════════════════════════════ */}
-      <section className="py-8 sm:py-12 border-t border-border">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-          <motion.div {...smoothReveal}>
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-px bg-border" aria-hidden="true" />
-              <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Explorar más</h2>
+      {/* Un único puente hacia afuera: el mapa completo de afinidades.
+          "Explorar compatibilidad" y "Aprender más" ya se repetían, casi
+          palabra por palabra, en "Tu próximo movimiento" (IntelligenceScreen)
+          — cada tab no necesita reofrecer las mismas dos salidas. */}
+      <section className="py-8 sm:py-12 border-t border-ink/10">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+          <motion.button
+            {...smoothReveal}
+            onClick={() => router.push("/affinity")}
+            className="w-full text-left p-6 sm:p-8 border border-ink/10 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors group flex items-center justify-between gap-4"
+          >
+            <div>
+              <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">Ver el mapa completo de afinidades</p>
+              <p className="text-sm text-muted mt-1">Todas las conexiones, no solo las más altas.</p>
             </div>
-          </motion.div>
-          <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <motion.button
-              {...staggerItemSmooth}
-              onClick={() => router.push("/affinity")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
-            >
-              <span className="text-xl block mb-2">✦</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Todas las entidades</p>
-              <p className="text-sm text-muted mt-1">Explorá el mapa completo de afinidades.</p>
-            </motion.button>
-            <motion.button
-              {...staggerItemSmooth}
-              transition={{ ...staggerDelay, delay: 0.08 }}
-              onClick={() => router.push("/explore")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
-            >
-              <span className="text-xl block mb-2">🔍</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Explorar compatibilidad</p>
-              <p className="text-sm text-muted mt-1">Buscá personas, países y conceptos.</p>
-            </motion.button>
-            <motion.button
-              {...staggerItemSmooth}
-              transition={{ ...staggerDelay, delay: 0.16 }}
-              onClick={() => router.push("/academy")}
-              className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors group"
-            >
-              <span className="text-xl block mb-2">📚</span>
-              <p className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">Aprender más</p>
-              <p className="text-sm text-muted mt-1">Numerología, astrología y zodiaco chino.</p>
-            </motion.button>
-          </motion.div>
+            <span className="text-accent shrink-0" aria-hidden="true">→</span>
+          </motion.button>
         </div>
       </section>
-
-      {/* Cross-links */}
-      {onNavigate && (
-        <CrossLinks
-          links={[
-            { label: "¿Quién comparte tu energía?", description: "Aliados, opuestos y personas de tu mismo signo.", onClick: () => onNavigate("circle") },
-            { label: "Explorá tu mapa profundo", description: "Síntesis, patrones y dimensiones de tu perfil.", onClick: () => onNavigate("intelligence") },
-            { label: "Volvé a tu identidad", description: "Revisá tu perfil base y arquetipo.", onClick: () => onNavigate("identity") },
-          ]}
-        />
-      )}
     </div>
   );
 }
@@ -262,10 +257,11 @@ export default function WorldScreen({ profile, onNavigate }: WorldScreenProps) {
    SUB-COMPONENTS
    ════════════════════════════════════════════════════ */
 
-function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: number }) {
+function EntityCard({ rec, index }: { rec: AffinityResult; index: number }) {
   const router = useRouter();
   const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
   const animalDisplay = getZodiacDisplay(rec.entityAnimal);
+  const tierMeta = TIER_META[getTierForScore(rec.score)];
 
   return (
     <motion.button
@@ -274,93 +270,40 @@ function CountryCard({ rec, index }: { rec: PersonalRecommendation; index: numbe
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.3 }}
       onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-all group"
+      className="w-full text-left p-5 sm:p-6 border border-ink/10 hover:border-accent/40 hover:bg-ink/[0.02] transition-all group flex flex-col"
     >
-      <div className="flex items-start gap-4">
-        <div className="flex flex-col items-center shrink-0">
-          <span className="text-3xl">{rec.entity.emoji}</span>
-          <span className="text-xl mt-1">{animalDisplay.emoji}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
+      {/* Entidad + animal + nivel de resonancia */}
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <span className="text-2xl shrink-0" aria-hidden="true">{rec.entity.emoji}</span>
+          <div className="min-w-0">
+            <h4 className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
               {rec.entity.name}
             </h4>
-            <span className="font-serif text-lg font-bold text-foreground">{rec.totalScore}</span>
+            <p className="uppercase text-xs tracking-[0.2em] text-muted mt-0.5">
+              {animalDisplay.name}{event ? ` · ${event.year}` : ""}
+            </p>
           </div>
-          <p className="text-xs text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
-          </p>
-
-          {/* Historical fact — separated */}
-          {event && (
-            <div className="p-2.5 rounded-lg bg-background mb-2">
-              <p className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Dato histórico</p>
-              <p className="text-xs text-foreground leading-relaxed">
-                {rec.entity.description}
-              </p>
-              <p className="text-[10px] text-muted mt-1">
-                {event.label} ({event.year}) · {event.confidence === "exacta" ? "Fecha exacta" : event.confidence === "alta" ? "Alta precisión" : "Aproximado"}
-              </p>
-            </div>
-          )}
-
-          {/* Why it appears — symbolic */}
-          <p className="text-xs text-muted/70 leading-relaxed italic">
-            {rec.explanation}
-          </p>
         </div>
+        <span
+          className="text-xs uppercase tracking-[0.2em] shrink-0 px-2 py-1 border rounded-sm"
+          style={{ color: tierMeta.color, borderColor: `${tierMeta.color}40` }}
+        >
+          {tierMeta.label}
+        </span>
       </div>
-    </motion.button>
-  );
-}
 
-function BrandCard({ rec, index }: { rec: PersonalRecommendation; index: number }) {
-  const router = useRouter();
-  const event = rec.entity.events.find(e => e.primaryForAffinity) ?? rec.entity.events[0];
-  const animalDisplay = getZodiacDisplay(rec.entityAnimal);
+      {/* Historia breve */}
+      <p className="text-sm text-muted leading-relaxed line-clamp-3 mb-4">
+        {rec.entity.description}
+      </p>
 
-  return (
-    <motion.button
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
-      onClick={() => router.push(`/affinity/${rec.entity.type}/${rec.entity.id}`)}
-      className="w-full text-left p-4 sm:p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-all group"
-    >
-      <div className="flex items-start gap-4">
-        <div className="flex flex-col items-center shrink-0">
-          <span className="text-3xl">{rec.entity.emoji}</span>
-          <span className="text-xl mt-1">{animalDisplay.emoji}</span>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">
-              {rec.entity.name}
-            </h4>
-            <span className="font-serif text-lg font-bold text-foreground">{rec.totalScore}</span>
-          </div>
-          <p className="text-xs text-muted mb-2">
-            {rec.entity.country} · {animalDisplay.name} · {rec.entityAnimal}
-          </p>
-
-          {event && (
-            <div className="p-2.5 rounded-lg bg-background mb-2">
-              <p className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Dato histórico</p>
-              <p className="text-xs text-foreground leading-relaxed">
-                {rec.entity.description}
-              </p>
-              <p className="text-[10px] text-muted mt-1">
-                {event.label} ({event.year})
-              </p>
-            </div>
-          )}
-
-          <p className="text-xs text-muted/70 leading-relaxed italic">
-            {rec.explanation}
-          </p>
-        </div>
+      {/* Por qué aparece en tu mundo */}
+      <div className="mt-auto border-t border-ink/10 pt-3">
+        <p className="label-micro mb-1.5">Por qué aparece en tu mundo</p>
+        <p className="text-sm text-foreground leading-relaxed">
+          {rec.explanation}
+        </p>
       </div>
     </motion.button>
   );

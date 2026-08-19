@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { siteUrl } from '@/lib/seo';
 import { ENTITIES } from '@/lib/data/entities';
 import CompatibilityContent from '@/components/compatibility/CompatibilityContent';
 
@@ -14,20 +15,24 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
   const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) {
     return {
-      title: 'Análisis no encontrado | Molino',
+      title: 'Análisis no encontrado',
       description: 'La entidad que buscas no existe en nuestra base de datos.',
     };
   }
 
-  const description = `Análisis profundo de compatibilidad con ${entity.name} usando numerología, astrología occidental y zodiaco chino. Molino — Inteligencia Personal.`;
+  const description = `Compatibilidad simbólica con ${entity.name}: numerología, astrología y zodíaco chino. Molino — Mapa personal de autoconocimiento.`;
 
   return {
-    title: `Análisis multi-factor de ${entity.name} | Molino`,
+    title: `Análisis multi-factor de ${entity.name}`,
     description,
+    alternates: {
+      canonical: siteUrl(`/compatibility/${entityId}`),
+    },
     openGraph: {
       title: `Análisis multi-factor de ${entity.name} | Molino`,
       description,
       type: 'website',
+      url: siteUrl(`/compatibility/${entityId}`),
     },
     twitter: {
       card: 'summary_large_image',

@@ -11,8 +11,6 @@ import {
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -133,6 +131,22 @@ const ICON_MAP: Record<string, React.FC<IconProps>> = {
   numerologia: IconNumbers,
   astrologia: IconStars,
   filosofia: IconBook,
+  // Claves usadas directamente por el campo `icon` de KNOWLEDGE_TREE/HOW_IT_WORKS/COURSES.
+  knowledge: IconKnowledge,
+  numbers: IconNumbers,
+  letters: IconLetters,
+  stars: IconStars,
+  cycle: IconCycle,
+  book: IconBook,
+  hand: IconHand,
+  graduation: IconGraduation,
+  computer: IconComputer,
+  flame: IconFlame,
+  target: IconTarget,
+  repeat: IconRepeat,
+  sparkle: IconSparkle,
+  clock: IconClock,
+  map: IconMap,
 };
 
 const KNOWLEDGE_TREE = [
@@ -232,7 +246,7 @@ const KNOWLEDGE_TREE = [
     title: "Molino",
     icon: "flame",
     origin: "Plataforma global",
-    idea: "Inteligencia Personal: combina tradiciones históricas en una experiencia interactiva.",
+    idea: "Tu mapa: combina tradiciones históricas en una lectura personal.",
     influence: ["Numerología", "Astrología", "Zodíaco chino", "IA", "Recomendaciones"],
     molino: "Convergencia de todas las tradiciones en una plataforma moderna",
   },
@@ -280,7 +294,7 @@ const HOW_IT_WORKS = [
 const COURSES = [
   {
     id: "intro",
-    title: "Introducción a la Inteligencia Personal",
+    title: "Introducción a tu mapa personal",
     icon: "target",
     lessons: 5,
     description: "Los conceptos fundamentales detrás de tu mapa personal.",
@@ -304,7 +318,7 @@ const COURSES = [
     title: "Cómo leer tu mapa personal",
     icon: "map",
     lessons: 4,
-    description: "Guía práctica para interpretar tu Inteligencia Personal.",
+    description: "Guía práctica para interpretar tu mapa personal.",
   },
 ];
 
@@ -331,24 +345,29 @@ function KnowledgeNode({
       transition={{ delay: index * 0.06, duration: 0.4 }}
       className="relative pl-16"
     >
-      {/* Dot */}
-      <button
-        type="button"
-        onClick={onToggle}
-        className={`absolute left-4 top-1 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${
-          isExpanded ? "border-accent bg-accent/10" : "border-border bg-background hover:border-accent/50"
+      {/* Dot — decorativo, la acción real la expone el botón de abajo con texto */}
+      <div
+        aria-hidden="true"
+        className={`absolute left-4 top-1 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors pointer-events-none ${
+          isExpanded ? "border-accent bg-accent/10" : "border-border bg-background"
         }`}
       >
-        <span className="text-sm">{node.icon}</span>
-      </button>
+        <span className="text-sm">
+          {(() => {
+            const Icon = ICON_MAP[node.icon];
+            return Icon ? <Icon className="w-4 h-4" /> : null;
+          })()}
+        </span>
+      </div>
 
       <button
         type="button"
         onClick={onToggle}
+        aria-expanded={isExpanded}
         className="w-full text-left"
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
-        <h3 className="font-serif text-xl font-semibold text-foreground mb-1">{node.title}</h3>
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
+        <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{node.title}</h3>
         <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
       </button>
 
@@ -361,23 +380,23 @@ function KnowledgeNode({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-5 rounded-xl border border-border bg-background/50 space-y-3">
+            <div className="mt-4 p-6 rounded-md border border-border bg-background shadow-sm/50 space-y-3">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Origen</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Origen</p>
                 <p className="text-xs text-foreground">{node.origin}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Influencia en Molino</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
-                    <span key={inf} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/10 text-accent">
+                    <span key={inf} className="text-xs px-2 py-0.5 rounded-sm bg-accent/10 text-accent">
                       {inf}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-[0.15em] text-muted font-medium mb-1">Cómo se usa</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Cómo se usa</p>
                 <p className="text-xs text-foreground">{node.molino}</p>
               </div>
             </div>
@@ -394,19 +413,17 @@ export default function AcademyContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* ═══════════════════════════════════════════════
             HERO
             ═══════════════════════════════════════════════ */}
         <motion.section {...heroReveal} className="mb-16">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">La Academia</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1] mb-6">
             De dónde viene este sistema
           </h1>
           <p className="text-base text-muted max-w-xl leading-relaxed">
-            Aprendé las raíces históricas detrás de tu Inteligencia Personal.
+            Aprendé las raíces históricas detrás de tu mapa personal.
             Molino conecta tradiciones de miles de años en una experiencia moderna.
           </p>
         </motion.section>
@@ -417,7 +434,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">El árbol del conocimiento</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">El árbol del conocimiento</h2>
           </div>
 
           <p className="text-sm text-muted mb-8 leading-relaxed">
@@ -446,7 +463,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Cómo funciona Molino</h2>
           </div>
 
           <motion.div {...staggerApple} className="space-y-4">
@@ -455,19 +472,24 @@ export default function AcademyContent() {
                 key={step.step}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.1), duration: 0.4 }}
-                className="p-5 rounded-xl border border-border bg-card"
+                className="p-6 rounded-md border border-border bg-card shadow-sm"
               >
                 <div className="flex items-start gap-4">
-                  <span className="text-2xl shrink-0">{step.icon}</span>
+                  <span className="text-2xl shrink-0">
+                    {(() => {
+                      const Icon = ICON_MAP[step.icon];
+                      return Icon ? <Icon className="w-6 h-6" /> : null;
+                    })()}
+                  </span>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[10px] font-semibold text-accent">Paso {step.step}</span>
+                      <span className="text-xs font-semibold text-accent">Paso {step.step}</span>
                       <h3 className="text-sm font-semibold text-foreground">{step.title}</h3>
                     </div>
-                    <p className="text-xs text-muted/70 leading-relaxed mb-2">{step.description}</p>
+                    <p className="text-xs text-muted leading-relaxed mb-2">{step.description}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {step.items.map((item) => (
-                        <span key={item} className="text-[10px] px-2 py-0.5 rounded-full bg-background text-muted">
+                        <span key={item} className="text-xs px-2 py-0.5 rounded-md bg-background text-muted">
                           {item}
                         </span>
                       ))}
@@ -485,7 +507,7 @@ export default function AcademyContent() {
         <motion.section {...smoothReveal} className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Rutas de aprendizaje</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Rutas de aprendizaje</h2>
           </div>
 
           <motion.div {...staggerApple} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -494,15 +516,20 @@ export default function AcademyContent() {
                 key={course.id}
                 {...staggerItemSmooth}
                 transition={{ delay: staggerDelay(i, 0.08), duration: 0.4 }}
-                className="p-5 rounded-xl border border-border bg-card hover:border-accent/50 transition-colors cursor-pointer group"
-                onClick={() => {/* TODO: navigate to course */}}
+                className="p-6 rounded-md border border-border bg-card shadow-sm hover:border-accent/50 transition-colors cursor-pointer group"
+                onClick={() => {}}
               >
-                <span className="text-2xl block mb-3">{course.icon}</span>
-                <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors mb-1">
+                <span className="text-2xl block mb-3">
+                  {(() => {
+                    const Icon = ICON_MAP[course.icon];
+                    return Icon ? <Icon className="w-6 h-6" /> : null;
+                  })()}
+                </span>
+                <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors mb-1">
                   {course.title}
                 </h3>
                 <p className="text-xs text-muted leading-relaxed mb-2">{course.description}</p>
-                <p className="text-[10px] text-accent font-medium">{course.lessons} lecciones →</p>
+                <p className="text-xs text-accent font-medium">{course.lessons} lecciones →</p>
               </motion.div>
             ))}
           </motion.div>
@@ -512,14 +539,14 @@ export default function AcademyContent() {
             DISCLAIMER PREMIUM
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="mb-16">
-          <div className="p-6 rounded-2xl border border-border bg-card">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
+          <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Transparencia</p>
             <p className="text-sm text-foreground leading-relaxed mb-3">
-              Molino explora tradiciones históricas de números y símbolos culturales como herramienta de reflexión personal.
+              Estas tradiciones históricas exploran números y símbolos culturales como herramienta de reflexión personal.
             </p>
             <p className="text-xs text-muted leading-relaxed">
               Las interpretaciones pertenecen al campo simbólico y cultural, no constituyen predicciones científicas.
-              Molino combina numerología, astrología y zodíaco chino de forma transparente y educativa.
+              Este mapa combina numerología, astrología y zodíaco chino de forma transparente y educativa.
             </p>
           </div>
         </motion.section>
@@ -528,21 +555,20 @@ export default function AcademyContent() {
             CTA
             ═══════════════════════════════════════════════ */}
         <motion.section {...smoothReveal} className="text-center">
-          <div className="p-8 rounded-2xl border border-border bg-card">
+          <div className="p-8 rounded-md border border-border bg-card shadow-sm">
             <p className="text-sm text-muted mb-4">
               ¿Querés ver cómo se aplican estas tradiciones en tu perfil?
             </p>
             <button
               type="button"
               onClick={() => router.push("/profile")}
-              className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+              className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
             >
-              Ver mi Inteligencia Personal
+              Ver mi mapa
             </button>
           </div>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

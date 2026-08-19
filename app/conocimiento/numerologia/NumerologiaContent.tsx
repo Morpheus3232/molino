@@ -1,55 +1,45 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { NUMBERS, CALCULATIONS, NUMEROLOGY_DISCLAIMER } from "@/lib/data/numerologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
+import Reveal from "@/components/ui/Reveal";
 
 export default function NumerologiaContent() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
 
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Numerología</span>
         </nav>
 
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+        <Reveal tag="section" className="mb-16 sm:mb-20">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Numerología
           </h1>
-          <h2 className="font-serif text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
+          <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El lenguaje simbólico de los números y su relación con la personalidad y los ciclos.
           </h2>
-        </motion.section>
+        </Reveal>
 
         {/* Disclaimer */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
+        <Reveal tag="section" delay={0.05} className="mb-12">
+          <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{NUMEROLOGY_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Índice */}
-        <motion.section {...fadeUpDelayed(0.08)} className="mb-12 sm:mb-16">
+        <Reveal tag="section" delay={0.08} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Índice de contenidos</h2>
+            <h2 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground">Índice de contenidos</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
@@ -62,19 +52,19 @@ export default function NumerologiaContent() {
               { label: "Limitaciones", id: "limitaciones" },
               { label: "Fuentes y referencias", id: "fuentes" },
             ].map((item) => (
-              <button key={item.id} onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-lg hover:bg-foreground/5 inline-flex items-center gap-1">
+              <a key={item.id} href={`#${item.id}`} className="text-left text-sm text-foreground hover:text-accent transition-colors py-2 px-3 rounded-md hover:bg-accent/5 inline-flex items-center gap-1">
                 {item.label}
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-              </button>
+              </a>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* QUÉ ES LA NUMEROLYGÍA */}
-        <motion.section {...fadeUpDelayed(0.1)} id="que-es" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.1} id="que-es" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Qué es la numerología</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Qué es la numerología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -83,20 +73,20 @@ export default function NumerologiaContent() {
             <p className="text-base text-foreground leading-relaxed">
               <strong>Es importante aclarar:</strong> la numerología no es una ciencia. No existe evidencia empírica que respalde la idea de que los números determinen rasgos de personalidad o destinos. Lo que sí existe es una tradición cultural de más de 2500 años que Molino utiliza como herramienta de reflexión.
             </p>
-            <div className="p-5 rounded-xl border border-border bg-card mt-6">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
+            <div className="p-6 border border-ink/10 mt-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">En resumen</p>
               <p className="text-sm text-muted leading-relaxed">
                 La numerología es un lenguaje simbólico. Molino la usa como una lente de autoconocimiento, no como una métrica objetiva.
               </p>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* HISTORIA */}
-        <motion.section {...fadeUpDelayed(0.12)} id="historia" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.12} id="historia" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia y evolución</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Historia y evolución</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -109,8 +99,8 @@ export default function NumerologiaContent() {
               La numerología <strong>moderna</strong> se consolidó en el siglo XX con autores como L. Dow Balliett y Florence Campbell. El sistema de correspondencia de letras y números que usamos hoy fue codificado en el siglo XIX.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-              <div className="p-5 rounded-xl border border-border bg-card">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
+              <div className="p-6 border border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Diferencia clave</p>
                 <p className="text-sm text-muted leading-relaxed">
                   <strong>Pitagorismo histórico:</strong> Escuela filosófica que veía los números como principios matemáticos del universo.
                 </p>
@@ -118,28 +108,28 @@ export default function NumerologiaContent() {
                   <strong>Numerología esotérica:</strong> Sistema moderno que asigna significados personales y predictivos a los números basándose en fechas y nombres.
                 </p>
               </div>
-              <div className="p-5 rounded-xl border border-border bg-card">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
+              <div className="p-6 border border-ink/10">
+                <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Lo que dice la evidencia</p>
                 <p className="text-sm text-muted leading-relaxed">
                   No existe evidencia científica que respalde que los números determinen rasgos de personalidad. La investigación en psicología no ha encontrado correlaciones válidas entre fechas de nacimiento y características psicológicas.
                 </p>
               </div>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* PITAGÓRICA */}
-        <motion.section {...fadeUpDelayed(0.14)} id="pitagorica" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.14} id="pitagorica" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Numerología pitagórica</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Numerología pitagórica</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
               La numerología pitagórica es el sistema más utilizado en occidente. Asigna valores numéricos del 1 al 9 a cada letra del alfabeto, y luego reduce cualquier suma a un solo dígito.
             </p>
-            <div className="p-5 rounded-xl border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
+            <div className="p-6 border border-ink/10">
+              <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3">Tabla de correspondencia</p>
               <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-foreground">
                 {["A=1", "B=2", "C=3", "D=4", "E=5", "F=6", "G=7", "H=8", "I=9", "J=1", "K=2", "L=3", "M=4", "N=5", "O=6", "P=7", "Q=8", "R=9", "S=1", "T=2", "U=3", "V=4", "W=5", "X=6", "Y=7", "Z=8"].map((v) => (
                   <span key={v} className="text-center py-1 px-2 rounded bg-background text-xs">{v}</span>
@@ -150,89 +140,87 @@ export default function NumerologiaContent() {
               Nota: Este sistema fue codificado en el siglo XIX. La versión que usa Molino sigue esta convención. Otros sistemas numerológicos usan tablas diferentes.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* CÁLCULOS */}
-        <motion.section {...fadeUpDelayed(0.16)} id="calculos" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.16} id="calculos" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo calcula Molino</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Cómo calcula Molino</h2>
           </div>
           <div className="space-y-6">
             {Object.values(CALCULATIONS).map((calc) => (
-              <div key={calc.title} className="p-5 rounded-xl border border-border bg-card">
-                <h3 className="font-serif text-lg font-semibold text-foreground mb-2">{calc.title}</h3>
+              <div key={calc.title} className="p-6 border border-ink/10">
+                <h3 className="font-heading text-lg font-semibold text-foreground mb-2">{calc.title}</h3>
                 <p className="text-sm text-muted leading-relaxed mb-3">{calc.description}</p>
-                <div className="p-3 rounded-lg bg-background text-sm text-foreground font-mono mb-3">{calc.formula}</div>
+                <div className="p-3 rounded-md bg-background text-sm text-foreground font-mono mb-3">{calc.formula}</div>
                 <p className="text-xs text-muted italic">{calc.caveat}</p>
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* NÚMEROS 1-9 */}
-        <motion.section {...fadeUpDelayed(0.18)} id="numeros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.18} id="numeros" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los números del 1 al 9</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Los números del 1 al 9</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Cada número tiene un significado tradicional en la numerología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
           </p>
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
-              <motion.div key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.04, duration: 0.4 }}>
-                <button onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="w-full text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
-                  <div className="flex items-start gap-5">
-                    <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
-                      <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
-                      <div className="flex flex-wrap gap-1.5 mt-3">
-                        {num.keywords.map((kw) => (
-                          <span key={kw} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-full border border-border">{kw}</span>
-                        ))}
-                      </div>
+              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block w-full text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
+                <div className="flex items-start gap-6">
+                  <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
+                    <p className="text-sm text-muted mt-1 line-clamp-2">{num.meaning}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-3">
+                      {num.keywords.map((kw) => (
+                        <span key={kw} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border">{kw}</span>
+                      ))}
                     </div>
-                     <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:inline-flex items-center gap-1">
-                       Ver
-                       <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
-                     </span>
                   </div>
-                </button>
-              </motion.div>
+                   <span className="text-sm text-muted group-hover:text-accent transition-colors mt-2 shrink-0 hidden sm:inline-flex items-center gap-1">
+                     Ver
+                     <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
+                   </span>
+                </div>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* NÚMEROS MAESTROS */}
-        <motion.section {...fadeUpDelayed(0.2)} id="maestros" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.2} id="maestros" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Números maestros: 11, 22 y 33</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Números maestros: 11, 22 y 33</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Los números maestros fueron incorporados a la numerología moderna. No forman parte del sistema pitagórico original.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
-              <motion.button key={num.number} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }} onClick={() => router.push(`/conocimiento/numerologia/numero-${num.number}`)} className="text-left p-5 rounded-xl border border-accent/20 bg-accent/[0.03] hover:border-accent/50 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
-                <p className="text-3xl font-serif font-bold text-accent mb-2">{num.number}</p>
-                <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
+              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block text-left p-6 border border-accent/20 hover:border-accent/50 transition-colors group">
+                <p className="text-3xl font-heading font-bold text-accent mb-2">{num.number}</p>
+                <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
                 <p className="text-sm text-muted mt-2 leading-relaxed">{num.meaning}</p>
-              </motion.button>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* LIMITACIONES */}
-        <motion.section {...fadeUpDelayed(0.22)} id="limitaciones" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.22} id="limitaciones" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Limitaciones y carácter no científico</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Limitaciones y carácter no científico</h2>
           </div>
           <div className="max-w-3xl space-y-4">
-            <div className="p-5 rounded-xl border border-border bg-card">
+            <div className="p-6 border border-ink/10">
               <p className="text-sm text-foreground leading-relaxed">
                 <strong>La numerología no es una ciencia.</strong> No existe evidencia empírica que respalde que las fechas de nacimiento o los nombres determinen rasgos de personalidad, destinos o ciclos de vida. La investigación en psicología y ciencias cognitivas no ha encontrado correlaciones válidas.
               </p>
@@ -244,13 +232,13 @@ export default function NumerologiaContent() {
               Si buscas información sobre salud, relaciones o decisiones importantes, consulta a un profesional calificado. La numerología no reemplaza el consejo médico, psicológico o legal.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* FUENTES */}
-        <motion.section {...fadeUpDelayed(0.24)} id="fuentes" className="mb-16 sm:mb-20 scroll-mt-24">
+        <Reveal tag="section" delay={0.24} id="fuentes" className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes y referencias</h2>
+            <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground">Fuentes y referencias</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -269,32 +257,30 @@ export default function NumerologiaContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Herramientas relacionadas */}
-        <motion.section {...fadeUpDelayed(0.24)} className="mb-12">
-          <div className="p-6 rounded-2xl border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
-            <h3 className="font-serif text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
+        <Reveal tag="section" delay={0.24} className="mb-12">
+          <div className="p-6 border border-accent/20">
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Camino de Vida</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
-              Ingresá tu fecha de nacimiento y descubrí tu número de Camino de Vida, Expresión y más.
+              Ingresá tu fecha de nacimiento y calculá tu número de Camino de Vida, Expresión y más.
             </p>
             <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →
             </Link>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Disclaimer final */}
-        <motion.section {...fadeUpDelayed(0.26)}>
-          <div className="p-5 rounded-xl border border-border bg-card">
+        <Reveal tag="section" delay={0.26}>
+          <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
       </main>
 
-      <UniversityFooter />
     </div>
   );
 }

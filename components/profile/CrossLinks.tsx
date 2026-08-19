@@ -16,12 +16,12 @@ interface CrossLinksProps {
 
 export default function CrossLinks({ title = "Seguí explorando", links }: CrossLinksProps) {
   return (
-    <section className="py-8 sm:py-12 border-t border-border">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+    <section className="py-8 sm:py-12 border-t border-ink/10">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...smoothReveal}>
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-8 h-px bg-border" aria-hidden="true" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+            <h2 className="font-heading text-lg uppercase tracking-tight text-foreground">{title}</h2>
           </div>
         </motion.div>
 
@@ -34,11 +34,11 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
               viewport={{ once: true }}
               transition={{ delay: i * 0.06, duration: 0.3 }}
               onClick={link.onClick}
-              className="text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+              className="text-left p-4 border border-ink/10 hover:border-ink/20 transition-colors group"
             >
               <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors">{link.label}</p>
-              <p className="text-xs text-muted mt-1 leading-relaxed">{link.description}</p>
-              <p className="text-xs text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+              <p className="text-sm text-muted mt-1 leading-relaxed">{link.description}</p>
+              <p className="font-mono uppercase text-xs tracking-[0.2em] text-accent mt-2 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                 Explorar
                 <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
               </p>

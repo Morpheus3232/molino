@@ -13,9 +13,10 @@
 
 import type { UserProfile } from "@/types/user";
 import type { SymbolicEntity, EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent, SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, SYMBOLIC_ENTITIES, focusEntitiesByCountry } from "@/lib/data/symbolic-entities";
 import { calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
-import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { ANIMALS, SAN_HE_TRIADS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { t } from "@/lib/i18n";
 
 // ════════════════════════════════════════════════════
 // TYPES
@@ -50,13 +51,24 @@ export type AffinityTier =
   | "desafiante"
   | "distante";
 
-export const TIER_META: Record<AffinityTier, { label: string; color: string; description: string }> = {
-  "resonancia-alta":  { label: "Resonancia alta",       color: "#2D5A3D", description: "Patrones simbólicos fuertemente alineados" },
-  "afinidad-media":   { label: "Afinidad media",        color: "#4A6FA5", description: "Conexión moderada con puntos de interés compartidos" },
-  "complementarios":  { label: "Complementarios",       color: "#D4A843", description: "Diferentes pero que se enriquecen mutuamente" },
-  "desafiante":       { label: "Desafiante",            color: "#B45309", description: "Tensión creativa que puede generar crecimiento" },
-  "distante":         { label: "Frecuencias lejanas",   color: "#6B7280", description: "Baja resonancia simbólica, pero no excluyente" },
+// Colores por tier: token de diseño, no depende del locale — por eso vive
+// acá y no en el diccionario (lib/i18n solo tiene label/description).
+const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
+  "resonancia-alta": "#2D5A3D",
+  "afinidad-media": "#4A6FA5",
+  "complementarios": "#D4A843",
+  "desafiante": "#B45309",
+  "distante": "#838C95",
 };
+
+// Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +
+// color para no romper los call sites existentes (TIER_META[tier].label/.color/.description).
+export const TIER_META: Record<AffinityTier, { label: string; color: string; description: string }> = Object.fromEntries(
+  (Object.keys(AFFINITY_TIER_COLORS) as AffinityTier[]).map((tier) => [
+    tier,
+    { ...t.affinityTiers[tier], color: AFFINITY_TIER_COLORS[tier] },
+  ])
+) as Record<AffinityTier, { label: string; color: string; description: string }>;
 
 export function getTierForScore(score: number): AffinityTier {
   if (score >= 75) return "resonancia-alta";
@@ -82,10 +94,74 @@ function getRelationship(_diff: number, userAnimal: string, entityAnimal: string
   return getRelation(userAnimal as Animal, entityAnimal as Animal).label;
 }
 
-/** Detailed explanation of the relationship from canonical animalRelations */
-function getExplanation(_diff: number, userAnimal: string, entityAnimal: string): string {
+/**
+ * Detailed explanation of the relationship, naming the entity.
+ *
+ * Composes a unique explanation by combining:
+ * 1. The entity's historical grounding (event label + year)
+ * 2. The relational meaning (specific to this animal pair)
+ *
+ * Never uses generic template phrases like "comparte tu energía".
+ * The historical part ensures every entity reads as distinct, even when
+ * two entities share the same animal relation type.
+ */
+function getExplanation(
+  _diff: number,
+  userAnimal: string,
+  entityAnimal: string,
+  entityName?: string,
+  primaryEvent?: HistoricalEvent
+): string {
   if (!userAnimal || !entityAnimal) return "No hay datos suficientes para calcular la afinidad.";
-  return getRelation(userAnimal as Animal, entityAnimal as Animal).description;
+
+  if (!entityName) {
+    return getRelation(userAnimal as Animal, entityAnimal as Animal).description;
+  }
+
+  const rel = getRelation(userAnimal as Animal, entityAnimal as Animal);
+
+  // Historical grounding — unique per entity thanks to event year + description
+  const eventYear = primaryEvent?.year;
+  const eventLabel = primaryEvent?.label?.toLowerCase() || "evento histórico";
+  const eventDescription = primaryEvent?.description;
+
+  const hasUniqueEvent = eventDescription && eventDescription !== primaryEvent?.label;
+
+  // Build the historical context (unique per entity)
+  const historicalContext = eventYear
+    ? (hasUniqueEvent
+      ? `${eventDescription} (${eventYear}).`
+      : `${entityName} quedó definida por ${eventLabel} de ${eventYear}.`)
+    : "";
+
+  // Build the relational meaning (specific to this pair)
+  let relationalMeaning: string;
+  switch (rel.type) {
+    case "same":
+      relationalMeaning = `Su energía del ${entityAnimal} comparte la misma frecuencia que tu ${userAnimal} — fortalezas, puntos ciegos y ritmo natural en sintonía.`;
+      break;
+    case "triad": {
+      const triad = SAN_HE_TRIADS.find(t => t.animals.includes(userAnimal as Animal) && t.animals.includes(entityAnimal as Animal));
+      relationalMeaning = `${entityName} (${entityAnimal}) y tu ${userAnimal} comparten el elemento oculto${triad ? ` de ${triad.element}` : ""} de la tríada, una conexión que refuerza la energía de ambos.`;
+      break;
+    }
+    case "harmonious":
+      relationalMeaning = `Su energía del ${entityAnimal} complementa naturalmente tu ${userAnimal}.`;
+      break;
+    case "clash":
+      relationalMeaning = `Su energía del ${entityAnimal} entra en tensión con tu ${userAnimal} — un contraste que invita a replantear perspectivas.`;
+      break;
+    case "harm":
+      relationalMeaning = `Su energía del ${entityAnimal} tiene una relación de atención con tu ${userAnimal}.`;
+      break;
+    default:
+      relationalMeaning = `Su energía del ${entityAnimal} corre por un carril distinto al de tu ${userAnimal}.`;
+      break;
+  }
+
+  return historicalContext
+    ? `${historicalContext} ${relationalMeaning}`
+    : relationalMeaning;
 }
 
 /** Traditional context for the relationship */
@@ -125,11 +201,26 @@ export function calculateAffinity(
 ): AffinityResult {
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
   const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
+  return calculateAffinityForAnimal(userAnimal, userYear, entity);
+}
 
+/**
+ * Same calculation as calculateAffinity, but takes the user's Chinese zodiac
+ * animal directly instead of a full UserProfile — for contexts (like the
+ * /affinity animal switcher) where the user is exploring affinity for an
+ * animal that isn't necessarily their own. Same rule, same scores, no new
+ * formula: this is calculateAffinity with its two inputs (userAnimal,
+ * userYear) exposed instead of read off a profile.
+ */
+export function calculateAffinityForAnimal(
+  userAnimal: string,
+  userYear: number,
+  entity: SymbolicEntity,
+): AffinityResult {
   // Resolve primary event
   const primaryEvent = getPrimaryEvent(entity);
   if (!primaryEvent) {
-    return buildFallbackResult(profile, entity, "Entidad sin evento histórico primario.");
+    return buildFallbackResult(userAnimal, userYear, entity, "Entidad sin evento histórico primario.");
   }
 
   const { animal: entityAnimal, isApproximate } = resolveEntityAnimal(entity);
@@ -151,7 +242,7 @@ export function calculateAffinity(
     diff = Math.abs(ui - ei) % 12;
     score = getZodiacScore(userAnimal, entityAnimal);
     relationship = getRelationship(diff, userAnimal, entityAnimal);
-    explanation = getExplanation(diff, userAnimal, entityAnimal);
+    explanation = getExplanation(diff, userAnimal, entityAnimal, entity.name, primaryEvent);
     tradition = getTradition(diff, userAnimal, entityAnimal);
   }
 
@@ -187,12 +278,11 @@ export function calculateAffinity(
 
 /** Build a safe fallback result when data is insufficient */
 function buildFallbackResult(
-  profile: UserProfile,
+  userAnimal: string,
+  userYear: number,
   entity: SymbolicEntity,
   reason: string,
 ): AffinityResult {
-  const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const userYear = parseInt(profile.birthDate?.split("-")[0] || "0", 10);
   const fallbackEvent: HistoricalEvent = {
     id: "fallback",
     type: "fecha-tradicional",
@@ -288,14 +378,57 @@ export function calculateAllAffinity(
     .sort((a, b) => b.score - a.score);
 }
 
+/** Same as calculateAllAffinity, for a raw animal instead of a full profile. */
+export function calculateAllAffinityForAnimal(
+  animal: string,
+  entities: SymbolicEntity[],
+): AffinityResult[] {
+  return entities
+    .map(entity => calculateAffinityForAnimal(animal, 0, entity))
+    .sort((a, b) => b.score - a.score);
+}
+
+export interface RepresentativeAffinitySet {
+  positive: AffinityResult[];
+  mixed: AffinityResult[];
+  negative: AffinityResult[];
+}
+
+/**
+ * Picks 8 representative results out of an already-scored, already-sorted
+ * set: the top 5 (positivas), 2 from the middle of what's left (mixtas), and
+ * the single lowest-scored one (negativa). Pure selection over existing
+ * scores — no new scoring rule, no change to what calculateAffinity(...)
+ * returns for any entity.
+ */
+export function getRepresentativeAffinitySet(
+  sortedResults: AffinityResult[],
+): RepresentativeAffinitySet {
+  if (sortedResults.length < 8) {
+    return { positive: sortedResults, mixed: [], negative: [] };
+  }
+  const positive = sortedResults.slice(0, 5);
+  const negative = sortedResults.slice(-1);
+  const remaining = sortedResults.slice(5, -1);
+  const midStart = Math.max(0, Math.floor(remaining.length / 2) - 1);
+  const mixed = remaining.slice(midStart, midStart + 2);
+  return { positive, mixed, negative };
+}
+
 /** Get top affinity highlight per category for the profile summary */
 export type AffinityHighlightType = "brand" | "city" | "country";
 
-export function getTopAffinityHighlights(profile: UserProfile): AffinityResult[] {
+/**
+ * userCountry acota "city" a las ciudades del propio país cuando hay
+ * cobertura local (ver focusEntitiesByCountry) — el highlight de un
+ * visitante de Chile debería poder ser una ciudad chilena, no siempre la
+ * ciudad global con mejor puntaje.
+ */
+export function getTopAffinityHighlights(profile: UserProfile, userCountry?: string): AffinityResult[] {
   const highlightTypes: AffinityHighlightType[] = ["brand", "city", "country"];
   return highlightTypes
     .map((type) => {
-      const entities = SYMBOLIC_ENTITIES.filter((e) => e.type === type);
+      const entities = focusEntitiesByCountry(SYMBOLIC_ENTITIES.filter((e) => e.type === type), type, userCountry);
       if (entities.length === 0) return null;
       return calculateAllAffinity(profile, entities)[0];
     })

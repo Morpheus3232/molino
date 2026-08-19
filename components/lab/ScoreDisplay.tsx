@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { getScoreColor, getScoreLabel, getScoreBgColor } from "@/lib/utils/score";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 
 interface ScoreDisplayProps {
   score: number;
@@ -9,27 +9,21 @@ interface ScoreDisplayProps {
   size?: "sm" | "md" | "lg";
 }
 
-export default function ScoreDisplay({ score, label, size = "md" }: ScoreDisplayProps) {
-  const getScoreColor = (score: number): string => {
-    if (score >= 80) return "text-green-600 bg-green-50";
-    if (score >= 60) return "text-blue-600 bg-blue-50";
-    if (score >= 40) return "text-yellow-600 bg-yellow-50";
-    return "text-red-600 bg-red-50";
-  };
-
+export default function ScoreDisplay({ score, size = "md" }: ScoreDisplayProps) {
   const sizeClasses = {
-    sm: "text-xl",
-    md: "text-3xl",
-    lg: "text-4xl",
+    sm: "text-sm",
+    md: "text-lg",
+    lg: "text-xl",
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`font-bold ${getScoreColor(score)} ${sizeClasses[size]} px-3 py-1 rounded-full`}
+      className={`font-bold uppercase tracking-[0.2em] ${sizeClasses[size]} px-3 py-1`}
+      style={{ color: getScoreColor(score), backgroundColor: "var(--score-bg)" }}
     >
-      {score}%
+      {getScoreLabel(score)}
     </motion.div>
   );
 }

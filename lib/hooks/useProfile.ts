@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { loadProfileFromStorage, clearStoredProfile } from "@/lib/storage/localStorage";
-import { getSession, clearSession } from "@/lib/storage/ephemeral";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { loadProfileFromStorage, clearStoredProfile } from "@/lib/session/localStorage";
+import { getSession, clearSession } from "@/lib/session/ephemeral";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { decodeProfileData, profileFromShareData } from "@/lib/utils/profileShare";
 import type { UserProfile } from "@/types/user";
 

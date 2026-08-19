@@ -33,4 +33,26 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+.env*
 OmniRoute/
+
+# local-only dev fallback KV store (see lib/kv.ts), never used in production
+.molino-dev-kv.json
+
+# graphify generated knowledge-graph artifact
+graphify-out/
+
+# workspace / agent tooling (local config, not part of product)
+.agents/
+.claude/
+.codex/
+.opencode/
+.artifacts/
+.impeccable/
+kilo.json
+.tmp/
+.github/hooks/
+.github/skills/
+playwright-report/
+test-results/
+validation-results/

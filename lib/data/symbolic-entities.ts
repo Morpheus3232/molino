@@ -11,8 +11,23 @@
 import { getChineseAnimal, getChineseElement, calculateAnimalFromDate } from "@/lib/engines/chineseZodiacEngine";
 import { BRANDS_60 } from "./brands-60";
 import { BRANDS_AUTOS_60 } from "./brands-autos-60";
+import { BRANDS_ARGENTINA } from "./brands-argentina";
 import { COUNTRIES_60 } from "./countries-60";
 import { CITIES_60 } from "./cities-60";
+import { CITIES_ARGENTINA } from "./cities-argentina";
+import { TEAMS_ARGENTINA } from "./teams-argentina";
+import { TEAMS_CHILE } from "./teams-chile";
+import { TEAMS_PERU } from "./teams-peru";
+import { TEAMS_URUGUAY } from "./teams-uruguay";
+import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
+import { UNIVERSITIES_CHILE } from "./universities-chile";
+import { UNIVERSITIES_PERU } from "./universities-peru";
+import { MOVIES } from "./movies";
+import { ARTISTS_ARGENTINA } from "./artists-argentina";
+import { ARTISTS_CHILE } from "./artists-chile";
+import { ARTISTS_PERU } from "./artists-peru";
+import { ARTISTS_URUGUAY } from "./artists-uruguay";
+import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
 
 export type EntityType =
   | "brand"
@@ -131,9 +146,26 @@ export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
 export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...BRANDS_60,
   ...BRANDS_AUTOS_60,
+  ...BRANDS_ARGENTINA,
 
   ...COUNTRIES_60,
   ...CITIES_60,
+  ...CITIES_ARGENTINA,
+
+  ...TEAMS_ARGENTINA,
+  ...TEAMS_CHILE,
+  ...TEAMS_PERU,
+  ...TEAMS_URUGUAY,
+  ...UNIVERSITIES_ARGENTINA,
+  ...UNIVERSITIES_CHILE,
+  ...UNIVERSITIES_PERU,
+
+  ...MOVIES,
+  ...ARTISTS_ARGENTINA,
+  ...ARTISTS_CHILE,
+  ...ARTISTS_PERU,
+  ...ARTISTS_URUGUAY,
+  ...FAMOUS_PEOPLE_ENTITIES,
 
   // ──── UNIVERSIDADES (3) ────
   {
@@ -201,6 +233,26 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
         description: "Primera evidencia documentada de ense\u00f1anza en la Universidad de Oxford.",
         source: "University of Oxford — History",
         confidence: "baja",
+        primaryForAffinity: true,
+      },
+    ],
+  },
+
+  {
+    id: "salamanca", name: "Universidad de Salamanca", type: "university", foundingYear: 1218, country: "España",
+    emoji: "📖",
+    description: "Salamanca es la universidad más antigua del mundo hispanohablante. Referencia histórica del pensamiento jurídico y humanista.",
+    keyThemes: ["Legado", "Sabiduría", "Tradición", "Humanismo"],
+    sourceNote: "Fundada en 1218 por el rey Alfonso IX de León. Fecha exacta de fundación no documentada; se usa el año.",
+    events: [
+      {
+        id: "salamanca-fundacion",
+        type: "fundacion",
+        label: "Fundación",
+        year: 1218,
+        description: "El rey Alfonso IX de León funda el Estudio General de Salamanca, origen de la universidad.",
+        source: "Universidad de Salamanca — Historia institucional",
+        confidence: "media",
         primaryForAffinity: true,
       },
     ],
@@ -274,6 +326,27 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
         source: "Real Madrid — Historia del Club",
         confidence: "alta",
         primaryForAffinity: false,
+      },
+    ],
+  },
+
+  {
+    id: "sporting-cp", name: "Sporting CP", type: "team", foundingYear: 1906, country: "Portugal",
+    emoji: "⚽",
+    description: "Sporting Clube de Portugal es uno de los tres grandes del fútbol portugués, cantera histórica de figuras como Cristiano Ronaldo.",
+    keyThemes: ["Cantera", "Identidad", "Tradición", "Formación"],
+    sourceNote: "Fundado el 1 de julio de 1906 en Lisboa por José Alvalade.",
+    events: [
+      {
+        id: "sporting-fundacion",
+        type: "fundacion",
+        label: "Fundación",
+        date: "1906-07-01",
+        year: 1906,
+        description: "José Alvalade funda el Sporting Clube de Portugal en Lisboa.",
+        source: "Sporting Clube de Portugal — Historia oficial",
+        confidence: "exacta",
+        primaryForAffinity: true,
       },
     ],
   },
@@ -382,6 +455,25 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
     ],
   },
   {
+    id: "soda-stereo", name: "Soda Stereo", type: "artist", foundingYear: 1982, country: "Argentina",
+    emoji: "🎸",
+    description: "Soda Stereo es la banda de rock en español más influyente de Latinoamérica, referencia ineludible del new wave y el rock latino.",
+    keyThemes: ["Reinvención", "Vanguardia", "Latinoamérica", "Elegancia"],
+    sourceNote: "Formada en 1982 en Buenos Aires por Gustavo Cerati, Zeta Bosio y Charly Alberti. Fecha exacta de formación no documentada públicamente; se usa el año.",
+    events: [
+      {
+        id: "soda-stereo-formacion",
+        type: "creacion",
+        label: "Formación de la banda",
+        year: 1982,
+        description: "Gustavo Cerati, Héctor «Zeta» Bosio y Charly Alberti forman Soda Stereo en Buenos Aires.",
+        source: "Soda Stereo — Historia oficial / Wikipedia",
+        confidence: "media",
+        primaryForAffinity: true,
+      },
+    ],
+  },
+  {
     id: "tango", name: "Carlos Gardel", type: "artist", foundingYear: 1890, country: "Argentina",
     emoji: "\ud83c\udfb5",
     description: "Carlos Gardel es la voz m\u00edtica del tango. Su figura trasciende la m\u00fAsica para convertirse en s\u00edmbolo cultural.",
@@ -416,4 +508,35 @@ export function getEntityById(id: string): SymbolicEntity | undefined {
 export function getAvailableTypes(): EntityType[] {
   const types = new Set(SYMBOLIC_ENTITIES.map(e => e.type));
   return Array.from(types);
+}
+
+/**
+ * Entity types with real per-country coverage (ciudades, artistas,
+ * universidades, equipos all have dedicated country data files —
+ * cities-argentina.ts, artists-chile.ts, etc.). "country" itself and
+ * global-only types (brand, movie) are excluded: narrowing "país" to just
+ * the user's own country would be a trivial, uninformative single result.
+ */
+const COUNTRY_FOCUSABLE_TYPES: EntityType[] = ["city", "artist", "university", "team"];
+
+function normalizeCountryName(name: string): string {
+  return name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+}
+
+/**
+ * Narrows entities to the user's own country for types where that's
+ * meaningful — un visitante de Chile ve ciudades/artistas/universidades/
+ * equipos de Chile, no una mezcla global de docenas de países. Si no hay
+ * datos locales para ese tipo (país sin cobertura todavía), devuelve la
+ * lista completa sin filtrar: mejor mostrar algo global que una página vacía.
+ */
+export function focusEntitiesByCountry(
+  entities: SymbolicEntity[],
+  type: EntityType,
+  userCountry?: string,
+): SymbolicEntity[] {
+  if (!userCountry || !COUNTRY_FOCUSABLE_TYPES.includes(type)) return entities;
+  const normalized = normalizeCountryName(userCountry);
+  const local = entities.filter(e => normalizeCountryName(e.country) === normalized);
+  return local.length > 0 ? local : entities;
 }

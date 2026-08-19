@@ -1,67 +1,74 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Archivo_Black, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
+import SiteIntro from "@/components/ui/SiteIntro";
+import SkipLink from "@/components/ui/SkipLink";
 import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
+import UniversityHeader from "@/components/layout/UniversityHeader";
+import UniversityFooter from "@/components/layout/UniversityFooter";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
-import Prism from "@/components/effects/Prism";
+import { SITE_URL } from "@/lib/seo";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" });
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
+const archivoBlack = Archivo_Black({ subsets: ["latin"], weight: "400", display: "swap", variable: "--font-display" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 
+// REVIEW: title.template above stops applying past a certain route-segment
+// depth (reproduced on Next 16.3/Turbopack via curl against rendered
+// <title>): every static child under compatibility/*, herramientas/*,
+// affinity/recommendations/*, and profile/insights lost the "| Molino"
+// suffix entirely rather than merging it, while shallower routes (e.g.
+// /affinity, /herramientas, /guia) were unaffected. Worked around by
+// hardcoding the full title string on each affected route instead of
+// relying on the template — root-causing the actual Next.js metadata
+// resolution behavior needs more time than this pass budgeted.
 export const metadata: Metadata = {
   title: {
-    default: "Molino — Inteligencia Personal",
+    default: "Molino — Mapa Personal de Autoconocimiento",
     template: "%s | Molino",
   },
   description:
-    "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Molino combina numerología, astrología, zodiaco chino y análisis de patrones para construir tu mapa personal de autoconocimiento.",
+    "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   keywords: [
-    "personal intelligence",
     "autoconocimiento",
     "numerología",
     "astrología",
     "mapa personal",
-    "arquetipos",
     "zodiaco chino",
     "ciclos personales",
     "Camino de Vida",
-    "gratuito",
     "sin registro",
     "código abierto",
+    "sin cookies",
   ],
   authors: [{ name: "Molino" }],
   creator: "Molino",
   openGraph: {
     type: "website",
-    locale: "es_AR",
-    url: "https://molino-alpha.vercel.app",
+    // es_419: español latinoamericano neutro (no atado a un país). Cuando
+    // existan en/pt-BR reales, esto se vuelve dinámico por locale de ruta.
+    locale: "es_419",
+    alternateLocale: ["en_US", "pt_BR"],
+    url: SITE_URL,
     siteName: "Molino",
-    title: "Molino — Inteligencia Personal",
+    title: "Molino — Mapa Personal de Autoconocimiento",
     description:
-      "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología, zodiaco chino y análisis de patrones conectados.",
-    images: [
-      {
-        url: "https://molino-alpha.vercel.app/og-image.svg",
-        width: 1200,
-        height: 630,
-        alt: "Molino — Inteligencia Personal",
-      },
-    ],
+      "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Molino — Inteligencia Personal",
+    title: "Molino — Mapa Personal de Autoconocimiento",
     description:
-      "Entendé quién sos. Reconocé tus patrones. Tomá mejores decisiones. Numerología, astrología y análisis de patrones.",
-    images: ["https://molino-alpha.vercel.app/og-image.svg"],
+      "Generá tu mapa personal cruzando numerología, astrología y zodíaco chino. Gratis, sin registro, sin guardar datos.",
   },
-  metadataBase: new URL("https://molino-alpha.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
-    canonical: "https://molino-alpha.vercel.app",
+    canonical: SITE_URL,
   },
   robots: {
     index: true,
@@ -77,7 +84,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F5F0",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
 };
@@ -87,67 +94,99 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const webSiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Molino",
-    url: "https://molino-alpha.vercel.app",
-    description: "Inteligencia Personal: numerología, astrología, zodiaco chino y análisis de patrones.",
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Molino",
+      url: SITE_URL,
+      description: "Mapa Personal de Autoconocimiento: numerología, astrología, zodiaco chino y análisis de patrones.",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "Molino",
+      url: SITE_URL,
+      applicationCategory: "EducationalApplication",
+      operatingSystem: "Web",
+      description: "Aplicación web de autoconocimiento que genera un mapa personal combinando numerología pitagórica, astrología occidental y zodíaco chino.",
+      offers: {
+        "@type": "Offer",
+        price: "8",
+        priceCurrency: "USD",
+        description: "Premium — síntesis completa. Pago único, acceso permanente.",
+      },
+      author: {
+        "@type": "Organization",
+        name: "Molino",
+      },
+    },
+  ];
 
   return (
-    <html lang="es" className={`${inter.variable} ${playfair.variable}`}>
+    <html
+      lang="es"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${inter.variable} ${archivoBlack.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
+    >
       <head>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
+        {jsonLd.map((schema, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+        ))}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body>
-        <div className="fixed inset-0 -z-10 opacity-[0.08] pointer-events-none" aria-hidden="true">
-          <Prism
-            animationType="rotate"
-            timeScale={0.15}
-            height={3.5}
-            baseWidth={5.5}
-            scale={3.6}
-            hueShift={0}
-            colorFrequency={0.5}
-            noise={0.15}
-            glow={0.3}
-            bloom={0.3}
-            transparent={true}
-            suspendWhenOffscreen={false}
+<body>
+          <div
+            aria-hidden="true"
+            style={{ display: "none" }}
+            dangerouslySetInnerHTML={{
+              __html: `<!--
+THESIS: Molino no ilustra lo mistico, lo calcula en vivo -- el sitio se muestra
+como el instrumento que muele tres sistemas (numerologia, astrologia, zodiaco
+chino) en un mapa, y refusa el hero-metric estatico y el "neon sobre negro" generico.
+OWN-WORLD: fondo casi negro (#0A0A0C) + textura de grano (Grainient dorado/marron,
+ya en el repo) + un nucleo de turbina de 3 aspas, cada una con el color de un
+sistema (oro numerologia, indigo astrologia, jade zodiaco); Archivo Black para
+cifras/titulos, JetBrains Mono para lecturas/datos.
+STORY: el visitante ve su fecha entrar como grano y salir como numero del dia;
+entiende que cada cifra es trazable, no decorativa, y arranca el onboarding.
+FIRST VIEWPORT: hero full-bleed, turbina girando a la derecha/detras, numero del
+dia "molido" a la izquierda con su calculo visible, CTA "Crear mi mapa" debajo.
+FORM: Molino / Turbina Viva -- direccion asignada por concept-seed (candidato 5/7,
+seed 3b23cd2e), literalizando el molino del nombre como nucleo generativo.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish
+review, the verdict, and DESIGN.md.
+-->`,
+            }}
           />
-        </div>
-        <a href="#main-content" className="skip-link">
-          Saltar al contenido principal
-        </a>
-        <AnalyticsProvider />
-        <MotionProvider>
-          <AppErrorBoundary>
-            <AnimatedLayout>{children}</AnimatedLayout>
-          </AppErrorBoundary>
-        </MotionProvider>
-        <Toaster position="bottom-right" richColors />
-        {process.env.NEXT_PUBLIC_POSTHOG_KEY && (
-          <>
-            <Script
-              src="https://eu.i.posthog.com/static/array.js"
-              strategy="afterInteractive"
-            />
-            <Script id="posthog-init" strategy="afterInteractive">
-              {`window.posthog && window.posthog.init('${process.env.NEXT_PUBLIC_POSTHOG_KEY}', {
-                api_host: 'https://eu.i.posthog.com',
-                cookieless_mode: 'always',
-                capture_pageview: false,
-                capture_pageleave: false,
-                autocapture: false
-              });`}
-            </Script>
-          </>
-        )}
+          <SkipLink />
+          <SiteIntro />
+          <AnalyticsProvider />
+          <MotionProvider>
+            <ScrollProgress />
+            <UniversityHeader />
+            <AppErrorBoundary>
+              <AnimatedLayout>{children}</AnimatedLayout>
+              <UniversityFooter />
+            </AppErrorBoundary>
+          </MotionProvider>
+          {/* Sin theme="dark" caía al fondo blanco por defecto de sonner —
+              un toast de librería sin skin, roto contra el resto de la UI
+              (siempre oscura, sin theme toggle implementado). */}
+          <Toaster
+            position="bottom-right"
+            richColors
+            theme="dark"
+            toastOptions={{
+              classNames: {
+                toast: "!bg-background !text-foreground !border !border-ink/10 !font-sans",
+              },
+            }}
+          />
       </body>
     </html>
   );

@@ -85,9 +85,10 @@ describe("Product rule: 2 amigos (triad) + 1 enemigo (clash) por animal", () => 
       expect(profile.challengingRelations).toHaveLength(1);
     });
 
-    test(`${animal} getFriends returns 3 (2 triad + 1 liuHe)`, () => {
+    test(`${animal} getFriends returns 2 (triad only)`, () => {
       const friends = getFriends(animal as Animal);
-      expect(friends).toHaveLength(3);
+      expect(friends).toHaveLength(2);
+      expect(friends.every(f => f.type === "triad")).toBe(true);
     });
 
     test(`${animal} getChallenging returns 1`, () => {

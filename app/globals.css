@@ -3,64 +3,137 @@
 @tailwind utilities;
 
 :root {
-  --color-ink: #1A1A1A;
-  --color-paper: #FBFBFB;
-  --color-cream: #F7F5F0;
-  --color-warm: #8B7355;
-  --color-accent: #C49A2A;
-  --color-accent-hover: #B8946E;
-  --color-muted: #6B7280;
-  --color-border: #E8E5DE;
-  --color-background: var(--color-cream);
+  /* ═══════════════════════════════════════════════════════════════
+     REBUILD — base oscura premium (reemplaza la base clara anterior).
+     "ink" sigue siendo el color de la marca legible, "paper" sigue
+     siendo la superficie — solo se invirtieron los valores, así que
+     TODA utilidad existente (bg-background, text-foreground, border-ink/10,
+     bg-ink/[0.04], text-paper/70, etc.) hereda el cambio sin tocar
+     componentes uno por uno.
+     ═══════════════════════════════════════════════════════════════ */
+  --color-ink: #F3F1EA;
+  --color-paper: #0A0A0C;
+  --color-paper-alt: #16161A;
+  --color-accent: #7C8CFF;
+  --color-accent-hover: #94A0FF;
+  --color-accent-light: #AEB8FF;
+  /* B0B0A6 en vez de A6A69C: el valor anterior hacía que text-muted/70 (el
+     uso más común para texto secundario en todo el sitio) cayera a ~4.3:1
+     sobre los fondos oscuros del sitio, por debajo del mínimo WCAG AA de
+     4.5:1 para texto normal. Este valor deja text-muted/70 en ~4.7:1+
+     verificado contra bg-card (#131315, el fondo más oscuro en uso) sin
+     cambiar perceptiblemente el carácter "apagado" del tono. */
+  --color-muted: #B0B0A6;
+
+  /* Mismos colores en RGB espaciado — Tailwind necesita este formato
+     (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
+     modificador de opacidad (ej. text-paper/70). Con la variable en hex
+     plano, Tailwind no puede aplicar la opacidad y la clase queda sin
+     efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
+     en varias secciones del sitio. Ver tailwind.config.ts. */
+  --color-ink-rgb: 243 241 234;
+  --color-paper-rgb: 10 10 12;
+  --color-accent-rgb: 124 140 255;
+  --color-accent-light-rgb: 174 184 255;
+  --color-muted-rgb: 176 176 166;
+  --color-border: #2A2A2E;
+  --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
-  --color-card: var(--color-paper);
+  --color-card: #131315;
   --color-card-border: var(--color-border);
+  --color-surface-elevated: #1B1B1E;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
-  --color-accent-foreground: var(--color-ink);
-  --color-success: #2D5A3D;
+  --color-accent-foreground: var(--color-paper);
+  --color-success: #10B981;
   --color-success-foreground: var(--color-ink);
-  --color-warning: #C49A2A;
-  --color-warning-foreground: var(--color-ink);
-  --color-error: #B91C1C;
-  --color-error-foreground: var(--color-paper);
+  --color-warning: #7C8CFF;
+  --color-warning-foreground: var(--color-paper);
+  --color-error: #EF4444;
+  --color-error-foreground: var(--color-ink);
 
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
+  /*
+   * Radios — sistema hibrido.
+   *
+   * REGLA: la estructura es filosa, el detalle es suave.
+   *   - Estructura (secciones full-bleed, divisiones de grilla, bloques de
+   *     color, barras de datos): `rounded-none`. Es lo que da el caracter
+   *     editorial y no se toca.
+   *   - Detalle (botones, inputs, tarjetas, chips, badges, modales): estos
+   *     radios. Es lo que hace que la interfaz se sienta amable al usarla.
+   */
+  --radius-sm: 0.375rem;  /* 6px  — chips, badges, tags */
+  --radius-md: 0.625rem;  /* 10px — botones, inputs, tarjetas */
+  --radius-lg: 0.875rem;  /* 14px — modales, tarjetas grandes */
+  --radius-xl: 1.25rem;   /* 20px — contenedores destacados */
 
-  --section-padding: 7rem;
-  --card-padding: 1.75rem;
-  --grid-gap: 1.25rem;
+  --section-padding: 4rem;
+  --card-padding: 1.5rem;
+  --grid-gap: 0;
 
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
+  /*
+   * Spacing scale — fixed tokens. No values between these without justification.
+   *
+   *   xs:   8px  (0.5rem)  →  p-2
+   *   sm:  12px  (0.75rem) →  p-3
+   *   md:  16px  (1rem)    →  p-4
+   *   lg:  24px  (1.5rem)  →  p-6
+   *   xl:  32px  (2rem)    →  p-8
+   *   2xl: 48px  (3rem)    →  p-12
+   *   3xl: 64px  (4rem)    →  p-16
+   *   4xl: 96px  (6rem)    →  p-24
+   *   5xl: 128px (8rem)    →  p-32
+   */
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
 
-  --font-serif: 'Playfair Display', serif;
+  /* ═══════════════════════════════════════════════════════════════
+     TIPOGRAFÍA — Escala cerrada
+     ═══════════════════════════════════════════════════════════════
+     Display  (--step-8, 4.5rem, 72px)  →  font-display, lh 0.85
+     H1       (--step-6, 3rem,   48px)  →  font-display, lh 0.9
+     H2       (--step-5, 2.25rem, 36px) →  font-display, lh 1.0
+     H3       (--step-4, 1.75rem, 28px) →  font-heading, lh 1.1
+     H4       (--step-3, 1.375rem,22px) →  font-heading, lh 1.2
+     Body L   (--step-2, 1.125rem, 18px) → font-sans,    lh 1.6
+     Body     (--step-1, 1rem,    16px) →  font-sans,    lh 1.6
+     Caption  (0.875rem, 14px)          →  font-sans,    lh 1.5
+     Overline (0.7rem,   11px)          →  font-mono,    lh 1.0
+     ═══════════════════════════════════════════════════════════════ */
+  --font-display: 'Archivo Black', sans-serif;
   --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
   --tracking-tight: -0.02em;
 
-  --shadow-sm: 0 1px 3px 0 rgba(26, 26, 26, 0.05), 0 1px 2px -1px rgba(26, 26, 26, 0.05);
-  --shadow-md: 0 6px 12px -2px rgba(26, 26, 26, 0.08), 0 3px 6px -3px rgba(26, 26, 26, 0.06);
-  --shadow-lg: 0 12px 18px -4px rgba(26, 26, 26, 0.1), 0 5px 10px -6px rgba(26, 26, 26, 0.06);
-  --shadow-xl: 0 22px 28px -6px rgba(26, 26, 26, 0.12), 0 10px 14px -8px rgba(26, 26, 26, 0.08);
-  --shadow-glow: 0 0 50px rgba(196, 154, 42, 0.12);
-  --shadow-glow-accent: 0 0 40px rgba(212, 168, 67, 0.08);
-  --shadow-inner: inset 0 2px 4px 0 rgba(26, 26, 26, 0.05);
+  /*
+   * Sombras — sutiles y en capas. Sirven para separar el detalle del fondo,
+   * no para simular profundidad exagerada. Van solo en elementos de detalle.
+   */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.36), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.48), 0 4px 12px rgba(0, 0, 0, 0.28);
+  --shadow-glow: none;
+  --shadow-glow-accent: 0 4px 20px rgba(124, 140, 255, 0.32);
+  --shadow-inner: inset 0 1px 2px rgba(0, 0, 0, 0.24);
 
   --max-width-content: 680px;
-  --max-width-wide: 1200px;
-  --max-width-layout: 1200px;
-  --max-width-article: 680px;
+  --max-input: 480px;
+  --max-card: 384px;
+  --max-wide: 1280px;
+  --max-layout: 1280px;
 
   --step-1-text: 1rem;
   --step-2-text: 1.125rem;
@@ -71,53 +144,53 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(26, 26, 26, 0.25);
-  --color-ink-alpha-03: rgba(26, 26, 26, 0.03);
-  --color-accent-alpha-04: rgba(196, 154, 42, 0.08);
-  --color-accent-alpha-10: rgba(196, 154, 42, 0.12);
+  --color-ink-alpha-25: rgba(243, 241, 234, 0.25);
+  --color-ink-alpha-03: rgba(243, 241, 234, 0.05);
+  --color-accent-alpha-04: rgba(124, 140, 255, 0.1);
+  --color-accent-alpha-10: rgba(124, 140, 255, 0.16);
 
   /* Element colors */
-  --element-fire: #C49A2A;
-  --element-earth: #2D5A3D;
-  --element-air: #6B4C7A;
-  --element-water: #2E5C8A;
-  --element-metal: #7A8A99;
-  --element-wood: #8FBC8F;
+  --element-fire: #1E3AFF;
+  --element-earth: #059669;
+  --element-air: #7C3AED;
+  --element-water: #0284C7;
+  --element-metal: #838C95;
+  --element-wood: #10B981;
 
   /* Map layer colors */
-  --layer-identity: #C49A2A;
-  --layer-patterns: #8B7355;
-  --layer-numerology: #2E5C8A;
-  --layer-astrology: #6B4C7A;
-  --layer-cycles: #2D5A3D;
-  --layer-moment: #C44536;
+  --layer-identity: #1E3AFF;
+  --layer-patterns: #3B82F6;
+  --layer-numerology: #2563EB;
+  --layer-astrology: #7C3AED;
+  --layer-cycles: #059669;
+  --layer-moment: #DC2626;
 
   /* Category colors */
-  --cat-country: #C49A2A;
-  --cat-city: #4A5568;
-  --cat-brand: #6B4C7A;
-  --cat-band: #C44536;
-  --cat-movie: #2E5C8A;
-  --cat-book: #2D5A3D;
-  --cat-philosophy: #8B5CF6;
-  --cat-event: #B8860B;
-  --cat-food: #FF8C42;
-  --cat-color: #E8B4B8;
-  --cat-crystal: #4FD1C5;
-  --cat-deity: #F6AD55;
+  --cat-country: #1E3AFF;
+  --cat-city: #4B5563;
+  --cat-brand: #7C3AED;
+  --cat-band: #DC2626;
+  --cat-movie: #2563EB;
+  --cat-book: #059669;
+  --cat-philosophy: #7C3AED;
+  --cat-event: #1E3AFF;
+  --cat-food: #EA580C;
+  --cat-color: #EC4899;
+  --cat-crystal: #14B8A6;
+  --cat-deity: #F59E0B;
 
-  /* Score colors */
-  --score-excellent: #22C55E;
-  --score-good: #3B82F6;
-  --score-neutral: #EAB308;
-  --score-poor: #EF4444;
+  /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo */
+  --score-excellent: #AEB8FF;
+  --score-good: #7C8CFF;
+  --score-neutral: #A6A69C;
+  --score-poor: #6B6B63;
 
   /* Overlay */
-  --overlay: rgba(0, 0, 0, 0.5);
-  --overlay-light: rgba(0, 0, 0, 0.3);
+  --overlay: rgba(0, 0, 0, 0.6);
+  --overlay-light: rgba(0, 0, 0, 0.4);
 
   /* Skeleton */
-  --skeleton: #E8E5DE;
+  --skeleton: #1E1E22;
 }
 
 @layer base {
@@ -129,6 +202,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -146,17 +220,18 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 1.1;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.0;
     color: var(--color-foreground);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
   }
 
-  h1 { font-size: var(--step-5-text); }
-  h2 { font-size: var(--step-4-text); }
-  h3 { font-size: var(--step-3-text); }
-  h4 { font-size: var(--step-2-text); }
+  h1 { font-size: var(--step-6-text); }
+  h2 { font-size: var(--step-5-text); }
+  h3 { font-size: var(--step-4-text); }
+  h4 { font-size: var(--step-3-text); }
 
   p {
     color: var(--color-muted);
@@ -182,14 +257,17 @@
   button:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
-    border-radius: var(--radius-pill);
+  }
+
+  input[type="date"] {
+    color-scheme: dark;
   }
 
   input:focus-visible,
   select:focus-visible {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(196, 154, 42, 0.18);
+    box-shadow: 0 0 0 3px rgba(124, 140, 255, 0.24);
   }
 
   .skip-link {
@@ -211,7 +289,7 @@
   }
 
   ::selection {
-    background: rgba(196, 154, 42, 0.22);
+    background: rgba(124, 140, 255, 0.28);
     color: var(--color-foreground);
   }
 
@@ -256,33 +334,28 @@
 
 @layer components {
   /* ═══════════════════════════════════════════════════════════════
-     EDITORIAL SECTION SYSTEM — varied visual treatments
+     BRUTALIST EDITORIAL SECTION SYSTEM
      ═══════════════════════════════════════════════════════════════ */
 
   .section-editorial {
-    padding: 5rem 0;
+    padding: 6rem 0;
   }
 
   .section-editorial-lg {
-    padding: 7rem 0;
+    padding: 10rem 0;
   }
 
   .section-dark {
-    background: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
   .section-dark p:not([class*="text-"]) {
     color: var(--color-muted);
   }
 
-  .section-ink {
-    background: var(--color-ink);
-    color: var(--color-paper);
-  }
-
-  .section-cream {
-    background: var(--color-cream);
+  .section-paper-alt {
+    background: var(--color-paper-alt);
   }
 
   .section-full-bleed {
@@ -291,11 +364,11 @@
     margin-right: calc(-50vw + 50%);
   }
 
-  /* Editorial number — large typographic presence */
+  /* Display number — signature element */
   .number-display {
-    font-family: var(--font-serif);
-    font-weight: 600;
-    line-height: 0.9;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.85;
     letter-spacing: -0.04em;
     color: var(--color-foreground);
   }
@@ -304,13 +377,24 @@
     color: var(--color-accent);
   }
 
-  /* Editorial label */
-  .label-editorial {
-    font-size: 0.625rem;
-    font-weight: 500;
-    letter-spacing: 0.25em;
+  /* Micro label — utility tags in caps */
+  .label-micro {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-muted);
+  }
+
+  /* Section eyebrow */
+  .eyebrow-brutalist {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   /* Editorial body text */
@@ -321,16 +405,16 @@
     max-width: 40rem;
   }
 
+  /* Accent block — solid color fill */
+  .accent-block {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+
   /* Accent line — used for visual separators */
   .line-accent {
     width: 3rem;
     height: 1px;
-    background: var(--color-accent);
-  }
-
-  .line-accent-lg {
-    width: 4rem;
-    height: 2px;
     background: var(--color-accent);
   }
 
@@ -356,39 +440,31 @@
   .card {
     background: var(--color-card);
     border: 1px solid var(--color-card-border);
-    border-radius: var(--radius-xl);
-    padding: var(--card-padding);
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: var(--card-padding);
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
   }
 
   .card:hover {
-    box-shadow: var(--shadow-md);
     border-color: var(--color-accent);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
 
   .card-static {
     background: var(--color-card);
     border: 1px solid var(--color-card-border);
-    border-radius: var(--radius-xl);
-    padding: var(--card-padding);
+    border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-  }
-
-  .card-glow {
-    background: var(--color-card);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius-xl);
     padding: var(--card-padding);
-    box-shadow: var(--shadow-glow);
   }
 
   .surface-elevated {
     background: var(--color-card);
     border: 1px solid var(--color-card-border);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
   }
 
   .input {
@@ -400,8 +476,8 @@
     border-radius: var(--radius-md);
     color: var(--color-foreground);
     font-family: var(--font-sans);
-    font-size: 0.95rem;
-    transition: border-color 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+    font-size: 1rem;
+    transition: border-color 200ms ease, background-color 200ms ease;
   }
 
   .input:hover {
@@ -411,7 +487,7 @@
   .input:focus {
     outline: none;
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(196, 154, 42, 0.18);
+    box-shadow: 0 0 0 3px rgb(var(--color-accent-rgb) / 0.18);
     background-color: var(--color-card);
   }
 
@@ -424,12 +500,14 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.7rem 1.4rem;
-    border-radius: var(--radius-pill);
-    font-weight: 500;
-    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
     line-height: 1;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: var(--radius-md);
+    transition: all 200ms ease;
     cursor: pointer;
     border: none;
     text-decoration: none;
@@ -437,35 +515,26 @@
   }
 
   .btn:hover {
-    transform: translateY(-1px);
-  }
-
-  .btn:active {
-    transform: scale(0.98);
+    opacity: 0.9;
   }
 
   .btn-primary {
-    background: var(--color-primary);
-    color: var(--color-primary-foreground);
-    box-shadow: var(--shadow-sm);
+    background: var(--color-ink);
+    color: var(--color-paper);
   }
 
   .btn-primary:hover {
     background: var(--color-accent);
     color: var(--color-accent-foreground);
-    box-shadow: var(--shadow-md);
   }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--color-secondary-foreground);
-    border: 1px solid var(--color-card-border);
+  .btn-accent {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
   }
 
-  .btn-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-foreground);
-    background: var(--color-accent-alpha-04);
+  .btn-accent:hover {
+    opacity: 0.9;
   }
 
   .btn-ghost {
@@ -482,7 +551,21 @@
   .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
+  }
+
+  .btn-accent:disabled,
+  .btn-primary:disabled,
+  .btn-ghost:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn:focus-visible,
+  .btn-accent:focus-visible,
+  .btn-primary:focus-visible,
+  .btn-ghost:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 
   .section {
@@ -495,31 +578,33 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.35rem 1rem;
-    border-radius: var(--radius-pill);
-    font-size: 0.75rem;
-    font-weight: 500;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
     color: var(--color-accent-foreground);
-    background: var(--color-accent-alpha-10);
-    border: 1px solid rgba(196, 154, 42, 0.25);
-    transition: background-color 150ms ease, border-color 150ms ease;
+    background: var(--color-accent);
+    transition: opacity 150ms ease;
   }
 
   .badge:hover {
-    background: rgba(196, 154, 42, 0.18);
+    opacity: 0.85;
   }
 
   .map-node {
     position: relative;
     background: var(--color-card);
     border: 1px solid var(--color-card-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     padding: 1.25rem;
     transition: border-color 200ms ease, box-shadow 200ms ease;
   }
 
   .map-node:hover {
     border-color: var(--color-accent);
-    box-shadow: var(--shadow-md);
   }
 
   .map-connector {
@@ -560,6 +645,38 @@
   .stagger-4 { animation-delay: 0.2s; }
   .stagger-5 { animation-delay: 0.25s; }
   .stagger-6 { animation-delay: 0.3s; }
+
+  .section-spacing {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-spacing {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-spacing {
+      padding-top: 10rem;
+      padding-bottom: 10rem;
+    }
+  }
+
+  .card-hover {
+    transition: border-color 0.2s ease;
+  }
+
+  .card-hover:hover {
+    border-color: var(--color-accent);
+  }
+}
+
+@keyframes molino-rotor-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {

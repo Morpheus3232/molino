@@ -1,32 +1,15 @@
 // Centralized framer-motion animation variants
 // Use these instead of defining animations inline
 
-import { useEffect, useState } from "react";
-
-// Check if user prefers reduced motion
-export function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined") return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-// Hook for reduced motion state in components
-export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return reduced;
-}
+// NOTE: useReducedMotion/prefersReducedMotion live in motion-hooks.ts
+// (client-only). This module stays free of React hooks so it can be
+// imported by Server Components.
 
 // Fade in from below (most common)
 export const fadeUp = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: "easeOut" as const },
 };
 
@@ -34,7 +17,7 @@ export const fadeUp = {
 export const fadeUpDelayed = (delay: number) => ({
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
@@ -42,7 +25,7 @@ export const fadeUpDelayed = (delay: number) => ({
 export const fadeIn = {
   initial: { opacity: 0 },
   whileInView: { opacity: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -50,7 +33,7 @@ export const fadeIn = {
 export const scaleUp = {
   initial: { opacity: 0, scale: 0.95 },
   whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -58,13 +41,16 @@ export const scaleUp = {
 export const staggerContainer = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.08 } },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
 };
 
-// Stagger item (use inside staggerContainer)
+// Stagger item (use inside staggerContainer) — needs its own viewport:{once:true}
+// or it reverts to invisible whenever it scrolls out of view again (e.g. after
+// the app's own scrollTo(0,0) on navigation), leaving content stuck hidden.
 export const staggerItem = {
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.4, ease: "easeOut" as const },
 };
 
@@ -79,13 +65,14 @@ export const pageEnter = {
 export const staggerSection = {
   initial: {},
   whileInView: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-  viewport: { once: true, margin: "-60px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
 };
 
 // Stagger item for cards inside a section
 export const staggerCard = {
   initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: "easeOut" as const },
 };
 
@@ -93,7 +80,7 @@ export const staggerCard = {
 export const numberReveal = {
   initial: { opacity: 0, scale: 0.8 },
   whileInView: { opacity: 1, scale: 1 },
-  viewport: { once: true, margin: "-40px" },
+  viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
 

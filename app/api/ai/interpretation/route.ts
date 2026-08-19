@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateWithOpenAI, generateWithClaude } from '@/lib/engines/aiEngine';
+import { generateWithRouting, getProviderStatus } from '@/lib/engines/providerRouter';
 import { buildIntelligencePrompt, generateFallbackInterpretation, type MolinoContext, type InterpretationType } from '@/lib/engines/intelligenceEngine';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
+
+const PREMIUM_TYPES = new Set<InterpretationType>(['personal_profile', 'question']);
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const rl = checkRateLimit(rateLimitKey(ip, 'ai/interpretation'), AI_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
+
   try {
     const body = await request.json();
 
-    // Support both legacy format and new Intelligence Engine format
     if (body.type && body.context) {
-      // New Intelligence Engine format
       return handleIntelligenceRequest(body);
     }
 
-    // Legacy format (backward compatibility)
     return handleLegacyRequest(body);
   } catch (error) {
     console.error('Error en API route:', error);
@@ -28,9 +33,9 @@ async function handleIntelligenceRequest(body: {
   context: MolinoContext;
   question?: string;
   template?: string;
-  provider?: 'openai' | 'claude';
+  provider?: 'openai' | 'claude' | 'openrouter';
 }) {
-  const { type, context, question, template, provider = 'openai' } = body;
+  const { type, context, question, template, provider } = body;
 
   if (!context?.userProfile) {
     return NextResponse.json(
@@ -39,14 +44,30 @@ async function handleIntelligenceRequest(body: {
     );
   }
 
+  if (PREMIUM_TYPES.has(type)) {
+    // This legacy route only serves free product types (compatibility,
+    // daily_energy, ...). Premium types are served exclusively by
+    // /api/intelligence/interpret, which carries the birthDate needed to
+    // derive the premium hash. Blocking here is fail-safe: no premium
+    // content can ever leak through this route.
+    return NextResponse.json(
+      { error: { code: 'premium_required', message: 'Premium content is not served by this endpoint' } },
+      { status: 403, headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+    );
+  }
+
   try {
     const prompt = template || buildIntelligencePrompt({ type, context, question });
 
-    const interpretation = provider === 'claude'
-      ? await generateWithClaude(context.userProfile as any, context.entity || { name: 'Análisis' }, context.compatibility as any, prompt)
-      : await generateWithOpenAI(context.userProfile as any, context.entity || { name: 'Análisis' }, context.compatibility as any, prompt);
+    const { interpretation, providerUsed, fallbackUsed } = await generateWithRouting(
+      context.userProfile as any,
+      context.entity || { name: 'Análisis' },
+      context.compatibility as any,
+      prompt,
+      provider
+    );
 
-    return NextResponse.json({ interpretation });
+    return NextResponse.json({ interpretation, providerUsed, fallbackUsed });
   } catch (error) {
     console.error('Error en Intelligence Engine:', error);
     return NextResponse.json({
@@ -60,10 +81,10 @@ async function handleLegacyRequest(body: {
   user: any;
   target: any;
   result: any;
-  provider?: 'openai' | 'claude';
+  provider?: 'openai' | 'claude' | 'openrouter';
   template?: string;
 }) {
-  const { user, target, result, provider = 'openai', template } = body;
+  const { user, target, result, provider, template } = body;
 
   if (!user || !target || !result) {
     return NextResponse.json(
@@ -73,14 +94,22 @@ async function handleLegacyRequest(body: {
   }
 
   try {
-    const interpretation = provider === 'claude'
-      ? await generateWithClaude(user, target, result, template)
-      : await generateWithOpenAI(user, target, result, template);
+    // Template intentionally ignored — the server builds its own prompt
+    // from user/target/result. Accepting a client-controlled template
+    // would allow prompt injection (template replaces system prompt
+    // verbatim in aiEngine.ts:222-231). The default prompt already
+    // includes the entity context needed for compatibility analysis.
+    const { interpretation, providerUsed, fallbackUsed } = await generateWithRouting(
+      user,
+      target,
+      result,
+      template,
+      provider
+    );
 
-    return NextResponse.json({ interpretation });
+    return NextResponse.json({ interpretation, providerUsed, fallbackUsed });
   } catch (error) {
     console.error('Error en IA:', error);
-    // For legacy format, return a simple fallback
     return NextResponse.json({
       interpretation: {
         narrative: 'Interpretación generada localmente.',

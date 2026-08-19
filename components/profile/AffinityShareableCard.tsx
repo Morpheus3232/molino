@@ -16,31 +16,31 @@ interface AffinityShareableCardProps {
  * Animal names are always clean: "Rata", "Caballo", "Dragón", etc. — no articles.
  */
 function buildShareText(result: AffinityResult): string {
-  const { entity, entityAnimal, userAnimal, score, relationship } = result;
+  const { entity, entityAnimal, userAnimal, relationship } = result;
   const emoji = entity.emoji || "";
   const tierLabel = TIER_META[result.tier].label;
 
   if (entityAnimal === userAnimal) {
-    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+    return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. ${tierLabel}. ¿Cuál es la tuya? Leelo en Molino ✨`;
   }
 
   if (relationship === "tríada compatible") {
-    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${tierLabel}. ¿Y vos? Leé tu afinidad en Molino ✨`;
   }
 
   if (relationship === "armonía natural") {
-    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${tierLabel}. Leé tu afinidad simbólica en Molino ✨`;
   }
 
   if (relationship === "opuestos en el ciclo") {
-    return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${tierLabel}. Mirá qué significa tu conexión en Molino ✨`;
   }
 
   if (relationship === "requiere atención") {
-    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
+    return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${tierLabel}. Leé tu afinidad en Molino ✨`;
   }
 
-  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
+  return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${tierLabel} — ${relationship}. ¿Cuál es la tuya? Leelo en Molino ✨`;
 }
 
 /**
@@ -122,7 +122,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
       {/* The card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-2xl border border-border bg-card max-w-full"
+        className="relative overflow-hidden rounded-md border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
         {/* Accent bar */}
@@ -131,95 +131,94 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
         <div className="p-6 sm:p-8">
           {/* Header */}
           <div className="mb-8">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium mb-1">
+            <p className="label-micro mb-1">
               Mi afinidad simbólica
             </p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted/60">
+            <p className="label-micro">
               Según el zodíaco chino
             </p>
           </div>
 
           {/* Main result — Animals face to face, visual hierarchy */}
-          <div className="flex items-center justify-center gap-3 sm:gap-5 mb-5 overflow-hidden">
+          <div className="flex items-center justify-center gap-3 sm:gap-6 mb-6 overflow-hidden">
             {/* Entity animal */}
             <div className="text-center flex-1 min-w-0">
               <span className="text-4xl sm:text-5xl block mb-2">{entity.emoji}</span>
-              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.entityAnimal)}</p>
-              <p className="text-[11px] text-muted mt-1 truncate">{entity.name}</p>
+              <p className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.entityAnimal)}</p>
+              <p className="text-xs text-muted mt-1 truncate">{entity.name}</p>
             </div>
 
-            {/* Score — central, impactful, never pushes */}
-            <div className="flex flex-col items-center shrink-0 px-1">
+            {/* Tier — central, impactful, never pushes */}
+            <div className="flex flex-col items-center shrink-0 px-1 max-w-[7rem]">
               <span
-                className="font-serif text-4xl sm:text-5xl font-bold leading-none"
+                className="font-heading text-lg sm:text-xl font-bold leading-tight text-center"
                 style={{ color: tierMeta.color }}
               >
-                {result.score}
+                {tierMeta.label}
               </span>
-              <span className="text-[10px] text-muted mt-1">/100</span>
             </div>
 
             {/* User animal */}
             <div className="text-center flex-1 min-w-0">
               <span className="text-4xl sm:text-5xl block mb-2">🪞</span>
-              <p className="font-serif text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.userAnimal)}</p>
-              <p className="text-[11px] text-muted mt-1">Vos</p>
+              <p className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight truncate">{formatAnimalSimple(result.userAnimal)}</p>
+              <p className="text-xs text-muted mt-1">Vos</p>
             </div>
           </div>
 
           {/* Relationship badge — clean, readable */}
           <div className="text-center mb-6">
             <span
-              className="text-[11px] font-medium uppercase tracking-wider px-4 py-1.5 rounded-full"
+              className="text-xs font-medium uppercase tracking-wider px-4 py-1.5 rounded-sm"
               style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
             >
-              {tierMeta.label} · {result.relationship}
+              {result.relationship}
             </span>
           </div>
 
           {/* One-line viral explanation — THE key line */}
           <div className="mb-6">
-            <p className="text-sm sm:text-[15px] text-foreground leading-relaxed text-center font-medium">
+            <p className="text-sm sm:text-sm text-foreground leading-relaxed text-center font-medium">
               {buildCardExplanation(result)}
             </p>
           </div>
 
-          {/* Event info + confidence — subtle, factual */}
-          <div className="flex flex-col items-center gap-1.5 text-[10px] text-muted/70 mb-6">
+          {/* Event info + confidence */}
+          <div className="flex flex-col items-center gap-1.5 text-xs text-muted mb-6">
             <div className="flex items-center justify-center gap-1.5">
               <span>{entity.name}</span>
               <span aria-hidden="true">·</span>
               <span>{eventDate}</span>
             </div>
             {event.confidence === "exacta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
-                <span className="w-1 h-1 rounded-full bg-green-600" />
+              <span className="inline-flex items-center gap-1 text-xs text-accent">
+                <span className="w-1 h-1 rounded-full bg-accent" />
                 Fecha histórica verificada
               </span>
             )}
             {event.confidence === "alta" && event.date && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-green-700">
-                <span className="w-1 h-1 rounded-full bg-green-600" />
+              <span className="inline-flex items-center gap-1 text-xs text-accent">
+                <span className="w-1 h-1 rounded-full bg-accent" />
                 Fecha histórica verificada
               </span>
             )}
             {result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-amber-600">
+              <span className="inline-flex items-center gap-1 text-xs text-amber-700">
                 <span className="w-1 h-1 rounded-full bg-amber-500" />
                 Fecha aproximada
               </span>
             )}
             {(event.confidence === "tradicion" || event.confidence === "baja") && !result.isApproximate && (
-              <span className="inline-flex items-center gap-1 text-[9px] text-muted/60">
+              <span className="inline-flex items-center gap-1 text-xs text-muted">
                 <span className="w-1 h-1 rounded-full bg-muted/50" />
                 Tradición cultural
               </span>
             )}
           </div>
 
-          {/* Transparency block — minimal */}
-          <div className="p-3 rounded-lg bg-background/50 mb-5">
-            <p className="text-[9px] text-muted/60 leading-relaxed text-center">
+          {/* Transparency block */}
+          <div className="p-3 rounded-md bg-background/50 mb-6">
+            <p className="text-xs text-muted leading-relaxed text-center">
               Basado en: fecha de nacimiento · fecha histórica de la entidad · tradición del zodíaco chino
             </p>
           </div>
@@ -227,26 +226,26 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
           {/* CTA */}
           <div className="text-center mb-4">
             <p className="text-xs text-muted">
-              Descubrí más afinidades en{" "}
+              Leé más afinidades en{" "}
               <span className="font-semibold text-foreground">Molino</span>
             </p>
           </div>
 
-          {/* Disclaimer — minimal, non-intrusive */}
-          <p className="text-[8px] text-muted/40 text-center leading-relaxed mb-4">
+          {/* Disclaimer */}
+          <p className="text-xs text-muted text-center leading-relaxed mb-4">
             Lectura simbólica. No constituye predicción científica.
           </p>
 
           {/* Footer */}
-          <div className="pt-4 border-t border-border flex items-center justify-between">
+          <div className="pt-4 border-t border-ink/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
                 <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent-light)" textAnchor="middle">M</text>
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Inteligencia Personal</span>
+            <span className="text-xs text-muted">Mapa personal de autoconocimiento</span>
           </div>
         </div>
       </div>
@@ -255,7 +254,7 @@ export default function AffinityShareableCard({ result }: AffinityShareableCardP
       <button
         type="button"
         onClick={handleShare}
-        className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+        className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground min-h-[44px]"
       >
         {copied ? (
           <>

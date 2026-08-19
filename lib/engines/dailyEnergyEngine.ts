@@ -279,7 +279,7 @@ function generateExplanation(
   return explanation;
 }
 
-function getYearTheme(year: number): string {
+export function getYearTheme(year: number): string {
   const themes: Record<number, string> = {
     1: "un año de nuevos comienzos",
     2: "un año de cooperación y relaciones",

@@ -1,17 +1,24 @@
-import React from "react";
+"use client";
+
+import { motion } from "framer-motion";
+import type { ReactNode } from "react";
 
 interface SectionProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
-  background?: "default" | "muted";
+  delay?: number;
 }
 
-export default function Section({ children, className = "", background = "default" }: SectionProps) {
-  const bgClass = background === "muted" ? "bg-background/80" : "bg-transparent";
-
+export default function Section({ children, className, delay = 0 }: SectionProps) {
   return (
-    <section className={`section ${bgClass} ${className}`}>
+    <motion.section
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.6, delay }}
+      className={`section-spacing ${className || ""}`}
+    >
       {children}
-    </section>
+    </motion.section>
   );
 }

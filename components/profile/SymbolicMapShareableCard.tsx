@@ -31,7 +31,7 @@ export default function SymbolicMapShareableCard({
 
   const display = getZodiacDisplay(userAnimal);
 
-  const shareText = `Mi mapa simbólico ${year}: ${display.name}. Aliados: ${friends.map(f => formatAnimalSimple(f.animal)).join(", ")}. Según el zodíaco chino. Descubrí el tuyo en Molino.`;
+  const shareText = `Mi mapa simbólico ${year}: ${display.name}. Aliados: ${friends.map(f => formatAnimalSimple(f.animal)).join(", ")}. Según el zodíaco chino. Leé el tuyo en Molino.`;
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -54,7 +54,7 @@ export default function SymbolicMapShareableCard({
       {/* The card */}
       <div
         ref={cardRef}
-        className="relative overflow-hidden rounded-2xl border border-border bg-card max-w-full"
+        className="relative overflow-hidden rounded-md border border-ink/10 bg-card max-w-full"
         style={{ maxWidth: "480px" }}
       >
         {/* Accent bar */}
@@ -63,10 +63,10 @@ export default function SymbolicMapShareableCard({
         <div className="p-6 sm:p-8">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted font-medium">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium">
               Mi mapa simbólico {year}
             </p>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted/60">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted">
               Según el zodíaco chino
             </p>
           </div>
@@ -74,17 +74,17 @@ export default function SymbolicMapShareableCard({
           {/* Main animal — hero */}
           <div className="text-center mb-6">
             <span className="text-6xl sm:text-7xl block mb-2">{display.emoji}</span>
-            <p className="font-serif text-3xl sm:text-4xl font-bold text-foreground">{display.name}</p>
+            <p className="font-heading text-3xl sm:text-4xl font-bold text-foreground">{display.name}</p>
             <p className="text-xs text-muted mt-1">Mi energía base{element ? ` · ${element}` : ""}</p>
           </div>
 
           {/* Allies */}
           {friends.length > 0 && (
-            <div className="mb-5">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Mis aliados</p>
               <div className="flex flex-wrap gap-2">
                 {friends.map((rel) => (
-                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background">
+                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
                     <span className="text-sm">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
                   </div>
@@ -95,11 +95,11 @@ export default function SymbolicMapShareableCard({
 
           {/* Challenging */}
           {challenging.length > 0 && (
-            <div className="mb-5">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
+            <div className="mb-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Energías para observar</p>
               <div className="flex flex-wrap gap-2">
                 {challenging.map((rel) => (
-                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background">
+                  <div key={rel.animal} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-background">
                     <span className="text-sm">{formatAnimalEmoji(rel.animal)}</span>
                     <span className="text-xs font-medium text-foreground">{rel.animal}</span>
                   </div>
@@ -109,15 +109,15 @@ export default function SymbolicMapShareableCard({
           )}
 
           {/* Year resonance */}
-          <div className="p-4 rounded-xl bg-background mb-5">
+          <div className="p-4 rounded-md bg-background mb-6">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{formatAnimalEmoji(yearAnimal)}</span>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-foreground">{year} — Año del {yearAnimal}</p>
-                <p className="text-[10px] text-muted">{yearResonance.label}</p>
+                <p className="text-xs text-muted">{yearResonance.label}</p>
               </div>
               <span className="text-xs font-medium" style={{ color: yearResonance.color }}>
-                {"★".repeat(yearResonance.type === "alignment" ? 5 : yearResonance.type === "harmony" ? 4 : yearResonance.type === "neutral" ? 3 : 2)}
+                {yearResonance.type === "alignment" ? "Alta" : yearResonance.type === "harmony" ? "Media" : yearResonance.type === "neutral" ? "Neutra" : "Baja"}
               </span>
             </div>
           </div>
@@ -125,26 +125,26 @@ export default function SymbolicMapShareableCard({
           {/* CTA */}
           <div className="text-center mb-4">
             <p className="text-xs text-muted">
-              Descubrí tu mapa en{" "}
+              Mirá tu mapa en{" "}
               <span className="font-semibold text-foreground">Molino</span>
             </p>
           </div>
 
           {/* Disclaimer */}
-          <p className="text-[8px] text-muted/40 text-center leading-relaxed mb-4">
+          <p className="text-xs text-muted text-center leading-relaxed mb-4">
             Lectura simbólica. No constituye predicción científica.
           </p>
 
           {/* Footer */}
-          <div className="pt-4 border-t border-border flex items-center justify-between">
+          <div className="pt-4 border-t border-ink/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <svg width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
                 <rect width="64" height="64" rx="14" fill="var(--color-foreground)" />
-                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent)" textAnchor="middle">M</text>
+                <text x="32" y="44" fontFamily="Georgia, serif" fontSize="36" fontWeight="700" fill="var(--color-accent-light)" textAnchor="middle">M</text>
               </svg>
               <span className="text-xs font-medium text-muted">Molino</span>
             </div>
-            <span className="text-[9px] text-muted">Inteligencia Personal</span>
+            <span className="text-xs text-muted">Mapa personal de autoconocimiento</span>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function SymbolicMapShareableCard({
       <button
         type="button"
         onClick={handleShare}
-        className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+        className="inline-flex items-center justify-center gap-2 font-medium transition-all px-6 py-3 text-sm bg-accent text-accent-foreground min-h-[44px]"
       >
         {copied ? (
           <>

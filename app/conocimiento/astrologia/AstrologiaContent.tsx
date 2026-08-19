@@ -1,13 +1,7 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
+import Reveal from "@/components/ui/Reveal";
 
 const ELEMENTS = [
   { name: "Fuego", signs: "Aries, Leo, Sagitario", traits: ["Energía", "Pasión", "Iniciativa"], color: "var(--element-fire)" },
@@ -23,39 +17,35 @@ const MODALITIES = [
 ];
 
 export default function AstrologiaContent() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/explore" className="hover:text-accent transition-colors">Conocimiento</Link>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Astrología</span>
         </nav>
 
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Conocimiento</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">Astrología</h1>
-          <h2 className="font-serif text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
+        <Reveal tag="section" className="mb-16 sm:mb-20">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">Astrología</h1>
+          <h2 className="font-heading text-xl sm:text-2xl text-muted mt-4 leading-relaxed max-w-2xl">
             El mapa del cielo de tu nacimiento y su tradición interpretativa.
           </h2>
-        </motion.section>
+        </Reveal>
 
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
+        <Reveal tag="section" delay={0.05} className="mb-12">
+          <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{ASTROLOGY_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Qué es */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.1} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Qué es la astrología</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Qué es la astrología</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -68,13 +58,13 @@ export default function AstrologiaContent() {
               Molino utiliza la astrología occidental (zodíaco tropical) como uno de los sistemas que componen tu mapa personal.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Historia */}
-        <motion.section {...fadeUpDelayed(0.12)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.12} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-base text-foreground leading-relaxed">
@@ -90,19 +80,19 @@ export default function AstrologiaContent() {
               <strong>Astrología moderna (siglo XX-XXI):</strong> Se popularizó en la cultura popular. El horóscopo solar (sun sign) se convirtió en la forma más conocida, aunque la tradición completa es mucho más compleja.
             </p>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Elementos y Modalidades */}
-        <motion.section {...fadeUpDelayed(0.14)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.14} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Elementos y modalidades</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Elementos y modalidades</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h3 className="font-serif text-lg font-semibold text-foreground">Elementos</h3>
+              <h3 className="font-heading text-lg font-semibold text-foreground">Elementos</h3>
               {ELEMENTS.map((el) => (
-                <div key={el.name} className="p-4 rounded-xl border border-border bg-card">
+                <div key={el.name} className="p-4 border border-ink/10">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="w-2 h-2 rounded-full" style={{ backgroundColor: el.color }} />
                     <p className="text-sm font-medium text-foreground">{el.name}</p>
@@ -113,9 +103,9 @@ export default function AstrologiaContent() {
               ))}
             </div>
             <div className="space-y-4">
-              <h3 className="font-serif text-lg font-semibold text-foreground">Modalidades</h3>
+              <h3 className="font-heading text-lg font-semibold text-foreground">Modalidades</h3>
               {MODALITIES.map((mod) => (
-                <div key={mod.name} className="p-4 rounded-xl border border-border bg-card">
+                <div key={mod.name} className="p-4 border border-ink/10">
                   <p className="text-sm font-medium text-foreground mb-1">{mod.name}</p>
                   <p className="text-xs text-muted">{mod.signs}</p>
                   <p className="text-xs text-muted mt-1">{mod.traits.join(" · ")}</p>
@@ -123,41 +113,41 @@ export default function AstrologiaContent() {
               ))}
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Los 12 Signos */}
-        <motion.section {...fadeUpDelayed(0.18)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.18} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Los 12 signos zodiacales</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Los 12 signos zodiacales</h2>
           </div>
           <p className="text-sm text-muted mb-8 max-w-2xl">
             Cada signo tiene un significado tradicional en la astrología. Estas interpretaciones pertenecen a la tradición y no representan evidencia científica.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {ZODIAC_SIGNS.map((sign, i) => (
-              <motion.button key={sign.name} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-20px" }} transition={{ delay: i * 0.03, duration: 0.35 }} onClick={() => router.push(`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`)} className="text-left p-5 rounded-xl border border-border bg-card hover:border-accent transition-all duration-200 ease-out hover:-translate-y-[2px] hover:shadow-sm group">
+            {ZODIAC_SIGNS.map((sign) => (
+              <Link key={sign.name} href={`/conocimiento/astrologia/${sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`} className="text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-2xl">{sign.symbol}</span>
-                  <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{sign.name}</h3>
+                  <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{sign.name}</h3>
                 </div>
                 <p className="text-xs text-muted">{sign.dates}</p>
                 <p className="text-xs text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
                   {sign.element} · {sign.modality}
                   <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1">→</span>
                 </p>
-              </motion.button>
+              </Link>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Limitaciones */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.2} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Diferencia entre astrología y astronomía</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Diferencia entre astrología y astronomía</h2>
           </div>
-          <div className="max-w-3xl p-5 rounded-xl border border-border bg-card">
+          <div className="max-w-3xl p-6 border border-ink/10">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-foreground mb-2">Astronomía</p>
@@ -169,13 +159,13 @@ export default function AstrologiaContent() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Fuentes */}
-        <motion.section {...fadeUpDelayed(0.22)} className="mb-16 sm:mb-20">
+        <Reveal tag="section" delay={0.22} className="mb-16 sm:mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes y referencias</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Fuentes y referencias</h2>
           </div>
           <div className="space-y-3 max-w-3xl">
             {[
@@ -193,29 +183,27 @@ export default function AstrologiaContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </Reveal>
 
         {/* Herramientas relacionadas */}
-        <motion.section {...fadeUpDelayed(0.22)} className="mb-12">
-          <div className="p-6 rounded-2xl border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Herramienta relacionada</p>
-            <h3 className="font-serif text-lg font-semibold text-foreground mb-2">Calculá tu Signo Solar</h3>
+        <Reveal tag="section" delay={0.22} className="mb-12">
+          <div className="p-6 border border-accent/20">
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Calculá tu Signo Solar</h3>
             <p className="text-sm text-muted leading-relaxed mb-4">
-              Ingresá tu fecha de nacimiento y descubrí tu signo zodiacal occidental.
+              Ingresá tu fecha de nacimiento y calculá tu signo zodiacal occidental.
             </p>
             <Link href="/herramientas/signo-solar" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →
             </Link>
           </div>
-        </motion.section>
+        </Reveal>
 
-        <motion.section {...fadeUpDelayed(0.24)}>
-          <div className="p-5 rounded-xl border border-border bg-card">
+        <Reveal tag="section" delay={0.24}>
+          <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </Reveal>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
-import { getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
-import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
+import {
+  calculateAllAffinityForAnimal,
+  getRepresentativeAffinitySet,
+  TIER_META,
+  type AffinityResult,
+} from "@/lib/engines/affinityEngine";
+import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
+import { focusEntitiesByCountry, type EntityType, type SymbolicEntity } from "@/lib/data/symbolic-entities";
+import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -18,159 +22,234 @@ interface AffinityTypeContentProps {
   entities: SymbolicEntity[];
 }
 
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
+
+const GROUPS: { key: "positive" | "mixed" | "negative"; label: string; symbol: string }[] = [
+  { key: "positive", label: "Resonantes", symbol: "●" },
+  { key: "mixed", label: "Complementarias", symbol: "◐" },
+  { key: "negative", label: "Contraste", symbol: "○" },
+];
+
 export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
-  const [search, setSearch] = useState("");
+  const userCountry = useUserContext().country;
 
-  const results = useMemo(() => {
-    if (!profile) return [];
-    return calculateAllAffinity(profile, entities);
-  }, [profile, entities]);
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const activeAnimal: Animal = selectedAnimal
+    ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
-  const filtered = useMemo(() => {
-    if (!search) return results;
-    const q = search.toLowerCase();
-    return results.filter((r) => r.entity.name.toLowerCase().includes(q));
-  }, [results, search]);
+  // El score queda intacto (afinidad zodiacal pura). El país del usuario
+  // acota QUÉ entidades se muestran (ciudades/artistas/universidades/equipos
+  // de su propio país en vez de una mezcla global de docenas de países) —
+  // nunca cómo se puntúan.
+  const focusedEntities = useMemo(
+    () => focusEntitiesByCountry(entities, type, userCountry),
+    [entities, type, userCountry]
+  );
 
-  if (!mounted) return <LoadingState message="Cargando..." />;
-
-  if (!profile) {
-    return (
-      <div className="min-h-screen bg-background">
-        <UniversityHeader />
-        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 py-24 text-center">
-          <div className="w-8 h-2 bg-accent mx-auto mb-8" />
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Personal · {meta.plural}
-          </p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-4">
-            {meta.icon} {meta.plural}
-          </h1>
-          <p className="text-muted mb-8 max-w-md mx-auto">
-            Creá tu perfil para descubrir qué {meta.plural.toLowerCase()} resuenan con tu identidad simbólica.
-          </p>
-          <button
-            type="button"
-            onClick={() => router.push("/onboarding")}
-            className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-8 py-4 text-base bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[52px]"
-          >
-            Crear mi perfil
-          </button>
-        </div>
-        <UniversityFooter />
-      </div>
+  const sorted = useMemo(
+    () => calculateAllAffinityForAnimal(activeAnimal, focusedEntities),
+    [activeAnimal, focusedEntities]
+  );
+  
+  // Filter results based on search query
+  const filteredSorted = useMemo(() => {
+    if (!searchQuery.trim()) return sorted;
+    const query = searchQuery.toLowerCase().trim();
+    return sorted.filter(r => 
+      r.entity.name.toLowerCase().includes(query) ||
+      r.entity.country.toLowerCase().includes(query) ||
+      r.entityAnimal.toLowerCase().includes(query)
     );
-  }
-
-  const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
+  }, [sorted, searchQuery]);
+  
+  const set = useMemo(() => getRepresentativeAffinitySet(filteredSorted), [filteredSorted]);
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      {/* Sin mode="wait": con "wait" el swap loading→contenido se queda
+          esperando para siempre a que la animación de salida del skeleton
+          termine — reproducido en local, la página no pasa nunca de
+          "Cargando afinidades...". Sin mode="wait" cross-fadea y sí commitea. */}
+      <AnimatePresence>
+        {!mounted ? (
+          <motion.div key="loading" variants={transitionVariants} initial="enter" animate="show" exit="exit">
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+              <p className="sr-only" role="status" aria-label="Cargando afinidades...">
+                Cargando afinidades...
+              </p>
+              <div className="animate-pulse">
+                <div className="h-3 bg-[var(--skeleton)] rounded w-12rem mb-6" />
+                <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+                <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+                <div className="h-64 bg-[var(--skeleton)] border border-ink/10" />
+              </div>
+            </main>
+          </motion.div>
+        ) : (
+          <motion.div key="content" variants={transitionVariants} initial="enter" animate="show" exit="exit">
+            <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
 
-        {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <button
-            type="button"
-            onClick={() => router.push("/affinity")}
-            className="text-sm text-muted hover:text-accent transition-colors mb-6 inline-flex items-center gap-2 min-h-[44px]"
-          >
-            &larr; Todas las categorías
-          </button>
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
-            Afinidad Personal · {meta.plural}
-          </p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
-            {meta.icon} {meta.plural}
-            <br />
-            <span className="text-muted">que resuenan con vos</span>
-          </h1>
-          <p className="text-base text-muted mt-6 max-w-xl leading-relaxed">
-            Tu animal{" "}
-            <span className="font-medium text-foreground">{userAnimal}</span> se conecta con cada{" "}
-            {meta.label.toLowerCase()} a través de su zodíaco chino, basado en el evento histórico principal.
-          </p>
-        </motion.section>
+              {/* HERO */}
+              <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
+                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+                  <button type="button" onClick={() => router.push("/affinity")} className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</button>
+                  <span>›</span>
+                  <span className="text-foreground font-medium">{meta.plural}</span>
+                </nav>
+                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] tracking-tight">
+                  Cómo resuena cada {meta.label.toLowerCase()}
+                </h1>
+                <p className="text-sm text-muted mt-4 max-w-xl">
+                  Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} aparecen sus patrones.
+                </p>
+                {userCountry && focusedEntities.length < entities.length && (
+                  <p className="text-xs text-accent mt-3">
+                    Mostrando {meta.plural.toLowerCase()} de {userCountry}, tu país en Molino.
+                  </p>
+                )}
+              </motion.div>
 
-        {/* Search */}
-        {results.length > 3 && (
-          <div className="mb-8">
-            <input
-              type="search"
-              placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full max-w-sm px-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
-              aria-label={`Buscar ${meta.plural.toLowerCase()}`}
-            />
-          </div>
+              {/* Contexto editorial — qué es y qué no es la resonancia */}
+              <div className="border-t border-ink/10 py-8">
+                <p className="text-sm text-foreground leading-relaxed max-w-2xl">
+                  Cada entidad tiene un animal asociado según su fecha de origen. La resonancia compara ese animal con el de tu mapa.
+                </p>
+                <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">
+                  No es una predicción ni una medida de compatibilidad personal. Es una lectura simbólica basada exclusivamente en la relación entre ambos animales del zodíaco chino.
+                </p>
+              </div>
+
+              {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
+              <div className="border-t border-ink/10 py-8">
+                <p className="label-micro mb-4">Animal</p>
+                <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide">
+                  {ANIMALS.map((animal) => {
+                    const display = getZodiacDisplay(animal);
+                    const isActive = animal === activeAnimal;
+                    return (
+                      <button
+                        key={animal}
+                        type="button"
+                        onClick={() => setSelectedAnimal(animal)}
+                        aria-pressed={isActive}
+                        className={`shrink-0 flex items-center gap-2 px-3 py-2 min-h-[44px] border text-sm transition-colors ${
+                          isActive
+                            ? "border-accent bg-accent/10 text-foreground"
+                            : "border-ink/10 text-muted hover:border-accent/40 hover:text-foreground"
+                        }`}
+                      >
+                        <span className="text-base" aria-hidden="true">{display.emoji}</span>
+                        <span className="font-medium">{display.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {profile?.chineseZodiac === activeAnimal && !selectedAnimal && (
+                  <p className="text-xs text-muted mt-3">Tu animal — {formatAnimalSimple(activeAnimal)}.</p>
+                )}
+              </div>
+
+              {/* SEARCH — Available for all types, shows before selecting entity */}
+              <div className="border-t border-ink/10 py-8">
+                <p className="label-micro mb-4">Buscar</p>
+                <input
+                  type="search"
+                  placeholder={`Buscar ${meta.plural.toLowerCase()}...`}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-4 py-3 border border-ink/10 bg-background text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent rounded-lg"
+                  aria-label={`Buscar ${meta.plural.toLowerCase()}`}
+                />
+                {searchQuery && (
+                  <p className="text-xs text-muted mt-2">
+                    {filteredSorted.length} resultado{filteredSorted.length !== 1 ? "s" : ""} para &quot;{searchQuery}&quot;
+                  </p>
+                )}
+              </div>
+
+              {/* 8 RESULTADOS REPRESENTATIVOS */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeAnimal}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="border-t border-ink/10"
+                >
+                  {GROUPS.map((group) => {
+                    const items = set[group.key];
+                    if (items.length === 0) return null;
+                    return (
+                      <div key={group.key} className="py-8 border-b border-ink/10 last:border-b-0">
+                        <div className="flex items-baseline gap-3 mb-4">
+                          <span className="text-accent text-xs" aria-hidden="true">{group.symbol}</span>
+                          <p className="label-micro">{group.label}</p>
+                        </div>
+                        <div className="space-y-0">
+                          {items.map((result) => (
+                            <ResultRow key={result.entity.id} result={result} type={type} onClick={() => router.push(`/affinity/${type}/${result.entity.id}`)} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </motion.div>
+              </AnimatePresence>
+            </main>
+          </motion.div>
         )}
-
-        {/* Results */}
-        <motion.div {...staggerContainer} className="space-y-3">
-          {filtered.map((result, i) => (
-            <EntityCard
-              key={result.entity.id}
-              result={result}
-              index={i}
-              type={type}
-              onClick={() => router.push(`/affinity/${type}/${result.entity.id}`)}
-            />
-          ))}
-        </motion.div>
-      </main>
-      <UniversityFooter />
+      </AnimatePresence>
     </div>
   );
 }
 
-function EntityCard({
+function ResultRow({
   result,
-  index,
   type,
   onClick,
 }: {
   result: AffinityResult;
-  index: number;
   type: EntityType;
   onClick: () => void;
 }) {
   const tierMeta = TIER_META[result.tier];
+  // Presentación editorial: el label del engine se mantiene, el color pasa
+  // a tonos de marca (accent/muted) — nunca semáforo verde/rojo.
+  const tierColor =
+    result.tier === "resonancia-alta" || result.tier === "afinidad-media"
+      ? "var(--color-accent)"
+      : "var(--color-muted)";
 
   return (
-    <motion.button
-      {...staggerItem}
+    <button
+      type="button"
       onClick={onClick}
-      className="w-full text-left p-5 sm:p-6 rounded-xl border border-border bg-card/60 hover:border-accent transition-all group flex items-center gap-4 sm:gap-6 relative overflow-hidden"
+      className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
-      <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ backgroundColor: tierMeta.color }} />
-      
-      {/* Rank + Emoji */}
-      <div className="flex flex-col items-center gap-1 shrink-0">
-        <span className="text-xs font-mono text-muted">{String(index + 1).padStart(2, "0")}</span>
-        <span className="text-2xl">{result.entity.emoji}</span>
-      </div>
-
-      {/* Name + Context */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-serif text-lg font-semibold text-foreground group-hover:text-accent transition-colors truncate">
-          {result.entity.name}
-        </h3>
-        <p className="text-xs text-muted truncate">
-          {result.entity.country} · {result.primaryEvent.label} ({result.primaryEvent.year})
-        </p>
-      </div>
-
-      {/* Score Insight */}
-      <div className="text-right shrink-0">
-        <div className="font-serif text-2xl font-bold" style={{ color: tierMeta.color }}>{result.score}</div>
-        <div className="text-[10px] font-medium uppercase tracking-wider mt-0.5" style={{ color: tierMeta.color }}>
-          {tierMeta.label}
+      <div className="flex items-center gap-4">
+        <span className="text-2xl shrink-0" aria-hidden="true">{result.entity.emoji}</span>
+        <div className="flex-1 min-w-0">
+          <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
+            {result.entity.name}
+          </p>
+          <p className="text-xs text-muted mt-0.5">
+            {formatAnimalSimple(result.entityAnimal)}
+          </p>
+        </div>
+        <div className="text-right shrink-0">
+          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierMeta.label}</p>
         </div>
       </div>
-    </motion.button>
+      {result.explanation && (
+        <p className="text-sm text-muted leading-relaxed mt-2 ml-10">{result.explanation}</p>
+      )}
+    </button>
   );
 }

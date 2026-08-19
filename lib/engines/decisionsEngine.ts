@@ -9,6 +9,7 @@
 import type { UserProfile } from '@/types/user';
 import { getPersonalDayForDate, getPersonalYear, getMoonPhase } from '@/lib/calculations';
 import { calculateDailyEnergy, type DailyEnergyResult } from './dailyEnergyEngine';
+import { detectDecisionIntent, type DecisionIntent } from './decisionIntent';
 
 export type DecisionCategory =
   | 'career'
@@ -36,6 +37,7 @@ export interface DecisionResult {
   personalYear: number;
   moonPhase: string;
   elementInfluence: string;
+  detectedIntent?: DecisionIntent;
 }
 
 const CATEGORY_LABELS: Record<DecisionCategory, string> = {
@@ -100,17 +102,19 @@ export function analyzeDecision(
     energyScore * 0.3
   );
 
+  const detectedIntent = detectDecisionIntent(question, category);
+
   // Generate recommendation
-  const recommendation = generateRecommendation(overallScore, category, personalDay);
+  const recommendation = generateRecommendation(overallScore, category, personalDay, detectedIntent, profile.element);
 
   // Generate reasoning
-  const reasoning = generateReasoning(profile, category, overallScore, personalDay, moonPhase.phase);
+  const reasoning = generateReasoning(profile, category, overallScore, personalDay, moonPhase.phase, detectedIntent);
 
   // Generate considerations
-  const considerations = generateConsiderations(profile, category, personalDay, personalYear);
+  const considerations = generateConsiderations(profile, category, personalDay, personalYear, detectedIntent);
 
   // Generate next steps
-  const nextSteps = generateNextSteps(overallScore, category);
+  const nextSteps = generateNextSteps(overallScore, category, detectedIntent);
 
   return {
     question,
@@ -127,6 +131,7 @@ export function analyzeDecision(
     personalYear,
     moonPhase: moonPhase.phase,
     elementInfluence: getElementDecisionInfluence(profile.element, category),
+    detectedIntent: detectedIntent ?? undefined,
   };
 }
 
@@ -203,18 +208,100 @@ function calculateTimingScore(
   return Math.min(100, Math.max(1, score));
 }
 
-function generateRecommendation(score: number, category: DecisionCategory, personalDay: number): string {
-  const categoryLabel = CATEGORY_LABELS[category];
+// Hoisted out of generateRecommendation() so this static table isn't
+// rebuilt on every call — same content, module-level constant.
+const RECOMMENDATION_TEMPLATES: Record<DecisionCategory, { high: string; medium: string; neutral: string; low: string }> = {
+  career: {
+    high: `El momento favorece decisiones de carrera. Confiá en tu iniciativa para dar el paso.`,
+    medium: `Reflexioná sobre tu entorno profesional. Pesá pros y contras antes de moverte.`,
+    neutral: `Carrera: momento neutro. Sin urgencia, podés esperar a mayor claridad.`,
+    low: `Decisiones laborales pueden encontrar obstáculos. Considerá posponer cambios mayores.`,
+  },
+  relationships: {
+    high: `Tu energía relacional está afinada. Es buen momento para conversaciones importantes o nuevos vínculos.`,
+    medium: `Las relaciones piden escucha antes de acción. No apures definiciones.`,
+    neutral: `Relaciones: momento neutro. Mantené el vínculo sin forzar profundidad hoy.`,
+    low: `Pueden aparecer malentendidos. Si es evitable, postergá charlas delicadas.`,
+  },
+  creativity: {
+    high: `La energía creativa está alta. Es el momento de lanzar, publicar o iniciar ese proyecto.`,
+    medium: `Tu creatividad pide espacio. Explorá ideas sin comprometerte todavía.`,
+    neutral: `Creatividad: momento neutro. La inspiración vendrá sin forzar.`,
+    low: `La energía creativa está baja. No fuerces la salida; dejá que madure.`,
+  },
+  finances: {
+    high: `El momento favorece decisiones financieras concretas. Inversiones, compras o planes van bien.`,
+    medium: `Evaluá opciones económicas con calma. No hay apuro por cerrar.`,
+    neutral: `Finanzas: momento neutro. Mantené el plan actual sin innovar hoy.`,
+    low: `Evita movimientos de dinero arriesgados. Priorizá la estabilidad y el ahorro.`,
+  },
+  health: {
+    high: `Tu cuerpo y mente piden acción. Es buen momento para rutinas, chequeos o cambios de hábito.`,
+    medium: `Cuidá tu bienestar con atención, sin dramatizar. Pequeños ajustes funcionan mejor.`,
+    neutral: `Salud: momento neutro. Mantené lo que funciona, no innoves hoy.`,
+    low: `Evita cambios bruscos en salud o rutina. Priorizá el reposo y la estabilidad.`,
+  },
+  education: {
+    high: `La mente está receptiva. Empezar un curso, estudio o investigación va bien ahora.`,
+    medium: `Explorá qué aprender sin comprometerte. La curiosidad guía mejor que la presión.`,
+    neutral: `Educación: momento neutro. No hay apuro por inscribirte hoy.`,
+    low: `El foco mental está disperso. Si podés, postergá inicios de estudio formales.`,
+  },
+  travel: {
+    high: `Tu energía abre caminos para viajar. Es buen momento para planear o decidir un destino.`,
+    medium: `Podés reflexionar sobre viajes sin apuro. Evaluá destinos y fechas con calma.`,
+    neutral: `Viajes: momento neutro. Si no tenés fecha fija, no hay presión para decidir.`,
+    low: `Los viajes pueden presentar imprevistos ahora. Si podés, postergá la reserva.`,
+  },
+  personal: {
+    high: `El momento favorece decisiones personales. Confiá en tu criterio para lo que te define.`,
+    medium: `Reflexioná sobre lo personal sin presión externa. El tiempo juega a tu favor.`,
+    neutral: `Personal: momento neutro. No hay urgencia por definir hoy.`,
+    low: `Las decisiones íntimas pueden encontrar ruido. Esperá mayor claridad interna.`,
+  },
+  other: {
+    high: `El momento es favorable para avanzar. Tu energía está alineada.`,
+    medium: `Es buen momento para reflexionar. Considerá los pros y contras.`,
+    neutral: `Momento neutro. Si no tenés prisa, podés esperar.`,
+    low: `Este momento presenta desafíos. Considerá postergar.`,
+  },
+};
 
+function generateRecommendation(score: number, category: DecisionCategory, personalDay: number, intent: DecisionIntent | null, element?: string): string {
+  const t = RECOMMENDATION_TEMPLATES[category];
+  let recommendation: string;
   if (score >= 75) {
-    return `El momento es favorable para tomar decisiones sobre ${categoryLabel.toLowerCase()}. Tu energía está alineada.`;
+    recommendation = t.high;
   } else if (score >= 55) {
-    return `Es un buen momento para reflexionar sobre ${categoryLabel.toLowerCase()}. Considerá los pros y contras.`;
+    recommendation = t.medium;
   } else if (score >= 40) {
-    return `El momento es neutral para ${categoryLabel.toLowerCase()}. Si no tenés prisa, podés esperar.`;
+    recommendation = t.neutral;
   } else {
-    return `Este momento presenta desafíos para decisiones sobre ${categoryLabel.toLowerCase()}. Considerá postergar.`;
+    recommendation = t.low;
   }
+
+  // El texto por tier+categoría es igual para cualquier perfil que caiga en
+  // ese mismo tier — con timing/energía compartidos entre las 6 categorías
+  // (60% del score), la mayoría de los perfiles terminaban leyendo el mismo
+  // puñado de frases. La afinidad elemento↔categoría ya participa del score
+  // (calculateAlignmentScore, +15 si coincide) pero nunca se explicaba: acá
+  // se hace visible el motivo real, que sí varía por persona y por categoría.
+  // Antes solo Fuego/Tierra (o el par que corresponda) recibía esta línea;
+  // los otros dos elementos de cada categoría no tenían ninguna señal propia.
+  if (element) {
+    recommendation += ` Tu elemento ${element.toLowerCase()} ${getElementDecisionInfluence(element, category)}.`;
+  }
+
+  if (intent) {
+    const intentLine: Record<DecisionIntent['kind'], string> = {
+      accion: ' Tu pregunta apunta a dar un paso concreto. Si te sentís alineado, avanzá con confianza.',
+      espera: ' Tu pregunta refleja una intención de esperar. Aprovechá el momento para no apurarte.',
+      revisar: ' Tu pregunta apunta a cerrar o abandonar algo. Valorá el cierre como parte del proceso.',
+    };
+    recommendation += intentLine[intent.kind];
+  }
+
+  return recommendation;
 }
 
 function generateReasoning(
@@ -222,15 +309,27 @@ function generateReasoning(
   category: DecisionCategory,
   overallScore: number,
   personalDay: number,
-  moonPhase: string
+  moonPhase: string,
+  intent: DecisionIntent | null
 ): string {
   const categoryLabel = CATEGORY_LABELS[category];
 
   let reasoning = `Analizando tu perfil para una decisión sobre ${categoryLabel.toLowerCase()}: `;
   reasoning += `Tu Life Path ${profile.lifePath} como ${profile.archetype} te da una perspectiva única. `;
-  reasoning += `Tu elemento ${profile.element} ${getElementDecisionInfluence(profile.element, category).toLowerCase()}. `;
+  // "Elemento" sin calificar es ambiguo con el elemento del zodíaco chino
+  // que Identidad muestra como dato protagonista — ver mismo fix en timingEngine.
+  reasoning += `Tu elemento astrológico, ${profile.element}, ${getElementDecisionInfluence(profile.element, category).toLowerCase()}. `;
   reasoning += `Hoy es personal day ${personalDay}, lo que ${getDayDecisionInfluence(personalDay).toLowerCase()}. `;
   reasoning += `La fase lunar ${moonPhase.toLowerCase()} ${getMoonDecisionInfluence(moonPhase).toLowerCase()}.`;
+
+  if (intent) {
+    const intentLine: Record<DecisionIntent['kind'], string> = {
+      accion: ' Tu intención de actuar es clara; el momento acompaña la iniciativa.',
+      espera: ' Tu señal de espera sugiere cautela; conviene darte más margen antes de ejecutar.',
+      revisar: ' Tu señal de revisión indica que este cierre puede liberarte energía.',
+    };
+    reasoning += intentLine[intent.kind];
+  }
 
   return reasoning;
 }
@@ -239,13 +338,22 @@ function generateConsiderations(
   profile: UserProfile,
   category: DecisionCategory,
   personalDay: number,
-  personalYear: number
+  personalYear: number,
+  intent: DecisionIntent | null
 ): string[] {
   const considerations: string[] = [];
 
   // Life Path considerations
-  if (profile.lifePath === 1 || profile.lifePath === 8) {
-    considerations.push("Tu energía de liderazgo te impulsa a decidir rápido. Asegurate de considerar todas las opciones.");
+  // LP1 y LP8 compartían un único texto ("energía de liderazgo") pese a que
+  // el propio scoring del engine ya los trata distinto (lifePathDecisionStyle:
+  // 1→75, 8→80) y sus arquetipos reales (ARCHETYPES en lib/data.ts) son
+  // genuinamente distintos: LP1 "El Líder" (Independiente/Innovador/
+  // Determinado) vs LP8 "El Poderoso" (Ambicioso/Estratégico/Autoritario).
+  // Se hace visible esa diferencia real en vez de inventar una nueva.
+  if (profile.lifePath === 1) {
+    considerations.push("Tu energía de liderazgo te impulsa a decidir rápido y de forma independiente. Asegurate de considerar todas las opciones.");
+  } else if (profile.lifePath === 8) {
+    considerations.push("Tu energía estratégica busca la jugada de mayor impacto. Asegurate de que la ambición no te haga saltear pasos.");
   } else if (profile.lifePath === 2 || profile.lifePath === 6) {
     considerations.push("Tu naturaleza cooperativa te hace considerar a otros. No olvides tus propias necesidades.");
   } else if (profile.lifePath === 7) {
@@ -272,41 +380,74 @@ function generateConsiderations(
     considerations.push("Tu año personal favorece la estructura y el trabajo metódico.");
   }
 
+  if (intent) {
+    if (intent.kind === 'accion') {
+      considerations.push("Tu intención de actuar es fuerte. Definí el paso concreto antes de comprometerte.");
+    } else if (intent.kind === 'espera') {
+      considerations.push("Elegiste esperar. Usá ese tiempo para reunir más información.");
+    } else {
+      considerations.push("Estás evaluando un cierre o abandono. Asegurate de no dejar pendientes importantes.");
+    }
+  }
+
   return considerations;
 }
 
-function generateNextSteps(score: number, category: DecisionCategory): string[] {
+function generateNextSteps(score: number, category: DecisionCategory, intent: DecisionIntent | null): string[] {
+  // Antes esta lista solo dependía del bucket de score (4 combinaciones
+  // posibles en total). Perfiles con distinta categoría y elemento pero
+  // score similar leían exactamente los mismos 3 pasos. Ahora la categoría
+  // entra al texto para que el paso concreto varíe con lo que se está
+  // decidiendo, no solo con el puntaje.
+  const categoryLabel = CATEGORY_LABELS[category].toLowerCase();
   const steps: string[] = [];
 
   if (score >= 75) {
-    steps.push("Escribí los pros y contras de cada opción.");
+    steps.push(`Escribí los pros y contras de cada opción de ${categoryLabel}.`);
     steps.push("Hablá con alguien de confianza sobre tu decisión.");
     steps.push("Dale una semana antes de ejecutar para confirmar tu intuición.");
   } else if (score >= 55) {
     steps.push("Tomate tiempo para reflexionar sin presión.");
-    steps.push("Investigá más sobre las opciones disponibles.");
+    steps.push(`Investigá más sobre tus opciones en ${categoryLabel}.`);
     steps.push("Consultá con alguien que tenga experiencia en el tema.");
   } else if (score >= 40) {
     steps.push("No te apures. Este momento no es ideal para decisiones grandes.");
-    steps.push("Enfocá tu energía en otras áreas por ahora.");
+    steps.push(`Enfocá tu energía en otras áreas mientras el timing de ${categoryLabel} mejora.`);
     steps.push("Volvé a evaluar en una semana.");
   } else {
-    steps.push("Este momento presenta desafíos. Esperá una ventana más favorable.");
+    steps.push(`Este momento presenta desafíos para ${categoryLabel}. Esperá una ventana más favorable.`);
     steps.push("Enfocá tu energía en el autoconocimiento y la reflexión.");
     steps.push("La paciencia es tu mejor herramienta ahora.");
+  }
+
+  if (intent) {
+    if (intent.kind === 'accion') {
+      steps.push("Concretá el primer paso pequeño de tu plan de acción.");
+    } else if (intent.kind === 'espera') {
+      steps.push("Fijá una fecha para reevaluar tu decisión.");
+    } else {
+      steps.push("Planificá cómo cerrar este ciclo de forma ordenada.");
+    }
   }
 
   return steps;
 }
 
 function getElementDecisionInfluence(element: string, category: DecisionCategory): string {
-  const influences: Record<string, string> = {
-    Fuego: "aporta pasión e iniciativa a tus decisiones",
-    Tierra: "aporta estabilidad y practicidad a tus decisiones",
-    Aire: "aporta claridad mental y comunicación a tus decisiones",
-    Agua: "aporta intuición y empatía a tus decisiones",
+  const traits: Record<string, string> = {
+    Fuego: "aporta pasión e iniciativa",
+    Tierra: "aporta estabilidad y practicidad",
+    Aire: "aporta claridad mental y comunicación",
+    Agua: "aporta intuición y empatía",
   };
-  return influences[element] || "influye en tu proceso de decisión";
+  const trait = traits[element];
+  if (!trait) return "influye en tu proceso de decisión";
+
+  const categoryLabel = CATEGORY_LABELS[category].toLowerCase();
+  const hasAffinity = CATEGORY_ELEMENT_AFFINITY[category].includes(element);
+  return hasAffinity
+    ? `${trait} a tus decisiones de ${categoryLabel}, con afinidad natural para este terreno`
+    : `${trait} a tus decisiones de ${categoryLabel}`;
 }
 
 function getDayDecisionInfluence(day: number): string {

@@ -313,7 +313,9 @@ export function getAnimalProfile(animal: Animal): AnimalProfile {
 }
 
 /**
- * Get all friends of an animal (triad + harmonious).
+ * Get all friends of an animal. Product rule: exactly 2 friends — the
+ * San He triad partners. The Liu He partner remains available via
+ * AnimalProfile.liuHePartner but is not counted as a friend/ally.
  */
 export function getFriends(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];
@@ -322,12 +324,14 @@ export function getFriends(animal: Animal): AnimalRelation[] {
   for (const other of profile.harmonyPartners) {
     friends.push(getRelation(animal, other));
   }
-  friends.push(getRelation(animal, profile.liuHePartner));
   return friends.sort((a, b) => b.score - a.score);
 }
 
 /**
- * Get all challenging relationships (clash + harm).
+ * Get all challenging relationships. Product rule (see
+ * __tests__/animal-relations.test.ts): exactly 3 friends (2 triad + 1
+ * liuHe) + 1 enemy (clash) per animal — the Liu Hai "harm" pair is
+ * deliberately folded into neutral, not surfaced as a second tension.
  */
 export function getChallenging(animal: Animal): AnimalRelation[] {
   const profile = ANIMAL_PROFILES[animal];

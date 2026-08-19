@@ -9,17 +9,26 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["var(--font-serif)", "Playfair Display", "serif"],
+        display: ["var(--font-display)", "Archivo Black", "sans-serif"],
+        heading: ["var(--font-heading)", "Space Grotesk", "sans-serif"],
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
+        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       fontSize: {
-        xs: "var(--step-1-text)",
-        sm: "var(--step-2-text)",
-        base: "var(--step-3-text)",
-        lg: "var(--step-4-text)",
-        xl: "var(--step-5-text)",
-        "2xl": "2rem",
-        "3xl": "3rem",
+        // Escala tipográfica — alineada con DESIGN_SYSTEM.md.
+        // Monotónica y coherente: cada nivel crece sobre el anterior.
+        xs: "0.75rem",      // 12px — labels pequeños
+        sm: "0.875rem",     // 14px — Caption
+        base: "1rem",       // 16px — Body
+        lg: "1.125rem",     // 18px — Body Large
+        xl: "1.25rem",      // 20px
+        "2xl": "1.5rem",    // 24px
+        "3xl": "1.75rem",   // 28px — H3
+        "4xl": "2.25rem",   // 36px — H2
+        "5xl": "3rem",      // 48px — H1
+        "6xl": "3.75rem",   // 60px
+        "7xl": "4.5rem",    // 72px — Display
+        "8xl": "6rem",      // 96px
       },
       letterSpacing: {
         tight: "var(--tracking-tight)",
@@ -43,25 +52,31 @@ const config: Config = {
         xl: "var(--radius-xl)",
       },
       colors: {
-        background: "var(--color-background)",
-        foreground: "var(--color-foreground)",
-        muted: "var(--color-muted)",
-        "muted-foreground": "var(--color-muted-foreground)",
+        // background/foreground/muted/ink/paper/accent(+light) usan el patrón
+        // rgb(var(--x-rgb) / <alpha-value>) para que las utilidades con
+        // modificador de opacidad (ej. text-paper/70, bg-ink/10) generen CSS
+        // válido — con var(--x) en hex plano, Tailwind no puede aplicar la
+        // opacidad y la clase queda sin efecto (ver globals.css).
+        background: "rgb(var(--color-paper-rgb) / <alpha-value>)",
+        foreground: "rgb(var(--color-ink-rgb) / <alpha-value>)",
+        muted: "rgb(var(--color-muted-rgb) / <alpha-value>)",
+        "muted-foreground": "rgb(var(--color-muted-rgb) / <alpha-value>)",
         card: "var(--color-card)",
         "card-border": "var(--color-card-border)",
         border: "var(--color-border)",
         primary: {
-          DEFAULT: "var(--color-primary)",
-          foreground: "var(--color-primary-foreground)",
+          DEFAULT: "rgb(var(--color-ink-rgb) / <alpha-value>)",
+          foreground: "rgb(var(--color-paper-rgb) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "var(--color-secondary)",
-          foreground: "var(--color-secondary-foreground)",
+          DEFAULT: "rgb(var(--color-muted-rgb) / <alpha-value>)",
+          foreground: "rgb(var(--color-ink-rgb) / <alpha-value>)",
         },
         accent: {
-          DEFAULT: "var(--color-accent)",
+          DEFAULT: "rgb(var(--color-accent-rgb) / <alpha-value>)",
           foreground: "var(--color-accent-foreground)",
           hover: "var(--color-accent-hover)",
+          light: "rgb(var(--color-accent-light-rgb) / <alpha-value>)",
         },
         accentHover: "var(--color-accent-hover)",
         success: {
@@ -76,10 +91,9 @@ const config: Config = {
           DEFAULT: "var(--color-error)",
           foreground: "var(--color-error-foreground)",
         },
-        ink: "var(--color-ink)",
-        paper: "var(--color-paper)",
-        cream: "var(--color-cream)",
-        warm: "var(--color-warm)",
+        ink: "rgb(var(--color-ink-rgb) / <alpha-value>)",
+        paper: "rgb(var(--color-paper-rgb) / <alpha-value>)",
+        "paper-alt": "var(--color-paper-alt)",
         // Element colors
         "element-fire": "var(--element-fire)",
         "element-earth": "var(--element-earth)",

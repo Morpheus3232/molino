@@ -1,34 +1,22 @@
 // Score color and label utilities
-// Single source of truth for score visualization
+// Single source of truth for score visualization. Copy lives in lib/i18n —
+// this file only maps a number to a bucket id/CSS token, never to text.
+
+import { t } from "@/lib/i18n";
 
 export function getScoreColor(score: number): string {
-  if (score >= 80) return "text-green-500";
-  if (score >= 60) return "text-blue-500";
-  if (score >= 40) return "text-yellow-500";
-  return "text-red-500";
-}
-
-export function getScoreBgColor(score: number): string {
-  if (score >= 80) return "text-green-600 bg-green-50";
-  if (score >= 60) return "text-blue-600 bg-blue-50";
-  if (score >= 40) return "text-yellow-600 bg-yellow-50";
-  return "text-red-600 bg-red-50";
+  if (score >= 75) return "var(--score-excellent)";
+  if (score >= 55) return "var(--score-good)";
+  if (score >= 40) return "var(--score-neutral)";
+  return "var(--score-poor)";
 }
 
 export function getScoreLabel(score: number): string {
-  if (score >= 80) return "Excelente";
-  if (score >= 60) return "Buena";
-  if (score >= 40) return "Moderada";
-  return "Baja";
+  if (score >= 75) return t.scoreLabels.excellent;
+  if (score >= 55) return t.scoreLabels.good;
+  if (score >= 40) return t.scoreLabels.neutral;
+  return t.scoreLabels.poor;
 }
-
-export function getScoreHex(score: number): string {
-  if (score >= 80) return "#22C55E";
-  if (score >= 60) return "#3B82F6";
-  if (score >= 40) return "#EAB308";
-  return "#EF4444";
-}
-
 
 export function safeNumber(value: unknown, fallback = 0): number {
   const n = typeof value === "number" ? value : Number(value);
