@@ -64,7 +64,7 @@ export default function MethodContent() {
                 Cada sistema está limitado por su propia tradición, contexto cultural y forma de cálculo.
               </p>
               <p className="text-sm text-muted leading-relaxed">
-                La numerología occidental, la astrología tropical, el zodiaco chino y otros marcos tienen valores simbólicos y culturales,
+                La numerología occidental, la astrología, el zodiaco chino y otros marcos tienen valores simbólicos y culturales,
                 pero no reemplazan el juicio crítico ni las decisiones personales. Los resultados son interpretaciones abiertas.
               </p>
               <p className="text-sm text-muted leading-relaxed">
@@ -91,7 +91,7 @@ export default function MethodContent() {
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Astrología occidental</h3>
                 <p className="text-sm text-muted leading-relaxed">
-                  Zodiaco tropical, cálculo de signos, planetas, casas y aspectos según la tradición helenística y renacentista.
+                  Cálculo de signos, planetas, casas y aspectos según la tradición helenística y renacentista.
                   Autores de referencia: William Lilly, Dane Rudhyar, Liz Greene.
                 </p>
               </div>

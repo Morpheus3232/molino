@@ -145,6 +145,24 @@ export default function CalendarioClient() {
                 </span>
               ))}
             </div>
+
+            {selectedContent.recommendations && selectedContent.recommendations.length > 0 && (
+              <div className="mt-6 pt-5 border-t border-ink/10">
+                <p className="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2.5">
+                  Recomendado para hoy
+                </p>
+                <ul className="flex flex-wrap gap-2">
+                  {selectedContent.recommendations.map((rec) => (
+                    <li
+                      key={rec}
+                      className="text-sm text-foreground px-3 py-1.5 bg-accent/5 border border-accent/20"
+                    >
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

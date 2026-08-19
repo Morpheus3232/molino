@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Público general hispanohablante (foco LatAm) curioso por el autoconocimiento simbólico — numerología pitagórica, astrología tropical y zodíaco chino/ciclo sexagenario. No se asume conocimiento técnico previo de estos sistemas: el onboarding pide solo fecha de nacimiento y, opcionalmente, nombre. Confirmado con el usuario (no practicantes avanzados/nicho esotérico).
+Público general hispanohablante (foco LatAm) curioso por el autoconocimiento simbólico — numerología pitagórica, astrología y zodíaco chino/ciclo sexagenario. No se asume conocimiento técnico previo de estos sistemas: el onboarding pide solo fecha de nacimiento y, opcionalmente, nombre. Confirmado con el usuario (no practicantes avanzados/nicho esotérico).
 
 ## Product Purpose
 

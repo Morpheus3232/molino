@@ -52,7 +52,7 @@ export const ZODIAC_SIGNS: AstrologySign[] = [
     strengths: ["Determinaci\u00f3n", "Paciencia", "Lealtad", "Practicidad", "Sentido est\u00e9tico"],
     challenges: ["Terquedad", "Resistencia al cambio", "Materialismo", "Apego excesivo", "Rutinario"],
     compatibility: { friendly: ["Virgo", "Capricornio", "C\u00e1ncer"], challenging: ["Leo", "Acuario"] },
-    scientificNote: "Las fechas astrol\u00f3gicas no coinciden con las posiciones astron\u00f3micas reales del sol. El zod\u00edaco tropical utilizado en la astrolog\u00eda occidental se ha desplazado aproximadamente un signo completo desde su codificaci\u00f3n.",
+    scientificNote: "Las fechas astrol\u00f3gicas no coinciden con las posiciones astron\u00f3micas reales del sol. El zod\u00edaco utilizado en la astrolog\u00eda occidental se ha desplazado aproximadamente un signo completo desde su codificaci\u00f3n.",
     sourceIds: ["britannica-astrology", "oxford-hellenistic-astrology"],
   },
   {

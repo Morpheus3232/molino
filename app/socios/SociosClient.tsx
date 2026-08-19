@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import PartnershipComparison from "@/components/couple/PartnershipComparison";
+import WorkProfilePanel from "@/components/couple/WorkProfilePanel";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
-import { Handshake, Sparkles, ShieldCheck } from "lucide-react";
+import { Handshake, Sparkles, ShieldCheck, User, Users } from "lucide-react";
 
 function parseDateParam(param: string | null): string {
   if (!param) return "";
@@ -34,8 +35,50 @@ function isValidDate(dateStr: string): boolean {
   return d <= today && d.getFullYear() >= 1900;
 }
 
+type Mode = "compare" | "solo";
+
 export default function SociosClient() {
   const searchParams = useSearchParams();
+
+  const [mode, setMode] = useState<Mode>((searchParams.get("mode") as Mode) === "solo" ? "solo" : "compare");
+
+  // Modo solo — analiza una única fecha, sin comparar contra nadie.
+  const urlDateSolo = parseDateParam(searchParams.get("d"));
+  const urlNameSolo = searchParams.get("n") || "";
+  const [dateSolo, setDateSolo] = useState(urlDateSolo);
+  const [nameSolo, setNameSolo] = useState(urlNameSolo);
+  const [isAnalyzingSolo, setIsAnalyzingSolo] = useState(Boolean(urlDateSolo && isValidDate(urlDateSolo)));
+
+  const profileSolo = useMemo<UserProfile | null>(() => {
+    if (!dateSolo || !isValidDate(dateSolo)) return null;
+    try {
+      return calculateUserProfile(nameSolo.trim(), dateSolo);
+    } catch {
+      return null;
+    }
+  }, [dateSolo, nameSolo]);
+
+  const handleAnalyzeSolo = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profileSolo) return;
+    setIsAnalyzingSolo(true);
+    const query = new URLSearchParams();
+    query.set("mode", "solo");
+    query.set("d", dateSolo);
+    if (nameSolo.trim()) query.set("n", nameSolo.trim());
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `/socios?${query.toString()}`);
+    }
+  };
+
+  const handleResetSolo = () => {
+    setIsAnalyzingSolo(false);
+    setDateSolo("");
+    setNameSolo("");
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", "/socios?mode=solo");
+    }
+  };
 
   const urlDateA = parseDateParam(searchParams.get("a"));
   const urlDateB = parseDateParam(searchParams.get("b"));
@@ -120,10 +163,113 @@ export default function SociosClient() {
           <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
             Para socios, empleador y empleado, o cualquier par armando un proyecto juntos: ingresá dos
             fechas de nacimiento y vean cómo se complementan sus caminos de vida, signos solares,
-            zodíaco chino y química elemental trabajando en equipo.
+            zodíaco chino y química elemental trabajando en equipo. También podés analizar una sola
+            fecha para ver el perfil de trabajo de esa persona.
           </p>
+
+          <div className="inline-flex items-center gap-1 mt-6 p-1 rounded-xl bg-ink/5 border border-ink/10">
+            <button
+              type="button"
+              onClick={() => setMode("compare")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-semibold transition-colors ${
+                mode === "compare" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              Comparar dos
+            </button>
+            <button
+              type="button"
+              onClick={() => setMode("solo")}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider font-semibold transition-colors ${
+                mode === "solo" ? "bg-card text-foreground shadow-sm" : "text-muted hover:text-foreground"
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              Analizar una
+            </button>
+          </div>
         </header>
 
+        {mode === "solo" ? (
+          <AnimatePresence mode="wait">
+            {isAnalyzingSolo && profileSolo ? (
+              <motion.div
+                key="solo-result"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.35 }}
+                className="max-w-2xl mx-auto"
+              >
+                <WorkProfilePanel profile={profileSolo} />
+                <div className="text-center mt-6">
+                  <button
+                    type="button"
+                    onClick={handleResetSolo}
+                    className="font-mono text-xs text-muted hover:text-accent transition-colors"
+                  >
+                    Analizar otra fecha
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="solo-form"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.35 }}
+                className="max-w-md mx-auto"
+              >
+                <form onSubmit={handleAnalyzeSolo} className="space-y-6">
+                  <div className="rounded-3xl border border-accent/25 bg-card p-6 sm:p-8 shadow-sm space-y-5">
+                    <div>
+                      <label
+                        htmlFor="name-solo"
+                        className="block font-mono text-xs uppercase tracking-wider text-muted mb-1.5 font-semibold"
+                      >
+                        Nombre o apodo (opcional)
+                      </label>
+                      <input
+                        id="name-solo"
+                        type="text"
+                        placeholder="Ej. Alex"
+                        value={nameSolo}
+                        onChange={(e) => setNameSolo(e.target.value)}
+                        className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-mono text-xs uppercase tracking-wider text-muted mb-3 font-semibold text-center">
+                        Fecha de Nacimiento
+                      </label>
+                      <DateInput value={dateSolo} onChange={setDateSolo} />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <Button
+                      type="submit"
+                      variant="accent"
+                      size="lg"
+                      disabled={!isValidDate(dateSolo)}
+                      className="w-full sm:w-auto min-w-[240px] text-base py-4"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Ver perfil de trabajo
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center justify-center gap-2 text-xs text-muted font-mono">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Sin registro · 100% calculado en tu navegador</span>
+                  </div>
+                </form>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        ) : (
         <AnimatePresence mode="wait">
           {isComparing && profileA && profileB ? (
             <motion.div
@@ -263,6 +409,7 @@ export default function SociosClient() {
             </motion.div>
           )}
         </AnimatePresence>
+        )}
       </div>
     </div>
   );

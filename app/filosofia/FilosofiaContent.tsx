@@ -62,7 +62,7 @@ const pillars = [
 
 const ancientTraditions = [
   "Numerología pitagórica y caldea",
-  "Astrología tropical helenística y moderna",
+  "Astrología helenística y moderna",
   "Zodíaco chino (ciclo sexagenario, 12 animales, 5 elementos)",
   "I Ching y los 64 hexagramas",
   "Kabbalah y Árbol de la Vida",
@@ -182,7 +182,7 @@ export default function FilosofiaContent() {
             <p className="text-muted max-w-xl mb-4">
               Molino se basa en la tradición de numerología pitagórica, un sistema de conocimiento
               simbólico con más de 2.500 años de historia que pertenece al dominio público. Combinamos
-              esta tradición con astrología tropical y zodíaco chino para crear una herramienta de
+              esta tradición con astrología y zodíaco chino para crear una herramienta de
               autoconocimiento estructurada y accesible.
             </p>
             <p className="text-muted max-w-xl mb-4">
