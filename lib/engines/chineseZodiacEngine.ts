@@ -5,8 +5,14 @@ import {
   CHINESE_NEW_YEAR_DATES,
 } from "@/lib/data/chinese-new-year";
 import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
+import { getFoodRecommendation } from "./zodiacFoodEngine";
+import { getPetRecommendation } from "./zodiacPetEngine";
+import { analyzeTiming } from "./zodiacTimingEngine";
 
 export { getChineseNewYearDate, getLunarYear, CHINESE_NEW_YEAR_DATES };
+export { getFoodRecommendation, getFoodRecommendationByYear } from "./zodiacFoodEngine";
+export { getPetRecommendation, getPetRecommendationByYear } from "./zodiacPetEngine";
+export { analyzeTiming } from "./zodiacTimingEngine";
 
 export function getChineseZodiac(birthDate: string): Animal {
   return getRealChineseZodiac(birthDate);
@@ -61,4 +67,24 @@ export function getChineseAnimal(yearOrDate: number | string): Animal {
 export function calculateChineseCompatibility(userAnimal: string, targetAnimal: string): number {
   if (!userAnimal || !targetAnimal) return 50;
   return getRelation(userAnimal as Animal, targetAnimal as Animal).score;
+}
+
+/**
+ * Combina las lecturas simbólicas de alimento, mascota y timing anual
+ * para un signo — punto de entrada único para consumir los 3 motores
+ * nuevos sin tener que importarlos por separado.
+ */
+export function getChineseZodiacRecommendations(yearOrDate: number | string) {
+  const animal = getChineseAnimal(yearOrDate);
+  return {
+    sign: animal,
+    food: getFoodRecommendation(animal),
+    pet: getPetRecommendation(animal),
+    timing: analyzeTiming(animal),
+  };
+}
+
+/** Analiza el timing anual a partir de un año o fecha de nacimiento. */
+export function analyzeTimingByYear(yearOrDate: number | string, queryYear?: number) {
+  return analyzeTiming(getChineseAnimal(yearOrDate), queryYear);
 }

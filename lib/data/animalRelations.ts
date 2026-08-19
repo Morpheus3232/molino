@@ -313,6 +313,18 @@ export function getAnimalProfile(animal: Animal): AnimalProfile {
 }
 
 /**
+ * Get the Liu Chong (六冲) clash partner — the animal in direct
+ * opposition. Every animal has exactly one.
+ */
+export function getClashPartner(animal: Animal): Animal | undefined {
+  for (const [a, b] of LIU_CHONG_CLASHES) {
+    if (a === animal) return b;
+    if (b === animal) return a;
+  }
+  return undefined;
+}
+
+/**
  * Get all friends of an animal. Product rule: exactly 2 friends — the
  * San He triad partners. The Liu He partner remains available via
  * AnimalProfile.liuHePartner but is not counted as a friend/ally.
