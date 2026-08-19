@@ -159,3 +159,14 @@ export function getCalendarDayContent(dateStr: string): CalendarDayContent {
   const content = CONTENT[number];
   return { number, master: (MASTER_NUMBERS as readonly number[]).includes(number), ...content };
 }
+
+/** "2+0+2+6+0+8+1+9 = 28" o, si sigue reduciendo, "...= 19 → 1+9 = 10 → 1+0 = 1" — la cuenta completa, no solo el resultado. */
+export function formatDateNumberBreakdown(breakdown: DateNumberBreakdown): string {
+  const steps = [`${breakdown.digits.join("+")} = ${breakdown.total}`];
+  let prev = breakdown.total;
+  for (const step of breakdown.reductions) {
+    steps.push(`${String(prev).split("").join("+")} = ${step}`);
+    prev = step;
+  }
+  return steps.join(" → ");
+}
