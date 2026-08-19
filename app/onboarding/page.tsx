@@ -9,6 +9,7 @@ import Button from "@/components/ui/Button";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, loadOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 import { markOnboardingCompleted } from "@/lib/session/discovery";
+import { hasStoredProfile } from "@/lib/session/localStorage";
 import LocationStep from "@/components/onboarding/LocationStep";
 
 const STEPS = [
@@ -27,14 +28,24 @@ export default function OnboardingPage() {
     setDateValue(value);
   }, []);
 
-  // La fecha ya pudo haberse enviado desde el hero de la home: si está
-  // guardada, la precargamos y saltamos directo al paso de adelanto.
+  // Si ya existe un mapa guardado, este visitante ya pasó por onboarding —
+  // la única forma de llegar acá con un perfil todavía guardado es una
+  // reentrada accidental (link viejo, back del navegador, etc.), nunca
+  // "Rehacer mi mapa" (ese botón borra el perfil antes de redirigir). Mostrar
+  // el mapa ya hecho en vez de repetir el asistente desde cero.
   useEffect(() => {
+    if (hasStoredProfile()) {
+      router.replace("/profile");
+      return;
+    }
+    // La fecha ya pudo haberse enviado desde el hero de la home: si está
+    // guardada, la precargamos y saltamos directo al paso de adelanto.
     const stored = loadOnboardingData();
     if (stored?.dateValue && /^\d{4}-\d{2}-\d{2}$/.test(stored.dateValue)) {
       setDateValue(stored.dateValue);
       setStep("location");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isDateValid = Boolean(

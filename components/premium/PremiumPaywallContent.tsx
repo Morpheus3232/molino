@@ -158,7 +158,7 @@ export default function PremiumPaywallContent({
               <span>$8 USD, pago único</span>
             </div>
             <p className="text-muted leading-relaxed">
-              Acceso permanente a tu síntesis completa, informe con narrativa de IA y proyecciones 2026–2030 sin suscripciones mensuales.
+              Acceso permanente a tu síntesis completa, informe con narrativa personalizada y proyecciones 2026–2030 sin suscripciones mensuales.
             </p>
           </div>
 

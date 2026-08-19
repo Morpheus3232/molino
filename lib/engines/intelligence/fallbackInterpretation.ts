@@ -73,7 +73,12 @@ export function generateFallbackInterpretation(
       const friends = getFriends(animal);
       const challengingRelations = getChallenging(animal);
 
-      summary = `${userProfile.name ? `${userProfile.name}, tu` : 'Tu'} Life Path ${userProfile.lifePath} (${personalCode.lifePath.name}) es la nota base de tu perfil: ${personalCode.lifePath.meaning}. Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} lo modulan.`;
+      // Una sola idea por campo: `summary` es la nota base sola (una
+      // oración corta, pensada para el tratamiento tipográfico grande de
+      // "La Lectura"), y "elemento/signo" se explica en `alignment` — antes
+      // ambas ideas se apilaban en la misma oración de summary y quedaba un
+      // párrafo denso, mal organizado en pantallas de fuente grande.
+      summary = `${userProfile.name ? `${userProfile.name}, tu` : 'Tu'} Life Path ${userProfile.lifePath} (${personalCode.lifePath.name}) es la nota base de tu perfil: ${personalCode.lifePath.meaning}.`;
       // "Qué significa" tiene que agregar una capa distinta de "Tu patrón
       // central" (corePattern.whyItMatters usa motorPattern.description más
       // abajo) — reusar el mismo texto acá era literal, no una repetición
@@ -81,7 +86,7 @@ export function generateFallbackInterpretation(
       // se usaba en ningún lado del fallback.
       alignment = numerology.archetypeDescription
         ? `${numerology.archetypeDescription} Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} son la textura con la que esto se expresa día a día.`
-        : `Tu energía de ${userProfile.element} y tu enfoque de ${userProfile.archetype} se conectan a través de tu Life Path ${userProfile.lifePath}.`;
+        : `Tu elemento ${userProfile.element} y tu signo ${userProfile.sunSign} modulan cómo se expresa tu Life Path ${userProfile.lifePath} día a día.`;
       // Si hay energía del día real, explicamos por qué ese momento importa
       // para esta identidad — el tema de año/día y la mecánica elemento→potencia/modula
       // ya se comunican en Moment Insight, así que acá evitamos repetirlas literalmente.

@@ -10,6 +10,8 @@ import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-ligh
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
 import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
+import { buildLuckyNumberProof } from "@/lib/calculations/proof";
+import CalculationProof from "@/components/shared/CalculationProof";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
@@ -118,6 +120,11 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     } catch {
       return null;
     }
+  }, [profile.birthDate]);
+
+  const luckyNumberInputs = useMemo(() => {
+    const [year, month] = profile.birthDate.split("-").map((p) => parseInt(p, 10));
+    return Number.isFinite(year) && Number.isFinite(month) ? { month, year } : null;
   }, [profile.birthDate]);
 
   const affinities = useMemo(() => {
@@ -322,6 +329,31 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                         </p>
                       </div>
                     </div>
+                  </motion.section>
+                )}
+
+                {luckyNumberInputs && (
+                  <motion.section
+                    initial={reduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.6 }}
+                  >
+                    <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Tu número de la suerte</p>
+                    <p
+                      className="font-display italic text-4xl sm:text-5xl mt-2 mb-3"
+                      style={{ color: elementColor }}
+                    >
+                      {profile.luckyNumber}
+                    </p>
+                    <p className="text-sm text-muted leading-relaxed max-w-xl">
+                      Sale de combinar la primera cifra de tu mes de nacimiento con la última cifra distinta de
+                      cero de tu año. Es un número de referencia personal, no una predicción.
+                    </p>
+                    <CalculationProof
+                      label="Número de la suerte"
+                      data={buildLuckyNumberProof(luckyNumberInputs.month, luckyNumberInputs.year)}
+                      className="mt-4"
+                    />
                   </motion.section>
                 )}
 

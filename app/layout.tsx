@@ -152,7 +152,7 @@ export default function RootLayout({
           "@type": "Offer",
           price: "8",
           priceCurrency: "USD",
-          description: "Acceso Premium: pago único de $8 USD, sin suscripción, acceso vitalicio a la síntesis completa con IA.",
+          description: "Acceso Premium: pago único de $8 USD, sin suscripción, acceso vitalicio a la síntesis completa y personalizada.",
           availability: "https://schema.org/InStock",
         },
       ],
