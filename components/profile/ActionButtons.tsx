@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
@@ -37,17 +37,37 @@ async function copyToClipboard(text: string) {
 
 export default function ActionButtons({ profile }: ActionButtonsProps) {
   const downloadRef = useRef<ProfileDownloadImageHandle>(null);
+  const [showShareDisclaimer, setShowShareDisclaimer] = useState(false);
+  const [pendingShare, setPendingShare] = useState<(() => void) | null>(null);
   const shareText = generateShareText(profile);
   const shareUrl = generateShareUrl(profile);
 
-  const handleShare = async () => {
+  const requestShare = (action: () => void) => {
+    setPendingShare(() => action);
+    setShowShareDisclaimer(true);
+  };
+
+  const confirmShare = () => {
+    setShowShareDisclaimer(false);
+    pendingShare?.();
+    setPendingShare(null);
+  };
+
+  const cancelShare = () => {
+    setShowShareDisclaimer(false);
+    setPendingShare(null);
+  };
+
+  const handleShare = () => {
     if (navigator.share) {
-      try {
-        await navigator.share({ title: "Mi Mapa Molino", text: shareText, url: shareUrl });
-        return;
-      } catch {}
+      requestShare(async () => {
+        try {
+          await navigator.share({ title: "Mi Mapa Molino", text: shareText, url: shareUrl });
+        } catch {}
+      });
+      return;
     }
-    await copyToClipboard(`${shareText}\n${shareUrl}`);
+    requestShare(() => copyToClipboard(`${shareText}\n${shareUrl}`));
   };
 
   const handleDownload = () => {

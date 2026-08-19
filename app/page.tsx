@@ -17,9 +17,9 @@ import { ARCHETYPES } from "@/lib/data";
 import type { UserProfile } from "@/types/user";
 import type { PersonalRecommendation } from "@/lib/engines/personalRecommendationEngine";
 import { safeNumber } from "@/lib/utils/score";
-import { saveSession } from "@/lib/storage/ephemeral";
-import { saveProfileToStorage } from "@/lib/storage/localStorage";
-import { markOnboardingCompleted } from "@/lib/storage/discovery";
+import { saveSession } from "@/lib/session/ephemeral";
+import { saveProfileToStorage } from "@/lib/session/localStorage";
+import { markOnboardingCompleted } from "@/lib/session/discovery";
 import { analytics } from "@/lib/analytics/analytics";
 import Grainient from "@/components/Grainient";
 

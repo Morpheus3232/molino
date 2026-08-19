@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Share2, Check } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import { calculateAllAffinity } from "@/lib/engines/affinityEngine";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
+import { buildShareableTabUrl, generateTabShareText } from "@/lib/utils/profileShare";
 import { useMemo } from "react";
 
 interface WorldConnectionsProps {
@@ -74,6 +77,7 @@ function EntityRank({
 }
 
 export default function WorldConnections({ profile }: WorldConnectionsProps) {
+  const [copied, setCopied] = useState(false);
   const { countryResonances, cityResonances, brandResonances } = useMemo(() => {
     const all = calculateAllAffinity(profile, SYMBOLIC_ENTITIES);
     const countries = all.filter((r) => r.entity.type === "country").sort((a, b) => b.score - a.score);
@@ -83,6 +87,20 @@ export default function WorldConnections({ profile }: WorldConnectionsProps) {
   }, [profile]);
 
   const totalConnections = countryResonances.length + cityResonances.length + brandResonances.length;
+
+  const handleShare = async () => {
+    const url = buildShareableTabUrl(profile, "world");
+    const text = generateTabShareText(profile, "world");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Mi Mundo — Molino", text, url });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  };
 
   return (
     <section className="py-10 sm:py-12 border-t border-ink/10" aria-labelledby="world-heading">
@@ -122,6 +140,17 @@ export default function WorldConnections({ profile }: WorldConnectionsProps) {
             title="MARCAS AFINES"
             entities={brandResonances}
           />
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            {copied ? <Check className="w-4 h-4 text-accent" /> : <Share2 className="w-4 h-4" />}
+            {copied ? "Copiado" : "Compartir mi Mundo"}
+          </button>
         </div>
       </div>
     </section>

@@ -25,7 +25,8 @@ const PRIMARY = [
 
 /* ═══ Secondary: dentro del dropdown "Explorar" ═══ */
 const EXPLORE_ITEMS = [
-  { href: "/affinity", label: "Afinidad" },
+  { href: "/affinity", label: "[PERSON_NAME]" },
+  { href: "/evolution", label: "Tu evolución" },
   { href: "/explore", label: "Explorar sistemas" },
 ];
 

@@ -9,7 +9,7 @@ import { formatDate } from "@/lib/i18n/format";
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ dob?: string; data?: string; tab?: string }>;
+  searchParams: Promise<{ dob?: string; data?: string; tab?: string; ref?: string }>;
 }
 
 function buildProfile(calculated: UserProfile, name: string, birthDate: string): UserProfile {
@@ -81,6 +81,7 @@ export default async function ProfilePage({ searchParams }: Props) {
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;
+  const refParam = params.ref;
   const tab = params.tab || null;
 
   let profile: UserProfile | null = null;
@@ -96,7 +97,7 @@ export default async function ProfilePage({ searchParams }: Props) {
     today.setHours(0, 0, 0, 0);
     const birthDate = new Date(dob + "T00:00:00");
     if (birthDate > today) {
-      return <ProfileClient serverProfile={null} initialTab={tab} futureDateError={true} />;
+      return <ProfileClient serverProfile={null} initialTab={tab} initialRef={refParam} futureDateError={true} />;
     }
     try {
       const calculated = calculateUserProfile("", dob);
@@ -104,5 +105,5 @@ export default async function ProfilePage({ searchParams }: Props) {
     } catch {}
   }
 
-  return <ProfileClient serverProfile={profile} initialTab={tab} />;
+  return <ProfileClient serverProfile={profile} initialTab={tab} initialRef={refParam} />;
 }

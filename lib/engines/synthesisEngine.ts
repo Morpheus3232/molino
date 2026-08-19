@@ -26,6 +26,26 @@ export interface PatternInsight {
   sources: string[];
 }
 
+export interface TensionInsight {
+  label: string;
+  title: string;
+  evidence: string;
+  sources: string[];
+  hasTension: boolean;
+  implication?: string;
+}
+
+export interface RuleInsight {
+  label: string;
+  keyword: string;
+  title: string;
+  body: string;
+  description: string;
+  sources: string[];
+  source?: string;
+  rule?: string;
+}
+
 export interface SynthesisInsight {
   type: "identity" | "tension" | "strength" | "attention" | "opportunity";
   title: string;
@@ -149,6 +169,139 @@ function getChineseTraits(animal: string): string[] {
     Cerdo: ["generosidad", "compasión", "optimismo"],
   };
   return traits[animal] || ["equilibrio"];
+}
+
+export const ELEMENT_PACE: Record<string, "rápido" | "medio" | "lento"> = {
+  Fuego: "rápido",
+  Aire: "rápido",
+  Agua: "medio",
+  Tierra: "lento",
+};
+
+const LIFEPATH_PACE: Record<number, "rápido" | "medio" | "lento"> = {
+  1: "rápido", 2: "lento", 3: "rápido", 4: "lento",
+  5: "rápido", 6: "medio", 7: "lento", 8: "rápido",
+  9: "rápido", 11: "rápido", 22: "lento", 33: "medio",
+};
+
+function getPaceConflict(
+  lifePathPace: string,
+  elementPace: string,
+): boolean {
+  return lifePathPace !== elementPace;
+}
+
+export function findSharedTheme(
+  themesA: string[],
+  themesB: string[],
+): string | null {
+  for (const a of themesA) {
+    for (const b of themesB) {
+      if (a.toLowerCase() === b.toLowerCase()) return a;
+    }
+  }
+  return null;
+}
+
+export function themeOfPhrase(phrase: string): string {
+  const keywords = [
+    "independencia", "cooperación", "expresión", "estabilidad", "libertad",
+    "responsabilidad", "introspección", "manifestación", "adaptación",
+    "intuición", "construcción", "sanación",
+    "liderazgo", "armonía", "creatividad", "disciplina", "cambio",
+    "cuidado", "verdad", "poder", "desapego",
+  ];
+  for (const kw of keywords) {
+    if (phrase.toLowerCase().includes(kw)) return kw;
+  }
+  return "equilibrio";
+}
+
+export function buildTensions(profile: UserProfile): TensionInsight[] {
+  const lp = safeNumber(profile.lifePath, 1);
+  const element = typeof profile.element === "string" ? profile.element : "";
+  const lpPace = LIFEPATH_PACE[lp] || "medio";
+  const elPace = ELEMENT_PACE[element] || "medio";
+
+  if (!getPaceConflict(lpPace, elPace)) return [];
+
+  const lpName = getNumberName(lp);
+  const lpKeyword = getKeywordForLifePath(lp);
+  const elementTraits = getElementTraits(element);
+
+  return [{
+    label: "Contradicción de ritmo",
+    title: `${lpName} (${lpPace}) vs ${element} (${elPace})`,
+    evidence: `Tu Life Path ${lp} tiende a ser ${lpPace} (${lpKeyword}) pero tu elemento ${element} es ${elPace} (${elementTraits[0]}, ${elementTraits[1]})`,
+    sources: ["Numerología", "Astrología"],
+    hasTension: true,
+  }];
+}
+
+export function buildRules(profile: UserProfile): RuleInsight[] {
+  const lp = safeNumber(profile.lifePath, 1);
+  const element = typeof profile.element === "string" ? profile.element : "";
+
+  return [
+    {
+      label: "Regla de ritmo",
+      keyword: "tu ritmo",
+      title: "Regla de ritmo",
+      body: `Tu Life Path ${lp} marca un ritmo ${LIFEPATH_PACE[lp] || "medio"}. Tu elemento ${element} tiende a ser ${ELEMENT_PACE[element] || "medio"}. Escuchar tu propio tempo es la primera regla.`,
+      description: `Tu Life Path ${lp} marca un ritmo ${LIFEPATH_PACE[lp] || "medio"}. Tu elemento ${element} tiende a ser ${ELEMENT_PACE[element] || "medio"}. Escuchar tu propio tempo es la primera regla.`,
+      sources: ["Numerología", "Astrología"],
+    },
+    {
+      label: "Regla de elemento",
+      keyword: element.toLowerCase(),
+      title: "Regla de elemento",
+      body: `Tu elemento ${element} define tu forma natural de procesar el mundo. No luches contra tu elemento: úsalo como ventaja.`,
+      description: `Tu elemento ${element} define tu forma natural de procesar el mundo. No luches contra tu elemento: úsalo como ventaja.`,
+      sources: ["Astrología"],
+    },
+  ];
+}
+
+export function buildPrinciples(
+  rules: RuleInsight[],
+  patterns?: PatternInsight[],
+  archetypeInfo?: UserProfile["archetypeInfo"],
+): RuleInsight[] {
+  const rule1 = rules[0] || { keyword: "tu ritmo", description: "Escuchar tu propio tempo es la primera regla.", sources: ["Numerología"] };
+  const rule2 = rules[1] || { keyword: "tu elemento", description: "Tu elemento define tu forma natural de procesar el mundo.", sources: ["Astrología"] };
+
+  return [
+    {
+      label: "AVANZÁ",
+      keyword: rule1.keyword,
+      title: "AVANZÁ",
+      body: rule1.description,
+      description: rule1.description,
+      sources: rule1.sources,
+    },
+    {
+      label: "EVITÁ",
+      keyword: rule2.keyword,
+      title: "EVITÁ",
+      body: rule2.description,
+      description: rule2.description,
+      sources: rule2.sources,
+    },
+  ];
+}
+
+export function hasCircularSources(insights: { sources: string[] }[] | string[]): boolean {
+  if (Array.isArray(insights) && insights.length > 0 && typeof insights[0] === 'string') {
+    return (insights as string[]).length !== new Set(insights as string[]).size;
+  }
+  const allSources = new Set<string>();
+  for (const insight of (insights as { sources: string[] }[])) {
+    for (const source of insight.sources) {
+      if (allSources.has(source)) return true;
+      allSources.add(source);
+    }
+  }
+  return false;
 }
 
 export function buildPersonalCode(profile: UserProfile): PersonalCode {
@@ -318,6 +471,41 @@ export function buildDimensions(profile: UserProfile): DimensionInsight[] {
       explanation: `Tu intuición se fortalece con tu Life Path ${lp} y la naturaleza de tu elemento.`,
     },
   ];
+}
+
+export function buildDateDimensions(profile: UserProfile): DimensionInsight[] {
+  const lp = safeNumber(profile.lifePath, 1);
+  const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
+  const element = typeof profile.element === "string" ? profile.element : "";
+
+  return [
+    {
+      dimension: "Ritmo diario",
+      value: Math.min(lp * 10, 100),
+      influences: ["Life Path", sunSign],
+      explanation: `Tu ritmo diario natural está marcado por tu Life Path ${lp} y tu signo solar ${sunSign}.`,
+    },
+    {
+      dimension: "Energía mensual",
+      value: Math.min((pathStep(lp) || 5) * 10, 100),
+      influences: ["Ciclo", element],
+      explanation: `Tu energía mensual fluctúa con el paso de tu ciclo personal, modulado por tu elemento ${element}.`,
+    },
+    {
+      dimension: "Timbre anual",
+      value: Math.min((lp % 9 || 9) * 10, 100),
+      influences: ["Año", "Elemento"],
+      explanation: `Tu timbre anual refleja la vibración de tu Life Path ${lp} dentro de tu elemento ${element}.`,
+    },
+  ];
+}
+
+function pathStep(lp: number): number {
+  const steps: Record<number, number> = {
+    0: 5, 1: 5, 2: 3, 3: 7, 4: 6, 5: 4,
+    6: 5, 7: 6, 8: 7, 9: 5, 11: 3, 22: 8, 33: 4,
+  };
+  return steps[lp] || 5;
 }
 
 export function buildMomentState(profile: UserProfile, energyScore: number, energyTheme: string): MomentState {

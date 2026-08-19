@@ -957,8 +957,8 @@ const ELEMENT_TONE: Record<string, string> = {
 function combineWithElement(branchPace: 'fast' | 'slow', element: string): string {
   const tone = ELEMENT_TONE[element] || 'tu forma de avanzar es propia, no calca un patrón fijo';
   const elementPace = ELEMENT_PACE[element];
-  if (!elementPace || elementPace === 'fluid') return `y tu elemento ${element} lo atraviesa a su manera: ${tone}`;
-  return elementPace === branchPace
+  if (!elementPace) return `y tu elemento ${element} lo atraviesa a su manera: ${tone}`;
+  return elementPace === (branchPace === 'fast' ? 'rápido' : 'lento')
     ? `y tu elemento ${element} lo refuerza: ${tone}`
     : `aunque tu elemento ${element} tira para el otro lado: ${tone}`;
 }

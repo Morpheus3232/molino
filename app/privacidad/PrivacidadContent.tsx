@@ -6,10 +6,8 @@ const sections = [
     body: `Molino opera bajo el principio de minimización de datos. Recopilamos únicamente:
 
 - **Fecha de nacimiento** (obligatoria): Se ingresa en el navegador y se procesa localmente para calcular tu mapa personal. No se almacena en servidores de Molino para usuarios sin acceso Premium.
-- **Nombre** (opcional): Solo si lo proporcionás para activar cálculos adicionales de numerología (expresión, alma, personalidad).
-- **País de ubicación** (opcional): Para adaptar contenido cultural y afinidades geográficas. No usamos geolocalización automática.
 
-**Usuarios Premium:** Al activar Premium, se genera un hash SHA-256 de tu nombre + fecha de nacimiento para verificar tu acceso sin almacenar los datos en claro. Este hash se guarda en nuestra base de datos junto con el estado de tu suscripción.`,
+**Usuarios Premium:** Al activar Premium, se genera un hash HMAC-SHA256 de tu fecha de nacimiento para verificar tu acceso sin almacenar los datos en claro. Este hash se guarda en nuestra base de datos junto con el estado de tu suscripción.`,
   },
   {
     title: "2. Cómo usamos tus datos",
@@ -17,12 +15,13 @@ const sections = [
 
 - Calcular tu mapa personal de numerología, astrología y zodíaco chino (procesamiento 100% local en el navegador).
 - Procesar pagos Premium a través de Mercado Pago y PayPal (estos proveedores reciben solo los datos necesarios para la transacción: email, monto, hash de verificación).
-- Generar interpretaciones asistidas por IA (solo para usuarios Premium, a través de OpenAI y Anthropic, bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento).
+- Generar interpretaciones asistidas por IA (solo para usuarios Premium, a través de OpenRouter (routing) y DeepSeek v4 (modelo de IA), bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento).
+- Analítica local anónima client-side: registramos eventos de uso (visitas de página, perfil creado, consultas a IA, decisiones, afinidades compartidas, retornos) únicamente en el **localStorage de tu navegador** con un identificador anónimo (molino-analytics-user-id). Nunca viajan a servidores de Molino y no contienen tu nombre ni tu fecha de nacimiento. Podés inspeccionarlos en DevTools → Application → LocalStorage.
 - Analítica de uso anónima y agregada (PostHog en modo cookieless) para mejorar la experiencia.
 
 **Base legal (RGPD Art. 6):**
 - Ejecución de contrato (Art. 6.1.b): procesamiento de pagos y entrega del servicio Premium.
-- Consentimiento (Art. 6.1.a): nombre opcional, país opcional, analítica (opt-in).
+- Consentimiento (Art. 6.1.a): analítica (opt-in).
 - Interés legítimo (Art. 6.1.f): mejora del servicio con datos agregados anónimos.
 
 **Retención:** Los datos de pago los conservan los proveedores según sus políticas (mínimo 5-10 años por obligaciones fiscales). Tu perfil local (localStorage) persiste hasta que lo borrás. El hash de verificación Premium se elimina a los 30 días de cancelar la suscripción.`,
@@ -31,7 +30,7 @@ const sections = [
     title: "3. Almacenamiento y seguridad",
     body: `Tu perfil se guarda en el almacenamiento local de tu navegador (localStorage). No enviamos tu perfil a nuestros servidores, excepto cuando:
 
-- Activás una compra Premium (se genera un identificador hash SHA-256 de nombre+fecha para verificar tu acceso).
+- Activás una compra Premium (se genera un identificador hash HMAC-SHA256 de tu fecha de nacimiento para verificar tu acceso).
 - Solicitás una interpretación con IA (tu perfil simbólico —sin nombre real si no lo diste— se envía a proveedores de IA bajo acuerdos de confidencialidad y data processing addendums).
 
 **Medidas de seguridad:**
@@ -39,7 +38,7 @@ const sections = [
 - Content Security Policy estricta.
 - Headers de seguridad: HSTS, X-Frame-Options, Referrer-Policy.
 - No almacenamos contraseñas (no hay autenticación tradicional).
-- El hash Premium es irreversible (no permite recuperar nombre ni fecha).
+- El hash Premium es irreversible (no permite recuperar tu fecha de nacimiento).
 
 **Cifrado en tránsito:** Todo el tráfico viaja sobre TLS. Los proveedores de pago e IA usan sus propios certificados y estándares (PCI-DSS para pagos).`,
   },
@@ -51,8 +50,8 @@ const sections = [
 |-----------|-----------|-----------------|------------------------|
 | Mercado Pago | Procesamiento de pagos (LatAm) | Email, hash de perfil, monto, país | https://www.mercadopago.com.ar/privacy |
 | PayPal | Procesamiento de pagos (Internacional) | Hash de perfil, monto, email | https://www.paypal.com/privacy |
-| OpenAI | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://openai.com/privacy |
-| Anthropic | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://www.anthropic.com/privacy |
+| OpenRouter | Routing de solicitudes de IA (Premium) | Perfil simbólico, preguntas | https://openrouter.ai/privacy |
+| DeepSeek v4 | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas | https://platform.deepseek.com/privacy |
 | Vercel | Hosting, edge functions, analytics | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |
 | PostHog | Analítica de uso (opcional, cookieless) | Eventos anónimos, sesión, dispositivo | https://posthog.com/privacy |
 
@@ -81,6 +80,13 @@ Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas cont
 - No es accesible por terceros (same-origin policy).
 - No se envía automáticamente con cada request HTTP (a diferencia de cookies).
 
+**Analítica local (localStorage, molino-analytics-*):** De forma predeterminada, Molino registra eventos de uso **solo en tu navegador**, bajo las claves molino-analytics-user-id y molino-analytics-events:
+
+- Contienen un **ID anónimo** y una **lista de eventos** (visitas de página, \`onboarding\`, \`return_visit\`, afinidades, compras) — **ningún dato de tu perfil** (ni nombre, ni fecha de nacimiento, ni país).
+- Se usan para mejorar el producto. Podés verificarlo abriendo DevTools → Application → LocalStorage: no verás tu perfil ahí, solo eventos anónimos.
+- El evento \`profile_created\` puede incluir **datos simbólicos agregados** (\`lifePath\`, \`archetype\`) y viaja **únicamente** en el localStorage local de tu navegador. Nunca se envía a servidores.
+- Podés borrarlos desde el panel de análisis ("Borrar datos") o limpiando el localStorage del sitio.
+
 **PostHog (analítica opcional):** Si se habilita, opera en **modo cookieless**:
 - No utiliza cookies ni localStorage para identificación.
 - Usa fingerprinting ligero (user-agent + IP truncada) solo para deduplicar sesiones anónimas.
@@ -99,7 +105,7 @@ Si detectamos que un menor de 16 años ha proporcionado datos (ej. al comprar Pr
     title: "8. Cambios en esta política",
     body: `Nos reservamos el derecho de actualizar esta política de privacidad. Los cambios significativos se comunicarán a través del sitio web (banner en homepage) y, si tenés Premium activo, por email.
 
-**Última actualización:** 7 de agosto de 2025
+**Última actualización:** 12 de agosto de 2026
 
 **Historial de versiones:** Disponible en GitHub (repositorio público) para transparencia total.`,
   },
@@ -109,7 +115,7 @@ Si detectamos que un menor de 16 años ha proporcionado datos (ej. al comprar Pr
 
 **Responsable del tratamiento:** Molino (proyecto de código abierto)
 **Email:** privacidad@molino.app
-**Repositorio:** https://github.com/molino-app/molino (issues públicos para transparencia)
+**Repositorio:** https://github.com/Morpheus3232/molino (issues públicos para transparencia)
 **Dirección:** Proyecto distribuido, sin sede física única
 
 Para consultas sobre pagos: pagos@molino.app
@@ -134,7 +140,7 @@ export default function PrivacidadContent() {
             Política de Privacidad
           </h1>
           <p className="text-muted mb-2 text-sm animate-fade-in-up stagger-1">
-            Última actualización: 7 de agosto de 2025
+            Última actualización: 12 de agosto de 2026
           </p>
           <p className="text-foreground/70 mb-12 leading-relaxed animate-fade-in-up stagger-2">
             En Molino, tu privacidad es una prioridad. Esta política describe

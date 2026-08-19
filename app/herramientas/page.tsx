@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Hash, Sun, Moon, HeartHandshake, type LucideIcon } from "lucide-react";
+import { Hash, Sun, Moon, HeartHandshake, Calendar, type LucideIcon } from "lucide-react";
 import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
 
 const TOOLS: { title: string; subtitle: string; description: string; href: string; icon: LucideIcon; color: string; labelColor: string }[] = [
@@ -50,7 +50,7 @@ const TOOLS: { title: string; subtitle: string; description: string; href: strin
     subtitle: "Energ\u00eda del d\u00eda",
     description: "La energ\u00eda de cada d\u00eda seg\u00fan el n\u00famero al que se reduce. Naveg\u00e1 el mes y descubr\u00ed el prop\u00f3sito de cada jornada.",
     href: "/calendario",
-    icon: "\ud83d\udcc5",
+    icon: Calendar,
     color: "var(--layer-numerology)",
   },
 ];

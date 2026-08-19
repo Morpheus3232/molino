@@ -18,7 +18,8 @@ type EventType =
   | "checkout_started"
   | "payment_approved"
   | "premium_unlocked"
-  | "cognitive_lift";
+  | "cognitive_lift"
+  | "return_visit";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -30,6 +31,9 @@ interface AnalyticsEvent {
 class Analytics {
   private events: AnalyticsEvent[] = [];
   private userId: string | null = null;
+
+  private static readonly LAST_VISIT_KEY = "molino-analytics-last-visit";
+  private static readonly RETURN_COUNTED_KEY = "molino-analytics-return-counted";
 
   constructor() {
     this.loadFromStorage();
@@ -98,6 +102,7 @@ class Analytics {
       profileCreated: this.getEventsByType("profile_created").length,
       aiQueries: this.getEventsByType("ai_query").length,
       decisions: this.getEventsByType("decision_made").length,
+      returnVisits: this.getEventsByType("return_visit").length,
       features: {} as Record<string, number>,
     };
 
@@ -225,6 +230,43 @@ class Analytics {
     this.track({
       type: "premium_unlocked",
     });
+  }
+
+  /**
+   * Registra el último instante de visita. Se llama en cada carga de la app
+   * para poder comparar la próxima visita contra un "retorno".
+   */
+  updateLastVisit() {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.setItem(Analytics.LAST_VISIT_KEY, String(Date.now()));
+    } catch {
+      // sin almacenamiento disponible → no trackeamos retornos
+    }
+  }
+
+  /**
+   * Dispara `return_visit` una sola vez por sesión de pestaña, solo si es una
+   * vuelta real: el usuario ya vino antes (hay usuario + última visita) y la
+   * última visita supera la ventana `periodMs` (por defecto 24 h). Nunca en el
+   * primer contacto, y no en cada page view.
+   */
+  trackReturnVisit(periodMs = 24 * 60 * 60 * 1000): boolean {
+    if (typeof window === "undefined") return false;
+    try {
+      if (window.sessionStorage.getItem(Analytics.RETURN_COUNTED_KEY)) return false;
+      const lastRaw = window.localStorage.getItem(Analytics.LAST_VISIT_KEY);
+      if (!lastRaw) return false;
+      const last = Number(lastRaw);
+      if (Number.isNaN(last)) return false;
+      const now = Date.now();
+      if (now - last < periodMs) return false;
+      this.track({ type: "return_visit" });
+      window.sessionStorage.setItem(Analytics.RETURN_COUNTED_KEY, "1");
+      return true;
+    } catch {
+      return false;
+    }
   }
 }
 
