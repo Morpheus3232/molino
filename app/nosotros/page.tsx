@@ -19,6 +19,15 @@ const jsonLd = [
     url: siteUrl("/nosotros"),
   },
   {
+    // Nombre del proyecto, no de una persona — coherente con la narrativa
+    // de la página (misión, no biografía del fundador).
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Molino",
+    url: SITE_URL,
+    email: "versionlimitada@proton.me",
+  },
+  {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
