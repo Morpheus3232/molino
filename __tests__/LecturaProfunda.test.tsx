@@ -105,8 +105,8 @@ describe('LecturaProfunda', () => {
 
     // El masthead de movimientos gratis es la única bajada que se mantiene.
     expect(screen.getByText(/Hasta ahora viste las piezas/)).toBeInTheDocument();
-    // La "conversación entre tus sistemas" (04) es contenido Premium: bloqueada.
-    expect(screen.queryByText('La conversación entre tus sistemas')).not.toBeInTheDocument();
+    // "La Lectura" es contenido Premium: bloqueada.
+    expect(screen.queryByText('La Lectura')).not.toBeInTheDocument();
   });
 
   it('usuario sin Premium: SÍ ve las piezas gratis (patrones/reglas/evolución), NO ve la interpretación ni el chat', async () => {
@@ -122,10 +122,8 @@ describe('LecturaProfunda', () => {
       expect(screen.getByText(/Pagar con Mercado Pago/i)).toBeInTheDocument();
     });
 
-    // Interpretación (06, misma frase que el masthead pero como h3 propio) y
-    // chat (07) — pagas. Se distingue del masthead (h2, siempre visible) por
-    // su bajada exclusiva de la sección 06.
-    expect(screen.queryByText(/Precisión sin falsa certeza/)).not.toBeInTheDocument();
+    // La Lectura (05, abre en pestaña propia) y chat (06) — pagas.
+    expect(screen.queryByText('La Lectura')).not.toBeInTheDocument();
     expect(screen.queryByText(/preguntarle qué significa/)).not.toBeInTheDocument();
   });
 
@@ -138,12 +136,15 @@ describe('LecturaProfunda', () => {
     expect(screen.getByText(/PRINCIPIOS/)).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText(/Precisión sin falsa certeza/)).toBeInTheDocument();
+      expect(screen.getByText('La Lectura')).toBeInTheDocument();
     });
+    expect(screen.getByText('Abrir mi lectura →')).toBeInTheDocument();
     expect(screen.getByText(/preguntarle qué significa/)).toBeInTheDocument();
 
+    // La interpretación llega en segundo plano (sin renderizarse acá — vive
+    // en /lectura) para alimentar el trazado "Ver conexiones" y el chat.
     await waitFor(() => {
-      expect(screen.getByText('Síntesis de prueba.')).toBeInTheDocument();
+      expect(screen.getByText('Ver conexiones')).toBeInTheDocument();
     });
   });
 

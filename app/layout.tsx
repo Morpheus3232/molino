@@ -8,6 +8,7 @@ import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import UniversityHeader from "@/components/layout/UniversityHeader";
 import UniversityFooter from "@/components/layout/UniversityFooter";
+import RouteVisibilityGate from "@/components/layout/RouteVisibilityGate";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
@@ -192,7 +193,9 @@ export default function RootLayout({
             <UniversityHeader />
             <AppErrorBoundary>
               <AnimatedLayout>{children}</AnimatedLayout>
-              <UniversityFooter />
+              <RouteVisibilityGate hideOnPrefix="/lectura">
+                <UniversityFooter />
+              </RouteVisibilityGate>
             </AppErrorBoundary>
           </MotionProvider>
         </PWAProvider>

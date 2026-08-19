@@ -22,7 +22,6 @@ import {
   type MasterNumberHit,
 } from "@/lib/engines/numerologyEngine";
 import PremiumGate from "@/components/profile/PremiumGate";
-import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
 import type { MolinoInterpretation as MolinoInterpretationType } from "@/lib/engines/intelligenceEngine";
 import ChatWithMolino from "@/components/profile/ChatWithMolino";
 import AnnualCyclesPreview from "@/components/profile/AnnualCyclesPreview";
@@ -389,6 +388,40 @@ function LecturaProfundaDesbloqueada({
   const element = typeof profile.element === "string" ? profile.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
 
+  // La Lectura en sí vive en su propia pestaña (app/lectura) — esta llamada
+  // acá es silenciosa, solo para alimentar el trazado "Esta lectura conecta"
+  // de abajo y el contexto del chat (ChatWithMolino), sin repetir la UI de
+  // MolinoInterpretation. Pega contra el mismo cache server-side por
+  // profileHash+type+prompt que /lectura, así que no duplica costo de IA.
+  useEffect(() => {
+    let cancelled = false;
+    import("@/lib/profile-salt").then(({ getProfileSalt }) =>
+      import("@/lib/premium").then(({ getPremiumTokenClient }) =>
+        fetch("/api/intelligence/interpret", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: profile.name,
+            dob: profile.birthDate,
+            salt: getProfileSalt(),
+            type: "personal_profile",
+            premiumToken: getPremiumTokenClient(),
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (cancelled) return;
+            const interpretation = (data.ai ?? data.fallback) as MolinoInterpretationType | undefined;
+            if (interpretation) setAiInterpretation(interpretation);
+          })
+          .catch(() => {})
+      )
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [profile.birthDate, profile.name]);
+
   const connections: ConnectionNode[] = pieces
     ? [
         ...pieces.patterns.map((p) => ({ kind: "Patrón", label: `${p.label}: ${p.keyword}` })),
@@ -406,31 +439,33 @@ function LecturaProfundaDesbloqueada({
         <AnnualCyclesPreview profile={profile} />
       </div>
 
-      {/* 05 · Interpretación — la conversación entre sistemas */}
+      {/* 05 · La Lectura — vive en su propia pestaña (app/lectura), no
+          embebida acá. Si se acaba de desbloquear (pago/cupón), ya se abrió
+          sola vía useCommitPremiumUnlock; este bloque es tanto el respaldo
+          si el navegador bloqueó ese popup como el punto de reingreso para
+          quien vuelve otro día y ya es premium (justUnlocked=false). */}
       <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 py-16 sm:py-20 section-paper-alt overflow-hidden">
         <div
           className="absolute -left-1/4 top-0 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-[0.08] -z-10 pointer-events-none"
           style={{ background: `radial-gradient(circle, ${elementColor}, transparent 70%)` }}
           aria-hidden="true"
         />
-        <ChapterNumber number="05 · LA LECTURA" color={elementColor} />
         <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">
-          La conversación entre tus sistemas
+          La Lectura
         </h3>
         <p className="text-sm text-muted mb-8 max-w-xl leading-relaxed">
-          Precisión sin falsa certeza — una interpretación, no un hecho.
+          La conversación entre tus sistemas, en su propio espacio — con tus mayores afinidades de países, ciudades y marcas.
+          {justUnlocked && " Se abrió en una pestaña nueva."}
         </p>
+        <a
+          href={`/lectura?dob=${encodeURIComponent(profile.birthDate)}${profile.name ? `&name=${encodeURIComponent(profile.name)}` : ""}`}
+          target="_blank"
+          rel="noopener"
+          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-accent-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"
+        >
+          Abrir mi lectura →
+        </a>
         <div className="max-w-2xl">
-          <MolinoInterpretation
-            profile={profile}
-            type="personal_profile"
-            dailyEnergy={pieces?.dailyEnergy}
-            timing={pieces?.timing}
-            label="Tu síntesis"
-            description="La lectura que conecta tus números, tus astros y tu momento en una sola conclusión"
-            justUnlocked={justUnlocked}
-            onInterpretationReady={setAiInterpretation}
-          />
           {aiInterpretation && <Connections nodes={connections} />}
         </div>
       </div>

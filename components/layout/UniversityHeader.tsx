@@ -93,6 +93,10 @@ export default function UniversityHeader() {
     router.push("/onboarding");
   }, [router]);
 
+  // La Lectura vive en su propia pestaña como un objeto autónomo — el nav
+  // del sitio rompe esa sensación de "testamento que se despliega solo".
+  if (pathname.startsWith("/lectura")) return null;
+
   return (
     <>
       <motion.header
