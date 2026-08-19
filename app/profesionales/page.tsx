@@ -1,8 +1,20 @@
 import Link from "next/link";
 import { createRouteMetadata } from "@/lib/seo";
-import { ShieldCheck, Users, Sparkles, BookOpen, Lock, Compass, CheckCircle2, ArrowRight } from "lucide-react";
+import { ShieldCheck, Users, Sparkles, BookOpen, Lock, Compass, CheckCircle2, ArrowRight, XCircle } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+
+const WHAT_WE_DONT_DO = [
+  "No reemplazamos terapia profesional",
+  "No hacemos diagnósticos",
+  "No predecimos el futuro",
+];
+
+const WHAT_WE_DO = [
+  "Marco estructurado para reflexión",
+  "Herramienta de conversación",
+  "Recurso complementario",
+];
 
 export const metadata = createRouteMetadata({
   title: "Molino para Coaches: Herramienta de Reflexión",
@@ -73,6 +85,48 @@ export default function ProfesionalesPage() {
           >
             Ver planes y precios →
           </Link>
+        </div>
+
+        {/* Para coaches que valoran la honestidad */}
+        <div className="max-w-3xl mx-auto mb-20">
+          <Card padding="lg" className="border-ink/10 bg-card">
+            <h2 className="font-heading text-xl sm:text-2xl font-bold text-foreground mb-3">
+              Para coaches que valoran la honestidad
+            </h2>
+            <p className="text-sm sm:text-base text-muted leading-relaxed">
+              Molino no es una herramienta clínica validada. Es un marco de reflexión construido por aficionados apasionados. Si buscás instrumentos con respaldo empírico, esto no es para vos. Si buscás una herramienta complementaria para estructurar conversaciones, puede servirte.
+            </p>
+          </Card>
+        </div>
+
+        {/* Qué NO hacemos / Qué SÍ hacemos */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-20">
+          <Card padding="lg" className="h-full border-ink/10 bg-card">
+            <h3 className="font-heading text-lg font-bold text-foreground mb-4">
+              Qué NO hacemos
+            </h3>
+            <ul className="space-y-3 text-sm text-muted">
+              {WHAT_WE_DONT_DO.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <XCircle className="w-4 h-4 text-error/70 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+          <Card padding="lg" className="h-full border-ink/10 bg-card">
+            <h3 className="font-heading text-lg font-bold text-foreground mb-4">
+              Qué SÍ hacemos
+            </h3>
+            <ul className="space-y-3 text-sm text-muted">
+              {WHAT_WE_DO.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
         </div>
 
         {/* 3 Pillars */}

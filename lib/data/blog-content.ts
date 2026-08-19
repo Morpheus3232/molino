@@ -646,6 +646,70 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     related: ["numerologia-numero-de-vida", "signo-astral-personalidad", "numerologia-ano-personal"],
   },
+  {
+    slug: "honestidad-radical-lo-que-molino-es-y-no-es",
+    title: "Honestidad radical: lo que Molino es (y lo que no es)",
+    excerpt:
+      "Cada tanto vale la pena parar y mirar el proyecto con ojo crítico. Esto es lo que encontramos cuando lo hicimos con Molino — sin marketing, sin vender expertise que no tenemos.",
+    metaDescription:
+      "Qué hace bien Molino, qué le falta, y qué es (y qué no es) el proyecto: no somos expertos certificados, somos aficionados que construyeron una herramienta gratuita y privada de autoconocimiento.",
+    category: "Autoconocimiento",
+    date: "2026-08-19",
+    image: "/blog/honestidad-radical-lo-que-molino-es-y-no-es.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Cada tanto vale la pena parar y mirar un proyecto propio con la misma honestidad que le pedimos a la gente que se mire a sí misma con un mapa simbólico. Esto es lo que vemos cuando hacemos ese ejercicio con Molino, hoy.",
+      "No es un comunicado de prensa ni una respuesta a un incidente puntual. Es simplemente una foto honesta de dónde estamos parados: qué funciona, qué falta, y sobre todo, qué es este proyecto realmente — sin inflar credenciales que no tenemos.",
+    ],
+    sections: [
+      {
+        id: "lo-que-hicimos-bien",
+        heading: "Lo que hicimos bien",
+        paragraphs: [
+          "La privacidad no es una promesa de marketing acá: el cálculo del mapa gratuito corre enteramente en tu navegador. Tu fecha de nacimiento no viaja a un servidor de Molino para darte tu Camino de Vida, tu signo solar o tu animal del zodíaco chino.",
+          "El motor de cálculo está publicado como código abierto — no hay una caja negra propietaria escondiendo cómo se llega a cada resultado. Y no hay suscripción mensual: lo gratuito es gratuito para siempre, y lo único que tiene costo (la síntesis con IA) se paga una sola vez, no todos los meses.",
+        ],
+      },
+      {
+        id: "lo-que-mejoramos",
+        heading: "Lo que mejoramos",
+        paragraphs: [
+          "Durante mucho tiempo la página de 'Quiénes somos' hablaba del proyecto en abstracto, sin contar por qué existe realmente. La reescribimos para que cuente la historia real: nació de la frustración de pagar por conocimiento que debería ser público, no de un plan de negocio.",
+          "También nos faltaba documentación honesta sobre las limitaciones del proyecto — hacia dónde no llega, qué no reemplaza. Ese trabajo sigue en curso, y preferimos decirlo así en vez de aparentar que ya está resuelto.",
+        ],
+      },
+      {
+        id: "lo-que-no-somos",
+        heading: "Lo que NO somos",
+        paragraphs: [
+          "No somos expertos certificados en numerología, astrología ni zodíaco chino. No somos una empresa tradicional con equipo de soporte, oficina o ronda de inversión. No ofrecemos diagnósticos, terapia ni predicciones — los sistemas simbólicos que usamos no tienen respaldo científico, y lo decimos así de directo en cada rincón del sitio.",
+        ],
+      },
+      {
+        id: "lo-que-si-somos",
+        heading: "Lo que SÍ somos",
+        paragraphs: [
+          "Somos aficionados que se cansaron de pagar suscripciones. Construimos esto porque creemos que el conocimiento simbólico debe ser público, gratuito y privado. No somos expertos certificados, y eso está bien: no vendemos expertise, vendemos herramientas.",
+          "El proyecto es más grande que una persona — el código es público justamente para que no dependa de que alguien en particular siga sosteniéndolo. Cualquiera puede leerlo, cuestionarlo o mejorarlo.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Puedo revisar el código de Molino yo mismo?",
+        a: "Sí. El repositorio es público en GitHub, bajo la cuenta Morpheus3232/molino. Cualquiera puede leer el motor de cálculo, abrir un issue o proponer un cambio.",
+      },
+      {
+        q: "¿Dónde puedo leer más sobre la filosofía del proyecto?",
+        a: "En molino.app/filosofia están los principios completos (conocimiento libre, privacidad radical, transparencia total, código abierto, sin tracking invasivo). En molino.app/nosotros está la historia de por qué existe Molino.",
+      },
+      {
+        q: "¿Por qué admiten esto públicamente en vez de sonar más 'profesionales'?",
+        a: "Porque sonar más profesionales de lo que somos sería exactamente el tipo de sensacionalismo que Molino existe para evitar. Preferimos que confíes en la herramienta por lo que hace, no por credenciales infladas.",
+      },
+    ],
+    related: ["autoconocimiento-que-es-que-no", "numerologia-astrologia-herramientas-no-oraculo"],
+  },
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
