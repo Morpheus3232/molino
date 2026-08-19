@@ -103,7 +103,7 @@ function LoadingSkeleton() {
 const LOADING_MESSAGE_STEPS: Array<{ afterMs: number; message: string }> = [
   { afterMs: 2000, message: "Analizando tus números…" },
   { afterMs: 5000, message: "Consultando la sabiduría de tu mapa…" },
-  { afterMs: 10000, message: "Estamos armando tu mapa. Ojalá te sirva tanto como a nosotros nos sirvió descubrir el nuestro." },
+  { afterMs: 10000, message: "Ya casi. Molino nació porque nos cansamos de pagar suscripciones por cálculos que llevan siglos siendo de dominio público — armamos esto para que fuera gratis y transparente. Ojalá tu mapa te sirva tanto como a nosotros nos sirvió construirlo." },
 ];
 
 function useProgressiveLoadingMessage(active: boolean): string {
@@ -695,7 +695,7 @@ export default function MolinoInterpretation({
                 <p
                   role="status"
                   aria-live="polite"
-                  className="font-heading text-sm italic text-muted text-center leading-relaxed max-w-sm mx-auto -mt-6 sm:-mt-8"
+                  className="font-heading text-sm italic text-muted text-center leading-relaxed max-w-md mx-auto -mt-6 sm:-mt-8"
                 >
                   {loadingMessage}
                 </p>

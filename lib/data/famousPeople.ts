@@ -93,6 +93,7 @@ export const FAMOUS_BY_ANIMAL: Record<string, FamousPerson[]> = {
     { name: "Samuel L. Jackson", animal: "Caballo", year: 1948, westernSign: "Capricornio", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
     { name: "Denzel Washington", animal: "Caballo", year: 1954, westernSign: "Capricornio", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
     { name: "Stephen Hawking", animal: "Caballo", year: 1942, westernSign: "Capricornio", field: "Ciencia", country: "Reino Unido", emoji: "🔬" },
+    { name: "Carlos Gardel", animal: "Caballo", year: 1890, westernSign: "Sagitario", field: "Música", country: "Argentina", emoji: "🎤" },
   ],
   Cabra: [
     { name: "Mark Twain", animal: "Cabra", year: 1835, westernSign: "Sagitario", field: "Literatura", country: "Estados Unidos", emoji: "📚" },
@@ -216,6 +217,7 @@ export const FAMOUS_BY_SIGN: Record<string, FamousPerson[]> = {
     { name: "Bruce Lee", animal: "Dragón", year: 1940, westernSign: "Sagitario", field: "Cine", country: "Estados Unidos", emoji: "🥋" },
     { name: "Taylor Swift", animal: "Serpiente", year: 1989, westernSign: "Sagitario", field: "Música", country: "Estados Unidos", emoji: "🎤" },
     { name: "Scarlett Johansson", animal: "Rata", year: 1984, westernSign: "Sagitario", field: "Cine", country: "Estados Unidos", emoji: "🎬" },
+    { name: "Carlos Gardel", animal: "Caballo", year: 1890, westernSign: "Sagitario", field: "Música", country: "Argentina", emoji: "🎤" },
   ],
   Capricornio: [
     { name: "Isaac Newton", animal: "Tigre", year: 1643, westernSign: "Capricornio", field: "Ciencia", country: "Reino Unido", emoji: "🔬" },

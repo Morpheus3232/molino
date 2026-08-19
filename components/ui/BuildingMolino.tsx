@@ -301,9 +301,18 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
             initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: reduceMotion ? 0 : 0.4 }}
-            className="mt-4 text-center font-heading text-sm italic text-muted leading-relaxed max-w-sm mx-auto"
+            className="mt-4 text-center font-heading text-sm italic text-muted leading-relaxed max-w-md whitespace-pre-line mx-auto"
           >
-            Estamos armando tu mapa. Ojalá te sirva tanto como a nosotros nos sirvió descubrir el nuestro.
+            {`Ya casi. Algo grande está por revelarse...
+
+Tu mapa no te va a decir qué hacer.
+Te va a dar la claridad que necesitás para decidir.
+
+No es magia.
+Es matemática que lleva siglos esperándote.
+
+Y cuando lo veas,
+no vas a poder volver a mirarte igual.`}
           </motion.p>
         )}
       </motion.div>

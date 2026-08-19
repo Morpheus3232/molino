@@ -14,7 +14,7 @@ export const FAQS = [
   {
     question: "¿Qué incluye el acceso Premium de $8 USD?",
     answer:
-      "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa de IA, ciclos personales 2026–2030, desglose de tensiones arquetípicas y preguntas interactivas.",
+      "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa personalizada, ciclos personales 2026–2030, desglose de tensiones arquetípicas y preguntas interactivas.",
   },
   {
     question: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",

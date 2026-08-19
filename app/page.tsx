@@ -62,7 +62,7 @@ const homeSchemas = [
         name: "¿Qué incluye el acceso Premium de $8 USD?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa de IA y chat interactivo con tu mapa, ciclos personales 2026–2030 y desglose de tensiones arquetípicas.",
+          text: "El acceso Premium (pago único de por vida) incluye la síntesis profunda con narrativa personalizada y chat interactivo con tu mapa, ciclos personales 2026–2030 y desglose de tensiones arquetípicas.",
         },
       },
       {

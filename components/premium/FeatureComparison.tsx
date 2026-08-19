@@ -72,8 +72,8 @@ const FEATURES: FeatureItem[] = [
     description: "Comparativa de mapas lado a lado con puntos de fricción y sinergias.",
   },
   {
-    category: "Herramientas & IA",
-    name: "Preguntale a Molino (chat de IA)",
+    category: "Herramientas",
+    name: "Preguntale a Molino",
     free: false,
     premium: true,
     highlight: true,
@@ -270,7 +270,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
             <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1">
               <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
               <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
-              <p className="text-xs text-foreground/90 leading-relaxed">$8 USD. Acceso vitalicio permanente, informe con narrativa de IA y 0 tracking.</p>
+              <p className="text-xs text-foreground/90 leading-relaxed">$8 USD. Acceso vitalicio permanente, informe con síntesis narrativa y 0 tracking.</p>
             </div>
           </div>
         </div>
