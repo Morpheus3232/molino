@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { motion } from "framer-motion";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
@@ -53,7 +53,7 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
             <Link
               key={entity.id}
               href={`/affinity/${entity.type}/${entity.id}`}
-              className={`snap-start shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-all min-h-[40px] ${
+              className={`snap-start shrink-0 flex items-center gap-2 px-3 py-2 rounded-md border text-sm transition-all min-h-[40px] ${
                 isCurrent
                   ? "border-accent bg-accent/10 text-foreground"
                   : "border-border bg-card text-muted hover:border-accent/40 hover:text-foreground"
@@ -63,7 +63,7 @@ export default function AnimalQuickSelector({ profile, currentEntity, type }: An
               <span className="text-base">{entity.emoji}</span>
               <span className="font-medium truncate max-w-[80px]">{entity.name}</span>
               <span
-                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full shrink-0"
+                className="text-xs font-semibold px-1.5 py-0.5 rounded-sm shrink-0"
                 style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
               >
                 {result.score}

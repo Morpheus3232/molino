@@ -1,4 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
-  <rect width="180" height="180" rx="40" fill="#1A1A1A" />
-  <text x="90" y="120" font-family="Georgia, 'Times New Roman', serif" font-size="100" font-weight="700" fill="#C49A2A" text-anchor="middle">M</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#0A0A0C"/>
+  <g fill="#F3F1EA">
+    <!-- Torre -->
+    <path d="M34,96 L66,96 L56,46 L44,46 Z" fill-opacity="0.95"/>
+    <!-- Gorro -->
+    <path d="M44,46 Q50,34 56,46 Z"/>
+    <!-- Rotor (estático) -->
+    <g transform="translate(50 38)">
+      <g transform="rotate(45)">
+        <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"/>
+      </g>
+      <g transform="rotate(135)">
+        <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"/>
+      </g>
+      <g transform="rotate(225)">
+        <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"/>
+      </g>
+      <g transform="rotate(315)">
+        <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z"/>
+      </g>
+      <circle cx="0" cy="0" r="3.2" fill="#0A0A0C" stroke="#F3F1EA" stroke-width="1"/>
+    </g>
+  </g>
 </svg>

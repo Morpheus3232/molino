@@ -1,10 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
+import Link from "next/link";
 import { SOURCES, MOLINO_DISCLAIMER } from "@/lib/data/sources";
 
 const SYSTEM_LABELS: Record<string, string> = {
@@ -24,8 +18,6 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export default function FuentesContent() {
-  const router = useRouter();
-
   const bySystem = SOURCES.reduce((acc, src) => {
     if (!acc[src.system]) acc[src.system] = [];
     acc[src.system].push(src);
@@ -34,41 +26,39 @@ export default function FuentesContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Breadcrumb */}
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/")}>Inicio</span>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2">&rsaquo;</span>
-          <span className="hover:text-accent cursor-pointer" onClick={() => router.push("/explore")}>Conocimiento</span>
+          <Link href="/explore" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Conocimiento</Link>
           <span className="mx-2">&rsaquo;</span>
           <span className="text-foreground font-medium">Fuentes y metodología</span>
         </nav>
 
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-20">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Transparencia</p>
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.1]">
             Fuentes y metodología
           </h1>
           <p className="text-base sm:text-lg text-muted mt-6 max-w-2xl leading-relaxed">
             Molino se compromete con la transparencia. Cada afirmación factual puede rastrearse hasta una fuente confiable. Cada interpretación simbólica está claramente identificada como tal.
           </p>
-        </motion.section>
+        </section>
 
         {/* Disclaimer */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-12">
-          <div className="p-5 rounded-xl border border-accent/20 bg-accent/[0.03]">
+        <section className="mb-12 animate-fade-in-up stagger-1">
+          <div className="p-6 border border-accent/20">
             <p className="text-sm text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </section>
 
         {/* Cómo funciona Molino */}
-        <motion.section {...fadeUpDelayed(0.1)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-2">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo funciona Molino</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Cómo funciona Molino</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
@@ -79,26 +69,26 @@ export default function FuentesContent() {
               { title: "5. Compatibilidad", text: "Basado en la relación entre animales del zodíaco chino. Las puntuaciones son deterministas y explicables." },
               { title: "6. Sin predicciones", text: "Molino no predice el futuro. Ofrece herramientas de reflexión basadas en sistemas simbólicos." },
             ].map((item) => (
-              <div key={item.title} className="p-5 rounded-xl border border-border bg-card">
+              <div key={item.title} className="p-6 border border-ink/10">
                 <h3 className="text-sm font-medium text-foreground mb-2">{item.title}</h3>
                 <p className="text-xs text-muted leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>
-        </motion.section>
+        </section>
 
         {/* Cómo se calcula la compatibilidad */}
-        <motion.section {...fadeUpDelayed(0.15)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-3">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Cómo se calcula la compatibilidad</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Cómo se calcula la compatibilidad</h2>
           </div>
           <div className="max-w-3xl space-y-4">
             <p className="text-sm text-foreground leading-relaxed">
               La compatibilidad de Molino utiliza <strong>70% zodiaco chino + 30% numerología</strong> como fórmula base. Esto es una propuesta de Molino, no una convención universal.
             </p>
-            <div className="p-5 rounded-xl border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fórmula</p>
+            <div className="p-6 border border-ink/10">
+              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fórmula</h3>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-accent shrink-0" />
@@ -120,18 +110,18 @@ export default function FuentesContent() {
               Para países se utiliza el <strong>año de independencia</strong> como fecha de referencia. Para marcas, el <strong>año de fundación</strong>. Cuando existen múltiples fechas posibles, Molino elige la más documentada y lo indica explícitamente.
             </p>
           </div>
-        </motion.section>
+        </section>
 
         {/* Fuentes por sistema */}
-        <motion.section {...fadeUpDelayed(0.2)} className="mb-16 sm:mb-20">
+        <section className="mb-16 sm:mb-20 animate-fade-in-up stagger-4">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Fuentes por sistema</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Fuentes por sistema</h2>
           </div>
           <div className="space-y-8">
             {Object.entries(bySystem).map(([system, sources]) => (
               <div key={system}>
-                <h3 className="font-serif text-lg font-semibold text-foreground mb-4">{SYSTEM_LABELS[system] || system}</h3>
+                <h3 className="font-heading text-lg font-semibold text-foreground mb-4">{SYSTEM_LABELS[system] || system}</h3>
                 <div className="space-y-3">
                   {sources.map((src) => (
                     <div key={src.id} className="flex items-start gap-3 py-3 border-b border-border last:border-b-0">
@@ -146,7 +136,7 @@ export default function FuentesContent() {
                         )}
                         <p className="text-xs text-muted mt-1 italic">{src.relevance}</p>
                       </div>
-                      <span className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-full border border-border shrink-0">
+                      <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 rounded-md border border-border shrink-0">
                         {TYPE_LABELS[src.type] || src.type}
                       </span>
                     </div>
@@ -155,17 +145,16 @@ export default function FuentesContent() {
               </div>
             ))}
           </div>
-        </motion.section>
+        </section>
 
         {/* Disclaimer final */}
-        <motion.section {...fadeUpDelayed(0.25)}>
-          <div className="p-5 rounded-xl border border-border bg-card">
+        <section className="animate-fade-in-up stagger-5">
+          <div className="p-6 border border-ink/10">
             <p className="text-xs text-muted leading-relaxed">{MOLINO_DISCLAIMER}</p>
           </div>
-        </motion.section>
+        </section>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

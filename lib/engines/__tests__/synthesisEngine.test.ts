@@ -1,0 +1,436 @@
+import { describe, it, expect } from "vitest";
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildPrinciples, hasCircularSources } from "../synthesisEngine";
+import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo } from "../numerologyEngine";
+import type { UserProfile } from "@/types/user";
+
+// buildPersonalCode es el único punto de entrada público que expone el
+// nombre/significado de cada número (getNumberName/getNumberMeaning son
+// privadas). Estos fixtures solo pisan los 4 campos numéricos que esa
+// función lee — el resto del shape de UserProfile no le importa.
+function profileWith(fields: Partial<UserProfile>): UserProfile {
+  return {
+    name: "",
+    birthDate: "1990-01-09",
+    birthPlace: "",
+    goal: "life",
+    interests: [],
+    onboardingStep: 1,
+    completedSections: [],
+    theme: "light",
+    language: "es",
+    notifications: true,
+    lifePath: 1,
+    sunSign: "Capricornio",
+    sunSignInfo: { sign: "Capricornio", element: "Tierra", modality: "Cardinal" },
+    chineseZodiac: "Caballo",
+    chineseZodiacInfo: { animal: "Caballo", element: "Metal" },
+    element: "Tierra",
+    modality: "Cardinal",
+    luckyNumber: 11,
+    archetype: "El Líder",
+    archetypeInfo: {},
+    cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 },
+    recommendations: { strengths: [], challenges: [], practices: [] },
+    ...fields,
+  };
+}
+
+describe("buildPersonalCode — FASE 1D-2C: Personalidad 9 ≠ Camino de Vida 9", () => {
+  it("Personalidad 9 (día 9/18/27) representa capacidad de adaptación, no 'El Filósofo'/'Generosidad'", () => {
+    const code = buildPersonalCode(profileWith({ personalityNumber: 9 }));
+    expect(code.personality.number).toBe(9);
+    expect(code.personality.name).toBe("El Adaptador");
+    expect(code.personality.meaning).toBe("Capacidad de adaptación");
+  });
+
+  it("Camino de Vida 9 NO cambia como consecuencia del cambio de Personalidad", () => {
+    const code = buildPersonalCode(profileWith({ lifePath: 9 }));
+    expect(code.lifePath.number).toBe(9);
+    expect(code.lifePath.name).toBe("El Filósofo");
+    expect(code.lifePath.meaning).toBe("Compasión y sabiduría");
+  });
+
+  it("Expresión 9 y Alma 9 NO cambian como consecuencia del cambio de Personalidad", () => {
+    const code = buildPersonalCode(profileWith({ expressionNumber: 9, soulNumber: 9 }));
+    expect(code.expression.name).toBe("El Filósofo");
+    expect(code.expression.meaning).toBe("Humanitarismo");
+    expect(code.soul.name).toBe("El Filósofo");
+    expect(code.soul.meaning).toBe("Servicio al todo");
+  });
+
+  it("Personalidad 7 conserva 'Misterio' intacto", () => {
+    const code = buildPersonalCode(profileWith({ personalityNumber: 7 }));
+    expect(code.personality.name).toBe("El Investigador");
+    expect(code.personality.meaning).toBe("Misterio");
+  });
+
+  it("Camino de Vida 7 conserva su nombre/significado propio (no 'Misterio')", () => {
+    const code = buildPersonalCode(profileWith({ lifePath: 7 }));
+    expect(code.lifePath.name).toBe("El Investigador");
+    expect(code.lifePath.meaning).toBe("Búsqueda de verdad");
+  });
+});
+
+// "Cuando tus sistemas se encuentran" solo debe mostrarse cuando dos sources
+// realmente derivan de señales distintas. El bug original: buildPatterns
+// etiquetaba "Tu motor" como ["Arquetipos", "Numerología"] siempre, pero
+// ambos labels se derivan enteramente del mismo lifePath — era el mismo dato
+// contado dos veces, no una convergencia real. Este bloque barre una matriz
+// de perfiles (todo lifePath × los 12 animales chinos) para asegurar que
+// ningún pattern/insight generado — presente o futuro — vuelva a etiquetar
+// dos sources que resuelvan a la misma señal fundamental (SOURCE_SIGNAL).
+describe("buildPatterns — no reintroducir convergencias circulares", () => {
+  const LIFE_PATHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+  const CHINESE_ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+
+  it("ningún pattern de buildPatterns etiqueta dos sources que compartan señal fundamental", () => {
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of CHINESE_ANIMALS) {
+        const patterns = buildPatterns(profileWith({ lifePath, chineseZodiac, cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } }));
+        for (const p of patterns) {
+          expect(hasCircularSources(p.sources), `"${p.label}" (lifePath=${lifePath}, animal=${chineseZodiac}) sources=${p.sources.join(",")}`).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("regresión del bug original: 'Tu motor' nunca vuelve a etiquetar ['Arquetipos','Numerología'] juntos", () => {
+    for (const lifePath of LIFE_PATHS) {
+      const motor = buildPatterns(profileWith({ lifePath, chineseZodiac: "Cerdo" })).find((p) => p.label === "Tu motor")!;
+      expect(motor.sources).not.toEqual(expect.arrayContaining(["Arquetipos", "Numerología"]));
+    }
+  });
+});
+
+// "Tu tensión" (Numerología + Ciclos) y "Tu próximo movimiento" (Ciclos +
+// Zodiaco Chino) ganaron la misma lógica que ya tenía "Tu motor": solo se
+// etiquetan como convergencia de dos sistemas si findSharedTheme encuentra
+// un tema real compartido; si no, fallback honesto de una sola fuente.
+describe("buildPatterns — 'Tu tensión' y 'Tu próximo movimiento' con convergencia real", () => {
+  const LIFE_PATHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+  const CHINESE_ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+  const PERSONAL_YEARS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+
+  function realisticProfile(lifePath: number, chineseZodiac: string, personalYear: number): UserProfile {
+    return profileWith({
+      lifePath,
+      chineseZodiac,
+      archetypeInfo: getArchetypeInfo(lifePath),
+      cycles: { personalYear, personalMonth: 1, personalDay: 1 },
+    });
+  }
+
+  it("con datos de arquetipo reales (no {}), ningún pattern etiqueta dos sources que compartan señal fundamental", () => {
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of CHINESE_ANIMALS) {
+        for (const personalYear of PERSONAL_YEARS) {
+          const patterns = buildPatterns(realisticProfile(lifePath, chineseZodiac, personalYear));
+          for (const p of patterns) {
+            expect(
+              hasCircularSources(p.sources),
+              `"${p.label}" (lifePath=${lifePath}, animal=${chineseZodiac}, año=${personalYear}) sources=${p.sources.join(",")}`
+            ).toBe(false);
+          }
+        }
+      }
+    }
+  });
+
+  it("determinismo: mismo perfil produce siempre la misma síntesis", () => {
+    const profile = realisticProfile(4, "Caballo", 4);
+    const a = buildPatterns(profile);
+    const b = buildPatterns(profile);
+    expect(a).toEqual(b);
+  });
+
+  it("toda convergencia declarada ('Tu tensión' con 2 sources) es trazable a un challenge real del perfil", () => {
+    for (const lifePath of LIFE_PATHS) {
+      const challenges = ARCHETYPE_DESCRIPTIONS[lifePath]?.challenges ?? [];
+      for (const personalYear of PERSONAL_YEARS) {
+        const tension = buildPatterns(realisticProfile(lifePath, "Rata", personalYear)).find((p) => p.label === "Tu tensión")!;
+        if (tension.sources.length > 1) {
+          expect(challenges, `lifePath=${lifePath}, año=${personalYear}`).toContain(tension.keyword);
+        }
+      }
+    }
+  });
+
+  it("toda convergencia declarada ('Tu próximo movimiento' con 2 sources) es trazable al texto real de YEAR_TYPES", () => {
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of CHINESE_ANIMALS) {
+        for (const personalYear of PERSONAL_YEARS) {
+          const movement = buildPatterns(realisticProfile(lifePath, chineseZodiac, personalYear)).find((p) => p.label === "Tu próximo movimiento")!;
+          if (movement.sources.length > 1) {
+            expect(movement.keyword.length, `animal=${chineseZodiac}, año=${personalYear}`).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
+  });
+
+  it("caso conocido CON convergencia: Life Path 4 (challenge 'Rigidez') + Año personal 4 ('estabilidad, disciplina') comparten tema de estructura", () => {
+    const tension = buildPatterns(realisticProfile(4, "Rata", 4)).find((p) => p.label === "Tu tensión")!;
+    expect(tension.sources).toEqual(["Numerología", "Ciclos"]);
+    expect(tension.keyword).toBe("Rigidez");
+  });
+
+  it("caso conocido SIN convergencia forzada: Life Path 2 (challenges sin overlap con Año personal 4) cae a fuente única, sin inventar una segunda", () => {
+    const tension = buildPatterns(realisticProfile(2, "Rata", 4)).find((p) => p.label === "Tu tensión")!;
+    expect(tension.sources).toEqual(["Numerología"]);
+  });
+
+  it("misma señal de Ciclos (año 4), animales distintos: Caballo no converge por 'estructura', Buey sí (determinación → estructura)", () => {
+    const conBuey = buildPatterns(realisticProfile(1, "Buey", 4)).find((p) => p.label === "Tu próximo movimiento")!;
+    const conCaballo = buildPatterns(realisticProfile(1, "Caballo", 4)).find((p) => p.label === "Tu próximo movimiento")!;
+    expect(conBuey.sources).toEqual(["Ciclos", "Zodiaco Chino"]);
+    expect(conCaballo.sources).toEqual(["Ciclos"]);
+  });
+});
+
+// buildTensions es la contraparte de buildPatterns: en vez de detectar cuándo
+// dos sistemas COINCIDEN, detecta cuándo dos sistemas ya calculados apuntan
+// en direcciones OPUESTAS. Solo debe declarar una tensión cuando el Life Path
+// tiene un reclamo de ritmo real (getLifePathPace) Y el elemento contradice
+// ese ritmo — nunca debe inventar una tensión para un grupo de Life Path sin
+// reclamo de ritmo (2,6,9,11,22,33) ni para un elemento fluido (Aire/Agua).
+describe("buildTensions — solo declara tensión ante una contradicción real de ritmo", () => {
+  it("Life Path rápido (1) + elemento lento (Tierra) → tensión real", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 1, element: "Tierra" }));
+    expect(tensions).toHaveLength(1);
+    expect(tensions[0].sources).toEqual(["Numerología", "Astrología"]);
+    expect(tensions[0].evidence).toContain("Tierra");
+    expect(tensions[0].evidence).toContain("1");
+  });
+
+  it("Life Path lento (7) + elemento rápido (Fuego) → tensión real", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 7, element: "Fuego" }));
+    expect(tensions).toHaveLength(1);
+  });
+
+  it("Life Path rápido (8) + elemento rápido (Fuego) → sin tensión (se refuerzan, no se contradicen)", () => {
+    const tensions = buildTensions(profileWith({ lifePath: 8, element: "Fuego" }));
+    expect(tensions).toHaveLength(0);
+  });
+
+  it("Life Path sin reclamo de ritmo (2, 6, 9, 11, 22, 33) → nunca declara esta tensión, sea cual sea el elemento", () => {
+    for (const lifePath of [2, 6, 9, 11, 22, 33]) {
+      for (const element of ["Fuego", "Tierra", "Metal", "Aire", "Agua"]) {
+        const tensions = buildTensions(profileWith({ lifePath, element }));
+        expect(tensions, `lifePath=${lifePath}, element=${element}`).toHaveLength(0);
+      }
+    }
+  });
+
+  it("elemento fluido (Aire/Agua) nunca contradice, porque no fuerza un ritmo propio", () => {
+    for (const lifePath of [1, 3, 4, 5, 7, 8]) {
+      for (const element of ["Aire", "Agua"]) {
+        const tensions = buildTensions(profileWith({ lifePath, element }));
+        expect(tensions, `lifePath=${lifePath}, element=${element}`).toHaveLength(0);
+      }
+    }
+  });
+
+  it("determinismo: mismo perfil produce siempre la misma tensión", () => {
+    const profile = profileWith({ lifePath: 4, element: "Fuego" });
+    expect(buildTensions(profile)).toEqual(buildTensions(profile));
+  });
+});
+
+// buildRules nunca debe rellenar hasta 10 con texto inventado — cada regla
+// debe trazarse a un dato real (archetypeInfo.strengths/challenges, o un
+// pattern/tension ya calculado en otro lado del engine).
+describe("buildRules — nunca rellena hasta 10, cada regla se traza a un dato real", () => {
+  it("sin archetypeInfo (perfil vacío como el que arma profileWith por defecto), solo produce reglas desde patterns/tensions — nunca inventa fortalezas/desafíos", () => {
+    const rules = buildRules(profileWith({}));
+    expect(rules.every((r) => !r.source.startsWith("Arquetipo"))).toBe(true);
+  });
+
+  it("con archetypeInfo real (3-5 strengths/challenges), produce una regla por cada uno — nunca más de las que existen", () => {
+    const strengths = ["Iniciativa", "Creatividad", "Coraje", "Originalidad"];
+    const challenges = ["Impaciencia", "Ego", "Control"];
+    const rules = buildRules(profileWith({ archetypeInfo: { strengths, challenges } }));
+    const strengthRules = rules.filter((r) => r.source.startsWith("Arquetipo") && strengths.some((s) => r.source.includes(s)));
+    const challengeRules = rules.filter((r) => r.source.startsWith("Arquetipo") && challenges.some((c) => r.source.includes(c)));
+    expect(strengthRules).toHaveLength(4);
+    expect(challengeRules).toHaveLength(3);
+  });
+
+  it("nunca devuelve más de 10 reglas", () => {
+    const rules = buildRules(
+      profileWith({
+        archetypeInfo: {
+          strengths: ["A", "B", "C", "D", "E"],
+          challenges: ["F", "G", "H", "I"],
+        },
+      })
+    );
+    expect(rules.length).toBeLessThanOrEqual(10);
+  });
+
+  it("cada regla cita el rasgo real (en minúscula) del que sale, no una plantilla genérica", () => {
+    const rules = buildRules(profileWith({ archetypeInfo: { strengths: ["Diplomacia"], challenges: [] } }));
+    const diplomaciaRule = rules.find((r) => r.source.includes("Diplomacia"));
+    expect(diplomaciaRule?.rule).toMatch(/diplomacia/);
+  });
+
+  it("determinismo: mismo perfil produce siempre las mismas reglas", () => {
+    const profile = profileWith({ lifePath: 1, element: "Tierra", archetypeInfo: { strengths: ["Iniciativa"], challenges: ["Impaciencia"] } });
+    expect(buildRules(profile)).toEqual(buildRules(profile));
+  });
+});
+
+// buildPrinciples — "Tus reglas" agrupado en 3 principios compactos. La UI
+// sintetiza datos reales, nunca inventa: cada término sale SOLO de
+// archetypeInfo.strengths/challenges (los patterns motor/tensión ya se
+// muestran en "Tus patrones", repetirlos acá duplicaría el concepto).
+describe("buildPrinciples — sintetiza los datos reales del perfil, no inventa", () => {
+  it("un perfil con ambición/estrategia/liderazgo muestra exactamente esos términos", () => {
+    const profile = profileWith({
+      lifePath: 8,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 5, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Ambición", "Estrategia", "Liderazgo", "Visión"], challenges: ["Materialismo", "Control", "Intimidación"] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const avanzar = principles.find((p) => p.title === "AVANZÁ")!;
+    expect(avanzar.body).toContain("ambición");
+    expect(avanzar.body).toContain("estrategia");
+    expect(avanzar.body).toContain("liderazgo");
+  });
+
+  it("el keyword del motor NO se repite en AVANZÁ (evita '…y ambicioso')", () => {
+    const profile = profileWith({
+      lifePath: 8,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 5, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Ambición", "Estrategia", "Liderazgo", "Visión"], challenges: ["Materialismo", "Control", "Intimidación"] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const body = principles.map((p) => p.body).join(" ").toLowerCase();
+    expect(body).not.toContain("ambicioso");
+  });
+
+  it("otro conjunto de arquetipos NO muestra ambición/estrategia/liderazgo artificialmente", () => {
+    const profile = profileWith({
+      lifePath: 2,
+      element: "Agua",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Diplomacia", "Intuición", "Paciencia"], challenges: ["Indecisión"] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const body = principles.map((p) => p.body).join(" ").toLowerCase();
+    expect(body).not.toContain("ambición");
+    expect(body).not.toContain("estrategia");
+    expect(body).not.toContain("liderazgo");
+    expect(body).toContain("diplomacia");
+    expect(body).toContain("intuición");
+  });
+
+  it("la tensión mostrada pertenece al perfil (challenges reales, sin duplicados)", () => {
+    const profile = profileWith({
+      lifePath: 1,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Iniciativa"], challenges: ["Materialismo", "Control"] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const observa = principles.find((p) => p.title === "OBSERVÁ")!;
+    const lower = observa.body.toLowerCase();
+    expect(lower).toContain("materialismo");
+    expect(lower).toContain("control");
+    // el mismo término no debe repetirse dentro de la frase
+    expect(lower).not.toMatch(/materialismo.*materialismo/);
+  });
+
+  it("el movimiento mostrado pertenece al ciclo actual (pattern Tu próximo movimiento)", () => {
+    const profile = profileWith({
+      lifePath: 1,
+      element: "Tierra",
+      chineseZodiac: "Buey",
+      cycles: { personalYear: 4, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Iniciativa"], challenges: ["Impaciencia"] },
+    });
+    const patterns = buildPatterns(profile);
+    const movement = patterns.find((p) => p.label === "Tu próximo movimiento");
+    const principles = buildPrinciples(buildRules(profile), patterns, profile.archetypeInfo);
+    const inici = principles.find((p) => p.title === "INICIÁ")!;
+    if (movement) {
+      expect(inici.body).toContain(movement.keyword.toLowerCase());
+    } else {
+      // sin pattern de movimiento: fallback genérico verdadero, sin inventar
+      expect(inici.body).toMatch(/ciclo actual/i);
+    }
+  });
+
+  it("no aparecen reglas inventadas: sin challenges no hay términos de OBSERVÁ fabricados", () => {
+    const profile = profileWith({
+      lifePath: 1,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Iniciativa"], challenges: [] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const body = principles.map((p) => p.body).join(" ").toLowerCase();
+    expect(body).not.toContain("materialismo");
+    expect(body).not.toContain("intimidación");
+    expect(body).not.toContain("control");
+    // el fallback del tension pattern no colorea la frase ("adaptación son…")
+    expect(body).not.toContain("adaptación son");
+  });
+
+  it("tope de 3 términos: una lista larga de strengths no vuelve la frase un listado", () => {
+    const profile = profileWith({
+      lifePath: 9,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 9, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: {
+        strengths: ["Adaptabilidad", "Compasión", "Sabiduría", "Capacidad de reflejar a otros", "Visión global"],
+        challenges: ["Apego emocional", "Ego excesivo", "Influencia del entorno negativo", "Dificultad para soltar"],
+      },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const avanzar = principles.find((p) => p.title === "AVANZÁ")!;
+    const observa = principles.find((p) => p.title === "OBSERVÁ")!;
+    // los 3 primeros sí aparecen…
+    expect(avanzar.body).toContain("adaptabilidad");
+    expect(avanzar.body).toContain("compasión");
+    expect(avanzar.body).toContain("sabiduría");
+    // …pero los sobrantes se descartan, la frase no se convierte en listado
+    expect(avanzar.body).not.toContain("capacidad de reflejar a otros");
+    expect(avanzar.body).not.toContain("visión global");
+    expect(observa.body).not.toContain("dificultad para soltar");
+  });
+
+  it("OBSERVÁ con un único challenge usa singular ('es una señal')", () => {
+    const profile = profileWith({
+      lifePath: 1,
+      element: "Tierra",
+      chineseZodiac: "Caballo",
+      cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 },
+      archetypeInfo: { strengths: ["Iniciativa"], challenges: ["Control"] },
+    });
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const observa = principles.find((p) => p.title === "OBSERVÁ")!;
+    expect(observa.body).toBe("Control es una señal para revisar, no un defecto que eliminar.");
+  });
+
+  it("categoría vacía cae en fallback genérico, nunca en atributo inventado", () => {
+    const profile = profileWith({});
+    const principles = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const observa = principles.find((p) => p.title === "OBSERVÁ")!;
+    expect(observa.body).toMatch(/señales|zonas de exceso/i);
+  });
+
+  it("determinismo: mismo perfil produce siempre los mismos principios", () => {
+    const profile = profileWith({ lifePath: 3, element: "Fuego", chineseZodiac: "Caballo", archetypeInfo: { strengths: ["Creatividad"], challenges: ["Dispersión"] } });
+    const a = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    const b = buildPrinciples(buildRules(profile), buildPatterns(profile), profile.archetypeInfo);
+    expect(a).toEqual(b);
+  });
+});

@@ -4,8 +4,6 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { getSunSign } from "@/lib/engines/astrologyEngine";
 import { getChineseZodiac } from "@/lib/engines/chineseZodiacEngine";
@@ -86,20 +84,18 @@ export default function CompatibilidadCalcPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Compatibilidad</span>
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Compatibilidad</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Compatibilidad simbólica
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
@@ -111,8 +107,8 @@ export default function CompatibilidadCalcPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {/* Persona 1 */}
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 1</p>
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 1</h3>
               <div className="space-y-3">
                 <select value={p1.day} onChange={(e) => setP1({ ...p1, day: e.target.value })} className="input" aria-label="Día persona 1">
                   <option value="">Día</option>
@@ -132,15 +128,15 @@ export default function CompatibilidadCalcPage() {
                 </select>
               </div>
               {person1 && (
-                <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">
                   {person1.animal} · {person1.sunSign} · Camino de Vida {person1.lifePath}
                 </div>
               )}
             </div>
 
             {/* Persona 2 */}
-            <div className="p-6 rounded-xl border border-border bg-card">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-4">Persona 2</p>
+            <div className="p-6 rounded-md border border-border bg-card shadow-sm">
+              <h3 className="font-heading text-lg font-semibold text-accent mb-4">Persona 2</h3>
               <div className="space-y-3">
                 <select value={p2.day} onChange={(e) => setP2({ ...p2, day: e.target.value })} className="input" aria-label="Día persona 2">
                   <option value="">Día</option>
@@ -160,7 +156,7 @@ export default function CompatibilidadCalcPage() {
                 </select>
               </div>
               {person2 && (
-                <div className="mt-4 p-3 rounded-lg bg-background text-sm text-muted">
+                <div className="mt-4 p-3 rounded-md bg-background text-sm text-muted">
                   {person2.animal} · {person2.sunSign} · Camino de Vida {person2.lifePath}
                 </div>
               )}
@@ -182,14 +178,14 @@ export default function CompatibilidadCalcPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-md border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                    className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3"
                   >
                     Compatibilidad
                   </motion.p>
@@ -197,35 +193,14 @@ export default function CompatibilidadCalcPage() {
                     initial={{ opacity: 0, scale: 0.6 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="number-display text-[5rem] sm:text-[7rem] leading-none"
+                    className="font-heading text-3xl sm:text-4xl font-semibold leading-tight"
                     style={{
                       color: compatibility.score >= 75 ? "var(--score-excellent)" : compatibility.score >= 55 ? "var(--score-good)" : "var(--score-neutral)"
                     }}
                   >
-                    {compatibility.score}%
-                  </motion.p>
-                  <motion.p
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-xl font-semibold text-foreground mt-4"
-                  >
                     {compatibility.label}
                   </motion.p>
                 </div>
-
-                {/* Desglose */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                  className="max-w-lg mx-auto mb-6"
-                >
-                  <div className="p-4 rounded-xl bg-card border border-border text-center transition-colors hover:border-accent/30">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Zodiaco Chino</p>
-                    <p className="text-2xl font-serif font-bold" style={{ color: compatibility.zodiacScore >= 70 ? "var(--score-excellent)" : "var(--score-good)" }}>{compatibility.zodiacScore}%</p>
-                  </div>
-                </motion.div>
 
                 {/* Explicación */}
                 <motion.div
@@ -243,10 +218,10 @@ export default function CompatibilidadCalcPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
                 <p className="text-xs text-muted leading-relaxed">
-                  <strong>Fórmula:</strong> 100% relación zodiacal (animal del usuario vs animal de la otra persona). Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
+                  <strong>Fórmula:</strong> relación zodiacal entre el animal del usuario y el de la otra persona. Esta es una interpretación simbólica. No constituye evidencia científica ni predice el resultado de una relación.
                 </p>
               </motion.div>
 
@@ -260,14 +235,14 @@ export default function CompatibilidadCalcPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Compatibilidad zodiacal: ${compatibility.score}% — ${compatibility.label}. Calculá la tuya en Molino.`;
+                    const text = `Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`;
                     if (navigator.share) {
                       navigator.share({ title: "Compatibilidad — Molino", text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -278,7 +253,7 @@ export default function CompatibilidadCalcPage() {
                   <p className="text-sm text-muted mb-3">Querés una experiencia más completa con tu perfil personal?</p>
                   <Link
                     href="/onboarding"
-                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     Crear tu mapa completo
                   </Link>
@@ -289,7 +264,6 @@ export default function CompatibilidadCalcPage() {
         </AnimatePresence>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
+import Button from "@/components/ui/Button";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { ARCHETYPES } from "@/lib/data";
 import { getCompatibilityDescription } from "@/lib/data";
@@ -58,24 +57,22 @@ export default function CaminoDeVidaPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[900px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/herramientas" className="hover:text-accent transition-colors">Herramientas</Link>
+          <Link href="/herramientas" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Herramientas</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">Camino de Vida</span>
         </nav>
 
         <motion.section {...fadeUp}>
-          <p className="text-[11px] uppercase tracking-[0.3em] text-accent font-medium mb-4">Numerología</p>
-          <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Camino de Vida
           </h1>
           <p className="text-base text-muted mt-4 max-w-xl leading-relaxed">
-            Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número revela tu energía central.
+            Calculá tu número de Camino de Vida a partir de tu fecha de nacimiento. Según la tradición numerológica, este número describe tu energía central.
           </p>
         </motion.section>
 
@@ -83,7 +80,7 @@ export default function CaminoDeVidaPage() {
         <motion.section {...fadeUp} className="mt-12 sm:mt-16">
           <div className="max-w-md space-y-4">
             <div>
-              <label className="block text-[11px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
+              <label className="block text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Fecha de nacimiento</label>
               <div className="flex gap-3">
                 <select value={day} onChange={(e) => setDay(e.target.value)} className="input flex-1" aria-label="Día">
                   <option value="">Día</option>
@@ -105,14 +102,7 @@ export default function CaminoDeVidaPage() {
                 </select>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={handleCalculate}
-              disabled={!isValid}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground min-h-[48px] disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              Calcular Camino de Vida
-            </button>
+            <Button variant="primary" fullWidth onClick={handleCalculate} disabled={!isValid}>Calcular Camino de Vida</Button>
           </div>
         </motion.section>
 
@@ -130,14 +120,14 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="p-8 sm:p-10 rounded-2xl border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
+                className="p-8 sm:p-10 rounded-md border border-accent/20 bg-accent/[0.03] hover:border-accent/40 transition-colors duration-300"
               >
                 <div className="text-center mb-8">
                   <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.15, duration: 0.4 }}
-                    className="text-[10px] uppercase tracking-[0.25em] text-accent font-medium mb-3"
+                    className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-3"
                   >
                     Tu Camino de Vida
                   </motion.p>
@@ -154,7 +144,7 @@ export default function CaminoDeVidaPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.4 }}
-                    className="font-serif text-2xl font-semibold text-foreground mt-4"
+                    className="font-heading text-2xl font-semibold text-foreground mt-4"
                   >
                     {result.meaning.archetype}
                   </motion.p>
@@ -182,7 +172,7 @@ export default function CaminoDeVidaPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.35 }}
-                className="mt-6 p-4 rounded-xl border border-border bg-card"
+                className="mt-6 p-4 rounded-md border border-border bg-card shadow-sm"
               >
                 <p className="text-xs text-muted leading-relaxed">
                   <strong>Nota:</strong> El Camino de Vida es una interpretación simbólica de la tradición numerológica. No constituye evidencia científica ni predice el futuro. Molino lo utiliza como herramienta de reflexión.
@@ -199,14 +189,14 @@ export default function CaminoDeVidaPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Descubrí el tuyo en Molino.`;
+                    const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Leé el tuyo en Molino.`;
                     if (navigator.share) {
                       navigator.share({ title: "Mi Camino de Vida — Molino", text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }
                   }}
-                  className="inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-5 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
+                  className="inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-2.5 text-sm bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 hover:border-accent/30 min-h-[40px]"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -217,7 +207,7 @@ export default function CaminoDeVidaPage() {
                   <p className="text-sm text-muted mb-3">Querés ver cómo esto se conecta con astrología y zodiaco chino?</p>
                   <Link
                     href="/onboarding"
-                    className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground hover:shadow-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] focus:outline-none focus:ring-2 focus:ring-accent/40 focus:ring-offset-2"
                   >
                     Crear tu mapa completo
                   </Link>
@@ -228,7 +218,6 @@ export default function CaminoDeVidaPage() {
         </AnimatePresence>
 
       </main>
-      <UniversityFooter />
     </div>
   );
 }

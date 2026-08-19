@@ -2,18 +2,36 @@
 
 import { Suspense, useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
+import SearchInput from "@/components/ui/SearchInput";
 
 type SelectionStep = "pick-a" | "pick-b";
 
 export default function ComparePickerPage() {
   return (
-    <Suspense fallback={<LoadingState message="Cargando..." />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background">
+          <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
+            <p className="sr-only" role="status" aria-label="Cargando...">
+              Cargando...
+            </p>
+            <div className="animate-pulse">
+              <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+              <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+              <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="h-16 bg-[var(--skeleton)] rounded-md border border-ink/10" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    >
       <ComparePickerInner />
     </Suspense>
   );
@@ -62,8 +80,7 @@ function ComparePickerInner() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -86,10 +103,10 @@ function ComparePickerInner() {
 
         {/* Header */}
         <motion.section {...fadeUp} className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4">
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4">
             Comparación Simbólica
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
+          <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.1] mb-3">
             {step === "pick-a" ? "Elegí la primera entidad" : "Elegí la segunda entidad"}
           </h1>
           <p className="text-sm text-muted">
@@ -102,7 +119,7 @@ function ComparePickerInner() {
         {/* Selected entity preview (step B) */}
         {step === "pick-b" && selectedEntityA && (
           <motion.section {...fadeUp} className="mb-6">
-            <div className="flex items-center gap-3 p-4 rounded-xl border border-accent/30 bg-accent/5">
+            <div className="flex items-center gap-3 p-4 rounded-md border border-accent/30 bg-accent/5">
               <span className="text-2xl">{selectedEntityA.emoji}</span>
               <div>
                 <p className="text-sm font-medium text-foreground">{selectedEntityA.name}</p>
@@ -115,13 +132,12 @@ function ComparePickerInner() {
 
         {/* Search */}
         <motion.div {...fadeUp} className="mb-6">
-          <input
-            type="search"
-            placeholder="Buscar entidad..."
+          <SearchInput
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full max-w-sm px-4 py-3 rounded-xl border border-border bg-card text-foreground placeholder:text-muted text-sm focus:outline-none focus:border-accent transition-colors"
-            aria-label="Buscar entidad"
+            onValueChange={setSearch}
+            placeholder="Buscar entidad..."
+            label="Buscar entidad"
+            className="max-w-sm"
             autoFocus
           />
         </motion.div>
@@ -136,7 +152,7 @@ function ComparePickerInner() {
                 key={entity.id}
                 type="button"
                 onClick={() => handleSelect(entity.id)}
-                className="w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent transition-all group flex items-center gap-4"
+                className="w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent transition-all group flex items-center gap-4"
               >
                 <span className="text-xl shrink-0">{entity.emoji}</span>
                 <div className="flex-1 min-w-0">
@@ -156,13 +172,31 @@ function ComparePickerInner() {
         </motion.div>
 
         {filtered.length === 0 && (
-          <p className="text-center text-muted py-12">No se encontraron resultados para &quot;{search}&quot;.</p>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-center py-16"
+          >
+            <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] tracking-tight text-foreground mb-4">Sin resultados</h2>
+            <p className="text-sm text-muted mb-6 max-w-md mx-auto">
+              No se encontraron resultados para &ldquo;{search}&rdquo;.
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push("/affinity")}
+              className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px]"
+            >
+              Volver a Afinidad Personal
+            </button>
+          </motion.div>
         )}
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mt-16">
-          <div className="p-5 rounded-xl border border-border bg-card">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+          <div className="p-6 border border-ink/10 bg-transparent">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La comparación es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
               Molino es una plataforma educativa y de entretenimiento.
@@ -170,7 +204,6 @@ function ComparePickerInner() {
           </div>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

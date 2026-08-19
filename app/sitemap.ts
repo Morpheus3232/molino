@@ -4,8 +4,9 @@ import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://molino-alpha.vercel.app";
+const BASE_URL = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
@@ -14,6 +15,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/biblioteca`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/method`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
     { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/filosofia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/docs/motores`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/hoy`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.9 },
+    { url: `${BASE_URL}/decisions`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/camino-de-vida`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/signo-solar`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/zodiaco-chino`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/herramientas/compatibilidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/affinity/recommendations/countries`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/affinity/recommendations/brands`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
   ];
 
   // Affinity hub + category listings
@@ -69,5 +81,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages];
+  // Guía pages
+  const guiaPages = [
+    { url: `${BASE_URL}/guia`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${BASE_URL}/guia/camino-de-vida-7`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
+    { url: `${BASE_URL}/guia/numeros-maestros`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/guia/compatibilidad-astrologica`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+  ];
+
+  return [...staticPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages];
 }

@@ -231,14 +231,19 @@ function getChallengingDimensions(
 
 function getElementTimingInfluence(element: string, personalDay: number): string {
   const influences: Record<string, string> = {
-    Fuego: "Tu elemento aporta iniciativa y pasión. Potenciá tu energía natural.",
-    Tierra: "Tu elemento aporta estabilidad y prakticidad. Construí sobre bases sólidas.",
-    Aire: "Tu elemento aporta claridad mental y comunicación. Compartí ideas.",
-    Agua: "Tu elemento aporta intuición y empatía. Escuchá tu instinto.",
-    Metal: "Tu elemento aporta determinación y enfoque. Sí sé lo que importa.",
-    Madera: "Tu elemento aporta crecimiento y expansión. Abríte a nuevas posibilidades.",
+    Fuego: "aporta iniciativa y pasión. Potenciá tu energía natural.",
+    Tierra: "aporta estabilidad y prakticidad. Construí sobre bases sólidas.",
+    Aire: "aporta claridad mental y comunicación. Compartí ideas.",
+    Agua: "aporta intuición y empatía. Escuchá tu instinto.",
+    Metal: "aporta determinación y enfoque. Sabé lo que importa.",
+    Madera: "aporta crecimiento y expansión. Abríte a nuevas posibilidades.",
   };
-  return influences[element] || "Tu energía es única. Conocétela y usala a tu favor.";
+  const influence = influences[element] || "es única. Conocétela y usala a tu favor.";
+  // "Elemento" sin calificar es ambiguo: Identidad usa el elemento del
+  // zodíaco chino (Wu Xing) como dato protagonista; acá es el elemento
+  // astrológico occidental. Mismo perfil, dos sistemas — sin la etiqueta
+  // lee como una contradicción entre pantallas.
+  return `Tu elemento astrológico, ${element}, ${influence}`;
 }
 
 function generateTimingExplanation(
@@ -264,7 +269,7 @@ function generateTimingExplanation(
 
   explanation += `Tu personal day (${personalDay}) aporta cualidades de ${getDayQuality(personalDay)}. `;
   explanation += `La fase lunar ${moonPhase.toLowerCase()} ${getMoonInfluence(moonPhase)}. `;
-  explanation += `Tu elemento ${profile.element} ${getElementTimingInfluence(profile.element, personalDay).toLowerCase()}`;
+  explanation += getElementTimingInfluence(profile.element, personalDay);
 
   return explanation;
 }
@@ -302,14 +307,18 @@ function getMoonInfluence(phase: string): string {
 }
 
 function generateRecommendedWindow(intention: TimingIntention, score: number): string {
+  // Antes esta línea ignoraba `intention` pese a recibirlo: dos consultas
+  // con distinto propósito (ej. "iniciar un proyecto" vs. "firmar un
+  // acuerdo") pero score similar leían la misma recomendación genérica.
+  const intentionLabel = INTENTION_LABELS[intention].toLowerCase();
   if (score >= 75) {
-    return "Este es un momento excelente para actuar. Si sentís que es el momento, confiá en tu intuición.";
+    return `Este es un momento excelente para ${intentionLabel}. Si sentís que es el momento, confiá en tu intuición.`;
   } else if (score >= 55) {
-    return "Es un buen momento para avanzar. Prepará bien los detalles y actuá con confianza.";
+    return `Es un buen momento para ${intentionLabel}. Prepará bien los detalles y actuá con confianza.`;
   } else if (score >= 40) {
-    return "El momento es neutral. Si no tenés prisa, podés esperar un día más favorable.";
+    return `El momento es neutral para ${intentionLabel}. Si no tenés prisa, podés esperar un día más favorable.`;
   } else {
-    return "Este día presenta desafíos. Si podés postergar, esperá una ventana más favorable.";
+    return `Este día presenta desafíos para ${intentionLabel}. Si podés postergar, esperá una ventana más favorable.`;
   }
 }
 

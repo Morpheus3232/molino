@@ -13,7 +13,12 @@ type EventType =
   | "affinity_shared"
   | "affinity_profile_cta_clicked"
   | "affinity_recommendation_clicked"
-  | "affinity_save_clicked";
+  | "affinity_save_clicked"
+  | "paywall_viewed"
+  | "checkout_started"
+  | "payment_approved"
+  | "premium_unlocked"
+  | "cognitive_lift";
 
 interface AnalyticsEvent {
   type: EventType;
@@ -71,15 +76,8 @@ class Analytics {
 
     this.events.push(fullEvent);
     this.saveToStorage();
-    console.log("📊 Analytics:", fullEvent);
-
-    // PostHog sink — fires only if posthog is loaded (Project Key configured)
-    if (typeof window !== "undefined" && typeof window.posthog === "object" && typeof window.posthog.capture === "function") {
-      try {
-        window.posthog.capture(event.type, event.data || {});
-      } catch {
-        // PostHog blocked or misconfigured — silent fail
-      }
+    if (process.env.NODE_ENV !== "production") {
+      console.log("📊 Analytics:", fullEvent);
     }
 
     return fullEvent;
@@ -199,6 +197,33 @@ class Analytics {
     this.track({
       type: "affinity_save_clicked",
       data: { entityType, entityId, score, tier },
+    });
+  }
+
+  trackPaywallViewed(section?: string) {
+    this.track({
+      type: "paywall_viewed",
+      data: { section },
+    });
+  }
+
+  trackCheckoutStarted(currencyId: string, paymentMethod: "mercadopago" | "paypal" = "mercadopago") {
+    this.track({
+      type: "checkout_started",
+      data: { currencyId, paymentMethod, amount: currencyId === "USD" ? 8 : 8100 },
+    });
+  }
+
+  trackPaymentApproved(paymentId: string, paymentMethod: "mercadopago" | "paypal" = "mercadopago") {
+    this.track({
+      type: "payment_approved",
+      data: { paymentId, paymentMethod },
+    });
+  }
+
+  trackPremiumUnlocked() {
+    this.track({
+      type: "premium_unlocked",
     });
   }
 }

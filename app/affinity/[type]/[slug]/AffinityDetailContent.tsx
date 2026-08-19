@@ -5,27 +5,31 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { fadeUp, fadeUpDelayed, staggerContainer, staggerItem, useReducedMotion } from "@/lib/utils/motion";
+import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateAffinity, calculateAllAffinity, TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
-import { calculateUserProfile } from "@/lib/engines/compatibilityEngine";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { buildEntityConnectionStory, getRelationColor, getRelationIcon } from "@/lib/engines/entityStoryEngine";
 import type { EntityType, HistoricalEvent } from "@/lib/data/symbolic-entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { SYMBOLIC_ENTITIES, ENTITY_TYPES } from "@/lib/data/symbolic-entities";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
-import LoadingState from "@/components/ui/LoadingState";
-import AffinityScoreGauge from "@/components/ui/AffinityScoreGauge";
+import ReadingNumber from "@/components/ui/ReadingNumber";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { analytics } from "@/lib/analytics/analytics";
-import { saveAffinityResult, hasSavedAffinity } from "@/lib/storage/localStorage";
+import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage";
 
 const AFFINITY_DATE_KEY = "molino.affinity-date.v1";
 const MONTHS = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 const MONTH_LABELS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+
+const transitionVariants = {
+  enter: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.2, ease: "easeOut" } },
+  exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
+};
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -51,7 +55,28 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
       .slice(0, 3);
   }, [profile, entity, result]);
 
-  if (!mounted) return <LoadingState message="Cargando..." />;
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
+          <p className="sr-only" role="status" aria-label="Cargando lectura...">
+            Cargando lectura...
+          </p>
+          <div className="animate-pulse">
+            <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+            <div className="h-8 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
+            <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-8" />
+            <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />
+            <div className="space-y-px bg-ink/10">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-24 bg-[var(--skeleton)] border-b border-ink/10" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!profile) {
     return (
@@ -65,8 +90,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -89,34 +113,37 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           <AnimalQuickSelector profile={profile} currentEntity={entity} type={type} />
         )}
 
-        {/* Share CTA — right after hero, before details */}
-        {result && (
-          <ShareInlineCTA result={result} entity={entity} />
-        )}
+         {/* Compartir esta afinidad — visible without scrolling */}
+         {result && (
+           <motion.section {...fadeUp} className="mb-12">
+             <SectionHeader title="Compartí esta resonancia" />
+             <AffinityShareableCard result={result} />
+           </motion.section>
+         )}
 
-        {/* Base del cálculo simbólico */}
+         {/* Base del cálculo simbólico */}
         {result && primaryEvent && (
           <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-calculo">
             <CollapsibleSection title="Base del cálculo simbólico" id="section-calculo">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Tu año */}
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
-                  <p className="font-serif text-3xl font-bold text-foreground">{result.userYear}</p>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">Tu año</p>
+                  <p className="font-heading text-3xl font-bold text-foreground">{result.userYear}</p>
                   <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.userAnimal)}</p>
                 </div>
                 {/* Evento de la entidad */}
                 <div>
-                  <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-3">
                     {primaryEvent.label}
                   </p>
-                  <p className="font-serif text-3xl font-bold text-foreground">{result.entityYear}</p>
+                  <p className="font-heading text-3xl font-bold text-foreground">{result.entityYear}</p>
                   <p className="text-sm text-muted mt-1">{formatAnimalSimple(result.entityAnimal)}</p>
                 </div>
               </div>
 
               {/* Event detail line */}
-              <div className="mt-5 pt-5 border-t border-border">
+              <div className="mt-6 pt-6 border-t border-border">
                 <div className="flex items-center gap-2 text-xs text-muted">
                   <span>{entity.name}</span>
                   <span aria-hidden="true">·</span>
@@ -156,7 +183,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                   {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
                 </p>
                 <span
-                  className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"
+                  className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                   style={{ color: tierMeta?.color, backgroundColor: `${tierMeta?.color}15` }}
                 >
                   {result.relationship}
@@ -183,8 +210,8 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Link to multi-factor analysis — after deep content */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-2xl border border-accent/20 bg-accent/[0.03]">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
+          <div className="p-6 border border-accent/20 bg-accent/[0.03]">
+            <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
               Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
             </p>
@@ -203,11 +230,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {otherEvents.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
             <SectionHeader title="Otros eventos históricos" />
-            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <div className="border border-ink/10 bg-transparent overflow-hidden">
               <button
                 type="button"
                 onClick={() => setShowOtherEvents(!showOtherEvents)}
-                className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-muted/30 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
                 aria-expanded={showOtherEvents}
               >
                 <div>
@@ -238,7 +265,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     transition={{ duration: 0.2, ease: "easeInOut" }}
                     className="overflow-hidden"
                   >
-                    <div className="px-5 pb-5 space-y-3">
+                    <div className="px-6 pb-6 space-y-3">
                       {otherEvents.map(event => (
                         <OtherEventCard key={event.id} event={event} />
                       ))}
@@ -279,8 +306,8 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* Disclaimer */}
         <motion.section {...fadeUp} className="mb-12">
-          <div className="p-5 rounded-2xl border border-border bg-card">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+          <div className="p-6 border border-ink/10 bg-transparent">
+            <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
             <p className="text-xs text-muted leading-relaxed">
               La afinidad es una lectura simbólica basada en tradiciones del zodíaco chino, no una medición científica.
               Molino es una plataforma educativa y de entretenimiento. Cada persona puede interpretar estos sistemas de forma diferente.
@@ -288,15 +315,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           </div>
         </motion.section>
 
-        {/* Shareable card */}
-        {result && (
-          <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Compartir" />
-            <AffinityShareableCard result={result} />
-          </motion.section>
-        )}
-
-        {/* "Sos X como Y" narrative */}
+         {/* "Sos X como Y" narrative */}
         {result && profile && (() => {
           const story = buildEntityConnectionStory(profile, entity);
           if (!story) return null;
@@ -305,11 +324,11 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
           return (
             <motion.section {...fadeUp} className="mb-12">
               <SectionHeader title="Tu conexión" />
-              <div className="p-6 rounded-2xl border border-border bg-card">
+              <div className="p-6 border border-ink/10 bg-transparent">
                 <div className="flex items-start gap-4 mb-4">
                   <span className="text-3xl shrink-0">{entity.emoji}</span>
                   <div>
-                    <h3 className="font-serif text-xl font-semibold text-foreground mb-1">
+                    <h3 className="font-heading text-xl font-semibold text-foreground mb-1">
                       {story.headline}
                     </h3>
                     <p className="text-sm text-muted">{story.subtitle}</p>
@@ -318,10 +337,10 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                 <div className="flex items-center gap-2 mb-4">
                   <span className="text-lg">{relationIcon}</span>
                   <span
-                    className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"
+                    className="text-xs font-medium uppercase tracking-wider px-2 py-0.5 rounded-sm"
                     style={{ color: relationColor, backgroundColor: `${relationColor}15` }}
                   >
-                    {story.relationLabel} · {story.relationScore}/100
+                    {story.relationLabel}
                   </span>
                 </div>
                 <p className="text-sm text-foreground leading-relaxed">{story.explanation}</p>
@@ -333,7 +352,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
         {/* Discovery loop — related entities across all types */}
         {relatedEntities.length > 0 && (
           <motion.section {...fadeUp} className="mb-12">
-            <SectionHeader title="Descubrí algo más" />
+              <SectionHeader title="Explorá más" />
             <div className="space-y-3">
               {relatedEntities.map((rel, idx) => {
                 const relTier = TIER_META[rel.tier];
@@ -343,7 +362,7 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                     key={rel.entity.id}
                     href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                     onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                    className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -359,10 +378,10 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <span
-                          className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                          className="text-xs font-semibold px-2 py-0.5 rounded-sm uppercase tracking-[0.05em]"
                           style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                         >
-                          {rel.score}
+                          {relTier.label}
                         </span>
                         <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
                       </div>
@@ -376,25 +395,24 @@ export default function AffinityDetailContent({ entity, meta, type }: AffinityDe
 
         {/* CTAs */}
         <motion.section {...fadeUp}>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={() => router.push("/conocimiento/zodiaco-chino")}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 sm:border-accent/30 sm:bg-accent/[0.03]"
-            >
-              Conocé el zodíaco chino →
-            </button>
+          <div className="flex flex-col items-center gap-3">
             <button
               type="button"
               onClick={() => router.push(`/affinity/${type}`)}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all px-6 py-3 text-xs sm:text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               Ver todas las {meta.plural.toLowerCase()}
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push("/conocimiento/zodiaco-chino")}
+              className="text-sm text-accent hover:underline min-h-[44px] inline-flex items-center focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+            >
+              Conocé el zodíaco chino →
             </button>
           </div>
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }
@@ -417,7 +435,10 @@ function PremiumHero({
   const router = useRouter();
   const reducedMotion = useReducedMotion();
   const tierMeta = TIER_META[result.tier];
-  const explanation = buildContextualExplanation(result);
+  // result.explanation ya nombra a la entidad (affinityEngine.getExplanation),
+  // en vez de un bucket genérico por score que repetía la misma frase para
+  // cualquier entidad que compartiera relación de animal con el usuario.
+  const explanation = result.explanation;
 
   // Stagger delays (seconds)
   const d = {
@@ -431,33 +452,29 @@ function PremiumHero({
   return (
     <motion.section
       className="mb-12"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="whileInView"
-      viewport={{ once: true, margin: "-40px" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
     >
       {/* Label */}
-      <motion.div variants={staggerItem}>
-        <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-6 text-center">
-          Afinidad Personal · {meta.label}
+      <div>
+        <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-6 text-center">
+          Cómo resuena · {meta.label}
         </p>
-      </motion.div>
+      </div>
 
       {/* Animals facing each other — approach animation for high scores */}
-      <motion.div
-        variants={staggerItem}
-        className="flex items-end justify-center gap-6 sm:gap-10 mb-8"
-      >
+      <div className="flex items-end justify-center gap-6 sm:gap-10 mb-8">
         {/* Entity — moves right for high scores */}
         <motion.div
           className="text-center"
           animate={reducedMotion ? {} : { x: result.score >= 75 ? 12 : 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label={entity.name}>
             {entity.emoji}
           </span>
-          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+          <p className="font-heading text-lg sm:text-xl font-semibold text-foreground leading-tight">
             {entity.name}
           </p>
           <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.entityAnimal)}</p>
@@ -467,268 +484,55 @@ function PremiumHero({
         <motion.div
           className="flex flex-col items-center pb-6"
           animate={reducedMotion ? {} : { opacity: result.score >= 75 ? 0.3 : 1 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
+          transition={{ duration: 0.3 }}
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted/40 font-medium">vs</span>
+          <span className="text-xs uppercase tracking-[0.2em] text-muted font-medium">vs</span>
         </motion.div>
 
         {/* User — moves left for high scores */}
         <motion.div
           className="text-center"
           animate={reducedMotion ? {} : { x: result.score >= 75 ? -12 : 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="text-5xl sm:text-6xl block mb-2" role="img" aria-label="Vos">
             🪞
           </span>
-          <p className="font-serif text-lg sm:text-xl font-semibold text-foreground leading-tight">
+          <p className="font-heading text-lg sm:text-xl font-semibold text-foreground leading-tight">
             Vos
           </p>
           <p className="text-xs text-muted mt-0.5">{formatAnimalSimple(result.userAnimal)}</p>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Score Gauge — centered */}
-      <motion.div variants={staggerItem} className="flex justify-center mb-6">
-        <AffinityScoreGauge score={result.score} color={tierMeta.color} size={200} />
-      </motion.div>
-
-      {/* Tier badge */}
-      <motion.div variants={staggerItem} className="flex justify-center mb-4">
-        <span
-          className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-full"
-          style={{ color: tierMeta.color, backgroundColor: `${tierMeta.color}12` }}
-        >
-          {tierMeta.label}
-        </span>
-      </motion.div>
+      {/* Score — número editorial, sin gauge ni badge */}
+      <div className="flex justify-center mb-6 text-center">
+        <ReadingNumber
+          value={result.score}
+          label={`Resonancia · ${meta.label}`}
+          color={result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)"}
+          context={tierMeta.label}
+          size="xl"
+        />
+      </div>
 
       {/* Contextual explanation */}
-      <motion.div variants={staggerItem} className="text-center mb-8 px-4">
+      <div className="text-center mb-8 px-4">
         <p className="text-sm text-foreground leading-relaxed max-w-md mx-auto">
           {explanation}
         </p>
-      </motion.div>
+      </div>
 
       {/* CTAs — primary Share + secondary Explore */}
-      <motion.div variants={staggerItem} className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
           type="button"
           onClick={() => router.push(`/affinity/compare?from=${entity.id}`)}
-          className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className="inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3 text-sm border border-border bg-card text-foreground hover:border-accent min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           Explorar otra entidad
           <span aria-hidden="true">→</span>
         </button>
-      </motion.div>
-    </motion.section>
-  );
-}
-
-function buildContextualExplanation(result: AffinityResult): string {
-  const { entity, userAnimal, entityAnimal, relationship, score } = result;
-  const eName = entity.name;
-
-  if (entityAnimal === userAnimal) {
-    return `${userAnimal} y ${entityAnimal} son el mismo signo — una conexión directa con ${eName}.`;
-  }
-  if (score >= 75) {
-    return `${userAnimal} y ${entityAnimal} tienen una fuerte resonancia simbólica según la tradición del zodíaco chino.`;
-  }
-  if (score >= 60) {
-    return `${userAnimal} y ${entityAnimal} comparten una conexión moderada que revela puntos de interés con ${eName}.`;
-  }
-  if (score >= 45) {
-    return `${userAnimal} y ${entityAnimal} son diferentes pero se enriquecen mutuamente en el ciclo del zodíaco chino.`;
-  }
-  if (score >= 30) {
-    return `La relación entre ${userAnimal} y ${entityAnimal} genera una tensión creativa según esta tradición.`;
-  }
-  return `${userAnimal} y ${entityAnimal} tienen una baja resonancia simbólica, pero no por eso menos interesante.`;
-}
-
-function ShareButton({
-  result,
-  entity,
-  tierMeta,
-}: {
-  result: AffinityResult;
-  entity: SymbolicEntity;
-  tierMeta: { label: string; color: string; description: string };
-}) {
-  const [copied, setCopied] = useState(false);
-  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
-
-  const shareText = useMemo(() => {
-    const { entityAnimal, userAnimal, score } = result;
-    const emoji = entity.emoji || "";
-    return `${emoji} ${entity.name} y ${userAnimal}: ${score}/100 según el zodíaco chino. ¿Cuál es la tuya? Descubríla en Molino ✨`;
-  }, [result, entity]);
-
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Afinidad simbólica con ${entity.name} — Molino`,
-          text: shareText,
-          url: shareUrl,
-        });
-        analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida");
-      } catch {
-        // User cancelled — no toast needed
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        analytics.trackAffinityShared(entity.type, "clipboard");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!");
-      } catch {
-        toast.error("No pudimos copiar. Intentá de nuevo.");
-      }
-    }
-  }, [entity, shareText, shareUrl]);
-
-  return (
-    <button
-      type="button"
-      onClick={handleShare}
-      className="inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3 text-sm min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-      style={{ backgroundColor: tierMeta.color, color: "#fff" }}
-      aria-label={`Compartí tu afinidad con ${entity.name}`}
-    >
-      {copied ? (
-        <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-          Enlace copiado
-        </>
-      ) : (
-        <>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-          </svg>
-          Compartí tu afinidad
-        </>
-      )}
-    </button>
-  );
-}
-
-function ShareInlineCTA({ result, entity }: { result: AffinityResult; entity: SymbolicEntity }) {
-  const [copied, setCopied] = useState(false);
-  const shareUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/affinity/${entity.type}/${entity.id}`;
-
-  const shareText = useMemo(() => {
-    const { entityAnimal, userAnimal, score, relationship } = result;
-    const emoji = entity.emoji || "";
-    const tierLabel = TIER_META[result.tier].label;
-
-    if (entityAnimal === userAnimal) {
-      return `${emoji} ${entity.name} y yo somos el mismo signo: ${userAnimal}. Afinidad ${score}/100 — ${tierLabel}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
-    }
-    if (relationship === "tríada compatible") {
-      return `${userAnimal} y ${entityAnimal} comparten una tríada según el zodíaco chino. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. ¿Y vos? Descubrí tu afinidad en Molino ✨`;
-    }
-    if (relationship === "armonía natural") {
-      return `${userAnimal} y ${entityAnimal} se complementan. ${emoji} ${entity.name}: ${score}/100 — ${tierLabel}. Descubrí tu afinidad simbólica en Molino ✨`;
-    }
-    if (relationship === "opuestos en el ciclo") {
-      return `${userAnimal} y ${entityAnimal}: opuestos que se atraen. ${emoji} ${entity.name}: ${score}/100. Mirá qué significa tu conexión en Molino ✨`;
-    }
-    if (relationship === "requiere atención") {
-      return `${userAnimal} y ${entityAnimal}: tensión creativa según la tradición. ${emoji} ${entity.name}: ${score}/100. Descubrí tu afinidad en Molino ✨`;
-    }
-    return `Mi afinidad simbólica con ${emoji} ${entity.name}: ${score}/100 — ${relationship}. ¿Cuál es la tuya? Descubrílo en Molino ✨`;
-  }, [result, entity]);
-
-  const handleShare = useCallback(async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `Afinidad simbólica con ${entity.name} — Molino`,
-          text: shareText,
-          url: shareUrl,
-        });
-        analytics.trackAffinityShared(entity.type, "share");
-        toast.success("Afinidad compartida");
-      } catch {
-        // User cancelled — no toast needed
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        analytics.trackAffinityShared(entity.type, "clipboard");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast.success("¡Afinidad copiada!");
-      } catch {
-        toast.error("No pudimos copiar. Intentá de nuevo.");
-      }
-    }
-  }, [entity, shareText, shareUrl]);
-
-  const tierMeta = TIER_META[result.tier];
-  const isHighAffinity = result.score >= 75;
-
-  return (
-    <motion.section {...fadeUp} className="mb-12">
-      <div
-        className="p-6 rounded-2xl border-2 transition-colors"
-        style={{
-          borderColor: isHighAffinity ? `${tierMeta.color}30` : "var(--border)",
-          backgroundColor: isHighAffinity ? `${tierMeta.color}05` : "var(--card)",
-        }}
-      >
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground mb-1">
-              {isHighAffinity
-                ? `¡${entity.name} tiene una afinidad destacada con vos!`
-                : `¿Te sorprendió esta conexión con ${entity.name}?`}
-            </p>
-            <p className="text-xs text-muted">
-              Compartí tu afinidad simbólica y descubrí qué tienen los demás.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleShare}
-            className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-            style={{
-              backgroundColor: tierMeta.color,
-              color: "#fff",
-            }}
-            aria-label={`Compartí tu afinidad con ${entity.name}`}
-          >
-            {copied ? (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                Enlace copiado
-              </>
-            ) : (
-              <>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <circle cx="18" cy="5" r="3" />
-                  <circle cx="6" cy="12" r="3" />
-                  <circle cx="18" cy="19" r="3" />
-                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-                </svg>
-                Compartí tu afinidad
-              </>
-            )}
-          </button>
-        </div>
       </div>
     </motion.section>
   );
@@ -743,7 +547,7 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
   }, [event]);
 
   return (
-    <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
+    <div className="p-4 rounded-md bg-muted/30 border border-border/50">
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-foreground">{event.label}</span>
@@ -755,9 +559,9 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
       </div>
       <p className="text-xs text-muted leading-relaxed">{event.description}</p>
       <div className="flex items-center gap-3 mt-2">
-        <p className="text-[10px] text-muted/60">Fuente: {event.source}</p>
+        <p className="text-xs text-muted">Fuente: {event.source}</p>
         {isApproximate && (
-          <p className="text-[10px] text-muted/60">· Año aproximado</p>
+          <p className="text-xs text-muted">· Año aproximado</p>
         )}
       </div>
     </div>
@@ -766,9 +570,9 @@ function OtherEventCard({ event }: { event: HistoricalEvent }) {
 
 function SectionHeader({ title, id }: { title: string; id?: string }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
+    <div className="flex items-center gap-3 mb-6">
       <div className="w-8 h-px bg-border" aria-hidden="true" />
-      <h2 id={id} className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">{title}</h2>
+      <h2 id={id} className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">{title}</h2>
     </div>
   );
 }
@@ -806,11 +610,11 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div className="rounded-2xl border border-border bg-card overflow-hidden">
+    <div className="border border-ink/10 bg-transparent overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/20 transition-colors sm:pointer-events-none sm:cursor-default focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
+        className="w-full flex items-center justify-between p-6 text-left hover:bg-muted/20 transition-colors sm:pointer-events-none sm:cursor-default focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
         aria-expanded={open}
         aria-controls={id}
       >
@@ -829,7 +633,7 @@ function CollapsibleSection({
       <div
         className={`${open ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"} sm:max-h-none sm:opacity-100 transition-all duration-300 ease-in-out overflow-hidden`}
       >
-        <div className="px-5 pb-5">
+        <div className="px-6 pb-6">
           {children}
         </div>
       </div>
@@ -923,7 +727,7 @@ function QuickAffinity({
     return calculateAllAffinity(profile, SYMBOLIC_ENTITIES)
       .filter(r => r.entity.id !== entity.id)
       .slice(0, 3);
-  }, [day, month, year, entity, calculateUserProfile, calculateAllAffinity, SYMBOLIC_ENTITIES]);
+  }, [day, month, year, entity, result]);
 
   const handleSubmit = useCallback(() => {
     setError("");
@@ -963,7 +767,10 @@ function QuickAffinity({
     });
     analytics.trackAffinitySaveClicked(type, entity.id, result.score, result.tier);
     setSaved(true);
-    toast.success("Afinidad guardada ✓");
+    toast.success("Resonancia guardada", {
+      description: "Encontrala en tus conexiones personales",
+      duration: 4000,
+    });
   }, [result, saved, entity, type]);
 
   const tierMeta = result ? TIER_META[result.tier] : null;
@@ -981,8 +788,7 @@ function QuickAffinity({
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
 
         {/* Back */}
         <motion.div {...fadeUp}>
@@ -997,13 +803,13 @@ function QuickAffinity({
 
         {/* Hero — entity info always visible */}
         <motion.section {...fadeUp} className="mb-8">
-          <p className="text-[10px] uppercase tracking-[0.35em] text-accent font-medium mb-4 text-center">
-            Afinidad Personal · {meta.label}
+          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4 text-center">
+            Cómo resuena · {meta.label}
           </p>
           <div className="flex items-center justify-center gap-4 mb-4">
             <span className="text-5xl">{entity.emoji}</span>
             <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
+              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
                 {entity.name}
               </h1>
               <p className="text-sm text-muted mt-1">{entity.country}</p>
@@ -1011,13 +817,21 @@ function QuickAffinity({
           </div>
         </motion.section>
 
-        {/* Date input OR Result */}
-        {!hasResult ? (
-          /* Date input — shown when no date is saved */
+        {/* Date input OR Result — AnimatePresence for smooth transition */}
+        <AnimatePresence mode="wait">
+          {!hasResult ? (
+            <motion.div
+              key="date-input"
+              variants={transitionVariants}
+              initial="enter"
+              animate="show"
+              exit="exit"
+            >
+          {/* Date input — shown when no date is saved */}
           <motion.section {...fadeUp} className="mb-12">
-            <div className="max-w-md mx-auto p-6 rounded-2xl border border-border bg-card">
+            <div className="max-w-md mx-auto p-6 border border-ink/10 bg-transparent">
               <p className="text-sm font-medium text-foreground mb-1 text-center">
-                Ingresá tu fecha de nacimiento para descubrir tu afinidad con {entity.name}
+                Ingresá tu fecha de nacimiento para ver tu resonancia con {entity.name}
               </p>
               <p className="text-xs text-muted mb-6 text-center">
                 Solo necesitamos tu fecha. No se guarda permanentemente.
@@ -1025,12 +839,12 @@ function QuickAffinity({
 
               <div className="grid grid-cols-3 gap-3 mb-4">
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-day">Día</label>
                   <select
                     id="qa-day"
                     value={day}
                     onChange={e => setDay(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     <option value="">—</option>
                     {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
@@ -1039,12 +853,12 @@ function QuickAffinity({
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-month">Mes</label>
                   <select
                     id="qa-month"
                     value={month}
                     onChange={e => setMonth(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {MONTHS.map((m, i) => (
                       <option key={m} value={m}>{MONTH_LABELS[i]}</option>
@@ -1052,12 +866,12 @@ function QuickAffinity({
                   </select>
                 </div>
                 <div>
-                  <label className="text-[11px] uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
+                  <label className="text-xs uppercase tracking-[0.18em] text-muted font-medium mb-1.5 block" htmlFor="qa-year">Año</label>
                   <select
                     id="qa-year"
                     value={year}
                     onChange={e => setYear(e.target.value)}
-                    className="w-full px-3 py-3 rounded-xl border border-border bg-card text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
+                    className="w-full px-3 py-3 rounded-md border border-border bg-card shadow-sm text-foreground text-base focus:outline-none focus:ring-2 focus:ring-accent min-h-[44px]"
                   >
                     {yearOptions.map(y => (
                       <option key={y} value={y}>{y}</option>
@@ -1073,15 +887,22 @@ function QuickAffinity({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground shadow-sm hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-3.5 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[48px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
               >
-                Descubrir mi afinidad
+                Ver mi resonancia
               </button>
             </div>
           </motion.section>
+          </motion.div>
         ) : (
           /* Result — shown after date is entered */
-          <>
+          <motion.div
+            key="result"
+            variants={transitionVariants}
+            initial="enter"
+            animate="show"
+            exit="exit"
+          >
             {/* PremiumHero reuses the same component from the with-profile flow */}
             {result && tierMeta && (
               <PremiumHero result={result} entity={entity} meta={meta} type={type} />
@@ -1089,19 +910,19 @@ function QuickAffinity({
 
             {/* Save result + secondary onboarding CTA */}
             <motion.section {...fadeUp} className="mb-12">
-              <div className="p-5 rounded-2xl border border-border bg-card">
+              <div className="p-6 border border-ink/10 bg-transparent">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Guardá tu resultado</p>
                     <p className="text-sm text-muted leading-relaxed">
                       {saved
-                        ? "Tu afinidad con esta entidad está guardada."
-                        : "Guardá tu afinidad para accederla después sin reingresar tu fecha."
+                        ? "Tu resonancia con esta entidad está guardada."
+                        : "Guardá tu resonancia para accederla después sin reingresar tu fecha."
                       }
                     </p>
                   </div>
                   {saved ? (
-                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-full font-medium px-4 py-2 text-sm text-green-700 bg-green-50 min-h-[40px]">
+                    <span className="shrink-0 inline-flex items-center gap-1.5 rounded-md font-medium px-4 py-2 text-sm text-accent bg-accent/10 min-h-[40px]">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
@@ -1111,9 +932,9 @@ function QuickAffinity({
                     <button
                       type="button"
                       onClick={handleSave}
-                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all px-5 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                      className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-all px-6 py-2.5 text-sm border border-accent/30 bg-accent/[0.03] text-accent hover:bg-accent/10 min-h-[40px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                     >
-                      Guardar mi afinidad
+                      Guardar mi resonancia
                     </button>
                   )}
                 </div>
@@ -1144,7 +965,7 @@ function QuickAffinity({
                         key={rel.entity.id}
                         href={`/affinity/${rel.entity.type}/${rel.entity.id}`}
                         onClick={() => analytics.trackAffinityRecommendationClicked(type, entity.id, rel.entity.id, idx)}
-                        className="block w-full text-left p-4 rounded-xl border border-border bg-card hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                        className="block w-full text-left p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                       >
                         <div className="flex items-center gap-3">
                           <span className="text-xl shrink-0">{rel.entity.emoji}</span>
@@ -1160,10 +981,10 @@ function QuickAffinity({
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             <span
-                              className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                              className="text-xs font-semibold px-2 py-0.5 rounded-sm uppercase tracking-[0.05em]"
                               style={{ color: relTier.color, backgroundColor: `${relTier.color}12` }}
                             >
-                              {rel.score}
+                              {relTier.label}
                             </span>
                             <span className="text-xs text-accent group-hover:translate-x-1 transition-transform">→</span>
                           </div>
@@ -1172,12 +993,12 @@ function QuickAffinity({
                     );
                   })}
                 </div>
-              </motion.section>
-            )}
-          </>
+            </motion.section>
+          )}
+          </motion.div>
         )}
+        </AnimatePresence>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

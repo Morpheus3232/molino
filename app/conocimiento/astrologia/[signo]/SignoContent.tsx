@@ -1,35 +1,23 @@
 "use client";
 
-import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
-import UniversityHeader from "@/components/layout/UniversityHeader";
-import UniversityFooter from "@/components/layout/UniversityFooter";
 import { ZODIAC_SIGNS, ASTROLOGY_DISCLAIMER } from "@/lib/data/astrologia-content";
 
 function normalize(str: string) {
   return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-export default function SignoContent() {
-  const router = useRouter();
-  const params = useParams();
-  const [copied, setCopied] = useState(false);
-  const signId = params.signo as string;
-  const sign = ZODIAC_SIGNS.find(s => normalize(s.name) === normalize(signId));
-
+export default function SignoContent({ sign }: { sign: (typeof ZODIAC_SIGNS)[number] | null | undefined }) {
   if (!sign) {
     return (
       <div className="min-h-screen bg-background">
-        <UniversityHeader />
-        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24">
-          <h1 className="font-serif text-4xl font-semibold text-foreground">Signo no encontrado</h1>
-          <p className="text-muted mt-4">El signo &quot;{signId}&quot; no existe en la base de astrología de Molino.</p>
-          <button onClick={() => router.push("/conocimiento/astrologia")} className="mt-6 text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</button>
+        <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+          <h1 className="font-heading text-4xl font-semibold text-foreground">Signo no encontrado</h1>
+          <p className="text-muted mt-4">El signo no existe en la base de astrología de Molino.</p>
+          <Link href="/conocimiento/astrologia" className="mt-6 inline-block text-sm text-accent hover:text-accent/80">&larr; Volver a Astrología</Link>
         </main>
-        <UniversityFooter />
       </div>
     );
   }
@@ -40,12 +28,11 @@ export default function SignoContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <UniversityHeader />
-      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-12 sm:pt-20 pb-24" id="main-content">
+      <main className="mx-auto max-w-[1200px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         <nav className="text-xs text-muted mb-8" aria-label="Breadcrumb">
-          <Link href="/" className="hover:text-accent transition-colors">Inicio</Link>
+          <Link href="/" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Inicio</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
-          <Link href="/conocimiento/astrologia" className="hover:text-accent transition-colors">Astrología</Link>
+          <Link href="/conocimiento/astrologia" className="underline decoration-ink/25 underline-offset-2 hover:text-accent hover:decoration-accent transition-colors">Astrología</Link>
           <span className="mx-2" aria-hidden="true">&rsaquo;</span>
           <span className="text-foreground font-medium" aria-current="page">{sign.name}</span>
         </nav>
@@ -55,13 +42,13 @@ export default function SignoContent() {
           <div className="flex items-center gap-4 mb-4">
             <span className="text-5xl">{sign.symbol}</span>
             <div>
-              <h1 className="font-serif text-4xl sm:text-5xl font-semibold text-foreground leading-[1.1]">{sign.name}</h1>
+              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground leading-[1.1]">{sign.name}</h1>
               <p className="text-sm text-muted mt-1">{sign.dates}</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-4">
             {[sign.element, sign.modality, sign.polarity, sign.rulingPlanet].map((tag) => (
-              <span key={tag} className="text-[9px] uppercase tracking-[0.15em] text-muted font-medium px-2 py-0.5 rounded-full border border-border bg-card/60">{tag}</span>
+              <span key={tag} className="text-xs uppercase tracking-[0.2em] text-muted font-medium px-2 py-0.5 border border-ink/10">{tag}</span>
             ))}
           </div>
         </motion.section>
@@ -70,7 +57,7 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Significado tradicional</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Significado tradicional</h2>
           </div>
           <p className="text-base text-foreground leading-relaxed max-w-3xl">{sign.meaning}</p>
         </motion.section>
@@ -79,7 +66,7 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Historia</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Historia</h2>
           </div>
           <p className="text-sm text-foreground leading-relaxed max-w-3xl">{sign.history}</p>
         </motion.section>
@@ -87,16 +74,16 @@ export default function SignoContent() {
         {/* Fortalezas y Desafíos */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div className="p-5 rounded-xl border border-border bg-card/60">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-3">Fortalezas</p>
+            <div className="p-6 border border-ink/10">
+              <h3 className="font-heading text-lg font-semibold text-accent mb-3">Fortalezas</h3>
               <ul className="space-y-2">
                 {sign.strengths.map(s => (
                   <li key={s} className="text-sm text-foreground flex items-start gap-2"><span className="text-accent mt-0.5">&bull;</span>{s}</li>
                 ))}
               </ul>
             </div>
-            <div className="p-5 rounded-xl border border-border bg-card/60">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-3">Desafíos</p>
+            <div className="p-6 border border-ink/10">
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-3">Desafíos</h3>
               <ul className="space-y-2">
                 {sign.challenges.map(c => (
                   <li key={c} className="text-sm text-foreground flex items-start gap-2"><span className="text-muted mt-0.5">&bull;</span>{c}</li>
@@ -110,19 +97,19 @@ export default function SignoContent() {
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" />
-            <h2 className="text-[11px] uppercase tracking-[0.25em] text-muted font-medium">Compatibilidades tradicionales</h2>
+            <h2 className="font-heading text-xl sm:text-2xl font-semibold text-foreground tracking-tight">Compatibilidades tradicionales</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-border bg-card/60">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-accent font-medium mb-2">Compatibles</p>
+            <div className="p-4 border border-ink/10">
+              <h3 className="font-heading text-lg font-semibold text-accent mb-2">Compatibles</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.friendly.map(f => (
                   <span key={f} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{f}</span>
                 ))}
               </div>
             </div>
-            <div className="p-4 rounded-xl border border-border bg-card/60">
-              <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Desafiantes</p>
+            <div className="p-4 border border-ink/10">
+              <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Desafiantes</h3>
               <div className="flex flex-wrap gap-2">
                 {sign.compatibility.challenging.map(c => (
                   <span key={c} className="text-sm text-foreground px-2 py-1 rounded bg-background border border-border">{c}</span>
@@ -134,8 +121,8 @@ export default function SignoContent() {
 
         {/* Aviso + Disclaimer consolidados */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">
-          <div className="p-5 rounded-xl border border-border bg-card/60">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-muted font-medium mb-2">Aviso importante</p>
+          <div className="p-6 border border-ink/10">
+            <h3 className="font-heading text-lg font-semibold text-foreground mb-2">Aviso importante</h3>
             <p className="text-sm text-muted leading-relaxed">{sign.scientificNote}</p>
             <p className="text-xs text-muted leading-relaxed mt-3">{ASTROLOGY_DISCLAIMER}</p>
           </div>
@@ -144,18 +131,17 @@ export default function SignoContent() {
         {/* Navegación */}
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
-            <button onClick={() => router.push(`/conocimiento/astrologia/${normalize(prev.name)}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/astrologia/${normalize(prev.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               &larr; {prev.symbol} {prev.name}
-            </button>
+            </Link>
           ) : <div />}
           {next ? (
-            <button onClick={() => router.push(`/conocimiento/astrologia/${normalize(next.name)}`)} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/astrologia/${normalize(next.name)}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               {next.symbol} {next.name} &rarr;
-            </button>
+            </Link>
           ) : <div />}
         </motion.section>
       </main>
-      <UniversityFooter />
     </div>
   );
 }

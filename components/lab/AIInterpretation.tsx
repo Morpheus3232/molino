@@ -54,7 +54,7 @@ export default function AIInterpretation({
 
   if (isLoading) {
     return (
-      <div className="space-y-3 p-4 bg-background rounded-xl border border-card-border">
+      <div className="space-y-3 p-4 bg-background rounded-md border border-card-border">
         <div className="animate-pulse">
           <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
           <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
@@ -67,7 +67,7 @@ export default function AIInterpretation({
 
   if (error) {
     return (
-      <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+      <div className="p-4 bg-yellow-50 rounded-md border border-yellow-200">
         <p className="text-sm text-yellow-700">{error}</p>
       </div>
     );
@@ -79,7 +79,7 @@ export default function AIInterpretation({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-4 p-4 bg-background rounded-xl border border-card-border"
+      className="space-y-4 p-4 bg-background rounded-md border border-card-border"
     >
       <h4 className="text-sm font-medium text-muted uppercase tracking-wider mb-2">Interpretación</h4>
       

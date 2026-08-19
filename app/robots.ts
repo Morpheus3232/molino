@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,9 +7,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/"],
+        // /profile?dob=... y /profile?data=... son mapas personales de un
+        // solo usuario (ya noindex a nivel de página, ver app/profile/page.tsx)
+        // — evitamos gastar crawl budget en ellos directamente acá también.
+        disallow: ["/api/", "/admin/", "/profile?*"],
       },
     ],
-    sitemap: "https://molino-alpha.vercel.app/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

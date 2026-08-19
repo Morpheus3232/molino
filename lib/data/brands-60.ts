@@ -8,7 +8,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📦",
     description: "Amazon revolucionó el comercio minorista creando un mercado global donde se puede comprar casi cualquier producto con entrega rápida.",
     keyThemes: ["Innovación", "Escalabilidad", "Obsesión", "Eficiencia"],
-    category: "otro",events: [{ id: "amazon-fund", type: "fundacion", label: "Fundación de Amazon", year: 1994, confidence: "media", primaryForAffinity: true, description: "Fundación de Amazon", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "amazon-fund", type: "fundacion", label: "Fundación de Amazon", year: 1994, confidence: "media", primaryForAffinity: true, description: "Jeff Bezos fundó la compañía en un garaje de Seattle en 1994 como una librería online, sembrando el comercio electrónico global.", source: "Documentación histórica" }],
     sourceNote: "Fundada por Jeff Bezos el 5 de julio de 1994 en Seattle, Washington.",
   },
   {
@@ -16,7 +16,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏠",
     description: "Airbnb transformó la industria hotelera conectando viajeros con anfitriones locales en más de 220 países.",
     keyThemes: ["Comunidad", "Confianza", "Pertenencia", "Aventura"],
-    category: "otro",events: [{ id: "airbnb-fund", type: "fundacion", label: "Fundación de Airbnb", year: 2008, confidence: "media", primaryForAffinity: true, description: "Fundación de Airbnb", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "airbnb-fund", type: "fundacion", label: "Fundación de Airbnb", year: 2008, confidence: "media", primaryForAffinity: true, description: "Brian Chesky y Joe Gebbia alquilaron colchones inflables en su piso de San Francisco en 2008 para pagar el alquiler, naciendo el alojamiento compartido.", source: "Documentación histórica" }],
     sourceNote: "Fundada en agosto de 2008 por Brian Chesky, Joe Gebbia y Nathan Blecharczyk en San Francisco.",
   },
   {
@@ -24,7 +24,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Uber reinventó la movilidad urbana conectando pasajeros con conductores a través de una aplicación.",
     keyThemes: ["Movilidad", "Disrupción", "Acceso", "Eficiencia"],
-    category: "otro",events: [{ id: "uber-fund", type: "fundacion", label: "Fundación de Uber", year: 2009, confidence: "media", primaryForAffinity: true, description: "Fundación de Uber", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "uber-fund", type: "fundacion", label: "Fundación de Uber", year: 2009, confidence: "media", primaryForAffinity: true, description: "Garrett Camp, frustrado por la dificultad de encontrar taxi en París, concibió en 2009 un servicio de coches con chofer reservable por app desde San Francisco.", source: "Documentación histórica" }],
     sourceNote: "Fundada en marzo de 2009 por Garrett Camp y Travis Kalanick en San Francisco.",
   },
   {
@@ -32,7 +32,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💳",
     description: "PayPal democratizó los pagos digitales permitiendo transferencias seguras entre personas y negocios.",
     keyThemes: ["Confianza", "Seguridad", "Accesibilidad", "Innovación"],
-    category: "otro",events: [{ id: "paypal-fund", type: "fundacion", label: "Fundación de PayPal", year: 1998, confidence: "media", primaryForAffinity: true, description: "Fundación de PayPal", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "paypal-fund", type: "fundacion", label: "Fundación de PayPal", year: 1998, confidence: "media", primaryForAffinity: true, description: "Peter Thiel y Max Levchin crearon Confinity en 1998 para desarrollar criptografía móvil, y su sistema de pagos acabó transformando las finanzas digitales.", source: "Documentación histórica" }],
     sourceNote: "Fundada en diciembre de 1998 por Max Levchin, Peter Thiel y Luke Nosek como Confinity.",
   },
   {
@@ -40,7 +40,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏷️",
     description: "eBay creó el primer gran mercado de subastas en línea donde cualquier persona puede comprar y vender.",
     keyThemes: ["Subasta", "Comercio", "Comunidad", "Oportunidad"],
-    category: "otro",events: [{ id: "ebay-fund", type: "fundacion", label: "Fundación de eBay", year: 1995, confidence: "media", primaryForAffinity: true, description: "Fundación de eBay", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ebay-fund", type: "fundacion", label: "Fundación de eBay", year: 1995, confidence: "media", primaryForAffinity: true, description: "Pierre Omidyar programó AuctionWeb en 1995 como web de subastas personales; el primer objeto vendido fue un puntero láser roto.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 3 de septiembre de 1995 por Pierre Omidyar como AuctionWeb en San José, California.",
   },
 
@@ -50,7 +50,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Toyota perfeccionó el sistema de producción justo a tiempo para convertirse en el mayor fabricante de automóviles del mundo.",
     keyThemes: ["Calidad", "Mejora", "Eficiencia", "Confiabilidad"],
-    category: "otro",events: [{ id: "toyota-fund", type: "fundacion", label: "Fundación de Toyota Motor Corporation", year: 1937, confidence: "alta", primaryForAffinity: true, description: "Fundación de Toyota Motor Corporation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "toyota-fund", type: "fundacion", label: "Fundación de Toyota Motor Corporation", year: 1937, confidence: "alta", primaryForAffinity: true, description: "Kiichiro Toyoda creó en 1937 la rama automotriz de la textilera familiar de su padre, con el sueño de fabricar coches japoneses competitivos.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 28 de agosto de 1937 por Kiichiro Toyoda en Toyota, Japón.",
   },
   {
@@ -58,7 +58,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏍️",
     description: "Honda construyó su reputación en motores confiables desde motocicletas hasta automóviles y robótica.",
     keyThemes: ["Ingeniería", "Confiabilidad", "Innovación", "Respeto"],
-    category: "otro",events: [{ id: "honda-fund", type: "fundacion", label: "Fundación de Honda Motor Co.", year: 1948, confidence: "media", primaryForAffinity: true, description: "Fundación de Honda Motor Co.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "honda-fund", type: "fundacion", label: "Fundación de Honda Motor Co.", year: 1948, confidence: "media", primaryForAffinity: true, description: "Soichiro Honda, mecánico autodidacta, montó motores de posguerra en bicicletas antes de fundar Honda Motor en 1948 junto a Takeo Fujisawa.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 24 de septiembre de 1948 por Soichiro Honda y Takeo Fujisawa en Hamamatsu, Japón.",
   },
   {
@@ -66,7 +66,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🖥️",
     description: "IBM lideró la revolución de la computación empresarial durante más de un siglo con innovación constante.",
     keyThemes: ["Tecnología", "Confianza", "Empresa", "Legado"],
-    category: "otro",events: [{ id: "ibm-fund", type: "fundacion", label: "Fundación de IBM", year: 1911, confidence: "alta", primaryForAffinity: true, description: "Fundación de IBM", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ibm-fund", type: "fundacion", label: "Fundación de IBM", year: 1911, confidence: "alta", primaryForAffinity: true, description: "Charles Ranlett Flint fusionó en 1911 tres empresas de tarjetas perforadas y básculas, dando origen a la futura IBM.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de junio de 1911 por Charles Ranlett Flint como Computing-Tabulating-Recording Company.",
   },
   {
@@ -74,7 +74,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚘",
     description: "Ford democratizó el automóvil con la cadena de montaje transformando la industria y el trabajo moderno.",
     keyThemes: ["Industria", "Innovación", "Trabajo", "Legado"],
-    category: "otro",events: [{ id: "ford-fund", type: "fundacion", label: "Fundación de Ford Motor Company", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ford Motor Company", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ford-fund", type: "fundacion", label: "Fundación de Ford Motor Company", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Henry Ford fundó Ford Motor en 1903 con 28.000 dólares y lanzó en 1908 el Modelo T, el automóvil que movilizó a Estados Unidos.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de junio de 1903 por Henry Ford en Detroit, Míchigan.",
   },
   {
@@ -82,7 +82,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍫",
     description: "Nestlé es la compañía de alimentos más grande del mundo presente en casi todos los hogares del planeta.",
     keyThemes: ["Nutrición", "Tradición", "Global", "Calidad"],
-    category: "otro",events: [{ id: "nestle-fund", type: "fundacion", label: "Fundación de Nestlé", year: 1866, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nestlé", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nestle-fund", type: "fundacion", label: "Fundación de Nestlé", year: 1866, confidence: "alta", primaryForAffinity: true, description: "El farmacéutico suizo Henri Nestlé creó en 1866 una harina láctea infantil contra la mortalidad de bebés, germen de la mayor empresa alimentaria del mundo.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1866 por Henri Nestlé en Vevey, Suiza.",
   },
 
@@ -92,7 +92,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⚡",
     description: "Tesla aceleró la transición hacia la energía sostenible con vehículos eléctricos de alto rendimiento.",
     keyThemes: ["Futuro", "Sostenibilidad", "Rebelde", "Visión"],
-    category: "otro",events: [{ id: "tesla-fund", type: "fundacion", label: "Fundación de Tesla Motors", year: 2003, confidence: "media", primaryForAffinity: true, description: "Fundación de Tesla Motors", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tesla-fund", type: "fundacion", label: "Fundación de Tesla Motors", year: 2003, confidence: "media", primaryForAffinity: true, description: "Martin Eberhard y Marc Tarpenning fundaron Tesla Motors en 2003 para demostrar que un deportivo eléctrico podía superar a los de gasolina.", source: "Documentación histórica" }],
     sourceNote: "Fundada en julio de 2003 por Martin Eberhard y Marc Tarpenning en San Carlos, California.",
   },
   {
@@ -100,7 +100,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📺",
     description: "Netflix transformó el entretenimiento con streaming bajo demanda y contenido original galardonado.",
     keyThemes: ["Entretenimiento", "Innovación", "Disfrute", "Audacia"],
-    category: "otro",events: [{ id: "netflix-fund", type: "fundacion", label: "Fundación de Netflix", year: 1997, confidence: "media", primaryForAffinity: true, description: "Fundación de Netflix", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "netflix-fund", type: "fundacion", label: "Fundación de Netflix", year: 1997, confidence: "media", primaryForAffinity: true, description: "Reed Hastings y Marc Randolph lanzaron Netflix en 1997 como alquiler de DVD por correo, tras una película devuelta con retraso.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 29 de agosto de 1997 por Reed Hastings y Marc Randolph en Scotts Valley, California.",
   },
   {
@@ -108,7 +108,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🥤",
     description: "Red Bull creó la categoría de bebidas energéticas con un marketing audaz basado en deportes extremos.",
     keyThemes: ["Energía", "Audacia", "Extremo", "Vitalidad"],
-    category: "otro",events: [{ id: "redbull-fund", type: "fundacion", label: "Fundación de Red Bull", year: 1987, confidence: "alta", primaryForAffinity: true, description: "Fundación de Red Bull", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "redbull-fund", type: "fundacion", label: "Fundación de Red Bull", year: 1987, confidence: "alta", primaryForAffinity: true, description: "Dietrich Mateschitz adaptó en 1987 una bebida tónica tailandesa que lo salvó de un jet lag y creó el mercado mundial de energéticas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1987 por Dietrich Mateschitz en Fuschl am See, Austria.",
   },
   {
@@ -116,7 +116,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👟",
     description: "Nike inspira a los atletas de todo el mundo con innovación en calzado y un espíritu de superación.",
     keyThemes: ["Competencia", "Superación", "Vitalidad", "Rebeldía"],
-    category: "otro",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1964, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nike", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nike-fund", type: "fundacion", label: "Fundación de Nike", year: 1964, confidence: "alta", primaryForAffinity: true, description: "Phil Knight vendía zapatillas japonesas desde su maletero antes de renombrar Blue Ribbon Sports como Nike, por la diosa griega de la victoria.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 25 de enero de 1964 por Phil Knight y Bill Bowerman como Blue Ribbon Sports en Oregón.",
   },
   {
@@ -124,7 +124,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚀",
     description: "SpaceX revolucionó la exploración espacial con cohetes reutilizables y la visión de colonizar Marte.",
     keyThemes: ["Exploración", "Innovación", "Visión", "Audacia"],
-    category: "otro",events: [{ id: "spacex-fund", type: "fundacion", label: "Fundación de SpaceX", year: 2002, confidence: "media", primaryForAffinity: true, description: "Fundación de SpaceX", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "spacex-fund", type: "fundacion", label: "Fundación de SpaceX", year: 2002, confidence: "media", primaryForAffinity: true, description: "Elon Musk fundó SpaceX en 2002 tras fracasar en la compra de cohetes rusos baratos, con el objetivo de abaratar el acceso al espacio.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 14 de marzo de 2002 por Elon Musk en Hawthorne, California.",
   },
 
@@ -134,7 +134,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👛",
     description: "Chanel liberó a la mujer moderna con diseños atemporales que combinan elegancia y rebeldía.",
     keyThemes: ["Elegancia", "Rebeldía", "Atemporal", "Lujo"],
-    category: "otro",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1910, confidence: "alta", primaryForAffinity: true, description: "Fundación de Chanel", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "chanel-fund", type: "fundacion", label: "Fundación de Chanel", year: 1910, confidence: "alta", primaryForAffinity: true, description: "Gabrielle 'Coco' Chanel abrió en 1910 su primera tienda de sombreros en París y liberó a la mujer del corsé con un estilo masculino.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1910 por Coco Chanel en París, Francia.",
   },
   {
@@ -142,7 +142,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👜",
     description: "Louis Vuitton es el ícono del lujo francés con baúles y bolsos que simbolizan estatus y artesanía.",
     keyThemes: ["Lujo", "Artesanía", "Estatus", "Tradición"],
-    category: "otro",events: [{ id: "lv-fund", type: "fundacion", label: "Fundación de Louis Vuitton", year: 1854, confidence: "alta", primaryForAffinity: true, description: "Fundación de Louis Vuitton", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lv-fund", type: "fundacion", label: "Fundación de Louis Vuitton", year: 1854, confidence: "alta", primaryForAffinity: true, description: "Louis Vuitton, ebanista llegado a París a los 14 años, patentó en 1858 baúles planos y apilables que revolucionaron el equipaje.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1854 por Louis Vuitton en París, Francia.",
   },
   {
@@ -150,7 +150,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💄",
     description: "Dior revolucionó la alta costura con el New Look y sigue siendo sinónimo de sofisticación parisina.",
     keyThemes: ["Sofisticación", "Feminidad", "Arte", "Elegancia"],
-    category: "otro",events: [{ id: "dior-fund", type: "fundacion", label: "Fundación de Dior", year: 1946, confidence: "alta", primaryForAffinity: true, description: "Fundación de Dior", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "dior-fund", type: "fundacion", label: "Fundación de Dior", year: 1946, confidence: "alta", primaryForAffinity: true, description: "Christian Dior lanzó en 1947 el New Look con faldas amplias que devolvieron el lujo y el glamour a la moda de posguerra.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de diciembre de 1946 por Christian Dior en París, Francia.",
   },
   {
@@ -158,7 +158,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧣",
     description: "Hermès representa la excelencia artesanal francesa desde sus arneses ecuestres hasta sus icónicos bolsos.",
     keyThemes: ["Artesanía", "Exclusividad", "Tradición", "Excelencia"],
-    category: "otro",events: [{ id: "hermes-fund", type: "fundacion", label: "Fundación de Hermès", year: 1837, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hermès", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "hermes-fund", type: "fundacion", label: "Fundación de Hermès", year: 1837, confidence: "alta", primaryForAffinity: true, description: "Thierry Hermès abrió en 1837 un taller de arneses y sillas de montar para caballos, hoy la casa de lujo más antigua de París.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1837 por Thierry Hermès en París, Francia.",
   },
   {
@@ -166,7 +166,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💍",
     description: "Cartier es el joyero de los reyes con piezas que combinan artesanía excepcional y diseño visionario.",
     keyThemes: ["Joyería", "Prestigio", "Arte", "Legado"],
-    category: "otro",events: [{ id: "cartier-fund", type: "fundacion", label: "Fundación de Cartier", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Fundación de Cartier", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "cartier-fund", type: "fundacion", label: "Fundación de Cartier", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Louis-François Cartier, aprendiz de joyero, tomó en 1847 el taller de su maestro en París y creó el 'joyero de los reyes'.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1847 por Louis-François Cartier en París, Francia.",
   },
 
@@ -176,7 +176,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🔍",
     description: "Google organiza la información del mundo haciéndola accesible y útil para todas las personas.",
     keyThemes: ["Conocimiento", "Búsqueda", "Innovación", "Escala"],
-    category: "otro",events: [{ id: "google-fund", type: "fundacion", label: "Fundación de Google", year: 1998, confidence: "alta", primaryForAffinity: true, description: "Fundación de Google", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "google-fund", type: "fundacion", label: "Fundación de Google", year: 1998, confidence: "alta", primaryForAffinity: true, description: "Larry Page y Sergey Brin desarrollaron en 1998 un buscador, llamado BackRub, que ordenaba los resultados según los enlaces entre páginas.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de septiembre de 1998 por Larry Page y Sergey Brin en Menlo Park, California.",
   },
   {
@@ -184,7 +184,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💻",
     description: "Microsoft llevó una computadora a cada hogar con Windows y Office transformando la productividad global.",
     keyThemes: ["Tecnología", "Productividad", "Innovación", "Visión"],
-    category: "otro",events: [{ id: "microsoft-fund", type: "fundacion", label: "Fundación de Microsoft", year: 1975, confidence: "alta", primaryForAffinity: true, description: "Fundación de Microsoft", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "microsoft-fund", type: "fundacion", label: "Fundación de Microsoft", year: 1975, confidence: "alta", primaryForAffinity: true, description: "Bill Gates y Paul Allen fundaron Microsoft en 1975 en Albuquerque para vender su BASIC, el primer lenguaje del microordenador Altair.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de abril de 1975 por Bill Gates y Paul Allen en Albuquerque, Nuevo México.",
   },
   {
@@ -192,7 +192,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍎",
     description: "Apple revolucionó la informática personal y la experiencia digital con productos de diseño icónico.",
     keyThemes: ["Innovación", "Diseño", "Simplicidad", "Rebelde"],
-    category: "otro",events: [{ id: "apple-fund", type: "fundacion", label: "Fundación de Apple", year: 1976, confidence: "alta", primaryForAffinity: true, description: "Fundación de Apple", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "apple-fund", type: "fundacion", label: "Fundación de Apple", year: 1976, confidence: "alta", primaryForAffinity: true, description: "Steve Jobs y Steve Wozniak montaron la primera Apple I en el garaje de Los Altos en 1976, financiada con la venta de una furgoneta Volkswagen.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de abril de 1976 por Steve Jobs, Steve Wozniak y Ronald Wayne en Los Altos, California.",
   },
   {
@@ -200,7 +200,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📱",
     description: "Samsung pasó de ser una tienda de comestibles a liderar la electrónica de consumo global.",
     keyThemes: ["Tecnología", "Innovación", "Global", "Calidad"],
-    category: "otro",events: [{ id: "samsung-fund", type: "fundacion", label: "Fundación de Samsung", year: 1938, confidence: "alta", primaryForAffinity: true, description: "Fundación de Samsung", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "samsung-fund", type: "fundacion", label: "Fundación de Samsung", year: 1938, confidence: "alta", primaryForAffinity: true, description: "Lee Byung-chul fundó Samsung en 1938 en Daegu como tienda de exportación de pescado, fideos y frutas, camino del conglomerado tecnológico.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de marzo de 1938 por Lee Byung-chul en Daegu, Corea del Sur.",
   },
   {
@@ -208,7 +208,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🌐",
     description: "Alibaba transformó el comercio electrónico en China conectando fabricantes con compradores globales.",
     keyThemes: ["Comercio", "Innovación", "Escala", "Visión"],
-    category: "otro",events: [{ id: "alibaba-fund", type: "fundacion", label: "Fundación de Alibaba Group", year: 1999, confidence: "media", primaryForAffinity: true, description: "Fundación de Alibaba Group", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "alibaba-fund", type: "fundacion", label: "Fundación de Alibaba Group", year: 1999, confidence: "media", primaryForAffinity: true, description: "Jack Ma, profesor de inglés sin conocimientos de informática, reunió en 1999 a 17 amigos en su piso de Hangzhou para crear Alibaba.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 4 de abril de 1999 por Jack Ma en Hangzhou, China.",
   },
 
@@ -218,7 +218,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏦",
     description: "Goldman Sachs es el banco de inversión más influyente de Wall Street asesorando a gobiernos y corporaciones.",
     keyThemes: ["Inversión", "Poder", "Estrategia", "Discreción"],
-    category: "otro",events: [{ id: "gs-fund", type: "fundacion", label: "Fundación de Goldman Sachs", year: 1869, confidence: "alta", primaryForAffinity: true, description: "Fundación de Goldman Sachs", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "gs-fund", type: "fundacion", label: "Fundación de Goldman Sachs", year: 1869, confidence: "alta", primaryForAffinity: true, description: "El inmigrante alemán Marcus Goldman fundó en 1869 en Wall Street un negocio de pagarés para comerciantes de joyas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1869 por Marcus Goldman y Samuel Sachs en Nueva York.",
   },
   {
@@ -226,7 +226,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📊",
     description: "BlackRock es el gestor de activos más grande del mundo moviendo billones en inversiones globales.",
     keyThemes: ["Inversión", "Escala", "Tecnología", "Influencia"],
-    category: "otro",events: [{ id: "blackrock-fund", type: "fundacion", label: "Fundación de BlackRock", year: 1988, confidence: "media", primaryForAffinity: true, description: "Fundación de BlackRock", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "blackrock-fund", type: "fundacion", label: "Fundación de BlackRock", year: 1988, confidence: "media", primaryForAffinity: true, description: "Larry Fink y ocho socios de Blackstone fundaron BlackRock en 1988, pionera en gestión de riesgos con su sistema Aladdin.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1988 por Larry Fink, Robert Kapito y otros siete socios en Nueva York.",
   },
   {
@@ -234,7 +234,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💊",
     description: "Pfizer desarrolla medicamentos que salvan vidas desde su fundación incluyendo la primera vacuna contra COVID-19.",
     keyThemes: ["Salud", "Ciencia", "Innovación", "Vida"],
-    category: "otro",events: [{ id: "pfizer-fund", type: "fundacion", label: "Fundación de Pfizer", year: 1849, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pfizer", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "pfizer-fund", type: "fundacion", label: "Fundación de Pfizer", year: 1849, confidence: "alta", primaryForAffinity: true, description: "Los químicos Charles Pfizer y Charles Erhart fundaron la firma en Brooklyn en 1849 con un antiparasitario de sabor dulce como primer éxito.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1849 por Charles Pfizer y Charles Erhart en Brooklyn, Nueva York.",
   },
   {
@@ -242,7 +242,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "✈️",
     description: "Lockheed Martin es el contratista de defensa y aeroespacial más grande del mundo impulsando tecnología de vanguardia.",
     keyThemes: ["Defensa", "Innovación", "Tecnología", "Sigilo"],
-    category: "otro",events: [{ id: "lockheed-fund", type: "fundacion", label: "Fundación de Lockheed", year: 1912, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lockheed", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lockheed-fund", type: "fundacion", label: "Fundación de Lockheed", year: 1912, confidence: "alta", primaryForAffinity: true, description: "Los hermanos Allan y Malcolm Loughead fundaron en 1912 una fábrica de hidroaviones en Santa Bárbara, precursora del gigante aeroespacial.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1912 por Allan y Malcolm Loughead en Santa Bárbara, California.",
   },
   {
@@ -250,7 +250,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📋",
     description: "McKinsey es la consultora estratégica más prestigiosa asesorando a las empresas más poderosas del mundo.",
     keyThemes: ["Estrategia", "Conocimiento", "Influencia", "Excelencia"],
-    category: "otro",events: [{ id: "mckinsey-fund", type: "fundacion", label: "Fundación de McKinsey & Company", year: 1926, confidence: "alta", primaryForAffinity: true, description: "Fundación de McKinsey & Company", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "mckinsey-fund", type: "fundacion", label: "Fundación de McKinsey & Company", year: 1926, confidence: "alta", primaryForAffinity: true, description: "James O. McKinsey, profesor de contabilidad, abrió su firma de consultoría en Chicago en 1926 y creó la profesión de consultor.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1926 por James O. McKinsey en Chicago, Illinois.",
   },
 
@@ -260,7 +260,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏎️",
     description: "Ferrari es el símbolo del automovilismo de lujo con una herencia imbatible en la Fórmula 1.",
     keyThemes: ["Velocidad", "Pasión", "Exclusividad", "Legado"],
-    category: "otro",events: [{ id: "ferrari-fund", type: "fundacion", label: "Fundación de Ferrari", year: 1939, confidence: "alta", primaryForAffinity: true, description: "Fundación de Ferrari", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ferrari-fund", type: "fundacion", label: "Fundación de Ferrari", year: 1939, confidence: "alta", primaryForAffinity: true, description: "Enzo Ferrari fundó en 1939 su escudería tras desvincularse de Alfa Romeo; el primer coche con su nombre, el 125 S, llegó en 1947.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1939 por Enzo Ferrari como Auto Avio Costruzioni en Módena, Italia.",
   },
   {
@@ -268,7 +268,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧭",
     description: "Jeep nació como vehículo militar en la Segunda Guerra Mundial y se convirtió en ícono de aventura.",
     keyThemes: ["Aventura", "Libertad", "Robustez", "Exploración"],
-    category: "otro",events: [{ id: "jeep-fund", type: "fundacion", label: "Origen de Jeep", year: 1941, confidence: "alta", primaryForAffinity: true, description: "Origen de Jeep", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "jeep-fund", type: "fundacion", label: "Origen de Jeep", year: 1941, confidence: "alta", primaryForAffinity: true, description: "Willys-Overland diseñó en 1941 un todoterreno ligero para el ejército estadounidense, ganándose el apodo 'jeep' durante la guerra.", source: "Documentación histórica" }],
     sourceNote: "Creado en 1941 por Willys-Overland para el ejército estadounidense en Toledo, Ohio.",
   },
   {
@@ -276,7 +276,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎵",
     description: "Virgin expandió su espíritu rebelde desde la música hasta aerolíneas y viajes espaciales.",
     keyThemes: ["Rebelde", "Aventura", "Diversidad", "Innovación"],
-    category: "otro",events: [{ id: "virgin-fund", type: "fundacion", label: "Fundación de Virgin Records", year: 1970, confidence: "alta", primaryForAffinity: true, description: "Fundación de Virgin Records", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "virgin-fund", type: "fundacion", label: "Fundación de Virgin Records", year: 1970, confidence: "alta", primaryForAffinity: true, description: "Richard Branson y Nik Powell fundaron Virgin en 1970 vendiendo discos desde una iglesia reconvertida en tienda de Notting Hill.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1970 por Richard Branson y Nik Powell en Londres, Reino Unido.",
   },
   {
@@ -284,7 +284,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🐆",
     description: "Puma nació de una rivalidad fraternal y se convirtió en marca deportiva global asociada a la velocidad.",
     keyThemes: ["Deporte", "Velocidad", "Estilo", "Cultura"],
-    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1948, confidence: "alta", primaryForAffinity: true, description: "Fundación de Puma", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "puma-fund", type: "fundacion", label: "Fundación de Puma", year: 1948, confidence: "alta", primaryForAffinity: true, description: "Rudolf Dassler fundó Puma en 1948 en Herzogenaurach, tras romper la sociedad con su hermano Adolf, creador de Adidas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1948 por Rudolf Dassler en Herzogenaurach, Alemania.",
   },
   {
@@ -292,7 +292,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏍️",
     description: "Harley-Davidson es el ícono de la libertad sobre dos ruedas con más de un siglo de tradición motociclista.",
     keyThemes: ["Libertad", "Rebeldía", "Ruta", "Hermandad"],
-    category: "otro",events: [{ id: "harley-fund", type: "fundacion", label: "Fundación de Harley-Davidson", year: 1903, confidence: "alta", primaryForAffinity: true, description: "Fundación de Harley-Davidson", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "harley-fund", type: "fundacion", label: "Fundación de Harley-Davidson", year: 1903, confidence: "alta", primaryForAffinity: true, description: "William Harley y los hermanos Davidson ensamblaron en 1903 su primera motocicleta en un cobertizo de Milwaukee.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1903 por William Harley y los hermanos Davidson en Milwaukee, Wisconsin.",
   },
 
@@ -302,7 +302,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🐭",
     description: "Disney creó el entretenimiento familiar mágico con personajes que han marcado generaciones enteras.",
     keyThemes: ["Magia", "Imaginación", "Infancia", "Narrativa"],
-    category: "otro",events: [{ id: "disney-fund", type: "fundacion", label: "Fundación de Disney Brothers Studio", year: 1923, confidence: "alta", primaryForAffinity: true, description: "Fundación de Disney Brothers Studio", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "disney-fund", type: "fundacion", label: "Fundación de Disney Brothers Studio", year: 1923, confidence: "alta", primaryForAffinity: true, description: "Walt y Roy Disney fundaron en 1923 el Disney Brothers Studio, donde en 1928 nació Mickey Mouse tras perder a su creación Oswald.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de octubre de 1923 por Walt y Roy Disney en Los Ángeles, California.",
   },
   {
@@ -310,7 +310,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💡",
     description: "Pixar revolucionó la animación digital con historias emocionantes que conectan con todas las edades.",
     keyThemes: ["Creatividad", "Emoción", "Tecnología", "Narrativa"],
-    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1986, confidence: "alta", primaryForAffinity: true, description: "Fundación de Pixar", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "pixar-fund", type: "fundacion", label: "Fundación de Pixar", year: 1986, confidence: "alta", primaryForAffinity: true, description: "Steve Jobs compró en 1986 el departamento de gráficos de Lucasfilm, rebautizado Pixar, que estrenaría el primer largometraje animado por ordenador.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1986 por Ed Catmull y Alvy Ray Smith tras ser comprada por Steve Jobs en Richmond, California.",
   },
   {
@@ -318,7 +318,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧱",
     description: "Lego despertó la imaginación de niños y adultos con sus icónicos ladrillos de construcción desde Dinamarca.",
     keyThemes: ["Creatividad", "Juego", "Imaginación", "Aprendizaje"],
-    category: "otro",events: [{ id: "lego-fund", type: "fundacion", label: "Fundación de Lego", year: 1932, confidence: "alta", primaryForAffinity: true, description: "Fundación de Lego", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "lego-fund", type: "fundacion", label: "Fundación de Lego", year: 1932, confidence: "alta", primaryForAffinity: true, description: "El carpintero Ole Kirk Christiansen fabricó juguetes de madera en Billund desde 1932 y bautizó su firma Lego, del danés 'leg godt', jugar bien.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 10 de agosto de 1932 por Ole Kirk Christiansen en Billund, Dinamarca.",
   },
   {
@@ -326,7 +326,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎮",
     description: "Nintendo pasó de hacer naipes a crear las franquicias de videojuegos más queridas del mundo.",
     keyThemes: ["Juego", "Innovación", "Magia", "Diversión"],
-    category: "otro",events: [{ id: "nintendo-fund", type: "fundacion", label: "Fundación de Nintendo", year: 1889, confidence: "alta", primaryForAffinity: true, description: "Fundación de Nintendo", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "nintendo-fund", type: "fundacion", label: "Fundación de Nintendo", year: 1889, confidence: "alta", primaryForAffinity: true, description: "Fusajiro Yamauchi fundó Nintendo en 1889 en Kioto para fabricar naipes hanafuda, origen de un imperio del entretenimiento.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 23 de septiembre de 1889 por Fusajiro Yamauchi en Kioto, Japón.",
   },
   {
@@ -334,7 +334,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🕹️",
     description: "PlayStation redefinió el entretenimiento interactivo con franquicias exclusivas y tecnología de vanguardia.",
     keyThemes: ["Juego", "Innovación", "Inmersión", "Comunidad"],
-    category: "otro",events: [{ id: "ps-fund", type: "lanzamiento", label: "Lanzamiento de PlayStation", year: 1994, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de PlayStation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "ps-fund", type: "lanzamiento", label: "Lanzamiento de PlayStation", year: 1994, confidence: "alta", primaryForAffinity: true, description: "Sony lanzó PlayStation en 1994 en Japón tras un acuerdo fallido con Nintendo para un lector de CD, que la impulsó a hacer su propia consola.", source: "Documentación histórica" }],
     sourceNote: "Lanzada el 3 de diciembre de 1994 por Sony Computer Entertainment en Japón.",
   },
 
@@ -344,7 +344,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎵",
     description: "TikTok transformó las redes sociales con videos cortos virales y un algoritmo de recomendación adictivo.",
     keyThemes: ["Creatividad", "Viral", "Música", "Juventud"],
-    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 2016, confidence: "alta", primaryForAffinity: true, description: "Lanzamiento de TikTok", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tiktok-fund", type: "lanzamiento", label: "Lanzamiento de TikTok", year: 2016, confidence: "alta", primaryForAffinity: true, description: "ByteDance lanzó en 2016 su app de vídeos cortos Douyin, luego internacionalizada como TikTok, el fenómeno viral de la década.", source: "Documentación histórica" }],
     sourceNote: "Lanzada en septiembre de 2016 por ByteDance en Pekín, China.",
   },
   {
@@ -352,7 +352,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🎧",
     description: "Spotify transformó la industria musical con streaming personalizado y descubrimiento algorítmico.",
     keyThemes: ["Música", "Conectividad", "Descubrimiento", "Innovación"],
-    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 2006, confidence: "media", primaryForAffinity: true, description: "Fundación de Spotify", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "spotify-fund", type: "fundacion", label: "Fundación de Spotify", year: 2006, confidence: "media", primaryForAffinity: true, description: "Daniel Ek y Martin Lorentzon crearon Spotify en 2006 en Estocolmo para combatir la piratería musical con streaming legal.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 2006 por Daniel Ek y Martin Lorentzon en Estocolmo, Suecia.",
   },
   {
@@ -360,7 +360,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📹",
     description: "Zoom redefinió la comunicación remota con videoconferencias simples y confiables para el mundo.",
     keyThemes: ["Conexión", "Simplicidad", "Remoto", "Comunicación"],
-    category: "otro",events: [{ id: "zoom-fund", type: "fundacion", label: "Fundación de Zoom", year: 2011, confidence: "media", primaryForAffinity: true, description: "Fundación de Zoom", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "zoom-fund", type: "fundacion", label: "Fundación de Zoom", year: 2011, confidence: "media", primaryForAffinity: true, description: "Eric Yuan, ex ingeniero de WebEx, fundó Zoom en 2011 en San José para lograr videoconferencias sin latencia ni fricción.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 21 de abril de 2011 por Eric Yuan en San José, California.",
   },
   {
@@ -368,7 +368,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "👻",
     description: "Snapchat popularizó el contenido efímero cambiando la forma en que las generaciones jóvenes se comunican.",
     keyThemes: ["Efímero", "Creatividad", "Juventud", "Diversión"],
-    category: "otro",events: [{ id: "snapchat-fund", type: "lanzamiento", label: "Lanzamiento de Snapchat", year: 2011, confidence: "media", primaryForAffinity: true, description: "Lanzamiento de Snapchat", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "snapchat-fund", type: "lanzamiento", label: "Lanzamiento de Snapchat", year: 2011, confidence: "media", primaryForAffinity: true, description: "Evan Spiegel y sus compañeros de Stanford lanzaron Snapchat en 2011 tras la broma de un amigo que quería fotos que desaparecieran.", source: "Documentación histórica" }],
     sourceNote: "Lanzada en septiembre de 2011 por Evan Spiegel, Bobby Murphy y Reggie Brown en Los Ángeles.",
   },
   {
@@ -376,7 +376,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🤖",
     description: "Android democratizó los smartphones con un sistema operativo abierto usado por miles de millones.",
     keyThemes: ["Apertura", "Innovación", "Accesibilidad", "Personalización"],
-    category: "otro",events: [{ id: "android-fund", type: "fundacion", label: "Fundación de Android Inc.", year: 2003, confidence: "alta", primaryForAffinity: true, description: "Fundación de Android Inc.", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "android-fund", type: "fundacion", label: "Fundación de Android Inc.", year: 2003, confidence: "alta", primaryForAffinity: true, description: "Andy Rubin fundó Android Inc. en 2003 para crear un sistema operativo de móviles abierto; Google lo compró dos años después.", source: "Documentación histórica" }],
     sourceNote: "Fundada en octubre de 2003 por Andy Rubin, Rich Miner, Nick Sears y Chris White en Palo Alto, California.",
   },
 
@@ -386,7 +386,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⌚",
     description: "Rolex es el reloj de lujo más reconocido del mundo símbolo de precisión estatus y legado.",
     keyThemes: ["Precisión", "Estatus", "Legado", "Excelencia"],
-    category: "otro",events: [{ id: "rolex-fund", type: "fundacion", label: "Fundación de Rolex", year: 1905, confidence: "alta", primaryForAffinity: true, description: "Fundación de Rolex", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "rolex-fund", type: "fundacion", label: "Fundación de Rolex", year: 1905, confidence: "alta", primaryForAffinity: true, description: "Hans Wilsdorf fundó en 1905 en Londres una distribuidora de relojes y registró el nombre Rolex en 1908 por su sonido corto.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1905 por Hans Wilsdorf y Alfred Davis en Londres, Reino Unido.",
   },
   {
@@ -394,7 +394,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "BMW es sinónimo de ingeniería de precisión alemana con vehículos que combinan lujo y rendimiento.",
     keyThemes: ["Ingeniería", "Precisión", "Lujo", "Rendimiento"],
-    category: "otro",events: [{ id: "bmw-fund", type: "fundacion", label: "Fundación de BMW", year: 1916, confidence: "alta", primaryForAffinity: true, description: "Fundación de BMW", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "bmw-fund", type: "fundacion", label: "Fundación de BMW", year: 1916, confidence: "alta", primaryForAffinity: true, description: "BMW nació en 1916 en Múnich como fabricante de motores de avión; la hélice giratoria inspiró su famoso logo.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 7 de marzo de 1916 como Bayerische Flugzeugwerke en Múnich, Alemania.",
   },
   {
@@ -402,7 +402,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "⚙️",
     description: "Siemens es el gigante industrial alemán que impulsó la electrificación y automatización global.",
     keyThemes: ["Industria", "Tecnología", "Innovación", "Eficiencia"],
-    category: "otro",events: [{ id: "siemens-fund", type: "fundacion", label: "Fundación de Siemens", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Fundación de Siemens", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "siemens-fund", type: "fundacion", label: "Fundación de Siemens", year: 1847, confidence: "alta", primaryForAffinity: true, description: "Werner von Siemens, inventor prusiano, fundó en 1847 en Berlín su taller de telegrafía junto a Johann Georg Halske.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de octubre de 1847 por Werner von Siemens en Berlín, Alemania.",
   },
   {
@@ -410,7 +410,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "📬",
     description: "FedEx revolucionó la logística global con entregas exprés confiables y seguimiento en tiempo real.",
     keyThemes: ["Logística", "Confiabilidad", "Velocidad", "Precisión"],
-    category: "otro",events: [{ id: "fedex-fund", type: "fundacion", label: "Fundación de FedEx", year: 1971, confidence: "media", primaryForAffinity: true, description: "Fundación de FedEx", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "fedex-fund", type: "fundacion", label: "Fundación de FedEx", year: 1971, confidence: "media", primaryForAffinity: true, description: "Frederick W. Smith ideó el sistema de centro de distribución de Memphis en una tesis universitaria antes de fundar FedEx en 1971.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1971 por Frederick W. Smith en Memphis, Tennessee.",
   },
   {
@@ -418,7 +418,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "💳",
     description: "American Express es la tarjeta de crédito premium que ofrece servicios financieros exclusivos a nivel global.",
     keyThemes: ["Exclusividad", "Confianza", "Viajes", "Prestigio"],
-    category: "otro",events: [{ id: "amex-fund", type: "fundacion", label: "Fundación de American Express", year: 1850, confidence: "alta", primaryForAffinity: true, description: "Fundación de American Express", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "amex-fund", type: "fundacion", label: "Fundación de American Express", year: 1850, confidence: "alta", primaryForAffinity: true, description: "Henry Wells y William Fargo, socios de la competidora, crearon American Express en 1850 como empresa de envíos expresos de valores.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 18 de marzo de 1850 por Henry Wells, William Fargo y John Warren Butterfield en Nueva York.",
   },
 
@@ -428,7 +428,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏔️",
     description: "Patagonia lidera la responsabilidad ambiental corporativa mientras fabrica ropa outdoor de alta calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
-    category: "otro",events: [{ id: "patagonia-fund", type: "fundacion", label: "Fundación de Patagonia", year: 1973, confidence: "media", primaryForAffinity: true, description: "Fundación de Patagonia", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "patagonia-fund", type: "fundacion", label: "Fundación de Patagonia", year: 1973, confidence: "media", primaryForAffinity: true, description: "El escalador Yvon Chouinard, forjador de pitones de alpinismo, creó en 1973 en Ventura la línea de ropa técnica Patagonia.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1973 por Yvon Chouinard en Ventura, California.",
   },
   {
@@ -436,7 +436,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🧥",
     description: "The North Face equipa a exploradores y alpinistas con el mejor equipo técnico para condiciones extremas.",
     keyThemes: ["Exploración", "Resistencia", "Naturaleza", "Aventura"],
-    category: "otro",events: [{ id: "tnf-fund", type: "fundacion", label: "Fundación de The North Face", year: 1966, confidence: "media", primaryForAffinity: true, description: "Fundación de The North Face", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "tnf-fund", type: "fundacion", label: "Fundación de The North Face", year: 1966, confidence: "media", primaryForAffinity: true, description: "Douglas Tompkins y Kenneth Klopp abrieron en 1966 en San Francisco una tienda de montañismo, bautizada por la cara más fría de las cumbres.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1966 por Douglas Tompkins y Kenneth Klopp en San Francisco, California.",
   },
   {
@@ -444,7 +444,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚗",
     description: "Volvo es pionera mundial en seguridad automotriz con el objetivo de que nadie muera en un Volvo.",
     keyThemes: ["Seguridad", "Confiabilidad", "Familia", "Sostenibilidad"],
-    category: "otro",events: [{ id: "volvo-fund", type: "fundacion", label: "Fundación de Volvo", year: 1927, confidence: "alta", primaryForAffinity: true, description: "Fundación de Volvo", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "volvo-fund", type: "fundacion", label: "Fundación de Volvo", year: 1927, confidence: "alta", primaryForAffinity: true, description: "Assar Gabrielsson y Gustav Larson fundaron Volvo en 1927 en Gotemburgo con el lema de que los coches los conducen personas, origen de su obsesión por la seguridad.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 14 de abril de 1927 por Assar Gabrielsson y Gustav Larson en Gotemburgo, Suecia.",
   },
   {
@@ -452,7 +452,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🚜",
     description: "John Deere es el fabricante de maquinaria agrícola más icónico que alimenta al mundo con innovación.",
     keyThemes: ["Trabajo", "Tierra", "Confiabilidad", "Tradición"],
-    category: "otro",events: [{ id: "deere-fund", type: "fundacion", label: "Fundación de John Deere", year: 1837, confidence: "alta", primaryForAffinity: true, description: "Fundación de John Deere", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "deere-fund", type: "fundacion", label: "Fundación de John Deere", year: 1837, confidence: "alta", primaryForAffinity: true, description: "El herrero John Deere fabricó en 1837 su primer arado de acero pulido en Grand Detour, que no se pegaba al barro de las praderas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1837 por John Deere en Grand Detour, Illinois.",
   },
   {
@@ -460,7 +460,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🏕️",
     description: "REI es la cooperativa de equipamiento outdoor más grande de Estados Unidos propiedad de sus miembros.",
     keyThemes: ["Comunidad", "Naturaleza", "Cooperación", "Aventura"],
-    category: "otro",events: [{ id: "rei-fund", type: "fundacion", label: "Fundación de REI", year: 1938, confidence: "media", primaryForAffinity: true, description: "Fundación de REI", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "rei-fund", type: "fundacion", label: "Fundación de REI", year: 1938, confidence: "media", primaryForAffinity: true, description: "Lloyd y Mary Anderson fundaron REI en 1938 como cooperativa de escaladores en Seattle con una cuota de un dólar.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1938 por Lloyd y Mary Anderson en Seattle, Washington.",
   },
 
@@ -470,7 +470,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🥤",
     description: "Coca-Cola es la bebida más reconocida del planeta símbolo de felicidad y momentos compartidos.",
     keyThemes: ["Felicidad", "Tradición", "Celebración", "Compartir"],
-    category: "otro",events: [{ id: "cocacola-fund", type: "creacion", label: "Creación de Coca-Cola", year: 1886, confidence: "alta", primaryForAffinity: true, description: "Creación de Coca-Cola", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "cocacola-fund", type: "creacion", label: "Creación de Coca-Cola", year: 1886, confidence: "alta", primaryForAffinity: true, description: "El farmacéutico John Pemberton creó en 1886 en Atlanta un jarabe medicinal que se vendía en la farmacia Jacobs como refresco de cinco centavos.", source: "Documentación histórica" }],
     sourceNote: "Creada el 8 de mayo de 1886 por John Pemberton en Atlanta, Georgia.",
   },
   {
@@ -478,7 +478,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍔",
     description: "McDonald's es la cadena de comida rápida más grande del mundo famosa por sus hamburguesas y su alcance global.",
     keyThemes: ["Placer", "Familia", "Accesibilidad", "Estandarización"],
-    category: "otro",events: [{ id: "mcdonalds-fund", type: "fundacion", label: "Fundación de McDonald's Corporation", year: 1955, confidence: "alta", primaryForAffinity: true, description: "Fundación de McDonald's Corporation", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "mcdonalds-fund", type: "fundacion", label: "Fundación de McDonald's Corporation", year: 1955, confidence: "alta", primaryForAffinity: true, description: "Ray Kroc conoció en 1954 el restaurante de los hermanos McDonald y compró sus derechos de franquicia, sembrando el imperio del fast food.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 15 de abril de 1955 por Ray Kroc en Des Plaines, Illinois.",
   },
   {
@@ -486,7 +486,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍦",
     description: "Ben & Jerry's es famoso por sus helados artesanales creativos y su activismo social comprometido.",
     keyThemes: ["Placer", "Creatividad", "Justicia", "Disfrute"],
-    category: "otro",events: [{ id: "bj-fund", type: "fundacion", label: "Fundación de Ben & Jerry's", year: 1978, confidence: "media", primaryForAffinity: true, description: "Fundación de Ben & Jerry's", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "bj-fund", type: "fundacion", label: "Fundación de Ben & Jerry's", year: 1978, confidence: "media", primaryForAffinity: true, description: "Ben Cohen y Jerry Greenfield, amigos de la secundaria, abrieron en 1978 una heladería en una gasolinera de Vermont tras un curso por correspondencia.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 5 de mayo de 1978 por Ben Cohen y Jerry Greenfield en Burlington, Vermont.",
   },
   {
@@ -494,7 +494,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍫",
     description: "Hershey's endulzó Estados Unidos con su chocolate con leche creando un imperio de confitería.",
     keyThemes: ["Placer", "Tradición", "Dulzura", "Nostalgia"],
-    category: "otro",events: [{ id: "hershey-fund", type: "fundacion", label: "Fundación de Hershey", year: 1894, confidence: "alta", primaryForAffinity: true, description: "Fundación de Hershey", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "hershey-fund", type: "fundacion", label: "Fundación de Hershey", year: 1894, confidence: "alta", primaryForAffinity: true, description: "Milton Hershey, tras varios fracasos en el caramelo, fundó en 1894 su compañía de chocolate con leche en Pensilvania.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1894 por Milton S. Hershey en Hershey, Pensilvania.",
   },
   {
@@ -502,7 +502,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     emoji: "🍕",
     description: "Domino's revolucionó la entrega de pizza a domicilio con un sistema de seguimiento y garantía de tiempo.",
     keyThemes: ["Placer", "Comodidad", "Velocidad", "Disfrute"],
-    category: "otro",events: [{ id: "dominos-fund", type: "fundacion", label: "Fundación de Domino's", year: 1960, confidence: "media", primaryForAffinity: true, description: "Fundación de Domino's", source: "Documentación histórica" }],
+    category: "otro",events: [{ id: "dominos-fund", type: "fundacion", label: "Fundación de Domino's", year: 1960, confidence: "media", primaryForAffinity: true, description: "Tom Monaghan compró en 1960 una pizzería de Ypsilanti por 500 dólares junto a su hermano y la rebautizó Domino's en 1965.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1960 por Tom Monaghan y James Monaghan en Ypsilanti, Míchigan.",
   },
 
@@ -514,7 +514,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "La marca de moda más rápida del mundo, pionera del fast fashion desde España.",
     keyThemes: ["Moda", "Velocidad", "Tendencia", "Accesibilidad"],
-    events: [{ id: "zara-fund", type: "fundacion", label: "Fundación", year: 1960, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "zara-fund", type: "fundacion", label: "Fundación", year: 1960, confidence: "media", primaryForAffinity: true, description: "Amancio Ortega, sastre de formación, abrió en 1975 su primera tienda en A Coruña bajo el nombre Zorba, cambiado a Zara por otra marca existente.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1975 por Amancio Ortega en Arteixo, España.",
   },
   {
@@ -523,7 +523,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Minorista de moda sueca que democratizó el estilo con ropa asequible y trendy.",
     keyThemes: ["Moda", "Accesibilidad", "Sostenibilidad", "Tendencia"],
-    events: [{ id: "h-and-m-fund", type: "fundacion", label: "Fundación", year: 1972, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "h-and-m-fund", type: "fundacion", label: "Fundación", year: 1972, confidence: "media", primaryForAffinity: true, description: "Erling Persson, comerciante sueco, fundó H&M en 1947 en Västerås vendiendo ropa de mujer a bajo precio bajo el nombre Hennes.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1947 por Erling Persson en Västerås, Suecia.",
   },
   {
@@ -532,7 +532,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca japonesa de ropa casual que combina simplicidad y tecnología textil.",
     keyThemes: ["Simplicidad", "Tecnología", "Calidad", "Comodidad"],
-    events: [{ id: "uniqlo-fund", type: "fundacion", label: "Fundación", year: 1984, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "uniqlo-fund", type: "fundacion", label: "Fundación", year: 1984, confidence: "media", primaryForAffinity: true, description: "Tadashi Yanai abrió en 1984 en Hiroshima la tienda Unique Clothing Warehouse, semilla de la cadena de básicos Uniqlo.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1949 como men's shop en Hiroshima.",
   },
   {
@@ -541,7 +541,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Los inventores del jean azul, icono de la moda americana y la rebeldía juvenil.",
     keyThemes: ["Rebeldía", "Jeans", "América", "Durabilidad"],
-    events: [{ id: "levi-strauss-fund", type: "fundacion", label: "Fundación", year: 1996, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "levi-strauss-fund", type: "fundacion", label: "Fundación", year: 1996, confidence: "media", primaryForAffinity: true, description: "Levi Strauss, inmigrante bávaro, se asoció en 1873 con el sastre Jacob Davis para patentar los vaqueros con remaches de cobre.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1853 por Levi Strauss en San Francisco.",
   },
   {
@@ -550,7 +550,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de moda italiana de lujo, símbolo de estatus y artesanía florentina.",
     keyThemes: ["Lujo", "Artesanía", "Estatus", "Moda"],
-    events: [{ id: "gucci-fund", type: "fundacion", label: "Fundación", year: 2008, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "gucci-fund", type: "fundacion", label: "Fundación", year: 2008, confidence: "media", primaryForAffinity: true, description: "Guccio Gucci, ex maletero del hotel Savoy de Londres, fundó en 1921 en Florencia su taller de artículos de cuero y maletas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1921 por Guccio Gucci en Florencia.",
   },
   // BUEY
@@ -560,7 +560,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca británica icónica por sus gabardinas y el patrón check.",
     keyThemes: ["Tradición", "Elegancia", "Británico", "Calidad"],
-    events: [{ id: "burberry-fund", type: "fundacion", label: "Fundación", year: 1961, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "burberry-fund", type: "fundacion", label: "Fundación", year: 1961, confidence: "media", primaryForAffinity: true, description: "Thomas Burberry, aprendiz de pañero, fundó en 1856 su tienda en Basingstoke e inventó el tejido impermeable gabardina en 1879.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1856 por Thomas Burberry en Basingstoke.",
   },
   {
@@ -569,7 +569,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca que vende el sueño americano con un estilo preppy y sofisticado.",
     keyThemes: ["Preppy", "América", "Elegancia", "Estilo"],
-    events: [{ id: "ralph-lauren-fund", type: "fundacion", label: "Fundación", year: 1973, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "ralph-lauren-fund", type: "fundacion", label: "Fundación", year: 1973, confidence: "media", primaryForAffinity: true, description: "Ralph Lifshitz, hijo de inmigrantes bielorrusos, empezó en 1967 vendiendo corbatas de diseño propio desde un cajón de Bloomingdale's.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1967 por Ralph Lauren en Nueva York.",
   },
   {
@@ -578,7 +578,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de moda americana que fusiona estilo preppy con cultura pop.",
     keyThemes: ["Americano", "Preppy", "Pop", "Juventud"],
-    events: [{ id: "tommy-hilfiger-fund", type: "fundacion", label: "Fundación", year: 1985, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "tommy-hilfiger-fund", type: "fundacion", label: "Fundación", year: 1985, confidence: "media", primaryForAffinity: true, description: "Tommy Hilfiger vendió sus primeros diseños en tiendas de Nueva York antes de fundar en 1985 la marca que lleva su nombre.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1985 por Tommy Hilfiger en Nueva York.",
   },
   {
@@ -587,7 +587,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de moda barcelonesa conocida por su estilo urbano y femenino.",
     keyThemes: ["Urbano", "Femenino", "Diseño", "Accesibilidad"],
-    events: [{ id: "mango-fund", type: "fundacion", label: "Fundación", year: 1997, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "mango-fund", type: "fundacion", label: "Fundación", year: 1997, confidence: "media", primaryForAffinity: true, description: "Los hermanos Isak y Nahman Andic, inmigrantes turcos en Barcelona, abrieron en 1984 su primera tienda Mango en el Paseo de Gracia.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1984 por los hermanos Andic en Barcelona.",
   },
   {
@@ -596,7 +596,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca británica que mezcla estética japonesa con ropa informal.",
     keyThemes: ["Informal", "Japonés", "Británico", "Estilo"],
-    events: [{ id: "superdry-fund", type: "fundacion", label: "Fundación", year: 2009, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "superdry-fund", type: "fundacion", label: "Fundación", year: 2009, confidence: "media", primaryForAffinity: true, description: "Julian Dunkerton, que aprendió el comercio en mercadillos, fundó Superdry en 2003 en Cheltenham fusionando estética japonesa y ropa británica.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 2003 por Julian Dunkerton en Cheltenham.",
   },
   // TIGRE
@@ -606,7 +606,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de moda urbana de lujo que revolucionó el streetwear.",
     keyThemes: ["Streetwear", "Lujo", "Rebelde", "Arte"],
-    events: [{ id: "off-white-fund", type: "fundacion", label: "Fundación", year: 1962, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "off-white-fund", type: "fundacion", label: "Fundación", year: 1962, confidence: "media", primaryForAffinity: true, description: "Virgil Abloh, arquitecto y disc-jockey de formación, fundó Off-White en 2012 en Milán para fusionar streetwear y lujo.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 2012 por Virgil Abloh en Milán.",
   },
   {
@@ -615,7 +615,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de streetwear neoyorquina que se convirtió en fenómeno cultural.",
     keyThemes: ["Streetwear", "Cultura", "Rebelde", "Exclusividad"],
-    events: [{ id: "supreme-fund", type: "fundacion", label: "Fundación", year: 1974, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "supreme-fund", type: "fundacion", label: "Fundación", year: 1974, confidence: "media", primaryForAffinity: true, description: "James Jebbia, inglés criado en Nueva York, abrió en 1994 su tienda de skate en Lafayette Street, semilla del culto a Supreme.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1994 por James Jebbia en Nueva York.",
   },
   {
@@ -624,7 +624,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de moda italiana conocida por sus estampados barrocos y audacia.",
     keyThemes: ["Audacia", "Barroco", "Lujo", "Pasión"],
-    events: [{ id: "versace-fund", type: "fundacion", label: "Fundación", year: 1986, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "versace-fund", type: "fundacion", label: "Fundación", year: 1986, confidence: "media", primaryForAffinity: true, description: "Gianni Versace, sastre de Reggio Calabria, fundó en 1978 su casa en Milán y convirtió la Medusa, el oro y el rojo en su sello.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1978 por Gianni Versace en Milán.",
   },
   {
@@ -633,7 +633,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana de denim que desafió las convenciones con marketing provocador.",
     keyThemes: ["Rebelde", "Denim", "Provocación", "Estilo"],
-    events: [{ id: "diesel-fund", type: "fundacion", label: "Fundación", year: 1998, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "diesel-fund", type: "fundacion", label: "Fundación", year: 1998, confidence: "media", primaryForAffinity: true, description: "Renzo Rosso convirtió en 1978 el taller de confección de su familia en Diesel, famosa por una publicidad irreverente.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1978 por Renzo Rosso en Molvena.",
   },
   {
@@ -642,7 +642,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Ropa de trabajo que se convirtió en icono del streetwear y la cultura obrera.",
     keyThemes: ["Trabajo", "Durabilidad", "Streetwear", "Autenticidad"],
-    events: [{ id: "carhartt-fund", type: "fundacion", label: "Fundación", year: 2010, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "carhartt-fund", type: "fundacion", label: "Fundación", year: 2010, confidence: "media", primaryForAffinity: true, description: "Hamilton Carhartt fundó en 1889 en Detroit su fábrica de ropa de trabajo con una sola máquina de coser y dos empleados.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1889 por Hamilton Carhartt en Detroit.",
   },
   // GATO
@@ -652,7 +652,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de moda milanesa de lujo, conocida por su elegancia minimalista y vanguardista.",
     keyThemes: ["Elegancia", "Minimalismo", "Lujo", "Vanguardia"],
-    events: [{ id: "prada-fund", type: "fundacion", label: "Fundación", year: 1963, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "prada-fund", type: "fundacion", label: "Fundación", year: 1963, confidence: "media", primaryForAffinity: true, description: "Mario Prada abrió en 1913 su boutique de lujo en la Galleria Vittorio Emanuele de Milán, origen de la casa Prada.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1913 por Mario Prada en Milán.",
   },
   {
@@ -661,7 +661,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de alta costura parisina que vistió a la mujer moderna.",
     keyThemes: ["Elegancia", "París", "Modernidad", "Vanguardia"],
-    events: [{ id: "saint-laurent-fund", type: "fundacion", label: "Fundación", year: 1975, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "saint-laurent-fund", type: "fundacion", label: "Fundación", year: 1975, confidence: "media", primaryForAffinity: true, description: "Yves Saint Laurent fundó en 1961 su casa en París tras ser despedido de Dior, y vistió a la mujer con el esmoquin.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1961 por Yves Saint Laurent en París.",
   },
   {
@@ -670,7 +670,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de lujo francesa conocida por su elegancia aristocrática.",
     keyThemes: ["Elegancia", "Lujo", "París", "Arte"],
-    events: [{ id: "givenchy-fund", type: "fundacion", label: "Fundación", year: 1987, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "givenchy-fund", type: "fundacion", label: "Fundación", year: 1987, confidence: "media", primaryForAffinity: true, description: "Hubert de Givenchy abrió su casa en 1952 en París y vistió a Audrey Hepburn, definiendo la elegancia del cine clásico.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1952 por Hubert de Givenchy en París.",
   },
   {
@@ -679,7 +679,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de moda italiana famosa por sus vestidos rojos y alta costura.",
     keyThemes: ["Elegancia", "Alta Costura", "Pasión", "Arte"],
-    events: [{ id: "valentino-fund", type: "fundacion", label: "Fundación", year: 1999, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "valentino-fund", type: "fundacion", label: "Fundación", year: 1999, confidence: "media", primaryForAffinity: true, description: "Valentino Garavani fundó en 1960 su taller en Roma, capital de la dolce vita, y tiñó el 'rojo Valentino' como emblema.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1960 por Valentino Garavani en Roma.",
   },
   {
@@ -688,7 +688,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana de moda que redefinió la elegancia masculina y femenina.",
     keyThemes: ["Elegancia", "Diseño", "Italiano", "Sofisticación"],
-    events: [{ id: "armani-fund", type: "fundacion", label: "Fundación", year: 2011, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "armani-fund", type: "fundacion", label: "Fundación", year: 2011, confidence: "media", primaryForAffinity: true, description: "Giorgio Armani, escaparatista y diseñador de Cerruti, fundó en 1975 su firma en Milán y reinventó el traje masculino sin estructura.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1975 por Giorgio Armani en Milán.",
   },
   // DRAGÓN
@@ -698,7 +698,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca alemana de moda masculina de alta gama, símbolo de poder y elegancia.",
     keyThemes: ["Poder", "Elegancia", "Masculino", "Calidad"],
-    events: [{ id: "boss-fund", type: "fundacion", label: "Fundación", year: 1964, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "boss-fund", type: "fundacion", label: "Fundación", year: 1964, confidence: "media", primaryForAffinity: true, description: "Hugo Boss abrió en 1923 en Metzingen su taller de confección de uniformes de trabajo, camino de la moda masculina de lujo.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1923 por Hugo Boss en Metzingen.",
   },
   {
@@ -707,7 +707,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca americana que revolucionó la moda con su estética minimalista y provocativa.",
     keyThemes: ["Minimalismo", "Provocación", "Americano", "Estilo"],
-    events: [{ id: "calvin-klein-fund", type: "fundacion", label: "Fundación", year: 1976, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "calvin-klein-fund", type: "fundacion", label: "Fundación", year: 1976, confidence: "media", primaryForAffinity: true, description: "Calvin Klein fundó en 1968 con su amigo Barry Schwartz una firma neoyorquina que empezó con abrigos y vestidos.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1968 por Calvin Klein en Nueva York.",
   },
   {
@@ -716,7 +716,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca siciliana que celebra la pasión mediterránea y la artesanía italiana.",
     keyThemes: ["Pasión", "Sicilia", "Lujo", "Artesanía"],
-    events: [{ id: "dolce-gabbana-fund", type: "fundacion", label: "Fundación", year: 1988, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "dolce-gabbana-fund", type: "fundacion", label: "Fundación", year: 1988, confidence: "media", primaryForAffinity: true, description: "Domenico Dolce y Stefano Gabbana se conocieron en un atelier milanés y presentaron en 1985 su primera colección de mujeres.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1985 por Domenico Dolce y Stefano Gabbana en Milán.",
   },
   {
@@ -725,7 +725,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Casa de moda vasca que innova desde la alta costura hasta el streetwear.",
     keyThemes: ["Innovación", "Vanguardia", "Arte", "Excentricidad"],
-    events: [{ id: "balenciaga-fund", type: "fundacion", label: "Fundación", year: 2000, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "balenciaga-fund", type: "fundacion", label: "Fundación", year: 2000, confidence: "media", primaryForAffinity: true, description: "Cristóbal Balenciaga, hijo de un pescador vasco, abrió su primer atelier en San Sebastián en 1917 antes de triunfar en París.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1917 por Cristóbal Balenciaga en San Sebastián.",
   },
   {
@@ -734,7 +734,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca romana de lujo famosa por sus pieles y artículos de cuero.",
     keyThemes: ["Lujo", "Artesanía", "Piel", "Elegancia"],
-    events: [{ id: "fendi-fund", type: "fundacion", label: "Fundación", year: 2012, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "fendi-fund", type: "fundacion", label: "Fundación", year: 2012, confidence: "media", primaryForAffinity: true, description: "Adele y Edoardo Fendi abrieron en 1925 en Roma una tienda de pieles que tres décadas después fichó a Karl Lagerfeld.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1925 por Adele y Edoardo Fendi en Roma.",
   },
   // SERPIENTE
@@ -744,7 +744,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca japonesa de vanguardia que desafía las convenciones de la moda.",
     keyThemes: ["Vanguardia", "Arte", "Rebelde", "Innovación"],
-    events: [{ id: "comme-garcons-fund", type: "fundacion", label: "Fundación", year: 1965, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "comme-garcons-fund", type: "fundacion", label: "Fundación", year: 1965, confidence: "media", primaryForAffinity: true, description: "Rei Kawakubo fundó Comme des Garçons en 1969 en Tokio sin formación de moda, desafiando las siluetas con ropa deconstruida.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1969 por Rei Kawakubo en Tokio.",
   },
   {
@@ -753,7 +753,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñador japonés conocido por sus plisados y tecnología textil.",
     keyThemes: ["Tecnología", "Arte", "Plisados", "Innovación"],
-    events: [{ id: "issey-miyake-fund", type: "fundacion", label: "Fundación", year: 1977, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "issey-miyake-fund", type: "fundacion", label: "Fundación", year: 1977, confidence: "media", primaryForAffinity: true, description: "Issey Miyake se formó en París y Nueva York antes de fundar en 1970 en Tokio su estudio, célebre por los plisados tecnológicos.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1970 por Issey Miyake en Tokio.",
   },
   {
@@ -762,7 +762,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñador japonés de moda vanguardista conocido por sus siluetas asimétricas.",
     keyThemes: ["Vanguardia", "Asimetría", "Arte", "Rebelde"],
-    events: [{ id: "yohji-yamamoto-fund", type: "fundacion", label: "Fundación", year: 1989, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "yohji-yamamoto-fund", type: "fundacion", label: "Fundación", year: 1989, confidence: "media", primaryForAffinity: true, description: "Yohji Yamamoto, hijo de una costurera, se graduó en diseño en 1966 y fundó en 1972 su firma de siluetas asimétricas en Tokio.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1972 por Yohji Yamamoto en Tokio.",
   },
   {
@@ -771,7 +771,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñador estadounidense de moda oscura y vanguardista.",
     keyThemes: ["Oscuro", "Vanguardia", "Arte", "Rebelde"],
-    events: [{ id: "rick-owens-fund", type: "fundacion", label: "Fundación", year: 2001, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "rick-owens-fund", type: "fundacion", label: "Fundación", year: 2001, confidence: "media", primaryForAffinity: true, description: "Rick Owens lanzó su firma en 1994 en Los Ángeles, donde conoció a su musa Michèle Lamy, y desfiló en París desde 2003.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1994 por Rick Owens en Los Ángeles.",
   },
   {
@@ -780,7 +780,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñadora belga conocida por su estética poética y deconstructivista.",
     keyThemes: ["Poético", "Deconstructivista", "Arte", "Elegancia"],
-    events: [{ id: "ann-demeulemeester-fund", type: "fundacion", label: "Fundación", year: 2013, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "ann-demeulemeester-fund", type: "fundacion", label: "Fundación", year: 2013, confidence: "media", primaryForAffinity: true, description: "Ann Demeulemeester, graduada de la Real Academia de Amberes, fundó su firma en 1985 y entró en los famosos 'Seis de Amberes'.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1985 por Ann Demeulemeester en Amberes.",
   },
   // CABALLO
@@ -790,7 +790,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca deportiva que revolucionó el fitness con zapatillas de aeróbic.",
     keyThemes: ["Deporte", "Fitness", "Velocidad", "Libertad"],
-    events: [{ id: "reebok-fund", type: "fundacion", label: "Fundación", year: 1966, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "reebok-fund", type: "fundacion", label: "Fundación", year: 1966, confidence: "media", primaryForAffinity: true, description: "Los nietos del pionero del calzado de clavos Joseph William Foster fundaron Reebok en 1958 en Bolton.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1958 en Bolton, Reino Unido.",
   },
   {
@@ -799,7 +799,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Las zapatillas más icónicas del mundo, nacidas en una cancha de básquet.",
     keyThemes: ["Clásico", "Básquet", "Rebelde", "Cultura"],
-    events: [{ id: "converse-fund", type: "fundacion", label: "Fundación", year: 1978, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "converse-fund", type: "fundacion", label: "Fundación", year: 1978, confidence: "media", primaryForAffinity: true, description: "Marquis Mills Converse fundó en 1908 en Malden su fábrica de calzado de goma y lanzó en 1917 la All Star para básquet.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1908 por Marquis Mills Converse en Malden.",
   },
   {
@@ -808,7 +808,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Zapatillas de skate que se convirtieron en símbolo de la cultura juvenil.",
     keyThemes: ["Skate", "Juventud", "Rebelde", "Aventura"],
-    events: [{ id: "vans-fund", type: "fundacion", label: "Fundación", year: 1990, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "vans-fund", type: "fundacion", label: "Fundación", year: 1990, confidence: "media", primaryForAffinity: true, description: "Paul Van Doren y sus socios abrieron en 1966 la primera tienda Vans en Anaheim, con zapatillas personalizadas al momento.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1966 por Paul Van Doren en Anaheim.",
   },
   {
@@ -817,7 +817,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Botas robustas que pasaron de la obra al streetwear.",
     keyThemes: ["Aventura", "Durabilidad", "Naturaleza", "Estilo"],
-    events: [{ id: "timberland-fund", type: "fundacion", label: "Fundación", year: 2002, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "timberland-fund", type: "fundacion", label: "Fundación", year: 2002, confidence: "media", primaryForAffinity: true, description: "Nathan Swartz compró en 1955 una fábrica de calzado en Massachusetts y creó en 1973 la bota impermeable Timberland.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1973 por Nathan Swartz en Stratham.",
   },
   {
@@ -826,7 +826,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Ropa outdoor que equipa a aventureros desde hace décadas.",
     keyThemes: ["Aventura", "Naturaleza", "Exterior", "Durabilidad"],
-    events: [{ id: "columbia-fund", type: "fundacion", label: "Fundación", year: 2014, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "columbia-fund", type: "fundacion", label: "Fundación", year: 2014, confidence: "media", primaryForAffinity: true, description: "Paul y Marie Boyle fundaron en 1938 en Portland la Columbia Hat Company, vendiendo gorras antes de la ropa técnica.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1938 como Columbia Hat Company en Portland.",
   },
   // CABRA
@@ -836,7 +836,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana conocida por sus estampados artísticos y siluetas creativas.",
     keyThemes: ["Arte", "Creatividad", "Color", "Originalidad"],
-    events: [{ id: "marni-fund", type: "fundacion", label: "Fundación", year: 1967, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "marni-fund", type: "fundacion", label: "Fundación", year: 1967, confidence: "media", primaryForAffinity: true, description: "Consuelo Castiglioni fundó Marni en 1994 en Milán, vistiendo a la mujer con estampados vanguardistas y siluetas experimentales.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1994 por Consuelo Castiglioni en Milán.",
   },
   {
@@ -845,7 +845,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana de lujo famosa por sus estampados paisley.",
     keyThemes: ["Arte", "Pañuelos", "Lujo", "Creatividad"],
-    events: [{ id: "etro-fund", type: "fundacion", label: "Fundación", year: 1979, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "etro-fund", type: "fundacion", label: "Fundación", year: 1979, confidence: "media", primaryForAffinity: true, description: "Gerolamo Etro, viajero y coleccionista de textiles, fundó en 1968 en Milán su firma, célebre por el estampado paisley.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1968 por Gerolamo Etro en Milán.",
   },
   {
@@ -854,7 +854,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca francesa de origen japonés que combina colores y estampados salvajes.",
     keyThemes: ["Color", "Naturaleza", "Creatividad", "Diversidad"],
-    events: [{ id: "kenzo-fund", type: "fundacion", label: "Fundación", year: 1991, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kenzo-fund", type: "fundacion", label: "Fundación", year: 1991, confidence: "media", primaryForAffinity: true, description: "Kenzo Takada se mudó a París en 1965 y abrió en 1970 su boutique Jungle Jap en la Galerie Vivienne.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1970 por Kenzo Takada en París.",
   },
   {
@@ -863,7 +863,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñador americano que fusiona arte, moda y cultura pop.",
     keyThemes: ["Arte", "Cultura", "Pop", "Creatividad"],
-    events: [{ id: "marc-jacobs-fund", type: "fundacion", label: "Fundación", year: 2003, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "marc-jacobs-fund", type: "fundacion", label: "Fundación", year: 2003, confidence: "media", primaryForAffinity: true, description: "Marc Jacobs lanzó en 1984 su propia marca en Nueva York con una primera colección de jerséis de mohair.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1984 por Marc Jacobs en Nueva York.",
   },
   {
@@ -872,7 +872,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Diseñadora punk que revolucionó la moda con su rebeldía creativa.",
     keyThemes: ["Punk", "Rebelde", "Creatividad", "Arte"],
-    events: [{ id: "vivienne-westwood-fund", type: "fundacion", label: "Fundación", year: 2015, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "vivienne-westwood-fund", type: "fundacion", label: "Fundación", year: 2015, confidence: "media", primaryForAffinity: true, description: "Vivienne Westwood y Malcolm McLaren abrieron en 1971 la tienda SEX en King's Road, cuna del punk y del tartán Westwood.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1971 por Vivienne Westwood en Londres.",
   },
   // MONO
@@ -882,7 +882,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "La marca de zapatillas más icónica, nacida de la leyenda de Michael Jordan.",
     keyThemes: ["Básquet", "Innovación", "Cultura", "Estilo"],
-    events: [{ id: "jordan-fund", type: "fundacion", label: "Fundación", year: 1968, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "jordan-fund", type: "fundacion", label: "Fundación", year: 1968, confidence: "media", primaryForAffinity: true, description: "Nike creó la línea Air Jordan en 1984 para Michael Jordan, tras pagar la multa de la NBA por sus zapatillas rojas y negras.", source: "Documentación histórica" }],
     sourceNote: "Lanzada en 1984 por Nike para Michael Jordan.",
   },
   {
@@ -891,7 +891,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de zapatillas y moda que revolucionó la industria con drops limitados.",
     keyThemes: ["Innovación", "Exclusividad", "Futuro", "Cultura"],
-    events: [{ id: "yeezy-fund", type: "fundacion", label: "Fundación", year: 1980, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "yeezy-fund", type: "fundacion", label: "Fundación", year: 1980, confidence: "media", primaryForAffinity: true, description: "Kanye West y Adidas presentaron Yeezy en 2015, una colaboración de drops limitados que revolucionó el mercado de reventa.", source: "Documentación histórica" }],
     sourceNote: "Lanzada en 2015 por Kanye West en colaboración con Adidas.",
   },
   {
@@ -900,7 +900,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana de innovación textil con su icónico parche en el brazo.",
     keyThemes: ["Innovación", "Tecnología", "Diseño", "Estilo"],
-    events: [{ id: "stone-island-fund", type: "fundacion", label: "Fundación", year: 1992, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "stone-island-fund", type: "fundacion", label: "Fundación", year: 1992, confidence: "media", primaryForAffinity: true, description: "Massimo Osti, diseñador gráfico, fundó Stone Island en 1982 en Rávena, obsesionado con la innovación de tejidos técnicos.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1982 por Massimo Osti en Rávena.",
   },
   {
@@ -909,7 +909,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca sueca de moda contemporánea conocida por su estética minimalista.",
     keyThemes: ["Minimalismo", "Diseño", "Suecia", "Creatividad"],
-    events: [{ id: "acne-studios-fund", type: "fundacion", label: "Fundación", year: 2004, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "acne-studios-fund", type: "fundacion", label: "Fundación", year: 2004, confidence: "media", primaryForAffinity: true, description: "El colectivo creativo Acne nació en 1996 en Estocolmo; su primera remesa de vaqueros regalada a amigos convirtió a la marca en Acne Studios.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1996 por Jonny Johansson en Estocolmo.",
   },
   {
@@ -918,7 +918,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca francesa de plumíferos de lujo que viste a esquiadores y fashionistas.",
     keyThemes: ["Lujo", "Deporte", "Invierno", "Estilo"],
-    events: [{ id: "moncler-fund", type: "fundacion", label: "Fundación", year: 2016, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "moncler-fund", type: "fundacion", label: "Fundación", year: 2016, confidence: "media", primaryForAffinity: true, description: "René Ramillón fundó Moncler en 1952 en Monestier-de-Clermont, fabricando edredones y sacos de dormir para alpinistas.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1952 por René Ramillón en Monestier-de-Clermont.",
   },
   // GALLO
@@ -928,7 +928,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "La marca de ropa más antigua de Estados Unidos, sinónimo de elegancia clásica.",
     keyThemes: ["Tradición", "Elegancia", "Clásico", "Precisión"],
-    events: [{ id: "brooks-brothers-fund", type: "fundacion", label: "Fundación", year: 1969, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "brooks-brothers-fund", type: "fundacion", label: "Fundación", year: 1969, confidence: "media", primaryForAffinity: true, description: "Henry Sands Brooks abrió en 1818 su tienda de ropa en Cherry Street, Nueva York, la más antigua de Estados Unidos.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1818 por Henry Brooks en Nueva York.",
   },
   {
@@ -937,7 +937,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca británica de ropa masculina clásica con espíritu deportivo.",
     keyThemes: ["Británico", "Clásico", "Deporte", "Elegancia"],
-    events: [{ id: "hackett-fund", type: "fundacion", label: "Fundación", year: 1981, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "hackett-fund", type: "fundacion", label: "Fundación", year: 1981, confidence: "media", primaryForAffinity: true, description: "Jeremy Hackett vendía ropa vintage en el mercado de Portobello antes de fundar en 1988 su tienda masculina en Londres.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1988 por Jeremy Hackett en Londres.",
   },
   {
@@ -946,7 +946,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca británica nacida del tenis, adoptada por subculturas juveniles.",
     keyThemes: ["Deporte", "Subcultura", "Británico", "Estilo"],
-    events: [{ id: "fred-perry-fund", type: "fundacion", label: "Fundación", year: 1993, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "fred-perry-fund", type: "fundacion", label: "Fundación", year: 1993, confidence: "media", primaryForAffinity: true, description: "El tenista Fred Perry, triple campeón de Wimbledon, fundó en 1952 con el austriaco Tibby Wegner una marca nacida de una pulsera para el sudor.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1952 por Fred Perry en Londres.",
   },
   {
@@ -955,7 +955,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca italiana de colores que unió moda y activismo social.",
     keyThemes: ["Color", "Diversidad", "Activismo", "Estilo"],
-    events: [{ id: "benetton-fund", type: "fundacion", label: "Fundación", year: 2005, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "benetton-fund", type: "fundacion", label: "Fundación", year: 2005, confidence: "media", primaryForAffinity: true, description: "Luciano Benetton fundó en 1965 su empresa familiar en Ponzano Veneto, financiada con la venta de una bicicleta.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1965 por Luciano Benetton en Ponzano Veneto.",
   },
   {
@@ -964,7 +964,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca francesa del cocodrilo, pionera de la ropa deportiva elegante.",
     keyThemes: ["Deporte", "Elegancia", "Clásico", "Francés"],
-    events: [{ id: "lacoste-fund", type: "fundacion", label: "Fundación", year: 2017, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "lacoste-fund", type: "fundacion", label: "Fundación", year: 2017, confidence: "media", primaryForAffinity: true, description: "René Lacoste, campeón de tenis apodado 'el Cocodrilo', fundó en 1933 con André Gillier la marca de la famosa polo.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1933 por René Lacoste en París.",
   },
   // PERRO
@@ -974,7 +974,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Ropa outdoor que lidera la responsabilidad ambiental y la calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
-    events: [{ id: "patagonia-wear-fund", type: "fundacion", label: "Fundación", year: 1970, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "patagonia-wear-fund", type: "fundacion", label: "Fundación", year: 1970, confidence: "media", primaryForAffinity: true, description: "Yvon Chouinard creó en 1973 la marca Patagonia, que en 2022 transfirió al planeta para financiar la lucha climática.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1973 por Yvon Chouinard en Ventura.",
   },
   {
@@ -983,7 +983,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Equipo técnico para exploradores que desafían los límites.",
     keyThemes: ["Exploración", "Resistencia", "Naturaleza", "Aventura"],
-    events: [{ id: "north-face-wear-fund", type: "fundacion", label: "Fundación", year: 1982, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "north-face-wear-fund", type: "fundacion", label: "Fundación", year: 1982, confidence: "media", primaryForAffinity: true, description: "Douglas Tompkins fundó en 1966 en San Francisco una tienda de montañismo que presentó en 1975 la carpa cúpula geodésica.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1966 por Douglas Tompkins en San Francisco.",
   },
   {
@@ -992,7 +992,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca de ropa outdoor americana conocida por su calidad y garantía.",
     keyThemes: ["Naturaleza", "Calidad", "Tradición", "Confiabilidad"],
-    events: [{ id: "llbean-fund", type: "fundacion", label: "Fundación", year: 1994, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "llbean-fund", type: "fundacion", label: "Fundación", year: 1994, confidence: "media", primaryForAffinity: true, description: "Leon Leonwood Bean, cazador de Maine, creó en 1912 su bota de caza impermeable y lanzó su famosa garantía de por vida.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1912 por Leon Leonwood Bean en Maine.",
   },
   {
@@ -1001,7 +1001,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Pionero americano de ropa outdoor y plumíferos.",
     keyThemes: ["Aventura", "Naturaleza", "Innovación", "Calidad"],
-    events: [{ id: "eddie-bauer-fund", type: "fundacion", label: "Fundación", year: 2006, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "eddie-bauer-fund", type: "fundacion", label: "Fundación", year: 2006, confidence: "media", primaryForAffinity: true, description: "Eddie Bauer, cazador y pescador, fundó en 1920 en Seattle su tienda de artículos deportivos y patentó en 1936 el primer plumífero.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1920 por Eddie Bauer en Seattle.",
   },
   {
@@ -1010,7 +1010,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca noruega de ropa técnica para condiciones extremas.",
     keyThemes: ["Naturaleza", "Técnica", "Resistencia", "Mar"],
-    events: [{ id: "helly-hansen-fund", type: "fundacion", label: "Fundación", year: 2018, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "helly-hansen-fund", type: "fundacion", label: "Fundación", year: 2018, confidence: "media", primaryForAffinity: true, description: "Helly Juell Hansen, capitán noruego, fabricó en 1877 en Moss sus primeras chaquetas impermeables de lino alquitranado.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1877 por Helly Juell Hansen en Moss.",
   },
   // CERDO
@@ -1020,7 +1020,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Las clásicas zapatillas de lona italianas, cómodas y con estilo.",
     keyThemes: ["Comodidad", "Clásico", "Italiano", "Estilo"],
-    events: [{ id: "superga-fund", type: "fundacion", label: "Fundación", year: 1971, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "superga-fund", type: "fundacion", label: "Fundación", year: 1971, confidence: "media", primaryForAffinity: true, description: "Walter Martiny fundó Superga en 1911 en Turín, pionera del calzado deportivo de lona y goma.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1911 por Walter Martiny en Turín.",
   },
   {
@@ -1029,7 +1029,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca deportiva italiana con el icónico logo del hombre y mujer.",
     keyThemes: ["Deporte", "Italiano", "Clásico", "Comodidad"],
-    events: [{ id: "kappa-fund", type: "fundacion", label: "Fundación", year: 1983, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "kappa-fund", type: "fundacion", label: "Fundación", year: 1983, confidence: "media", primaryForAffinity: true, description: "Kappa nació en 1916 en Turín como fábrica de ropa interior y adoptó en 1969 el logo del hombre y la mujer sentados.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1916 en Turín, Italia.",
   },
   {
@@ -1038,7 +1038,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca deportiva italiana que se convirtió en icono del estilo juvenil.",
     keyThemes: ["Deporte", "Italiano", "Estilo", "Tenis"],
-    events: [{ id: "fila-fund", type: "fundacion", label: "Fundación", year: 1995, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "fila-fund", type: "fundacion", label: "Fundación", year: 1995, confidence: "media", primaryForAffinity: true, description: "Los hermanos Fila fundaron en 1911 en Biella una fábrica textil de lencería que a mediados de siglo viró hacia el deporte.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1911 por los hermanos Fila en Biella.",
   },
   {
@@ -1047,7 +1047,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca americana de ropa deportiva, famosa por sus hoodies.",
     keyThemes: ["Deporte", "Comodidad", "Clásico", "Americano"],
-    events: [{ id: "champion-fund", type: "fundacion", label: "Fundación", year: 2007, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "champion-fund", type: "fundacion", label: "Fundación", year: 2007, confidence: "media", primaryForAffinity: true, description: "Los hermanos Feinbloom fundaron Champion en 1919 en Rochester, inventando en 1934 el primer tejido de sudadera reversible.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1919 por los Feinbloom Brothers en Rochester.",
   },
   {
@@ -1056,7 +1056,7 @@ export const BRANDS_60: SymbolicEntity[] = [
     category: "ropa",
     description: "Marca americana de ropa interior y básicos, conocida por su comodidad.",
     keyThemes: ["Comodidad", "Básico", "Americano", "Calidad"],
-    events: [{ id: "hanes-fund", type: "fundacion", label: "Fundación", year: 2019, confidence: "media", primaryForAffinity: true, description: "Fundación", source: "Documentación histórica" }],
+    events: [{ id: "hanes-fund", type: "fundacion", label: "Fundación", year: 2019, confidence: "media", primaryForAffinity: true, description: "Pleasant Henderson Hanes fundó en 1901 su fábrica de calcetines en Winston-Salem, dando nombre a la marca de básicos Hanes.", source: "Documentación histórica" }],
     sourceNote: "Fundada en 1901 en Winston-Salem, Carolina del Norte.",
   },
 ];

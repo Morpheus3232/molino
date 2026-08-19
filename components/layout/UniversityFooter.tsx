@@ -1,59 +1,63 @@
 import Link from "next/link";
+import { Github } from "lucide-react";
+import Logo from "@/components/ui/Logo";
+
+const FOOTER_LINKS = [
+  { href: "/", label: "Inicio" },
+  { href: "/ejemplo", label: "Ejemplo" },
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/privacidad", label: "Privacidad" },
+];
 
 export default function UniversityFooter() {
   return (
-    <footer className="border-t border-white/5 bg-foreground text-background">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 py-20 sm:py-28">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          <div className="md:col-span-5">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-background text-foreground text-base font-semibold tracking-tight">
-                M
+    <footer className="bg-[#0F0F10] border-t border-ink/10 text-foreground">
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
+        <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-between md:gap-8">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xs">
+            <Link href="/" className="inline-flex items-center gap-2.5 group" aria-label="Molino — Ir al inicio">
+              <span className="inline-flex h-9 w-9 items-center justify-center bg-white/10 border border-white/20">
+                <Logo className="w-6 h-6" />
               </span>
-              <span className="font-serif text-2xl font-semibold tracking-tight text-background">Molino</span>
-            </div>
-            <p className="font-serif text-xl text-background/70 mt-2 leading-relaxed">
-              Inteligencia Personal
+              <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
+                Molino
+              </span>
+            </Link>
+            <p className="text-sm text-muted mt-3 leading-relaxed">
+              Autoconocimiento sin ruido.
             </p>
-            <p className="text-sm text-background/50 mt-1 max-w-xs leading-relaxed">
-              Conocéte. Entendéte. Orientáte.
-            </p>
-            <p className="text-xs text-background/40 mt-8 max-w-xs leading-relaxed">Código abierto · Sin servidor · Privacidad radical</p>
           </div>
 
-          <div className="md:col-span-3 md:col-start-8">
-            <h4 className="text-[11px] uppercase tracking-[0.3em] text-background/40 font-medium mb-6">Explorar</h4>
-            <ul className="space-y-4">
-              <li>
-                <Link href="/" className="text-sm text-background/60 hover:text-background transition-colors">Inicio</Link>
-              </li>
-              <li>
-                <Link href="/profile" className="text-sm text-background/60 hover:text-background transition-colors">Mi mapa</Link>
-              </li>
-              <li>
-                <Link href="/explore" className="text-sm text-background/60 hover:text-background transition-colors">Explorar</Link>
-              </li>
-              <li>
-                <Link href="/biblioteca" className="text-sm text-background/60 hover:text-background transition-colors">Biblioteca</Link>
-              </li>
+          <nav aria-label="Navegación del pie de página" className="flex flex-col items-center md:items-end gap-6">
+            <ul className="flex flex-col items-center sm:flex-row sm:flex-wrap sm:justify-center md:items-center gap-x-8 gap-y-4 list-none">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-foreground/80 hover:text-accent transition-colors font-medium"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
-          </div>
-
-          <div className="md:col-span-3">
-            <h4 className="text-[11px] uppercase tracking-[0.3em] text-background/40 font-medium mb-6">Principios</h4>
-            <ul className="space-y-4 text-sm text-background/50">
-              <li>Conocimiento libre</li>
-              <li>Privacidad radical</li>
-              <li>Transparencia total</li>
-              <li>Código abierto</li>
-              <li>Sin tracking ni cookies</li>
-            </ul>
-          </div>
+            <Link
+              href="https://github.com/molino-app/molino"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted hover:text-accent transition-colors"
+            >
+              <Github className="w-4 h-4" aria-hidden="true" />
+              GitHub
+            </Link>
+          </nav>
         </div>
 
-        <div className="mt-16 pt-10 border-t border-white/10 text-center">
-          <p className="text-xs text-background/40 leading-relaxed">Molino — Inteligencia Personal. Todo el contenido es educativo y no constituye asesoramiento profesional.</p>
-          <p className="text-xs text-background/40 mt-2 leading-relaxed">El conocimiento simbolico es patrimonio de la humanidad. Compartilo libremente.</p>
+        <div className="mt-12 pt-6 border-t border-white/20">
+          <p className="text-center text-xs text-white/70 font-mono tracking-wider">
+            © 2026 Molino. Todos los derechos reservados.
+          </p>
         </div>
       </div>
     </footer>

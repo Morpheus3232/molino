@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { SITE_URL, siteUrl } from "@/lib/seo";
 import FuentesContent from "./FuentesContent";
 
 export const metadata: Metadata = {
   title: "Fuentes y metodología",
   description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino. Transparencia académica y rigor.",
+  alternates: {
+    canonical: siteUrl("/conocimiento/fuentes"),
+  },
   openGraph: {
     title: "Fuentes y metodología — Molino",
     description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
     type: "article",
+    url: siteUrl("/conocimiento/fuentes"),
   },
 };
 
@@ -19,15 +24,15 @@ const jsonLd = [
     description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
-    url: "https://molino-alpha.vercel.app/conocimiento/fuentes",
-    mainEntityOfPage: { "@type": "WebPage", "@id": "https://molino-alpha.vercel.app/conocimiento/fuentes" },
+    url: siteUrl("/conocimiento/fuentes"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": siteUrl("/conocimiento/fuentes") },
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://molino-alpha.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Conocimiento", item: "https://molino-alpha.vercel.app/explore" },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Conocimiento", item: siteUrl("/explore") },
       { "@type": "ListItem", position: 3, name: "Fuentes" },
     ],
   },

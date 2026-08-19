@@ -50,11 +50,12 @@ export function getPersonalYear(
   birthDay: number,
   birthMonth: number,
   _birthYear?: number,
-  _a?: number,
+  targetYear?: number,
   _b?: number,
   currentYear?: number
 ): number {
-  const year = currentYear ?? new Date().getFullYear();
+  // Prefer explicit currentYear (used by the personalMonth call hack), else the 4th positional arg every real caller passes.
+  const year = currentYear ?? targetYear ?? new Date().getFullYear();
   let sum = birthDay + birthMonth + year;
 
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
@@ -63,6 +64,32 @@ export function getPersonalYear(
       temp += parseInt(char, 10);
     }
     sum = temp;
+  }
+
+  return sum;
+}
+
+export function getDailyNumber(targetDate: Date = new Date()): number {
+  const day = targetDate.getDate();
+  const month = targetDate.getMonth() + 1;
+  const year = targetDate.getFullYear();
+
+  const dateStr = `${String(day).padStart(2, '0')}${String(month).padStart(2, '0')}${year}`;
+  let sum = 0;
+  for (const char of dateStr) {
+    sum += parseInt(char, 10);
+  }
+
+  // Excepciones: 11 y 22 son números maestros, 28 es la riqueza
+  if (sum === 11 || sum === 22 || sum === 28) return sum;
+
+  while (sum > 9) {
+    let temp = 0;
+    for (const char of String(sum)) {
+      temp += parseInt(char, 10);
+    }
+    sum = temp;
+    if (sum === 11 || sum === 22 || sum === 28) return sum;
   }
 
   return sum;
