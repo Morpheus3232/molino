@@ -833,6 +833,184 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     related: ["compatibilidad-zodiaco-chino", "numerologia-numero-de-vida", "autoconocimiento-que-es-que-no"],
   },
+  {
+    slug: "numeros-del-poder-28-y-8",
+    title: "El 28 y el 8: el patrón de los números del poder",
+    excerpt:
+      "¿Por qué el 28 y el 8 aparecen una y otra vez en las fechas y decisiones de Steve Jobs, Elon Musk, Bill Gates y Nikola Tesla? Una mirada curiosa (y honesta) a un patrón numerológico famoso.",
+    metaDescription:
+      "El 28 y el 8 como números del dinero y del poder: el patrón que se repite en Steve Jobs, Elon Musk, Bill Gates y Nikola Tesla, explicado con curiosidad y sin caer en la superstición.",
+    category: "Numerología",
+    date: "2026-08-19",
+    image: "/blog/numeros-del-poder-28-y-8.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Hay números que la tradición numerológica asocia con la riqueza y el poder: el 28 (el llamado 'número del dinero') y el 8 (su reducción, el número de la materialidad y la ambición). Y una curiosidad que circula hace años: las fechas más importantes de algunos de los creadores de riqueza más conocidos del mundo tienden a sumar 28 o 8.",
+      "En este artículo recorremos ese patrón —con las fechas reales, no inventadas—, porque es un ejemplo fascinante de cómo la numerología lee la realidad: no afirmando que el número cause el éxito, sino notando que el patrón se repite más de lo que el azar parecería explicar. Como siempre en Molino, lo contamos con honestidad: esto es observación de patrones, no una ley mágica.",
+    ],
+    sections: [
+      {
+        id: "la-clave",
+        heading: "La clave numerológica",
+        paragraphs: [
+          "En numerología, la reducción de una fecha se hace sumando todos sus dígitos hasta llegar a un número del 1 al 9 (o a un número maestro). Dentro de ese mapa, el 8 es el arquetipo del dinero, el poder y la materialidad: la energía de construir, administrar y lograr resultados tangibles.",
+          "El 28 es una cifra especial porque, al reducirse, da 2 + 8 = 10 → 1 + 0 = 1. Pero antes de llegar al 1, el 28 conserva la marca del 8 (la riqueza) y del 2 (la cooperación). Por eso en muchas escuelas se lo llama 'el número del dinero': une la materialidad del 8 con la capacidad de trabajar con otros del 2.",
+          "Cuando una fecha importante suma 28, o cuando una decisión gira alrededor del 8, quienes leen numerología suelen detenerse a mirarla. Veamos qué encontramos en las vidas —reales— de cuatro nombres famosos.",
+        ],
+      },
+      {
+        id: "steve-jobs",
+        heading: "Steve Jobs: el arquitecto del 28",
+        paragraphs: [
+          "Jobs es el caso más citado. Su fecha de nacimiento, el 24 de febrero de 1955, suma 2 + 4 + 2 + 1 + 9 + 5 + 5 = 28. La fundación de Apple, el 1 de abril de 1976, da 1 + 4 + 1 + 9 + 7 + 6 = 28. Y su incorporación legal, el 3 de enero de 1977, da 3 + 1 + 1 + 9 + 7 + 7 = 28.",
+          "El 8 también asoma en sus lanzamientos: el iPhone original salió el 29 de junio de 2007, que se reduce a 6 + 2 + 9 + 2 + 0 + 0 + 7 = 26 → 2 + 6 = 8, el número del dinero en plena era de máxima creación de valor para la compañía.",
+        ],
+        list: [
+          "Nacimiento (24/02/1955): 2+4+2+1+9+5+5 = 28 — el número del dinero.",
+          "Fundación de Apple (01/04/1976): 1+4+1+9+7+6 = 28.",
+          "Incorporación legal de Apple (03/01/1977): 3+1+1+9+7+7 = 28.",
+          "Lanzamiento del iPhone (29/06/2007): suma 26 → 8, el número del dinero.",
+        ],
+      },
+      {
+        id: "elon-musk",
+        heading: "Elon Musk: el visionario del 28",
+        paragraphs: [
+          "Musk nació el 28 de junio de 1971 — literalmente un día 28, lo que en numerología se lee como un 'birthday number' 28 reducido a 1, la cifra del liderazgo y de empezar proyectos nuevos. Su Life Path se calcula como 34 → 7, la energía del visionario y del análisis.",
+          "Y el 8 aparece una y otra vez en sus decisiones: la compra de Twitter fue de 44 mil millones de dólares (4 + 4 = 8), la fecha de la oferta (25 de abril de 2022) suma 17 → 1 + 7 = 8, y el precio del tick de verificación fue USD 8 por mes, directo. Sus lanzamientos de Tesla y SpaceX suelen caer en fechas que suman 8, 17 o 26 — todas reducen a 8.",
+        ],
+        list: [
+          "Nacimiento: 28 de junio de 1971 — nacido un día 28 (birthday 28 → 1).",
+          "Life Path: 34 → 7, el arquetipo del visionario.",
+          "Compra de Twitter: USD 44.000 millones → 4 + 4 = 8.",
+          "Oferta por Twitter (25/04/2022): 2+5+4+2+0+2+2 = 17 → 1 + 7 = 8.",
+          "Precio del check azul: USD 8/mes — el 8 directo.",
+          "Lanzamientos de Tesla y SpaceX en fechas que suman 8, 17 o 26 (todas → 8).",
+        ],
+      },
+      {
+        id: "bill-gates",
+        heading: "Bill Gates: el constructor del 28",
+        paragraphs: [
+          "Gates nació el 28 de octubre de 1955 — también un día 28, otro 'birthday number' que reduce a 1. Su Life Path se calcula como 31 → 4, la energía del constructor: la persona que organiza, sistematiza y construye a escala.",
+          "El 28 como 'número del dinero' se lee acá de forma directa: el nacimiento en día 28, sumado a un Life Path 4 (construcción, estructura) describe, para la tradición numerológica, al que edifica imperios sobre bases sólidas.",
+        ],
+        list: [
+          "Nacimiento: 28 de octubre de 1955 — nacido un día 28.",
+          "Birthday number: 28 → 1 — el número de la riqueza y el liderazgo.",
+          "Life Path: 31 → 4 — el constructor, la estructura.",
+        ],
+      },
+      {
+        id: "nikola-tesla",
+        heading: "Nikola Tesla: el genio del 28",
+        paragraphs: [
+          "Tesla es un caso particular porque su fecha de nacimiento se registra en dos calendarios. En el calendario juliano nació el 28 de junio de 1856 — un día 28. En el gregoriano (10 de julio de 1856) la suma da 7 + 1 + 0 + 1 + 8 + 5 + 6 = 28 también. Hasta se señala que cayó en la semana 28 del año, y su Life Path fue 28/10/1, la energía del líder.",
+          "La empresa que lo homenajea, Tesla Motors, se fundó el 1 de julio de 2003, que reduce a 1 + 7 + 2 + 0 + 0 + 3 = 13 → 4, la construcción. Y su complementariedad con Musk (Life Path 7 + 4) se lee como una tensión complementaria: el visionario y el constructor.",
+        ],
+        list: [
+          "Nacimiento juliano: 28 de junio de 1856 — día 28.",
+          "Nacimiento gregoriano (10/07/1856): 7+1+0+1+8+5+6 = 28.",
+          "Life Path: 28/10/1 — el líder.",
+          "Cayó en la semana 28 del año 1856.",
+          "Fundación de Tesla Motors (01/07/2003): 1+7+2+0+0+3 = 13 → 4 (construcción).",
+        ],
+      },
+      {
+        id: "conclusion-honesta",
+        heading: "Conclusión (con honestidad)",
+        paragraphs: [
+          "El patrón es real en los datos: el 28 y el 8 aparecen en momentos clave de Jobs, Musk, Gates y Tesla. Ahora bien, la lectura honesta —la que sostiene Molino— es que estos números describen un patrón, no provocan el éxito. La numerología no dice que el 28 cause la riqueza; dice que las personas que construyen riqueza suelen vivir rodeadas de la cifra que la simboliza.",
+          "Esa es justamente la pregunta que vale la pena: no '¿el número me hará rico?', sino '¿qué patrón repito yo?'. El 28 y el 8 pueden ser un espejo para mirar tu propia relación con el dinero, el poder y la construcción — no un atajo, sino una lente para conocerte mejor.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Tener un 28 o un 8 garantiza riqueza?",
+        a: "No. La numerología describe patrones simbólicos, no causas. El 28 y el 8 coinciden con la vida de grandes creadores de riqueza, pero muchísima gente con esos números no construyó imperios, y mucha gente sin ellos sí lo hizo. Leelo como un espejo de tendencias, nunca como una promesa.",
+      },
+      {
+        q: "¿Los nacidos un día 28 están destinados a ser ricos?",
+        a: "Esa afirmación circula mucho, pero es una lectura popular simplificada. En numerología, el día 28 (que reduce a 1) habla de liderazgo y de construir proyectos propios — pero el mapa completo, no un solo número, es lo que describe a una persona.",
+      },
+      {
+        q: "¿Estos números son 'magia' o hay algo matemático de fondo?",
+        a: "Las fechas y las sumas son reales y verificables. Lo simbólico es la interpretación. La instrucción de reducir cifras tiene incluso un correlato aritmético riguroso (el resto módulo 9), pero eso no convierte la lectura en una ley — la lectura sigue siendo una forma de mirarse, no un oráculo.",
+      },
+    ],
+    related: ["numerologia-numero-de-vida", "numerologia-numeros-maestros", "numerologia-astrologia-herramientas-no-oraculo"],
+  },
+  {
+    slug: "numero-8-dinero-poder",
+    title: "El 8 en numerología: el número del dinero, el poder y la ambición",
+    excerpt:
+      "El 8 es el arquetipo del dinero y el poder. Conocé qué representa, cómo detectarlo en tu fecha y tu nombre, y cómo usarlo como herramienta de autoconocimiento sin caer en la codicia.",
+    metaDescription:
+      "Qué significa el 8 en numerología: el número del dinero, el poder, la ambición y la materialidad. Cómo se calcula, dónde aparece en tu mapa y cómo leerlo con equilibrio.",
+    category: "Numerología",
+    date: "2026-08-19",
+    image: "/blog/numero-8-dinero-poder.svg",
+    author: "Equipo Molino",
+    intro: [
+      "Dentro del mapa numerológico, el 8 ocupa un lugar particular: es el único número asociado de forma casi unánime al dinero, el poder y la materialidad. Representa la energía de construir, administrar y ver resultados tangibles en el mundo — la capacidad de convertir una idea en algo que existe y vale.",
+      "Pero el 8 también tiene su sombra: la ambición desmedida, el control y el miedo a soltar. Como todo arquetipo numerológico, se entiende mejor en su equilibrio: cuánto 8 tenés, dónde aparece en tu mapa y cómo lo estás viviendo.",
+    ],
+    sections: [
+      {
+        id: "que-representa",
+        heading: "Qué representa el 8",
+        paragraphs: [
+          "El 8 es la energía de la manifestación material. Mientras el 1 inicia y el 3 comunica, el 8 construye y administra: es el número de los negocios, la gestión, el dinero y el poder bien (o mal) administrado. Su forma, el símbolo del infinito, también apila dos círculos: lo de abajo, lo material; lo de arriba, lo espiritual — y su desafío es equilibrarlos.",
+          "En la numerología pitagórica, el 8 se asocia con Saturno (la disciplina y el límite) en la astrología tradicional, lo que refuerza su lectura: el 8 llega a la cima a través del trabajo sostenido, no del atajo. Es el número del que administra y del que rinde cuentas.",
+        ],
+      },
+      {
+        id: "donde-aparece",
+        heading: "Dónde detectarlo en tu mapa",
+        paragraphs: [
+          "El 8 puede aparecer en varias posiciones de tu mapa, y cada una dice algo distinto. Como Life Path, habla de una trayectoria marcada por el poder y la construcción. Como Expresión, describe a alguien que se muestra capaz, autoridad presente. Como Alhambre o número personal, marca períodos en los que los temas del dinero y el poder pasan al frente.",
+        ],
+        list: [
+          "Life Path 8: una vida orientada a construir y administrar — el 'ejecutivo' del mapa.",
+          "Expresión 8: mostrás autoridad y capacidad de mando hacia afuera.",
+          "Año personal 8: un año para consolidar, cobrar y crecer materialmente.",
+          "Día 8 o fechas que suman 8: momentos de decisión con fuerte impronta material.",
+        ],
+      },
+      {
+        id: "el-28-y-el-8",
+        heading: "El 28, la versión 'rica' del 8",
+        paragraphs: [
+          "Hay una cifra que la tradición numérica destaca especialmente: el 28. Antes de reducirse a 1, el 28 conserva la marca del 8 (la riqueza) y del 2 (la cooperación), por eso se lo llama 'el número del dinero': une la materialidad del 8 con la capacidad de trabajar con otros del 2.",
+          "Por eso, cuando en una lectura aparece un 28 —en una fecha de nacimiento, en una suma de fechas clave o en cálculos de nombre— los numerólogos suelen leerlo como un acento riqueza dentro del mapa. Es el mismo tema del 8, pero con la alianza del 2: no dinero aislado, sino dinero construido en sociedad.",
+        ],
+      },
+      {
+        id: "equilibrio",
+        heading: "El lado oscuro y cómo leerlo con equilibrio",
+        paragraphs: [
+          "El 8 en exceso es el arquetipo del poder desequilibrado: el control, la codicia, la necesidad de ganar siempre y el olvido de lo que no se puede medir. Quien vive un 8 puro desde la sombra tiende a confundir valor con precio.",
+          "La lectura útil del 8 no es perseguir más dinero, sino preguntarse: ¿estoy construyendo algo sólido? ¿Estoy administrando bien mis recursos — tiempo, energía, relaciones, además del dinero? ¿Mi ambición suma a los demás o solo a mí? Ese es el 8 maduro: el poder que construye y administra, sin perder el piso.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿El 8 es 'el número del dinero' de verdad o es un mito?",
+        a: "Es una convención de la tradición numerológica: el 8 se asocia de forma casi unánime al dinero, el poder y la materialidad. No es una verdad científica, sino el arquetipo que esa tradición asignó a la cifra — y como tal, una lente para mirarse, no una ley.",
+      },
+      {
+        q: "¿Cómo calculo si tengo un 8?",
+        a: "Sumás los dígitos de tu fecha de nacimiento (y los de tu nombre si querés los del nombre) y reducís hasta una cifra del 1 al 9. Si da 8, ese es tu número en esa posición. Los nacidos un día 8, 17 o 26 (o un 28 reducido a 1) tienen el acento del 8 en su birthday number.",
+      },
+      {
+        q: "¿Tener un 8 significa que voy a ser rico?",
+        a: "No. El 8 describe una tendencia a los temas del poder y la construcción, no garantiza resultados. La riqueza depende de muchísimas variables que ningún número puede capturar. El 8 es útil como espejo de tu relación con lo material, no como una promesa.",
+      },
+    ],
+    related: ["numerologia-numero-de-vida", "numerologia-numeros-maestros", "numeros-del-poder-28-y-8"],
+  },
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {

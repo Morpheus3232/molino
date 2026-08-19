@@ -58,8 +58,8 @@ const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
   8: {
     title: "El Poder",
     purpose: "Emprender, gestionar, ambición, resultados",
-    description: "El poder viene de la acción, no del deseo. Alinear el propósito con lo que se hace es lo que abre paso a los resultados. Tradicionalmente asociado a la manifestación material y el equilibrio entre dar y recibir.",
-    tags: ["Emprender", "Gestionar", "Ambición", "Resultados"],
+    description: "El poder viene de la acción, no del deseo. Alinear el propósito con lo que se hace es lo que abre paso a los resultados. Tradicionalmente asociado a la manifestación material y el equilibrio entre dar y recibir. Es el número del dinero: las personas que construyen riqueza suelen vivir rodeadas de cifras que se reducen a 8 — y este es un buen día para mirar de frente tu relación con lo material.",
+    tags: ["Emprender", "Gestionar", "Ambición", "Resultados", "Dinero"],
     recommendations: ["Pagar deudas", "Pagar a tu equipo", "Cortarte el pelo", "Empezar proyectos"],
   },
   9: {
@@ -83,8 +83,8 @@ const CONTENT: Record<number, Omit<CalendarDayContent, "number" | "master">> = {
   28: {
     title: "Número de Abundancia",
     purpose: "Abundancia material, riqueza a largo plazo, autoridad, resultados",
-    description: "Número maestro. Comparte la energía de manifestación material del 8, con una base más sólida y sostenida en el tiempo: día de autoridad silenciosa, ideal para decisiones importantes sin esperar permiso de nadie.",
-    tags: ["Abundancia", "Riqueza", "Autoridad", "Resultados"],
+    description: "Número maestro. Comparte la energía de manifestación material del 8, con una base más sólida y sostenida en el tiempo: día de autoridad silenciosa, ideal para decisiones importantes sin esperar permiso de nadie. Antes de reducirse a 1, el 28 conserva la marca del 8 —el número del dinero— y del 2 —el de la cooperación—: por eso es el día de la riqueza construida con otros, no aislada. Es una fecha con fuerte impronta material: los nacidos un día 28 comparten este acento de abundancia personal.",
+    tags: ["Abundancia", "Riqueza", "Autoridad", "Resultados", "Dinero"],
     recommendations: ["Pagar deudas", "Pagar a tu equipo", "Cortarte el pelo", "Empezar proyectos"],
   },
   33: {
