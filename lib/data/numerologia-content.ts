@@ -240,6 +240,11 @@ export const CALCULATIONS = {
 export const MASTER_NUMBERS = [11, 22, 33];
 
 /**
+ * Notas sobre los números maestros.
+ */
+export const MASTER_NUMBERS_NOTE = "Los números maestros (11, 22, 33) son conceptos incorporados a la numerología en el siglo XX. No formaban parte del sistema pitagórico original. En Molino los incluimos como variantes de interpretación que algunas tradiciones modernas utilizan."
+
+/**
  * Disclaimer de numerología.
  */
 export const NUMEROLOGY_DISCLAIMER = "La numerología es un sistema simbólico tradicional. Molino la utiliza como herramienta de reflexión y autoconocimiento. Las interpretaciones numerológicas no constituyen evidencia científica, predicciones ni diagnósticos profesionales. Los cálculos son deterministas y reproducibles a partir de los mismos datos de entrada.";

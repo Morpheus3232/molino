@@ -14,6 +14,90 @@
 import type { UserProfile } from "@/types/user";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 
+/* ─── Public share (circle / world) ──────────────────────────────────── */
+
+/** Minimal public data for shareable circle/world views — no name, no full birthDate */
+export interface SharedPublicData {
+  l: number;   // lifePath
+  s: string;   // sunSign
+  e: string;   // element
+  c: string;   // chineseZodiac
+  y?: number;  // birthYear (year only, not identifying)
+}
+
+/** Encode ONLY public fields for circle/world sharing */
+export function encodePublicData(profile: UserProfile): string {
+  const year = profile.birthDate ? parseInt(profile.birthDate.split("-")[0], 10) : undefined;
+  const data: SharedPublicData = {
+    l: profile.lifePath,
+    s: profile.sunSign,
+    e: profile.element,
+    c: profile.chineseZodiac,
+  };
+  if (year && !isNaN(year)) data.y = year;
+  const json = JSON.stringify(data);
+  const encoded = btoa(encodeURIComponent(json));
+  return encoded.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+/** Decode public share data */
+export function decodePublicData(encoded: string): SharedPublicData | null {
+  try {
+    let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+    while (base64.length % 4) base64 += "=";
+    const json = decodeURIComponent(atob(base64));
+    const data = JSON.parse(json) as SharedPublicData;
+    if (!data.l || !data.s || !data.e || !data.c) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+/** Reconstruct a minimal UserProfile from public share data for circle/world rendering */
+export function profileFromPublicData(data: SharedPublicData): UserProfile {
+  const birthYear = data.y || 2000;
+  const calculated = calculateUserProfile("", `${birthYear}-01-01`);
+  return {
+    ...calculated,
+    name: "",
+    birthDate: `${birthYear}-01-01`,
+    lifePath: data.l,
+    sunSign: data.s,
+    element: data.e,
+    chineseZodiac: data.c === "Conejo" ? "Gato" : data.c,
+    archetype: calculated.archetype || "",
+    birthPlace: "",
+    birthTime: undefined,
+    goal: "life" as const,
+    interests: [],
+    onboardingStep: 4,
+    completedSections: ["identity"],
+    theme: "light" as const,
+    language: "es" as const,
+    notifications: true,
+    cycles: calculated.cycles || { personalYear: 0, personalMonth: 0, personalDay: 0 },
+    recommendations: calculated.recommendations || { strengths: [], challenges: [], practices: [] },
+  };
+}
+
+/** Build a shareable URL for a profile's circle or world tab (public hash, no name) */
+export function buildShareableTabUrl(profile: UserProfile, tab: "circle" | "world"): string {
+  const encoded = encodePublicData(profile);
+  const base = typeof window !== "undefined" ? window.location.origin : "";
+  return `${base}/profile?tab=${tab}&ref=${encoded}`;
+}
+
+/** Generate share text for circle/world */
+export function generateTabShareText(profile: UserProfile, tab: "circle" | "world"): string {
+  const animal = profile.chineseZodiac || "";
+  const element = profile.element || "";
+  if (tab === "circle") {
+    return `Mi Círculo en Molino — ${animal} de ${element}. Mirá mis aliados y tensiones zodiacales.`;
+  }
+  return `Mi Mundo en Molino — ${animal} de ${element}. Lugares y marcas que conectan con mi perfil.`;
+}
+
 /** Minimal data needed to reconstruct a shared profile view */
 export interface ShareableProfileData {
   n: string;      // name

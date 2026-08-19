@@ -7,7 +7,7 @@ import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
 import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { encodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
+import { encodeProfileData, profileFromEncoded, decodePublicData, profileFromPublicData } from "@/lib/utils/profileShare";
 import { recordVisit } from "@/lib/session/discovery";
 import { fadeUp } from "@/lib/utils/motion";
 import ProfileHub from "@/components/profile/ProfileHub";
@@ -39,15 +39,24 @@ function buildFromLocal(): UserProfile | null {
   return null;
 }
 
-export default function ProfileClient({ serverProfile, initialTab, futureDateError }: ProfileClientProps) {
+export default function ProfileClient({ serverProfile, initialTab, initialRef, futureDateError }: ProfileClientProps) {
   const router = useRouter();
   const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
+  const isSharedView = Boolean(initialRef);
 
   useEffect(() => {
     setMounted(true);
     recordVisit();
+
+    if (initialRef) {
+      const publicData = decodePublicData(initialRef);
+      if (publicData) {
+        setProfile(profileFromPublicData(publicData));
+      }
+      return;
+    }
 
     if (serverProfile) {
       saveProfileToStorage(serverProfile);
@@ -55,8 +64,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     }
 
     if (!profile) {
-      // The hash never reaches the server (see the URL-sync effect below), so
-      // reconstructing a bookmarked /profile#<hash> only happens here.
       const hash = window.location.hash.slice(1);
       const fromHash = hash ? profileFromEncoded(hash) : null;
       if (fromHash) {
@@ -68,7 +75,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
       if (local) setProfile(local);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [serverProfile]);
+  }, [serverProfile, initialRef]);
 
   // The mount effect above only sees the hash on a genuine fresh page load.
   // Editing just the fragment of an already-open /profile tab (address bar
@@ -96,11 +103,20 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   // you could hand to someone else without this session's ?dob= ever having
   // touched a server log a second time.
   useEffect(() => {
-    if (!mounted || !profile) return;
+    if (!mounted || !profile || isSharedView) return;
     const encoded = encodeProfileData(profile);
     if (window.location.hash.slice(1) === encoded && !window.location.search) return;
     window.history.replaceState(null, "", `/profile#${encoded}`);
-  }, [mounted, profile]);
+  }, [mounted, profile, isSharedView]);
+
+  // In shared view, scroll to the relevant section after mount
+  useEffect(() => {
+    if (!mounted || !isSharedView || !initialTab) return;
+    const id = initialTab === "circle" ? "circle-heading" : initialTab === "world" ? "world-heading" : null;
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [mounted, isSharedView, initialTab]);
 
   const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
@@ -169,13 +185,34 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   return (
     <div className="min-h-screen bg-background">
       <main id="main-content">
+        {isSharedView && (
+          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4">
+            <div className="flex items-center justify-between gap-4 p-4 border border-accent/20 bg-accent/[0.04] rounded-lg">
+              <p className="text-sm text-foreground">
+                Estás viendo un mapa compartido.{" "}
+                {loadProfileFromStorage()
+                  ? "Tenés tu propio mapa — entrá a tu perfil para comparar."
+                  : "Creá tu mapa para comparar con este."}
+              </p>
+              <Button
+                variant="accent"
+                size="sm"
+                onClick={() => router.push(loadProfileFromStorage() ? "/profile" : "/onboarding")}
+                className="shrink-0"
+              >
+                {loadProfileFromStorage() ? "Mi mapa" : "Crear mi mapa"}
+              </Button>
+            </div>
+          </div>
+        )}
+
         {showEphemeralWarning && (
           <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4">
             <EphemeralWarning onDismiss={dismissEphemeralWarning} />
           </div>
         )}
 
-        <ProfileHub profile={profile} />
+        <ProfileHub profile={profile} isSharedView={isSharedView} />
       </main>
 
     </div>
@@ -185,5 +222,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
   initialTab: string | null;
+  initialRef?: string;
   futureDateError?: boolean;
 }

@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { Share2, Check } from "lucide-react";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { buildShareableTabUrl, generateTabShareText } from "@/lib/utils/profileShare";
 import type { UserProfile } from "@/types/user";
 
 interface CircleAlignmentProps {
@@ -12,6 +15,7 @@ interface CircleAlignmentProps {
 
 export default function CircleAlignment({ profile }: CircleAlignmentProps) {
   const reduceMotion = useSafeReducedMotion();
+  const [copied, setCopied] = useState(false);
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const relationMap = getRelationshipMap(userAnimal);
   const display = getZodiacDisplay(userAnimal);
@@ -20,6 +24,20 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
     .filter((f) => f.type === "triad")
     .map((f) => f.animal);
   const challenges = relationMap.challenging.map((c) => c.animal);
+
+  const handleShare = async () => {
+    const url = buildShareableTabUrl(profile, "circle");
+    const text = generateTabShareText(profile, "circle");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Mi Círculo — Molino", text, url });
+        return;
+      }
+      await navigator.clipboard.writeText(`${text}\n${url}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  };
 
   const reveal = {
     initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
@@ -103,6 +121,17 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
             </motion.div>
           </div>
         </motion.div>
+
+        <div className="mt-6 flex justify-end">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-foreground transition-colors"
+          >
+            {copied ? <Check className="w-4 h-4 text-accent" /> : <Share2 className="w-4 h-4" />}
+            {copied ? "Copiado" : "Compartir mi Círculo"}
+          </button>
+        </div>
       </div>
     </section>
   );
