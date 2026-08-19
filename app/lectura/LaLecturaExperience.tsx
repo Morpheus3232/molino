@@ -8,6 +8,8 @@ import { getProfileSalt } from "@/lib/profile-salt";
 import { getPremiumTokenClient } from "@/lib/premium";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
+import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
+import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
@@ -70,16 +72,33 @@ function AfinidadPanel({ title, entities }: { title: string; entities: LightAffi
 
 export default function LaLecturaExperience({ profile, catalog }: Props) {
   const reduceMotion = useSafeReducedMotion();
+
   const [interpretation, setInterpretation] = useState<MolinoInterpretation | null>(null);
   const [fetchDone, setFetchDone] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
+  // "La Lectura" es un documento único e irrepetible — si ya se generó para
+  // este perfil, reabrirla la muestra tal cual quedó, sin recrearla ni
+  // repetir la animación de construcción (ver lib/session/lecturaCache.ts).
+  // El chequeo vive en este efecto (no en el estado inicial) a propósito:
+  // localStorage no existe en el render de servidor, así que leerlo en el
+  // inicializador de useState produce un mismatch de hidratación — server y
+  // cliente arrancan iguales (revealed=false) y este efecto, que solo corre
+  // en el cliente después del mount, resuelve el caché sin ese desajuste.
   useEffect(() => {
+    const cached = getCachedLectura(profile.birthDate, profile.name || "");
+    if (cached) {
+      setInterpretation(cached);
+      setFetchDone(true);
+      setRevealed(true);
+      return;
+    }
     let cancelled = false;
     fetchLectura(profile).then((result) => {
       if (cancelled) return;
       setInterpretation(result);
       setFetchDone(true);
+      if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
     });
     return () => {
       cancelled = true;
@@ -89,6 +108,17 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
 
   const elementColor = ELEMENT_COLORS[typeof profile.element === "string" ? profile.element : ""] || "var(--color-accent)";
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
+
+  // Las 4 lecturas nuevas del zodíaco chino (alimento, mascota, timing,
+  // color de elemento) — cálculo puro y local, sin IA, mismo criterio que
+  // el resto de Molino.
+  const zodiacExtras = useMemo(() => {
+    try {
+      return getChineseZodiacRecommendations(profile.birthDate);
+    } catch {
+      return null;
+    }
+  }, [profile.birthDate]);
 
   const affinities = useMemo(() => {
     if (!userAnimal) return { countries: [], cities: [], brands: [] };
@@ -236,30 +266,82 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               </motion.blockquote>
             )}
 
-            {/* Predela — tus mayores afinidades, en el mismo lenguaje que /affinity */}
-            {hasAffinities && (
-              <motion.section
-                initial={reduceMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.6 }}
-                className="border-t-2 border-ink/15 pt-10"
-              >
-                <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Lo que resuena con vos</p>
-                <p className="text-xs text-muted mb-2">
-                  Calculado con el mismo criterio que el resto de Molino — tu animal del zodíaco chino contra el de cada entidad.
-                </p>
-                <AfinidadPanel title="Países" entities={affinities.countries} />
-                <AfinidadPanel title="Ciudades" entities={affinities.cities} />
-                <AfinidadPanel title="Marcas" entities={affinities.brands} />
-              </motion.section>
-            )}
+            {/* Companion — todo lo que sigue es contenido de apoyo, agrupado
+                después del cierre narrativo: primero las 4 lecturas nuevas
+                del zodíaco chino, después las afinidades. Una sola franja
+                visual (border-t-2) marca dónde termina la lectura y empieza
+                el material de referencia. */}
+            {(zodiacExtras || hasAffinities) && (
+              <div className="border-t-2 border-ink/15 pt-10 space-y-14 sm:space-y-16">
+                {zodiacExtras && (
+                  <motion.section
+                    initial={reduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.55 }}
+                  >
+                    <p className="font-heading text-lg sm:text-xl text-foreground mb-2">
+                      Tu ciclo, en detalle
+                    </p>
+                    <p className="text-xs text-muted mb-6">
+                      Cuatro lecturas más de tu signo del zodíaco chino, {zodiacExtras.sign}.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10">
+                      <div className="bg-paper p-6 sm:p-7">
+                        <h3 className="font-heading text-sm text-foreground mb-2">Alimento</h3>
+                        {zodiacExtras.food.restriction === "EVITAR" ? (
+                          <p className="text-sm text-muted leading-relaxed">
+                            Alimento a moderar: <strong className="text-foreground">{zodiacExtras.food.alimento}</strong>. {zodiacExtras.food.razon}
+                          </p>
+                        ) : (
+                          <p className="text-sm text-muted leading-relaxed">Sin restricción alimentaria específica según esta tradición.</p>
+                        )}
+                      </div>
+                      <div className="bg-paper-alt p-6 sm:p-7">
+                        <h3 className="font-heading text-sm text-foreground mb-2">Mascota</h3>
+                        <p className="text-sm text-muted leading-relaxed">
+                          Energía en tensión: <strong className="text-foreground">{zodiacExtras.pet.petToAvoid}</strong>. {zodiacExtras.pet.razon}
+                        </p>
+                      </div>
+                      <div className="bg-paper p-6 sm:p-7">
+                        <h3 className="font-heading text-sm text-foreground mb-2">Timing anual</h3>
+                        <p className="text-sm text-muted leading-relaxed">
+                          {zodiacExtras.timing.consejo} Tu próximo año propio: <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
+                        </p>
+                      </div>
+                      <div className="bg-paper-alt p-6 sm:p-7">
+                        <h3 className="font-heading text-sm text-foreground mb-2">Color de tu elemento</h3>
+                        <p className="text-sm text-muted leading-relaxed flex items-start gap-2">
+                          <span
+                            className="mt-1 w-3 h-3 rounded-full shrink-0 border border-ink/10"
+                            style={{ backgroundColor: zodiacExtras.elementColor.colorHex }}
+                            aria-hidden="true"
+                          />
+                          <span>
+                            <strong className="text-foreground">{zodiacExtras.elementColor.color}</strong> — {zodiacExtras.elementColor.descripcion}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </motion.section>
+                )}
 
-            {/* Confianza — sin mencionar el mecanismo de generación, a pedido
-                explícito: esta lectura no se presenta como salida de un
-                sistema, es tu mapa. */}
-            <p className="text-center font-mono text-[11px] text-muted/60 mt-16">
-              Confianza: {interpretation.confidence}
-            </p>
+                {hasAffinities && (
+                  <motion.section
+                    initial={reduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.65 }}
+                  >
+                    <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Lo que resuena con vos</p>
+                    <p className="text-xs text-muted mb-2">
+                      Calculado con el mismo criterio que el resto de Molino — tu animal del zodíaco chino contra el de cada entidad.
+                    </p>
+                    <AfinidadPanel title="Países" entities={affinities.countries} />
+                    <AfinidadPanel title="Ciudades" entities={affinities.cities} />
+                    <AfinidadPanel title="Marcas" entities={affinities.brands} />
+                  </motion.section>
+                )}
+              </div>
+            )}
           </>
         )}
 
