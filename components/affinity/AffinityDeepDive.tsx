@@ -93,9 +93,14 @@ export default function AffinityDeepDive({
         </motion.section>
       )}
 
-      {/* Relationship */}
-      <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-relacion">
-        <CollapsibleSection title="Relación entre ambos animales" id="section-relacion">
+      {/* Por qué esta afinidad — fusiona lo que antes eran dos secciones
+          ("Relación entre ambos animales" + "¿Por qué esta afinidad?"):
+          ambas explicaban la misma relación desde ángulos que se pisaban
+          (par de animales + tradición, y resumen + método). result.explanation
+          ya se muestra completo en AffinityHero (primer contacto) — no se
+          repite acá. */}
+      <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-por-que">
+        <CollapsibleSection title="¿Por qué esta afinidad?" id="section-por-que">
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl">{entity.emoji}</span>
             <p className="text-sm font-medium text-foreground">
@@ -109,17 +114,10 @@ export default function AffinityDeepDive({
             </span>
           </div>
           <div className="h-px bg-border my-4" />
-          <p className="text-sm text-foreground leading-relaxed mb-3">{result.explanation}</p>
-          {result.tradition && (
-            <p className="text-xs text-muted italic">{result.tradition}</p>
-          )}
-        </CollapsibleSection>
-      </motion.section>
-
-      {/* Why this affinity */}
-      <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-por-que">
-        <CollapsibleSection title="¿Por qué esta afinidad?" id="section-por-que">
           <p className="text-sm text-foreground leading-relaxed mb-4">{result.summary}</p>
+          {result.tradition && (
+            <p className="text-xs text-muted italic mb-3">{result.tradition}</p>
+          )}
           <p className="text-xs text-muted leading-relaxed italic">{result.methodNote}</p>
         </CollapsibleSection>
       </motion.section>

@@ -16,6 +16,7 @@ import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm
 import { SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
 import AffinityShareableCard from "@/components/profile/AffinityShareableCard";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
+import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -68,6 +69,17 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+
+        {/* Breadcrumbs — misma IA real que el resto del sitio (no "Atlas",
+            que es una sección distinta de geografía/países). */}
+        <AtlasBreadcrumbs
+          crumbs={[
+            { href: "/", label: "Inicio" },
+            { href: "/affinity", label: "Afinidades" },
+            { href: `/affinity/${type}`, label: meta.plural },
+            { label: entity.name },
+          ]}
+        />
 
         {/* Back */}
         <motion.div {...fadeUp}>
