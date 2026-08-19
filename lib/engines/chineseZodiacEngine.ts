@@ -8,11 +8,13 @@ import { ANIMALS, getRelation, type Animal } from "@/lib/data/animalRelations";
 import { getFoodRecommendation } from "./zodiacFoodEngine";
 import { getPetRecommendation } from "./zodiacPetEngine";
 import { analyzeTiming } from "./zodiacTimingEngine";
+import { getElementColor } from "./zodiacElementColorEngine";
 
 export { getChineseNewYearDate, getLunarYear, CHINESE_NEW_YEAR_DATES };
 export { getFoodRecommendation, getFoodRecommendationByYear } from "./zodiacFoodEngine";
 export { getPetRecommendation, getPetRecommendationByYear } from "./zodiacPetEngine";
 export { analyzeTiming } from "./zodiacTimingEngine";
+export { getElementColor } from "./zodiacElementColorEngine";
 
 export function getChineseZodiac(birthDate: string): Animal {
   return getRealChineseZodiac(birthDate);
@@ -81,10 +83,16 @@ export function getChineseZodiacRecommendations(yearOrDate: number | string) {
     food: getFoodRecommendation(animal),
     pet: getPetRecommendation(animal),
     timing: analyzeTiming(animal),
+    elementColor: getElementColor(getChineseElement(yearOrDate)),
   };
 }
 
 /** Analiza el timing anual a partir de un año o fecha de nacimiento. */
 export function analyzeTimingByYear(yearOrDate: number | string, queryYear?: number) {
   return analyzeTiming(getChineseAnimal(yearOrDate), queryYear);
+}
+
+/** Obtiene el color tradicional del elemento a partir de un año o fecha de nacimiento. */
+export function getElementColorByYear(yearOrDate: number | string) {
+  return getElementColor(getChineseElement(yearOrDate));
 }

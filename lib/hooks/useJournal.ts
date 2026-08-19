@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { JournalEntry, JournalFilter } from "@/types/journal";
 
 const DB_NAME = "molino_journal_db";
@@ -237,81 +237,13 @@ export function useJournal() {
     [entries]
   );
 
-  // Export entries as JSON string
-  const exportEntriesJSON = useCallback((): string => {
-    return JSON.stringify(
-      {
-        version: "molino.journal.v1",
-        exportedAt: new Date().toISOString(),
-        entriesCount: entries.length,
-        entries,
-      },
-      null,
-      2
-    );
-  }, [entries]);
-
-  // Import entries from JSON string
-  const importEntriesJSON = useCallback(
-    async (rawJSON: string): Promise<{ success: boolean; count: number; error?: string }> => {
-      try {
-        const parsed = JSON.parse(rawJSON);
-        const importedList: JournalEntry[] = Array.isArray(parsed)
-          ? parsed
-          : Array.isArray(parsed.entries)
-          ? parsed.entries
-          : [];
-
-        if (importedList.length === 0) {
-          return { success: false, count: 0, error: "No se encontraron entradas válidas en el archivo." };
-        }
-
-        // Merge without duplicates by ID
-        const existingIds = new Set(entries.map((e) => e.id));
-        const newItems = importedList.filter((item) => item && item.id && item.content && !existingIds.has(item.id));
-        const merged = [...newItems, ...entries];
-        merged.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-        setEntries(merged);
-        saveToLocalStorage(merged);
-
-        const db = await openDB();
-        if (db) {
-          for (const item of newItems) {
-            try {
-              await putToIDB(db, item);
-            } catch {}
-          }
-        }
-
-        return { success: true, count: newItems.length };
-      } catch (err: any) {
-        return { success: false, count: 0, error: err?.message || "Archivo JSON inválido." };
-      }
-    },
-    [entries]
-  );
-
-  // Storage size in KB
-  const storageSizeKB = useMemo(() => {
-    try {
-      const json = JSON.stringify(entries);
-      return (new Blob([json]).size / 1024).toFixed(1);
-    } catch {
-      return "0.0";
-    }
-  }, [entries]);
-
   return {
     entries,
     loading,
-    storageSizeKB,
     addEntry,
     updateEntry,
     deleteEntry,
     filterEntries,
-    exportEntriesJSON,
-    importEntriesJSON,
     refresh: loadEntries,
   };
 }
