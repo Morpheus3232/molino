@@ -151,10 +151,12 @@ const ASTRO_COMPAT: Record<string, Record<string, number>> = {
   Piscis: { Cáncer: 92, Escorpio: 92, Tauro: 82, Capricornio: 80, Virgo: 84, Piscis: 74 },
 };
 
-export function calculateCoupleCompatibility(
-  profileA: UserProfile,
-  profileB: UserProfile
-): CoupleCompatibilityResult {
+/**
+ * Núcleo de cálculo compartido — mismo puntaje/relaciones subyacentes para
+ * cualquier contexto (pareja, sociedad/socios). Ver calculateCoupleCompatibility
+ * y partnershipEngine.ts para las dos lecturas de copy sobre estos mismos datos.
+ */
+export function computeRawCompatibility(profileA: UserProfile, profileB: UserProfile) {
   const lifePathA = safeNumber(profileA.lifePath, 1);
   const lifePathB = safeNumber(profileB.lifePath, 1);
 
@@ -185,6 +187,51 @@ export function calculateCoupleCompatibility(
   if (score >= 85) level = "Sinergia Excepcional & Fuerte Resonancia";
   else if (score >= 72) level = "Alta Afinidad & Armonía Natural";
   else if (score >= 58) level = "Complementariedad Dinámica";
+
+  const elemSynergy = ELEMENT_SYNERGY[elemA]?.[elemB] || {
+    type: "complementary" as const,
+    title: `Química Elemental: ${elemA} y ${elemB}`,
+    desc: `Combinación de energías de ${elemA} y ${elemB} que aporta variedad al vínculo.`,
+  };
+
+  return {
+    lifePathA,
+    lifePathB,
+    animalA,
+    animalB,
+    sunSignA,
+    sunSignB,
+    elemA,
+    elemB,
+    zodiacRelation,
+    numerologyScore,
+    astroScore,
+    elemSynergy,
+    score,
+    level,
+  };
+}
+
+export function calculateCoupleCompatibility(
+  profileA: UserProfile,
+  profileB: UserProfile
+): CoupleCompatibilityResult {
+  const {
+    lifePathA,
+    lifePathB,
+    animalA,
+    animalB,
+    sunSignA,
+    sunSignB,
+    elemA,
+    elemB,
+    zodiacRelation,
+    numerologyScore,
+    astroScore,
+    elemSynergy,
+    score,
+    level,
+  } = computeRawCompatibility(profileA, profileB);
 
   // Connections (Points of connection)
   const connections: CoupleConnectionPoint[] = [];
@@ -221,11 +268,6 @@ export function calculateCoupleCompatibility(
   }
 
   // Elements synergy
-  const elemSynergy = ELEMENT_SYNERGY[elemA]?.[elemB] || {
-    type: "complementary",
-    title: `Química Elemental: ${elemA} y ${elemB}`,
-    desc: `Combinación de energías de ${elemA} y ${elemB} que aporta variedad a la relación.`,
-  };
   connections.push({
     id: "element-synergy",
     title: elemSynergy.title,

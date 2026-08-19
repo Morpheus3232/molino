@@ -1,28 +1,12 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import type { JournalEntry, JournalMood } from "@/types/journal";
 import { MOOD_CONFIG } from "@/types/journal";
 import JournalInsights from "@/components/journal/JournalInsights";
-import {
-  Search,
-  Tag,
-  Trash2,
-  Edit2,
-  Calendar,
-  Compass,
-  TrendingUp,
-  Filter,
-  Sparkles,
-  Download,
-  Upload,
-  HardDrive,
-  Check,
-  AlertCircle,
-} from "lucide-react";
-import Button from "@/components/ui/Button";
+import { Search, Tag, Trash2, Edit2, Compass, TrendingUp } from "lucide-react";
 
 // recharts is heavy; keep it out of the initial client bundle by loading the
 // mood chart lazily (ssr:false). The rest of the timeline renders immediately.
@@ -34,11 +18,8 @@ const MoodChart = dynamic(() => import("@/components/journal/MoodChart"), {
 interface JournalTimelineProps {
   entries: JournalEntry[];
   loading?: boolean;
-  storageSizeKB?: string;
   onEditEntry?: (entry: JournalEntry) => void;
   onDeleteEntry?: (id: string) => void;
-  onExportJSON?: () => void;
-  onImportJSON?: (rawJSON: string) => Promise<{ success: boolean; count: number; error?: string }>;
   className?: string;
 }
 
@@ -60,18 +41,13 @@ function formatDate(dateStr: string): string {
 export default function JournalTimeline({
   entries,
   loading = false,
-  storageSizeKB = "0.0",
   onEditEntry,
   onDeleteEntry,
-  onExportJSON,
-  onImportJSON,
   className = "",
 }: JournalTimelineProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMood, setSelectedMood] = useState<JournalMood | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [importStatus, setImportStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Extract all unique tags
   const allTags = useMemo(() => {
@@ -110,35 +86,6 @@ export default function JournalTimeline({
     }));
   }, [entries]);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !onImportJSON) return;
-
-    try {
-      const text = await file.text();
-      const res = await onImportJSON(text);
-      if (res.success) {
-        setImportStatus({
-          type: "success",
-          message: `Se importaron ${res.count} entrada(s) correctamente.`,
-        });
-      } else {
-        setImportStatus({
-          type: "error",
-          message: res.error || "Error al importar el archivo.",
-        });
-      }
-    } catch {
-      setImportStatus({
-        type: "error",
-        message: "Error al leer el archivo JSON.",
-      });
-    } finally {
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setTimeout(() => setImportStatus(null), 4000);
-    }
-  };
-
   // Estado de carga con Skeleton para evitar flash de "vacío"
   if (loading) {
     return (
@@ -162,96 +109,12 @@ export default function JournalTimeline({
         <p className="text-xs sm:text-sm text-muted max-w-md mx-auto mt-2 leading-relaxed">
           Escribí tu primer registro a la izquierda. A medida que sumes entradas, se guardarán 100% en tu navegador y verás la evolución de tu energía.
         </p>
-
-        {/* Botón para restaurar backup si ya tenía antes */}
-        {onImportJSON && (
-          <div className="mt-6 pt-6 border-t border-ink/10 inline-flex flex-col items-center">
-            <span className="text-[11px] font-mono text-muted mb-2">¿Ya tenías una copia de tus entradas?</span>
-            <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ink/5 hover:bg-ink/10 border border-ink/10 text-xs font-mono text-foreground transition-colors">
-              <Upload className="w-3.5 h-3.5 text-accent" />
-              <span>Restaurar copia</span>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".json,application/json"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </label>
-          </div>
-        )}
       </div>
     );
   }
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Backup & Storage Bar */}
-      <div className="p-3 rounded-2xl bg-card/60 border border-ink/10 text-xs font-mono space-y-2">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-muted">
-            <HardDrive className="w-3.5 h-3.5 text-accent" />
-            <span>Uso local: <strong>~{storageSizeKB} KB</strong></span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {onExportJSON && (
-              <button
-                type="button"
-                onClick={onExportJSON}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
-                title="Descargar una copia de tus entradas en un archivo"
-                aria-label="Descargar copia de seguridad del journal"
-              >
-                <Download className="w-3 h-3 text-accent" />
-                <span>Descargar copia</span>
-              </button>
-            )}
-
-            {onImportJSON && (
-              <label className="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-ink/5 hover:bg-ink/10 border border-ink/10 text-foreground text-[11px] focus-within:ring-2 focus-within:ring-accent transition-colors">
-                <Upload className="w-3 h-3 text-accent" />
-                <span>Restaurar copia</span>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".json,application/json"
-                  onChange={handleFileChange}
-                  className="hidden"
-                  aria-label="Subir archivo para restaurar entradas del journal"
-                />
-              </label>
-            )}
-          </div>
-        </div>
-        <p className="text-[11px] text-muted/80 leading-relaxed">
-          Tus entradas viven solo en este navegador — Molino no las guarda en ningún servidor. Descargá una copia de vez en cuando para no perderlas si cambiás de dispositivo o borrás los datos del sitio.
-        </p>
-      </div>
-
-      {/* Import Status Alert */}
-      <AnimatePresence>
-        {importStatus && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className={`p-3 rounded-xl text-xs font-mono flex items-center gap-2 border ${
-              importStatus.type === "success"
-                ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                : "bg-rose-500/10 border-rose-500/20 text-rose-400"
-            }`}
-          >
-            {importStatus.type === "success" ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <AlertCircle className="w-4 h-4" />
-            )}
-            <span>{importStatus.message}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Mood vs Time Chart Card */}
       {chartData.length >= 2 && (
         <div className="rounded-2xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">

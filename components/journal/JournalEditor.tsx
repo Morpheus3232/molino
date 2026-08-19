@@ -12,7 +12,7 @@ import {
 import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Sparkles, Calendar, Check, PenLine } from "lucide-react";
+import { Sparkles, Check, PenLine } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface JournalEditorProps {
@@ -41,9 +41,8 @@ export default function JournalEditor({
   const [content, setContent] = useState(editingEntry?.content || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
   const tags = useMemo(() => editingEntry?.tags || [], [editingEntry]);
-  const [date, setDate] = useState<string>(
-    editingEntry?.date || new Date().toISOString().split("T")[0]
-  );
+  // Siempre hoy — el diario registra el presente, no permite reescribir el pasado.
+  const date = useMemo(() => editingEntry?.date || new Date().toISOString().split("T")[0], [editingEntry]);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
@@ -157,22 +156,14 @@ export default function JournalEditor({
             <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
               {editingEntry ? "Editar Entrada" : "Nuevo Registro"}
             </h3>
-            <p className="text-[11px] text-muted">
-              Tus reflexiones cruzadas con tu mapa simbólico.
+            <p className="text-[11px] text-muted capitalize">
+              {new Date(date + "T12:00:00").toLocaleDateString("es-AR", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
             </p>
           </div>
-        </div>
-
-        {/* Date Selector */}
-        <div className="flex items-center gap-2 bg-background border border-ink/10 rounded-xl px-3 py-1.5 text-xs text-muted">
-          <Calendar className="w-3.5 h-3.5 text-accent" />
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="bg-transparent border-none text-foreground font-mono text-xs focus:outline-none cursor-pointer"
-            aria-label="Fecha de la entrada"
-          />
         </div>
       </div>
 
