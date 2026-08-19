@@ -4,23 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
-import { getCalendarDayContent, getDateNumberBreakdown } from "@/lib/numerology/calendar";
+import { getCalendarDayContent, getDateNumberBreakdown, formatDateNumberBreakdown } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import type { UserProfile } from "@/types/user";
 import { fadeUpDelayed } from "@/lib/utils/motion";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
-
-/** "2+0+2+6+0+8+1+6 = 25 → 2+5 = 7" — la cuenta completa, no solo el resultado. */
-function formatBreakdown(breakdown: ReturnType<typeof getDateNumberBreakdown>): string {
-  const steps = [`${breakdown.digits.join("+")} = ${breakdown.total}`];
-  let prev = breakdown.total;
-  for (const step of breakdown.reductions) {
-    steps.push(`${String(prev).split("").join("+")} = ${step}`);
-    prev = step;
-  }
-  return steps.join(" → ");
-}
 
 /**
  * Arriba de todo del home para usuarios con perfil guardado: el número del
@@ -66,7 +55,7 @@ export default function TodayNumberBanner() {
         </motion.p>
 
         <motion.p {...fadeUpDelayed(0.1)} className="font-mono text-xs sm:text-sm text-muted mt-4">
-          {formatBreakdown(breakdown)}
+          {formatDateNumberBreakdown(breakdown)}
           {breakdown.isMaster && <span className="ml-2 text-accent">· número maestro</span>}
         </motion.p>
 

@@ -7,6 +7,7 @@ import { useJournal } from "@/lib/hooks/useJournal";
 import { computeJournalStreak, findEntryForDate } from "@/lib/utils/journalStreak";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
+import TodayCalendarNumberCard from "@/components/daily/TodayCalendarNumberCard";
 import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
@@ -56,6 +57,11 @@ export default function HoyClient() {
             streakBadge={badge}
           />
         )}
+
+        {/* 1.2 Número del día del calendario numerológico — dato universal,
+            no depende del perfil (mismo contenido que TodayNumberBanner del
+            home, en formato card compacto). */}
+        <TodayCalendarNumberCard />
 
         {/* 1.5 Personal Year — solo con perfil (contenido determinista, no depende de IA ni pago) */}
         {daily?.isPersonalized && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
