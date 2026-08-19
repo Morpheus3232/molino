@@ -11,6 +11,7 @@ const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: 
 const TrustSignals = dynamic(() => import("@/components/social/TrustSignals"), { ssr: true });
 const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true });
 const MapPreviewDemo = dynamic(() => import("@/components/sections/MapPreviewDemo"), { ssr: true });
+const FamousNumerologyCases = dynamic(() => import("@/components/sections/FamousNumerologyCases"), { ssr: true });
 const QuienHaceEsto = dynamic(() => import("@/components/sections/QuienHaceEsto"), { ssr: true });
 const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true });
 
@@ -148,6 +149,7 @@ export default function Home() {
           <NewInsightsTeaser />
           <PersonalizedHomeClient />
           <MapPreviewDemo />
+          <FamousNumerologyCases />
           <ParejaTeaser />
           <PremiumTeaser />
           <TrustSignals />
