@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { fadeUp } from "@/lib/utils/motion";
 
@@ -73,7 +73,7 @@ function FAQItem({
         </button>
       </h3>
 
-      <AnimatePresence initial={false}>
+      <div>
         {isOpen && (
           <motion.div
             id={panelId}
@@ -90,7 +90,7 @@ function FAQItem({
             </p>
           </motion.div>
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 }

@@ -25,7 +25,7 @@ const jsonLd = [
     "@type": "Organization",
     name: "Molino",
     url: SITE_URL,
-    email: "versionlimitada@proton.me",
+    email: "hola@molino.app",
   },
   {
     "@context": "https://schema.org",
