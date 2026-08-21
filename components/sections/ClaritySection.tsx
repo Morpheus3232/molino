@@ -2,146 +2,234 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertCircle } from "lucide-react";
-import { fadeUpDelayed } from "@/lib/utils/motion";
+import { Search, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 
-interface ComparisonFeature {
-  feature: string;
+interface ComparisonRow {
+  label: string;
   molino: string;
   traditional: string;
 }
 
-const features: ComparisonFeature[] = [
+const comparisonData: ComparisonRow[] = [
   {
-    feature: "¿Qué hace?",
+    label: "¿Qué hace?",
     molino: "Estructura tu realidad: identifica patrones, tensiones y ciclos. Para decidir mejor.",
     traditional: "Predice el futuro o revela 'destino'. Requiere fe.",
   },
   {
-    feature: "¿Se guardan tus datos?",
+    label: "¿Se guardan tus datos?",
     molino: "No. Todo ocurre en tu navegador. Cálculo local, privacidad radical.",
     traditional: "Sí. Se vende información, emails a listas, monetizan tu perfil.",
   },
   {
-    feature: "¿Por qué confiar?",
+    label: "¿Por qué confiar?",
     molino: "Fórmulas visibles, fuentes verificables. Podes auditar cada número.",
     traditional: "Se vende la magia. 'Confía en nosotros'. Sin trazabilidad.",
   },
   {
-    feature: "¿Para quién?",
+    label: "¿Para quién?",
     molino: "Gente curiosa que quiere entender cómo es, no gurús que digan qué hacer.",
     traditional: "Buscadores de respuestas externas. Seguidores de métodos.",
   },
 ];
 
-const fadeUp = { initial: { opacity: 0, y: 12 }, whileInView: { opacity: 1, y: 0 }, transition: { duration: 0.6 } };
+const pillars = [
+  {
+    icon: Search,
+    title: "Estructura",
+    description: "Tres sistemas verificados: numerología, astrología, zodíaco chino. Métodos, no improvisación.",
+  },
+  {
+    icon: Shield,
+    title: "Utilidad",
+    description: "No predice futuro. Te da perspectiva para decidir mejor. Herramienta, no magia.",
+  },
+  {
+    icon: Zap,
+    title: "Enfoque",
+    description: "Para el curioso que quiere entender. No para seguidores de gurús.",
+  },
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
 
 export default function ClaritySection() {
   return (
-    <section className="relative py-16 sm:py-24 px-4 sm:px-8 bg-ink/2 border-t border-b border-ink/10">
-      <div className="max-w-5xl mx-auto">
+    <section className="relative py-20 sm:py-32 px-4 sm:px-8 bg-paper overflow-hidden">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div {...fadeUp} className="mb-12 text-center">
-          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
-            Tu inteligencia personal.{" "}
-            <span className="text-accent">Sin gurús.</span>
-          </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-            Molino es diferente a la astrología tradicional. No es magia, es estructura.
-            No es predicción, es perspectiva.
-          </p>
-        </motion.div>
-
-        {/* Tabla comparativa */}
         <motion.div
-          {...fadeUp}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="mb-20 text-center"
         >
-          {/* Molino column */}
-          <div className="p-6 rounded-lg bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
-            <motion.h3
-              {...fadeUpDelayed(0.05)}
-              className="font-heading font-bold text-xl text-emerald-600 mb-6 flex items-center gap-2"
-            >
-              <CheckCircle2 className="w-5 h-5" />
-              Molino
-            </motion.h3>
-            <div className="space-y-6">
-              {features.map((f, i) => (
-                <motion.div key={i} {...fadeUpDelayed(0.08 + i * 0.03)}>
-                  <p className="text-sm font-mono text-muted mb-2">{f.feature}</p>
-                  <p className="text-foreground leading-relaxed">{f.molino}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <motion.div variants={itemVariants} className="mb-6">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">
+              ¿Cuál es la diferencia?
+            </p>
+          </motion.div>
 
-          {/* Astrología tradicional column */}
-          <div className="p-6 rounded-lg bg-gradient-to-br from-orange-500/10 to-orange-500/5 border border-orange-500/20">
-            <motion.h3
-              {...fadeUpDelayed(0.05)}
-              className="font-heading font-bold text-xl text-orange-600 mb-6 flex items-center gap-2"
-            >
-              <AlertCircle className="w-5 h-5" />
-              Astrología Tradicional
-            </motion.h3>
-            <div className="space-y-6">
-              {features.map((f, i) => (
-                <motion.div key={i} {...fadeUpDelayed(0.08 + i * 0.03)}>
-                  <p className="text-sm font-mono text-muted mb-2">{f.feature}</p>
-                  <p className="text-foreground leading-relaxed">{f.traditional}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-ink mb-6 leading-tight">
+            Tu inteligencia personal.
+            <br />
+            <span className="text-accent">Sin gurús.</span>
+          </motion.h2>
+
+          <motion.p
+            variants={itemVariants}
+            className="text-lg sm:text-xl text-foreground/70 leading-relaxed max-w-3xl mx-auto font-light"
+          >
+            Molino estructura tu realidad. No predice, te da perspectiva para decidir mejor.
+          </motion.p>
         </motion.div>
 
-        {/* 3 Pilares */}
-        <motion.div {...fadeUp} className="grid grid-cols-1 sm:grid-cols-3 gap-8 py-12 border-t border-ink/10">
-          {[
-            {
-              icon: "🔍",
-              title: "Estructura",
-              desc: "Numerología pitagórica, astrología solar, zodíaco chino. Sistemas probados. Sin improvisation.",
-            },
-            {
-              icon: "🛡️",
-              title: "Privacidad",
-              desc: "Cálculo 100% local. Tus datos no salen de tu navegador. Código abierto para auditar.",
-            },
-            {
-              icon: "⚡",
-              title: "Accionable",
-              desc: "No predice. Te da perspectiva para tomar decisiones mejor informadas EN SERIO.",
-            },
-          ].map((pillar, i) => (
-            <motion.div
-              key={i}
-              {...fadeUpDelayed(0.1 + i * 0.05)}
-              className="text-center"
-            >
-              <div className="text-4xl mb-3">{pillar.icon}</div>
-              <h4 className="font-heading font-bold text-lg text-foreground mb-2">
-                {pillar.title}
-              </h4>
-              <p className="text-sm text-foreground/70 leading-relaxed">
-                {pillar.desc}
-              </p>
+        {/* Comparison Grid — Clean and Professional */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mb-24"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+            {/* Molino Column */}
+            <motion.div variants={itemVariants} className="space-y-12">
+              <div className="space-y-2 pb-8 border-b border-accent/20">
+                <h3 className="font-heading text-2xl font-bold text-ink">Molino</h3>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/70">Estructura probada</p>
+              </div>
+
+              {comparisonData.map((row, idx) => (
+                <motion.div
+                  key={`molino-${idx}`}
+                  variants={itemVariants}
+                  className="space-y-3 group"
+                >
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/60 group-hover:text-accent/70 transition-colors">
+                    {row.label}
+                  </p>
+                  <p className="font-light text-lg leading-relaxed text-foreground/85 group-hover:text-foreground transition-colors">
+                    {row.molino}
+                  </p>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
+
+            {/* Traditional Astrology Column */}
+            <motion.div variants={itemVariants} className="space-y-12">
+              <div className="space-y-2 pb-8 border-b border-ink/10">
+                <h3 className="font-heading text-2xl font-bold text-ink/40">Astrología Tradicional</h3>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/40">Sin transparencia</p>
+              </div>
+
+              {comparisonData.map((row, idx) => (
+                <motion.div
+                  key={`traditional-${idx}`}
+                  variants={itemVariants}
+                  className="space-y-3 opacity-60 group"
+                >
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/40 group-hover:text-muted/60 transition-colors">
+                    {row.label}
+                  </p>
+                  <p className="font-light text-lg leading-relaxed text-foreground/50 group-hover:text-foreground/60 transition-colors line-through decoration-ink/20">
+                    {row.traditional}
+                  </p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent mb-24" />
         </motion.div>
 
-        {/* Micro CTA */}
-        <motion.div {...fadeUp} className="text-center pt-8 border-t border-ink/10">
-          <p className="text-sm text-muted mb-4">
-            ¿Querés saber más sobre los métodos que usamos?
-          </p>
+        {/* Three Pillars — Elevated */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="space-y-12"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/60">
+              Tres pilares
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pillars.map((pillar, idx) => {
+              const Icon = pillar.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  variants={itemVariants}
+                  className="group relative"
+                >
+                  {/* Subtle background card */}
+                  <div className="absolute inset-0 bg-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  {/* Content */}
+                  <div className="relative z-10 p-8 space-y-6">
+                    {/* Icon */}
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent/10 text-accent group-hover:bg-accent/15 transition-colors duration-300">
+                      <Icon className="w-7 h-7" strokeWidth={1.5} />
+                    </div>
+
+                    {/* Title */}
+                    <h4 className="font-heading text-2xl font-bold text-ink leading-tight">
+                      {pillar.title}
+                    </h4>
+
+                    {/* Description */}
+                    <p className="font-light text-base leading-relaxed text-foreground/75 group-hover:text-foreground transition-colors duration-300">
+                      {pillar.description}
+                    </p>
+                  </div>
+
+                  {/* Border */}
+                  <div className="absolute inset-0 rounded-2xl border border-accent/10 group-hover:border-accent/25 transition-colors duration-300" />
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* CTA to Methods */}
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mt-20 text-center"
+        >
           <Link
             href="/metodos-y-fuentes"
-            className="inline-flex items-center gap-2 font-heading font-semibold text-accent hover:text-accent/80 transition-colors"
+            className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium text-sm uppercase tracking-[0.1em] group"
           >
-            Ver fórmulas y fuentes →
+            Ver fórmulas y fuentes
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
         </motion.div>
       </div>

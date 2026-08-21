@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
@@ -18,8 +18,6 @@ function isValidBirthDate(value: string): boolean {
   const birth = new Date(`${value}T00:00:00`);
   return year >= 1900 && birth < new Date();
 }
-
-const CTA_LABEL = "Entendé tu mapa";
 
 export default function HeroInstrument() {
   const router = useRouter();
@@ -62,67 +60,33 @@ export default function HeroInstrument() {
     setDateValue(value);
   }, []);
 
-  const ctaClass = `
-    group inline-flex items-center justify-center gap-3
-    font-heading font-bold uppercase tracking-[0.08em]
-    rounded-md transition-all duration-200 ease-out
-    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold
-    ${
-      isDateValid && !isSubmitting
-        ? "bg-gold text-gold-foreground shadow-[0_0_35px_rgba(245,176,34,0.35)] hover:bg-gold-hover hover:shadow-[0_0_45px_rgba(245,176,34,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99]"
-        : "bg-ink/10 text-muted cursor-not-allowed"
-    }
-  `;
-
-  // Server y primer render de cliente no conocen el perfil local (localStorage
-  // solo es legible tras el mount) — hasta entonces se muestra el formulario,
-  // igual que PersonalizedHomeClient acepta el mismo parpadeo breve.
   const isReturningUser = mounted && Boolean(profile?.birthDate);
 
   if (isReturningUser) {
     return (
       <section
         id="mapa-form"
-        className="relative bg-background min-h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
+        className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
       >
-        <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
-          <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
+        <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
+          <motion.div {...fadeUp} className="space-y-8">
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4">Bienvenido de vuelta</p>
+              <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-ink leading-tight">
+                Tu mapa te está esperando.
+              </h1>
+            </div>
+
+            <div className="flex justify-center pt-4">
+              <Link
+                href="/profile"
+                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.08em] transition-all duration-200 hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent shadow-[0_4px_20px_rgba(154,74,24,0.2)]"
+              >
+                Ver mi mapa
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </Link>
             </div>
           </motion.div>
-
-          <motion.h1
-            {...fadeUpDelayed(0.05)}
-            className="font-display text-[clamp(2.25rem,6.5vw,4.5rem)] font-bold tracking-tight text-foreground leading-[1.02] mb-5"
-          >
-            Tu mapa ya está listo.
-          </motion.h1>
-
-          <motion.p
-            {...fadeUpDelayed(0.1)}
-            className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-lg mx-auto mb-8"
-          >
-            Volvé a tu lectura completa — patrones, momento actual y decisiones.
-          </motion.p>
-
-          <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-5">
-            <Link
-              href="/profile"
-              className="group inline-flex items-center justify-center gap-3 font-heading font-bold uppercase tracking-[0.08em] rounded-md transition-all duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold bg-gold text-gold-foreground shadow-[0_0_35px_rgba(245,176,34,0.35)] hover:bg-gold-hover hover:shadow-[0_0_45px_rgba(245,176,34,0.55)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto"
-            >
-              Ver mi mapa
-              <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
-            </Link>
-          </motion.div>
-
-          <motion.p {...fadeUpDelayed(0.25)} className="font-mono text-xs text-muted/70 tracking-wide">
-            Sin registro ·{" "}
-            <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-              Ver un ejemplo interactivo
-            </Link>
-          </motion.p>
         </div>
       </section>
     );
@@ -131,62 +95,59 @@ export default function HeroInstrument() {
   return (
     <section
       id="mapa-form"
-      className="relative bg-background min-h-[calc(100dvh-4rem)] flex items-center overflow-hidden border-t border-ink/10"
+      className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
     >
-      <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-8 text-center w-full">
-        {/* Live region for accessibility */}
+      <div className="relative z-10 mx-auto max-w-2xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
         <div aria-live="polite" aria-atomic="true" className="sr-only">
           {isSubmitting && "Generando tu mapa..."}
           {!isSubmitting && isDateValid && "Fecha válida. Lista para generar tu mapa."}
         </div>
 
-        {/* Privacy Badge */}
-        <motion.div {...fadeUpDelayed(0)} className="mb-6 flex justify-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-ink/5 border border-ink/10 text-muted text-xs font-mono">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span title="Premium/IA: se procesa externamente solo cuando vos lo activás, con proveedores bajo acuerdo de confidencialidad.">Cálculo local por defecto</span>
+        <motion.div {...fadeUp} className="space-y-8">
+          {/* Eyebrow */}
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Descubrí tu patrón</p>
+
+          {/* Main Headline */}
+          <h1 className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-ink leading-tight">
+            Ingresá tu fecha de nacimiento.
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-xl mx-auto">
+            Molino cruza numerología, astrología y zodíaco chino en tiempo real.
+            <br className="hidden sm:block" />
+            Sin registro. Sin guardar. Solo tu navegador.
+          </p>
+
+          {/* Privacy Badge */}
+          <div className="flex justify-center pt-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/5 border border-accent/20 text-accent text-xs font-mono">
+              <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Cálculo 100% local</span>
+            </div>
           </div>
-        </motion.div>
 
-        {/* Headline emocional */}
-        <motion.h1
-          {...fadeUpDelayed(0.05)}
-          className="font-display text-[clamp(2.25rem,6.5vw,4.5rem)] font-bold tracking-tight text-foreground leading-[1.02] mb-5"
-        >
-          Entendete mejor.
-          <br className="hidden sm:block" /> Decidí con más claridad.
-        </motion.h1>
+          {/* Form */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleGenerate();
+            }}
+            className="w-full pt-4"
+          >
+            <div className="mb-6">
+              <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
+            </div>
 
-        <motion.p
-          {...fadeUpDelayed(0.1)}
-          className="text-lg sm:text-xl text-foreground/80 leading-relaxed max-w-lg mx-auto mb-8"
-        >
-          Una{" "}
-          <Link href="/metodos-y-fuentes" className="underline decoration-dotted underline-offset-2 hover:text-accent transition-colors">
-            matriz estructurada
-          </Link>{" "}
-          de numerología, astrología y zodíaco chino. No predice — te da más perspectiva para decidir vos. En 30 segundos.
-        </motion.p>
-
-        {/* Formulario de Fecha y Generación */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleGenerate();
-          }}
-          className="w-full"
-        >
-          {/* FECHA — input real DD/MM/AAAA */}
-          <motion.div {...fadeUpDelayed(0.15)} className="mb-5">
-            <DateInput ref={dateInputRef} value={dateValue} onChange={handleDateChange} />
-          </motion.div>
-
-          {/* CTA principal — grande, dorado */}
-          <motion.div {...fadeUpDelayed(0.2)} className="flex justify-center mb-3">
             <button
               type="submit"
               aria-busy={isSubmitting}
-              className={`${ctaClass} px-10 py-4 sm:px-12 text-base sm:text-lg min-h-[56px] w-full sm:w-auto`}
+              disabled={!isDateValid || isSubmitting}
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-3 px-10 py-4 sm:px-12 text-base sm:text-lg font-heading font-bold uppercase tracking-[0.08em] rounded-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] ${
+                isDateValid && !isSubmitting
+                  ? "bg-accent text-paper shadow-[0_4px_20px_rgba(154,74,24,0.2)] hover:bg-accent/90 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
+                  : "bg-ink/5 text-muted cursor-not-allowed"
+              }`}
             >
               {isSubmitting ? (
                 <>
@@ -201,45 +162,28 @@ export default function HeroInstrument() {
                       <path d="M12 2a10 10 0 0 1 10 10" strokeOpacity="1" />
                     </svg>
                   </motion.span>
-                  Generando tu mapa…
+                  Generando…
                 </>
               ) : (
                 <>
-                  {CTA_LABEL}
-                  <ArrowRight
-                    className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
-                    aria-hidden="true"
-                  />
+                  Ver tu mapa
+                  <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
                 </>
               )}
             </button>
-          </motion.div>
-        </form>
+          </form>
 
-        {/* Microcopy de urgencia */}
-        <motion.p
-          {...fadeUpDelayed(0.25)}
-          className="font-mono text-xs text-muted/70 tracking-wide mb-5"
-        >
-          Gratis · Toma 30 segundos · Sin registro
-        </motion.p>
-
-        <motion.p {...fadeUpDelayed(0.3)} className="font-mono text-xs text-muted/70 tracking-wide">
-          <Link href="/ejemplo" className="underline decoration-muted/40 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">
-            Ver un ejemplo interactivo
-          </Link>
-        </motion.p>
+          {/* Microcopy */}
+          <p className="font-mono text-xs text-muted/70 tracking-wide pt-4">
+            Toma 30 segundos ·{" "}
+            <Link href="/ejemplo" className="text-accent hover:underline underline-offset-2 transition-colors">
+              Ver ejemplo interactivo
+            </Link>
+          </p>
+        </motion.div>
       </div>
 
-      {/* Sticky CTA mobile — reusable, sincronizado con el input del hero */}
-      <StickyMobileCTA
-        value={dateValue}
-        onChange={handleDateChange}
-        onGenerate={handleGenerate}
-        canGenerate={isDateValid && !isSubmitting}
-        showAfter={1}
-        ctaLabel="Generar mapa"
-      />
+      <StickyMobileCTA value={dateValue} onChange={handleDateChange} onGenerate={handleGenerate} canGenerate={isDateValid} ctaLabel="Ver tu mapa" />
     </section>
   );
 }
