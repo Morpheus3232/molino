@@ -1013,6 +1013,129 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     related: ["numerologia-numero-de-vida", "numerologia-numeros-maestros", "numeros-del-poder-28-y-8"],
   },
+  {
+    slug: "filosofia-codigo-abierto",
+    title: "Molino es código abierto: por qué la transparencia es parte de tu mapa",
+    excerpt:
+      "Todo lo que Molino hace está disponible en GitHub. No hay secretos, no hay algoritmos ocultos, no hay recolección de datos a tus espaldas. La filosofía de código abierto es la garantía de que tu privacidad importa.",
+    metaDescription:
+      "Descubrí por qué Molino eligió ser código abierto, cómo eso protege tu privacidad, y qué significa que un sistema de autoconocimiento sea transparente por defecto.",
+    category: "Autoconocimiento",
+    date: "2026-08-21",
+    image: "/blog/filosofia-codigo-abierto.svg",
+    author: "Equipo Molino",
+    intro: [
+      "En un mundo donde la mayoría de las plataformas de tecnología venden tus datos, Molino eligió el camino opuesto: ser completamente abierta. Eso significa que todo el código que genera tu mapa personal está disponible en GitHub para que lo leas, lo audites y lo entiendas.",
+      "No es un acto de generosidad corporativa. Es una decisión sobre qué clase de herramienta queremos ser: una que confía en sus usuarios lo suficiente como para dejarles ver adentro.",
+    ],
+    sections: [
+      {
+        id: "que-es-codigo-abierto",
+        heading: "¿Qué significa que Molino sea código abierto?",
+        paragraphs: [
+          "Código abierto (open source) significa que todo el código que hace funcionar Molino está publicado públicamente en GitHub, bajo la licencia Affero General Public License v3 (AGPL-3.0). No es solo 'disponible si lo pedís'. Es 'aquí está, léelo ahora'.",
+          "Cualquiera puede descargar el código, estudiarlo línea por línea, verificar cómo funciona el cálculo de tu Número de Vida, cómo se calcula la afinidad con otro signo, cómo se almacenan (o no) tus datos. No hay trucos. No hay algoritmos ocultos diseñados para retenerte o venderte.",
+          "El código abierto es una garantía: si alguien notara un fallo o una vulnerabilidad, podría reportarlo (y lo hace). Si Molino hiciera algo malicioso, el código lo delataría. Es transparencia radical.",
+        ],
+      },
+      {
+        id: "por-que-codigo-abierto",
+        heading: "¿Por qué elegir código abierto?",
+        paragraphs: [
+          "Porque un sistema de autoconocimiento no puede confiar en la magia de marca. La fe que deposites en Molino tiene que estar fundamentada en verificación, no en promesas. Si te decimos 'tu privacidad nos importa', la forma de probarlo no es con un video publicitario: es dejar que mires el código.",
+          "Las herramientas de autoconocimiento — numerología, astrología, zodíaco chino — trabajan con información profunda: tu fecha de nacimiento, tu nombre, tus patrones personales. Eso merece un nivel de confianza que solo la transparencia puede dar.",
+          "Además: el código abierto hace que Molino sea mejor. Cuando cientos de personas pueden leer el código, los bugs se encuentran antes. Cuando alguien ve una mejora, puede aportar. Es colaboración en lugar de secreto corporativo.",
+        ],
+      },
+      {
+        id: "privacidad-por-diseno",
+        heading: "Privacidad por diseño: no es accidental",
+        paragraphs: [
+          "Molino no guarda tu perfil en servidores. No hace tracking. No vende tus datos. Pero lo más importante es que **puedes verificar que eso es verdad** leyendo el código.",
+          "Cuando generas tu mapa en Molino, los datos se calculan en tu navegador. Se guardan solo en tu dispositivo (en localStorage, donde tú tienes control). Cuando cierras sesión, se van. Nadie en Molino ve tu información a menos que vos la compartas (por ejemplo, si generás un link para pareja).",
+          "Eso no es una política de privacidad que podría cambiar mañana. Es arquitectura: está construido en el código. Y el código está abierto para que lo confirmes.",
+        ],
+      },
+      {
+        id: "comunidad-no-corporacion",
+        heading: "Comunidad, no corporación",
+        paragraphs: [
+          "Código abierto significa que Molino no es solo una empresa. Es un proyecto colaborativo. Contribuyentes pueden proponer mejoras, traducir a otros idiomas, crear variantes adaptadas a diferentes culturas numerológicas, o simplemente auditar la seguridad.",
+          "Algunos de los mejores sistemas de autoconocimiento del futuro probablemente vendrán de comunidades de código abierto, no de startups con inversión de riesgo. Porque la comunidad no tiene presión de sacar rendimiento: solo el propósito de hacer herramientas que funcionen bien.",
+          "Si en algún momento Molino dejara de mantener el código, la comunidad podría seguir adelante. El proyecto no desaparece cuando una empresa quiebra. Es propiedad común.",
+        ],
+      },
+      {
+        id: "como-explorar-codigo",
+        heading: "Cómo explorar el código de Molino",
+        paragraphs: [
+          "No necesitas ser programador. El código está en https://github.com/Morpheus3232/molino. Podes:",
+          "Leer el README para entender cómo está estructurado.",
+          "Navegar la carpeta `/lib/engines/` para ver cómo se calculan los números.",
+          "Revisar `/app/` para ver cómo funciona la interfaz.",
+          "Ver `/lib/data/` para entender cómo se define cada concepto numerológico.",
+          "Si no entiendes algo, podés abrir una issue (un ticket) y preguntar. La comunidad responde.",
+        ],
+        list: [
+          "Leer el README para entender cómo está estructurado",
+          "Navegar la carpeta `/lib/engines/` para ver cómo se calculan los números",
+          "Revisar `/app/` para ver cómo funciona la interfaz",
+          "Ver `/lib/data/` para entender cómo se define cada concepto numerológico",
+          "Si no entiendes algo, abrir una issue (un ticket) y preguntar",
+        ],
+      },
+      {
+        id: "licencia-agpl",
+        heading: "¿Qué es AGPL y por qué importa?",
+        paragraphs: [
+          "AGPL-3.0 es una licencia de código abierto que dice: si usas Molino (incluso como base para otro proyecto), tienes que compartir también tu código. No puedes construir una versión privada que robe el trabajo sin dar nada a cambio.",
+          "Es la forma de proteger que Molino siga siendo abierto. Si alguien crea una versión modificada de Molino, esa versión también tiene que ser abierta. Es comunidad por defecto.",
+          "Para proyectos sin ánimo de lucro, o para contribuciones a Molino mismo, no hay restricción. Solo si comercializar una derivada de Molino, tienes que mantener la licencia abierta.",
+        ],
+      },
+      {
+        id: "riesgos-codigo-abierto",
+        heading: "¿Hay riesgos en ser abierto?",
+        paragraphs: [
+          "Sí, algunos. El código abierto visible a todos también es visible a personas malintencionadas que buscan vulnerabilidades. Pero la realidad es: código cerrado no es más seguro, es solo menos verificable. Los hacks grandes suelen venir de software privado porque nadie puede auditar.",
+          "Además: en Molino no hay datos centralizados. No hay base de datos de usuarios. El riesgo típico de 'hackear la plataforma y robar datos' no existe aquí. El código es el único ataque posible, y está siendo monitoreado por cientos de ojos.",
+          "El código abierto es, en realidad, más seguro. Es transparencia + comunidad = confianza verificada.",
+        ],
+      },
+      {
+        id: "futuro-abierto",
+        heading: "El futuro de Molino es código abierto",
+        paragraphs: [
+          "No es un experimento. Es la arquitectura. Molino será siempre abierto porque la confianza en herramientas de autoconocimiento no puede construirse de otro modo.",
+          "Si contribuís, si reportas bugs, si ayudas a mejorar Molino, tu nombre estará en los créditos. Si traduces a otro idioma, tu trabajo cuenta. Si auditas el código y encuentras una vulnerabilidad, te lo agradecemos (y te crédito público).",
+          "La numerología, la astrología, el zodíaco chino — estas tradiciones han existido miles de años porque funcionan como espejos. Molino es solo ese espejo, pero digital y verificable. Y eso es para todos.",
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: "¿Molino gana dinero siendo código abierto?",
+        a: "No directamente de licencias. Molino es gratuito y siempre lo será. En el futuro podría haber servicios de pago (como análisis avanzados o consultas), pero el código base seguirá siendo abierto y gratuito. La idea es que el autoconocimiento no sea un lujo.",
+      },
+      {
+        q: "¿Puedo copiar Molino y hacer mi propia versión?",
+        a: "Sí, bajo AGPL-3.0. Eso significa: descargá el código, modificalo, úsalo. Pero tu versión también tiene que ser abierta. No puedes vender una copia privada de Molino. Es justo: si se beneficia del trabajo de Molino, devuelve el conocimiento.",
+      },
+      {
+        q: "¿Qué pasa si encuentro un bug en el código?",
+        a: "Abrí un issue en GitHub (https://github.com/Morpheus3232/molino/issues). Describeí qué pasó, incluí pasos para reproducirlo, y la comunidad lo verá. Los mantenedores lo abordarán. Eres parte de mejorar Molino.",
+      },
+      {
+        q: "¿El código abierto significa que Molino no tiene seguridad?",
+        a: "Lo opuesto. El código abierto es más seguro porque puede ser auditado. Los mejores proyectos de seguridad del mundo (como OpenSSL, que protege la mayoría de internet) son de código abierto. La privacidad en Molino está garantizada no por secreto, sino por verificación.",
+      },
+      {
+        q: "¿Necesito saber programar para usar Molino?",
+        a: "No. El interfaz de Molino es para todos. El código abierto es para quienes quieran verificar cómo funciona adentro. Pero generando tu mapa, no necesitas tocar una línea de código.",
+      },
+    ],
+    related: ["numerologia-numero-de-vida", "signo-solar", "compatibilidad"],
+  },
 ];
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
