@@ -38,6 +38,7 @@ import {
 } from "@/lib/utils/premiumMotion";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
+import LocalizedAffinityHub from "@/components/profile/LocalizedAffinityHub";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -283,7 +284,12 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         )}
 
         {/* ═══════════════════════════════════════════════
-            BLOQUE 3: DESCUBRIMIENTOS
+            BLOQUE 6: EXPLORACIÓN LOCALIZADA
+            ═══════════════════════════════════════════════ */}
+        <LocalizedAffinityHub catalog={catalog} />
+
+        {/* ═══════════════════════════════════════════════
+            FOOTER
             ═══════════════════════════════════════════════ */}
         <motion.section {...cardReveal} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
