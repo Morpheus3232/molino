@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#F5F0E4"/>
+  
+  <!-- Decorative glow circles (top-right & bottom-left) -->
+  <circle cx="1000" cy="80" r="280" fill="rgba(154, 74, 24, 0.15)"/>
+  <circle cx="150" cy="520" r="220" fill="rgba(154, 74, 24, 0.15)"/>
+  
+  <!-- Category label -->
+  <text 
+    x="80" 
+    y="110" 
+    font-family="'SF Pro Display', -apple-system, sans-serif" 
+    font-size="24" 
+    letter-spacing="3" 
+    fill="#9A4A18" 
+    font-weight="700"
+    text-transform="uppercase"
+  >Numerología</text>
+  
+  <!-- Category emoji -->
+  <text 
+    x="1080" 
+    y="130" 
+    font-family="'Apple Color Emoji', Arial, sans-serif"
+    font-size="72"
+  >🔢</text>
+  
+  <!-- Main title -->
+  <text 
+    x="80" 
+    y="340" 
+    font-family="'Merriweather', serif" 
+    font-size="96" 
+    fill="#241F17" 
+    font-weight="800"
+    letter-spacing="-2"
+  >Número de Vida</text>
+  
+  <!-- Subtitle -->
+  <text 
+    x="80" 
+    y="410" 
+    font-family="'SF Pro Display', -apple-system, sans-serif" 
+    font-size="44" 
+    fill="#6B6252"
+    font-weight="400"
+  >La cifra central de tu fecha</text>
+  
+  <!-- Molino logo/mark (minimalist line) -->
+  <line x1="80" y1="520" x2="200" y2="520" stroke="#9A4A18" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Footer text -->
+  <text 
+    x="80" 
+    y="580" 
+    font-family="'SF Pro Display', -apple-system, sans-serif" 
+    font-size="16" 
+    letter-spacing="1" 
+    fill="#6B6252" 
+    font-weight="500"
+    text-transform="uppercase"
+  >molino.app</text>
+</svg>
