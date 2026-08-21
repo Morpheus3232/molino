@@ -1,0 +1,58 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  
+  <!-- Code brackets pattern (top left) -->
+  <g opacity="0.1">
+    <text x="50" y="100" font-family="monospace" font-size="48" fill="#3b82f6" font-weight="bold">&lt;</text>
+    <text x="120" y="100" font-family="monospace" font-size="48" fill="#3b82f6" font-weight="bold">/&gt;</text>
+    <text x="50" y="180" font-family="monospace" font-size="48" fill="#8b5cf6" font-weight="bold">&lt;</text>
+    <text x="120" y="180" font-family="monospace" font-size="48" fill="#8b5cf6" font-weight="bold">/&gt;</text>
+  </g>
+  
+  <!-- Decorative circles -->
+  <circle cx="1100" cy="100" r="80" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.2"/>
+  <circle cx="1100" cy="100" r="60" fill="none" stroke="#8b5cf6" stroke-width="1" opacity="0.3"/>
+  <circle cx="1100" cy="100" r="40" fill="none" stroke="#3b82f6" stroke-width="1" opacity="0.2"/>
+  
+  <!-- Center accent circle -->
+  <circle cx="150" cy="530" r="100" fill="none" stroke="url(#accentGrad)" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Main content -->
+  <text x="600" y="160" font-family="system-ui, -apple-system" font-size="72" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-1">
+    Código Abierto
+  </text>
+  
+  <text x="600" y="240" font-family="system-ui, -apple-system" font-size="48" font-weight="600" fill="#3b82f6" text-anchor="middle">
+    Transparencia Total
+  </text>
+  
+  <text x="600" y="320" font-family="system-ui, -apple-system" font-size="28" font-weight="400" fill="#cbd5e1" text-anchor="middle" max-width="900">
+    Tu privacidad no es un secreto.
+  </text>
+  
+  <text x="600" y="370" font-family="system-ui, -apple-system" font-size="28" font-weight="400" fill="#cbd5e1" text-anchor="middle" max-width="900">
+    Es arquitectura verificable.
+  </text>
+  
+  <!-- Code indicator at bottom -->
+  <g>
+    <rect x="350" y="450" width="500" height="80" rx="8" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.3"/>
+    <text x="370" y="480" font-family="monospace" font-size="16" fill="#3b82f6" opacity="0.7">// github.com/Morpheus3232/molino</text>
+    <text x="370" y="510" font-family="monospace" font-size="16" fill="#8b5cf6" opacity="0.7">LICENSE: AGPL-3.0</text>
+  </g>
+  
+  <!-- Bottom accent -->
+  <rect x="0" y="600" width="1200" height="30" fill="url(#accentGrad)" opacity="0.2"/>
+</svg>
