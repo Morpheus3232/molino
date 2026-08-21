@@ -12,11 +12,11 @@ Público general hispanohablante (foco LatAm) curioso por el autoconocimiento si
 
 ## Product Purpose
 
-Molino es una plataforma educativa que genera un "mapa personal de autoconocimiento" cruzando numerología, astrología y zodíaco chino a partir de la fecha de nacimiento (y opcionalmente nombre) del usuario. Todo el cálculo ocurre client-side; no hay backend que persista perfiles. Éxito = el usuario entiende su propio patrón simbólico y puede explorar afinidades (marcas, ciudades, equipos, universidades, artistas, películas, países) relacionadas con su perfil, con las fórmulas y fuentes siempre visibles.
+Molino generates a personal "symbol map" — numerological path, astrological chart, Chinese zodiac cycle — from birth date alone (name optional). All calculations run 100% in-browser; no backend persistence, no registration. Success = the user understands their own symbolic pattern, can explore related affinities (brands, cities, teams, artists, films, countries), and sees every formula and source. Every claim is traceable.
 
 ## Positioning
 
-Transparencia radical + privacidad por diseño: cada cálculo muestra su fórmula y fuente (nada de "confía en el algoritmo"), y el perfil vive solo en localStorage del navegador — sin registro, sin cookies de tracking, sin fingerprinting. Esto lo diferencia de apps comerciales de astrología/numerología que retienen datos, monetizan con suscripciones opacas o presentan resultados como verdad sin trazabilidad. Código abierto (MIT).
+**Radical transparency + privacy by design.** Every calculation shows its formula and source — no "trust the algorithm" black boxes. The symbol map lives **only in browser localStorage** — no registration, no cookies, no fingerprinting, no backend persistence. This differentiates Molino from commercial astrology/numerology apps that retain data, monetize via opaque subscriptions, or present claims without traceability. Open source (MIT) and independently verifiable.
 
 ## Operating Context
 
