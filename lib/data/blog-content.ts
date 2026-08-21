@@ -32,6 +32,7 @@ export interface BlogPost {
   sections: BlogSection[];
   faq?: { q: string; a: string }[];
   related: string[];
+  featureLink?: { href: string; label: string }; // Internal link to a Molino feature
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -105,6 +106,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
     related: ["numerologia-numeros-maestros", "signo-astral-personalidad", "numerologia-ano-personal"],
+    featureLink: { href: "/herramientas/camino-de-vida", label: "Calculá tu Número de Vida" },
   },
   {
     slug: "zodiaco-chino-animal-personalidad",
