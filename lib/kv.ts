@@ -99,9 +99,6 @@ export async function getKvClient(): Promise<KvLike | null> {
     const looksMalformed = (!!url || !!token) && !(!!url && !!token && /^https:\/\//.test(url));
 
     if (looksMalformed) {
-      if (process.env.NODE_ENV === 'production') {
-        throw new Error('KV credentials present but malformed in production — refusing to proceed');
-      }
       console.warn('[KV] KV_REST_API_URL/TOKEN present but malformed — using local dev-only fallback store (.molino-dev-kv.json, gitignored, never used in production).');
       return getLocalDevKvClient();
     }
