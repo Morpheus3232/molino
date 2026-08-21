@@ -1,6 +1,7 @@
 {
   "name": "molino",
   "version": "0.1.0",
+  "description": "Open-source personal symbol map combining numerology, astrology, and Chinese zodiac. Transparent calculations, radical privacy, 100% client-side.",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",

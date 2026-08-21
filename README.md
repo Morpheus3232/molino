@@ -8,19 +8,19 @@
 [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38B2AC)](https://tailwindcss.com/)
-[![No Tracking](https://img.shields.io/badge/Sin%20Tracking%20Invasivo-✓-brightgreen.svg)](https://github.com/Morpheus3232/molino)
+[![Open Source](https://img.shields.io/badge/Open%20Source-MIT-brightgreen.svg)](https://github.com/Morpheus3232/molino)
 
-## Filosofía
+## Philosophy
 
-Molino es una plataforma educativa de código abierto que explora sistemas simbólicos (numerología pitagórica, astrología, zodíaco chino/ciclo sexagenario) con total transparencia y privacidad. Sin registro, sin cookies, sin tracking invasivo.
+Molino generates a personal "symbol map" — your numerological path, astrological chart, and Chinese zodiac cycle — from your birth date. Everything runs **100% locally in your browser**; no registration, no backend persistence, no tracking. The calculation engine is transparent: every number has its formula and source visible.
 
-### Principios
+### Core commitments
 
-- 📚 **Conocimiento libre**: Todo el contenido se basa en fuentes públicas.
-- 🔒 **Privacidad radical**: Tu mapa gratuito se procesa 100% localmente (localStorage), sin persistir datos en servidores. Si activás Premium o IA, se envía únicamente un hash HMAC-SHA256 de tu perfil (nunca la fecha de nacimiento en claro ni el nombre) para validar el acceso.
-- 🔍 **Transparencia total**: Cada cálculo está explicado con sus fórmulas y fuentes.
-- 💻 **Código abierto**: Todo el código está disponible en GitHub (licencia MIT).
-- 🚫 **Sin tracking invasivo**: Sin píxeles, sin fingerprinting, sin cookies de rastreo. Solo métricas de uso agregadas y anónimas.
+- 🔍 **Transparency over mystique**: Every formula is shown; no "trust the algorithm" claims. Each result links to its source.
+- 🔒 **Radical privacy**: Your map lives in browser localStorage only. No registration, no cookies, no fingerprinting, no server persistence.
+- 📚 **Open source**: All code is MIT. Anyone can verify, fork, or contribute.
+- 🎓 **For the curious, not initiated**: Designed for people discovering numerology/astrology for the first time, not advanced practitioners.
+- 🚫 **No invasive tracking**: Only anonymous, aggregate usage metrics. No pixels, fingerprinting, or data resale.
 
 ## Tecnologías
 
