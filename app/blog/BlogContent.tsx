@@ -7,9 +7,39 @@ import { motion, AnimatePresence } from "framer-motion";
 import { staggerApple, staggerDelay } from "@/lib/utils/premiumMotion";
 import { fadeUpMount } from "@/lib/utils/motion";
 import { BLOG_POSTS, BLOG_CATEGORIES, getReadingTime, type BlogCategory, type BlogPost } from "@/lib/data/blog-content";
+import { Sparkles, Users, Moon, Compass } from "lucide-react";
 
 type Filter = BlogCategory | "Todos";
 const FILTERS: Filter[] = ["Todos", ...BLOG_CATEGORIES];
+
+// Metadata para cada categoría
+const CATEGORY_META: Record<Filter, { icon: React.ComponentType<{ className?: string }>, description: string, color: string }> = {
+  Todos: {
+    icon: Compass,
+    description: "Explora todos los artículos",
+    color: "text-accent",
+  },
+  Numerología: {
+    icon: Sparkles,
+    description: "Los números de tu fecha de nacimiento",
+    color: "text-terracota",
+  },
+  Astrología: {
+    icon: Moon,
+    description: "Tu carta astral y los planetas",
+    color: "text-gold",
+  },
+  "Zodiaco Chino": {
+    icon: Users,
+    description: "Tu animal y los ciclos de 12 años",
+    color: "text-purple-400",
+  },
+  Autoconocimiento: {
+    icon: Compass,
+    description: "Herramientas para conocerte mejor",
+    color: "text-blue-400",
+  },
+};
 
 function formatDate(iso: string): string {
   return new Date(iso + "T00:00:00").toLocaleDateString("es-AR", {
@@ -68,6 +98,9 @@ export default function BlogContent() {
     [filter],
   );
 
+  const meta = CATEGORY_META[filter];
+  const Icon = meta.icon;
+
   return (
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1200px] px-4 sm:px-8 pt-16 sm:pt-24 pb-24" id="main-content">
@@ -90,27 +123,77 @@ export default function BlogContent() {
           </motion.p>
         </div>
 
-        {/* Filtros por categoría */}
-        <nav className="flex flex-wrap gap-2 mb-10" aria-label="Filtrar artículos por categoría">
-          {FILTERS.map((f) => {
-            const active = filter === f;
-            return (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setFilter(f)}
-                aria-pressed={active}
-                className={`px-3 py-1.5 text-xs font-mono font-semibold uppercase tracking-[0.2em] rounded-sm border transition-colors min-h-[44px] ${
-                  active
-                    ? "bg-accent text-accent-foreground border-accent"
-                    : "border-border text-muted hover:text-foreground hover:border-accent/50"
-                }`}
-              >
-                {f}
-              </button>
-            );
-          })}
-        </nav>
+        {/* Menú de categorías mejorado */}
+        <motion.nav
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mb-12"
+          aria-label="Filtrar artículos por categoría"
+        >
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {FILTERS.map((f, idx) => {
+              const active = filter === f;
+              const categoryMeta = CATEGORY_META[f];
+              const CategoryIcon = categoryMeta.icon;
+
+              return (
+                <motion.button
+                  key={f}
+                  type="button"
+                  onClick={() => setFilter(f)}
+                  aria-pressed={active}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all min-h-[120px] sm:min-h-[140px] ${
+                    active
+                      ? "border-accent bg-accent/10 shadow-lg shadow-accent/20"
+                      : "border-border bg-card hover:border-accent/50 hover:bg-accent/5"
+                  }`}
+                >
+                  <CategoryIcon className={`w-6 h-6 sm:w-7 sm:h-7 mb-2 ${active ? categoryMeta.color : "text-muted"} transition-colors`} />
+                  <span className={`text-xs sm:text-sm font-heading font-bold uppercase tracking-[0.1em] text-center leading-tight ${
+                    active ? "text-foreground" : "text-muted"
+                  }`}>
+                    {f}
+                  </span>
+                  {f !== "Todos" && (
+                    <span className="text-[10px] text-muted mt-1 text-center leading-tight max-w-[90px]">
+                      {categoryMeta.description}
+                    </span>
+                  )}
+                </motion.button>
+              );
+            })}
+          </div>
+        </motion.nav>
+
+        {/* Descripción de la categoría activa */}
+        <motion.div
+          key={filter}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="mb-10 p-5 rounded-lg bg-accent/5 border border-accent/20 flex items-start gap-3"
+        >
+          <Icon className={`w-5 h-5 sm:w-6 sm:h-6 mt-0.5 shrink-0 ${meta.color}`} />
+          <div>
+            <p className="font-heading font-semibold text-foreground text-sm sm:text-base">
+              {filter === "Todos" ? "Todos los artículos" : filter}
+            </p>
+            <p className="text-xs sm:text-sm text-muted mt-1">
+              {meta.description}
+            </p>
+            {filter !== "Todos" && (
+              <p className="text-xs text-muted/70 mt-2">
+                {posts.length} artículo{posts.length !== 1 ? "s" : ""} disponible{posts.length !== 1 ? "s" : ""}
+              </p>
+            )}
+          </div>
+        </motion.div>
 
         {/* Grid de tarjetas — sin `layout` en el contenedor: esa prop dispara
             una animación FLIP que, en navegación client-side de Next.js,
@@ -134,19 +217,3 @@ export default function BlogContent() {
 
         {/* CTA al mapa */}
         <motion.section {...staggerApple} className="mt-20 text-center">
-          <div className="p-8 sm:p-10 rounded-md border border-border bg-card">
-            <p className="text-sm text-muted mb-4 max-w-md mx-auto">
-              ¿Querés ver cómo se aplican estos sistemas a TU fecha de nacimiento?
-            </p>
-            <Link
-              href="/profile"
-              className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
-            >
-              Generá tu mapa
-            </Link>
-          </div>
-        </motion.section>
-      </main>
-    </div>
-  );
-}

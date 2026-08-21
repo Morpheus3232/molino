@@ -228,6 +228,32 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
               )}
             </div>
 
+            {/* Feature link contextual */}
+            {post.featureLink && (
+              <motion.section {...fadeUp} className="mb-12">
+                <div className="p-6 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-accent/20 hover:border-accent/40 transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className="text-2xl shrink-0">✨</div>
+                    <div className="flex-1">
+                      <h3 className="font-heading text-lg font-semibold text-foreground mb-1">
+                        Verlo en tu mapa
+                      </h3>
+                      <p className="text-sm text-muted mb-3">
+                        Descubrí exactamente cómo se ve esto en tu caso personal.
+                      </p>
+                      <Link
+                        href={post.featureLink.href}
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors group"
+                      >
+                        <span>{post.featureLink.label}</span>
+                        <span className="group-hover:translate-x-1 transition-transform">→</span>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
             {/* CTA contextual al final */}
             <motion.section {...fadeUp} className="text-center">
               <div className="p-8 sm:p-10 rounded-md border border-border bg-card">

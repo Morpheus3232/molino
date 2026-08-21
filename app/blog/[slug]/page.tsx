@@ -77,6 +77,21 @@ export default async function BlogArticlePage({ params }: Props) {
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     articleSection: post.category,
+    ...(post.faq?.length
+      ? {
+          faqPage: {
+            "@type": "FAQPage",
+            mainEntity: post.faq.map((faq) => ({
+              "@type": "Question",
+              name: faq.q,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: faq.a,
+              },
+            })),
+          },
+        }
+      : {}),
   };
 
   return (
