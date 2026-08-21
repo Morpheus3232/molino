@@ -103,9 +103,8 @@ MIT — Libre para usar, modificar y compartir.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Créditos
+## Fuentes de los Sistemas
 
-- Sistema GG33 — Gary Grinberg (como referencia)
-- Numerología Pitagórica — Fuente histórica
-- Astrología Occidental — Zodíaco Tropical
+- Numerología Pitagórica — Tradición histórica documentada
+- Astrología Occidental — Zodíaco Tropical / Sistema de Casas
 - Zodíaco Chino — Ciclo Sexagenario
