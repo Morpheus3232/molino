@@ -14,8 +14,6 @@ import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 const NAV_LINKS = [
   { href: "/hoy", label: "Hoy" },
   { href: "/atlas", label: "Atlas" },
-  { href: "/pareja", label: "Pareja" },
-  { href: "/socios", label: "Socios" },
   { href: "/biblioteca", label: "Biblioteca" },
   { href: "/academy", label: "Academia" },
   { href: "/blog", label: "Blog" },

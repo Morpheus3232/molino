@@ -43,7 +43,7 @@ export default function JournalInsights({ entries }: { entries: JournalEntry[] }
   if (!hasAnyInsight) return null;
 
   return (
-    <div className="rounded-2xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">
+    <div className="rounded-xl border border-ink/10 bg-card p-5 sm:p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="w-4 h-4 text-accent" />
         <h3 className="font-heading text-sm sm:text-base font-bold text-foreground">Tus patrones de energía</h3>
