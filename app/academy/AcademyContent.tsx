@@ -13,6 +13,7 @@ import {
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
+import { BookOpen, Sparkles, Zap, Clock, Users, ArrowRight } from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -133,7 +134,6 @@ export const ICON_MAP: Record<string, React.FC<IconProps>> = {
   numerologia: IconNumbers,
   astrologia: IconStars,
   filosofia: IconBook,
-  // Claves usadas directamente por el campo `icon` de ACADEMY_PIECES/HOW_IT_WORKS/COURSES.
   knowledge: IconKnowledge,
   numbers: IconNumbers,
   letters: IconLetters,
@@ -202,6 +202,7 @@ const COURSES = [
     title: "Introducción a tu mapa personal",
     icon: "target",
     description: "Los conceptos fundamentales detrás de tu mapa personal.",
+    color: "from-blue-500/10",
     pieces: piecesFor(["babilonia", "molino"]),
   },
   {
@@ -209,6 +210,7 @@ const COURSES = [
     title: "Numerología: de Pitágoras al presente",
     icon: "numbers",
     description: "La historia completa de cómo los números se convirtieron en herramienta de autoconocimiento.",
+    color: "from-amber-500/10",
     pieces: piecesFor(["pitagoras", "guematia", "balliett", "cheiro", "jordan", "mccants"]),
   },
   {
@@ -216,6 +218,7 @@ const COURSES = [
     title: "Astrología occidental",
     icon: "stars",
     description: "De la observación babilónica del cielo a la astrología helenística que define signos y casas.",
+    color: "from-purple-500/10",
     pieces: piecesFor(["babilonia", "helenistica"]),
   },
   {
@@ -223,6 +226,7 @@ const COURSES = [
     title: "Zodíaco oriental y ciclos",
     icon: "cycle",
     description: "Los 12 animales, los elementos y los ciclos de 60 años.",
+    color: "from-emerald-500/10",
     pieces: piecesFor(["zodiaco-chino"]),
   },
 ];
@@ -250,7 +254,7 @@ function KnowledgeNode({
       transition={{ delay: index * 0.06, duration: 0.4 }}
       className="relative pl-16"
     >
-      {/* Dot — decorativo, la acción real la expone el botón de abajo con texto */}
+      {/* Dot — decorativo */}
       <div
         aria-hidden="true"
         className={`absolute left-4 top-1 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors pointer-events-none ${
@@ -269,19 +273,22 @@ function KnowledgeNode({
         type="button"
         onClick={onToggle}
         aria-expanded={isExpanded}
-        className="w-full text-left"
+        className="w-full text-left group"
       >
         <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-1">{node.era}</p>
-        <h3 className="font-heading text-xl font-semibold text-foreground mb-1">{node.title}</h3>
+        <h3 className="font-heading text-xl font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">{node.title}</h3>
         <p className="text-sm text-muted leading-relaxed">{node.idea}</p>
       </button>
 
-      <Link
-        href={`/academy/${node.slug}`}
-        className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors mt-2"
-      >
-        Ver artículo completo →
-      </Link>
+      <div className="flex items-center gap-4 mt-3">
+        <Link
+          href={`/academy/${node.slug}`}
+          className="inline-flex items-center gap-1 text-xs font-medium text-accent hover:text-accent/80 transition-colors group"
+        >
+          <span>Leer más</span>
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
+      </div>
 
       <AnimatePresence>
         {isExpanded && (
@@ -292,24 +299,24 @@ function KnowledgeNode({
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="mt-4 p-6 rounded-2xl border border-ink/10 bg-background space-y-3">
+            <div className="mt-4 p-6 rounded-lg border border-border bg-gradient-to-br from-card to-card/50 space-y-3">
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Origen</p>
-                <p className="text-xs text-foreground">{node.origin}</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-1">Origen</p>
+                <p className="text-sm text-foreground">{node.origin}</p>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Influencia en Molino</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-2">Influencia en Molino</p>
                 <div className="flex flex-wrap gap-1.5">
                   {node.influence.map((inf) => (
-                    <span key={inf} className="text-xs px-2 py-0.5 rounded-full bg-accent/10 text-accent">
+                    <span key={inf} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
                       {inf}
                     </span>
                   ))}
                 </div>
               </div>
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-1">Cómo se usa</p>
-                <p className="text-xs text-foreground">{node.molino}</p>
+                <p className="text-xs uppercase tracking-[0.15em] text-muted font-semibold mb-1">Cómo se usa</p>
+                <p className="text-sm text-foreground">{node.molino}</p>
               </div>
             </div>
           </motion.div>
@@ -322,6 +329,220 @@ function KnowledgeNode({
 export default function AcademyContent() {
   const router = useRouter();
   const [expandedNode, setExpandedNode] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"history" | "courses">("history");
+
+  return (
+    <div className="min-h-screen bg-background">
+      <main className="mx-auto max-w-6xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+
+        {/* ═══════════════════════════════════════════════
+            HERO — Impactante con mejor contexto
+            ═══════════════════════════════════════════════ */}
+        <motion.section {...heroReveal} className="mb-20">
+          <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
+            <BookOpen className="w-4 h-4 text-accent" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">Academia de Molino</span>
+          </div>
+
+          <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl tracking-tight text-foreground leading-[1.05] mb-6">
+            De dónde viene este sistema
+          </h1>
+
+          <p className="text-lg sm:text-xl text-muted max-w-3xl leading-relaxed mb-8">
+            Molino no inventó nada. Es un pórtico a tradiciones milenarias: desde los ciclos babilónicos hasta la numerología pitagórica, 
+            pasando por la astrología helenística y el zodíaco chino. Este recorrido te ayuda a entender cómo se construye tu mapa.
+          </p>
+
+          <div className="flex flex-wrap gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              onClick={() => setActiveTab("history")}
+              className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
+                activeTab === "history"
+                  ? "bg-accent text-accent-foreground shadow-lg"
+                  : "bg-card border border-border hover:border-accent/50"
+              }`}
+            >
+              Viajeros del tiempo
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              onClick={() => setActiveTab("courses")}
+              className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
+                activeTab === "courses"
+                  ? "bg-accent text-accent-foreground shadow-lg"
+                  : "bg-card border border-border hover:border-accent/50"
+              }`}
+            >
+              Cursos temáticos
+            </motion.button>
+          </div>
+        </motion.section>
+
+        <AnimatePresence mode="wait">
+          {/* ═══════════════════════════════════════════════
+              TAB: HISTORY — Tradiciones y sus autores
+              ═══════════════════════════════════════════════ */}
+          {activeTab === "history" && (
+            <motion.section
+              key="history"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mb-20"
+            >
+              <div className="mb-12">
+                <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Viajeros del tiempo</h2>
+                <p className="text-muted max-w-2xl">
+                  Las grandes tradiciones simbólicas y los maestros que las llevaron desde la antigüedad hasta hoy.
+                </p>
+              </div>
+
+              <div className="space-y-8">
+                {ACADEMY_PIECES.map((piece, idx) => (
+                  <KnowledgeNode
+                    key={piece.slug}
+                    node={piece}
+                    index={idx}
+                    isExpanded={expandedNode === piece.slug}
+                    onToggle={() => setExpandedNode(expandedNode === piece.slug ? null : piece.slug)}
+                  />
+                ))}
+              </div>
+            </motion.section>
+          )}
+
+          {/* ═══════════════════════════════════════════════
+              TAB: COURSES — Cursos temáticos
+              ═══════════════════════════════════════════════ */}
+          {activeTab === "courses" && (
+            <motion.section
+              key="courses"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mb-20"
+            >
+              <div className="mb-12">
+                <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Cursos temáticos</h2>
+                <p className="text-muted max-w-2xl">
+                  Recorridos estructurados por tema: desde numerología hasta astrología oriental.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {COURSES.map((course, idx) => {
+                  const CourseIcon = ICON_MAP[course.icon];
+                  return (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.08 }}
+                      className={`p-8 rounded-xl border border-border bg-gradient-to-br ${course.color} to-background hover:border-accent/50 transition-all group cursor-pointer`}
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="w-12 h-12 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
+                          {CourseIcon && <CourseIcon className="w-6 h-6 text-accent" />}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-accent/60">
+                          {course.pieces.length} capítulo{course.pieces.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+
+                      <h3 className="font-heading text-xl font-bold text-foreground mb-2 group-hover:text-accent transition-colors">
+                        {course.title}
+                      </h3>
+                      <p className="text-sm text-muted mb-6 leading-relaxed">{course.description}</p>
+
+                      <div className="flex items-center justify-between pt-6 border-t border-border">
+                        <span className="text-xs font-mono uppercase tracking-[0.15em] text-muted">Inicia aquí</span>
+                        <Link
+                          href={`/academy/${course.pieces[0]?.slug || "babilonia"}`}
+                          className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors group/link"
+                        >
+                          <span className="text-sm font-semibold">Empezar</span>
+                          <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.section>
+          )}
+        </AnimatePresence>
+
+        {/* ═══════════════════════════════════════════════
+            CÓMO FUNCIONA — Proceso paso a paso
+            ═══════════════════════════════════════════════ */}
+        <motion.section {...staggerApple} className="mb-20">
+          <div className="mb-12">
+            <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Cómo Molino usa esto</h2>
+            <p className="text-muted max-w-2xl">
+              Del conocimiento antiguo al mapa personal moderno: estos son los cuatro pilares de tu lectura.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {HOW_IT_WORKS.map((item, idx) => {
+              const StepIcon = ICON_MAP[item.icon];
+              return (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="p-8 rounded-xl border border-border bg-card hover:border-accent/50 transition-all"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 font-mono text-sm font-bold text-accent">
+                      {item.step}
+                    </span>
+                    {StepIcon && <StepIcon className="w-6 h-6 text-accent" />}
+                  </div>
+
+                  <h3 className="font-heading text-lg font-bold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-sm text-muted mb-4">{item.description}</p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {item.items.map((itemText) => (
+                      <span key={itemText} className="text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
+                        {itemText}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════
+            CTA — Ir a generar tu mapa
+            ═══════════════════════════════════════════════ */}
+        <motion.section {...staggerApple} className="py-16 px-8 sm:px-12 rounded-xl border border-border bg-gradient-to-br from-accent/10 to-accent/5 text-center">
+          <Sparkles className="w-8 h-8 text-accent mx-auto mb-4" />
+          <h2 className="font-heading text-3xl font-bold text-foreground mb-3">Listo para tu mapa</h2>
+          <p className="text-muted max-w-2xl mx-auto mb-6">
+            Ahora que conocés la historia y la teoría, generá tu mapa personal en segundos y descubrí cómo estos sistemas ancestrales hablan de vos.
+          </p>
+          <Link
+            href="/profile"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors group"
+          >
+            <span>Generá tu mapa</span>
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </motion.section>
+      </main>
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-background">
