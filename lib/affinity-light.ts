@@ -78,6 +78,7 @@ export function lightAffinity(userAnimal: string, entity: { animal: string }): {
 }
 
 /** Sort a lightweight entity list by affinity score, descending.
+ * PRIORITIZES SAME ANIMAL MATCHES FIRST.
  * Optional userCountry applies +15 score boost to local entities for prioritization.
  */
 export function sortLightEntities(
@@ -85,33 +86,47 @@ export function sortLightEntities(
   entities: LightweightLike[],
   userCountry?: string,
 ): LightAffinityResult[] {
-  return entities
-    .map((e) => {
-      const { score, tier, relationship } = lightAffinity(userAnimal, e);
-      // Apply country boost: local entities get +15 points
-      const COUNTRY_BOOST = 15;
-      const boostedScore = userCountry && e.country === userCountry 
-        ? score + COUNTRY_BOOST 
-        : score;
-      return {
-        id: e.id,
-        name: e.name,
-        animal: e.animal,
-        emoji: e.emoji,
-        visualType: e.visualType,
-        imageUrl: e.imageUrl,
-        country: e.country,
-        countryISO: e.countryISO,
-        city: e.city,
-        type: e.type,
-        score: boostedScore,
-        tier,
-        relationship,
-        isApproximate: e.isApproximate ?? false,
-        origin: e.origin,
-      };
-    })
-    .sort((a, b) => b.score - a.score);
+  const COUNTRY_BOOST = 15;
+  
+  const mapped = entities.map((e) => {
+    const { score, tier, relationship } = lightAffinity(userAnimal, e);
+    const boostedScore = userCountry && e.country === userCountry 
+      ? score + COUNTRY_BOOST 
+      : score;
+    // Check if same animal: score should be 95 (from RELATION_SCORES.same)
+    const isSameAnimal = e.animal === userAnimal;
+    
+    return {
+      id: e.id,
+      name: e.name,
+      animal: e.animal,
+      emoji: e.emoji,
+      visualType: e.visualType,
+      imageUrl: e.imageUrl,
+      country: e.country,
+      countryISO: e.countryISO,
+      city: e.city,
+      type: e.type,
+      score: boostedScore,
+      tier,
+      relationship,
+      isApproximate: e.isApproximate ?? false,
+      origin: e.origin,
+      isSameAnimal, // Track for sorting priority
+    };
+  });
+
+  // Sort: same animal first (isSameAnimal=true), then by score descending
+  mapped.sort((a, b) => {
+    // Same animal takes priority
+    if (a.isSameAnimal && !b.isSameAnimal) return -1;
+    if (!a.isSameAnimal && b.isSameAnimal) return 1;
+    // Otherwise sort by boosted score descending
+    return b.score - a.score;
+  });
+
+  // Remove the isSameAnimal flag before returning (it's internal only)
+  return mapped.map(({ isSameAnimal, ...rest }) => rest);
 }
 
 type LightweightLike = {

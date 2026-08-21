@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Sparkles, Heart, ArrowRight, ShieldCheck, Flame, Droplets, Wind, Mountain, Compass, Share2 } from "lucide-react";
+import { Sparkles, Heart, ArrowRight, ShieldCheck, Flame, Droplets, Wind, Mountain, Compass } from "lucide-react";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
-import SocialShareBar from "@/components/ui/SocialShareBar";
 import { siteUrl, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
@@ -263,11 +262,6 @@ export default async function SinastriaPage({ params }: PageProps) {
               Compartí la sinastría de {signA.name} y {signB.name} con un clic.
             </span>
           </div>
-          <SocialShareBar
-            title={`Compatibilidad ${signA.name} y ${signB.name}`}
-            text={`Descubrí cómo se complementan ${signA.name} y ${signB.name} en Molino:`}
-            url={`${SITE_URL}/sinastria/${signA.slug}/${signB.slug}`}
-          />
         </div>
 
         {/* Related Synastry Cross-links (SEO Internal linking) */}

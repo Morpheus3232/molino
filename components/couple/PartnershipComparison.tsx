@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import {
@@ -8,9 +8,7 @@ import {
   type PartnershipCompatibilityResult,
 } from "@/lib/engines/partnershipEngine";
 import { PersonCard } from "@/components/couple/CoupleComparison";
-import { Sparkles, Handshake, Share2, Check, AlertTriangle, Compass, RefreshCw } from "lucide-react";
-import Button from "@/components/ui/Button";
-import SocialShareBar from "@/components/ui/SocialShareBar";
+import { Sparkles, Handshake, AlertTriangle, Compass } from "lucide-react";
 
 interface PartnershipComparisonProps {
   profileA: UserProfile;
@@ -25,32 +23,10 @@ export default function PartnershipComparison({
   onReset,
   className = "",
 }: PartnershipComparisonProps) {
-  const [copied, setCopied] = useState(false);
-
   const result = useMemo<PartnershipCompatibilityResult>(
     () => calculatePartnershipCompatibility(profileA, profileB),
     [profileA, profileB]
   );
-
-  const shareUrl = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    return `${window.location.origin}/socios?a=${profileA.birthDate}&b=${profileB.birthDate}`;
-  }, [profileA.birthDate, profileB.birthDate]);
-
-  const handleShareLink = useCallback(async () => {
-    const text = `Afinidad de sociedad en Molino: ${result.summary}\nMirá el resultado acá:`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "Modo Socios — Molino", text, url: shareUrl });
-        return;
-      } catch {}
-    }
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  }, [result.summary, shareUrl]);
 
   return (
     <div className={`space-y-8 ${className}`}>
@@ -77,41 +53,6 @@ export default function PartnershipComparison({
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
           {result.summary}
         </p>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 pt-6 border-t border-ink/10">
-          <Button variant="ghost" onClick={handleShareLink} className="flex items-center gap-2 px-4">
-            {copied ? (
-              <>
-                <Check className="w-4 h-4 text-emerald-400" />
-                ¡Enlace copiado!
-              </>
-            ) : (
-              <>
-                <Share2 className="w-4 h-4" />
-                Compartir comparativa
-              </>
-            )}
-          </Button>
-
-          {onReset && (
-            <Button
-              variant="ghost"
-              onClick={onReset}
-              className="flex items-center gap-1.5 text-muted hover:text-foreground text-xs"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Nueva comparación
-            </Button>
-          )}
-        </div>
-
-        <div className="mt-4 flex items-center justify-center">
-          <SocialShareBar
-            title={`Afinidad de Sociedad: ${result.level}`}
-            text={`Comparativa en Molino: ${result.summary}`}
-            url={shareUrl}
-          />
-        </div>
       </motion.div>
 
       {/* Side-by-side Maps */}

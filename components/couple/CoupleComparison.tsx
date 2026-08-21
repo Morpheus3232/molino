@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useCallback } from "react";
+import { useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import {
@@ -14,17 +14,11 @@ import { safeNumber } from "@/lib/utils/score";
 import {
   Sparkles,
   Heart,
-  Share2,
-  Copy,
-  Check,
   AlertTriangle,
   Compass,
   Zap,
   ArrowRight,
-  RefreshCw,
 } from "lucide-react";
-import Button from "@/components/ui/Button";
-import SocialShareBar from "@/components/ui/SocialShareBar";
 
 interface CoupleComparisonProps {
   profileA: UserProfile;
@@ -127,36 +121,10 @@ export default function CoupleComparison({
   onReset,
   className = "",
 }: CoupleComparisonProps) {
-  const [copied, setCopied] = useState(false);
-
   const result = useMemo<CoupleCompatibilityResult>(
     () => calculateCoupleCompatibility(profileA, profileB),
     [profileA, profileB]
   );
-
-  const shareUrl = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    return `${window.location.origin}/pareja?a=${profileA.birthDate}&b=${profileB.birthDate}`;
-  }, [profileA.birthDate, profileB.birthDate]);
-
-  const handleShareLink = useCallback(async () => {
-    const text = `Comparativa de mapas en Molino: ${result.summary}\nMirá el resultado acá:`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Modo Pareja — Molino",
-          text,
-          url: shareUrl,
-        });
-        return;
-      } catch {}
-    }
-    if (navigator.clipboard) {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  }, [result.summary, shareUrl]);
 
   return (
     <div className={`space-y-8 ${className}`}>
@@ -184,47 +152,6 @@ export default function CoupleComparison({
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
           {result.summary}
         </p>
-
-        {/* Actions Bar */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 pt-6 border-t border-ink/10">
-          <Button
-            variant="ghost"
-            onClick={handleShareLink}
-            className="flex items-center gap-2 px-4"
-          >
-            {copied ? (
-              <>
-                <Check className="w-4 h-4 text-emerald-400" />
-                ¡Enlace copiado!
-              </>
-            ) : (
-              <>
-                <Share2 className="w-4 h-4" />
-                Compartir comparativa
-              </>
-            )}
-          </Button>
-
-          {onReset && (
-            <Button
-              variant="ghost"
-              onClick={onReset}
-              className="flex items-center gap-1.5 text-muted hover:text-foreground text-xs"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Nueva comparación
-            </Button>
-          )}
-        </div>
-
-        {/* Social Share Bar */}
-        <div className="mt-4 flex items-center justify-center">
-          <SocialShareBar
-            title={`Sinergia de Pareja: ${result.level}`}
-            text={`Comparativa en Molino: ${result.summary}`}
-            url={shareUrl}
-          />
-        </div>
       </motion.div>
 
       {/* Side-by-side Maps (Desktop side by side, Mobile stacked) */}
