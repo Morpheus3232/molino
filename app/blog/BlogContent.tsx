@@ -217,3 +217,19 @@ export default function BlogContent() {
 
         {/* CTA al mapa */}
         <motion.section {...staggerApple} className="mt-20 text-center">
+          <div className="p-8 sm:p-10 rounded-md border border-border bg-card">
+            <p className="text-sm text-muted mb-4 max-w-md mx-auto">
+              ¿Querés ver cómo se aplican estos sistemas a TU fecha de nacimiento?
+            </p>
+            <Link
+              href="/profile"
+              className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
+            >
+              Generá tu mapa
+            </Link>
+          </div>
+        </motion.section>
+      </main>
+    </div>
+  );
+}
