@@ -140,7 +140,7 @@ export const UNIVERSITIES_BUENOS_AIRES: AtlasEntityInput[] = [
     events: [{ id: "s21-fund", type: "fundacion", label: "Fundación", year: 1995, description: "Se funda la Universidad Siglo 21.", source: "Siglo 21 — Historia institucional", confidence: "media", primaryForAffinity: true }],
   },
   {
-    id: "isalud-arg", name: "ISALUD Argentina", type: "university", country: "Argentina",
+    id: "isalud-arg", name: "ISALUD Argentina (Instituto de Salud)", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "ISALUD es institución privada especializada en salud y ciencias médicas.",
     keyThemes: ["Privada", "Salud", "Medicina", "Especializada"],
@@ -149,7 +149,7 @@ export const UNIVERSITIES_BUENOS_AIRES: AtlasEntityInput[] = [
     events: [{ id: "isalud-arg-fund", type: "fundacion", label: "Operaciones", year: 1990, description: "ISALUD expande operaciones a Buenos Aires.", source: "ISALUD — Historia institucional", confidence: "media", primaryForAffinity: false }],
   },
   {
-    id: "universidad-notarial", name: "Universidad Notarial Argentina", type: "university", country: "Argentina",
+    id: "universidad-notarial", name: "Universidad Notarial Argentina (UNA)", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "Universidad Notarial Argentina es institución especializada en derecho notarial.",
     keyThemes: ["Privada", "Derecho", "Especializada", "Profesión"],

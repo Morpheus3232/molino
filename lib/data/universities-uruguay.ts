@@ -139,10 +139,10 @@ export const UNIVERSITIES_URUGUAY: AtlasEntityInput[] = [
        },
      ],
    },
-   {
-     id: "isalud", name: "ISALUD Uruguay", type: "university", country: "Uruguay",
-     emoji: "🎓",
-     description: "ISALUD Uruguay es una universidad privada especializada en salud, medicina y ciencias de la vida.",
+    {
+      id: "isalud", name: "ISALUD Uruguay (Instituto de Salud)", type: "university", country: "Uruguay",
+      emoji: "🎓",
+      description: "ISALUD Uruguay es una universidad privada especializada en salud, medicina y ciencias de la vida.",
      keyThemes: ["Salud", "Medicina", "Ciencias", "Privada"],
      sourceNote: "Reconocida como universidad en Uruguay en 2007.",
      events: [
@@ -234,10 +234,10 @@ export const UNIVERSITIES_URUGUAY: AtlasEntityInput[] = [
        },
      ],
    },
-   {
-     id: "psi", name: "Psi (Instituto de Estudios Psicológicos)", type: "university", country: "Uruguay",
-     emoji: "🎓",
-     description: "PSI es una institución especializada en formación en psicología y ciencias del comportamiento.",
+    {
+      id: "psi", name: "Instituto de Estudios Psicológicos (Psi Uruguay)", type: "university", country: "Uruguay",
+      emoji: "🎓",
+      description: "PSI es una institución especializada en formación en psicología y ciencias del comportamiento.",
      keyThemes: ["Psicología", "Comportamiento", "Formación", "Privada"],
      sourceNote: "Fundada en los años 90 en Montevideo, Uruguay.",
      events: [

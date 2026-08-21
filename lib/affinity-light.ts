@@ -77,14 +77,22 @@ export function lightAffinity(userAnimal: string, entity: { animal: string }): {
   return { score: rel.score, tier: tierForScore(rel.score), relationship: rel.label };
 }
 
-/** Sort a lightweight entity list by affinity score, descending. */
+/** Sort a lightweight entity list by affinity score, descending.
+ * Optional userCountry applies +15 score boost to local entities for prioritization.
+ */
 export function sortLightEntities(
   userAnimal: string,
   entities: LightweightLike[],
+  userCountry?: string,
 ): LightAffinityResult[] {
   return entities
     .map((e) => {
       const { score, tier, relationship } = lightAffinity(userAnimal, e);
+      // Apply country boost: local entities get +15 points
+      const COUNTRY_BOOST = 15;
+      const boostedScore = userCountry && e.country === userCountry 
+        ? score + COUNTRY_BOOST 
+        : score;
       return {
         id: e.id,
         name: e.name,
@@ -96,7 +104,7 @@ export function sortLightEntities(
         countryISO: e.countryISO,
         city: e.city,
         type: e.type,
-        score,
+        score: boostedScore,
         tier,
         relationship,
         isApproximate: e.isApproximate ?? false,

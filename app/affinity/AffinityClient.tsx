@@ -52,7 +52,16 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
     const counts: Record<string, number> = {};
     availableTypes.forEach(type => {
       const list = byType[type] || [];
-      counts[type] = list.filter(e => lightAffinity(userAnimal, e).score >= 50).length;
+      // Apply country boost when scoring
+      const scored = list.map(e => {
+        const aff = lightAffinity(userAnimal, e);
+        const boost = userCountry && e.country === userCountry ? 15 : 0;
+        return { entity: e, score: aff.score + boost };
+      });
+      // Sort by boosted score descending
+      scored.sort((a, b) => b.score - a.score);
+      // Count those with score >= 50 (after boost)
+      counts[type] = scored.filter(s => s.score >= 50).length;
     });
     return counts;
   })() : null;
