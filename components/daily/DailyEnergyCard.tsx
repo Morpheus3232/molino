@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { StreakBadge } from "@/lib/hooks/useStreak";
-import { Sparkles, Moon, Compass, Zap, Flame, Shield, TrendingUp } from "lucide-react";
-import { getScoreLabel } from "@/lib/utils/score";
+import { Sparkles, Moon, Compass, Flame, Share2, ShieldCheck } from "lucide-react";
+import { getScoreLabel, getScoreColor } from "@/lib/utils/score";
 
 interface DailyEnergyCardProps {
   profile: UserProfile | null;
@@ -28,9 +28,13 @@ export default function DailyEnergyCard({
     month: "long",
   });
 
+  const score = daily.overallScore;
+  const scoreLabel = getScoreLabel(score);
+  const scoreColor = getScoreColor(score);
+
   return (
     <div
-      className={`rounded-3xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 shadow-xl relative overflow-hidden ${className}`}
+      className={`rounded-xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 relative overflow-hidden ${className}`}
     >
       {/* Top Banner: Date + Streak badge */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
@@ -49,27 +53,29 @@ export default function DailyEnergyCard({
         )}
       </div>
 
-      {/* Main Energy Score & Theme Grid */}
+      {/* Main Score Grid */}
       <div className="my-6 grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-        {/* Left: Overall Score Gauge */}
-        <div className="sm:col-span-5 flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
+        {/* Score */}
+        <div className="sm:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold">
-            Vibración Diaria
+            Vibración de hoy
           </span>
           <div className="flex items-baseline gap-1 my-1">
-            <span className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
-              {getScoreLabel(daily.overallScore)}
+            <span className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-foreground">
+              {score}
             </span>
+            <span className="font-mono text-xs text-muted">/100</span>
           </div>
+          <p className="font-heading text-sm font-bold" style={{ color: scoreColor }}>
+            {scoreLabel}
+          </p>
           {daily.isPersonalized && (
-            <span className="font-mono text-xs text-muted">
-              Año Personal {daily.personalYear}
-            </span>
+            <p className="font-mono text-xs text-muted mt-1">Año Personal {daily.personalYear}</p>
           )}
         </div>
 
-        {/* Right: Theme & Description */}
-        <div className="sm:col-span-7 p-4 sm:p-5 rounded-2xl bg-background/70 border border-ink/5 space-y-2">
+        {/* Theme & description */}
+        <div className="sm:col-span-7 p-5 rounded-xl bg-background/70 border border-ink/5 space-y-2">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-accent" />
             <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
@@ -82,10 +88,10 @@ export default function DailyEnergyCard({
         </div>
       </div>
 
-      {/* Sub-Pillars Strip: Moon Phase + Element Harmony */}
+      {/* Sub-Pillars Strip */}
       <div className="pt-4 border-t border-ink/10 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-        {/* Moon Phase */}
-        <div className="p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
+        {/* Moon */}
+        <div className="p-2.5 rounded-md bg-background/50 border border-ink/5 flex items-center gap-2.5">
           <span className="text-lg">{daily.moonPhase?.emoji || "🌙"}</span>
           <div>
             <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
@@ -99,9 +105,9 @@ export default function DailyEnergyCard({
 
         {profile ? (
           <>
-            {/* Elemental Influence */}
-            <div className="p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
-              <Flame className="w-4 h-4 text-amber-400 shrink-0" />
+            {/* Element */}
+            <div className="p-2.5 rounded-md bg-background/50 border border-ink/5 flex items-center gap-2.5">
+              <Flame className="w-4 h-4 text-amber-600 shrink-0" />
               <div className="min-w-0">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
                   Elemento
@@ -112,9 +118,9 @@ export default function DailyEnergyCard({
               </div>
             </div>
 
-            {/* Archetype Resonance */}
-            <div className="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
-              <Compass className="w-4 h-4 text-accent shrink-0" />
+            {/* Archetype */}
+            <div className="col-span-2 sm:col-span-1 p-2.5 rounded-md bg-background/50 border border-ink/5 flex items-center gap-2.5">
+              <Share2 className="w-4 h-4 text-accent shrink-0" />
               <div className="min-w-0">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
                   Tu Arquetipo
@@ -126,10 +132,8 @@ export default function DailyEnergyCard({
             </div>
           </>
         ) : (
-          // Sin perfil no hay elemento ni arquetipo que mostrar — el mismo
-          // grid de 3 pilares se completa con lo que sí es universal ese día.
-          <div className="col-span-2 sm:col-span-2 p-2.5 rounded-xl bg-background/50 border border-ink/5 flex items-center gap-2.5">
-            <Compass className="w-4 h-4 text-accent shrink-0" />
+          <div className="col-span-2 sm:col-span-2 p-2.5 rounded-md bg-background/50 border border-ink/5 flex items-center gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-accent shrink-0" />
             <div className="min-w-0">
               <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
                 Fortaleza del día
