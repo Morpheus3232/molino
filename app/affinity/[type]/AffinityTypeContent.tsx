@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
+import { useUserContext } from "@/lib/hooks/useUserContext";
 import { sortLightEntities, tierForScore, type LightAffinityResult, type LightTier } from "@/lib/affinity-light";
 import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
@@ -52,6 +53,7 @@ const TIER_COLOR: Record<LightTier, string> = {
 export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
+  const userCountry = useUserContext().country;
 
   const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -59,8 +61,8 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
 
   const sorted = useMemo(
-    () => sortLightEntities(activeAnimal, entities),
-    [activeAnimal, entities]
+    () => sortLightEntities(activeAnimal, entities, userCountry),
+    [activeAnimal, entities, userCountry]
   );
 
   // Filter results based on search query
