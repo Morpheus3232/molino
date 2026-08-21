@@ -25,6 +25,7 @@ import { COUNTRIES_ATLAS } from "./countries-atlas";
 import { CITIES_60 } from "./cities-60";
 import { CITIES_ATLAS } from "./cities-atlas";
 import { CITIES_ARGENTINA } from "./cities-argentina";
+import { CITIES_URUGUAY } from "./cities-uruguay";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
 import { TEAMS_CHILE } from "./teams-chile";
 import { TEAMS_PERU } from "./teams-peru";
@@ -212,7 +213,8 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...COUNTRIES_ATLAS,
   ...CITIES_60,
   ...CITIES_ATLAS,
-  ...CITIES_ARGENTINA,
+   ...CITIES_ARGENTINA,
+   ...CITIES_URUGUAY,
 
   ...TEAMS_ARGENTINA,
   ...TEAMS_CHILE,

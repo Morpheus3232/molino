@@ -414,12 +414,59 @@ import { SYMBOLIC_ENTITIES } from "@/lib/data/symbolic-entities";
  * Get recommendations filtered by entity type, sorted by score.
  */
 export function getRecommendationsByType(
-  profile: UserProfile,
-  entityType: EntityType,
-  limit = 10,
-): Recommendation[] {
-  const map = buildSymbolicMap(profile);
-  return map.recommendations
-    .filter(r => r.entity.type === entityType)
-    .slice(0, limit);
-}
+   profile: UserProfile,
+   entityType: EntityType,
+   limit = 10,
+ ): Recommendation[] {
+   const map = buildSymbolicMap(profile);
+   return map.recommendations
+     .filter(r => r.entity.type === entityType)
+     .slice(0, limit);
+ }
+
+/**
+ * Get recommendations filtered by country preference.
+ * When a user is from a specific country (e.g., Uruguay), local entities
+ * are weighted higher in the recommendation order.
+ *
+ * Strategy:
+ * 1. Calculate recommendations for all entities
+ * 2. Apply country boost to entities from user's country
+ * 3. Sort by boosted score
+ *
+ * Note: This does NOT filter out non-local entities — it promotes local ones.
+ */
+export function getRecommendationsByCountryPreference(
+   profile: UserProfile,
+   userCountry: string | undefined,
+   entityType?: EntityType,
+   limit = 20,
+ ): Recommendation[] {
+   const map = buildSymbolicMap(profile);
+   let filtered = map.recommendations;
+
+   // Filter by type if provided
+   if (entityType) {
+     filtered = filtered.filter(r => r.entity.type === entityType);
+   }
+
+   // If no country preference, return as-is
+   if (!userCountry) {
+     return filtered.slice(0, limit);
+   }
+
+   // Apply country boost: local entities +15 score points
+   const COUNTRY_BOOST = 15;
+   const boosted = filtered.map(rec => ({
+     ...rec,
+     _originalScore: rec.totalScore,
+     totalScore: rec.entity.country === userCountry 
+       ? rec.totalScore + COUNTRY_BOOST 
+       : rec.totalScore,
+   }));
+
+   // Sort by boosted score
+   boosted.sort((a, b) => b.totalScore - a.totalScore);
+
+   return boosted.slice(0, limit);
+ }
