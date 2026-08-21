@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
+import ClaritySection from "@/components/sections/ClaritySection";
 import TodayNumberBanner from "@/components/sections/TodayNumberBanner";
 import NewInsightsTeaser from "@/components/sections/NewInsightsTeaser";
 import { SITE_URL } from "@/lib/seo";
@@ -144,9 +145,10 @@ export default function Home() {
       ))}
       <div className="relative z-10">
         <main id="main-content" className="pt-16">
-          <TodayNumberBanner />
-          <HeroInstrument />
-          <NewInsightsTeaser />
+         <TodayNumberBanner />
+         <HeroInstrument />
+         <ClaritySection />
+         <NewInsightsTeaser />
           <PersonalizedHomeClient />
           <MapPreviewDemo />
           <FamousNumerologyCases />
