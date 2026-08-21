@@ -1,21 +1,13 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
+import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
-import SocialProofSection from "@/components/sections/SocialProofSection";
-import UseCasesSection from "@/components/sections/UseCasesSection";
-import TodayNumberBanner from "@/components/sections/TodayNumberBanner";
-import NewInsightsTeaser from "@/components/sections/NewInsightsTeaser";
+import CaseStudiesSection from "@/components/sections/CaseStudiesSection";
+import FeaturesSection from "@/components/sections/FeaturesSection";
+import TrustLayer from "@/components/sections/TrustLayer";
+import CTASection from "@/components/sections/CTASection";
 import { SITE_URL } from "@/lib/seo";
 
-const AtlasTeaser = dynamic(() => import("@/components/sections/AtlasTeaser"), { ssr: true });
-const ParejaTeaser = dynamic(() => import("@/components/sections/ParejaTeaser"), { ssr: true });
-const PremiumTeaser = dynamic(() => import("@/components/sections/PremiumTeaser"), { ssr: true });
-const CTAFinal = dynamic(() => import("@/components/sections/CTAFinal"), { ssr: true });
-const TrustSignals = dynamic(() => import("@/components/social/TrustSignals"), { ssr: true });
-const PersonalizedHomeClient = dynamic(() => import("@/components/sections/PersonalizedHomeClient"), { ssr: true });
-const MapPreviewDemo = dynamic(() => import("@/components/sections/MapPreviewDemo"), { ssr: true });
-const FamousNumerologyCases = dynamic(() => import("@/components/sections/FamousNumerologyCases"), { ssr: true });
-const QuienHaceEsto = dynamic(() => import("@/components/sections/QuienHaceEsto"), { ssr: true });
 const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true });
 
 const homeSchemas = [
@@ -98,73 +90,55 @@ const homeSchemas = [
         name: "¿Cómo se calculan el Camino de Vida y los sistemas simbólicos?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Aplicamos el método pitagórico clásico reduciendo día, mes y año (respetando los Números Maestros 11, 22 y 33), cálculo solar astronómico para la astrología y el ciclo sexagenario lunar para el animal y elemento del zodíaco chino.",
+          text: "Usamos numerología pitagórica (suma de dígitos hasta un dígito o maestro), astrología tropical (zodíaco occidental + casas), y zodíaco chino sexagenario. Todas las fórmulas están documentadas y auditables en /metodos-y-fuentes.",
         },
-      },
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Inicio",
-        item: SITE_URL,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Mapa Personal",
-        item: `${SITE_URL}/profile`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Modo Pareja",
-        item: `${SITE_URL}/pareja`,
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
-        name: "Dashboard Hoy",
-        item: `${SITE_URL}/hoy`,
       },
     ],
   },
 ];
 
-export default function Home() {
+export const metadata = {
+  title: "Molino — Tu Mapa Personal de Autoconocimiento",
+  description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados. Transparencia radical.",
+  openGraph: {
+    title: "Molino — Tu Mapa Personal de Autoconocimiento",
+    description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados.",
+    type: "website",
+    url: SITE_URL,
+  },
+};
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background relative">
-      {homeSchemas.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-      <div className="relative z-10">
-        <main id="main-content" className="pt-16">
-         <TodayNumberBanner />
-         <HeroInstrument />
-         <ClaritySection />
-         <SocialProofSection />
-         <UseCasesSection />
-         <NewInsightsTeaser />
-          <PersonalizedHomeClient />
-          <MapPreviewDemo />
-          <FamousNumerologyCases />
-          <ParejaTeaser />
-          <PremiumTeaser />
-          <TrustSignals />
-          <CTAFinal />
-          <AtlasTeaser />
-          <QuienHaceEsto />
-          <FAQ />
-        </main>
-      </div>
-    </div>
+    <>
+      <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
+        {/* Hero — Date Input */}
+        <HeroInstrument />
+
+        {/* Proof — Interactive Map Demo */}
+        <ProofSection />
+
+        {/* Clarity — Molino vs Traditional */}
+        <ClaritySection />
+
+        {/* Case Studies — Real Examples */}
+        <CaseStudiesSection />
+
+        {/* Features — Six Tools */}
+        <FeaturesSection />
+
+        {/* Trust Layer — Privacy & Architecture */}
+        <TrustLayer />
+
+        {/* Final CTA */}
+        <CTASection />
+
+        {/* FAQ */}
+        <FAQ />
+      </main>
+
+      {/* JSON-LD Schema */}
+      <script type="application/ld+json">{JSON.stringify(homeSchemas)}</script>
+    </>
   );
 }
