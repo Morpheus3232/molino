@@ -135,7 +135,7 @@ export default function ClaritySection() {
         {/* Micro CTA */}
         <motion.div {...fadeUp} className="text-center pt-8 border-t border-ink/10">
           <p className="text-sm text-muted mb-4">
-            Quieres saber más sobre los métodos que usamos?
+            ¿Querés saber más sobre los métodos que usamos?
           </p>
           <Link
             href="/metodos-y-fuentes"

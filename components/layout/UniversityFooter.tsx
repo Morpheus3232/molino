@@ -19,7 +19,7 @@ const FOOTER_LINKS = [
   { href: "/privacidad", label: "Privacidad" },
 ];
 
-const CONTACT_EMAIL = "versionlimitada@proton.me";
+const CONTACT_EMAIL = "hola@molino.app";
 
 export default async function UniversityFooter() {
   const memberCount = await getMemberCount();

@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   const premiumToken = await getOrCreatePremiumToken(profileHash);
   if (!premiumToken) {
     return NextResponse.json({
-      error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+      error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a hola@molino.app.',
     }, { status: 503 });
   }
 

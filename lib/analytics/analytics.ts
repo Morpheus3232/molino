@@ -122,7 +122,7 @@ class Analytics {
       this.saveToStorage();
 
       if (process.env.NODE_ENV !== "production") {
-        console.log("📊 Analytics:", fullEvent);
+        // console.log("📊 Analytics:", fullEvent) — debug removed in production;
       }
 
       return fullEvent;

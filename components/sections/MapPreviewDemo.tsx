@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Sparkles, Hash, Sun, Compass, ArrowRight, ShieldCheck, Check } from "lucide-react";
 import Link from "next/link";
 import Card from "@/components/ui/Card";
@@ -208,7 +208,7 @@ export default function MapPreviewDemo() {
 
           {/* Dynamic Content Panel */}
           <div className="p-5 sm:p-6 rounded-2xl bg-card border border-ink/10">
-            <AnimatePresence mode="wait">
+            <div>
               {activeTab === "general" && (
                 <motion.div
                   key="general"
@@ -306,7 +306,7 @@ export default function MapPreviewDemo() {
                   </p>
                 </motion.div>
               )}
-            </AnimatePresence>
+            </div>
           </div>
 
           {/* CTA Footer */}
@@ -317,7 +317,7 @@ export default function MapPreviewDemo() {
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold rounded-xl hover:bg-gold-hover transition-colors shadow-md"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Generá tu mapa</span>
+              <span>Entendé tu mapa</span>
             </button>
             <p className="font-mono text-[11px] text-muted mt-2">
               100% privado en tu navegador · Sin registro ni costo

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import { Menu, X, Sparkles } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -160,7 +160,7 @@ export default function UniversityHeader() {
         </div>
 
         {/* Mobile menu */}
-        <AnimatePresence>
+        <div>
           {menuOpen && (
             <motion.div
               id="mobile-menu"
@@ -215,11 +215,11 @@ export default function UniversityHeader() {
               </nav>
             </motion.div>
           )}
-        </AnimatePresence>
+        </div>
       </motion.header>
 
       {/* Confirm new profile modal */}
-      <AnimatePresence>
+      <div>
         {showConfirm && (
           <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
             <motion.div
@@ -246,7 +246,7 @@ export default function UniversityHeader() {
             </motion.div>
           </div>
         )}
-      </AnimatePresence>
+      </div>
     </>
   );
 }

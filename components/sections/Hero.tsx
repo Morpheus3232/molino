@@ -18,7 +18,7 @@ function isValidBirthDate(value: string): boolean {
   return year >= 1900 && birth < new Date();
 }
 
-const CTA_LABEL = "Descubrí tu mapa";
+const CTA_LABEL = "Entendé tu mapa";
 
 export default function Hero() {
   const router = useRouter();
