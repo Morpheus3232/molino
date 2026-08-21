@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import ClaritySection from "@/components/sections/ClaritySection";
+import SocialProofSection from "@/components/sections/SocialProofSection";
+import UseCasesSection from "@/components/sections/UseCasesSection";
 import TodayNumberBanner from "@/components/sections/TodayNumberBanner";
 import NewInsightsTeaser from "@/components/sections/NewInsightsTeaser";
 import { SITE_URL } from "@/lib/seo";
@@ -148,6 +150,8 @@ export default function Home() {
          <TodayNumberBanner />
          <HeroInstrument />
          <ClaritySection />
+         <SocialProofSection />
+         <UseCasesSection />
          <NewInsightsTeaser />
           <PersonalizedHomeClient />
           <MapPreviewDemo />
