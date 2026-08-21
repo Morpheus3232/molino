@@ -25,12 +25,14 @@ import { COUNTRIES_ATLAS } from "./countries-atlas";
 import { CITIES_60 } from "./cities-60";
 import { CITIES_ATLAS } from "./cities-atlas";
 import { CITIES_ARGENTINA } from "./cities-argentina";
+import { CITIES_ARGENTINA_COMPLETO } from "./cities-argentina-completo";
 import { CITIES_URUGUAY } from "./cities-uruguay";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
 import { TEAMS_CHILE } from "./teams-chile";
 import { TEAMS_PERU } from "./teams-peru";
 import { TEAMS_URUGUAY } from "./teams-uruguay";
 import { UNIVERSITIES_ARGENTINA } from "./universities-argentina";
+import { UNIVERSITIES_BUENOS_AIRES } from "./universities-buenos-aires";
 import { UNIVERSITIES_CHILE } from "./universities-chile";
 import { UNIVERSITIES_PERU } from "./universities-peru";
 import { UNIVERSITIES_URUGUAY } from "./universities-uruguay";
@@ -213,15 +215,17 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
   ...COUNTRIES_ATLAS,
   ...CITIES_60,
   ...CITIES_ATLAS,
-   ...CITIES_ARGENTINA,
-   ...CITIES_URUGUAY,
+    ...CITIES_ARGENTINA,
+    ...CITIES_ARGENTINA_COMPLETO,
+    ...CITIES_URUGUAY,
 
   ...TEAMS_ARGENTINA,
   ...TEAMS_CHILE,
   ...TEAMS_PERU,
   ...TEAMS_URUGUAY,
-  ...UNIVERSITIES_ARGENTINA,
-  ...UNIVERSITIES_CHILE,
+   ...UNIVERSITIES_ARGENTINA,
+   ...UNIVERSITIES_BUENOS_AIRES,
+   ...UNIVERSITIES_CHILE,
   ...UNIVERSITIES_PERU,
   ...UNIVERSITIES_URUGUAY,
 
