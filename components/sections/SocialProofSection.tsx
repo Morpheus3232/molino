@@ -93,7 +93,7 @@ export default function SocialProofSection() {
 
               {/* Quote */}
               <p className="text-xs sm:text-sm text-foreground leading-relaxed flex-1 mb-4">
-                "{testimonial.quote}"
+                &quot;{testimonial.quote}&quot;
               </p>
 
               {/* Author */}
