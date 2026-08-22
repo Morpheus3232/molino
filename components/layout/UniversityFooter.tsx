@@ -3,24 +3,28 @@ import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { getMemberCount } from "@/lib/metrics";
 
+// Arquitectura coherente con el header (Fase 4): "Tu mapa" son las mismas
+// rutas CORE del header (sin repetir Mi Mapa/Hoy/Academia, ya están arriba
+// en cada página); "Explorar" es el mismo ecosistema del dropdown del
+// header, no una lista distinta. El resto queda agrupado por función.
 const FOOTER_COLUMNS = [
   {
-    title: "Explorar",
+    title: "Tu mapa",
     links: [
-      { href: "/", label: "Inicio" },
-      { href: "/hoy", label: "Hoy" },
-      { href: "/journal", label: "Journal" },
-      { href: "/calendario", label: "Calendario" },
       { href: "/mundo", label: "Afinidades" },
+      { href: "/pareja", label: "Modo Pareja" },
+      { href: "/premium", label: "Premium" },
+      { href: "/onboarding", label: "Crear mi mapa" },
     ],
   },
   {
-    title: "Descubrir",
+    title: "Explorar",
     links: [
       { href: "/atlas", label: "Atlas" },
       { href: "/biblioteca", label: "Biblioteca" },
-      { href: "/academy", label: "Academia" },
       { href: "/blog", label: "Blog" },
+      { href: "/journal", label: "Journal" },
+      { href: "/calendario", label: "Calendario" },
     ],
   },
   {
@@ -28,20 +32,19 @@ const FOOTER_COLUMNS = [
     links: [
       { href: "/nosotros", label: "Nosotros" },
       { href: "/profesionales", label: "Profesionales" },
-      { href: "/premium", label: "Premium" },
-      { href: "/pareja", label: "Modo Pareja" },
       { href: "/socios", label: "Socios" },
+      { href: "/embed", label: "Widget" },
+      { href: "/docs", label: "API / Docs" },
     ],
   },
   {
-    title: "Recursos",
+    title: "Transparencia",
     links: [
-      { href: "/embed", label: "Widget" },
-      { href: "/docs", label: "API / Docs" },
       { href: "/metodos-y-fuentes", label: "Métodos y Fuentes" },
       { href: "/transparencia", label: "Transparencia" },
-      { href: "/changelog", label: "Changelog" },
       { href: "/privacidad", label: "Privacidad" },
+      { href: "/terminos", label: "Términos" },
+      { href: "/changelog", label: "Changelog" },
     ],
   },
 ];

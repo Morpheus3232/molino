@@ -20,10 +20,17 @@ describe("Product consistency — Molino", () => {
   test("UniversityHeader nav links do not contain 'Descubrir'", () => {
     const fs = require("fs");
     const path = require("path");
-    const navPath = path.resolve(__dirname, "..", "lib", "data", "navigation.ts");
     const headerPath = path.resolve(__dirname, "..", "components", "layout", "UniversityHeader.tsx");
-    expect(fs.readFileSync(navPath, "utf8")).not.toContain("Descubrir");
     expect(fs.readFileSync(headerPath, "utf8")).not.toContain("Descubrir");
+  });
+
+  // lib/data/navigation.ts se eliminó en Fase 4 (2026-08-22): 0 imports en
+  // todo el repo, footer real vive hardcodeado en UniversityFooter.tsx.
+  test("lib/data/navigation.ts (huérfano) fue eliminado", () => {
+    const fs = require("fs");
+    const path = require("path");
+    const navPath = path.resolve(__dirname, "..", "lib", "data", "navigation.ts");
+    expect(fs.existsSync(navPath)).toBe(false);
   });
 
   test("saved ProfileHub does not expose DailyInsights", () => {
