@@ -4,7 +4,7 @@ import { Sparkles, ArrowRight, Zap, Sun, Heart, Smartphone, Moon, ExternalLink, 
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
-  title: "Atajos de Apple (Siri Shortcuts) & Automatizaciones — Molino",
+  title: "Atajos de Apple (Siri Shortcuts) & Automatizaciones",
   description:
     "Configurá Atajos de iOS, rutinas de Siri y webhooks para consultar tu vibración diaria, fases lunares y sinastría automáticamente.",
   path: "/shortcuts",

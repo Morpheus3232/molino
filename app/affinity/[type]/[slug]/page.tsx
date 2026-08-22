@@ -35,14 +35,14 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
       canonical: siteUrl(`/affinity/${type}/${slug}`),
     },
     openGraph: {
-      title: `Mi afinidad simbólica con ${entity.name} | Molino`,
+      title: `Mi afinidad simbólica con ${entity.name}`,
       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
       type: "website",
       url: siteUrl(`/affinity/${type}/${slug}`),
     },
     twitter: {
       card: "summary_large_image",
-      title: `Mi afinidad simbólica con ${entity.name} | Molino`,
+      title: `Mi afinidad simbólica con ${entity.name}`,
       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino.`,
     },
   };

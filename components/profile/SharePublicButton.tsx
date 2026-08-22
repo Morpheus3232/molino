@@ -29,7 +29,7 @@ export default function SharePublicButton({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Mi ${path === "/circulo" ? "círculo" : "mundo"} — Molino`,
+          title: `Mi ${path === "/circulo" ? "círculo" : "mundo"}`,
           text,
           url,
         });

@@ -34,14 +34,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { pair } = await params;
   const parsed = parsePair(pair);
-  if (!parsed) return { title: "Compatibilidad no encontrada | Molino" };
+  if (!parsed) return { title: "Compatibilidad no encontrada" };
   const { a, b } = parsed;
   const nameA = SIGN_NAMES[a];
   const nameB = SIGN_NAMES[b];
   const factA = SIGN_FACTS[nameA];
   const factB = SIGN_FACTS[nameB];
 
-  const title = `Compatibilidad ${nameA} y ${nameB}: ${factA.element} + ${factB.element} — Molino`;
+  const title = `Compatibilidad ${nameA} y ${nameB}: ${factA.element} + ${factB.element}`;
   const description = `Descubrí la compatibilidad astrológica entre ${nameA} (${factA.element}, ${factA.modality}) y ${nameB} (${factB.element}, ${factB.modality}). Amor, comunicación y sinergia elemental.`;
   const url = siteUrl(`/compatibilidad/${a}-${b}`);
 

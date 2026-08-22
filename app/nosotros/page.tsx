@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Quiénes somos",
   description: "Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.",
   path: "/nosotros",
-  ogTitle: "Quiénes somos — Molino",
+  ogTitle: "Quiénes somos",
   ogDescription: "La historia y los valores detrás de Molino: por qué lo construimos y en qué creemos.",
   image: "/opengraph-image",
 });
@@ -14,7 +14,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: "Quiénes somos — Molino",
+    name: "Quiénes somos",
     description: "Por qué existe Molino: autoconocimiento sin sensacionalismo, cruzando numerología, astrología y zodíaco chino en una sola herramienta honesta.",
     url: siteUrl("/nosotros"),
   },

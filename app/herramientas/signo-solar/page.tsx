@@ -189,7 +189,7 @@ export default function SignoSolarPage() {
                   onClick={() => {
                     const text = `Mi signo solar es ${result.sign} (${result.element} · ${result.modality}). Leé el tuyo en Molino.`;
                     if (navigator.share) {
-                      navigator.share({ title: `Mi Signo Solar — ${result.sign} — Molino`, text }).catch(() => {});
+                      navigator.share({ title: `Mi Signo Solar — ${result.sign}`, text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

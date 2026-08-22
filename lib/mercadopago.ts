@@ -153,7 +153,7 @@ export async function createPreference(
 
   const item = {
     id: `${productId}_${profileHash}`,
-    title: isPlan ? `Molino — Plan ${plan!.id}` : 'Molino — Mapa Personal Completo',
+    title: isPlan ? `Plan ${plan!.id}` : 'Mapa Personal Completo',
     quantity: 1,
     unit_price: price,
     currency_id: currency,
@@ -224,7 +224,7 @@ export async function createGiftPreference(giftCode: string) {
 
   const item = {
     id: `gift_${giftCode}`,
-    title: 'Molino — Regalo: Mapa Personal Completo',
+    title: 'Regalo: Mapa Personal Completo',
     quantity: 1,
     unit_price: price,
     currency_id: PRODUCT_CURRENCY_USD,
@@ -342,7 +342,7 @@ export async function processPayment({
     body: {
       ...paymentData,
       transaction_amount: expectedAmount,
-      description: 'Molino — Mapa Personal Completo',
+      description: 'Mapa Personal Completo',
       metadata: {
         profile_hash: profileHash,
         product: PRODUCT_ID,

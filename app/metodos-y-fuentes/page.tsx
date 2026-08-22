@@ -4,7 +4,7 @@ import { BookMarked, Compass, Github, Sparkles } from "lucide-react";
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
-  title: "Métodos y Fuentes — Molino",
+  title: "Métodos y Fuentes",
   description:
     "Qué son la numerología, la astrología y el zodíaco chino, cómo Molino los calcula y por qué los tratamos como herramienta de reflexión y no como ciencia ni predicción.",
   path: "/metodos-y-fuentes",
@@ -16,7 +16,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Métodos y Fuentes — Molino",
+    headline: "Métodos y Fuentes",
     description:
       "Qué son la numerología, la astrología y el zodíaco chino, cómo Molino los calcula y por qué los tratamos como herramienta de reflexión y no como ciencia ni predicción.",
     author: { "@type": "Organization", name: "Molino" },

@@ -97,10 +97,10 @@ const homeSchemas = [
 ];
 
 export const metadata = {
-  title: "Molino — Tu Mapa Personal de Autoconocimiento",
+  title: "Tu Mapa Personal de Autoconocimiento",
   description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados. Transparencia radical.",
   openGraph: {
-    title: "Molino — Tu Mapa Personal de Autoconocimiento",
+    title: "Tu Mapa Personal de Autoconocimiento",
     description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados.",
     type: "website",
     url: SITE_URL,

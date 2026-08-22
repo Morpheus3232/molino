@@ -49,7 +49,7 @@ export function signoXCasaRoutes(): ProgrammaticRoute[] {
       const path = `signo/${n}/casa/${house.number}`;
       routes.push({
         path,
-        title: `Número ${n} en la Casa ${house.number} (${house.name}) — Numerología y Astrología | Molino`,
+        title: `Número ${n} en la Casa ${house.number} (${house.name}) — Numerología y Astrología`,
         description: `Qué significa tu número ${n} manifestado en la casa ${house.number} (${house.name}, ${house.area}). Síntesis de numerología y astrología para ${house.name.toLowerCase()}.`,
         priority: 0.6,
       });
@@ -73,7 +73,7 @@ export function compatibilidadSignosRoutes(): ProgrammaticRoute[] {
       const path = `compatibilidad/${a}-${b}`;
       routes.push({
         path,
-        title: `Compatibilidad ${nameA} y ${nameB}: ${factA.element} + ${factB.element} — Molino`,
+        title: `Compatibilidad ${nameA} y ${nameB}: ${factA.element} + ${factB.element}`,
         description: `Descubrí la compatibilidad astrológica entre ${nameA} (${factA.element}, ${factA.modality}) y ${nameB} (${factB.element}, ${factB.modality}). Amor, comunicación y sinergia elemental.`,
         priority: 0.7,
       });

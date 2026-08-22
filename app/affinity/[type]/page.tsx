@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
       canonical: siteUrl(`/affinity/${type}`),
     },
     openGraph: {
-      title: `Afinidad Personal · ${meta.plural} | Molino`,
+      title: `Afinidad Personal · ${meta.plural}`,
       description: meta.description,
       type: "website",
       url: siteUrl(`/affinity/${type}`),

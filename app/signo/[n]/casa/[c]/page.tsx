@@ -34,9 +34,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const num = Number(n);
   const house = HOUSE_BY_NUMBER[Number(c)];
   const fact = numberFact(num);
-  if (!house || !fact) return { title: "No encontrado | Molino" };
+  if (!house || !fact) return { title: "No encontrado" };
 
-  const title = `Número ${num} (${fact.title}) en la Casa ${house.number} (${house.name}) — Molino`;
+  const title = `Número ${num} (${fact.title}) en la Casa ${house.number} (${house.name})`;
   const description = `Qué significa tu número ${num} (${fact.title}: ${fact.keywords.join(", ")}) manifestado en la casa astrológica ${house.number} (${house.name}, ${house.area}). Síntesis de numerología y astrología.`;
   const url = siteUrl(`/signo/${num}/casa/${house.number}`);
 

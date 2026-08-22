@@ -3,13 +3,13 @@ import { siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   // { default, template } — ver nota en app/herramientas/layout.tsx.
-  title: { default: "Afinidad", template: "%s | Molino" },
+  title: { default: "Afinidad", template: "%s" },
   description: "Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.",
   alternates: {
     canonical: siteUrl("/affinity"),
   },
   openGraph: {
-    title: "Afinidad — Molino",
+    title: "Afinidad",
     description: "Afinidad simbólica entre vos y el mundo.",
     type: "website",
     url: siteUrl("/affinity"),

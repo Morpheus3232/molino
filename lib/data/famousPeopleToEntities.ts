@@ -1213,7 +1213,7 @@ function personToEntity(person: FamousPerson): AtlasEntityInput {
         label: "Nacimiento",
         year: person.year,
         description: `${person.name} nace en ${person.year}.`,
-        source: "Molino — famousPeople.ts (selección curada)",
+        source: "famousPeople.ts (selección curada)",
         confidence: "media",
         primaryForAffinity: true,
       },

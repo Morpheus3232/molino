@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Guía",
   description: "Artículos, tutoriales y guías completas sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
   path: "/guia",
-  ogTitle: "Guía — Molino",
+  ogTitle: "Guía",
   ogDescription: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
 });
 

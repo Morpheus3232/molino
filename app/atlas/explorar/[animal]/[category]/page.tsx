@@ -29,26 +29,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { animal: rawAnimal, category } = await params;
   const animal = decodeURIComponent(rawAnimal);
   if (!getAllAnimalNames().includes(animal) || !VALID_CATEGORIES.includes(category as EntityType)) {
-    return { title: "No encontrado | Molino" };
+    return { title: "No encontrado" };
   }
   const meta = ENTITY_TYPES[category as EntityType];
   const profile = getAnimalProfile(animal as Animal);
   const canonical = siteUrl(`/atlas/explorar/${animal}/${category}`);
   return {
-    title: `${meta.plural} de ${animal} — Atlas | Molino`,
+    title: `${meta.plural} de ${animal} — Atlas`,
     description: profile
       ? `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} ${profile.emoji} según el Zodiaco Chino.`
       : `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} según el Zodiaco Chino.`,
     alternates: { canonical },
     openGraph: {
-      title: `${meta.plural} de ${animal} — Atlas | Molino`,
+      title: `${meta.plural} de ${animal} — Atlas`,
       description: `Explorá ${meta.plural.toLowerCase()} del Zodiaco Chino en el Atlas de Molino.`,
       type: "website",
       url: canonical,
     },
     twitter: {
       card: "summary_large_image",
-      title: `${meta.plural} de ${animal} — Atlas | Molino`,
+      title: `${meta.plural} de ${animal} — Atlas`,
       description: `Explorá ${meta.plural.toLowerCase()} asociadas a ${animal} según el Zodiaco Chino.`,
     },
   };

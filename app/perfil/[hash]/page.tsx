@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Perfil compartido", robots: { index: false, follow: true } };
   }
   return {
-    title: "Mapa personal compartido — Molino",
+    title: "Mapa personal compartido",
     description: "Mapa personal de autoconocimiento compartido: numerología, astrología y zodíaco chino.",
     robots: { index: false, follow: true },
     alternates: { canonical: siteUrl(`/perfil/${hash}`) },

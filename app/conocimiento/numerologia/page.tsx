@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Numerología — El lenguaje simbólico de los números",
   description: "Aprendé sobre numerología: Camino de Vida, Expresión, Alma, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
   path: "/conocimiento/numerologia",
-  ogTitle: "Numerología — Molino",
+  ogTitle: "Numerología",
   ogDescription: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
 });
 

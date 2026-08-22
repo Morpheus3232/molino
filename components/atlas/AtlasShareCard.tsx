@@ -66,7 +66,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         const file = new File([blob], `molino-${sanitizeFilenamePart(entity.name) || "atlas"}.png`, { type: "image/png" });
         try {
           await navigator.share({
-            title: headline ?? `Afinidad con ${entity.name} — Molino`,
+            title: headline ?? `Afinidad con ${entity.name}`,
             text: shareText,
             url: shareUrl,
             files: [file],

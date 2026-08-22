@@ -51,7 +51,7 @@ export default function EmbedWidgetPage() {
 
   const embedCode = `<iframe src="${embedUrl}" width="100%" height="${
     isCompact ? "320" : "440"
-  }" style="border:none;border-radius:20px;overflow:hidden;" title="Molino — Calculadora de Mapa Personal"></iframe>`;
+  }" style="border:none;border-radius:20px;overflow:hidden;" title="Calculadora de Mapa Personal"></iframe>`;
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(embedCode);

@@ -293,7 +293,7 @@ export default function ZodiacoChinoCalcPage() {
                   onClick={() => {
                     const text = `Soy ${result.animal} de elemento ${result.element}. Leé tu animal del zodiaco chino en Molino.`;
                     if (navigator.share) {
-                      navigator.share({ title: `Mi Zodiaco Chino — ${result.animal} — Molino`, text }).catch(() => {});
+                      navigator.share({ title: `Mi Zodiaco Chino — ${result.animal}`, text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

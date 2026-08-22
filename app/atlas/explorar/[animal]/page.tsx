@@ -19,17 +19,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { animal } = await params;
   const decoded = decodeURIComponent(animal);
   if (!getAllAnimalNames().includes(decoded)) {
-    return { title: "Animal no encontrado | Molino" };
+    return { title: "Animal no encontrado" };
   }
   const profile = getAnimalProfile(decoded as Animal);
   return {
-    title: `${decoded} — Explorar | Atlas | Molino`,
+    title: `${decoded} — Explorar | Atlas`,
     description: profile
       ? `Explorá países, ciudades, marcas y entidades asociadas a ${decoded} ${profile.emoji} según el Zodiaco Chino.`
       : `Explorá entidades asociadas a ${decoded} según el Zodiaco Chino.`,
     alternates: { canonical: siteUrl(`/atlas/explorar/${decoded}`) },
     openGraph: {
-      title: `${decoded} — Explorar | Atlas | Molino`,
+      title: `${decoded} — Explorar | Atlas`,
       description: `Explorá el Atlas de Molino filtrado por ${decoded}.`,
       type: "website",
       url: siteUrl(`/atlas/explorar/${decoded}`),

@@ -2,7 +2,7 @@ import { createRouteMetadata } from "@/lib/seo";
 import { getMemberCount, getMonthlyMemberCounts } from "@/lib/metrics";
 
 export const metadata = createRouteMetadata({
-  title: "Transparencia — Molino",
+  title: "Transparencia",
   description:
     "Métricas públicas y honestas de Molino: cuántos miembros reales (pagos validados) hay, mes a mes, y cómo financiamos el proyecto sin vender tus datos.",
   path: "/transparencia",

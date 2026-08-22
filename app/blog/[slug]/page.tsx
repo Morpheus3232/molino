@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: url,
     },
     openGraph: {
-      title: `${post.title} | Molino`,
+      title: `${post.title}`,
       description: post.metaDescription,
       type: "article",
       url,

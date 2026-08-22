@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Astrología — El lenguaje de los astros",
   description: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía. Un sistema simbólico con 4000 años de historia.",
   path: "/conocimiento/astrologia",
-  ogTitle: "Astrología — Molino",
+  ogTitle: "Astrología",
   ogDescription: "Aprendé sobre astrología: signos zodiacales, elementos, modalidades y la diferencia con la astronomía.",
 });
 

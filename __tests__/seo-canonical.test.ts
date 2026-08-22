@@ -31,10 +31,10 @@ describe("Technical SEO & Canonical URLs", () => {
   });
 
   it("formats titles consistently with formatTitle", () => {
-    expect(formatTitle("")).toBe("Molino — Mapa Personal de Autoconocimiento");
-    expect(formatTitle("Filosofía")).toBe("Filosofía | Molino");
-    expect(formatTitle("Contacto | Molino")).toBe("Contacto | Molino");
-    expect(formatTitle("Tu Mapa — Molino")).toBe("Tu Mapa — Molino");
+    // La marca no aparece en la superficie visible de los títulos
+    // (decisión de producto): formatTitle devuelve el título tal cual.
+    expect(formatTitle("")).toBe("Mapa Personal de Autoconocimiento");
+    expect(formatTitle("Filosofía")).toBe("Filosofía");
   });
 
   it("generates complete and valid route metadata via createRouteMetadata", () => {
@@ -45,13 +45,12 @@ describe("Technical SEO & Canonical URLs", () => {
     });
 
     // { absolute } — no un string plano — para que el title.template de un
-    // layout ancestro no vuelva a envolver un título que formatTitle() ya
-    // completó, lo que producía "X | Molino | Molino".
-    expect(meta.title).toEqual({ absolute: "Filosofía | Molino" });
+    // layout ancestro no envuelva el título y duplique sufijos de marca.
+    expect(meta.title).toEqual({ absolute: "Filosofía" });
     expect(meta.description).toBe("Nuestra visión del autoconocimiento.");
     expect(meta.alternates?.canonical).toBe(`${SITE_URL}/filosofia`);
     expect(meta.robots).toEqual({ index: true, follow: true });
-    expect(meta.openGraph?.title).toBe("Filosofía | Molino");
+    expect(meta.openGraph?.title).toBe("Filosofía");
     expect(meta.openGraph?.url).toBe(`${SITE_URL}/filosofia`);
     expect(meta.openGraph?.locale).toBe("es_419");
   });

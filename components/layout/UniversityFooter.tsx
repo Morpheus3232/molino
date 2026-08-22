@@ -56,7 +56,7 @@ export default async function UniversityFooter() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
         <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-between md:gap-8">
           <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xs">
-            <Link href="/" className="inline-flex items-center gap-2.5 group" aria-label="Molino — Ir al inicio">
+            <Link href="/" className="inline-flex items-center gap-2.5 group" aria-label="Ir al inicio">
               <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-md">
                 <Logo className="w-6 h-6" />
               </span>

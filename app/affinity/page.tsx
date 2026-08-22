@@ -7,7 +7,7 @@ export const metadata = createRouteMetadata({
   title: "Afinidad",
   description: "Descubrí la afinidad simbólica entre vos y el mundo: marcas, países, ciudades y personas históricas.",
   path: "/affinity",
-  ogTitle: "Afinidad — Molino",
+  ogTitle: "Afinidad",
   ogDescription: "Afinidad simbólica entre vos y el mundo.",
   image: "/opengraph-image",
 });

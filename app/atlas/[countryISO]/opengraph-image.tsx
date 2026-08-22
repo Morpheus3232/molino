@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { getAtlasCountries, isoToFlagEmoji } from "@/lib/data/atlas-queries";
 
-export const alt = "Atlas de país — Molino";
+export const alt = "Atlas de país";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

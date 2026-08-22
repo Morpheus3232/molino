@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Camino de Vida 7 — El buscador de la verdad",
   description: "Guía completa del Camino de Vida 7 en numerología: significado, personalidad, fortalezas, desafíos, relaciones y crecimiento personal.",
   path: "/guia/camino-de-vida-7",
-  ogTitle: "Camino de Vida 7 — El buscador de la verdad | Guía | Molino",
+  ogTitle: "Camino de Vida 7 — El buscador de la verdad | Guía",
   ogDescription: "Significado, personalidad y camino de crecimiento del número 7 en numerología.",
 });
 

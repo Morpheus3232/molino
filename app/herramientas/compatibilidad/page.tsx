@@ -237,7 +237,7 @@ export default function CompatibilidadCalcPage() {
                   onClick={() => {
                     const text = `Compatibilidad zodiacal: ${compatibility.label}. Calculá la tuya en Molino.`;
                     if (navigator.share) {
-                      navigator.share({ title: "Compatibilidad — Molino", text }).catch(() => {});
+                      navigator.share({ title: "Compatibilidad", text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

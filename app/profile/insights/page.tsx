@@ -9,7 +9,7 @@ export const metadata = createRouteMetadata({
   title: "Mis patrones",
   description: "Tu exploración personal de patrones simbólicos. Conexiones, recomendaciones y descubrimientos según el zodíaco chino.",
   path: "/profile/insights",
-  ogTitle: "Mis patrones — Molino",
+  ogTitle: "Mis patrones",
   ogDescription: "Exploración personal basada en tradiciones culturales del zodíaco chino.",
 });
 

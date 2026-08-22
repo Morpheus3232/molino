@@ -16,14 +16,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { countryISO } = await params;
   const name = getCountryName(countryISO.toUpperCase());
-  if (!name) return { title: "País no encontrado | Molino" };
+  if (!name) return { title: "País no encontrado" };
   const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}`);
   return {
-    title: `Atlas de ${name} — Afinidades | Molino`,
+    title: `Atlas de ${name} — Afinidades`,
     description: `Explorá las afinidades simbólicas de ${name}: ciudades, clubes, universidades, marcas y artistas según el zodíaco chino.`,
     alternates: { canonical },
     openGraph: {
-      title: `Atlas de ${name} — Afinidades | Molino`,
+      title: `Atlas de ${name} — Afinidades`,
       description: `Explorá las afinidades simbólicas de ${name} según el zodíaco chino.`,
       type: "website",
       url: canonical,

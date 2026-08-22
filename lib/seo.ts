@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 export const SITE_URL = "https://www.molino.app";
-export const SITE_NAME = "Molino";
+// Nombre de marca eliminado de la superficie visible del sitio por decisión
+// de producto. El dominio queda como identificador técnico (JSON-LD, OG).
+export const SITE_NAME = "molino.app";
 export const SITE_DESCRIPTION =
   "Tu mapa personal de autoconocimiento. Pitagórica, astrología y zodiaco chino — gratis, sin registro, 100% local.";
 export const OG_IMAGE = "/og-image.png";
@@ -12,9 +14,8 @@ export function siteUrl(path: string = ""): string {
 }
 
 export function formatTitle(title: string): string {
-  if (!title) return "Molino — Mapa Personal de Autoconocimiento";
-  if (title.endsWith(" | Molino") || title.endsWith(" — Molino")) return title;
-  return `${title} | Molino`;
+  if (!title) return "Mapa Personal de Autoconocimiento";
+  return title;
 }
 
 export function createRouteMetadata({
@@ -46,9 +47,8 @@ export function createRouteMetadata({
   return {
     // { absolute } (no un string plano) le dice a Next.js que NO aplique
     // el title.template de ningún layout ancestro sobre este título — sin
-    // esto, fullTitle (que ya incluye "| Molino" vía formatTitle) queda
-    // envuelto una segunda vez por el template del layout padre,
-    // produciendo "X | Molino | Molino".
+    // esto, fullTitle quedaría envuelto una segunda vez por el template
+    // del layout padre, duplicando el sufijo de marca.
     title: { absolute: fullTitle },
     description,
     alternates: noIndex ? undefined : { canonical: canonicalUrl },
