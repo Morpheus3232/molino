@@ -40,17 +40,15 @@ function MatchCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.1 * Math.min(index, 4), ease: [0.22, 1, 0.36, 1] }}
       className={`rounded-2xl border p-4 sm:p-5 transition-all relative overflow-hidden flex flex-col ${
-        featured
-          ? "sm:col-span-2 bg-gradient-to-br from-accent/[0.07] via-card to-background border-accent/40 shadow-md"
-          : matchCount >= 2
-            ? "bg-gradient-to-br from-card to-background border-accent/30 shadow-sm"
-            : "bg-card border-ink/10 shadow-sm"
+        matchCount >= 2
+          ? "bg-gradient-to-br from-card to-background border-accent/30 shadow-sm"
+          : "bg-card border-ink/10 shadow-sm"
       }`}
     >
       {/* Top resonance badge */}
       <div className="absolute top-0 right-0 flex">
         {featured && (
-          <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-foreground text-background font-bold">
+          <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
             <Star className="w-2.5 h-2.5" />
             Principal
           </span>
@@ -66,18 +64,11 @@ function MatchCard({
       {/* Header: emoji + Name + Meta (sin avatar de iniciales) */}
       <div className="flex-1">
       <div className="flex items-start gap-3">
-        <span
-          className={`${featured ? "text-3xl sm:text-4xl" : "text-xl"} leading-none flex-shrink-0 mt-0.5`}
-          aria-hidden="true"
-        >
+        <span className="text-xl leading-none flex-shrink-0 mt-0.5" aria-hidden="true">
           {person.emoji}
         </span>
-        <div className="min-w-0 flex-1 pr-12 sm:pr-20">
-          <h3
-            className={`font-heading font-bold text-foreground leading-tight ${
-              featured ? "text-base sm:text-xl" : "text-sm sm:text-base"
-            }`}
-          >
+        <div className="min-w-0 flex-1 pr-14">
+          <h3 className="font-heading text-sm sm:text-base font-bold text-foreground leading-tight">
             {person.name}
           </h3>
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mt-1">
@@ -93,22 +84,14 @@ function MatchCard({
 
       {/* Headline callout */}
       <div className={`mt-3 p-2.5 rounded-lg bg-background/60 border border-ink/5`}>
-        <p
-          className={`font-medium text-foreground leading-snug flex items-start gap-1.5 ${
-            featured ? "text-xs sm:text-sm" : "text-[11px] sm:text-xs"
-          }`}
-        >
-          <Star className={`text-accent mt-0.5 flex-shrink-0 ${featured ? "w-3.5 h-3.5" : "w-3 h-3"}`} />
+        <p className="text-[11px] sm:text-xs font-medium text-foreground leading-snug flex items-start gap-1.5">
+          <Star className="w-3 h-3 text-accent mt-0.5 flex-shrink-0" />
           <span>{headline}</span>
         </p>
       </div>
 
       {/* Bio */}
-      <p
-        className={`text-muted mt-2.5 leading-relaxed ${
-          featured ? "text-xs sm:text-sm text-foreground/80" : "text-[11px] line-clamp-3"
-        }`}
-      >
+      <p className="text-[11px] text-muted mt-2.5 leading-relaxed line-clamp-3">
         {person.shortBio}
       </p>
 
@@ -239,8 +222,8 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         </div>
 
         {/* Grid of Matches (up to 8) — 1 columna en mobile (las cards tienen
-            mucho contenido para 2 col angostas), featured ocupa 2 columnas
-            desde sm para dar jerarquía al match principal. */}
+            mucho contenido para 2 col angostas). Todas las cards del mismo
+            tamaño: la jerarquía la dan los badges, no el tamaño. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {matches.map((match, idx) => (
             <MatchCard
