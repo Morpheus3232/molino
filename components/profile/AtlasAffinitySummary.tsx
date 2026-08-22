@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Compass } from "lucide-react";
 import type { AtlasSection } from "@/lib/affinity-light";
 import { fadeUp } from "@/lib/utils/motion";
 
@@ -35,14 +35,32 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
               {totalEntities} afinidades para {animalName}
             </h2>
           </div>
+
+          <Link
+            href={`/atlas/explorar/${animalSlug}`}
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.18em] text-muted bg-ink/5 border border-ink/10 px-3.5 py-1.5 rounded-full self-start sm:self-auto hover:border-accent/40 hover:text-accent transition-colors"
+          >
+            <Compass className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Atlas de {animalName}</span>
+          </Link>
         </motion.div>
 
         <div className="space-y-8">
           {sections.map((section) => (
             <div key={section.type}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3">
+              {/* Título de categoría linkeado a su listado en el Atlas —
+                  section.type ya es el slug que espera la ruta
+                  /atlas/explorar/[animal]/[category] */}
+              <Link
+                href={`/atlas/explorar/${animalSlug}/${section.type}`}
+                className="group inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3 hover:text-accent transition-colors"
+              >
                 {section.label}
-              </p>
+                <ArrowRight
+                  className="w-3 h-3 opacity-40 -translate-x-0.5 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                  aria-hidden="true"
+                />
+              </Link>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {section.entities.map((e) => (
                   <Link
