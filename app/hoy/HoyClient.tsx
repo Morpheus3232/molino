@@ -28,7 +28,23 @@ export default function HoyClient() {
   // cualquier visitante ese día). No hace falta pedir fecha de nacimiento.
   const daily = useDailyEnergy(profile);
 
-  if (!mounted || loading) return null;
+  if (!mounted || loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
+          <p className="sr-only" role="status" aria-live="polite">Cargando tu energía del día...</p>
+          <div className="animate-pulse space-y-6">
+            <div className="h-4 bg-[var(--skeleton)] rounded w-48 mb-6" />
+            <div className="h-64 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="h-40 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
+              <div className="h-40 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
