@@ -12,6 +12,7 @@ import {
 } from "@/types/journal";
 import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
 import { Sparkles, Check, PenLine, Tag, RefreshCw, Zap, Sun, Moon, Compass } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -29,15 +30,13 @@ interface JournalEditorProps {
   className?: string;
 }
 
-/** Micro-reflexiones para arrancar cuando no hay prompt contextual ni texto.
- * Sirven para bajar la barrera del "no sé qué escribir" sin prometer un
- * análisis que el Motor no calcula. */
+/** Micro-reflexiones para arrancar cuando no hay prompt contextual ni texto. */
 const DAILY_PROMPTS = [
   "¿Qué decisión tomaste hoy, por más chica que sea?",
   "¿Qué emoción dominó tu día y de dónde creés que vino?",
   "¿Hubo una sincronicidad o casualidad que te llamó la atención?",
   "¿Qué te dio energía hoy? ¿Y qué te la sacó?",
-  "¿Qué te llevaría anotar para que tu yo del futuro entienda este momento?",
+  "¿Qué te gustaría anotar para que tu yo del futuro entienda este momento?",
   "¿Te cruzaste con alguien que cambió tu ánimo? ¿Cómo?",
   "¿A qué le dijiste que sí hoy? ¿Y a qué le dijiste que no?",
 ];
@@ -53,12 +52,13 @@ export default function JournalEditor({
   const [content, setContent] = useState(editingEntry?.content || contextualPrompt || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
   const [tags, setTags] = useState<string[]>(editingEntry?.tags || []);
-  // Siempre hoy — el diario registra el presente, no permite reescribir el pasado.
-  const date = useMemo(() => editingEntry?.date || new Date().toISOString().split("T")[0], [editingEntry]);
+  
+  // Siempre fecha local (no UTC) para evitar desfases horarios
+  const date = useMemo(() => editingEntry?.date || toLocalDateKey(new Date()), [editingEntry]);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
-  // Semilla estable por día: arranca la lista de sugerencias en un punto
-  // distinto cada día, así el prompt sugerido no se repite.
+
+  // Semilla de prompt diario
   const initialSeed = useMemo(
     () => Math.floor(new Date().getDate() % DAILY_PROMPTS.length),
     []
@@ -76,7 +76,8 @@ export default function JournalEditor({
   }, []);
 
   const cycleContext = useMemo<JournalCycleContext>(() => {
-    const targetDate = new Date(date + "T12:00:00");
+    const [y, m, d] = date.split("-").map(Number);
+    const targetDate = new Date(y, m - 1, d, 12, 0, 0);
     const year = targetDate.getFullYear();
     const month = targetDate.getMonth() + 1;
 
@@ -116,6 +117,16 @@ export default function JournalEditor({
       return {};
     }
   }, [profile, date]);
+
+  const formattedDisplayDate = useMemo(() => {
+    const [y, m, d] = date.split("-").map(Number);
+    const targetDate = new Date(y, m - 1, d, 12, 0, 0);
+    return targetDate.toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+  }, [date]);
 
   const effectivePlaceholder =
     "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día...";
@@ -161,7 +172,7 @@ export default function JournalEditor({
   const cycle = cycleContext;
 
   return (
-    <div className={`relative overflow-hidden rounded-xl border border-ink/10 bg-card p-6 sm:p-8 transition-all ${className}`}>
+    <div className={`relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm transition-all ${className}`}>
       {/* Toast de persistencia local */}
       <AnimatePresence>
         {savedSuccess && (
@@ -170,7 +181,7 @@ export default function JournalEditor({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 text-xs font-mono shadow-md backdrop-blur-sm"
+            className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono shadow-sm backdrop-blur-sm"
           >
             <Check className="w-3.5 h-3.5" />
             <span>Entrada guardada en tu navegador</span>
@@ -179,63 +190,53 @@ export default function JournalEditor({
       </AnimatePresence>
 
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center text-accent">
-            <PenLine className="w-4 h-4" />
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-border/80">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
+            <PenLine className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-heading text-base sm:text-lg font-bold text-foreground">
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
               {editingEntry ? "Editar Entrada" : "Nuevo Registro"}
             </h3>
-            <p className="text-xs text-muted capitalize">
-              {new Date(date + "T12:00:00").toLocaleDateString("es-AR", {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-              })}
+            <p className="text-xs sm:text-sm text-muted capitalize mt-0.5">
+              {formattedDisplayDate}
             </p>
           </div>
         </div>
+
+        {/* Badges de ciclo en vivo */}
+        {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.yearCycle?.personalYear) && (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {cycle.dayEnergy?.theme && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
+                <Zap className="w-3 h-3 text-accent" />
+                <span>{cycle.dayEnergy.theme}</span>
+              </span>
+            )}
+            {cycle.dayEnergy?.personalDay && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono bg-background border border-border text-foreground">
+                <Compass className="w-3 h-3 text-muted" />
+                Día {cycle.dayEnergy.personalDay}
+              </span>
+            )}
+            {cycle.dayEnergy?.moonPhase && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono bg-background border border-border text-foreground">
+                <Moon className="w-3 h-3 text-muted" />
+                {cycle.dayEnergy.moonPhase}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Ciclo contextual del día — cruz realizado en vivo */}
-      {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.yearCycle?.personalYear) && (
-        <div className="flex flex-wrap items-center gap-1.5 mt-4">
-          {cycle.dayEnergy?.theme && (
-            <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-[10px] font-mono border border-accent">
-              <Zap className="w-3 h-3 text-accent" />
-              <span className="text-accent font-semibold">{cycle.dayEnergy.theme}</span>
-            </span>
-          )}
-          {cycle.dayEnergy?.personalDay && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[10px] font-mono bg-accent/5 border border-ink/10">
-              <Compass className="w-3 h-3 text-foreground" />
-              Día {cycle.dayEnergy.personalDay}
-            </span>
-          )}
-          {cycle.dayEnergy?.moonPhase && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[10px] font-mono bg-accent/5 border border-ink/10">
-              <Moon className="w-3 h-3 text-foreground" />
-              {cycle.dayEnergy.moonPhase}
-            </span>
-          )}
-          {cycle.yearCycle?.personalYear && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm text-[10px] font-mono bg-accent/5 border border-ink/10">
-              <Sun className="w-3 h-3 text-foreground" />
-              Año {cycle.yearCycle.personalYear}
-            </span>
-          )}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="mt-5 space-y-5">
+      <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         {/* Mood Selector (1 to 5) */}
         <div>
-          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-2.5 font-semibold">
+          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-3 font-semibold">
             ¿Cómo está tu energía hoy?
           </label>
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 gap-2 sm:gap-3">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
               const isSelected = mood === m;
@@ -244,32 +245,24 @@ export default function JournalEditor({
                   key={m}
                   type="button"
                   whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.94 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => setMood(m)}
-                  animate={isSelected ? { scale: 1.04 } : { scale: 1 }}
+                  animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
                   transition={{ duration: 0.18 }}
-                  className={`flex flex-col items-center justify-center p-2.5 rounded-lg border transition-colors text-center group ${
+                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all text-center group ${
                     isSelected
-                      ? "border-transparent ring-2 ring-accent/40 shadow-md"
-                      : "border-ink/10 bg-background/50 hover:bg-ink/5 hover:border-ink/20"
+                      ? "border-accent/40 bg-accent/10 shadow-sm ring-1 ring-accent"
+                      : "border-border bg-background/50 hover:bg-background hover:border-border/80"
                   }`}
-                  style={
-                    isSelected
-                      ? { backgroundColor: cfg.bg }
-                      : undefined
-                  }
                   aria-pressed={isSelected}
                   aria-label={cfg.label}
                 >
-                  <motion.span
-                    animate={isSelected ? { scale: 1.12 } : { scale: 1 }}
-                    className="text-xl sm:text-2xl mb-1"
-                  >
+                  <span className="text-2xl sm:text-3xl mb-1.5 block transform group-hover:scale-110 transition-transform">
                     {cfg.emoji}
-                  </motion.span>
+                  </span>
                   <span
                     className={`font-mono text-[10px] font-semibold truncate w-full ${
-                      isSelected ? "text-foreground font-bold" : "text-muted"
+                      isSelected ? "text-accent font-bold" : "text-muted"
                     }`}
                   >
                     {cfg.label}
@@ -282,17 +275,21 @@ export default function JournalEditor({
 
         {/* Prompt sugerido */}
         {!editingEntry && (
-          <div className="rounded-md bg-accent/5 border border-accent/20 p-3 flex items-start justify-between gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-accent font-medium">
-              <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <button type="button" onClick={usePrompt} className="text-left leading-snug">
+          <div className="rounded-2xl bg-accent/[0.04] border border-accent/20 p-3.5 flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs text-foreground/90 font-medium">
+              <Sparkles className="w-4 h-4 text-accent shrink-0" />
+              <button
+                type="button"
+                onClick={usePrompt}
+                className="text-left leading-relaxed hover:text-accent transition-colors"
+              >
                 {contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length]}
               </button>
             </div>
             <button
               type="button"
               onClick={nextPrompt}
-              className="shrink-0 p-1.5 text-muted hover:text-foreground rounded-md hover:bg-ink/5 transition-colors"
+              className="shrink-0 p-1 text-muted hover:text-accent rounded-lg hover:bg-background/80 transition-colors"
               aria-label="Ver otra sugerencia de registro"
               title="Ver otra sugerencia"
             >
@@ -302,12 +299,12 @@ export default function JournalEditor({
         )}
 
         {/* Content Textarea */}
-        <div>
+        <div className="space-y-2">
           <label
             htmlFor="journal-content"
-            className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold mb-2"
+            className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
           >
-            Reflexión
+            Reflexión del día
           </label>
           <textarea
             id="journal-content"
@@ -315,21 +312,21 @@ export default function JournalEditor({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder={effectivePlaceholder}
-            className="w-full rounded-xl bg-background border border-ink/10 p-3.5 text-sm text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
+            className="w-full rounded-2xl bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
             required
           />
-          <div className="flex justify-between items-center text-[11px] text-muted font-mono mt-1 px-1">
+          <div className="flex justify-between items-center text-[11px] text-muted font-mono px-1">
             <span>{content.length} caracteres</span>
-            <span>100% privado en tu navegador</span>
+            <span>100% privado en tu dispositivo</span>
           </div>
         </div>
 
         {/* Quick Tags */}
         <div>
-          <div className="flex items-center gap-1.5 mb-2">
+          <div className="flex items-center gap-1.5 mb-2.5">
             <Tag className="w-3.5 h-3.5 text-muted" />
             <label className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
-              Temas de hoy <span className="text-muted/50">(opcional)</span>
+              Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
             </label>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -341,10 +338,10 @@ export default function JournalEditor({
                   type="button"
                   onClick={() => toggleTag(tag)}
                   aria-pressed={selected}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition-all border ${
+                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-all border ${
                     selected
-                      ? "bg-accent text-accent-foreground border-accent"
-                      : "bg-transparent text-muted border-ink/15 hover:border-accent/40 hover:text-foreground"
+                      ? "bg-accent text-accent-foreground border-accent font-semibold"
+                      : "bg-background text-muted border-border hover:border-accent/40 hover:text-foreground"
                   }`}
                 >
                   #{tag}
@@ -355,7 +352,7 @@ export default function JournalEditor({
         </div>
 
         {/* Submit / Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-ink/10">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/80">
           {editingEntry && onCancelEdit && (
             <Button
               type="button"
@@ -370,9 +367,9 @@ export default function JournalEditor({
 
           <Button
             type="submit"
-            variant="primary"
+            variant="accent"
             disabled={!content.trim() || isSaving}
-            className="flex items-center gap-2 px-6"
+            className="flex items-center gap-2 px-6 py-2.5 font-bold shadow-sm"
           >
             {isSaving ? (
               <>Guardando...</>
