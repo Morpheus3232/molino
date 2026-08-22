@@ -1108,6 +1108,19 @@ export function findFamousMatches(
         headline = `Compartís tu Número de Vida con ${person.name}`;
       } else if (matchSunSign) {
         headline = `Tu signo solar es el mismo que ${person.name}`;
+      } else if (matchChineseZodiac) {
+        // Todas las cards de esta sección comparten el animal del usuario
+        // (es excluyente), así que ese dato no distingue a nadie. El dato
+        // único de cada figura es la distancia en años entre nacimientos
+        // (siempre múltiplo de 12 dentro del mismo animal).
+        const uy = Number.parseInt(profile.birthDate?.split("-")[0] ?? "", 10);
+        const fy = Number.parseInt(person.birthDate.split("-")[0], 10);
+        if (Number.isFinite(uy) && Number.isFinite(fy) && fy !== uy) {
+          const gap = Math.round(Math.abs(fy - uy) / 12) * 12;
+          headline = `Mismo animal que vos, nacidos ${gap} años de distancia`;
+        } else {
+          headline = `Tu animal del zodíaco chino coincide con ${person.name}`;
+        }
       } else {
         headline = `Tu animal del zodíaco chino coincide con ${person.name}`;
       }
