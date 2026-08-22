@@ -171,7 +171,7 @@ export default function NumerologiaContent() {
           </p>
           <div className="space-y-6">
             {NUMBERS.filter(n => n.number <= 9).map((num, i) => (
-              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block w-full text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
+              <Link key={num.number} href={`/conocimiento/numerologia/${num.number}`} className="block w-full text-left p-6 border border-ink/10 hover:border-accent transition-colors group">
                 <div className="flex items-start gap-6">
                   <p className="number-display text-4xl sm:text-5xl number-display-accent shrink-0">{num.number}</p>
                   <div className="flex-1 min-w-0">
@@ -204,7 +204,7 @@ export default function NumerologiaContent() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {NUMBERS.filter(n => n.number > 9).map((num) => (
-              <Link key={num.number} href={`/conocimiento/numerologia/numero-${num.number}`} className="block text-left p-6 border border-accent/20 hover:border-accent/50 transition-colors group">
+              <Link key={num.number} href={`/conocimiento/numerologia/${num.number}`} className="block text-left p-6 border border-accent/20 hover:border-accent/50 transition-colors group">
                 <p className="text-3xl font-heading font-bold text-accent mb-2">{num.number}</p>
                 <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-accent transition-colors">{num.title}</h3>
                 <p className="text-sm text-muted mt-2 leading-relaxed">{num.meaning}</p>
@@ -268,6 +268,21 @@ export default function NumerologiaContent() {
             </p>
             <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →
+            </Link>
+          </div>
+        </Reveal>
+
+        {/* Profundizá — interlinking hacia el contenido que ya tiene tracción
+            real en Search Console (Fase 6A), ausente hasta ahora desde el hub. */}
+        <Reveal tag="section" delay={0.25} className="mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link href="/blog/numerologia-ano-personal" className="block p-6 border border-ink/10 hover:border-accent transition-colors">
+              <h3 className="font-heading text-base font-semibold text-foreground mb-1">Cómo calcular tu Año Personal</h3>
+              <p className="text-sm text-muted leading-relaxed">Guía paso a paso para calcular y usar el Año Personal en tu planificación.</p>
+            </Link>
+            <Link href="/guia/numeros-maestros" className="block p-6 border border-ink/10 hover:border-accent transition-colors">
+              <h3 className="font-heading text-base font-semibold text-foreground mb-1">Números Maestros (11, 22, 33)</h3>
+              <p className="text-sm text-muted leading-relaxed">Qué son, cómo se detectan en tu mapa y qué significa cada uno.</p>
             </Link>
           </div>
         </Reveal>

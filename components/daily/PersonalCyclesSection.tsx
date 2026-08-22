@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { PERSONAL_YEAR_MEANINGS } from "@/lib/engines/dailyEnergyEngine";
@@ -51,6 +52,12 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
         <p><span className="text-foreground font-medium">Desafíos: </span>{yearMeaning.challenges}</p>
         <p><span className="text-foreground font-medium">Oportunidades: </span>{yearMeaning.opportunities}</p>
       </div>
+      <Link
+        href="/blog/numerologia-ano-personal"
+        className="inline-block mt-4 text-xs font-mono text-accent hover:underline underline-offset-2"
+      >
+        Cómo se calcula el Año Personal →
+      </Link>
     </div>
   );
 }

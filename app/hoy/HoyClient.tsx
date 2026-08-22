@@ -10,10 +10,10 @@ import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { smoothReveal } from "@/lib/utils/premiumMotion";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
 import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
-import DailyFocus from "@/components/daily/DailyFocus";
+import DailyFocus, { MomentAdvice } from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
 import Link from "next/link";
-import { TrendingUp, ShieldCheck } from "lucide-react";
+import { TrendingUp, ShieldCheck, CalendarClock } from "lucide-react";
 
 export default function HoyClient() {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
@@ -60,7 +60,13 @@ export default function HoyClient() {
         )}
       </motion.div>
 
-      {/* 1. Daily Energy Card (Unificado con Día del Calendario Numerológico) */}
+      {/* 1. Consejo del Momento — jerarquía Fase 6A: lo primero después de
+          saber que el mapa está cargado, antes del detalle de ciclo/score. */}
+      {daily && (
+        <MomentAdvice daily={daily} todayEntry={todayEntry} journalStreak={journalStreak} />
+      )}
+
+      {/* 2. Daily Energy Card (Unificado con Día del Calendario Numerológico) */}
       {daily && (
         <DailyEnergyCard
           profile={profile}
@@ -70,25 +76,32 @@ export default function HoyClient() {
         />
       )}
 
-      {/* 1.5 Personal Year */}
+      {/* 2.5 Personal Year */}
       {daily?.isPersonalized && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
 
-      {/* 2. Daily Focus */}
+      {/* 3. Próxima acción: foco/evitar del día */}
       {daily && (
-        <DailyFocus daily={daily} todayEntry={todayEntry} journalStreak={journalStreak} />
+        <DailyFocus daily={daily} />
       )}
 
-      {/* 3. Week Preview */}
+      {/* 4. Week Preview */}
       {daily?.nextDaysForecast && <WeekPreview forecast={daily.nextDaysForecast} />}
 
-      {/* 4. Evolución */}
-      <div className="text-center pt-2">
+      {/* 5. Evolución + Timing — únicos puntos de entrada reales a estas rutas */}
+      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2">
         <Link
           href="/evolution"
           className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
         >
           <TrendingUp className="w-3.5 h-3.5" />
           Ver tus patrones →
+        </Link>
+        <Link
+          href="/timing"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
+        >
+          <CalendarClock className="w-3.5 h-3.5" />
+          Días favorables según tu ciclo →
         </Link>
       </div>
     </div>

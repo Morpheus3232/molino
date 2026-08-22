@@ -42,16 +42,33 @@ export interface AtlasHistoricalEvent {
 export interface AtlasEntityInput {
   id: string;
   name: string;
+  /**
+   * String libre — ya soporta cualquier categoría nueva sin tocar este tipo
+   * (ej. "neighborhood", "venue", "restaurant") con solo agregar entradas
+   * con ese `type` a un dataset. País → Ciudad → Barrio → Lugar/local se
+   * modela así: country (país) → city (ciudad) → neighborhood (barrio,
+   * Fase 6A) → una entidad type:"venue" con neighborhood seteado (el lugar
+   * en sí). No hace falta un tipo nuevo por nivel de la jerarquía.
+   */
   type: string;
   country: string;
   /** Ciudad de sede/fundación — solo se usa hoy para priorizar universidades de la capital dentro del mismo país. */
   city?: string;
+  /** Barrio dentro de la ciudad (Fase 6A, sin datos cargados todavía) — ej. "Palermo" para una entidad type:"venue" con city:"Buenos Aires". */
+  neighborhood?: string;
   emoji?: string;
   description: string;
   keyThemes: string[];
   category?: string;
   events: AtlasHistoricalEvent[];
   sourceNote?: string;
+  /**
+   * Solo para type:"university" (Fase 6A) — criterio explícito de por qué
+   * esta institución es una de las 3-5 relevantes de su país, en vez de una
+   * lista sin criterio documentado. Ausente = universidad legacy pre-Fase 6A,
+   * no representa que no tenga criterio, solo que no se migró todavía.
+   */
+  relevance?: string;
 }
 
 /** Full Atlas entity — the enriched, server-only shape. */

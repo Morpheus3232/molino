@@ -3,7 +3,8 @@
 import { useMemo } from "react";
 import type { UserProfile } from "@/types/user";
 import { calculateDailyEnergy, calculateUniversalDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
-import { safeNumber } from "@/lib/utils/score";
+import { buildOrientation, type OrientationEvidence } from "@/lib/utils/orientation";
+import { buildMomentState } from "@/lib/engines/synthesisEngine";
 
 export interface DayForecast {
   date: string;
@@ -18,7 +19,10 @@ export interface DayForecast {
 export interface EnrichedDailyEnergy extends DailyEnergyResult {
   focusAction: string;
   avoidAction: string;
+  /** Línea de acción del día — ahora deriva de buildOrientation() (Fase 6A), no de una plantilla concatenada ad-hoc. */
   dailyAdvice: string;
+  /** Evidencia trazable detrás de dailyAdvice (Foco/Luna/Año personal/área top) — mismo motor, ver lib/utils/orientation.ts. */
+  orientationEvidence: OrientationEvidence[];
   nextDaysForecast: DayForecast[];
   /** false cuando no hay perfil — el tema/score vienen de
    * calculateUniversalDailyEnergy (mismo para cualquier visitante ese día),
@@ -91,7 +95,26 @@ export function useDailyEnergy(
       if (!profile) {
         const universal = calculateUniversalDailyEnergy(targetDate);
         const actions = FOCUS_BY_PERSONAL_DAY[universal.dailyNumber] || FOCUS_BY_PERSONAL_DAY[1];
-        const dailyAdvice = `Hoy es un día de ${universal.theme.toLowerCase()} bajo la luna ${universal.moonPhase.phase.toLowerCase()} — vale la pena ${actions.focus.toLowerCase()}`;
+        const universalResult: DailyEnergyResult = {
+          date: universal.date,
+          overallScore: universal.overallScore,
+          theme: universal.theme,
+          description: universal.description,
+          strengths: universal.strengths,
+          cautions: universal.cautions,
+          areas: universal.areas,
+          moonPhase: universal.moonPhase,
+          personalDay: universal.dailyNumber,
+          personalYear: 0,
+          personalMonth: 0,
+          elementInfluence: "",
+          explanation: universal.description,
+        };
+        const orientation = buildOrientation(universalResult, undefined, null);
+        // Sin perfil no hay Año Personal real (personalYear se fuerza a 0
+        // arriba solo para no ramificar el resto de los componentes) —
+        // mostrar "Año personal: 0" sería un dato falso, no ausente.
+        orientation.evidence = orientation.evidence.filter((e) => e.label !== "Año personal");
 
         const nextDaysForecast: DayForecast[] = [];
         for (let i = 1; i <= 3; i++) {
@@ -110,36 +133,24 @@ export function useDailyEnergy(
         }
 
         return {
-          date: universal.date,
-          overallScore: universal.overallScore,
-          theme: universal.theme,
-          description: universal.description,
-          strengths: universal.strengths,
-          cautions: universal.cautions,
-          areas: universal.areas,
-          moonPhase: universal.moonPhase,
-          personalDay: universal.dailyNumber,
-          personalYear: 0,
-          personalMonth: 0,
-          elementInfluence: "",
-          explanation: universal.description,
+          ...universalResult,
           isPersonalized: false,
           focusAction: actions.focus,
           avoidAction: actions.avoid,
-          dailyAdvice,
+          dailyAdvice: orientation.orientation,
+          orientationEvidence: orientation.evidence,
           nextDaysForecast,
         };
       }
 
       const daily = calculateDailyEnergy(profile, targetDate);
       const personalDay = daily.personalDay || 1;
-      const lifePath = safeNumber(profile.lifePath, 1);
 
       const actions =
         FOCUS_BY_PERSONAL_DAY[personalDay] || FOCUS_BY_PERSONAL_DAY[1];
 
-      // Contextual personalized advice
-      const dailyAdvice = `Combinando tu vibración natal (${lifePath}) con la energía de ${daily.theme.toLowerCase()} (Día ${personalDay}) bajo la luna ${daily.moonPhase?.phase.toLowerCase() || "actual"}, el universo te invita a ${actions.focus.toLowerCase()}`;
+      const momentState = buildMomentState(profile, daily.overallScore, daily.theme);
+      const orientation = buildOrientation(daily, momentState, null);
 
       // 3-day forecast
       const nextDaysForecast: DayForecast[] = [];
@@ -166,7 +177,8 @@ export function useDailyEnergy(
         isPersonalized: true,
         focusAction: actions.focus,
         avoidAction: actions.avoid,
-        dailyAdvice,
+        dailyAdvice: orientation.orientation,
+        orientationEvidence: orientation.evidence,
         nextDaysForecast,
       };
     } catch {

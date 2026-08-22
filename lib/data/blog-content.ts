@@ -377,11 +377,11 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "numerologia-ano-personal",
-    title: "El Año Personal en numerología: cómo funciona y cómo usarlo para planificar",
+    title: "Cómo calcular el Año Personal en numerología — guía completa",
     excerpt:
       "El Año Personal es el ciclo de nueve años que se mueve dentro de tu numerología. Aprendé cómo se calcula, qué representa cada año del ciclo y cómo usarlo para planificar sin caer en el determinismo.",
     metaDescription:
-      "Descubrí qué es el Año Personal en numerología, cómo calcularlo a partir de tu cumpleaños y qué representa cada uno de los 9 años del ciclo para planificar tu año con más criterio.",
+      "Cómo calcular el Año Personal en numerología a partir de tu fecha de nacimiento, qué representa cada uno de los 9 años del ciclo y cómo usarlo para planificar tu año con más criterio.",
     category: "Numerología",
     date: "2026-08-16",
     image: "/blog/numerologia-ano-personal.svg",

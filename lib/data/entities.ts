@@ -1,4 +1,6 @@
-export type EntityCategory = 
+import { COUNTRIES } from "./countries";
+
+export type EntityCategory =
   | 'country' | 'city' | 'brand' | 'band' | 'movie' | 'car' 
   | 'person' | 'sport' | 'food' | 'tech' | 'nature' | 'art'
   | 'music' | 'book' | 'mythology' | 'architecture' | 'dance'
@@ -662,6 +664,22 @@ export const ENTITIES: EntityProfile[] = [
     context: { description: 'Placer, dulzura y consuelo universal.', keyThemes: ['Placer', 'Dulzura', 'Consuelo', 'Regalo'], funFact: 'Los mayas lo usaban como moneda.' }
   },
 ];
+
+// Fase 6A (2026-08-22): los países de ENTITIES tenían chineseZodiac/element
+// hardcodeados a mano, divergentes del cálculo real en lib/data/countries.ts
+// (fuente canónica, generada por script desde la fecha de independencia real
+// — ver su cabecera). Ej. Argentina: "Tigre" acá vs. "Rata" en COUNTRIES,
+// lo que daba un resultado de compatibilidad distinto según la ruta. Se
+// normaliza sin reescribir las 25 entradas a mano ni tocar lifePath/sunSign/
+// archetype (astrología/numerología, sin equivalente en COUNTRIES).
+const COUNTRY_ZODIAC_BY_NAME = new Map(COUNTRIES.map((c) => [c.name, c]));
+for (const entity of ENTITIES) {
+  if (entity.category !== "country") continue;
+  const canonical = COUNTRY_ZODIAC_BY_NAME.get(entity.name);
+  if (!canonical) continue;
+  entity.symbolism.chineseZodiac = canonical.animal;
+  entity.symbolism.element = canonical.element;
+}
 
 export function getEntityById(id: string): EntityProfile | undefined {
   return ENTITIES.find(entity => entity.id === id);
