@@ -13,6 +13,7 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { Toaster } from "sonner";
 import MotionProvider from "@/components/ui/MotionProvider";
 import PWAProvider from "@/components/PWAProvider";
+import ChunkRecovery from "@/components/ChunkRecovery";
 import { SITE_URL, SITE_NAME, OG_IMAGE, siteUrl } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -187,6 +188,7 @@ export default function RootLayout({
         <SkipLink />
         <SiteIntro />
         <AnalyticsProvider />
+        <ChunkRecovery />
         <PWAProvider>
           <MotionProvider>
             <ScrollProgress />
