@@ -377,13 +377,11 @@ export function calculateDailyEnergy(
   const birthMonth = birthParts[1] || 1;
   const birthYear = birthParts[0] || 1990;
 
-  // Calculate personal cycles for the target date
-  const personalDay = getPersonalDayForDate(birthDay, birthMonth, birthYear, targetDate);
+  // Base day number is aligned with the calendar day vibration (universal date reduction)
+  const calendarDayNumber = calculateDailyNumber(targetDate);
   const personalYear = getPersonalYear(birthDay, birthMonth, birthYear, targetDate.getFullYear());
-  // personalMonth = reduce(personalYear + mes actual) — mismo fix que
-  // profileBuilder.ts: NO getPersonalYear con el mes en el slot de
-  // currentYear (descartaba el año real).
   const personalMonth = reduceToSingleDigit(personalYear + (targetDate.getMonth() + 1));
+  const personalDay = calendarDayNumber;
 
   // Get moon phase
   const moonPhase = getMoonPhase(targetDate);
@@ -398,7 +396,7 @@ export function calculateDailyEnergy(
   const baseScore = calculateEnergyScore(personalDay, personalYear, personalMonth, moonPhase.phase, profile.element);
   const overallScore = Math.min(100, Math.max(1, baseScore));
 
-  // Get theme and description
+  // Get theme and description based on day number
   const themeData = THEME_BY_PERSONAL_DAY[personalDay] || THEME_BY_PERSONAL_DAY[1];
   const strengths = STRENGTHS_BY_PERSONAL_DAY[personalDay] || ["Claridad", "Acción", "Conexión"];
   const cautions = CAUTIONS_BY_PERSONAL_DAY[personalDay] || ["Impaciencia", "Distracción"];
