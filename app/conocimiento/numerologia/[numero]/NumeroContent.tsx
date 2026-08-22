@@ -222,12 +222,12 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
         {/* Navegación entre números */}
         <motion.section {...fadeUp} className="flex justify-between items-center pt-8 border-t border-border">
           {prev ? (
-            <Link href={`/conocimiento/numerologia/numero-${prev.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/numerologia/${prev.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               &larr; Número {prev.number} — {prev.title}
             </Link>
           ) : <div />}
           {next ? (
-            <Link href={`/conocimiento/numerologia/numero-${next.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
+            <Link href={`/conocimiento/numerologia/${next.number}`} className="text-sm text-accent hover:text-accent/80 transition-colors">
               {next.number} — {next.title} &rarr;
             </Link>
           ) : <div />}

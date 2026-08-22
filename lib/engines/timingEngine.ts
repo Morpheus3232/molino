@@ -18,6 +18,7 @@ export type TimingIntention =
   | 'make_decision'
   | 'start_relationship'
   | 'publish_something'
+  | 'travel'
   | 'other';
 
 export interface TimingResult {
@@ -44,6 +45,7 @@ const INTENTION_LABELS: Record<TimingIntention, string> = {
   make_decision: "Tomar una decisión",
   start_relationship: "Empezar una relación",
   publish_something: "Publicar algo",
+  travel: "Viajar",
   other: "Otro",
 };
 
@@ -55,6 +57,7 @@ const INTENTION_FAVORABLE_DAYS: Record<TimingIntention, number[]> = {
   make_decision: [7, 9, 1],
   start_relationship: [2, 6, 3],
   publish_something: [3, 5, 9],
+  travel: [5, 1, 3],
   other: [1, 2, 3, 4, 5, 6, 7, 8, 9],
 };
 
@@ -66,6 +69,7 @@ const INTENTION_CHALLENGING_DAYS: Record<TimingIntention, number[]> = {
   make_decision: [5, 3],
   start_relationship: [5, 8],
   publish_something: [7, 4],
+  travel: [4, 6],
   other: [],
 };
 
@@ -188,10 +192,10 @@ function calculateTimingScore(
 
 function getElementIntentionBonus(element: string, intention: TimingIntention): number {
   const matrix: Record<string, Record<TimingIntention, number>> = {
-    Fuego: { start_project: 10, change_job: 5, launch_something: 10, sign_agreement: 0, make_decision: 5, start_relationship: 5, publish_something: 8, other: 5 },
-    Tierra: { start_project: 8, change_job: 3, launch_something: 5, sign_agreement: 10, make_decision: 5, start_relationship: 5, publish_something: 3, other: 5 },
-    Aire: { start_project: 5, change_job: 8, launch_something: 5, sign_agreement: 8, make_decision: 10, start_relationship: 3, publish_something: 8, other: 5 },
-    Agua: { start_project: 3, change_job: 5, launch_something: 3, sign_agreement: 5, make_decision: 5, start_relationship: 10, publish_something: 3, other: 5 },
+    Fuego: { start_project: 10, change_job: 5, launch_something: 10, sign_agreement: 0, make_decision: 5, start_relationship: 5, publish_something: 8, travel: 8, other: 5 },
+    Tierra: { start_project: 8, change_job: 3, launch_something: 5, sign_agreement: 10, make_decision: 5, start_relationship: 5, publish_something: 3, travel: 3, other: 5 },
+    Aire: { start_project: 5, change_job: 8, launch_something: 5, sign_agreement: 8, make_decision: 10, start_relationship: 3, publish_something: 8, travel: 10, other: 5 },
+    Agua: { start_project: 3, change_job: 5, launch_something: 3, sign_agreement: 5, make_decision: 5, start_relationship: 10, publish_something: 3, travel: 5, other: 5 },
   };
   return matrix[element]?.[intention] || 0;
 }

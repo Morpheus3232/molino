@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { useDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import { useStreak, getBadgeForStreak } from "@/lib/hooks/useStreak";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
-import DailyFocus from "@/components/daily/DailyFocus";
+import DailyFocus, { MomentAdvice } from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 
@@ -43,6 +43,7 @@ describe("Daily Energy & Retention System", () => {
       focusAction: "Tomar la iniciativa en proyectos postergados.",
       avoidAction: "La impaciencia con el ritmo de los demás.",
       dailyAdvice: "Aprovechá la claridad de hoy.",
+      orientationEvidence: [],
       nextDaysForecast: [
         {
           date: "2026-08-15",
@@ -95,6 +96,7 @@ describe("Daily Energy & Retention System", () => {
       focusAction: "Tomar la iniciativa en proyectos postergados.",
       avoidAction: "La impaciencia con el ritmo de los demás.",
       dailyAdvice: "Aprovechá la claridad de hoy.",
+      orientationEvidence: [],
       nextDaysForecast: [],
     };
 
@@ -104,6 +106,40 @@ describe("Daily Energy & Retention System", () => {
     expect(screen.getByText(/Tomar la iniciativa en proyectos postergados/i)).toBeDefined();
     expect(screen.getByText(/Evitá hoy/i)).toBeDefined();
     expect(screen.getByText(/La impaciencia con el ritmo de los demás/i)).toBeDefined();
+  });
+
+  it("renders MomentAdvice (extraído de DailyFocus en Fase 6A) with Consejo del Momento and Journal CTA", () => {
+    const mockDaily = {
+      date: "2026-08-14",
+      overallScore: 84,
+      theme: "Iniciación",
+      description: "Un día para comenzar algo nuevo.",
+      strengths: [],
+      cautions: [],
+      areas: {
+        work: { score: 80, label: "Favorable" },
+        relationships: { score: 80, label: "Favorable" },
+        creativity: { score: 80, label: "Favorable" },
+        decisions: { score: 80, label: "Favorable" },
+      },
+      moonPhase: { phase: "Creciente", emoji: "🌓", description: "Expansión" },
+      personalDay: 1,
+      personalYear: 7,
+      personalMonth: 3,
+      elementInfluence: "Fuego",
+      explanation: "Día de inicio.",
+      isPersonalized: true,
+      focusAction: "Tomar la iniciativa en proyectos postergados.",
+      avoidAction: "La impaciencia con el ritmo de los demás.",
+      dailyAdvice: "Aprovechá la claridad de hoy.",
+      orientationEvidence: [{ label: "Luna", value: "Creciente" }],
+      nextDaysForecast: [],
+    };
+
+    render(<MomentAdvice daily={mockDaily} />);
+
+    expect(screen.getByText(/Consejo del Momento/i)).toBeDefined();
+    expect(screen.getByText(/Aprovechá la claridad de hoy/i)).toBeDefined();
     expect(screen.getByText(/Anotar en mi Journal/i)).toBeDefined();
   });
 

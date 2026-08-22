@@ -69,11 +69,64 @@ const AREA_ADVICE: Record<AreaKey, Record<string, string>> = {
   },
 };
 
-export default function DailyFocus({ daily, todayEntry, journalStreak = 0, className = "" }: DailyFocusProps) {
+/**
+ * Consejo del Momento — extraído de DailyFocus (Fase 6A) para poder
+ * renderizarse más arriba en la jerarquía de /hoy (justo después del badge
+ * de mapa cargado), sin duplicar el cálculo: sigue leyendo daily.dailyAdvice
+ * / daily.orientationEvidence, que ahora derivan de buildOrientation()
+ * (lib/utils/orientation.ts) en vez de una plantilla ad-hoc.
+ */
+export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className = "" }: DailyFocusProps) {
   const journalHref = todayEntry
     ? "/journal"
     : `/journal?prompt=${encodeURIComponent(daily.dailyAdvice)}`;
 
+  return (
+    <div className={`rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${className}`}>
+      <div className="space-y-2 flex-1">
+        <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
+          <Compass className="w-4 h-4" />
+          <span>Consejo del Momento</span>
+        </div>
+        <blockquote className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-3 py-0.5">
+          &ldquo;{daily.dailyAdvice}&rdquo;
+        </blockquote>
+        {daily.orientationEvidence && daily.orientationEvidence.length > 0 && (
+          <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1">
+            {daily.orientationEvidence.map((e) => (
+              <span key={e.label} className="text-[11px] font-mono text-muted">
+                <span className="text-muted/70">{e.label}:</span> {e.value}
+              </span>
+            ))}
+          </div>
+        )}
+        {journalStreak >= 2 && (
+          <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-700">
+            <Flame className="w-3.5 h-3.5" />
+            {journalStreak} días escribiendo en tu Journal
+          </p>
+        )}
+      </div>
+
+      {/* Journal CTA */}
+      <div className="flex-shrink-0">
+        <Link href={journalHref}>
+          <Button
+            variant="accent"
+            size="md"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi Journal"}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusProps, "todayEntry" | "journalStreak">) {
   return (
     <div className={`space-y-6 ${className}`}>
       {/* 2-Card Grid: Focus vs Avoid */}
@@ -135,40 +188,6 @@ export default function DailyFocus({ daily, todayEntry, journalStreak = 0, class
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* Dynamic Advice & Journal Callout Banner */}
-      <div className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <div className="space-y-2 flex-1">
-          <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
-            <Compass className="w-4 h-4" />
-            <span>Consejo del Momento</span>
-          </div>
-          <blockquote className="text-xs sm:text-sm text-foreground/90 italic leading-relaxed border-l-2 border-accent pl-3 py-0.5">
-            &ldquo;{daily.dailyAdvice}&rdquo;
-          </blockquote>
-          {journalStreak >= 2 && (
-            <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-700">
-              <Flame className="w-3.5 h-3.5" />
-              {journalStreak} días escribiendo en tu Journal
-            </p>
-          )}
-        </div>
-
-        {/* Journal CTA */}
-        <div className="flex-shrink-0">
-          <Link href={journalHref}>
-            <Button
-              variant="accent"
-              size="md"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 text-xs font-bold px-5 py-3 shadow-md"
-            >
-              <BookOpen className="w-4 h-4" />
-              <span>{todayEntry ? "Ver tu entrada de hoy" : "Anotar en mi Journal"}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          </Link>
         </div>
       </div>
     </div>
