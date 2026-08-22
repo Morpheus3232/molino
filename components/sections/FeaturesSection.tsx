@@ -89,8 +89,9 @@ export default function FeaturesSection() {
             </p>
           </motion.div>
 
-          <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-paper mb-6 leading-tight">
-            Seis herramientas para tu autoconocimiento.
+          <motion.h2 variants={itemVariants} className="font-display font-normal normal-case tracking-tight text-paper mb-6 leading-[1.05] text-[clamp(2.5rem,5vw,4rem)]">
+            Seis herramientas,{" "}
+            <em className="text-gradient-warm-dark">un mismo mapa.</em>
           </motion.h2>
         </motion.div>
 
@@ -105,25 +106,25 @@ export default function FeaturesSection() {
           {features.map((feature, idx) => (
             <motion.div key={idx} variants={itemVariants}>
               <Link href={feature.href}>
-                <div className="group relative h-full p-8 rounded-2xl bg-gradient-to-br from-paper/10 to-paper/5 border border-accent/10 hover:border-accent/25 transition-all duration-300 cursor-pointer space-y-5 hover:bg-gradient-to-br hover:from-paper/15 hover:to-paper/10">
+                <div className="group relative h-full p-8 rounded-2xl bg-gradient-to-br from-paper/10 to-paper/5 border border-paper/10 transition-all duration-300 cursor-pointer space-y-5 hover:border-accent/40 hover:-translate-y-1.5 hover:shadow-[0_0_60px_rgba(154,74,24,0.22),0_16px_48px_rgba(0,0,0,0.35)]">
                   {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent/15 transition-colors">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-paper group-hover:scale-110 transition-all duration-300">
                     {feature.icon}
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-heading text-xl font-bold text-paper group-hover:text-accent transition-colors">
+                  <h3 className="font-display italic font-normal normal-case text-2xl text-paper group-hover:text-accent-light transition-colors duration-300">
                     {feature.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-paper/70 leading-relaxed font-light text-sm">
+                  <p className="text-paper/70 leading-relaxed text-sm">
                     {feature.description}
                   </p>
 
                   {/* Arrow indicator */}
-                  <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent/10 text-accent text-lg group-hover:translate-x-0.5 transition-transform">
+                  <div className="absolute bottom-6 right-6 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent text-paper text-lg">
                       →
                     </span>
                   </div>

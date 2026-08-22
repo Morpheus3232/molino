@@ -271,6 +271,34 @@ export default function CoupleComparison({
           &ldquo;{result.dailyAdvice}&rdquo;
         </blockquote>
       </motion.section>
+
+      {/* Share */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.4 }}
+        className="flex justify-center mt-6"
+      >
+        <button
+          type="button"
+          onClick={() => {
+            const text = `Comparativa de Molino: ${profileA.name} + ${profileB.name}`;
+            if (navigator.share) {
+              navigator.share({ title: text, text }).catch(() => {});
+            } else {
+              navigator.clipboard.writeText(text).catch(() => {});
+            }
+          }}
+          className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-md"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+          Compartir comparativa
+        </button>
+      </motion.div>
     </div>
   );
 }

@@ -180,13 +180,15 @@ describe("nudoEngine — detectarNudo", () => {
 
   it("contexto daily_energy con fricción real: dailyEnergyEngine reporta un score bajo para este perfil/fecha → el Nudo cruza patrón estable + contexto y es real", () => {
     // Life Path 3 (rápido) + Tierra (lento) = contradicción de ritmo real.
-    // Con fecha fija 2023-01-07, dailyEnergyEngine da overallScore 46/100,
-    // por debajo del umbral neutro del engine.
+    // Desde 545cca2 el personalDay se alinea con el día calendario
+    // (calculateDailyNumber), así que la fecha fija debe elegirse bajo ese
+    // comportamiento: 2023-01-20 (día calendario 1) da overallScore 43/100,
+    // por debajo del umbral neutro del engine (50).
     const profile = profileWith({ lifePath: 3, element: "Tierra", birthDate: "1992-06-22" });
     const result = detectarNudo({
       profile,
       context: "daily_energy",
-      payload: { targetDate: new Date(2023, 0, 7, 12, 0, 0) },
+      payload: { targetDate: new Date(2023, 0, 20, 12, 0, 0) },
     });
 
     expect(result.trace.hasRealTension).toBe(true);
