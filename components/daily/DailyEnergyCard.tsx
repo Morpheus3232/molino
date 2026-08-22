@@ -6,7 +6,6 @@ import type { UserProfile } from "@/types/user";
 import type { EnrichedDailyEnergy } from "@/lib/hooks/useDailyEnergy";
 import type { StreakBadge } from "@/lib/hooks/useStreak";
 import { Sparkles, Flame, Share2, ShieldCheck, ArrowRight } from "lucide-react";
-import { getScoreLabel, getScoreColor } from "@/lib/utils/score";
 import { getCalendarDayContent, getDateNumberBreakdown, formatDateNumberBreakdown } from "@/lib/numerology/calendar";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import Link from "next/link";
@@ -36,15 +35,11 @@ export default function DailyEnergyCard({
     month: "long",
   });
 
-  const score = daily.overallScore;
-  const scoreLabel = getScoreLabel(score);
-  const scoreColor = getScoreColor(score);
-
   return (
     <div
       className={`rounded-2xl sm:rounded-3xl border border-accent/20 bg-card shadow-sm overflow-hidden ${className}`}
     >
-      {/* ── 1. Top Bar: Fecha + Racha ───────────────────────────── */}
+      {/* ── 1. Top Bar: Fecha + Racha Amigable ─────────────────── */}
       <div className="px-6 sm:px-8 py-4 border-b border-border/70 flex flex-wrap items-center justify-between gap-3 bg-background/50">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
@@ -53,12 +48,13 @@ export default function DailyEnergyCard({
           </span>
         </div>
 
-        {streakDays >= 1 && (
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 font-mono text-xs font-semibold">
-            <span>{streakBadge?.emoji || "🌱"}</span>
-            <span>{streakDays} {streakDays === 1 ? "día conociéndote" : "días seguidos"}</span>
-          </div>
-        )}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-foreground font-mono text-xs">
+          <span>{streakBadge?.emoji || "🌱"}</span>
+          <span className="font-bold text-accent">
+            Día {streakDays} conociéndote
+          </span>
+          <span className="text-muted hidden sm:inline">· qué bueno tenerte por acá</span>
+        </div>
       </div>
 
       {/* ── 2. HERO PRINCIPAL: Hoy es día X (Numerología del día) ── */}
@@ -127,38 +123,11 @@ export default function DailyEnergyCard({
         </div>
       </div>
 
-      {/* ── 3. SECCIÓN SECUNDARIA: Vibración & Energía de Manifestación ── */}
+      {/* ── 3. SECCIÓN: Energía del día & Pilares ── */}
       <div className="p-6 sm:p-8 bg-background/50 space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          {/* Score / Vibración */}
-          <div className="lg:col-span-4 p-5 rounded-2xl bg-card border border-border/80 flex items-center justify-between lg:flex-col lg:items-start">
-            <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-bold block">
-                Vibración de hoy
-              </span>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="font-display text-4xl sm:text-5xl font-black tracking-tight text-foreground">
-                  {score}
-                </span>
-                <span
-                  className="font-heading text-xs font-bold px-2.5 py-0.5 rounded-full bg-background border border-border inline-block"
-                  style={{ color: scoreColor }}
-                >
-                  {scoreLabel}
-                </span>
-              </div>
-            </div>
-            <div className="text-right lg:text-left lg:mt-2">
-              {daily.isPersonalized && (
-                <p className="font-mono text-[11px] text-muted">
-                  Año Personal {daily.personalYear}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Theme & Descripción de la energía */}
-          <div className="lg:col-span-8 p-5 sm:p-6 rounded-2xl bg-card border border-border/80 space-y-2">
+        {/* Banner de Energía & Año Personal */}
+        <div className="p-6 rounded-2xl bg-card border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-accent" />
               <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
@@ -169,6 +138,17 @@ export default function DailyEnergyCard({
               {daily.description}
             </p>
           </div>
+
+          {daily.isPersonalized && (
+            <div className="shrink-0 p-3.5 rounded-xl bg-background/80 border border-border/70 text-right sm:text-left self-start sm:self-center">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-muted font-semibold block">
+                Ciclo en curso
+              </span>
+              <span className="font-heading text-sm font-bold text-accent">
+                Año Personal {daily.personalYear}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* ── 4. Pilares: Fase Lunar, Elemento y Arquetipo Personal ── */}
