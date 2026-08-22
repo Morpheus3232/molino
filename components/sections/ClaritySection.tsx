@@ -1,238 +1,293 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Shield, Zap } from "lucide-react";
+import {
+  Search,
+  Shield,
+  Zap,
+  CheckCircle2,
+  XCircle,
+  ArrowRight,
+  SlidersHorizontal,
+  Lock,
+  Binary,
+  Compass,
+  Cpu,
+  Layers
+} from "lucide-react";
 import Link from "next/link";
 
-interface ComparisonRow {
-  label: string;
-  molino: string;
-  traditional: string;
+interface ComparisonItem {
+  category: string;
+  molinoTitle: string;
+  molinoDesc: string;
+  traditionalTitle: string;
+  traditionalDesc: string;
 }
 
-const comparisonData: ComparisonRow[] = [
+const comparisonRows: ComparisonItem[] = [
   {
-    label: "¿Qué hace?",
-    molino: "Estructura tu realidad: identifica patrones, tensiones y ciclos. Para decidir mejor.",
-    traditional: "Predice el futuro o revela 'destino'. Requiere fe.",
+    category: "¿Qué hace?",
+    molinoTitle: "Estructura tu realidad",
+    molinoDesc: "Identifica patrones matemáticos, tensiones arquetípicas y ciclos activos para tomar mejores decisiones.",
+    traditionalTitle: "Predicción y destino",
+    traditionalDesc: "Promete adivinar el futuro o revelar un 'destino inmutable' que requiere fe ciega.",
   },
   {
-    label: "¿Se guardan tus datos?",
-    molino: "No. Todo ocurre en tu navegador. Cálculo local, privacidad radical.",
-    traditional: "Sí. Se vende información, emails a listas, monetizan tu perfil.",
+    category: "¿Se guardan tus datos?",
+    molinoTitle: "0% Almacenamiento externo",
+    molinoDesc: "Todo ocurre en tu navegador local (Web Workers). Cálculo 100% privado, sin bases de datos ni registro.",
+    traditionalTitle: "Comercialización de PII",
+    traditionalDesc: "Venta de listas de correos, monetización de perfiles en la nube y seguimiento de publicidad.",
   },
   {
-    label: "¿Por qué confiar?",
-    molino: "Fórmulas visibles, fuentes verificables. Podes auditar cada número.",
-    traditional: "Se vende la magia. 'Confía en nosotros'. Sin trazabilidad.",
+    category: "¿Por qué confiar?",
+    molinoTitle: "Fórmulas auditables y abiertas",
+    molinoDesc: "Fórmulas pitagóricas visibles y fuentes documentadas. Podés auditar y comprobar cada número.",
+    traditionalTitle: "Caja negra y misticismo",
+    traditionalDesc: "Se vende el 'misterio' y la fe en un intermediario. Sin trazabilidad comprobable.",
   },
   {
-    label: "¿Para quién?",
-    molino: "Gente curiosa que quiere entender cómo es, no gurús que digan qué hacer.",
-    traditional: "Buscadores de respuestas externas. Seguidores de métodos.",
+    category: "¿Para quién es?",
+    molinoTitle: "Curiosos y analistas",
+    molinoDesc: "Para quien busca herramientas de autoconocimiento lúcido y autonomía, sin depender de nadie.",
+    traditionalTitle: "Buscadores de respuestas externas",
+    traditionalDesc: "Para quienes buscan un oráculo o un gurú que les dicte qué hacer con sus vidas.",
   },
 ];
 
 const pillars = [
   {
-    icon: Search,
+    icon: Binary,
     title: "Estructura",
-    description: "Tres sistemas verificados: numerología, astrología, zodíaco chino. Métodos, no improvisación.",
+    subtitle: "Rigor Simbólico",
+    description: "Tres sistemas verificados: numerología pitagórica, astrología tropical y zodíaco chino. Método y cálculo matemático, no improvisación.",
+    badge: "100% Determinista"
   },
   {
     icon: Shield,
     title: "Utilidad",
-    description: "No predice futuro. Te da perspectiva para decidir mejor. Herramienta, no magia.",
+    subtitle: "Perspectiva Práctica",
+    description: "No predice futuros mágicos. Brinda claridad sobre tus ciclos para negociar, decidir y sincronizar mejor tu energía.",
+    badge: "Orientación Real"
   },
   {
     icon: Zap,
     title: "Enfoque",
-    description: "Para el curioso que quiere entender. No para seguidores de gurús.",
+    subtitle: "Autonomía Radical",
+    description: "Pensado para el curioso que quiere entender sus propios patrones, no para seguidores pasivos de gurús.",
+    badge: "Sin Intermediarios"
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
 export default function ClaritySection() {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
   return (
-    <section className="relative py-20 sm:py-32 px-4 sm:px-8 bg-paper overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-24 sm:py-36 px-4 sm:px-8 bg-background border-b border-border overflow-hidden">
+      {/* Subtle Background Mesh / Glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] bg-accent/[0.025] blur-[150px] pointer-events-none rounded-full" />
+
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="mb-20 text-center"
-        >
-          <motion.div variants={itemVariants} className="mb-6">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6"
+          >
+            <SlidersHorizontal className="w-3.5 h-3.5 text-accent" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
               ¿Cuál es la diferencia?
-            </p>
+            </span>
           </motion.div>
 
-          <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-ink mb-6 leading-tight">
+          <motion.h2
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
+          >
             Tu inteligencia personal.
             <br />
             <span className="text-accent">Sin gurús.</span>
           </motion.h2>
 
           <motion.p
-            variants={itemVariants}
-            className="text-lg sm:text-xl text-foreground/70 leading-relaxed max-w-3xl mx-auto font-light"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="text-base sm:text-lg text-muted leading-relaxed font-normal"
           >
-            Molino estructura tu realidad. No predice, te da perspectiva para decidir mejor.
+            Molino estructura tu realidad mediante métodos comprobables. No adivinación: claridad para tomar mejores decisiones.
           </motion.p>
-        </motion.div>
+        </div>
 
-        {/* Comparison Grid — Clean and Professional */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mb-24"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-            {/* Molino Column */}
-            <motion.div variants={itemVariants} className="space-y-12">
-              <div className="space-y-2 pb-8 border-b border-accent/20">
-                <h3 className="font-heading text-2xl font-bold text-ink">Molino</h3>
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/70">Estructura probada</p>
+        {/* ── High-Contrast Comparison Matrix ── */}
+        <div className="rounded-3xl border border-border bg-card shadow-sm overflow-hidden mb-24">
+          {/* Table Headers */}
+          <div className="grid grid-cols-1 md:grid-cols-2 border-b border-border/80 bg-background/50">
+            {/* Molino Header */}
+            <div className="p-6 sm:p-8 border-b md:border-b-0 md:border-r border-border/80 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
+                    Molino
+                  </h3>
+                  <span className="font-mono text-xs text-accent font-semibold">
+                    Estructura probada & transparente
+                  </span>
+                </div>
               </div>
+              <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-accent/10 text-accent uppercase tracking-wider">
+                Auditable
+              </span>
+            </div>
 
-              {comparisonData.map((row, idx) => (
-                <motion.div
-                  key={`molino-${idx}`}
-                  variants={itemVariants}
-                  className="space-y-3 group"
-                >
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/60 group-hover:text-accent/70 transition-colors">
-                    {row.label}
-                  </p>
-                  <p className="font-light text-lg leading-relaxed text-foreground/85 group-hover:text-foreground transition-colors">
-                    {row.molino}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Traditional Astrology Column */}
-            <motion.div variants={itemVariants} className="space-y-12">
-              <div className="space-y-2 pb-8 border-b border-ink/10">
-                <h3 className="font-heading text-2xl font-bold text-ink/40">Astrología Tradicional</h3>
-                <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/40">Sin transparencia</p>
+            {/* Traditional Astrology Header */}
+            <div className="p-6 sm:p-8 flex items-center justify-between bg-muted/5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-muted/10 border border-border flex items-center justify-center text-muted">
+                  <XCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-muted">
+                    Astrología Tradicional
+                  </h3>
+                  <span className="font-mono text-xs text-muted/70">
+                    Caja negra sin trazabilidad
+                  </span>
+                </div>
               </div>
-
-              {comparisonData.map((row, idx) => (
-                <motion.div
-                  key={`traditional-${idx}`}
-                  variants={itemVariants}
-                  className="space-y-3 opacity-60 group"
-                >
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/40 group-hover:text-muted/60 transition-colors">
-                    {row.label}
-                  </p>
-                  <p className="font-light text-lg leading-relaxed text-foreground/50 group-hover:text-foreground/60 transition-colors line-through decoration-ink/20">
-                    {row.traditional}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
+              <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-[10px] font-mono text-muted bg-muted/10 uppercase tracking-wider">
+                Opaco
+              </span>
+            </div>
           </div>
 
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-accent/20 to-transparent mb-24" />
-        </motion.div>
+          {/* Comparison Rows */}
+          <div className="divide-y divide-border/60">
+            {comparisonRows.map((row, idx) => (
+              <div
+                key={idx}
+                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseLeave={() => setHoveredIdx(null)}
+                className={`grid grid-cols-1 md:grid-cols-2 transition-colors duration-200 ${
+                  hoveredIdx === idx ? "bg-accent/[0.02]" : ""
+                }`}
+              >
+                {/* Left: Molino Benefit */}
+                <div className="p-6 sm:p-8 md:border-r border-border/60 space-y-2 bg-gradient-to-r from-accent/[0.02] to-transparent">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold block">
+                    {row.category}
+                  </span>
+                  <p className="font-heading text-base sm:text-lg font-bold text-foreground">
+                    {row.molinoTitle}
+                  </p>
+                  <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal">
+                    {row.molinoDesc}
+                  </p>
+                </div>
 
-        {/* Three Pillars — Elevated */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="space-y-12"
-        >
-          <motion.div variants={itemVariants} className="text-center mb-16">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted/60">
-              Tres pilares
-            </p>
-          </motion.div>
+                {/* Right: Traditional Friction */}
+                <div className="p-6 sm:p-8 space-y-2 bg-background/20 opacity-80">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted font-bold block">
+                    {row.category}
+                  </span>
+                  <p className="font-heading text-base sm:text-lg font-semibold text-muted line-through decoration-border">
+                    {row.traditionalTitle}
+                  </p>
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed font-light">
+                    {row.traditionalDesc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* ── Three Pillars Section (Elevated 3D-feel Cards) ── */}
+        <div className="space-y-12 mb-20">
+          <div className="text-center max-w-xl mx-auto">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold block mb-2">
+              Arquitectura del Método
+            </span>
+            <h3 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
+              Tres pilares fundamentales
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {pillars.map((pillar, idx) => {
               const Icon = pillar.icon;
               return (
                 <motion.div
                   key={idx}
-                  variants={itemVariants}
-                  className="group relative"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.4 }}
+                  className="group relative flex flex-col justify-between p-8 rounded-3xl border border-border bg-card hover:border-accent/40 hover:shadow-md transition-all duration-300 overflow-hidden"
                 >
-                  {/* Subtle background card */}
-                  <div className="absolute inset-0 bg-accent/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Subtle top indicator bar */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Content */}
-                  <div className="relative z-10 p-8 space-y-6">
-                    {/* Icon */}
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-accent/10 text-accent group-hover:bg-accent/15 transition-colors duration-300">
-                      <Icon className="w-7 h-7" strokeWidth={1.5} />
+                  <div className="space-y-5">
+                    {/* Icon & Badge */}
+                    <div className="flex items-center justify-between">
+                      <div className="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent group-hover:scale-105 transition-transform duration-300">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="font-mono text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-border/50 text-muted group-hover:text-foreground transition-colors">
+                        {pillar.badge}
+                      </span>
                     </div>
 
-                    {/* Title */}
-                    <h4 className="font-heading text-2xl font-bold text-ink leading-tight">
-                      {pillar.title}
-                    </h4>
+                    {/* Title & Subtitle */}
+                    <div>
+                      <h4 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
+                        {pillar.title}
+                      </h4>
+                      <p className="font-mono text-xs text-accent mt-0.5 font-medium">
+                        {pillar.subtitle}
+                      </p>
+                    </div>
 
                     {/* Description */}
-                    <p className="font-light text-base leading-relaxed text-foreground/75 group-hover:text-foreground transition-colors duration-300">
+                    <p className="text-xs sm:text-sm text-muted leading-relaxed font-normal">
                       {pillar.description}
                     </p>
                   </div>
 
-                  {/* Border */}
-                  <div className="absolute inset-0 rounded-2xl border border-accent/10 group-hover:border-accent/25 transition-colors duration-300" />
+                  <div className="mt-8 pt-4 border-t border-border/50 flex items-center gap-2 text-xs font-mono text-muted/80 group-hover:text-accent transition-colors">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-accent" />
+                    <span>Verificado por Molino</span>
+                  </div>
                 </motion.div>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
-        {/* CTA to Methods */}
-        <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mt-20 text-center"
-        >
+        {/* ── Call To Action to Methods & Sources ── */}
+        <div className="text-center">
           <Link
             href="/metodos-y-fuentes"
-            className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors font-medium text-sm uppercase tracking-[0.1em] group"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-card border border-border text-foreground hover:border-accent hover:text-accent font-heading font-semibold text-xs sm:text-sm uppercase tracking-wider shadow-sm transition-all duration-200 group"
           >
-            Ver fórmulas y fuentes
-            <span className="transition-transform group-hover:translate-x-1">→</span>
+            <span>Ver fórmulas y fuentes</span>
+            <ArrowRight className="w-4 h-4 text-accent group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
+
