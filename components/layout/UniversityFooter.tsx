@@ -49,7 +49,7 @@ const FOOTER_COLUMNS = [
   },
 ];
 
-const CONTACT_EMAIL = "hola@molino.app";
+const CONTACT_EMAIL = "versionlimitada@proton.me";
 
 export default async function UniversityFooter() {
   const memberCount = await getMemberCount();

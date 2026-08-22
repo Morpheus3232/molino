@@ -134,11 +134,11 @@ export default function NosotrosContent() {
             No hay equipo de soporte ni ticketera. Si encontrás un error, tenés una idea o simplemente querés escribir, llega directo:
           </p>
           <a
-            href="mailto:hola@molino.app"
+            href="mailto:versionlimitada@proton.me"
             className="inline-flex items-center gap-2 font-mono text-sm text-accent hover:underline"
           >
             <Mail className="w-4 h-4" aria-hidden="true" />
-            hola@molino.app
+            versionlimitada@proton.me
           </a>
         </motion.section>
 
