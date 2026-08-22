@@ -109,7 +109,7 @@ export default function SavedProfilesDrawer({
         ) : (
           <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
         )}
-        <span className={compact ? "hidden 2xl:inline" : ""}>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
+        <span className={compact ? "hidden lg:inline" : ""}>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
       </button>
 
       {/* Drawer Modal Backdrop */}
