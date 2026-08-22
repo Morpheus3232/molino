@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import {
   Binary,
   Compass,
@@ -195,7 +196,7 @@ export default function ProofSection() {
           >
             <Fingerprint className="w-3.5 h-3.5 text-accent" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-              Así se ve tu mapa
+              El diferencial
             </span>
           </motion.div>
 
@@ -206,7 +207,7 @@ export default function ProofSection() {
             transition={{ delay: 0.1 }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
           >
-            Datos reales en tiempo real.
+            No solo un resultado. El cómo, visible.
           </motion.h2>
 
           <motion.p
@@ -216,7 +217,7 @@ export default function ProofSection() {
             transition={{ delay: 0.15 }}
             className="text-base sm:text-lg text-muted leading-relaxed font-normal"
           >
-            Tu mapa se actualiza en vivo. Cada número tiene su origen comprobable. Nada es inventado.
+            Este es un ejemplo (no tu mapa todavía). Cada número tiene una fórmula que podés revisar — nada queda en una caja cerrada.
           </motion.p>
         </div>
 
@@ -376,8 +377,14 @@ export default function ProofSection() {
               </div>
             </div>
 
-            <div className="shrink-0 font-mono text-xs text-muted flex items-center gap-1 self-end sm:self-center">
-              <span>0% almacenamiento en nube</span>
+            <div className="shrink-0 flex items-center gap-4 self-end sm:self-center">
+              <Link
+                href="/ejemplo"
+                className="font-mono text-xs text-accent hover:underline underline-offset-2 whitespace-nowrap"
+              >
+                Ver el mapa completo →
+              </Link>
+              <span className="font-mono text-xs text-muted whitespace-nowrap">Cálculo 100% local</span>
             </div>
           </div>
         </motion.div>

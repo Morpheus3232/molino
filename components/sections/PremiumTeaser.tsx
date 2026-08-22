@@ -35,7 +35,7 @@ export default function PremiumTeaser() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-4">
             <Sparkles className="w-3.5 h-3.5" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
-              Molino Premium · Claridad Profunda
+              Gratis vs. Premium
             </span>
           </div>
 
@@ -43,13 +43,14 @@ export default function PremiumTeaser() {
             {...fadeUp}
             className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground font-bold tracking-tight leading-[1.08]"
           >
-            Tu mapa básico es gratuito.
+            Ver tu mapa es gratis.
             <br />
-            <span className="text-accent">La profundidad total se desbloquea en un clic.</span>
+            <span className="text-accent">Entenderlo es Premium.</span>
           </motion.h2>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
-            Sin suscripciones mensuales ocultas. Un único acceso vitalicio de <strong>$8 USD</strong>.
+            Gratis: numerología, astrología y zodíaco chino cruzados, con su fórmula visible.
+            Premium: la síntesis que conecta esas piezas entre sí — un único acceso vitalicio de <strong>$8 USD</strong>.
           </p>
         </div>
 

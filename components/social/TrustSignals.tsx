@@ -56,7 +56,7 @@ const PRIVACY_STEPS: { icon: BadgeIcon; title: string; detail: string }[] = [
   },
   {
     icon: Fingerprint,
-    title: "3. Privacidad garantizada",
+    title: "3. Vos tenés el control",
     detail: "Al cerrar la pestaña, tu fecha desaparece a menos que la guardes en tu bóveda local.",
   },
 ];
@@ -152,7 +152,7 @@ export default function TrustSignals() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-ink/10 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-muted">
-            <span>Sin telemetría de terceros</span>
+            <span>Sin rastreo publicitario</span>
             <span>·</span>
             <Link
               href="https://github.com/Morpheus3232/molino"

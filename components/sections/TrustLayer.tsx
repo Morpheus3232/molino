@@ -85,7 +85,7 @@ export default function TrustLayer() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8"
         >
           {trustPoints.map((point, idx) => (
             <motion.div
@@ -110,6 +110,19 @@ export default function TrustLayer() {
             </motion.div>
           ))}
         </motion.div>
+
+        <motion.p
+          variants={itemVariants}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-xs text-paper/50 max-w-2xl mx-auto mb-16"
+        >
+          * El cálculo del mapa es 100% local. Premium y las interpretaciones con IA guardan un hash irreversible de tu perfil —nunca tu fecha en claro— según nuestra{" "}
+          <Link href="/privacidad" className="underline hover:text-paper/80">
+            política de privacidad
+          </Link>
+          .
+        </motion.p>
 
         {/* CTA to GitHub */}
         <motion.div
