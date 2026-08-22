@@ -136,22 +136,21 @@ export default function DailyEnergyCard({
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted font-bold block">
                 Vibración de hoy
               </span>
-              <div className="flex items-baseline gap-1 mt-1">
+              <div className="flex items-center gap-2 mt-1">
                 <span className="font-display text-4xl sm:text-5xl font-black tracking-tight text-foreground">
                   {score}
                 </span>
-                <span className="font-mono text-xs text-muted">/100</span>
+                <span
+                  className="font-heading text-xs font-bold px-2.5 py-0.5 rounded-full bg-background border border-border inline-block"
+                  style={{ color: scoreColor }}
+                >
+                  {scoreLabel}
+                </span>
               </div>
             </div>
             <div className="text-right lg:text-left lg:mt-2">
-              <span
-                className="font-heading text-sm font-bold px-2.5 py-1 rounded-full bg-background border border-border inline-block"
-                style={{ color: scoreColor }}
-              >
-                {scoreLabel}
-              </span>
               {daily.isPersonalized && (
-                <p className="font-mono text-[11px] text-muted mt-1.5">
+                <p className="font-mono text-[11px] text-muted">
                   Año Personal {daily.personalYear}
                 </p>
               )}
