@@ -65,9 +65,10 @@ describe("Daily Energy & Retention System", () => {
       />
     );
 
-    expect(screen.getByText("Alta")).toBeDefined();
+    // Desde 2822171 la card ya no muestra el bloque de score/nivel ("Alta");
+    // el streak se presenta como "Día N conociéndote".
     expect(screen.getByText(/Energía de Iniciación/i)).toBeDefined();
-    expect(screen.getByText(/5 días seguidos/i)).toBeDefined();
+    expect(screen.getByText(/Día 5 conociéndote/i)).toBeDefined();
   });
 
   it("renders DailyFocus with focus, avoid, and Journal CTA", () => {

@@ -67,8 +67,8 @@ export default function TrustLayer() {
             </p>
           </motion.div>
 
-          <motion.h2 variants={itemVariants} className="font-display text-5xl sm:text-6xl font-bold tracking-tight text-paper mb-6 leading-tight">
-            Privacidad por diseño.
+          <motion.h2 variants={itemVariants} className="font-display font-normal normal-case tracking-tight text-paper mb-6 leading-[1.05] text-[clamp(2.5rem,5vw,4rem)]">
+            Privacidad <em className="text-gradient-warm-dark">por diseño.</em>
           </motion.h2>
 
           <motion.p
@@ -99,57 +99,16 @@ export default function TrustLayer() {
               </div>
 
               {/* Title */}
-              <h3 className="font-heading text-xl font-bold text-paper">
+              <h3 className="font-display italic font-normal normal-case text-2xl text-paper">
                 {point.title}
               </h3>
 
               {/* Description */}
-              <p className="text-paper/70 leading-relaxed font-light">
+              <p className="text-paper/70 leading-relaxed text-sm">
                 {point.description}
               </p>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Details Section */}
-        <motion.div
-          variants={itemVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="p-8 sm:p-12 rounded-2xl bg-gradient-to-br from-paper/5 to-paper/2 border border-accent/15 space-y-8"
-        >
-          <div className="space-y-4">
-            <h3 className="font-heading text-2xl font-bold text-paper">Cómo funciona</h3>
-            <p className="text-paper/70 leading-relaxed font-light">
-              Molino es una aplicación web que corre 100% en tu navegador. Los motores de cálculo (numerología, astrología, zodíaco chino) se ejecutan localmente usando Web Workers. Tu fecha de nacimiento se procesa en tu CPU y nunca se transmite a ningún servidor.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-6 border-y border-accent/10">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/60 mb-2">Ingresás</p>
-              <p className="font-light text-paper/80">Tu fecha de nacimiento</p>
-            </div>
-            <div className="flex items-center justify-center">
-              <span className="text-accent font-bold">→</span>
-            </div>
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/60 mb-2">Se procesa</p>
-              <p className="font-light text-paper/80">En tu navegador (Web Workers)</p>
-            </div>
-            <div className="col-span-full sm:col-span-1">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/60 mb-2">Resultado</p>
-              <p className="font-light text-paper/80">Tu mapa, guardado localmente (localStorage)</p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/60">Premium e IA (opcional)</p>
-            <p className="text-paper/70 leading-relaxed font-light text-sm">
-              Si activás Premium ($8) o IA integrada, se envía un hash criptográfico de tu perfil a MercadoPago (para validar pago) u OpenRouter/DeepSeek (para procesar con IA). Tu fecha de nacimiento en claro nunca se transmite.
-            </p>
-          </div>
         </motion.div>
 
         {/* CTA to GitHub */}

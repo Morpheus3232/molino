@@ -13,11 +13,12 @@ describe("Home page — universal access without profile", () => {
     const pagePath = path.resolve(__dirname, "..", "app", "page.tsx");
     const source = fs.readFileSync(pagePath, "utf8");
     expect(source).toBeTruthy();
-    expect(source).toContain("PersonalizedHomeClient");
     expect(source).toContain("HeroInstrument");
-    expect(source).toContain("CTAFinal");
-    expect(source).toContain("TrustSignals");
-    expect(source).toContain("QuienHaceEsto");
+    expect(source).toContain("ProofSection");
+    expect(source).toContain("ClaritySection");
+    expect(source).toContain("FeaturesSection");
+    expect(source).toContain("TrustLayer");
+    expect(source).toContain("CTASection");
     expect(source).toContain("FAQ");
   });
 });

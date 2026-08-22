@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import Hero from "@/components/sections/Hero";
+import HeroInstrument from "@/components/sections/HeroInstrument";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -35,7 +35,7 @@ if (typeof Element.prototype.scrollIntoView !== "function") {
   Element.prototype.scrollIntoView = () => {};
 }
 
-describe("Hero — birth date entry", () => {
+describe("HeroInstrument — birth date entry", () => {
   beforeEach(() => {
     push.mockClear();
     localStorage.clear();
@@ -43,39 +43,41 @@ describe("Hero — birth date entry", () => {
 
   it("valid date: navigates to /onboarding and saves the date", async () => {
     const user = userEvent.setup();
-    render(<Hero />);
+    render(<HeroInstrument />);
 
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
     await user.type(screen.getByPlaceholderText("AAAA"), "1990");
-    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
+    await user.click(screen.getByRole("button", { name: /ver tu mapa/i }));
 
     expect(push).toHaveBeenCalledWith("/onboarding");
     const saved = JSON.parse(localStorage.getItem("molino.onboarding.v1") || "{}");
     expect(saved.dateValue).toBe("1990-06-15");
   });
 
-  it("incomplete date: reports the missing field and does not navigate", async () => {
+  it("incomplete date: button stays disabled and does not navigate", async () => {
     const user = userEvent.setup();
-    render(<Hero />);
+    render(<HeroInstrument />);
 
-    // Day and month only — year left empty.
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
-    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
+    // Year left empty — date is incomplete, button stays disabled.
 
-    expect(await screen.findByRole("alert")).toHaveTextContent("Completá el año de nacimiento.");
+    const btn = screen.getByRole("button", { name: /ver tu mapa/i });
+    expect(btn).toBeDisabled();
+
+    await user.click(btn);
     expect(push).not.toHaveBeenCalled();
   });
 
   it("future year: never completes, so the button reports it instead of navigating", async () => {
     const user = userEvent.setup();
-    render(<Hero />);
+    render(<HeroInstrument />);
 
     await user.type(screen.getByPlaceholderText("DD"), "15");
     await user.type(screen.getByPlaceholderText("MM"), "06");
     await user.type(screen.getByPlaceholderText("AAAA"), "2099");
-    await user.click(screen.getByRole("button", { name: /descubrí tu mapa/i }));
+    await user.click(screen.getByRole("button", { name: /ver tu mapa/i }));
 
     expect(push).not.toHaveBeenCalled();
   });

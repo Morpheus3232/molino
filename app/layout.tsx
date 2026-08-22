@@ -17,7 +17,7 @@ import { SITE_URL, SITE_NAME, OG_IMAGE, siteUrl } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
-const newsreader = Newsreader({ subsets: ["latin"], style: ["italic"], display: "swap", variable: "--font-display" });
+const newsreader = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-display" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
 

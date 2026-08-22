@@ -74,6 +74,14 @@ export const fadeUpMount = {
   transition: { duration: 0.5, ease: "easeOut" as const },
 };
 
+// Same as fadeUpMount but with a delay — para elementos above-the-fold que
+// heredan el entrance escalonado sin depender de IntersectionObserver.
+export const fadeUpMountDelayed = (delay: number) => ({
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, delay, ease: "easeOut" as const },
+});
+
 // Stagger section reveal (use on section wrapper)
 export const staggerSection = {
   initial: {},

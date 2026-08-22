@@ -14,6 +14,17 @@ vi.mock("recharts", async () => {
   };
 });
 
+// JournalTimeline uses framer-motion whileInView which requires
+// IntersectionObserver — jsdom doesn't provide it.
+if (typeof (global as unknown as { IntersectionObserver?: unknown }).IntersectionObserver === "undefined") {
+  class MockIntersectionObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  (global as unknown as { IntersectionObserver: unknown }).IntersectionObserver = MockIntersectionObserver;
+}
+
 describe("JournalEditor Component", () => {
   const mockProfile: Partial<UserProfile> = {
     name: "Franco",
