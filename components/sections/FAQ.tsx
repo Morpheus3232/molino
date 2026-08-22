@@ -19,7 +19,7 @@ export const FAQS = [
   {
     question: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
     answer:
-      "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers. Tu fecha de nacimiento se procesa en tu CPU local y no se transmite ni se almacena en ninguna base de datos externa.",
+      "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers: tu fecha de nacimiento se procesa en tu CPU local y nunca se transmite en texto plano. Si activás Premium o una interpretación con IA, se guarda un hash HMAC-SHA256 irreversible de tu perfil — nunca tu fecha de nacimiento en claro. Podés ver el detalle exacto en /privacidad.",
   },
   {
     question: "¿Puedo comparar mi mapa con mi pareja o guardar varios perfiles?",

@@ -7,7 +7,6 @@ import {
   Shield,
   Zap,
   CheckCircle2,
-  XCircle,
   ArrowRight,
   SlidersHorizontal,
   Lock,
@@ -18,42 +17,36 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-interface ComparisonItem {
+interface MethodItem {
   category: string;
-  molinoTitle: string;
-  molinoDesc: string;
-  traditionalTitle: string;
-  traditionalDesc: string;
+  title: string;
+  description: string;
 }
 
-const comparisonRows: ComparisonItem[] = [
+// Antes esto era una comparación "Molino vs Astrología Tradicional" —
+// se reemplazó por el método de Molino hecho visible, sin retratar otras
+// disciplinas como opacas o deshonestas (Molino usa astrología como uno de
+// sus tres sistemas; atacarla como categoría era inconsistente).
+const methodRows: MethodItem[] = [
   {
     category: "¿Qué hace?",
-    molinoTitle: "Estructura tu realidad",
-    molinoDesc: "Identifica patrones matemáticos, tensiones arquetípicas y ciclos activos para tomar mejores decisiones.",
-    traditionalTitle: "Predicción y destino",
-    traditionalDesc: "Promete adivinar el futuro o revelar un 'destino inmutable' que requiere fe ciega.",
+    title: "Estructura tu realidad",
+    description: "Identifica patrones matemáticos, tensiones arquetípicas y ciclos activos para tomar mejores decisiones. No promete adivinar el futuro.",
   },
   {
     category: "¿Se guardan tus datos?",
-    molinoTitle: "0% Almacenamiento externo",
-    molinoDesc: "Todo ocurre en tu navegador local (Web Workers). Cálculo 100% privado, sin bases de datos ni registro.",
-    traditionalTitle: "Comercialización de PII",
-    traditionalDesc: "Venta de listas de correos, monetización de perfiles en la nube y seguimiento de publicidad.",
+    title: "Tu mapa básico no sale de tu navegador",
+    description: "El cálculo ocurre 100% en tu dispositivo (Web Workers), sin registro. Si activás Premium o IA, guardamos un hash irreversible de tu perfil — nunca tu fecha en claro.",
   },
   {
     category: "¿Por qué confiar?",
-    molinoTitle: "Fórmulas auditables y abiertas",
-    molinoDesc: "Fórmulas pitagóricas visibles y fuentes documentadas. Podés auditar y comprobar cada número.",
-    traditionalTitle: "Caja negra y misticismo",
-    traditionalDesc: "Se vende el 'misterio' y la fe en un intermediario. Sin trazabilidad comprobable.",
+    title: "Fórmulas auditables y abiertas",
+    description: "Fórmulas pitagóricas visibles y fuentes documentadas. Podés auditar y comprobar cada número en /metodos-y-fuentes.",
   },
   {
     category: "¿Para quién es?",
-    molinoTitle: "Curiosos y analistas",
-    molinoDesc: "Para quien busca herramientas de autoconocimiento lúcido y autonomía, sin depender de nadie.",
-    traditionalTitle: "Buscadores de respuestas externas",
-    traditionalDesc: "Para quienes buscan un oráculo o un gurú que les dicte qué hacer con sus vidas.",
+    title: "Curiosos y analistas",
+    description: "Para quien busca herramientas de autoconocimiento lúcido y autonomía — el mapa te muestra el método, la decisión sigue siendo tuya.",
   },
 ];
 
@@ -100,7 +93,7 @@ export default function ClaritySection() {
           >
             <SlidersHorizontal className="w-3.5 h-3.5 text-accent" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-              ¿Cuál es la diferencia?
+              Qué cambia cuando podés ver el método
             </span>
           </motion.div>
 
@@ -127,85 +120,41 @@ export default function ClaritySection() {
           </motion.p>
         </div>
 
-        {/* ── High-Contrast Comparison Matrix ── */}
+        {/* ── El método, hecho visible ── */}
         <div className="rounded-3xl border border-border bg-card shadow-sm overflow-hidden mb-24">
-          {/* Table Headers */}
-          <div className="grid grid-cols-1 md:grid-cols-2 border-b border-border/80 bg-background/50">
-            {/* Molino Header */}
-            <div className="p-6 sm:p-8 border-b md:border-b-0 md:border-r border-border/80 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
-                    Molino
-                  </h3>
-                  <span className="font-mono text-xs text-accent font-semibold">
-                    Estructura probada & transparente
-                  </span>
-                </div>
-              </div>
-              <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-[10px] font-mono font-bold bg-accent/10 text-accent uppercase tracking-wider">
-                Auditable
-              </span>
+          <div className="p-6 sm:p-8 border-b border-border/80 bg-background/50 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
+              <CheckCircle2 className="w-5 h-5" />
             </div>
-
-            {/* Traditional Astrology Header */}
-            <div className="p-6 sm:p-8 flex items-center justify-between bg-muted/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-muted/10 border border-border flex items-center justify-center text-muted">
-                  <XCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-muted">
-                    Astrología Tradicional
-                  </h3>
-                  <span className="font-mono text-xs text-muted/70">
-                    Caja negra sin trazabilidad
-                  </span>
-                </div>
-              </div>
-              <span className="hidden sm:inline-flex px-3 py-1 rounded-full text-[10px] font-mono text-muted bg-muted/10 uppercase tracking-wider">
-                Opaco
+            <div>
+              <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
+                Cómo trabaja Molino
+              </h3>
+              <span className="font-mono text-xs text-accent font-semibold">
+                Método visible, no una caja cerrada
               </span>
             </div>
           </div>
 
-          {/* Comparison Rows */}
           <div className="divide-y divide-border/60">
-            {comparisonRows.map((row, idx) => (
+            {methodRows.map((row, idx) => (
               <div
                 key={idx}
                 onMouseEnter={() => setHoveredIdx(idx)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`grid grid-cols-1 md:grid-cols-2 transition-colors duration-200 ${
+                className={`p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-2 sm:gap-8 transition-colors duration-200 ${
                   hoveredIdx === idx ? "bg-accent/[0.02]" : ""
                 }`}
               >
-                {/* Left: Molino Benefit */}
-                <div className="p-6 sm:p-8 md:border-r border-border/60 space-y-2 bg-gradient-to-r from-accent/[0.02] to-transparent">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold block">
-                    {row.category}
-                  </span>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold block sm:pt-1">
+                  {row.category}
+                </span>
+                <div className="space-y-2">
                   <p className="font-heading text-base sm:text-lg font-bold text-foreground">
-                    {row.molinoTitle}
+                    {row.title}
                   </p>
-                  <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal">
-                    {row.molinoDesc}
-                  </p>
-                </div>
-
-                {/* Right: Traditional Friction */}
-                <div className="p-6 sm:p-8 space-y-2 bg-background/20 opacity-80">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted font-bold block">
-                    {row.category}
-                  </span>
-                  <p className="font-heading text-base sm:text-lg font-semibold text-muted line-through decoration-border">
-                    {row.traditionalTitle}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted leading-relaxed font-light">
-                    {row.traditionalDesc}
+                  <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal max-w-xl">
+                    {row.description}
                   </p>
                 </div>
               </div>

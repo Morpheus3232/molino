@@ -3,6 +3,7 @@ import HeroInstrument from "@/components/sections/HeroInstrument";
 import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
+import PremiumTeaser from "@/components/sections/PremiumTeaser";
 import TrustLayer from "@/components/sections/TrustLayer";
 import CTASection from "@/components/sections/CTASection";
 import { SITE_URL } from "@/lib/seo";
@@ -65,7 +66,7 @@ const homeSchemas = [
         name: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers. Tu fecha de nacimiento se procesa en tu CPU local y no se transmite ni se almacena en ninguna base de datos externa.",
+          text: "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers: tu fecha de nacimiento se procesa en tu CPU local y nunca se transmite en texto plano. Si activás Premium o una interpretación con IA, se guarda un hash HMAC-SHA256 irreversible de tu perfil — nunca tu fecha de nacimiento en claro. Detalle completo en /privacidad.",
         },
       },
       {
@@ -98,10 +99,10 @@ const homeSchemas = [
 
 export const metadata = {
   title: "Tu Mapa Personal de Autoconocimiento",
-  description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados. Transparencia radical.",
+  description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
   openGraph: {
     title: "Tu Mapa Personal de Autoconocimiento",
-    description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. 100% local, sin registro, sin datos guardados.",
+    description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro.",
     type: "website",
     url: SITE_URL,
   },
@@ -120,8 +121,11 @@ export default function HomePage() {
         {/* Clarity — Molino vs Traditional */}
         <ClaritySection />
 
-        {/* Features — Six Tools */}
+        {/* Features — Core del mapa (ciclos, afinidades) + link a ecosistema */}
         <FeaturesSection />
+
+        {/* Premium — transformación: veo mi mapa vs. entiendo cómo se conecta */}
+        <PremiumTeaser />
 
         {/* Trust Layer — Privacy & Architecture */}
         <TrustLayer />

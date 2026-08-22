@@ -14,8 +14,8 @@ const METRICS = [
   },
   {
     value: "0",
-    label: "Datos en el servidor",
-    detail: "No guardamos tus datos personales. Lo que escribís sale de tu dispositivo.",
+    label: "Fecha en claro en servidores",
+    detail: "Tu mapa gratuito nunca toca un servidor. En Premium, guardamos solo un hash irreversible — nunca tu fecha de nacimiento en texto plano.",
     icon: ServerOff,
   },
   {
