@@ -12,14 +12,14 @@ import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
 /* ═══ Navegación (todo visible, sin dropdown) ═══ */
 const NAV_LINKS = [
-  { href: "/hoy", label: "Hoy" },
+  { href: "/academy", label: "Academia" },
   { href: "/atlas", label: "Atlas" },
   { href: "/biblioteca", label: "Biblioteca" },
-  { href: "/academy", label: "Academia" },
   { href: "/blog", label: "Blog" },
+  { href: "/calendario", label: "Calendario" },
+  { href: "/hoy", label: "Hoy" },
   { href: "/journal", label: "Journal" },
   { href: "/profile", label: "Mi Mapa" },
-  { href: "/calendario", label: "Calendario" },
 ];
 
 export default function UniversityHeader() {
