@@ -9,7 +9,6 @@ import { computeJournalStreak, findEntryForDate } from "@/lib/utils/journalStrea
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { smoothReveal } from "@/lib/utils/premiumMotion";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
-import TodayCalendarNumberCard from "@/components/daily/TodayCalendarNumberCard";
 import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
@@ -51,7 +50,7 @@ export default function HoyClient() {
             )}
           </motion.div>
 
-          {/* 1. Daily Energy Card */}
+          {/* 1. Daily Energy Card (Unificado con Día del Calendario Numerológico) */}
           {daily && (
             <DailyEnergyCard
               profile={profile}
@@ -60,9 +59,6 @@ export default function HoyClient() {
               streakBadge={badge}
             />
           )}
-
-          {/* 1.2 Calendario number */}
-          <TodayCalendarNumberCard />
 
           {/* 1.5 Personal Year */}
           {daily?.isPersonalized && profile && <PersonalCyclesSection profile={profile} daily={daily} />}
