@@ -83,18 +83,18 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), payment=(self "https://js.mercadopago.com" "https://www.paypal.com")',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(self "https://js.mercadopago.com")',
           },
           {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-`script-src 'self' 'unsafe-inline' https://js.mercadopago.com https://www.paypal.com https://*.paypal.com${__impeccableLiveDev}${__devEval}`,
+`script-src 'self' 'unsafe-inline' https://js.mercadopago.com${__impeccableLiveDev}${__devEval}`,
           "style-src 'self' 'unsafe-inline'",
-          "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com https://*.paypalobjects.com",
+          "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com",
           "font-src 'self'",
-          "connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com https://api-m.paypal.com https://api-m.sandbox.paypal.com${__impeccableLiveDev}",
-          "frame-src 'self' https://www.mercadopago.com.ar https://www.mercadopago.com https://checkout.mercadopago.com https://www.paypal.com https://*.paypal.com",
+`connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com${__impeccableLiveDev}`,
+          "frame-src 'self' https://www.mercadopago.com.ar https://www.mercadopago.com https://checkout.mercadopago.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
