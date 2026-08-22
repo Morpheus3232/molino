@@ -31,8 +31,8 @@ const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variab
 // hardcoding the full title on every leaf route.
 export const metadata: Metadata = {
   title: {
-    default: "Numerología, Astrología y Zodiaco Gratis | Molino",
-    template: "%s | Molino",
+    default: "Numerología, Astrología y Zodiaco Gratis",
+    template: "%s",
   },
   description:
     "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
@@ -64,14 +64,14 @@ export const metadata: Metadata = {
     locale: "es_419",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Numerología, Astrología y Zodiaco Gratis | Molino",
+    title: "Numerología, Astrología y Zodiaco Gratis",
     description:
       "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
     images: [{ url: OG_IMAGE }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Numerología, Astrología y Zodiaco Gratis | Molino",
+    title: "Numerología, Astrología y Zodiaco Gratis",
     description:
       "Descubrí tu mapa personal cruzando numerología, astrología y zodiaco chino en segundos. 100% privado, cálculo local, sin registro. Empezá gratis ahora.",
   },

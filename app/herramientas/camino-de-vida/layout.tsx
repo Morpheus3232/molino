@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   description:
     "Calculá tu número de Camino de Vida con la fecha de nacimiento. Significado del 1 al 9 y números maestros 11, 22, 33.",
   path: "/herramientas/camino-de-vida",
-  ogTitle: "Calculá tu Camino de Vida — Molino",
+  ogTitle: "Calculá tu Camino de Vida",
   ogDescription: "Número de Camino de Vida a partir de tu fecha de nacimiento.",
   image: "/opengraph-image",
 });
@@ -13,7 +13,7 @@ export const metadata = createRouteMetadata({
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Molino — Calculadora de Camino de Vida",
+  name: "Calculadora de Camino de Vida",
   description:
     "Calculá tu número de Camino de Vida con la fecha de nacimiento. Significado del 1 al 9 y números maestros 11, 22, 33.",
   url: siteUrl("/herramientas/camino-de-vida"),

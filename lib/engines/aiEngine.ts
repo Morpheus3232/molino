@@ -221,7 +221,7 @@ export async function generateWithOpenAI(
         {
           role: 'system',
           content: [
-            'Eres el Motor de Inteligencia de Molino — un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
+            'Eres el Motor de Inteligencia de un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
             '',
             'INSTRUCCIONES OBLIGATORIAS:',
             '- Solo interpretás datos que Molino ya calculó. No inventás cálculos.',
@@ -300,7 +300,7 @@ export async function generateWithClaude(
       max_tokens: template ? STRUCTURED_OUTPUT_MAX_TOKENS : DEFAULT_MAX_TOKENS,
       temperature: 0.7,
       system: [
-        'Eres el Motor de Inteligencia de Molino — un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
+        'Eres el Motor de Inteligencia de un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
         '',
         'INSTRUCCIONES OBLIGATORIAS:',
         '- Solo interpretás datos que Molino ya calculó. No inventás cálculos.',
@@ -376,7 +376,7 @@ export async function generateWithOpenRouter(
       {
         role: 'system',
         content: [
-          'Eres el Motor de Inteligencia de Molino — un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
+          'Eres el Motor de Inteligencia de un experto en sistemas simbólicos (numerología, astrología, zodiaco chino) que ofrece interpretaciones profundas y reflexivas.',
           '',
           'INSTRUCCIONES OBLIGATORIAS:',
           '- Solo interpretás datos que Molino ya calculó. No inventás cálculos.',

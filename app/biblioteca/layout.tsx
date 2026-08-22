@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   description:
     "Fuentes bibliográficas, artículos académicos y referencias que sustentan los sistemas de conocimiento de Molino: numerología, astrología y zodiaco chino.",
   path: "/biblioteca",
-  ogTitle: "Biblioteca — Molino",
+  ogTitle: "Biblioteca",
   ogDescription: "Fuentes y referencias bibliográficas de los sistemas simbólicos de Molino.",
 });
 

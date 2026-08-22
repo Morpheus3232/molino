@@ -191,7 +191,7 @@ export default function CaminoDeVidaPage() {
                   onClick={() => {
                     const text = `Mi Camino de Vida es ${result.lifePath} — ${result.meaning.archetype}. Leé el tuyo en Molino.`;
                     if (navigator.share) {
-                      navigator.share({ title: "Mi Camino de Vida — Molino", text }).catch(() => {});
+                      navigator.share({ title: "Mi Camino de Vida", text }).catch(() => {});
                     } else {
                       navigator.clipboard.writeText(text).then(() => {});
                     }

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),
     },
     openGraph: {
-      title: `${animal.emoji} ${animal.name} — Molino`,
+      title: `${animal.emoji} ${animal.name}`,
       description: `${animal.meaning.slice(0, 155)}`,
       type: "article",
       url: siteUrl(`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`),

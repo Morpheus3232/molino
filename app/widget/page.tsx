@@ -5,7 +5,7 @@ import Card from "@/components/ui/Card";
 import CopyEmbedCode from "./CopyEmbedCode";
 
 export const metadata = createRouteMetadata({
-  title: "Widget de Numerología Gratis para Coaches | Molino",
+  title: "Widget de Numerología Gratis para Coaches",
   description:
     "Sumá una calculadora de Camino de Vida gratis a tu web o blog de bienestar. Sin registro, sin tracking, instalación en 2 minutos. Ideal para coaches.",
   path: "/widget",
@@ -126,7 +126,7 @@ export default function WidgetPage() {
               width="100%"
               height="440"
               style={{ border: "none", borderRadius: 20, overflow: "hidden", maxWidth: 420 }}
-              title="Molino — Calculadora de Mapa Personal (demo)"
+              title="Calculadora de Mapa Personal (demo)"
               loading="lazy"
             />
           </div>

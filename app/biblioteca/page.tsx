@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Biblioteca — Fuentes y referencias",
   description: "Colección curada de libros, artículos y recursos sobre numerología, astrología, zodiaco chino, kabbalah y más sistemas simbólicos.",
   path: "/biblioteca",
-  ogTitle: "Biblioteca — Molino",
+  ogTitle: "Biblioteca",
   ogDescription: "Fuentes y referencias sobre numerología, astrología, zodiaco chino y otros sistemas simbólicos.",
 });
 

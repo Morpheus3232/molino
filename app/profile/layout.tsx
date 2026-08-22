@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   // { default, template } — ver nota en app/herramientas/layout.tsx.
-  title: { default: "Mi Mapa Personal", template: "%s | Molino" },
+  title: { default: "Mi Mapa Personal", template: "%s" },
   description:
     "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos. Explorá tu mapa en Molino.",
   openGraph: {
-    title: "Mi Mapa Personal | Molino",
+    title: "Mi Mapa Personal",
     description:
       "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos.",
     type: "website",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mi Mapa Personal | Molino",
+    title: "Mi Mapa Personal",
     description:
       "Tu mapa personal de autoconocimiento: identidad, conexiones y patrones simbólicos.",
   },

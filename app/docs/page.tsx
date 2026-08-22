@@ -4,7 +4,7 @@ import { Code2, ArrowRight, ShieldCheck, Terminal, Sparkles, Cpu, Layers, Heart,
 import Card from "@/components/ui/Card";
 
 export const metadata = createRouteMetadata({
-  title: "API Pública & Documentación para Desarrolladores — Molino",
+  title: "API Pública & Documentación para Desarrolladores",
   description:
     "Documentación completa de la API REST v1 de Molino. Endpoints con soporte CORS para consultar mapas simbólicos, compatibilidad y energía diaria en JSON.",
   path: "/docs",

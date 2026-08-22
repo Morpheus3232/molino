@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Motores y fórmulas",
   description: "Documentación técnica de los motores de cálculo: fórmulas de numerología (Camino de Vida, Expresión), astronomía de precisión (Swiss Ephemeris) y calendario chino (ciclo sexagenario).",
   path: "/docs/motores",
-  ogTitle: "Motores y fórmulas — Molino",
+  ogTitle: "Motores y fórmulas",
   ogDescription: "Fórmulas y algoritmos detrás de Molino: numerología, astrología de precisión, zodíaco chino. Código abierto y auditable.",
 });
 
@@ -13,7 +13,7 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    headline: "Motores y fórmulas — Molino",
+    headline: "Motores y fórmulas",
     description: "Documentación técnica de los motores de cálculo de Molino.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },

@@ -8,7 +8,7 @@ interface Props {
 export async function generateMetadata({ params }: Props) {
   const { codigo } = await params;
   return createRouteMetadata({
-    title: "Te regalaron un mapa — Molino",
+    title: "Te regalaron un mapa",
     description: "Canjeá tu regalo: un mapa personal completo de numerología, astrología y zodíaco chino.",
     path: `/regalar/${codigo}`,
   });

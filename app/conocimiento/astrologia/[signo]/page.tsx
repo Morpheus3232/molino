@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),
     },
     openGraph: {
-      title: `${sign.symbol} ${sign.name} — Molino`,
+      title: `${sign.symbol} ${sign.name}`,
       description: `${sign.meaning.slice(0, 155)}`,
       type: "article",
       url: siteUrl(`/conocimiento/astrologia/${normalize(sign.name)}`),

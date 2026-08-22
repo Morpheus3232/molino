@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Fuentes y metodología",
   description: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino. Transparencia académica y rigor.",
   path: "/conocimiento/fuentes",
-  ogTitle: "Fuentes y metodología — Molino",
+  ogTitle: "Fuentes y metodología",
   ogDescription: "Conocé las fuentes y la metodología que Molino utiliza para numerología, astrología y zodiaco chino.",
 });
 

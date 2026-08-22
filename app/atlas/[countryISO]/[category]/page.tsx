@@ -27,14 +27,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { countryISO, category } = await params;
   const name = getCountryName(countryISO.toUpperCase());
   const catLabel = categoryLabel(category);
-  if (!name || !catLabel) return { title: "No encontrado | Molino" };
+  if (!name || !catLabel) return { title: "No encontrado" };
   const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}/${category}`);
   return {
-    title: `${catLabel} de ${name} — Atlas | Molino`,
+    title: `${catLabel} de ${name} — Atlas`,
     description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
     alternates: { canonical },
     openGraph: {
-      title: `${catLabel} de ${name} — Atlas | Molino`,
+      title: `${catLabel} de ${name} — Atlas`,
       description: `Descubrí ${catLabel.toLowerCase()} de ${name} y su afinidad simbólica según el zodíaco chino.`,
       type: "website",
       url: canonical,

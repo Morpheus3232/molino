@@ -652,7 +652,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "honestidad-radical-lo-que-molino-es-y-no-es",
     title: "Honestidad radical: lo que Molino es (y lo que no es)",
     excerpt:
-      "Cada tanto vale la pena parar y mirar el proyecto con ojo crítico. Esto es lo que encontramos cuando lo hicimos con Molino — sin marketing, sin vender expertise que no tenemos.",
+      "Cada tanto vale la pena parar y mirar el proyecto con ojo crítico. Esto es lo que encontramos cuando lo hicimos con sin marketing, sin vender expertise que no tenemos.",
     metaDescription:
       "Qué hace bien Molino, qué le falta, y qué es (y qué no es) el proyecto: no somos expertos certificados, somos aficionados que construyeron una herramienta gratuita y privada de autoconocimiento.",
     category: "Autoconocimiento",

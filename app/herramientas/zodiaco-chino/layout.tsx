@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   description:
     "Calculá tu animal del zodíaco chino con tu fecha de nacimiento. Conocé los 12 animales, los 5 elementos y las compatibilidades.",
   path: "/herramientas/zodiaco-chino",
-  ogTitle: "Calculá tu animal del Zodiaco Chino — Molino",
+  ogTitle: "Calculá tu animal del Zodiaco Chino",
   ogDescription: "Animal del zodíaco chino a partir de tu fecha de nacimiento.",
   image: "/opengraph-image",
 });
@@ -13,7 +13,7 @@ export const metadata = createRouteMetadata({
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Molino — Calculadora de Zodiaco Chino",
+  name: "Calculadora de Zodiaco Chino",
   description:
     "Calculá tu animal del zodíaco chino con tu fecha de nacimiento. Conocé los 12 animales, los 5 elementos y las compatibilidades.",
   url: siteUrl("/herramientas/zodiaco-chino"),

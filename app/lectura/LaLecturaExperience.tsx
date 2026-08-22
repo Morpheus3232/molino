@@ -365,7 +365,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                   >
                     <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Lo que resuena con vos</p>
                     <p className="text-xs text-muted mb-2">
-                      Calculado con el mismo criterio que el resto de Molino — tu animal del zodíaco chino contra el de cada entidad.
+                      Calculado con el mismo criterio que el resto de tu animal del zodíaco chino contra el de cada entidad.
                     </p>
                     <AfinidadPanel title="Países" entities={affinities.countries} />
                     <AfinidadPanel title="Ciudades" entities={affinities.cities} />

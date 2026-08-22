@@ -108,7 +108,7 @@ export default function UniversityHeader() {
           {/* Logo — el wordmark "Molino" se esconde en el rango 1024-1279px
               para darle ese espacio al nav (9 links necesitan margen para
               quedar legibles ahí); el ícono solo ya identifica la marca. */}
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Molino — Ir al inicio">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio">
             <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl">
               <Logo className="w-7 h-7" />
             </span>

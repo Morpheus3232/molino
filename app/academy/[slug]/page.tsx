@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: siteUrl(`/academy/${piece.slug}`),
     },
     openGraph: {
-      title: `${piece.title} — La Academia | Molino`,
+      title: `${piece.title} — La Academia`,
       description: piece.metaDescription,
       type: "article",
       url: siteUrl(`/academy/${piece.slug}`),

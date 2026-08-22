@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   description:
     "Descubrí la compatibilidad entre tu energía y la de los países del mundo, usando numerología y zodíaco chino.",
   path: "/compatibility/countries",
-  ogTitle: "Compatibilidad con países — Molino",
+  ogTitle: "Compatibilidad con países",
   ogDescription: "Compatibilidad entre tu energía y la de los países del mundo.",
   image: "/opengraph-image",
 });

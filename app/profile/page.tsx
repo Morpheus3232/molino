@@ -88,8 +88,8 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const socialTitle = lifePath
     ? `El Camino de Vida de ${name || "este mapa"} es ${lifePath} 🔮`
     : hasData
-      ? `${titleBase} — Molino`
-      : "Tu Mapa Personal — Molino";
+      ? `${titleBase}`
+      : "Tu Mapa Personal";
   const socialDescription = hasData
     ? `Descubrí la síntesis de numerología, astrología y zodíaco chino${name ? ` de ${name}` : ""}. 100% privado y gratuito en Molino.app.`
     : "Tu perfil de autoconocimiento con numerología, astrología y zodíaco chino.";

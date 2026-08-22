@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Method — Cómo funciona",
   description: "Transparencia total: cómo se calculan los números, las limitaciones de cada sistema simbólico y las fuentes en las que se basa Molino.",
   path: "/method",
-  ogTitle: "Method — Molino",
+  ogTitle: "Method",
   ogDescription: "Transparencia total: cómo se calculan los números, las limitaciones de cada sistema y las fuentes en las que se basa.",
 });
 

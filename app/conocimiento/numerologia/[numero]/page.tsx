@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: siteUrl(`/conocimiento/numerologia/${num.number}`),
     },
     openGraph: {
-      title: `Número ${num.number} ${num.title} — Molino`,
+      title: `Número ${num.number} ${num.title}`,
       description: `${num.meaning.slice(0, 155)}`,
       type: "article",
       url: siteUrl(`/conocimiento/numerologia/${num.number}`),

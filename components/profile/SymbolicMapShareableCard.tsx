@@ -37,7 +37,7 @@ export default function SymbolicMapShareableCard({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Mi mapa simbólico — Molino`,
+          title: `Mi mapa simbólico`,
           text: shareText,
           url: window.location.origin,
         });

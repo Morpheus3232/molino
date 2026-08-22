@@ -8,7 +8,7 @@ const EMBED_CODE = `<iframe
   width="100%"
   height="440"
   style="border:none;border-radius:20px;overflow:hidden;"
-  title="Molino — Calculadora de Mapa Personal"
+  title="Calculadora de Mapa Personal"
   loading="lazy"
 ></iframe>`;
 

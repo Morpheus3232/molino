@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
     };
   }
 
-  const description = `Compatibilidad simbólica con ${entity.name}: numerología, astrología y zodíaco chino. Molino — Mapa personal de autoconocimiento.`;
+  const description = `Compatibilidad simbólica con ${entity.name}: numerología, astrología y zodíaco chino. Mapa personal de autoconocimiento.`;
 
   return {
     title: `Análisis multi-factor de ${entity.name}`,
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ entity: s
       canonical: siteUrl(`/compatibility/${entityId}`),
     },
     openGraph: {
-      title: `Análisis multi-factor de ${entity.name} | Molino`,
+      title: `Análisis multi-factor de ${entity.name}`,
       description,
       type: 'website',
       url: siteUrl(`/compatibility/${entityId}`),

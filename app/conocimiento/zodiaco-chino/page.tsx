@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   title: "Zodiaco Chino — Los 12 animales, los 5 elementos",
   description: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años. Un sistema milenario con una profundidad que va mucho más allá de tu animal.",
   path: "/conocimiento/zodiaco-chino",
-  ogTitle: "Zodiaco Chino — Molino",
+  ogTitle: "Zodiaco Chino",
   ogDescription: "Explorá el zodiaco chino: 12 animales, 5 elementos, ciclo sexagenario de 60 años.",
 });
 

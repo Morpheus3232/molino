@@ -4,7 +4,7 @@ import Card from "@/components/ui/Card";
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
-  title: "Changelog & Novedades — Molino",
+  title: "Changelog & Novedades",
   description:
     "Registro público de mejoras técnicas, nuevas funcionalidades, motores de cálculo y actualizaciones de privacidad en Molino.",
   path: "/changelog",

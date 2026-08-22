@@ -5,7 +5,7 @@ export const metadata = createRouteMetadata({
   description:
     "Calculá la compatibilidad entre dos personas según su numerología y zodíaco chino. Sin registro, gratis y auditable.",
   path: "/herramientas/compatibilidad",
-  ogTitle: "Compatibilidad — Molino",
+  ogTitle: "Compatibilidad",
   ogDescription: "Calculá la compatibilidad entre dos personas según numerología y zodiaco chino.",
   image: "/opengraph-image",
 });
@@ -13,7 +13,7 @@ export const metadata = createRouteMetadata({
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "Molino — Calculadora de Compatibilidad",
+  name: "Calculadora de Compatibilidad",
   description:
     "Calculá la compatibilidad entre dos personas según su numerología y zodíaco chino. Sin registro, gratis y auditable.",
   url: siteUrl("/herramientas/compatibilidad"),

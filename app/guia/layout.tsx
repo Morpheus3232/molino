@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Guía — Molino",
-    template: "%s | Guía | Molino",
+    default: "Guía",
+    template: "%s | Guía",
   },
   description: "Artículos y guías sobre numerología, astrología, zodiaco chino y autoconocimiento simbólico.",
   openGraph: {
-    title: "Guía — Molino",
+    title: "Guía",
     description: "Artículos y guías sobre sistemas simbólicos de autoconocimiento.",
     type: "website",
   },

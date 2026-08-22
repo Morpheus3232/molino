@@ -76,10 +76,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const signB = SIGNS_DATA[signoB.toLowerCase()];
 
   if (!signA || !signB) {
-    return { title: "Sinastría no encontrada | Molino" };
+    return { title: "Sinastría no encontrada" };
   }
 
-  const title = `Compatibilidad ${signA.name} y ${signB.name}: Amor, Sinergia y Elementos — Molino`;
+  const title = `Compatibilidad ${signA.name} y ${signB.name}: Amor, Sinergia y Elementos`;
   const description = `Descubrí la química astrológica entre ${signA.name} (${signA.element}) y ${signB.name} (${signB.element}). Puntos de conexión, desafíos y sinastría completa.`;
 
   return {
