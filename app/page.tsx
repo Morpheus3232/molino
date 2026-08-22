@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
-import CaseStudiesSection from "@/components/sections/CaseStudiesSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import TrustLayer from "@/components/sections/TrustLayer";
 import CTASection from "@/components/sections/CTASection";
@@ -120,9 +119,6 @@ export default function HomePage() {
 
         {/* Clarity — Molino vs Traditional */}
         <ClaritySection />
-
-        {/* Case Studies — Real Examples */}
-        <CaseStudiesSection />
 
         {/* Features — Six Tools */}
         <FeaturesSection />
