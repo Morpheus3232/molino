@@ -9,7 +9,6 @@ import {
   Clock,
   Layers,
   ChevronRight,
-  ShieldCheck,
   Cpu,
   Fingerprint,
   Info
@@ -340,8 +339,8 @@ export default function ProofSection() {
                   </div>
 
                   {/* Formula / Calculation Breakdown (Technical Detail) */}
-                  <div className="mt-5 pt-4 border-t border-border/50">
-                    {showTechnicalDetails ? (
+                  {showTechnicalDetails && (
+                    <div className="mt-5 pt-4 border-t border-border/50">
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -354,13 +353,8 @@ export default function ProofSection() {
                           {item.formula}
                         </p>
                       </motion.div>
-                    ) : (
-                      <div className="flex items-center gap-1.5 text-[11px] font-mono text-muted/70 group-hover:text-muted transition-colors">
-                        <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-                        <span>Validado en motor local</span>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>
