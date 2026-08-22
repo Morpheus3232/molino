@@ -8,7 +8,7 @@ export const metadata = createRouteMetadata({
   path: "/transparencia",
 });
 
-const CONTACT_EMAIL = "hola@molino.app";
+const CONTACT_EMAIL = "versionlimitada@proton.me";
 
 export default async function TransparenciaPage() {
   const memberCount = await getMemberCount();

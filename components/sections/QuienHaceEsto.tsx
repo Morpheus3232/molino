@@ -9,7 +9,7 @@ import Card from "@/components/ui/Card";
 const GITHUB_USER = "Morpheus3232";
 const GITHUB_REPO = "Morpheus3232/molino";
 const REPO_URL = `https://github.com/${GITHUB_REPO}`;
-const CONTACT_EMAIL = "hola@molino.app";
+const CONTACT_EMAIL = "versionlimitada@proton.me";
 
 export default function QuienHaceEsto() {
   return (
