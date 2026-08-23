@@ -13,6 +13,7 @@ import {
 } from "@/lib/utils/premiumMotion";
 import { scaleUpMount } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
+import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { BookOpen, Sparkles, Zap, Clock, Users, ArrowRight } from "lucide-react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -196,7 +197,18 @@ function piecesFor(slugs: string[]): AcademyPiece[] {
     .filter((p): p is AcademyPiece => Boolean(p));
 }
 
-const COURSES = [
+interface Course {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  color: string;
+  pieces: AcademyPiece[];
+  /** Slug de la guía práctica (academy-guides.ts) que complementa este curso, si existe. */
+  guideSlug?: string;
+}
+
+const COURSES: Course[] = [
   {
     id: "intro",
     title: "Introducción a tu mapa personal",
@@ -225,9 +237,10 @@ const COURSES = [
     id: "zodiaco",
     title: "Zodíaco oriental y ciclos",
     icon: "cycle",
-    description: "Los 12 animales, los elementos y los ciclos de 60 años.",
+    description: "Los 12 animales, los elementos y los ciclos de 60 años: de dónde vienen y cómo funcionan en tu mapa.",
     color: "from-emerald-500/10",
     pieces: piecesFor(["zodiaco-chino"]),
+    guideSlug: "como-funciona-el-zodiaco-chino",
   },
 ];
 
@@ -353,6 +366,47 @@ export default function AcademyContent() {
             pasando por la astrología helenística y el zodíaco chino. Este recorrido te ayuda a entender cómo se construye tu mapa.
           </p>
 
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════
+            EMPEZÁ POR ACÁ — ruta editorial de las 4 guías nuevas.
+            Capa "Aprender": entender Molino, no la historia de las
+            tradiciones (eso vive en las tabs de abajo, capa "Explorar").
+            ═══════════════════════════════════════════════ */}
+        <motion.section {...scaleUpMount} className="mb-20">
+          <div className="mb-8">
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold mb-3">Empezá por acá</p>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Entendé Molino en 10 minutos
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {ACADEMY_GUIDES.map((guide, idx) => (
+              <Link
+                key={guide.slug}
+                href={`/academy/${guide.slug}`}
+                className="flex items-start gap-4 p-5 rounded-lg border border-border bg-card hover:border-accent/50 transition-all group"
+              >
+                <span className="font-mono text-xs font-bold text-accent/60 shrink-0 pt-0.5">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="font-heading text-base font-semibold text-foreground mb-1 group-hover:text-accent transition-colors">
+                    {guide.title}
+                  </h3>
+                  <p className="text-sm text-muted leading-relaxed">{guide.subtitle}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ═══════════════════════════════════════════════
+            EXPLORAR — capa histórica existente (timeline + cursos),
+            sin modificar contenido ni arquitectura.
+            ═══════════════════════════════════════════════ */}
+        <motion.section {...staggerApple} className="mb-8">
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold mb-3">Explorar</p>
           <div className="flex flex-wrap gap-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -435,6 +489,7 @@ export default function AcademyContent() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {COURSES.map((course, idx) => {
                   const CourseIcon = ICON_MAP[course.icon];
+                  const relatedGuide = course.guideSlug ? getAcademyGuideBySlug(course.guideSlug) : undefined;
                   return (
                     <motion.div
                       key={course.id}
@@ -468,6 +523,17 @@ export default function AcademyContent() {
                           <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                         </Link>
                       </div>
+                      {relatedGuide && (
+                        <div className="mt-3 pt-3 border-t border-border/60">
+                          <Link
+                            href={`/academy/${relatedGuide.slug}`}
+                            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-accent transition-colors"
+                          >
+                            <span>¿Ya sabés la historia? Vas directo a la guía práctica</span>
+                            <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      )}
                     </motion.div>
                   );
                 })}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
+import { getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { ICON_MAP } from "../AcademyContent";
 
 export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }) {
@@ -11,6 +12,17 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
   const prev = currentIndex > 0 ? ACADEMY_PIECES[currentIndex - 1] : null;
   const next = currentIndex < ACADEMY_PIECES.length - 1 ? ACADEMY_PIECES[currentIndex + 1] : null;
   const Icon = ICON_MAP[piece.icon];
+  const relatedGuide = piece.relatedGuideSlug ? getAcademyGuideBySlug(piece.relatedGuideSlug) : undefined;
+  // Los títulos de guía siguen el patrón "Tema: acción concreta" (ver
+  // academy-guides.ts) — se usa la mitad accionable como texto de link,
+  // sin depender del contenido específico de ninguna pieza o guía.
+  const relatedGuideLabel = relatedGuide
+    ? (() => {
+        const [, action] = relatedGuide.title.split(":");
+        const text = (action ?? relatedGuide.title).trim();
+        return text.charAt(0).toUpperCase() + text.slice(1);
+      })()
+    : "";
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,6 +95,21 @@ export default function AcademyArticleContent({ piece }: { piece: AcademyPiece }
             <p className="text-sm text-foreground leading-relaxed">{piece.molino}</p>
           </div>
         </motion.section>
+
+        {/* Guía práctica relacionada — solo si la pieza declara relatedGuideSlug */}
+        {relatedGuide && (
+          <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+            <div className="p-6 rounded-md border border-border bg-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <p className="text-sm text-muted">¿Querés saber {relatedGuideLabel.charAt(0).toLowerCase() + relatedGuideLabel.slice(1)}?</p>
+              <Link
+                href={`/academy/${relatedGuide.slug}`}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-accent/80 transition-colors shrink-0"
+              >
+                {relatedGuideLabel} →
+              </Link>
+            </div>
+          </motion.section>
+        )}
 
         {/* Transparencia */}
         <motion.section {...fadeUp} className="mb-12 sm:mb-16">

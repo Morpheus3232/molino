@@ -10,6 +10,8 @@ export interface AcademyPiece {
   molino: string;
   metaDescription: string;
   story: string[];
+  /** Slug de la guía práctica (academy-guides.ts) que continúa este tema, si existe. */
+  relatedGuideSlug?: string;
 }
 
 export const ACADEMY_PIECES: AcademyPiece[] = [
@@ -97,6 +99,7 @@ export const ACADEMY_PIECES: AcademyPiece[] = [
       "En la China imperial, el tiempo se organizaba en ciclos sexagenarios: cada año combinaba uno de los cinco elementos con uno de los doce animales, creando 60 combinaciones distintas. El sistema ordenaba calendarios, decisiones y rituales.",
       "Los doce animales se convirtieron en una forma accesible de leer el carácter y la suerte. Molino lo usa como uno de los tres ejes de tu mapa: tu animal zodiacal, sus afinidades y los ciclos que rigen tu año.",
     ],
+    relatedGuideSlug: "como-funciona-el-zodiaco-chino",
   },
   {
     id: "balliett",
