@@ -257,7 +257,9 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
 
   // ──── UNIVERSIDADES (3) ────
   {
-    id: "uba", name: "Universidad de Buenos Aires", type: "university", country: "Argentina", city: "Buenos Aires",
+    // Nombre incluye "(UBA)" para que la búsqueda por acrónimo la encuentre
+    // (mismo patrón que el resto de las universidades de universities-buenos-aires.ts).
+    id: "uba", name: "Universidad de Buenos Aires (UBA)", type: "university", country: "Argentina", city: "Buenos Aires",
     emoji: "\ud83c\udf93",
     description: "La UBA es la universidad p\u00fablica m\u00e1s prestigiosa de Latinoam\u00e9rica. Ha producido 5 premios Nobel.",
     keyThemes: ["Conocimiento", "Excelencia", "Accesibilidad", "Compromiso"],

@@ -102,7 +102,10 @@ export const UNIVERSITIES_URUGUAY: AtlasEntityInput[] = [
      ],
    },
    {
-     id: "uces", name: "Universidad CLAEH", type: "university", country: "Uruguay",
+     // id corregido de "uces" (acrónimo que pertenece a una universidad argentina
+     // real, Universidad de Ciencias Empresariales y Sociales — ver
+     // universities-buenos-aires.ts) a "claeh".
+     id: "claeh", name: "Universidad CLAEH", type: "university", country: "Uruguay",
      emoji: "🎓",
      description: "CLAEH es una universidad privada uruguaya con fuerte énfasis en humanidades, ciencias sociales y administración.",
      keyThemes: ["Humanidades", "Ciencias sociales", "Administración", "Privada"],

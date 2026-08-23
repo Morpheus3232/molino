@@ -9,24 +9,8 @@ export const UNIVERSITIES_BUENOS_AIRES: AtlasEntityInput[] = [
   // ────────────────────────────────────────────────────
   // PÚBLICAS
   // ────────────────────────────────────────────────────
-  {
-    id: "uba", name: "Universidad de Buenos Aires (UBA)", type: "university", country: "Argentina",
-    emoji: "🎓",
-    description: "La UBA es la universidad pública más grande de Argentina y una de las más prestigiosas de América Latina. Fundada en 1821, es la cuna de científicos, artistas e intelectuales.",
-    keyThemes: ["Pública", "Prestigio", "Ciencia", "Excelencia"],
-    category: "Pública",
-    sourceNote: "Fundada el 9 de agosto de 1821. URL: www.uba.ar",
-    events: [{ id: "uba-fund", type: "fundacion", label: "Fundación", date: "1821-08-09", year: 1821, description: "Bernardino Rivadavia funda la Universidad de Buenos Aires.", source: "UBA — Historia institucional", confidence: "exacta", primaryForAffinity: true }],
-  },
-  {
-    id: "unlp", name: "Universidad Nacional de La Plata (UNLP)", type: "university", country: "Argentina",
-    emoji: "🎓",
-    description: "La UNLP es la universidad pública más importante del interior bonaerense, con fuerte presencia en investigación y formación profesional.",
-    keyThemes: ["Pública", "La Plata", "Investigación", "Excelencia"],
-    category: "Pública",
-    sourceNote: "Fundada el 7 de noviembre de 1888. URL: www.unlp.edu.ar",
-    events: [{ id: "unlp-fund", type: "fundacion", label: "Fundación", date: "1888-11-07", year: 1888, description: "Se funda la Universidad Nacional de La Plata.", source: "UNLP — Historia institucional", confidence: "exacta", primaryForAffinity: true }],
-  },
+  // UBA vive en symbolic-entities.ts (id "uba") — no duplicar acá.
+  // UNLP vive en universities-argentina.ts (id "unlp") — no duplicar acá.
   {
     id: "ungs", name: "Universidad Nacional de General Sarmiento (UNGS)", type: "university", country: "Argentina",
     emoji: "🎓",
@@ -85,23 +69,67 @@ export const UNIVERSITIES_BUENOS_AIRES: AtlasEntityInput[] = [
     sourceNote: "Fundada en 1972. URL: www.usf.edu.ar",
     events: [{ id: "usfa-fund", type: "fundacion", label: "Fundación", year: 1972, description: "Se funda la USFA.", source: "USFA — Historia institucional", confidence: "media", primaryForAffinity: true }],
   },
+  // Universidad Torcuato Di Tella vive en universities-argentina.ts (id "di-tella",
+  // año 1991 verificado) — esta entrada duplicaba la universidad con un año
+  // incorrecto (1989); no duplicar acá.
   {
-    id: "universidad-torcuato", name: "Universidad Torcuato Di Tella", type: "university", country: "Argentina",
-    emoji: "🎓",
-    description: "Torcuato Di Tella es universidad privada de élite con fuerte presencia en ciencias sociales y economía.",
-    keyThemes: ["Privada", "Élite", "Ciencias sociales", "Investigación"],
-    category: "Privada",
-    sourceNote: "Fundada en 1989. URL: www.utdt.edu.ar",
-    events: [{ id: "utdt-fund", type: "fundacion", label: "Fundación", year: 1989, description: "Se funda la Universidad Torcuato Di Tella.", source: "UTDT — Historia institucional", confidence: "media", primaryForAffinity: true }],
-  },
-  {
-    id: "uces", name: "Universidad del Centro de Estudios Macroeconómicos Argentinos (UCEMA)", type: "university", country: "Argentina",
+    id: "ucema", name: "Universidad del CEMA (UCEMA)", type: "university", country: "Argentina",
     emoji: "🎓",
     description: "UCEMA es universidad privada especializada en economía y ciencias empresariales.",
     keyThemes: ["Privada", "Economía", "Especializada", "Investigación"],
     category: "Privada",
-    sourceNote: "Fundada en 1984. URL: www.ucema.edu.ar",
-    events: [{ id: "ucema-fund", type: "fundacion", label: "Fundación", year: 1984, description: "Se funda la UCEMA.", source: "UCEMA — Historia institucional", confidence: "media", primaryForAffinity: true }],
+    // id anterior "uces" era incorrecto: ese acrónimo pertenece a otra universidad real
+    // (Universidad de Ciencias Empresariales y Sociales, agregada más abajo). Año
+    // corregido de 1984 (no verificable) a 1978, verificado: nace como Centro de
+    // Estudios Macroeconómicos de Argentina (CEMA) en 1978 y se reconoce como
+    // Universidad del CEMA en 1995.
+    sourceNote: "Fundada en 1978 como Centro de Estudios Macroeconómicos de Argentina (CEMA); reconocida como Universidad del CEMA en 1995. URL: www.ucema.edu.ar",
+    events: [{ id: "ucema-fund", type: "fundacion", label: "Fundación", year: 1978, description: "Nace el Centro de Estudios Macroeconómicos de Argentina (CEMA), origen de la Universidad del CEMA.", source: "UCEMA — Historia institucional", confidence: "media", primaryForAffinity: true }],
+  },
+  {
+    id: "uces", name: "Universidad de Ciencias Empresariales y Sociales (UCES)", type: "university", country: "Argentina",
+    emoji: "🎓",
+    description: "UCES es universidad privada con programas en ciencias empresariales, comunicación, psicología y derecho.",
+    keyThemes: ["Privada", "Empresariales", "Comunicación", "Sociales"],
+    category: "Privada",
+    sourceNote: "Autorizada a funcionar como universidad el 4 de octubre de 1991 por resolución del Ministerio de Cultura, Educación y Justicia; sus antecedentes organizacionales (Asociación de Dirigentes de Venta) datan de 1942. URL: www.uces.edu.ar",
+    events: [{ id: "uces-fund", type: "fundacion", label: "Autorización como universidad", date: "1991-10-04", year: 1991, description: "El Ministerio de Cultura, Educación y Justicia autoriza a la UCES a funcionar como universidad.", source: "UCES — Historia institucional", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "itba", name: "Instituto Tecnológico de Buenos Aires (ITBA)", type: "university", country: "Argentina",
+    emoji: "🎓",
+    description: "ITBA es universidad privada especializada en ingeniería, tecnología y ciencias vinculadas al mar.",
+    keyThemes: ["Privada", "Ingeniería", "Tecnología", "Excelencia"],
+    category: "Privada",
+    sourceNote: "Fundado el 20 de noviembre de 1959 por un grupo de marinos y civiles; reconocido por Ley 14.557 como una de las primeras universidades privadas de Argentina. URL: www.itba.edu.ar",
+    events: [{ id: "itba-fund", type: "fundacion", label: "Fundación", date: "1959-11-20", year: 1959, description: "Se funda el Instituto Tecnológico de Buenos Aires.", source: "ITBA — Historia institucional", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "usal", name: "Universidad del Salvador (USAL)", type: "university", country: "Argentina",
+    emoji: "🎓",
+    description: "USAL es universidad privada de la Compañía de Jesús con programas en humanidades, ciencias sociales y ciencias jurídicas.",
+    keyThemes: ["Privada", "Jesuita", "Humanidades", "Tradición"],
+    sourceNote: "Se firma el Acta Fundacional de las Facultades Universitarias del Salvador el 2 de mayo de 1956, tras el decreto de diciembre de 1955 que habilitó universidades privadas en Argentina; recibió reconocimiento oficial como universidad privada el 3 de diciembre de 1959. URL: www.usal.edu.ar",
+    category: "Privada",
+    events: [{ id: "usal-fund", type: "fundacion", label: "Acta fundacional", date: "1956-05-02", year: 1956, description: "Se firma el Acta Fundacional de las Facultades Universitarias del Salvador.", source: "USAL — Historia institucional", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "una-artes", name: "Universidad Nacional de las Artes (UNA)", type: "university", country: "Argentina",
+    emoji: "🎓",
+    description: "La UNA es universidad pública especializada en música, artes visuales, danza, teatro y folklore, heredera del Instituto Universitario Nacional del Arte (IUNA).",
+    keyThemes: ["Pública", "Arte", "Música", "Creatividad"],
+    category: "Pública",
+    sourceNote: "Creada a fines de 1996 como Instituto Universitario Nacional del Arte (IUNA), sobre la base de siete instituciones terciarias de arte preexistentes; el Congreso cambió su denominación a Universidad Nacional de las Artes en 2014.",
+    events: [{ id: "una-artes-fund", type: "fundacion", label: "Creación (como IUNA)", year: 1996, description: "Se crea el Instituto Universitario Nacional del Arte, origen de la Universidad Nacional de las Artes.", source: "UNA — Historia institucional", confidence: "media", primaryForAffinity: true }],
+  },
+  {
+    id: "ucine", name: "Universidad del Cine (FUC)", type: "university", country: "Argentina",
+    emoji: "🎓",
+    description: "La Universidad del Cine (FUC) es institución privada especializada en cine, guion y realización audiovisual.",
+    keyThemes: ["Privada", "Cine", "Guion", "Creatividad"],
+    category: "Privada",
+    sourceNote: "Fundada en 1991 por el director de cine Manuel Antín; autorizada definitivamente por Decreto 856/2003. Fecha exacta de fundación no documentada públicamente; se usa el año.",
+    events: [{ id: "ucine-fund", type: "fundacion", label: "Fundación", year: 1991, description: "El director de cine Manuel Antín funda la Universidad del Cine.", source: "FUC — Historia institucional", confidence: "media", primaryForAffinity: true }],
   },
   {
     id: "universidad-belgrano", name: "Universidad de Belgrano (UB)", type: "university", country: "Argentina",
