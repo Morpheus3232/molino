@@ -10,31 +10,99 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
-/* ═══ Navegación — Fase 4: CORE siempre visible, Exploración agrupada ═══
-   CORE es lo que sostiene el mapa personal (mapa / ciclos / afinidades /
-   contenido educativo). El resto son superficies de descubrimiento — útiles,
-   pero no deberían competir en peso visual con el núcleo del producto. */
-const CORE_LINKS = [
-  { href: "/profile", label: "Mi Mapa" },
+/* ═══ Navegación — Fase 5: header contextual según haya o no perfil activo ═══
+   Sin perfil el sitio ofrece exploración general; con perfil, el nav habla
+   en primera persona sobre el contenido del usuario (Mi Mapa, Mis
+   Afinidades, Mi Tiempo, Mi Journal, Mis Mapas) y el contenido general se
+   repliega a un único punto de entrada "Explorar". Mismas rutas reales de
+   siempre — esto es reorganización de navegación, no una superficie nueva. */
+
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface NavGroup {
+  heading?: string;
+  links: NavLink[];
+}
+
+const NO_PROFILE_LINKS: NavLink[] = [
+  { href: "/atlas", label: "Atlas" },
   { href: "/hoy", label: "Hoy" },
-  { href: "/mundo", label: "Afinidades" },
-  { href: "/academy", label: "Academia" },
+  { href: "/calendario", label: "Calendario" },
+  { href: "/journal", label: "Journal" },
 ];
 
-const EXPLORE_LINKS = [
+const MODES_LINKS: NavLink[] = [
+  { href: "/socios", label: "Modo Socios" },
+  { href: "/pareja", label: "Modo Parejas" },
+];
+
+// "Aprender" difiere apenas por perfil: sin perfil, Atlas ya es un link CORE
+// (no se duplica acá); con perfil, Atlas deja de ser CORE y entra a Explorar.
+const LEARN_LINKS_NO_PROFILE: NavLink[] = [
+  { href: "/academy", label: "Academia" },
+  { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/blog", label: "Blog" },
+];
+
+const LEARN_LINKS_WITH_PROFILE: NavLink[] = [
+  { href: "/academy", label: "Academia" },
   { href: "/atlas", label: "Atlas" },
   { href: "/biblioteca", label: "Biblioteca" },
   { href: "/blog", label: "Blog" },
-  { href: "/journal", label: "Journal" },
-  { href: "/calendario", label: "Calendario" },
 ];
+
+const EXPLORE_GROUPS_NO_PROFILE: NavGroup[] = [
+  { heading: "Modos", links: MODES_LINKS },
+  { heading: "Aprender", links: LEARN_LINKS_NO_PROFILE },
+];
+
+const EXPLORE_GROUPS_WITH_PROFILE: NavGroup[] = [
+  { heading: "Aprender", links: LEARN_LINKS_WITH_PROFILE },
+  { heading: "Modos", links: MODES_LINKS },
+];
+
+// Categorías reales de /affinity/[type] — mismas 7 que generateStaticParams
+// en app/affinity/[type]/page.tsx. No se agrega ninguna que no tenga ruta.
+const AFFINITY_GROUPS: NavGroup[] = [
+  {
+    heading: "Afinidades",
+    links: [
+      { href: "/affinity/country", label: "Países" },
+      { href: "/affinity/city", label: "Ciudades" },
+      { href: "/affinity/brand", label: "Marcas" },
+      { href: "/affinity/university", label: "Universidades" },
+      { href: "/affinity/artist", label: "Artistas" },
+      { href: "/affinity/movie", label: "Películas" },
+      { href: "/affinity/team", label: "Equipos" },
+    ],
+  },
+];
+
+// Mes → /calendario (vista mensual real) y Año → /evolution ("de dónde
+// venís, dónde estás y qué ciclo se abre" — la única ruta real centrada en
+// el arco temporal largo). No existe una ruta /mes ni /año dedicada.
+const TIME_GROUPS: NavGroup[] = [
+  {
+    links: [
+      { href: "/hoy", label: "Hoy" },
+      { href: "/semana", label: "Semana" },
+      { href: "/calendario", label: "Mes" },
+      { href: "/evolution", label: "Año" },
+    ],
+  },
+];
+
+type MenuId = "explore" | "affinities" | "time";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [exploreOpen, setExploreOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -44,12 +112,22 @@ export default function UniversityHeader() {
 
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
-  const isExploreActive = EXPLORE_LINKS.some((l) => isActive(l.href));
+  const isGroupActive = (groups: NavGroup[]) =>
+    groups.some((g) => g.links.some((l) => isActive(l.href)));
+
+  const toggleMenu = (id: MenuId) => setOpenMenu((v) => (v === id ? null : id));
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
 
+  // hasProfile arranca en `false` tanto en SSR como en el primer render
+  // cliente (determinista, sin mismatch de hidratación) y se corrige en
+  // useLayoutEffect antes del paint — mismo patrón que ya usaba este header.
+  // saveProfileToStorage/clearStoredProfile (lib/session/localStorage.ts)
+  // son el único choke point de escritura del perfil, así que estos dos
+  // eventos cubren crear, cargar un perfil guardado, cambiar de perfil y
+  // eliminarlo — sin un segundo estado global.
   useLayoutEffect(() => {
     setHasProfile(hasStoredProfile());
     const refresh = () => setHasProfile(hasStoredProfile());
@@ -63,7 +141,7 @@ export default function UniversityHeader() {
 
   useEffect(() => {
     setMenuOpen(false);
-    setExploreOpen(false);
+    setOpenMenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -74,7 +152,7 @@ export default function UniversityHeader() {
           triggerRef.current?.focus();
         }
         setMenuOpen(false);
-        setExploreOpen(false);
+        setOpenMenu(null);
       }
     };
     document.addEventListener("keydown", handleEscape);
@@ -85,7 +163,7 @@ export default function UniversityHeader() {
     const handleClickOutside = (e: MouseEvent) => {
       if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
-        setExploreOpen(false);
+        setOpenMenu(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -100,13 +178,22 @@ export default function UniversityHeader() {
     clearStoredProfile();
     setShowConfirm(false);
     triggerRef.current?.focus();
-    window.dispatchEvent(new Event("molino-profile-cleared"));
     router.push("/onboarding");
   }, [router]);
 
   // La Lectura vive en su propia pestaña como un objeto autónomo — el nav
   // del sitio rompe esa sensación de "testamento que se despliega solo".
   if (pathname.startsWith("/lectura")) return null;
+
+  const exploreGroups = hasProfile ? EXPLORE_GROUPS_WITH_PROFILE : EXPLORE_GROUPS_NO_PROFILE;
+  const vaultLabel = hasProfile ? "Mis Mapas" : "Guardar mi mapa";
+
+  const navButtonClass = (active: boolean) =>
+    `px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+      active
+        ? "text-foreground bg-ink/[0.06] font-bold"
+        : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
+    }`;
 
   return (
     <>
@@ -117,10 +204,6 @@ export default function UniversityHeader() {
         }`}
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
-          {/* Logo — con el nav reducido a 4 items CORE + "Explorar", el
-              wordmark ya entra cómodo desde el primer breakpoint donde el
-              nav aparece (antes se ocultaba hasta 1280px para hacerle
-              lugar a 9 links). */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio">
             <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl">
               <Logo className="w-7 h-7" />
@@ -130,76 +213,81 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
-          {/* Desktop nav — 4 items CORE con peso completo, + un único
-              punto de entrada "Explorar" para el ecosistema (Atlas,
-              Biblioteca, Blog, Journal, Calendario). Menos nodos, misma
-              cantidad de rutas alcanzables. */}
+          {/* Desktop nav — mismo orden en ambos estados: perfil (o su
+              ausencia) define de qué habla el nav, no cuántos ítems tiene. */}
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navegación principal">
-            {CORE_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
-                  isActive(link.href)
-                    ? "text-foreground bg-ink/[0.06] font-bold"
-                    : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
-                }`}
-                aria-current={pathname === link.href ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setExploreOpen((v) => !v)}
-                aria-expanded={exploreOpen}
-                aria-haspopup="true"
-                aria-controls="explore-menu"
-                className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
-                  isExploreActive
-                    ? "text-foreground bg-ink/[0.06] font-bold"
-                    : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
-                }`}
-              >
-                Explorar
-                <ChevronDown
-                  aria-hidden="true"
-                  className={`w-3.5 h-3.5 transition-transform ${exploreOpen ? "rotate-180" : ""}`}
+            {!hasProfile ? (
+              <>
+                {NO_PROFILE_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={navButtonClass(isActive(link.href))}
+                    aria-current={pathname === link.href ? "page" : undefined}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <NavDropdown
+                  id="explore"
+                  label="Explorar"
+                  groups={exploreGroups}
+                  isOpen={openMenu === "explore"}
+                  isActive={isGroupActive(exploreGroups)}
+                  onToggle={() => toggleMenu("explore")}
+                  isActiveLink={isActive}
                 />
-              </button>
-
-              {exploreOpen && (
-                <div
-                  id="explore-menu"
-                  className="absolute top-full right-0 mt-2 w-48 py-1.5 rounded-xl border border-ink/10 bg-background shadow-lg"
+                <SavedProfilesDrawer label={vaultLabel} className={navButtonClass(false)} />
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/profile"
+                  className={navButtonClass(isActive("/profile"))}
+                  aria-current={pathname === "/profile" ? "page" : undefined}
                 >
-                  {EXPLORE_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setExploreOpen(false)}
-                      className={`block px-4 py-2 text-sm transition-colors ${
-                        isActive(link.href)
-                          ? "text-accent font-semibold bg-ink/[0.03]"
-                          : "text-foreground hover:bg-ink/[0.04] hover:text-accent"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                  Mi Mapa
+                </Link>
+                <NavDropdown
+                  id="affinities"
+                  label="Mis Afinidades"
+                  groups={AFFINITY_GROUPS}
+                  isOpen={openMenu === "affinities"}
+                  isActive={isGroupActive(AFFINITY_GROUPS)}
+                  onToggle={() => toggleMenu("affinities")}
+                  isActiveLink={isActive}
+                />
+                <NavDropdown
+                  id="time"
+                  label="Mi Tiempo"
+                  groups={TIME_GROUPS}
+                  isOpen={openMenu === "time"}
+                  isActive={isGroupActive(TIME_GROUPS)}
+                  onToggle={() => toggleMenu("time")}
+                  isActiveLink={isActive}
+                />
+                <Link
+                  href="/journal"
+                  className={navButtonClass(isActive("/journal"))}
+                  aria-current={pathname === "/journal" ? "page" : undefined}
+                >
+                  Mi Journal
+                </Link>
+                <SavedProfilesDrawer label={vaultLabel} className={navButtonClass(false)} />
+                <NavDropdown
+                  id="explore"
+                  label="Explorar"
+                  groups={exploreGroups}
+                  isOpen={openMenu === "explore"}
+                  isActive={isGroupActive(exploreGroups)}
+                  onToggle={() => toggleMenu("explore")}
+                  isActiveLink={isActive}
+                />
+              </>
+            )}
           </nav>
 
-          {/* Right side: saved profiles vault & mobile hamburger */}
           <div className="flex items-center gap-2">
-            <div className="hidden sm:block">
-              <SavedProfilesDrawer compact className="!py-1 !px-2.5 !text-[11px]" />
-            </div>
-
             <button
               type="button"
               className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
@@ -213,7 +301,9 @@ export default function UniversityHeader() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — mismo orden que el desktop, agrupado en vez de
+            comprimido: cada dropdown se aplana a una sección con su
+            encabezado, nunca una fila de 15 links sueltos. */}
         <div>
           {menuOpen && (
             <motion.div
@@ -225,40 +315,28 @@ export default function UniversityHeader() {
               className="lg:hidden overflow-hidden border-t border-ink/10 bg-background"
             >
               <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
-                {CORE_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
-                      isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground hover:text-accent"
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-
-                <p className="px-3 pt-4 pb-1 text-[11px] font-mono uppercase tracking-[0.15em] text-muted/70">
-                  Explorar
-                </p>
-                {EXPLORE_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
-                      isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground/80 hover:text-accent"
-                    }`}
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-
-                <div className="border-t border-ink/10 my-2" />
-
-                <div className="px-3 py-1.5">
-                  <SavedProfilesDrawer className="w-full justify-center !min-h-[44px] !py-2.5" />
-                </div>
+                {!hasProfile ? (
+                  <>
+                    {NO_PROFILE_LINKS.map((link) => (
+                      <MobileLink key={link.href} link={link} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    ))}
+                    <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <div className="px-3 py-1.5">
+                      <SavedProfilesDrawer label={vaultLabel} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <MobileLink link={{ href: "/profile", label: "Mi Mapa" }} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileGroups groups={AFFINITY_GROUPS} heading="Mis Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={TIME_GROUPS} heading="Mi Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={{ href: "/journal", label: "Mi Journal" }} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <div className="px-3 py-1.5">
+                      <SavedProfilesDrawer label={vaultLabel} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                    </div>
+                    <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                  </>
+                )}
 
                 <div className="border-t border-ink/10 my-2" />
 
@@ -303,7 +381,7 @@ export default function UniversityHeader() {
                 ¿Crear nuevo mapa?
               </h3>
               <p className="text-xs text-muted mb-6 leading-relaxed">
-                Se limpiará la fecha activa. Si querés conservarla, guardala primero en tu Bóveda Local.
+                Se limpiará la fecha activa. Si querés conservarla, guardala primero en Mis Mapas.
               </p>
               <div className="flex gap-3">
                 <Button variant="ghost" size="sm" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">
@@ -317,6 +395,139 @@ export default function UniversityHeader() {
           </div>
         )}
       </div>
+    </>
+  );
+}
+
+/** Dropdown de desktop — un solo patrón de accesibilidad (aria-expanded,
+ * aria-haspopup, cierre por Escape/click-afuera ya cubiertos por los
+ * listeners globales del header) reutilizado por Explorar / Mis Afinidades
+ * / Mi Tiempo en vez de tres implementaciones separadas. */
+function NavDropdown({
+  id,
+  label,
+  groups,
+  isOpen,
+  isActive,
+  onToggle,
+  isActiveLink,
+}: {
+  id: string;
+  label: string;
+  groups: NavGroup[];
+  isOpen: boolean;
+  isActive: boolean;
+  onToggle: () => void;
+  isActiveLink: (href: string) => boolean;
+}) {
+  const menuId = `${id}-menu`;
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        aria-controls={menuId}
+        className={`inline-flex items-center gap-1 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
+          isActive
+            ? "text-foreground bg-ink/[0.06] font-bold"
+            : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
+        }`}
+      >
+        {label}
+        <ChevronDown
+          aria-hidden="true"
+          className={`w-3.5 h-3.5 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          id={menuId}
+          className="absolute top-full right-0 mt-2 w-56 py-1.5 rounded-xl border border-ink/10 bg-background shadow-lg"
+        >
+          {groups.map((group, i) => (
+            <div key={group.heading ?? i} className={i > 0 ? "mt-1.5 pt-1.5 border-t border-ink/10" : ""}>
+              {group.heading && (
+                <p className="px-4 pt-1 pb-1 text-[10px] font-mono uppercase tracking-[0.15em] text-muted/70">
+                  {group.heading}
+                </p>
+              )}
+              {group.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActiveLink(link.href) ? "page" : undefined}
+                  className={`block px-4 py-2 text-sm transition-colors ${
+                    isActiveLink(link.href)
+                      ? "text-accent font-semibold bg-ink/[0.03]"
+                      : "text-foreground hover:bg-ink/[0.04] hover:text-accent"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileLink({
+  link,
+  isActive,
+  onClick,
+}: {
+  link: NavLink;
+  isActive: (href: string) => boolean;
+  onClick: () => void;
+}) {
+  return (
+    <Link
+      href={link.href}
+      aria-current={isActive(link.href) ? "page" : undefined}
+      className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+        isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground hover:text-accent"
+      }`}
+      onClick={onClick}
+    >
+      {link.label}
+    </Link>
+  );
+}
+
+function MobileGroups({
+  groups,
+  heading,
+  isActive,
+  onNavigate,
+}: {
+  groups: NavGroup[];
+  heading: string;
+  isActive: (href: string) => boolean;
+  onNavigate: () => void;
+}) {
+  return (
+    <>
+      <p className="px-3 pt-4 pb-1 text-[11px] font-mono uppercase tracking-[0.15em] text-muted/70">
+        {heading}
+      </p>
+      {groups.flatMap((g) => g.links).map((link) => (
+        <Link
+          key={link.href}
+          href={link.href}
+          aria-current={isActive(link.href) ? "page" : undefined}
+          className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
+            isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground/80 hover:text-accent"
+          }`}
+          onClick={onNavigate}
+        >
+          {link.label}
+        </Link>
+      ))}
     </>
   );
 }

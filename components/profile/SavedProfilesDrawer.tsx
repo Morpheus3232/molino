@@ -27,12 +27,17 @@ interface SavedProfilesDrawerProps {
    * el espacio es escaso con los 9 links de nav. En el resto de usos el
    * texto siempre se muestra. */
   compact?: boolean;
+  /** Override del texto/aria-label del trigger (ej. "Guardar mi mapa" /
+   * "Mis Mapas" en el header, según haya o no perfil activo). La
+   * funcionalidad del drawer no cambia, solo la etiqueta visible. */
+  label?: string;
 }
 
 export default function SavedProfilesDrawer({
   currentProfile,
   className = "",
   compact = false,
+  label,
 }: SavedProfilesDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [vault, setVault] = useState<VaultProfileItem[]>([]);
@@ -101,15 +106,15 @@ export default function SavedProfilesDrawer({
           setIsOpen(true);
         }}
         className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-ink/10 text-xs font-mono text-foreground/90 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all shadow-sm ${className}`}
-        title="Ver y cambiar entre mapas guardados en este navegador"
-        aria-label="Abrir bóveda de perfiles locales"
+        title={label ?? "Ver y cambiar entre mapas guardados en este navegador"}
+        aria-label={label ?? "Abrir bóveda de perfiles locales"}
       >
         {vault.length > 0 ? (
           <Bookmark className="w-3.5 h-3.5 text-accent" />
         ) : (
           <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
         )}
-        <span className={compact ? "hidden lg:inline" : ""}>{vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda"}</span>
+        <span className={compact ? "hidden lg:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
       </button>
 
       {/* Drawer Modal Backdrop */}

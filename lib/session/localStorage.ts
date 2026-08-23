@@ -57,6 +57,11 @@ export function saveProfileToStorage(data: StoredUserProfile["profile"]): void {
   };
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    // Único choke point de escritura: crear, cargar un perfil guardado y
+    // cambiar de perfil pasan todos por acá, así que un solo dispatch acá
+    // mantiene reactivo cualquier listener (ej. el header) sin que cada
+    // call site tenga que acordarse de emitirlo.
+    window.dispatchEvent(new Event("molino-profile-created"));
   } catch (err) {
     console.error("Error saving profile to localStorage:", err);
   }
@@ -95,6 +100,7 @@ export function loadProfileFromStorage(): StoredUserProfile["profile"] | null {
 export function clearStoredProfile(): void {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(STORAGE_KEY);
+  window.dispatchEvent(new Event("molino-profile-cleared"));
 }
 
 export function hasStoredProfile(): boolean {
