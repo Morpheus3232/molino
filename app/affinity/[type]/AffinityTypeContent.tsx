@@ -26,34 +26,43 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-type RelationGroupKey = "same" | "triad" | "opposite";
+type RelationGroupKey = "same" | "triad" | "opposite" | "other";
 
 const GROUPS: { key: RelationGroupKey; label: string }[] = [
   { key: "same", label: "Mismo animal" },
   { key: "triad", label: "Triada" },
   { key: "opposite", label: "Opuesto" },
+  { key: "other", label: "Otras conexiones" },
 ];
 
-const RELATION_GROUP_SCORE: Record<RelationGroupKey, number> = {
+const RELATION_GROUP_SCORE: Partial<Record<RelationGroupKey, number>> = {
   same: RELATION_SCORES.same.score,
   triad: RELATION_SCORES.triad.score,
   opposite: RELATION_SCORES.clash.score,
+  // "other" agrupa relaciones heterogéneas (armonía natural / neutral / daño)
+  // — cada fila ya muestra su propia relación real (result.relationship), no
+  // hay un score único que represente al grupo entero.
 };
 
 const PAGE_SIZE = 8;
 
 /**
- * Group results by the actual relation type the system calculates —
- * same animal, triad (San He), or opposite (Liu Chong clash). No position-
- * based top-N split, no tier-bucket mixing (tiers blend triad + harmonious).
+ * Group results by the actual relation type the system calculates — same
+ * animal, triad (San He) y opuesto (Liu Chong clash) mantienen su
+ * presentación destacada de siempre. Todo lo demás (armonía natural /
+ * neutral / daño) cae en "other": una entidad que pasa el filtro de
+ * búsqueda SIEMPRE termina en algún grupo, nunca se descarta en silencio
+ * (antes, harmonious/neutral/harm no caían en ningún grupo y desaparecían
+ * del render aunque el contador de resultados las siguiera contando).
  */
-function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[]): Record<RelationGroupKey, LightAffinityResult[]> {
-  const groups: Record<RelationGroupKey, LightAffinityResult[]> = { same: [], triad: [], opposite: [] };
+export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[]): Record<RelationGroupKey, LightAffinityResult[]> {
+  const groups: Record<RelationGroupKey, LightAffinityResult[]> = { same: [], triad: [], opposite: [], other: [] };
   for (const result of sorted) {
     const type = getRelation(userAnimal, result.animal as Animal).type;
     if (type === "same") groups.same.push(result);
     else if (type === "triad") groups.triad.push(result);
     else if (type === "clash") groups.opposite.push(result);
+    else groups.other.push(result);
   }
   return groups;
 }
@@ -86,9 +95,9 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
 
   const groups = useMemo(() => groupByRelation(activeAnimal, filteredSorted), [activeAnimal, filteredSorted]);
 
-  const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE });
+  const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE, other: PAGE_SIZE });
   useEffect(() => {
-    setVisibleCounts({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE });
+    setVisibleCounts({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE, other: PAGE_SIZE });
   }, [activeAnimal, searchQuery]);
 
   return (
@@ -185,7 +194,9 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 )}
               </div>
 
-              {/* RESULTADOS AGRUPADOS POR RELACIÓN REAL: mismo animal, triada, opuesto */}
+              {/* RESULTADOS AGRUPADOS POR RELACIÓN REAL: mismo animal, triada, opuesto,
+                  y el resto (armonía natural / neutral / daño) en "Otras conexiones" —
+                  ninguna entidad que pase el filtro de búsqueda queda sin grupo. */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAnimal}
@@ -203,7 +214,11 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                     return (
                       <div key={group.key} className="py-8 border-b border-ink/10 last:border-b-0">
                         <div className="mb-4">
-                          <RelationBar score={RELATION_GROUP_SCORE[group.key]} label={group.label} />
+                          {group.key === "other" ? (
+                            <p className="label-micro">{group.label}</p>
+                          ) : (
+                            <RelationBar score={RELATION_GROUP_SCORE[group.key]!} label={group.label} />
+                          )}
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
