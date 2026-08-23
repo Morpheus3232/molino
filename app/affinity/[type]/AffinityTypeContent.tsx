@@ -269,18 +269,20 @@ function ResultRow({
       onClick={onClick}
       className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-start sm:items-center gap-4">
         <EntityVisual visualType={result.visualType as VisualType} emoji={result.emoji} name={result.name} countryISO={result.countryISO} size={40} />
-        <div className="flex-1 min-w-0">
-          <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors truncate">
-            {result.name}
-          </p>
-          <p className="text-xs text-muted mt-0.5">
-            {formatAnimalSimple(result.animal)}
-          </p>
-        </div>
-        <div className="text-right shrink-0">
-          <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierLabel}</p>
+        <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors sm:truncate">
+              {result.name}
+            </p>
+            <p className="text-xs text-muted mt-0.5">
+              {formatAnimalSimple(result.animal)}
+            </p>
+          </div>
+          <div className="text-left sm:text-right shrink-0">
+            <p className="text-sm font-display font-semibold uppercase tracking-wide" style={{ color: tierColor }}>{tierLabel}</p>
+          </div>
         </div>
       </div>
     </button>

@@ -188,7 +188,10 @@ export const TEAMS_ARGENTINA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "lanus", name: "Lanús", type: "team", country: "Argentina",
+    // id "club-lanus" (no "lanus") — ese id ya lo usa la ciudad homónima en
+    // cities-argentina-completo.ts; con el mismo id, getEntityById() devolvía
+    // siempre la ciudad y esta página de equipo nunca era alcanzable.
+    id: "club-lanus", name: "Lanús", type: "team", country: "Argentina",
     emoji: "⚽",
     description: "Club Atlético Lanús es el \"Granate\" del sur del conurbano bonaerense, campeón de la Copa Sudamericana en 2013.",
     keyThemes: ["Trabajo", "Constancia", "Comunidad", "Superación"],

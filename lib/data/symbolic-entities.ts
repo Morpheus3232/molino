@@ -202,10 +202,66 @@ export function resolveEventAnimal(event: HistoricalEvent): HistoricalEvent {
 }
 
 // ════════════════════════════════════════════════════
+// DEDUPLICATION — same real-world entity added twice across dataset files
+// ════════════════════════════════════════════════════
+
+const CONFIDENCE_RANK: Record<string, number> = {
+  exacta: 5,
+  alta: 4,
+  media: 3,
+  baja: 2,
+  tradicion: 1,
+};
+
+/**
+ * Higher is better. Confidence of the primary event dominates (a
+ * well-sourced exact date beats a vague one); description length is only a
+ * tiebreaker within the same confidence tier.
+ */
+function entityQualityScore(entity: AtlasEntity): number {
+  const primary = getPrimaryEvent(entity);
+  const confidenceScore = primary ? (CONFIDENCE_RANK[primary.confidence] ?? 0) : 0;
+  return confidenceScore * 1000 + (entity.description?.length ?? 0);
+}
+
+/**
+ * The dataset is assembled from many source files (base catalogs + later
+ * regional expansions — México/Colombia/España, autos, ropa, ciudades
+ * completas de Argentina) that sometimes add an entity that already exists
+ * under a different id. Without this, the same real brand/city/country
+ * appears twice in every Affinity list. Dedupe by (type, name, country) —
+ * NOT by id, since the whole problem is that duplicates use different ids —
+ * keeping whichever entry has the best-sourced primary event. Deterministic:
+ * no Date.now/Math.random, same input always produces the same output.
+ */
+function dedupeAtlasEntities(entities: AtlasEntity[]): AtlasEntity[] {
+  const keyOf = (e: AtlasEntity) => `${e.type}::${e.name}::${e.country ?? ""}`;
+
+  const bestByKey = new Map<string, AtlasEntity>();
+  for (const entity of entities) {
+    const key = keyOf(entity);
+    const existing = bestByKey.get(key);
+    if (!existing || entityQualityScore(entity) > entityQualityScore(existing)) {
+      bestByKey.set(key, entity);
+    }
+  }
+
+  const seen = new Set<string>();
+  const result: AtlasEntity[] = [];
+  for (const entity of entities) {
+    const key = keyOf(entity);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(bestByKey.get(key)!);
+  }
+  return result;
+}
+
+// ════════════════════════════════════════════════════
 // SAMPLE DATA — Real, verifiable entities
 // ════════════════════════════════════════════════════
 
-export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
+export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...BRANDS_60,
   ...BRANDS_AUTOS_60,
   ...AUTOS_ATLAS,
@@ -582,7 +638,7 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = [
       },
     ],
   },
-].map(enrichEntity);
+].map(enrichEntity));
 
 /** Helper: get all entities of a given type */
 export function getEntitiesByType(type: EntityType): SymbolicEntity[] {

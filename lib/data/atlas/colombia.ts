@@ -110,7 +110,10 @@ export const TEAMS_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "santa-fe", name: "Independiente Santa Fe", type: "team", country: "Colombia", emoji: "🔴",
+    // id "independiente-santa-fe" (no "santa-fe") — ese id ya lo usa la
+    // ciudad Santa Fe (Argentina) en cities-argentina-completo.ts; con el
+    // mismo id, getEntityById() devolvía siempre la ciudad.
+    id: "independiente-santa-fe", name: "Independiente Santa Fe", type: "team", country: "Colombia", emoji: "🔴",
     description: "Uno de los clubes más antiguos de Colombia, campeón de la Copa Sudamericana 2015.",
     keyThemes: ["Cardenal", "Bogotá", "Historia", "Sudamericana"],
     sourceNote: "Fundado el 28 de febrero de 1941.",

@@ -26,7 +26,11 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     events: [{ id: "laplata-fund", type: "fundacion", label: "Fundación", date: "1882-11-19", year: 1882, description: "Dardo Rocha funda La Plata como nueva capital de Buenos Aires.", source: "Documentación histórica", confidence: "exacta", primaryForAffinity: true }],
   },
   {
-    id: "quilmes", name: "Quilmes", type: "city", country: "Argentina",
+    // id "quilmes-ciudad" (no "quilmes") — ese id ya lo usa la marca de
+    // cerveza Quilmes en brands-argentina.ts; con el mismo id,
+    // getEntityById() devolvía siempre la marca y esta ciudad nunca era
+    // alcanzable.
+    id: "quilmes-ciudad", name: "Quilmes", type: "city", country: "Argentina",
     emoji: "🇦🇷",
     description: "Quilmes es ciudad del conurbano bonaerense, importante centro industrial y comercial.",
     keyThemes: ["Industria", "Conurbano", "Tradición", "Trabajo"],
