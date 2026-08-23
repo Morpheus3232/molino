@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Halftone from "@/components/ui/Halftone";
+import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
 type Tone = "paper" | "paperAlt" | "ink" | "accent";
 
@@ -87,6 +88,11 @@ export default function EditorialSection({
   const t = TONES[tone];
   const isFullBleed = tone === "ink" || tone === "accent";
   const Heading = as;
+  // Failsafe anti-blanco: los headers de sección editorial pueden quedar
+  // above-the-fold según la página; si whileInView no dispara Y el header ya
+  // está cerca del viewport, animate fuerza visible tras 1.5s — ver
+  // useRevealFallback. Below-the-fold sigue dependiendo de whileInView.
+  const { ref, forceVisible } = useRevealFallback<HTMLDivElement>();
 
   return (
     <section
@@ -107,9 +113,14 @@ export default function EditorialSection({
       <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {(eyebrow || title || intro) && (
           <motion.div
+            ref={ref}
             initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
+            {...(forceVisible
+              ? { animate: { opacity: 1, y: 0 } }
+              : {
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-40px" },
+                })}
             transition={{ duration: 0.5 }}
             className={`${isFullBleed ? "pt-20 lg:pt-28" : "pt-16 lg:pt-24"} pb-10 lg:pb-14`}
           >

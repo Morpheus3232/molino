@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
 type RevealTag = "div" | "section" | "article" | "li" | "button";
 
@@ -40,14 +41,24 @@ export default function Reveal({
   ...rest
 }: RevealProps) {
   const Tag = MOTION_TAGS[tag];
+  // Failsafe: si IntersectionObserver no dispara (hiccup de hidratación) Y el
+  // elemento ya está cerca del viewport, tras 1.5s se fuerza el estado
+  // visible via animate — ver useRevealFallback. Below-the-fold sigue
+  // dependiendo de whileInView como siempre.
+  const { ref, forceVisible } = useRevealFallback();
   return (
     <Tag
+      ref={ref}
       id={id}
       className={className}
       onClick={onClick}
       initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0, margin: "50px" }}
+      {...(forceVisible
+        ? { animate: { opacity: 1, y: 0 } }
+        : {
+            whileInView: { opacity: 1, y: 0 },
+            viewport: { once: true, amount: 0, margin: "50px" },
+          })}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       {...rest}
     >

@@ -82,6 +82,13 @@ export const fadeUpMountDelayed = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
+// Scale-up triggered on MOUNT — equivalente above-the-fold de scaleUp.
+export const scaleUpMount = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.4, ease: "easeOut" as const },
+};
+
 // Stagger section reveal (use on section wrapper)
 export const staggerSection = {
   initial: {},

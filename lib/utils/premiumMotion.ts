@@ -163,3 +163,64 @@ export function nestedStaggerDelay(
 ): number {
   return outerIndex * outerBase + innerIndex * innerBase;
 }
+
+// ════════════════════════════════════════════════════
+// MOUNT VARIANTS — for above-the-fold content that must never
+// depend on IntersectionObserver (prevents blank-page on nav hiccups)
+// ════════════════════════════════════════════════════
+
+/** smoothReveal triggered on MOUNT */
+export const smoothRevealMount = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
+
+/** cardReveal triggered on MOUNT */
+export const cardRevealMount = {
+  initial: { opacity: 0, y: 24, scale: 0.97 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
+
+/** heroReveal triggered on MOUNT */
+export const heroRevealMount = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
+
+/** popIn triggered on MOUNT */
+export const popInMount = {
+  initial: { opacity: 0, scale: 0.8, y: 12 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
+};
+
+/** emojiBounce triggered on MOUNT */
+export const emojiBounceMount = {
+  initial: { opacity: 0, scale: 0, rotate: -12 },
+  animate: { opacity: 1, scale: 1, rotate: 0 },
+  transition: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] as const },
+};
+
+/** staggerApple triggered on MOUNT — staggerChildren sigue funcionando via
+ *  transition en el animate (no necesita viewport). */
+export const staggerAppleMount = {
+  initial: {},
+  animate: { transition: { staggerChildren: 0.1 } },
+};
+
+/** staggerItemSmooth triggered on MOUNT */
+export const staggerItemSmoothMount = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
+
+/** staggerItemPop triggered on MOUNT */
+export const staggerItemPopMount = {
+  initial: { opacity: 0, scale: 0.9, y: 12 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
+};
