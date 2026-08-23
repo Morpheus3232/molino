@@ -7,9 +7,11 @@ import {
   sortLightEntities,
   buildAtlasSections,
   getEnemyAnimal,
+  countAffinityMatches,
   type LightAffinityResult,
 } from '@/lib/affinity-light';
 import type { LightweightEntity } from '@/types/atlas';
+import { getEntitiesByType, toLightweightEntity, type EntityType } from '@/lib/data/symbolic-entities';
 
 function makeEntity(overrides: Partial<LightweightEntity> = {}): LightweightEntity {
   return {
@@ -223,5 +225,59 @@ describe('buildAtlasSections', () => {
     expect(result.enemyAnimal).toHaveLength(0);
     expect(result.userAnimal).toBeNull();
     expect(result.enemyAnimalName).toBeNull();
+  });
+});
+
+describe('countAffinityMatches', () => {
+  test('a neutral relation (score exactly 50) is NOT counted as a match', () => {
+    // Caballo/Gato is a neutralRelations pair → score 50 ("complementarios" tier).
+    const entities = [{ animal: "Gato" }];
+    const { total, matched } = countAffinityMatches("Caballo", entities);
+    expect(total).toBe(1);
+    expect(matched).toBe(0);
+  });
+
+  test('same-animal (score 95) and triad/harmonious (>=60) count as matches', () => {
+    const entities = [
+      { animal: "Caballo" }, // same, 95
+      { animal: "Perro" },   // Caballo triad partner
+    ];
+    const { matched } = countAffinityMatches("Caballo", entities);
+    expect(matched).toBe(2);
+  });
+
+  test('clash/harm (score < 60) are not counted', () => {
+    // Caballo enemy is Rata (clash, score 30).
+    const entities = [{ animal: "Rata" }];
+    const { matched } = countAffinityMatches("Caballo", entities);
+    expect(matched).toBe(0);
+  });
+
+  test('country boost can push a neutral relation over the affinity threshold', () => {
+    // Neutral (50) + 15 country boost = 65 >= 60 → counts.
+    const entities = [{ animal: "Gato", country: "Argentina" }];
+    const { matched } = countAffinityMatches("Caballo", entities, "Argentina");
+    expect(matched).toBe(1);
+    // Without the boost, same pair does not count.
+    const { matched: unboosted } = countAffinityMatches("Caballo", entities);
+    expect(unboosted).toBe(0);
+  });
+
+  test('real catalog counts for Camino de Vida 5 · Caballo profile (per category)', () => {
+    const CATEGORY_TYPES: EntityType[] = ['brand', 'country', 'city', 'team', 'university', 'movie', 'artist'];
+    const results: Record<string, { total: number; matched: number }> = {};
+    for (const type of CATEGORY_TYPES) {
+      const entities = getEntitiesByType(type).map((e) => toLightweightEntity(e));
+      results[type] = countAffinityMatches("Caballo", entities);
+    }
+    console.log('\n=== countAffinityMatches — Caballo (afinidad-media+ only, neutral excluded) ===');
+    for (const type of CATEGORY_TYPES) {
+      console.log(`  ${type.padEnd(12)} matched: ${results[type].matched} / ${results[type].total}`);
+    }
+    // Sanity: matched can never exceed total, and every category has data.
+    for (const type of CATEGORY_TYPES) {
+      expect(results[type].matched).toBeLessThanOrEqual(results[type].total);
+      expect(results[type].total).toBeGreaterThan(0);
+    }
   });
 });

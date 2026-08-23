@@ -77,6 +77,29 @@ export function lightAffinity(userAnimal: string, entity: { animal: string }): {
   return { score: rel.score, tier: tierForScore(rel.score), relationship: rel.label };
 }
 
+/**
+ * Single source of truth for "N con afinidad para tu perfil" style counters.
+ * matched = entities whose boosted score (same country boost used everywhere
+ * else) reaches the "afinidad-media" tier per tierForScore — i.e. the same
+ * tier cutoffs the rest of the UI already uses to call something an affinity.
+ * A score of exactly 50 ("complementarios") is NOT an affinity match: it's
+ * neutral, not affinity, and must not be counted here.
+ */
+export function countAffinityMatches(
+  userAnimal: string,
+  entities: { animal: string; country?: string }[],
+  userCountry?: string,
+): { total: number; matched: number } {
+  const COUNTRY_BOOST = 15;
+  const matched = entities.filter((e) => {
+    const { score } = lightAffinity(userAnimal, e);
+    const boosted = userCountry && e.country === userCountry ? score + COUNTRY_BOOST : score;
+    const tier = tierForScore(boosted);
+    return tier === "afinidad-media" || tier === "resonancia-alta";
+  }).length;
+  return { total: entities.length, matched };
+}
+
 /** Sort a lightweight entity list by affinity score, descending.
  * PRIORITIZES SAME ANIMAL MATCHES FIRST.
  * Optional userCountry applies +15 score boost to local entities for prioritization.
