@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Hash, Sun, Moon, HeartHandshake, type LucideIcon } from "lucide-react";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import { fadeUpDelayed, fadeUpMount } from "@/lib/utils/motion";
 
 const TOOLS: { title: string; subtitle: string; description: string; href: string; icon: LucideIcon; color: string; labelColor: string }[] = [
   {
@@ -58,7 +58,8 @@ export default function HerramientasPage() {
           <span className="text-foreground font-medium" aria-current="page">Herramientas</span>
         </nav>
 
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+        {/* Hero — animación por montaje (no whileInView, ver fadeUpMount) */}
+        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground leading-[1.1]">
             Calculá tu identidad
           </h1>

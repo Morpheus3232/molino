@@ -7,6 +7,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
 import { useMemo } from "react";
 import EntityVisual from "@/components/ui/EntityVisual";
+import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
 const TIER_COLOR: Record<string, string> = {
   "resonancia-alta": "#2D5A3A",
@@ -106,14 +107,20 @@ export default function WorldConnections({ profile, catalog }: WorldConnectionsP
   }, [profile, catalog]);
 
   const totalConnections = countryResonances.length + cityResonances.length + brandResonances.length;
+  // Failsafe anti-blanco: si whileInView no dispara Y la sección ya está
+  // cerca del viewport, animate fuerza visible tras 1.5s — ver
+  // useRevealFallback. Below-the-fold sigue dependiendo de whileInView.
+  const { ref, forceVisible } = useRevealFallback<HTMLDivElement>();
 
   return (
     <section className="py-10 sm:py-12 border-t border-ink/10" aria-labelledby="world-heading">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div
+          ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" } as const}
+          {...(forceVisible
+            ? { animate: { opacity: 1, y: 0 } }
+            : { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-100px" } as const })}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }}
         >
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">

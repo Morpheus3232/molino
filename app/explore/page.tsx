@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import { fadeUpDelayed, fadeUpMount } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
 
 const SYSTEMS = [
@@ -67,8 +67,8 @@ export default function ExplorePage() {
 
       <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24 pb-24" id="main-content">
 
-        {/* ═══ HERO ═══ */}
-        <motion.section {...fadeUp} className="mb-20 sm:mb-28">
+        {/* ═══ HERO — animación por montaje (no whileInView) ═══ */}
+        <motion.section {...fadeUpMount} className="mb-20 sm:mb-28">
           <p className="label-micro mb-4">
             Explorar
           </p>

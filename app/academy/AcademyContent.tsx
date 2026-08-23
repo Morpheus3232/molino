@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   smoothReveal,
-  heroReveal,
   cardReveal,
   staggerApple,
   staggerItemSmooth,
   staggerDelay,
 } from "@/lib/utils/premiumMotion";
+import { scaleUpMount } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { BookOpen, Sparkles, Zap, Clock, Users, ArrowRight } from "lucide-react";
 
@@ -338,7 +338,7 @@ export default function AcademyContent() {
         {/* ═══════════════════════════════════════════════
             HERO — Impactante con mejor contexto
             ═══════════════════════════════════════════════ */}
-        <motion.section {...heroReveal} className="mb-20">
+        <motion.section {...scaleUpMount} className="mb-20">
           <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20">
             <BookOpen className="w-4 h-4 text-accent" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">Academia de Molino</span>

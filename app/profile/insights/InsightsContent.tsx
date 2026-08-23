@@ -27,14 +27,14 @@ import {
   getZodiacDisplay,
 } from "@/lib/utils/zodiacDisplay";
 import {
-  smoothReveal,
-  heroReveal,
+  smoothRevealMount,
+  heroRevealMount,
   cardReveal,
-  popIn,
-  emojiBounce,
+  emojiBounceMount,
+  staggerDelay,
   staggerApple,
   staggerItemSmooth,
-  staggerDelay,
+  smoothReveal,
 } from "@/lib/utils/premiumMotion";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
@@ -171,7 +171,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             HEADER
             ═══════════════════════════════════════════════ */}
-        <motion.div {...smoothReveal} className="mb-10">
+        <motion.div {...smoothRevealMount} className="mb-10">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-3">
             Mis patrones
           </p>
@@ -186,7 +186,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             BLOQUE 1: HOY EN TU PERFIL
             ═══════════════════════════════════════════════ */}
-        <motion.section {...heroReveal} className="mb-8">
+        <motion.section {...heroRevealMount} className="mb-8">
           <div className="relative overflow-hidden rounded-md border border-border bg-card shadow-sm">
             <div className="h-1.5" style={{ backgroundColor: elementColor }} />
             <div className="p-6 sm:p-8">
@@ -195,7 +195,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <motion.div {...emojiBounce} className="text-center shrink-0">
+                <motion.div {...emojiBounceMount} className="text-center shrink-0">
                   <span className="text-6xl sm:text-7xl block mb-2">{display.emoji}</span>
                   <p className="font-heading text-2xl font-bold text-foreground">{display.name}</p>
                 </motion.div>

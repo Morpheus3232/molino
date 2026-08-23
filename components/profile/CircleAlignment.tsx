@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { getAnimalBirthYears, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import type { UserProfile } from "@/types/user";
@@ -21,17 +22,22 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
     .map((f) => f.animal);
   const challenges = relationMap.challenging.map((c) => c.animal);
 
+  // Failsafe anti-blanco: si whileInView no dispara Y la sección ya está
+  // cerca del viewport, animate fuerza visible tras 1.5s — ver
+  // useRevealFallback. Below-the-fold sigue dependiendo de whileInView.
+  const { ref, forceVisible } = useRevealFallback<HTMLDivElement>();
   const reveal = {
     initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: "-100px" } as const,
+    ...(forceVisible
+      ? { animate: { opacity: 1, y: 0 } }
+      : { whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: "-100px" } as const }),
     transition: { duration: reduceMotion ? 0.1 : 0.5, ease: [0.22, 1, 0.36, 1] as const },
   };
 
   return (
     <section className="py-16 sm:py-24" aria-labelledby="circle-heading">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.div {...reveal}>
+        <motion.div ref={ref} {...reveal}>
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-4">
             03 · Tu círculo
           </p>
