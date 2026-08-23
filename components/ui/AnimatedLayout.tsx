@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
 import { startLoading, stopLoading } from "@/lib/utils/loadingSignal";
 
@@ -32,17 +32,26 @@ export default function AnimatedLayout({ children }: AnimatedLayoutProps) {
     return () => clearTimeout(timer);
   }, [pathname]);
 
+  // Sin AnimatePresence a propósito (P0, 2026-08-22): con AnimatePresence,
+  // key={pathname} se desincroniza del contenido real en navegación
+  // client-side de Next.js — React ya pintó los children de la ruta nueva
+  // mientras pathname todavía reporta la ruta vieja por un render más. Cuando
+  // pathname se actualiza recién en el render siguiente, AnimatePresence lee
+  // eso como "la instancia vieja debe salir" y le aplica la exit animation
+  // (opacity → 0) al mismo nodo DOM que ya tiene pintado el contenido nuevo
+  // — nunca vuelve a entrar. Resultado: página en blanco hasta refrescar.
+  // Un motion.div plano fuera de AnimatePresence no tiene ese problema: el
+  // cambio de key siempre dispara un remount limpio (initial → animate), sin
+  // ventana de carrera. Se pierde el crossfade de salida de la ruta vieja;
+  // el fade-in de la ruta nueva se mantiene igual.
   return (
-    <AnimatePresence initial={false}>
-      <motion.div
-        key={pathname}
-        initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={reducedMotion ? undefined : { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }}
-        transition={{ duration: reducedMotion ? 0 : 0.2, ease: "easeOut" }}
-      >
-        {children}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      key={pathname}
+      initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reducedMotion ? 0 : 0.2, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
   );
 }
