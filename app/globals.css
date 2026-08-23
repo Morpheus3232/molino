@@ -10,14 +10,14 @@
      (bg-background, text-foreground, border-ink/10, bg-ink/[0.04],
      text-paper/70, etc.) hereda el cambio sin tocar componentes uno
      por uno. Contraste verificado (fórmula WCAG, relative luminance):
-     ink/paper = 14.4:1, muted/paper = 5.3:1, accent/paper = 5.2:1.
+     ink/paper = 15.7:1, muted/paper = 5.3:1, accent/paper = 5.8:1.
      ═══════════════════════════════════════════════════════════════ */
-  --color-ink: #241F17;
-  --color-paper: #F5F0E4;
-  --color-paper-alt: #EDE5D2;
-  --color-accent: #9A4A18;
-  --color-accent-hover: #7E3B12;
-  --color-accent-light: #D98F52;
+  --color-ink: #1D1B17;
+  --color-paper: #F7F4EE;
+  --color-paper-alt: #EFEAE0;
+  --color-accent: #A83A23;
+  --color-accent-hover: #87301C;
+  --color-accent-light: #D9805F;
   /* --color-gold: acento dorado para CTAs de alta urgencia — contrasta fuerte
      sobre el fondo oscuro (--color-paper #0A0A0C).
      --color-gold-foreground: texto sobre gold — tinta oscura para AA≥7:1. */
@@ -25,10 +25,10 @@
   --color-gold-hover: #FCC044;
   --color-gold-foreground: #1A1200;
   --color-gold-rgb: 245 176 34;
-  /* #6B6252 verificado a 5.28:1 sobre --color-paper (#F5F0E4) — por
+  /* #6A6459 verificado a 5.34:1 sobre --color-paper (#F7F4EE) — por
      encima del mínimo WCAG AA de 4.5:1 para texto normal, con margen
      similar al que ya regía en la base oscura. */
-  --color-muted: #6B6252;
+  --color-muted: #6A6459;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -36,18 +36,18 @@
      plano, Tailwind no puede aplicar la opacidad y la clase queda sin
      efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
      en varias secciones del sitio. Ver tailwind.config.ts. */
-  --color-ink-rgb: 36 31 23;
-  --color-paper-rgb: 245 240 228;
-  --color-accent-rgb: 154 74 24;
-  --color-accent-light-rgb: 217 143 82;
+  --color-ink-rgb: 29 27 23;
+  --color-paper-rgb: 247 244 238;
+  --color-accent-rgb: 168 58 35;
+  --color-accent-light-rgb: 217 128 95;
   --color-gold-rgb: 245 176 34;
-  --color-border: #E0D6C0;
+  --color-border: #DEDACE;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
   --color-card: var(--color-paper-alt);
   --color-card-border: var(--color-border);
-  --color-surface-elevated: #F0E9DA;
+  --color-surface-elevated: #F1ECE1;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
@@ -55,7 +55,7 @@
   --color-accent-foreground: var(--color-paper);
   --color-success: #1F7A4D;
   --color-success-foreground: var(--color-paper);
-  --color-warning: #9A4A18;
+  --color-warning: #A83A23;
   --color-warning-foreground: var(--color-paper);
   --color-error: #B3261E;
   --color-error-foreground: var(--color-paper);
@@ -129,11 +129,11 @@
    * panel oscuro — sobre un fondo claro tipo papel, una sombra muy sutil
    * comunica elevación mejor que un borde solo.
    */
-  --shadow-sm: 0 1px 2px rgba(36, 31, 23, 0.06);
-  --shadow-md: 0 2px 6px rgba(36, 31, 23, 0.08);
-  --shadow-lg: 0 4px 12px rgba(36, 31, 23, 0.10);
-  --shadow-xl: 0 8px 24px rgba(36, 31, 23, 0.12);
-  --shadow-inner: inset 0 1px 2px rgba(36, 31, 23, 0.06);
+  --shadow-sm: 0 1px 2px rgba(29, 27, 23, 0.06);
+  --shadow-md: 0 2px 6px rgba(29, 27, 23, 0.08);
+  --shadow-lg: 0 4px 12px rgba(29, 27, 23, 0.10);
+  --shadow-xl: 0 8px 24px rgba(29, 27, 23, 0.12);
+  --shadow-inner: inset 0 1px 2px rgba(29, 27, 23, 0.06);
 
   --max-width-content: 680px;
   --max-input: 480px;
@@ -150,12 +150,12 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(36, 31, 23, 0.25);
-  --color-ink-alpha-03: rgba(36, 31, 23, 0.05);
-  --color-accent-alpha-04: rgba(154, 74, 24, 0.1);
-  --color-accent-alpha-10: rgba(154, 74, 24, 0.16);
-  --color-accent-alpha-20: rgba(154, 74, 24, 0.22);
-  --color-accent-glow: rgba(154, 74, 24, 0.08);
+  --color-ink-alpha-25: rgba(29, 27, 23, 0.25);
+  --color-ink-alpha-03: rgba(29, 27, 23, 0.05);
+  --color-accent-alpha-04: rgba(168, 58, 35, 0.1);
+  --color-accent-alpha-10: rgba(168, 58, 35, 0.16);
+  --color-accent-alpha-20: rgba(168, 58, 35, 0.22);
+  --color-accent-glow: rgba(168, 58, 35, 0.08);
 
   /* ═══════════════════════════════════════════════════════════════
      MOLINO 2.0 — Nueva identidad visual — Sistema de tokens completo
@@ -174,11 +174,11 @@
   --step-10-text: 7.5rem;
 
   /* New surface tokens */
-  --color-surface-raised: #F0E9DA;
-  --color-surface-overlay: rgba(245, 240, 228, 0.92);
+  --color-surface-raised: #F1ECE1;
+  --color-surface-overlay: rgba(247, 244, 238, 0.92);
 
   /* Border glow accent */
-  --border-accent-alpha: rgba(154, 74, 24, 0.35);
+  --border-accent-alpha: rgba(168, 58, 35, 0.35);
 
   /* ═══════════════════════════════════════════════════════════════
      COLOR REFINEMENTS — Variantes de los colores base
@@ -195,15 +195,15 @@
   --color-gold-rgb: 245 176 34;
 
   /* Accent terracota refinements */
-  --color-accent-soft: rgba(154, 74, 24, 0.08);
-  --color-accent-subtle: rgba(154, 74, 24, 0.12);
-  --color-accent-medium: rgba(154, 74, 24, 0.2);
+  --color-accent-soft: rgba(168, 58, 35, 0.08);
+  --color-accent-subtle: rgba(168, 58, 35, 0.12);
+  --color-accent-medium: rgba(168, 58, 35, 0.2);
 
   /* Deep ink — tono intermedio entre ink y muted, para texto que necesita
      ser más suave que ink pero más presente que muted */
   --color-deep-ink: #3A3226;
-  --color-veil: rgba(245, 240, 228, 0.4);
-  --color-veil-strong: rgba(245, 240, 228, 0.6);
+  --color-veil: rgba(247, 244, 238, 0.4);
+  --color-veil-strong: rgba(247, 244, 238, 0.6);
 
   /* ═══════════════════════════════════════════════════════════════
      MYSTICAL ELEMENTS — Constelaciones, símbolos, patrones
@@ -824,7 +824,7 @@
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(135deg,
-      rgba(154, 74, 24, 0.05) 0%,
+      rgba(168, 58, 35, 0.05) 0%,
       transparent 100%
     );
     pointer-events: none;
@@ -1181,7 +1181,7 @@
   }
 
   /* Sobre fondos oscuros el gradiente arranca más claro para mantener AA
-     sobre --color-ink (#241F17): accent-light/gold tienen ≥4.5:1 ahí. */
+     sobre --color-ink (#1D1B17): accent-light/gold tienen ≥4.5:1 ahí. */
   .text-gradient-warm-dark {
     background: linear-gradient(
       110deg,

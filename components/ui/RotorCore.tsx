@@ -12,14 +12,14 @@ function Blade({ angle }: { angle: number }) {
       <path
         d={BLADE_D}
         fill="none"
-        stroke="var(--color-paper, #F5F0E4)"
+        stroke="var(--color-paper, #F7F4EE)"
         strokeWidth="2.5"
         strokeLinejoin="round"
       />
       <path d={BLADE_D} fill="currentColor" stroke="none" />
-      <line x1="-6" y1="-6" x2="6" y2="-6" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
-      <line x1="-8" y1="-22" x2="8" y2="-22" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
-      <line x1="-4" y1="-40" x2="4" y2="-40" stroke="var(--color-paper, #F5F0E4)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-6" y1="-6" x2="6" y2="-6" stroke="var(--color-paper, #F7F4EE)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-8" y1="-22" x2="8" y2="-22" stroke="var(--color-paper, #F7F4EE)" strokeWidth="0.8" strokeOpacity="0.5" />
+      <line x1="-4" y1="-40" x2="4" y2="-40" stroke="var(--color-paper, #F7F4EE)" strokeWidth="0.8" strokeOpacity="0.5" />
     </g>
   );
 }
