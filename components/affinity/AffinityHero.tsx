@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
-import { TIER_META, type AffinityResult } from "@/lib/engines/affinityEngine";
+import { type AffinityResult } from "@/lib/engines/affinityEngine";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
-import ReadingNumber from "@/components/ui/ReadingNumber";
 import EntityVisual from "@/components/ui/EntityVisual";
+import RelationBar from "@/components/affinity/RelationBar";
 
 /**
  * Score hero — animals facing off, resonance number, contextual explanation.
@@ -26,7 +26,6 @@ export default function AffinityHero({
 }) {
   const router = useRouter();
   const reducedMotion = useReducedMotion();
-  const tierMeta = TIER_META[result.tier];
   // result.explanation ya nombra a la entidad (affinityEngine.getExplanation),
   // en vez de un bucket genérico por score que repetía la misma frase para
   // cualquier entidad que compartiera relación de animal con el usuario.
@@ -95,15 +94,9 @@ export default function AffinityHero({
         </motion.div>
       </div>
 
-      {/* Score — número editorial, sin gauge ni badge */}
+      {/* Relación — barra derivada de RELATION_SCORES, sin número de "compatibilidad" */}
       <div className="flex justify-center mb-6 text-center">
-        <ReadingNumber
-          value={result.score}
-          label={`Resonancia · ${meta.label}`}
-          color={result.tier === "resonancia-alta" || result.tier === "afinidad-media" ? "var(--color-accent)" : "var(--color-muted)"}
-          context={tierMeta.label}
-          size="xl"
-        />
+        <RelationBar score={result.score} label={result.relationship} />
       </div>
 
       {/* Contextual explanation */}

@@ -1,17 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import { sortLightEntities, tierForScore, type LightAffinityResult, type LightTier } from "@/lib/affinity-light";
-import { ANIMALS, type Animal } from "@/lib/data/animalRelations";
+import { sortLightEntities, type LightAffinityResult } from "@/lib/affinity-light";
+import { ANIMALS, getRelation, RELATION_SCORES, type Animal } from "@/lib/data/animalRelations";
 import { getZodiacDisplay, formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import type { LightweightEntity, VisualType } from "@/types/atlas";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 import EntityVisual from "@/components/ui/EntityVisual";
+import RelationBar from "@/components/affinity/RelationBar";
 
 interface AffinityTypeContentProps {
   type: EntityType;
@@ -25,30 +26,37 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-const GROUPS: { key: "positive" | "mixed" | "negative"; label: string; symbol: string }[] = [
-  { key: "positive", label: "Resonantes", symbol: "●" },
-  { key: "mixed", label: "Complementarias", symbol: "◐" },
-  { key: "negative", label: "Contraste", symbol: "○" },
+type RelationGroupKey = "same" | "triad" | "opposite";
+
+const GROUPS: { key: RelationGroupKey; label: string }[] = [
+  { key: "same", label: "Mismo animal" },
+  { key: "triad", label: "Triada" },
+  { key: "opposite", label: "Opuesto" },
 ];
 
-/** Pick 8 representative results out of an already-sorted list. */
-function representativeSet(sorted: LightAffinityResult[]): { positive: LightAffinityResult[]; mixed: LightAffinityResult[]; negative: LightAffinityResult[] } {
-  if (sorted.length < 8) return { positive: sorted, mixed: [], negative: [] };
-  const positive = sorted.slice(0, 5);
-  const negative = sorted.slice(-1);
-  const remaining = sorted.slice(5, -1);
-  const midStart = Math.max(0, Math.floor(remaining.length / 2) - 1);
-  const mixed = remaining.slice(midStart, midStart + 2);
-  return { positive, mixed, negative };
-}
-
-const TIER_COLOR: Record<LightTier, string> = {
-  "resonancia-alta": "#2D5A3D",
-  "afinidad-media": "#4A6FA5",
-  complementarios: "#D4A843",
-  desafiante: "#B45309",
-  distante: "#838C95",
+const RELATION_GROUP_SCORE: Record<RelationGroupKey, number> = {
+  same: RELATION_SCORES.same.score,
+  triad: RELATION_SCORES.triad.score,
+  opposite: RELATION_SCORES.clash.score,
 };
+
+const PAGE_SIZE = 8;
+
+/**
+ * Group results by the actual relation type the system calculates —
+ * same animal, triad (San He), or opposite (Liu Chong clash). No position-
+ * based top-N split, no tier-bucket mixing (tiers blend triad + harmonious).
+ */
+function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[]): Record<RelationGroupKey, LightAffinityResult[]> {
+  const groups: Record<RelationGroupKey, LightAffinityResult[]> = { same: [], triad: [], opposite: [] };
+  for (const result of sorted) {
+    const type = getRelation(userAnimal, result.animal as Animal).type;
+    if (type === "same") groups.same.push(result);
+    else if (type === "triad") groups.triad.push(result);
+    else if (type === "clash") groups.opposite.push(result);
+  }
+  return groups;
+}
 
 export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
   const router = useRouter();
@@ -76,7 +84,12 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
     );
   }, [sorted, searchQuery]);
 
-  const set = useMemo(() => representativeSet(filteredSorted), [filteredSorted]);
+  const groups = useMemo(() => groupByRelation(activeAnimal, filteredSorted), [activeAnimal, filteredSorted]);
+
+  const [visibleCounts, setVisibleCounts] = useState<Record<RelationGroupKey, number>>({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE });
+  useEffect(() => {
+    setVisibleCounts({ same: PAGE_SIZE, triad: PAGE_SIZE, opposite: PAGE_SIZE });
+  }, [activeAnimal, searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -172,7 +185,7 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                 )}
               </div>
 
-              {/* 8 RESULTADOS REPRESENTATIVOS */}
+              {/* RESULTADOS AGRUPADOS POR RELACIÓN REAL: mismo animal, triada, opuesto */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeAnimal}
@@ -182,19 +195,30 @@ export default function AffinityTypeContent({ type, meta, entities }: AffinityTy
                   className="border-t border-ink/10"
                 >
                   {GROUPS.map((group) => {
-                    const items = set[group.key];
-                    if (items.length === 0) return null;
+                    const all = groups[group.key];
+                    if (all.length === 0) return null;
+                    const visible = visibleCounts[group.key];
+                    const items = all.slice(0, visible);
+                    const hasMore = all.length > visible;
                     return (
                       <div key={group.key} className="py-8 border-b border-ink/10 last:border-b-0">
-                        <div className="flex items-baseline gap-3 mb-4">
-                          <span className="text-accent text-xs" aria-hidden="true">{group.symbol}</span>
-                          <p className="label-micro">{group.label}</p>
+                        <div className="mb-4">
+                          <RelationBar score={RELATION_GROUP_SCORE[group.key]} label={group.label} />
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
                             <ResultRow key={result.id} result={result} onClick={() => router.push(`/affinity/${type}/${result.id}`)} />
                           ))}
                         </div>
+                        {hasMore && (
+                          <button
+                            type="button"
+                            onClick={() => setVisibleCounts((prev) => ({ ...prev, [group.key]: prev[group.key] + PAGE_SIZE }))}
+                            className="mt-4 text-sm text-accent hover:underline min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+                          >
+                            Ver más
+                          </button>
+                        )}
                       </div>
                     );
                   })}

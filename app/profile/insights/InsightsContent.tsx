@@ -209,7 +209,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
                       {yearResonance.label}
                     </span>
                     <span className="text-sm" style={{ color: yearResonance.color }}>
-                      {yearCycle.level >= 4 ? "Presencia marcada" : yearCycle.level >= 3 ? "Presencia moderada" : "Presencia sutil"}
+                      {yearCycle.level >= 4 ? "Alta" : yearCycle.level >= 3 ? "Moderada" : "Sutil"}
                     </span>
                   </div>
                   <p className="text-sm text-foreground leading-relaxed mb-2">
@@ -338,7 +338,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
               </div>
 
               <p className="text-xs text-muted mb-4 leading-relaxed">
-                Algunas tradiciones consideran ciertos símbolos como energías opuestas o desafiantes.
+                El zodíaco chino ubica a estos símbolos como animal opuesto en el ciclo de 12 años.
                 No significa evitar, sino conocer diferentes dinámicas.
               </p>
 
@@ -482,9 +482,10 @@ function getLiuHePartner(animal: string): string {
 }
 
 function getRelationLabel(a: string, b: string): string {
-  if (a === b) return "misma energía";
+  if (a === b) return "mismo animal";
   const rel = getRelation(a as Animal, b as Animal);
-  if (rel.type === "triad") return "tríada";
+  if (rel.type === "triad") return "triada";
   if (rel.type === "harmonious") return "armonía natural";
-  return "energías independientes";
+  if (rel.type === "clash") return "opuesto";
+  return "neutral";
 }

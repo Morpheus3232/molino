@@ -138,18 +138,18 @@ function getExplanation(
   let relationalMeaning: string;
   switch (rel.type) {
     case "same":
-      relationalMeaning = `Su energía del ${entityAnimal} comparte la misma frecuencia que tu ${userAnimal} — fortalezas, puntos ciegos y ritmo natural en sintonía.`;
+      relationalMeaning = `Comparte tu mismo animal, el ${entityAnimal}.`;
       break;
     case "triad": {
       const triad = SAN_HE_TRIADS.find(t => t.animals.includes(userAnimal as Animal) && t.animals.includes(entityAnimal as Animal));
-      relationalMeaning = `${entityName} (${entityAnimal}) y tu ${userAnimal} comparten el elemento oculto${triad ? ` de ${triad.element}` : ""} de la tríada, una conexión que refuerza la energía de ambos.`;
+      relationalMeaning = `Pertenece a tu triada${triad ? ` (elemento ${triad.element})` : ""}, junto con tu ${userAnimal}.`;
       break;
     }
     case "harmonious":
       relationalMeaning = `Su energía del ${entityAnimal} complementa naturalmente tu ${userAnimal}.`;
       break;
     case "clash":
-      relationalMeaning = `Su energía del ${entityAnimal} entra en tensión con tu ${userAnimal} — un contraste que invita a replantear perspectivas.`;
+      relationalMeaning = `Pertenece al animal opuesto a tu ${userAnimal} en el ciclo de 12 años.`;
       break;
     case "harm":
       relationalMeaning = `Su energía del ${entityAnimal} tiene una relación de atención con tu ${userAnimal}.`;

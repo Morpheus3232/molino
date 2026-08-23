@@ -95,7 +95,7 @@ export interface AnimalRelation {
 // RELATIONSHIP SCORES
 // ════════════════════════════════════════════════════
 
-const RELATION_SCORES: Record<RelationType, { score: number; tier: number }> = {
+export const RELATION_SCORES: Record<RelationType, { score: number; tier: number }> = {
   same:       { score: 95, tier: 5 },
   triad:      { score: 85, tier: 4 },
   harmonious: { score: 80, tier: 4 },
@@ -268,11 +268,11 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
 
 const RELATION_LABELS: Record<RelationType, string> = {
   same: "mismo animal",
-  triad: "tríada",
+  triad: "triada",
   harmonious: "armonía natural",
-  neutral: "energías independientes",
-  clash: "energías opuestas",
-  harm: "energías opuestas",
+  neutral: "neutral",
+  clash: "opuesto",
+  harm: "neutral",
 };
 
 // ════════════════════════════════════════════════════
@@ -288,7 +288,7 @@ export function getRelation(a: Animal, b: Animal): AnimalRelation {
       animal: b,
       type: "same",
       label: "mismo animal",
-      description: `${b} comparte tu misma energía base.`,
+      description: `Comparte tu mismo animal, el ${b}.`,
       ...RELATION_SCORES.same,
     };
   }
@@ -404,16 +404,16 @@ function getRelationDescription(type: RelationType, a: string, b: string): strin
   switch (type) {
     case "triad": {
       const triad = SAN_HE_TRIADS.find(t => t.animals.includes(a as Animal) && t.animals.includes(b as Animal));
-      return `${a} y ${b} comparten el elemento oculto ${triad?.element ?? ""}. Energías que se potencian mutuamente.`;
+      return `${a} y ${b} pertenecen a la misma triada${triad ? ` (elemento ${triad.element})` : ""}.`;
     }
     case "harmonious":
-      return `${a} y ${b} forman una pareja armoniosa. Se complementan de forma natural según la tradición.`;
+      return `${a} y ${b} forman un par armonioso según la tradición.`;
     case "clash":
-      return `${a} y ${b} son energías opuestas en el ciclo. Requiere más consciencia y estrategia.`;
+      return `${a} y ${b} son el animal opuesto en el ciclo de 12 años.`;
     case "harm":
-      return `${a} y ${b} tienen una relación de mayor atención. La tradición sugiere actuar con cuidado.`;
+      return `${a} y ${b} tienen una relación de atención según la tradición.`;
     case "neutral":
-      return `${a} y ${b} no tienen una relación especial. Energías independientes.`;
+      return `${a} y ${b} no tienen una relación tradicional documentada.`;
     default:
       return "";
   }
