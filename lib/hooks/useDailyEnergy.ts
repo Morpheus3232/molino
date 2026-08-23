@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { UserProfile } from "@/types/user";
 import { calculateDailyEnergy, calculateUniversalDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { buildOrientation, type OrientationEvidence } from "@/lib/utils/orientation";
 import { buildMomentState } from "@/lib/engines/synthesisEngine";
+import { toLocalDateKey } from "@/lib/session/dailyHistory";
 
 export interface DayForecast {
   date: string;
@@ -86,11 +87,45 @@ const FOCUS_BY_PERSONAL_DAY: Record<number, { focus: string; avoid: string }> = 
 
 const DAY_NAMES_ES = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
+/**
+ * Afinidad del día — fetch liviano a /api/hoy/afinidad-del-dia (Fase P0.1):
+ * enriquece orientationEvidence con UNA entidad real, sin cargar
+ * SYMBOLIC_ENTITIES en el bundle de /hoy. Enriquecimiento, no dependencia
+ * crítica: si falla o tarda, el Consejo del Momento ya renderizado con
+ * `base` no se ve afectado — esto solo agrega un ítem más a la evidencia
+ * cuando (y si) llega.
+ */
+function useAffinityOfTheDay(animal: string | undefined, dateKey: string): OrientationEvidence | null {
+  const [evidence, setEvidence] = useState<OrientationEvidence | null>(null);
+
+  useEffect(() => {
+    setEvidence(null);
+    if (!animal) return;
+
+    const controller = new AbortController();
+    const url = `/api/hoy/afinidad-del-dia?animal=${encodeURIComponent(animal)}&date=${encodeURIComponent(dateKey)}`;
+
+    fetch(url, { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { entity?: { name: string } | null; relationLabel?: string } | null) => {
+        if (!data?.entity || !data.relationLabel) return;
+        setEvidence({ label: "Hoy resuena", value: `${data.entity.name} (${data.relationLabel})` });
+      })
+      .catch(() => {
+        // Silencioso a propósito: la Afinidad es enriquecimiento, no crítica para /hoy.
+      });
+
+    return () => controller.abort();
+  }, [animal, dateKey]);
+
+  return evidence;
+}
+
 export function useDailyEnergy(
   profile: UserProfile | null,
   targetDate: Date = new Date()
 ): EnrichedDailyEnergy | null {
-  return useMemo(() => {
+  const base = useMemo(() => {
     try {
       if (!profile) {
         const universal = calculateUniversalDailyEnergy(targetDate);
@@ -185,4 +220,12 @@ export function useDailyEnergy(
       return null;
     }
   }, [profile, targetDate]);
+
+  // Sin perfil, animal es undefined → useAffinityOfTheDay no hace fetch y
+  // devuelve null siempre (regla P0.1: sin perfil, orientationEvidence no cambia).
+  const affinityEvidence = useAffinityOfTheDay(profile?.chineseZodiac, toLocalDateKey(targetDate));
+
+  if (!base) return null;
+  if (!affinityEvidence) return base;
+  return { ...base, orientationEvidence: [...base.orientationEvidence, affinityEvidence] };
 }
