@@ -19,18 +19,6 @@ function isValidBirthDate(value: string): boolean {
   return year >= 1900 && birth < new Date();
 }
 
-/* Atmósfera del hero — halos cálidos que respiran. aria-hidden y
-   pointer-events-none: es decoración pura, nunca interfiere con el form. */
-function HeroAtmosphere() {
-  return (
-    <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
-      <div className="absolute -top-40 -left-40 w-[34rem] h-[34rem] rounded-full bg-accent/10 blur-3xl animate-breathe" />
-      <div className="absolute -bottom-48 -right-32 w-[30rem] h-[30rem] rounded-full bg-gold/10 blur-3xl animate-breathe [animation-delay:-4s]" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[42rem] h-[16rem] rounded-full bg-accent-light/5 blur-3xl" />
-    </div>
-  );
-}
-
 export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
@@ -80,7 +68,6 @@ export default function HeroInstrument() {
         id="mapa-form"
         className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
       >
-        <HeroAtmosphere />
         <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
           <motion.div {...fadeUpMount} className="space-y-10">
             <div>
@@ -96,7 +83,7 @@ export default function HeroInstrument() {
             <motion.div {...fadeUpMountDelayed(0.15)} className="flex justify-center pt-2">
               <Link
                 href="/profile"
-                className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.08em] transition-all duration-200 hover:bg-accent-hover hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent shadow-[0_4px_20px_rgba(154,74,24,0.2)]"
+                className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.08em] transition-colors duration-200 hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 Ver mi mapa
                 <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
@@ -113,8 +100,6 @@ export default function HeroInstrument() {
       id="mapa-form"
       className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
     >
-      <HeroAtmosphere />
-
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
         <div aria-live="polite" aria-atomic="true" className="sr-only">
           {isSubmitting && "Generando tu mapa..."}
@@ -138,9 +123,9 @@ export default function HeroInstrument() {
 
           {/* Subheadline */}
           <motion.p {...fadeUpMountDelayed(0.12)} className="text-lg sm:text-xl text-muted leading-relaxed max-w-xl mx-auto">
-            Molino cruza numerología, astrología y zodíaco chino en tiempo real.
+            Se calculan numerología, astrología y zodíaco chino a partir de tu fecha.
             <br className="hidden sm:block" />
-            Sin registro. Sin guardar. Solo tu navegador.
+            Sin registro. Tu fecha no se envía a ningún servidor.
           </motion.p>
 
           {/* Form */}
@@ -158,9 +143,9 @@ export default function HeroInstrument() {
                 type="submit"
                 aria-busy={isSubmitting}
                 disabled={!isDateValid || isSubmitting}
-                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-4 text-base sm:text-lg font-heading font-bold uppercase tracking-[0.08em] rounded-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] ${
+                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-4 text-base sm:text-lg font-heading font-bold uppercase tracking-[0.08em] rounded-lg transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] ${
                   isDateValid && !isSubmitting
-                    ? "bg-accent text-paper shadow-[0_4px_24px_rgba(154,74,24,0.25)] hover:bg-accent-hover hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
+                    ? "bg-accent text-paper hover:bg-accent-hover active:scale-[0.98]"
                     : "bg-ink/5 text-muted cursor-not-allowed"
                 }`}
               >

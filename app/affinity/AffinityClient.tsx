@@ -9,8 +9,16 @@ import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
 import type { EntityType } from "@/lib/data/symbolic-entities";
-import { lightAffinity } from "@/lib/affinity-light";
-import { useUserContext } from "@/lib/hooks/useUserContext";
+
+const EXPLORE_COPY: Record<EntityType, string> = {
+  brand: "Explorar marcas relacionadas con tu perfil.",
+  country: "Explorar países que comparten tu animal.",
+  city: "Explorar ciudades que comparten tu animal.",
+  university: "Explorar universidades que comparten tu animal.",
+  team: "Explorar equipos que comparten tu animal.",
+  movie: "Explorar películas que comparten tu animal.",
+  artist: "Explorar artistas que comparten tu animal.",
+};
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
   brand: Sparkles,
@@ -36,7 +44,6 @@ interface AffinityClientProps {
 export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-  const userCountry = useUserContext().country;
 
   useEffect(() => {
     if (mounted && !loading && !profile) {
@@ -46,25 +53,6 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
   }, [mounted, loading, profile, router]);
 
   const availableTypes = (Object.keys(byType) as EntityType[]).filter((t) => byType[t].length > 0);
-
-  const personalizedCounts = profile ? (() => {
-    const userAnimal = profile.chineseZodiac || "";
-    const counts: Record<string, number> = {};
-    availableTypes.forEach(type => {
-      const list = byType[type] || [];
-      // Apply country boost when scoring
-      const scored = list.map(e => {
-        const aff = lightAffinity(userAnimal, e);
-        const boost = userCountry && e.country === userCountry ? 15 : 0;
-        return { entity: e, score: aff.score + boost };
-      });
-      // Sort by boosted score descending
-      scored.sort((a, b) => b.score - a.score);
-      // Count those with score >= 50 (after boost)
-      counts[type] = scored.filter(s => s.score >= 50).length;
-    });
-    return counts;
-  })() : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,8 +126,6 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                   {availableTypes.map((type, i) => {
                     const meta = typeMeta[type] || { label: type, plural: type, icon: "", description: "" };
                     const Icon = TYPE_ICONS[type] ?? Sparkles;
-                    const totalCount = (byType[type] || []).length;
-                    const personalCount = personalizedCounts?.[type] ?? null;
 
                     return (
                       <motion.button
@@ -151,16 +137,7 @@ export default function AffinityHub({ byType, typeMeta }: AffinityClientProps) {
                         <Icon className="w-7 h-7 mb-3 text-accent" strokeWidth={1.5} aria-hidden="true" />
                         <h3 className="font-heading uppercase text-xl font-semibold text-foreground group-hover:text-accent transition-colors">{meta.plural}</h3>
                         <p className="text-sm text-muted mt-2 leading-relaxed">{meta.description}</p>
-                        <div className="mt-4 pt-3">
-                          {personalCount !== null ? (
-                            <>
-                              <p className="font-heading text-lg font-semibold text-accent">{personalCount} <span className="text-sm text-muted font-normal">con presencia en tu mapa</span></p>
-                              <p className="text-xs text-muted mt-1">{totalCount} {meta.plural.toLowerCase()} en total</p>
-                            </>
-                          ) : (
-                            <p className="text-xs text-accent font-medium">{totalCount} {meta.plural.toLowerCase()}</p>
-                          )}
-                        </div>
+                        <p className="text-xs text-accent font-medium mt-4 pt-3">{EXPLORE_COPY[type]}</p>
                       </motion.button>
                     );
                   })}

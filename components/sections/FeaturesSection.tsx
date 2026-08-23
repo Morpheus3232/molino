@@ -82,44 +82,36 @@ export default function FeaturesSection() {
 
           <motion.h2 variants={itemVariants} className="font-display font-normal normal-case tracking-tight text-paper mb-6 leading-[1.05] text-[clamp(2.5rem,5vw,4rem)]">
             El mapa no es estático.{" "}
-            <em className="text-gradient-warm-dark">Cambia con vos.</em>
+            <em className="text-gradient-warm-dark">Se actualiza con la fecha y el ciclo.</em>
           </motion.h2>
         </motion.div>
 
-        {/* Core Grid — 3 dimensiones del mapa, no 6 features sueltas */}
+        {/* Core Grid — 3 capacidades de un mismo sistema, no 3 productos */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-paper/10 border-y border-paper/10"
         >
           {coreFeatures.map((feature, idx) => (
             <motion.div key={idx} variants={itemVariants}>
-              <Link href={feature.href}>
-                <div className="group relative h-full p-8 rounded-2xl bg-gradient-to-br from-paper/10 to-paper/5 border border-paper/10 transition-all duration-300 cursor-pointer space-y-5 hover:border-accent/40 hover:-translate-y-1.5 hover:shadow-[0_0_60px_rgba(154,74,24,0.22),0_16px_48px_rgba(0,0,0,0.35)]">
-                  {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent group-hover:text-paper group-hover:scale-110 transition-all duration-300">
-                    {feature.icon}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-display italic font-normal normal-case text-2xl text-paper group-hover:text-accent-light transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-paper/70 leading-relaxed text-sm">
-                    {feature.description}
-                  </p>
-
-                  {/* Arrow indicator */}
-                  <div className="absolute bottom-6 right-6 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-accent text-paper text-lg">
-                      →
-                    </span>
-                  </div>
+              <Link href={feature.href} className="group block h-full p-8 md:p-10 space-y-4 transition-colors duration-300 hover:bg-paper/[0.03]">
+                <div className="text-accent">
+                  {feature.icon}
                 </div>
+
+                <h3 className="font-display italic font-normal normal-case text-2xl text-paper">
+                  {feature.title}
+                </h3>
+
+                <p className="text-paper/70 leading-relaxed text-sm">
+                  {feature.description}
+                </p>
+
+                <span className="inline-flex items-center gap-1 font-mono text-xs text-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  Explorar →
+                </span>
               </Link>
             </motion.div>
           ))}

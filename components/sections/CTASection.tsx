@@ -28,12 +28,7 @@ export default function CTASection() {
   const isReturningUser = mounted && Boolean(profile?.birthDate);
 
   return (
-    <section className="relative py-24 sm:py-40 px-4 sm:px-8 bg-ink overflow-hidden">
-      {/* Atmósfera — halo dorado central, eco del hero */}
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[36rem] h-[36rem] rounded-full bg-accent/15 blur-3xl animate-breathe" />
-      </div>
-
+    <section className="relative py-24 sm:py-40 px-4 sm:px-8 bg-ink">
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <motion.div
           initial="hidden"
@@ -65,14 +60,14 @@ export default function CTASection() {
             <p className="text-lg sm:text-xl text-paper/70 leading-relaxed">
               {isReturningUser
                 ? "Volvé cuando quieras a tu lectura completa, ciclos y decisiones."
-                : "Toma 30 segundos. Sin registro. Sin guardar datos."}
+                : "Toma 30 segundos. Sin registro. Tu fecha no se envía a ningún servidor."}
             </p>
           </motion.div>
 
           <motion.div variants={itemVariants}>
             <Link
               href={isReturningUser ? "/profile" : "#mapa-form"}
-              className="btn-shimmer group inline-flex items-center justify-center gap-3 px-12 py-5 bg-gold text-gold-foreground rounded-lg font-heading font-bold uppercase tracking-[0.1em] text-lg transition-all duration-200 hover:bg-gold-hover hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold shadow-[0_8px_32px_rgba(245,176,34,0.25)] hover:shadow-[0_12px_44px_rgba(245,176,34,0.35)]"
+              className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.1em] text-lg transition-colors duration-200 hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {isReturningUser ? "Ver mi mapa" : "Descubrir"}
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -82,14 +77,14 @@ export default function CTASection() {
           <motion.p variants={itemVariants} className="font-mono text-xs text-paper/50 tracking-wide">
             {isReturningUser ? (
               <>
-                <Link href="/ejemplo" className="text-gold hover:underline underline-offset-2">
+                <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
                   Ver ejemplo interactivo
                 </Link>
               </>
             ) : (
               <>
                 Gratis · Sin tracking ·{" "}
-                <Link href="/ejemplo" className="text-gold hover:underline underline-offset-2">
+                <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
                   Ver ejemplo
                 </Link>
               </>

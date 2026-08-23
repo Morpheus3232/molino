@@ -99,7 +99,7 @@ const demoData: Record<MapQuadrant, QuadrantData> = {
         value: "Acuario ♒",
         badge: "Horizonte Este",
         formula: "Cálculo de hora solar y latitud geográfica de nacimiento",
-        meaning: "Enfoque vanguardista, autonomía radical y mirada orientada al futuro.",
+        meaning: "Mirada orientada al futuro.",
       },
     ],
   },
@@ -150,7 +150,7 @@ const demoData: Record<MapQuadrant, QuadrantData> = {
         value: "2026–2035",
         badge: "Período de 9 Años",
         formula: "Apertura por Año Personal 5 hacia la consolidación del ciclo 9",
-        meaning: "Transformación estructural: redefinición de metas profesionales y relaciones clave.",
+        meaning: "Cambio estructural: redefinición de metas profesionales y relaciones clave.",
         highlight: true,
       },
       {
@@ -181,24 +181,19 @@ export default function ProofSection() {
   const CurrentIcon = current.icon;
 
   return (
-    <section className="relative py-20 sm:py-32 px-4 sm:px-8 bg-background border-y border-border overflow-hidden">
-      {/* Background Subtle Accent Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-accent/[0.03] blur-[140px] pointer-events-none rounded-full" />
-
+    <section className="relative py-20 sm:py-32 px-4 sm:px-8 bg-background border-y border-border">
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <motion.div
+          <motion.p
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6"
+            className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6"
           >
-            <Fingerprint className="w-3.5 h-3.5 text-accent" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
-              El diferencial
-            </span>
-          </motion.div>
+            <Fingerprint className="w-3.5 h-3.5" aria-hidden="true" />
+            Cómo se obtiene el mapa
+          </motion.p>
 
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
@@ -207,7 +202,7 @@ export default function ProofSection() {
             transition={{ delay: 0.1 }}
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
           >
-            No solo un resultado. El cómo, visible.
+            Así se calcula cada número.
           </motion.h2>
 
           <motion.p
@@ -217,13 +212,13 @@ export default function ProofSection() {
             transition={{ delay: 0.15 }}
             className="text-base sm:text-lg text-muted leading-relaxed font-normal"
           >
-            Este es un ejemplo (no tu mapa todavía). Cada número tiene una fórmula que podés revisar — nada queda en una caja cerrada.
+            Este es un ejemplo (no tu mapa todavía). Cada número muestra la fórmula que lo genera.
           </motion.p>
         </div>
 
-        {/* Interactive Navigator Pill */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex p-1.5 rounded-2xl bg-card border border-border/80 shadow-sm max-w-full overflow-x-auto">
+        {/* Interactive Navigator */}
+        <div className="flex justify-center mb-8 border-b border-border">
+          <div className="inline-flex max-w-full overflow-x-auto">
             {quadrants.map((quad) => {
               const item = demoData[quad];
               const Icon = item.icon;
@@ -233,21 +228,19 @@ export default function ProofSection() {
                 <button
                   key={quad}
                   onClick={() => setActiveQuadrant(quad)}
-                  className={`relative flex items-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl font-heading font-medium text-xs sm:text-sm tracking-wide transition-all duration-300 whitespace-nowrap ${
-                    isActive
-                      ? "text-accent font-bold"
-                      : "text-muted hover:text-foreground hover:bg-background/50"
+                  className={`relative flex items-center gap-2 px-4 sm:px-6 py-3 font-heading font-medium text-xs sm:text-sm tracking-wide transition-colors duration-200 whitespace-nowrap ${
+                    isActive ? "text-accent" : "text-muted hover:text-foreground"
                   }`}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="activeTabPill"
-                      className="absolute inset-0 bg-accent/10 border border-accent/30 rounded-xl"
+                      layoutId="activeTabUnderline"
+                      className="absolute inset-x-0 -bottom-px h-px bg-accent"
                       transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
                     />
                   )}
-                  <Icon className={`w-4 h-4 relative z-10 ${isActive ? "text-accent" : "text-muted"}`} />
-                  <span className="relative z-10">{item.title}</span>
+                  <Icon className="w-4 h-4" aria-hidden="true" />
+                  <span>{item.title}</span>
                 </button>
               );
             })}
@@ -260,17 +253,15 @@ export default function ProofSection() {
           className="rounded-2xl sm:rounded-3xl border border-border bg-card shadow-sm overflow-hidden"
         >
           {/* Card Meta Bar */}
-          <div className="px-6 sm:px-10 py-6 border-b border-border/70 flex flex-wrap items-center justify-between gap-4 bg-background/40">
+          <div className="px-6 sm:px-10 py-6 border-b border-border/70 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-                <CurrentIcon className="w-5 h-5" />
-              </div>
+              <CurrentIcon className="w-5 h-5 text-accent shrink-0" aria-hidden="true" />
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
                     {current.title}
                   </h3>
-                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-semibold uppercase tracking-wider bg-accent/10 text-accent">
+                  <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-muted">
                     {current.badge}
                   </span>
                 </div>
@@ -283,9 +274,9 @@ export default function ProofSection() {
             {/* Technical toggle button */}
             <button
               onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
-              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border font-mono text-xs transition-colors ${
                 showTechnicalDetails
-                  ? "bg-accent text-accent-foreground border-accent shadow-sm"
+                  ? "bg-accent text-accent-foreground border-accent"
                   : "bg-background border-border text-muted hover:text-foreground hover:border-accent/40"
               }`}
             >
@@ -309,10 +300,10 @@ export default function ProofSection() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ delay: idx * 0.08, duration: 0.35 }}
-                  className={`group relative flex flex-col justify-between p-6 rounded-2xl border transition-all duration-300 ${
+                  className={`group relative flex flex-col justify-between p-6 rounded-2xl border transition-colors duration-300 bg-background/60 ${
                     item.highlight
-                      ? "bg-gradient-to-b from-accent/[0.04] to-card border-accent/30 shadow-[0_4px_24px_-12px_rgba(var(--accent-rgb),0.12)]"
-                      : "bg-background/60 border-border/70 hover:border-border hover:bg-background"
+                      ? "border-border/70 border-l-2 border-l-accent"
+                      : "border-border/70 hover:border-border"
                   }`}
                 >
                   {/* Top: Label + mini tag */}
@@ -322,7 +313,7 @@ export default function ProofSection() {
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-border/40 text-muted group-hover:text-foreground transition-colors">
+                        <span className="text-[10px] font-mono text-muted">
                           {item.badge}
                         </span>
                       )}
@@ -362,11 +353,9 @@ export default function ProofSection() {
           </div>
 
           {/* Footer Synthesis Callout */}
-          <div className="p-6 sm:px-10 border-t border-border/70 bg-background/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-6 sm:px-10 border-t border-border/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-start sm:items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5 sm:mt-0">
-                <Layers className="w-4 h-4" />
-              </div>
+              <Layers className="w-4 h-4 text-accent shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" />
               <div>
                 <p className="font-heading text-sm font-bold text-foreground">
                   Todo está conectado
