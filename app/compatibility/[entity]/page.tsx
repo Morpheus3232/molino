@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { siteUrl } from '@/lib/seo';
 import { ENTITIES } from '@/lib/data/entities';
+import { getEntityById } from '@/lib/data/symbolic-entities';
 import CompatibilityContent from '@/components/compatibility/CompatibilityContent';
 
 export async function generateStaticParams() {
@@ -57,5 +58,11 @@ export default async function CompatibilityPage({ params }: { params: Promise<{ 
   const entity = ENTITIES.find(e => e.id === entityId);
   if (!entity) notFound();
 
-  return <CompatibilityContent entity={entity} />;
+  // Cuando el mismo id existe en el atlas de /affinity (mismo país, misma
+  // marca, etc.), reusamos su evento histórico real como evidencia — en vez
+  // de inventar una para esta página. Si no hay match, la página se apoya
+  // solo en los datos propios de `entity` (sin evidencia de evento).
+  const atlasEntity = getEntityById(entityId) ?? null;
+
+  return <CompatibilityContent entity={entity} atlasEntity={atlasEntity} />;
 }

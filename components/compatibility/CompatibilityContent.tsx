@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo, useCallback, useState, useEffect } from "react";
+import { useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { fetchCompatibility } from "@/lib/api/client";
-import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { generateMatchStory, type MatchStory } from "@/lib/engines/storyEngine";
-import type { CompatibilityResult } from "@/lib/engines/compatibilityEngine";
-import MolinoInterpretation from "@/components/ui/MolinoInterpretation";
-import CompatibilityLab from "@/components/lab/CompatibilityLab";
+import { calculateAffinity } from "@/lib/engines/affinityEngine";
+import { getRelation, type Animal } from "@/lib/data/animalRelations";
+import { calculateElementCompatibility, getElement } from "@/lib/engines/astrologyEngine";
+import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
+import { SectionHeader, CollapsibleSection, DataRow } from "@/components/affinity/AffinitySectionPrimitives";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import type { EntityProfile } from "@/lib/data/entities";
+import { ENTITIES, type EntityProfile } from "@/lib/data/entities";
+import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -20,61 +21,105 @@ const transitionVariants = {
   exit: { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } },
 };
 
-interface CompatibilityContentProps {
-  entity: EntityProfile;
+const CATEGORY_LABELS: Record<string, string> = {
+  country: "País", city: "Ciudad", brand: "Marca", band: "Banda", movie: "Película",
+  person: "Persona", nature: "Naturaleza", art: "Arte", philosophy: "Filosofía",
+  sport: "Deporte", food: "Comida", tvshow: "Serie", videoGame: "Videojuego",
+  anime: "Anime", comic: "Cómic", drink: "Bebida", dessert: "Postre",
+};
+
+/** Traducción del elemento occidental a una lectura factual, sin score visible. */
+function describeElementPair(userElement: string, entityElement: string): string | null {
+  const score = calculateElementCompatibility(userElement, entityElement);
+  if (userElement === entityElement) return `mismo elemento (${userElement})`;
+  if (score === 90) return `elementos afines (${userElement}–${entityElement})`;
+  if (score === 40) return `elementos opuestos (${userElement}–${entityElement})`;
+  return null;
 }
 
-export default function CompatibilityContent({ entity }: CompatibilityContentProps) {
+interface CompatibilityContentProps {
+  entity: EntityProfile;
+  atlasEntity: SymbolicEntity | null;
+}
+
+export default function CompatibilityContent({ entity, atlasEntity }: CompatibilityContentProps) {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
 
-  const [compat, setCompat] = useState<CompatibilityResult | null>(null);
-  const [compatError, setCompatError] = useState(false);
+  // Zodiaco chino — mismo motor real que /affinity. Con match en el atlas,
+  // reusa el evento histórico real como evidencia; sin match, usa
+  // getRelation() directo (misma fuente de verdad, sin evento asociado).
+  const chinese = useMemo(() => {
+    if (!profile) return null;
+    if (atlasEntity) {
+      const result = calculateAffinity(profile, atlasEntity);
+      return {
+        userAnimal: result.userAnimal,
+        entityAnimal: result.entityAnimal,
+        label: result.relationship,
+        description: result.explanation,
+        evidence: result.primaryEvent.description,
+        eventLabel: result.primaryEvent.label,
+        eventYear: result.entityYear,
+        eventSource: result.primaryEvent.source,
+      };
+    }
+    const userAnimal = profile.chineseZodiac;
+    const entityAnimal = entity.symbolism.chineseZodiac;
+    if (!userAnimal || !entityAnimal) return null;
+    const relation = getRelation(userAnimal as Animal, entityAnimal as Animal);
+    return {
+      userAnimal,
+      entityAnimal,
+      label: relation.label,
+      description: relation.description,
+      evidence: null,
+      eventLabel: null,
+      eventYear: null,
+      eventSource: null,
+    };
+  }, [profile, entity, atlasEntity]);
 
-  useEffect(() => {
-    if (!profile) return;
-    let cancelled = false;
-    setCompatError(false);
-    fetchCompatibility(profile.birthDate, {
-      lifePath: entity.symbolism.lifePath || 5,
-      sunSign: entity.symbolism.sunSign,
-      chineseZodiac: entity.symbolism.chineseZodiac,
-      archetype: entity.symbolism.archetype,
-      element: entity.symbolism.element,
-      name: entity.name,
-    })
-      .then((data) => {
-        if (!cancelled) setCompat(data);
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error("Compatibility error:", err);
-          setCompatError(true);
-        }
-      });
-    return () => { cancelled = true; };
+  const numerology = useMemo(() => {
+    if (!profile || entity.symbolism.lifePath == null) return null;
+    return {
+      userLifePath: profile.lifePath,
+      entityLifePath: entity.symbolism.lifePath,
+      sameNumber: profile.lifePath === entity.symbolism.lifePath,
+    };
   }, [profile, entity]);
 
-  const dailyEnergy = useMemo(() => {
-    if (!profile) return null;
-    return calculateDailyEnergy(profile, new Date());
-  }, [profile]);
+  const astrology = useMemo(() => {
+    if (!profile || !entity.symbolism.sunSign) return null;
+    const entityElement = getElement(entity.symbolism.sunSign);
+    return {
+      userSign: profile.sunSign,
+      userElement: profile.sunSignInfo.element,
+      entitySign: entity.symbolism.sunSign,
+      entityElement,
+      reading: describeElementPair(profile.sunSignInfo.element, entityElement),
+    };
+  }, [profile, entity]);
 
-  const story: MatchStory | null = useMemo(() => {
-    if (!profile || !compat) return null;
-    try {
-      return generateMatchStory(profile, entity, compat.scores.overall);
-    } catch {
-      return null;
-    }
-  }, [profile, entity, compat]);
+  // Exploración — otras entidades reales con relación real (mismo animal /
+  // triada / opuesto exclusivamente, misma fuente que /affinity).
+  const otherEntities = useMemo(() => {
+    if (!profile) return [];
+    const userAnimal = profile.chineseZodiac as Animal;
+    return ENTITIES
+      .filter(e => e.id !== entity.id && e.symbolism.chineseZodiac)
+      .map(e => ({ entity: e, relation: getRelation(userAnimal, e.symbolism.chineseZodiac as Animal) }))
+      .filter(({ relation }) => relation.type === "same" || relation.type === "triad" || relation.type === "clash")
+      .sort((a, b) => (a.entity.category === entity.category ? -1 : 0) - (b.entity.category === entity.category ? -1 : 0))
+      .slice(0, 6);
+  }, [profile, entity]);
 
   const handleShare = useCallback(() => {
     const url = `${window.location.origin}/compatibility/${entity.id}`;
     if (navigator.share) {
       navigator.share({
-        title: `Compatibilidad con ${entity.name}`,
-        text: `Leé tu compatibilidad con ${entity.name} en Molino`,
+        title: `Tu conexión con ${entity.name}`,
+        text: `Descubrí tu conexión con ${entity.name} en Molino`,
         url,
       }).catch(() => {});
     } else {
@@ -96,8 +141,8 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
             exit="exit"
           >
             <div className="mx-auto max-w-content px-4 sm:px-6 pt-16 sm:pt-20 pb-24">
-              <p className="sr-only" role="status" aria-label="Cargando compatibilidad...">
-                Cargando compatibilidad...
+              <p className="sr-only" role="status" aria-label="Cargando conexión...">
+                Cargando conexión...
               </p>
               <div className="animate-pulse">
                 <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
@@ -123,10 +168,10 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
                 <span className="text-5xl">{entity.emoji}</span>
               </div>
               <h1 className="font-heading text-3xl font-semibold text-foreground mb-4">
-                Compatibilidad con {entity.name}
+                Tu conexión con {entity.name}
               </h1>
               <p className="text-sm text-muted mb-8 max-w-md mx-auto">
-                Para ver tu compatibilidad con {entity.name}, primero necesitás crear tu perfil personal.
+                Para ver tu conexión con {entity.name}, primero necesitás crear tu perfil personal.
               </p>
               <Button size="lg" onClick={() => router.push("/onboarding")}>
                 Crear mi perfil
@@ -141,146 +186,183 @@ export default function CompatibilityContent({ entity }: CompatibilityContentPro
             animate="show"
             exit="exit"
           >
-<main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
-            {compatError && (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-8 p-6 rounded-md border border-ink/10 bg-transparent"
-              >
-                <p className="font-heading text-lg font-semibold text-foreground mb-2">No se pudo cargar el análisis</p>
-                <p className="text-sm text-muted mb-4">Ocurrió un error al calcular la compatibilidad. Podés intentar nuevamente.</p>
-                <Button variant="secondary" onClick={() => window.location.reload()}>Reintentar</Button>
-              </motion.div>
-            )}
-            {!compatError && (
-              <>
-                {/* Breadcrumb */}
-                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
-                  <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-                  <span>›</span>
-                  <Link href="/explore" className="hover:text-foreground transition-colors">Explorar</Link>
-                  <span>›</span>
-                  <span className="text-foreground font-medium">{entity.name}</span>
-                </nav>
+            <main className="mx-auto max-w-content px-4 sm:px-6 py-8 pb-24" id="main-content">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+                <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+                <span>›</span>
+                <Link href="/explore" className="hover:text-foreground transition-colors">Explorar</Link>
+                <span>›</span>
+                <span className="text-foreground font-medium">{entity.name}</span>
+              </nav>
 
-                {/* Entity header */}
-                <div className="flex items-center gap-4 mb-8">
-                  <span className="text-5xl">{entity.emoji}</span>
-                  <div>
-                    <h1 className="font-heading text-2xl sm:text-3xl font-bold text-foreground">
-                      Análisis multi-factor de {entity.name}
-                    </h1>
-                    <p className="text-sm text-muted mt-1">
-                      {entity.category} · {entity.context.keyThemes.slice(0, 3).join(' · ')}
+              {/* 1+2. Entidad + conexión concreta */}
+              <motion.section {...fadeUp} className="mb-12 text-center">
+                <span className="text-5xl block mb-4">{entity.emoji}</span>
+                <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-tight mb-2">
+                  {entity.name}
+                </p>
+                <p className="text-sm text-muted mb-6">
+                  {CATEGORY_LABELS[entity.category] || entity.category} · {entity.context.keyThemes.slice(0, 3).join(" · ")}
+                </p>
+
+                {chinese && (
+                  <>
+                    <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-3">
+                      Una conexión con tu mapa
                     </p>
-                  </div>
-                </div>
+                    <p className="text-sm text-foreground font-medium mb-8">
+                      {formatAnimalSimple(chinese.entityAnimal)} · {chinese.label}
+                    </p>
 
-                {/* Explanation of what this page is */}
-                <div className="mb-6 p-4 rounded-md bg-accent/[0.05] border border-accent/20">
-                  <p className="text-sm text-muted leading-relaxed">
-                    Este análisis usa <strong>múltiples sistemas</strong> (numerología, astrología occidental, zodiaco chino, arquetipos) para evaluar la compatibilidad.
-                    Para la <strong>afinidad principal</strong> basada solo en el zodíaco chino, visitá la página de <a href={`/affinity`} className="text-accent hover:underline">afinidad simbólica</a>.
-                  </p>
-                </div>
-
-                {/* User context */}
-                <div className="mb-6 p-4 border border-ink/10 bg-transparent">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Tu perfil</p>
-                  <p className="text-sm text-foreground">
-                    <span className="font-medium">{profile.name}</span> · Camino de Vida {profile.lifePath} · {profile.sunSign} · {profile.chineseZodiac}
-                  </p>
-                </div>
-
-                {/* Compatibility results */}
-                {compat && (
-                  <CompatibilityLab
-                    user={profile}
-                    entity={entity}
-                    result={compat}
-                    template={`Analiza la compatibilidad desde la perspectiva de ${entity.category}.`}
-                  />
-                )}
-
-                {/* Narrative */}
-                {story && (
-                  <div className="mt-6">
-                    <div className="border border-ink/10 bg-transparent p-6">
-                      <span className="badge mb-3">Narrativa de conexión</span>
-                      <p className="text-lg leading-relaxed text-foreground mb-4">{story.narrative}</p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="rounded-md bg-background p-4 border border-border">
-                          <p className="text-sm font-medium text-foreground mb-2">Puntos de conexión</p>
-                          <ul className="text-sm text-muted space-y-2">
-                            {story.connections.map((conn, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <span className="text-accent mt-0.5">✓</span>
-                                <span>{conn}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div className="rounded-md bg-background p-4 border border-border">
-                          <p className="text-sm font-medium text-foreground mb-2">Áreas de crecimiento</p>
-                          <ul className="text-sm text-muted space-y-2">
-                            {story.challenges.map((challenge, i) => (
-                              <li key={i} className="flex items-start gap-2">
-                                <span className="text-yellow-500 mt-0.5">⟳</span>
-                                <span>{challenge}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
+                    {/* 3. Evidencia */}
+                    <div className="mb-8 px-4">
+                      <p className="text-sm text-foreground leading-relaxed max-w-md mx-auto">
+                        {chinese.evidence || entity.context.description}
+                      </p>
                     </div>
-                  </div>
+                  </>
                 )}
+              </motion.section>
 
-                {/* AI Interpretation */}
-                {compat && (
-                  <div className="mt-6">
-                    <MolinoInterpretation
-                      profile={profile}
-                      type="compatibility"
-                      compatibility={compat}
-                      dailyEnergy={dailyEnergy || undefined}
-                      entity={entity}
-                      label="Interpretación de Molino"
-                      description="Análisis personalizado de tu compatibilidad"
-                    />
+              {/* 4. Cómo se obtiene */}
+              <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-metodo">
+                <CollapsibleSection title="Cómo se obtiene este resultado" id="section-metodo">
+                  <p className="text-xs text-muted leading-relaxed">
+                    El zodíaco chino compara tu animal con el de {entity.name} usando la relación
+                    tradicional entre animales del ciclo de 12 años — el mismo motor que usan las
+                    páginas de afinidad. La numerología compara tu Camino de Vida real con el número
+                    simbólico asignado a {entity.name}: solo se lee una coincidencia cuando el número
+                    es exactamente el mismo. La astrología occidental compara el elemento tradicional
+                    de cada signo solar (fuego, tierra, aire, agua). El arquetipo se muestra como dato
+                    descriptivo: no existe una regla documentada de compatibilidad entre arquetipos
+                    distintos, así que no se interpreta.
+                  </p>
+                </CollapsibleSection>
+              </motion.section>
+
+              {/* 5. Lecturas por sistema */}
+              <motion.section {...fadeUp} className="mb-12">
+                <SectionHeader title="Lecturas por sistema" />
+                <div className="space-y-3">
+                  {chinese && (
+                    <CollapsibleSection title="Zodiaco chino">
+                      <div className="space-y-3 mb-4">
+                        <DataRow label="Tu animal" value={formatAnimalSimple(chinese.userAnimal)} />
+                        <DataRow label={`Animal de ${entity.name}`} value={formatAnimalSimple(chinese.entityAnimal)} />
+                        {chinese.eventLabel && (
+                          <>
+                            <DataRow label="Evento" value={`${chinese.eventLabel} (${chinese.eventYear})`} />
+                            <DataRow label="Fuente" value={chinese.eventSource || ""} />
+                          </>
+                        )}
+                      </div>
+                      <div className="h-px bg-border my-4" />
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Lectura simbólica</p>
+                      <p className="text-sm text-foreground leading-relaxed">{chinese.description}</p>
+                    </CollapsibleSection>
+                  )}
+
+                  {numerology && (
+                    <CollapsibleSection title="Numerología">
+                      <div className="space-y-3 mb-4">
+                        <DataRow label="Tu Camino de Vida" value={String(numerology.userLifePath)} />
+                        <DataRow label={`Camino de Vida de ${entity.name}`} value={String(numerology.entityLifePath)} />
+                      </div>
+                      {numerology.sameNumber && (
+                        <>
+                          <div className="h-px bg-border my-4" />
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Lectura simbólica</p>
+                          <p className="text-sm text-foreground leading-relaxed">
+                            Comparten el mismo número de Camino de Vida.
+                          </p>
+                        </>
+                      )}
+                    </CollapsibleSection>
+                  )}
+
+                  {astrology && (
+                    <CollapsibleSection title="Astrología occidental">
+                      <div className="space-y-3 mb-4">
+                        <DataRow label="Tu signo solar" value={`${astrology.userSign} (${astrology.userElement})`} />
+                        <DataRow label={`Signo de ${entity.name}`} value={`${astrology.entitySign} (${astrology.entityElement})`} />
+                      </div>
+                      {astrology.reading && (
+                        <>
+                          <div className="h-px bg-border my-4" />
+                          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Lectura simbólica</p>
+                          <p className="text-sm text-foreground leading-relaxed capitalize">{astrology.reading}</p>
+                        </>
+                      )}
+                    </CollapsibleSection>
+                  )}
+
+                  {entity.symbolism.archetype && (
+                    <CollapsibleSection title="Arquetipos">
+                      <div className="space-y-3">
+                        <DataRow label="Tu arquetipo" value={profile.archetype} />
+                        <DataRow label={`Arquetipo de ${entity.name}`} value={entity.symbolism.archetype} />
+                      </div>
+                      <p className="text-xs text-muted italic mt-4">
+                        Dato descriptivo — no hay una regla tradicional documentada para comparar arquetipos entre sí.
+                      </p>
+                    </CollapsibleSection>
+                  )}
+                </div>
+              </motion.section>
+
+              {/* 6. Exploración */}
+              {otherEntities.length > 0 && (
+                <motion.section {...fadeUp} className="mb-12">
+                  <SectionHeader title="Explorá otras conexiones" />
+                  <div className="divide-y divide-border border-t border-b border-border">
+                    {otherEntities.map(({ entity: other, relation }) => (
+                      <Link
+                        key={other.id}
+                        href={`/compatibility/${other.id}`}
+                        className="flex items-center justify-between gap-4 py-4 hover:bg-muted/20 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{other.emoji}</span>
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{other.name}</p>
+                            <p className="text-xs text-muted">{CATEGORY_LABELS[other.category] || other.category}</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-medium text-accent uppercase tracking-wide">{relation.label}</span>
+                      </Link>
+                    ))}
                   </div>
-                )}
+                </motion.section>
+              )}
 
-                {/* Disclaimer */}
-                <div className="mt-8 p-4 bg-card rounded-md border border-border text-center space-y-2">
-                  <p className="text-xs text-muted">
-                    Resultado para <span className="font-medium">{profile.name}</span> con {entity.name}
-                  </p>
-                  <p className="text-xs text-muted">
-                    Análisis basado en numerología, astrología occidental, zodiaco chino y arquetipos.
-                  </p>
-                </div>
+              {/* Disclaimer */}
+              <div className="mt-8 p-4 bg-card rounded-md border border-border text-center space-y-2">
+                <p className="text-xs text-muted">
+                  Resultado para <span className="font-medium">{profile.name || "vos"}</span> con {entity.name}
+                </p>
+                <p className="text-xs text-muted">
+                  Lectura simbólica basada en zodíaco chino, numerología y astrología occidental — no una medición científica.
+                </p>
+              </div>
 
-                {/* Share */}
-                <div className="mt-6 flex justify-center">
-                  <button
-                    type="button"
-                    onClick={handleShare}
-                    className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-md"
-                  >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
-                      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                      <polyline points="16 6 12 2 8 6" />
-                      <line x1="12" y1="2" x2="12" y2="15" />
-                    </svg>
-                    Compartir resultado
-                  </button>
-                </div>
-              </>
-            )}
-          </main>
-        </motion.div>
+              {/* Share */}
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-mono tracking-wider text-muted hover:text-accent transition-colors border border-border hover:border-accent rounded-md"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                    <polyline points="16 6 12 2 8 6" />
+                    <line x1="12" y1="2" x2="12" y2="15" />
+                  </svg>
+                  Compartir resultado
+                </button>
+              </div>
+            </main>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
