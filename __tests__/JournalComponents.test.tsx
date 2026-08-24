@@ -93,8 +93,8 @@ describe("JournalTimeline Component", () => {
     expect(screen.getAllByText("#Trabajo").length).toBeGreaterThanOrEqual(1);
   });
 
-  it("renders empty state when there are no entries", () => {
-    render(<JournalTimeline entries={[]} />);
-    expect(screen.getByText(/Tu registro de autoconocimiento/i)).toBeDefined();
+  it("renders nothing when there are no entries", () => {
+    const { container } = render(<JournalTimeline entries={[]} />);
+    expect(container.innerHTML).toBe("");
   });
 });

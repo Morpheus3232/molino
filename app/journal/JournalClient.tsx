@@ -12,7 +12,7 @@ import { computeJournalStreak } from "@/lib/utils/journalStreak";
 import JournalEditor from "@/components/journal/JournalEditor";
 import JournalTimeline from "@/components/journal/JournalTimeline";
 import CountUp from "@/components/ui/CountUp";
-import { BookOpen, ShieldCheck, Sparkles, Flame } from "lucide-react";
+import { BookOpen, Flame } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 
@@ -101,8 +101,7 @@ export default function JournalClient() {
                 Journal
               </h1>
               <p className="text-sm sm:text-base text-muted mt-2 leading-relaxed">
-                Registrá cómo te sentís día a día y descubrí cómo interactúan tus emociones y
-                decisiones con tus ciclos numerológicos y astrológicos.
+                Privado en tu navegador.
               </p>
             </div>
 
@@ -113,10 +112,6 @@ export default function JournalClient() {
                   {journalStreak} días seguidos
                 </span>
               )}
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs font-mono">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                100% privado en tu navegador
-              </span>
             </div>
           </div>
 
@@ -181,22 +176,18 @@ export default function JournalClient() {
             />
 
             {/* Reflection Tip Card */}
-            <div className="p-6 rounded-xl bg-card border border-ink/5 text-xs text-muted leading-relaxed space-y-2">
-              <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-accent font-bold">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Consejo de registro</span>
-              </div>
-              <p>
-                No necesitás escribir párrafos largos. Una frase sobre cómo te sentís o qué decisión tomaste
-                hoy es suficiente para ofrecer una perspectiva sobre patrones cuando mires hacia atrás.
+            <div className="p-4 bg-card text-xs text-muted space-y-1">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-muted font-bold">
+                Consejo
               </p>
+              <p>Una frase alcanza.</p>
             </div>
 
             <Link
               href="/hoy"
               className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
             >
-              Explorá cómo tus ciclos de hoy influyen en tu energía →
+              Ver mi energía de hoy →
             </Link>
           </div>
 

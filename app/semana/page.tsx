@@ -1,21 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plane, Briefcase, type LucideIcon } from "lucide-react";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { getDayVibration, type TopicId, getFavorableNumbers } from "@/lib/utils/dateVibration";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
 import Button from "@/components/ui/Button";
-
-const TOPIC_OPTIONS: { id: TopicId; label: string; icon: LucideIcon }[] = [
-  { id: "viajes", label: "Viajar", icon: Plane },
-  { id: "negocios", label: "Emprender / Negocios", icon: Briefcase },
-];
 
 export default function SemanaPage() {
   return (
@@ -28,7 +22,8 @@ export default function SemanaPage() {
 function SemanaContent() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-  const [topic, setTopic] = useState<TopicId>("viajes");
+
+  const topic: TopicId = "viajes";
 
   // Get Monday to Sunday of current week
   const weekDays = useMemo(() => {
@@ -110,25 +105,6 @@ function SemanaContent() {
           </h1>
           <p className="text-sm text-muted mt-3">{weekRange}</p>
         </motion.div>
-
-        {/* Selector de tema */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {TOPIC_OPTIONS.map((opt) => (
-            <button
-              key={opt.id}
-              type="button"
-              onClick={() => setTopic(opt.id)}
-              className={`flex items-center gap-2 px-4 py-2 border text-sm font-medium transition-colors ${
-                topic === opt.id
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-ink/10 text-muted hover:border-ink/20 hover:text-foreground"
-              }`}
-            >
-              <opt.icon className="w-4 h-4" aria-hidden="true" />
-              {opt.label}
-            </button>
-          ))}
-        </div>
 
         {/* 7 días de la semana */}
         <div className="grid grid-cols-1 sm:grid-cols-7 gap-px bg-ink/10">

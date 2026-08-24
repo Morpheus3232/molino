@@ -248,7 +248,7 @@ export default function JournalEditor({
                   key={m}
                   type="button"
                   onClick={() => setMood(m)}
-                  className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-3 rounded-lg text-xs transition-all min-h-[44px] ${
+                  className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-xs transition-all min-h-[44px] ${
                     isSelected
                       ? "bg-accent/15 border border-accent/40 text-foreground font-semibold shadow-xs"
                       : "text-muted hover:text-foreground hover:bg-ink/[0.03] border border-transparent"
@@ -273,9 +273,6 @@ export default function JournalEditor({
             >
               ¿Qué querés registrar?
             </label>
-            <span className="text-[11px] text-muted font-mono">
-              100% privado en tu dispositivo
-            </span>
           </div>
 
           <textarea

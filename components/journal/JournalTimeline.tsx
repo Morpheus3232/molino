@@ -98,19 +98,7 @@ export default function JournalTimeline({
   }
 
   if (entries.length === 0) {
-    return (
-      <div className={`rounded-xl border border-ink/10 bg-card p-8 sm:p-10 text-center ${className}`}>
-        <div className="w-12 h-12 rounded-xl bg-accent/10 text-accent mx-auto flex items-center justify-center mb-4">
-          <Compass className="w-6 h-6" />
-        </div>
-        <h3 className="font-heading text-lg font-bold text-foreground">
-          Tu registro de autoconocimiento está listo
-        </h3>
-        <p className="text-xs sm:text-sm text-muted max-w-md mx-auto mt-2 leading-relaxed">
-          Escribí tu primer registro a la izquierda. A medida que sumes entradas, se guardarán 100% en tu navegador y verás la evolución de tu energía.
-        </p>
-      </div>
-    );
+    return null;
   }
 
   return (
