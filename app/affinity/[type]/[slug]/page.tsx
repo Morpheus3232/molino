@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { buildEntityJsonLd } from "@/lib/seo-jsonld";
 import { ENTITY_TYPES, getEntityById, getEntitiesByType, SYMBOLIC_ENTITIES, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
+import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
@@ -63,6 +64,9 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   // layer never reaches the client bundle — only these props do.
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
   const sameType = getEntitiesByType(type as EntityType).map(toLightweightEntity);
+  // Capa 1 (editorial): otras entidades del mismo tipo ya existentes en el
+  // dataset, sin calcular afinidad — solo un listado, no un descubrimiento.
+  const editorialRelated = sameType.filter((e) => e.id !== entity.id).slice(0, 4);
   const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
 
   return (
@@ -71,7 +75,12 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />
+      <div className="min-h-screen bg-background">
+        <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+          <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType} relatedEntities={editorialRelated} />
+          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />
+        </main>
+      </div>
     </>
   );
 }

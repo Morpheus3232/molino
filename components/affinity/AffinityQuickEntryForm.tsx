@@ -10,7 +10,6 @@ import { TIER_META } from "@/lib/engines/affinityEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import type { LightweightEntity } from "@/types/atlas";
-import EntityVisual from "@/components/ui/EntityVisual";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDiscoveryList from "@/components/affinity/AffinityDiscoveryList";
 import { analytics } from "@/lib/analytics/analytics";
@@ -165,38 +164,13 @@ export default function AffinityQuickEntryForm({
   }, [hasResult, result, type]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
+    <>
+      <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4 text-center">
+        Cómo resuena · {meta.label}
+      </p>
 
-        {/* Back */}
-        <motion.div {...fadeUp}>
-          <button
-            type="button"
-            onClick={() => router.push(`/affinity/${type}`)}
-            className="text-sm text-muted hover:text-accent transition-colors mb-8 inline-flex items-center gap-2 min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
-          >
-            &larr; {meta.plural}
-          </button>
-        </motion.div>
-
-        {/* Hero — entity info always visible */}
-        <motion.section {...fadeUp} className="mb-8">
-          <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-4 text-center">
-            Cómo resuena · {meta.label}
-          </p>
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <EntityVisual visualType={entity.visualType} emoji={entity.emoji} imageUrl={entity.imageUrl} name={entity.name} countryISO={entity.countryISO} size={56} shape="circle" />
-            <div>
-              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-foreground leading-[1.1]">
-                {entity.name}
-              </h1>
-              <p className="text-sm text-muted mt-1">{entity.country}</p>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Date input OR Result — AnimatePresence for smooth transition */}
-        <AnimatePresence mode="wait">
+      {/* Date input OR Result — AnimatePresence for smooth transition */}
+      <AnimatePresence mode="wait">
           {!hasResult ? (
             <motion.div
               key="date-input"
@@ -334,8 +308,7 @@ export default function AffinityQuickEntryForm({
             <AffinityDiscoveryList title="Seguí descubriendo" relatedEntities={relatedEntities} entityId={entity.id} type={type} />
           </motion.div>
         )}
-        </AnimatePresence>
-      </main>
-    </div>
+      </AnimatePresence>
+    </>
   );
 }
