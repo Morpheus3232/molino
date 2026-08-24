@@ -14,7 +14,7 @@ import { calculateDailyEnergy, getYearTheme } from "@/lib/engines/dailyEnergyEng
 import { resolveYearCycle } from "@/lib/engines/yearCycleEngine";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import type { Animal } from "@/lib/data/animalRelations";
-import { Sparkles, Check, PenLine, Tag, RefreshCw, Zap, Sun, Moon, Compass } from "lucide-react";
+import { Sparkles, Check, PenLine, Tag, RefreshCw, Zap, Moon, Compass, Plus, ChevronDown } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 interface JournalEditorProps {
@@ -52,7 +52,8 @@ export default function JournalEditor({
   const [content, setContent] = useState(editingEntry?.content || contextualPrompt || "");
   const [mood, setMood] = useState<JournalMood>(editingEntry?.mood || 3);
   const [tags, setTags] = useState<string[]>(editingEntry?.tags || []);
-  
+  const [showTags, setShowTags] = useState<boolean>(Boolean(editingEntry?.tags && editingEntry.tags.length > 0));
+
   // Siempre fecha local (no UTC) para evitar desfases horarios
   const date = useMemo(() => editingEntry?.date || toLocalDateKey(new Date()), [editingEntry]);
   const [isSaving, setIsSaving] = useState(false);
@@ -65,11 +66,15 @@ export default function JournalEditor({
   );
   const [promptSeed, setPromptSeed] = useState(initialSeed);
 
+  const currentPrompt = useMemo(
+    () => contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length],
+    [contextualPrompt, promptSeed]
+  );
+
   const usePrompt = useCallback(() => {
-    const target = contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length];
-    if (!target) return;
-    setContent((prev) => (prev.trim() ? `${prev.trim()}\n\n` : "") + target);
-  }, [contextualPrompt, promptSeed]);
+    if (!currentPrompt) return;
+    setContent((prev) => (prev.trim() ? `${prev.trim()}\n\n` : "") + currentPrompt);
+  }, [currentPrompt]);
 
   const nextPrompt = useCallback(() => {
     setPromptSeed((s) => s + 1);
@@ -128,9 +133,6 @@ export default function JournalEditor({
     });
   }, [date]);
 
-  const effectivePlaceholder =
-    "¿Cómo te sentís hoy? Escribí tus pensamientos, decisiones, intuiciones o sincronicidades del día...";
-
   const toggleTag = useCallback((tag: string) => {
     setTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
   }, []);
@@ -157,6 +159,7 @@ export default function JournalEditor({
           setContent("");
           setMood(3);
           setTags([]);
+          setShowTags(false);
         } else if (onCancelEdit) {
           onCancelEdit();
         }
@@ -184,44 +187,44 @@ export default function JournalEditor({
             className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono shadow-sm backdrop-blur-sm"
           >
             <Check className="w-3.5 h-3.5" />
-            <span>Entrada guardada en tu navegador</span>
+            <span>Guardado en tu navegador</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Header */}
+      {/* Header — Título claro + Fecha + Contexto sutil */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-border/80">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent">
-            <PenLine className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+            <PenLine className="w-4 h-4" />
           </div>
           <div>
             <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
               {editingEntry ? "Editar Entrada" : "Nuevo Registro"}
             </h3>
-            <p className="text-xs sm:text-sm text-muted capitalize mt-0.5">
+            <p className="text-xs text-muted capitalize mt-0.5">
               {formattedDisplayDate}
             </p>
           </div>
         </div>
 
-        {/* Badges de ciclo en vivo */}
+        {/* Badges de ciclo en vivo — discretos */}
         {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.yearCycle?.personalYear) && (
           <div className="flex flex-wrap items-center gap-1.5">
             {cycle.dayEnergy?.theme && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
                 <Zap className="w-3 h-3 text-accent" />
                 <span>{cycle.dayEnergy.theme}</span>
               </span>
             )}
             {cycle.dayEnergy?.personalDay && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono bg-background border border-border text-foreground">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono bg-background border border-border text-foreground">
                 <Compass className="w-3 h-3 text-muted" />
                 Día {cycle.dayEnergy.personalDay}
               </span>
             )}
             {cycle.dayEnergy?.moonPhase && (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono bg-background border border-border text-foreground">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono bg-background border border-border text-foreground">
                 <Moon className="w-3 h-3 text-muted" />
                 {cycle.dayEnergy.moonPhase}
               </span>
@@ -231,127 +234,149 @@ export default function JournalEditor({
       </div>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-        {/* Mood Selector (1 to 5) */}
+        {/* 1. ¿Cómo te sentís? — Escala horizontal minimalista (5 estados) */}
         <div>
-          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-3 font-semibold">
-            ¿Cómo está tu energía hoy?
+          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-2.5 font-semibold">
+            ¿Cómo te sentís?
           </label>
-          <div className="grid grid-cols-5 gap-2 sm:gap-3">
+          <div className="flex items-center justify-between gap-1 sm:gap-2 p-1.5 rounded-xl bg-background border border-border">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
               const isSelected = mood === m;
               return (
-                <motion.button
+                <button
                   key={m}
                   type="button"
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.96 }}
                   onClick={() => setMood(m)}
-                  animate={isSelected ? { scale: 1.02 } : { scale: 1 }}
-                  transition={{ duration: 0.18 }}
-                  className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all text-center group ${
+                  className={`flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-3 rounded-lg text-xs transition-all min-h-[44px] ${
                     isSelected
-                      ? "border-accent/40 bg-accent/10 shadow-sm ring-1 ring-accent"
-                      : "border-border bg-background/50 hover:bg-background hover:border-border/80"
+                      ? "bg-accent/15 border border-accent/40 text-foreground font-semibold shadow-xs"
+                      : "text-muted hover:text-foreground hover:bg-ink/[0.03] border border-transparent"
                   }`}
                   aria-pressed={isSelected}
                   aria-label={cfg.label}
                 >
-                  <span className="text-2xl sm:text-3xl mb-1.5 block transform group-hover:scale-110 transition-transform">
-                    {cfg.emoji}
-                  </span>
-                  <span
-                    className={`font-mono text-[10px] font-semibold truncate w-full ${
-                      isSelected ? "text-accent font-bold" : "text-muted"
-                    }`}
-                  >
-                    {cfg.label}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Prompt sugerido */}
-        {!editingEntry && (
-          <div className="rounded-2xl bg-accent/[0.04] border border-accent/20 p-3.5 flex items-start justify-between gap-3">
-            <div className="flex items-center gap-2 text-xs text-foreground/90 font-medium">
-              <Sparkles className="w-4 h-4 text-accent shrink-0" />
-              <button
-                type="button"
-                onClick={usePrompt}
-                className="text-left leading-relaxed hover:text-accent transition-colors"
-              >
-                {contextualPrompt || DAILY_PROMPTS[promptSeed % DAILY_PROMPTS.length]}
-              </button>
-            </div>
-            <button
-              type="button"
-              onClick={nextPrompt}
-              className="shrink-0 p-1 text-muted hover:text-accent rounded-lg hover:bg-background/80 transition-colors"
-              aria-label="Ver otra sugerencia de registro"
-              title="Ver otra sugerencia"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        )}
-
-        {/* Content Textarea */}
-        <div className="space-y-2">
-          <label
-            htmlFor="journal-content"
-            className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
-          >
-            Reflexión del día
-          </label>
-          <textarea
-            id="journal-content"
-            rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={effectivePlaceholder}
-            className="w-full rounded-2xl bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
-            required
-          />
-          <div className="flex justify-between items-center text-[11px] text-muted font-mono px-1">
-            <span>{content.length} caracteres</span>
-            <span>100% privado en tu dispositivo</span>
-          </div>
-        </div>
-
-        {/* Quick Tags */}
-        <div>
-          <div className="flex items-center gap-1.5 mb-2.5">
-            <Tag className="w-3.5 h-3.5 text-muted" />
-            <label className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
-              Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
-            </label>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {QUICK_TAGS.map((tag) => {
-              const selected = tags.includes(tag);
-              return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleTag(tag)}
-                  aria-pressed={selected}
-                  className={`px-3 py-1 rounded-lg text-xs font-mono transition-all border ${
-                    selected
-                      ? "bg-accent text-accent-foreground border-accent font-semibold"
-                      : "bg-background text-muted border-border hover:border-accent/40 hover:text-foreground"
-                  }`}
-                >
-                  #{tag}
+                  <span className="text-lg leading-none" aria-hidden="true">{cfg.emoji}</span>
+                  <span className="font-mono text-[10px] sm:text-[11px] truncate">{cfg.label}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Submit / Action Buttons */}
+        {/* 2. ¿Qué querés registrar? — Textarea como protagonista absoluto */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label
+              htmlFor="journal-content"
+              className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
+            >
+              ¿Qué querés registrar?
+            </label>
+            <span className="text-[11px] text-muted font-mono">
+              100% privado en tu dispositivo
+            </span>
+          </div>
+
+          <textarea
+            id="journal-content"
+            rows={5}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Escribí tus pensamientos, decisiones, intuiciones o lo que viviste hoy..."
+            className="w-full rounded-2xl bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
+            required
+          />
+
+          <div className="flex items-center justify-between pt-1">
+            {/* Sugerencia subordinada y discreta */}
+            {!editingEntry && (
+              <div className="flex items-center gap-1.5 text-xs text-muted">
+                <button
+                  type="button"
+                  onClick={usePrompt}
+                  className="text-left text-muted/80 hover:text-accent transition-colors truncate max-w-[240px] sm:max-w-md flex items-center gap-1"
+                  title="Usar como punto de partida"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
+                  <span className="truncate italic">&ldquo;{currentPrompt}&rdquo;</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={nextPrompt}
+                  className="p-1 text-muted hover:text-accent rounded transition-colors shrink-0"
+                  aria-label="Ver otra sugerencia"
+                  title="Cambiar sugerencia"
+                >
+                  <RefreshCw className="w-3 h-3" />
+                </button>
+              </div>
+            )}
+
+            <span className="text-[11px] text-muted font-mono ml-auto shrink-0">
+              {content.length} caracteres
+            </span>
+          </div>
+        </div>
+
+        {/* 3. Temas clave — Ocultos por defecto, desplegables discretamente */}
+        <div>
+          {!showTags ? (
+            <button
+              type="button"
+              onClick={() => setShowTags(true)}
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors py-1 min-h-[36px]"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Agregar tema {tags.length > 0 && `(${tags.length})`}</span>
+            </button>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="space-y-2 pt-2"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-muted" />
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
+                    Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowTags(false)}
+                  className="text-[11px] font-mono text-muted hover:text-foreground transition-colors"
+                >
+                  Ocultar
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {QUICK_TAGS.map((tag) => {
+                  const selected = tags.includes(tag);
+                  return (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => toggleTag(tag)}
+                      aria-pressed={selected}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-all border ${
+                        selected
+                          ? "bg-accent text-accent-foreground border-accent font-semibold"
+                          : "bg-background text-muted border-border hover:border-accent/40 hover:text-foreground"
+                      }`}
+                    >
+                      #{tag}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </div>
+
+        {/* 4. Guardar registro — CTA principal claro */}
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/80">
           {editingEntry && onCancelEdit && (
             <Button
@@ -359,7 +384,7 @@ export default function JournalEditor({
               variant="ghost"
               size="sm"
               onClick={onCancelEdit}
-              className="text-muted hover:text-foreground"
+              className="text-muted hover:text-foreground min-h-[44px]"
             >
               Cancelar
             </Button>
@@ -369,7 +394,7 @@ export default function JournalEditor({
             type="submit"
             variant="accent"
             disabled={!content.trim() || isSaving}
-            className="flex items-center gap-2 px-6 py-2.5 font-bold shadow-sm"
+            className="flex items-center gap-2 px-7 py-2.5 font-bold shadow-sm min-h-[44px]"
           >
             {isSaving ? (
               <>Guardando...</>
@@ -381,7 +406,7 @@ export default function JournalEditor({
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                {editingEntry ? "Actualizar Entrada" : "Guardar en el Journal"}
+                {editingEntry ? "Actualizar registro" : "Guardar registro"}
               </>
             )}
           </Button>

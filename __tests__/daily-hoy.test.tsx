@@ -102,9 +102,9 @@ describe("Daily Energy & Retention System", () => {
 
     render(<DailyFocus daily={mockDaily} />);
 
-    expect(screen.getByText(/Tu foco de hoy/i)).toBeDefined();
+    expect(screen.getByText(/Favorable hoy/i)).toBeDefined();
     expect(screen.getByText(/Tomar la iniciativa en proyectos postergados/i)).toBeDefined();
-    expect(screen.getByText(/Evitá hoy/i)).toBeDefined();
+    expect(screen.getByText(/Observar hoy/i)).toBeDefined();
     expect(screen.getByText(/La impaciencia con el ritmo de los demás/i)).toBeDefined();
   });
 

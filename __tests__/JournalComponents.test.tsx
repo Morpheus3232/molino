@@ -43,7 +43,7 @@ describe("JournalEditor Component", () => {
     );
 
     expect(screen.getByText(/Nuevo Registro/i)).toBeDefined();
-    expect(screen.getByPlaceholderText(/¿Cómo te sentís hoy\?/i)).toBeDefined();
+    expect(screen.getByPlaceholderText(/Escribí tus pensamientos/i)).toBeDefined();
   });
 
   it("submits content and mood when save is clicked", async () => {
@@ -55,10 +55,10 @@ describe("JournalEditor Component", () => {
       />
     );
 
-    const textarea = screen.getByPlaceholderText(/¿Cómo te sentís hoy\?/i);
+    const textarea = screen.getByPlaceholderText(/Escribí tus pensamientos/i);
     fireEvent.change(textarea, { target: { value: "Hoy me sentí muy inspirado con el proyecto." } });
 
-    const saveButton = screen.getByRole("button", { name: /Guardar en el Journal/i });
+    const saveButton = screen.getByRole("button", { name: /Guardar registro/i });
     fireEvent.click(saveButton);
 
     expect(handleSave).toHaveBeenCalledTimes(1);

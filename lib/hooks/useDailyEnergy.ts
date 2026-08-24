@@ -17,6 +17,16 @@ export interface DayForecast {
   moonEmoji: string;
 }
 
+export interface DailyConnection {
+  id: string;
+  name: string;
+  type: string;
+  relation: string;
+  relationLabel: string;
+  explanation: string;
+  href: string;
+}
+
 export interface EnrichedDailyEnergy extends DailyEnergyResult {
   focusAction: string;
   avoidAction: string;
@@ -24,6 +34,8 @@ export interface EnrichedDailyEnergy extends DailyEnergyResult {
   dailyAdvice: string;
   /** Evidencia trazable detrás de dailyAdvice (Foco/Luna/Año personal/área top) — mismo motor, ver lib/utils/orientation.ts. */
   orientationEvidence: OrientationEvidence[];
+  /** Conexión de afinidad contextual del día, con razón explícita y enlace navegable. */
+  dailyConnection?: DailyConnection | null;
   nextDaysForecast: DayForecast[];
   /** false cuando no hay perfil — el tema/score vienen de
    * calculateUniversalDailyEnergy (mismo para cualquier visitante ese día),
@@ -88,18 +100,16 @@ const FOCUS_BY_PERSONAL_DAY: Record<number, { focus: string; avoid: string }> = 
 const DAY_NAMES_ES = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
 /**
- * Afinidad del día — fetch liviano a /api/hoy/afinidad-del-dia (Fase P0.1):
- * enriquece orientationEvidence con UNA entidad real, sin cargar
- * SYMBOLIC_ENTITIES en el bundle de /hoy. Enriquecimiento, no dependencia
- * crítica: si falla o tarda, el Consejo del Momento ya renderizado con
- * `base` no se ve afectado — esto solo agrega un ítem más a la evidencia
- * cuando (y si) llega.
+ * Afinidad del día — fetch liviano a /api/hoy/afinidad-del-dia:
+ * enriquece la energía del día con una conexión contextual navegable, sin cargar
+ * SYMBOLIC_ENTITIES en el bundle de /hoy. Si falla o tarda, la energía del día
+ * funciona de forma inmediata y determinista.
  */
-function useAffinityOfTheDay(animal: string | undefined, dateKey: string): OrientationEvidence | null {
-  const [evidence, setEvidence] = useState<OrientationEvidence | null>(null);
+function useAffinityOfTheDay(animal: string | undefined, dateKey: string): DailyConnection | null {
+  const [connection, setConnection] = useState<DailyConnection | null>(null);
 
   useEffect(() => {
-    setEvidence(null);
+    setConnection(null);
     if (!animal) return;
 
     const controller = new AbortController();
@@ -107,9 +117,24 @@ function useAffinityOfTheDay(animal: string | undefined, dateKey: string): Orien
 
     fetch(url, { signal: controller.signal })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data: { entity?: { name: string } | null; relationLabel?: string } | null) => {
+      .then((data: { entity?: { id: string; name: string; type: string } | null; relation?: string; relationLabel?: string } | null) => {
         if (!data?.entity || !data.relationLabel) return;
-        setEvidence({ label: "Hoy resuena", value: `${data.entity.name} (${data.relationLabel})` });
+        const explanation =
+          data.relation === "same"
+            ? "Comparte tu misma energía en el ciclo zodiacal."
+            : data.relation === "triad"
+              ? "Pertenece a uno de tus dos animales aliados en el ciclo."
+              : "Posición de contraste a observar en el ciclo.";
+
+        setConnection({
+          id: data.entity.id,
+          name: data.entity.name,
+          type: data.entity.type,
+          relation: data.relation || "same",
+          relationLabel: data.relationLabel,
+          explanation,
+          href: `/affinity/${data.entity.type}/${data.entity.id}`,
+        });
       })
       .catch(() => {
         // Silencioso a propósito: la Afinidad es enriquecimiento, no crítica para /hoy.
@@ -118,7 +143,7 @@ function useAffinityOfTheDay(animal: string | undefined, dateKey: string): Orien
     return () => controller.abort();
   }, [animal, dateKey]);
 
-  return evidence;
+  return connection;
 }
 
 export function useDailyEnergy(
@@ -221,11 +246,9 @@ export function useDailyEnergy(
     }
   }, [profile, targetDate]);
 
-  // Sin perfil, animal es undefined → useAffinityOfTheDay no hace fetch y
-  // devuelve null siempre (regla P0.1: sin perfil, orientationEvidence no cambia).
-  const affinityEvidence = useAffinityOfTheDay(profile?.chineseZodiac, toLocalDateKey(targetDate));
+  // Sin perfil, animal es undefined → useAffinityOfTheDay no hace fetch y devuelve null.
+  const dailyConnection = useAffinityOfTheDay(profile?.chineseZodiac, toLocalDateKey(targetDate));
 
   if (!base) return null;
-  if (!affinityEvidence) return base;
-  return { ...base, orientationEvidence: [...base.orientationEvidence, affinityEvidence] };
+  return { ...base, dailyConnection };
 }
