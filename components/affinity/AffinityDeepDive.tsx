@@ -69,7 +69,7 @@ export default function AffinityDeepDive({
                 <span aria-hidden="true">·</span>
                 <span>{primaryEvent.label}</span>
                 <span aria-hidden="true">·</span>
-                <span>{primaryEvent.date ? formatDisplayDate(primaryEvent.date) : `circa ${primaryEvent.year}`}</span>
+                <span>{primaryEvent.date ? formatDisplayDate(primaryEvent.date) : String(primaryEvent.year)}</span>
                 <span aria-hidden="true">·</span>
                 <span className="font-medium text-foreground">{formatAnimalSimple(result.entityAnimal)}</span>
               </div>

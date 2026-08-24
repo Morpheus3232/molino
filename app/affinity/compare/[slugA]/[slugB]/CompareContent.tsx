@@ -266,8 +266,8 @@ export default function CompareContent({ entityA, entityB }: CompareContentProps
                   />
                   <DifferenceRow
                     label="Precisión"
-                    valueA={resultA.isApproximate ? "Año aproximado" : "Fecha exacta"}
-                    valueB={resultB.isApproximate ? "Año aproximado" : "Fecha exacta"}
+                    valueA={resultA.isApproximate ? "Año registrado" : "Fecha exacta"}
+                    valueB={resultB.isApproximate ? "Año registrado" : "Fecha exacta"}
                   />
                   <DifferenceRow
                     label="Relación con vos"
@@ -357,7 +357,7 @@ function EntityBaseCard({
           <span className="text-foreground">
             {result.primaryEvent.date
               ? formatDisplayDate(result.primaryEvent.date)
-              : `circa ${result.primaryEvent.year}`}
+              : String(result.primaryEvent.year)}
           </span>
         </div>
         <div className="flex justify-between">

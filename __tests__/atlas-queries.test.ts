@@ -11,6 +11,8 @@ import {
   orderCountriesForUser,
   topCountriesByCount,
   getCountryName,
+  getCitiesByCountry,
+  getCountryEntityByISO,
 } from '@/lib/data/atlas-queries';
 
 describe('getAtlasCountries', () => {
@@ -107,5 +109,21 @@ describe('user-country personalization', () => {
 
   test('getCountryName resolves ISO to a name', () => {
     expect(getCountryName('AR')).toBe('Argentina');
+  });
+
+  test('getCitiesByCountry returns only city entities for that country', () => {
+    const cities = getCitiesByCountry('AR');
+    expect(cities.length).toBeGreaterThan(0);
+    for (const city of cities) {
+      expect(city.type).toBe('city');
+      expect(city.countryISO).toBe('AR');
+    }
+  });
+
+  test('getCountryEntityByISO returns the country entity if present', () => {
+    const arg = getCountryEntityByISO('AR');
+    expect(arg).toBeDefined();
+    expect(arg?.type).toBe('country');
+    expect(arg?.name).toBe('Argentina');
   });
 });

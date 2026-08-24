@@ -51,7 +51,7 @@ export function OtherEventCard({ event }: { event: HistoricalEvent }) {
       <div className="flex items-center gap-3 mt-2">
         <p className="text-xs text-muted">Fuente: {event.source}</p>
         {isApproximate && (
-          <p className="text-xs text-muted">· Año aproximado</p>
+          <p className="text-xs text-muted">· Año documentado</p>
         )}
       </div>
     </div>

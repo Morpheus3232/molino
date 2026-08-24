@@ -93,6 +93,23 @@ export function getEntitiesByTaxonomy(countryISO: string, category: EntityType):
 }
 
 /**
+ * Ciudades de un país determinado para exploración geográfica directa.
+ */
+export function getCitiesByCountry(countryISO: string): LightweightEntity[] {
+  return SYMBOLIC_ENTITIES
+    .filter((e) => e.countryISO === countryISO && e.type === "city")
+    .map(toLightweightEntity);
+}
+
+/**
+ * Entidad país por ISO si existe registrada en el catálogo.
+ */
+export function getCountryEntityByISO(countryISO: string): LightweightEntity | null {
+  const entity = SYMBOLIC_ENTITIES.find((e) => e.countryISO === countryISO && e.type === "country");
+  return entity ? toLightweightEntity(entity) : null;
+}
+
+/**
  * All countries available for `generateStaticParams` (each with its ISO).
  */
 export function getAllCountryISOs(): string[] {

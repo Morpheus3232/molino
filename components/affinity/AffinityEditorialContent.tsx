@@ -62,11 +62,30 @@ export default function AffinityEditorialContent({
           <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.1]">
             {entity.name}
           </h1>
-          <p className="text-sm text-muted mt-1">
-            {meta.label}
-            {entity.country ? ` · ${entity.country}` : ""}
-            {entity.city ? ` · ${entity.city}` : ""}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted mt-1">
+            <span>{meta.label}</span>
+            {entity.country && (
+              <>
+                <span aria-hidden="true">·</span>
+                {entity.countryISO ? (
+                  <Link
+                    href={`/atlas/${entity.countryISO}`}
+                    className="text-foreground hover:text-accent underline underline-offset-4 decoration-dotted transition-colors"
+                  >
+                    {entity.country}
+                  </Link>
+                ) : (
+                  <span>{entity.country}</span>
+                )}
+              </>
+            )}
+            {entity.city && (
+              <>
+                <span aria-hidden="true">·</span>
+                <span>{entity.city}</span>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -86,18 +105,18 @@ export default function AffinityEditorialContent({
         <section className="mb-8" aria-labelledby="section-evento-documentado">
           <CollapsibleSection title="Evento documentado" id="section-evento-documentado" defaultOpen>
             <div className="space-y-3">
-              <DataRow label="Evento" value={primaryEvent.label} />
+              <DataRow label="Hito histórico" value={primaryEvent.label} />
               {primaryEvent.date ? (
-                <DataRow label="Fecha" value={formatDisplayDate(primaryEvent.date)} />
+                <DataRow label="Fecha documentada" value={formatDisplayDate(primaryEvent.date)} />
               ) : (
-                <DataRow label="Año" value={`${primaryEvent.year} (aproximado)`} />
+                <DataRow label="Año documentado" value={String(primaryEvent.year)} />
               )}
               <DataRow label="Fuente" value={primaryEvent.source} />
-              {entity.sourceNote && <DataRow label="Nota" value={entity.sourceNote} />}
+              {entity.sourceNote && <DataRow label="Nota de registro" value={entity.sourceNote} />}
             </div>
             <p className="text-xs text-muted mt-4 flex items-center gap-1.5">
-              <span className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${primaryEvent.date ? "bg-success" : "bg-warning"}`} />
-              {primaryEvent.date ? "Fecha exacta" : "Año aproximado"}
+              <span className={`inline-block w-1.5 h-1.5 rounded-full shrink-0 ${primaryEvent.date ? "bg-success" : "bg-accent"}`} />
+              {primaryEvent.date ? "Registro histórico con fecha exacta" : "Registro histórico con año documentado"}
             </p>
           </CollapsibleSection>
         </section>

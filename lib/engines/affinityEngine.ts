@@ -252,7 +252,7 @@ export function calculateAffinityForAnimal(
   // Build event date description
   const eventDateStr = primaryEvent.date
     ? formatEventDate(primaryEvent.date)
-    : `circa ${primaryEvent.year}`;
+    : String(primaryEvent.year);
 
   const summary = `${entity.name} tiene una ${tierMeta.label.toLowerCase()} con tu perfil simbólico. Tu animal es ${userAnimal || "—"} y el de ${entity.name} (según ${primaryEvent.label.toLowerCase()}) es ${entityAnimal || "—"}.`;
 
@@ -268,10 +268,10 @@ export function calculateAffinityForAnimal(
     tier,
     relationship,
     explanation,
-    tradition,
     summary,
-    disclaimer: "Molino es una plataforma educativa y de entretenimiento. Estas interpretaciones pertenecen al ámbito de los sistemas simbólicos y no constituyen predicción científica, diagnóstico ni asesoramiento profesional. Cada persona puede interpretar estos sistemas de forma diferente.",
-    methodNote: `Cálculo: comparación directa entre el animal del zodíaco chino de tu año de nacimiento (${userYear}) y el del evento "${primaryEvent.label}" de ${entity.name} (${eventDateStr}). Basado en la relación documentada entre animales en el ciclo de 12 años.${isApproximate ? " Nota: el año de la entidad fue calculado con aproximación (sin fecha exacta)." : ""}`,
+    tradition,
+    disclaimer: "Molino es una plataforma educativa y de entretenimiento. Estas interpretaciones pertenecen al ámbito de los sistemas simbólicos y no constituyen predicción científica, diagnóstico ni asesoramiento profesional.",
+    methodNote: `Cálculo: comparación directa entre el animal del zodíaco chino de tu año de nacimiento (${userYear}) y el del evento "${primaryEvent.label}" de ${entity.name} (${eventDateStr}). Basado en la relación documentada entre animales en el ciclo de 12 años.${isApproximate ? " Nota: el cálculo utiliza el año documentado en fuentes históricas." : ""}`,
     isApproximate,
   };
 }
