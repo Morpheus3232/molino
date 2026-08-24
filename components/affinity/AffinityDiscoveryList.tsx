@@ -13,7 +13,7 @@ import { analytics } from "@/lib/analytics/analytics";
 
 const TYPE_LABEL: Record<string, string> = {
   brand: "Marca", city: "Ciudad", country: "País", university: "Universidad",
-  team: "Equipo", movie: "Película", artist: "Artista",
+  team: "Equipo", movie: "Película", artist: "Famoso",
 };
 
 /**

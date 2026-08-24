@@ -21,7 +21,7 @@ const CATEGORY_META: Record<EntityType, { label: string; plural: string; icon: L
   brand: { label: "Marca", plural: "Marcas", icon: Sparkles, color: "text-amber-400" },
   team: { label: "Equipo", plural: "Equipos", icon: Trophy, color: "text-emerald-400" },
   university: { label: "Universidad", plural: "Universidades", icon: GraduationCap, color: "text-violet-400" },
-  artist: { label: "Artista", plural: "Artistas", icon: Mic2, color: "text-rose-400" },
+  artist: { label: "Famoso", plural: "Famosos", icon: Mic2, color: "text-rose-400" },
   movie: { label: "Película", plural: "Películas", icon: Clapperboard, color: "text-orange-400" },
 };
 

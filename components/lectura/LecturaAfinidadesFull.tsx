@@ -71,7 +71,7 @@ const CATEGORY_TABS: { key: CategoryFilterKey; label: string }[] = [
   { key: "football", label: "Fútbol" },
   { key: "university", label: "Universidades" },
   { key: "team", label: "Equipos" },
-  { key: "artist", label: "Artistas" },
+  { key: "artist", label: "Famosos" },
   { key: "brand", label: "Marcas" },
   { key: "movie", label: "Películas" },
 ];
@@ -82,7 +82,7 @@ const TYPE_LABELS_ES: Record<string, string> = {
   university: "Universidad",
   team: "Equipo",
   football_player: "Jugador",
-  artist: "Artista",
+  artist: "Famoso",
   brand: "Marca",
   movie: "Película",
 };

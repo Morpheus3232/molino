@@ -56,7 +56,7 @@ export function getCurationCategoryLabel(type: string): string {
     brand: "Marcas",
     team: "Equipos",
     university: "Universidades",
-    artist: "Artistas",
+    artist: "Famosos",
     movie: "Películas",
   };
   return labels[type] ?? type;

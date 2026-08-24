@@ -26,6 +26,8 @@ const GENDER_BY_LABEL: Record<string, EntityGender> = {
   universidades: "feminine",
   artista: "masculine",
   artistas: "masculine",
+  famoso: "masculine",
+  famosos: "masculine",
   película: "feminine",
   películas: "feminine",
   jugador: "masculine",

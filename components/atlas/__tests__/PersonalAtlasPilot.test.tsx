@@ -102,7 +102,7 @@ describe("PersonalAtlasPilot — Fútbol: Equipos / Jugadores (Actualidad + Refe
     expect(screen.getByText("River")).toBeInTheDocument();
   });
 
-  test("Artistas sigue fuera de Fútbol", async () => {
+  test("Famosos sigue fuera de Fútbol", async () => {
     await renderWithGroups(GROUPS);
     const futbolHeading = screen.getByText("Fútbol");
     const futbolSection = futbolHeading.parentElement!;

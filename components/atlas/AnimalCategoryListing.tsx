@@ -17,7 +17,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   brand: "Marcas",
   team: "Equipos",
   university: "Universidades",
-  artist: "Artistas",
+  artist: "Famosos",
   movie: "Películas",
 };
 

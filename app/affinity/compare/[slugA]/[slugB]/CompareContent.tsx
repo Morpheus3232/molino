@@ -16,7 +16,7 @@ import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
 
 const TYPE_LABEL: Record<string, string> = {
   brand: "Marca", city: "Ciudad", country: "País", university: "Universidad",
-  team: "Equipo", movie: "Película", artist: "Artista",
+  team: "Equipo", movie: "Película", artist: "Famoso",
 };
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import Button from "@/components/ui/Button";

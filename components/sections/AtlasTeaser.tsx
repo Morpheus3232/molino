@@ -27,7 +27,7 @@ export default function AtlasTeaser() {
             </motion.h2>
 
             <motion.p {...fadeUp} className="text-sm sm:text-base text-muted leading-relaxed">
-              Explorá tu mapa en el mundo: marcas, ciudades, equipos, universidades, artistas y películas que comparten tu animal del zodíaco chino.
+              Explorá tu mapa en el mundo: marcas, ciudades, equipos, universidades, famosos y películas que comparten tu animal del zodíaco chino.
             </motion.p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">

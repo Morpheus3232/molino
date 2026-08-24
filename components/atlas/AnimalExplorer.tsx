@@ -18,7 +18,7 @@ const CATEGORY_ORDER = [
   { type: "brand", label: "Marcas" },
   { type: "team", label: "Equipos" },
   { type: "university", label: "Universidades" },
-  { type: "artist", label: "Artistas" },
+  { type: "artist", label: "Famosos" },
   { type: "movie", label: "Películas" },
 ];
 

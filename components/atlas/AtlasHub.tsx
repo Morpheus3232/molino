@@ -344,7 +344,7 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
                 ["brand", "Marcas"],
                 ["team", "Equipos"],
                 ["university", "Universidades"],
-                ["artist", "Artistas"],
+                ["artist", "Famosos"],
                 ["movie", "Películas"],
               ] as const
             ).map(([cat, label]) => (

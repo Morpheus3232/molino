@@ -17,7 +17,7 @@ const EXPLORE_COPY: Record<EntityType, string> = {
   university: "Explorar universidades que comparten tu animal.",
   team: "Explorar equipos que comparten tu animal.",
   movie: "Explorar películas que comparten tu animal.",
-  artist: "Explorar artistas que comparten tu animal.",
+  artist: "Explorar famosos que comparten tu animal.",
 };
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {

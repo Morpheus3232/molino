@@ -49,7 +49,7 @@ const TYPE_LABEL: Record<string, string> = {
   university: "Universidad",
   team: "Equipo",
   movie: "Película",
-  artist: "Artista",
+  artist: "Famoso",
 };
 
 export default function AffinityPreview({ highlights, onEnter }: AffinityPreviewProps) {

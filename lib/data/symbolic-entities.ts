@@ -181,7 +181,7 @@ export const ENTITY_TYPES: Record<EntityType, { label: string; plural: string; i
   university: { label: "Universidad", plural: "Universidades", icon: "\ud83c\udf93", description: "Conoc\u00e9 qu\u00e9 instituciones educativas conectan con tu patr\u00f3n" },
   team:       { label: "Equipo",     plural: "Equipos",       icon: "\u26bd",  description: "Ved qu\u00e9 equipos deportivos vibran con tu energ\u00eda" },
   movie:      { label: "Pel\u00edcula", plural: "Pel\u00edculas", icon: "\ud83c\udfac", description: "Descubr\u00ed qu\u00e9 pel\u00edculas resuenan con vos" },
-  artist:     { label: "Artista",    plural: "Artistas",      icon: "\ud83c\udfa4", description: "Encontr\u00e9 qu\u00e9 artistas conectan con tu esencia" },
+  artist:     { label: "Famoso",     plural: "Famosos",       icon: "\ud83c\udfa4", description: "Encontr\u00e1 qu\u00e9 famosos conectan con tu esencia" },
 };
 
 /** Chinese zodiac animal for a given year (Gregorian fallback, pre-1900 compatible) */

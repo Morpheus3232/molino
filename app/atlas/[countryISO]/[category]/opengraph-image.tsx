@@ -10,7 +10,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   city: "Ciudades",
   team: "Equipos",
   university: "Universidades",
-  artist: "Artistas",
+  artist: "Famosos",
   movie: "Películas",
 };
 

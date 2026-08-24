@@ -176,7 +176,7 @@ const CATEGORY_ORDER: { type: string; label: string; singular: string }[] = [
   { type: "brand", label: "Marcas", singular: "marca" },
   { type: "team", label: "Equipos", singular: "equipo" },
   { type: "university", label: "Universidades", singular: "universidad" },
-  { type: "artist", label: "Artistas", singular: "artista" },
+  { type: "artist", label: "Famosos", singular: "famoso" },
   { type: "movie", label: "Películas", singular: "película" },
 ];
 

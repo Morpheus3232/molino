@@ -143,7 +143,7 @@ test.describe("Navegación — con perfil", () => {
     await expect(nav.getByRole("link", { name: "Mi Mapa" })).toBeVisible();
     await nav.getByRole("button", { name: "Mis Afinidades" }).click();
     const menu = page.locator("#affinities-menu");
-    for (const label of ["Países", "Ciudades", "Marcas", "Universidades", "Artistas", "Películas", "Equipos"]) {
+    for (const label of ["Países", "Ciudades", "Marcas", "Universidades", "Famosos", "Películas", "Equipos"]) {
       await expect(menu.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
     await menu.getByRole("link", { name: "Marcas", exact: true }).click();

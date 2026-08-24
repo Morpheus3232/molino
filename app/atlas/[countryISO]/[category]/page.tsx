@@ -48,7 +48,7 @@ function categoryLabel(category: string): string | null {
     city: { plural: "Ciudades", label: "Ciudades" },
     team: { plural: "Equipos", label: "Equipos" },
     university: { plural: "Universidades", label: "Universidades" },
-    artist: { plural: "Artistas", label: "Artistas" },
+    artist: { plural: "Famosos", label: "Famoso" },
     movie: { plural: "Películas", label: "Películas" },
   };
   return meta[category]?.plural ?? null;

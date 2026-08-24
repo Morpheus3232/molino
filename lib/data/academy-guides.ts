@@ -67,7 +67,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
     howItWorks: [
       "Mi Mapa responde ¿quién soy según los sistemas que usa Molino? Ahí están tu Camino de Vida, tu signo solar y tu animal del zodíaco chino: los datos base que no cambian con la fecha.",
       "Hoy responde ¿qué está activo para mí ahora? Combina tu día personal, tu año personal y la fase lunar del día para armar el Consejo del Momento — se explica en detalle en la guía de Hoy.",
-      "Afinidades responde ¿con qué entidades del mundo comparto una resonancia simbólica según mi animal del zodíaco chino? Países, ciudades, marcas, universidades, artistas, películas y equipos, comparados con vos por la relación tradicional entre animales (ver la guía de afinidades).",
+      "Afinidades responde ¿con qué entidades del mundo comparto una resonancia simbólica según mi animal del zodíaco chino? Países, ciudades, marcas, universidades, famosos, películas y equipos, comparados con vos por la relación tradicional entre animales (ver la guía de afinidades).",
       "Journal responde ¿qué quiero registrar y observar de mi propio recorrido? Es el único espacio donde el contenido lo escribís vos, no Molino.",
       "Año (Evolution) responde ¿en qué ciclo largo estoy? Mira el arco de tiempo más amplio que tu Año Personal, con perspectiva sobre patrones que no se ven día a día.",
       "Mes (Calendario) responde ¿qué cambia durante este período? Es la vista intermedia entre el detalle diario de Hoy y el arco largo de Año.",
@@ -159,7 +159,7 @@ export const ACADEMY_GUIDES: AcademyGuide[] = [
       "Qué NO te está diciendo una afinidad",
     ],
     whatIs: [
-      "Una página de Afinidad compara tu animal del zodíaco chino con el de una entidad real — un país, una ciudad, una marca, una universidad, un artista, una película o un equipo. No mide compatibilidad ni predice nada: muestra una relación simbólica documentada entre dos animales.",
+      "Una página de Afinidad compara tu animal del zodíaco chino con el de una entidad real — un país, una ciudad, una marca, una universidad, un famoso, una película o un equipo. No mide compatibilidad ni predice nada: muestra una relación simbólica documentada entre dos animales.",
     ],
     howItWorks: [
       "Todo empieza con un dato verificable: el evento histórico principal de esa entidad, con su fecha y su año — una fundación, una creación, un lanzamiento, según corresponda. Molino usa exclusivamente ese evento para calcular el animal de la entidad, de la misma forma que calcula el tuyo a partir de tu fecha de nacimiento.",

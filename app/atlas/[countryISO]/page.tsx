@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const canonical = siteUrl(`/atlas/${countryISO.toUpperCase()}`);
   return {
     title: `Atlas de ${name} — Afinidades`,
-    description: `Explorá las afinidades simbólicas de ${name}: ciudades, clubes, universidades, marcas y artistas según el zodíaco chino.`,
+    description: `Explorá las afinidades simbólicas de ${name}: ciudades, clubes, universidades, marcas y famosos según el zodíaco chino.`,
     alternates: { canonical },
     openGraph: {
       title: `Atlas de ${name} — Afinidades`,
