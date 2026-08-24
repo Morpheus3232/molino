@@ -30,22 +30,6 @@ function isValidIntention(value: unknown): value is TimingIntention {
   return typeof value === "string" && (VALID_INTENTIONS as string[]).includes(value);
 }
 
-/** Save the user's chosen timing intention. */
-export function saveTimingIntention(intention: TimingIntention): void {
-  if (typeof window === "undefined") return;
-  if (!isValidIntention(intention)) return;
-  try {
-    const payload: StoredTimingIntention = {
-      version: 1,
-      intention,
-      savedAt: new Date().toISOString(),
-    };
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-  } catch (err) {
-    console.error("Error saving timing intention:", err);
-  }
-}
-
 /** Load the user's last chosen timing intention. Returns null if none exists or the value is invalid. */
 export function loadTimingIntention(): TimingIntention | null {
   if (typeof window === "undefined") return null;

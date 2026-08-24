@@ -27,12 +27,6 @@ test.describe("/hoy — jerarquía Fase 6A", () => {
     expect(bodyWidth).toBeLessThanOrEqual(391);
   });
 
-  test("link a /timing presente y funcional", async ({ page }) => {
-    await page.goto("/hoy");
-    const link = page.getByRole("link", { name: /Días favorables según tu ciclo/i });
-    await expect(link).toHaveAttribute("href", "/timing");
-  });
-
   test("evidencia trazable (Luna/Año personal) visible junto al Consejo", async ({ page }) => {
     await page.goto("/hoy");
     await expect(page.getByText(/^Luna:/)).toBeVisible();

@@ -13,7 +13,7 @@ import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus, { MomentAdvice } from "@/components/daily/DailyFocus";
 import WeekPreview from "@/components/daily/WeekPreview";
 import Link from "next/link";
-import { TrendingUp, ShieldCheck, CalendarClock } from "lucide-react";
+import { TrendingUp, ShieldCheck } from "lucide-react";
 
 export default function HoyClient() {
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
@@ -95,13 +95,6 @@ export default function HoyClient() {
         >
           <TrendingUp className="w-3.5 h-3.5" />
           Ver tus patrones →
-        </Link>
-        <Link
-          href="/timing"
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors"
-        >
-          <CalendarClock className="w-3.5 h-3.5" />
-          Días favorables según tu ciclo →
         </Link>
       </div>
     </div>
