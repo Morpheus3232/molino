@@ -60,7 +60,7 @@ export default function SpaceIndex({ profile, circleName, allyName, worldCount, 
     },
     {
       label: "Círculo",
-      teaser: allyName ? `${circleName} forma tríada con ${allyName}.` : "Energías alrededor de tu signo.",
+      teaser: allyName ? `${circleName} tiene afinidad con ${allyName}.` : "Energías alrededor de tu signo.",
       href: "/circulo",
       icon: Users,
       color: "bg-violet-500/10 text-violet-400",

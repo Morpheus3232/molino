@@ -123,10 +123,10 @@ describe("AffinityTypeContent — sin perfil (animal activo por defecto: Rata)",
     }
   });
 
-  it("same/triad/opposite no cambian: la relación 'same' se sigue mostrando igual", async () => {
+  it("same/triad/opposite se agrupan con la nueva terminología: 'Alta compatibilidad'", async () => {
     render(<AffinityTypeContent type="university" meta={META} entities={ENTITIES} />);
     expect(await screen.findByText(SAME_ANIMAL_ENTITY.name)).toBeInTheDocument();
-    expect(screen.getByText("Mismo animal")).toBeInTheDocument();
+    expect(screen.getByText("Alta compatibilidad")).toBeInTheDocument();
   });
 
   it("las relaciones que no son same/triad/opposite aparecen bajo 'Otras conexiones'", async () => {

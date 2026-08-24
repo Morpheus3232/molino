@@ -4,6 +4,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
+import { formatOtherEntities } from "@/lib/utils/plural";
 import Link from "next/link";
 
 // formatDisplayDate vive en AffinitySectionPrimitives.tsx ("use client") — no
@@ -104,7 +105,7 @@ export default function AffinityEditorialContent({
 
       {relatedEntities.length > 0 && (
         <section className="mb-4">
-          <SectionHeader title={`Otras ${meta.plural.toLowerCase()}`} />
+          <SectionHeader title={formatOtherEntities(type, meta.plural)} />
           <div className="space-y-3">
             {relatedEntities.map((rel) => (
               <Link

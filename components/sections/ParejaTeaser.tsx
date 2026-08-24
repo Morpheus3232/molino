@@ -43,7 +43,7 @@ export default function ParejaTeaser() {
             </motion.h2>
 
             <motion.p {...fadeUp} className="text-sm sm:text-base text-muted leading-relaxed">
-              Cruzá dos fechas para descubrir los puntos de sinergia natural, química elemental entre signos solares, tríadas del zodíaco chino y zonas de fricción constructiva.
+              Cruzá dos fechas para descubrir los puntos de sinergia natural, química elemental entre signos solares, compatibilidades del zodíaco chino y zonas de fricción constructiva.
             </motion.p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">

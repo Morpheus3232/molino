@@ -30,7 +30,7 @@ export interface TimingAnalysis {
 const REGLA = "Según la tradición, el ciclo tiende a acompañarte en tu propio año y a pedirte más cautela en el año de tu signo opuesto.";
 
 function findNextYear(fromYear: number, target: Animal): number {
-  for (let y = fromYear; y < fromYear + 12; y++) {
+  for (let y = fromYear + 1; y <= fromYear + 12; y++) {
     if (getYearAnimal(y) === target) return y;
   }
   return fromYear + 12;

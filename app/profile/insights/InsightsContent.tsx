@@ -334,11 +334,11 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
           <motion.section {...cardReveal} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Opuestos</h2>
+                <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Energía Opuesta</h2>
               </div>
 
               <p className="text-xs text-muted mb-4 leading-relaxed">
-                El zodíaco chino ubica a estos símbolos como animal opuesto en el ciclo de 12 años.
+                El zodíaco chino ubica a estos símbolos como la energía en posición opuesta en el ciclo de 12 años.
                 No significa evitar, sino conocer diferentes dinámicas.
               </p>
 

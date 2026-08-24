@@ -78,12 +78,12 @@ export function buildEntityConnectionStory(
   switch (relation.type) {
     case "same":
       headline = `Energía del ${entityDisplay.name}, como tu ${userDisplay.name}.`;
-      subtitle = `Compartís el mismo animal zodiacal: ${entityDisplay.name}`;
+      subtitle = `Alta compatibilidad: comparte tu mismo animal del zodíaco chino`;
       isPositive = true;
       break;
     case "triad":
-      headline = `${entity.name} y tu ${userDisplay.name} comparten un elemento oculto de la tríada.`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} comparten un elemento oculto`;
+      headline = `${entity.name} y tu ${userDisplay.name} comparten afinidad elemental.`;
+      subtitle = `Buena compatibilidad: pertenece a uno de tus dos animales aliados`;
       isPositive = true;
       break;
     case "harmonious":
@@ -98,7 +98,7 @@ export function buildEntityConnectionStory(
       break;
     case "clash":
       headline = `${entity.name} entra en tensión con tu ${userDisplay.name}.`;
-      subtitle = `${userDisplay.name} y ${entityDisplay.name} son opuestos en el ciclo`;
+      subtitle = `Energía opuesta: pertenece al animal que ocupa la posición opuesta a la tuya`;
       isPositive = false;
       break;
     case "harm":

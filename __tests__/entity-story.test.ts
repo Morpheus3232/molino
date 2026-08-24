@@ -10,14 +10,14 @@ describe("Same animal narrative", () => {
   const r = getRelation("Caballo", "Caballo");
   test("type is 'same'", () => expect(r.type).toBe("same"));
   test("score is 95", () => expect(r.score).toBe(95));
-  test("label is 'mismo animal'", () => expect(r.label).toBe("mismo animal"));
+  test("label is 'alta compatibilidad'", () => expect(r.label).toBe("alta compatibilidad"));
 });
 
 describe("Triad narrative", () => {
   const r = getRelation("Caballo", "Tigre");
   test("type is 'triad'", () => expect(r.type).toBe("triad"));
   test("score is 85", () => expect(r.score).toBe(85));
-  test("label is 'triada'", () => expect(r.label).toBe("triada"));
+  test("label is 'buena compatibilidad'", () => expect(r.label).toBe("buena compatibilidad"));
 });
 
 describe("Harmonious narrative", () => {
@@ -37,7 +37,7 @@ describe("Clash narrative", () => {
   const r = getRelation("Caballo", "Rata");
   test("type is 'clash'", () => expect(r.type).toBe("clash"));
   test("score is 30", () => expect(r.score).toBe(30));
-  test("label is 'opuesto'", () => expect(r.label).toBe("opuesto"));
+  test("label is 'energía opuesta'", () => expect(r.label).toBe("energía opuesta"));
 });
 
 describe("Harm narrative", () => {

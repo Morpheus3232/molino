@@ -10,6 +10,7 @@ import type { Animal } from "@/lib/data/animalRelations";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
+import { formatViewAll } from "@/lib/utils/plural";
 
 const CATEGORY_ORDER = [
   { type: "country", label: "Países" },
@@ -152,7 +153,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                     href={`/atlas/explorar/${animal}/${g.type}`}
                     className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-muted hover:text-accent transition-colors group/link"
                   >
-                    <span>Ver todas las {g.label.toLowerCase()}</span>
+                    <span>{formatViewAll(g.type, g.label)}</span>
                     <span className="group-hover/link:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
                   </Link>
                 )}

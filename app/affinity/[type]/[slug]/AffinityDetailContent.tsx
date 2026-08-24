@@ -12,6 +12,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
 import AffinityDiscoveryList from "@/components/affinity/AffinityDiscoveryList";
+import { formatViewAll } from "@/lib/utils/plural";
 import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm";
 import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 
@@ -101,7 +102,7 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
             onClick={() => router.push(`/affinity/${type}`)}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-md font-medium transition-all px-6 py-3 text-sm border border-border bg-transparent text-muted hover:border-accent hover:text-foreground min-h-[44px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
-            Ver todas las {meta.plural.toLowerCase()}
+            {formatViewAll(type, meta.plural)}
           </button>
           <button
             type="button"

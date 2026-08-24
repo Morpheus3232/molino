@@ -54,10 +54,10 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-accent)" }} />
-                <h3 className="font-medium text-foreground">ALIADOS — Energías que amplifican</h3>
+                <h3 className="font-medium text-foreground">BUENA COMPATIBILIDAD — Animales aliados</h3>
               </div>
               <p className="text-sm text-muted mb-4">
-                Tu {display.name} de {profile.chineseZodiacInfo?.element} forma tríada armónica con estos animales. Juntos crean un ciclo de apoyo mutuo.
+                Tu {display.name} de {profile.chineseZodiacInfo?.element} tiene buena compatibilidad con estos animales aliados. Juntos crean un ciclo de apoyo mutuo.
               </p>
               <div className="flex flex-wrap gap-3">
                 {allies.map((ally, i) => (
@@ -74,10 +74,10 @@ export default function CircleAlignment({ profile }: CircleAlignmentProps) {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-muted)" }} />
-                <h3 className="font-medium text-foreground">CONTRASTE — Energía que desafía</h3>
+                <h3 className="font-medium text-foreground">ENERGÍA OPUESTA — Posición de contraste</h3>
               </div>
               <p className="text-sm text-muted mb-4">
-                El animal opuesto en el ciclo muestra dónde aparece fricción natural. No es &ldquo;malo&rdquo;: es donde más aprendés.
+                El animal que ocupa la posición opuesta a la tuya muestra dónde aparece fricción natural. No es &ldquo;malo&rdquo;: es donde más aprendés.
               </p>
               {challenges.length > 0 ? (
                 <div className="flex flex-wrap gap-3">

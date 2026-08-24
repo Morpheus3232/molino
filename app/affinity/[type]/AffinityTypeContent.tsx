@@ -29,9 +29,9 @@ const transitionVariants = {
 type RelationGroupKey = "same" | "triad" | "opposite" | "other";
 
 const GROUPS: { key: RelationGroupKey; label: string }[] = [
-  { key: "same", label: "Mismo animal" },
-  { key: "triad", label: "Triada" },
-  { key: "opposite", label: "Opuesto" },
+  { key: "same", label: "Alta compatibilidad" },
+  { key: "triad", label: "Buena compatibilidad" },
+  { key: "opposite", label: "Energía opuesta" },
   { key: "other", label: "Otras conexiones" },
 ];
 

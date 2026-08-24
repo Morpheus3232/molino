@@ -267,11 +267,11 @@ export const ANIMAL_PROFILES: Record<Animal, AnimalProfile> = {
 // ════════════════════════════════════════════════════
 
 const RELATION_LABELS: Record<RelationType, string> = {
-  same: "mismo animal",
-  triad: "triada",
+  same: "alta compatibilidad",
+  triad: "buena compatibilidad",
   harmonious: "armonía natural",
   neutral: "neutral",
-  clash: "opuesto",
+  clash: "energía opuesta",
   harm: "neutral",
 };
 
@@ -287,8 +287,8 @@ export function getRelation(a: Animal, b: Animal): AnimalRelation {
     return {
       animal: b,
       type: "same",
-      label: "mismo animal",
-      description: `Comparte tu mismo animal, el ${b}.`,
+      label: "alta compatibilidad",
+      description: "Comparte tu mismo animal del zodíaco chino.",
       ...RELATION_SCORES.same,
     };
   }
@@ -403,13 +403,12 @@ export function getRelationshipMap(animal: Animal): {
 function getRelationDescription(type: RelationType, a: string, b: string): string {
   switch (type) {
     case "triad": {
-      const triad = SAN_HE_TRIADS.find(t => t.animals.includes(a as Animal) && t.animals.includes(b as Animal));
-      return `${a} y ${b} pertenecen a la misma triada${triad ? ` (elemento ${triad.element})` : ""}.`;
+      return `Pertenece a uno de tus dos animales aliados en el ciclo.`;
     }
     case "harmonious":
       return `${a} y ${b} forman un par armonioso según la tradición.`;
     case "clash":
-      return `${a} y ${b} son el animal opuesto en el ciclo de 12 años.`;
+      return `Pertenece al animal que ocupa la posición opuesta a la tuya en el ciclo.`;
     case "harm":
       return `${a} y ${b} tienen una relación de atención según la tradición.`;
     case "neutral":

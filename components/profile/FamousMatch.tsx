@@ -238,7 +238,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
 
         {/* Subtle footer tip */}
         <div className="mt-6 flex items-center justify-between flex-wrap gap-3 text-[11px] text-muted font-mono border-t border-ink/5 pt-4">
-          <span>Fechas históricas verificadas · Sin conjeturas</span>
+          <span>Fechas de nacimiento documentadas en registros biográficos</span>
           <span className="text-accent/90">
             Coincidencia principal: {primaryMatch.person.name} ({primaryMatch.person.field})
           </span>

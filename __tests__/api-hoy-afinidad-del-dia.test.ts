@@ -38,7 +38,7 @@ describe("GET /api/hoy/afinidad-del-dia", () => {
     expect(["same", "triad", "clash"]).toContain(json.relation);
     expect(typeof json.relationLabel).toBe("string");
     // cero lenguaje inventado — mismo vocabulario que /affinity/[type]
-    expect(["mismo animal", "triada", "opuesto"]).toContain(json.relationLabel);
+    expect(["alta compatibilidad", "buena compatibilidad", "energía opuesta"]).toContain(json.relationLabel);
   });
 
   it("no expone catálogo, descripciones, eventos, sourceNotes ni scores/porcentajes", async () => {

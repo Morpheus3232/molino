@@ -100,16 +100,16 @@ describe('resonanceReasoning (voz Molino)', () => {
     expect(r).not.toMatch(/perfecto para vos|sos muy|te va a encantar/i);
   });
 
-  test('same animal reasoning names the shared point-blind-spot dynamic', () => {
+  test('same animal reasoning names alta compatibilidad and shared qualities', () => {
     const r = resonanceReasoning('Rata', 'Rata', 'X');
+    expect(r).toContain('alta compatibilidad');
     expect(r).toContain('mismo animal');
-    expect(r).toContain('puntos ciegos');
   });
 
-  test('clash reasoning describes a tension, not a verdict', () => {
+  test('clash reasoning describes an opposition / contrast tension', () => {
     const r = resonanceReasoning('Rata', 'Caballo', 'X');
-    expect(r).toMatch(/oposición|tensión/);
-    expect(r).toMatch(/puede/i); // conditional, refutable language
+    expect(r).toContain('energía opuesta');
+    expect(r).toMatch(/oposición|contraste|atención/);
   });
 
   test('neutral reasoning avoids overclaiming', () => {

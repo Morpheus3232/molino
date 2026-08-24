@@ -3,17 +3,17 @@
  */
 
 export const RELATION_LABELS_ES: Readonly<Record<string, { label: string; description: string }>> = {
+  same: {
+    label: "Alta compatibilidad",
+    description: "Comparte tu mismo animal del zodíaco chino.",
+  },
   triad: {
-    label: "Tríada de afinidad",
-    description: "Máxima armonía natural en el zodíaco chino. Comparten la misma visión y se potencian mutuamente.",
+    label: "Buena compatibilidad",
+    description: "Pertenece a uno de tus dos animales aliados.",
   },
   harmonious: {
     label: "Par armonioso",
     description: "Excelente complementariedad y apoyo mutuo. Vínculo fluido y constructivo.",
-  },
-  same: {
-    label: "Mismo signo",
-    description: "Fuerte identificación y resonancia directa de virtudes y desafíos.",
   },
   neutral: {
     label: "Relación neutral",
@@ -24,8 +24,8 @@ export const RELATION_LABELS_ES: Readonly<Record<string, { label: string; descri
     description: "Ritmos y estilos de procesamiento diferentes. Requiere paciencia y claridad en acuerdos.",
   },
   clash: {
-    label: "Oposición directa",
-    description: "Polaridad energética. Puede generar atracción magnética o fricción si no se respeta la perspectiva del otro.",
+    label: "Energía opuesta",
+    description: "Pertenece al animal que ocupa la posición opuesta a la tuya.",
   },
 };
 

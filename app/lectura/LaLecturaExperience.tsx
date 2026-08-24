@@ -312,7 +312,18 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                       <div className="bg-paper p-6 sm:p-7">
                         <h3 className="font-heading text-sm text-foreground mb-2">Timing anual</h3>
                         <p className="text-sm text-muted leading-relaxed">
-                          {zodiacExtras.timing.consejo} Tu próximo año propio: <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
+                          {zodiacExtras.timing.consejo}{" "}
+                          {zodiacExtras.timing.isOwnYear ? (
+                            <>
+                              Estás transitando tu año propio ({zodiacExtras.timing.currentYear}). El siguiente será en{" "}
+                              <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
+                            </>
+                          ) : (
+                            <>
+                              Tu próximo año propio:{" "}
+                              <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
+                            </>
+                          )}
                         </p>
                       </div>
                       <div className="bg-paper-alt p-6 sm:p-7">

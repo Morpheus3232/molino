@@ -16,13 +16,13 @@ interface AtlasCategoryListingProps {
 
 const SECTION_META: Record<ResonanceBucket, { title: string; hint: string; accent: string }> = {
   affine: {
-    title: "Afinidades y Armonías",
-    hint: "Misma tríada, par armonioso o mismo animal",
+    title: "Alta y Buena Compatibilidad",
+    hint: "Mismo animal, animales aliados o par armonioso",
     accent: "border-l-emerald-500/50",
   },
   tension: {
-    title: "Tensiones y Desafíos",
-    hint: "Oposición directa o relación de atención",
+    title: "Energía Opuesta y Tensiones",
+    hint: "Posición opuesta en el ciclo o relación de atención",
     accent: "border-l-amber-500/50",
   },
   neutral: {

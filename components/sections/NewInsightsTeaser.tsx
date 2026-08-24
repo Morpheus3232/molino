@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Utensils, PawPrint, Clock, Palette, Handshake } from "lucide-react";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUp, fadeUpMount } from "@/lib/utils/motion";
 
 const FEATURES = [
   {
@@ -25,7 +25,7 @@ const FEATURES = [
     color: "text-accent",
     bg: "bg-accent/10",
     title: "Timing anual",
-    desc: "Si el año en curso es tu año, el de tu signo opuesto, o uno neutral — y cuándo es tu próximo año propio.",
+    desc: "Si el año en curso es tu año, el de tu signo en posición opuesta, o uno neutral — y cuándo es tu próximo año propio.",
   },
   {
     icon: Palette,
@@ -40,7 +40,7 @@ export default function NewInsightsTeaser() {
   return (
     <section className="border-t border-ink/10 py-14 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
-        <motion.div {...fadeUp} className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+        <motion.div {...fadeUpMount} className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
             Analizamos distintas áreas que influyen en tu día a día
           </span>
@@ -58,8 +58,7 @@ export default function NewInsightsTeaser() {
             <motion.div
               key={f.title}
               initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
               className="p-5 rounded-2xl bg-card border border-ink/10 hover:border-accent/30 transition-colors"
             >
@@ -77,8 +76,7 @@ export default function NewInsightsTeaser() {
         {/* Socios mode mention */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
           className="mt-6 sm:mt-8 p-5 sm:p-6 rounded-2xl bg-ink/[0.02] border border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
         >

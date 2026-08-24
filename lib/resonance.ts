@@ -32,11 +32,11 @@ export interface ResonanceInfo {
 }
 
 const RELATION_LABELS: Record<RelationType, string> = {
-  same: "Mismo animal",
-  triad: "Tríada",
+  same: "Alta compatibilidad",
+  triad: "Buena compatibilidad",
   harmonious: "Armonía",
   neutral: "Neutro",
-  clash: "Opuestos",
+  clash: "Energía opuesta",
   harm: "Tensión",
 };
 
@@ -99,13 +99,13 @@ export function resonanceReasoning(
 
   switch (info.relationType) {
     case "same":
-      return `${base(entityAnimal)}: mismo animal, lo que puede leerse como afinidad de ritmo — o como quedar atrapado en los mismos puntos ciegos que ya conocés.`;
+      return `${base(entityAnimal)}: alta compatibilidad al compartir el mismo animal, con sintonía de ritmo y cualidades compartidas.`;
     case "triad":
-      return `${base(entityAnimal)} comparten la energía de una tríada: se potencian en lo que cada uno ya sabe hacer. La pregunta es si esa potencia se traduce en movimiento.`;
+      return `${base(entityAnimal)}: buena compatibilidad al pertenecer a la energía de tus animales aliados en el ciclo.`;
     case "harmonious":
       return `${base(entityAnimal)} forman un par armonioso según la tradición: cubren lo que el otro tiende a descuidar.`;
     case "clash":
-      return `${base(entityAnimal)} están en oposición directa: lo que uno empuja, el otro frena. Puede ser tensión que desgasta o contraste que obliga a definir una postura.`;
+      return `${base(entityAnimal)}: energía opuesta en el ciclo, una posición de contraste que conviene observar con atención.`;
     case "harm":
       return `${base(entityAnimal)} tienen una relación de atención: no se bloquean, pero exigen cuidado para no rozar un punto sensible.`;
     default:
