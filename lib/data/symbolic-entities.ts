@@ -45,6 +45,15 @@ import { FAMOUS_PEOPLE_ENTITIES } from "./famousPeopleToEntities";
 import { CITIES_MEXICO, TEAMS_MEXICO, UNIVERSITIES_MEXICO, BRANDS_MEXICO, ARTISTS_MEXICO } from "./atlas/mexico";
 import { CITIES_COLOMBIA, TEAMS_COLOMBIA, UNIVERSITIES_COLOMBIA, BRANDS_COLOMBIA, ARTISTS_COLOMBIA } from "./atlas/colombia";
 import { CITIES_ESPANA, TEAMS_ESPANA, UNIVERSITIES_ESPANA, BRANDS_ESPANA, ARTISTS_ESPANA } from "./atlas/espana";
+import { FOOTBALL_PLAYERS_ARGENTINA } from "./football-players-argentina";
+import { FOOTBALL_PLAYERS_URUGUAY } from "./football-players-uruguay";
+import { FOOTBALL_PLAYERS_ESPANA } from "./football-players-espana";
+import { FOOTBALL_PLAYERS_USA } from "./football-players-usa";
+import { FOOTBALL_PLAYERS_CHILE } from "./football-players-chile";
+import { FOOTBALL_PLAYERS_PERU } from "./football-players-peru";
+import { FOOTBALL_PLAYERS_MEXICO } from "./football-players-mexico";
+import { FOOTBALL_PLAYERS_COLOMBIA } from "./football-players-colombia";
+import { FOOTBALL_PLAYERS_BRASIL } from "./football-players-brasil";
 
 export type EntityType =
   | "brand"
@@ -160,6 +169,7 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
     city: enriched.city,
     type: enriched.type,
     origin,
+    category: enriched.category,
   };
 }
 
@@ -310,6 +320,18 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...UNIVERSITIES_ESPANA,
   ...BRANDS_ESPANA,
   ...ARTISTS_ESPANA,
+
+  // ──── FÚTBOL: jugadores actuales + referentes históricos (piloto de
+  // Atlas Personal, type:"football_player") — países prioritarios ────
+  ...FOOTBALL_PLAYERS_ARGENTINA,
+  ...FOOTBALL_PLAYERS_URUGUAY,
+  ...FOOTBALL_PLAYERS_ESPANA,
+  ...FOOTBALL_PLAYERS_USA,
+  ...FOOTBALL_PLAYERS_CHILE,
+  ...FOOTBALL_PLAYERS_PERU,
+  ...FOOTBALL_PLAYERS_MEXICO,
+  ...FOOTBALL_PLAYERS_COLOMBIA,
+  ...FOOTBALL_PLAYERS_BRASIL,
 
   // ──── UNIVERSIDADES (3) ────
   {
@@ -653,6 +675,13 @@ export function getEntityById(id: string): SymbolicEntity | undefined {
 /** Helper: get all available types that have at least one entity */
 export function getAvailableTypes(): EntityType[] {
   const types = new Set<EntityType>(SYMBOLIC_ENTITIES.map(e => e.type as EntityType));
+  // "football_player" existe en la data (ver artists-argentina.ts) para el
+  // piloto de Atlas Personal (getPersonalAtlas), pero no es un EntityType
+  // real (no está en ENTITY_TYPES/VISUAL_TYPE_BY_TYPE) ni tiene ruta en
+  // /affinity/[type] — excluirlo acá evita un tile o URL de sitemap que
+  // devuelve 404. Los dos consumidores de esta función son
+  // app/affinity/page.tsx y app/sitemap.ts.
+  types.delete("football_player" as EntityType);
   return Array.from(types);
 }
 

@@ -98,4 +98,6 @@ export interface LightweightEntity {
   type: string;
   /** Breve origen: momento de fundación/creación, p. ej. "Fundación · 1905". Derivado (server-side) del evento primario. */
   origin?: string;
+  /** Passthrough de AtlasEntityInput.category — hoy solo distingue "actual"/"historico" en football_player. */
+  category?: string;
 }

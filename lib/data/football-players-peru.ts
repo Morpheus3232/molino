@@ -1,0 +1,158 @@
+import type { AtlasEntityInput } from "@/types/atlas";
+
+/**
+ * Selección peruana de fútbol — jugadores actuales + 3 referentes
+ * históricos (piloto de Atlas Personal, category:"actual"/"historico").
+ *
+ * Actuales: convocatoria de junio de 2026 vs. Haití/España (Perú no
+ * clasificó al Mundial 2026), fechas verificadas en Wikipedia.
+ * Históricos: Teófilo Cubillas, Héctor Chumpitaz y Paolo Guerrero. Guerrero
+ * se retiró de la selección en 2022, de ahí su clasificación como
+ * histórico y no como actual.
+ */
+export const FOOTBALL_PLAYERS_PERU: AtlasEntityInput[] = [
+  {
+    id: "pe-pedro-gallese", name: "Pedro Gallese", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Pedro Gallese es arquero y capitán de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 23 de febrero de 1990. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-pedro-gallese-nac", type: "creacion", label: "Nacimiento", date: "1990-02-23", year: 1990, description: "Pedro Gallese nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-alejandro-duarte", name: "Alejandro Duarte", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Alejandro Duarte es arquero de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 5 de abril de 1994. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-alejandro-duarte-nac", type: "creacion", label: "Nacimiento", date: "1994-04-05", year: 1994, description: "Alejandro Duarte nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-andre-carrillo", name: "André Carrillo", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "André Carrillo es mediocampista de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 14 de junio de 1991. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-andre-carrillo-nac", type: "creacion", label: "Nacimiento", date: "1991-06-14", year: 1991, description: "André Carrillo nace en Lima, Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-yoshimar-yotun", name: "Yoshimar Yotún", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Yoshimar Yotún es mediocampista de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 7 de abril de 1990. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-yoshimar-yotun-nac", type: "creacion", label: "Nacimiento", date: "1990-04-07", year: 1990, description: "Yoshimar Yotún nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-miguel-araujo", name: "Miguel Araujo", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Miguel Araujo es defensor de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 24 de octubre de 1994. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-miguel-araujo-nac", type: "creacion", label: "Nacimiento", date: "1994-10-24", year: 1994, description: "Miguel Araujo nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-marcos-lopez", name: "Marcos López", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Marcos López es defensor de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 20 de noviembre de 1999. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-marcos-lopez-nac", type: "creacion", label: "Nacimiento", date: "1999-11-20", year: 1999, description: "Marcos López nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-alex-valera", name: "Alex Valera", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Alex Valera es delantero de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 16 de mayo de 1996. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-alex-valera-nac", type: "creacion", label: "Nacimiento", date: "1996-05-16", year: 1996, description: "Alex Valera nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-erick-noriega", name: "Erick Noriega", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Erick Noriega es mediocampista de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 22 de octubre de 2001. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-erick-noriega-nac", type: "creacion", label: "Nacimiento", date: "2001-10-22", year: 2001, description: "Erick Noriega nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-jairo-concha", name: "Jairo Concha", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Jairo Concha es mediocampista de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 27 de mayo de 1999. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-jairo-concha-nac", type: "creacion", label: "Nacimiento", date: "1999-05-27", year: 1999, description: "Jairo Concha nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-renzo-garces", name: "Renzo Garcés", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Renzo Garcés es defensor de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 12 de junio de 1996. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-renzo-garces-nac", type: "creacion", label: "Nacimiento", date: "1996-06-12", year: 1996, description: "Renzo Garcés nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-oliver-sonne", name: "Oliver Sonne", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Oliver Sonne es defensor de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 10 de noviembre de 2000. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-oliver-sonne-nac", type: "creacion", label: "Nacimiento", date: "2000-11-10", year: 2000, description: "Oliver Sonne nace en Dinamarca (elegible para Perú).", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-kenji-cabrera", name: "Kenji Cabrera", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Kenji Cabrera es delantero de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 27 de enero de 2003. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-kenji-cabrera-nac", type: "creacion", label: "Nacimiento", date: "2003-01-27", year: 2003, description: "Kenji Cabrera nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-alfonso-barco", name: "Alfonso Barco", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Alfonso Barco es mediocampista de la selección peruana, convocado a la nómina de 2026.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Actual"],
+    category: "actual",
+    sourceNote: "Nacido el 7 de diciembre de 2001. Fuente: Wikipedia; convocatoria FPF junio 2026.",
+    events: [{ id: "pe-alfonso-barco-nac", type: "creacion", label: "Nacimiento", date: "2001-12-07", year: 2001, description: "Alfonso Barco nace en Perú.", source: "Wikipedia / FPF", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-teofilo-cubillas", name: "Teófilo Cubillas", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Teófilo Cubillas es el máximo goleador entre volantes en la historia de los Mundiales (10 goles en 3 ediciones) y campeón/mejor jugador de la Copa América 1975.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Histórico"],
+    category: "historico",
+    sourceNote: "Nacido el 8 de marzo de 1949. Fuente: Wikipedia.",
+    events: [{ id: "pe-teofilo-cubillas-nac", type: "creacion", label: "Nacimiento", date: "1949-03-08", year: 1949, description: "Teófilo Cubillas nace en Lima, Perú.", source: "Wikipedia", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-hector-chumpitaz", name: "Héctor Chumpitaz", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Héctor Chumpitaz capitaneó a Perú durante 15 años y 105 partidos, incluyendo el título de la Copa América 1975; la FIFA lo nombró entre los 100 mejores jugadores de Mundiales de la historia.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Histórico"],
+    category: "historico",
+    sourceNote: "Nacido el 12 de abril de 1944. Fuente: Wikipedia.",
+    events: [{ id: "pe-hector-chumpitaz-nac", type: "creacion", label: "Nacimiento", date: "1944-04-12", year: 1944, description: "Héctor Chumpitaz nace en Perú.", source: "Wikipedia", confidence: "exacta", primaryForAffinity: true }],
+  },
+  {
+    id: "pe-paolo-guerrero", name: "Paolo Guerrero", type: "football_player", country: "Perú",
+    emoji: "⚽",
+    description: "Paolo Guerrero es el goleador histórico de la selección peruana (41 goles) y llevó a Perú de vuelta a un Mundial en 2018 tras 36 años de ausencia; se retiró de la selección en 2022.",
+    keyThemes: ["Fútbol", "Selección Peruana", "Histórico"],
+    category: "historico",
+    sourceNote: "Nacido el 1 de enero de 1984. Fuente: Wikipedia. Retirado de la selección en 2022 — no forma parte del plantel actual.",
+    events: [{ id: "pe-paolo-guerrero-nac", type: "creacion", label: "Nacimiento", date: "1984-01-01", year: 1984, description: "Paolo Guerrero nace en Lima, Perú.", source: "Wikipedia", confidence: "exacta", primaryForAffinity: true }],
+  },
+];

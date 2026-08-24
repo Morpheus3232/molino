@@ -14,6 +14,7 @@ import {
 import { getAnimalProfile, ANIMALS } from "@/lib/data/animalRelations";
 import type { Animal } from "@/lib/data/animalRelations";
 import CountryGrid from "@/components/atlas/CountryGrid";
+import PersonalAtlasPilot from "@/components/atlas/PersonalAtlasPilot";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -231,6 +232,9 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
           style={{ transformOrigin: "left" }}
         />
       </section>
+
+      {/* ═══════════ TU ATLAS (piloto: university/team/artist) ═══════════ */}
+      <PersonalAtlasPilot animal={userAnimal} countryISO={userCountryISO} />
 
       {/* ═══════════ CATEGORÍAS — TU ANIMAL ═══════════ */}
       {sections && sections.sameAnimal.length > 0 && (

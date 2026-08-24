@@ -204,40 +204,43 @@ export const ARTISTS_ARGENTINA: AtlasEntityInput[] = [
 
    // ────────────────────────────────────────────────────
    // FUTBOLISTAS LEGENDARIOS
+   // type: "football_player" — no "artist". Ver Atlas Personal (getPersonalAtlas):
+   // el piloto trata equipos y jugadores como dos categorías propias, no como
+   // una mezcla de "artistas" con música/literatura/teatro.
    // ────────────────────────────────────────────────────
    {
-     id: "diego-maradona", name: "Diego Armando Maradona", type: "artist", country: "Argentina",
+     id: "diego-maradona", name: "Diego Armando Maradona", type: "football_player", country: "Argentina",
      emoji: "⚽",
      description: "Diego Maradona es el futbolista más grande de Argentina, campeón mundial 1986, símbolo de la pasión deportiva.",
      keyThemes: ["Fútbol", "Campeón", "Mano de Dios", "Legendario"],
-     category: "Deporte",
+     category: "historico",
      sourceNote: "Nacido el 30 de octubre de 1960 en Lanús; fallecido el 25 de noviembre de 2020.",
      events: [{ id: "maradona-nac", type: "creacion", label: "Nacimiento", date: "1960-10-30", year: 1960, description: "Diego Armando Maradona Franco nace en Lanús, Buenos Aires.", source: "Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true }],
    },
    {
-     id: "lionel-messi", name: "Lionel Messi", type: "artist", country: "Argentina",
+     id: "lionel-messi", name: "Lionel Messi", type: "football_player", country: "Argentina",
      emoji: "⚽",
      description: "Lionel Messi es el futbolista contemporáneo más grande, ganador de 8 Balones de Oro, campeón mundial 2022.",
      keyThemes: ["Fútbol", "Campeón", "Artista", "Contemporáneo"],
-     category: "Deporte",
+     category: "historico",
      sourceNote: "Nacido el 24 de junio de 1987 en Rosario.",
      events: [{ id: "messi-nac", type: "creacion", label: "Nacimiento", date: "1987-06-24", year: 1987, description: "Lionel Andrés Messi Cuccittini nace en Rosario.", source: "FIFA / Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true }],
    },
    {
-     id: "juan-roman-riquelme", name: "Juan Román Riquelme", type: "artist", country: "Argentina",
+     id: "juan-roman-riquelme", name: "Juan Román Riquelme", type: "football_player", country: "Argentina",
      emoji: "⚽",
      description: "Juan Román Riquelme es futbolista legendario, símbolo de Boca Juniors, campeón de Libertadores.",
      keyThemes: ["Fútbol", "Boca", "Libertadores", "Magicista"],
-     category: "Deporte",
+     category: "historico",
      sourceNote: "Nacido el 1 de junio de 1978 en La Plata.",
       events: [{ id: "riquelme-nac", type: "creacion", label: "Nacimiento", date: "1978-06-01", year: 1978, description: "Juan Román Riquelme nace en La Plata.", source: "Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true }],
    },
    {
-     id: "juan-pablo-sorin", name: "Juan Pablo Sorín", type: "artist", country: "Argentina",
+     id: "juan-pablo-sorin", name: "Juan Pablo Sorín", type: "football_player", country: "Argentina",
      emoji: "⚽",
      description: "Juan Pablo Sorín es futbolista histórico, campeón mundial 1986 con Argentina, defensor legendario.",
      keyThemes: ["Fútbol", "Campeón", "Defensa", "Histórico"],
-     category: "Deporte",
+     category: "historico",
      sourceNote: "Nacido el 25 de mayo de 1966 en Buenos Aires.",
       events: [{ id: "sorin-nac", type: "creacion", label: "Nacimiento", date: "1966-05-25", year: 1966, description: "Juan Pablo Sorín Tapia nace en Buenos Aires.", source: "Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true }],
    },
