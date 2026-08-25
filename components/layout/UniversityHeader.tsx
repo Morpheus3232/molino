@@ -155,7 +155,14 @@ export default function UniversityHeader() {
       setIsPremium(premium);
       const profile = loadProfileFromStorage() as UserProfile | null;
       setActiveProfile(profile);
-      setLecturaHref(premium && profile ? `/lectura#${encodeProfileData(profile)}` : null);
+      // El link se muestra con solo tener un mapa activo, ya no según
+      // `premium`: ese chequeo era `!!getPremiumTokenClient()`, es decir "este
+      // dispositivo pagó alguna vez", no "esta fecha tiene lectura". Con un
+      // mapa nuevo sin pagar el link aparecía igual y terminaba en un error
+      // genérico. Ahora /lectura resuelve el entitlement real y muestra el
+      // paywall cuando corresponde, así que el link es la puerta de entrada
+      // al producto pago —lo vea quien lo compró o quien todavía no.
+      setLecturaHref(profile ? `/lectura#${encodeProfileData(profile)}` : null);
     };
     refresh();
     window.addEventListener("molino-profile-created", refresh);

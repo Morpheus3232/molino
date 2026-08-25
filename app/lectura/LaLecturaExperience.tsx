@@ -4,13 +4,22 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
+import { usePremiumAccess } from "@/lib/hooks/usePremiumAccess";
 import { getProfileSalt } from "@/lib/profile-salt";
 import { getPremiumTokenClient } from "@/lib/premium";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
 import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
-import { buildPatterns, buildRules, buildPrinciples } from "@/lib/engines/synthesisEngine";
+import {
+  buildPatterns,
+  buildRules,
+  buildPrinciples,
+  buildTensions,
+  generatePaywallHook,
+} from "@/lib/engines/synthesisEngine";
+import { safeNumber } from "@/lib/utils/score";
 import { buildLuckyNumberProof } from "@/lib/calculations/proof";
 import CalculationProof from "@/components/shared/CalculationProof";
+import PremiumGate from "@/components/profile/PremiumGate";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
@@ -51,6 +60,17 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const [fetchDone, setFetchDone] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
+  // El acceso premium es por (fecha de nacimiento + dispositivo), no por
+  // dispositivo a secas: cargar un mapa nuevo sin pagarlo NO da acceso a su
+  // lectura aunque ya hayas pagado otro. Antes esto se descubría recién en el
+  // 403 de /api/intelligence/interpret, que el fetch colapsaba a `null` y la
+  // UI mostraba como "no pudimos generar tu lectura" — un error técnico donde
+  // en realidad faltaba pagar. Ahora se consulta antes de gastar la llamada
+  // de IA. usePremiumAccess además re-emite el token de dispositivo si se
+  // perdió (localStorage limpiado, navegador nuevo), así que un usuario que
+  // ya pagó no cae nunca en el paywall por no tener el token a mano.
+  const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
+
   // "La Lectura" es un documento único e irrepetible — si ya se generó para
   // este perfil, reabrirla la muestra tal cual quedó, sin recrearla ni
   // repetir la animación de construcción (ver lib/session/lecturaCache.ts).
@@ -67,6 +87,10 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
       setRevealed(true);
       return;
     }
+    // `null` = todavía consultando el entitlement; `false` = hay que pagar.
+    // En ninguno de los dos casos tiene sentido disparar la llamada de IA
+    // (que puede tardar hasta 55s y, sin acceso, termina en 403 igual).
+    if (isPremium !== true) return;
     let cancelled = false;
     fetchLectura(profile).then((result) => {
       if (cancelled) return;
@@ -78,7 +102,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.birthDate, profile.name]);
+  }, [profile.birthDate, profile.name, isPremium]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
@@ -106,6 +130,27 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     const patterns = buildPatterns(profile);
     return buildPrinciples(rules, patterns, profile.archetypeInfo);
   }, [profile]);
+
+  // Mismo preview que arma LecturaPremium en /profile (LecturaProfunda.tsx) —
+  // el paywall muestra un patrón y una tensión reales de ESTE perfil, no una
+  // promesa genérica.
+  const gatePreview = useMemo(
+    () => ({
+      lifePath: safeNumber(profile.lifePath, 1),
+      chineseZodiac: typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "",
+      pattern: buildPatterns(profile)[0] ?? null,
+      tension: buildTensions(profile)[0] ?? null,
+      hook: generatePaywallHook(profile),
+    }),
+    [profile]
+  );
+
+  // Solo se muestra el paywall cuando el servidor ya confirmó que falta pagar.
+  // Mientras `isPremium` es null seguimos en el estado de carga: PremiumGate
+  // arranca en 'locked' y acá ocupa la pantalla entera, así que montarlo antes
+  // de saber la respuesta le haría ver el paywall un instante a alguien que ya
+  // pagó — justo el usuario al que no hay que mostrárselo.
+  const locked = isPremium === false && !interpretation;
 
   return (
     <main className="min-h-screen bg-background">
@@ -136,7 +181,21 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         {/* La IA es un enriquecimiento encima del contenido determinista de
             abajo, no un gate para verlo — mientras carga o si falla, el
             zodíaco/número de la suerte/afinidades siguen disponibles. */}
-        {!revealed ? (
+        {locked ? (
+          /* Falta pagar ESTA lectura. PremiumGate ya es el dueño del checkout
+             (Mercado Pago, cupón, recuperar compra) y del copy de venta, así
+             que se reutiliza tal cual en vez de escribir un segundo paywall
+             que después se desincroniza del precio o del flujo de pago. Al
+             desbloquear, sus children pasan a renderizarse y el efecto de
+             arriba dispara la generación real. */
+          <div className="pt-4 pb-16">
+            <PremiumGate name={profile.name} birthDate={profile.birthDate} preview={gatePreview}>
+              <div className="pt-4 pb-16">
+                <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
+              </div>
+            </PremiumGate>
+          </div>
+        ) : !revealed ? (
           <div className="pt-4 pb-16">
             <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
           </div>
@@ -265,7 +324,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             afinidades. Una sola franja visual (border-t-2) marca dónde
             termina la lectura narrativa (si la hubo) y empieza el material
             de referencia. */}
-        {revealed && (principles.length > 0 || zodiacExtras || catalog.length > 0) && (
+        {(revealed || locked) && (principles.length > 0 || zodiacExtras || catalog.length > 0) && (
               <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
                 {principles.length > 0 && (
                   <motion.section

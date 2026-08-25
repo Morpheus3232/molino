@@ -88,7 +88,10 @@ export default function PremiumPaywallContent({
         </div>
 
         <h3 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-snug mb-4">
-          {t.premium.headline}
+          {t.premium.headline}{" "}
+          {/* El <br> se oculta abajo de sm, así que sin este espacio las dos
+              frases quedan pegadas en mobile ("piezas.Ahora"). En desktop el
+              espacio colapsa contra el salto de línea y no se nota. */}
           <br className="hidden sm:block" />
           {t.premium.headlineLine2}
         </h3>

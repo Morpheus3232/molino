@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   Check,
   Plus,
+  Sparkles,
+  Lock,
+  Gift,
 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import {
@@ -21,6 +24,7 @@ import {
   type VaultProfileItem,
 } from "@/lib/session/multiProfiles";
 import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
+import { getProfileSalt } from "@/lib/profile-salt";
 import Link from "next/link";
 
 interface SavedProfilesDrawerProps {
@@ -57,6 +61,10 @@ export default function SavedProfilesDrawer({
   const [customLabel, setCustomLabel] = useState("");
   const [savedFeedback, setSavedFeedback] = useState(false);
   const [confirmNewMap, setConfirmNewMap] = useState(false);
+  /** id del mapa → tiene La Lectura desbloqueada. Vacío hasta que responde el
+   * servidor: el estado premium no vive en localStorage (es por fecha +
+   * dispositivo, en KV), así que no se puede derivar del item guardado. */
+  const [lecturaStatus, setLecturaStatus] = useState<Record<string, boolean>>({});
   const modalRef = useRef<HTMLDivElement>(null);
 
   const refreshVault = useCallback(() => {
@@ -73,6 +81,32 @@ export default function SavedProfilesDrawer({
   useEffect(() => {
     if (!isOpen) setConfirmNewMap(false);
   }, [isOpen]);
+
+  // Estado de La Lectura por mapa — una sola request para toda la bóveda, solo
+  // mientras el drawer está abierto (nadie necesita este dato con el modal
+  // cerrado). Si falla, los badges simplemente no aparecen: es un indicador
+  // informativo, nunca el control de acceso — ese vive en el servidor, en
+  // /api/intelligence/interpret.
+  useEffect(() => {
+    if (!isOpen || vault.length === 0) return;
+    let cancelled = false;
+    fetch("/api/mp/check-batch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        salt: getProfileSalt(),
+        profiles: vault.map((v) => ({ id: v.id, name: v.name, birthDate: v.birthDate })),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!cancelled && data?.status) setLecturaStatus(data.status);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, vault]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -321,6 +355,7 @@ export default function SavedProfilesDrawer({
                   vault.map((item) => {
                     const isCurrent =
                       currentProfile && currentProfile.birthDate === item.birthDate;
+                    const hasLectura = lecturaStatus[item.id];
 
                     return (
                       <div
@@ -349,6 +384,33 @@ export default function SavedProfilesDrawer({
                           <p className="text-xs font-mono text-muted mt-0.5">
                             Camino {item.lifePath} · {item.sunSign} · {item.chineseZodiac} ({item.birthDate})
                           </p>
+                          {/* Cada mapa se paga por separado (el acceso es por
+                              fecha), así que la bóveda distingue cuál ya tiene
+                              La Lectura y cuál no. Sin dato del servidor
+                              todavía, no se muestra nada — mejor ningún badge
+                              que uno equivocado. */}
+                          {hasLectura !== undefined && (
+                            <span
+                              className={`mt-1.5 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.1em] px-1.5 py-0.5 rounded ${
+                                hasLectura
+                                  ? "bg-gold/15 border border-gold/40"
+                                  : "text-muted/80 border border-ink/10"
+                              }`}
+                              style={hasLectura ? { color: "var(--color-gold-foreground)" } : undefined}
+                            >
+                              {hasLectura ? (
+                                <>
+                                  <Sparkles className="w-2.5 h-2.5" aria-hidden="true" />
+                                  Lectura incluida
+                                </>
+                              ) : (
+                                <>
+                                  <Lock className="w-2.5 h-2.5" aria-hidden="true" />
+                                  Sin lectura
+                                </>
+                              )}
+                            </span>
+                          )}
                         </Link>
 
                         <div className="flex items-center gap-2">
@@ -376,6 +438,29 @@ export default function SavedProfilesDrawer({
                   })
                 )}
               </div>
+
+              {/* Regalar — /regalar existe completo (compra de código +
+                  canje con la fecha del destinatario) pero no se linkeaba
+                  desde ningún lado del sitio. Este es el lugar natural:
+                  quien está mirando los mapas de otras personas es
+                  exactamente quien puede querer regalarle la lectura a
+                  alguien. */}
+              <Link
+                href="/regalar"
+                onClick={() => setIsOpen(false)}
+                className="mt-4 flex items-center gap-3 p-3.5 rounded-md border border-gold/30 bg-gold/[0.06] hover:bg-gold/[0.12] hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-colors"
+              >
+                <Gift className="w-4 h-4 shrink-0" style={{ color: "var(--color-gold-foreground)" }} aria-hidden="true" />
+                <span className="flex-1 min-w-0">
+                  <span className="block font-heading text-sm font-bold text-foreground">
+                    Regalar una lectura
+                  </span>
+                  <span className="block text-xs text-muted mt-0.5">
+                    Comprás un código y la persona lo canjea con su propia fecha.
+                  </span>
+                </span>
+                <ArrowRight className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
+              </Link>
 
               {/* Footer Notice */}
               <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-xs font-mono text-muted">
