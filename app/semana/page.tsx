@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
-import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
+import { getScoreColor } from "@/lib/utils/score";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
 import Button from "@/components/ui/Button";
@@ -147,11 +147,11 @@ function SemanaContent() {
                 >
                   {day.personalDay}
                 </span>
+                {/* Solo el theme (Armonía, Introspección...) — el label de
+                    energía (Alta/Moderada) se repetía casi todos los días
+                    y era ruido: el color del círculo ya lo comunica. */}
                 <span className="mt-2 text-xs font-semibold text-foreground leading-tight">
                   {day.theme}
-                </span>
-                <span className="text-[11px] text-muted">
-                  {getScoreLabel(day.overallScore)}
                 </span>
               </motion.div>
             );
