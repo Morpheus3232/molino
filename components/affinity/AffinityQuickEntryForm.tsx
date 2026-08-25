@@ -11,7 +11,6 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import type { LightweightEntity } from "@/types/atlas";
 import AffinityHero from "@/components/affinity/AffinityHero";
-import AffinityDiscoveryList from "@/components/affinity/AffinityDiscoveryList";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage";
 
@@ -104,7 +103,7 @@ export default function AffinityQuickEntryForm({
     [birthDate],
   );
 
-  const { result, relatedEntities } = useAffinityResult(quickProfile, entity, catalog);
+  const { result } = useAffinityResult(quickProfile, entity);
 
   const handleSubmit = useCallback(() => {
     setError("");
@@ -305,7 +304,6 @@ export default function AffinityQuickEntryForm({
             </motion.section>
 
             {/* Recommendations — next discoveries */}
-            <AffinityDiscoveryList title="Seguí descubriendo" relatedEntities={relatedEntities} entityId={entity.id} type={type} />
           </motion.div>
         )}
       </AnimatePresence>

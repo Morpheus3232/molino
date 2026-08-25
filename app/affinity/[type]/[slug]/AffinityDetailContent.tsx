@@ -11,10 +11,8 @@ import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import type { LightweightEntity } from "@/types/atlas";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
-import AffinityDiscoveryList from "@/components/affinity/AffinityDiscoveryList";
 import { formatViewAll } from "@/lib/utils/plural";
 import AffinityQuickEntryForm from "@/components/affinity/AffinityQuickEntryForm";
-import AnimalQuickSelector from "@/components/affinity/AnimalQuickSelector";
 
 interface AffinityDetailContentProps {
   entity: SymbolicEntity;
@@ -22,16 +20,14 @@ interface AffinityDetailContentProps {
   type: EntityType;
   /** Lightweight projections of ALL entities (for the discovery loop). */
   catalog: LightweightEntity[];
-  /** Lightweight projections of same-type entities (for the quick selector). */
-  sameType: LightweightEntity[];
 }
 
-export default function AffinityDetailContent({ entity, meta, type, catalog, sameType }: AffinityDetailContentProps) {
+export default function AffinityDetailContent({ entity, meta, type, catalog }: AffinityDetailContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const [showOtherEvents, setShowOtherEvents] = useState(false);
 
-  const { result, relatedEntities } = useAffinityResult(profile, entity, catalog);
+  const { result } = useAffinityResult(profile, entity);
 
   if (!mounted) {
     return (
@@ -73,11 +69,6 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
         <AffinityHero result={result} entity={entity} meta={meta} type={type} />
       )}
 
-      {/* Quick selector — same type entities */}
-      {result && profile && (
-        <AnimalQuickSelector profile={profile} currentEntityId={entity.id} type={type} entities={sameType} />
-      )}
-
       {/* Deep-dive content — calc basis, relationship, why, other events, documented data, disclaimer, connection story */}
       {result && profile && (
         <AffinityDeepDive
@@ -90,9 +81,6 @@ export default function AffinityDetailContent({ entity, meta, type, catalog, sam
           onToggleOtherEvents={() => setShowOtherEvents(v => !v)}
         />
       )}
-
-      {/* Discovery loop — related entities across all types */}
-      <AffinityDiscoveryList title="Explorá más" relatedEntities={relatedEntities} entityId={entity.id} type={type} />
 
       {/* CTAs */}
       <motion.section {...fadeUp}>

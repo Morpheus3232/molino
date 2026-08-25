@@ -11,8 +11,6 @@ import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
 import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
 import {
   buildPatterns,
-  buildRules,
-  buildPrinciples,
   buildTensions,
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
@@ -122,15 +120,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     return Number.isFinite(year) && Number.isFinite(month) ? { month, year } : null;
   }, [profile.birthDate]);
 
-  // "02 · Tus principios" — antes vivía en /profile (gratis, sin IA); movido
-  // acá porque es contenido de lectura, no de "cómo estoy configurado".
-  // Determinista, mismas funciones puras que /profile usaba.
-  const principles = useMemo(() => {
-    const rules = buildRules(profile);
-    const patterns = buildPatterns(profile);
-    return buildPrinciples(rules, patterns, profile.archetypeInfo);
-  }, [profile]);
-
   // Mismo preview que arma LecturaPremium en /profile (LecturaProfunda.tsx) —
   // el paywall muestra un patrón y una tensión reales de ESTE perfil, no una
   // promesa genérica.
@@ -153,13 +142,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const locked = isPremium === false && !interpretation;
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Salida arriba — visible sin esperar la IA ni scrollear hasta el pie */}
-      <div className="flex items-center justify-between mx-auto max-w-[760px] px-6 sm:px-8 pt-8">
-        <Link href="/profile" className="text-xs font-mono text-muted hover:text-accent transition-colors">
-          ← Tu mapa
-        </Link>
-      </div>
+    <section className="bg-background border-t border-ink/10">
 
       {/* Cresta — el molino, quieto, coronando la lectura. Solo una vez
           revelada: mientras carga, BuildingMolino ya trae su propio molino
@@ -189,6 +172,25 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
              desbloquear, sus children pasan a renderizarse y el efecto de
              arriba dispara la generación real. */
           <div className="pt-4 pb-16">
+            {/* Encabezado del tramo pago. El detalle de qué incluye lo arma
+                PremiumGate → PremiumPaywallContent → FeatureComparison, que
+                ya es la fuente única del precio y de la tabla gratis/Pro; un
+                segundo listado acá se desincronizaría del primero. */}
+            <div className="mb-10 border-b border-ink/10 pb-8">
+              <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-4">
+                LECTURA PRO
+              </p>
+              <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.9] tracking-tight text-foreground">
+                LA CONVERSACIÓN
+                <br />
+                ENTRE TUS SISTEMAS.
+              </h2>
+              <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
+                Todo lo de arriba es tuyo y no se paga. Lo que sigue es la parte que cruza los tres
+                sistemas en una sola lectura escrita para tu mapa, más las preguntas abiertas sobre
+                tus decisiones. Pago único de 8 dólares, acceso permanente — sin suscripción.
+              </p>
+            </div>
             <PremiumGate name={profile.name} birthDate={profile.birthDate} preview={gatePreview}>
               <div className="pt-4 pb-16">
                 <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
@@ -396,36 +398,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             afinidades. Una sola franja visual (border-t-2) marca dónde
             termina la lectura narrativa (si la hubo) y empieza el material
             de referencia. */}
-        {(revealed || locked) && (principles.length > 0 || zodiacExtras || catalog.length > 0) && (
+        {(revealed || locked) && (zodiacExtras || catalog.length > 0) && (
               <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
-                {principles.length > 0 && (
-                  <motion.section
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.5 }}
-                  >
-                    <p className="font-heading text-lg sm:text-xl text-foreground mb-6">Tus principios</p>
-                    <div className="max-w-2xl space-y-8">
-                      {principles.map((p, i) => (
-                        <div key={p.title} className="flex items-start gap-5">
-                          <span className="font-mono text-xs text-muted leading-[1.7] shrink-0 w-5">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-                          <div>
-                            <p className="font-heading text-base sm:text-lg text-foreground leading-snug">
-                              {p.title}
-                            </p>
-                            <p className="text-sm text-muted leading-relaxed mt-1.5">{p.body}</p>
-                            {p.source && (
-                              <p className="mt-2 font-mono text-xs text-accent">{p.source}</p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.section>
-                )}
-
                 {zodiacExtras && (
                   <motion.section
                     initial={reduceMotion ? false : { opacity: 0 }}
@@ -522,6 +496,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           </Link>
         </div>
       </div>
-    </main>
+    </section>
   );
 }

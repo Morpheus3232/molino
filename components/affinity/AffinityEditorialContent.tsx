@@ -4,7 +4,6 @@ import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
-import { formatOtherEntities } from "@/lib/utils/plural";
 import Link from "next/link";
 
 // formatDisplayDate vive en AffinitySectionPrimitives.tsx ("use client") — no
@@ -28,12 +27,10 @@ export default function AffinityEditorialContent({
   entity,
   meta,
   type,
-  relatedEntities,
 }: {
   entity: SymbolicEntity;
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
-  relatedEntities: LightweightEntity[];
 }) {
   const primaryEvent = getPrimaryEvent(entity);
 
@@ -122,26 +119,6 @@ export default function AffinityEditorialContent({
         </section>
       )}
 
-      {relatedEntities.length > 0 && (
-        <section className="mb-4">
-          <SectionHeader title={formatOtherEntities(type, meta.plural)} />
-          <div className="space-y-3">
-            {relatedEntities.map((rel) => (
-              <Link
-                key={rel.id}
-                href={`/affinity/${rel.type}/${rel.id}`}
-                className="flex items-center gap-3 p-4 border border-ink/10 bg-transparent hover:border-accent/40 transition-colors group focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-              >
-                <EntityVisual visualType={rel.visualType} emoji={rel.emoji} name={rel.name} countryISO={rel.countryISO} size={32} />
-                <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
-                  {rel.name}
-                </p>
-                <span className="text-xs text-accent group-hover:translate-x-1 transition-transform ml-auto shrink-0" aria-hidden="true">→</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

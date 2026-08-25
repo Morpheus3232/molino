@@ -6,6 +6,9 @@ import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { profileFromEncoded } from "@/lib/utils/profileShare";
 import LaLecturaExperience from "./LaLecturaExperience";
+import LecturaGratis from "@/components/lectura/LecturaGratis";
+import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import type { Animal } from "@/lib/data/animalRelations";
 
 interface Props {
   catalog: LightweightEntity[];
@@ -42,5 +45,46 @@ export default function LecturaClient({ catalog }: Props) {
     );
   }
 
-  return <LaLecturaExperience profile={profile} catalog={catalog} />;
+  const display = getZodiacDisplay((profile.chineseZodiac ?? "") as Animal);
+  const elemento =
+    typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
+
+  return (
+    <main id="main-content" className="min-h-screen bg-background">
+      {/* Encabezado de la página. Antes /lectura entraba directo al bloque
+          pago; ahora abre con lo gratis, así que necesita decir de quién es
+          la lectura y de dónde viene. */}
+      <header className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-12 border-b border-ink/10">
+        <Link
+          href="/profile"
+          className="font-mono text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
+        >
+          ← Mi Mapa
+        </Link>
+        <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">La lectura</p>
+        <h1 className="mt-2 font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.88] tracking-tight text-foreground uppercase">
+          ¿QUÉ SIGNIFICA
+          <br />
+          TU MAPA?
+        </h1>
+        <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
+          Mi Mapa te dice dónde tu signo toca el mundo. Acá se lee qué dice de vos: los dígitos de
+          tu fecha, dónde coinciden tus sistemas y qué sale de cruzarlos.
+        </p>
+        <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted">
+          <span>Camino de vida {profile.lifePath}</span>
+          <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
+          <span>{profile.sunSign}</span>
+          <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
+          <span>
+            {display.name}
+            {elemento ? ` de ${elemento}` : ""}
+          </span>
+        </p>
+      </header>
+
+      <LecturaGratis profile={profile} />
+      <LaLecturaExperience profile={profile} catalog={catalog} />
+    </main>
+  );
 }

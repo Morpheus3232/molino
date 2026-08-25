@@ -28,12 +28,38 @@ export function getChineseZodiac(birthDate: string): Animal {
  *   2. Year only → fallback to YYYY-06-01 (always after CNY), marked approximate
  *   3. Never presents a fallback as an exact historical date
  */
+/**
+ * El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero. La tabla
+ * real (`CHINESE_NEW_YEAR_DATES`) cubre 1886-2040; fuera de ese rango
+ * `getLunarYear` aproxima el corte con un 4 de febrero fijo.
+ *
+ * Esa aproximación es inocua para cualquier fecha FUERA de la ventana en la
+ * que el Año Nuevo puede caer: un 16 de abril pertenece a su año calendario
+ * sin importar el día exacto del corte. Dentro de la ventana, en cambio, el
+ * signo puede quedar corrido un lugar — y una fecha exacta que produce un
+ * signo dudoso es peor que ninguna, porque se presenta como verificada.
+ *
+ * Ejemplos reales que esto atrapa: Buenos Aires (1580-02-03), Santiago
+ * (1541-02-12), Guadalajara (1542-02-14). Quedan marcadas como aproximadas y
+ * el Mapa Personal las descarta.
+ */
+function boundaryIsCertain(dateStr: string): boolean {
+  const [y, m, d] = dateStr.split("-").map(Number);
+  if (!y || !m || !d) return false;
+  if (CHINESE_NEW_YEAR_DATES[y]) return true; // corte real documentado
+  const enVentana = (m === 1 && d >= 21) || (m === 2 && d <= 21);
+  return !enVentana;
+}
+
 export function calculateAnimalFromDate(
   dateStr?: string,
   year?: number
 ): { animal: Animal | ""; isApproximate: boolean } {
   if (dateStr) {
-    return { animal: getRealChineseZodiac(dateStr), isApproximate: false };
+    return {
+      animal: getRealChineseZodiac(dateStr),
+      isApproximate: !boundaryIsCertain(dateStr),
+    };
   }
   if (year) {
     const fallbackDate = `${year}-06-01`;

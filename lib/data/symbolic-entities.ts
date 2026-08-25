@@ -151,11 +151,27 @@ export function resolveEntityAnimalData(input: Pick<AtlasEntityInput, "events">)
  * `origin` (etiqueta del evento primario + año) para mostrar de un vistazo
  * el momento de fundación/creación de la entidad.
  */
+/** Etiquetas de `keyThemes` que el dataset usa para marcar gama alta. */
+const PREMIUM_THEMES = new Set(["Lujo", "Exclusivo", "Premium", "Alta gama", "Alta costura"]);
+
 export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity {
   const enriched = enrichEntity(input);
   const { animal, isApproximate } = resolveEntityAnimalData(input);
   const primary = getPrimaryEvent(input);
   const origin = primary && primary.year ? `${primary.label} · ${primary.year}` : undefined;
+  // La frase de origen y la fecha exacta viajan juntas y SOLO cuando el evento
+  // trae `date`. Sin fecha completa el signo no es afirmable (ver originDate en
+  // types/atlas.ts), así que mandar la prosa igual sería mostrar un respaldo
+  // que no respalda nada. Además mantiene el payload del cliente acotado a las
+  // entidades que el Mapa Personal puede usar.
+  const hasExactDate = Boolean(primary?.date);
+  // Gama alta según lo que el propio registro declara — nunca inferido de la
+  // fama de la marca. Sirve para acotar cuántas marcas caras puede tener una
+  // recomendación: el público del sitio es mayoritariamente clase media y una
+  // lista de puro lujo no es una recomendación, es una vidriera.
+  const premium =
+    input.category === "Lujo" ||
+    (input.keyThemes ?? []).some((t) => PREMIUM_THEMES.has(t));
   return {
     id: enriched.id,
     name: enriched.name,
@@ -169,6 +185,15 @@ export function toLightweightEntity(input: AtlasEntityInput): LightweightEntity 
     city: enriched.city,
     type: enriched.type,
     origin,
+    year: primary?.year,
+    ...(premium ? { premium: true } : {}),
+    ...(hasExactDate && primary
+      ? {
+          originDate: primary.date,
+          originLabel: primary.label,
+          originNote: primary.description || input.sourceNote,
+        }
+      : {}),
     category: enriched.category,
   };
 }
@@ -245,7 +270,19 @@ function entityQualityScore(entity: AtlasEntity): number {
  * no Date.now/Math.random, same input always produces the same output.
  */
 function dedupeAtlasEntities(entities: AtlasEntity[]): AtlasEntity[] {
-  const keyOf = (e: AtlasEntity) => `${e.type}::${e.name}::${e.country ?? ""}`;
+  // El nombre se normaliza (minúsculas, sin diacríticos, sin puntuación de
+  // adorno) porque los datasets escriben la misma marca de dos formas —
+  // "Skoda" en autos-atlas y "Škoda" en brands-autos-60 se colaban como dos
+  // entidades distintas y aparecían duplicadas en toda lista de afinidad.
+  const normalizeName = (name: string) =>
+    name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const keyOf = (e: AtlasEntity) => `${e.type}::${normalizeName(e.name)}::${e.country ?? ""}`;
 
   const bestByKey = new Map<string, AtlasEntity>();
   for (const entity of entities) {
@@ -652,10 +689,10 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
         id: "gardel-nacimiento",
         type: "creacion",
         label: "Nacimiento (fecha disputada)",
-        year: 1890,
+        year: 1890, date: "1890-12-11",
         description: "El nacimiento de Gardel est\u00e1 disputado: 11 de diciembre de 1890 en Toulouse, Francia, o 24 de diciembre de 1883 en Tacuaremb\u00f3, Uruguay.",
         source: "Academia Nacional del Tango",
-        confidence: "baja",
+        confidence: "exacta",
         primaryForAffinity: true,
       },
     ],

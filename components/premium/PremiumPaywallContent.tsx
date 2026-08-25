@@ -71,7 +71,10 @@ export default function PremiumPaywallContent({
   isApplyingCoupon,
   handleApplyCoupon,
 }: PremiumPaywallContentProps) {
-  const [showComparison, setShowComparison] = useState(false);
+  // Abierto por defecto: el detalle de qué incluye la Lectura Pro es el
+  // argumento, no una nota al pie. Plegado, la sección pedía 8 dólares sin
+  // decir del todo por qué. El toggle queda para poder cerrarlo.
+  const [showComparison, setShowComparison] = useState(true);
 
   return (
     <motion.div
@@ -233,7 +236,7 @@ export default function PremiumPaywallContent({
             className="w-full flex items-center justify-between text-left group"
           >
             <span className="label-micro text-muted group-hover:text-accent transition-colors">
-              ¿Qué incluye Premium, comparado con lo gratis?
+              Qué incluye la Lectura Pro, comparado con lo gratis
             </span>
             <ChevronDown
               className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180' : ''}`}

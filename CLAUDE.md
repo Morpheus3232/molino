@@ -9,6 +9,150 @@ memoria efímera. Monetiza exclusivamente con MercadoPago (`lib/mercadopago.ts`,
 ninguno de los dos tenía credenciales configuradas en producción ni UI que
 los ofreciera como opción de pago.
 
+## Filosofía del sitio (decisión del dueño del producto, 2026-08-25)
+
+Esto gobierna qué se construye y cómo. No es una nota histórica: si una
+funcionalidad nueva la contradice, la funcionalidad está mal.
+
+> La idea es buscar comparativas **solamente en años del zodíaco chino** entre
+> la entidad y el posible usuario. Alguien que nació en un año Caballo resuena
+> mejor con las marcas, países, etc. Caballo. Es lo que comprobé en la vida y
+> quiero usar este sitio con ese propósito. Primero como **mapa personal**,
+> después con la funcionalidad de **servir al prójimo** — en este caso, público
+> hispanohablante de entre 18 y 99 años.
+
+Consecuencias operativas:
+
+- **El país del usuario ordena, nunca puntúa.** Dentro de cada casilla van
+  primero hasta **3** entidades del país declarado en el onboarding y después
+  el mundo — nunca todas las locales, que taparían el mapa (mismo criterio,
+  con 2, que `curateCategory` en `lib/affinity-light.ts`). El país no mueve una
+  entidad de casilla: dos personas del mismo signo ven las mismas entidades en
+  los mismos grupos, en distinto orden. La priorización se resuelve por ISO, y
+  `lib/data/__tests__/country-iso-coverage.test.ts` garantiza que los 197
+  países que ofrece el onboarding resuelvan a uno.
+- **En castellano se dice "signo", no "animal"** ("tu propio signo" suena mejor
+  que "tu propio animal"). El orden de recomendación es siempre: tu propio
+  signo → tus dos amigos → la energía opuesta, esta última presentada como qué
+  conviene evitar.
+- **Una sola regla de afinidad: signo contra signo.** El año de origen de la
+  entidad da su animal; la fecha de nacimiento da el del usuario. No mezclar
+  numerología, Wu Xing, signo solar ni ninguna otra capa dentro del puntaje de
+  afinidad. Esas capas viven en sus propias secciones (`/lectura`, `/hoy`,
+  cuadro de nacimiento, convergencia) y no se cruzan con el Atlas.
+- **De las relaciones del ciclo se usan tres casillas: tu propio signo, tus
+  DOS AMIGOS (三合 San He) y tu ENEMIGO (六冲 Liu Chong).** Los pares Liu He y
+  Liu Hai existen en la tradición pero quedan fuera del modelo: caen en "el
+  resto del ciclo". Menos categorías, más señal.
+- **En castellano se dice "amigos" y "enemigo"**, no "tríada" ni "choque". El
+  nombre chino se muestra al lado como referencia, no como la etiqueta
+  principal.
+- **La relación es categórica, no continua.** Agrupar por casilla, nunca
+  rankear con un puntaje de dos dígitos que sugiera una precisión que el
+  sistema no tiene.
+- **Fecha exacta o no se muestra.** El Año Nuevo chino cae entre el 21 de enero
+  y el 21 de febrero: un origen fechado solo por año podría pertenecer al signo
+  anterior. `toLightweightEntity` solo emite `originDate`/`originLabel`/
+  `originNote` cuando el evento primario trae `date`, y el Mapa Personal
+  descarta toda entidad sin fecha exacta (`isApproximate`). Preferimos una
+  lista más corta que una recomendación construida sobre una duda.
+- **Cada entrada muestra la frase de origen del registro + la fecha exacta**,
+  como hacía el Atlas. La prosa es la que ya está en el dataset, no se inventa.
+- **El año de origen de cada entidad es dato crítico**, no decorativo: es lo
+  único que produce su signo. Un año mal cargado corrompe toda la afinidad de
+  esa entidad en el sitio entero. Ver
+  `lib/data/__tests__/entity-year-consistency.test.ts`, que existe porque
+  `brands-60.ts` llegó a tener 41 años inventados con el año correcto escrito
+  al lado en su propio `sourceNote`.
+- **Público objetivo: 7 países.** Argentina, México, España, Chile, Colombia,
+  Uruguay y Perú (los mismos que `SUGGESTED_COUNTRIES` en
+  `components/onboarding/LocationStep.tsx`). El resto del mundo sigue
+  disponible y priorizable, pero la cobertura de datos se mide y se completa
+  para estos siete.
+- **La edad no se le pide a nadie**: sale de `birthDate`. Se usa únicamente en
+  el dominio de personas, para acercar primero a las nacidas dentro de una
+  vuelta del ciclo (±12 años) — dato real, porque el año de nacimiento está
+  cargado. NO existe en el atlas un dato de "para qué edad es" una marca o un
+  auto, así que no se simula uno: inventarlo sería el mismo error que los años
+  inventados.
+- **Gama media primero, y sin bucket genérico de "marcas".** Vestimenta y autos
+  son dominios propios; no existe un dominio que junte tecnología, bancos y
+  gaseosas, porque no responde ninguna pregunta. Dentro de cada grupo, las de
+  gama alta van al final: el público es mayoritariamente de clase media.
+  `toLightweightEntity` marca `premium: true` según lo que el propio registro
+  declara (`category: "Lujo"` o un `keyThemes` con Lujo/Exclusivo/Premium/Alta
+  gama) — nunca inferido. Relega, no descarta.
+- **Deuda de datos conocida (2026-08-25)**: el cuello de botella es la fecha
+  exacta de fundación de las marcas. Se cargaron 21 desde Wikidata (19 autos,
+  2 de ropa) aceptando solo precisión de día **y** coincidencia con el año ya
+  documentado en nuestro registro — dos fuentes de acuerdo o se descarta; el
+  `source` del evento guarda el Q-id. De 163 marcas consultadas solo salieron
+  esas 21: la mayoría tiene precisión de año también en Wikidata, y el
+  matching por nombre da falsos positivos peligrosos (MG matcheaba con MGM),
+  así que el filtro exige además que la descripción de la entidad sea del
+  rubro.
+
+  Estado: **autos ya funciona** (19 entradas, 4-6 opciones afines para cada
+  uno de los 12 signos, parejo). **Vestimenta sigue casi vacía** (2 entradas:
+  H&M y Vans) — necesita ~87 fechas más, y la vía realista es carga curada
+  desde la fuente oficial de cada marca, no Wikidata.
+
+  Método a mano: un evento fechado en **marzo o después** queda determinado
+  aunque no se sepa el día, porque el Año Nuevo chino nunca cae después del 21
+  de febrero. Hoy no se explota (`date` exige día completo y poner `-01`
+  inventaría uno); si vale la pena, es un campo `month` en el evento, jamás un
+  día falso.
+
+  Cobertura global con fecha exacta: territorio 108/311, cancha 70/91,
+  aula 48/93, gente 221/234, pantalla 16/16, autos 19/74, vestimenta 2/89.
+
+  Cobertura local con fecha exacta, por país del público objetivo (entidades
+  del propio país que el mapa puede mostrar):
+
+  | País | Total | ciudades | marcas | equipos | univ. | personas |
+  |---|---|---|---|---|---|---|
+  | Argentina | 108 | 28 | 3 | 19 | 18 | 38 |
+  | Uruguay | 57 | 8 | 0 | 13 | 1 | 34 |
+  | Chile | 46 | 1 | 0 | 10 | 9 | 26 |
+  | Perú | 45 | 1 | 0 | 10 | 9 | 25 |
+  | México | 40 | 3 | 4 | 5 | 5 | 23 |
+  | España | 35 | 2 | 3 | 7 | 2 | 20 |
+  | Colombia | 33 | 4 | 1 | 5 | 3 | 20 |
+
+  (La columna "marcas" de esa tabla ya no tiene dominio propio: solo cuenta
+  para vestimenta y autos.) El hueco local más grande son las **ciudades fuera
+  de Argentina**, y ahí el problema NO son las fechas —solo 5 ciudades de esos
+  países carecen de fecha exacta— sino que el atlas tiene muy pocas ciudades
+  cargadas fuera de Argentina. Completarlo es cargar entidades con su fecha y
+  su `source`, nunca estimarla.
+- **Nada de listas sin criterio.** Se eliminaron (2026-08-25) tres secciones
+  que mostraban "entidades relacionadas" que no tenían ninguna relación con lo
+  que el lector estaba mirando —eran las primeras N del catálogo ordenadas por
+  afinidad, doce filas con el mismo 95 y ninguna razón para estar ahí—:
+  `AnimalQuickSelector` ("Otras entidades del mismo tipo"), el bloque
+  `relatedEntities` de `AffinityEditorialContent` ("Otros países") y
+  `AffinityDiscoveryList` ("Explorá más" / "Seguí descubriendo"). Los tres
+  componentes y la lista que los alimentaba (`useAffinityResult`) ya no
+  existen. Antes de agregar cualquier lista nueva: si no se puede escribir en
+  una línea POR QUÉ cada fila está ahí, no va.
+- **Sin intención de venta ni autoelogio en el producto.** La sección no habla
+  de la marca ni se recomienda a sí misma; muestra el cálculo y la regla, y
+  deja la decisión en el usuario.
+- **Dos páginas, dos preguntas (2026-08-25).** `/profile` ("Mi Mapa") responde
+  **dónde tu signo toca el mundo** y no contiene nada más: hero de identidad +
+  `PersonalMapSection` + acciones + índice. Todo lo interpretativo —cuadro de
+  nacimiento, convergencia, los dos movimientos, sincronicidad y el detalle
+  del cálculo— se mudó a `/lectura`, compuesto en
+  `components/lectura/LecturaGratis.tsx`. `/lectura` abre **gratis** con eso y
+  cierra con la **Lectura Pro (USD 8, pago único)**, cuyo detalle de
+  beneficios lo arma `PremiumGate` → `PremiumPaywallContent` →
+  `FeatureComparison`: esa es la fuente única del precio y de la tabla
+  gratis/Pro, no duplicar el listado en otro lado.
+- **Motor**: `lib/engines/personalMapEngine.ts` (puro, client-safe) es la
+  implementación de todo lo anterior. UI: `components/profile/PersonalMapSection.tsx`
+  dentro de `/profile` ("Mi Mapa"). Cubre los ocho dominios del Atlas
+  (territorio, vestimenta, autos, cancha, aula, gente, pantalla).
+
 ## Sesión del 2026-08-17
 
 Sesión larga en dos tramos: hardening técnico (mañana) + funcionalidades

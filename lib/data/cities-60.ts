@@ -8,7 +8,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Estados Unidos", emoji: "🇺🇸",
     description: "Capital del entretenimiento mundial, fundada como ciudad ferroviaria en el desierto de Nevada.",
     keyThemes: ["Entretenimiento", "Noche", "Suerte", "Espectáculo"],
-    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "Nacida el 15 de mayo de 1905, cuando se subastaron solares del ferrocarril de San Pedro, Los Ángeles y Salt Lake en el valle del desierto de Nevada.", source: "Documentación histórica" }],
+    events: [{ id: "las-vegas-fund", type: "fundacion", label: "Fundación", year: 1905, date: "1905-05-15", confidence: "exacta", primaryForAffinity: true, description: "Nacida el 15 de mayo de 1905, cuando se subastaron solares del ferrocarril de San Pedro, Los Ángeles y Salt Lake en el valle del desierto de Nevada.", source: "Documentación histórica" }],
     sourceNote: "Fundada como ciudad el 15 de mayo de 1905.",
   },
   {
@@ -16,7 +16,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Israel", emoji: "🇮🇱",
     description: "Fundada en 1909 como suburbio de Jaffa, hoy es la vibrante capital tecnológica de Israel.",
     keyThemes: ["Innovación", "Playas", "Startups", "Cultura"],
-    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 11 de abril de 1909 cuando sesenta familias judías sortearon terrenos junto a Jaffa para levantar el barrio de Ahuzat Bayit.", source: "Documentación histórica" }],
+    events: [{ id: "tel-aviv-fund", type: "fundacion", label: "Fundación", year: 1909, date: "1909-04-11", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 11 de abril de 1909 cuando sesenta familias judías sortearon terrenos junto a Jaffa para levantar el barrio de Ahuzat Bayit.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 11 de abril de 1909.",
   },
   {
@@ -40,7 +40,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Canadá", emoji: "🇨🇦",
     description: "Ciudad portuaria rodeada de montañas, conocida por su calidad de vida y diversidad.",
     keyThemes: ["Naturaleza", "Diversidad", "Calidad", "Puerto"],
-    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1886, confidence: "exacta", primaryForAffinity: true, description: "Incorporada el 6 de abril de 1886 como término del ferrocarril transcontinental, quedó arrasada meses después por el Gran Incendio.", source: "Documentación histórica" }],
+    events: [{ id: "vancouver-fund", type: "fundacion", label: "Fundación", year: 1886, date: "1886-04-06", confidence: "exacta", primaryForAffinity: true, description: "Incorporada el 6 de abril de 1886 como término del ferrocarril transcontinental, quedó arrasada meses después por el Gran Incendio.", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de abril de 1886.",
   },
   // BUEY
@@ -65,7 +65,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Canadá", emoji: "🇨🇦",
     description: "La ciudad más grande de Canadá, motor económico y cultural del país.",
     keyThemes: ["Multiculturalismo", "Economía", "Cultura", "Orden"],
-    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1834, confidence: "exacta", primaryForAffinity: true, description: "Incorporada como ciudad el 6 de marzo de 1834, dejó atrás el nombre colonial de York para recuperar el topónimo indígena Toronto.", source: "Documentación histórica" }],
+    events: [{ id: "toronto-fund", type: "fundacion", label: "Fundación", year: 1834, date: "1834-03-06", confidence: "exacta", primaryForAffinity: true, description: "Incorporada como ciudad el 6 de marzo de 1834, dejó atrás el nombre colonial de York para recuperar el topónimo indígena Toronto.", source: "Documentación histórica" }],
     sourceNote: "Incorporada como ciudad el 6 de marzo de 1834.",
   },
   {
@@ -98,7 +98,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Brasil", emoji: "🇧🇷",
     description: "La ciudad maravillosa, cuna de la samba y el carnaval más famoso del mundo.",
     keyThemes: ["Samba", "Carnaval", "Playas", "Alegría"],
-    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1565, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 1 de marzo de 1565 por Estácio de Sá entre el Pan de Azúcar y el Corcovado, para expulsar a los franceses de la bahía.", source: "Documentación histórica" }],
+    events: [{ id: "rio-janeiro-fund", type: "fundacion", label: "Fundación", year: 1565, date: "1565-03-01", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 1 de marzo de 1565 por Estácio de Sá entre el Pan de Azúcar y el Corcovado, para expulsar a los franceses de la bahía.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 1 de marzo de 1565.",
   },
   {
@@ -114,7 +114,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Colombia", emoji: "🇨🇴",
     description: "Capital colombiana a 2600 metros de altura, centro cultural y político del país.",
     keyThemes: ["Cultura", "Altura", "Diversidad", "Resiliencia"],
-    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1538, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 6 de agosto de 1538 por Gonzalo Jiménez de Quesada en la sabana cundiboyacense, sobre el territorio del cacique Bacatá.", source: "Documentación histórica" }],
+    events: [{ id: "bogota-fund", type: "fundacion", label: "Fundación", year: 1538, date: "1538-08-06", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 6 de agosto de 1538 por Gonzalo Jiménez de Quesada en la sabana cundiboyacense, sobre el territorio del cacique Bacatá.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 6 de agosto de 1538.",
   },
   {
@@ -229,7 +229,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Perú", emoji: "🇵🇪",
     description: "Capital peruana, ciudad de los reyes y capital gastronómica de Latinoamérica.",
     keyThemes: ["Gastronomía", "Historia", "Cultura", "Misterio"],
-    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1535, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 18 de enero de 1535 por Francisco Pizarro como Ciudad de los Reyes, a orillas del río Rímac.", source: "Documentación histórica" }],
+    events: [{ id: "lima-fund", type: "fundacion", label: "Fundación", year: 1535, date: "1535-01-18", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 18 de enero de 1535 por Francisco Pizarro como Ciudad de los Reyes, a orillas del río Rímac.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 18 de enero de 1535.",
   },
   {
@@ -254,7 +254,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Argentina", emoji: "🇦🇷",
     description: "Capital argentina, ciudad del tango, la literatura y la pasión desbordante.",
     keyThemes: ["Tango", "Pasión", "Literatura", "Libertad"],
-    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1536, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 3 de febrero de 1536 por Pedro de Mendoza como Puerto de Nuestra Señora Santa María del Buen Aire, fue abandonada y refundada en 1580.", source: "Documentación histórica" }],
+    events: [{ id: "buenos-aires-old-fund", type: "fundacion", label: "Fundación", year: 1536, date: "1536-02-03", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 3 de febrero de 1536 por Pedro de Mendoza como Puerto de Nuestra Señora Santa María del Buen Aire, fue abandonada y refundada en 1580.", source: "Documentación histórica" }],
     sourceNote: "Primera fundación en 1536, definitiva en 1580.",
   },
   {
@@ -262,7 +262,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Australia", emoji: "🇦🇺",
     description: "La ciudad más icónica de Australia, con su famosa ópera y playas doradas.",
     keyThemes: ["Playas", "Aventura", "Opera", "Libertad"],
-    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1788, confidence: "exacta", primaryForAffinity: true, description: "En 1788 el capitán Arthur Phillip fundó la primera colonia británica en Port Jackson, bautizada en honor a Lord Sydney.", source: "Documentación histórica" }],
+    events: [{ id: "sydney-fund", type: "fundacion", label: "Fundación", year: 1788, date: "1788-01-26", confidence: "exacta", primaryForAffinity: true, description: "En 1788 el capitán Arthur Phillip fundó la primera colonia británica en Port Jackson, bautizada en honor a Lord Sydney.", source: "Documentación histórica" }],
     sourceNote: "Establecida el 26 de enero de 1788.",
   },
   {
@@ -278,7 +278,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Cuba", emoji: "🇨🇺",
     description: "Capital cubana, ciudad de música, colores y un espíritu libre e irreverente.",
     keyThemes: ["Música", "Color", "Libertad", "Historia"],
-    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 16 de noviembre de 1519 por Diego Velázquez de Cuéllar junto a la bahía, tras ser trasladada desde la costa sur.", source: "Documentación histórica" }],
+    events: [{ id: "la-habana-fund", type: "fundacion", label: "Fundación", year: 1519, date: "1519-11-16", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 16 de noviembre de 1519 por Diego Velázquez de Cuéllar junto a la bahía, tras ser trasladada desde la costa sur.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 16 de noviembre de 1519.",
   },
   {
@@ -360,7 +360,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Chile", emoji: "🇨🇱",
     description: "Capital chilena a los pies de los Andes centro financiero del Cono Sur.",
     keyThemes: ["Innovación", "Naturaleza", "Estabilidad", "Cultura"],
-    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1541, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 12 de febrero de 1541 por Pedro de Valdivia en el valle del río Mapocho, junto al cerro Huelén.", source: "Documentación histórica" }],
+    events: [{ id: "santiago-fund", type: "fundacion", label: "Fundación", year: 1541, date: "1541-02-12", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 12 de febrero de 1541 por Pedro de Valdivia en el valle del río Mapocho, junto al cerro Huelén.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 12 de febrero de 1541.",
   },
   {
@@ -442,7 +442,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Panamá", emoji: "🇵🇦",
     description: "Capital panameña puente entre dos océanos y dos mundos.",
     keyThemes: ["Canal", "Comercio", "Conexión", "Soberanía"],
-    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1519, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 15 de agosto de 1519 por Pedro Arias Dávila, fue la primera ciudad española fundada en la costa del Pacífico.", source: "Documentación histórica" }],
+    events: [{ id: "panama-city-fund", type: "fundacion", label: "Fundación", year: 1519, date: "1519-08-15", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 15 de agosto de 1519 por Pedro Arias Dávila, fue la primera ciudad española fundada en la costa del Pacífico.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 15 de agosto de 1519.",
   },
   {
@@ -459,7 +459,7 @@ export const CITIES_60: AtlasEntityInput[] = [
     country: "Filipinas", emoji: "🇵🇭",
     description: "Capital filipina ciudad de la sonrisa y la calidez en el Pacífico.",
     keyThemes: ["Hospitalidad", "Historia", "Calidez", "Diversidad"],
-    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1571, confidence: "exacta", primaryForAffinity: true, description: "Fundada el 24 de junio de 1571 por Miguel López de Legazpi sobre el poblado del reino precolonial de Rajah Sulayman.", source: "Documentación histórica" }],
+    events: [{ id: "manila-fund", type: "fundacion", label: "Fundación", year: 1571, date: "1571-06-24", confidence: "exacta", primaryForAffinity: true, description: "Fundada el 24 de junio de 1571 por Miguel López de Legazpi sobre el poblado del reino precolonial de Rajah Sulayman.", source: "Documentación histórica" }],
     sourceNote: "Fundada el 24 de junio de 1571.",
   },
   {

@@ -415,9 +415,9 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
     keyThemes: ["Japonés","Compacto","Práctico","Kei"],
     events: [{
       id: "auto-daihatsu-fund", type: "fundacion", label: "Fundación",
-      year: 1907, confidence: "media", primaryForAffinity: true,
+      year: 1907, date: "1907-03-01", confidence: "exacta", primaryForAffinity: true,
       description: "Daihatsu fue fundada en 1907.",
-      source: "Documentación histórica",
+      source: "Wikidata Q27511 (fecha de fundación, precisión de día), coincide con el año ya documentado",
     }],
     sourceNote: "Fundada en 1907.",
   },

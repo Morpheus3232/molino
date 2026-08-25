@@ -84,12 +84,17 @@ describe('user-country personalization', () => {
 
   test('orderCountriesForUser moves the user country to the front', () => {
     const countries = getAtlasCountries();
+    const antes = countries.map((c) => c.iso);
     const iso = 'AR';
     const ordered = orderCountriesForUser(countries, iso);
     expect(ordered[0].iso).toBe(iso);
-    // Preserves all countries (and does not mutate the input).
+    // Preserves all countries (and does not mutate the input). El chequeo de
+    // no-mutación era `length === 58`: un número que crece cada vez que un
+    // país del Atlas gana su código ISO, y que entonces falla por una mejora
+    // en los datos en vez de por una mutación. Se compara contra el estado
+    // previo, que es lo que la prueba quería decir.
     expect(ordered.length).toBe(countries.length);
-    expect(countries.length).toBe(58); // input untouched
+    expect(countries.map((c) => c.iso)).toEqual(antes);
   });
 
   test('orderCountriesForUser is a no-op when the country is already first', () => {

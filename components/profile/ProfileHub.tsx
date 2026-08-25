@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -11,11 +11,7 @@ import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import SpaceIndex from "@/components/profile/SpaceIndex";
-import ConvergenceSection from "@/components/profile/ConvergenceSection";
-import BirthGridSection from "@/components/profile/BirthGridSection";
-import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/profile/LecturaProfunda";
-import FamousMatch from "@/components/profile/FamousMatch";
-import CalculationDetails from "@/components/profile/CalculationDetails";
+import PersonalMapSection from "@/components/profile/PersonalMapSection";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import Link from "next/link";
@@ -33,8 +29,6 @@ export default function ProfileHub({
    * del visitante. Todo lo demás (estructura, cálculo, copy) es idéntico. */
   isDemo?: boolean;
 }) {
-  const [pieces, setPieces] = useState<LecturaPieces | null>(null);
-
   const userAnimal = (profile.chineseZodiac ?? "") as Animal;
   const display = getZodiacDisplay(userAnimal);
   const chineseElement =
@@ -145,49 +139,23 @@ export default function ProfileHub({
       </header>
 
       {/* ═══════════════════════════════════════════════
-          CUADRO DE NACIMIENTO — reemplaza al radar de
-          "dimensiones", cuyos valores eran aritmética
-          arbitraria (lifePath * 10, 50 + (lp % 5) * 10) y
-          trataban etiquetas ordinales como magnitudes. Acá
-          cada casilla es un conteo que el lector puede
-          rehacer a mano.
+          EL MAPA APLICADO — el giro de la página: de "cómo
+          estoy configurado" a "qué hago con esto". Territorio,
+          movimiento, máquina y piel, cada cruce con sus cuatro
+          reglas a la vista. Bloque ink full-bleed: es el cambio
+          de registro, no una sección más.
           ═══════════════════════════════════════════════ */}
-      <BirthGridSection profile={profile} />
+      <PersonalMapSection profile={profile} catalog={catalog} />
 
       {/* ═══════════════════════════════════════════════
-          CONVERGENCIA — dónde dos sistemas calculados por
-          caminos distintos dan el mismo resultado. Va antes
-          de la lectura interpretativa porque responde la
-          pregunta de la página ("¿cómo estoy configurado?"),
-          no la de /lectura ("¿qué significa?").
-          ═══════════════════════════════════════════════ */}
-      <ConvergenceSection profile={profile} />
-
-      {/* ═══════════════════════════════════════════════
-          LECTURA LIBRE — Patrones + Principios + Momento.
-          Sin interrupción de paywall: los tres movimientos
-          gratis corren completos antes de pedir nada.
-          ═══════════════════════════════════════════════ */}
-      <LecturaLibre profile={profile} onData={setPieces} />
-
-      {/* ═══════════════════════════════════════════════
-          SINCRONICIDAD — ¿Con quién compartís tu mapa?
-          ═══════════════════════════════════════════════ */}
-      <FamousMatch profile={profile} />
-
-      {/* ═══════════════════════════════════════════════
-          LECTURA PREMIUM — Cierre de la lectura: síntesis
-          entre sistemas + chat. Acá vive el upsell.
-          ═══════════════════════════════════════════════ */}
-      <LecturaPremium profile={profile} pieces={pieces} />
-
-      {/* ═══════════════════════════════════════════════
-          CÁLCULO — Cómo se calculó esto (colapsable), al
-          pie: es el diferenciador estructural del producto,
-          pero no la primera pregunta que hace la página.
+          PASE A LA LECTURA — todo lo interpretativo (cuadro
+          de nacimiento, convergencia, los movimientos, la
+          sincronicidad y el cálculo) vive ahora en /lectura.
+          Mi Mapa responde "¿dónde toca el mundo mi signo?";
+          la lectura responde "¿qué significa?". Eran dos
+          preguntas apiladas en una sola página.
           ═══════════════════════════════════════════════ */}
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
-        <CalculationDetails profile={profile} />
         {!isDemo && <ActionButtons profile={profile} />}
       </div>
 

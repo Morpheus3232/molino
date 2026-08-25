@@ -55,7 +55,7 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     description: "Capital de Entre Ríos, ciudad histórica a orillas del río Paraná, centro político durante el Rosismo.",
     keyThemes: ["Río", "Historia", "Política", "Litoral"],
     sourceNote: "Fundada el 16 de octubre de 1730.",
-    events: [{ id: "parana-fund", type: "fundacion", label: "Fundación", year: 1730, description: "Se funda Paraná como asentamiento en el río.", source: "Documentación histórica", confidence: "media", primaryForAffinity: true }],
+    events: [{ id: "parana-fund", type: "fundacion", label: "Fundación", year: 1730, date: "1730-10-16", description: "Se funda Paraná como asentamiento en el río.", source: "Documentación histórica", confidence: "exacta", primaryForAffinity: true }],
   },
   {
     id: "concordia", name: "Concordia", type: "city", country: "Argentina",
@@ -207,7 +207,7 @@ export const CITIES_ARGENTINA_COMPLETO: AtlasEntityInput[] = [
     description: "Catamarca es capital provincial, ciudad andina de tradición religiosa y mineral.",
     keyThemes: ["Montaña", "Minería", "Tradición", "Religión"],
     sourceNote: "Fundada el 15 de agosto de 1683.",
-    events: [{ id: "catamarca-fund", type: "fundacion", label: "Fundación", year: 1683, description: "Se funda San Fernando del Valle de Catamarca.", source: "Documentación histórica", confidence: "media", primaryForAffinity: true }],
+    events: [{ id: "catamarca-fund", type: "fundacion", label: "Fundación", year: 1683, date: "1683-08-15", description: "Se funda San Fernando del Valle de Catamarca.", source: "Documentación histórica", confidence: "exacta", primaryForAffinity: true }],
   },
   {
     id: "la-rioja", name: "La Rioja", type: "city", country: "Argentina",

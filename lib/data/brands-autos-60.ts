@@ -8,7 +8,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "La voz rugiente de Detroit, Dodge moldea la rebeldía americana en muscle cars y camionetas que no piden permiso en la carretera.",
     keyThemes: ["Potencia", "Muscle", "Americano", "Durabilidad"],
-    events: [{ id: "dodge-autos-fund", type: "fundacion", label: "Fundación", year: 1900, confidence: "media", primaryForAffinity: true, description: "Los hermanos John y Horace Dodge la fundaron en Detroit fabricando piezas para Ford antes de lanzar su primer auto en 1914.", source: "Documentación histórica" }],
+    events: [{ id: "dodge-autos-fund", type: "fundacion", label: "Fundación", year: 1900, date: "1900-12-14", confidence: "exacta", primaryForAffinity: true, description: "Los hermanos John y Horace Dodge la fundaron en Detroit fabricando piezas para Ford antes de lanzar su primer auto en 1914.", source: "Wikidata Q27564 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1900.",
   },
   // Rata
@@ -38,7 +38,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "De motorizar bicicletas con excedentes de guerra a dominar el mundo, Honda convirtió la ingeniería japonesa en pura obstinación y genio.",
     keyThemes: ["Japón", "Innovación", "Motocicletas", "Confiabilidad"],
-    events: [{ id: "honda-motor-autos-fund", type: "fundacion", label: "Fundación", year: 1948, confidence: "media", primaryForAffinity: true, description: "Soichiro Honda, un mecánico autodidacta, fundó la empresa en Hamamatsu motorizando bicicletas con motores de excedentes de guerra.", source: "Documentación histórica" }],
+    events: [{ id: "honda-motor-autos-fund", type: "fundacion", label: "Fundación", year: 1948, date: "1948-09-24", confidence: "exacta", primaryForAffinity: true, description: "Soichiro Honda, un mecánico autodidacta, fundó la empresa en Hamamatsu motorizando bicicletas con motores de excedentes de guerra.", source: "Wikidata Q9584 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1948.",
   },
   // Cerdo
@@ -78,7 +78,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Walter Chrysler resucitó una marca moribunda y la convirtió en el tercer gigante de Detroit, donde la aerodinámica se vestía de arte americano.",
     keyThemes: ["Americano", "Innovación", "Diseño", "Potencia"],
-    events: [{ id: "chrysler-autos-fund", type: "fundacion", label: "Fundación", year: 1925, confidence: "media", primaryForAffinity: true, description: "Walter Chrysler relanzó en 1925 la moribunda Maxwell Motors con su nombre y el vanguardista Chrysler Six.", source: "Documentación histórica" }],
+    events: [{ id: "chrysler-autos-fund", type: "fundacion", label: "Fundación", year: 1925, date: "1925-06-06", confidence: "exacta", primaryForAffinity: true, description: "Walter Chrysler relanzó en 1925 la moribunda Maxwell Motors con su nombre y el vanguardista Chrysler Six.", source: "Wikidata Q29610 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1925.",
   },
   // Buey
@@ -118,7 +118,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Bajo el tridente robado a la fuente de Neptuno, Maserati teje elegancia italiana con un rugido de competición reservado a pocos.",
     keyThemes: ["Lujo", "Italiano", "Elegancia", "Deportivo"],
-    events: [{ id: "maserati-autos-fund", type: "fundacion", label: "Fundación", year: 1914, confidence: "media", primaryForAffinity: true, description: "Los hermanos Maserati abrieron su taller en Bolonia; el tridente del emblema proviene de la fuente de Neptuno.", source: "Documentación histórica" }],
+    events: [{ id: "maserati-autos-fund", type: "fundacion", label: "Fundación", year: 1914, date: "1914-12-01", confidence: "exacta", primaryForAffinity: true, description: "Los hermanos Maserati abrieron su taller en Bolonia; el tridente del emblema proviene de la fuente de Neptuno.", source: "Wikidata Q35962 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1914.",
   },
   // Tigre
@@ -148,7 +148,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "La primera marca de lujo japonesa en América, Acura llevó la precisión de Honda al asfalto con el cuchillo afilado del deportivo NSX.",
     keyThemes: ["Japón", "Precisión", "Deportivo", "Lujo"],
-    events: [{ id: "acura-autos-fund", type: "fundacion", label: "Fundación", year: 1986, confidence: "media", primaryForAffinity: true, description: "Honda estrenó en Estados Unidos la primera marca de lujo japonesa, debutando con el sedán Legend y el deportivo Integra.", source: "Documentación histórica" }],
+    events: [{ id: "acura-autos-fund", type: "fundacion", label: "Fundación", year: 1986, date: "1986-03-27", confidence: "exacta", primaryForAffinity: true, description: "Honda estrenó en Estados Unidos la primera marca de lujo japonesa, debutando con el sedán Legend y el deportivo Integra.", source: "Wikidata Q53097 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1986.",
   },
   // Gato
@@ -288,7 +288,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Bautizada con las estrellas de las Pléyades, Subaru unió motores bóxer y tracción integral para que ningún camino quede sin conquistar.",
     keyThemes: ["Japón", "Confiabilidad", "Aventura", "Tecnología"],
-    events: [{ id: "subaru-autos-fund", type: "fundacion", label: "Fundación", year: 1953, confidence: "media", primaryForAffinity: true, description: "Bautizada como las estrellas Pléyades, nació de la fusión de Fuji Heavy Industries y lanzó el mini auto 360.", source: "Documentación histórica" }],
+    events: [{ id: "subaru-autos-fund", type: "fundacion", label: "Fundación", year: 1953, date: "1953-07-15", confidence: "exacta", primaryForAffinity: true, description: "Bautizada como las estrellas Pléyades, nació de la fusión de Fuji Heavy Industries y lanzó el mini auto 360.", source: "Wikidata Q172741 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1953.",
   },
   // Serpiente
@@ -338,7 +338,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "De los telares de seda de Hamamatsu a las calles del mundo, Suzuki demostró que lo pequeño, bien hecho, puede conquistarlo todo.",
     keyThemes: ["Japón", "Versatilidad", "Accesibilidad", "Compacto"],
-    events: [{ id: "suzuki-autos-fund", type: "fundacion", label: "Fundación", year: 1909, confidence: "media", primaryForAffinity: true, description: "Michio Suzuki fundó en Hamamatsu una fábrica de telares de seda que décadas después se volcó a los vehículos.", source: "Documentación histórica" }],
+    events: [{ id: "suzuki-autos-fund", type: "fundacion", label: "Fundación", year: 1909, date: "1909-02-10", confidence: "exacta", primaryForAffinity: true, description: "Michio Suzuki fundó en Hamamatsu una fábrica de telares de seda que décadas después se volcó a los vehículos.", source: "Wikidata Q181642 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1909.",
   },
   // Gallo
@@ -358,7 +358,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Del legado de los autos Datsun al Leaf que corre sin gasolina, Nissan ha convertido la innovación japonesa en progreso cotidiano para el mundo.",
     keyThemes: ["Innovación", "Japón", "Tecnología", "Confiabilidad"],
-    events: [{ id: "nissan-autos-fund", type: "fundacion", label: "Fundación", year: 1933, confidence: "media", primaryForAffinity: true, description: "Yoshisuke Aikawa creó Jidosha Seizo, heredera de los autos Datsun, y la rebautizó Nissan por Nihon Sangyo.", source: "Documentación histórica" }],
+    events: [{ id: "nissan-autos-fund", type: "fundacion", label: "Fundación", year: 1933, date: "1933-12-26", confidence: "exacta", primaryForAffinity: true, description: "Yoshisuke Aikawa creó Jidosha Seizo, heredera de los autos Datsun, y la rebautizó Nissan por Nihon Sangyo.", source: "Wikidata Q20165 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1933.",
   },
   // Cabra
@@ -418,7 +418,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Nacida en Silicon Valley para reinventar el automóvil, cada Tesla carga la audacia de creer que el futuro no emite gases.",
     keyThemes: ["Innovación", "Sostenibilidad", "Tecnología", "Futuro"],
-    events: [{ id: "tesla-autos-fund", type: "fundacion", label: "Fundación", year: 2003, confidence: "media", primaryForAffinity: true, description: "Martin Eberhard y Marc Tarpenning fundaron la firma en Silicon Valley, bautizada en honor a Nikola Tesla.", source: "Documentación histórica" }],
+    events: [{ id: "tesla-autos-fund", type: "fundacion", label: "Fundación", year: 2003, date: "2003-07-01", confidence: "exacta", primaryForAffinity: true, description: "Martin Eberhard y Marc Tarpenning fundaron la firma en Silicon Valley, bautizada en honor a Nikola Tesla.", source: "Wikidata Q478214 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 2003.",
   },
   // Mono
@@ -428,7 +428,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "William Durant tejió en Flint un imperio de marcas rivales unidas bajo un mismo techo, dando al mundo el primer gigante automotriz americano.",
     keyThemes: ["Americano", "Gigante", "Innovación", "Tradición"],
-    events: [{ id: "gm-autos-fund", type: "fundacion", label: "Fundación", year: 1908, confidence: "media", primaryForAffinity: true, description: "William C. Durant consolidó en Flint una holding que absorbió a Buick, Oldsmobile y Cadillac para formar GM.", source: "Documentación histórica" }],
+    events: [{ id: "gm-autos-fund", type: "fundacion", label: "Fundación", year: 1908, date: "1908-09-16", confidence: "exacta", primaryForAffinity: true, description: "William C. Durant consolidó en Flint una holding que absorbió a Buick, Oldsmobile y Cadillac para formar GM.", source: "Wikidata Q81965 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1908.",
   },
   // Mono
@@ -438,7 +438,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "De los telares de Hiroshima a la carretera, Mazda siguió la luz de Ahura Mazda y encontró su alma en un motor rotativo imposiblemente único.",
     keyThemes: ["Innovación", "Japón", "Deportivo", "Diseño"],
-    events: [{ id: "mazda-autos-fund", type: "fundacion", label: "Fundación", year: 1920, confidence: "media", primaryForAffinity: true, description: "Jujiro Matsuda, fabricante de maquinaria de corcho, fundó la empresa en Hiroshima; el nombre evoca al dios Ahura Mazda.", source: "Documentación histórica" }],
+    events: [{ id: "mazda-autos-fund", type: "fundacion", label: "Fundación", year: 1920, date: "1920-01-30", confidence: "exacta", primaryForAffinity: true, description: "Jujiro Matsuda, fabricante de maquinaria de corcho, fundó la empresa en Hiroshima; el nombre evoca al dios Ahura Mazda.", source: "Wikidata Q35996 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1920.",
   },
   // Mono
@@ -468,7 +468,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Cuando Louis Renault subió su primer coche por la calle de Lepic en París, sembró una estirpe francesa de innovación y diseño que nunca se detuvo.",
     keyThemes: ["Francés", "Innovación", "Diseño", "Historia"],
-    events: [{ id: "renault-autos-fund", type: "fundacion", label: "Fundación", year: 1898, confidence: "media", primaryForAffinity: true, description: "Louis Renault armó su primer coche en el patio familiar de Boulogne-Billancourt y lo probó subiendo la calle de Lepic.", source: "Documentación histórica" }],
+    events: [{ id: "renault-autos-fund", type: "fundacion", label: "Fundación", year: 1898, date: "1898-12-24", confidence: "exacta", primaryForAffinity: true, description: "Louis Renault armó su primer coche en el patio familiar de Boulogne-Billancourt y lo probó subiendo la calle de Lepic.", source: "Wikidata Q6686 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1898.",
   },
   // Gallo
@@ -528,7 +528,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "De las cenizas de una fábrica fallida en Milán, Alfa Romeo nació con un trébol de la suerte y un corazón que late en italiano.",
     keyThemes: ["Pasión", "Italiano", "Diseño", "Deportivo"],
-    events: [{ id: "alfa-romeo-autos-fund", type: "fundacion", label: "Fundación", year: 1910, confidence: "media", primaryForAffinity: true, description: "Nacida en Milán de las cenizas de la filial italiana de Darracq, la A.L.F.A. debutó con el 24 HP.", source: "Documentación histórica" }],
+    events: [{ id: "alfa-romeo-autos-fund", type: "fundacion", label: "Fundación", year: 1910, date: "1910-06-24", confidence: "exacta", primaryForAffinity: true, description: "Nacida en Milán de las cenizas de la filial italiana de Darracq, la A.L.F.A. debutó con el 24 HP.", source: "Wikidata Q26921 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1910.",
   },
   // Perro
@@ -608,7 +608,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "El auto nacional de Malasia, Proton puso a una nación joven sobre ruedas propias y convirtió el orgullo asiático en industria.",
     keyThemes: ["Malasia", "Crecimiento", "Accesibilidad", "Industria"],
-    events: [{ id: "proton-autos-fund", type: "fundacion", label: "Fundación", year: 1983, confidence: "media", primaryForAffinity: true, description: "Proton nació como el auto nacional de Malasia y su primer modelo, el Saga, usó tecnología de Mitsubishi.", source: "Documentación histórica" }],
+    events: [{ id: "proton-autos-fund", type: "fundacion", label: "Fundación", year: 1983, date: "1983-05-07", confidence: "exacta", primaryForAffinity: true, description: "Proton nació como el auto nacional de Malasia y su primer modelo, el Saga, usó tecnología de Mitsubishi.", source: "Wikidata Q827306 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1983.",
   },
   // Caballo
@@ -618,7 +618,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Del acero del siglo XIX al león rampante, Peugeot ha acompañado a Francia desde los carruajes hasta el asfalto de hoy.",
     keyThemes: ["Tradición", "Francés", "Diseño", "Historia"],
-    events: [{ id: "peugeot-autos-fund", type: "fundacion", label: "Fundación", year: 1810, confidence: "media", primaryForAffinity: true, description: "La familia Peugeot, dedicada al acero desde 1810, presentó su primer automóvil de vapor en 1889.", source: "Documentación histórica" }],
+    events: [{ id: "peugeot-autos-fund", type: "fundacion", label: "Fundación", year: 1810, date: "1810-09-26", confidence: "exacta", primaryForAffinity: true, description: "La familia Peugeot, dedicada al acero desde 1810, presentó su primer automóvil de vapor en 1889.", source: "Wikidata Q6742 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1810.",
   },
   // Buey
@@ -628,7 +628,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "El gigante alemán que democratizó el automóvil con el Escarabajo.",
     keyThemes: ["Confiabilidad", "Tradición", "Accesibilidad", "Ingeniería"],
-    events: [{ id: "vw-autos-fund", type: "fundacion", label: "Fundación", year: 1937, confidence: "media", primaryForAffinity: true, description: "Con el encargo del 'auto del pueblo', Ferdinand Porsche diseñó el Escarabajo que dio nombre a la fábrica de Wolfsburgo.", source: "Documentación histórica" }],
+    events: [{ id: "vw-autos-fund", type: "fundacion", label: "Fundación", year: 1937, date: "1937-05-28", confidence: "exacta", primaryForAffinity: true, description: "Con el encargo del 'auto del pueblo', Ferdinand Porsche diseñó el Escarabajo que dio nombre a la fábrica de Wolfsburgo.", source: "Wikidata Q246 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1937.",
   },
   // Buey
@@ -638,7 +638,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "Nacida en Wuhu con ambición estatal, Chery convirtió motores y diseño en el emblema de un gigante que aprendió a cruzar las fronteras del mundo.",
     keyThemes: ["China", "Crecimiento", "Innovación", "Accesibilidad"],
-    events: [{ id: "chery-autos-fund", type: "fundacion", label: "Fundación", year: 1997, confidence: "media", primaryForAffinity: true, description: "Nacida en Wuhu con apoyo estatal, Chery comenzó fabricando motores y se volvió la gran exportadora china.", source: "Documentación histórica" }],
+    events: [{ id: "chery-autos-fund", type: "fundacion", label: "Fundación", year: 1997, date: "1997-01-08", confidence: "exacta", primaryForAffinity: true, description: "Nacida en Wuhu con apoyo estatal, Chery comenzó fabricando motores y se volvió la gran exportadora china.", source: "Wikidata Q591001 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1997.",
   },
   // Serpiente
@@ -658,7 +658,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
     category: "autos",
     description: "El ingeniero Vincenzo Lancia dejó FIAT para inventar autos con alma propia, sembrando una innovación técnica que hoy vive en las leyendas del rally.",
     keyThemes: ["Italiano", "Innovación", "Diseño", "Historia"],
-    events: [{ id: "lancia-autos-fund", type: "fundacion", label: "Fundación", year: 1906, confidence: "media", primaryForAffinity: true, description: "Vincenzo Lancia dejó FIAT para fundar su marca en Turín con el Alfa 12 HP, precursor del innovador Lambda.", source: "Documentación histórica" }],
+    events: [{ id: "lancia-autos-fund", type: "fundacion", label: "Fundación", year: 1906, date: "1906-11-27", confidence: "exacta", primaryForAffinity: true, description: "Vincenzo Lancia dejó FIAT para fundar su marca en Turín con el Alfa 12 HP, precursor del innovador Lambda.", source: "Wikidata Q35896 (fecha de fundación, precisión de día), coincide con el año ya documentado" }],
     sourceNote: "Fundada en 1906.",
   },
   // Perro

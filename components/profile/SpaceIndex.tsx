@@ -19,8 +19,12 @@ interface SpaceIndexProps {
 export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndexProps) {
   const items = [
     {
-      label: "Leer qué significa",
-      teaser: "La conversación entre tus sistemas, en su propio espacio.",
+      // Destino principal desde que Mi Mapa quedó con una sola pregunta: el
+      // cuadro de nacimiento, la convergencia, los dos movimientos y la
+      // sincronicidad viven ahora en /lectura, gratis, con la Pro al final.
+      label: "Leer qué significa tu mapa",
+      teaser:
+        "Los dígitos de tu fecha, dónde coinciden tus sistemas y la lectura de los dos movimientos. Gratis.",
       href: `/lectura#${encodeProfileData(profile)}`,
       icon: BookOpen,
     },
@@ -54,7 +58,8 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
           ¿Y ahora qué? Explorá tu mapa
         </h2>
         <p className="text-sm text-muted mt-2 leading-relaxed">
-          Un mapa no es para guardarlo en un cajón. Es una brújula práctica para navegar tus decisiones cotidianas.
+          Esta página responde dónde tu signo toca el mundo. Lo que ese mapa significa se lee
+          aparte, y el resto son herramientas que salen de las mismas coordenadas.
         </p>
       </div>
 

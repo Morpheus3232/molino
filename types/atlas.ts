@@ -98,6 +98,27 @@ export interface LightweightEntity {
   type: string;
   /** Breve origen: momento de fundación/creación, p. ej. "Fundación · 1905". Derivado (server-side) del evento primario. */
   origin?: string;
+  /** Año del evento primario, en crudo. Es lo que produce el signo. */
+  year?: number;
+  /**
+   * Fecha exacta del evento primario en ISO (YYYY-MM-DD), presente SOLO cuando
+   * el registro la documenta. Sin ella el signo del zodíaco chino no puede
+   * afirmarse: el Año Nuevo chino cae entre el 21 de enero y el 21 de febrero,
+   * así que un evento fechado solo por año podría pertenecer al signo
+   * anterior. Los tres campos `origin*` viajan juntos y solo con fecha exacta.
+   */
+  originDate?: string;
+  /** Etiqueta del evento primario, ej. "Fundación", "Independencia". */
+  originLabel?: string;
+  /** Frase breve que documenta el origen, tal como la trae el registro. */
+  originNote?: string;
+  /**
+   * La entidad es de gama alta según los datos del propio registro
+   * (`category: "Lujo"` o un `keyThemes` con Lujo/Exclusivo/Premium/Alta gama).
+   * No es un juicio de precio inventado: es la etiqueta que el dataset ya
+   * traía. Se usa para que una lista no quede compuesta solo por marcas caras.
+   */
+  premium?: boolean;
   /** Passthrough de AtlasEntityInput.category — hoy solo distingue "actual"/"historico" en football_player. */
   category?: string;
 }

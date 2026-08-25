@@ -63,10 +63,8 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   // types) and same-type entities (for the quick selector). The rich data
   // layer never reaches the client bundle — only these props do.
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
-  const sameType = getEntitiesByType(type as EntityType).map(toLightweightEntity);
   // Capa 1 (editorial): otras entidades del mismo tipo ya existentes en el
   // dataset, sin calcular afinidad — solo un listado, no un descubrimiento.
-  const editorialRelated = sameType.filter((e) => e.id !== entity.id).slice(0, 4);
   const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
 
   return (
@@ -77,8 +75,8 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
       />
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
-          <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType} relatedEntities={editorialRelated} />
-          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} sameType={sameType} />
+          <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType} />
+          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} />
         </main>
       </div>
     </>

@@ -42,7 +42,7 @@ export default function ConvergenceSection({ profile }: { profile: UserProfile }
           <>
             {convergentCount === 1 ? "UN SISTEMA" : `${convergentCount} SISTEMAS`}
             <br />
-            SE REPITEN.
+            {convergentCount === 1 ? "SE REPITE." : "SE REPITEN."}
           </>
         ) : (
           <>

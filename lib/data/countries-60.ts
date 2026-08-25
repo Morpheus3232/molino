@@ -8,7 +8,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Estados Unidos", emoji: "🇺🇸",
     description: "La primera república moderna nació en 1776 bajo el lema del «sueño americano», una promesa de movilidad social que ha atraído a inmigrantes de todo el mundo hacia sus costas desde entonces.",
     keyThemes: ["Innovación", "Diversidad", "Libertad", "Poder"],
-    events: [{ id: "usa-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1776, confidence: "exacta", primaryForAffinity: true, description: "Redactada por Thomas Jefferson y firmada el 4 de julio de 1776, separó a las trece colonias de Gran Bretaña y dio origen a la primera república moderna.", source: "Documentación histórica" }],
+    events: [{ id: "usa-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1776, date: "1776-07-04", confidence: "exacta", primaryForAffinity: true, description: "Redactada por Thomas Jefferson y firmada el 4 de julio de 1776, separó a las trece colonias de Gran Bretaña y dio origen a la primera república moderna.", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 4 de julio de 1776.",
   },
   {
@@ -16,7 +16,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Israel", emoji: "🇮🇱",
     description: "Tierra prometida donde el desierto del Néguev florece con tecnología de riego por goteo, un estado nacido del exilio que recuperó el hebreo como lengua viva tras veinte siglos.",
     keyThemes: ["Resiliencia", "Innovación", "Tradición", "Estrategia"],
-    events: [{ id: "israel-indep", type: "independencia-declarada", label: "Declaración del Estado de Israel", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Proclamada por David Ben-Gurión en Tel Aviv el 14 de mayo de 1948, creó un refugio nacional judío un día antes de expirar el mandato británico.", source: "Documentación histórica" }],
+    events: [{ id: "israel-indep", type: "independencia-declarada", label: "Declaración del Estado de Israel", year: 1948, date: "1948-05-14", confidence: "exacta", primaryForAffinity: true, description: "Proclamada por David Ben-Gurión en Tel Aviv el 14 de mayo de 1948, creó un refugio nacional judío un día antes de expirar el mandato británico.", source: "Documentación histórica" }],
     sourceNote: "Declaración de Independencia el 14 de mayo de 1948.",
   },
   {
@@ -24,7 +24,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Países Bajos", emoji: "🇳🇱",
     description: "Un cuarto de su territorio se lo arrebataron al mar con diques y molinos, y de esa batalla hidráulica nació una república mercantil que inventó la primera bolsa del mundo.",
     keyThemes: ["Comercio", "Tolerancia", "Ingeniería", "Liberalismo"],
-    events: [{ id: "nl-acta", type: "independencia-declarada", label: "Acta de Abjuración", year: 1581, confidence: "exacta", primaryForAffinity: true, description: "El Acta de Abjuración destronó formalmente a Felipe II y es considerada uno de los primeros documentos que declararon la soberanía popular.", source: "Documentación histórica" }],
+    events: [{ id: "nl-acta", type: "independencia-declarada", label: "Acta de Abjuración", year: 1581, date: "1581-07-26", confidence: "exacta", primaryForAffinity: true, description: "El Acta de Abjuración destronó formalmente a Felipe II y es considerada uno de los primeros documentos que declararon la soberanía popular.", source: "Documentación histórica" }],
     sourceNote: "Acta de Abjuración el 26 de julio de 1581.",
   },
   {
@@ -32,7 +32,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Taiwán", emoji: "🇹🇼",
     description: "Isla-montaña del Pacífico convertida en la fábrica de semiconductores del mundo, que conserva la escritura china tradicional y la memoria de una república sitiada entre dos potencias.",
     keyThemes: ["Democracia", "Adaptabilidad", "Tecnología", "Resiliencia"],
-    events: [{ id: "taiwan-founding", type: "fundacion", label: "Fundación de la República de China", year: 1912, confidence: "exacta", primaryForAffinity: true, description: "Sun Yat-sen proclamó la república en Nankín el 1 de enero de 1912, derribando más de dos milenios de gobierno imperial chino.", source: "Documentación histórica" }],
+    events: [{ id: "taiwan-founding", type: "fundacion", label: "Fundación de la República de China", year: 1912, date: "1912-01-01", confidence: "exacta", primaryForAffinity: true, description: "Sun Yat-sen proclamó la república en Nankín el 1 de enero de 1912, derribando más de dos milenios de gobierno imperial chino.", source: "Documentación histórica" }],
     sourceNote: "Fundación de la República de China el 1 de enero de 1912.",
   },
   {
@@ -40,7 +40,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Singapur", emoji: "🇸🇬",
     description: "Puerto del Estrecho de Malaca que pasó de aldea de pescadores a ciudad-estado de rascacielos, donde el león marino del Merlion guarda un crisol de cuatro lenguas.",
     keyThemes: ["Eficiencia", "Innovación", "Multiculturalismo", "Visión"],
-    events: [{ id: "sg-indep", type: "independencia-declarada", label: "Independencia de Singapur", year: 1965, confidence: "exacta", primaryForAffinity: true, description: "Separada de Malasia en 1965, la ciudad-estado proclamó su independencia bajo Lee Kuan Yew y se embarcó en una transformación económica radical.", source: "Documentación histórica" }],
+    events: [{ id: "sg-indep", type: "independencia-declarada", label: "Independencia de Singapur", year: 1965, date: "1965-08-09", confidence: "exacta", primaryForAffinity: true, description: "Separada de Malasia en 1965, la ciudad-estado proclamó su independencia bajo Lee Kuan Yew y se embarcó en una transformación económica radical.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 9 de agosto de 1965.",
   },
   // BUEY
@@ -49,7 +49,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Alemania", emoji: "🇩🇪",
     description: "Tierra de los hermanos Grimm y de la primera imprenta de Gutenberg, reconstruida dos veces desde las cenizas del siglo XX hasta liderar la economía de Europa.",
     keyThemes: ["Industria", "Disciplina", "Precisión", "Estabilidad"],
-    events: [{ id: "de-unificacion", type: "fundacion", label: "Unificación Alemana", year: 1871, confidence: "exacta", primaryForAffinity: true, description: "Bismarck proclamó el Imperio Alemán en el Salón de los Espejos de Versalles, unificando veinticinco estados alemanes bajo el dominio prusiano.", source: "Documentación histórica" }],
+    events: [{ id: "de-unificacion", type: "fundacion", label: "Unificación Alemana", year: 1871, date: "1871-01-18", confidence: "exacta", primaryForAffinity: true, description: "Bismarck proclamó el Imperio Alemán en el Salón de los Espejos de Versalles, unificando veinticinco estados alemanes bajo el dominio prusiano.", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Imperio Alemán el 18 de enero de 1871.",
   },
   {
@@ -57,7 +57,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Japón", emoji: "🇯🇵",
     description: "Archipiélago del sol naciente donde los templos zen conviven con los trenes bala y el monte Fuji se refleja en un país que convirtió la cortesía en arte.",
     keyThemes: ["Tradición", "Disciplina", "Innovación", "Armonía"],
-    events: [{ id: "jp-constitucion", type: "fundacion", label: "Constitución de la Posguerra", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Promulgada bajo la ocupación aliada, esta constitución renunció para siempre a la guerra y redujo al emperador a un símbolo sin poder político.", source: "Documentación histórica" }],
+    events: [{ id: "jp-constitucion", type: "fundacion", label: "Constitución de la Posguerra", year: 1947, date: "1947-05-03", confidence: "exacta", primaryForAffinity: true, description: "Promulgada bajo la ocupación aliada, esta constitución renunció para siempre a la guerra y redujo al emperador a un símbolo sin poder político.", source: "Documentación histórica" }],
     sourceNote: "Constitución del 3 de mayo de 1947.",
   },
   {
@@ -65,7 +65,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Suiza", emoji: "🇨🇭",
     description: "Cuatro idiomas, veintiséis cantones y una neutralidad que lo convirtió en refugio de revolucionarios y banqueros en el corazón de los Alpes, donde nació el reloj suizo.",
     keyThemes: ["Neutralidad", "Estabilidad", "Precisión", "Diplomacia"],
-    events: [{ id: "ch-constitucion", type: "fundacion", label: "Constitución Federal Suiza", year: 1848, confidence: "exacta", primaryForAffinity: true, description: "Tras la breve guerra del Sonderbund, esta constitución transformó una frágil confederación de cantones en un estado federal centralizado con moneda única.", source: "Documentación histórica" }],
+    events: [{ id: "ch-constitucion", type: "fundacion", label: "Constitución Federal Suiza", year: 1848, date: "1848-09-12", confidence: "exacta", primaryForAffinity: true, description: "Tras la breve guerra del Sonderbund, esta constitución transformó una frágil confederación de cantones en un estado federal centralizado con moneda única.", source: "Documentación histórica" }],
     sourceNote: "Constitución Federal del 12 de septiembre de 1848.",
   },
   {
@@ -73,7 +73,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Canadá", emoji: "🇨🇦",
     description: "La segunda nación más extensa del mundo, con más lagos que el resto del planeta junto, donde la hoja de arce tiñe de rojo los otoños entre Montreal y Vancouver.",
     keyThemes: ["Multiculturalismo", "Paz", "Naturaleza", "Estabilidad"],
-    events: [{ id: "ca-confederacion", type: "fundacion", label: "Confederación Canadiense", year: 1867, confidence: "exacta", primaryForAffinity: true, description: "El Acta de la América del Norte Británica unió a Ontario, Quebec, Nueva Escocia y Nuevo Brunswick como un dominio autónomo dentro del Imperio Británico.", source: "Documentación histórica" }],
+    events: [{ id: "ca-confederacion", type: "fundacion", label: "Confederación Canadiense", year: 1867, date: "1867-07-01", confidence: "exacta", primaryForAffinity: true, description: "El Acta de la América del Norte Británica unió a Ontario, Quebec, Nueva Escocia y Nuevo Brunswick como un dominio autónomo dentro del Imperio Británico.", source: "Documentación histórica" }],
     sourceNote: "Acta de la América del Norte Británica el 1 de julio de 1867.",
   },
   {
@@ -81,7 +81,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Corea del Sur", emoji: "🇰🇷",
     description: "De las cenizas de la guerra emergió un país que inventó la impresión con tipos metálicos antes que Gutenberg y hoy exporta K-pop, kimchi y semiconductores por todo el planeta.",
     keyThemes: ["Industria", "Tecnología", "Disciplina", "Progreso"],
-    events: [{ id: "kr-fundacion", type: "fundacion", label: "Fundación de la República de Corea", year: 1948, confidence: "exacta", primaryForAffinity: true, description: "Proclamada el 15 de agosto de 1948 tras cuarenta años de dominio japonés, la República nació dividida de su vecino del norte por el paralelo 38.", source: "Documentación histórica" }],
+    events: [{ id: "kr-fundacion", type: "fundacion", label: "Fundación de la República de Corea", year: 1948, date: "1948-08-15", confidence: "exacta", primaryForAffinity: true, description: "Proclamada el 15 de agosto de 1948 tras cuarenta años de dominio japonés, la República nació dividida de su vecino del norte por el paralelo 38.", source: "Documentación histórica" }],
     sourceNote: "Establecimiento de la República el 15 de agosto de 1948.",
   },
   // TIGRE
@@ -104,7 +104,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "India", emoji: "🇮🇳",
     description: "Cuna del cero, el ajedrez y el yoga, un subcontinente de dioses poliédricos donde el Taj Mahal y la mayor democracia del planeta conviven desde 1947.",
     keyThemes: ["Democracia", "Diversidad", "Espiritualidad", "Crecimiento"],
-    events: [{ id: "in-indep", type: "independencia-declarada", label: "Independencia de la India", year: 1947, confidence: "exacta", primaryForAffinity: true, description: "Proclamada a la medianoche del 15 de agosto de 1947 tras décadas de desobediencia civil liderada por Gandhi, la independencia llegó junto con la partición del subcontinente.", source: "Documentación histórica" }],
+    events: [{ id: "in-indep", type: "independencia-declarada", label: "Independencia de la India", year: 1947, date: "1947-08-15", confidence: "exacta", primaryForAffinity: true, description: "Proclamada a la medianoche del 15 de agosto de 1947 tras décadas de desobediencia civil liderada por Gandhi, la independencia llegó junto con la partición del subcontinente.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 15 de agosto de 1947.",
   },
   {
@@ -119,7 +119,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Nigeria", emoji: "🇳🇬",
     description: "El gigante demográfico de África, fusión de más de 250 etnias que convierten a Lagos en la capital cultural emergente del continente y a Nollywood en su gran pantalla.",
     keyThemes: ["Potencia", "Diversidad", "Empresa", "Cultura"],
-    events: [{ id: "ng-indep", type: "independencia-declarada", label: "Independencia de Nigeria", year: 1960, confidence: "exacta", primaryForAffinity: true, description: "La antigua colonia británica más poblada de África accedió a la independencia el 1 de octubre de 1960, con más de 250 etnias unidas en una sola federación.", source: "Documentación histórica" }],
+    events: [{ id: "ng-indep", type: "independencia-declarada", label: "Independencia de Nigeria", year: 1960, date: "1960-10-01", confidence: "exacta", primaryForAffinity: true, description: "La antigua colonia británica más poblada de África accedió a la independencia el 1 de octubre de 1960, con más de 250 etnias unidas en una sola federación.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 1 de octubre de 1960.",
   },
   // GATO
@@ -128,7 +128,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Francia", emoji: "🇫🇷",
     description: "Cuna de la Bastilla y de la Torre Eiffel, donde la baguette, el vino y la «joie de vivre» son patrimonio de una república que acuñó la declaración de los derechos humanos.",
     keyThemes: ["Elegancia", "República", "Cultura", "Vanguardia"],
-    events: [{ id: "fr-revolucion", type: "fundacion", label: "Revolución Francesa", year: 1789, confidence: "exacta", primaryForAffinity: true, description: "La toma de la Bastilla el 14 de julio de 1789 estalló contra el absolutismo borbónico y abolió el feudalismo, inspirando revoluciones en todo el mundo.", source: "Documentación histórica" }],
+    events: [{ id: "fr-revolucion", type: "fundacion", label: "Revolución Francesa", year: 1789, date: "1789-07-14", confidence: "exacta", primaryForAffinity: true, description: "La toma de la Bastilla el 14 de julio de 1789 estalló contra el absolutismo borbónico y abolió el feudalismo, inspirando revoluciones en todo el mundo.", source: "Documentación histórica" }],
     sourceNote: "Toma de la Bastilla el 14 de julio de 1789.",
   },
   {
@@ -136,7 +136,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Italia", emoji: "🇮🇹",
     description: "La bota del Mediterráneo donde el Coliseo y la pizza nacieron casi al mismo tiempo, y cada ciudad guarda las capas de los dos milenios que la construyeron.",
     keyThemes: ["Arte", "Moda", "Gastronomía", "Elegancia"],
-    events: [{ id: "it-unificacion", type: "fundacion", label: "Unificación Italiana", year: 1861, confidence: "exacta", primaryForAffinity: true, description: "El Parlamento de Turín proclamó a Víctor Manuel II rey de Italia, culminando el Risorgimento que unificó la península tras siglos de fragmentación.", source: "Documentación histórica" }],
+    events: [{ id: "it-unificacion", type: "fundacion", label: "Unificación Italiana", year: 1861, date: "1861-03-17", confidence: "exacta", primaryForAffinity: true, description: "El Parlamento de Turín proclamó a Víctor Manuel II rey de Italia, culminando el Risorgimento que unificó la península tras siglos de fragmentación.", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Reino de Italia el 17 de marzo de 1861.",
   },
   {
@@ -144,7 +144,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Marruecos", emoji: "🇲🇦",
     description: "Puerta de África entre el Atlántico y el Sahara, donde los zocos de Marrakech, la mezquita de Hassan II y el té con menta custodian la memoria andalusí.",
     keyThemes: ["Diplomacia", "Tradición", "Artesanía", "Tolerancia"],
-    events: [{ id: "ma-indep", type: "independencia-declarada", label: "Independencia de Marruecos", year: 1956, confidence: "exacta", primaryForAffinity: true, description: "El sultán Mohammed V, exiliado por Francia, regresó a Rabat para encabezar la independencia negociada que puso fin a 44 años de protectorado.", source: "Documentación histórica" }],
+    events: [{ id: "ma-indep", type: "independencia-declarada", label: "Independencia de Marruecos", year: 1956, date: "1956-03-02", confidence: "exacta", primaryForAffinity: true, description: "El sultán Mohammed V, exiliado por Francia, regresó a Rabat para encabezar la independencia negociada que puso fin a 44 años de protectorado.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 2 de marzo de 1956.",
   },
   {
@@ -160,7 +160,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Kenia", emoji: "🇰🇪",
     description: "Sabana de la Gran Migración donde el Kilimanjaro vigila el Valle del Rift, y los atletas de las tierras altas corren los maratones del mundo.",
     keyThemes: ["Naturaleza", "Diplomacia", "Diversidad", "Safari"],
-    events: [{ id: "ke-indep", type: "independencia-declarada", label: "Independencia de Kenia", year: 1963, confidence: "exacta", primaryForAffinity: true, description: "Conocida como Uhuru Day, la independencia del 12 de diciembre de 1963 puso fin a décadas de revuelta Mau Mau y coronó a Jomo Kenyatta como primer presidente.", source: "Documentación histórica" }],
+    events: [{ id: "ke-indep", type: "independencia-declarada", label: "Independencia de Kenia", year: 1963, date: "1963-12-12", confidence: "exacta", primaryForAffinity: true, description: "Conocida como Uhuru Day, la independencia del 12 de diciembre de 1963 puso fin a décadas de revuelta Mau Mau y coronó a Jomo Kenyatta como primer presidente.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 12 de diciembre de 1963.",
   },
   // DRAGÓN
@@ -169,7 +169,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "China", emoji: "🇨🇳",
     description: "Civilización del dragón que inventó el papel, la pólvora y la brújula, y que hoy reescribe el equilibrio mundial desde la Gran Muralla hasta sus megaciudades.",
     keyThemes: ["Poder", "Ambición", "Tradición", "Expansión"],
-    events: [{ id: "cn-proclamacion", type: "fundacion", label: "Proclamación de la República Popular", year: 1949, confidence: "exacta", primaryForAffinity: true, description: "Mao Zedong proclamó la nueva república desde la Puerta de Tiananmén el 1 de octubre de 1949, tras derrotar al gobierno nacionalista en la guerra civil.", source: "Documentación histórica" }],
+    events: [{ id: "cn-proclamacion", type: "fundacion", label: "Proclamación de la República Popular", year: 1949, date: "1949-10-01", confidence: "exacta", primaryForAffinity: true, description: "Mao Zedong proclamó la nueva república desde la Puerta de Tiananmén el 1 de octubre de 1949, tras derrotar al gobierno nacionalista en la guerra civil.", source: "Documentación histórica" }],
     sourceNote: "Proclamación el 1 de octubre de 1949.",
   },
   {
@@ -177,7 +177,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Rusia", emoji: "🇷🇺",
     description: "Imperio de once husos horarios entre Europa y el Pacífico, donde el tren transiberiano cruza la estepa infinita bajo las cúpulas de San Basilio.",
     keyThemes: ["Poder", "Geopolítica", "Resiliencia", "Inmensidad"],
-    events: [{ id: "ru-federacion", type: "fundacion", label: "Disolución de la URSS", year: 1991, confidence: "exacta", primaryForAffinity: true, description: "Boris Yeltsin disolvió oficialmente la URSS el 25 de diciembre de 1991, entregando el poder soviético, el arsenal nuclear y el asiento en la ONU a Rusia.", source: "Documentación histórica" }],
+    events: [{ id: "ru-federacion", type: "fundacion", label: "Disolución de la URSS", year: 1991, date: "1991-12-25", confidence: "exacta", primaryForAffinity: true, description: "Boris Yeltsin disolvió oficialmente la URSS el 25 de diciembre de 1991, entregando el poder soviético, el arsenal nuclear y el asiento en la ONU a Rusia.", source: "Documentación histórica" }],
     sourceNote: "Disolución de la URSS el 25 de diciembre de 1991.",
   },
   {
@@ -185,7 +185,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Reino Unido", emoji: "🇬🇧",
     description: "Isla de Shakespeare, el Big Ben y el té de las cinco, que impuso su lengua y su moneda a media humanidad desde un archipiélago eternamente nublado.",
     keyThemes: ["Imperio", "Parlamento", "Tradición", "Influencia"],
-    events: [{ id: "gb-union", type: "fundacion", label: "Acts of Union", year: 1707, confidence: "exacta", primaryForAffinity: true, description: "Los Acts of Union fundieron los reinos de Inglaterra y Escocia en un solo parlamento británico tras el proyecto fallido de colonia escocesa en Darién.", source: "Documentación histórica" }],
+    events: [{ id: "gb-union", type: "fundacion", label: "Acts of Union", year: 1707, date: "1707-05-01", confidence: "exacta", primaryForAffinity: true, description: "Los Acts of Union fundieron los reinos de Inglaterra y Escocia en un solo parlamento británico tras el proyecto fallido de colonia escocesa en Darién.", source: "Documentación histórica" }],
     sourceNote: "Acts of Union el 1 de mayo de 1707.",
   },
   {
@@ -193,7 +193,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Emiratos Árabes Unidos", emoji: "🇦🇪",
     description: "En medio siglo, siete emiratos del golfo trocaron los campamentos de pesca de perlas por el Burj Khalifa, erigiendo el desierto más lujoso y futurista del planeta.",
     keyThemes: ["Lujo", "Ambición", "Futurismo", "Comercio"],
-    events: [{ id: "ae-federacion", type: "fundacion", label: "Independencia y Federación", year: 1971, confidence: "exacta", primaryForAffinity: true, description: "Zayed bin Sultán Al Nahyan unió siete emiratos del golfo Pérsico el 2 de diciembre de 1971, al retirarse Gran Bretaña de la región.", source: "Documentación histórica" }],
+    events: [{ id: "ae-federacion", type: "fundacion", label: "Independencia y Federación", year: 1971, date: "1971-12-02", confidence: "exacta", primaryForAffinity: true, description: "Zayed bin Sultán Al Nahyan unió siete emiratos del golfo Pérsico el 2 de diciembre de 1971, al retirarse Gran Bretaña de la región.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 2 de diciembre de 1971.",
   },
   {
@@ -201,7 +201,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Turquía", emoji: "🇹🇷",
     description: "Puente de Estambul entre dos continentes, donde Santa Sofía reúne bajo una misma cúpula el eco de Bizancio y el esplendor de los sultanes otomanos.",
     keyThemes: ["Puente", "Modernización", "Poder", "Historia"],
-    events: [{ id: "tr-republica", type: "fundacion", label: "Proclamación de la República", year: 1923, confidence: "exacta", primaryForAffinity: true, description: "Mustafa Kemal Atatürk abolió el sultanato otomano y proclamó una república laica, iniciando reformas radicales en lengua, derecho y vestimenta.", source: "Documentación histórica" }],
+    events: [{ id: "tr-republica", type: "fundacion", label: "Proclamación de la República", year: 1923, date: "1923-10-29", confidence: "exacta", primaryForAffinity: true, description: "Mustafa Kemal Atatürk abolió el sultanato otomano y proclamó una república laica, iniciando reformas radicales en lengua, derecho y vestimenta.", source: "Documentación histórica" }],
     sourceNote: "Proclamación de la República el 29 de octubre de 1923.",
   },
   // SERPIENTE
@@ -210,7 +210,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Egipto", emoji: "🇪🇬",
     description: "«Un don del Nilo», como escribió Heródoto, con pirámides más antiguas que Roma y un desierto que guarda el secreto de los faraones desde hace cinco milenios.",
     keyThemes: ["Sabiduría", "Historia", "Misterio", "Liderazgo"],
-    events: [{ id: "eg-indep", type: "independencia-declarada", label: "Independencia de Egipto", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "Gran Bretaña reconoció a Egipto como reino soberano el 28 de febrero de 1922, aunque conservó el control del canal de Suez hasta 1956.", source: "Documentación histórica" }],
+    events: [{ id: "eg-indep", type: "independencia-declarada", label: "Independencia de Egipto", year: 1922, date: "1922-02-28", confidence: "exacta", primaryForAffinity: true, description: "Gran Bretaña reconoció a Egipto como reino soberano el 28 de febrero de 1922, aunque conservó el control del canal de Suez hasta 1956.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 28 de febrero de 1922.",
   },
   {
@@ -218,7 +218,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Grecia", emoji: "🇬🇷",
     description: "Cien islas blancas y azules donde nació la democracia, y los dioses del Olimpo aún vigilan los teatros al aire libre donde se inventó la tragedia.",
     keyThemes: ["Filosofía", "Democracia", "Sabiduría", "Mito"],
-    events: [{ id: "gr-indep", type: "independencia-declarada", label: "Guerra de Independencia Griega", year: 1821, confidence: "exacta", primaryForAffinity: true, description: "El arzobispo Germán III bendijo la revuelta en Agia Lavra, una guerra de casi diez años que expulsó a los otomanos e inspiró al romanticismo europeo.", source: "Documentación histórica" }],
+    events: [{ id: "gr-indep", type: "independencia-declarada", label: "Guerra de Independencia Griega", year: 1821, date: "1821-03-25", confidence: "exacta", primaryForAffinity: true, description: "El arzobispo Germán III bendijo la revuelta en Agia Lavra, una guerra de casi diez años que expulsó a los otomanos e inspiró al romanticismo europeo.", source: "Documentación histórica" }],
     sourceNote: "Declaración de independencia el 25 de marzo de 1821.",
   },
   {
@@ -241,7 +241,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Arabia Saudita", emoji: "🇸🇦",
     description: "Custodio de la Meca y la Kaaba, un reino que emergió de las dunas gracias al petróleo y hoy levanta ciudades de cristal en pleno desierto.",
     keyThemes: ["Petróleo", "Estrategia", "Tradición", "Autoridad"],
-    events: [{ id: "sa-unificacion", type: "fundacion", label: "Unificación del Reino", year: 1932, confidence: "exacta", primaryForAffinity: true, description: "Abdulaziz bin Saud unificó bajo su trono los reinos de Hiyaz y Néyed en 1932, dando nombre al país con su propia dinastía y su alianza con el wahabismo.", source: "Documentación histórica" }],
+    events: [{ id: "sa-unificacion", type: "fundacion", label: "Unificación del Reino", year: 1932, date: "1932-09-23", confidence: "exacta", primaryForAffinity: true, description: "Abdulaziz bin Saud unificó bajo su trono los reinos de Hiyaz y Néyed en 1932, dando nombre al país con su propia dinastía y su alianza con el wahabismo.", source: "Documentación histórica" }],
     sourceNote: "Proclamación del Reino el 23 de septiembre de 1932.",
   },
   // CABALLO
@@ -257,7 +257,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Australia", emoji: "🇦🇺",
     description: "Continente-isla donde el monolito rojo de Uluru, los marsupiales y el surf de Bondi conviven con la cultura aborigen más antigua del planeta.",
     keyThemes: ["Aventura", "Naturaleza", "Libertad", "Resiliencia"],
-    events: [{ id: "au-federacion", type: "fundacion", label: "Federación Australiana", year: 1901, confidence: "exacta", primaryForAffinity: true, description: "El 1 de enero de 1901, seis colonias británicas se federaron en la Commonwealth de Australia, la primera nación en adoptar el voto secreto en sus elecciones.", source: "Documentación histórica" }],
+    events: [{ id: "au-federacion", type: "fundacion", label: "Federación Australiana", year: 1901, date: "1901-01-01", confidence: "exacta", primaryForAffinity: true, description: "El 1 de enero de 1901, seis colonias británicas se federaron en la Commonwealth de Australia, la primera nación en adoptar el voto secreto en sus elecciones.", source: "Documentación histórica" }],
     sourceNote: "Federación el 1 de enero de 1901.",
   },
   {
@@ -265,7 +265,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Mongolia", emoji: "🇲🇳",
     description: "Patria de Gengis Kan y del último imperio nómada, donde el cielo azul de la estepa apenas cabe entre los gers y los jinetes de hoy.",
     keyThemes: ["Libertad", "Nomadismo", "Estepa", "Tradición"],
-    events: [{ id: "mn-indep", type: "independencia-declarada", label: "Independencia de Mongolia", year: 1921, confidence: "exacta", primaryForAffinity: true, description: "Damdin Süjbaatar, al frente de jinetes revolucionarios apoyados por los soviéticos, expulsó a los ocupantes chinos y restauró la independencia de la estepa.", source: "Documentación histórica" }],
+    events: [{ id: "mn-indep", type: "independencia-declarada", label: "Independencia de Mongolia", year: 1921, date: "1921-07-11", confidence: "exacta", primaryForAffinity: true, description: "Damdin Süjbaatar, al frente de jinetes revolucionarios apoyados por los soviéticos, expulsó a los ocupantes chinos y restauró la independencia de la estepa.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 11 de julio de 1921.",
   },
   {
@@ -273,7 +273,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Cuba", emoji: "🇨🇺",
     description: "Isla de los habanos y de los coches clásicos americanos congelados en el tiempo, donde la salsa nació y la historia entera se baila a ritmo de son.",
     keyThemes: ["Rebeldía", "Ritmo", "Pasión", "Resistencia"],
-    events: [{ id: "cu-indep", type: "independencia-declarada", label: "Independencia de Cuba", year: 1902, confidence: "exacta", primaryForAffinity: true, description: "El 20 de mayo de 1902, Cuba puso fin a la ocupación militar estadounidense y se constituyó en república con Tomás Estrada Palma, aunque la Enmienda Platt limitó su soberanía.", source: "Documentación histórica" }],
+    events: [{ id: "cu-indep", type: "independencia-declarada", label: "Independencia de Cuba", year: 1902, date: "1902-05-20", confidence: "exacta", primaryForAffinity: true, description: "El 20 de mayo de 1902, Cuba puso fin a la ocupación militar estadounidense y se constituyó en república con Tomás Estrada Palma, aunque la Enmienda Platt limitó su soberanía.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 20 de mayo de 1902.",
   },
   {
@@ -281,7 +281,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Jamaica", emoji: "🇯🇲",
     description: "Isla de reggae y rastafari donde Bob Marley convirtió el sufrimiento en música y la montaña Blue Mountain, en el café más famoso del mundo.",
     keyThemes: ["Libertad", "Música", "Velocidad", "Caribe"],
-    events: [{ id: "jm-indep", type: "independencia-declarada", label: "Independencia de Jamaica", year: 1962, confidence: "exacta", primaryForAffinity: true, description: "Jamaica se convirtió el 6 de agosto de 1962 en el primer territorio británico del Caribe en independizarse, con Alexander Bustamante como primer ministro.", source: "Documentación histórica" }],
+    events: [{ id: "jm-indep", type: "independencia-declarada", label: "Independencia de Jamaica", year: 1962, date: "1962-08-06", confidence: "exacta", primaryForAffinity: true, description: "Jamaica se convirtió el 6 de agosto de 1962 en el primer territorio británico del Caribe en independizarse, con Alexander Bustamante como primer ministro.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 6 de agosto de 1962.",
   },
   // CABRA
@@ -290,7 +290,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "España", emoji: "🇪🇸",
     description: "Tierra de la Alhambra, el flamenco y la siesta, donde la convivencia de tres culturas dejó su huella en cada piedra y en cada cocina.",
     keyThemes: ["Arte", "Pasión", "Creatividad", "Diversidad"],
-    events: [{ id: "es-constitucion", type: "fundacion", label: "Constitución Española", year: 1978, confidence: "exacta", primaryForAffinity: true, description: "Aprobada en referéndum tres años después de la muerte de Franco, esta constitución restauró la democracia, la monarquía parlamentaria y las autonomías regionales.", source: "Documentación histórica" }],
+    events: [{ id: "es-constitucion", type: "fundacion", label: "Constitución Española", year: 1978, date: "1978-12-06", confidence: "exacta", primaryForAffinity: true, description: "Aprobada en referéndum tres años después de la muerte de Franco, esta constitución restauró la democracia, la monarquía parlamentaria y las autonomías regionales.", source: "Documentación histórica" }],
     sourceNote: "Constitución del 6 de diciembre de 1978.",
   },
   {
@@ -313,7 +313,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Austria", emoji: "🇦🇹",
     description: "País de los Alpes que dio a Mozart, a Freud y a la Ópera de Viena, donde la elegancia de un imperio de vals sobrevive en un pequeño estado de gran música.",
     keyThemes: ["Música", "Arte", "Elegancia", "Creatividad"],
-    events: [{ id: "at-neutralidad", type: "fundacion", label: "Declaración de Neutralidad", year: 1955, confidence: "exacta", primaryForAffinity: true, description: "El Tratado de Estado de Viena devolvió la soberanía tras diez años de ocupación aliada y selló la neutralidad perpetua del país.", source: "Documentación histórica" }],
+    events: [{ id: "at-neutralidad", type: "fundacion", label: "Declaración de Neutralidad", year: 1955, date: "1955-05-15", confidence: "exacta", primaryForAffinity: true, description: "El Tratado de Estado de Viena devolvió la soberanía tras diez años de ocupación aliada y selló la neutralidad perpetua del país.", source: "Documentación histórica" }],
     sourceNote: "Tratado de Estado el 15 de mayo de 1955.",
   },
   {
@@ -321,7 +321,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Bélgica", emoji: "🇧🇪",
     description: "Reino del cómic, la cerveza y el chocolate, inventor de la patata frita, que acoge en Bruselas las instituciones de una Europa construida entre dos lenguas.",
     keyThemes: ["Surrealismo", "Diplomacia", "Diversidad", "Creatividad"],
-    events: [{ id: "be-indep", type: "independencia-declarada", label: "Independencia de Bélgica", year: 1830, confidence: "exacta", primaryForAffinity: true, description: "Tras una revolución contra el reino de los Países Bajos, el Congreso Nacional proclamó una monarquía constitucional independiente con Leopoldo de Sajonia-Coburgo como rey.", source: "Documentación histórica" }],
+    events: [{ id: "be-indep", type: "independencia-declarada", label: "Independencia de Bélgica", year: 1830, date: "1830-10-04", confidence: "exacta", primaryForAffinity: true, description: "Tras una revolución contra el reino de los Países Bajos, el Congreso Nacional proclamó una monarquía constitucional independiente con Leopoldo de Sajonia-Coburgo como rey.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 4 de octubre de 1830.",
   },
   // MONO
@@ -330,7 +330,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Suecia", emoji: "🇸🇪",
     description: "Tierra de los vikingos y del premio Nobel, donde el sol de medianoche, el ABBA y el diseño minimalista hacen de la luz y del orden un arte de vivir.",
     keyThemes: ["Innovación", "Diseño", "Bienestar", "Ingenio"],
-    events: [{ id: "se-indep", type: "independencia-declarada", label: "Independencia de la Unión de Kalmar", year: 1523, confidence: "exacta", primaryForAffinity: true, description: "Gustavo Vasa, liberador de la ocupación danesa, fue elegido rey y rompió con la Unión de Kalmar, fundando la Suecia moderna y la dinastía Vasa.", source: "Documentación histórica" }],
+    events: [{ id: "se-indep", type: "independencia-declarada", label: "Independencia de la Unión de Kalmar", year: 1523, date: "1523-06-06", confidence: "exacta", primaryForAffinity: true, description: "Gustavo Vasa, liberador de la ocupación danesa, fue elegido rey y rompió con la Unión de Kalmar, fundando la Suecia moderna y la dinastía Vasa.", source: "Documentación histórica" }],
     sourceNote: "Elección de Gustavo Vasa el 6 de junio de 1523.",
   },
   {
@@ -338,14 +338,14 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Finlandia", emoji: "🇫🇮",
     description: "País de los mil lagos y de las auroras boreales, cuna de la sauna y de Nokia, que convirtió la lucha contra el frío en un sistema educativo legendario.",
     keyThemes: ["Ingenio", "Educación", "Diseño", "Naturaleza"],
-    events: [{ id: "fi-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1917, confidence: "exacta", primaryForAffinity: true, description: "El Senado finlandés proclamó la independencia el 6 de diciembre de 1917, aprovechando el colapso del imperio ruso, y el gobierno bolchevique la reconoció semanas después.", source: "Documentación histórica" }],
+    events: [{ id: "fi-indep", type: "independencia-declarada", label: "Declaración de Independencia", year: 1917, date: "1917-12-06", confidence: "exacta", primaryForAffinity: true, description: "El Senado finlandés proclamó la independencia el 6 de diciembre de 1917, aprovechando el colapso del imperio ruso, y el gobierno bolchevique la reconoció semanas después.", source: "Documentación histórica" }],
   },
   {
     id: "dinamarca", name: "Dinamarca", type: "country",
     country: "Dinamarca", emoji: "🇩🇰",
     description: "Reino de Hamlet y de los cuentos de Andersen, donde Copenhague pedalea sobre bicicletas y el hygge transforma el largo invierno nórdico en un abrazo.",
     keyThemes: ["Diseño", "Hygge", "Innovación", "Sostenibilidad"],
-    events: [{ id: "dk-constitucion", type: "fundacion", label: "Constitución de Dinamarca", year: 1849, confidence: "exacta", primaryForAffinity: true, description: "Firmada por Federico VII, esta constitución abolió el absolutismo danés e instauró el sufragio, convirtiendo el 5 de junio en el día de la Constitución.", source: "Documentación histórica" }],
+    events: [{ id: "dk-constitucion", type: "fundacion", label: "Constitución de Dinamarca", year: 1849, date: "1849-06-05", confidence: "exacta", primaryForAffinity: true, description: "Firmada por Federico VII, esta constitución abolió el absolutismo danés e instauró el sufragio, convirtiendo el 5 de junio en el día de la Constitución.", source: "Documentación histórica" }],
     sourceNote: "Constitución el 5 de junio de 1849.",
   },
   {
@@ -360,7 +360,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Hungría", emoji: "🇭🇺",
     description: "Nación del Danubio que baña Budapest, donde el cubo de Rubik, la penicilina y el bolígrafo nacieron de cerebros que escaparon de una Europa en guerra.",
     keyThemes: ["Inventiva", "Ciencia", "Ingenio", "Cultura"],
-    events: [{ id: "hu-republica", type: "fundacion", label: "Fundación de la República", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Proclamada tras la derrota austrohúngara en la Gran Guerra, esta república de corta vida cayó en 1919 ante la contrarrevolución y la ocupación rumana.", source: "Documentación histórica" }],
+    events: [{ id: "hu-republica", type: "fundacion", label: "Fundación de la República", year: 1918, date: "1918-11-16", confidence: "exacta", primaryForAffinity: true, description: "Proclamada tras la derrota austrohúngara en la Gran Guerra, esta república de corta vida cayó en 1919 ante la contrarrevolución y la ocupación rumana.", source: "Documentación histórica" }],
     sourceNote: "Proclamación de la República el 16 de noviembre de 1918.",
   },
   // GALLO
@@ -369,7 +369,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Polonia", emoji: "🇵🇱",
     description: "País de Chopin y de Copérnico, repartido tres veces entre sus vecinos y siempre renacido, donde Varsovia se reconstruyó piedra a piedra tras la guerra.",
     keyThemes: ["Organización", "Resistencia", "Identidad", "Disciplina"],
-    events: [{ id: "pl-indep", type: "independencia-declarada", label: "Independencia de Polonia", year: 1918, confidence: "exacta", primaryForAffinity: true, description: "Tras 123 años de particiones entre Rusia, Prusia y Austria, Polonia renació el 11 de noviembre de 1918, el mismo día en que terminó la Gran Guerra.", source: "Documentación histórica" }],
+    events: [{ id: "pl-indep", type: "independencia-declarada", label: "Independencia de Polonia", year: 1918, date: "1918-11-11", confidence: "exacta", primaryForAffinity: true, description: "Tras 123 años de particiones entre Rusia, Prusia y Austria, Polonia renació el 11 de noviembre de 1918, el mismo día en que terminó la Gran Guerra.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 11 de noviembre de 1918.",
   },
   {
@@ -377,7 +377,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "República Checa", emoji: "🇨🇿",
     description: "Tierra de castillos, cerveza y cristal de Bohemia, donde Praga exhibe el reloj astronómico más antiguo del mundo entre sus mil torres.",
     keyThemes: ["Precisión", "Pragmatismo", "Cultura", "Industria"],
-    events: [{ id: "cz-fundacion", type: "fundacion", label: "Disolución de Checoslovaquia", year: 1993, confidence: "exacta", primaryForAffinity: true, description: "La Revolución de Terciopelo fue tan pacífica que checos y eslovacos acordaron separarse por negociación, creando dos estados el 1 de enero de 1993 sin disparar una bala.", source: "Documentación histórica" }],
+    events: [{ id: "cz-fundacion", type: "fundacion", label: "Disolución de Checoslovaquia", year: 1993, date: "1993-01-01", confidence: "exacta", primaryForAffinity: true, description: "La Revolución de Terciopelo fue tan pacífica que checos y eslovacos acordaron separarse por negociación, creando dos estados el 1 de enero de 1993 sin disparar una bala.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 1 de enero de 1993.",
   },
   {
@@ -385,7 +385,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Noruega", emoji: "🇳🇴",
     description: "Tierra de fiordos, auroras y vikingos, donde el salmón y los trolls conviven con el fondo soberano más grande del planeta.",
     keyThemes: ["Disciplina", "Previsión", "Naturaleza", "Bienestar"],
-    events: [{ id: "no-indep", type: "independencia-declarada", label: "Disolución de la Unión con Suecia", year: 1905, confidence: "exacta", primaryForAffinity: true, description: "El Storting declaró disuelta la unión con Suecia tras un referéndum, y el príncipe Carlos de Dinamarca fue coronado como Haakon VII.", source: "Documentación histórica" }],
+    events: [{ id: "no-indep", type: "independencia-declarada", label: "Disolución de la Unión con Suecia", year: 1905, date: "1905-06-07", confidence: "exacta", primaryForAffinity: true, description: "El Storting declaró disuelta la unión con Suecia tras un referéndum, y el príncipe Carlos de Dinamarca fue coronado como Haakon VII.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 7 de junio de 1905.",
   },
   {
@@ -393,7 +393,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Rumania", emoji: "🇷🇴",
     description: "País latino rodeado de eslavos, cuna del castillo de Drácula en Transilvania, con iglesias de madera y monasterios pintados de una fe ortodoxa profunda.",
     keyThemes: ["Organización", "Latín", "Tradición", "Resiliencia"],
-    events: [{ id: "ro-indep", type: "independencia-declarada", label: "Independencia de Rumania", year: 1877, confidence: "exacta", primaryForAffinity: true, description: "En plena guerra ruso-turca, el Parlamento rumano proclamó su independencia del Imperio Otomano, sellada luego en el Congreso de Berlín de 1878.", source: "Documentación histórica" }],
+    events: [{ id: "ro-indep", type: "independencia-declarada", label: "Independencia de Rumania", year: 1877, date: "1877-05-09", confidence: "exacta", primaryForAffinity: true, description: "En plena guerra ruso-turca, el Parlamento rumano proclamó su independencia del Imperio Otomano, sellada luego en el Congreso de Berlín de 1878.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 9 de mayo de 1877.",
   },
   {
@@ -401,7 +401,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Bulgaria", emoji: "🇧🇬",
     description: "Nación que dio a los eslavos el alfabeto cirílico y a los perfumistas la rosa de Kazanlak, entre montañas donde los monasterios se ocultan de la historia.",
     keyThemes: ["Orden", "Tradición", "Cultura", "Agricultura"],
-    events: [{ id: "bg-indep", type: "independencia-declarada", label: "Independencia de Bulgaria", year: 1908, confidence: "exacta", primaryForAffinity: true, description: "El príncipe Fernando I proclamó el reino independiente en Tarnovo, rompiendo la tutela otomana sin disparar un solo tiro.", source: "Documentación histórica" }],
+    events: [{ id: "bg-indep", type: "independencia-declarada", label: "Independencia de Bulgaria", year: 1908, date: "1908-10-05", confidence: "exacta", primaryForAffinity: true, description: "El príncipe Fernando I proclamó el reino independiente en Tarnovo, rompiendo la tutela otomana sin disparar un solo tiro.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 5 de octubre de 1908.",
   },
   // PERRO
@@ -410,7 +410,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Costa Rica", emoji: "🇨🇷",
     description: "El único país del mundo sin ejército desde 1949, donde el «pura vida» y un cuarto de su territorio protegido lo convierten en laboratorio de biodiversidad.",
     keyThemes: ["Paz", "Justicia", "Naturaleza", "Educación"],
-    events: [{ id: "cr-indep", type: "independencia-declarada", label: "Independencia de Costa Rica", year: 1821, confidence: "exacta", primaryForAffinity: true, description: "La independencia llegó sin combates, transmitida por correo desde Guatemala, y el país se unió voluntariamente a la efímera República Federal de Centroamérica.", source: "Documentación histórica" }],
+    events: [{ id: "cr-indep", type: "independencia-declarada", label: "Independencia de Costa Rica", year: 1821, date: "1821-09-15", confidence: "exacta", primaryForAffinity: true, description: "La independencia llegó sin combates, transmitida por correo desde Guatemala, y el país se unió voluntariamente a la efímera República Federal de Centroamérica.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 15 de septiembre de 1821.",
   },
   {
@@ -418,7 +418,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Uruguay", emoji: "🇺🇾",
     description: "Pequeña franja entre dos gigantes que inventó el mate, el asado y la primera ley de divorcio de América, y levantó en Montevideo el primer mundial de fútbol.",
     keyThemes: ["Justicia", "Estabilidad", "Libertad", "Igualdad"],
-    events: [{ id: "uy-indep", type: "independencia-declarada", label: "Convención Preliminar de Paz", year: 1828, confidence: "exacta", primaryForAffinity: true, description: "La Convención Preliminar de Paz puso fin a la Guerra del Brasil y creó un estado tapón independiente entre Argentina y Brasil, con Montevideo como capital.", source: "Documentación histórica" }],
+    events: [{ id: "uy-indep", type: "independencia-declarada", label: "Convención Preliminar de Paz", year: 1828, date: "1828-08-27", confidence: "exacta", primaryForAffinity: true, description: "La Convención Preliminar de Paz puso fin a la Guerra del Brasil y creó un estado tapón independiente entre Argentina y Brasil, con Montevideo como capital.", source: "Documentación histórica" }],
     sourceNote: "Convención Preliminar de Paz el 27 de agosto de 1828.",
   },
   {
@@ -426,7 +426,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Nueva Zelanda", emoji: "🇳🇿",
     description: "Tierra de los maoríes del haka y de los paisajes de El Señor de los Anillos, donde fiordos, ovejas y derechos indígenas se cuidan con la misma devoción.",
     keyThemes: ["Justicia", "Naturaleza", "Derechos", "Paz"],
-    events: [{ id: "nz-tratado", type: "fundacion", label: "Tratado de Waitangi", year: 1840, confidence: "exacta", primaryForAffinity: true, description: "Firmado por jefes maoríes y la Corona británica en Waitangi, este tratado reconoció la soberanía británica a cambio de garantizar la propiedad de las tierras maoríes.", source: "Documentación histórica" }],
+    events: [{ id: "nz-tratado", type: "fundacion", label: "Tratado de Waitangi", year: 1840, date: "1840-02-06", confidence: "exacta", primaryForAffinity: true, description: "Firmado por jefes maoríes y la Corona británica en Waitangi, este tratado reconoció la soberanía británica a cambio de garantizar la propiedad de las tierras maoríes.", source: "Documentación histórica" }],
     sourceNote: "Tratado de Waitangi el 6 de febrero de 1840.",
   },
   {
@@ -434,7 +434,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Panamá", emoji: "🇵🇦",
     description: "Puente del mundo que parte dos océanos con un canal, donde el sombrero que lleva su nombre se teje en Ecuador y el puente de las Américas une dos continentes.",
     keyThemes: ["Conexión", "Soberanía", "Justicia", "Comercio"],
-    events: [{ id: "pa-indep", type: "independencia-declarada", label: "Independencia de Panamá", year: 1903, confidence: "exacta", primaryForAffinity: true, description: "Panamá se separó de Colombia el 3 de noviembre de 1903 con el respaldo naval de Estados Unidos, que obtuvo a cambio el control del canal.", source: "Documentación histórica" }],
+    events: [{ id: "pa-indep", type: "independencia-declarada", label: "Independencia de Panamá", year: 1903, date: "1903-11-03", confidence: "exacta", primaryForAffinity: true, description: "Panamá se separó de Colombia el 3 de noviembre de 1903 con el respaldo naval de Estados Unidos, que obtuvo a cambio el control del canal.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 3 de noviembre de 1903.",
   },
   {
@@ -442,7 +442,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Irlanda", emoji: "🇮🇪",
     description: "Isla esmeralda de leyendas celtas y pubs, donde Joyce y Yeats convirtieron la hambruna y la emigración en la literatura más luminosa de habla inglesa.",
     keyThemes: ["Justicia", "Literatura", "Música", "Resiliencia"],
-    events: [{ id: "ie-indep", type: "independencia-declarada", label: "Estado Libre Irlandés", year: 1922, confidence: "exacta", primaryForAffinity: true, description: "El tratado angloirlandés creó este dominio autónomo con el norte dividido, desatando una guerra civil entre partidarios y opositores de Michael Collins.", source: "Documentación histórica" }],
+    events: [{ id: "ie-indep", type: "independencia-declarada", label: "Estado Libre Irlandés", year: 1922, date: "1922-12-06", confidence: "exacta", primaryForAffinity: true, description: "El tratado angloirlandés creó este dominio autónomo con el norte dividido, desatando una guerra civil entre partidarios y opositores de Michael Collins.", source: "Documentación histórica" }],
     sourceNote: "Estado Libre Irlandés el 6 de diciembre de 1922.",
   },
   // CERDO
@@ -451,7 +451,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Filipinas", emoji: "🇵🇭",
     description: "Archipiélago de más de siete mil islas y único país católico de Asia, donde los jeepneys multicolor y las fiestas bailan entre tifones y sonrisas.",
     keyThemes: ["Hospitalidad", "Calidez", "Resiliencia", "Alegría"],
-    events: [{ id: "ph-indep", type: "independencia-declarada", label: "Independencia de Filipinas", year: 1946, confidence: "exacta", primaryForAffinity: true, description: "El 4 de julio de 1946, la antigua colonia estadounidense obtuvo su independencia plena, la primera del sudeste asiático tras la Segunda Guerra Mundial.", source: "Documentación histórica" }],
+    events: [{ id: "ph-indep", type: "independencia-declarada", label: "Independencia de Filipinas", year: 1946, date: "1946-07-04", confidence: "exacta", primaryForAffinity: true, description: "El 4 de julio de 1946, la antigua colonia estadounidense obtuvo su independencia plena, la primera del sudeste asiático tras la Segunda Guerra Mundial.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 4 de julio de 1946.",
   },
   {
@@ -459,7 +459,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Indonesia", emoji: "🇮🇩",
     description: "El mayor archipiélago del mundo, con más de 17.000 islas, donde el batik, los dragones de Komodo y el café de Sumatra conviven con la mayor población musulmana.",
     keyThemes: ["Diversidad", "Comunidad", "Generosidad", "Espiritualidad"],
-    events: [{ id: "id-indep", type: "independencia-declarada", label: "Proclamación de Independencia", year: 1945, confidence: "exacta", primaryForAffinity: true, description: "Sukarno y Hatta proclamaron la independencia en Yakarta el 17 de agosto de 1945, desatando una guerra de cuatro años contra los holandeses.", source: "Documentación histórica" }],
+    events: [{ id: "id-indep", type: "independencia-declarada", label: "Proclamación de Independencia", year: 1945, date: "1945-08-17", confidence: "exacta", primaryForAffinity: true, description: "Sukarno y Hatta proclamaron la independencia en Yakarta el 17 de agosto de 1945, desatando una guerra de cuatro años contra los holandeses.", source: "Documentación histórica" }],
     sourceNote: "Proclamación el 17 de agosto de 1945.",
   },
   {
@@ -467,7 +467,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Malasia", emoji: "🇲🇾",
     description: "Fusión de la Malaca colonial y de las torres Petronas, donde la selva de Borneo, los orangutanes y el durián conviven en una federación de dos mundos.",
     keyThemes: ["Generosidad", "Multiculturalismo", "Calidez", "Progreso"],
-    events: [{ id: "my-indep", type: "independencia-declarada", label: "Independencia de Malasia", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "La Federación de Malaya, con Tunku Abdul Rahman como primer ministro, obtuvo la independencia del Reino Unido el 31 de agosto de 1957 y años después se amplió con Borneo.", source: "Documentación histórica" }],
+    events: [{ id: "my-indep", type: "independencia-declarada", label: "Independencia de Malasia", year: 1957, date: "1957-08-31", confidence: "exacta", primaryForAffinity: true, description: "La Federación de Malaya, con Tunku Abdul Rahman como primer ministro, obtuvo la independencia del Reino Unido el 31 de agosto de 1957 y años después se amplió con Borneo.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 31 de agosto de 1957.",
   },
   {
@@ -475,7 +475,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Bangladesh", emoji: "🇧🇩",
     description: "El delta del Ganges donde se teje buena parte de la ropa del mundo, un país de ríos, ciclones y una resiliencia que convirtió el arroz en su bandera.",
     keyThemes: ["Generosidad", "Comunidad", "Resiliencia", "Crecimiento"],
-    events: [{ id: "bd-indep", type: "independencia-declarada", label: "Independencia de Bangladesh", year: 1971, confidence: "exacta", primaryForAffinity: true, description: "Tras una sangrienta guerra de liberación contra Pakistán, Bangladesh nació el 16 de diciembre de 1971 con la rendición del ejército paquistaní.", source: "Documentación histórica" }],
+    events: [{ id: "bd-indep", type: "independencia-declarada", label: "Independencia de Bangladesh", year: 1971, date: "1971-12-16", confidence: "exacta", primaryForAffinity: true, description: "Tras una sangrienta guerra de liberación contra Pakistán, Bangladesh nació el 16 de diciembre de 1971 con la rendición del ejército paquistaní.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 16 de diciembre de 1971.",
   },
   {
@@ -483,7 +483,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Ghana", emoji: "🇬🇭",
     description: "La antigua Costa de Oro, primera nación subsahariana en derribar el colonialismo, donde el castillo de Elmina recuerda la trata y la alegría de Accra responde.",
     keyThemes: ["Calidez", "Libertad", "Hospitalidad", "Estabilidad"],
-    events: [{ id: "gh-indep", type: "independencia-declarada", label: "Independencia de Ghana", year: 1957, confidence: "exacta", primaryForAffinity: true, description: "Kwame Nkrumah lideró la antigua Costa de Oro hacia la independencia el 6 de marzo de 1957, primera colonia subsahariana en liberarse y faro del panafricanismo.", source: "Documentación histórica" }],
+    events: [{ id: "gh-indep", type: "independencia-declarada", label: "Independencia de Ghana", year: 1957, date: "1957-03-06", confidence: "exacta", primaryForAffinity: true, description: "Kwame Nkrumah lideró la antigua Costa de Oro hacia la independencia el 6 de marzo de 1957, primera colonia subsahariana en liberarse y faro del panafricanismo.", source: "Documentación histórica" }],
     sourceNote: "Independencia el 6 de marzo de 1957.",
   },
 
@@ -495,7 +495,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Sudáfrica", emoji: "🇿🇦",
     description: "Nación del arcoíris donde once idiomas oficiales conviven en la tierra de Mandela, con la Table Mountain vigilando Ciudad del Cabo y el fin del apartheid como faro mundial.",
     keyThemes: ["Diversidad", "Justicia", "Resiliencia", "Transición"],
-    events: [{ id: "za-republica", type: "fundacion", label: "Proclamación de la República", year: 1961, confidence: "exacta", primaryForAffinity: true, description: "Sudáfrica se constituyó como república el 31 de mayo de 1961, rompiendo sus últimos lazos constitucionales con la Corona británica.", source: "Documentación histórica" }],
+    events: [{ id: "za-republica", type: "fundacion", label: "Proclamación de la República", year: 1961, date: "1961-05-31", confidence: "exacta", primaryForAffinity: true, description: "Sudáfrica se constituyó como república el 31 de mayo de 1961, rompiendo sus últimos lazos constitucionales con la Corona británica.", source: "Documentación histórica" }],
     sourceNote: "Proclamación de la República el 31 de mayo de 1961.",
   },
 
@@ -521,7 +521,7 @@ export const COUNTRIES_60: AtlasEntityInput[] = [
     country: "Islandia", emoji: "🇮🇸",
     description: "Isla de hielo y fuego donde los géiseres, los glaciares y las sagas vikingas conviven con la energía geotérmica que calienta una de las democracias más antiguas del mundo.",
     keyThemes: ["Resiliencia", "Naturaleza", "Democracia", "Independencia"],
-    events: [{ id: "is-republica", type: "fundacion", label: "Proclamación de la República", year: 1940, confidence: "exacta", primaryForAffinity: true, description: "Islandia declaró su independencia de Dinamarca el 17 de junio de 1944. La ocupación alemana de Dinamarca en 1940 aceleró el proceso de separación.", source: "Documentación histórica" }],
+    events: [{ id: "is-republica", type: "fundacion", label: "Proclamación de la República", year: 1944, date: "1944-06-17", confidence: "exacta", primaryForAffinity: true, description: "Islandia declaró su independencia de Dinamarca el 17 de junio de 1944. La ocupación alemana de Dinamarca en 1940 aceleró el proceso de separación.", source: "Documentación histórica" }],
     sourceNote: "República proclamada el 17 de junio de 1944.",
   },
   {
