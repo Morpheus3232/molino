@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Calendar, Users, Target } from "lucide-react";
+import { Calendar, Users, Target, FileText, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface Feature {
@@ -41,6 +41,27 @@ const ecosystemLinks: { title: string; href: string }[] = [
   { title: "Exportar tu mapa", href: "/profile" },
 ];
 
+// Antes era una sección aparte (PremiumTeaser) con su propio header, su
+// propio grid de 3 columnas y dos menciones del precio — repetía la forma
+// del bloque de arriba para responder la misma pregunta implícita ("qué más
+// hay"). Fusionado acá como continuación, no como venta aparte.
+const PREMIUM_PERKS = [
+  {
+    icon: FileText,
+    title: "Síntesis narrativa + chat",
+    desc: "Tu mapa interpretado en profundidad, con conversación interactiva para seguir preguntando.",
+  },
+  {
+    icon: Calendar,
+    title: "Ciclos anuales extendidos",
+    desc: "Años y meses personales para planificar decisiones importantes con anticipación.",
+  },
+  {
+    icon: Users,
+    title: "Sinergia vincular avanzada",
+    desc: "Comparativas ilimitadas con socios, familia y pareja.",
+  },
+];
 
 export default function FeaturesSection() {
   return (
@@ -105,6 +126,48 @@ export default function FeaturesSection() {
               {link.title}
             </Link>
           ))}
+        </div>
+
+        {/* Premium — una capa más profunda, no una venta aparte */}
+        <div className="mt-24 pt-16 border-t border-paper/10">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent-light mb-4">
+              Una capa más profunda
+            </p>
+            <h3 className="font-display text-2xl sm:text-3xl text-paper font-bold tracking-tight leading-[1.1]">
+              Ver tu mapa es gratis. Entenderlo es Premium.
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-paper/10 border-y border-paper/10 mb-10">
+            {PREMIUM_PERKS.map((perk) => {
+              const Icon = perk.icon;
+              return (
+                <div key={perk.title} className="p-6 md:px-8 space-y-3">
+                  <Icon className="w-5 h-5 text-accent-light" aria-hidden="true" />
+                  <h4 className="font-heading text-base font-bold text-paper">
+                    {perk.title}
+                  </h4>
+                  <p className="text-xs text-paper/60 leading-relaxed">
+                    {perk.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center max-w-xl mx-auto">
+            <p className="text-sm text-paper/70 mb-4">
+              Acceso de por vida, <strong className="text-paper">$8 USD</strong> — un solo pago, sin suscripción.
+            </p>
+            <Link
+              href="/premium"
+              className="inline-flex items-center justify-center gap-2 font-mono text-xs text-accent-light hover:underline underline-offset-2 group"
+            >
+              Ver el detalle de Premium
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

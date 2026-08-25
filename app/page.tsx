@@ -3,7 +3,6 @@ import HeroInstrument from "@/components/sections/HeroInstrument";
 import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
-import PremiumTeaser from "@/components/sections/PremiumTeaser";
 import CTASection from "@/components/sections/CTASection";
 import { SITE_URL } from "@/lib/seo";
 
@@ -120,11 +119,9 @@ export default function HomePage() {
         {/* Clarity — Molino vs Traditional */}
         <ClaritySection />
 
-        {/* Features — Core del mapa (ciclos, afinidades) + link a ecosistema */}
+        {/* Features — Core del mapa (ciclos, afinidades) + ecosistema +
+            Premium fusionado como su continuación, no como venta aparte */}
         <FeaturesSection />
-
-        {/* Premium — transformación: veo mi mapa vs. entiendo cómo se conecta */}
-        <PremiumTeaser />
 
         {/* Final CTA */}
         <CTASection />
