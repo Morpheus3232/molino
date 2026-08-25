@@ -75,14 +75,18 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="text-center mb-10"
+        className="text-center mb-8"
       >
         <p className="text-xs font-medium uppercase tracking-wide text-muted mb-3">Paso 2 de 2</p>
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[0.9] mb-4">
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl tracking-tight text-foreground leading-[0.9] mb-3">
           ¿Dónde estás ahora?
         </h1>
-        <p className="text-base text-muted-foreground max-w-sm mx-auto">
-          Para adaptar tu mapa a tu mundo. No rastreamos tu ubicación real — elegís vos, y podés cambiarlo cuando quieras.
+        {/* Antes esto eran dos bloques (subtítulo + card "¿Para qué sirve
+            esto?") que decían lo mismo con distintas palabras y empujaban el
+            selector de país abajo del fold. Una sola línea: para qué sirve,
+            que no rastreamos, y que se puede cambiar. */}
+        <p className="text-base text-muted-foreground max-w-sm mx-auto text-balance">
+          Con tu país vemos qué ciudades, países y marcas comparten tu patrón. No lo rastreamos: elegís vos y lo cambiás cuando quieras.
         </p>
       </motion.div>
 
@@ -92,17 +96,6 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         transition={{ duration: 0.25 }}
         className="mb-8 max-w-sm mx-auto"
       >
-        {/* Microcopy explicativo sobre qué hace la ubicación */}
-        <div className="mb-6 p-4 border border-ink/10 bg-background rounded-md text-left">
-          <p className="text-xs font-mono font-semibold tracking-[0.2em] uppercase text-accent mb-2">
-            ¿Para qué sirve esto?
-          </p>
-          <p className="text-sm text-muted leading-relaxed">
-            Tu país actual revela resonancias simbólicas con <strong className="text-foreground">países, ciudades y marcas</strong> que comparten tu patrón energético.
-            No es predicción — es una lente de lectura para explorar afinidades culturales y geográficas.
-          </p>
-        </div>
-
         <AnimatePresence mode="wait" initial={false}>
           {selectedCountry ? (
             <motion.div

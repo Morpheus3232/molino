@@ -14,12 +14,21 @@ import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
-/* ═══ Navegación — Fase 5: header contextual según haya o no perfil activo ═══
-   Sin perfil el sitio ofrece exploración general; con perfil, el nav habla
-   en primera persona sobre el contenido del usuario (Mi Mapa, Mis
-   Afinidades, Mi Tiempo, Mi Journal, Mis Mapas) y el contenido general se
-   repliega a un único punto de entrada "Explorar". Mismas rutas reales de
-   siempre — esto es reorganización de navegación, no una superficie nueva. */
+/* ═══ Navegación — tres zonas fijas, siempre en el mismo lugar ═══
+   Izquierda: el logo (volver al inicio). Centro: destinos — a dónde puedo
+   ir. Derecha: la acción del estado — qué puedo hacer. Nada cruza de zona.
+
+   El criterio de qué entra al centro: **el header solo lleva lo que es
+   tuyo; lo que es del sitio vive en el footer.** Sin mapa todavía no hay
+   nada tuyo, así que el centro se reduce a dos puertas de prueba (Atlas,
+   Hoy) y la zona derecha es una sola cosa: crear el mapa. Con mapa, el
+   centro son tus cuatro superficies y la derecha son tus dos objetos
+   guardados (Lectura, Guardados).
+
+   Por qué se fue "Explorar" del header: era el cajón de sobras (Academia,
+   Biblioteca, Blog, Atlas, Modos) y ya estaba entero en la columna
+   "Explorar" del footer. Se mantiene solo en el menú móvil, que es la
+   única navegación que tiene mobile. */
 
 interface NavLink {
   href: string;
@@ -31,12 +40,21 @@ interface NavGroup {
   links: NavLink[];
 }
 
+// Sin mapa: dos puertas para probar el sitio antes de dar una fecha, no un
+// catálogo de herramientas que necesitan un mapa que todavía no existe.
+// Calendario y Journal se movieron al footer (columna "Explorar").
 const NO_PROFILE_LINKS: NavLink[] = [
   { href: "/atlas", label: "Atlas" },
   { href: "/hoy", label: "Hoy" },
-  { href: "/calendario", label: "Calendario" },
-  { href: "/journal", label: "Journal" },
 ];
+
+// Con mapa: se saca el prefijo "Mi/Mis" de todo menos del ancla. Con cinco
+// labels arrancando igual, la palabra que diferencia caía siempre segunda y
+// el ojo tenía que leer cada label entero en vez de escanear.
+const PROFILE_LINKS = {
+  map: { href: "/profile", label: "Mi Mapa" },
+  journal: { href: "/journal", label: "Journal" },
+} satisfies Record<string, NavLink>;
 
 const MODES_LINKS: NavLink[] = [
   { href: "/socios", label: "Modo Socios" },
@@ -136,10 +154,10 @@ export default function UniversityHeader() {
   // son el único choke point de escritura del perfil, así que estos dos
   // eventos cubren crear, cargar un perfil guardado, cambiar de perfil y
   // eliminarlo — sin un segundo estado global.
-  // "Mis Mapas" solo tiene sentido una vez que hay algo guardado — antes el
-  // label ya distinguía "Guardar mi mapa" vs "Mis Mapas" pero lo hacía según
-  // hasProfile, no según la bóveda real, así que alguien con un perfil activo
-  // pero cero mapas guardados igual veía "Mis Mapas". `isPremium` habilita el
+  // El label de la bóveda distingue "hay algo guardado" de "todavía no" según
+  // `vaultCount`, no según `hasProfile`: antes alguien con un perfil activo
+  // pero cero mapas guardados veía igual el label de bóveda llena.
+  // `isPremium` habilita el
   // atajo dorado al mapa reciente (ver SavedProfilesDrawer) y el link "Mi
   // Lectura", cuyo href necesita el perfil completo (la lectura vive en
   // /lectura#<hash>, nunca en query string). Un solo efecto: los cuatro
@@ -224,10 +242,10 @@ export default function UniversityHeader() {
   if (pathname.startsWith("/lectura")) return null;
 
   const exploreGroups = hasProfile ? EXPLORE_GROUPS_WITH_PROFILE : EXPLORE_GROUPS_NO_PROFILE;
-  // "Mis Mapas" solo cuando ya hay algo guardado en la bóveda — antes se
-  // mostraba con solo tener un perfil activo, aunque nunca se hubiera
-  // guardado nada.
-  const vaultLabel = vaultCount > 0 ? "Mis Mapas" : "Guardar mi mapa";
+  // El label anterior de la bóveda era el plural literal del ancla del
+  // centro: dos etiquetas casi idénticas a tres ítems de distancia, una para
+  // el mapa activo y otra para la bóveda. "Guardados" no compite con ella.
+  const vaultLabel = vaultCount > 0 ? "Guardados" : "Guardar";
 
   const navButtonClass = (active: boolean) =>
     `px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
@@ -235,6 +253,12 @@ export default function UniversityHeader() {
         ? "text-foreground bg-ink/[0.06] font-bold"
         : "text-muted hover:text-foreground hover:bg-ink/[0.02]"
     }`;
+
+  // Zona derecha: se ve distinta a propósito. Los destinos del centro son
+  // texto plano; una acción lleva borde o relleno, así se sabe qué navega y
+  // qué abre algo antes de clickear.
+  const actionClass =
+    "inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors";
 
   return (
     <>
@@ -251,44 +275,31 @@ export default function UniversityHeader() {
             </span>
           </Link>
 
-          {/* Desktop nav — mismo orden en ambos estados: perfil (o su
-              ausencia) define de qué habla el nav, no cuántos ítems tiene. */}
+          {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navegación principal">
             {!hasProfile ? (
-              <>
-                {NO_PROFILE_LINKS.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={navButtonClass(isActive(link.href))}
-                    aria-current={pathname === link.href ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <NavDropdown
-                  id="explore"
-                  label="Explorar"
-                  groups={exploreGroups}
-                  isOpen={openMenu === "explore"}
-                  isActive={isGroupActive(exploreGroups)}
-                  onToggle={() => toggleMenu("explore")}
-                  isActiveLink={isActive}
-                />
-                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
-              </>
+              NO_PROFILE_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={navButtonClass(isActive(link.href))}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              ))
             ) : (
               <>
                 <Link
-                  href="/profile"
-                  className={navButtonClass(isActive("/profile"))}
-                  aria-current={pathname === "/profile" ? "page" : undefined}
+                  href={PROFILE_LINKS.map.href}
+                  className={navButtonClass(isActive(PROFILE_LINKS.map.href))}
+                  aria-current={pathname === PROFILE_LINKS.map.href ? "page" : undefined}
                 >
-                  Mi Mapa
+                  {PROFILE_LINKS.map.label}
                 </Link>
                 <NavDropdown
                   id="affinities"
-                  label="Mis Afinidades"
+                  label="Afinidades"
                   groups={AFFINITY_GROUPS}
                   isOpen={openMenu === "affinities"}
                   isActive={isGroupActive(AFFINITY_GROUPS)}
@@ -297,7 +308,7 @@ export default function UniversityHeader() {
                 />
                 <NavDropdown
                   id="time"
-                  label="Mi Tiempo"
+                  label="Tiempo"
                   groups={TIME_GROUPS}
                   isOpen={openMenu === "time"}
                   isActive={isGroupActive(TIME_GROUPS)}
@@ -305,37 +316,41 @@ export default function UniversityHeader() {
                   isActiveLink={isActive}
                 />
                 <Link
-                  href="/journal"
-                  className={navButtonClass(isActive("/journal"))}
-                  aria-current={pathname === "/journal" ? "page" : undefined}
+                  href={PROFILE_LINKS.journal.href}
+                  className={navButtonClass(isActive(PROFILE_LINKS.journal.href))}
+                  aria-current={pathname === PROFILE_LINKS.journal.href ? "page" : undefined}
                 >
-                  Mi Journal
+                  {PROFILE_LINKS.journal.label}
                 </Link>
-                {/* Solo para quien ya pagó o canjeó un cupón — mismo criterio
-                    que el atajo dorado de Mis Mapas (getPremiumTokenClient). */}
-                {lecturaHref && (
-                  <Link
-                    href={lecturaHref}
-                    className="px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase rounded-xl whitespace-nowrap text-gold/80 hover:text-gold hover:bg-ink/[0.02] transition-colors"
-                  >
-                    Mi Lectura
-                  </Link>
-                )}
-                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
-                <NavDropdown
-                  id="explore"
-                  label="Explorar"
-                  groups={exploreGroups}
-                  isOpen={openMenu === "explore"}
-                  isActive={isGroupActive(exploreGroups)}
-                  onToggle={() => toggleMenu("explore")}
-                  isActiveLink={isActive}
-                />
               </>
             )}
           </nav>
 
+          {/* ZONA DERECHA — la acción del estado. Sin mapa es una sola cosa:
+              crearlo. Antes esa acción solo existía en el menú móvil, así que
+              en desktop un usuario nuevo veía seis herramientas y ninguna
+              indicación de por dónde empezar. */}
           <div className="flex items-center gap-2">
+            {!hasProfile ? (
+              <Link
+                href="/onboarding"
+                className="hidden lg:inline-flex items-center px-4 py-2 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl bg-accent text-accent-foreground hover:opacity-90 transition-opacity"
+              >
+                Crear mi mapa
+              </Link>
+            ) : (
+              <div className="hidden lg:flex items-center gap-2">
+                {lecturaHref && (
+                  <Link
+                    href={lecturaHref}
+                    className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-gold/40 text-gold hover:border-gold hover:bg-gold/[0.08] transition-colors"
+                  >
+                    Lectura
+                  </Link>
+                )}
+                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={actionClass} />
+              </div>
+            )}
             <button
               type="button"
               className="lg:hidden min-h-[44px] min-w-[44px] flex items-center justify-center text-muted hover:text-foreground hover:bg-ink/5 transition-colors rounded-xl"
@@ -365,27 +380,36 @@ export default function UniversityHeader() {
               <nav className="px-4 py-4 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto" aria-label="Menú móvil">
                 {!hasProfile ? (
                   <>
+                    {/* La acción va primera, no enterrada al fondo del sheet:
+                        es lo único que un usuario nuevo necesita decidir. */}
+                    <Link
+                      href="/onboarding"
+                      className="flex items-center justify-center min-h-[44px] mb-3 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      CREAR MI MAPA
+                    </Link>
                     {NO_PROFILE_LINKS.map((link) => (
                       <MobileLink key={link.href} link={link} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     ))}
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <div className="px-3 py-1.5">
-                      <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
-                    </div>
                   </>
                 ) : (
                   <>
-                    <MobileLink link={{ href: "/profile", label: "Mi Mapa" }} isActive={isActive} onClick={() => setMenuOpen(false)} />
-                    <MobileGroups groups={AFFINITY_GROUPS} heading="Mis Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={TIME_GROUPS} heading="Mi Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileLink link={{ href: "/journal", label: "Mi Journal" }} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileLink link={PROFILE_LINKS.map} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileGroups groups={AFFINITY_GROUPS} heading="Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={TIME_GROUPS} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
+
+                    <div className="border-t border-ink/10 my-2" />
+
                     {lecturaHref && (
                       <Link
                         href={lecturaHref}
                         className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-gold/80 hover:text-gold"
                         onClick={() => setMenuOpen(false)}
                       >
-                        Mi Lectura
+                        Lectura
                       </Link>
                     )}
                     <div className="px-3 py-1.5">
@@ -395,27 +419,20 @@ export default function UniversityHeader() {
                   </>
                 )}
 
-                <div className="border-t border-ink/10 my-2" />
-
-                {hasProfile ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      handleNewProfile();
-                    }}
-                    className="flex items-center min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
-                  >
-                    Reiniciar perfil actual
-                  </button>
-                ) : (
-                  <Link
-                    href="/onboarding"
-                    className="flex items-center justify-center min-h-[44px] mx-3 mt-2 px-4 py-2.5 text-xs font-mono font-semibold tracking-[0.2em] uppercase bg-accent text-accent-foreground hover:opacity-90 transition-opacity text-center rounded-xl"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    CREAR MI MAPA
-                  </Link>
+                {hasProfile && (
+                  <>
+                    <div className="border-t border-ink/10 my-2" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMenuOpen(false);
+                        handleNewProfile();
+                      }}
+                      className="flex items-center min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
+                    >
+                      Reiniciar perfil actual
+                    </button>
+                  </>
                 )}
               </nav>
             </motion.div>
@@ -428,7 +445,7 @@ export default function UniversityHeader() {
         {showConfirm && (
           <div ref={modalRef} className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
             <motion.div
-              className="relative bg-card border border-ink/10 p-6 sm:p-8 max-w-sm w-full rounded-3xl shadow-2xl"
+              className="relative bg-card border border-ink/10 p-6 sm:p-8 max-w-sm w-full rounded-lg shadow-xl"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -438,7 +455,7 @@ export default function UniversityHeader() {
                 ¿Crear nuevo mapa?
               </h3>
               <p className="text-xs text-muted mb-6 leading-relaxed">
-                Se limpiará la fecha activa. Si querés conservarla, guardala primero en Mis Mapas.
+                Se limpiará la fecha activa. Si querés conservarla, guardala primero desde &laquo;Guardar&raquo;.
               </p>
               <div className="flex gap-3">
                 <Button variant="ghost" size="sm" onClick={() => { setShowConfirm(false); triggerRef.current?.focus(); }} className="flex-1">

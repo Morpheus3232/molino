@@ -3,10 +3,10 @@ import { Github, ShieldCheck, Mail } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import { getMemberCount } from "@/lib/metrics";
 
-// Arquitectura coherente con el header (Fase 4): "Tu mapa" son las mismas
-// rutas CORE del header (sin repetir Mi Mapa/Hoy/Academia, ya están arriba
-// en cada página); "Explorar" es el mismo ecosistema del dropdown del
-// header, no una lista distinta. El resto queda agrupado por función.
+// El header solo lleva lo que es del usuario; el contenido del sitio vive
+// acá. Cuando "Explorar" salió del header, esta columna pasó a ser su único
+// hogar en desktop — cualquier ruta que se saque del header tiene que
+// aparecer en alguna de estas cuatro columnas o queda sin puerta de entrada.
 const FOOTER_COLUMNS = [
   {
     title: "Tu mapa",
@@ -21,6 +21,7 @@ const FOOTER_COLUMNS = [
     title: "Explorar",
     links: [
       { href: "/atlas", label: "Atlas" },
+      { href: "/academy", label: "Academia" },
       { href: "/biblioteca", label: "Biblioteca" },
       { href: "/blog", label: "Blog" },
       { href: "/journal", label: "Journal" },

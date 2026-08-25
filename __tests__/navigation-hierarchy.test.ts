@@ -6,28 +6,40 @@ function read(relPath: string): string {
   return fs.readFileSync(path.resolve(__dirname, "..", relPath), "utf8");
 }
 
-// Fase 5 (2026-08-23): el header pasa de una jerarquía fija (CORE + Explorar
-// para todos) a una jerarquía CONTEXTUAL — sin perfil el sitio ofrece
-// exploración general (Atlas/Hoy/Calendario/Journal/Explorar/Guardar mi
-// mapa); con perfil, el nav habla en primera persona sobre el contenido del
-// usuario (Mi Mapa/Mis Afinidades/Mi Tiempo/Mi Journal/Mis Mapas/Explorar).
-// Mismas rutas reales de siempre.
+// El header tiene tres zonas fijas: logo | destinos | acción del estado.
+// Sin mapa los destinos son Atlas/Hoy y la acción es "Crear mi mapa"; con
+// mapa son Mi Mapa/Afinidades/Tiempo/Journal y las acciones son
+// Lectura/Guardar. "Explorar" salió del header desktop (vive en el footer)
+// y solo queda en el menú móvil. Mismas rutas reales de siempre.
 
 describe("Header — navegación sin perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("las 4 rutas CORE sin perfil están presentes", () => {
+  test("los destinos sin perfil son solo Atlas y Hoy", () => {
     const src = header();
-    for (const href of ["/atlas", "/hoy", "/calendario", "/journal"]) {
-      expect(src).toContain(`href: "${href}"`);
-    }
+    expect(src).toMatch(/NO_PROFILE_LINKS[\s\S]*?\];/);
+    const block = src.match(/NO_PROFILE_LINKS[\s\S]*?\];/)![0];
+    expect(block).toContain('href: "/atlas"');
+    expect(block).toContain('href: "/hoy"');
+    // Calendario y Journal se movieron al footer para no ofrecerle a un
+    // usuario nuevo herramientas que necesitan un mapa que todavía no tiene.
+    expect(block).not.toContain('href: "/calendario"');
+    expect(block).not.toContain('href: "/journal"');
   });
 
-  test("Guardar mi mapa reemplaza a Bóveda como label del trigger", () => {
-    expect(header()).toContain('"Guardar mi mapa"');
+  test("la acción sin perfil es crear el mapa, no abrir una bóveda vacía", () => {
+    const src = header();
+    expect(src).toContain("Crear mi mapa");
+    expect(src).toMatch(/!hasProfile \? \([\s\S]{0,400}href="\/onboarding"/);
   });
 
-  test("Explorar (sin perfil) agrupa Modos y Aprender con las rutas reales", () => {
+  test("el label de la bóveda no compite con 'Mi Mapa'", () => {
+    const src = header();
+    expect(src).toMatch(/vaultLabel\s*=\s*vaultCount > 0 \? "Guardados" : "Guardar"/);
+    expect(src).not.toContain('"Mis Mapas"');
+  });
+
+  test("Explorar sigue existiendo para el menú móvil, con las rutas reales", () => {
     const src = header();
     expect(src).toContain("EXPLORE_GROUPS_NO_PROFILE");
     for (const href of ["/socios", "/pareja", "/academy", "/biblioteca", "/blog"]) {
@@ -39,16 +51,18 @@ describe("Header — navegación sin perfil", () => {
 describe("Header — navegación con perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("los 5 ítems personales están presentes", () => {
+  test("solo el ancla conserva el prefijo 'Mi' — el resto escanea por su propia palabra", () => {
     const src = header();
-    expect(src).toContain("Mi Mapa");
-    expect(src).toContain("Mis Afinidades");
-    expect(src).toContain("Mi Tiempo");
-    expect(src).toContain("Mi Journal");
-    expect(src).toContain('"Mis Mapas"');
+    expect(src).toContain('label: "Mi Mapa"');
+    expect(src).toContain('label="Afinidades"');
+    expect(src).toContain('label="Tiempo"');
+    expect(src).toContain('label: "Journal"');
+    expect(src).not.toContain('label="Mis Afinidades"');
+    expect(src).not.toContain('label="Mi Tiempo"');
+    expect(src).not.toContain('label: "Mi Journal"');
   });
 
-  test("Mis Afinidades usa las 7 categorías reales de /affinity/[type]", () => {
+  test("Afinidades usa las 7 categorías reales de /affinity/[type]", () => {
     const src = header();
     for (const href of [
       "/affinity/country",
@@ -63,7 +77,7 @@ describe("Header — navegación con perfil", () => {
     }
   });
 
-  test("Mi Tiempo usa Hoy/Semana/Mes/Año sobre rutas reales existentes", () => {
+  test("Tiempo usa Hoy/Semana/Mes/Año sobre rutas reales existentes", () => {
     const src = header();
     expect(src).toContain("TIME_GROUPS");
     expect(src).toMatch(/href:\s*"\/hoy",\s*label:\s*"Hoy"/);
@@ -72,7 +86,7 @@ describe("Header — navegación con perfil", () => {
     expect(src).toMatch(/href:\s*"\/evolution",\s*label:\s*"Año"/);
   });
 
-  test("Explorar (con perfil) agrupa Aprender (incluye Atlas) y Modos", () => {
+  test("Explorar (con perfil, solo móvil) agrupa Aprender (incluye Atlas) y Modos", () => {
     const src = header();
     expect(src).toContain("EXPLORE_GROUPS_WITH_PROFILE");
     expect(src).toContain("LEARN_LINKS_WITH_PROFILE");
@@ -125,10 +139,18 @@ describe("lib/session/localStorage.ts — único choke point de escritura del pe
   });
 });
 
-describe("Footer — fuera de scope de esta fase, se deja intacto", () => {
-  test("Afinidades sigue apuntando a /mundo (footer no forma parte del header)", () => {
-    const src = read("components/layout/UniversityFooter.tsx");
-    expect(src).toMatch(/href:\s*"\/mundo",\s*label:\s*"Afinidades"/);
+describe("Footer — único hogar en desktop de lo que salió del header", () => {
+  const footer = () => read("components/layout/UniversityFooter.tsx");
+
+  test("Afinidades sigue apuntando a /mundo", () => {
+    expect(footer()).toMatch(/href:\s*"\/mundo",\s*label:\s*"Afinidades"/);
+  });
+
+  test("cubre todo el ex-dropdown Explorar, incluida Academia", () => {
+    const src = footer();
+    for (const href of ["/atlas", "/academy", "/biblioteca", "/blog", "/journal", "/calendario"]) {
+      expect(src).toContain(`href: "${href}"`);
+    }
   });
 });
 
