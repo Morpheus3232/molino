@@ -14,6 +14,7 @@ import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
 import { buildDimensions } from "@/lib/engines/synthesisEngine";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import SpaceIndex from "@/components/profile/SpaceIndex";
+import ConvergenceSection from "@/components/profile/ConvergenceSection";
 import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/profile/LecturaProfunda";
 import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
@@ -161,6 +162,15 @@ export default function ProfileHub({
           <DimensionsPreview dimensions={dimensions} elementColor={elementColor} expandable={false} />
         </div>
       </div>
+
+      {/* ═══════════════════════════════════════════════
+          CONVERGENCIA — dónde dos sistemas calculados por
+          caminos distintos dan el mismo resultado. Va antes
+          de la lectura interpretativa porque responde la
+          pregunta de la página ("¿cómo estoy configurado?"),
+          no la de /lectura ("¿qué significa?").
+          ═══════════════════════════════════════════════ */}
+      <ConvergenceSection profile={profile} />
 
       {/* ═══════════════════════════════════════════════
           LECTURA LIBRE — Patrones + Principios + Momento.

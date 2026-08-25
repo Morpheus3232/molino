@@ -30,8 +30,19 @@ export interface ConvergentLayer {
   description: string;
 }
 
+/** Una coincidencia concreta entre dos capas, con su regla explícita. */
+export interface ConvergentMatch {
+  /** Las dos capas que coinciden, por id. */
+  between: [string, string];
+  /** Qué coincide, en una línea legible. */
+  label: string;
+  /** La regla que la produjo — lo que hace verificable el hallazgo. */
+  rule: string;
+}
+
 export interface Convergence {
   layers: ConvergentLayer[];
+  matches: ConvergentMatch[];
   convergentCount: number;
   totalLayers: number;
   convergenceLevel: "strong" | "moderate" | "low";
@@ -94,7 +105,8 @@ export function buildConvergence(profile: UserProfile): Convergence {
   ];
 
   // Detect convergences
-  const convergentCount = detectConvergences(layers, lifePath, personalYear, userAnimal, yearAnimal);
+  const matches = detectConvergences(layers, lifePath, personalYear, userAnimal, yearAnimal);
+  const convergentCount = matches.length;
 
   let convergenceLevel: Convergence["convergenceLevel"];
   let message: string;
@@ -103,19 +115,31 @@ export function buildConvergence(profile: UserProfile): Convergence {
   if (convergentCount >= 3) {
     convergenceLevel = "strong";
     message = "Alta resonancia de patrones";
-    insight = "Varios de tus patrones personales están alineados este año. Según estas tradiciones, es un momento de coherencia simbólica.";
   } else if (convergentCount >= 2) {
     convergenceLevel = "moderate";
     message = "Resonancia moderada de patrones";
-    insight = "Algunos de tus patrones muestran alineación. Un momento de observación y conexión.";
   } else {
     convergenceLevel = "low";
     message = "Patrones independientes";
-    insight = "Tus patrones actúan de forma independiente. Un momento de exploración diversa.";
+  }
+
+  // El insight nombra QUÉ coincide, no solo que algo coincide. Un texto que
+  // dice "algunos de tus patrones muestran alineación" no aporta nada que el
+  // número de al lado no diga ya.
+  if (convergentCount === 0) {
+    insight =
+      "Ninguna de tus capas coincide con otra este año: cada sistema apunta a algo distinto. En estas tradiciones eso se lee como un año de exploración en varios frentes, no como una falta.";
+  } else {
+    const listado = matches.map((m) => m.rule.toLowerCase()).join("; ");
+    insight =
+      convergentCount === 1
+        ? `Hay una coincidencia entre tus capas (${listado}). El resto de los sistemas apunta a lugares distintos.`
+        : `Hay ${convergentCount} coincidencias entre tus capas (${listado}). Cuando sistemas que se calculan por separado dan el mismo resultado, estas tradiciones lo leen como un patrón más marcado.`;
   }
 
   return {
     layers,
+    matches,
     convergentCount,
     totalLayers: layers.length,
     convergenceLevel,
@@ -134,29 +158,56 @@ function detectConvergences(
   personalYear: number,
   userAnimal: Animal,
   yearAnimal: Animal,
-): number {
-  let count = 0;
+): ConvergentMatch[] {
+  const matches: ConvergentMatch[] = [];
 
-  // Life Path = Personal Year number
-  if (lifePath === personalYear) count++;
+  // Antes esta función solo devolvía un número, y contaba
+  // `lifePath === personalYear` DOS veces (una como "Life Path = Personal
+  // Year number" y otra como "Life Path matches personal year digit": misma
+  // condición, distinto comentario), lo que inflaba el nivel de resonancia.
+  // Ahora devuelve las coincidencias concretas, cada una con la regla que la
+  // produjo — el conteo sale de la longitud, así que no se puede volver a
+  // duplicar sin que se vea.
 
-  // Animal matches year animal
-  if (userAnimal === yearAnimal) count++;
+  if (lifePath === personalYear) {
+    matches.push({
+      between: ["life-path", "personal-year"],
+      label: `Tu Camino de Vida y tu Año Personal son el mismo número: ${lifePath}`,
+      rule: "Camino de Vida = Año Personal",
+    });
+  }
 
-  // Life Path matches personal year digit
-  if (lifePath === personalYear) count++;
+  if (userAnimal === yearAnimal) {
+    matches.push({
+      between: ["animal", "year-animal"],
+      label: `Este es tu año: el animal del año vuelve a ser ${userAnimal}`,
+      rule: "Animal natal = animal del año en curso",
+    });
+  }
 
-  // Birthday number matches personal year
-  const birthday = layers.find(l => l.id === "birthday");
-  if (birthday && birthday.value === personalYear) count++;
+  const birthday = layers.find((l) => l.id === "birthday");
+  if (birthday && birthday.value === personalYear) {
+    matches.push({
+      between: ["birthday", "personal-year"],
+      label: `Tu número de cumpleaños coincide con tu Año Personal: ${personalYear}`,
+      rule: "Número de cumpleaños = Año Personal",
+    });
+  }
 
-  // Life Path odd/even matches animal Yang/Yin
   const yangAnimals = ["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Perro"];
   const isYangAnimal = yangAnimals.includes(userAnimal);
   const isOddLifePath = lifePath % 2 === 1;
-  if (isYangAnimal === isOddLifePath) count++;
+  if (isYangAnimal === isOddLifePath) {
+    const polaridad = isYangAnimal ? "Yang" : "Yin";
+    const paridad = isOddLifePath ? "impar" : "par";
+    matches.push({
+      between: ["life-path", "animal"],
+      label: `Tu Camino de Vida ${paridad} y tu animal ${polaridad} comparten polaridad`,
+      rule: `Camino de Vida ${paridad} ↔ animal ${polaridad}`,
+    });
+  }
 
-  return count;
+  return matches;
 }
 
 function extractBirthdayNumber(birthDate?: string): number {
