@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { loadProfileFromStorage, saveProfileToStorage } from "@/lib/session/localStorage";
@@ -10,7 +9,6 @@ import { getSession } from "@/lib/session/ephemeral";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { encodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import { recordVisit } from "@/lib/session/discovery";
-import { fadeUp } from "@/lib/utils/motion";
 import ProfileHub from "@/components/profile/ProfileHub";
 import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import Button from "@/components/ui/Button";
@@ -127,7 +125,7 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     return (
       <div className="min-h-screen bg-background">
         <div className="mx-auto max-w-content px-4 sm:px-6 py-24 text-center">
-          <motion.div {...fadeUp} className="w-8 h-px bg-ink/10 mx-auto mb-8" />
+          <div className="w-8 h-px bg-ink/10 mx-auto mb-8" />
           {futureDateError ? (
             <div role="alert">
               <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
@@ -142,24 +140,21 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
             </div>
           ) : (
             <>
-              <motion.h1
-                {...fadeUp}
-                className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4"
-              >
+              <h1 className="font-display text-4xl sm:text-5xl tracking-tight text-foreground mb-4">
                 Tu mapa se genera en la portada
-              </motion.h1>
-              <motion.p {...fadeUp} className="text-muted mb-8 max-w-md mx-auto">
+              </h1>
+              <p className="text-muted mb-8 max-w-md mx-auto">
                 Elegís tu fecha de nacimiento en la portada y volvés directo acá, a tu numerología, astrología y
                 zodíaco chino ya cruzados en un solo mapa.
-              </motion.p>
-              <motion.div {...fadeUp} className="flex justify-center mb-6">
+              </p>
+              <div className="flex justify-center mb-6">
                 <Badge variant="muted">Gratis · Sin registro</Badge>
-              </motion.div>
-              <motion.div {...fadeUp}>
+              </div>
+              <div>
                 <Button variant="accent" size="lg" onClick={() => router.push("/")}>
                   Ir a la portada
                 </Button>
-              </motion.div>
+              </div>
             </>
           )}
         </div>

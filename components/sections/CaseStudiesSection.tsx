@@ -72,8 +72,7 @@ export default function CaseStudiesSection() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          animate="visible"
           className="mb-20 text-center"
         >
           <motion.div variants={itemVariants} className="mb-6">
@@ -98,8 +97,7 @@ export default function CaseStudiesSection() {
         <motion.div
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible"
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
           {caseStudies.map((study, idx) => (
@@ -109,7 +107,7 @@ export default function CaseStudiesSection() {
               className="group relative"
             >
               {/* Card Container */}
-              <div className="relative z-10 p-8 rounded-2xl bg-gradient-to-br from-paper to-paper border border-accent/10 group-hover:border-accent/25 transition-all duration-300 space-y-6 h-full flex flex-col">
+              <div className="relative z-10 p-8 rounded-md bg-gradient-to-br from-paper to-paper border border-accent/10 group-hover:border-accent/25 transition-all duration-300 space-y-6 h-full flex flex-col">
                 {/* Icon & Header */}
                 <div className="space-y-4">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/10 text-accent group-hover:bg-accent/15 transition-colors">
@@ -150,7 +148,7 @@ export default function CaseStudiesSection() {
               </div>
 
               {/* Hover Border Glow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/10 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
+              <div className="absolute inset-0 rounded-md bg-gradient-to-br from-accent/10 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur" />
             </motion.div>
           ))}
         </motion.div>
@@ -159,8 +157,7 @@ export default function CaseStudiesSection() {
         <motion.div
           variants={itemVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible"
           className="mt-16 p-6 text-center bg-accent/5 rounded-xl border border-accent/10"
         >
           <p className="text-sm text-foreground/70 font-light">

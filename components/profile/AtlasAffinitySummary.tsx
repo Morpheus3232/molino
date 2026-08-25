@@ -28,7 +28,7 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...fadeUp} className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent mb-2">
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-2">
               Tu animal en el mundo
             </p>
             <h2 id="atlas-affinity-title" className="font-heading text-2xl sm:text-3xl text-foreground uppercase tracking-tight">
@@ -53,7 +53,7 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
                   /atlas/explorar/[animal]/[category] */}
               <Link
                 href={`/atlas/explorar/${animalSlug}/${section.type}`}
-                className="group inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3 hover:text-accent transition-colors"
+                className="group inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3 hover:text-accent transition-colors"
               >
                 {section.label}
                 <ArrowRight
@@ -66,13 +66,13 @@ export default function AtlasAffinitySummary({ sections, animalSlug, animalName 
                   <Link
                     key={e.id}
                     href={`/affinity/${e.type}/${e.id}`}
-                    className="flex items-center gap-3 p-4 rounded-2xl border border-ink/10 bg-card hover:border-accent/40 transition-colors"
+                    className="flex items-center gap-3 p-4 rounded-md border border-ink/10 bg-card hover:border-accent/40 transition-colors"
                   >
                     <span className="text-2xl shrink-0" aria-hidden="true">{e.emoji || "🔮"}</span>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-foreground truncate">{e.name}</p>
                       {e.origin && (
-                        <p className="text-[11px] text-muted truncate">{e.origin}</p>
+                        <p className="text-xs text-muted truncate">{e.origin}</p>
                       )}
                     </div>
                   </Link>

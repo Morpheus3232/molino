@@ -96,7 +96,7 @@ export default function PremiumPreview({
           {/* Top Bar with user badge */}
           <div className="flex items-center justify-between gap-3 pb-6 border-b border-ink/10 mb-8">
             <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-accent animate-pulse" />
+              <span className="w-3 h-3 rounded-full bg-accent" />
               <div>
                 <span className="font-mono text-[10px] uppercase tracking-wider text-muted block">
                   Perfil Activo

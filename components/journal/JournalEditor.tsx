@@ -175,7 +175,7 @@ export default function JournalEditor({
   const cycle = cycleContext;
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm transition-all ${className}`}>
+    <div className={`relative overflow-hidden rounded-md border border-border bg-card p-6 sm:p-8 shadow-sm transition-all ${className}`}>
       {/* Toast de persistencia local */}
       <AnimatePresence>
         {savedSuccess && (
@@ -184,7 +184,7 @@ export default function JournalEditor({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.95 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono shadow-sm backdrop-blur-sm"
+            className="absolute top-4 right-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-sm bg-card border border-success/40 text-success text-xs font-mono shadow-sm"
           >
             <Check className="w-3.5 h-3.5" />
             <span>Guardado en tu navegador</span>
@@ -212,19 +212,19 @@ export default function JournalEditor({
         {(cycle?.dayEnergy?.theme || cycle?.dayEnergy?.personalDay || cycle?.yearCycle?.personalYear) && (
           <div className="flex flex-wrap items-center gap-1.5">
             {cycle.dayEnergy?.theme && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono font-semibold bg-accent/10 text-accent border border-accent/20">
                 <Zap className="w-3 h-3 text-accent" />
                 <span>{cycle.dayEnergy.theme}</span>
               </span>
             )}
             {cycle.dayEnergy?.personalDay && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono bg-background border border-border text-foreground">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono bg-background border border-border text-foreground">
                 <Compass className="w-3 h-3 text-muted" />
                 Día {cycle.dayEnergy.personalDay}
               </span>
             )}
             {cycle.dayEnergy?.moonPhase && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono bg-background border border-border text-foreground">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-mono bg-background border border-border text-foreground">
                 <Moon className="w-3 h-3 text-muted" />
                 {cycle.dayEnergy.moonPhase}
               </span>
@@ -236,10 +236,25 @@ export default function JournalEditor({
       <form onSubmit={handleSubmit} className="mt-6 space-y-6">
         {/* 1. ¿Cómo te sentís? — Escala horizontal minimalista (5 estados) */}
         <div>
-          <label className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-2.5 font-semibold">
+          <label className="block font-mono text-xs uppercase tracking-[0.2em] text-muted mb-2.5">
             ¿Cómo te sentís?
           </label>
-          <div className="flex items-center justify-between gap-1 sm:gap-2 p-1.5 rounded-xl bg-background border border-border">
+          {/* Dos bugs de layout acá, los dos por lo mismo: cinco palabras de
+              hasta 11 caracteres no entran en una fila angosta.
+
+              1. `flex-1` sin `min-w-0`: min-width:auto le pone como piso el
+                 ancho intrínseco de la palabra, los botones no podían
+                 encogerse y desbordaban el contenedor (el `truncate` del span
+                 nunca se activaba porque el ítem flex es el button).
+              2. Mostrar los 5 labels y truncar da "Desafian…" / "En sinto…",
+                 que no dicen nada. Y ocultarlos por breakpoint de viewport no
+                 sirve: este editor vive en un card angosto incluso en desktop.
+
+              La escala se lee por los emoji (lluvia → sol → chispa) y el
+              label del estado elegido se confirma debajo. Funciona igual a
+              312px que a 1440px, sin recortes. El nombre completo de cada
+              opción sigue disponible en su aria-label. */}
+          <div className="flex items-stretch gap-1 p-1 rounded-md bg-background border border-border">
             {([1, 2, 3, 4, 5] as JournalMood[]).map((m) => {
               const cfg = MOOD_CONFIG[m];
               const isSelected = mood === m;
@@ -248,20 +263,22 @@ export default function JournalEditor({
                   key={m}
                   type="button"
                   onClick={() => setMood(m)}
-                  className={`flex-1 flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-lg text-xs transition-all min-h-[44px] ${
+                  className={`flex-1 min-w-0 flex items-center justify-center rounded-sm transition-colors min-h-[44px] border text-xl leading-none ${
                     isSelected
-                      ? "bg-accent/15 border border-accent/40 text-foreground font-semibold shadow-xs"
-                      : "text-muted hover:text-foreground hover:bg-ink/[0.03] border border-transparent"
+                      ? "bg-accent/10 border-accent"
+                      : "border-transparent opacity-60 hover:opacity-100 hover:bg-ink/[0.03]"
                   }`}
                   aria-pressed={isSelected}
                   aria-label={cfg.label}
                 >
-                  <span className="text-lg leading-none" aria-hidden="true">{cfg.emoji}</span>
-                  <span className="font-mono text-[10px] sm:text-[11px] truncate">{cfg.label}</span>
+                  <span aria-hidden="true">{cfg.emoji}</span>
                 </button>
               );
             })}
           </div>
+          <p className="mt-2 text-center font-mono text-xs text-accent" aria-live="polite">
+            {MOOD_CONFIG[mood].label}
+          </p>
         </div>
 
         {/* 2. ¿Qué querés registrar? — Textarea como protagonista absoluto */}
@@ -269,7 +286,7 @@ export default function JournalEditor({
           <div className="flex items-center justify-between">
             <label
               htmlFor="journal-content"
-              className="block font-mono text-[11px] uppercase tracking-wider text-muted font-semibold"
+              className="block font-mono text-xs uppercase tracking-wider text-muted font-semibold"
             >
               ¿Qué querés registrar?
             </label>
@@ -281,18 +298,18 @@ export default function JournalEditor({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Escribí tus pensamientos, decisiones, intuiciones o lo que viviste hoy..."
-            className="w-full rounded-2xl bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
+            className="w-full rounded-md bg-background border border-border p-4 text-sm sm:text-base text-foreground placeholder:text-muted/60 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-y leading-relaxed font-sans"
             required
           />
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-1">
             {/* Sugerencia subordinada y discreta */}
             {!editingEntry && (
-              <div className="flex items-center gap-1.5 text-xs text-muted">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5 text-xs text-muted">
                 <button
                   type="button"
                   onClick={usePrompt}
-                  className="text-left text-muted/80 hover:text-accent transition-colors truncate max-w-[240px] sm:max-w-md flex items-center gap-1"
+                  className="min-w-0 text-left text-muted/80 hover:text-accent transition-colors flex items-center gap-1"
                   title="Usar como punto de partida"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-accent shrink-0" />
@@ -310,7 +327,7 @@ export default function JournalEditor({
               </div>
             )}
 
-            <span className="text-[11px] text-muted font-mono ml-auto shrink-0">
+            <span className="text-xs text-muted font-mono ml-auto shrink-0">
               {content.length} caracteres
             </span>
           </div>
@@ -337,14 +354,14 @@ export default function JournalEditor({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Tag className="w-3.5 h-3.5 text-muted" />
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
+                  <span className="font-mono text-xs uppercase tracking-wider text-muted font-semibold">
                     Temas clave <span className="text-muted/60 font-normal">(opcional)</span>
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShowTags(false)}
-                  className="text-[11px] font-mono text-muted hover:text-foreground transition-colors"
+                  className="text-xs font-mono text-muted hover:text-foreground transition-colors"
                 >
                   Ocultar
                 </button>
@@ -397,7 +414,7 @@ export default function JournalEditor({
               <>Guardando...</>
             ) : savedSuccess ? (
               <>
-                <Check className="w-4 h-4 text-emerald-500" />
+                <Check className="w-4 h-4 text-success" />
                 ¡Guardado!
               </>
             ) : (

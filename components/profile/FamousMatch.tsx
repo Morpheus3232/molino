@@ -39,7 +39,7 @@ function MatchCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.1 * Math.min(index, 4), ease: [0.22, 1, 0.36, 1] }}
-      className={`rounded-2xl border p-4 sm:p-5 transition-all relative overflow-hidden flex flex-col ${
+      className={`rounded-md border p-4 sm:p-5 transition-all relative overflow-hidden flex flex-col ${
         matchCount >= 2
           ? "bg-gradient-to-br from-card to-background border-accent/30 shadow-sm"
           : "bg-card border-ink/10 shadow-sm"
@@ -48,13 +48,13 @@ function MatchCard({
       {/* Top resonance badge */}
       <div className="absolute top-0 right-0 flex">
         {featured && (
-          <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
+          <span className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
             <Star className="w-2.5 h-2.5" />
             Principal
           </span>
         )}
         {matchCount >= 2 && (
-          <span className="inline-flex items-center gap-1 font-mono text-[8px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
+          <span className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
             <Sparkles className="w-2.5 h-2.5" />
             {matchCount === 3 ? "Triple" : "Doble"}
           </span>
@@ -72,10 +72,10 @@ function MatchCard({
             {person.name}
           </h3>
           <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mt-1">
-            <span className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded border bg-ink/5 text-muted border-ink/10">
+            <span className="font-mono text-xs uppercase tracking-wider px-1.5 py-0.5 rounded border bg-ink/5 text-muted border-ink/10">
               {person.field}
             </span>
-            <span className="text-[10px] text-muted">
+            <span className="text-xs text-muted">
               {person.country} {birthYearFormatted ? `· ${birthYearFormatted}` : ""}
             </span>
           </div>
@@ -84,20 +84,20 @@ function MatchCard({
 
       {/* Headline callout */}
       <div className={`mt-3 p-2.5 rounded-lg bg-background/60 border border-ink/5`}>
-        <p className="text-[11px] sm:text-xs font-medium text-foreground leading-snug flex items-start gap-1.5">
+        <p className="text-xs sm:text-xs font-medium text-foreground leading-snug flex items-start gap-1.5">
           <Star className="w-3 h-3 text-accent mt-0.5 flex-shrink-0" />
           <span>{headline}</span>
         </p>
       </div>
 
       {/* Bio */}
-      <p className="text-[11px] text-muted mt-2.5 leading-relaxed line-clamp-3">
+      <p className="text-xs text-muted mt-2.5 leading-relaxed line-clamp-3">
         {person.shortBio}
       </p>
 
       {/* Quote if available */}
       {person.quote && (
-        <blockquote className="mt-2.5 text-[11px] italic text-foreground/80 border-l-2 border-accent/40 pl-2 py-0.5">
+        <blockquote className="mt-2.5 text-xs italic text-foreground/80 border-l-2 border-accent/40 pl-2 py-0.5">
           &ldquo;{person.quote}&rdquo;
         </blockquote>
       )}
@@ -119,7 +119,7 @@ function MatchCard({
               : undefined
           }
         >
-          <span className="flex items-center gap-1 font-mono text-[8px] uppercase tracking-wider">
+          <span className="flex items-center gap-1 font-mono text-xs uppercase tracking-wider">
             Zodíaco
             {matchChineseZodiac && <Check className="w-2.5 h-2.5" aria-label="Coincide" />}
           </span>
@@ -137,7 +137,7 @@ function MatchCard({
                 : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
             }`}
           >
-            <span className="flex items-center justify-between font-mono text-[8px] uppercase tracking-wider">
+            <span className="flex items-center justify-between font-mono text-xs uppercase tracking-wider">
               Camino
               {matchLifePath && <Check className="w-2.5 h-2.5 text-accent" aria-label="Coincide" />}
             </span>
@@ -158,12 +158,12 @@ function MatchCard({
                 : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
             }`}
           >
-            <span className="flex items-center justify-between font-mono text-[8px] uppercase tracking-wider">
+            <span className="flex items-center justify-between font-mono text-xs uppercase tracking-wider">
               Solar
               {matchSunSign && <Check className="w-2.5 h-2.5 text-accent" aria-label="Coincide" />}
             </span>
             <span
-              className={`block font-mono text-[11px] font-bold text-right ${
+              className={`block font-mono text-xs font-bold text-right ${
                 matchSunSign ? "text-foreground" : ""
               }`}
             >
@@ -199,8 +199,8 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-semibold">
+              <span className="w-2 h-2 rounded-full bg-accent" />
+              <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold">
                 Sincronicidad Histórica
               </span>
             </div>
@@ -237,7 +237,7 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
         </div>
 
         {/* Subtle footer tip */}
-        <div className="mt-6 flex items-center justify-between flex-wrap gap-3 text-[11px] text-muted font-mono border-t border-ink/5 pt-4">
+        <div className="mt-6 flex items-center justify-between flex-wrap gap-3 text-xs text-muted font-mono border-t border-ink/5 pt-4">
           <span>Fechas de nacimiento documentadas en registros biográficos</span>
           <span className="text-accent/90">
             Coincidencia principal: {primaryMatch.person.name} ({primaryMatch.person.field})

@@ -30,7 +30,7 @@ export default function ParejaTeaser() {
           <div className="lg:col-span-6 space-y-5">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400">
               <Heart className="w-3.5 h-3.5 animate-pulse" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.25em] font-bold">
+              <span className="font-mono text-xs uppercase tracking-[0.25em] font-bold">
                 Modo Pareja & Vínculos
               </span>
             </div>
@@ -71,7 +71,7 @@ export default function ParejaTeaser() {
 
           {/* Right Preview Card */}
           <div className="lg:col-span-6">
-            <div className="relative p-6 sm:p-8 rounded-3xl bg-card border border-ink/10 shadow-xl overflow-hidden">
+            <div className="relative p-6 sm:p-8 rounded-md bg-card border border-ink/10 shadow-xl overflow-hidden">
               <div className="flex items-center justify-between pb-4 border-b border-ink/10">
                 <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">
                   Sinergia de Ejemplo
@@ -83,8 +83,8 @@ export default function ParejaTeaser() {
 
               <div className="grid grid-cols-2 gap-4 my-6">
                 {/* Persona A */}
-                <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 text-center space-y-1">
-                  <span className="text-[10px] font-mono text-amber-700 uppercase tracking-widest block font-bold">
+                <div className="p-4 rounded-md bg-amber-500/5 border border-amber-500/20 text-center space-y-1">
+                  <span className="text-xs font-mono text-amber-700 uppercase tracking-widest block font-bold">
                     Ana (15/03/1990)
                   </span>
                   <div className="font-display text-lg text-foreground font-bold">Camino 1 · Piscis</div>
@@ -92,8 +92,8 @@ export default function ParejaTeaser() {
                 </div>
 
                 {/* Persona B */}
-                <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/20 text-center space-y-1">
-                  <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest block font-bold">
+                <div className="p-4 rounded-md bg-blue-500/5 border border-blue-500/20 text-center space-y-1">
+                  <span className="text-xs font-mono text-blue-400 uppercase tracking-widest block font-bold">
                     Lucas (22/07/1988)
                   </span>
                   <div className="font-display text-lg text-foreground font-bold">Camino 7 · Cáncer</div>

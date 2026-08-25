@@ -132,7 +132,7 @@ export default function SavedProfilesDrawer({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.25 }}
-              className="w-full max-w-lg rounded-3xl bg-card border border-ink/15 p-6 sm:p-8 shadow-2xl relative overflow-hidden"
+              className="w-full max-w-lg rounded-md bg-card border border-ink/15 p-6 sm:p-8 shadow-2xl relative overflow-hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between pb-4 border-b border-ink/10">
@@ -144,7 +144,7 @@ export default function SavedProfilesDrawer({
                     <h3 id="vault-title" className="font-heading text-lg font-bold text-foreground">
                       Bóveda de Mapas Guardados
                     </h3>
-                    <p className="text-[11px] font-mono text-muted">
+                    <p className="text-xs font-mono text-muted">
                       100% privado en tu navegador · Sin cuentas
                     </p>
                   </div>
@@ -162,12 +162,12 @@ export default function SavedProfilesDrawer({
 
               {/* Save Current Profile Box */}
               {currentProfile && currentProfile.birthDate && !isCurrentAlreadySaved && (
-                <div className="mt-5 p-4 rounded-2xl bg-accent/5 border border-accent/20 space-y-3">
+                <div className="mt-5 p-4 rounded-md bg-accent/5 border border-accent/20 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs font-bold text-accent">
                       Guardar mapa actual
                     </span>
-                    <span className="text-[11px] font-mono text-muted">
+                    <span className="text-xs font-mono text-muted">
                       {currentProfile.birthDate}
                     </span>
                   </div>
@@ -204,7 +204,7 @@ export default function SavedProfilesDrawer({
                 {vault.length === 0 ? (
                   <div className="py-8 text-center text-muted text-xs font-mono">
                     <p>Aún no guardaste mapas en este navegador.</p>
-                    <p className="mt-1 text-[11px] text-muted/70">
+                    <p className="mt-1 text-xs text-muted/70">
                       Podés guardar tu perfil, el de tu pareja, amigos o familiares para consultarlos al instante.
                     </p>
                   </div>
@@ -216,7 +216,7 @@ export default function SavedProfilesDrawer({
                     return (
                       <div
                         key={item.id}
-                        className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
+                        className={`p-3.5 rounded-md border transition-all flex items-center justify-between gap-3 ${
                           isCurrent
                             ? "bg-accent/10 border-accent/30"
                             : "bg-background border-ink/5 hover:border-ink/20"
@@ -232,12 +232,12 @@ export default function SavedProfilesDrawer({
                               {item.label}
                             </span>
                             {isCurrent && (
-                              <span className="text-[9px] font-mono uppercase bg-accent text-background px-1.5 py-0.5 rounded font-bold">
+                              <span className="text-xs font-mono uppercase bg-accent text-background px-1.5 py-0.5 rounded font-bold">
                                 Activo
                               </span>
                             )}
                           </div>
-                          <p className="text-[11px] font-mono text-muted mt-0.5">
+                          <p className="text-xs font-mono text-muted mt-0.5">
                             Camino {item.lifePath} · {item.sunSign} · {item.chineseZodiac} ({item.birthDate})
                           </p>
                         </Link>
@@ -269,7 +269,7 @@ export default function SavedProfilesDrawer({
               </div>
 
               {/* Footer Notice */}
-              <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-[11px] font-mono text-muted">
+              <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-xs font-mono text-muted">
                 <span className="inline-flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                   Almacenado solo en este dispositivo

@@ -41,7 +41,7 @@ export default function NewInsightsTeaser() {
     <section className="border-t border-ink/10 py-14 sm:py-20">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         <motion.div {...fadeUpMount} className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-bold">
             Analizamos distintas áreas que influyen en tu día a día
           </span>
           <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground font-bold tracking-tight mt-2">
@@ -60,7 +60,7 @@ export default function NewInsightsTeaser() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className="p-5 rounded-2xl bg-card border border-ink/10 hover:border-accent/30 transition-colors"
+              className="p-5 rounded-md bg-card border border-ink/10 hover:border-accent/30 transition-colors"
             >
               <div className={`w-9 h-9 rounded-xl ${f.bg} ${f.color} flex items-center justify-center mb-3`}>
                 <f.icon className="w-4.5 h-4.5" />
@@ -78,7 +78,7 @@ export default function NewInsightsTeaser() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-6 sm:mt-8 p-5 sm:p-6 rounded-2xl bg-ink/[0.02] border border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          className="mt-6 sm:mt-8 p-5 sm:p-6 rounded-md bg-ink/[0.02] border border-ink/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
         >
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">

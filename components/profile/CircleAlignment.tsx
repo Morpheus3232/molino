@@ -105,7 +105,7 @@ function AnimalCard({ animal }: { animal: Animal }) {
         <span role="img" aria-label={display.name}>{display.emoji}</span>
         <span className="font-medium">{display.name}</span>
       </div>
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-1.5">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1.5">
         Años de nacimiento
       </p>
       <p className="font-mono text-xs text-muted leading-relaxed">{years.join(" · ")}</p>

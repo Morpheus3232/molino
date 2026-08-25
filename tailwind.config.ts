@@ -131,6 +131,14 @@ const config: Config = {
         wide: "var(--max-width-wide)",
         layout: "var(--max-width-layout)",
         article: "var(--max-width-article)",
+        // `8xl` solo existía bajo fontSize, no acá: las ~69 utilidades
+        // `max-w-8xl` repartidas por el sitio (todo /profile, EditorialSection,
+        // header y footer) no generaban NINGUNA regla CSS, así que esos
+        // contenedores corrían a ancho completo del viewport. 90rem continúa
+        // la progresión de Tailwind sobre 7xl (80rem) y es el valor que la
+        // clase daba a entender: por debajo de 1440px no cambia nada, y arriba
+        // deja de haber líneas de 200+ caracteres.
+        "8xl": "90rem",
       },
       screens: {
         xs: "475px",

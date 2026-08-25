@@ -47,7 +47,7 @@ export default function UseCasesSection() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div {...fadeUp} className="text-center mb-12">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-3">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold mb-3">
             Cómo lo usan
           </p>
           <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground">

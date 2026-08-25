@@ -159,7 +159,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                 aria-label={`${formatDate(snapshot.date)}: ${ORIENTATION_LABELS[snapshot.orientation]}, ${snapshot.theme}`}
               >
                 {/* Theme label */}
-                <span className="text-[10px] text-muted mb-1.5 truncate max-w-[4rem] opacity-0 group-hover:opacity-100 transition-opacity">
+                <span className="text-xs text-muted mb-1.5 truncate max-w-[4rem] opacity-0 group-hover:opacity-100 transition-opacity">
                   {snapshot.theme}
                 </span>
 
@@ -194,7 +194,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                     />
                   </svg>
                   {/* Score number centered */}
-                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-mono font-medium text-foreground">
+                  <span className="absolute inset-0 flex items-center justify-center text-xs font-mono font-medium text-foreground">
                     {snapshot.overallScore ?? "—"}
                   </span>
                 </div>
@@ -215,7 +215,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
 
                 {/* Date label */}
                 <span
-                  className={`text-[10px] font-mono mt-2 whitespace-nowrap ${
+                  className={`text-xs font-mono mt-2 whitespace-nowrap ${
                     isToday ? "text-accent font-semibold" : "text-muted"
                   } ${isSelected ? "text-foreground font-medium" : ""}`}
                 >
