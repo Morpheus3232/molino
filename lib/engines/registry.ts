@@ -20,7 +20,7 @@ import { calculateDailyEnergy, type DailyEnergyResult } from './dailyEnergyEngin
 import { analyzeTiming, type TimingResult } from './timingEngine';
 import { analyzeDecision, type DecisionResult, type DecisionCategory } from './decisionsEngine';
 import { buildConvergence, type Convergence } from './convergentEngine';
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildDimensions, type PersonalCode, type PatternInsight, type TensionInsight, type RuleInsight, type DimensionInsight } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, type PersonalCode, type PatternInsight, type TensionInsight, type RuleInsight, type DimensionInsight } from './synthesisEngine';
 import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber } from './numerologyEngine';
 import { getSunSign, getSunSignInfo, getMoonSign, getElement, getModality } from './astrologyEngine';
 import { getChineseZodiac, getChineseZodiacInfo } from './chineseZodiacEngine';
@@ -206,15 +206,6 @@ const synthesisRulesEngine: Engine = {
   },
 };
 
-const synthesisDimensionsEngine: Engine = {
-  kind: 'synthesis_dimensions',
-  label: 'Dimensiones',
-  compute: (input) => {
-    const { profile } = input as { profile: UserProfile };
-    return buildDimensions(profile);
-  },
-};
-
 /**
  * The registry itself — a `map<kind, engine>`. Engines are keyed by kind and
  * looked up by `getEngine`. Never add a new engine here without also adding
@@ -234,7 +225,6 @@ export const ENGINE_REGISTRY: ReadonlyMap<EngineKind, Engine> = new Map<EngineKi
   [synthesisPatternsEngine.kind, synthesisPatternsEngine],
   [synthesisTensionsEngine.kind, synthesisTensionsEngine],
   [synthesisRulesEngine.kind, synthesisRulesEngine],
-  [synthesisDimensionsEngine.kind, synthesisDimensionsEngine],
 ]);
 
 /**

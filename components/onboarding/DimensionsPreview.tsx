@@ -14,12 +14,12 @@ const ProfileRadar = dynamic(() => import("@/components/charts/ProfileRadar"), {
   loading: () => <div className="h-80" aria-hidden="true" />,
 });
 
-type Dimensions = SynthesisResult["dimensions"];
+type Dimensions = SynthesisResult["dateDimensions"];
 
 interface DimensionsPreviewProps {
   /** Fecha en formato YYYY-MM-DD. Requerida solo si no se pasan `dimensions` ya calculadas. */
   birthDate?: string;
-  /** Dimensiones ya calculadas (p.ej. buildDimensions(profile) en Mi Mapa). Si vienen, no hay fetch/cache/loading. */
+  /** Dimensiones ya calculadas. Si vienen, no hay fetch/cache/loading. */
   dimensions?: Dimensions;
   /** Color del elemento para el radar. Si no se pasa, se deriva de birthDate. */
   elementColor?: string;

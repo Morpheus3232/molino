@@ -10,11 +10,9 @@ import { useUserContext } from "@/lib/hooks/useUserContext";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
-import DimensionsPreview from "@/components/onboarding/DimensionsPreview";
-import { buildDimensions } from "@/lib/engines/synthesisEngine";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import ConvergenceSection from "@/components/profile/ConvergenceSection";
+import BirthGridSection from "@/components/profile/BirthGridSection";
 import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/profile/LecturaProfunda";
 import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
@@ -48,9 +46,6 @@ export default function ProfileHub({
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = archetype.name;
 
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
-  const dimensions = useMemo(() => buildDimensions(profile), [profile]);
 
   const worldCount = useMemo(() => {
     if (!catalog || catalog.length === 0) return 0;
@@ -151,17 +146,14 @@ export default function ProfileHub({
       </div>
 
       {/* ═══════════════════════════════════════════════
-          TUS DIMENSIONES — radar + desglose, siempre
-          expandido (sin accordion, a diferencia del onboarding).
-          Mismo tono section-paper-alt que "01 · TU MAPA" más abajo
-          (y que la tarjeta compartible) — un solo bloque de fondo
-          continuo entre ambas secciones en vez de dos criterios.
+          CUADRO DE NACIMIENTO — reemplaza al radar de
+          "dimensiones", cuyos valores eran aritmética
+          arbitraria (lifePath * 10, 50 + (lp % 5) * 10) y
+          trataban etiquetas ordinales como magnitudes. Acá
+          cada casilla es un conteo que el lector puede
+          rehacer a mano.
           ═══════════════════════════════════════════════ */}
-      <div className="section-paper-alt border-t border-ink/10">
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-10 sm:pt-14">
-          <DimensionsPreview dimensions={dimensions} elementColor={elementColor} expandable={false} />
-        </div>
-      </div>
+      <BirthGridSection profile={profile} />
 
       {/* ═══════════════════════════════════════════════
           CONVERGENCIA — dónde dos sistemas calculados por

@@ -1,5 +1,5 @@
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
-import { buildPersonalCode, buildPatterns, buildDimensions, buildDateDimensions, buildMomentState } from "@/lib/engines/synthesisEngine";
+import { buildPersonalCode, buildPatterns, buildDateDimensions, buildMomentState } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
 import { buildConvergence } from "@/lib/engines/convergentEngine";
 import { calculateCompatibility } from "@/lib/engines/compatibilityEngine";
@@ -17,12 +17,6 @@ export interface SynthesisResult {
     keyword: string;
     description: string;
     sources: string[];
-  }>;
-  dimensions: Array<{
-    dimension: string;
-    value: number;
-    influences: string[];
-    explanation: string;
   }>;
   dateDimensions: Array<{
     dimension: string;
@@ -104,7 +98,6 @@ export async function fetchSynthesis(dob: string, name?: string, includeEnergy =
   const result: SynthesisResult = {
     personalCode: buildPersonalCode(profile),
     patterns: buildPatterns(profile),
-    dimensions: buildDimensions(profile),
     dateDimensions: buildDateDimensions(profile),
   };
 
