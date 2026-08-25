@@ -309,6 +309,7 @@ export async function POST(req: NextRequest) {
           const NULLABLE_OPTIONAL_FIELDS = [
             'opening', 'alignment', 'howYouOperate', 'relationalNote',
             'timing', 'suggestedNextStep', 'closingSynthesis', 'confidence', 'corePattern',
+            'blindSpot', 'lifeAreas',
           ] as const;
           for (const field of NULLABLE_OPTIONAL_FIELDS) {
             if (data[field] === null) delete data[field];

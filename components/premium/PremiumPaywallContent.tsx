@@ -142,6 +142,29 @@ export default function PremiumPaywallContent({
               </>
             )}
           </blockquote>
+
+          {/* Entregables concretos. Antes este bloque era solo la prosa de
+              arriba, que promete "la síntesis completa" sin decir qué llega.
+              Nombrar las secciones reales es la forma honesta de generar
+              tensión: "tu punto ciego" da curiosidad porque existe de verdad
+              (ver blindSpot/lifeAreas en la lectura), no porque insinúe algo
+              que después no está. Si cambian las secciones de la lectura,
+              esta lista tiene que cambiar con ellas. */}
+          <ul className="mt-6 space-y-2.5">
+            {[
+              ["Tu punto ciego", "lo que tu patrón produce sin que vos lo veas"],
+              ["Dónde se nota", "cómo baja a tu trabajo, tus vínculos y tus decisiones"],
+              ["Tu patrón central", "de qué dos señales sale y por qué importa"],
+              ["Preguntas abiertas", "consultale a Molino lo que quieras sobre tu mapa"],
+            ].map(([title, detail]) => (
+              <li key={title} className="flex items-start gap-3 text-sm leading-relaxed">
+                <span className="w-3 h-px bg-accent mt-[0.65em] shrink-0" aria-hidden="true" />
+                <span className="text-muted">
+                  <span className="font-semibold text-foreground">{title}</span> — {detail}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="border-t border-ink/10 pt-5 pb-4 sticky bottom-0 z-30 bg-background/95 backdrop-blur-sm sm:static sm:pt-10 sm:pb-0 sm:bg-transparent sm:backdrop-blur-none">

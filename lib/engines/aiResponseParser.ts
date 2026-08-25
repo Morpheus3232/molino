@@ -124,6 +124,8 @@ export interface MolinoContractJSON {
   howYouOperate?: string;
   relationalNote?: string;
   closingSynthesis?: string;
+  blindSpot?: string;
+  lifeAreas?: { work: string; relationships: string; decisions: string };
 }
 
 function isStringArray(value: unknown): value is string[] {

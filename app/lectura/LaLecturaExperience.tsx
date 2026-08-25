@@ -288,6 +288,78 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               </motion.div>
             </div>
 
+            {/* El punto ciego — el pico visual de la lectura. Es el único
+                bloque invertido de toda la página: el contraste contra el
+                papel es lo que lo convierte en "el momento", sin necesidad de
+                subir el tamaño de fuente hasta que grite. Usa .section-dark,
+                la utilidad de superficie invertida que ya define
+                globals.css, en vez de inventar un par de colores nuevo. */}
+            {interpretation.blindSpot && (
+              <motion.section
+                initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.3 }}
+                className="section-dark rounded-[--radius-lg] p-8 sm:p-12 mb-16 sm:mb-20 shadow-lg"
+              >
+                {/* accent-light, no accent: --color-accent (#A83A23) está
+                    calibrado contra el papel claro y sobre ink queda en 2.7:1,
+                    abajo del 4.5:1 que pide un texto de 12px.
+                    --color-accent-light (#D9805F) es el par del mismo acento
+                    pensado para superficies oscuras. */}
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="w-6 h-px bg-accent-light" aria-hidden="true" />
+                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light">
+                    El punto ciego
+                  </p>
+                </div>
+                {/* text-paper explícito, no heredado: globals.css baja a
+                    --color-muted los <p> dentro de .section-dark, lo que acá
+                    dejaba el párrafo más importante de la lectura paga en
+                    2.93:1 sobre el fondo ink — abajo del piso de 3:1 de WCAG
+                    AA incluso contando como texto grande. */}
+                <p className="font-display italic text-[clamp(1.4rem,3.4vw,2rem)] leading-[1.3] max-w-2xl text-paper">
+                  {interpretation.blindSpot}
+                </p>
+              </motion.section>
+            )}
+
+            {/* Los tres dominios — el mismo patrón central bajando a tierra.
+                Misma retícula de hairlines (gap-px sobre ink/10) que "las dos
+                alas" de arriba, para que se lea como parte del mismo
+                documento y no como un módulo pegado aparte. */}
+            {interpretation.lifeAreas && (
+              <motion.section
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.35 }}
+                className="mb-16 sm:mb-20"
+              >
+                <h2 className="font-heading text-lg sm:text-xl text-foreground mb-1">
+                  Dónde se nota
+                </h2>
+                <p className="text-xs text-muted mb-6">
+                  El mismo patrón, manifestándose distinto en cada dominio.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink/10">
+                  {([
+                    ["01", "Trabajo", interpretation.lifeAreas.work],
+                    ["02", "Vínculos", interpretation.lifeAreas.relationships],
+                    ["03", "Decisiones", interpretation.lifeAreas.decisions],
+                  ] as const).map(([num, label, body]) => (
+                    <div key={label} className="bg-paper p-6 sm:p-7">
+                      <div className="flex items-baseline gap-2 mb-3">
+                        <span className="font-mono text-xs text-accent">{num}</span>
+                        <h3 className="font-heading text-sm uppercase tracking-[0.1em] text-foreground">
+                          {label}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-muted leading-relaxed">{body}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.section>
+            )}
+
             {/* Recomendación — el paso siguiente, destacado */}
             {interpretation.suggestedNextStep && (
               <motion.div

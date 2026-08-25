@@ -133,4 +133,21 @@ export interface MolinoInterpretation {
   howYouOperate?: string;
   relationalNote?: string;
   closingSynthesis?: string;
+  /**
+   * El punto ciego: lo que el patrón produce sin que la persona lo vea. Es
+   * el campo con el registro más frontal de toda la lectura — nombra el
+   * costo, no solo la cualidad.
+   */
+  blindSpot?: string;
+  /**
+   * El patrón aterrizado en tres dominios concretos. Existe porque
+   * "howYouOperate" describe el mecanismo en abstracto y la lectura paga
+   * necesitaba decir qué pasa específicamente en el trabajo, en los
+   * vínculos y al decidir.
+   */
+  lifeAreas?: {
+    work: string;
+    relationships: string;
+    decisions: string;
+  };
 }

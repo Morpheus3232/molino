@@ -42,8 +42,15 @@ export const AI_HEAVY_TIMEOUT_MS = 55_000;
  * once the personal_profile prompt (promptBuilder.ts) started asking for
  * substantially longer prose per field (2-3x the sentence count) — 2500
  * was sized for the old, shorter targets and would truncate the new ones.
+ *
+ * 6000 acompaña los dos campos nuevos de la lectura paga (`blindSpot` y
+ * `lifeAreas`, que son 4 bloques de prosa más) sobre esos targets ya
+ * largos. El costo de quedarse corto acá no es una respuesta recortada:
+ * es JSON inválido a mitad de objeto → fallback local → el usuario que
+ * pagó recibe la versión determinista. Por eso el presupuesto se mueve
+ * junto con el prompt y no después.
  */
-const STRUCTURED_OUTPUT_MAX_TOKENS = 4500;
+const STRUCTURED_OUTPUT_MAX_TOKENS = 6000;
 const DEFAULT_MAX_TOKENS = 800;
 
 /** Truncates a provider error body for logging and strips anything that
@@ -93,8 +100,9 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
   additionalProperties: false,
   required: [
     'opening', 'summary', 'corePattern', 'alignment', 'tensions',
-    'howYouOperate', 'relationalNote', 'timing', 'suggestedNextStep',
-    'closingSynthesis', 'strengths', 'whatToConsider', 'confidence', 'limitations',
+    'howYouOperate', 'blindSpot', 'lifeAreas', 'relationalNote', 'timing',
+    'suggestedNextStep', 'closingSynthesis', 'strengths', 'whatToConsider',
+    'confidence', 'limitations',
   ],
   properties: {
     opening: { type: ['string', 'null'] },
@@ -112,6 +120,17 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
     alignment: { type: ['string', 'null'] },
     tensions: { type: 'array', items: { type: 'string' } },
     howYouOperate: { type: ['string', 'null'] },
+    blindSpot: { type: ['string', 'null'] },
+    lifeAreas: {
+      type: ['object', 'null'],
+      additionalProperties: false,
+      required: ['work', 'relationships', 'decisions'],
+      properties: {
+        work: { type: 'string' },
+        relationships: { type: 'string' },
+        decisions: { type: 'string' },
+      },
+    },
     relationalNote: { type: ['string', 'null'] },
     timing: { type: ['string', 'null'] },
     suggestedNextStep: { type: ['string', 'null'] },
