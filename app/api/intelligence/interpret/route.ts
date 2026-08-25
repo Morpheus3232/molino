@@ -382,6 +382,15 @@ export async function POST(req: NextRequest) {
           howYouOperate: structured.howYouOperate,
           relationalNote: structured.relationalNote,
           closingSynthesis: structured.closingSynthesis,
+          // ⚠️ Esta proyección es una whitelist explícita: un campo que el
+          // modelo devuelve y que NO esté listado acá se descarta en silencio,
+          // sin error ni log. Agregar un campo al contrato son 7 lugares
+          // (types, json schema en aiEngine, MolinoContractJSON en el parser,
+          // NULLABLE_OPTIONAL_FIELDS de arriba, esta lista, el fallback y la
+          // UI) — este es el que se olvida, porque los otros seis fallan
+          // ruidosamente y este no.
+          blindSpot: structured.blindSpot,
+          lifeAreas: structured.lifeAreas,
           rawContext: context,
         };
       } else {
