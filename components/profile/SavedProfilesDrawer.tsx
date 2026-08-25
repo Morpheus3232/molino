@@ -244,14 +244,9 @@ export default function SavedProfilesDrawer({
                   <div className="w-8 h-8 rounded-xl bg-accent/10 text-accent flex items-center justify-center">
                     <Bookmark className="w-4 h-4" />
                   </div>
-                  <div>
-                    <h3 id="vault-title" className="font-heading text-lg font-bold text-foreground">
-                      Bóveda de Mapas Guardados
-                    </h3>
-                    <p className="text-xs font-mono text-muted">
-                      100% privado en tu navegador · Sin cuentas
-                    </p>
-                  </div>
+                  <h3 id="vault-title" className="font-heading text-lg font-bold text-foreground">
+                    Mapas guardados
+                  </h3>
                 </div>
 
                 <button
@@ -346,10 +341,7 @@ export default function SavedProfilesDrawer({
               <div className="mt-6 space-y-2.5 max-h-72 overflow-y-auto pr-1">
                 {vault.length === 0 ? (
                   <div className="py-8 text-center text-muted text-xs font-mono">
-                    <p>Aún no guardaste mapas en este navegador.</p>
-                    <p className="mt-1 text-xs text-muted/70">
-                      Podés guardar tu perfil, el de tu pareja, amigos o familiares para consultarlos al instante.
-                    </p>
+                    <p>Todavía no guardaste ningún mapa.</p>
                   </div>
                 ) : (
                   vault.map((item) => {
@@ -451,30 +443,16 @@ export default function SavedProfilesDrawer({
                 className="mt-4 flex items-center gap-3 p-3.5 rounded-md border border-gold/30 bg-gold/[0.06] hover:bg-gold/[0.12] hover:border-gold/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-colors"
               >
                 <Gift className="w-4 h-4 shrink-0" style={{ color: "var(--color-gold-foreground)" }} aria-hidden="true" />
-                <span className="flex-1 min-w-0">
-                  <span className="block font-heading text-sm font-bold text-foreground">
-                    Regalar una lectura
-                  </span>
-                  <span className="block text-xs text-muted mt-0.5">
-                    Comprás un código y la persona lo canjea con su propia fecha.
-                  </span>
+                <span className="flex-1 min-w-0 font-heading text-sm font-bold text-foreground">
+                  Regalar una lectura
                 </span>
                 <ArrowRight className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
               </Link>
 
               {/* Footer Notice */}
-              <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-xs font-mono text-muted">
-                <span className="inline-flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-success" />
-                  Almacenado solo en este dispositivo
-                </span>
-                <Link
-                  href="/pareja"
-                  onClick={() => setIsOpen(false)}
-                  className="text-accent hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent inline-flex items-center gap-1"
-                >
-                  Comparar con otro <ArrowRight className="w-3 h-3" />
-                </Link>
+              <div className="mt-6 pt-4 border-t border-ink/10 inline-flex items-center gap-1 text-xs font-mono text-muted">
+                <ShieldCheck className="w-3.5 h-3.5 text-success" />
+                Solo en este dispositivo
               </div>
             </motion.div>
           </div>

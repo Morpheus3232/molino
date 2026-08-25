@@ -18,7 +18,6 @@ import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import { encodeProfileData } from "@/lib/utils/profileShare";
 import Link from "next/link";
 
 export default function ProfileHub({
@@ -140,18 +139,6 @@ export default function ProfileHub({
                 )}
               </div>
 
-              {/* Una sola próxima acción después del hero — no ocho
-                  opciones equivalentes (ver SpaceIndex). El resto de la
-                  página profundiza esta misma pregunta antes de ofrecer
-                  cualquier otro camino. */}
-              <div className="mt-10">
-                <Link
-                  href={`/lectura#${encodeProfileData(profile)}`}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-lg bg-accent text-accent-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"
-                >
-                  Leer qué significa →
-                </Link>
-              </div>
             </div>
           </div>
         </div>

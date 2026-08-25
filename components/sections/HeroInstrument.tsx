@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
-import StickyMobileCTA from "@/components/ui/StickyMobileCTA";
 import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import { saveOnboardingData } from "@/lib/session/ephemeral";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
@@ -201,8 +200,6 @@ export default function HeroInstrument() {
           </motion.div>
         </motion.div>
       </div>
-
-      <StickyMobileCTA value={dateValue} onChange={handleDateChange} onGenerate={handleGenerate} canGenerate={isDateValid} ctaLabel="Ver tu mapa" />
     </section>
   );
 }
