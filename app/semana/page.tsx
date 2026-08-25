@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProfile } from "@/lib/hooks/useProfile";
-import { getDayVibration, type TopicId, getFavorableNumbers } from "@/lib/utils/dateVibration";
+import { calculateDailyEnergy } from "@/lib/engines/dailyEnergyEngine";
+import { getScoreColor, getScoreLabel } from "@/lib/utils/score";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
 import { formatDate } from "@/lib/i18n/format";
 import Button from "@/components/ui/Button";
@@ -22,8 +23,6 @@ export default function SemanaPage() {
 function SemanaContent() {
   const router = useRouter();
   const { profile, mounted, loading } = useProfile({ redirectIfNotFound: false });
-
-  const topic: TopicId = "viajes";
 
   // Get Monday to Sunday of current week
   const weekDays = useMemo(() => {
@@ -43,10 +42,17 @@ function SemanaContent() {
     return days;
   }, [profile]);
 
+  // Mismo motor que /hoy (calculateDailyEnergy): personalDay, theme y
+  // descripción reales según el perfil — no el engine de "viajes"
+  // (dateVibration.ts) que mostraba un número/label desconectado del resto
+  // del sitio y una leyenda genérica ("días ideales para viajar").
   const weekResults = useMemo(() => {
     if (!profile || weekDays.length === 0) return [];
-    return weekDays.map(d => getDayVibration(topic, toLocalDateKey(d)));
-  }, [profile, weekDays, topic]);
+    // calculateDailyEnergy().date usa toISOString() (UTC) — se pisa acá con
+    // toLocalDateKey() para no correr un día en husos horarios negativos
+    // (ver comentario en lib/session/dailyHistory.ts).
+    return weekDays.map(d => ({ ...calculateDailyEnergy(profile, d), date: toLocalDateKey(d) }));
+  }, [profile, weekDays]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -106,10 +112,11 @@ function SemanaContent() {
           <p className="text-sm text-muted mt-3">{weekRange}</p>
         </motion.div>
 
-        {/* 7 días de la semana */}
+        {/* 7 días de la semana — mismo personalDay/theme/score que /hoy y
+            /calendario, no un engine propio de "viajes" desconectado. */}
         <div className="grid grid-cols-1 sm:grid-cols-7 gap-px bg-ink/10">
           {weekResults.map((day, i) => {
-            const color = day.favorable ? day.color : "var(--color-muted)";
+            const color = getScoreColor(day.overallScore);
             const isTodayCell = day.date === todayKey;
             const date = new Date(day.date + "T12:00:00");
             const dayName = date.toLocaleDateString("es-AR", { weekday: "short" });
@@ -138,26 +145,21 @@ function SemanaContent() {
                     backgroundColor: isTodayCell ? color : `${color}12`,
                   }}
                 >
-                  {day.number}
+                  {day.personalDay}
                 </span>
-                <span className="mt-2 text-xs text-muted leading-tight line-clamp-2 min-h-[2rem]">
-                  {day.label}
+                <span className="mt-2 text-xs font-semibold text-foreground leading-tight">
+                  {day.theme}
+                </span>
+                <span className="text-[11px] text-muted">
+                  {getScoreLabel(day.overallScore)}
                 </span>
               </motion.div>
             );
           })}
         </div>
 
-        {/* Regla del tema */}
-        <p className="text-xs text-muted mt-4">
-          Días marcados:{" "}
-          <span className="font-mono font-semibold" style={{ color: "var(--score-excellent)" }}>
-            {getFavorableNumbers(topic)}
-          </span>{" "}
-          {topic === "viajes" ? "= ideales para viajar" : "= ideales para emprender"}.
-        </p>
-
-        {/* Detalle del día actual */}
+        {/* Detalle del día actual — misma descripción real que muestra /hoy
+            para ese personalDay, no un texto de plantilla por tema. */}
         {weekResults.length > 0 && (() => {
           const todayResult = weekResults.find(d => d.date === todayKey);
           if (!todayResult) return null;
@@ -172,23 +174,13 @@ function SemanaContent() {
                 <h3 className="font-display text-xl sm:text-2xl tracking-tight text-foreground">Tu día de hoy</h3>
                 <span
                   className="text-xs font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-ink/10"
-                  style={{ color: todayResult.favorable ? todayResult.color : "var(--color-muted)" }}
+                  style={{ color: getScoreColor(todayResult.overallScore) }}
                 >
-                  Vibración {todayResult.number} · {todayResult.label}
+                  Día {todayResult.personalDay} · {todayResult.theme}
                 </span>
               </div>
               <p className="text-base text-foreground leading-relaxed">
-                {todayResult.favorable
-                  ? topic === "viajes"
-                    ? "La fecha de hoy vibra en 5: un día para moverse, abrir horizontes y fluir con los imprevistos."
-                    : "La fecha de hoy vibra en 8 (o 28): un día para construir, concretar y dar estructura a un proyecto."
-                  : topic === "viajes"
-                    ? "La fecha de hoy no es de viaje, pero podés aprovechar la energía para planificar la ruta y preparar todo."
-                    : "La fecha de hoy no es la ideal para arrancar un negocio, pero sirve para ordenar documentos y definir el plan."}
-              </p>
-              <p className="text-sm text-muted mt-3">
-                Regla del tema: {getFavorableNumbers(topic)} = días ideales para{" "}
-                {topic === "viajes" ? "viajar" : "emprender"}.
+                {todayResult.description}
               </p>
             </motion.div>
           );
