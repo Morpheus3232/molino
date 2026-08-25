@@ -17,7 +17,6 @@ import { LecturaLibre, LecturaPremium, type LecturaPieces } from "@/components/p
 import FamousMatch from "@/components/profile/FamousMatch";
 import CalculationDetails from "@/components/profile/CalculationDetails";
 import ActionButtons from "@/components/profile/ActionButtons";
-import AtlasAffinitySummary from "@/components/profile/AtlasAffinitySummary";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
 import Link from "next/link";
 
@@ -49,10 +48,10 @@ export default function ProfileHub({
 
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
-  const atlasSections = useMemo(() => {
-    if (!catalog || catalog.length === 0) return [];
+  const atlasEntityCount = useMemo(() => {
+    if (!catalog || catalog.length === 0) return 0;
     const sections = buildAtlasSections(profile.chineseZodiac || "", catalog, userCountryISO).sameAnimal;
-    return [...sections].sort((a, b) => b.entities.length - a.entities.length).slice(0, 3);
+    return sections.reduce((sum, s) => sum + s.entities.length, 0);
   }, [profile, catalog, userCountryISO]);
 
   const relationMap = useMemo(
@@ -127,19 +126,22 @@ export default function ProfileHub({
                     </span>
                   </>
                 )}
+                {atlasEntityCount > 0 && (
+                  <>
+                    <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
+                    <Link
+                      href={`/atlas/explorar/${userAnimal}`}
+                      className="font-mono text-muted tracking-wide hover:text-accent transition-colors underline decoration-dotted underline-offset-4"
+                    >
+                      {atlasEntityCount} afinidades en tu Atlas
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </header>
-
-      {/* ═══════════════════════════════════════════════
-          CÁLCULO — Cómo se calculó esto (colapsable)
-          ═══════════════════════════════════════════════ */}
-      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
-        <CalculationDetails profile={profile} />
-        {!isDemo && <ActionButtons profile={profile} />}
-      </div>
 
       {/* ═══════════════════════════════════════════════
           CUADRO DE NACIMIENTO — reemplaza al radar de
@@ -173,16 +175,20 @@ export default function ProfileHub({
       <FamousMatch profile={profile} />
 
       {/* ═══════════════════════════════════════════════
-          ATLAS — Resumen compacto de afinidad con marcas,
-          ciudades y demás entidades del mismo animal.
-          ═══════════════════════════════════════════════ */}
-      <AtlasAffinitySummary sections={atlasSections} animalSlug={userAnimal} animalName={display.name} />
-
-      {/* ═══════════════════════════════════════════════
           LECTURA PREMIUM — Cierre de la lectura: síntesis
           entre sistemas + chat. Acá vive el upsell.
           ═══════════════════════════════════════════════ */}
       <LecturaPremium profile={profile} pieces={pieces} />
+
+      {/* ═══════════════════════════════════════════════
+          CÁLCULO — Cómo se calculó esto (colapsable), al
+          pie: es el diferenciador estructural del producto,
+          pero no la primera pregunta que hace la página.
+          ═══════════════════════════════════════════════ */}
+      <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
+        <CalculationDetails profile={profile} />
+        {!isDemo && <ActionButtons profile={profile} />}
+      </div>
 
       {/* ═══════════════════════════════════════════════
           NAV — Todas las herramientas y dimensiones del
