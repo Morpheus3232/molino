@@ -1,5 +1,25 @@
 import { NextResponse } from 'next/server';
 import { getProviderStatus } from '@/lib/engines/providerRouter';
+import { buildIntelligencePrompt } from '@/lib/engines/intelligenceEngine';
+import { buildMolinoContext } from '@/lib/engines/intelligence/contextBuilder';
+import { calculateUserProfile } from '@/lib/engines/profileBuilder';
+
+/** DIAGNÓSTICO TEMPORAL — perfil fijo dummy, ningún dato de usuario. */
+function promptProbe() {
+  try {
+    const profile = calculateUserProfile('', '1990-01-01');
+    const context = buildMolinoContext(profile, {});
+    const prompt = buildIntelligencePrompt({ type: 'personal_profile', context });
+    return {
+      chars: prompt.length,
+      tieneRegistroDiagnostico: prompt.includes('REGISTRO: DIAGNÓSTICO'),
+      pideBlindSpot: prompt.includes('"blindSpot"'),
+      pideLifeAreas: prompt.includes('"lifeAreas"'),
+    };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : String(e) };
+  }
+}
 
 export async function GET() {
   const status = getProviderStatus();
@@ -23,5 +43,6 @@ export async function GET() {
     // decir "usamos gpt-4"), y saber cuál corre realmente es lo que separa
     // "la lectura sale mal" de "está corriendo el modelo equivocado".
     openrouterModel: process.env.OPENROUTER_MODEL || '(sin setear → default)',
+    promptProbe: promptProbe(),
   });
 }
