@@ -70,7 +70,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
   return (
     <details className="group border border-ink/10 rounded-md bg-background/50">
       <summary className="flex cursor-pointer select-none list-none items-center justify-between px-4 py-3">
-        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
           ¿Cómo se calculó esto?
         </span>
         <ChevronDown className="h-4 w-4 text-muted transition-transform group-open:rotate-180" />
@@ -79,7 +79,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
       <div className="space-y-5 px-4 pb-5 pt-1 text-sm text-muted">
         {/* Camino de Vida */}
         <section>
-          <h3 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
             Camino de Vida
           </h3>
           <p className="mt-2">
@@ -111,7 +111,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
         {/* Signo Solar */}
         <section>
-          <h3 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
             Signo solar
           </h3>
           <p className="mt-2">
@@ -128,7 +128,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
 
         {/* Zodíaco Chino */}
         <section>
-          <h3 className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
             Zodíaco chino
           </h3>
           <p className="mt-2">
@@ -138,7 +138,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           <p>
             Elemento:{" "}
             <span className="font-mono text-foreground">
-              {element}, del ciclo de 5 elementos {birthYear} años × 2 años)
+              {element} — 5 elementos × 2 años cada uno, se repite cada 10
             </span>
           </p>
         </section>
@@ -147,7 +147,7 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           href={FORMULA_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wide text-accent hover:text-accent-hover"
+          className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wide text-accent hover:text-accent-hover"
         >
           Ver fórmula en GitHub →
         </a>

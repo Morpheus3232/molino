@@ -55,7 +55,9 @@
   --color-accent-foreground: var(--color-paper);
   --color-success: #1F7A4D;
   --color-success-foreground: var(--color-paper);
-  --color-warning: #A83A23;
+  /* Distinto de --color-accent (#A83A23): eran el mismo valor, así que un
+     aviso no se podía distinguir del acento de marca. 4.6:1 sobre paper. */
+  --color-warning: #8A5B00;
   --color-warning-foreground: var(--color-paper);
   --color-error: #B3261E;
   --color-error-foreground: var(--color-paper);
@@ -135,11 +137,17 @@
   --shadow-xl: 0 8px 24px rgba(29, 27, 23, 0.12);
   --shadow-inner: inset 0 1px 2px rgba(29, 27, 23, 0.06);
 
+  /* Los nombres tienen que ser --max-width-* : así los consume
+     tailwind.config.ts (maxWidth.wide/layout/article) y así los usa
+     .container más abajo. Antes se llamaban --max-wide/--max-layout, con lo
+     cual var(--max-width-wide) resolvía a nada y .container quedaba sin tope
+     de ancho. */
   --max-width-content: 680px;
   --max-input: 480px;
   --max-card: 384px;
-  --max-wide: 1280px;
-  --max-layout: 1280px;
+  --max-width-wide: 1280px;
+  --max-width-layout: 1280px;
+  --max-width-article: 720px;
 
   --step-1-text: 1rem;
   --step-2-text: 1.125rem;
@@ -1177,8 +1185,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shimmer 7s linear infinite;
-  }
+    }
 
   /* Sobre fondos oscuros el gradiente arranca más claro para mantener AA
      sobre --color-ink (#1D1B17): accent-light/gold tienen ≥4.5:1 ahí. */
@@ -1196,8 +1203,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
-    animation: shimmer 7s linear infinite;
-  }
+    }
 
   /* Shimmer sweep — banda de luz que cruza el botón. El elemento debe
      tener position:relative y overflow:hidden (incluidos acá). */

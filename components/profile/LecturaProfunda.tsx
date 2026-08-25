@@ -9,7 +9,7 @@ import {
   buildPrinciples,
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
-import { calculateDailyEnergy, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, getYearTheme, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -35,7 +35,7 @@ import EditorialSection from "@/components/ui/EditorialSection";
 function ChapterNumber({ number, color }: { number: string; color: string }) {
   return (
     <div className="flex items-center gap-3 mb-6" aria-hidden="true">
-      <span className="font-mono text-[11px] uppercase tracking-[0.25em]" style={{ color }}>
+      <span className="font-mono text-xs uppercase tracking-[0.25em]" style={{ color }}>
         {number}
       </span>
       <span className="h-px flex-1" style={{ backgroundColor: color, opacity: 0.15 }} />
@@ -57,7 +57,7 @@ function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elem
   if (hits.length === 0) return null;
   return (
     <div className="mt-10 pt-8 border-t border-ink/10">
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent mb-5">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-5">
         ✦ Tus números maestros
       </p>
       <div className="space-y-6">
@@ -67,7 +67,7 @@ function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elem
               <span className="font-heading text-2xl sm:text-3xl" style={{ color: elementColor }}>
                 {hit.number}
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
                 {MASTER_POSITION_LABELS_ES[hit.position]}
               </span>
             </div>
@@ -103,7 +103,7 @@ function PatronCentral({
       <ChapterNumber number="01 · TU PATRÓN CENTRAL" color={elementColor} />
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-2">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-2">
           {pattern.label}
         </p>
         <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] tracking-tight text-foreground uppercase mb-4" style={{ color: elementColor }}>
@@ -116,7 +116,7 @@ function PatronCentral({
         {/* Tensión — el pliegue del patrón */}
         {tension && (
           <div className="mt-10 pt-8 border-t border-ink/10">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-3">Tu tensión</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">Tu tensión</p>
             <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
               {tension.title}
             </p>
@@ -128,7 +128,7 @@ function PatronCentral({
 
         {/* Patrones secundarios — evidencia, no nuevas piezas */}
         <div className="mt-6 text-xs text-muted leading-relaxed">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">Evidencias · </span>
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Evidencias · </span>
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
         </div>
 
@@ -307,7 +307,7 @@ function PiezasLibres({
       {/* 03 · Momento — evolución integrada */}
       <TuMomento
         personalYear={dailyEnergy.personalYear}
-        yearTheme={dailyEnergy.theme}
+        yearTheme={getYearTheme(dailyEnergy.personalYear)}
         dailyEnergy={dailyEnergy}
         elementColor={elementColor}
       />
@@ -354,7 +354,7 @@ function Connections({ nodes }: { nodes: ConnectionNode[] }) {
                   className="absolute -left-[1.6rem] top-1 w-2 h-2 rounded-full bg-accent"
                   aria-hidden="true"
                 />
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent/80">{n.kind}</p>
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent/80">{n.kind}</p>
                 <p className="text-sm text-foreground/90 leading-relaxed mt-1">{n.label}</p>
               </li>
             ))}
@@ -427,7 +427,7 @@ function LecturaProfundaDesbloqueada({
         ...pieces.patterns.map((p) => ({ kind: "Patrón", label: `${p.label}: ${p.keyword}` })),
         ...pieces.rules.slice(0, 1).map((r) => ({ kind: "Regla", label: r.rule })),
         ...pieces.tensions.map((t) => ({ kind: "Tensión", label: t.title })),
-        { kind: "Ciclo", label: `Año personal ${pieces.dailyEnergy.personalYear} — ${pieces.dailyEnergy.theme}` },
+        { kind: "Ciclo", label: `Año personal ${pieces.dailyEnergy.personalYear} — ${getYearTheme(pieces.dailyEnergy.personalYear)}` },
       ]
     : [];
 
@@ -445,11 +445,6 @@ function LecturaProfundaDesbloqueada({
           si el navegador bloqueó ese popup como el punto de reingreso para
           quien vuelve otro día y ya es premium (justUnlocked=false). */}
       <div className="relative -mx-4 sm:-mx-8 lg:-mx-12 px-4 sm:px-8 lg:px-12 py-16 sm:py-20 section-paper-alt overflow-hidden">
-        <div
-          className="absolute -left-1/4 top-0 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-[0.08] -z-10 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${elementColor}, transparent 70%)` }}
-          aria-hidden="true"
-        />
         <h3 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground leading-snug mb-2">
           La Lectura
         </h3>
