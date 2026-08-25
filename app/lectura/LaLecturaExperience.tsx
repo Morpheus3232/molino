@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { getProfileSalt } from "@/lib/profile-salt";
 import { getPremiumTokenClient } from "@/lib/premium";
-import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
 import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
 import { buildPatterns, buildRules, buildPrinciples } from "@/lib/engines/synthesisEngine";
@@ -81,7 +80,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.birthDate, profile.name]);
 
-  const elementColor = ELEMENT_COLORS[typeof profile.element === "string" ? profile.element : ""] || "var(--color-accent)";
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
   // Las 4 lecturas nuevas del zodíaco chino (alimento, mascota, timing,
@@ -118,22 +116,28 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         </Link>
       </div>
 
-      {/* Cresta — el molino, quieto, coronando la lectura */}
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: -12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduceMotion ? 0 : 0.6, ease: "easeOut" }}
-        className="flex justify-center pt-8 pb-8"
-      >
-        <Logo className="h-10 w-10 text-accent" />
-      </motion.div>
+      {/* Cresta — el molino, quieto, coronando la lectura. Solo una vez
+          revelada: mientras carga, BuildingMolino ya trae su propio molino
+          girando — mostrar los dos a la vez (uno quieto arriba, uno girando
+          más abajo) leía como dos elementos sin relación, no como una sola
+          idea. */}
+      {revealed && (
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.6, ease: "easeOut" }}
+          className="flex justify-center pt-8 pb-8"
+        >
+          <Logo className="h-10 w-10 text-accent" />
+        </motion.div>
+      )}
 
       <div className="mx-auto max-w-[760px] px-6 sm:px-8 pb-32">
         {/* La IA es un enriquecimiento encima del contenido determinista de
             abajo, no un gate para verlo — mientras carga o si falla, el
             zodíaco/número de la suerte/afinidades siguen disponibles. */}
         {!revealed ? (
-          <div className="py-16">
+          <div className="pt-4 pb-16">
             <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
           </div>
         ) : !interpretation ? (
@@ -142,26 +146,31 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           </p>
         ) : (
           <>
-            {/* Panel central — el ícono de este testamento */}
+            {/* Panel central — el ícono de este testamento. Antes las tres
+                piezas (epígrafe, titular, párrafo) llevaban el mismo
+                tratamiento centrado, sin distinguir cuál es la cita, cuál el
+                titular y cuál el desarrollo. Ahora solo el epígrafe queda
+                centrado (es una cita, no un título); titular y párrafo se
+                alinean a la izquierda como el resto de la lectura, con el
+                titular en acento — antes tomaba el color de elemento chino,
+                que el sistema de diseño reserva a un punto de 8px, nunca a
+                un titular entero. */}
             <motion.section
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.1 }}
-              className="text-center mb-16 sm:mb-20"
+              className="mb-16 sm:mb-20"
             >
               {interpretation.opening && (
-                <p className="font-display italic text-2xl sm:text-3xl leading-[1.3] text-foreground mb-8 max-w-2xl mx-auto">
+                <p className="text-center font-display italic text-lg sm:text-xl leading-[1.4] text-muted mb-10 max-w-xl mx-auto">
                   {interpretation.opening}
                 </p>
               )}
-              <p
-                className="font-display italic text-[clamp(2.25rem,6vw,3.75rem)] leading-[1.05] tracking-tight max-w-2xl mx-auto"
-                style={{ color: elementColor }}
-              >
+              <p className="font-display italic text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.08] tracking-tight text-accent max-w-2xl">
                 {interpretation.summary}
               </p>
               {interpretation.corePattern && (
-                <p className="text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl mx-auto mt-8">
+                <p className="text-base sm:text-lg text-foreground/80 leading-relaxed max-w-xl mt-6">
                   {interpretation.corePattern.whyItMatters}
                 </p>
               )}
@@ -355,10 +364,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.6 }}
                   >
                     <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Tu número de la suerte</p>
-                    <p
-                      className="font-display italic text-4xl sm:text-5xl mt-2 mb-3"
-                      style={{ color: elementColor }}
-                    >
+                    <p className="font-display italic text-4xl sm:text-5xl mt-2 mb-3 text-accent">
                       {profile.luckyNumber}
                     </p>
                     <p className="text-sm text-muted leading-relaxed max-w-xl">

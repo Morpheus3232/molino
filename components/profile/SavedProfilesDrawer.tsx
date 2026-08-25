@@ -31,6 +31,14 @@ interface SavedProfilesDrawerProps {
    * "Mis Mapas" en el header, según haya o no perfil activo). La
    * funcionalidad del drawer no cambia, solo la etiqueta visible. */
   label?: string;
+  /** Atajo dorado para usuarios premium: en vez de abrir el drawer, el
+   * trigger se vuelve un link directo al mapa guardado más reciente (el
+   * primero de la bóveda, que ya queda ordenada por fecha de guardado en
+   * multiProfiles.ts). Solo se activa si además hay al menos un mapa
+   * guardado — sin eso no hay "más reciente" al que ir. Pensado para el
+   * header; el resto de los usos del drawer (ej. ActionButtons en
+   * /profile) no lo pasan y mantienen el modal completo. */
+  premiumShortcut?: boolean;
 }
 
 export default function SavedProfilesDrawer({
@@ -38,6 +46,7 @@ export default function SavedProfilesDrawer({
   className = "",
   compact = false,
   label,
+  premiumShortcut = false,
 }: SavedProfilesDrawerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [vault, setVault] = useState<VaultProfileItem[]>([]);
@@ -96,26 +105,52 @@ export default function SavedProfilesDrawer({
     currentProfile &&
     vault.some((p) => p.birthDate === currentProfile.birthDate);
 
+  // La bóveda ya queda ordenada por fecha de guardado (más nuevo primero,
+  // ver saveProfileToVault en multiProfiles.ts) — vault[0] es "el mapa
+  // reciente" sin ordenar nada acá.
+  const mostRecent = vault[0] ?? null;
+  const goldShortcut = premiumShortcut && mostRecent !== null;
+
   return (
     <>
-      {/* Trigger Button */}
-      <button
-        type="button"
-        onClick={() => {
-          refreshVault();
-          setIsOpen(true);
-        }}
-        className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-ink/10 text-xs font-mono text-foreground/90 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all shadow-sm ${className}`}
-        title={label ?? "Ver y cambiar entre mapas guardados en este navegador"}
-        aria-label={label ?? "Abrir bóveda de perfiles locales"}
-      >
-        {vault.length > 0 ? (
-          <Bookmark className="w-3.5 h-3.5 text-accent" />
-        ) : (
-          <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
-        )}
-        <span className={compact ? "hidden lg:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
-      </button>
+      {/* Trigger — para usuarios premium con al menos un mapa guardado, un
+          link directo a ese mapa en vez de abrir el drawer: el "de otro
+          color, un clic al más reciente" que separa a quien ya pagó. */}
+      {goldShortcut ? (
+        <Link
+          href={`/profile?dob=${mostRecent.birthDate}`}
+          // Color inline, no por clase: `className` acá suele venir de
+          // navButtonClass() del header, que ya trae su propio text-muted —
+          // dos utilities de color de igual especificidad hacen que quién
+          // gane dependa del orden interno de Tailwind, no de la intención.
+          // El inline style siempre gana sobre eso.
+          style={{ color: "var(--color-gold-foreground)" }}
+          className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gold/15 border border-gold/40 text-xs font-mono font-semibold hover:bg-gold/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-all shadow-sm ${className}`}
+          title={`Ir a tu mapa reciente (${mostRecent.birthDate})`}
+          aria-label={label ?? "Mis Mapas"}
+        >
+          <Bookmark className="w-3.5 h-3.5" />
+          <span className={compact ? "hidden lg:inline" : ""}>{label ?? "Mis Mapas"}</span>
+        </Link>
+      ) : (
+        <button
+          type="button"
+          onClick={() => {
+            refreshVault();
+            setIsOpen(true);
+          }}
+          className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-ink/10 text-xs font-mono text-foreground/90 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all shadow-sm ${className}`}
+          title={label ?? "Ver y cambiar entre mapas guardados en este navegador"}
+          aria-label={label ?? "Abrir bóveda de perfiles locales"}
+        >
+          {vault.length > 0 ? (
+            <Bookmark className="w-3.5 h-3.5 text-accent" />
+          ) : (
+            <BookmarkPlus className="w-3.5 h-3.5 text-accent" />
+          )}
+          <span className={compact ? "hidden lg:inline" : ""}>{label ?? (vault.length > 0 ? `Bóveda Local (${vault.length})` : "Guardar en Bóveda")}</span>
+        </button>
+      )}
 
       {/* Drawer Modal Backdrop */}
       <AnimatePresence>
@@ -193,7 +228,7 @@ export default function SavedProfilesDrawer({
               )}
 
               {savedFeedback && (
-                <div className="mt-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono flex items-center gap-2">
+                <div className="mt-3 p-2.5 rounded-xl bg-success/10 border border-success/20 text-success text-xs font-mono flex items-center gap-2">
                   <Check className="w-3.5 h-3.5" />
                   <span>¡Mapa guardado en tu bóveda local!</span>
                 </div>
@@ -255,7 +290,7 @@ export default function SavedProfilesDrawer({
                           <button
                             type="button"
                             onClick={(e) => handleDelete(item.id, e)}
-                            className="p-1.5 rounded-lg text-muted hover:text-rose-400 hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 transition-colors"
+                            className="p-1.5 rounded-lg text-muted hover:text-error hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error transition-colors"
                             title="Eliminar de la bóveda"
                             aria-label={`Eliminar mapa de ${item.label}`}
                           >
@@ -271,7 +306,7 @@ export default function SavedProfilesDrawer({
               {/* Footer Notice */}
               <div className="mt-6 pt-4 border-t border-ink/10 flex items-center justify-between text-xs font-mono text-muted">
                 <span className="inline-flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <ShieldCheck className="w-3.5 h-3.5 text-success" />
                   Almacenado solo en este dispositivo
                 </span>
                 <Link

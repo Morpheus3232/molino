@@ -4,7 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
+import { hasStoredProfile, clearStoredProfile, loadProfileFromStorage } from "@/lib/session/localStorage";
+import { getSavedProfilesVault } from "@/lib/session/multiProfiles";
+import { getPremiumTokenClient } from "@/lib/premium";
+import { encodeProfileData } from "@/lib/utils/profileShare";
+import type { UserProfile } from "@/types/user";
 import { Menu, X, ChevronDown } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
@@ -101,6 +105,9 @@ export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
+  const [vaultCount, setVaultCount] = useState(0);
+  const [isPremium, setIsPremium] = useState(false);
+  const [lecturaHref, setLecturaHref] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<MenuId | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -128,14 +135,36 @@ export default function UniversityHeader() {
   // son el único choke point de escritura del perfil, así que estos dos
   // eventos cubren crear, cargar un perfil guardado, cambiar de perfil y
   // eliminarlo — sin un segundo estado global.
+  // "Mis Mapas" solo tiene sentido una vez que hay algo guardado — antes el
+  // label ya distinguía "Guardar mi mapa" vs "Mis Mapas" pero lo hacía según
+  // hasProfile, no según la bóveda real, así que alguien con un perfil activo
+  // pero cero mapas guardados igual veía "Mis Mapas". `isPremium` habilita el
+  // atajo dorado al mapa reciente (ver SavedProfilesDrawer) y el link "Mi
+  // Lectura", cuyo href necesita el perfil completo (la lectura vive en
+  // /lectura#<hash>, nunca en query string). Un solo efecto: los cuatro
+  // eventos comparten el mismo choke point de escritura
+  // (saveProfileToStorage/clearStoredProfile, saveProfileToVault,
+  // savePremiumTokenClient) así que cualquiera de ellos puede volver
+  // desactualizado a los otros tres.
   useLayoutEffect(() => {
-    setHasProfile(hasStoredProfile());
-    const refresh = () => setHasProfile(hasStoredProfile());
+    const refresh = () => {
+      setHasProfile(hasStoredProfile());
+      setVaultCount(getSavedProfilesVault().length);
+      const premium = !!getPremiumTokenClient();
+      setIsPremium(premium);
+      const profile = premium ? loadProfileFromStorage() : null;
+      setLecturaHref(profile ? `/lectura#${encodeProfileData(profile as UserProfile)}` : null);
+    };
+    refresh();
     window.addEventListener("molino-profile-created", refresh);
     window.addEventListener("molino-profile-cleared", refresh);
+    window.addEventListener("molino-vault-updated", refresh);
+    window.addEventListener("molino-premium-updated", refresh);
     return () => {
       window.removeEventListener("molino-profile-created", refresh);
       window.removeEventListener("molino-profile-cleared", refresh);
+      window.removeEventListener("molino-vault-updated", refresh);
+      window.removeEventListener("molino-premium-updated", refresh);
     };
   }, []);
 
@@ -186,7 +215,10 @@ export default function UniversityHeader() {
   if (pathname.startsWith("/lectura")) return null;
 
   const exploreGroups = hasProfile ? EXPLORE_GROUPS_WITH_PROFILE : EXPLORE_GROUPS_NO_PROFILE;
-  const vaultLabel = hasProfile ? "Mis Mapas" : "Guardar mi mapa";
+  // "Mis Mapas" solo cuando ya hay algo guardado en la bóveda — antes se
+  // mostraba con solo tener un perfil activo, aunque nunca se hubiera
+  // guardado nada.
+  const vaultLabel = vaultCount > 0 ? "Mis Mapas" : "Guardar mi mapa";
 
   const navButtonClass = (active: boolean) =>
     `px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase transition-colors rounded-xl whitespace-nowrap ${
@@ -237,7 +269,7 @@ export default function UniversityHeader() {
                   onToggle={() => toggleMenu("explore")}
                   isActiveLink={isActive}
                 />
-                <SavedProfilesDrawer label={vaultLabel} className={navButtonClass(false)} />
+                <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
               </>
             ) : (
               <>
@@ -273,7 +305,17 @@ export default function UniversityHeader() {
                 >
                   Mi Journal
                 </Link>
-                <SavedProfilesDrawer label={vaultLabel} className={navButtonClass(false)} />
+                {/* Solo para quien ya pagó o canjeó un cupón — mismo criterio
+                    que el atajo dorado de Mis Mapas (getPremiumTokenClient). */}
+                {lecturaHref && (
+                  <Link
+                    href={lecturaHref}
+                    className="px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase rounded-xl whitespace-nowrap text-gold/80 hover:text-gold hover:bg-ink/[0.02] transition-colors"
+                  >
+                    Mi Lectura
+                  </Link>
+                )}
+                <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
                 <NavDropdown
                   id="explore"
                   label="Explorar"
@@ -322,7 +364,7 @@ export default function UniversityHeader() {
                     ))}
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <div className="px-3 py-1.5">
-                      <SavedProfilesDrawer label={vaultLabel} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                      <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>
                   </>
                 ) : (
@@ -331,8 +373,17 @@ export default function UniversityHeader() {
                     <MobileGroups groups={AFFINITY_GROUPS} heading="Mis Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS} heading="Mi Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={{ href: "/journal", label: "Mi Journal" }} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    {lecturaHref && (
+                      <Link
+                        href={lecturaHref}
+                        className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-gold/80 hover:text-gold"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Mi Lectura
+                      </Link>
+                    )}
                     <div className="px-3 py-1.5">
-                      <SavedProfilesDrawer label={vaultLabel} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                      <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                   </>

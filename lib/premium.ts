@@ -41,6 +41,7 @@ export function savePremiumTokenClient(token: string): void {
   if (typeof window === "undefined" || !token) return;
   try {
     window.localStorage.setItem(TOKEN_KEY, token);
+    window.dispatchEvent(new Event("molino-premium-updated"));
   } catch {
     // localStorage full or unavailable — best effort
   }

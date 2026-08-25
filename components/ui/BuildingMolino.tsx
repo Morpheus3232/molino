@@ -158,7 +158,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
 
       <motion.div
         aria-hidden="true"
-        className="w-full max-w-md"
+        className="w-full max-w-md mx-auto"
         initial={reduceMotion ? false : "hidden"}
         animate="show"
         variants={{
