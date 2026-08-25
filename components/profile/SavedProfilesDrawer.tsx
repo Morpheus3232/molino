@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bookmark,
@@ -10,6 +11,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Check,
+  Plus,
 } from "lucide-react";
 import type { UserProfile } from "@/types/user";
 import {
@@ -18,6 +20,7 @@ import {
   deleteProfileFromVault,
   type VaultProfileItem,
 } from "@/lib/session/multiProfiles";
+import { hasStoredProfile, clearStoredProfile } from "@/lib/session/localStorage";
 import Link from "next/link";
 
 interface SavedProfilesDrawerProps {
@@ -48,10 +51,12 @@ export default function SavedProfilesDrawer({
   label,
   premiumShortcut = false,
 }: SavedProfilesDrawerProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [vault, setVault] = useState<VaultProfileItem[]>([]);
   const [customLabel, setCustomLabel] = useState("");
   const [savedFeedback, setSavedFeedback] = useState(false);
+  const [confirmNewMap, setConfirmNewMap] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   const refreshVault = useCallback(() => {
@@ -64,6 +69,10 @@ export default function SavedProfilesDrawer({
     window.addEventListener("molino-vault-updated", handleVaultChange);
     return () => window.removeEventListener("molino-vault-updated", handleVaultChange);
   }, [refreshVault]);
+
+  useEffect(() => {
+    if (!isOpen) setConfirmNewMap(false);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -101,6 +110,27 @@ export default function SavedProfilesDrawer({
     refreshVault();
   };
 
+  // "Crear nuevo mapa" — el único slot de perfil activo (lib/session/
+  // localStorage.ts) impide arrancar uno nuevo mientras haya uno cargado;
+  // /onboarding rebota a /profile si hasStoredProfile() es true. El mapa
+  // activo ya está en la bóveda (o el usuario eligió no guardarlo), así que
+  // limpiarlo acá nunca pierde nada — solo confirma antes por si no lo guardó.
+  const handleCreateNewMap = () => {
+    if (hasStoredProfile()) {
+      setConfirmNewMap(true);
+      return;
+    }
+    setIsOpen(false);
+    router.push("/onboarding");
+  };
+
+  const confirmCreateNewMap = () => {
+    clearStoredProfile();
+    setConfirmNewMap(false);
+    setIsOpen(false);
+    router.push("/onboarding");
+  };
+
   const isCurrentAlreadySaved =
     currentProfile &&
     vault.some((p) => p.birthDate === currentProfile.birthDate);
@@ -113,12 +143,17 @@ export default function SavedProfilesDrawer({
 
   return (
     <>
-      {/* Trigger — para usuarios premium con al menos un mapa guardado, un
-          link directo a ese mapa en vez de abrir el drawer: el "de otro
-          color, un clic al más reciente" que separa a quien ya pagó. */}
+      {/* Trigger — para usuarios premium con al menos un mapa guardado, el
+          dorado marca el atajo visualmente, pero el click sigue abriendo la
+          bóveda (no navega directo): un link directo escondía "crear nuevo
+          mapa" y la lista de mapas guardados detrás de una sola fecha. */}
       {goldShortcut ? (
-        <Link
-          href={`/profile?dob=${mostRecent.birthDate}`}
+        <button
+          type="button"
+          onClick={() => {
+            refreshVault();
+            setIsOpen(true);
+          }}
           // Color inline, no por clase: `className` acá suele venir de
           // navButtonClass() del header, que ya trae su propio text-muted —
           // dos utilities de color de igual especificidad hacen que quién
@@ -126,12 +161,12 @@ export default function SavedProfilesDrawer({
           // El inline style siempre gana sobre eso.
           style={{ color: "var(--color-gold-foreground)" }}
           className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gold/15 border border-gold/40 text-xs font-mono font-semibold hover:bg-gold/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-all shadow-sm ${className}`}
-          title={`Ir a tu mapa reciente (${mostRecent.birthDate})`}
+          title={label ?? "Ver tus mapas guardados o crear uno nuevo"}
           aria-label={label ?? "Mis Mapas"}
         >
           <Bookmark className="w-3.5 h-3.5" />
           <span className={compact ? "hidden lg:inline" : ""}>{label ?? "Mis Mapas"}</span>
-        </Link>
+        </button>
       ) : (
         <button
           type="button"
@@ -194,6 +229,45 @@ export default function SavedProfilesDrawer({
                   <X className="w-4 h-4" />
                 </button>
               </div>
+
+              {/* Crear nuevo mapa — así alguien con su mapa ya cargado (o
+                  premium, con el atajo dorado) puede armar el de otra
+                  persona sin que el único slot de perfil activo se lo
+                  impida. Si hay un perfil activo, confirma antes de
+                  limpiarlo (ya está en la bóveda o el usuario elige no
+                  guardarlo). */}
+              {confirmNewMap ? (
+                <div className="mt-5 p-4 rounded-md bg-ink/5 border border-ink/10 space-y-3">
+                  <p className="text-xs text-foreground leading-relaxed">
+                    Se va a limpiar el mapa activo para armar uno nuevo. Si no lo guardaste en la bóveda, se pierde.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setConfirmNewMap(false)}
+                      className="flex-1 px-3.5 py-1.5 rounded-xl border border-ink/10 text-muted font-mono text-xs hover:text-foreground hover:border-ink/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={confirmCreateNewMap}
+                      className="flex-1 px-3.5 py-1.5 rounded-xl bg-accent text-background font-mono text-xs font-bold hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                    >
+                      Crear nuevo mapa
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleCreateNewMap}
+                  className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md border border-dashed border-accent/40 text-accent font-mono text-xs font-bold hover:bg-accent/5 hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Crear nuevo mapa</span>
+                </button>
+              )}
 
               {/* Save Current Profile Box */}
               {currentProfile && currentProfile.birthDate && !isCurrentAlreadySaved && (
