@@ -6,7 +6,6 @@ import {
   buildPatterns,
   buildTensions,
   buildRules,
-  buildPrinciples,
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy, getYearTheme, type DailyEnergyResult, type AreaScore } from "@/lib/engines/dailyEnergyEngine";
@@ -51,8 +50,7 @@ function ChapterNumber({ number, color }: { number: string; color: string }) {
 /**
  * Números maestros — contenido 100% determinista (getMasterNumbers no
  * llama IA ni depende de premium), así que vive en la zona gratis, como
- * addendum del patrón central en vez de un capítulo nuevo — evita
- * renumerar los capítulos 02-06 por un agregado cosmético.
+ * addendum del patrón central en vez de un capítulo nuevo.
  */
 function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elementColor: string }) {
   if (hits.length === 0) return null;
@@ -140,42 +138,6 @@ function PatronCentral({
 }
 
 /**
- * Reglas personales — principios numerados, sin caja, sin borde por ítem.
- */
-function Principios({
-  principles,
-  elementColor,
-}: {
-  principles: { title: string; body: string; source?: string }[];
-  elementColor: string;
-}) {
-  if (principles.length === 0) return null;
-  return (
-    <div>
-      <ChapterNumber number="02 · TUS PRINCIPIOS" color={elementColor} />
-      <div className="max-w-2xl space-y-8">
-        {principles.map((p, i) => (
-          <div key={p.title} className="flex items-start gap-5">
-            <span className="font-mono text-xs text-muted leading-[1.7] shrink-0 w-5">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div>
-              <p className="font-heading text-base sm:text-lg text-foreground leading-snug">
-                {p.title}
-              </p>
-              <p className="text-sm text-muted leading-relaxed mt-1.5">{p.body}</p>
-              {p.source && (
-                <p className="mt-2 font-mono text-xs text-accent">{p.source}</p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/**
  * Evolución — tu momento ahora, conectado al patrón.
  */
 function TuMomento({
@@ -210,7 +172,7 @@ function TuMomento({
 
   return (
     <div>
-      <ChapterNumber number="03 · TU MOMENTO" color={elementColor} />
+      <ChapterNumber number="02 · TU MOMENTO" color={elementColor} />
       <div className="max-w-2xl">
         <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight" style={{ color: elementColor }}>
           {personalYear}
@@ -290,7 +252,6 @@ function PiezasLibres({
   const patterns = buildPatterns(profile);
   const tensions = buildTensions(profile);
   const rules = buildRules(profile);
-  const principles = buildPrinciples(rules, patterns, profile.archetypeInfo);
   const timing = analyzeTiming(profile, new Date(), savedIntention || "start_project");
   const masterNumbers = getMasterNumbers(profile);
 
@@ -314,10 +275,8 @@ function PiezasLibres({
         />
       )}
 
-      {/* 02 · Principios */}
-      {principles.length > 0 && (
-        <Principios principles={principles} elementColor={elementColor} />
-      )}
+      {/* 02 · Principios — movido a /lectura: es contenido de lectura, no
+          de "cómo estoy configurado" (que es la pregunta de /profile). */}
 
       {/* 03 · Momento — evolución integrada */}
       <TuMomento
@@ -448,9 +407,9 @@ function LecturaProfundaDesbloqueada({
 
   return (
     <div className="space-y-20 sm:space-y-24">
-      {/* 04 · Ciclos anuales — deterministic, extiende "03 · TU MOMENTO" hacia adelante */}
+      {/* 03 · Ciclos anuales — deterministic, extiende "02 · TU MOMENTO" hacia adelante */}
       <div>
-        <ChapterNumber number="04 · CICLOS ANUALES" color={elementColor} />
+        <ChapterNumber number="03 · CICLOS ANUALES" color={elementColor} />
         <AnnualCyclesPreview profile={profile} />
       </div>
 
@@ -482,7 +441,7 @@ function LecturaProfundaDesbloqueada({
 
       {/* 05 · Preguntale a tu Molino */}
       <div>
-        <ChapterNumber number="06 · PREGUNTALE A TU MAPA" color={elementColor} />
+        <ChapterNumber number="04 · PREGUNTALE A TU MAPA" color={elementColor} />
         <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">
           Ya conocés tu mapa. Ahora podés preguntarle qué significa.
         </h3>
@@ -534,7 +493,7 @@ export interface LecturaPieces {
 }
 
 /**
- * Movimientos 01→03, siempre gratis. Se renderiza cerca del hero para que
+ * Movimientos 01→02, siempre gratis. Se renderiza cerca del hero para que
  * la lectura arranque sin interrupciones de paywall en el medio.
  */
 export function LecturaLibre({
@@ -549,8 +508,8 @@ export function LecturaLibre({
       as="h2"
       tone="paperAlt"
       eyebrow="TU MAPA"
-      title={<>LEER TU MAPA<br />EN TRES MOVIMIENTOS.</>}
-      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad, tus patrones y tu momento vistos como un solo sistema."
+      title={<>LEER TU MAPA<br />EN DOS MOVIMIENTOS.</>}
+      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Tus principios te esperan en la lectura completa."
     >
       <div className="pt-10 sm:pt-14">
         <PiezasLibres profile={profile} onData={onData} />
@@ -560,9 +519,9 @@ export function LecturaLibre({
 }
 
 /**
- * Movimientos 04→06, premium. Se ubica después de las decisiones y la
+ * Movimientos 03→04, premium. Se ubica después de las decisiones y la
  * sincronicidad, como cierre de la lectura — no interrumpiendo el flujo
- * gratuito de "tres movimientos".
+ * gratuito de "dos movimientos".
  */
 export function LecturaPremium({
   profile,

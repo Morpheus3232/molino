@@ -9,6 +9,7 @@ import { getPremiumTokenClient } from "@/lib/premium";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
 import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
+import { buildPatterns, buildRules, buildPrinciples } from "@/lib/engines/synthesisEngine";
 import { buildLuckyNumberProof } from "@/lib/calculations/proof";
 import CalculationProof from "@/components/shared/CalculationProof";
 import type { UserProfile } from "@/types/user";
@@ -98,6 +99,15 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     const [year, month] = profile.birthDate.split("-").map((p) => parseInt(p, 10));
     return Number.isFinite(year) && Number.isFinite(month) ? { month, year } : null;
   }, [profile.birthDate]);
+
+  // "02 · Tus principios" — antes vivía en /profile (gratis, sin IA); movido
+  // acá porque es contenido de lectura, no de "cómo estoy configurado".
+  // Determinista, mismas funciones puras que /profile usaba.
+  const principles = useMemo(() => {
+    const rules = buildRules(profile);
+    const patterns = buildPatterns(profile);
+    return buildPrinciples(rules, patterns, profile.archetypeInfo);
+  }, [profile]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -245,8 +255,36 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             Una sola franja visual (border-t-2) marca dónde termina la
             lectura narrativa (si la hubo) y empieza el material de
             referencia. */}
-        {(zodiacExtras || catalog.length > 0) && (
+        {(principles.length > 0 || zodiacExtras || catalog.length > 0) && (
               <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
+                {principles.length > 0 && (
+                  <motion.section
+                    initial={reduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.5 }}
+                  >
+                    <p className="font-heading text-lg sm:text-xl text-foreground mb-6">Tus principios</p>
+                    <div className="max-w-2xl space-y-8">
+                      {principles.map((p, i) => (
+                        <div key={p.title} className="flex items-start gap-5">
+                          <span className="font-mono text-xs text-muted leading-[1.7] shrink-0 w-5">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <p className="font-heading text-base sm:text-lg text-foreground leading-snug">
+                              {p.title}
+                            </p>
+                            <p className="text-sm text-muted leading-relaxed mt-1.5">{p.body}</p>
+                            {p.source && (
+                              <p className="mt-2 font-mono text-xs text-accent">{p.source}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.section>
+                )}
+
                 {zodiacExtras && (
                   <motion.section
                     initial={reduceMotion ? false : { opacity: 0 }}

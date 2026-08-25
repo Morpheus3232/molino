@@ -113,9 +113,9 @@ describe('LecturaProfunda', () => {
     mockFetch(false);
     render(<LecturaProfunda profile={TEST_PROFILE} />);
 
-    // Piezas — determinísticas, nunca detrás del paywall.
+    // Piezas — determinísticas, nunca detrás del paywall. "Tus principios"
+    // se movió a /lectura (ver app/lectura/LaLecturaExperience.tsx).
     expect(screen.getByText(/PATRÓN CENTRAL/)).toBeInTheDocument();
-    expect(screen.getByText(/PRINCIPIOS/)).toBeInTheDocument();
     expect(screen.getByText(/TU MOMENTO/)).toBeInTheDocument();
 
     await waitFor(() => {
@@ -133,7 +133,6 @@ describe('LecturaProfunda', () => {
 
     // Piezas gratis, igual que sin Premium.
     expect(screen.getByText(/PATRÓN CENTRAL/)).toBeInTheDocument();
-    expect(screen.getByText(/PRINCIPIOS/)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText('La Lectura')).toBeInTheDocument();
