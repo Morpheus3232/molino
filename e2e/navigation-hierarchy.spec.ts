@@ -1,10 +1,13 @@
 import { test, expect } from "@playwright/test";
 
 // El header tiene tres zonas fijas: logo | destinos | acción del estado.
-// Sin mapa los destinos son Atlas/Hoy y la acción es "Crear mi mapa"; con
-// mapa son Mi Mapa/Afinidades/Tiempo/Journal y las acciones son
-// Lectura/Guardados. "Explorar" ya no vive en el header desktop — se movió
-// al footer, y solo queda en el menú móvil (única navegación de mobile).
+// Sin mapa los destinos son Atlas/Tiempo/Aprender/Modos/Journal y la acción
+// es "Crear mi mapa"; con mapa son Mi Mapa/Afinidades/Tiempo/Modos/Journal y
+// las acciones son Lectura/Guardados. Modos (Socios/Parejas) es un grupo
+// propio del centro en ambos estados — no necesita un mapa activo para
+// tener sentido. "Explorar" ya no vive en el header desktop — se movió al
+// footer y a lo que le queda sin puerta propia (Aprender con perfil), y
+// solo queda en el menú móvil (única navegación de mobile).
 
 async function seedProfile(page: import("@playwright/test").Page) {
   await page.addInitScript(() => {
@@ -55,9 +58,10 @@ test.describe("Navegación — sin perfil", () => {
     await expect(nav.getByRole("link", { name: "Atlas" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Tiempo" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Aprender" })).toBeVisible();
+    await expect(nav.getByRole("button", { name: "Modos" })).toBeVisible();
     await expect(nav.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
     // La acción vive fuera del <nav> de destinos, en la zona derecha.
-    await expect(page.getByRole("link", { name: "Crear mi mapa" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("link", { name: "Crear mi mapa" })).toBeVisible();
     await expect(nav.getByRole("button", { name: /explorar/i })).toHaveCount(0);
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(1441);
@@ -66,7 +70,7 @@ test.describe("Navegación — sin perfil", () => {
   test("Crear mi mapa lleva al onboarding", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
-    await page.getByRole("link", { name: "Crear mi mapa" }).click();
+    await page.getByRole("banner").getByRole("link", { name: "Crear mi mapa" }).click();
     await page.waitForURL("**/onboarding");
   });
 
@@ -94,6 +98,18 @@ test.describe("Navegación — sin perfil", () => {
     }
   });
 
+  test("Modos sin perfil lleva a Modo Socios/Modo Parejas", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Navegación principal" });
+    await nav.getByRole("button", { name: "Modos" }).click();
+    const menu = page.locator("#modes-menu");
+    await expect(menu.getByRole("link", { name: "Modo Socios", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Modo Parejas", exact: true })).toBeVisible();
+    await menu.getByRole("link", { name: "Modo Parejas", exact: true }).click();
+    await page.waitForURL("**/pareja");
+  });
+
   test("tablet (834px): hamburguesa visible, nav desktop oculto, sin overflow", async ({ page }) => {
     await page.setViewportSize({ width: 834, height: 1112 });
     await page.goto("/");
@@ -102,7 +118,7 @@ test.describe("Navegación — sin perfil", () => {
     expect(bodyWidth).toBeLessThanOrEqual(835);
   });
 
-  test("mobile (390px): CREAR MI MAPA primero, después destinos y Explorar", async ({ page }) => {
+  test("mobile (390px): CREAR MI MAPA primero, después destinos, Aprender y Modos", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await page.getByRole("button", { name: /abrir menú/i }).click();
@@ -111,8 +127,10 @@ test.describe("Navegación — sin perfil", () => {
     await expect(mobileMenu.getByRole("link", { name: "Atlas", exact: true })).toBeVisible();
     await expect(mobileMenu.getByText("Tiempo")).toBeVisible();
     await expect(mobileMenu.getByRole("link", { name: "Hoy", exact: true })).toBeVisible();
+    await expect(mobileMenu.getByText("Aprender")).toBeVisible();
+    await expect(mobileMenu.getByText("Modos")).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: "Modo Parejas", exact: true })).toBeVisible();
     await expect(mobileMenu.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
-    await expect(mobileMenu.getByText("Explorar")).toBeVisible();
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(391);
   });
@@ -121,8 +139,9 @@ test.describe("Navegación — sin perfil", () => {
     test.skip(isMobile, "el nav desktop está oculto en mobile — se navega por el menú hamburguesa");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
-    await page.keyboard.press("Tab"); // skip link / logo
-    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab"); // skip link
+    await page.keyboard.press("Tab"); // logo (accesible por aria-label, sin texto visible)
+    await page.keyboard.press("Tab"); // primer destino real
     const focused = await page.evaluate(() => document.activeElement?.textContent?.trim());
     expect(focused).toBeTruthy();
   });
@@ -137,6 +156,7 @@ test.describe("Navegación — con perfil", () => {
     await expect(nav.getByRole("link", { name: "Mi Mapa" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Afinidades" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Tiempo" })).toBeVisible();
+    await expect(nav.getByRole("button", { name: "Modos" })).toBeVisible();
     await expect(nav.getByRole("link", { name: "Journal" })).toBeVisible();
     await expect(nav.getByRole("button", { name: /explorar/i })).toHaveCount(0);
     // Zona derecha, fuera del <nav>: la bóveda vacía dice "Guardar".
@@ -178,6 +198,20 @@ test.describe("Navegación — con perfil", () => {
     await page.waitForURL("**/semana");
   });
 
+  test("Modos con perfil muestra Modo Socios/Modo Parejas y navega", async ({ page }) => {
+    await seedProfile(page);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Navegación principal" });
+    await expect(nav.getByRole("link", { name: "Mi Mapa" })).toBeVisible();
+    await nav.getByRole("button", { name: "Modos" }).click();
+    const menu = page.locator("#modes-menu");
+    await expect(menu.getByRole("link", { name: "Modo Socios", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Modo Parejas", exact: true })).toBeVisible();
+    await menu.getByRole("link", { name: "Modo Socios", exact: true }).click();
+    await page.waitForURL("**/socios");
+  });
+
   test("la acción de la bóveda abre el drawer de perfiles guardados", async ({ page }) => {
     await seedProfile(page);
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -188,7 +222,7 @@ test.describe("Navegación — con perfil", () => {
     await expect(page.getByRole("dialog")).toBeVisible();
   });
 
-  test("mobile (390px): destinos, después acciones, después Explorar", async ({ page }) => {
+  test("mobile (390px): destinos, Modos, acciones, después Explorar", async ({ page }) => {
     await seedProfile(page);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
@@ -197,6 +231,8 @@ test.describe("Navegación — con perfil", () => {
     await expect(mobileMenu.getByRole("link", { name: "Mi Mapa", exact: true })).toBeVisible();
     await expect(mobileMenu.getByText("Afinidades")).toBeVisible();
     await expect(mobileMenu.getByText("Tiempo")).toBeVisible();
+    await expect(mobileMenu.getByText("Modos")).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: "Modo Socios", exact: true })).toBeVisible();
     await expect(mobileMenu.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
     await expect(mobileMenu.getByRole("button", { name: /^guardar$/i })).toBeVisible();
     await expect(mobileMenu.getByText("Explorar")).toBeVisible();
@@ -204,13 +240,13 @@ test.describe("Navegación — con perfil", () => {
     expect(bodyWidth).toBeLessThanOrEqual(391);
   });
 
-  test("el menú móvil sigue teniendo Explorar aunque el header desktop no", async ({ page }) => {
+  test("con perfil, Explorar (móvil) es solo Aprender — Modos ya tiene su propia sección arriba", async ({ page }) => {
     await seedProfile(page);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await page.getByRole("button", { name: /abrir menú/i }).click();
     const mobileMenu = page.locator("#mobile-menu");
-    for (const label of ["Academia", "Atlas", "Biblioteca", "Blog", "Modo Socios", "Modo Parejas"]) {
+    for (const label of ["Academia", "Atlas", "Biblioteca", "Blog"]) {
       await expect(mobileMenu.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
   });

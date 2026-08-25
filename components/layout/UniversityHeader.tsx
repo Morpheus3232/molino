@@ -27,8 +27,11 @@ import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 
    Por qué se fue "Explorar" del header: era el cajón de sobras (Academia,
    Biblioteca, Blog, Atlas, Modos) y ya estaba entero en la columna
-   "Explorar" del footer. Se mantiene solo en el menú móvil, que es la
-   única navegación que tiene mobile. */
+   "Explorar" del footer. Se mantiene solo en el menú móvil (única
+   navegación que tiene mobile), salvo Aprender y Modos, que ahora son
+   grupos propios del centro en ambos estados — no necesitan un mapa
+   activo para tener sentido y merecían su propia puerta, no una
+   enterrada dentro de otro dropdown. */
 
 interface NavLink {
   href: string;
@@ -91,21 +94,20 @@ const LEARN_LINKS_WITH_PROFILE: NavLink[] = [
   { href: "/blog", label: "Blog" },
 ];
 
-const EXPLORE_GROUPS_NO_PROFILE: NavGroup[] = [
-  { heading: "Modos", links: MODES_LINKS },
-  { heading: "Aprender", links: LEARN_LINKS_NO_PROFILE },
-];
-
 // El bloque de aprender es enteramente accesible sin mapa, así que sube al
-// header como grupo propio en vez de quedar sepultado en un cajón. Los Modos
-// no vienen acá: llamarlos "Aprender" sería mentir sobre a dónde llevan —
-// siguen en el footer.
+// header como grupo propio en vez de quedar sepultado en un cajón.
 const LEARN_GROUPS_NO_PROFILE: NavGroup[] = [{ links: LEARN_LINKS_NO_PROFILE }];
 
-const EXPLORE_GROUPS_WITH_PROFILE: NavGroup[] = [
-  { heading: "Aprender", links: LEARN_LINKS_WITH_PROFILE },
-  { heading: "Modos", links: MODES_LINKS },
-];
+// Modos (Socios/Parejas) también suben al header como grupo propio, en
+// ambos estados — no necesitan un mapa activo para tener sentido, y vivían
+// enterrados dentro de "Explorar"/footer sin puerta de entrada visible.
+const MODES_GROUPS: NavGroup[] = [{ links: MODES_LINKS }];
+
+// Modos ya no repite acá — tiene su propio dropdown/sección arriba en
+// ambos estados. Explorar (con perfil) queda solo con lo que sigue sin
+// puerta propia: Aprender, que para el usuario con mapa no justifica un
+// quinto grupo en el centro (Atlas ya vive en Afinidades/Mi Mapa).
+const EXPLORE_GROUPS_WITH_PROFILE: NavGroup[] = [{ links: LEARN_LINKS_WITH_PROFILE }];
 
 // Categorías reales de /affinity/[type] — mismas 7 que generateStaticParams
 // en app/affinity/[type]/page.tsx. No se agrega ninguna que no tenga ruta.
@@ -138,7 +140,7 @@ const TIME_GROUPS: NavGroup[] = [
   },
 ];
 
-type MenuId = "explore" | "affinities" | "time" | "learn";
+type MenuId = "explore" | "affinities" | "time" | "learn" | "modes";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
@@ -262,7 +264,9 @@ export default function UniversityHeader() {
   // del sitio rompe esa sensación de "testamento que se despliega solo".
   if (pathname.startsWith("/lectura")) return null;
 
-  const exploreGroups = hasProfile ? EXPLORE_GROUPS_WITH_PROFILE : EXPLORE_GROUPS_NO_PROFILE;
+  // Solo el menú móvil con perfil sigue usando "Explorar" — Aprender/Modos
+  // en el estado sin perfil ya son secciones propias en el mobile de arriba.
+  const exploreGroups = EXPLORE_GROUPS_WITH_PROFILE;
   // El label anterior de la bóveda era el plural literal del ancla del
   // centro: dos etiquetas casi idénticas a tres ítems de distancia, una para
   // el mapa activo y otra para la bóveda. "Guardados" no compite con ella.
@@ -325,6 +329,15 @@ export default function UniversityHeader() {
                   onToggle={() => toggleMenu("learn")}
                   isActiveLink={isActive}
                 />
+                <NavDropdown
+                  id="modes"
+                  label="Modos"
+                  groups={MODES_GROUPS}
+                  isOpen={openMenu === "modes"}
+                  isActive={isGroupActive(MODES_GROUPS)}
+                  onToggle={() => toggleMenu("modes")}
+                  isActiveLink={isActive}
+                />
                 <Link
                   href={NO_PROFILE_LINKS.journal.href}
                   className={navButtonClass(isActive(NO_PROFILE_LINKS.journal.href))}
@@ -358,6 +371,15 @@ export default function UniversityHeader() {
                   isOpen={openMenu === "time"}
                   isActive={isGroupActive(TIME_GROUPS)}
                   onToggle={() => toggleMenu("time")}
+                  isActiveLink={isActive}
+                />
+                <NavDropdown
+                  id="modes"
+                  label="Modos"
+                  groups={MODES_GROUPS}
+                  isOpen={openMenu === "modes"}
+                  isActive={isGroupActive(MODES_GROUPS)}
+                  onToggle={() => toggleMenu("modes")}
                   isActiveLink={isActive}
                 />
                 <Link
@@ -436,14 +458,16 @@ export default function UniversityHeader() {
                     </Link>
                     <MobileLink link={NO_PROFILE_LINKS.atlas} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS_NO_PROFILE} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={LEARN_GROUPS_NO_PROFILE} heading="Aprender" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={NO_PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
-                    <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                   </>
                 ) : (
                   <>
                     <MobileLink link={PROFILE_LINKS.map} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     <MobileGroups groups={AFFINITY_GROUPS} heading="Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
 
                     <div className="border-t border-ink/10 my-2" />

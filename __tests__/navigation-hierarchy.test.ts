@@ -55,10 +55,11 @@ describe("Header — navegación sin perfil", () => {
     expect(src).not.toContain('"Mis Mapas"');
   });
 
-  test("Explorar sigue existiendo para el menú móvil, con las rutas reales", () => {
+  test("Modos es un grupo propio del centro, no enterrado en Explorar", () => {
     const src = header();
-    expect(src).toContain("EXPLORE_GROUPS_NO_PROFILE");
-    for (const href of ["/socios", "/pareja", "/academy", "/biblioteca", "/blog"]) {
+    expect(src).toContain('label="Modos"');
+    expect(src).toContain("MODES_GROUPS");
+    for (const href of ["/socios", "/pareja"]) {
       expect(src).toContain(`href: "${href}"`);
     }
   });
@@ -102,10 +103,18 @@ describe("Header — navegación con perfil", () => {
     expect(src).toMatch(/href:\s*"\/evolution",\s*label:\s*"Año"/);
   });
 
-  test("Explorar (con perfil, solo móvil) agrupa Aprender (incluye Atlas) y Modos", () => {
+  test("Modos también es grupo propio del centro con perfil, no solo sin perfil", () => {
+    const src = header();
+    expect(src).toContain('label="Modos"');
+    expect(src).toContain("MODES_GROUPS");
+  });
+
+  test("Explorar (con perfil, solo móvil) ahora es solo Aprender — Modos ya no repite acá", () => {
     const src = header();
     expect(src).toContain("EXPLORE_GROUPS_WITH_PROFILE");
     expect(src).toContain("LEARN_LINKS_WITH_PROFILE");
+    const block = src.match(/EXPLORE_GROUPS_WITH_PROFILE[\s\S]*?\n\];/)![0];
+    expect(block).not.toContain("Modos");
   });
 
   test("no aparece 'Afinidades'/'Bóveda' como primer nivel plano fuera de sus dropdowns", () => {
