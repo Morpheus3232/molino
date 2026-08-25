@@ -10,6 +10,7 @@ import {
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
 import { calculateDailyEnergy, getYearTheme, type DailyEnergyResult, type AreaScore } from "@/lib/engines/dailyEnergyEngine";
+import { encodeProfileData } from "@/lib/utils/profileShare";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
@@ -467,7 +468,7 @@ function LecturaProfundaDesbloqueada({
           {justUnlocked && " Se abrió en una pestaña nueva."}
         </p>
         <a
-          href={`/lectura?dob=${encodeURIComponent(profile.birthDate)}${profile.name ? `&name=${encodeURIComponent(profile.name)}` : ""}`}
+          href={`/lectura#${encodeProfileData(profile)}`}
           target="_blank"
           rel="noopener"
           className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-accent-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-accent-hover transition-colors"

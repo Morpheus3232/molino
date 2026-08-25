@@ -5,6 +5,8 @@ import { analytics } from '@/lib/analytics/analytics';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 import { clearSelectedPlan } from '@/lib/session/selectedPlan';
+import { calculateUserProfile } from '@/lib/engines/profileBuilder';
+import { encodeProfileData } from '@/lib/utils/profileShare';
 
 export type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked' | 'pay_error' | 'verifying_redirect';
 
@@ -57,9 +59,12 @@ export function useCommitPremiumUnlock({ setState, setJustUnlocked, name, birthD
       // (frecuente cuando este código corre fuera de un click directo, ej.
       // el redirect de vuelta de Mercado Pago), PremiumUnlockReveal muestra
       // un botón "Abrir mi lectura" como respaldo — no falla en silencio.
+      // El perfil viaja en el fragmento (#), nunca en la query string: un
+      // fragmento no sale del navegador (no llega al servidor ni a logs),
+      // mismo esquema que /profile#<hash>.
       if (typeof window !== 'undefined' && birthDate) {
-        const url = `/lectura?dob=${encodeURIComponent(birthDate)}${name ? `&name=${encodeURIComponent(name)}` : ''}`;
-        window.open(url, '_blank');
+        const encoded = encodeProfileData(calculateUserProfile(name || '', birthDate));
+        window.open(`/lectura#${encoded}`, '_blank');
       }
     },
     [setState, setJustUnlocked, name, birthDate],

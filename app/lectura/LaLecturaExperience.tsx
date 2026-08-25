@@ -99,33 +99,36 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     return Number.isFinite(year) && Number.isFinite(month) ? { month, year } : null;
   }, [profile.birthDate]);
 
-  if (!revealed) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-6 py-24">
-        <div className="w-full max-w-md">
-          <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-background">
+      {/* Salida arriba — visible sin esperar la IA ni scrollear hasta el pie */}
+      <div className="flex items-center justify-between mx-auto max-w-[760px] px-6 sm:px-8 pt-8">
+        <Link href="/profile" className="text-xs font-mono text-muted hover:text-accent transition-colors">
+          ← Tu mapa
+        </Link>
+      </div>
+
       {/* Cresta — el molino, quieto, coronando la lectura */}
       <motion.div
         initial={reduceMotion ? false : { opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.6, ease: "easeOut" }}
-        className="flex justify-center pt-16 pb-8"
+        className="flex justify-center pt-8 pb-8"
       >
         <Logo className="h-10 w-10 text-accent" />
       </motion.div>
 
       <div className="mx-auto max-w-[760px] px-6 sm:px-8 pb-32">
-        {!interpretation ? (
-          <p className="text-center text-muted text-sm py-20">
-            No pudimos generar tu lectura esta vez. Volvé a{" "}
-            <Link href="/profile" className="text-accent underline underline-offset-4">tu mapa</Link> e intentá de nuevo.
+        {/* La IA es un enriquecimiento encima del contenido determinista de
+            abajo, no un gate para verlo — mientras carga o si falla, el
+            zodíaco/número de la suerte/afinidades siguen disponibles. */}
+        {!revealed ? (
+          <div className="py-16">
+            <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
+          </div>
+        ) : !interpretation ? (
+          <p className="text-center text-muted text-sm py-16">
+            No pudimos generar tu lectura esta vez. El resto de tu lectura sigue disponible abajo.
           </p>
         ) : (
           <>
@@ -232,14 +235,18 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 &ldquo;{interpretation.closingSynthesis}&rdquo;
               </motion.blockquote>
             )}
+          </>
+        )}
 
-            {/* Companion — todo lo que sigue es contenido de apoyo, agrupado
-                después del cierre narrativo: primero las 4 lecturas nuevas
-                del zodíaco chino, después las afinidades. Una sola franja
-                visual (border-t-2) marca dónde termina la lectura y empieza
-                el material de referencia. */}
-            {(zodiacExtras || catalog.length > 0) && (
-              <div className="border-t-2 border-ink/15 pt-10 space-y-14 sm:space-y-16">
+        {/* Companion — contenido determinista, calculado localmente sin IA.
+            Renderiza siempre, sin esperar fetchLectura ni depender de que
+            haya salido bien: primero las 4 lecturas nuevas del zodíaco
+            chino, después el número de la suerte, después las afinidades.
+            Una sola franja visual (border-t-2) marca dónde termina la
+            lectura narrativa (si la hubo) y empieza el material de
+            referencia. */}
+        {(zodiacExtras || catalog.length > 0) && (
+              <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
                 {zodiacExtras && (
                   <motion.section
                     initial={reduceMotion ? false : { opacity: 0 }}
@@ -331,8 +338,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 {/* 05 — Tu relación con el mundo: catálogo completo categorizado por relación */}
                 <LecturaAfinidadesFull userAnimal={userAnimal} catalog={catalog} />
               </div>
-            )}
-          </>
         )}
 
         <div className="text-center mt-16">
