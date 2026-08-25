@@ -56,6 +56,12 @@ const VALID_CONTRACT = {
   opening: 'Ves patrones antes de que otros los nombren.',
   corePattern: { what: 'Intuición operativa', source: 'Life Path 11 + Fuego', whyItMatters: 'Te adelanta al grupo, a veces demasiado.' },
   howYouOperate: 'Cuando el grupo todavía está evaluando opciones, vos ya elegiste una dirección.',
+  blindSpot: 'Confundís ver rápido con ver completo, y actuás antes de chequear el segundo dato.',
+  lifeAreas: {
+    work: 'Proponés la dirección antes de que el equipo termine de diagnosticar.',
+    relationships: 'Interpretás una duda ajena como si ya fuera un desacuerdo.',
+    decisions: 'Cerrás la opción rápido y después justificás, en vez de comparar antes.',
+  },
   relationalNote: 'Con Tigre y Perro compartís ritmo; con Rata, fricción productiva.',
   closingSynthesis: 'Ves antes de entender — y eso también hay que entrenarlo.',
 };
@@ -90,6 +96,24 @@ describe('POST /api/intelligence/interpret — AI validity contract', () => {
     expect(data.aiStatus).toBe('valid');
     expect(data.ai).not.toBeNull();
     expect(data.ai.summary).toBe(VALID_CONTRACT.summary);
+  });
+
+  // Regresión: blindSpot/lifeAreas llegaban del modelo, pasaban el validador
+  // estructural y semántico, y se perdían igual — sanitizeInterpretation()
+  // (la proyección que arma el body HTTP final, ~90 líneas después de donde
+  // se arma `aiResult`) es una whitelist DISTINTA de la que construye
+  // `aiResult`, y solo se había actualizado la primera. Se detectó recién
+  // probando en producción con un modelo real; este test lo hubiera agarrado
+  // en CI. Cualquier campo nuevo del contrato necesita entrar en las DOS
+  // proyecciones — este test existe para que la segunda nunca vuelva a
+  // quedarse atrás en silencio.
+  test('blindSpot y lifeAreas sobreviven hasta la respuesta HTTP final (no solo hasta aiResult)', async () => {
+    mockAiResponse(JSON.stringify(VALID_CONTRACT));
+    const res = await POST(req(BASE_BODY));
+    const data = await res.json();
+    expect(data.aiStatus).toBe('valid');
+    expect(data.ai.blindSpot).toBe(VALID_CONTRACT.blindSpot);
+    expect(data.ai.lifeAreas).toEqual(VALID_CONTRACT.lifeAreas);
   });
 
   test('chain-of-thought leak in summary → ai is null, aiStatus "invalid", fallback used instead', async () => {

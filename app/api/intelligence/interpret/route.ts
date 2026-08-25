@@ -492,6 +492,14 @@ function sanitizeInterpretation(interp: MolinoInterpretation) {
     opening: interp.opening,
     corePattern: interp.corePattern,
     howYouOperate: interp.howYouOperate,
+    // ⚠️ SEGUNDA whitelist explícita en este mismo archivo (la primera es la
+    // proyección de `structured` a `aiResult`, ~90 líneas arriba). Un campo
+    // nuevo del contrato tiene que agregarse a AMBAS o se pierde en silencio
+    // entre `aiResult` (que sí lo tiene) y la respuesta HTTP (que no) — así
+    // se perdieron blindSpot/lifeAreas la primera vez: se arregló la
+    // proyección de arriba y esta, idéntica, se pasó por alto.
+    blindSpot: interp.blindSpot,
+    lifeAreas: interp.lifeAreas,
     relationalNote: interp.relationalNote,
     closingSynthesis: interp.closingSynthesis,
   };
