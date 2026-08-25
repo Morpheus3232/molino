@@ -45,10 +45,23 @@ function sweepStuckEntrances() {
     if (el.closest('[aria-hidden="true"]')) return;
 
     const rect = el.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return;
-    // Solo lo visible ahora mismo: si está below-the-fold, whileInView
-    // todavía puede revelarlo por scroll — forzarlo acá mataría el efecto.
-    if (rect.top >= vh || rect.bottom <= 0) return;
+
+    // Con la pestaña en segundo plano el navegador no hace layout: vh es 0 y
+    // todos los rect son 0x0. Con los filtros de abajo aplicados tal cual, el
+    // barrido descartaba TODO justo en el escenario que más lo necesita —
+    // abrir un link compartido en una pestaña nueva, volver 15s después y
+    // encontrar la sección en blanco porque requestAnimationFrame estuvo
+    // pausado y la animación de entrada nunca completó. Si no hay layout
+    // todavía, no hay forma de saber qué está en viewport: se revela todo lo
+    // que matcheó la firma. Un reveal de más es mucho más barato que una
+    // sección invisible de forma permanente.
+    const sinLayout = vh === 0 || (rect.width === 0 && rect.height === 0);
+    if (!sinLayout) {
+      if (rect.width === 0 || rect.height === 0) return;
+      // Solo lo visible ahora mismo: si está below-the-fold, whileInView
+      // todavía puede revelarlo por scroll — forzarlo acá mataría el efecto.
+      if (rect.top >= vh || rect.bottom <= 0) return;
+    }
 
     el.style.opacity = "1";
     el.style.transform = "none";
@@ -62,7 +75,20 @@ export default function MotionFailsafe() {
     const timers = SWEEP_DELAYS_MS.map((ms) =>
       window.setTimeout(sweepStuckEntrances, ms)
     );
-    return () => timers.forEach((t) => window.clearTimeout(t));
+
+    // Los cuatro barridos se agotan a los 8s. Si la pestaña estuvo oculta
+    // todo ese tiempo (link abierto en segundo plano), corrieron sin layout y
+    // cuando el usuario finalmente mira no queda ninguno. Un barrido más al
+    // recuperar visibilidad, ya con layout real, cubre justo ese caso.
+    function onVisible() {
+      if (!document.hidden) sweepStuckEntrances();
+    }
+    document.addEventListener("visibilitychange", onVisible);
+
+    return () => {
+      timers.forEach((t) => window.clearTimeout(t));
+      document.removeEventListener("visibilitychange", onVisible);
+    };
   }, [pathname]);
 
   return null;
