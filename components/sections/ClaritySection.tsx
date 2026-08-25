@@ -2,12 +2,9 @@
 
 import React from "react";
 import {
-  Shield,
-  Zap,
   CheckCircle2,
   ArrowRight,
   SlidersHorizontal,
-  Binary,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -41,30 +38,6 @@ const methodRows: MethodItem[] = [
     category: "¿Para quién es?",
     title: "Curiosos y analistas",
     description: "Para quien busca herramientas de autoconocimiento lúcido — el mapa muestra el método, la decisión sigue siendo tuya.",
-  },
-];
-
-const pillars = [
-  {
-    icon: Binary,
-    title: "Estructura",
-    subtitle: "Rigor Simbólico",
-    description: "Tres sistemas: numerología pitagórica, astrología tropical y zodíaco chino. Método y cálculo matemático, no improvisación.",
-    badge: "100% Determinista"
-  },
-  {
-    icon: Shield,
-    title: "Utilidad",
-    subtitle: "Perspectiva Práctica",
-    description: "No predice futuros. Ofrece información sobre tus ciclos para negociar, decidir y organizar tu energía.",
-    badge: "Orientación Real"
-  },
-  {
-    icon: Zap,
-    title: "Enfoque",
-    subtitle: "Uso Independiente",
-    description: "Pensado para quien quiere entender sus propios patrones de manera directa.",
-    badge: "Sin Intermediarios"
   },
 ];
 
@@ -123,33 +96,6 @@ export default function ClaritySection() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        {/* ── Tres pilares — lista plana, sin cards ── */}
-        <div className="mb-16">
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-bold block mb-8 text-center">
-            Arquitectura del método
-          </span>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-8 divide-y md:divide-y-0 md:divide-x divide-border">
-            {pillars.map((pillar, idx) => {
-              const Icon = pillar.icon;
-              return (
-                <div key={idx} className="pt-10 md:pt-0 first:pt-0 md:px-8 first:pl-0 last:pr-0 space-y-3">
-                  <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
-                  <h4 className="font-heading text-lg font-bold text-foreground">
-                    {pillar.title}
-                  </h4>
-                  <p className="font-mono text-xs text-muted">
-                    {pillar.subtitle}
-                  </p>
-                  <p className="text-sm text-foreground/80 leading-relaxed">
-                    {pillar.description}
-                  </p>
-                </div>
-              );
-            })}
           </div>
         </div>
 

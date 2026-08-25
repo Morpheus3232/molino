@@ -17,7 +17,6 @@ describe("Home page — universal access without profile", () => {
     expect(source).toContain("ProofSection");
     expect(source).toContain("ClaritySection");
     expect(source).toContain("FeaturesSection");
-    expect(source).toContain("TrustLayer");
     expect(source).toContain("CTASection");
     expect(source).toContain("FAQ");
   });

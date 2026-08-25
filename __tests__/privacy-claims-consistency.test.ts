@@ -57,8 +57,8 @@ describe("Claims de privacidad — consistencia con la arquitectura real", () =>
     );
   });
 
-  test("TrustLayer califica el claim '100% Local' con la excepción de Premium/IA", () => {
-    const src = read("components/sections/TrustLayer.tsx");
+  test("ClaritySection califica el claim '100% Local' con la excepción de Premium/IA", () => {
+    const src = read("components/sections/ClaritySection.tsx");
     expect(src.toLowerCase()).toMatch(/hash|premium/);
   });
 

@@ -4,7 +4,6 @@ import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import PremiumTeaser from "@/components/sections/PremiumTeaser";
-import TrustLayer from "@/components/sections/TrustLayer";
 import CTASection from "@/components/sections/CTASection";
 import { SITE_URL } from "@/lib/seo";
 
@@ -126,9 +125,6 @@ export default function HomePage() {
 
         {/* Premium — transformación: veo mi mapa vs. entiendo cómo se conecta */}
         <PremiumTeaser />
-
-        {/* Trust Layer — Privacy & Architecture */}
-        <TrustLayer />
 
         {/* Final CTA */}
         <CTASection />
