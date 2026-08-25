@@ -1,0 +1,104 @@
+diff --git a/components/profile/ConvergentSection.tsx b/components/profile/ConvergentSection.tsx
+index 0cad120..45b393c 100644
+--- a/components/profile/ConvergentSection.tsx
++++ b/components/profile/ConvergentSection.tsx
+@@ -80,8 +80,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
+           <motion.div
+             key={`${conv.theme}-${i}`}
+             initial={{ opacity: 0, y: 16 }}
+-            whileInView={{ opacity: 1, y: 0 }}
+-            viewport={{ once: true, margin: "-40px" }}
++            animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: i * 0.08, duration: 0.5 }}
+             className="py-10 lg:py-12 border-b border-ink/10"
+           >
+@@ -120,8 +119,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
+         {/* Evidencia — las capas que alimentan la lectura */}
+         <motion.div
+           initial={{ opacity: 0, y: 12 }}
+-          whileInView={{ opacity: 1, y: 0 }}
+-          viewport={{ once: true, margin: "-40px" }}
++          animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.4 }}
+           className="pt-10 lg:pt-12"
+         >
+@@ -133,8 +131,7 @@ export default function ConvergentSection({ profile }: ConvergentSectionProps) {
+               <motion.div
+                 key={layer.id}
+                 initial={{ opacity: 0, y: 12 }}
+-                whileInView={{ opacity: 1, y: 0 }}
+-                viewport={{ once: true, margin: "-40px" }}
++                animate={{ opacity: 1, y: 0 }}
+                 transition={{ delay: i * 0.05, duration: 0.4 }}
+                 className="flex items-baseline justify-between gap-4 py-3.5 border-b border-ink/10 last:border-b-0"
+               >
+diff --git a/components/profile/CrossLinks.tsx b/components/profile/CrossLinks.tsx
+index 1bde98c..c462973 100644
+--- a/components/profile/CrossLinks.tsx
++++ b/components/profile/CrossLinks.tsx
+@@ -1,7 +1,7 @@
+ "use client";
+ 
+ import { motion } from "framer-motion";
+-import { smoothReveal } from "@/lib/utils/premiumMotion";
++import { smoothReveal, smoothRevealMount } from "@/lib/utils/premiumMotion";
+ 
+ interface CrossLink {
+   label: string;
+@@ -18,7 +18,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
+   return (
+     <section className="py-8 sm:py-12 border-t border-ink/10">
+       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
+-        <motion.div {...smoothReveal}>
++        <motion.div {...smoothRevealMount}>
+           <div className="flex items-center gap-3 mb-6">
+             <div className="w-8 h-px bg-ink/10" aria-hidden="true" />
+             <h2 className="font-heading text-lg uppercase tracking-tight text-foreground">{title}</h2>
+@@ -30,8 +30,7 @@ export default function CrossLinks({ title = "Seguí explorando", links }: Cross
+             <motion.button
+               key={link.label}
+               initial={{ opacity: 0, y: 8 }}
+-              whileInView={{ opacity: 1, y: 0 }}
+-              viewport={{ once: true }}
++              animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: i * 0.06, duration: 0.3 }}
+               onClick={link.onClick}
+               className="text-left p-4 border border-ink/10 hover:border-ink/20 transition-colors group"
+diff --git a/components/profile/IdentityCard.tsx b/components/profile/IdentityCard.tsx
+index 8f16832..86705de 100644
+--- a/components/profile/IdentityCard.tsx
++++ b/components/profile/IdentityCard.tsx
+@@ -72,8 +72,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
+                 <motion.div
+                   key={s}
+                   initial={{ opacity: 0, y: 12 }}
+-                  whileInView={{ opacity: 1, y: 0 }}
+-                  viewport={{ once: true, margin: "-40px" }}
++                  animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: i * 0.06, duration: 0.4 }}
+                   className="flex items-baseline gap-4 py-4 border-b border-ink/10"
+                 >
+@@ -96,8 +95,7 @@ export default function IdentityCard({ profile }: IdentityCardProps) {
+                 <motion.div
+                   key={g}
+                   initial={{ opacity: 0, y: 12 }}
+-                  whileInView={{ opacity: 1, y: 0 }}
+-                  viewport={{ once: true, margin: "-40px" }}
++                  animate={{ opacity: 1, y: 0 }}
+                   transition={{ delay: i * 0.06, duration: 0.4 }}
+                   className="flex items-baseline gap-4 py-4 border-b border-ink/10"
+                 >
+diff --git a/components/profile/PersonalScoreCard.tsx b/components/profile/PersonalScoreCard.tsx
+index f87b1bc..f46ee8a 100644
+--- a/components/profile/PersonalScoreCard.tsx
++++ b/components/profile/PersonalScoreCard.tsx
+@@ -64,8 +64,7 @@ export default function PersonalScoreCard({ profile }: PersonalScoreCardProps) {
+           <motion.div
+             key={ind.label}
+             initial={{ opacity: 0, y: 12 }}
+-            whileInView={{ opacity: 1, y: 0 }}
+-            viewport={{ once: true, margin: "-40px" }}
++            animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: i * 0.06, duration: 0.4 }}
+             className="py-6 border-b border-ink/10 last:border-b-0"
+           >

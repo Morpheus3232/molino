@@ -84,8 +84,7 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
           <motion.div
             key={source.field}
             initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06, duration: 0.4 }}
             className="py-6 border-b border-ink/10 last:border-b-0"
           >

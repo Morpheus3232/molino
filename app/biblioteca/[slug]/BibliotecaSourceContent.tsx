@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/utils/motion";
+import { fadeUpMount } from "@/lib/utils/motion";
 import {
   SOURCES,
   CATEGORY_LABELS,
@@ -30,7 +30,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         </nav>
 
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <span
               className="font-mono text-xs font-semibold tracking-wider uppercase px-2 py-0.5"
@@ -56,7 +56,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         </motion.section>
 
         {/* Descripción */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-px bg-border" aria-hidden="true" />
             <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Qué es</h2>
@@ -66,7 +66,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
 
         {/* Método */}
         {source.summary && (
-          <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+          <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
               <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Método</h2>
@@ -77,7 +77,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
 
         {/* Reseña */}
         {source.review && (
-          <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+          <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-px bg-border" aria-hidden="true" />
               <h2 className="font-heading text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Reseña de Molino</h2>
@@ -88,7 +88,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
 
         {/* Etiquetas + link externo */}
         {(source.tags?.length || source.link) && (
-          <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+          <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
             <div className="flex flex-wrap items-center gap-2">
               {(source.tags || []).map((tag) => (
                 <span
@@ -113,7 +113,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
         )}
 
         {/* CTA al mapa */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16 text-center">
+        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16 text-center">
           <div className="p-8 rounded-md border border-border bg-card shadow-sm">
             <p className="text-sm text-muted mb-4">
               ¿Querés ver cómo este sistema se aplica en tu perfil?
@@ -129,7 +129,7 @@ export default function BibliotecaSourceContent({ source }: { source: Biblioteca
 
         {/* Relacionadas */}
         {related.length > 0 && (
-          <motion.section {...fadeUp} className="pt-8 border-t border-border">
+          <motion.section {...fadeUpMount} className="pt-8 border-t border-border">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-4">
               Seguir explorando · {CATEGORY_LABELS[source.category] || source.category}
             </p>

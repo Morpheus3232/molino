@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { fadeUp, fadeUpDelayed, staggerItem } from "@/lib/utils/motion";
+import { fadeUpDelayed, fadeUpMount, fadeUpMountDelayed, staggerItem } from "@/lib/utils/motion";
 import { useDictionary } from "@/lib/i18n/useDictionary";
 
 const PRINCIPLE_ICONS: Record<string, string> = {
@@ -82,7 +82,7 @@ export default function FilosofiaContent() {
 
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-16 sm:mb-24">
+        <motion.section {...fadeUpMount} className="mb-16 sm:mb-24">
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Principios y fundamentos
           </h1>
@@ -99,7 +99,7 @@ export default function FilosofiaContent() {
         </motion.section>
 
         {/* Principles */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-20">
+        <motion.section {...fadeUpMountDelayed(0.05)} className="mb-20">
           <div className="mb-10">
             <h2 className="font-heading text-2xl sm:text-3xl tracking-tight text-foreground mb-4">
               Cinco principios innegociables
@@ -115,7 +115,7 @@ export default function FilosofiaContent() {
                 key={principle.id}
                 role="listitem"
                 id={principle.id}
-                {...staggerItem}
+                {...fadeUpMountDelayed(i * 0.08)}
                 className="group p-6 border border-ink/10 bg-background hover:bg-ink/[0.02] hover:border-ink/20 transition-all duration-300"
               >
                 <div className="flex items-start gap-4">
@@ -152,7 +152,7 @@ export default function FilosofiaContent() {
               <motion.div
                 key={pillar.title}
                 role="listitem"
-                {...staggerItem}
+                {...fadeUpMountDelayed(i * 0.06 + 0.1)}
                 className="p-6 sm:p-8 bg-background"
               >
                 <div className="flex items-start gap-4">
@@ -272,8 +272,7 @@ export default function FilosofiaContent() {
               <motion.div
                 key={item.q}
                 initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.06, duration: 0.3 }}
                 className="p-6 sm:p-8 bg-background"
               >

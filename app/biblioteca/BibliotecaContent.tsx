@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeUp, fadeUpDelayed } from "@/lib/utils/motion";
+import { fadeUpMount, fadeUpMountDelayed } from "@/lib/utils/motion";
 import SearchInput from "@/components/ui/SearchInput";
 import Chip from "@/components/ui/Chip";
 import { BookOpen, Sparkles, Compass, ArrowRight } from "lucide-react";
@@ -89,7 +89,7 @@ export default function BibliotecaContent() {
     <div className="min-h-screen bg-background">
       <main className="mx-auto max-w-[1100px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
         {/* Hero */}
-        <motion.section {...fadeUp} className="mb-12 sm:mb-16">
+        <motion.section {...fadeUpMount} className="mb-12 sm:mb-16">
           <p className="text-xs uppercase tracking-[0.3em] text-muted font-medium mb-4">Biblioteca de Fuentes</p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-tight text-foreground leading-[1.05]">
             Fuentes, Autores & Contexto
@@ -142,7 +142,7 @@ export default function BibliotecaContent() {
         </section>
 
         {/* Filter + Search */}
-        <motion.section {...fadeUpDelayed(0.05)} className="mb-10">
+        <motion.section {...fadeUpMountDelayed(0.05)} className="mb-10">
           <div className="flex flex-col sm:flex-row gap-3 mb-6">
             <div className="flex-1">
               <SearchInput
@@ -191,9 +191,8 @@ export default function BibliotecaContent() {
                       <motion.div
                         key={source.id}
                         initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-20px" }}
-                        transition={{ delay: i * 0.03, duration: 0.35 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: Math.min(i, 8) * 0.03, duration: 0.35 }}
                         className="p-6 rounded-2xl border border-ink/10 bg-card flex flex-col justify-between hover:border-ink/25 transition-all"
                       >
                         <div>

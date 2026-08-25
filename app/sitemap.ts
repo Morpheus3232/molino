@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { SYMBOLIC_ENTITIES, getAvailableTypes } from "@/lib/data/symbolic-entities";
+import { SYMBOLIC_ENTITIES, getAvailableTypes, type EntityType } from "@/lib/data/symbolic-entities";
 import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
@@ -69,8 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
-  // Affinity entity detail pages (canonical URLs)
-  const entityPages = SYMBOLIC_ENTITIES.map((entity) => ({
+  // Affinity entity detail pages (canonical URLs) — solo tipos con ruta real en
+  // /affinity/[type]/[slug]; football_player existe en SYMBOLIC_ENTITIES pero
+  // no es un EntityType publicable (ver getAvailableTypes()), y sin este filtro
+  // el sitemap anuncia URLs que devuelven 404.
+  const availableTypes = new Set<EntityType>(getAvailableTypes());
+  const entityPages = SYMBOLIC_ENTITIES.filter((entity) => availableTypes.has(entity.type as EntityType)).map((entity) => ({
     url: `${BASE_URL}/affinity/${entity.type}/${entity.id}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,

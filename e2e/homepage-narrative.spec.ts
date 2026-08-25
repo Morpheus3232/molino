@@ -19,10 +19,15 @@ test.describe("Homepage — narrativa Fase 3", () => {
     await expect(link).toHaveAttribute("href", "/ejemplo");
   });
 
-  test("/ejemplo carga con contenido real de María, sin depender del hero", async ({ page }) => {
+  test("/ejemplo reusa ProfileHub — mismo H1 (arquetipo) y estructura que /profile", async ({ page }) => {
+    // /ejemplo (2026-08-23): dejó de ser una demo editorial con narrativa
+    // escrita a mano — ahora renderiza <ProfileHub> con un perfil calculado
+    // por el motor real, igual que /profile. El H1 es el arquetipo (mismo
+    // que ve cualquier usuario real), no un nombre.
     await page.goto("/ejemplo");
-    await expect(page.locator("h1")).toHaveText("María");
-    await expect(page.getByRole("link", { name: /generá tu mapa/i })).toBeVisible();
+    await expect(page.getByText("Perfil de ejemplo")).toBeVisible();
+    await expect(page.locator("h1").first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /generá tu propio mapa/i })).toBeVisible();
   });
 
   test("PremiumTeaser: transformación Gratis/Premium y CTA a /premium", async ({ page }) => {

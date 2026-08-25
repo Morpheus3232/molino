@@ -12,7 +12,6 @@ function read(relPath: string): string {
 // no afecta el envío de emails transaccionales).
 const FILES_WITH_CONTACT_EMAIL = [
   "components/layout/UniversityFooter.tsx",
-  "components/sections/QuienHaceEsto.tsx",
   "app/nosotros/page.tsx",
   "app/nosotros/NosotrosContent.tsx",
   "app/transparencia/page.tsx",
