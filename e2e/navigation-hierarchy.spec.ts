@@ -48,16 +48,17 @@ async function seedProfile(page: import("@playwright/test").Page) {
 }
 
 test.describe("Navegación — sin perfil", () => {
-  test("desktop (1440px): destinos Atlas/Hoy + acción Crear mi mapa, sin Explorar", async ({ page }) => {
+  test("desktop (1440px): Atlas/Tiempo/Aprender/Journal + acción Crear mi mapa", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Navegación principal" });
     await expect(nav.getByRole("link", { name: "Atlas" })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Hoy", exact: true })).toBeVisible();
+    await expect(nav.getByRole("button", { name: "Tiempo" })).toBeVisible();
+    await expect(nav.getByRole("button", { name: "Aprender" })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
     // La acción vive fuera del <nav> de destinos, en la zona derecha.
     await expect(page.getByRole("link", { name: "Crear mi mapa" })).toBeVisible();
     await expect(nav.getByRole("button", { name: /explorar/i })).toHaveCount(0);
-    await expect(nav.getByRole("link", { name: "Calendario" })).toHaveCount(0);
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(1441);
   });
@@ -67,6 +68,30 @@ test.describe("Navegación — sin perfil", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "Crear mi mapa" }).click();
     await page.waitForURL("**/onboarding");
+  });
+
+  test("Tiempo sin perfil ofrece Hoy/Mes, no Semana ni Año", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Navegación principal" });
+    await nav.getByRole("button", { name: "Tiempo" }).click();
+    const menu = page.locator("#time-menu");
+    await expect(menu.getByRole("link", { name: "Hoy", exact: true })).toBeVisible();
+    await expect(menu.getByRole("link", { name: "Mes", exact: true })).toBeVisible();
+    // Muros duros sin mapa: no se ofrecen hasta que haya perfil.
+    await expect(menu.getByRole("link", { name: "Semana", exact: true })).toHaveCount(0);
+    await expect(menu.getByRole("link", { name: "Año", exact: true })).toHaveCount(0);
+  });
+
+  test("Aprender sin perfil lleva a Academia/Biblioteca/Blog", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Navegación principal" });
+    await nav.getByRole("button", { name: "Aprender" }).click();
+    const menu = page.locator("#learn-menu");
+    for (const label of ["Academia", "Biblioteca", "Blog"]) {
+      await expect(menu.getByRole("link", { name: label, exact: true })).toBeVisible();
+    }
   });
 
   test("tablet (834px): hamburguesa visible, nav desktop oculto, sin overflow", async ({ page }) => {
@@ -84,7 +109,9 @@ test.describe("Navegación — sin perfil", () => {
     const mobileMenu = page.locator("#mobile-menu");
     await expect(mobileMenu.getByRole("link", { name: /crear mi mapa/i })).toBeVisible();
     await expect(mobileMenu.getByRole("link", { name: "Atlas", exact: true })).toBeVisible();
+    await expect(mobileMenu.getByText("Tiempo")).toBeVisible();
     await expect(mobileMenu.getByRole("link", { name: "Hoy", exact: true })).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
     await expect(mobileMenu.getByText("Explorar")).toBeVisible();
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(391);

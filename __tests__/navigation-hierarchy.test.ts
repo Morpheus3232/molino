@@ -15,16 +15,32 @@ function read(relPath: string): string {
 describe("Header — navegación sin perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("los destinos sin perfil son solo Atlas y Hoy", () => {
+  test("los destinos sin perfil son Atlas, Tiempo, Aprender y Journal", () => {
     const src = header();
-    expect(src).toMatch(/NO_PROFILE_LINKS[\s\S]*?\];/);
-    const block = src.match(/NO_PROFILE_LINKS[\s\S]*?\];/)![0];
-    expect(block).toContain('href: "/atlas"');
+    expect(src).toContain('atlas: { href: "/atlas"');
+    expect(src).toContain('journal: { href: "/journal"');
+    expect(src).toContain('label="Tiempo"');
+    expect(src).toContain('label="Aprender"');
+  });
+
+  test("Tiempo sin perfil ofrece solo lo que funciona sin mapa", () => {
+    const src = header();
+    const block = src.match(/TIME_GROUPS_NO_PROFILE[\s\S]*?\n\];/)![0];
     expect(block).toContain('href: "/hoy"');
-    // Calendario y Journal se movieron al footer para no ofrecerle a un
-    // usuario nuevo herramientas que necesitan un mapa que todavía no tiene.
-    expect(block).not.toContain('href: "/calendario"');
-    expect(block).not.toContain('href: "/journal"');
+    expect(block).toContain('href: "/calendario"');
+    // /semana y /evolution son muros duros sin perfil ("Creá tu mapa
+    // primero", cero contenido) — mandar ahí a alguien sin mapa es el
+    // dead-end que este header elimina.
+    expect(block).not.toContain('href: "/semana"');
+    expect(block).not.toContain('href: "/evolution"');
+  });
+
+  test("Aprender sin perfil sube Academia/Biblioteca/Blog al header", () => {
+    const src = header();
+    expect(src).toContain("LEARN_GROUPS_NO_PROFILE");
+    for (const href of ["/academy", "/biblioteca", "/blog"]) {
+      expect(src).toContain(`href: "${href}"`);
+    }
   });
 
   test("la acción sin perfil es crear el mapa, no abrir una bóveda vacía", () => {

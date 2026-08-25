@@ -40,12 +40,27 @@ interface NavGroup {
   links: NavLink[];
 }
 
-// Sin mapa: dos puertas para probar el sitio antes de dar una fecha, no un
-// catálogo de herramientas que necesitan un mapa que todavía no existe.
-// Calendario y Journal se movieron al footer (columna "Explorar").
-const NO_PROFILE_LINKS: NavLink[] = [
-  { href: "/atlas", label: "Atlas" },
-  { href: "/hoy", label: "Hoy" },
+// Sin mapa: todo lo que se puede usar de verdad sin haber dado una fecha.
+// El filtro no es "cuánto entra" sino "esto funciona sin perfil": /hoy y
+// /calendario tienen contenido propio (a lo sumo un upsell al pie), igual
+// que /journal, /atlas y todo el bloque de aprender. Queda afuera /semana,
+// que es un muro duro ("Creá tu mapa primero", cero contenido), y /evolution
+// por lo mismo — mandar a alguien ahí antes de tener mapa es el dead-end que
+// este header trata de eliminar.
+const NO_PROFILE_LINKS = {
+  atlas: { href: "/atlas", label: "Atlas" },
+  journal: { href: "/journal", label: "Journal" },
+} satisfies Record<string, NavLink>;
+
+// Mismo nombre de grupo que con perfil, menos ítems: sin mapa, Semana y Año
+// no tienen nada que mostrar.
+const TIME_GROUPS_NO_PROFILE: NavGroup[] = [
+  {
+    links: [
+      { href: "/hoy", label: "Hoy" },
+      { href: "/calendario", label: "Mes" },
+    ],
+  },
 ];
 
 // Con mapa: se saca el prefijo "Mi/Mis" de todo menos del ancla. Con cinco
@@ -80,6 +95,12 @@ const EXPLORE_GROUPS_NO_PROFILE: NavGroup[] = [
   { heading: "Modos", links: MODES_LINKS },
   { heading: "Aprender", links: LEARN_LINKS_NO_PROFILE },
 ];
+
+// El bloque de aprender es enteramente accesible sin mapa, así que sube al
+// header como grupo propio en vez de quedar sepultado en un cajón. Los Modos
+// no vienen acá: llamarlos "Aprender" sería mentir sobre a dónde llevan —
+// siguen en el footer.
+const LEARN_GROUPS_NO_PROFILE: NavGroup[] = [{ links: LEARN_LINKS_NO_PROFILE }];
 
 const EXPLORE_GROUPS_WITH_PROFILE: NavGroup[] = [
   { heading: "Aprender", links: LEARN_LINKS_WITH_PROFILE },
@@ -117,7 +138,7 @@ const TIME_GROUPS: NavGroup[] = [
   },
 ];
 
-type MenuId = "explore" | "affinities" | "time";
+type MenuId = "explore" | "affinities" | "time" | "learn";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
@@ -278,16 +299,40 @@ export default function UniversityHeader() {
           {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navegación principal">
             {!hasProfile ? (
-              NO_PROFILE_LINKS.map((link) => (
+              <>
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className={navButtonClass(isActive(link.href))}
-                  aria-current={pathname === link.href ? "page" : undefined}
+                  href={NO_PROFILE_LINKS.atlas.href}
+                  className={navButtonClass(isActive(NO_PROFILE_LINKS.atlas.href))}
+                  aria-current={pathname === NO_PROFILE_LINKS.atlas.href ? "page" : undefined}
                 >
-                  {link.label}
+                  {NO_PROFILE_LINKS.atlas.label}
                 </Link>
-              ))
+                <NavDropdown
+                  id="time"
+                  label="Tiempo"
+                  groups={TIME_GROUPS_NO_PROFILE}
+                  isOpen={openMenu === "time"}
+                  isActive={isGroupActive(TIME_GROUPS_NO_PROFILE)}
+                  onToggle={() => toggleMenu("time")}
+                  isActiveLink={isActive}
+                />
+                <NavDropdown
+                  id="learn"
+                  label="Aprender"
+                  groups={LEARN_GROUPS_NO_PROFILE}
+                  isOpen={openMenu === "learn"}
+                  isActive={isGroupActive(LEARN_GROUPS_NO_PROFILE)}
+                  onToggle={() => toggleMenu("learn")}
+                  isActiveLink={isActive}
+                />
+                <Link
+                  href={NO_PROFILE_LINKS.journal.href}
+                  className={navButtonClass(isActive(NO_PROFILE_LINKS.journal.href))}
+                  aria-current={pathname === NO_PROFILE_LINKS.journal.href ? "page" : undefined}
+                >
+                  {NO_PROFILE_LINKS.journal.label}
+                </Link>
+              </>
             ) : (
               <>
                 <Link
@@ -389,9 +434,9 @@ export default function UniversityHeader() {
                     >
                       CREAR MI MAPA
                     </Link>
-                    {NO_PROFILE_LINKS.map((link) => (
-                      <MobileLink key={link.href} link={link} isActive={isActive} onClick={() => setMenuOpen(false)} />
-                    ))}
+                    <MobileLink link={NO_PROFILE_LINKS.atlas} isActive={isActive} onClick={() => setMenuOpen(false)} />
+                    <MobileGroups groups={TIME_GROUPS_NO_PROFILE} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileLink link={NO_PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                   </>
                 ) : (
