@@ -105,6 +105,7 @@ export default function UniversityHeader() {
   const pathname = usePathname();
   const router = useRouter();
   const [hasProfile, setHasProfile] = useState(false);
+  const [activeProfile, setActiveProfile] = useState<UserProfile | null>(null);
   const [vaultCount, setVaultCount] = useState(0);
   const [isPremium, setIsPremium] = useState(false);
   const [lecturaHref, setLecturaHref] = useState<string | null>(null);
@@ -152,8 +153,9 @@ export default function UniversityHeader() {
       setVaultCount(getSavedProfilesVault().length);
       const premium = !!getPremiumTokenClient();
       setIsPremium(premium);
-      const profile = premium ? loadProfileFromStorage() : null;
-      setLecturaHref(profile ? `/lectura#${encodeProfileData(profile as UserProfile)}` : null);
+      const profile = loadProfileFromStorage() as UserProfile | null;
+      setActiveProfile(profile);
+      setLecturaHref(premium && profile ? `/lectura#${encodeProfileData(profile)}` : null);
     };
     refresh();
     window.addEventListener("molino-profile-created", refresh);
@@ -236,12 +238,9 @@ export default function UniversityHeader() {
         }`}
       >
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio">
-            <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio — Molino">
+            <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl group-hover:text-accent transition-colors">
               <Logo className="w-7 h-7" />
-            </span>
-            <span className="hidden sm:inline font-heading text-base font-semibold uppercase tracking-[0.2em] text-foreground group-hover:text-accent transition-colors">
-              Molino
             </span>
           </Link>
 
@@ -269,7 +268,7 @@ export default function UniversityHeader() {
                   onToggle={() => toggleMenu("explore")}
                   isActiveLink={isActive}
                 />
-                <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
+                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
               </>
             ) : (
               <>
@@ -315,7 +314,7 @@ export default function UniversityHeader() {
                     Mi Lectura
                   </Link>
                 )}
-                <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
+                <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={navButtonClass(false)} />
                 <NavDropdown
                   id="explore"
                   label="Explorar"
@@ -364,7 +363,7 @@ export default function UniversityHeader() {
                     ))}
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <div className="px-3 py-1.5">
-                      <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                      <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>
                   </>
                 ) : (
@@ -383,7 +382,7 @@ export default function UniversityHeader() {
                       </Link>
                     )}
                     <div className="px-3 py-1.5">
-                      <SavedProfilesDrawer label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
+                      <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>
                     <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                   </>
