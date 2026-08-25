@@ -13,7 +13,7 @@ import { encodeProfileData } from "@/lib/utils/profileShare";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { safeNumber, getScoreLabel } from "@/lib/utils/score";
+import { safeNumber, getScoreLabel, getScoreColor } from "@/lib/utils/score";
 import Link from "next/link";
 import {
   getMasterNumbers,
@@ -31,14 +31,35 @@ import EditorialSection from "@/components/ui/EditorialSection";
 /**
  * Número de capítulo + regla fina. Sin borde, sin glow: solo texto y
  * una línea de 32px que marca el nivel sin ocupar espacio.
+ *
+ * Color fijo en accent — antes tomaba el color del elemento chino, que
+ * DESIGN.md reserva para un punto de 8px junto al nombre del sistema, nunca
+ * para un acento general. `elementDot` es ese punto: contexto de dónde sale
+ * la lectura, sin pintar la sección entera con un color de sistema.
  */
-function ChapterNumber({ number, color }: { number: string; color: string }) {
+function ChapterNumber({
+  number,
+  elementDot,
+}: {
+  number: string;
+  elementDot?: { color: string; label: string };
+}) {
   return (
-    <div className="flex items-center gap-3 mb-6" aria-hidden="true">
-      <span className="font-mono text-xs uppercase tracking-[0.25em]" style={{ color }}>
+    <div className="flex items-center gap-3 mb-6">
+      <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent" aria-hidden="true">
         {number}
       </span>
-      <span className="h-px flex-1" style={{ backgroundColor: color, opacity: 0.15 }} />
+      <span className="h-px flex-1 bg-accent/15" aria-hidden="true" />
+      {elementDot && (
+        <span className="flex items-center gap-1.5 shrink-0">
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ backgroundColor: elementDot.color }}
+            aria-hidden="true"
+          />
+          <span className="font-mono text-xs text-muted">{elementDot.label}</span>
+        </span>
+      )}
     </div>
   );
 }
@@ -52,18 +73,22 @@ function ChapterNumber({ number, color }: { number: string; color: string }) {
  * llama IA ni depende de premium), así que vive en la zona gratis, como
  * addendum del patrón central en vez de un capítulo nuevo.
  */
-function NumerosMaestros({ hits, elementColor }: { hits: MasterNumberHit[]; elementColor: string }) {
+function NumerosMaestros({ hits }: { hits: MasterNumberHit[] }) {
   if (hits.length === 0) return null;
   return (
     <div className="mt-10 pt-8 border-t border-ink/10">
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-5">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-1.5">
         ✦ Tus números maestros
+      </p>
+      <p className="text-xs text-muted mb-5 max-w-md">
+        11, 22 y 33 no se reducen como el resto de los números en numerología:
+        se leen enteros, con un significado propio en cada posición de tu carta.
       </p>
       <div className="space-y-6">
         {hits.map((hit) => (
           <div key={hit.position}>
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="font-heading text-2xl sm:text-3xl" style={{ color: elementColor }}>
+              <span className="font-display text-2xl sm:text-3xl text-accent">
                 {hit.number}
               </span>
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
@@ -90,22 +115,22 @@ function PatronCentral({
   pattern,
   tension,
   masterNumbers,
-  elementColor,
+  elementDot,
 }: {
   pattern: { label: string; keyword: string; description: string; sources?: string[] };
   tension: { title: string; evidence: string } | null;
   masterNumbers: MasterNumberHit[];
-  elementColor: string;
+  elementDot: { color: string; label: string };
 }) {
   return (
     <div>
-      <ChapterNumber number="01 · TU PATRÓN CENTRAL" color={elementColor} />
+      <ChapterNumber number="01 · TU PATRÓN CENTRAL" elementDot={elementDot} />
       <div className="max-w-3xl">
         {/* El motor — la pieza dominante */}
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-2">
           {pattern.label}
         </p>
-        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] tracking-tight text-foreground uppercase mb-4" style={{ color: elementColor }}>
+        <p className="font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.88] tracking-tight text-accent uppercase mb-4">
           {pattern.keyword}
         </p>
         <p className="text-base sm:text-lg text-foreground leading-relaxed max-w-2xl">
@@ -115,7 +140,10 @@ function PatronCentral({
         {/* Tensión — el pliegue del patrón */}
         {tension && (
           <div className="mt-10 pt-8 border-t border-ink/10">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-3">Tu tensión</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1">Tu tensión</p>
+            <p className="text-xs text-muted mb-3 max-w-lg">
+              El patrón central no es parejo: acá está el punto donde tira para dos lados a la vez.
+            </p>
             <p className="font-heading text-xl sm:text-2xl tracking-tight text-foreground mb-2">
               {tension.title}
             </p>
@@ -131,7 +159,7 @@ function PatronCentral({
           Este patrón se manifiesta desde tu carta natal y tu ciclo anual.
         </div>
 
-        <NumerosMaestros hits={masterNumbers} elementColor={elementColor} />
+        <NumerosMaestros hits={masterNumbers} />
       </div>
     </div>
   );
@@ -144,7 +172,7 @@ function TuMomento({
   personalYear,
   yearTheme,
   dailyEnergy,
-  elementColor,
+  elementDot,
 }: {
   personalYear: number;
   yearTheme: string | null;
@@ -156,7 +184,7 @@ function TuMomento({
       decisions: AreaScore;
     };
   };
-  elementColor: string;
+  elementDot: { color: string; label: string };
 }) {
   const areas: {
     work: AreaScore;
@@ -172,13 +200,17 @@ function TuMomento({
 
   return (
     <div>
-      <ChapterNumber number="02 · TU MOMENTO" color={elementColor} />
+      <ChapterNumber number="02 · TU MOMENTO" elementDot={elementDot} />
       <div className="max-w-2xl">
-        <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight" style={{ color: elementColor }}>
+        <p className="font-display text-[clamp(3rem,8vw,5rem)] leading-[0.85] tracking-tight text-accent">
           {personalYear}
         </p>
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mt-2">
           Año personal · {yearTheme ?? "—"}
+        </p>
+        <p className="mt-4 text-sm text-muted leading-relaxed max-w-md">
+          Tu año personal marca el clima de fondo de los próximos 12 meses.
+          Sobre ese clima, cada día suma o resta energía en cuatro áreas — es lo que muestran las barras de abajo.
         </p>
 
         {Object.keys(areas).length > 0 && (
@@ -192,26 +224,42 @@ function TuMomento({
                     : key === "creativity"
                       ? "Creatividad"
                       : "Decisiones";
+              const barColor = getScoreColor(area.score);
               return (
                 <div key={key} className="py-4 border-b border-ink/10">
-                  <div className="flex items-baseline justify-between gap-4">
+                  <div className="flex items-baseline justify-between gap-4 mb-2">
                     <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
                       {nombre}
                     </span>
-                    <span className="font-heading text-sm font-bold text-foreground shrink-0">
+                    <span
+                      className="font-heading text-sm font-bold shrink-0"
+                      style={{ color: barColor }}
+                    >
                       {getScoreLabel(area.score)}
                     </span>
                   </div>
-                  {/* Qué juega a favor. Sin esto el lector ve "Favorable" y
-                      no puede saber por qué. No se expone la aritmética
-                      interna: importa el factor, no de qué base parte. La
-                      barra anterior no decía nada de esto y encima usaba un
-                      segundo sistema de color por score, aparte del acento. */}
-                  <p className="mt-1 font-mono text-xs text-accent">
-                    {area.reasons && area.reasons.length > 0
-                      ? `A favor: ${area.reasons.join(" · ")}`
-                      : "Sin factores a favor hoy"}
-                  </p>
+                  {/* Barra: la misma cifra que separa "Favorable" de
+                      "Neutro" en getScoreLabel, ahora visible en vez de
+                      escondida detrás de la palabra. */}
+                  <div
+                    className="h-1.5 rounded-full bg-ink/8 overflow-hidden"
+                    role="img"
+                    aria-label={`${nombre}: ${getScoreLabel(area.score)}, ${area.score} de 100`}
+                  >
+                    <div
+                      className="h-full rounded-full transition-[width]"
+                      style={{ width: `${Math.max(area.score, 4)}%`, backgroundColor: barColor }}
+                    />
+                  </div>
+                  {/* Qué juega a favor — solo si hay algo verdadero que
+                      decir. Antes un día sin factores mostraba "Sin
+                      factores a favor hoy" al lado de la barra: leía como
+                      una alarma que la barra ya no necesita. */}
+                  {area.reasons && area.reasons.length > 0 && (
+                    <p className="mt-1.5 font-mono text-xs text-accent">
+                      A favor: {area.reasons.join(" · ")}
+                    </p>
+                  )}
                 </div>
               );
             })}
@@ -246,7 +294,7 @@ function PiezasLibres({
   }, []);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: `Elemento ${element || "—"}` };
 
   const dailyEnergy = calculateDailyEnergy(profile);
   const patterns = buildPatterns(profile);
@@ -271,7 +319,7 @@ function PiezasLibres({
           pattern={mainPattern}
           tension={mainTension}
           masterNumbers={masterNumbers}
-          elementColor={elementColor}
+          elementDot={elementDot}
         />
       )}
 
@@ -283,7 +331,7 @@ function PiezasLibres({
         personalYear={dailyEnergy.personalYear}
         yearTheme={getYearTheme(dailyEnergy.personalYear)}
         dailyEnergy={dailyEnergy}
-        elementColor={elementColor}
+        elementDot={elementDot}
       />
       {/* Puente hacia el gate */}
       {mainTension && (
@@ -360,7 +408,7 @@ function LecturaProfundaDesbloqueada({
   const [aiInterpretation, setAiInterpretation] = useState<MolinoInterpretationType | null>(null);
 
   const element = typeof profile.element === "string" ? profile.element : "";
-  const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
+  const elementDot = { color: ELEMENT_COLORS[element] || "var(--color-accent)", label: `Elemento ${element || "—"}` };
 
   // La Lectura en sí vive en su propia pestaña (app/lectura) — esta llamada
   // acá es silenciosa, solo para alimentar el trazado "Esta lectura conecta"
@@ -409,7 +457,7 @@ function LecturaProfundaDesbloqueada({
     <div className="space-y-20 sm:space-y-24">
       {/* 03 · Ciclos anuales — deterministic, extiende "02 · TU MOMENTO" hacia adelante */}
       <div>
-        <ChapterNumber number="03 · CICLOS ANUALES" color={elementColor} />
+        <ChapterNumber number="03 · CICLOS ANUALES" elementDot={elementDot} />
         <AnnualCyclesPreview profile={profile} />
       </div>
 
@@ -441,7 +489,7 @@ function LecturaProfundaDesbloqueada({
 
       {/* 05 · Preguntale a tu Molino */}
       <div>
-        <ChapterNumber number="04 · PREGUNTALE A TU MAPA" color={elementColor} />
+        <ChapterNumber number="04 · PREGUNTALE A TU MAPA" elementDot={elementDot} />
         <h3 className="font-heading text-xl sm:text-2xl tracking-tight text-foreground leading-snug max-w-xl">
           Ya conocés tu mapa. Ahora podés preguntarle qué significa.
         </h3>
