@@ -27,11 +27,6 @@ export default function ProfileRadar({ data, color }: ProfileRadarProps) {
       role="region"
       aria-label="Gráfico de radar con las dimensiones del perfil"
     >
-      <div
-        className="absolute inset-0 rounded-full blur-3xl opacity-[0.14] pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }}
-        aria-hidden="true"
-      />
       <ResponsiveContainer width="100%" height="100%">
         {/* accessibilityLayer=false: el keyboard/focus layer de Recharts v3
             lee estado de foco antes de que el store del chart exista cuando
