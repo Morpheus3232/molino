@@ -9,11 +9,11 @@ import {
   buildPrinciples,
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
-import { calculateDailyEnergy, getYearTheme, type DailyEnergyResult } from "@/lib/engines/dailyEnergyEngine";
+import { calculateDailyEnergy, getYearTheme, type DailyEnergyResult, type AreaScore } from "@/lib/engines/dailyEnergyEngine";
 import { analyzeTiming } from "@/lib/engines/timingEngine";
 import { loadTimingIntention } from "@/lib/session/timingIntention";
 import { ELEMENT_COLORS } from "@/lib/data/constants";
-import { safeNumber, getScoreLabel, getScoreColor } from "@/lib/utils/score";
+import { safeNumber, getScoreLabel } from "@/lib/utils/score";
 import Link from "next/link";
 import {
   getMasterNumbers,
@@ -145,7 +145,7 @@ function Principios({
   principles,
   elementColor,
 }: {
-  principles: { title: string; body: string }[];
+  principles: { title: string; body: string; source?: string }[];
   elementColor: string;
 }) {
   if (principles.length === 0) return null;
@@ -163,6 +163,9 @@ function Principios({
                 {p.title}
               </p>
               <p className="text-sm text-muted leading-relaxed mt-1.5">{p.body}</p>
+              {p.source && (
+                <p className="mt-2 font-mono text-xs text-accent">{p.source}</p>
+              )}
             </div>
           </div>
         ))}
@@ -184,19 +187,19 @@ function TuMomento({
   yearTheme: string | null;
   dailyEnergy?: {
     areas: {
-      work: { score: number; label: string };
-      relationships: { score: number; label: string };
-      creativity: { score: number; label: string };
-      decisions: { score: number; label: string };
+      work: AreaScore;
+      relationships: AreaScore;
+      creativity: AreaScore;
+      decisions: AreaScore;
     };
   };
   elementColor: string;
 }) {
   const areas: {
-    work: { score: number; label: string };
-    relationships: { score: number; label: string };
-    creativity: { score: number; label: string };
-    decisions: { score: number; label: string };
+    work: AreaScore;
+    relationships: AreaScore;
+    creativity: AreaScore;
+    decisions: AreaScore;
   } = dailyEnergy?.areas ?? {
     work: { score: 0, label: "" },
     relationships: { score: 0, label: "" },
@@ -216,28 +219,39 @@ function TuMomento({
         </p>
 
         {Object.keys(areas).length > 0 && (
-          <div className="mt-8 space-y-4">
-            {Object.entries(areas).map(([key, area]) => (
-              <div key={key}>
-                <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-xs text-muted capitalize">
-                    {key === "relationships" ? "Relaciones" : key === "work" ? "Trabajo" : key === "creativity" ? "Creatividad" : key === "decisions" ? "Decisiones" : key}
-                  </span>
-                  <span className="font-mono text-xs" style={{ color: getScoreColor(area.score) }}>
-                    {getScoreLabel(area.score)}
-                  </span>
+          <div className="mt-8 border-t border-ink/10">
+            {Object.entries(areas).map(([key, area]) => {
+              const nombre =
+                key === "relationships"
+                  ? "Relaciones"
+                  : key === "work"
+                    ? "Trabajo"
+                    : key === "creativity"
+                      ? "Creatividad"
+                      : "Decisiones";
+              return (
+                <div key={key} className="py-4 border-b border-ink/10">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                      {nombre}
+                    </span>
+                    <span className="font-heading text-sm font-bold text-foreground shrink-0">
+                      {getScoreLabel(area.score)}
+                    </span>
+                  </div>
+                  {/* Qué juega a favor. Sin esto el lector ve "Favorable" y
+                      no puede saber por qué. No se expone la aritmética
+                      interna: importa el factor, no de qué base parte. La
+                      barra anterior no decía nada de esto y encima usaba un
+                      segundo sistema de color por score, aparte del acento. */}
+                  <p className="mt-1 font-mono text-xs text-accent">
+                    {area.reasons && area.reasons.length > 0
+                      ? `A favor: ${area.reasons.join(" · ")}`
+                      : "Sin factores a favor hoy"}
+                  </p>
                 </div>
-                <div className="h-px bg-ink/10 overflow-hidden">
-                  <div
-                    className="h-full transition-all duration-500"
-                    style={{
-                      width: `${area.score}%`,
-                      backgroundColor: getScoreColor(area.score),
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

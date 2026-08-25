@@ -569,6 +569,12 @@ export function buildMomentState(profile: UserProfile, energyScore: number, ener
 export interface PrincipleInsight {
   title: "AVANZÁ" | "OBSERVÁ" | "INICIÁ";
   body: string;
+  /**
+   * De dónde sale el principio. El motor ya filtraba por `RuleInsight.source`
+   * para armarlo, pero no lo devolvía, así que el lector veía la conclusión
+   * sin su origen — la misma caja negra que el producto dice no ser.
+   */
+  source: string;
 }
 
 export function buildPrinciples(
@@ -617,6 +623,7 @@ export function buildPrinciples(
         avanzanTerms.length > 0
           ? `Cuando dudes, elegí ${joinTerms(avanzanTerms)}.`
           : "Tus fortalezas reales son tu brújula — confiá en ellas cuando dudes.",
+      source: "Fortalezas de tu arquetipo",
     },
     {
       title: "OBSERVÁ",
@@ -626,12 +633,14 @@ export function buildPrinciples(
           : observaTerms.length > 1
             ? `${joinTerms(observaTerms.map((t, i) => (i === 0 ? titleCase(t) : t)))} son señales para revisar, no defectos que eliminar.`
             : "Las zonas de exceso son información, no defectos — escuchalas a tiempo.",
+      source: "Desafíos de tu arquetipo",
     },
     {
       title: "INICIÁ",
       body: iniciTerm
         ? `Tu ciclo actual favorece ${iniciTerm}. No frenes algo nuevo por costumbre.`
         : "Tu ciclo actual tiene un ritmo propio — dejalo fluir sin forzar.",
+      source: "Tu próximo movimiento",
     },
   ];
 }

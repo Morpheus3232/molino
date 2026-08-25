@@ -13,6 +13,20 @@ import { getPersonalDayForDate, getPersonalYear, getMoonPhase, calculateLifePath
 import { getSunSign } from './astrologyEngine';
 import { getChineseZodiac } from './chineseZodiacEngine';
 
+/**
+ * Puntaje de un área del día. `reasons` lista los factores que efectivamente
+ * juegan a favor, en lenguaje llano. Sin eso el lector ve "Trabajo:
+ * Favorable" sin poder saber por qué, que es la misma caja negra que el
+ * producto dice no ser. No expone la aritmética interna: el lector quiere
+ * saber qué lo favorece, no de qué base parte el cálculo.
+ */
+export interface AreaScore {
+  score: number;
+  label: string;
+  /** Opcional: los fixtures de test y otras rutas construyen áreas sin esto. */
+  reasons?: string[];
+}
+
 export interface DailyEnergyResult {
   date: string;
   overallScore: number;
@@ -21,10 +35,10 @@ export interface DailyEnergyResult {
   strengths: string[];
   cautions: string[];
   areas: {
-    work: { score: number; label: string };
-    relationships: { score: number; label: string };
-    creativity: { score: number; label: string };
-    decisions: { score: number; label: string };
+    work: AreaScore;
+    relationships: AreaScore;
+    creativity: AreaScore;
+    decisions: AreaScore;
   };
   moonPhase: { phase: string; emoji: string; description: string };
   personalDay: number;
@@ -479,35 +493,38 @@ function calculateAreaScores(
 ): DailyEnergyResult['areas'] {
   const base = 50;
 
-  // Work: influenced by structured numbers (4, 8) and earth element
-  let work = base;
-  if ([4, 8].includes(personalDay)) work += 15;
-  if (element === "Tierra") work += 10;
-  if (moonPhase === "Creciente") work += 5;
+  // Cada regla suma y además se anota, para que el puntaje se pueda
+  // reconstruir leyendo: 50 de base + lo que aparezca en la lista.
+  function area(
+    diasFavorables: number[],
+    elementoFavorable: string,
+    lunaFavorable: string,
+    queAportaElDia: string
+  ): AreaScore {
+    let score = base;
+    const reasons: string[] = [];
 
-  // Relationships: influenced by cooperative numbers (2, 6) and water element
-  let relationships = base;
-  if ([2, 6].includes(personalDay)) relationships += 15;
-  if (element === "Agua") relationships += 10;
-  if (moonPhase === "Llena") relationships += 5;
+    if (diasFavorables.includes(personalDay)) {
+      score += 15;
+      reasons.push(queAportaElDia);
+    }
+    if (element === elementoFavorable) {
+      score += 10;
+      reasons.push(`tu elemento ${element}`);
+    }
+    if (moonPhase === lunaFavorable) {
+      score += 5;
+      reasons.push(`luna ${moonPhase.toLowerCase()}`);
+    }
 
-  // Creativity: influenced by expressive numbers (3, 5) and fire element
-  let creativity = base;
-  if ([3, 5].includes(personalDay)) creativity += 15;
-  if (element === "Fuego") creativity += 10;
-  if (moonPhase === "Creciente") creativity += 5;
-
-  // Decisions: influenced by analytical numbers (7, 9) and air element
-  let decisions = base;
-  if ([7, 9].includes(personalDay)) decisions += 15;
-  if (element === "Aire") decisions += 10;
-  if (moonPhase === "Llena") decisions += 5;
+    return { score: Math.min(100, score), label: getAreaLabel(score), reasons };
+  }
 
   return {
-    work: { score: Math.min(100, work), label: getAreaLabel(work) },
-    relationships: { score: Math.min(100, relationships), label: getAreaLabel(relationships) },
-    creativity: { score: Math.min(100, creativity), label: getAreaLabel(creativity) },
-    decisions: { score: Math.min(100, decisions), label: getAreaLabel(decisions) },
+    work: area([4, 8], "Tierra", "Creciente", "el ritmo de hoy pide estructura"),
+    relationships: area([2, 6], "Agua", "Llena", "el ritmo de hoy pide cooperación"),
+    creativity: area([3, 5], "Fuego", "Creciente", "el ritmo de hoy pide expresión"),
+    decisions: area([7, 9], "Aire", "Llena", "el ritmo de hoy pide análisis"),
   };
 }
 
