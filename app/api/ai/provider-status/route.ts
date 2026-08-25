@@ -19,6 +19,9 @@ export async function GET() {
   return NextResponse.json({
     ...status,
     intelligenceEngineV2: process.env.INTELLIGENCE_ENGINE_V2_ENABLED === 'true',
-    openrouterModelConfigured: Boolean(process.env.OPENROUTER_MODEL),
+    // El identificador del modelo no es una credencial (es equivalente a
+    // decir "usamos gpt-4"), y saber cuál corre realmente es lo que separa
+    // "la lectura sale mal" de "está corriendo el modelo equivocado".
+    openrouterModel: process.env.OPENROUTER_MODEL || '(sin setear → default)',
   });
 }
