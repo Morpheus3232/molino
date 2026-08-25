@@ -47,12 +47,6 @@ export default function ProfileHub({
   const archetypeName = archetype.name;
 
 
-  const worldCount = useMemo(() => {
-    if (!catalog || catalog.length === 0) return 0;
-    const results = sortLightEntities(profile.chineseZodiac || "", catalog);
-    return results.filter((r) => r.score >= 60).length;
-  }, [profile, catalog]);
-
   const { country } = useUserContext();
   const userCountryISO = useMemo(() => (country ? getCountryISO(country) : null), [country]);
   const atlasSections = useMemo(() => {
@@ -93,8 +87,10 @@ export default function ProfileHub({
           ═══════════════════════════════════════════════ */}
       <header className="relative overflow-hidden border-b border-ink/10">
         <div className="relative mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-16 sm:pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-16 items-center">
-            {/* Identity — núcleo emocional */}
+          <div className="grid grid-cols-1 items-center">
+            {/* Identity — núcleo emocional. Antes era grid-cols-[1fr_auto]
+                con una segunda columna que nunca tuvo contenido — cerrado a
+                una sola columna con intención, no dejado vacío. */}
             <div className="text-center lg:text-left">
               <span className="block font-mono text-xs uppercase tracking-[0.2em] text-accent">
                 CAMINO DE VIDA {lifePath}
@@ -196,9 +192,6 @@ export default function ProfileHub({
         profile={profile}
         circleName={`${display.name} de ${chineseElement}`}
         allyName={allies[0] ?? null}
-        worldCount={worldCount}
-        animalSlug={userAnimal}
-        animalName={display.name}
       />
     </div>
   );

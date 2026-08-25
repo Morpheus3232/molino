@@ -2,35 +2,33 @@
 
 import Link from "next/link";
 import type { UserProfile } from "@/types/user";
-import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import { Sun, BookOpen, Heart, Calendar, Compass, Users, Globe, TrendingUp, ArrowRight } from "lucide-react";
+import { encodeProfileData } from "@/lib/utils/profileShare";
+import { BookOpen, Sun, Heart, Users, ArrowRight } from "lucide-react";
 
 interface SpaceIndexProps {
   profile: UserProfile;
   circleName: string;
   allyName: string | null;
-  worldCount: number;
-  animalSlug: string;
-  animalName: string;
 }
 
-export default function SpaceIndex({ profile, circleName, allyName, worldCount, animalSlug, animalName }: SpaceIndexProps) {
-  const personalYear = profile.cycles?.personalYear;
-  const yearTheme = typeof personalYear === "number" ? getYearTheme(personalYear) : null;
-  const lifePath = profile.lifePath;
-
+// Journal, Calendario, Atlas, Mundo y Evolución ya tienen su propio camino de
+// descubrimiento en el header/footer globales (ver UniversityHeader.tsx,
+// UniversityFooter.tsx) — no necesitan estar acá también. Círculo es la
+// excepción: no está en ningún otro nav del sitio, así que se queda para no
+// dejarlo inalcanzable.
+export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndexProps) {
   const items = [
     {
-      label: "Hoy",
-      teaser: `Energía diaria y fase lunar para tu Camino ${lifePath}.`,
-      href: "/hoy",
-      icon: Sun,
+      label: "Leer qué significa",
+      teaser: "La conversación entre tus sistemas, en su propio espacio.",
+      href: `/lectura#${encodeProfileData(profile)}`,
+      icon: BookOpen,
     },
     {
-      label: "Journal",
-      teaser: "Reflexiones y estados de ánimo correlacionados con tus ciclos.",
-      href: "/journal",
-      icon: BookOpen,
+      label: "Hoy",
+      teaser: `Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`,
+      href: "/hoy",
+      icon: Sun,
     },
     {
       label: "Modo Pareja",
@@ -39,34 +37,10 @@ export default function SpaceIndex({ profile, circleName, allyName, worldCount, 
       icon: Heart,
     },
     {
-      label: "Calendario de Ciclos",
-      teaser: "El momento oportuno para iniciar o cerrar etapas este año.",
-      href: "/calendario",
-      icon: Calendar,
-    },
-    {
-      label: `Atlas de ${animalName}`,
-      teaser: "Ciudades, marcas, equipos y países que comparten tu energía.",
-      href: `/atlas/explorar/${animalSlug}`,
-      icon: Compass,
-    },
-    {
       label: "Círculo",
       teaser: allyName ? `${circleName} tiene afinidad con ${allyName}.` : "Energías alrededor de tu signo.",
       href: "/circulo",
       icon: Users,
-    },
-    {
-      label: "Mundo",
-      teaser: `${worldCount} conexiones resonantes en el mapa global.`,
-      href: "/mundo",
-      icon: Globe,
-    },
-    {
-      label: "Evolución",
-      teaser: yearTheme ? yearTheme : "Tu línea de tiempo.",
-      href: "/evolution",
-      icon: TrendingUp,
     },
   ];
 
