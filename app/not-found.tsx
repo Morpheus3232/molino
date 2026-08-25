@@ -18,9 +18,6 @@ const SUGGESTED_ROUTES = [
 export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4 py-24 text-foreground relative overflow-hidden">
-      {/* Cosmic ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl pointer-events-none" />
-
       <div className="text-center max-w-xl relative z-10 w-full">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent mb-6">
           <Compass className="w-3.5 h-3.5 animate-spin" style={{ animationDuration: "12s" }} />

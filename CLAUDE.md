@@ -122,7 +122,13 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 
 - Español rioplatense (vos), `lang="es-AR"` en todo el sitio
 - `font-heading` (Space Grotesk) para títulos, `font-sans` (Inter) para cuerpo
-- Sin `border-radius` salvo casos puntuales; sin sombras salvo dark mode
+- Radio: estructura filosa (0), detalle suave. 4 tokens en `app/globals.css`
+  (`--radius-sm` 6px chips/badges, `md` 10px botones/inputs/cards, `lg` 14px
+  modales/cards grandes, `xl` 20px contenedores destacados) — no usar
+  `rounded-2xl`/`rounded-3xl` (defaults de Tailwind fuera del sistema, hoy con
+  usos heredados que hay que migrar a estos 4 tokens, no sumar un quinto).
+  Sombra "papel levantado" (`--shadow-sm/md/lg/xl`, tinte cálido, ver
+  `DESIGN.md`) — no es solo para dark mode.
 - `"use client"` solo en componentes que realmente necesitan interactividad
 - Motores de cálculo (`lib/engines/`) son funciones puras: misma fecha de entrada → mismo resultado, sin I/O
 - Sin servidor de estado para el perfil del usuario: todo vive en localStorage, URL, o sesión efímera — no agregar una base de datos para esto sin justificarlo explícitamente

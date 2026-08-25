@@ -1,9 +1,22 @@
 // scripts/check-contrast.mjs
 // Usage: node scripts/check-contrast.mjs "#RRGGBB" "#RRGGBB" ...
-// Prints WCAG contrast ratio of each color against the paper background
-// (#F5F0E4) and flags anything under the 4.5:1 AA threshold for text.
+// Prints WCAG contrast ratio of each color against the shipped paper
+// background (read live from app/globals.css, never hardcoded — the palette
+// has changed under this script before) and flags anything under the 4.5:1
+// AA threshold for text.
 
-const PAPER = "#F5F0E4";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const globalsCss = fs.readFileSync(path.resolve(__dirname, "..", "app/globals.css"), "utf8");
+const paperMatch = globalsCss.match(/--color-paper:\s*(#[0-9a-fA-F]{6})/);
+if (!paperMatch) {
+  console.error("No se pudo leer --color-paper de app/globals.css");
+  process.exit(1);
+}
+const PAPER = paperMatch[1];
 
 function hexToRgb(hex) {
   const clean = hex.replace("#", "");

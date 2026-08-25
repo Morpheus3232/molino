@@ -15,7 +15,7 @@ const config: Config = {
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       fontSize: {
-        // Escala tipográfica — alineada con DESIGN_SYSTEM.md.
+        // Escala tipográfica — alineada con DESIGN.md.
         // Monotónica y coherente: cada nivel crece sobre el anterior.
         xs: "0.75rem",      // 12px — labels pequeños
         sm: "0.875rem",     // 14px — Caption

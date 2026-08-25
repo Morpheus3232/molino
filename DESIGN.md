@@ -2,14 +2,17 @@
 name: Molino — Almanaque Cálido
 description: El molino de viento de la marca, ya existente, como protagonista funcional sobre una identidad cálida y editorial — fondo papel, tinta oscura, acento terracota, tipografía serif itálica para títulos. Gira cuando el sitio carga o navega, se queda quieto cuando está listo.
 colors:
-  paper: "#F5F0E4"
-  paper-alt: "#EDE5D2"
-  ink: "#241F17"
-  muted: "#6B6252"
-  border: "#E0D6C0"
-  accent: "#9A4A18"
-  accent-hover: "#7E3B12"
-  accent-light: "#D98F52"
+  paper: "#F7F4EE"
+  paper-alt: "#EFEAE0"
+  ink: "#1D1B17"
+  muted: "#6A6459"
+  border: "#DEDACE"
+  accent: "#A83A23"
+  accent-hover: "#87301C"
+  accent-light: "#D9805F"
+  gold: "#F5B022"
+  gold-hover: "#FCC044"
+  gold-foreground: "#1A1200"
   sistema-numerologia: "#6B4C7A"
   sistema-astrologia: "#2E5C8A"
   sistema-zodiaco: "#85681D"
@@ -47,16 +50,18 @@ Estrategia: **restringida** (neutros + un acento), no una paleta de colores por 
 
 | Token | Valor | Uso |
 |---|---|---|
-| `paper` | `#F5F0E4` | Fondo principal |
-| `paper-alt` | `#EDE5D2` | Tarjetas, superficies elevadas |
-| `ink` | `#241F17` | Texto principal, molino, iconografía |
-| `muted` | `#6B6252` | Texto secundario — verificado 5.28:1 sobre `paper` (WCAG AA ≥4.5:1) |
-| `border` | `#E0D6C0` | Reglas, separadores, bordes de card |
-| `accent` | `#9A4A18` | CTAs, links, headers de sección, números clave, bordes destacados — verificado 5.2:1 sobre `paper` |
-| `accent-hover` | `#7E3B12` | Estado hover/active de elementos en `accent` |
-| `accent-light` | `#D98F52` | Hover states sobre fondo oscuro, fondos de pill, `eyebrow` sobre bloques full-bleed |
+| `paper` | `#F7F4EE` | Fondo principal |
+| `paper-alt` | `#EFEAE0` | Tarjetas, superficies elevadas |
+| `ink` | `#1D1B17` | Texto principal, molino, iconografía |
+| `muted` | `#6A6459` | Texto secundario — verificado 5.34:1 sobre `paper` (WCAG AA ≥4.5:1) |
+| `border` | `#DEDACE` | Reglas, separadores, bordes de card |
+| `accent` | `#A83A23` | CTAs, links, headers de sección, números clave, bordes destacados — verificado 5.81:1 sobre `paper` |
+| `accent-hover` | `#87301C` | Estado hover/active de elementos en `accent` |
+| `accent-light` | `#D9805F` | Hover states sobre fondo oscuro, fondos de pill, `eyebrow` sobre bloques full-bleed |
+| `gold` | `#F5B022` | CTAs de alta urgencia (`Button` variant `gold`) — texto sobre gold usa `gold-foreground`, no `paper` |
+| `gold-foreground` | `#1A1200` | Texto sobre fondo `gold`, verificado ≥7:1 |
 
-Contraste base verificado (fórmula WCAG, relative luminance): `ink`/`paper` = 14.4:1, `muted`/`paper` = 5.3:1, `accent`/`paper` = 5.2:1. Ver `app/globals.css` (comentario al inicio de `:root`) y `scripts/check-contrast.mjs`.
+Valores verificados (2026-08-25) contra `app/globals.css` (bloque `:root`) y `scripts/check-contrast.mjs`, que ahora lee `--color-paper` en vivo del CSS en vez de un hex hardcodeado. Correr `node scripts/check-contrast.mjs "#hex" ...` antes de dar por buena cualquier verificación de contraste — la tabla de arriba puede desviarse del código con el tiempo si no se corre.
 
 - **Colores por sistema** (preexistentes, documentados acá para que no lean como deriva): numerología `#6B4C7A`, astrología `#2E5C8A`, zodíaco chino `#85681D` — este último se oscureció desde `#C49A2A` (el tono original de la base oscura) para seguir pasando AA sobre el fondo claro `paper`. Uso restringido: un punto de 8px junto al nombre del sistema (`TresSistemas.tsx`) — nunca como fondo de sección ni como acento general.
 - **Colores de tipo de fuente en `/biblioteca`** (`TYPE_META` en `BibliotecaContent.tsx`): libro `#7B5E1C`, artículo `#5F6773`, video `#7C6487`, sitio web `#5A7262` — todos oscurecidos respecto de sus valores originales sobre fondo oscuro (`#D4A843`, `#77808E`, `#897095`, `#708F7B`) para volver a pasar 4.5:1 sobre `paper`. Uso restringido: texto + fondo al 15% de opacidad en el pill de tipo de fuente. Mismo patrón que los colores por sistema: no agregar un color nuevo por tipo sin sumarlo acá primero.
@@ -71,7 +76,9 @@ Contraste base verificado (fórmula WCAG, relative luminance): `ink`/`paper` = 1
 
 ## Layout
 
-Sin cambios estructurales respecto de la base anterior. El hero de home conserva el grid de 2 columnas (texto + molino, `components/sections/HeroInstrument.tsx`); el resto de páginas conserva su composición. Esta iteración fue un re-skin de color/tipo/componentes, no una reestructuración de IA o de jerarquía de contenido.
+El hero de home (`components/sections/HeroInstrument.tsx`) es una sola columna centrada — headline + `DateInput` + CTA — sin el molino ni un grid de 2 columnas (corregido 2026-08-25: esta sección afirmaba un layout que no existe en el código). El resto de páginas conserva su composición base; esta iteración fue mayormente un re-skin de color/tipo/componentes, no una reestructuración de IA o de jerarquía de contenido.
+
+Medidas de contenido definidas en `app/globals.css` (`--max-width-*`) y `tailwind.config.ts` (`maxWidth`): `content` (680px, prosa/columna angosta), `article` (720px), `wide`/`layout` (1280px, ambas definidas pero sin uso actual — no agregar una quinta medida sin retirar antes alguna de estas), y `8xl` (90rem/1440px vía Tailwind, la grilla ancha usada en `/profile` y `EditorialSection`).
 
 ## Elevation & Depth
 
@@ -84,7 +91,7 @@ Se retiró el halo `blur-3xl` (pensado para destacar sobre fondo casi negro). En
 --shadow-xl: 0 8px 24px rgba(36, 31, 23, 0.12);
 ```
 
-Sin neobrutalism, sin glass/blur.
+Sin neobrutalism. Sin `blur-3xl` decorativo (halos ambientales) — eliminados los 2 usos restantes 2026-08-25 (`not-found.tsx`, `AtlasShareCard.tsx`); si reaparece uno, es una regresión, no una excepción. `backdrop-blur` sigue en uso en 6 componentes como scrim funcional (drawers, sticky CTA, preview de paywall) sobre contenido que se mueve detrás — eso es legibilidad, no glassmorphism decorativo, y se mantiene.
 
 ## Components
 
@@ -155,6 +162,10 @@ Lighthouse solo audita una página a la vez y con una muestra parcial de reglas.
 - **Breadcrumbs del sitio entero distinguibles solo por color**: el link "Inicio" en el patrón `<nav aria-label="Breadcrumb">` (30 instancias en 17 archivos, 2 variantes de className idénticas) no tenía subrayado — en estado normal, el color de link vs. texto circundante no alcanza el 3:1 mínimo de WCAG 1.4.1. Agregado `underline decoration-ink/25 underline-offset-2` a las dos variantes vía reemplazo global (los className eran textualmente idénticos y exclusivos de este patrón, verificado antes del reemplazo).
 - **Tabla de fórmulas en `/docs/motores`**: encabezados usaban el mismo token (`text-muted` sobre `bg-muted/50`) para texto Y fondo — contraste casi nulo por diseño accidental, no por decisión. Encabezados pasados a `text-foreground`; celda de ejemplo (`text-accent/80`) subida a `text-accent-light`.
 - **Excepción documentada, no resuelta**: los numerales de fondo decorativos ("01", "02"...) en `text-ink/15` (60-96px, usados en `AnimalContent.tsx` y en el prop `numeral` de `EditorialSection`) siguen marcados por axe pese a llevar `aria-hidden="true"` — axe no exime la regla `color-contrast` para elementos ocultos del árbol de accesibilidad, porque el contraste bajo también es un problema para usuarios de baja visión que sí los ven. Es un patrón editorial deliberado (numeral fantasma muy tenue, siempre con un label real y bien contrastado inmediatamente al lado — ej. "CARACTERÍSTICAS") repetido en todo el sitio; subir su opacidad para pasar el linter cambiaría un efecto visual intencional por una ganancia de accesibilidad marginal (la información ya está disponible en el label adyacente). Se dejó como está — es la única violación axe-core restante en todo el sitio (8 nodos, 1 sola página).
+
+## Cómo se mantiene
+
+Si el código y este doc no coinciden, el doc está mal — se corrige en el mismo PR que toca el código, no después. Un token de color nuevo se agrega a la tabla de arriba antes que al CSS. Cualquier color nuevo aplicado a texto pasa por `node scripts/check-contrast.mjs "#hex"` antes de aceptarse.
 
 ## Do's and Don'ts
 

@@ -96,10 +96,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         ref={cardRef}
         className="relative w-full max-w-[480px] aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-paper-alt text-foreground"
       >
-        {/* Accent glow */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-16 w-56 h-56 bg-gold/10 rounded-full blur-3xl pointer-events-none" />
-
         <div className="relative flex flex-col h-full p-7">
           {/* Header */}
           <div className="flex items-center justify-between">
