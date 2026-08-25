@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildConvergence } from "@/lib/engines/convergentEngine";
+import { buildConvergence, BIRTH_DAY_PERSONALITY, getBirthDayPersonality } from "@/lib/engines/convergentEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import type { UserProfile } from "@/types/user";
 
@@ -67,5 +67,40 @@ describe("convergentEngine", () => {
     expect(() =>
       buildConvergence({ birthDate: "", lifePath: 0 } as unknown as UserProfile)
     ).not.toThrow();
+  });
+
+  it("la capa del día se presenta como personalidad, no como cumpleaños", () => {
+    const { layers } = buildConvergence(perfil("1990-05-14"));
+    const capa = layers.find((l) => l.id === "birthday");
+    expect(capa?.name).toBe("Número de personalidad");
+    // El nombre viejo describía de dónde sale el dato, no qué dice.
+    expect(capa?.name.toLowerCase()).not.toContain("cumpleaños");
+  });
+
+  it("esa capa trae una lectura de rasgos, no una tautología", () => {
+    const { layers } = buildConvergence(perfil("1990-05-14"));
+    const capa = layers.find((l) => l.id === "birthday");
+    expect(capa?.description.length).toBeGreaterThan(30);
+    // No puede limitarse a repetir el número que ya está al lado.
+    expect(capa?.description).not.toMatch(/^(Tu )?[Nn]úmero (de nacimiento|del día): \d+$/);
+  });
+
+  it("cubre todos los números alcanzables desde un día 1-31", () => {
+    // Reducción a un dígito conservando maestros: 1-9, 11 y 22. Con días
+    // hasta 31 el 33 no es alcanzable.
+    for (const n of [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22]) {
+      expect(BIRTH_DAY_PERSONALITY[n]).toBeDefined();
+      expect(getBirthDayPersonality(n).length).toBeGreaterThan(30);
+    }
+    expect(getBirthDayPersonality(99)).toBe("");
+  });
+
+  it("cada lectura nombra el rasgo y su costo", () => {
+    // Una descripción sin contrapeso es un horóscopo. Todas tienen dos
+    // oraciones o una coordinación explícita.
+    for (const texto of Object.values(BIRTH_DAY_PERSONALITY)) {
+      const tieneContrapeso = /(, y |, con |, a veces |, y el |, con la )/.test(texto);
+      expect(tieneContrapeso).toBe(true);
+    }
   });
 });

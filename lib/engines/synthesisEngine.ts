@@ -13,13 +13,6 @@ import { ARCHETYPES, ENERGY_TYPES, YEAR_TYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
 import { getMasterNumbers, getMasterPositionMeaning, MASTER_POSITION_LABELS_ES } from "@/lib/engines/numerologyEngine";
 
-export interface DimensionInsight {
-  dimension: string;
-  value: number;
-  influences: string[];
-  explanation: string;
-}
-
 export interface PatternInsight {
   label: string;
   keyword: string;
@@ -529,109 +522,7 @@ export function buildRules(profile: UserProfile): RuleInsight[] {
   return rules.slice(0, 10);
 }
 
-export function buildDimensions(profile: UserProfile): DimensionInsight[] {
-  const lp = safeNumber(profile.lifePath, 1);
-  const en = safeNumber(profile.expressionNumber, 0);
-  const sn = safeNumber(profile.soulNumber, 0);
-  const pn = safeNumber(profile.personalityNumber, 0);
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const modality = typeof profile.modality === "string" ? profile.modality : "";
 
-  return [
-    {
-      dimension: "Adaptabilidad",
-      value: Math.min((en || lp) * 10, 100),
-      influences: ["Expresión", element],
-      explanation: `Tu capacidad de adaptación está influenciada por tu expresión${en ? ` (número ${en})` : ""} y tu elemento ${element}.`,
-    },
-    {
-      dimension: "Creatividad",
-      value: Math.min((sn || lp) * 10, 100),
-      influences: ["Alma", typeof profile.sunSign === "string" ? profile.sunSign : ""],
-      explanation: `Tu creatividad viene de la interacción entre tu alma${sn ? ` (número ${sn})` : ""} y tu signo solar.`,
-    },
-    {
-      dimension: "Estructura",
-      value: Math.min(lp * 10, 100),
-      influences: ["Life Path", modality],
-      explanation: `Tu relación con la estructura está determinada por tu Life Path ${lp} y tu modalidad ${modality}.`,
-    },
-    {
-      dimension: "Independencia",
-      value: Math.min((pn || lp) * 10, 100),
-      influences: ["Personalidad", typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : ""],
-      explanation: `Tu independencia se expresa a través de tu personalidad${pn ? ` (número ${pn})` : ""} y tu animal chino.`,
-    },
-    {
-      dimension: "Intuición",
-      value: 50 + (lp % 5) * 10,
-      influences: ["Life Path", "Elemento"],
-      explanation: `Tu intuición se fortalece con tu Life Path ${lp} y la naturaleza de tu elemento.`,
-    },
-  ];
-}
-
-/**
- * Dimensiones calculables SOLO con la fecha de nacimiento.
- *
- * `buildDimensions` usa los numeros de Expresion, Alma y Personalidad, que se
- * derivan del nombre. Sin nombre esos numeros son 0 y las cuatro dimensiones
- * caen al mismo valor (lifePath * 10), con lo que el radar queda colapsado y
- * muestra un dato que no significa nada. Este set usa unicamente lo que la
- * fecha si determina, para que el grafico varie de verdad.
- */
-export function buildDateDimensions(profile: UserProfile): DimensionInsight[] {
-  const lp = safeNumber(profile.lifePath, 1);
-  const element = typeof profile.element === "string" ? profile.element : "";
-  const modality = typeof profile.modality === "string" ? profile.modality : "";
-  const sunSign = typeof profile.sunSign === "string" ? profile.sunSign : "";
-  const animal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-  const personalYear = safeNumber(profile.cycles?.personalYear, 0);
-  const personalDay = safeNumber(profile.cycles?.personalDay, 0);
-
-  // Escala 1..9 -> 20..100, para que ninguna dimension quede en cero visual.
-  const scale = (n: number) => Math.max(20, Math.min(Math.round((n / 9) * 100), 100));
-
-  const ELEMENT_WEIGHT: Record<string, number> = {
-    Fuego: 9, Aire: 7, Madera: 6, Agua: 5, Tierra: 4, Metal: 3,
-  };
-  const MODALITY_WEIGHT: Record<string, number> = {
-    Cardinal: 9, Mutable: 6, Fijo: 3,
-  };
-
-  return [
-    {
-      dimension: "Propósito",
-      value: scale(lp),
-      influences: ["Camino de Vida", String(lp)],
-      explanation: `Tu Camino de Vida ${lp} marca el eje de tu recorrido: es el número que sale de sumar tu fecha completa.`,
-    },
-    {
-      dimension: "Impulso",
-      value: scale(ELEMENT_WEIGHT[element] ?? 5),
-      influences: ["Elemento", element],
-      explanation: `Tu elemento ${element || "asignado"} describe con cuánta intensidad tendés a mover la energía hacia afuera.`,
-    },
-    {
-      dimension: "Estructura",
-      value: scale(10 - (MODALITY_WEIGHT[modality] ?? 6)),
-      influences: ["Modalidad", modality],
-      explanation: `Tu modalidad ${modality || "asignada"} indica qué tanto necesitás forma y continuidad para sostener lo que empezás.`,
-    },
-    {
-      dimension: "Ciclo",
-      value: scale(personalYear || lp),
-      influences: ["Año personal", String(personalYear || lp)],
-      explanation: `Estás en un año personal ${personalYear || lp}: es la etapa del ciclo de nueve años en la que te encontrás hoy.`,
-    },
-    {
-      dimension: "Intuición",
-      value: scale(((lp * 2) % 9) + 1),
-      influences: ["Camino de Vida", animal],
-      explanation: `El cruce entre tu Camino de Vida y tu animal ${animal || "chino"} describe cuánto te apoyás en lo que percibís antes de razonarlo.`,
-    },
-  ];
-}
 
 export function buildMomentState(profile: UserProfile, energyScore: number, energyTheme: string): MomentState {
   const personalYear = safeNumber(profile.cycles?.personalYear, 0);

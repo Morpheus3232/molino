@@ -65,21 +65,28 @@ export default function ConvergenceSection({ profile }: { profile: UserProfile }
         <ul className="border-t border-ink/10 mb-12">
           {layers.map((layer) => {
             const participa = matches.some((m) => m.between.includes(layer.id));
+            // El número del día trae una lectura de rasgos; el resto de las
+            // capas solo repite su propio valor, así que no se muestra.
+            const conLectura = layer.id === "birthday" && layer.description;
             return (
-              <li
-                key={layer.id}
-                className="flex items-baseline justify-between gap-4 py-3 border-b border-ink/10"
-              >
-                <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-                  {layer.name}
-                </span>
-                <span
-                  className={`font-heading text-base ${
-                    participa ? "text-accent font-bold" : "text-foreground"
-                  }`}
-                >
-                  {layer.value}
-                </span>
+              <li key={layer.id} className="py-3 border-b border-ink/10">
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+                    {layer.name}
+                  </span>
+                  <span
+                    className={`font-heading text-base shrink-0 ${
+                      participa ? "text-accent font-bold" : "text-foreground"
+                    }`}
+                  >
+                    {layer.value}
+                  </span>
+                </div>
+                {conLectura && (
+                  <p className="mt-1 text-sm text-muted leading-relaxed max-w-xl">
+                    {layer.description}
+                  </p>
+                )}
               </li>
             );
           })}

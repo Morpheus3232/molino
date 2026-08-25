@@ -50,6 +50,38 @@ export interface Convergence {
   insight: string;
 }
 
+/**
+ * Qué describe el número del día en que naciste.
+ *
+ * En la numerología pitagórica esta posición es la que habla de RASGOS DE
+ * PERSONALIDAD: cómo se te ve y cómo encarás las cosas, a diferencia del
+ * Camino de Vida, que describe el recorrido. El nombre "número de cumpleaños"
+ * que se usaba antes describía de dónde sale el dato, no qué dice.
+ *
+ * Se calcula reduciendo el día (1-31) a un dígito, conservando 11 y 22 como
+ * maestros. Con días hasta 31, el 33 no es alcanzable.
+ *
+ * Cada entrada nombra el rasgo y su costo: sin el costo es un horóscopo.
+ */
+export const BIRTH_DAY_PERSONALITY: Record<number, string> = {
+  1: "Iniciativa y empuje propio. Arrancás sin esperar permiso, y te cuesta delegar lo que sabés hacer.",
+  2: "Lectura fina del clima ajeno. Negociás bien y sostenés vínculos, con la contra de que imponerte te cuesta.",
+  3: "Expresión y humor. Se te da contar y conectar, y el riesgo es dispersarte entre demasiadas cosas.",
+  4: "Método y constancia. Construís sobre lo que ya está firme, y la rigidez es el precio.",
+  5: "Versatilidad e inquietud. Te adaptás rápido a lo nuevo, y quedarte quieto es lo difícil.",
+  6: "Responsabilidad afectiva. Te hacés cargo de los tuyos, a veces cargando más de lo que te toca.",
+  7: "Análisis y reserva. Entendés antes de opinar, y esa misma distancia puede leerse como frialdad.",
+  8: "Ambición y criterio práctico. Ves el resultado y el camino, con una exigencia que también aplicás a otros.",
+  9: "Visión amplia y generosidad. Pensás en el conjunto, y el idealismo te puede dejar sin límites propios.",
+  11: "Intuición marcada. Percibís antes de razonar, con una intensidad que por dentro se siente como tensión.",
+  22: "Capacidad de construir en grande. Aguantás proyectos largos, y la vara que te ponés es alta.",
+};
+
+/** Lectura del número del día. Devuelve string vacío si no hay dato. */
+export function getBirthDayPersonality(n: number): string {
+  return BIRTH_DAY_PERSONALITY[n] ?? "";
+}
+
 // ════════════════════════════════════════════════════
 // MAIN ENGINE
 // ════════════════════════════════════════════════════
@@ -76,10 +108,10 @@ export function buildConvergence(profile: UserProfile): Convergence {
     },
     {
       id: "birthday",
-      name: "Número de cumpleaños",
+      name: "Número de personalidad",
       value: birthdayNumber,
       emoji: "🎂",
-      description: `Tu número de nacimiento: ${birthdayNumber}`,
+      description: getBirthDayPersonality(birthdayNumber) || `Número del día: ${birthdayNumber}`,
     },
     {
       id: "animal",
@@ -189,8 +221,8 @@ function detectConvergences(
   if (birthday && birthday.value === personalYear) {
     matches.push({
       between: ["birthday", "personal-year"],
-      label: `Tu número de cumpleaños coincide con tu Año Personal: ${personalYear}`,
-      rule: "Número de cumpleaños = Año Personal",
+      label: `Tu número de personalidad coincide con tu Año Personal: ${personalYear}`,
+      rule: "Número de personalidad = Año Personal",
     });
   }
 

@@ -20,7 +20,7 @@ import { calculateDailyEnergy, type DailyEnergyResult } from './dailyEnergyEngin
 import { analyzeTiming, type TimingResult } from './timingEngine';
 import { analyzeDecision, type DecisionResult, type DecisionCategory } from './decisionsEngine';
 import { buildConvergence, type Convergence } from './convergentEngine';
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules, type PersonalCode, type PatternInsight, type TensionInsight, type RuleInsight, type DimensionInsight } from './synthesisEngine';
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, type PersonalCode, type PatternInsight, type TensionInsight, type RuleInsight } from './synthesisEngine';
 import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber } from './numerologyEngine';
 import { getSunSign, getSunSignInfo, getMoonSign, getElement, getModality } from './astrologyEngine';
 import { getChineseZodiac, getChineseZodiacInfo } from './chineseZodiacEngine';
@@ -277,10 +277,6 @@ export function runTensions(input: { profile: UserProfile }): TensionInsight[] {
 
 export function runRules(input: { profile: UserProfile }): RuleInsight[] {
   return runEngine('synthesis_rules', input);
-}
-
-export function runDimensions(input: { profile: UserProfile }): DimensionInsight[] {
-  return runEngine('synthesis_dimensions', input);
 }
 
 export function runPersonalCode(input: { profile: UserProfile }): PersonalCode {
