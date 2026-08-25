@@ -59,7 +59,7 @@ export default async function UniversityFooter() {
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
         <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-between md:gap-8">
           <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xs">
-            <Link href="/" className="inline-flex items-center gap-2.5 group" aria-label="Ir al inicio">
+            <Link href="/" className="inline-flex items-center gap-2.5 py-2.5 min-h-[44px] group" aria-label="Ir al inicio">
               <span className="inline-flex h-9 w-9 items-center justify-center bg-background text-foreground border border-ink/10 rounded-md">
                 <Logo className="w-6 h-6" />
               </span>
@@ -81,16 +81,16 @@ export default async function UniversityFooter() {
           {/* Columnas de navegación */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start md:items-end">
             {FOOTER_COLUMNS.map((col) => (
-              <nav key={col.title} aria-label={col.title} className="flex flex-col gap-4">
-                <h4 className="font-mono text-[10px] uppercase tracking-[0.2em] text-paper/60">
+              <nav key={col.title} aria-label={col.title} className="flex flex-col gap-1">
+                <h4 className="font-mono text-xs uppercase tracking-[0.2em] text-paper/60 mb-2">
                   {col.title}
                 </h4>
-                <ul className="space-y-2 list-none">
+                <ul className="list-none">
                   {col.links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-paper/80 hover:text-accent-light transition-colors font-medium"
+                        className="block py-2.5 min-h-[44px] flex items-center text-sm text-paper/80 hover:text-accent-light transition-colors font-medium"
                       >
                         {link.label}
                       </Link>
@@ -106,13 +106,13 @@ export default async function UniversityFooter() {
         <section className="mt-12 pt-8 border-t border-paper/20 text-center" aria-label="Contacto">
           <div className="flex flex-col items-center gap-3 text-sm text-paper/70">
             <p className="flex items-center gap-2">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-paper/80">¿Hablamos?</span>
+              <span className="font-mono text-xs uppercase tracking-wider text-paper/80">¿Hablamos?</span>
             </p>
             <p>
               Escribinos a{" "}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
-                className="inline-flex items-center gap-1 text-accent-light hover:underline"
+                className="inline-flex items-center gap-1 py-2.5 min-h-[44px] text-accent-light hover:underline"
               >
                 <Mail className="w-3.5 h-3.5" aria-hidden="true" />
                 {CONTACT_EMAIL}
@@ -128,7 +128,7 @@ export default async function UniversityFooter() {
             href="https://github.com/Morpheus3232/molino"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 text-sm text-paper/70 hover:text-accent-light transition-colors"
+            className="mt-4 inline-flex items-center gap-2 py-2.5 min-h-[44px] text-sm text-paper/70 hover:text-accent-light transition-colors"
           >
             <Github className="w-4 h-4" aria-hidden="true" />
             GitHub
