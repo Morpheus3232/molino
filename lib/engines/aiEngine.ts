@@ -38,12 +38,12 @@ export const AI_HEAVY_TIMEOUT_MS = 55_000;
  *
  * 2000 still truncated on a fraction of calls even with reasoning:{exclude:
  * true} set (reasoningTokens up to ~965 measured in production eating into
- * the same budget as the visible content). Raised to 2500 as a controlled,
- * single-variable experiment — everything else (model, reasoning.exclude,
- * response_format/schema, prompt) held constant. See __tests__/aiEngine.test.ts
- * for the assertion pinning this value.
+ * the same budget as the visible content). Raised to 2500, then to 4500
+ * once the personal_profile prompt (promptBuilder.ts) started asking for
+ * substantially longer prose per field (2-3x the sentence count) — 2500
+ * was sized for the old, shorter targets and would truncate the new ones.
  */
-const STRUCTURED_OUTPUT_MAX_TOKENS = 2500;
+const STRUCTURED_OUTPUT_MAX_TOKENS = 4500;
 const DEFAULT_MAX_TOKENS = 800;
 
 /** Truncates a provider error body for logging and strips anything that

@@ -123,6 +123,9 @@ CONTEXTO GRATUITO (el usuario ya vio esto antes de llegar acá — NO lo repitas
 
 El usuario está leyendo la sección "La conversación entre tus sistemas" — por eso pagó.
 Cada campo debe aportar algo que las piezas gratuitas NO pudieron decir.
+Esto es el producto premium: escribí con profundidad y desarrollo real, no
+en frases telegráficas. Cada campo de texto debe tener el largo indicado
+en su descripción — no lo acortes a una sola oración genérica.
 
 CONTRATO INTELECTUAL — CONVERGENCIA ENTRE SISTEMAS:
 
@@ -179,17 +182,17 @@ IMPORTANTE:
 
 Generá una respuesta JSON con:
 {
-  "opening": "Una frase fuerte que sintetice quién es esta persona, derivada del perfil real — no una definición genérica de su Life Path",
-  "summary": "Síntesis conectiva: qué patrón emergente aparece cuando los sistemas del usuario se leen juntos — 2-3 oraciones, no repetir datos ya mostrados",
-  "corePattern": { "what": "el patrón central", "source": "de qué dos señales sale (ej. Life Path 4 + elemento Tierra)", "whyItMatters": "por qué importa" },
-  "alignment": "Qué significa ese patrón para la vida concreta de esta persona ahora — no cómo se conectan los datos, sino qué cambia en la práctica",
-  "tensions": ["tensión 1, real y trazable, diferente de las tensions gratuitas", "tensión 2"],
-  "howYouOperate": "El patrón en acción: qué hace esta persona cuando enfrenta una decisión real, no qué rasgo tiene — 2-3 oraciones",
-  "relationalNote": "Qué tipo de energías complementan o generan fricción, basado en las relaciones reales del animal chino (vacío si no hay datos)",
-  "timing": "Por qué el momento actual importa dentro de la identidad del usuario",
-  "suggestedNextStep": "Una acción concreta y personalizada",
-  "closingSynthesis": "Cierre memorable y compartible en 1-2 frases",
-  "strengths": ["fortaleza que emerge de la combinación de sistemas, no de un solo dato", "fortaleza 2"],
+  "opening": "Una o dos frases fuertes que sinteticen quién es esta persona, derivadas del perfil real — no una definición genérica de su Life Path",
+  "summary": "Síntesis conectiva: qué patrón emergente aparece cuando los sistemas del usuario se leen juntos — 4-6 oraciones que desarrollan el argumento completo, no solo lo anuncian. No repetir datos ya mostrados",
+  "corePattern": { "what": "el patrón central", "source": "de qué dos señales sale (ej. Life Path 4 + elemento Tierra)", "whyItMatters": "por qué importa — 3-4 oraciones que desarrollan la mecánica del patrón con un ejemplo concreto, no solo lo nombran" },
+  "alignment": "Qué significa ese patrón para la vida concreta de esta persona ahora — 3-4 oraciones. No cómo se conectan los datos, sino qué cambia en la práctica",
+  "tensions": ["tensión 1, real y trazable, diferente de las tensions gratuitas — 2-3 oraciones que explican el mecanismo (Sistema A + Sistema B → fricción → manifestación), no una frase suelta", "tensión 2, mismo desarrollo"],
+  "howYouOperate": "El patrón en acción: qué hace esta persona cuando enfrenta una decisión real, no qué rasgo tiene — 4-5 oraciones con al menos un ejemplo de situación cotidiana reconocible",
+  "relationalNote": "Qué tipo de energías complementan o generan fricción, basado en las relaciones reales del animal chino — 2-3 oraciones (vacío si no hay datos)",
+  "timing": "Por qué el momento actual importa dentro de la identidad del usuario — 2-3 oraciones",
+  "suggestedNextStep": "Una acción concreta y personalizada, con el por qué detrás — 2-3 oraciones, no solo el qué",
+  "closingSynthesis": "Cierre memorable y compartible en 2-3 frases",
+  "strengths": ["fortaleza que emerge de la combinación de sistemas, no de un solo dato — 1-2 oraciones que muestran el mecanismo, no solo la nombran", "fortaleza 2, mismo desarrollo"],
   "whatToConsider": ["qué no se puede saber con este sistema, si corresponde"],
   "confidence": "Alta/Media/Baja - basado en los datos disponibles",
   "limitations": ["Los sistemas simbólicos son herramientas de reflexión, no ciencia"]

@@ -258,13 +258,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         )}
 
         {/* Companion — contenido determinista, calculado localmente sin IA.
-            Renderiza siempre, sin esperar fetchLectura ni depender de que
-            haya salido bien: primero las 4 lecturas nuevas del zodíaco
-            chino, después el número de la suerte, después las afinidades.
-            Una sola franja visual (border-t-2) marca dónde termina la
-            lectura narrativa (si la hubo) y empieza el material de
-            referencia. */}
-        {(principles.length > 0 || zodiacExtras || catalog.length > 0) && (
+            Espera a `revealed` igual que la lectura narrativa: mostrarlo
+            mientras BuildingMolino todavía está en pantalla se leía como
+            "ya terminó" a mitad de carga. Primero las 4 lecturas nuevas del
+            zodíaco chino, después el número de la suerte, después las
+            afinidades. Una sola franja visual (border-t-2) marca dónde
+            termina la lectura narrativa (si la hubo) y empieza el material
+            de referencia. */}
+        {revealed && (principles.length > 0 || zodiacExtras || catalog.length > 0) && (
               <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
                 {principles.length > 0 && (
                   <motion.section
