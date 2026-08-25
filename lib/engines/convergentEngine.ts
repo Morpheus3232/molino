@@ -161,12 +161,11 @@ export function buildConvergence(profile: UserProfile): Convergence {
   if (convergentCount === 0) {
     insight =
       "Ninguna de tus capas coincide con otra este año: cada sistema apunta a algo distinto. En estas tradiciones eso se lee como un año de exploración en varios frentes, no como una falta.";
-  } else {
-    const listado = matches.map((m) => m.rule.toLowerCase()).join("; ");
+  } else if (convergentCount === 1) {
     insight =
-      convergentCount === 1
-        ? `Hay una coincidencia entre tus capas (${listado}). El resto de los sistemas apunta a lugares distintos.`
-        : `Hay ${convergentCount} coincidencias entre tus capas (${listado}). Cuando sistemas que se calculan por separado dan el mismo resultado, estas tradiciones lo leen como un patrón más marcado.`;
+      "Una de tus capas coincide con otra. El resto de los sistemas apunta a lugares distintos.";
+  } else {
+    insight = `${convergentCount} de tus capas coinciden entre sí. Cuando sistemas que se calculan por caminos separados dan el mismo resultado, estas tradiciones lo leen como un patrón más marcado.`;
   }
 
   return {

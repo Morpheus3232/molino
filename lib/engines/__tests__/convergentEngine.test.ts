@@ -45,15 +45,13 @@ describe("convergentEngine", () => {
     }
   });
 
-  it("el insight nombra las coincidencias en vez de describirlas en abstracto", () => {
+  it("el insight no duplica la lista de reglas que se muestra debajo", () => {
     const c = buildConvergence(perfil("1990-05-14"));
-    if (c.convergentCount > 0) {
-      // Tiene que mencionar al menos una regla concreta, no solo "algunos
-      // de tus patrones muestran alineación".
-      const alguna = c.matches.some((m) => c.insight.includes(m.rule.toLowerCase()));
-      expect(alguna).toBe(true);
-    } else {
-      expect(c.insight.length).toBeGreaterThan(0);
+    expect(c.insight.length).toBeGreaterThan(0);
+    // Las reglas concretas viven en la lista numerada; repetirlas en la
+    // bajada obligaba a leer lo mismo dos veces.
+    for (const m of c.matches) {
+      expect(c.insight.toLowerCase()).not.toContain(m.rule.toLowerCase());
     }
   });
 
