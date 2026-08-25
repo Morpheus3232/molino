@@ -65,8 +65,8 @@ export const pageEnter = {
 // above-the-fold, donde whileInView depende de que IntersectionObserver
 // dispare en el instante exacto del primer render. Si eso falla (hiccup de
 // hidratación), el contenido queda en opacity:0 hasta que el usuario
-// scrollee o refresque (ver staggerItemSmooth en premiumMotion.ts, mismo
-// failure mode ya documentado ahí). Usar acá para lo que ya es visible al
+// scrollee o refresque (mismo failure mode que staggerItem, abajo). Usar
+// acá para lo que ya es visible al
 // cargar; below-the-fold puede seguir usando fadeUp/whileInView sin riesgo.
 export const fadeUpMount = {
   initial: { opacity: 0, y: 16 },
@@ -111,6 +111,25 @@ export const numberReveal = {
   viewport: { once: true, amount: 0, margin: "50px" },
   transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
 };
+
+// Scale-up hero reveal, triggered on MOUNT — para elementos hero above-the-fold.
+export const heroRevealMount = {
+  initial: { opacity: 0, scale: 0.9 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.5, ease: "easeOut" as const },
+};
+
+// Emoji/icon bounce, triggered on MOUNT
+export const emojiBounceMount = {
+  initial: { opacity: 0, scale: 0, rotate: -12 },
+  animate: { opacity: 1, scale: 1, rotate: 0 },
+  transition: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as const },
+};
+
+// Delay for the Nth item of a manually-staggered list
+export function staggerDelay(index: number, base = 0.08): number {
+  return index * base;
+}
 
 // Hover lift (for cards)
 export const hoverLift = {

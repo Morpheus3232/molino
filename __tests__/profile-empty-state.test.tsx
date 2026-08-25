@@ -53,19 +53,19 @@ beforeEach(() => {
 
 describe("ProfileClient — no profile available", () => {
   test("shows the empty state explaining the map is generated on the homepage", async () => {
-    render(<ProfileClient serverProfile={null} initialTab={null} />);
+    render(<ProfileClient serverProfile={null} />);
     expect(await screen.findByRole("heading", { name: /tu mapa se genera en la portada/i })).toBeInTheDocument();
   });
 
   test("does not render the map", async () => {
-    render(<ProfileClient serverProfile={null} initialTab={null} />);
+    render(<ProfileClient serverProfile={null} />);
     await screen.findByRole("heading", { name: /tu mapa se genera en la portada/i });
     expect(screen.queryByTestId("profile-hub")).not.toBeInTheDocument();
   });
 
   test("the CTA navigates to the homepage", async () => {
     const user = userEvent.setup();
-    render(<ProfileClient serverProfile={null} initialTab={null} />);
+    render(<ProfileClient serverProfile={null} />);
     const cta = await screen.findByRole("button", { name: /ir a la portada/i });
     await user.click(cta);
     expect(push).toHaveBeenCalledWith("/");
@@ -74,7 +74,7 @@ describe("ProfileClient — no profile available", () => {
 
 describe("ProfileClient — profile available", () => {
   test("renders the map instead of the empty state", async () => {
-    render(<ProfileClient serverProfile={VALID_PROFILE} initialTab={null} />);
+    render(<ProfileClient serverProfile={VALID_PROFILE} />);
     expect(await screen.findByTestId("profile-hub")).toHaveTextContent(VALID_PROFILE.archetype);
     expect(screen.queryByRole("heading", { name: /tu mapa se genera en la portada/i })).not.toBeInTheDocument();
   });

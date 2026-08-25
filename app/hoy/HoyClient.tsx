@@ -7,7 +7,7 @@ import { useStreak } from "@/lib/hooks/useStreak";
 import { useJournal } from "@/lib/hooks/useJournal";
 import { computeJournalStreak, findEntryForDate } from "@/lib/utils/journalStreak";
 import { toLocalDateKey } from "@/lib/session/dailyHistory";
-import { smoothReveal } from "@/lib/utils/premiumMotion";
+import { fadeUp } from "@/lib/utils/motion";
 import DailyEnergyCard from "@/components/daily/DailyEnergyCard";
 import PersonalCyclesSection from "@/components/daily/PersonalCyclesSection";
 import DailyFocus, { MomentAdvice } from "@/components/daily/DailyFocus";
@@ -47,7 +47,7 @@ export default function HoyClient() {
   return (
     <div className="space-y-10">
       {/* Profile / Crear mapa callout */}
-      <motion.div {...smoothReveal}>
+      <motion.div {...fadeUp}>
         {profile ? (
           <p className="inline-flex items-center gap-2 text-xs font-mono text-muted">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />

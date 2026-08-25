@@ -10,7 +10,6 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { encodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import { recordVisit } from "@/lib/session/discovery";
 import ProfileHub from "@/components/profile/ProfileHub";
-import EphemeralWarning from "@/components/profile/EphemeralWarning";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 
@@ -38,9 +37,8 @@ function buildFromLocal(): UserProfile | null {
   return null;
 }
 
-export default function ProfileClient({ serverProfile, initialTab, futureDateError, catalog }: ProfileClientProps) {
+export default function ProfileClient({ serverProfile, futureDateError, catalog }: ProfileClientProps) {
   const router = useRouter();
-  const [showEphemeralWarning, setShowEphemeralWarning] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
 
@@ -100,8 +98,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
     if (window.location.hash.slice(1) === encoded && !window.location.search) return;
     window.history.replaceState(null, "", `/profile#${encoded}`);
   }, [mounted, profile]);
-
-  const dismissEphemeralWarning = () => setShowEphemeralWarning(false);
 
   if (!mounted && !profile && !futureDateError) {
     return (
@@ -165,12 +161,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
   return (
     <div className="min-h-screen bg-background">
       <main id="main-content">
-        {showEphemeralWarning && (
-          <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4">
-            <EphemeralWarning onDismiss={dismissEphemeralWarning} />
-          </div>
-        )}
-
         <ProfileHub profile={profile} catalog={catalog} />
       </main>
 
@@ -180,7 +170,6 @@ export default function ProfileClient({ serverProfile, initialTab, futureDateErr
 
 interface ProfileClientProps {
   serverProfile: UserProfile | null;
-  initialTab: string | null;
   futureDateError?: boolean;
   catalog?: LightweightEntity[];
 }

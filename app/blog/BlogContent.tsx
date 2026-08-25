@@ -4,8 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { staggerApple, staggerDelay } from "@/lib/utils/premiumMotion";
-import { fadeUpMount } from "@/lib/utils/motion";
+import { fadeUpMount, staggerContainer, staggerDelay } from "@/lib/utils/motion";
 import { BLOG_POSTS, BLOG_CATEGORIES, getReadingTime, type BlogCategory, type BlogPost } from "@/lib/data/blog-content";
 import { Sparkles, Users, Moon, Compass } from "lucide-react";
 
@@ -216,7 +215,7 @@ export default function BlogContent() {
         )}
 
         {/* CTA al mapa */}
-        <motion.section {...staggerApple} className="mt-20 text-center">
+        <motion.section {...staggerContainer} className="mt-20 text-center">
           <div className="p-8 sm:p-10 rounded-md border border-border bg-card">
             <p className="text-sm text-muted mb-4 max-w-md mx-auto">
               ¿Querés ver cómo se aplican estos sistemas a TU fecha de nacimiento?

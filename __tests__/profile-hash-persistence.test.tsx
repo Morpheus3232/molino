@@ -55,7 +55,7 @@ describe("ProfileClient — reconstructing from an existing hash", () => {
   test("a bare /profile#<hash> visit renders the map with no serverProfile and no localStorage", async () => {
     window.history.replaceState(null, "", `/profile#${encodeProfileData(PROFILE)}`);
 
-    render(<ProfileClient serverProfile={null} initialTab={null} />);
+    render(<ProfileClient serverProfile={null} />);
 
     expect(await screen.findByTestId("profile-hub")).toHaveTextContent(PROFILE.birthDate);
   });
@@ -63,7 +63,7 @@ describe("ProfileClient — reconstructing from an existing hash", () => {
 
 describe("ProfileClient — writing the hash once a profile is on screen", () => {
   test("a serverProfile-backed visit ends up with that profile encoded in the URL hash", async () => {
-    render(<ProfileClient serverProfile={PROFILE} initialTab={null} />);
+    render(<ProfileClient serverProfile={PROFILE} />);
 
     await screen.findByTestId("profile-hub");
     expect(window.location.hash.slice(1)).toBe(encodeProfileData(PROFILE));

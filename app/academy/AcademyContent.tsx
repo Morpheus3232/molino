@@ -4,14 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  smoothReveal,
-  cardReveal,
-  staggerApple,
-  staggerItemSmooth,
-  staggerDelay,
-} from "@/lib/utils/premiumMotion";
-import { scaleUpMount } from "@/lib/utils/motion";
+import { scaleUpMount, staggerContainer } from "@/lib/utils/motion";
 import { ACADEMY_PIECES, type AcademyPiece } from "@/lib/data/academy-content";
 import { ACADEMY_GUIDES, getAcademyGuideBySlug } from "@/lib/data/academy-guides";
 import { BookOpen, Sparkles, Zap, Clock, Users, ArrowRight } from "lucide-react";
@@ -405,7 +398,7 @@ export default function AcademyContent() {
             EXPLORAR — capa histórica existente (timeline + cursos),
             sin modificar contenido ni arquitectura.
             ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerApple} className="mb-8">
+        <motion.section {...staggerContainer} className="mb-8">
           <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold mb-3">Explorar</p>
           <div className="flex flex-wrap gap-3">
             <motion.button
@@ -545,7 +538,7 @@ export default function AcademyContent() {
         {/* ═══════════════════════════════════════════════
             CÓMO FUNCIONA — Proceso paso a paso
             ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerApple} className="mb-20">
+        <motion.section {...staggerContainer} className="mb-20">
           <div className="mb-12">
             <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground mb-3">Cómo Molino usa esto</h2>
             <p className="text-muted max-w-2xl">
@@ -591,7 +584,7 @@ export default function AcademyContent() {
         {/* ═══════════════════════════════════════════════
             CTA — Ir a generar tu mapa
             ═══════════════════════════════════════════════ */}
-        <motion.section {...staggerApple} className="py-16 px-8 sm:px-12 rounded-xl border border-border bg-gradient-to-br from-accent/10 to-accent/5 text-center">
+        <motion.section {...staggerContainer} className="py-16 px-8 sm:px-12 rounded-xl border border-border bg-gradient-to-br from-accent/10 to-accent/5 text-center">
           <Sparkles className="w-8 h-8 text-accent mx-auto mb-4" />
           <h2 className="font-heading text-3xl font-bold text-foreground mb-3">Listo para tu mapa</h2>
           <p className="text-muted max-w-2xl mx-auto mb-6">

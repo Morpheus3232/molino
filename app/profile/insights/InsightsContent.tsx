@@ -27,15 +27,15 @@ import {
   getZodiacDisplay,
 } from "@/lib/utils/zodiacDisplay";
 import {
-  smoothRevealMount,
+  fadeUpMount,
   heroRevealMount,
-  cardReveal,
+  staggerCard,
   emojiBounceMount,
   staggerDelay,
-  staggerApple,
-  staggerItemSmooth,
-  smoothReveal,
-} from "@/lib/utils/premiumMotion";
+  staggerContainer,
+  staggerItem,
+  fadeUp,
+} from "@/lib/utils/motion";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
 import LocalizedAffinityHub from "@/components/profile/LocalizedAffinityHub";
@@ -171,7 +171,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             HEADER
             ═══════════════════════════════════════════════ */}
-        <motion.div {...smoothRevealMount} className="mb-10">
+        <motion.div {...fadeUpMount} className="mb-10">
           <p className="text-xs uppercase tracking-[0.3em] text-accent font-medium mb-3">
             Mis patrones
           </p>
@@ -241,7 +241,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
             BLOQUE 2: RECOMENDACIÓN DEL MOMENTO
             ═══════════════════════════════════════════════ */}
         {recommendations.length > 0 && (
-          <motion.section {...cardReveal} className="mb-8">
+          <motion.section {...staggerCard} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Algo que conecta contigo</h2>
@@ -291,24 +291,24 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             FOOTER
             ═══════════════════════════════════════════════ */}
-        <motion.section {...cardReveal} className="mb-8">
+        <motion.section {...staggerCard} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Sabías que...</h2>
             </div>
 
             <motion.div
-              {...staggerApple}
+              {...staggerContainer}
               className="space-y-3"
             >
-              <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
+              <motion.div {...staggerItem} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
                   <span className="font-medium">{discovery.title}</span>
                 </p>
                 <p className="text-xs text-muted mt-1">{discovery.detail}</p>
               </motion.div>
 
-              <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
+              <motion.div {...staggerItem} className="p-4 rounded-md bg-background/50">
                 <p className="text-sm text-foreground leading-relaxed">
                   Encontramos <span className="font-medium">{recommendations.length} entidades</span> con presencia en tu mapa.
                 </p>
@@ -316,7 +316,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
               </motion.div>
 
               {yearResonance.type === "alignment" && (
-                <motion.div {...staggerItemSmooth} className="p-4 rounded-md bg-background/50">
+                <motion.div {...staggerItem} className="p-4 rounded-md bg-background/50">
                   <p className="text-sm text-foreground leading-relaxed">
                     <span className="font-medium">Tu ciclo actual coincide con tu animal natal.</span>
                   </p>
@@ -331,7 +331,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
             BLOQUE 4: CONTRASTES
             ═══════════════════════════════════════════════ */}
         {relationMap.challenging.length > 0 && (
-          <motion.section {...cardReveal} className="mb-8">
+          <motion.section {...staggerCard} className="mb-8">
             <div className="p-6 rounded-md border border-border bg-card shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Energía Opuesta</h2>
@@ -365,7 +365,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             BLOQUE 5: PROGRESO PERSONAL
             ═══════════════════════════════════════════════ */}
-        <motion.section {...cardReveal} className="mb-8">
+        <motion.section {...staggerCard} className="mb-8">
           <div className="p-6 rounded-md border border-border bg-card shadow-sm">
             <div className="flex items-center gap-2 mb-6">
               <h2 className="text-xs uppercase tracking-[0.2em] text-muted font-medium">Tu progreso</h2>
@@ -406,7 +406,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         {/* ═══════════════════════════════════════════════
             FOOTER
             ═══════════════════════════════════════════════ */}
-        <motion.div {...smoothReveal} className="mt-8 text-center">
+        <motion.div {...fadeUp} className="mt-8 text-center">
           <button
             type="button"
             onClick={() => router.push("/profile")}
@@ -417,7 +417,7 @@ export default function InsightsContent({ catalog }: { catalog: LightweightEntit
         </motion.div>
 
         {/* Disclaimer */}
-        <motion.div {...smoothReveal} className="mt-8">
+        <motion.div {...fadeUp} className="mt-8">
           <p className="text-xs text-muted text-center leading-relaxed">
             Análisis personal basado en tradiciones culturales del zodíaco chino. No constituye predicción científica ni determina resultados reales.
           </p>

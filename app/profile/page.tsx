@@ -12,7 +12,7 @@ import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-enti
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ dob?: string; data?: string; share?: string; tab?: string }>;
+  searchParams: Promise<{ dob?: string; data?: string; share?: string }>;
 }
 
 function buildProfile(calculated: UserProfile, name: string, birthDate: string): UserProfile {
@@ -131,7 +131,6 @@ export default async function ProfilePage({ searchParams }: Props) {
   const params = await searchParams;
   const dob = params.dob;
   const dataParam = params.data;
-  const tab = params.tab || null;
 
   let profile: UserProfile | null = null;
 
@@ -146,7 +145,7 @@ export default async function ProfilePage({ searchParams }: Props) {
     today.setHours(0, 0, 0, 0);
     const birthDate = new Date(dob + "T00:00:00");
     if (birthDate > today) {
-      return <ProfileClient serverProfile={null} initialTab={tab} futureDateError={true} />;
+      return <ProfileClient serverProfile={null} futureDateError={true} />;
     }
     try {
       const calculated = calculateUserProfile("", dob);
@@ -156,5 +155,5 @@ export default async function ProfilePage({ searchParams }: Props) {
 
   const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
 
-  return <ProfileClient serverProfile={profile} initialTab={tab} catalog={catalog} />;
+  return <ProfileClient serverProfile={profile} catalog={catalog} />;
 }
