@@ -75,22 +75,6 @@ const homeSchemas = [
           text: "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas en tu navegador sin crear cuentas.",
         },
       },
-      {
-        "@type": "Question",
-        name: "¿Qué pasa si cambio de dispositivo o borro los datos de mi navegador?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Al ser almacenamiento 100% privado en tu cliente, los datos residen en tu navegador. Si adquiriste el acceso Premium, podés restaurarlo en cualquier nuevo dispositivo con un solo clic usando tu ID de pago.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "¿Cómo se calculan el Camino de Vida y los sistemas simbólicos?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Usamos numerología pitagórica (suma de dígitos hasta un dígito o maestro), astrología tropical (zodíaco occidental + casas), y zodíaco chino sexagenario. Todas las fórmulas están documentadas y auditables en /metodos-y-fuentes.",
-        },
-      },
     ],
   },
 ];

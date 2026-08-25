@@ -146,7 +146,7 @@ export default function HeroInstrument() {
                 className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-4 text-base sm:text-lg font-heading font-bold uppercase tracking-[0.08em] rounded-lg transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent min-h-[56px] ${
                   isDateValid && !isSubmitting
                     ? "bg-accent text-paper hover:bg-accent-hover active:scale-[0.98]"
-                    : "bg-ink/5 text-muted cursor-not-allowed"
+                    : "border-2 border-accent/40 text-accent cursor-not-allowed"
                 }`}
               >
                 {isSubmitting ? (
@@ -171,21 +171,33 @@ export default function HeroInstrument() {
                   </>
                 )}
               </button>
+
+              {!isDateValid && !isSubmitting && (
+                <p className="text-xs text-muted" role="status">
+                  Completá tu fecha de nacimiento para continuar.
+                </p>
+              )}
             </form>
 
-            {/* Privacidad + microcopy — juntos, una sola línea de confianza */}
-            <div className="pt-8 space-y-3">
-              <p className="flex items-center justify-center gap-2 text-xs font-mono text-accent">
-                <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
-                Cálculo 100% local
-              </p>
-              <p className="font-mono text-xs text-muted/70 tracking-wide">
-                Toma 30 segundos ·{" "}
-                <Link href="/ejemplo" className="text-accent hover:underline underline-offset-2 transition-colors">
-                  Ver ejemplo interactivo
-                </Link>
-              </p>
+            {/* "Ver ejemplo interactivo" es la única salida que no pide un
+                dato personal — es la respuesta a "¿qué me van a mostrar?"
+                sin pedir la fecha primero, así que es el CTA secundario
+                declarado del hero, no un link escondido. */}
+            <div className="pt-8">
+              <Link
+                href="/ejemplo"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg border border-border text-sm font-heading font-semibold text-foreground hover:border-accent hover:text-accent transition-colors"
+              >
+                Ver ejemplo interactivo
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </Link>
             </div>
+
+            {/* Privacidad — una sola línea de confianza */}
+            <p className="pt-6 flex items-center justify-center gap-2 text-xs font-mono text-accent">
+              <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
+              Cálculo 100% local · toma 30 segundos
+            </p>
           </motion.div>
         </motion.div>
       </div>
