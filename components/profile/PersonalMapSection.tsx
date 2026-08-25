@@ -46,12 +46,22 @@ const KIND_SHORT: Record<MapRelation, string> = {
   otro: "—",
 };
 
-/** Peso visual por casilla. El enemigo no se esconde: se marca. */
-const KIND_TONE: Record<MapRelation, { accent: string; bar: string }> = {
+/**
+ * Peso visual por casilla. El enemigo no se esconde: se marca — antes tenía
+ * menos contraste que "amigo" (text-paper/55 vs text-accent-light), lo
+ * opuesto de lo que dice el comentario. Ahora es la única casilla con chip
+ * propio, y "vos"/"amigo"/"otro" bajan en una escalera de opacidad del mismo
+ * tono en vez de compartir el mismo color entre sí.
+ */
+const KIND_TONE: Record<MapRelation, { accent: string; bar: string; badge?: string }> = {
   mismo: { accent: "text-accent-light", bar: "bg-accent-light" },
-  amigo: { accent: "text-accent-light", bar: "bg-accent-light/60" },
-  enemigo: { accent: "text-paper/55", bar: "bg-paper/30" },
-  otro: { accent: "text-paper/40", bar: "bg-paper/12" },
+  amigo: { accent: "text-accent-light/70", bar: "bg-accent-light/50" },
+  enemigo: {
+    accent: "text-paper",
+    bar: "bg-accent",
+    badge: "bg-accent/15 border border-accent/40 rounded-sm px-1.5 py-0.5",
+  },
+  otro: { accent: "text-paper/35", bar: "bg-paper/12" },
 };
 
 /** Tipos sin ruta de ficha propia — ver components/atlas/EntityCard.tsx. */
@@ -302,7 +312,9 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
           return (
             <li
               key={e.animal}
-              className="flex items-baseline gap-3 py-3 border-b border-paper/10"
+              className={`flex items-baseline gap-3 py-3 border-b ${
+                propio ? "border-accent-light/25" : "border-paper/10"
+              }`}
             >
               <span className="font-mono text-xs tabular-nums text-paper/30 shrink-0 w-5">
                 {String(i + 1).padStart(2, "0")}
@@ -313,7 +325,9 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
               >
                 {e.animal}
               </span>
-              <span className={`ml-auto font-mono text-xs text-right ${tone.accent}`}>
+              <span
+                className={`ml-auto font-mono text-[11px] text-right uppercase tracking-wide ${tone.accent} ${tone.badge ?? ""}`}
+              >
                 {KIND_SHORT[e.kind]}
               </span>
             </li>
