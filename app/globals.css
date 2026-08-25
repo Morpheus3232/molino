@@ -1369,12 +1369,6 @@
   }
 }
 
-/* Shimmer — barrido del gradiente de texto (background-position) */
-@keyframes shimmer {
-  0% { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-
 /* Shimmer sweep — banda de luz cruzando un botón */
 @keyframes shimmerSweep {
   0% { left: -80%; }
@@ -1388,15 +1382,8 @@
   }
 
   .animate-breathe,
-  .text-gradient-warm,
-  .text-gradient-warm-dark,
   .btn-shimmer::after {
     animation: none;
-  }
-
-  .text-gradient-warm,
-  .text-gradient-warm-dark {
-    background-position: 50% center;
   }
 
   .btn-shimmer::after {
