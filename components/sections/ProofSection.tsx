@@ -9,10 +9,8 @@ import {
   Sparkles,
   Clock,
   Layers,
-  ChevronRight,
   Cpu,
-  Fingerprint,
-  Info
+  Fingerprint
 } from "lucide-react";
 
 type MapQuadrant = "numerology" | "astrology" | "zodiac" | "timeline";
@@ -185,35 +183,20 @@ export default function ProofSection() {
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-20">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6"
-          >
+          <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">
             <Fingerprint className="w-3.5 h-3.5" aria-hidden="true" />
             Cómo se obtiene el mapa
-          </motion.p>
+          </p>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+          <h2
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
           >
             Así se calcula cada número.
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="text-base sm:text-lg text-muted leading-relaxed font-normal"
-          >
+          <p className="text-base sm:text-lg text-muted leading-relaxed font-normal">
             Este es un ejemplo (no tu mapa todavía). Cada número muestra la fórmula que lo genera.
-          </motion.p>
+          </p>
         </div>
 
         {/* Interactive Navigator */}
@@ -250,7 +233,7 @@ export default function ProofSection() {
         {/* Main Stage Display Card */}
         <motion.div
           layout
-          className="rounded-2xl sm:rounded-3xl border border-border bg-card shadow-sm overflow-hidden"
+          className="rounded-md sm:rounded-md border border-border bg-card shadow-sm overflow-hidden"
         >
           {/* Card Meta Bar */}
           <div className="px-6 sm:px-10 py-6 border-b border-border/70 flex flex-wrap items-center justify-between gap-4">
@@ -261,7 +244,7 @@ export default function ProofSection() {
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
                     {current.title}
                   </h3>
-                  <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-muted">
+                  <span className="text-xs font-mono font-semibold uppercase tracking-wider text-muted">
                     {current.badge}
                   </span>
                 </div>
@@ -291,16 +274,19 @@ export default function ProofSection() {
           </div>
 
           {/* 3 Pillars Data Grid */}
-          <div className="p-6 sm:p-10 pt-4 grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-            <AnimatePresence mode="wait">
-              {current.data.map((item, idx) => (
-                <motion.div
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={activeQuadrant}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
+              className="p-6 sm:p-10 pt-4 grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6"
+            >
+              {current.data.map((item) => (
+                <div
                   key={`${activeQuadrant}-${item.label}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ delay: idx * 0.08, duration: 0.35 }}
-                  className={`group relative flex flex-col justify-between p-6 rounded-2xl border transition-colors duration-300 bg-background/60 ${
+                  className={`group relative flex flex-col justify-between p-6 rounded-md border transition-colors duration-200 bg-background/60 ${
                     item.highlight
                       ? "border-border/70 border-l-2 border-l-accent"
                       : "border-border/70 hover:border-border"
@@ -309,11 +295,11 @@ export default function ProofSection() {
                   {/* Top: Label + mini tag */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
+                      <span className="font-mono text-xs uppercase tracking-wider text-muted font-semibold">
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className="text-[10px] font-mono text-muted">
+                        <span className="text-xs font-mono text-muted">
                           {item.badge}
                         </span>
                       )}
@@ -333,24 +319,20 @@ export default function ProofSection() {
                   {/* Formula / Calculation Breakdown (Technical Detail) */}
                   {showTechnicalDetails && (
                     <div className="mt-5 pt-4 border-t border-border/50">
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        className="space-y-1"
-                      >
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-accent font-bold block">
+                      <div className="space-y-1">
+                        <span className="font-mono text-xs uppercase tracking-wider text-accent font-bold block">
                           Origen del cálculo
                         </span>
-                        <p className="font-mono text-[11px] text-muted leading-tight bg-card p-2 rounded border border-border/60">
+                        <p className="font-mono text-xs text-muted leading-tight bg-card p-2 rounded border border-border/60">
                           {item.formula}
                         </p>
-                      </motion.div>
+                      </div>
                     </div>
                   )}
-                </motion.div>
+                </div>
               ))}
-            </AnimatePresence>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Footer Synthesis Callout */}
           <div className="p-6 sm:px-10 border-t border-border/70 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

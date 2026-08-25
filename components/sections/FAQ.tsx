@@ -1,9 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { fadeUp } from "@/lib/utils/motion";
 
 export const FAQS = [
   {
@@ -73,23 +71,26 @@ function FAQItem({
         </button>
       </h3>
 
-      <div>
-        {isOpen && (
-          <motion.div
-            id={panelId}
-            role="region"
-            aria-labelledby={buttonId}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="text-sm sm:text-base text-muted leading-relaxed pb-5 sm:pb-6 max-w-2xl">
-              {answer}
-            </p>
-          </motion.div>
-        )}
+      {/* Apertura/cierre por grid-template-rows (0fr → 1fr) en CSS puro.
+          Antes era un motion.div montado condicionalmente con `exit`, pero sin
+          AnimatePresence alrededor: el `exit` nunca corría, así que el panel
+          abría animado y cerraba de golpe. Además animaba `height: auto`, que
+          obliga a framer a medir layout en el hilo principal. Esta versión es
+          simétrica, no mide nada y respeta prefers-reduced-motion por el reset
+          global de globals.css. */}
+      <div
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr] invisible"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="text-sm sm:text-base text-muted leading-relaxed pb-5 sm:pb-6 max-w-2xl">
+            {answer}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -101,14 +102,13 @@ export default function FAQ() {
   return (
     <section id="faq" className="bg-ink/[0.02] border-t border-ink/10 py-16 sm:py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-8 lg:px-12">
-        <motion.h2
-          {...fadeUp}
+        <h2
           className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight text-foreground text-center mb-12 leading-[1.05]"
         >
           Preguntas frecuentes
-        </motion.h2>
+        </h2>
 
-        <motion.div {...fadeUp}>
+        <div>
           {FAQS.map((faq, i) => (
             <FAQItem
               key={faq.question}
@@ -118,7 +118,7 @@ export default function FAQ() {
               onToggle={() => setOpenIndex((current) => (current === i ? null : i))}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

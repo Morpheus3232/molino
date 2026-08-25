@@ -46,7 +46,7 @@ export default function TodayNumberBanner() {
   return (
     <section className="bg-background border-b border-ink/10">
       <div className="mx-auto max-w-2xl px-4 sm:px-8 py-12 sm:py-16 text-center">
-        <motion.p {...fadeUpDelayed(0)} className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted mb-4">
+        <motion.p {...fadeUpDelayed(0)} className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-4">
           Hoy es día
         </motion.p>
 
@@ -64,7 +64,7 @@ export default function TodayNumberBanner() {
         </motion.p>
 
         <motion.div {...fadeUpDelayed(0.15)} className="mt-8">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted mb-1">Arquetipo del día</p>
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1">Arquetipo del día</p>
           <p className="font-heading text-2xl sm:text-3xl text-foreground tracking-tight">{todayNumber.title}</p>
         </motion.div>
 

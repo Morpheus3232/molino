@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
@@ -30,14 +29,8 @@ export default function CTASection() {
   return (
     <section className="relative py-24 sm:py-40 px-4 sm:px-8 bg-ink">
       <div className="relative z-10 max-w-3xl mx-auto text-center">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
-          className="space-y-10"
-        >
-          <motion.div variants={itemVariants} className="space-y-6">
+        <div className="space-y-10">
+          <div className="space-y-6">
             <p className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-paper/50">
               <span className="inline-block h-px w-8 bg-accent/40" aria-hidden="true" />
               Empezá ahora
@@ -62,9 +55,9 @@ export default function CTASection() {
                 ? "Volvé cuando quieras a tu lectura completa, ciclos y decisiones."
                 : "Toma 30 segundos. Sin registro. Tu fecha no se envía a ningún servidor."}
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div variants={itemVariants}>
+          <div>
             <Link
               href={isReturningUser ? "/profile" : "#mapa-form"}
               className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.1em] text-lg transition-colors duration-200 hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -72,9 +65,9 @@ export default function CTASection() {
               {isReturningUser ? "Ver mi mapa" : "Descubrir"}
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.p variants={itemVariants} className="font-mono text-xs text-paper/50 tracking-wide">
+          <p className="font-mono text-xs text-paper/50 tracking-wide">
             {isReturningUser ? (
               <>
                 <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
@@ -89,8 +82,8 @@ export default function CTASection() {
                 </Link>
               </>
             )}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
       </div>
     </section>
   );

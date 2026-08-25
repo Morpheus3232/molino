@@ -76,7 +76,7 @@ export default function LocalizedAffinityHub({ catalog }: LocalizedAffinityHubPr
   return (
     <section className="mt-12 pt-8 border-t border-ink/10">
       <motion.div {...fadeUp} className="mb-6">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-2">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold mb-2">
           Exploración Localizada
         </p>
         <h2 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
@@ -115,7 +115,7 @@ export default function LocalizedAffinityHub({ catalog }: LocalizedAffinityHubPr
                         <p className="text-xs font-medium text-foreground group-hover:text-accent transition-colors truncate">
                           {e.name}
                         </p>
-                        <p className="text-[10px] text-muted">{e.country}</p>
+                        <p className="text-xs text-muted">{e.country}</p>
                       </div>
                     </Link>
                   ))}

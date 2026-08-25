@@ -48,7 +48,7 @@ export default function SocialProofSection() {
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <motion.div {...fadeUp} className="text-center mb-12">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold mb-3">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold mb-3">
             Confianza Verificada
           </p>
           <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-4">
@@ -103,8 +103,8 @@ export default function SocialProofSection() {
                 </div>
                 <div>
                   <p className="text-xs font-heading font-bold text-foreground">{testimonial.author}</p>
-                  <p className="text-[10px] text-muted">{testimonial.role}</p>
-                  <p className="text-[10px] text-muted/60">{testimonial.location}</p>
+                  <p className="text-xs text-muted">{testimonial.role}</p>
+                  <p className="text-xs text-muted/60">{testimonial.location}</p>
                 </div>
               </div>
             </motion.div>
@@ -119,17 +119,17 @@ export default function SocialProofSection() {
           <div>
             <p className="text-lg mb-1">🔒</p>
             <p className="text-xs sm:text-sm font-semibold text-foreground">Privacidad Radical</p>
-            <p className="text-[10px] sm:text-xs text-muted mt-1">Cálculo 100% local. Tus datos son tuyos.</p>
+            <p className="text-xs sm:text-xs text-muted mt-1">Cálculo 100% local. Tus datos son tuyos.</p>
           </div>
           <div>
             <p className="text-lg mb-1">📖</p>
             <p className="text-xs sm:text-sm font-semibold text-foreground">Código Abierto</p>
-            <p className="text-[10px] sm:text-xs text-muted mt-1">Audita las fórmulas en GitHub.</p>
+            <p className="text-xs sm:text-xs text-muted mt-1">Audita las fórmulas en GitHub.</p>
           </div>
           <div>
             <p className="text-lg mb-1">🚫</p>
             <p className="text-xs sm:text-sm font-semibold text-foreground">Sin Ads</p>
-            <p className="text-[10px] sm:text-xs text-muted mt-1">Sin tracking, sin venderte a terceros.</p>
+            <p className="text-xs sm:text-xs text-muted mt-1">Sin tracking, sin venderte a terceros.</p>
           </div>
         </motion.div>
       </div>

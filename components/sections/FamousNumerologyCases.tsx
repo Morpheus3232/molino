@@ -86,7 +86,7 @@ export default function FamousNumerologyCases() {
         <motion.div {...fadeUp} className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 mb-4">
             <TrendingUp className="w-4 h-4 text-accent" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent font-bold">
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-bold">
               Casos reales en números
             </span>
           </div>

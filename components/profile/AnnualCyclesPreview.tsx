@@ -41,7 +41,7 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
   }
 
   return (
-    <div className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6">
+    <div className="rounded-md border border-ink/10 bg-card p-6 sm:p-8 space-y-6">
       <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
         <div className="w-8 h-8 rounded-xl bg-accent/10 text-accent flex items-center justify-center">
           <CalendarRange className="w-4 h-4" />
@@ -60,7 +60,7 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
         {cycles.map((c) => (
           <div
             key={c.year}
-            className="rounded-2xl border border-ink/5 bg-background p-3 sm:p-4 flex flex-col justify-between hover:border-accent/30 transition-all"
+            className="rounded-md border border-ink/5 bg-background p-3 sm:p-4 flex flex-col justify-between hover:border-accent/30 transition-all"
           >
             <div>
               <div className="flex items-center justify-between text-xs text-muted font-mono mb-2">
@@ -72,11 +72,11 @@ export default function AnnualCyclesPreview({ profile }: AnnualCyclesPreviewProp
                 <span className="font-display text-xl text-foreground font-bold">
                   {c.personalYear}
                 </span>
-                <span className="font-mono text-[10px] text-muted">Año personal</span>
+                <span className="font-mono text-xs text-muted">Año personal</span>
               </div>
             </div>
 
-            <p className="mt-3 pt-2.5 border-t border-ink/5 text-[11px] text-muted leading-snug">
+            <p className="mt-3 pt-2.5 border-t border-ink/5 text-xs text-muted leading-snug">
               {c.cycleLabel}
             </p>
           </div>

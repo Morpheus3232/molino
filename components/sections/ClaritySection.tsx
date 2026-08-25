@@ -1,19 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import {
-  Search,
   Shield,
   Zap,
   CheckCircle2,
   ArrowRight,
   SlidersHorizontal,
-  Lock,
   Binary,
-  Compass,
-  Cpu,
-  Layers
 } from "lucide-react";
 import Link from "next/link";
 
@@ -75,46 +69,29 @@ const pillars = [
 ];
 
 export default function ClaritySection() {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-
   return (
     <section className="relative py-24 sm:py-36 px-4 sm:px-8 bg-background border-b border-border">
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6"
-          >
+          <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">
             <SlidersHorizontal className="w-3.5 h-3.5" aria-hidden="true" />
             El método
-          </motion.p>
+          </p>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
+          <h2
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
           >
             Tu inteligencia personal, con método visible.
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="text-base sm:text-lg text-muted leading-relaxed font-normal"
-          >
+          <p className="text-base sm:text-lg text-muted leading-relaxed font-normal">
             Estructura patrones a partir de tu fecha con métodos verificables. No es adivinación: es información para pensar tus propias decisiones.
-          </motion.p>
+          </p>
         </div>
 
         {/* ── El método, hecho visible ── */}
-        <div className="rounded-3xl border border-border bg-card overflow-hidden mb-16">
+        <div className="rounded-md border border-border bg-card overflow-hidden mb-16">
           <div className="p-6 sm:p-8 border-b border-border/80 flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 text-accent shrink-0" aria-hidden="true" />
             <div>
@@ -131,13 +108,9 @@ export default function ClaritySection() {
             {methodRows.map((row, idx) => (
               <div
                 key={idx}
-                onMouseEnter={() => setHoveredIdx(idx)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                className={`p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-2 sm:gap-8 transition-colors duration-200 ${
-                  hoveredIdx === idx ? "bg-ink/[0.02]" : ""
-                }`}
+                className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-2 sm:gap-8 transition-colors duration-200 hover:bg-ink/[0.02]"
               >
-                <span className="font-mono text-[10px] uppercase tracking-wider text-muted font-bold block sm:pt-1">
+                <span className="font-mono text-xs uppercase tracking-wider text-muted font-bold block sm:pt-1">
                   {row.category}
                 </span>
                 <div className="space-y-2">
@@ -155,7 +128,7 @@ export default function ClaritySection() {
 
         {/* ── Tres pilares — lista plana, sin cards ── */}
         <div className="mb-16">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted font-bold block mb-8 text-center">
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted font-bold block mb-8 text-center">
             Arquitectura del método
           </span>
 

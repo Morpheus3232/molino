@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { FileText, Calendar, Users, ArrowRight } from "lucide-react";
-import { fadeUp } from "@/lib/utils/motion";
 
 const PREMIUM_PERKS = [
   {
@@ -32,14 +30,13 @@ export default function PremiumTeaser() {
             Una capa más profunda de lectura
           </p>
 
-          <motion.h2
-            {...fadeUp}
+          <h2
             className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground font-bold tracking-tight leading-[1.08]"
           >
             Ver tu mapa es gratis.
             <br />
             <span className="text-accent">Entenderlo es Premium.</span>
-          </motion.h2>
+          </h2>
 
           <p className="text-sm sm:text-base text-muted mt-4 leading-relaxed">
             Gratis: numerología, astrología y zodíaco chino cruzados, con su fórmula visible.
@@ -49,15 +46,10 @@ export default function PremiumTeaser() {
 
         {/* 3 capacidades adicionales — lista plana */}
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-ink/10 border-y border-ink/10 mb-10">
-          {PREMIUM_PERKS.map((perk, i) => {
+          {PREMIUM_PERKS.map((perk) => {
             const Icon = perk.icon;
             return (
-              <motion.div
-                key={perk.title}
-                {...fadeUp}
-                style={{ transitionDelay: `${i * 0.08}s` }}
-                className="p-6 md:px-8 space-y-3"
-              >
+              <div key={perk.title} className="p-6 md:px-8 space-y-3">
                 <Icon className="w-5 h-5 text-accent" aria-hidden="true" />
                 <h3 className="font-heading text-base font-bold text-foreground">
                   {perk.title}
@@ -65,7 +57,7 @@ export default function PremiumTeaser() {
                 <p className="text-xs text-muted leading-relaxed">
                   {perk.desc}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>
