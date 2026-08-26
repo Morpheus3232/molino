@@ -263,22 +263,24 @@ export default function LecturaAfinidadesFull({
               onClick={() => handleSelectRelation(relKey)}
               className={`flex items-center justify-between p-3.5 rounded-xl text-left transition-all min-h-[48px] ${
                 isSelected
-                  ? "bg-card border border-ink/15 text-foreground shadow-xs font-semibold"
-                  : "text-muted hover:text-foreground hover:bg-ink/[0.03] border border-transparent"
+                  ? "bg-foreground text-background shadow-md font-bold ring-1 ring-foreground/20"
+                  : "bg-transparent text-muted hover:text-foreground/70 hover:bg-ink/[0.04]"
               }`}
             >
               <div className="min-w-0 pr-2">
                 <span className="block text-xs sm:text-sm tracking-tight truncate">
                   {cfg.label}
                 </span>
-                <span className="font-mono text-[10px] text-muted block mt-0.5 truncate">
+                <span className={`font-mono text-[10px] block mt-0.5 truncate ${
+                  isSelected ? "text-background/70" : "text-muted"
+                }`}>
                   {cfg.tag}
                 </span>
               </div>
               <span
                 className={`font-mono text-[11px] px-2 py-0.5 rounded-md shrink-0 border ${
                   isSelected
-                    ? "bg-accent/10 border-accent/30 text-accent font-bold"
+                    ? "bg-background/20 border-background/30 text-background font-bold"
                     : "bg-ink/5 border-ink/10 text-muted"
                 }`}
               >
