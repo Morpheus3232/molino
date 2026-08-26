@@ -411,9 +411,9 @@ export default function UniversityHeader() {
                 {lecturaHref && (
                   <Link
                     href={lecturaHref}
-                    className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-gold/40 text-gold hover:border-gold hover:bg-gold/[0.08] transition-colors"
+                    className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors"
                   >
-                    Lectura
+                    Mi Lectura
                   </Link>
                 )}
                 <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={actionClass} />
@@ -476,10 +476,10 @@ export default function UniversityHeader() {
                     {lecturaHref && (
                       <Link
                         href={lecturaHref}
-                        className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-gold/80 hover:text-gold"
+                        className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-accent/80 hover:text-accent"
                         onClick={() => setMenuOpen(false)}
                       >
-                        Lectura
+                        Mi Lectura
                       </Link>
                     )}
                     <div className="px-3 py-1.5">
