@@ -8,21 +8,17 @@ interface MarqueeSegment {
 }
 
 const MARQUEE_SEGMENTS: MarqueeSegment[] = [
-  { text: "EL CONSTRUCTOR", isAccent: true },
+  { text: "TE AYUDAMOS A ENTENDER DE DONDE VIENE EL VIENTO", isAccent: true },
   { text: "·" },
-  { text: "EL CAMALEÓN", isAccent: true },
+  { text: "MOLINO.APP", isAccent: false },
   { text: "·" },
-  { text: "CAMINO DE VIDA 4", isAccent: false },
+  { text: "TU MAPA PERSONAL DE AUTOCONOCIMIENTO", isAccent: false },
   { text: "·" },
-  { text: "CICLO DE CIMIENTO", isAccent: false },
+  { text: "TE AYUDAMOS A ENTENDER DE DONDE VIENE EL VIENTO", isAccent: true },
   { text: "·" },
-  { text: "SOL EN LEO", isAccent: false },
+  { text: "MOLINO.APP", isAccent: false },
   { text: "·" },
-  { text: "AÑO PERSONAL 4", isAccent: false },
-  { text: "·" },
-  { text: "ZODÍACO CHINO TIGRE", isAccent: true },
-  { text: "·" },
-  { text: "TU PATRÓN ES ÚNICO", isAccent: true },
+  { text: "TU MAPA PERSONAL DE AUTOCONOCIMIENTO", isAccent: false },
   { text: "·" },
 ];
 
