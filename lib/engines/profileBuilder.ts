@@ -1,7 +1,7 @@
 import {
   calculateLifePath,
   calculateExpressionNumber,
-  calculateSoulNumber,
+  calculateBirthDayReduction,
   calculateBirthDayNumber,
   calculateLuckyNumber,
 } from "./numerologyEngine";
@@ -69,8 +69,8 @@ export function calculateUserProfileData(
 
     // Numerology Facts
     lifePath,
+    birthDay: calculateBirthDayReduction(birthDay),
     expressionNumber: name ? calculateExpressionNumber(name) : undefined,
-    soulNumber: name ? calculateSoulNumber(name) : undefined,
     personalityNumber: calculateBirthDayNumber(birthDay),
     luckyNumber,
 

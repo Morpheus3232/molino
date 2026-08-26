@@ -3,10 +3,10 @@ import NumerologiaContent from "./NumerologiaContent";
 
 export const metadata = createRouteMetadata({
   title: "Numerología — El lenguaje simbólico de los números",
-  description: "Aprendé sobre numerología: Camino de Vida, Expresión, Alma, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
+  description: "Aprendé sobre numerología: Camino de Vida, Expresión, Personalidad, números maestros y el sistema pitagórico. Una guía completa para entender tu mapa numérico.",
   path: "/conocimiento/numerologia",
   ogTitle: "Numerología",
-  ogDescription: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality y números maestros.",
+  ogDescription: "Aprendé sobre numerología: Camino de Vida, Expresión, Personalidad y números maestros.",
 });
 
 const jsonLd = [
@@ -14,7 +14,7 @@ const jsonLd = [
     "@context": "https://schema.org",
     "@type": "Article",
     headline: "Numerología — El lenguaje simbólico de los números",
-    description: "Aprendé sobre numerología: Camino de Vida, Expression, Soul, Personality, números maestros y el sistema pitagórico.",
+    description: "Aprendé sobre numerología: Camino de Vida, Expresión, Personalidad, números maestros y el sistema pitagórico.",
     author: { "@type": "Organization", name: "Molino" },
     publisher: { "@type": "Organization", name: "Molino" },
     url: siteUrl("/conocimiento/numerologia"),

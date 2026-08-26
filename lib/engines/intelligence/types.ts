@@ -21,7 +21,6 @@ export interface MolinoContext {
     chineseZodiac: string;
     chineseElement: string;
     expressionNumber?: number;
-    soulNumber?: number;
     personalityNumber?: number;
     personalYear: number;
     personalMonth: number;
@@ -30,7 +29,6 @@ export interface MolinoContext {
   numerology: {
     lifePath: number;
     expressionNumber?: number;
-    soulNumber?: number;
     personalityNumber?: number;
     archetype: string;
     archetypeDescription: string;

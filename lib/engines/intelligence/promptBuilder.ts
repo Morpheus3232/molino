@@ -68,7 +68,6 @@ CONTEXTO DEL USUARIO:
 - Año personal: ${cycles.personalYear}
 - Mes personal: ${cycles.personalMonth}
 ${numerology.expressionNumber ? `- Expresión: ${numerology.expressionNumber}` : ''}
-${numerology.soulNumber ? `- Alma: ${numerology.soulNumber}` : ''}
 ${numerology.personalityNumber ? `- Personalidad: ${numerology.personalityNumber} (en Molino se calcula solo desde el día de nacimiento, no desde el nombre; para el 9 representa capacidad de adaptación — no uses el significado clásico de "número de personalidad" por consonantes)` : ''}
 </user_context>`;
 
@@ -123,7 +122,6 @@ SEGURIDAD:
       const personalCode = buildPersonalCode({
         lifePath: userProfile.lifePath,
         expressionNumber: numerology.expressionNumber,
-        soulNumber: numerology.soulNumber,
         personalityNumber: numerology.personalityNumber,
       } as UserProfile);
       const animal = chineseZodiac.animal as Animal;
@@ -141,7 +139,6 @@ ${baseContext}
 CÓDIGO PERSONAL (numerología completa):
 - Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
 ${personalCode.expression.number ? `- Expresión ${personalCode.expression.number} — ${personalCode.expression.name}: ${personalCode.expression.meaning}` : ''}
-${personalCode.soul.number ? `- Alma ${personalCode.soul.number} — ${personalCode.soul.name}: ${personalCode.soul.meaning}` : ''}
 ${buildMasterNumbersBlock(numerology)}
 ${relationsBlock}
 ${dailyEnergy ? `MOMENTO ACTUAL:
@@ -380,7 +377,6 @@ Generá una respuesta JSON con:
       const personalCode = buildPersonalCode({
         lifePath: userProfile.lifePath,
         expressionNumber: numerology.expressionNumber,
-        soulNumber: numerology.soulNumber,
         personalityNumber: numerology.personalityNumber,
       } as UserProfile);
       const patterns = buildPatterns({

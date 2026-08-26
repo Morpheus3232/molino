@@ -118,7 +118,7 @@
 │  ┌─────────────────────────────┐    │
 │  │ 🎯 IDENTIDAD                │    │
 │  │ Tu código natal: LifePath,  │    │
-│  │ Expresión, Alma, Animal,    │    │
+│  │ Expresión, Animal,               │    │
 │  │ Elemento, Ciclo actual      │    │
 │  └─────────────────────────────┘    │
 │  ┌─────────────────────────────┐    │
@@ -230,7 +230,7 @@ PASO 1: ENTRADA          PASO 2: ANIMACIÓN       PASO 3: NOMBRE (OPC)     REVEA
 
 #### Paso 3: Nombre (Opcional) — "¿Cómo te gustaría que te llamemos?"
 
-- **Explicación clara**: "Tu nombre desbloquea: Expresión, Alma, Personalidad (numerología completa). Es opcional."
+- **Explicación clara**: "Tu nombre desbloquea: Expresión (numerología complementaria). Es opcional."
 - **Input simple**, `font-sans text-lg`, placeholder "Tu nombre"
 - **Dos botones**: `[SALTAR]` (ghost) · `[CONTINUAR]` (primary)
 - **Skip sin culpa** — el mapa base ya está listo
@@ -252,7 +252,7 @@ PASO 1: ENTRADA          PASO 2: ANIMACIÓN       PASO 3: NOMBRE (OPC)     REVEA
 
 | Mostrar en Reveal (Gratis, Inmediato) | Reservar para Profile (Profundidad) |
 |----------------------------------------|--------------------------------------|
-| Animal + Elemento + Año | Expresión, Alma, Personalidad (requiere nombre) |
+| Animal + Elemento + Año | Expresión (requiere nombre) |
 | Life Path + 1 frase esencial | Síntesis cross-system, patrones convergentes |
 | Birthday Number + don | Affinidades, Ecosistema, Contraste, Círculo |
 | Ciclo Actual (Año/Mes/Día) + tema | Timeline ±5 años, Próximo movimiento |
@@ -294,7 +294,7 @@ PASO 1: ENTRADA          PASO 2: ANIMACIÓN       PASO 3: NOMBRE (OPC)     REVEA
 
 | Sección | Contenido | Estado | Prioridad |
 |---------|-----------|--------|-----------|
-| **Código Natal** | LifePath, Expression, Soul, Personality, Birthday | Expandible | Siempre visible |
+| **Código Natal** | LifePath, Expression, Personality, Birthday | Expandible | Siempre visible |
 | **Zodíaco Chino** | Animal, Elemento, Yin/Yang, Animal interno (mes), Secreto (hora) | Expandible | Siempre visible |
 | **Síntesis Cross-System** | Cómo dialogan numerología + zodiaco + Wu Xing | Collapsed | Click para ver |
 | **Patrones Personales** | Convergencias detectadas (convergentEngine) | Collapsed | Click para ver |

@@ -18,7 +18,6 @@ export const BASE_CONTEXT: MolinoContext = {
     chineseZodiac: 'Caballo',
     chineseElement: 'Fuego',
     expressionNumber: 3,
-    soulNumber: 9,
     personalityNumber: 5,
     personalYear: 3,
     personalMonth: 7,
@@ -27,7 +26,6 @@ export const BASE_CONTEXT: MolinoContext = {
   numerology: {
     lifePath: 7,
     expressionNumber: 3,
-    soulNumber: 9,
     personalityNumber: 5,
     archetype: 'El Buscador',
     archetypeDescription: 'Tu arquetipo se define por introspección, sabiduría, análisis.',

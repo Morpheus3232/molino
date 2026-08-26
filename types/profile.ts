@@ -1,6 +1,9 @@
 import type { MasterNumber } from "@/lib/data/facts/numerology-facts";
 import type { WesternSign, WesternElement, Modality } from "@/lib/data/facts/astrology-facts";
 import type { ChineseAnimal, ChineseElement } from "@/lib/data/facts/chinese-zodiac-facts";
+import type { BirthDayReduction } from "@/lib/engines/numerologyEngine";
+
+export type { BirthDayReduction } from "@/lib/engines/numerologyEngine";
 
 /**
  * Pure, 100% serializable factual user profile data.
@@ -23,8 +26,8 @@ export interface UserProfileData {
 
   // 1. Numerology Facts
   lifePath: number; // 1-9, 11, 22, 33
+  birthDay?: BirthDayReduction;
   expressionNumber?: number;
-  soulNumber?: number;
   personalityNumber?: number;
   luckyNumber: number;
 

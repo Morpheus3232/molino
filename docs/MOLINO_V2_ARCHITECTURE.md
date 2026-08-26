@@ -24,7 +24,7 @@
 
 ### Módulo 3 — Personal Intelligence Profile (`/profile`)
 Core Identity:
-- Life Path, Expression, Soul, Personality
+- Life Path, Expression, Personality
 - Arquetipo principal
 - Signo solar, zodiaco chino, elemento, modalidad
 - Keywords, fortalezas, desafíos
@@ -105,7 +105,6 @@ interface UserProfile {
     challenges: string[];
   };
   expressionNumber?: number;
-  soulNumber?: number;
   personalityNumber?: number;
   objectives?: string[];
 }

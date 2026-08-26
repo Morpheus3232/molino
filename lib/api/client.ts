@@ -9,7 +9,6 @@ export interface SynthesisResult {
   personalCode: {
     lifePath: { number: number; name: string; meaning: string };
     expression?: { number: number; name: string; meaning: string };
-    soul?: { number: number; name: string; meaning: string };
     personality?: { number: number; name: string; meaning: string };
   };
   patterns: Array<{

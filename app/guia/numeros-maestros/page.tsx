@@ -3,7 +3,7 @@ import GuiaContent from "./GuiaContent";
 
 export const metadata = createRouteMetadata({
   title: "Números Maestros 11, 22, 33 — Significado en numerología",
-  description: "Qué son los números maestros 11, 22 y 33, por qué no se reducen como el resto y cómo identificarlos en tu Camino de Vida, Expresión o número de Alma.",
+  description: "Qué son los números maestros 11, 22 y 33, por qué no se reducen como el resto y cómo identificarlos en tu Camino de Vida, Expresión o Personalidad.",
   path: "/guia/numeros-maestros",
   ogTitle: "Números Maestros 11, 22, 33 | Guía",
   ogDescription: "Las frecuencias que no se reducen: qué significan el 11, el 22 y el 33 en numerología y cómo identificarlos en tu mapa.",

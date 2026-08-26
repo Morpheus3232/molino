@@ -28,7 +28,6 @@ const TEST_PROFILE: UserProfile = {
   archetype: "El Nómada",
   archetypeInfo: { name: "El Nómada", color: "#C49A2A", description: "", quote: "", keywords: [], strengths: [], challenges: [] },
   expressionNumber: 3,
-  soulNumber: 7,
   personalityNumber: 5,
   cycles: { personalYear: 3, personalMonth: 7, personalDay: 5 },
   recommendations: { strengths: [], challenges: [], practices: [] },

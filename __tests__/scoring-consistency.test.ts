@@ -39,7 +39,6 @@ const mockProfile = {
   archetype: "El Líder",
   archetypeInfo: { name: "El Líder", color: "#D4A843", description: "", quote: "", keywords: [], strengths: [], challenges: [] },
   expressionNumber: 3,
-  soulNumber: 7,
   personalityNumber: 5,
   cycles: { personalYear: 3, personalMonth: 7, personalDay: 5 },
   recommendations: { strengths: [], challenges: [], practices: [] },

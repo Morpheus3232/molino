@@ -197,7 +197,7 @@ citados abajo); resumen ejecutivo del tramo de la tarde en
   intermedios eliminado.
 - **Números Maestros (11/22/33)**: `getMasterNumbers()`/
   `MASTER_POSITION_MEANINGS` en `lib/engines/numerologyEngine.ts` —
-  detecta maestros en Life Path/Expresión/Alma/Personalidad (no solo Life
+  detecta maestros en Life Path/Expresión/Personalidad (no solo Life
   Path como antes) y da significado específico por posición. Badge en
   `ProfileSummaryTable.tsx`, sección gratis en `LecturaProfunda.tsx`
   (capítulo 01, no premium — el contenido es determinista), instrucción

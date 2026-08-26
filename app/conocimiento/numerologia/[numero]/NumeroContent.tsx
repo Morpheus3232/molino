@@ -211,7 +211,7 @@ export default function NumeroContent({ num }: { num: (typeof NUMBERS)[number] |
           <div className="p-6 border border-ink/10">
             <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-2">Generá tu mapa</p>
             <p className="text-sm text-muted leading-relaxed mb-3">
-              Descubrí todos tus números: Camino de Vida, Expresión, Alma y Personalidad.
+              Descubrí tus números: Camino de Vida, Expresión y Personalidad.
             </p>
             <Link href="/herramientas/camino-de-vida" className="text-sm font-medium text-accent hover:underline">
               Ir a la calculadora →

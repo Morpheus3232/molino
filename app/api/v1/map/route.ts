@@ -46,7 +46,6 @@ export async function GET(request: Request) {
           lifePath: profile.lifePath,
           luckyNumber: profile.luckyNumber,
           expressionNumber: profile.expressionNumber,
-          soulNumber: profile.soulNumber,
           personalityNumber: profile.personalityNumber,
           archetype: profile.archetype,
         },

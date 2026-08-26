@@ -50,7 +50,6 @@ export function generateFallbackInterpretation(
       const personalCode = buildPersonalCode({
         lifePath: userProfile.lifePath,
         expressionNumber: numerology.expressionNumber,
-        soulNumber: numerology.soulNumber,
         personalityNumber: numerology.personalityNumber,
       } as UserProfile);
 

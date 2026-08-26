@@ -81,7 +81,6 @@ export interface ShareableProfileData {
   c: string;      // chineseZodiac
   a: string;      // archetype
   en?: number;    // expressionNumber
-  sn?: number;    // soulNumber
   pn?: number;    // personalityNumber
 }
 
@@ -114,7 +113,6 @@ export function encodeProfileData(profile: UserProfile): string {
     a: profile.archetype || (profile.archetypeInfo?.name) || '',
   };
   if (profile.expressionNumber) data.en = profile.expressionNumber;
-  if (profile.soulNumber) data.sn = profile.soulNumber;
   if (profile.personalityNumber) data.pn = profile.personalityNumber;
 
   const json = JSON.stringify(data);
@@ -166,7 +164,6 @@ export function profileFromShareData(data: ShareableProfileData): Partial<UserPr
     chineseZodiac: data.c === "Conejo" ? "Gato" : data.c,
     archetype: data.a,
     expressionNumber: data.en,
-    soulNumber: data.sn,
     personalityNumber: data.pn,
   };
 }

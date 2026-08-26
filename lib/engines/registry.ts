@@ -21,7 +21,7 @@ import { analyzeTiming, type TimingResult } from './timingEngine';
 import { analyzeDecision, type DecisionResult, type DecisionCategory } from './decisionsEngine';
 import { buildConvergence, type Convergence } from './convergentEngine';
 import { buildPersonalCode, buildPatterns, buildTensions, buildRules, type PersonalCode, type PatternInsight, type TensionInsight, type RuleInsight } from './synthesisEngine';
-import { calculateLifePath, calculateExpressionNumber, calculateSoulNumber } from './numerologyEngine';
+import { calculateLifePath, calculateExpressionNumber } from './numerologyEngine';
 import { getSunSign, getSunSignInfo, getMoonSign, getElement, getModality } from './astrologyEngine';
 import { getChineseZodiac, getChineseZodiacInfo } from './chineseZodiacEngine';
 import type { TimingIntention } from './timingEngine';
@@ -65,7 +65,7 @@ const profileEngine: Engine = {
   },
 };
 
-/** Numerology facts: life path, expression, soul. */
+/** Numerology facts: life path, expression. */
 const numerologyEngine: Engine = {
   kind: 'numerology',
   label: 'Numerología',
@@ -74,7 +74,6 @@ const numerologyEngine: Engine = {
     return {
       lifePath: calculateLifePath(birthDate),
       expressionNumber: name ? calculateExpressionNumber(name) : undefined,
-      soulNumber: name ? calculateSoulNumber(name) : undefined,
     };
   },
 };

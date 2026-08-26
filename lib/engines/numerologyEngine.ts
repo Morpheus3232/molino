@@ -1,9 +1,16 @@
 import type { UserProfile } from "@/types/user";
 
+export interface BirthDayReduction {
+  readonly original: number;
+  readonly reductionPath: readonly number[];
+  readonly finalValue: number;
+  readonly isMaster: boolean;
+}
+
 export interface NumerologyProfile {
   lifePath: number;
+  birthDayReduction?: BirthDayReduction;
   expressionNumber?: number;
-  soulNumber?: number;
   personalityNumber?: number;
   archetype: string;
   archetypeKeywords: string[];
@@ -141,79 +148,66 @@ export function calculateExpressionNumber(name: string): number {
   return sum;
 }
 
-export function calculateSoulNumber(name: string): number {
-  const cleanName = name.toUpperCase().replace(/[^A-Z]/g, '');
-  const vowels = ['A', 'E', 'I', 'O', 'U'];
-  const values: Record<string, number> = {
-    'A': 1, 'E': 5, 'I': 9, 'O': 6, 'U': 3
-  };
-
-  let sum = 0;
-  for (const char of cleanName) {
-    if (vowels.includes(char)) {
-      sum += values[char] || 0;
-    }
+/**
+ * Calcula la reducción simbólica del día de nacimiento (1-31).
+ * En Molino, la Personalidad se obtiene EXCLUSIVAMENTE a partir del día de nacimiento.
+ *
+ * Preserva números maestros (11, 22, 33) y registra todos los pasos de reducción
+ * realizados (reductionPath).
+ */
+export function calculateBirthDayReduction(day: number): BirthDayReduction {
+  if (!Number.isFinite(day) || day < 1 || day > 31) {
+    return {
+      original: day || 0,
+      reductionPath: [],
+      finalValue: 0,
+      isMaster: false,
+    };
   }
 
-  if (sum === 0) return 0;
-  if (sum === 11 || sum === 22 || sum === 33) return sum;
+  const reductionPath: number[] = [day];
 
-  while (sum > 9) {
+  if (day === 11 || day === 22 || day === 33) {
+    return {
+      original: day,
+      reductionPath,
+      finalValue: day,
+      isMaster: true,
+    };
+  }
+
+  let current = day;
+  while (current > 9) {
     let temp = 0;
-    for (const char of String(sum)) {
+    for (const char of String(current)) {
       temp += parseInt(char, 10);
     }
-    sum = temp;
-    if (sum === 11 || sum === 22 || sum === 33) return sum;
+    reductionPath.push(temp);
+    current = temp;
+    if (current === 11 || current === 22 || current === 33) break;
   }
 
-  return sum;
-}
-
-export function calculatePersonalityNumber(name: string): number {
-  const cleanName = name.toUpperCase().replace(/[^A-Z]/g, '');
-  const vowels = ['A', 'E', 'I', 'O', 'U'];
-  const values: Record<string, number> = {
-    'B': 2, 'C': 3, 'D': 4, 'F': 6, 'G': 7, 'H': 8, 'J': 1, 'K': 2,
-    'L': 3, 'M': 4, 'N': 5, 'P': 7, 'Q': 8, 'R': 9, 'S': 1, 'T': 2,
-    'V': 4, 'W': 5, 'X': 6, 'Y': 7, 'Z': 8
+  return {
+    original: day,
+    reductionPath,
+    finalValue: current,
+    isMaster: current === 11 || current === 22 || current === 33,
   };
-
-  let sum = 0;
-  for (const char of cleanName) {
-    if (!vowels.includes(char)) {
-      sum += values[char] || 0;
-    }
-  }
-
-  if (sum === 0) return 0;
-  if (sum === 11 || sum === 22 || sum === 33) return sum;
-
-  while (sum > 9) {
-    let temp = 0;
-    for (const char of String(sum)) {
-      temp += parseInt(char, 10);
-    }
-    sum = temp;
-    if (sum === 11 || sum === 22 || sum === 33) return sum;
-  }
-
-  return sum;
 }
 
+/**
+ * Devuelve el número de Personalidad / natalicio a partir del día de nacimiento (1-31).
+ */
 export function calculateBirthDayNumber(day: number): number {
-  if (day < 1 || day > 31) return 0;
-  let sum = day;
-  if (sum === 11 || sum === 22 || sum === 33) return sum;
-  while (sum > 9) {
-    let temp = 0;
-    for (const char of String(sum)) {
-      temp += parseInt(char, 10);
-    }
-    sum = temp;
-    if (sum === 11 || sum === 22 || sum === 33) return sum;
-  }
-  return sum;
+  return calculateBirthDayReduction(day).finalValue;
+}
+
+/**
+ * En Molino, el número de Personalidad se deriva EXCLUSIVAMENTE del día de nacimiento,
+ * NUNCA del nombre ni de consonantes.
+ */
+export function calculatePersonalityNumber(day: number): number {
+  return calculateBirthDayNumber(day);
 }
 
 /**
@@ -258,7 +252,7 @@ export function calculateNumerologyCompatibility(lp1: number, lp2: number): numb
 }
 
 export type MasterNumber = 11 | 22 | 33;
-export type MasterPosition = 'lifePath' | 'expression' | 'soul' | 'personality';
+export type MasterPosition = 'lifePath' | 'expression' | 'personality';
 
 export interface MasterNumberHit {
   position: MasterPosition;
@@ -273,18 +267,16 @@ function isMasterNumber(n: number | undefined): n is MasterNumber {
 
 /**
  * Detecta números maestros (11/22/33) ya presentes en un perfil calculado —
- * no recalcula nada, lee los 4 campos numerológicos que profileBuilder.ts
- * ya llena con calculateLifePath/calculateExpressionNumber/calculateSoulNumber/
- * calculateBirthDayNumber (todas preservan maestros en cada paso de
- * reducción, ver esas funciones más arriba en este archivo).
+ * no recalcula nada, lee los campos numerológicos que profileBuilder.ts
+ * ya llena con calculateLifePath/calculateExpressionNumber/calculateBirthDayNumber
+ * (todas preservan maestros en cada paso de reducción).
  */
 export function getMasterNumbers(
-  profile: Pick<UserProfile, 'lifePath' | 'expressionNumber' | 'soulNumber' | 'personalityNumber'>
+  profile: Pick<UserProfile, 'lifePath' | 'expressionNumber' | 'personalityNumber'>
 ): MasterNumberHit[] {
   const hits: MasterNumberHit[] = [];
   if (isMasterNumber(profile.lifePath)) hits.push({ position: 'lifePath', number: profile.lifePath });
   if (isMasterNumber(profile.expressionNumber)) hits.push({ position: 'expression', number: profile.expressionNumber });
-  if (isMasterNumber(profile.soulNumber)) hits.push({ position: 'soul', number: profile.soulNumber });
   if (isMasterNumber(profile.personalityNumber)) hits.push({ position: 'personality', number: profile.personalityNumber });
   return hits;
 }
@@ -292,27 +284,23 @@ export function getMasterNumbers(
 /**
  * Significado específico de cada maestro según en qué número cae — el
  * mismo 11/22/33 se lee distinto si es tu Camino de Vida (la trayectoria
- * completa) que si es tu Alma (motivación interna) o tu Personalidad (cómo
- * te perciben). ARCHETYPE_DESCRIPTIONS ya cubre Life Path con un tratamiento
- * general; esto lo desglosa por posición para las otras tres.
+ * completa) que si es tu Personalidad (cómo te proyectás). ARCHETYPE_DESCRIPTIONS
+ * ya cubre Life Path con un tratamiento general; esto lo desglosa por posición.
  */
 export const MASTER_POSITION_MEANINGS: Record<MasterNumber, Record<MasterPosition, string>> = {
   11: {
     lifePath: 'Tu Camino de Vida no es el del constructor paso a paso: es el del canal. El 11 percibe antes de entender, y esa intuición elevada es tanto tu herramienta más filosa como tu mayor fuente de ansiedad — tenés que aprender a confiar en lo que ves antes de poder explicarlo. Tu trayectoria completa se juega en sostener esa sensibilidad sin que te desborde.',
     expression: 'Cuando te expresás, algo en tu forma de comunicar contagia una claridad que no siempre podés justificar con datos — la gente sale de hablar con vos con una idea más nítida de lo que ya sabía, aunque no sepa por qué. Tu desafío es no diluir esa inspiración en la necesidad de caerle bien a todos.',
-    soul: 'Tu motivación más profunda no es la seguridad ni el reconocimiento: es el contacto con algo que sentís más grande que vos. Buscás sentido antes que resultado, y eso te vuelve inquieto en cualquier rutina que no te conecte con ese propósito trascendente.',
     personality: 'La primera impresión que dejás tiene un matiz que la gente identifica pero le cuesta nombrar — cierta profundidad, cierta sabiduría prestada. Te perciben como alguien que "sabe algo", aunque vos mismo dudes de qué exactamente.',
   },
   22: {
     lifePath: 'Tu Camino de Vida combina la visión del 11 con la capacidad de aterrizarla en algo real y duradero — no soñás en abstracto, soñás en estructuras que otros puedan usar. La presión que sentís no es paranoia: es proporcional a la escala de lo que estás capacitado para construir, y el riesgo real es el perfeccionismo que te frena antes de empezar.',
     expression: 'Te expresás con una practicidad que esconde ambición grande — hablás de planes concretos, pero detrás hay una visión de largo alcance que pocos captan de entrada. Tu forma de comunicar convence porque suena factible, no solo inspirador.',
-    soul: 'Tu alma no busca dejar una idea, busca dejar algo que se pueda tocar: una organización, una obra, un sistema que siga funcionando cuando vos ya no estés. Esa necesidad de legado tangible te da una paciencia poco común para sostener proyectos largos.',
     personality: 'Los demás te ven como alguien confiable con planes serios — no un soñador, sino alguien capaz de ejecutar lo que otros solo imaginan. Esa reputación de "el que sí lo hace" te precede.',
   },
   33: {
     lifePath: 'Tu Camino de Vida está orientado al servicio elevado — no el sacrificio silencioso, sino la capacidad real de sostener a otros sin perderte en el proceso. Combinás la intuición del 11 con la estructura del 22, aplicadas a cuidar en vez de construir. El riesgo es cargar responsabilidades ajenas hasta el agotamiento; el trabajo es aprender a dar sin vaciarte.',
     expression: 'Cuando te comunicás, hay una calidez que sana más que convence — la gente se siente escuchada, no solo persuadida. Tu forma de expresarte funciona mejor cuando viene de un lugar genuino y no de la obligación de estar disponible para todos.',
-    soul: 'Tu alma busca elevar a los que te rodean, casi como una vocación que no elegiste del todo — sentís el malestar ajeno como propio, y encontrás sentido en aliviarlo. La tarea pendiente es no confundir eso con la obligación de resolver todo.',
     personality: 'Te perciben como un refugio — alguien a quien se puede acudir sin miedo al juicio. Esa reputación de compasión genuina atrae a gente que necesita apoyo, a veces más de la que podés sostener.',
   },
 };
@@ -324,6 +312,5 @@ export function getMasterPositionMeaning(number: MasterNumber, position: MasterP
 export const MASTER_POSITION_LABELS_ES: Record<MasterPosition, string> = {
   lifePath: 'Camino de Vida',
   expression: 'Expresión',
-  soul: 'Alma',
   personality: 'Personalidad',
 };

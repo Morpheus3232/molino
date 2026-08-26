@@ -293,10 +293,10 @@ export const SOURCES: BibliotecaSource[] = [
     era: "ancestral",
     description: "Sistema de numerología occidental que asigna valores numéricos a las letras.",
     review: "La numerología pitagórica es el sistema más utilizado en occidente. Aunque se atribuye a Pitágoras, los historiadores modernos no encuentran evidencia directa. Lo que sí es real es el dato matemático de fondo: por el teorema 9 · E + fondo, reducir un número a una cifra (sumar sus dígitos) es equivalente a calcular su resto módulo 9. Es decir, la 'reducción' tradicional coincide exactamente con la aritmética modular de clase 9, una operación que los matemáticos estudiaron formalmente siglos después.",
-    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto. Se usa para calcular Camino de Vida, Expresión, Alma y Personalidad. Su reducción de dígitos es equivalente matemática del resto módulo 9.",
+    summary: "Asigna valores del 1 al 9 a cada letra del alfabeto. Se usa para calcular Expresión (y en combinación con la fecha, Camino de Vida y Personalidad). Su reducción de dígitos es equivalente matemática del resto módulo 9.",
     tags: ["numerología", "historia"],
     metaDescription:
-      "La numerología pitagórica asigna valores del 1 al 9 a las letras del alfabeto. Es la base del cálculo del Camino de Vida, la Expresión, el Alma y la Personalidad en Molino.",
+      "La numerología pitagórica asigna valores del 1 al 9 a las letras del alfabeto. Es la base del cálculo del Camino de Vida, la Expresión y la Personalidad en Molino.",
   },
   {
     id: "nicomaco",
@@ -421,7 +421,7 @@ export const SOURCES: BibliotecaSource[] = [
     era: "moderno",
     description: "Obra que estableció el término y la metodología de la numerología moderna tal como la conocemos.",
     review: "Jordan acuñó la palabra 'numerología' en su sentido actual y sistematizó los cálculos de Camino de Vida y números del nombre. Su obra es moderna, no antigua: el 'mito pitagórico' se superpone a un sistema codificado recién en el siglo XX.",
-    summary: "Define los pasos de reducción y las correspondencias que se usan hoy: Camino de Vida, Expresión, Alma y Personalidad. Es la referencia técnica de la escuela estadounidense de numerología.",
+    summary: "Define los pasos de reducción y las correspondencias que se usan hoy: Camino de Vida, Expresión y Personalidad. Es la referencia técnica de la escuela estadounidense de numerología.",
     tags: ["numerología", "moderno"],
     metaDescription:
       "Dr. Juno Jordan acuñó 'numerología' en su sentido actual y sistematizó en el siglo XX el cálculo de Camino de Vida y números del nombre que la escuela moderna usa hoy.",

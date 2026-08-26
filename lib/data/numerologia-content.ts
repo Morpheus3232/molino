@@ -438,12 +438,6 @@ export const CALCULATIONS = {
     formula: "Asignar valor numérico a cada letra (A=1, B=2, ..., I=9, J=1, etc.) y reducir.",
     caveat: "Se utiliza el nombre completo al nacer. Este cálculo depende de la ortografía exacta del nombre.",
   },
-  soulUrge: {
-    title: "Número del Alma",
-    description: "Usa solo las vocales del nombre completo. Se interpreta como motivación interna.",
-    formula: "Sumar los valores de las vocales del nombre completo y reducir.",
-    caveat: "La vocalización depende del idioma. Molino usa vocales en español: A, E, I, O, U.",
-  },
   personality: {
     title: "Número de Personalidad",
     description: "Se obtiene exclusivamente a partir del día de nacimiento. Representa la energía que proyectas al mundo.",

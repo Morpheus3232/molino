@@ -78,7 +78,6 @@ function assertNotCircular(sources: string[]): void {
 export interface PersonalCode {
   lifePath: { number: number; name: string; meaning: string };
   expression: { number: number; name: string; meaning: string };
-  soul: { number: number; name: string; meaning: string };
   personality: { number: number; name: string; meaning: string };
 }
 
@@ -94,33 +93,32 @@ export interface MomentState {
   focus: string;
 }
 
-function getNumberMeaning(n: number, type: "lifePath" | "expression" | "soul" | "personality"): string {
+function getNumberMeaning(n: number, type: "lifePath" | "expression" | "personality"): string {
   const meanings: Record<number, Record<string, string>> = {
-    1: { lifePath: "Liderazgo e independencia", expression: "Innovación y originalidad", soul: "Necesidad de autonomía", personality: "Impresión de fortaleza" },
-    2: { lifePath: "Diplomacia y cooperación", expression: "Armonía en la expresión", soul: "Deseo de conexión profunda", personality: "Sensibilidad percibida" },
-    3: { lifePath: "Creatividad y comunicación", expression: "Talento artístico", soul: "Alegría como necesidad", personality: "Carisma natural" },
-    4: { lifePath: "Disciplina y estabilidad", expression: "Metodología práctica", soul: "Hogar y seguridad", personality: "Confiabilidad" },
-    5: { lifePath: "Libertad y adaptabilidad", expression: "Versatilidad expresiva", soul: "Aventura y cambio", personality: "Dinamismo" },
-    6: { lifePath: "Responsabilidad y cuidado", expression: "Belleza y armonía", soul: "Amor incondicional", personality: "Calidez" },
-    7: { lifePath: "Búsqueda de verdad", expression: "Análisis profundo", soul: "Retiro y reflexión", personality: "Misterio" },
-    8: { lifePath: "Poder y materialización", expression: "Autoridad natural", soul: "Abundancia", personality: "Presencia" },
-    9: { lifePath: "Compasión y sabiduría", expression: "Humanitarismo", soul: "Servicio al todo", personality: "Capacidad de adaptación" },
-    11: { lifePath: "Intuición elevada", expression: "Inspiración espiritual", soul: "Iluminación personal", personality: "Magnetismo" },
-    22: { lifePath: "Manifestación a gran escala", expression: "Visión constructiva", soul: "Propósito divino", personality: "Grandeza" },
-    33: { lifePath: "Sanación y servicio", expression: "Maestía expresiva", soul: "Amor universal", personality: "Compasión" },
+    1: { lifePath: "Liderazgo e independencia", expression: "Innovación y originalidad", personality: "Impresión de fortaleza" },
+    2: { lifePath: "Diplomacia y cooperación", expression: "Armonía en la expresión", personality: "Sensibilidad percibida" },
+    3: { lifePath: "Creatividad y comunicación", expression: "Talento artístico", personality: "Carisma natural" },
+    4: { lifePath: "Disciplina y estabilidad", expression: "Metodología práctica", personality: "Confiabilidad" },
+    5: { lifePath: "Libertad y adaptabilidad", expression: "Versatilidad expresiva", personality: "Dinamismo" },
+    6: { lifePath: "Responsabilidad y cuidado", expression: "Belleza y armonía", personality: "Calidez" },
+    7: { lifePath: "Búsqueda de verdad", expression: "Análisis profundo", personality: "Misterio" },
+    8: { lifePath: "Poder y materialización", expression: "Autoridad natural", personality: "Presencia" },
+    9: { lifePath: "Compasión y sabiduría", expression: "Humanitarismo", personality: "Capacidad de adaptación" },
+    11: { lifePath: "Intuición elevada", expression: "Inspiración espiritual", personality: "Magnetismo" },
+    22: { lifePath: "Manifestación a gran escala", expression: "Visión constructiva", personality: "Grandeza" },
+    33: { lifePath: "Sanación y servicio", expression: "Maestía expresiva", personality: "Compasión" },
   };
 
   const defaults: Record<string, string> = {
     lifePath: "Energía personal",
     expression: "Expresión vital",
-    soul: "Deseo interior",
     personality: "Impresión externa",
   };
 
   return meanings[n]?.[type] || defaults[type];
 }
 
-function getNumberName(n: number, type: "lifePath" | "expression" | "soul" | "personality"): string {
+function getNumberName(n: number, type: "lifePath" | "expression" | "personality"): string {
   const names: Record<number, string> = {
     1: "El Pionero",
     2: "El Puente",
@@ -290,13 +288,11 @@ function getCycleThemeWords(personalYear: number): string[] {
 export function buildPersonalCode(profile: UserProfile): PersonalCode {
   const lp = safeNumber(profile.lifePath, 1);
   const en = safeNumber(profile.expressionNumber, 0);
-  const sn = safeNumber(profile.soulNumber, 0);
   const pn = safeNumber(profile.personalityNumber, 0);
 
   return {
     lifePath: { number: lp, name: getNumberName(lp, "lifePath"), meaning: getNumberMeaning(lp, "lifePath") },
     expression: { number: en, name: getNumberName(en, "expression"), meaning: getNumberMeaning(en, "expression") },
-    soul: { number: sn, name: getNumberName(sn, "soul"), meaning: getNumberMeaning(sn, "soul") },
     personality: { number: pn, name: getNumberName(pn, "personality"), meaning: getNumberMeaning(pn, "personality") },
   };
 }

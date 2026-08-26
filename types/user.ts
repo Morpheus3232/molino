@@ -1,3 +1,5 @@
+import type { BirthDayReduction } from "@/lib/engines/numerologyEngine";
+
 export interface UserProfile {
   id?: string;
   /** Onboarding solo pide birthDate — name no se colecta y no debería exigirse río abajo (perfil, premium, pagos). */
@@ -40,8 +42,8 @@ export interface UserProfile {
   archetype: string;
   archetypeInfo: any;
   expressionNumber?: number;
-  soulNumber?: number;
   personalityNumber?: number;
+  birthDay?: BirthDayReduction;
   cycles: {
     personalYear: number;
     personalMonth: number;

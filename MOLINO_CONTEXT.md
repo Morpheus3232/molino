@@ -39,7 +39,7 @@
 | Engine | Archivo | Función |
 |--------|---------|---------|
 | chineseZodiacEngine | `lib/engines/chineseZodiacEngine.ts` | Animal zodiacal con CNY real |
-| numerologyEngine | `lib/engines/numerologyEngine.ts` | Life Path, Expression, Soul, Personality |
+| numerologyEngine | `lib/engines/numerologyEngine.ts` | Life Path, Expression, Personality |
 | astrologyEngine | `lib/engines/astrologyEngine.ts` | Sun sign, element, modality |
 | compatibilityEngine | `lib/engines/compatibilityEngine.ts` | Perfil de usuario completo |
 | personalRecommendationEngine | `lib/engines/personalRecommendationEngine.ts` | Recomendaciones 40/30/20/10 |
@@ -92,7 +92,7 @@
 
 - **Paso 1:** Solo fecha de nacimiento (ultra simple)
 - **Paso 2:** Reveal — "Tu mapa inicial" (animal, LifePath, Birthday, Elemento)
-- **Paso 3:** Nombre opcional (desbloquea Expression/Soul/Personality)
+- **Paso 3:** Nombre opcional (desbloquea Expression)
 - **Paso 4:** Complete → redirección a /profile
 
 ### Affinity (`/affinity/*`)

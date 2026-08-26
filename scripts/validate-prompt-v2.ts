@@ -79,7 +79,6 @@ function mk(
       chineseZodiac: animal,
       chineseElement: element,
       expressionNumber: opts.noSecondaryNumbers ? undefined : (lifePath % 9) + 1,
-      soulNumber: opts.noSecondaryNumbers ? undefined : ((lifePath * 2) % 9) + 1,
       personalityNumber: opts.noSecondaryNumbers ? undefined : ((lifePath * 3) % 9) + 1,
       personalYear: (lifePath % 9) + 1,
       personalMonth: (lifePath % 12) + 1,
@@ -88,7 +87,6 @@ function mk(
     numerology: {
       lifePath,
       expressionNumber: opts.noSecondaryNumbers ? undefined : (lifePath % 9) + 1,
-      soulNumber: opts.noSecondaryNumbers ? undefined : ((lifePath * 2) % 9) + 1,
       personalityNumber: opts.noSecondaryNumbers ? undefined : ((lifePath * 3) % 9) + 1,
       archetype,
       archetypeDescription: opts.noArchetypeDescription ? '' : `Tu arquetipo se define por ${strengths.join(', ').toLowerCase() || 'introspección'}.`,

@@ -50,12 +50,10 @@ describe("buildPersonalCode — FASE 1D-2C: Personalidad 9 ≠ Camino de Vida 9"
     expect(code.lifePath.meaning).toBe("Compasión y sabiduría");
   });
 
-  it("Expresión 9 y Alma 9 NO cambian como consecuencia del cambio de Personalidad", () => {
-    const code = buildPersonalCode(profileWith({ expressionNumber: 9, soulNumber: 9 }));
+  it("Expresión 9 NO cambia como consecuencia del cambio de Personalidad", () => {
+    const code = buildPersonalCode(profileWith({ expressionNumber: 9 }));
     expect(code.expression.name).toBe("El Filósofo");
     expect(code.expression.meaning).toBe("Humanitarismo");
-    expect(code.soul.name).toBe("El Filósofo");
-    expect(code.soul.meaning).toBe("Servicio al todo");
   });
 
   it("Personalidad 7 conserva 'Misterio' intacto", () => {

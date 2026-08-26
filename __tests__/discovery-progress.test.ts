@@ -29,7 +29,6 @@ const TEST_PROFILE: UserProfile = {
   archetype: "El Visionario",
   archetypeInfo: { name: "El Visionario", color: "#4A6FA5", description: "", quote: "", keywords: [], strengths: [], challenges: [] },
   expressionNumber: 3,
-  soulNumber: 7,
   personalityNumber: 5,
   cycles: { personalYear: 3, personalMonth: 7, personalDay: 5 },
   recommendations: { strengths: [], challenges: [], practices: [] },

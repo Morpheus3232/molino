@@ -20,7 +20,7 @@ export default function MethodContent() {
             <div className="mb-4">
               <span className="badge">Cálculos base</span>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Camino de Vida (Camino de Vida)</h3>
                 <p className="text-sm text-muted leading-relaxed">
@@ -33,13 +33,6 @@ export default function MethodContent() {
                 <p className="text-sm text-muted leading-relaxed">
                   Se asignan valores a las letras del nombre completo, se suman y se reducen. Refleja la energía que la persona
                   proyecta, no una identidad fija ni un destino cerrado.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground mb-2">Número del Alma</h3>
-                <p className="text-sm text-muted leading-relaxed">
-                  Usa solo las vocales del nombre completo. Se interpreta como motivación interna y deseos centrales,
-                  sin determinar comportamientos ni resultados concretos.
                 </p>
               </div>
               <div>

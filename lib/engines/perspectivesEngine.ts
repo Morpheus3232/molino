@@ -50,7 +50,6 @@ export interface IdentityProfile {
 function getNumerologyPerspective(profile: UserProfile): SystemPerspective {
   const lp = safeNumber(profile.lifePath, 1);
   const en = safeNumber(profile.expressionNumber, 0);
-  const sn = safeNumber(profile.soulNumber, 0);
   const pn = safeNumber(profile.personalityNumber, 0);
   const archetype = ARCHETYPES[lp];
 
@@ -72,12 +71,16 @@ function getNumerologyPerspective(profile: UserProfile): SystemPerspective {
   const keywords = archetype?.keywords || [];
   const description = archetype?.description || `Tu energía principal está orientada hacia ${lpMeanings[lp] || "la acción"}.`;
 
+  const extraKeywords: string[] = [];
+  if (en > 0) extraKeywords.push(`Expresión ${en}`);
+  if (pn > 0) extraKeywords.push(`Personalidad ${pn}`);
+
   return {
     system: "numerologia",
     systemLabel: "Numerología",
     headline: `Camino de vida ${lp}`,
     detail: description,
-    keywords: [...keywords.slice(0, 3), `Expresión ${en}`, `Alma ${sn}`, `Personalidad ${pn}`],
+    keywords: [...keywords.slice(0, 3), ...extraKeywords],
     color: "var(--element-fire)",
     icon: "🔢",
   };

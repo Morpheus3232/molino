@@ -31,7 +31,6 @@ export function buildMolinoContext(
       chineseZodiac: profile.chineseZodiac,
       chineseElement: profile.chineseZodiacInfo?.element || '',
       expressionNumber: profile.expressionNumber,
-      soulNumber: profile.soulNumber,
       personalityNumber: profile.personalityNumber,
       personalYear: profile.cycles?.personalYear || 0,
       personalMonth: profile.cycles?.personalMonth || 0,
@@ -40,7 +39,6 @@ export function buildMolinoContext(
     numerology: {
       lifePath: profile.lifePath,
       expressionNumber: profile.expressionNumber,
-      soulNumber: profile.soulNumber,
       personalityNumber: profile.personalityNumber,
       archetype: profile.archetype,
       // ARCHETYPE_DESCRIPTIONS (numerologyEngine.ts) no tiene un campo

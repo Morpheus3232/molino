@@ -49,7 +49,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: "Equipo Molino",
     intro: [
       "En numerología, tu Número de Vida —también llamado Camino de Vida o Life Path— es el dato más importante de tu mapa. Se deriva únicamente de tu fecha de nacimiento y describe la dirección general que tiende a tomar tu vida: tus dones, tus desafíos y el tipo de experiencias que vas a buscar una y otra vez.",
-      "A diferencia de los números que salen de tu nombre (Expresión, Alma, Personalidad), el Número de Vida no cambia y no depende de cómo te llamen. Es tu punto de partida. Por eso casi toda la numerología moderna —desde las escuelas pitagóricas hasta las aplicaciones actuales— empieza por acá.",
+      "A diferencia de los números que salen de tu nombre (Expresión) o de tu día de nacimiento (Personalidad), el Número de Vida no cambia y no depende de cómo te llamen. Es tu punto de partida. Por eso casi toda la numerología moderna —desde las escuelas pitagóricas hasta las aplicaciones actuales— empieza por acá.",
     ],
     sections: [
       {
@@ -603,23 +603,22 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
       },
       {
-        id: "cuatro-posiciones",
-        heading: "Las cuatro posiciones donde puede aparecer un maestro",
+        id: "posiciones-maestras",
+        heading: "Las posiciones donde puede aparecer un maestro",
         paragraphs: [
-          "Un error común es pensar que los números maestros solo aparecen en el Número de Vida. En realidad pueden salir en cualquiera de los cuatro números centrales de un mapa numerológico, y cada posición describe una parte distinta de la persona.",
+          "Un error común es pensar que los números maestros solo aparecen en el Número de Vida. En realidad pueden salir en las distintas posiciones de un mapa numerológico, y cada posición describe una parte distinta de la persona.",
         ],
         list: [
           "Camino de Vida: la trayectoria completa — se calcula con la fecha de nacimiento entera.",
           "Expresión: cómo te comunicás y te mostrás hacia afuera — se calcula con el nombre completo.",
-          "Alma: tu motivación interna, lo que buscás aunque no lo digas — se calcula con las vocales del nombre.",
-          "Personalidad: la primera impresión que das — se calcula con las consonantes del nombre.",
+          "Personalidad: la impronta de tu día de nacimiento — se calcula reduciendo el día exacto en que naciste.",
         ],
       },
       {
         id: "el-mismo-numero-distinto-lugar",
         heading: "Por qué el mismo maestro se lee distinto según dónde cae",
         paragraphs: [
-          "Un 11 en el Camino de Vida describe una trayectoria completa marcada por la intuición y la sensibilidad elevada — es el eje de toda la vida. El mismo 11 en el número de Alma no describe tu trayectoria: describe una motivación interna, el tipo de sentido que buscás aunque no se note desde afuera. Y en Personalidad describe algo todavía más acotado: la impresión que generás en los primeros minutos de conocer a alguien.",
+          "Un 11 en el Camino de Vida describe una trayectoria completa marcada por la intuición y la sensibilidad elevada — es el eje de toda la vida. En Personalidad describe algo todavía más acotado: la impronta inmediata de cómo te proyectás al interactuar con otros.",
           "Por eso tener un número maestro no es 'tener más energía' en general, sino tenerla concentrada en una zona específica del mapa. Dos personas con un 22 —una en su Camino de Vida, otra en su número de Expresión— comparten el arquetipo del 'constructor a gran escala', pero lo viven en dominios distintos: una como el sentido de toda su vida, la otra como un matiz de cómo se comunica.",
         ],
       },
@@ -639,7 +638,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         q: "¿Puedo tener varios números maestros a la vez?",
-        a: "Sí. Como el Camino de Vida, la Expresión, el Alma y la Personalidad se calculan por separado, es posible (aunque poco común) que más de una posición dé un número maestro. Cada una se lee de forma independiente según lo que representa esa posición.",
+        a: "Sí. Como el Camino de Vida, la Expresión y la Personalidad se calculan por separado, es posible (aunque poco común) que más de una posición dé un número maestro. Cada una se lee de forma independiente según lo que representa esa posición.",
       },
       {
         q: "¿Por qué algunas lecturas también muestran la versión reducida (2, 4 o 6)?",

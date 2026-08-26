@@ -16,7 +16,6 @@ export interface StoredUserProfile {
     notifications: boolean;
     lifePath: number;
     expressionNumber?: number;
-    soulNumber?: number;
     personalityNumber?: number;
     sunSign: string;
     sunSignInfo: {

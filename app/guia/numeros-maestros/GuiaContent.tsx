@@ -30,7 +30,7 @@ export default function GuiaContent() {
               En numerología, cualquier número de varias cifras se reduce sumando sus dígitos hasta llegar a un número del 1 al 9. El 29, por ejemplo, se convierte en 2+9=11 y ese 11 se reduciría a su vez en 1+1=2. Los números maestros son la excepción a esa regla: 11, 22 y 33 no se reducen más allá de esa primera suma, porque se considera que llevan una carga simbólica propia, distinta de la del número al que reducirían (2, 4 y 6 respectivamente).
             </p>
             <p className="mt-4">
-              Aparecen del mismo modo que cualquier otro número del perfil — en el Camino de Vida (a partir de la fecha de nacimiento), en el número de Expresión o el de Alma (a partir del nombre) — solo que, cuando la suma da 11, 22 o 33 antes de reducirse a un dígito, la tradición numerológica los trata como una capa adicional de intensidad sobre el número base.
+              Aparecen del mismo modo que cualquier otro número del perfil — en el Camino de Vida (a partir de la fecha de nacimiento), en el número de Expresión (a partir del nombre) o en Personalidad (a partir del día) — solo que, cuando la suma da 11, 22 o 33 antes de reducirse a un dígito, la tradición numerológica los trata como una capa adicional de intensidad sobre el número base.
             </p>
           </section>
 
@@ -75,7 +75,7 @@ export default function GuiaContent() {
               Cómo identificarlos en tu mapa
             </h2>
             <p>
-              No hace falta calcular nada a mano: si tu Camino de Vida, tu número de Expresión o tu número de Alma dan 11, 22 o 33 antes de reducirse, Molino ya lo señala como tal en tu mapa personal — no lo simplifica a 2, 4 o 6. Si ninguno de tus números da uno de estos tres valores, es simplemente porque tu fecha de nacimiento y tu nombre no producen esa combinación específica; no es ni mejor ni peor que tener un número de un solo dígito, es otro patrón.
+              No hace falta calcular nada a mano: si tu Camino de Vida, tu número de Expresión o tu Personalidad dan 11, 22 o 33 antes de reducirse, Molino ya lo señala como tal en tu mapa personal — no lo simplifica a 2, 4 o 6. Si ninguno de tus números da uno de estos tres valores, es simplemente porque tu fecha de nacimiento y tu nombre no producen esa combinación específica; no es ni mejor ni peor que tener un número de un solo dígito, es otro patrón.
             </p>
           </section>
         </div>

@@ -58,12 +58,12 @@ export const ACADEMY_PIECES: AcademyPiece[] = [
     origin: "Tradición hebrea",
     idea: "Cada letra tiene un valor numérico. El nombre revela la esencia.",
     influence: ["Valores numéricos", "Conexiones simbólicas", "Significado del nombre"],
-    molino: "Influencia en Expression Number y Soul Number",
+    molino: "Influencia en el Número de Expresión",
     metaDescription:
-      "La guematría hebrea asigna un valor numérico a cada letra. Descubrí cómo esta tradición influye en los números de Expresión y Alma que Molino calcula a partir de tu nombre.",
+      "La guematría hebrea asigna un valor numérico a cada letra. Descubrí cómo esta tradición influye en el número de Expresión que Molino calcula a partir de tu nombre.",
     story: [
       "En la tradición hebrea, las letras no solo forman palabras: cada una porta un valor numérico y un peso simbólico. La guematría comparaba palabras y pasajes por su valor total, buscando correspondencias que revelaran sentidos ocultos.",
-      "Esa idea — que el nombre dice algo esencial sobre la persona — sobrevive hoy en la numerología. En Molino se traduce directamente en el Expression Number y el Soul Number, calculados a partir de las letras de tu nombre completo.",
+      "Esa idea — que el nombre dice algo esencial sobre la persona — sobrevive hoy en la numerología. En Molino se traduce directamente en el Número de Expresión, calculado a partir de las letras de tu nombre completo.",
     ],
   },
   {

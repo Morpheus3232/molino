@@ -21,7 +21,6 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
   const chineseZodiac = profile.chineseZodiac ?? "";
   const element = profile.chineseZodiacInfo?.element ?? "";
   const expressionNumber = profile.expressionNumber;
-  const soulNumber = profile.soulNumber;
   const personalityNumber = profile.personalityNumber;
 
   const sources: DataSource[] = [
@@ -49,21 +48,15 @@ export default function KnowledgeConnections({ profile }: KnowledgeConnectionsPr
       origin: "Zodíaco chino — sistema de 5 elementos",
       tradition: "Los 5 elementos (Madera, Fuego, Tierra, Metal, Agua) ciclan en combinación con los 12 animales.",
     },
-    // Expresión/Soul solo se calculan si hay nombre (letra por letra) — el
+    // Expresión solo se calcula si hay nombre (letra por letra) — el
     // onboarding actual no lo pide, así que para la mayoría de los perfiles
-    // no existen. Se omiten en vez de mostrar "—", que aparentaría un dato
+    // no existe. Se omite en vez de mostrar "—", que aparentaría un dato
     // roto en vez de un dato que simplemente no aplica a este perfil.
     ...(expressionNumber ? [{
       field: "Expresión Number",
       value: String(expressionNumber),
       origin: "Numerología del nombre",
       tradition: "Cada letra del nombre tiene un valor numérico según la tabla pitagórica.",
-    }] : []),
-    ...(soulNumber ? [{
-      field: "Soul Number",
-      value: String(soulNumber),
-      origin: "Numerología del nombre",
-      tradition: "Basado en las vocales del nombre, representa el deseo interior.",
     }] : []),
     ...(personalityNumber ? [{
       field: "Personalidad",

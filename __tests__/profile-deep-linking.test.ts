@@ -29,7 +29,6 @@ const TEST_PROFILE: UserProfile = {
   archetype: "El Visionario",
   archetypeInfo: { name: "El Visionario", color: "#4A6FA5", description: "", quote: "", keywords: [], strengths: [], challenges: [] },
   expressionNumber: 3,
-  soulNumber: 7,
   personalityNumber: 5,
   cycles: { personalYear: 3, personalMonth: 7, personalDay: 5 },
   recommendations: { strengths: [], challenges: [], practices: [] },
@@ -67,7 +66,6 @@ describe("Encode/Decode roundtrip", () => {
   test("chineseZodiac matches", () => expect(decoded!.c).toBe(TEST_PROFILE.chineseZodiac));
   test("archetype matches", () => expect(decoded!.a).toBe(TEST_PROFILE.archetype));
   test("expressionNumber matches", () => expect(decoded!.en).toBe(TEST_PROFILE.expressionNumber));
-  test("soulNumber matches", () => expect(decoded!.sn).toBe(TEST_PROFILE.soulNumber));
   test("personalityNumber matches", () => expect(decoded!.pn).toBe(TEST_PROFILE.personalityNumber));
 });
 
