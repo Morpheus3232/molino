@@ -11,6 +11,7 @@ import { ZODIAC_SYMBOLS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { ARCHETYPES } from "@/lib/data";
 import { safeNumber } from "@/lib/utils/score";
+import PersonalSynergySigil from "@/components/ui/PersonalSynergySigil";
 import {
   Sparkles,
   Heart,
@@ -45,17 +46,16 @@ export function PersonCard({
   const element = profile.chineseZodiacInfo?.element || profile.element || "Fuego";
   const name = profile.name?.trim() || archetypeName;
 
-  const accentColor = colorScheme === "gold" ? "#D4A843" : "#60A5FA";
-  const accentBorder = colorScheme === "gold" ? "border-amber-500/30" : "border-blue-500/30";
-  const accentBg = colorScheme === "gold" ? "bg-amber-500/10" : "bg-blue-500/10";
+  const isGold = colorScheme === "gold";
+  const accentBorder = isGold ? "border-gold/30" : "border-ink/20";
+  const accentBg = isGold ? "bg-gold/10 text-gold-foreground" : "bg-ink/5 text-foreground";
 
   return (
-    <div className={`rounded-2xl border p-5 sm:p-6 bg-card ${accentBorder} shadow-sm relative flex flex-col justify-between`}>
+    <div className={`rounded-xl border p-5 sm:p-6 bg-card ${accentBorder} shadow-sm relative flex flex-col justify-between`}>
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
           <span
             className={`font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-0.5 rounded-full font-bold ${accentBg}`}
-            style={{ color: accentColor }}
           >
             {badgeLabel}
           </span>
@@ -76,17 +76,17 @@ export function PersonCard({
         {/* 3 Pillars Grid */}
         <div className="grid grid-cols-3 gap-2 mt-5">
           {/* Life Path */}
-          <div className="p-2.5 rounded-xl bg-background/80 border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
             <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
               Camino
             </span>
-            <span className="font-mono text-lg font-bold" style={{ color: accentColor }}>
+            <span className={`font-mono text-lg font-bold ${isGold ? "text-gold" : "text-accent"}`}>
               {lifePath}
             </span>
           </div>
 
           {/* Sun Sign */}
-          <div className="p-2.5 rounded-xl bg-background/80 border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
             <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
               Solar
             </span>
@@ -96,7 +96,7 @@ export function PersonCard({
           </div>
 
           {/* Chinese Zodiac */}
-          <div className="p-2.5 rounded-xl bg-background/80 border border-ink/5 text-center">
+          <div className="p-2.5 rounded-lg bg-background border border-ink/5 text-center">
             <span className="font-mono text-[9px] uppercase tracking-wider text-muted block">
               Zodíaco
             </span>
@@ -132,8 +132,8 @@ export default function CoupleComparison({
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="rounded-3xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-xl text-center relative overflow-hidden"
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-xl text-center relative overflow-hidden"
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Heart className="w-4 h-4 text-accent animate-pulse" />
@@ -152,6 +152,21 @@ export default function CoupleComparison({
         <p className="text-xs sm:text-sm text-muted max-w-xl mx-auto leading-relaxed mt-2">
           {result.summary}
         </p>
+
+        {/* Sello de Sinergia y Patrón de Interferencia */}
+        {profileA.birthDate && profileB.birthDate && (
+          <div className="mt-8 pt-6 border-t border-ink/10 max-w-sm sm:max-w-md mx-auto">
+            <PersonalSynergySigil
+              dateA={profileA.birthDate}
+              dateB={profileB.birthDate}
+              nameA={profileA.name}
+              nameB={profileB.name}
+              width={480}
+              height={480}
+              className="text-foreground"
+            />
+          </div>
+        )}
       </motion.div>
 
       {/* Side-by-side Maps (Desktop side by side, Mobile stacked) */}
@@ -164,11 +179,11 @@ export default function CoupleComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.15 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
+        transition={{ duration: 0.35, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-success/10 text-success flex items-center justify-center">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -185,7 +200,7 @@ export default function CoupleComparison({
           {result.connections.map((c) => (
             <div
               key={c.id}
-              className="p-4 sm:p-5 rounded-2xl bg-background border border-ink/5 hover:border-accent/30 transition-all flex flex-col justify-between"
+              className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 hover:border-accent/30 transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -214,11 +229,11 @@ export default function CoupleComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.25 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
+        transition={{ duration: 0.35, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-warning/10 text-warning flex items-center justify-center">
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
@@ -235,10 +250,10 @@ export default function CoupleComparison({
           {result.challenges.map((ch) => (
             <div
               key={ch.id}
-              className="p-4 sm:p-5 rounded-2xl bg-background border border-ink/5 space-y-2"
+              className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-amber-700 font-semibold">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-warning font-semibold">
                   Área: {ch.area}
                 </span>
               </div>
@@ -258,8 +273,8 @@ export default function CoupleComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.35 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8"
+        transition={{ duration: 0.35, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8"
       >
         <div className="flex items-center gap-2.5 mb-3">
           <Compass className="w-5 h-5 text-accent" />

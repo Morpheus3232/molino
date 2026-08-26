@@ -2,9 +2,12 @@
 
 import React from "react";
 import PersonalSigil from "@/components/ui/PersonalSigil";
+import PersonalSynergySigil from "@/components/ui/PersonalSynergySigil";
 
 export interface AtlasShareCardSVGProps {
   birthDateFormatted: string; // ej. "18.04.1990"
+  birthDateRaw?: string;      // ej. "1990-04-18"
+  synergyDateB?: string;      // ej. "1992-09-24" (para modo pareja)
   birthDay?: number;          // ej. 18
   birthMonth?: number;        // ej. 4
   currentYear?: number | string; // ej. 2026
@@ -26,7 +29,7 @@ export interface AtlasShareCardSVGProps {
  * AtlasShareCardSVG — Tarjeta SVG Vectorial Compartible de Alta Definición (1080x1900)
  *
  * Incluye:
- * - Sello Personal determinístico (PersonalSigil) como fondo en opacidad 0.08
+ * - Sello Personal determinístico (PersonalSigil o PersonalSynergySigil) como fondo en opacidad 0.08
  * - Header editorial con línea divisoria (#DEDACE, 1px) y tipografía Newsreader
  * - Números clave en círculos de 40px con acento #A83A23
  * - Borde exterior sutil de 4px (#DEDACE, rx=24)
@@ -34,6 +37,8 @@ export interface AtlasShareCardSVGProps {
  */
 export default function AtlasShareCardSVG({
   birthDateFormatted,
+  birthDateRaw,
+  synergyDateB,
   birthDay = 18,
   birthMonth = 4,
   currentYear = 2026,
@@ -56,7 +61,7 @@ export default function AtlasShareCardSVG({
       viewBox="0 0 1080 1900"
       width="1080"
       height="1900"
-      className={className ?? "w-full h-auto max-w-[480px] rounded-2xl shadow-md border border-[#DEDACE]"}
+      className={className ?? "w-full h-auto max-w-[480px] rounded-xl shadow-md border border-[#DEDACE]"}
       style={{
         backgroundColor: "#F7F4EE",
         fontFamily: "'Space Grotesk', 'Inter', system-ui, sans-serif",
@@ -73,15 +78,25 @@ export default function AtlasShareCardSVG({
       {/* 1. Fondo base de papel */}
       <rect width="1080" height="1900" fill="#F7F4EE" />
 
-      {/* 2. FONDO: SELLO PERSONAL (patrón determinístico con opacidad 0.08) */}
+      {/* 2. FONDO: SELLO PERSONAL O PATRÓN DE SINERGIA */}
       <g opacity="0.08" transform="translate(100, 50)">
-        <PersonalSigil
-          lifePath={lifePathNumber}
-          birthDay={birthDay}
-          birthMonth={birthMonth}
-          width={880}
-          height={1800}
-        />
+        {synergyDateB ? (
+          <PersonalSynergySigil
+            dateA={birthDateRaw || "1990-04-18"}
+            dateB={synergyDateB}
+            width={880}
+            height={1800}
+            showLegend={false}
+          />
+        ) : (
+          <PersonalSigil
+            lifePath={lifePathNumber}
+            birthDay={birthDay}
+            birthMonth={birthMonth}
+            width={880}
+            height={1800}
+          />
+        )}
       </g>
 
       {/* 3. BORDE EXTERIOR SUTIL (4px, rx="24") */}
@@ -164,9 +179,9 @@ export default function AtlasShareCardSVG({
         {/* 6. BLOQUE 1: NUMEROLOGÍA */}
         <g transform="translate(100, 390)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
-          <rect x="0" y="0" width="8" height="230" fill="#6B4C7A" rx="4" />
+          <rect x="0" y="0" width="8" height="230" fill="#A83A23" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#6B4C7A" letterSpacing="3">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#A83A23" letterSpacing="3">
             PILAR I · NUMEROLOGÍA PITAGÓRICA
           </text>
           <text x="40" y="88" className="heading" fontSize="28" fill="#1D1B17">
@@ -180,7 +195,7 @@ export default function AtlasShareCardSVG({
             Reducción determinista: {lifePathFormula}
           </text>
 
-          <text x="830" y="145" textAnchor="end" className="heading" fontSize="90" fill="#6B4C7A">
+          <text x="830" y="145" textAnchor="end" className="heading" fontSize="90" fill="#A83A23">
             {lifePathNumber}
           </text>
         </g>
@@ -188,9 +203,9 @@ export default function AtlasShareCardSVG({
         {/* 7. BLOQUE 2: ZODÍACO CHINO */}
         <g transform="translate(100, 650)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
-          <rect x="0" y="0" width="8" height="230" fill="#85681D" rx="4" />
+          <rect x="0" y="0" width="8" height="230" fill="#F5B022" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#85681D" letterSpacing="3">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#1D1B17" letterSpacing="3">
             PILAR II · ZODÍACO CHINO
           </text>
           <text x="40" y="88" className="heading" fontSize="28" fill="#1D1B17">
@@ -204,7 +219,7 @@ export default function AtlasShareCardSVG({
             Ciclo sexagesimal de resonancia temporal
           </text>
 
-          <text x="830" y="145" textAnchor="end" className="heading" fontSize="85" fill="#85681D">
+          <text x="830" y="145" textAnchor="end" className="heading" fontSize="85" fill="#F5B022">
             {chineseBranch}
           </text>
         </g>
@@ -212,9 +227,9 @@ export default function AtlasShareCardSVG({
         {/* 8. BLOQUE 3: ASTROLOGÍA */}
         <g transform="translate(100, 910)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
-          <rect x="0" y="0" width="8" height="230" fill="#2E5C8A" rx="4" />
+          <rect x="0" y="0" width="8" height="230" fill="#A83A23" rx="4" />
 
-          <text x="40" y="44" className="mono" fontSize="14" fill="#2E5C8A" letterSpacing="3">
+          <text x="40" y="44" className="mono" fontSize="14" fill="#6A6459" letterSpacing="3">
             PILAR III · ASTROLOGÍA SIMBÓLICA
           </text>
           <text x="40" y="88" className="heading" fontSize="28" fill="#1D1B17">
@@ -228,8 +243,8 @@ export default function AtlasShareCardSVG({
             Coordenada solar geocéntrica de nacimiento
           </text>
 
-          <circle cx="780" cy="115" r="38" fill="none" stroke="#2E5C8A" strokeWidth="3" />
-          <circle cx="780" cy="115" r="9" fill="#2E5C8A" />
+          <circle cx="780" cy="115" r="38" fill="none" stroke="#A83A23" strokeWidth="3" />
+          <circle cx="780" cy="115" r="9" fill="#A83A23" />
         </g>
 
         {/* 9. BLOQUE 4: MAPA DE AFINIDADES CATEGÓRICAS */}
