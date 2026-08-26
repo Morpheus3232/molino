@@ -7,6 +7,7 @@ import type { UserProfile } from "@/types/user";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
 import { clearStoredProfile } from "@/lib/session/localStorage";
 import { clearSession } from "@/lib/session/ephemeral";
+import { editorialReveal } from "@/lib/utils/motion";
 
 interface ActionButtonsProps {
   profile: UserProfile;
@@ -24,10 +25,8 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.3 }}
-      className="flex flex-wrap items-center justify-center gap-3 py-8 border-t border-ink/10"
+      {...editorialReveal}
+      className="flex flex-wrap items-center justify-center gap-4 py-10 border-t border-border"
       role="group"
       aria-label="Acciones para tu mapa"
     >
@@ -35,7 +34,7 @@ export default function ActionButtons({ profile }: ActionButtonsProps) {
       <button
         type="button"
         onClick={handleRedo}
-        className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-card border border-ink/10 text-xs font-mono text-foreground/90 hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all shadow-sm"
+        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md bg-paper-alt border border-border text-xs font-mono uppercase tracking-wider text-foreground hover:border-accent/50 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all"
         title="Borrar este mapa y crear uno nuevo (por ejemplo, si pusiste mal la fecha de nacimiento)"
       >
         <RotateCcw className="w-3.5 h-3.5 text-accent" />

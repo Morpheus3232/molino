@@ -55,7 +55,7 @@ const demoData: Record<MapQuadrant, QuadrantData> = {
       {
         label: "Número de Expresión",
         value: "9",
-        badge: "El Adaptador",
+        badge: "El Camaleón",
         formula: "Suma teosófica de letras completas (A=1, B=2... Z=8) reducida mod 9",
         meaning: "Sensibilidad universal, generosidad pragmática y visión de síntesis.",
       },

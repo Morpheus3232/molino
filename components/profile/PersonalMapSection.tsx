@@ -2,11 +2,13 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
+import { editorialReveal } from "@/lib/utils/motion";
 import {
   buildPersonalMap,
   type AnimalRelationEntry,
@@ -110,14 +112,14 @@ function EntityRow({
             imageUrl={entity.imageUrl}
             name={entity.name}
             countryISO={entity.countryISO}
-            size={32}
+            size={36}
           />
           <span className="min-w-0 flex-1">
             <span className="block font-heading text-base font-bold text-paper group-hover:text-accent-light transition-colors truncate">
               {entity.name}
             </span>
             {(entity.country && entity.country !== entity.name) || local ? (
-              <span className="block font-mono text-xs text-paper/40 truncate">
+              <span className="block font-mono text-xs text-paper/40 truncate mt-0.5">
                 {entity.country !== entity.name ? entity.country : ""}
                 {local && (
                   <span className="text-accent-light/80">
@@ -136,7 +138,7 @@ function EntityRow({
         </span>
 
         {entity.originNote && (
-          <span className="mt-2 block pl-12 text-xs text-paper/50 leading-relaxed">
+          <span className="mt-2 block pl-13 text-xs text-paper/50 leading-relaxed font-serif">
             {entity.originLabel && (
               <span className="font-mono uppercase tracking-[0.14em] text-paper/35">
                 {entity.originLabel} ·{" "}
@@ -193,7 +195,7 @@ function GroupBlock({
       {restantes > 0 && (
         <Link
           href={domainHref}
-          className="mt-3 inline-block font-mono text-xs text-paper/45 hover:text-accent-light transition-colors underline decoration-dotted underline-offset-4"
+          className="mt-4 inline-block font-mono text-xs text-paper/45 hover:text-accent-light transition-colors underline decoration-dotted underline-offset-4"
         >
           + {restantes} más en esta relación →
         </Link>
@@ -220,8 +222,9 @@ function DomainBlock({
   const opuesta = domain.groups.find((g) => g.kind === "enemigo") ?? null;
 
   return (
-    <section
-      className="py-14 border-b border-paper/15 last:border-b-0"
+    <motion.section
+      {...editorialReveal}
+      className="py-16 sm:py-20 lg:py-24 border-b border-paper/15 last:border-b-0"
       aria-labelledby={`dominio-${domain.id}`}
     >
       <div className="flex items-baseline gap-5 flex-wrap">
@@ -233,7 +236,7 @@ function DomainBlock({
         </span>
         <h3
           id={`dominio-${domain.id}`}
-          className="font-display text-[clamp(1.75rem,5vw,3.25rem)] leading-[0.9] tracking-tight text-paper uppercase"
+          className="font-display text-[clamp(1.75rem,5vw,3.25rem)] leading-[0.9] tracking-tight text-paper uppercase font-bold"
         >
           {domain.question}
         </h3>
@@ -242,7 +245,7 @@ function DomainBlock({
         </span>
       </div>
 
-      <p className="mt-5 max-w-2xl text-sm sm:text-base text-paper/70 leading-relaxed">
+      <p className="mt-5 max-w-2xl text-base sm:text-lg text-paper/70 leading-relaxed font-serif">
         {domain.reading}
       </p>
       <p className="mt-2 max-w-2xl font-mono text-xs text-paper/35 leading-relaxed">
@@ -264,7 +267,7 @@ function DomainBlock({
       </div>
 
       {opuesta && (
-        <div className="mt-12 border-t border-paper/20 pt-10">
+        <div className="mt-14 border-t border-paper/20 pt-10">
           {/* Solo la etiqueta: la regla y el conteo ya los trae el grupo de
               abajo, repetirlos acá era decir dos veces lo mismo. */}
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mb-6">
@@ -282,18 +285,18 @@ function DomainBlock({
       >
         Ver las {domain.evaluated} entradas del dominio →
       </Link>
-    </section>
+    </motion.section>
   );
 }
 
 /** El ciclo completo: los doce signos y qué es cada uno para vos. */
 function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelationEntry[] }) {
   return (
-    <div className="border-t border-paper/15 pt-10 pb-4">
-      <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mb-2">
+    <motion.div {...editorialReveal} className="border-t border-paper/15 pt-12 sm:pt-16 pb-6">
+      <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-paper/40 mb-2">
         El ciclo entero, leído desde {animal}
       </h3>
-      <p className="max-w-2xl text-xs text-paper/45 leading-relaxed mb-6">
+      <p className="max-w-2xl text-xs sm:text-sm text-paper/50 font-serif leading-relaxed mb-8">
         Los doce signos, numerados en el orden del ciclo. Cada signo tiene dos amigos y un
         enemigo, y la cuenta se puede hacer a ojo: los amigos son los dos que están a cuatro
         posiciones (三合 San He) y el enemigo el que está a seis (六冲 Liu Chong), contando en
@@ -312,7 +315,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
           return (
             <li
               key={e.animal}
-              className={`flex items-baseline gap-3 py-3 border-b ${
+              className={`flex items-baseline gap-3 py-3.5 border-b ${
                 propio ? "border-accent-light/25" : "border-paper/10"
               }`}
             >
@@ -334,7 +337,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
           );
         })}
       </ul>
-    </div>
+    </motion.div>
   );
 }
 
@@ -381,16 +384,16 @@ export default function PersonalMapSection({
     <section className="section-full-bleed bg-ink text-paper overflow-hidden">
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* ── Encabezado ───────────────────────────────────────────── */}
-        <div className="pt-20 lg:pt-28 pb-10 lg:pb-14">
+        <motion.div {...editorialReveal} className="pt-20 lg:pt-28 pb-10 lg:pb-14">
           <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase mb-6 text-accent-light">
             EL MAPA APLICADO
           </p>
-          <h2 className="font-display text-[clamp(2.25rem,6vw,5.5rem)] leading-[0.88] tracking-tight max-w-4xl text-paper">
+          <h2 className="font-display text-[clamp(2.25rem,6vw,5.5rem)] leading-[0.88] tracking-tight max-w-4xl text-paper uppercase">
             DÓNDE TU SIGNO
             <br />
             TOCA EL MUNDO.
           </h2>
-          <p className="text-base lg:text-lg mt-8 max-w-xl leading-relaxed text-paper/70">
+          <p className="font-serif text-base lg:text-lg mt-8 max-w-xl leading-relaxed text-paper/70">
             Sos {map.animal}
             {map.element ? ` de ${map.element}` : ""}. Cada país, ciudad, auto, prenda, club,
             universidad, persona y película del atlas también tiene un signo: el del año en que
@@ -409,12 +412,12 @@ export default function PersonalMapSection({
               orden atiende a dónde estás; la afinidad, solo al signo.
             </p>
           )}
-        </div>
+        </motion.div>
 
         {/* ── El ciclo entero, como clave de lectura ────────────────── */}
         <CycleTable animal={map.animal} entries={map.relationMap} />
 
-        {/* ── Los cuatro dominios ──────────────────────────────────── */}
+        {/* ── Los dominios aplicados ───────────────────────────────── */}
         <div className="mt-4">
           {visibles.map((d, i) => (
             <DomainBlock
@@ -427,11 +430,11 @@ export default function PersonalMapSection({
         </div>
 
         {enEspera.length > 0 && (
-          <div className="mt-14 border-t border-paper/15 pt-10">
+          <motion.div {...editorialReveal} className="mt-16 border-t border-paper/15 pt-12">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mb-2">
               Todavía sin fecha exacta
             </p>
-            <p className="max-w-2xl text-sm text-paper/55 leading-relaxed mb-6">
+            <p className="max-w-2xl text-sm font-serif text-paper/55 leading-relaxed mb-6">
               Están cargados en el atlas, pero casi ninguna de sus entradas documenta el día
               exacto de su origen. Mejor anunciarlos pendientes que abrir una sección con dos
               opciones adentro.
@@ -450,25 +453,27 @@ export default function PersonalMapSection({
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         )}
 
-        <p className="mt-10 max-w-2xl text-xs text-paper/50 leading-relaxed">
-          <strong className="font-normal text-paper/75">Por qué hay entidades que no aparecen.</strong>{" "}
-          El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero: un origen fechado solo
-          por año podría pertenecer al signo anterior, y una fecha anterior a 1886 cae fuera de la
-          tabla de cortes documentados. En los dos casos el signo no se puede afirmar y la entidad
-          queda afuera, aunque siga en el Atlas. Una lista más corta antes que una recomendación
-          construida sobre una duda.
-        </p>
+        <div className="mt-16 pt-10 border-t border-paper/15 space-y-4">
+          <p className="max-w-2xl text-xs sm:text-sm text-paper/50 font-serif leading-relaxed">
+            <strong className="font-normal text-paper/80">Por qué hay entidades que no aparecen.</strong>{" "}
+            El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero: un origen fechado solo
+            por año podría pertenecer al signo anterior, y una fecha anterior a 1886 cae fuera de la
+            tabla de cortes documentados. En los dos casos el signo no se puede afirmar y la entidad
+            queda afuera, aunque siga en el Atlas. Una lista más corta antes que una recomendación
+            construida sobre una duda.
+          </p>
 
-        <p className="mt-6 max-w-2xl text-xs text-paper/40 italic leading-relaxed">
-          El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad,
-          cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan
-          en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o
-          qué usar es una lectura de una tradición, no una medición. El mapa propone; la decisión
-          es tuya.
-        </p>
+          <p className="max-w-2xl text-xs sm:text-sm text-paper/40 font-serif italic leading-relaxed">
+            El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad,
+            cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan
+            en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o
+            qué usar es una lectura de una tradición, no una medición. El mapa propone; la decisión
+            es tuya.
+          </p>
+        </div>
 
         <div className="h-20 lg:h-28" />
       </div>

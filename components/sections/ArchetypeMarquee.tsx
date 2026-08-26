@@ -10,7 +10,7 @@ interface MarqueeSegment {
 const MARQUEE_SEGMENTS: MarqueeSegment[] = [
   { text: "EL CONSTRUCTOR", isAccent: true },
   { text: "·" },
-  { text: "EL ADAPTADOR", isAccent: true },
+  { text: "EL CAMALEÓN", isAccent: true },
   { text: "·" },
   { text: "CAMINO DE VIDA 4", isAccent: false },
   { text: "·" },
@@ -80,7 +80,7 @@ export default function ArchetypeMarquee() {
 
       {/* Screen Reader solo para accesibilidad */}
       <span className="sr-only">
-        Patrones del mapa simbólico: El Constructor, El Adaptador, Camino de Vida 4, Ciclo de Cimiento, Sol en Leo, Año Personal 4, Zodíaco Chino Tigre.
+        Patrones del mapa simbólico: El Constructor, El Camaleón, Camino de Vida 4, Ciclo de Cimiento, Sol en Leo, Año Personal 4, Zodíaco Chino Tigre.
       </span>
 
       {/* Gradientes laterales de desvanecimiento suave */}

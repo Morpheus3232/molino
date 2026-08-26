@@ -5,6 +5,21 @@
 // (client-only). This module stays free of React hooks so it can be
 // imported by Server Components.
 
+// Editorial line-mask reveal on scroll
+export const editorialReveal = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.05, margin: "40px" },
+  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const },
+};
+
+// Editorial reveal triggered on MOUNT (for above-the-fold content)
+export const editorialRevealMount = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const },
+};
+
 // Fade in from below (most common)
 export const fadeUp = {
   initial: { opacity: 0, y: 16 },

@@ -136,7 +136,7 @@ function getNumberName(n: number, type: "lifePath" | "expression" | "personality
   // Personalidad 9 (días 9/18/27) se nombra distinto de Camino de Vida 9:
   // ver FASE 1D-2C. El resto de los números/tipos conserva el nombre compartido.
   const personalityNames: Partial<Record<number, string>> = {
-    9: "El Adaptador",
+    9: "El Camaleón",
   };
   if (type === "personality" && personalityNames[n]) return personalityNames[n] as string;
   return names[n] || "El Viajero";

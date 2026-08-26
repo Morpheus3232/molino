@@ -98,7 +98,7 @@ export const NUMEROLOGY_ARCHETYPES_ES: Readonly<Record<number, ArchetypeInterpre
   },
   9: {
     number: 9,
-    name: "El Adaptador / El Místico",
+    name: "El Camaleón / El Místico",
     keywords: ["Adaptación", "Compasión", "Sabiduría Universal", "Finalización"],
     description: "Tu energía es la del todo. Desarrollás la adaptación, la compasión y la capacidad de cerrar ciclos con sabiduría.",
     quote: "Una sola persona puede cambiar el mundo.",

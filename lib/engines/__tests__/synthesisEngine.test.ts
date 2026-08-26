@@ -39,7 +39,7 @@ describe("buildPersonalCode — FASE 1D-2C: Personalidad 9 ≠ Camino de Vida 9"
   it("Personalidad 9 (día 9/18/27) representa capacidad de adaptación, no 'El Filósofo'/'Generosidad'", () => {
     const code = buildPersonalCode(profileWith({ personalityNumber: 9 }));
     expect(code.personality.number).toBe(9);
-    expect(code.personality.name).toBe("El Adaptador");
+    expect(code.personality.name).toBe("El Camaleón");
     expect(code.personality.meaning).toBe("Capacidad de adaptación");
   });
 
