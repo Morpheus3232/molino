@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
-import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import ArchetypeMarquee from "@/components/sections/ArchetypeMarquee";
@@ -97,9 +96,6 @@ export default function HomePage() {
       <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
         {/* Hero — Date Input */}
         <HeroInstrument />
-
-        {/* Proof — Interactive Map Demo */}
-        <ProofSection />
 
         {/* Clarity — Molino vs Traditional */}
         <ClaritySection />
