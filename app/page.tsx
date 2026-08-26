@@ -3,6 +3,7 @@ import HeroInstrument from "@/components/sections/HeroInstrument";
 import ProofSection from "@/components/sections/ProofSection";
 import ClaritySection from "@/components/sections/ClaritySection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
+import ArchetypeMarquee from "@/components/sections/ArchetypeMarquee";
 import CTASection from "@/components/sections/CTASection";
 import { SITE_URL } from "@/lib/seo";
 
@@ -106,6 +107,9 @@ export default function HomePage() {
         {/* Features — Core del mapa (ciclos, afinidades) + ecosistema +
             Premium fusionado como su continuación, no como venta aparte */}
         <FeaturesSection />
+
+        {/* Marquee de Arquetipos — Conector continuo */}
+        <ArchetypeMarquee />
 
         {/* Final CTA */}
         <CTASection />

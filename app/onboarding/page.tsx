@@ -2,10 +2,11 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import DateInput, { type DateInputHandle } from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
+import MethodReductionLoader from "@/components/ui/MethodReductionLoader";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveOnboardingData, loadOnboardingData, clearOnboardingData } from "@/lib/session/ephemeral";
 import { markOnboardingCompleted } from "@/lib/session/discovery";
@@ -73,6 +74,9 @@ export default function OnboardingPage() {
 
   const handleFinish = () => {
     setIsGenerating(true);
+  };
+
+  const handleLoaderComplete = () => {
     try {
       const [year, month, day] = dateValue.split("-");
       saveOnboardingData({ day, month, year, dateValue, dateOfBirth: dateValue });
@@ -182,6 +186,32 @@ export default function OnboardingPage() {
           <LocationStep onDone={handleFinish} isSubmitting={isGenerating} />
         )}
       </main>
+
+      {/* Overlay modal del loader de reducción teosófica */}
+      <AnimatePresence>
+        {isGenerating && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/70 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-md"
+            >
+              <MethodReductionLoader
+                birthDate={dateValue}
+                onComplete={handleLoaderComplete}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

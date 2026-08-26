@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Share2, Check, Copy } from "lucide-react";
 import EntityVisual from "@/components/ui/EntityVisual";
+import PersonalSigil from "@/components/ui/PersonalSigil";
 import { nodeToPng, dataUrlToBlob, sanitizeFilenamePart } from "@/lib/utils/exportImage";
 import type { LightweightEntity } from "@/types/atlas";
 
@@ -96,6 +97,19 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         ref={cardRef}
         className="relative w-full max-w-[480px] aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-paper-alt text-foreground"
       >
+        {/* Sello Personal determinístico de fondo */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-[0.08] pointer-events-none" aria-hidden="true">
+          <svg viewBox="0 0 480 480" className="w-full h-full">
+            <PersonalSigil
+              lifePath={entity.year ? entity.year % 9 || 9 : 4}
+              birthDay={entity.year ? entity.year % 28 || 1 : 18}
+              birthMonth={4}
+              width={480}
+              height={480}
+            />
+          </svg>
+        </div>
+
         <div className="relative flex flex-col h-full p-7">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -178,3 +192,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
     </div>
   );
 }
+
+export { default as AtlasShareCardSVG } from "./AtlasShareCardSVG";
+
