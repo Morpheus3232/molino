@@ -83,7 +83,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               </span>
               <div>
                 <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  01 / NUMEROLOGÍA PITAGÓRICA
+                  NUMEROLOGÍA PITAGÓRICA
                 </span>
                 <span className="block font-mono text-xs text-muted/80 mt-0.5">
                   Camino de Vida
@@ -153,7 +153,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               </span>
               <div>
                 <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  02 / ASTROLOGÍA TROPICAL
+                  ASTROLOGÍA TROPICAL
                 </span>
                 <span className="block font-mono text-xs text-muted/80 mt-0.5">
                   Posicionamiento Solar
@@ -207,7 +207,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               </span>
               <div>
                 <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  03 / ZODÍACO CHINO
+                  ZODÍACO CHINO
                 </span>
                 <span className="block font-mono text-xs text-muted/80 mt-0.5">
                   Ciclo Sexagesimal
@@ -277,7 +277,7 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
               </span>
               <div>
                 <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  04 / CICLOS DE TIEMPO
+                  CICLOS DE TIEMPO
                 </span>
                 <span className="block font-mono text-xs text-muted/80 mt-0.5">
                   Frecuencia Anual Activa
