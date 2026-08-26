@@ -401,8 +401,8 @@ function DomainBlock({
 /** El ciclo completo: los doce signos y qué es cada uno para vos. */
 function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelationEntry[] }) {
   return (
-    <motion.div {...editorialReveal} className="border-t border-border pt-10 sm:pt-12 pb-6">
-      <div className="max-w-3xl mb-6">
+    <motion.div {...editorialReveal} className="border-t border-border pt-8 pb-4">
+      <div className="max-w-3xl mb-4">
         <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-2">
           El ciclo entero, leído desde {animal}
         </h3>
@@ -413,25 +413,22 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-1">
-        {entries.map((e, i) => {
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-0">
+        {entries.map((e) => {
           const propio = e.kind === "mismo";
           const amigo = e.kind === "amigo";
           const enemigo = e.kind === "enemigo";
           return (
             <div
               key={e.animal}
-              className={`flex items-center gap-2.5 py-2 border-b ${
-                propio ? "border-accent/30" : "border-border/50"
+              className={`flex items-center gap-2 py-1.5 border-b ${
+                propio ? "border-accent/30" : "border-border/40"
               }`}
             >
-              <span className="font-mono text-[10px] tabular-nums text-muted/50 shrink-0 w-4">
-                {String(i + 1).padStart(2, "0")}
-              </span>
               <ZodiacAnimalIcon
                 animal={e.animal}
-                size={22}
-                className={`shrink-0 ${propio ? "text-accent" : amigo ? "text-foreground" : "text-foreground/50"}`}
+                size={20}
+                className={`shrink-0 ${propio ? "text-accent" : amigo ? "text-foreground" : "text-foreground/45"}`}
               />
               <span
                 className={`font-heading text-sm font-bold ${propio ? "text-accent" : "text-foreground"}`}
@@ -445,8 +442,8 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
                     : amigo
                       ? "text-accent/70"
                       : enemigo
-                        ? "text-foreground/70"
-                        : "text-muted/40"
+                        ? "text-foreground/60"
+                        : "text-muted/35"
                 }`}
               >
                 {KIND_SHORT[e.kind]}
