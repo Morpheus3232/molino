@@ -504,7 +504,6 @@ export default function PersonalMapSection({
 
   if (!map || map.domains.length === 0 || visibles.length === 0) return null;
 
-  const enEspera = map.domains.filter((d) => d.insuficiente || d.groups.length === 0);
   const evaluadas = map.domains.reduce((sum, d) => sum + d.evaluated, 0);
 
   return (
@@ -563,52 +562,6 @@ export default function PersonalMapSection({
 
         {/* ── Afinidades por relación (mismo modelo que /lectura) ──── */}
         <LecturaAfinidadesFull userAnimal={map.animal} catalog={catalog ?? []} />
-
-        {/* ── Todavía sin fecha exacta (Colapsable) ─────────────────── */}
-        {enEspera.length > 0 && (
-          <motion.div {...editorialReveal} className="mt-14 border-t border-border pt-10">
-            <details className="group">
-              <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-2 select-none">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">
-                    Todavía sin fecha exacta
-                  </span>
-                  <span className="font-mono text-xs text-muted/70 tabular-nums">
-                    · {enEspera.length} {enEspera.length === 1 ? "dominio en espera" : "dominios en espera"}
-                  </span>
-                </div>
-                <span className="font-mono text-xs text-muted group-open:hidden">
-                  [+ Desplegar]
-                </span>
-                <span className="font-mono text-xs text-accent hidden group-open:inline">
-                  [− Colapsar]
-                </span>
-              </summary>
-
-              <div className="mt-4 pt-4 border-t border-border/60">
-                <p className="max-w-2xl text-sm font-serif text-muted leading-relaxed mb-6">
-                  Están cargados en el atlas, pero casi ninguna de sus entradas documenta el día
-                  exacto de su origen. Mejor anunciarlos pendientes que abrir una sección con pocas
-                  opciones adentro.
-                </p>
-                <ul className="border-t border-border/60 max-w-2xl">
-                  {enEspera.map((d) => (
-                    <li
-                      key={d.id}
-                      className="flex items-baseline justify-between gap-4 py-3 border-b border-border/60"
-                    >
-                      <span className="font-heading text-sm font-bold text-foreground/80">{d.question}</span>
-                      <span className="font-mono text-xs text-muted tabular-nums shrink-0">
-                        {d.evaluated > 0 ? `${d.evaluated} con fecha · ` : ""}
-                        {d.descartadas} sin fecha
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </details>
-          </motion.div>
-        )}
 
         {/* ── Disclaimer final sutil ──────────────────────────────── */}
         <div className="mt-14 pt-8 border-t border-border space-y-4 max-w-3xl">
