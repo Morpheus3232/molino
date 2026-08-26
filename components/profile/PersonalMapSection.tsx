@@ -532,13 +532,6 @@ export default function PersonalMapSection({
             </strong>{" "}
             con fecha exacta repartidas en tu propio signo, tus dos amigos y tu enemigo.
           </p>
-
-          {userCountryISO && country && (
-            <p className="mt-3 max-w-2xl font-mono text-xs text-muted/90 leading-relaxed border-l-2 border-accent/40 pl-3 py-0.5">
-              Dentro de cada casilla van primero hasta tres de {country}, y después el mundo. El
-              orden atiende a dónde estás; la afinidad, solo al signo.
-            </p>
-          )}
         </motion.div>
 
         {/* ── El ciclo entero, como clave de lectura ────────────────── */}
