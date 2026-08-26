@@ -77,6 +77,7 @@ const PROFILE_LINKS = {
 const MODES_LINKS: NavLink[] = [
   { href: "/socios", label: "Modo Socios" },
   { href: "/pareja", label: "Modo Parejas" },
+  { href: "/regalar", label: "Regalar Mapa 🎁" },
 ];
 
 // "Aprender" difiere apenas por perfil: sin perfil, Atlas ya es un link CORE

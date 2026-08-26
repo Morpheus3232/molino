@@ -3,7 +3,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import {
+  ChevronDown,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  HelpCircle,
+  KeyRound,
+  Ticket,
+  ArrowRight,
+  Lock,
+  Check,
+  Gift,
+} from 'lucide-react';
 import Button from '@/components/ui/Button';
 import FeatureComparison from '@/components/premium/FeatureComparison';
 import type { Dictionary } from '@/lib/i18n/dictionaries/es';
@@ -48,7 +60,7 @@ interface PremiumPaywallContentProps {
 }
 
 /** The `state === 'locked'` screen: preview, pricing, checkout CTA, and the
- * recover/coupon forms. Moved verbatim from PremiumGate.tsx. */
+ * recover/coupon forms. Redesigned with youthful, vibrant, crystal-clear value. */
 export default function PremiumPaywallContent({
   t,
   preview,
@@ -71,9 +83,6 @@ export default function PremiumPaywallContent({
   isApplyingCoupon,
   handleApplyCoupon,
 }: PremiumPaywallContentProps) {
-  // Abierto por defecto: el detalle de qué incluye la Lectura Pro es el
-  // argumento, no una nota al pie. Plegado, la sección pedía 8 dólares sin
-  // decir del todo por qué. El toggle queda para poder cerrarlo.
   const [showComparison, setShowComparison] = useState(true);
 
   return (
@@ -83,230 +92,285 @@ export default function PremiumPaywallContent({
       initial="hidden"
       animate="visible"
       exit="exit"
+      className="max-w-2xl"
     >
-      <div className="max-w-2xl">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="w-8 h-px bg-accent" aria-hidden="true" />
-          <p className="label-micro text-accent font-semibold">{t.premium.eyebrow}</p>
+      {/* Eyebrow & Badges */}
+      <div className="flex flex-wrap items-center gap-2.5 mb-4">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/15 border border-accent/30 text-accent font-mono text-[11px] uppercase tracking-wider font-bold">
+          <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+          Lectura Pro · Síntesis Cruzada
+        </span>
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 font-mono text-[11px] font-bold">
+          Pago Único · De por vida
+        </span>
+      </div>
+
+      {/* Main Headline */}
+      <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-[1.05] tracking-tight mb-4">
+        {t.premium.headline}{" "}
+        <br className="hidden sm:block" />
+        <span className="text-gradient-warm">{t.premium.headlineLine2}</span>
+      </h3>
+
+      <p className="text-base sm:text-lg text-muted leading-relaxed mb-8 max-w-xl">
+        {t.premium.body}
+      </p>
+
+      {/* Dynamic Hook Card if Profile Preview Available */}
+      {preview && (
+        <div className="relative rounded-2xl border border-accent/25 bg-accent/[0.03] p-6 mb-8 shadow-sm overflow-hidden">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-accent" aria-hidden="true" />
+          <p className="font-heading text-base sm:text-lg font-bold text-foreground leading-snug">
+            {preview.hook.question}
+          </p>
+          <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
+            {preview.hook.context}
+          </p>
+        </div>
+      )}
+
+      {/* Concrete Deliverables Grid */}
+      <div className="rounded-2xl border border-ink/10 bg-card p-6 mb-8 shadow-sm">
+        <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-ink/10">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold">
+            {t.premium.whatYouGetLabel}
+          </span>
+          <span className="text-xs font-mono text-muted">6 Beneficios Clave</span>
         </div>
 
-        <h3 className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-snug mb-4">
-          {t.premium.headline}{" "}
-          {/* El <br> se oculta abajo de sm, así que sin este espacio las dos
-              frases quedan pegadas en mobile ("piezas.Ahora"). En desktop el
-              espacio colapsa contra el salto de línea y no se nota. */}
-          <br className="hidden sm:block" />
-          {t.premium.headlineLine2}
-        </h3>
-
-        <p className="text-base text-muted leading-relaxed mb-10 max-w-xl">
-          {t.premium.body}
-        </p>
-
-        {preview && (
-          <div className="border border-ink/10 bg-ink/[0.02] px-6 py-5 mb-10 max-w-xl">
-            <p className="text-sm text-foreground leading-relaxed font-semibold">
-              {preview.hook.question}
-            </p>
-            <p className="text-sm text-muted leading-relaxed mt-2">
-              {preview.hook.context}
-            </p>
-          </div>
-        )}
-
-        <div className="border-t border-ink/10 pt-8 mb-10">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted font-medium mb-5">{t.premium.whatYouGetLabel}</p>
-          <div className="flex items-center gap-2 mb-4" aria-hidden="true">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0" />
-            <span className="h-px flex-1 bg-ink/10" />
-          </div>
-          <blockquote className="text-sm text-foreground/80 leading-relaxed italic">
+        <div className="space-y-4">
+          <blockquote className="text-xs sm:text-sm text-foreground/90 leading-relaxed italic border-l-2 border-accent/40 pl-3.5 my-2">
             {preview?.tension ? (
               <>
-                Tu tensión —<span className="font-semibold not-italic">{preview.tension.title.toLowerCase()}</span>—
-                no se queda ahí: la lectura completa explica de dónde viene y qué hacer con eso,
-                conecta tu patrón dominante con tu timing de hoy, y te deja preguntarle a Molino
-                lo que quieras sobre tu momento.
+                Tu tensión principal —<span className="font-semibold not-italic text-foreground">{preview.tension.title.toLowerCase()}</span>—
+                no se queda en una frase: la síntesis Pro explica exactamente de dónde surge el desfasaje, cómo desbloquearlo en tu día a día, y conecta tu timing actual con preguntas interactivas a Molino.
               </>
             ) : preview?.pattern && preview.pattern.sources.length > 1 ? (
               <>
-                Tu {preview.pattern.sources.join(" y ")} comparten un tema:{" "}
-                <span className="font-semibold not-italic">{preview.pattern.keyword}</span>.
-                La síntesis completa explica cómo este tema se manifiesta en tu identidad,
-                qué tensiones genera, qué hacer con eso en tu momento actual, y te deja
-                preguntarle a Molino lo que quieras sobre tu momento.
+                Tus coordenadas de {preview.pattern.sources.join(" y ")} convergen en un patrón central:{" "}
+                <span className="font-semibold not-italic text-foreground">{preview.pattern.keyword}</span>.
+                La lectura completa profundiza en cómo se manifiesta en tus decisiones, qué tensiones genera y qué hacer hoy.
               </>
             ) : (
               <>
                 Tu numerología, astrología y zodíaco chino cuentan tres historias distintas.
-                La síntesis completa las conecta en una sola lectura — qué significa todo esto
-                en tu caso, no qué son por separado, y te deja preguntarle a Molino lo que quieras
-                sobre tu momento.
+                La síntesis Pro las une en una sola lectura personalizada: sin horóscopos repetitivos ni predicciones vagas.
               </>
             )}
           </blockquote>
 
-          {/* Entregables concretos. Antes este bloque era solo la prosa de
-              arriba, que promete "la síntesis completa" sin decir qué llega.
-              Nombrar las secciones reales es la forma honesta de generar
-              tensión: "tu punto ciego" da curiosidad porque existe de verdad
-              (ver blindSpot/lifeAreas en la lectura), no porque insinúe algo
-              que después no está. Si cambian las secciones de la lectura,
-              esta lista tiene que cambiar con ellas. */}
-          <ul className="mt-6 space-y-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             {[
-              ["Tu punto ciego", "lo que tu patrón produce sin que vos lo veas"],
-              ["Dónde se nota", "cómo baja a tu trabajo, tus vínculos y tus decisiones"],
-              ["Tu patrón central", "de qué dos señales sale y por qué importa"],
-              ["Preguntas abiertas", "consultale a Molino lo que quieras sobre tu mapa"],
-            ].map(([title, detail]) => (
-              <li key={title} className="flex items-start gap-3 text-sm leading-relaxed">
-                <span className="w-3 h-px bg-accent mt-[0.65em] shrink-0" aria-hidden="true" />
-                <span className="text-muted">
-                  <span className="font-semibold text-foreground">{title}</span> — {detail}
+              {
+                title: "Tu Punto Ciego",
+                desc: "Lo que tu patrón produce en automático sin que te des cuenta.",
+              },
+              {
+                title: "Dónde se Nota",
+                desc: "Impacto real en tus vínculos, trabajo y toma de decisiones.",
+              },
+              {
+                title: "Preguntale a Molino",
+                desc: "Consultas abiertas ilimitadas con la IA adaptada a tu mapa.",
+              },
+              {
+                title: "Mapa de Ciclos 2026–2030",
+                desc: "Año Personal y proyecciones de timing para tus próximos 5 años.",
+              },
+              {
+                title: "Número de la Suerte Real",
+                desc: "Cálculo matemático transparente con desglose paso a paso.",
+              },
+              {
+                title: "Acceso Permanente",
+                desc: "Un solo pago de $8 USD para toda la vida. Cero suscripciones.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="flex items-start gap-2.5 p-2.5 rounded-xl bg-background/50 border border-ink/5">
+                <span className="w-5 h-5 rounded-md bg-accent/15 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 stroke-[2.5]" />
                 </span>
-              </li>
+                <div>
+                  <span className="font-heading text-xs sm:text-sm font-bold text-foreground block">
+                    {item.title}
+                  </span>
+                  <span className="text-[11px] text-muted leading-tight block mt-0.5">
+                    {item.desc}
+                  </span>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Checkout Action Card */}
+      <div className="rounded-2xl border border-accent/30 bg-card p-6 sm:p-8 mb-8 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-4">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
+              Desbloqueo Inmediato
+            </span>
+            <div className="flex items-baseline gap-2.5">
+              <span className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                ${chargePriceUsd} <span className="text-lg font-medium text-muted tracking-normal">{t.premium.priceSuffix}</span>
+              </span>
+              <span className="text-xs font-mono text-muted">
+                (~11.880 ARS)
+              </span>
+            </div>
+          </div>
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-accent/10 border border-accent/20 text-accent font-mono text-xs font-bold">
+            ⚡ Pago Único · Sin Suscripción
+          </span>
         </div>
 
-        <div className="border-t border-ink/10 pt-5 pb-4 sticky bottom-0 z-30 bg-background/95 backdrop-blur-sm sm:static sm:pt-10 sm:pb-0 sm:bg-transparent sm:backdrop-blur-none">
-          <p className="label-micro mb-4 text-muted">Tu síntesis completa</p>
+        <p className="text-xs sm:text-sm text-muted leading-relaxed mb-6">
+          Pagás una sola vez con Mercado Pago (tarjeta de crédito, débito o dinero en cuenta) y desbloqueás tu Lectura Pro completa de forma permanente.
+        </p>
 
-          <div className="flex items-baseline gap-3 mb-2">
-            <span className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
-              ${chargePriceUsd} <span className="text-lg font-medium tracking-wider">{t.premium.priceSuffix}</span>
-            </span>
-            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
-              Pago Único · De por vida
-            </span>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-accent/5 border border-accent/20 mb-6 space-y-1.5 text-xs">
-            <div className="flex items-center gap-1.5 font-bold text-accent">
-              <span>$8 USD, pago único</span>
-            </div>
-            <p className="text-muted leading-relaxed">
-              Acceso permanente a tu síntesis completa, informe con narrativa personalizada y proyecciones 2026–2030 sin suscripciones mensuales.
-            </p>
-          </div>
-
-          {mercadoPagoEnabled ? (
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                variant="accent"
-                size="lg"
-                fullWidth
-                onClick={onCheckout}
-              >
-                {t.premium.payWithMercadoPago}
-              </Button>
-            </div>
-          ) : (
-            <p className="text-sm text-muted border border-ink/10 bg-ink/[0.02] px-4 py-3">
-              {t.premium.paymentUnavailable}
-            </p>
-          )}
-
-          <p className="mt-3 text-xs text-muted/80 text-center sm:text-left">
-            Tus datos son tuyos: exportá tu perfil cuando quieras, sin suscripciones ocultas.
+        {mercadoPagoEnabled ? (
+          <Button
+            variant="accent"
+            size="lg"
+            fullWidth
+            onClick={onCheckout}
+            className="flex items-center justify-center gap-2 py-4 text-base font-bold shadow-lg hover:shadow-accent/20 active:scale-[0.99]"
+          >
+            <Sparkles className="w-4 h-4" />
+            {t.premium.payWithMercadoPago} · ${chargePriceUsd} USD
+          </Button>
+        ) : (
+          <p className="text-sm text-muted border border-ink/10 bg-ink/[0.02] px-4 py-3 rounded-lg text-center">
+            {t.premium.paymentUnavailable}
           </p>
+        )}
 
-          <div className="mt-4 text-center sm:text-left flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-2">
-            <Link
-              href="/premium"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:underline justify-center sm:justify-start"
-            >
-              Ver qué incluye el acceso Premium →
-            </Link>
-            <Link
-              href="/transparencia"
-              className="inline-flex items-center gap-1.5 text-xs font-mono text-muted hover:text-accent transition-colors justify-center sm:justify-start"
-            >
-              Ver nuestras métricas reales →
-            </Link>
-          </div>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-muted/90 font-mono">
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-accent" />
+            Sin cobros sorpresa
+          </span>
+          <span className="flex items-center gap-1.5">
+            <KeyRound className="w-3.5 h-3.5 text-accent" />
+            Recuperable multidispositivo
+          </span>
+          <span className="flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-accent" />
+            Entrega instantánea
+          </span>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-ink/10">
+        <div className="mt-5 pt-4 border-t border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <Link
+            href="/regalar"
+            className="text-xs font-mono text-accent hover:underline inline-flex items-center gap-1.5 font-bold"
+          >
+            <Gift className="w-3.5 h-3.5" />
+            ¿Querés regalárselo a alguien? Comprar regalo →
+          </Link>
+          <Link
+            href="/premium"
+            className="text-xs font-mono text-muted hover:text-foreground transition-colors"
+          >
+            Ver qué incluye Premium & FAQ →
+          </Link>
+        </div>
+      </div>
+
+      {/* Feature Comparison Accordion */}
+      <div className="rounded-2xl border border-ink/10 bg-card/40 p-4 sm:p-5 mb-6">
+        <button
+          type="button"
+          onClick={() => setShowComparison((v) => !v)}
+          aria-expanded={showComparison}
+          className="w-full flex items-center justify-between text-left group cursor-pointer"
+        >
+          <span className="font-heading text-sm font-bold text-foreground group-hover:text-accent transition-colors flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-accent" />
+            Comparativa detallada: Gratis vs Lectura Pro
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180 text-accent' : ''}`}
+            aria-hidden="true"
+          />
+        </button>
+        {showComparison && (
+          <div className="mt-4 pt-4 border-t border-ink/10 -mx-4 sm:-mx-5">
+            <FeatureComparison />
+          </div>
+        )}
+      </div>
+
+      {/* Recovery & Coupon Actions */}
+      <div className="pt-2 border-t border-ink/10 flex flex-wrap items-center justify-between gap-4 text-xs">
+        {/* Recovery Form */}
+        {!showRecover ? (
           <button
             type="button"
-            onClick={() => setShowComparison((v) => !v)}
-            aria-expanded={showComparison}
-            className="w-full flex items-center justify-between text-left group"
+            onClick={() => setShowRecover(true)}
+            className="text-muted hover:text-accent font-mono transition-colors inline-flex items-center gap-1.5"
           >
-            <span className="label-micro text-muted group-hover:text-accent transition-colors">
-              Qué incluye la Lectura Pro, comparado con lo gratis
-            </span>
-            <ChevronDown
-              className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180' : ''}`}
-              aria-hidden="true"
-            />
+            <KeyRound className="w-3.5 h-3.5" />
+            {t.premium.recoverAccess}
           </button>
-          {showComparison && (
-            <div className="-mx-4 sm:-mx-8">
-              <FeatureComparison />
-            </div>
-          )}
-        </div>
-
-        <div className="mt-4 pt-6 border-t border-ink/10 flex flex-col sm:flex-row gap-x-8 gap-y-3">
-          {!showRecover ? (
+        ) : (
+          <div className="space-y-3 w-full p-4 rounded-xl bg-card border border-ink/10">
+            <p className="text-xs text-muted/80 leading-relaxed">
+              Ingresá el ID de Mercado Pago que te llegó al email para restaurar tu acceso:
+            </p>
+            <form onSubmit={handleRecover} className="space-y-2">
+              <label htmlFor="recover-mp-id" className="text-xs font-mono text-muted block">
+                Mercado Pago ID:
+              </label>
+              <div className="flex gap-2">
+                <input
+                  id="recover-mp-id"
+                  type="text"
+                  value={recoverPaymentId}
+                  onChange={e => setRecoverPaymentId(e.target.value)}
+                  placeholder="Ej: 123456789"
+                  className="flex-1 px-3 py-2 text-sm rounded-lg border border-ink/15 bg-background text-foreground focus:outline-none focus:border-accent transition-colors font-mono"
+                />
+                <Button
+                  type="submit"
+                  disabled={isRecovering}
+                  size="sm"
+                  variant="accent"
+                >
+                  {isRecovering ? '…' : 'OK'}
+                </Button>
+              </div>
+            </form>
+            {recoverError && (
+              <p className="text-xs text-red-500">{recoverError}</p>
+            )}
             <button
               type="button"
-              onClick={() => setShowRecover(true)}
-              className="text-left text-xs text-muted hover:text-accent transition-colors"
+              onClick={cancelRecover}
+              className="text-xs text-muted hover:text-foreground transition-colors"
             >
-              {t.premium.recoverAccess}
+              Cancelar
             </button>
-          ) : (
-            <div className="space-y-3 w-full sm:w-auto">
-              <p className="text-xs text-muted/70 leading-relaxed">Lo encontrás en el email de confirmación de tu pago.</p>
-              <form onSubmit={handleRecover} className="space-y-2 w-full sm:w-[220px]">
-                <label htmlFor="recover-mp-id" className="text-xs text-muted block">Mercado Pago ID:</label>
-                <div className="flex gap-2">
-                  <input
-                    id="recover-mp-id"
-                    type="text"
-                    value={recoverPaymentId}
-                    onChange={e => setRecoverPaymentId(e.target.value)}
-                    placeholder="Ej: 123456789"
-                    className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isRecovering}
-                    className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
-                  >
-                    {isRecovering ? '…' : 'OK'}
-                  </button>
-                </div>
-              </form>
-              {recoverError && (
-                <p className="text-xs text-red-600">{recoverError}</p>
-              )}
-              <button
-                type="button"
-                onClick={cancelRecover}
-                className="text-xs text-muted hover:text-accent transition-colors"
-              >
-                Cancelar
-              </button>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
 
+        {/* Coupon Form */}
         {!showCoupon ? (
-            <button
-              type="button"
-              onClick={() => setShowCoupon(true)}
-              className="text-left text-xs text-muted hover:text-accent transition-colors"
-            >
-              {t.premium.haveCoupon}
-            </button>
-          ) : (
-            <form onSubmit={handleApplyCoupon} className="space-y-2 max-w-xs">
-              <label htmlFor="coupon-code" className="text-xs text-muted block">Código de cupón:</label>
+          <button
+            type="button"
+            onClick={() => setShowCoupon(true)}
+            className="text-muted hover:text-accent font-mono transition-colors inline-flex items-center gap-1.5"
+          >
+            <Ticket className="w-3.5 h-3.5" />
+            {t.premium.haveCoupon}
+          </button>
+        ) : (
+          <div className="space-y-3 w-full p-4 rounded-xl bg-card border border-ink/10">
+            <form onSubmit={handleApplyCoupon} className="space-y-2">
+              <label htmlFor="coupon-code" className="text-xs font-mono text-muted block">
+                Código de cupón:
+              </label>
               <div className="flex gap-2">
                 <input
                   id="coupon-code"
@@ -314,21 +378,30 @@ export default function PremiumPaywallContent({
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value)}
                   placeholder="Ingresá tu código"
-                  className="flex-1 px-3 py-2 text-base border border-ink/10 bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
+                  className="flex-1 px-3 py-2 text-sm rounded-lg border border-ink/15 bg-background text-foreground focus:outline-none focus:border-accent transition-colors font-mono uppercase"
                 />
-                <button
+                <Button
                   type="submit"
                   disabled={isApplyingCoupon}
-                  className="px-3 py-2 text-xs font-medium border border-ink/10 text-foreground hover:border-accent disabled:opacity-50 transition-colors"
+                  size="sm"
+                  variant="accent"
                 >
                   {isApplyingCoupon ? '…' : 'OK'}
-                </button>
+                </Button>
               </div>
               {couponError && (
-                <p className="text-xs text-red-600">{couponError}</p>
+                <p className="text-xs text-red-500">{couponError}</p>
               )}
             </form>
-          )}
+            <button
+              type="button"
+              onClick={() => setShowCoupon(false)}
+              className="text-xs text-muted hover:text-foreground transition-colors"
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
       </div>
     </motion.div>
   );

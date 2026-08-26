@@ -142,6 +142,7 @@ export async function createPreference(
   currencyId = 'USD',
   externalReference?: string,
   plan?: { id: string; cycle: BillingCycle } | null,
+  returnPath?: string,
 ) {
   const preference = new Preference(getMpClient());
 
@@ -163,15 +164,16 @@ export async function createPreference(
   };
 
   const baseUrl = getBaseUrl();
+  const safeReturn = returnPath && returnPath.startsWith('/') && !returnPath.startsWith('//') ? returnPath : '/profile';
 
   const response = await preference.create({
     body: {
       items: [item],
       external_reference: externalReference || profileHash,
       back_urls: {
-        success: `${baseUrl}/profile?payment_status=approved`,
-        failure: `${baseUrl}/profile?payment_status=failed`,
-        pending: `${baseUrl}/profile?payment_status=pending`,
+        success: `${baseUrl}${safeReturn}?payment_status=approved`,
+        failure: `${baseUrl}${safeReturn}?payment_status=failed`,
+        pending: `${baseUrl}${safeReturn}?payment_status=pending`,
       },
       // auto_return: 'approved', // Temporarily disabled for localhost testing
       notification_url: `${baseUrl}/api/mp/webhook`,

@@ -24,6 +24,7 @@ import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
 import Logo from "@/components/ui/Logo";
 import BuildingMolino from "@/components/ui/BuildingMolino";
 import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
+import { Gift } from "lucide-react";
 
 interface Props {
   profile: UserProfile;
@@ -490,7 +491,29 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               </div>
         )}
 
-        <div className="text-center mt-16">
+        <div className="mt-16 rounded-2xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
+          <div>
+            <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-accent mb-1">
+              <Gift className="w-4 h-4" />
+              ¿Pensaste en alguien mientras leías esto?
+            </span>
+            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+              Regalale su propio mapa personal
+            </h3>
+            <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed max-w-md">
+              No necesitás saber su fecha de nacimiento. Comprás el regalo ($8 USD) y se lo mandás por WhatsApp en un enlace listo para canjear.
+            </p>
+          </div>
+          <Link
+            href="/regalar"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md"
+          >
+            <Gift className="w-4 h-4" />
+            Regalar mapa · $8 USD
+          </Link>
+        </div>
+
+        <div className="text-center mt-12">
           <Link href="/profile" className="text-xs font-mono text-muted hover:text-accent transition-colors">
             ← Volver a tu mapa
           </Link>

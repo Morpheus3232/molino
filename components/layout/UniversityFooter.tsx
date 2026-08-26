@@ -14,6 +14,7 @@ const FOOTER_COLUMNS = [
       { href: "/mundo", label: "Afinidades" },
       { href: "/pareja", label: "Modo Pareja" },
       { href: "/premium", label: "Premium" },
+      { href: "/regalar", label: "Regalar mapa 🎁" },
       { href: "/onboarding", label: "Crear mi mapa" },
     ],
   },

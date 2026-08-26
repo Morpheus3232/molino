@@ -62,6 +62,7 @@ export default function HeroInstrument() {
   const isReturningUser = mounted && Boolean(profile?.birthDate);
 
   if (isReturningUser) {
+    const eyebrowText = profile?.name ? `Hola, ${profile.name}` : "Tu mapa personal";
     return (
       <section
         id="mapa-form"
@@ -71,7 +72,7 @@ export default function HeroInstrument() {
           <motion.div {...fadeUpMount} className="space-y-10">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6">
-                Bienvenido de vuelta
+                {eyebrowText}
               </p>
               <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(3rem,8vw,5.5rem)]">
                 Tu mapa te está{" "}

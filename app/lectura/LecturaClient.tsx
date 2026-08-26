@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { profileFromEncoded } from "@/lib/utils/profileShare";
+import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import LaLecturaExperience from "./LaLecturaExperience";
 import LecturaGratis from "@/components/lectura/LecturaGratis";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -14,10 +15,9 @@ interface Props {
   catalog: LightweightEntity[];
 }
 
-// El perfil viaja en el fragmento (#), nunca en la query string — un
-// fragmento no sale del navegador (no llega al servidor ni a logs), mismo
-// esquema que /profile#<hash>. Por eso esto es un client component: leer
-// location.hash solo es posible después del mount.
+// El perfil viaja en el fragmento (#) o en localStorage. Si el usuario entra
+// directamente a /lectura (ej. redirect post-pago de Mercado Pago o navegación interna),
+// cargamos su perfil guardado en el navegador sin fricción.
 export default function LecturaClient({ catalog }: Props) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [checked, setChecked] = useState(false);
@@ -25,7 +25,14 @@ export default function LecturaClient({ catalog }: Props) {
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     const fromHash = hash ? profileFromEncoded(hash) : null;
-    setProfile(fromHash);
+    if (fromHash) {
+      setProfile(fromHash);
+    } else {
+      const stored = loadProfileFromStorage();
+      if (stored) {
+        setProfile(stored as UserProfile);
+      }
+    }
     setChecked(true);
   }, []);
 

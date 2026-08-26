@@ -75,6 +75,7 @@ export default function PremiumCheckout({
           birthDate: birthDate || new Date().toISOString().split("T")[0],
           currencyId: "USD",
           salt,
+          returnPath: "/lectura",
         }),
       });
 

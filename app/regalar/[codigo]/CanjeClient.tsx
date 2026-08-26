@@ -7,6 +7,8 @@ import { Gift, Loader2, ShieldCheck } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { getOrCreateProfileSalt, savePremiumTokenClient } from "@/lib/premium";
+import { calculateUserProfile } from "@/lib/engines/profileBuilder";
+import { saveProfileToStorage } from "@/lib/session/localStorage";
 
 type CheckState = "checking" | "valid" | "not_found" | "already_redeemed";
 
@@ -68,6 +70,8 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
         return;
       }
       savePremiumTokenClient(data.premiumToken);
+      const profile = calculateUserProfile(name || "", birthDate);
+      saveProfileToStorage(profile);
       toast.success("¡Regalo canjeado! Redirigiendo a tu mapa...");
       router.push("/profile");
     } catch {

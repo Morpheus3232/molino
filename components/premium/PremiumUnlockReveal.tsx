@@ -1,7 +1,9 @@
 'use client';
 
 import { isValidElement, cloneElement, type ReactElement } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { Sparkles, ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 
 interface PremiumGatePreview {
   lifePath: number;
@@ -17,33 +19,53 @@ interface PremiumUnlockRevealProps {
 
 /** The reveal animation shown once, right after a real unlock (payment/
  * recover/coupon) in the current session — see justUnlocked in PremiumGate.tsx.
- * Moved verbatim. */
+ */
 export default function PremiumUnlockReveal({ preview, children }: PremiumUnlockRevealProps) {
   return (
-    <motion.div id="lectura-premium-reveal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.4 }}
-        className="flex items-center gap-3 mb-8 pb-6 border-b border-accent/20"
-      >
-        <span className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center shrink-0" aria-hidden="true">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-        </span>
-        <div>
-          <p className="text-sm font-semibold text-foreground">
-            {preview?.tension
-              ? <>Desbloqueaste tu tensión: {preview.tension.title.toLowerCase()}</>
-              : "Desbloqueaste tu síntesis completa"}
-          </p>
-          <p className="text-xs text-muted">Acceso permanente — la vas a encontrar acá cada vez que vuelvas.</p>
+    <motion.div
+      id="lectura-premium-reveal"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className="space-y-8"
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.04] p-6 sm:p-8 shadow-lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+          <div className="flex items-start gap-4">
+            <span className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/40 flex items-center justify-center shrink-0 text-accent">
+              <Sparkles className="w-5 h-5 animate-pulse" />
+            </span>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-accent/15 text-accent text-[11px] font-mono font-bold tracking-wider uppercase mb-1.5">
+                <CheckCircle2 className="w-3 h-3" />
+                Acceso Pro Activado
+              </div>
+              <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+                {preview?.tension
+                  ? <>Desbloqueaste tu tensión: {preview.tension.title.toLowerCase()}</>
+                  : "¡Tu Lectura Pro está desbloqueada y lista!"}
+              </h3>
+              <p className="text-xs sm:text-sm text-muted mt-1 max-w-xl leading-relaxed">
+                Acceso permanente de por vida. Tus tres sistemas (numerología, astrología y zodíaco chino) ya están conectados en tu síntesis profunda.
+              </p>
+            </div>
+          </div>
+
+          <Link
+            href="/lectura"
+            className="group inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-sm font-bold uppercase tracking-wider transition-all duration-200 hover:bg-accent-hover hover:shadow-md active:scale-[0.98] shrink-0 w-full sm:w-auto"
+          >
+            Abrir mi Lectura Pro
+            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
         </div>
-      </motion.div>
-      {/* justUnlocked pasa a MolinoInterpretation para que, mientras carga,
-          muestre un estado de espera propio de la revelación en vez del
-          skeleton genérico — sin esto, el usuario ve "desbloqueaste tu
-          síntesis" y un instante después una SEGUNDA pantalla de carga
-          desconectada, como si el desbloqueo hubiera fallado a medias. */}
+
+        <div className="mt-5 pt-4 border-t border-ink/10 flex items-center gap-2 text-[11px] font-mono text-muted">
+          <ShieldCheck className="w-3.5 h-3.5 text-accent shrink-0" />
+          <span>Te enviamos un email de respaldo con tu enlace mágico y tu ID de pago para que nunca pierdas el acceso.</span>
+        </div>
+      </div>
+
       {isValidElement(children) ? cloneElement(children as ReactElement<{ justUnlocked?: boolean }>, { justUnlocked: true }) : children}
     </motion.div>
   );

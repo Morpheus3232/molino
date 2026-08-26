@@ -6,6 +6,27 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 
 ---
 
+## [2.2.0] - 2026-08-25
+
+### Mejorado & Rediseñado
+- **Experiencia y Sección Premium / Paywall:**
+  - Rediseño completo de la interfaz de venta y presentación de la versión Pro (`PremiumPaywallContent.tsx`, `FeatureComparison.tsx`, `PremiumPreview.tsx`, `PremiumCheckout.tsx` y `/premium`).
+  - Tono fresco, juvenil, directo y honesto en español rioplatense ("vos"), enfocado en el valor real de la síntesis simbólica y sin determinismos.
+  - Desglose transparente y destacado de los 6 beneficios principales por pago único de $8 USD (de por vida, sin suscripciones): síntesis cruzada de los 3 sistemas, punto ciego y tensiones internas, consultas ilimitadas con Molino AI, número de la suerte con fórmula matemática visible, proyección de ciclos 2026–2030 y privacidad absoluta.
+- **Experiencia de Regalar Mapa / Lectura Pro (`/regalar`):**
+  - Verificación y blindaje del flujo completo de regalo de mapas: compra sin conocer la fecha de nacimiento previa, generación de código unívoco `MOLINO-XXXX-XXXX`, y canje instantáneo (`CanjeClient.tsx`) con guardado automático del perfil y activación del token Pro sin pantallas vacías.
+  - Integración y promoción visible de "Regalar mapa 🎁" en todo el sitio: acceso directo en la barra de navegación (`UniversityHeader.tsx` en Modos), en el pie de página (`UniversityFooter.tsx`), tarjeta destacada en `/premium` (`PremiumClient.tsx`), enlace en el paywall (`PremiumPaywallContent.tsx`), y tarjeta de invitación al pie de la lectura completa (`LaLecturaExperience.tsx`).
+  - Rediseño de la landing `/regalar` (`RegalarClient.tsx`) con valor claro, desglose de beneficios y opciones de envío instantáneo por WhatsApp.
+  - Soporte de `returnPath` dinámico en las preferencias de pago para que quienes compren desde `/lectura` o `/premium` regresen directo a `/lectura` a ver su lectura generándose en vivo.
+  - `/lectura` (`LecturaClient.tsx`) ahora resuelve de forma transparente el perfil desde `localStorage` ante accesos directos o redirecciones sin hash en la URL, eliminando fricción.
+  - Reemplazo de llamadas a `window.open` bloqueadas por navegadores móviles por una pantalla de revelación celebratoria (`PremiumUnlockReveal.tsx`) con botón directo a la lectura.
+  - Rediseño integral del correo de confirmación de compra (`lib/email.ts`): explica con claridad el acceso inmediato por enlace mágico de 1 clic y el uso del ID de pago como llave de respaldo multidispositivo sin contraseñas.
+
+### Corregido
+- **Saludo de Bienvenida Contextual (`HeroInstrument.tsx`):** se eliminó la frase rígida "Bienvenido de vuelta" para evitar asumirla en primeras visitas o perfiles iniciales, reemplazándola por saludos personalizados con el nombre del usuario o "Tu mapa personal".
+
+---
+
 ## [2.1.1] - 2026-08-15
 
 ### Seguridad

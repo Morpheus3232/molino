@@ -11,8 +11,9 @@ import PremiumPreview from "@/components/premium/PremiumPreview";
 import PremiumCheckout from "@/components/premium/PremiumCheckout";
 import PricingFAQ from "@/components/pricing/PricingFAQ";
 import { PREMIUM_FAQS } from "@/components/pricing/pricing-data";
-import { Sparkles, ShieldCheck, ArrowDown, Compass, Heart } from "lucide-react";
+import { Sparkles, ShieldCheck, ArrowDown, Compass, Heart, Gift } from "lucide-react";
 import Button from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function PremiumClient() {
   const router = useRouter();
@@ -99,15 +100,40 @@ export default function PremiumClient() {
         {/* 2. Transparent Feature Comparison */}
         <FeatureComparison />
 
-        {/* 3. Checkout Box with Guarantee */}
+        {/* 3. Checkout Box */}
         <div className="py-12 max-w-2xl mx-auto">
           <PremiumCheckout
             name={profile?.name}
             birthDate={profile?.birthDate}
             onUnlocked={() => {
-              router.push("/profile");
+              router.push("/lectura");
             }}
           />
+        </div>
+
+        {/* 4. Gift Banner */}
+        <div className="pb-12 max-w-2xl mx-auto">
+          <div className="rounded-3xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="space-y-2 text-center sm:text-left">
+              <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-accent">
+                <Gift className="w-3.5 h-3.5" />
+                ¿Querés regalarle la Lectura a alguien?
+              </span>
+              <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+                Comprá un mapa de regalo sin saber su fecha
+              </h3>
+              <p className="text-xs sm:text-sm text-muted leading-relaxed max-w-md">
+                Un detalle inolvidable para amigos, pareja o familia. Vos comprás el código y la otra persona ingresa su fecha al canjearlo.
+              </p>
+            </div>
+            <Link
+              href="/regalar"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-sm font-bold uppercase tracking-wider hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md"
+            >
+              <Gift className="w-4 h-4" />
+              Regalar mapa · $8 USD
+            </Link>
+          </div>
         </div>
 
         {/* 5. Specific FAQ */}

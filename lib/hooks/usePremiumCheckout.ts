@@ -38,6 +38,7 @@ export function usePremiumCheckout({ name, birthDate, currencyId, mercadoPagoEna
     setState('paying');
 
     const profileSalt = getOrCreateProfileSalt();
+    const returnPath = typeof window !== 'undefined' ? window.location.pathname : '/profile';
 
     try {
       const res = await fetch('/api/mp/preference', {
@@ -48,6 +49,7 @@ export function usePremiumCheckout({ name, birthDate, currencyId, mercadoPagoEna
           birthDate,
           currencyId,
           salt: profileSalt,
+          returnPath,
         }),
       });
 

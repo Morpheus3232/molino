@@ -53,18 +53,16 @@ export function useCommitPremiumUnlock({ setState, setJustUnlocked, name, birthD
       invalidatePremiumAccessCache(name, birthDate);
       analytics.trackPremiumUnlocked();
       if (opts?.cleanUrl) cleanUrlParams();
-      // "La Lectura" se abre en su propia pestaña — misma origin, así que
-      // lee el premiumToken recién guardado arriba desde localStorage sin
-      // necesidad de pasarlo por la URL. Si el navegador bloquea el popup
-      // (frecuente cuando este código corre fuera de un click directo, ej.
-      // el redirect de vuelta de Mercado Pago), PremiumUnlockReveal muestra
-      // un botón "Abrir mi lectura" como respaldo — no falla en silencio.
-      // El perfil viaja en el fragmento (#), nunca en la query string: un
-      // fragmento no sale del navegador (no llega al servidor ni a logs),
-      // mismo esquema que /profile#<hash>.
-      if (typeof window !== 'undefined' && birthDate) {
-        const encoded = encodeProfileData(calculateUserProfile(name || '', birthDate));
-        window.open(`/lectura#${encoded}`, '_blank');
+      // Si no estamos en /lectura, intentamos abrir la lectura en pestaña nueva.
+      // Si el navegador bloquea el popup (frecuente tras redirect de MP),
+      // PremiumUnlockReveal muestra el botón de acceso directo como respaldo visible.
+      if (typeof window !== 'undefined' && birthDate && !window.location.pathname.startsWith('/lectura')) {
+        try {
+          const encoded = encodeProfileData(calculateUserProfile(name || '', birthDate));
+          window.open(`/lectura#${encoded}`, '_blank');
+        } catch {
+          // Popups bloqueados por el navegador: el botón en PremiumUnlockReveal lo resuelve en 1 clic
+        }
       }
     },
     [setState, setJustUnlocked, name, birthDate],
