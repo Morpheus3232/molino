@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
@@ -23,8 +23,8 @@ import {
   BookOpen,
   Sparkles,
   ExternalLink,
-  Layers,
 } from "lucide-react";
+import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
 import {
   buildPersonalMap,
   type AnimalRelationEntry,
@@ -476,14 +476,6 @@ export default function PersonalMapSection({
     return map.domains.filter((d) => d.groups.length > 0 && !d.insuficiente);
   }, [map]);
 
-  const [activeTab, setActiveTab] = useState<DomainId | "all">("territorio");
-
-  // Si cambia el mapa o el dominio activo no está visible, ajustar
-  const activeDomain = useMemo(() => {
-    if (activeTab === "all") return null;
-    return visibles.find((d) => d.id === activeTab) || visibles[0] || null;
-  }, [activeTab, visibles]);
-
   const lecturaHref = useMemo(() => {
     const encoded = encodeProfileData(profile);
     return `/lectura#${encoded}`;
@@ -548,139 +540,8 @@ export default function PersonalMapSection({
         {/* ── El ciclo entero, como clave de lectura ────────────────── */}
         <CycleTable animal={map.animal} entries={map.relationMap} />
 
-        {/* ── Menú interactivo de Categorías de Afinidades ──────────── */}
-        <div className="mt-12 pt-8 border-t border-border" id="categorias-afinidades">
-          <div className="flex items-baseline justify-between gap-4 flex-wrap mb-6">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent block mb-1">
-                CATEGORÍAS DE AFINIDAD
-              </span>
-              <h3 className="font-heading text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
-                Elegí qué afinidad explorar
-              </h3>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab((prev) => (prev === "all" ? visibles[0]?.id || "territorio" : "all"))}
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-medium text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4 py-1"
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>{activeTab === "all" ? "Vista por pestañas" : "Ver todos los rubros juntos"}</span>
-            </button>
-          </div>
-
-          {/* Selector de pestañas ordenado */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 pb-2">
-            {visibles.map((domain, index) => {
-              const isActive = activeTab === domain.id;
-              const meta = DOMAIN_EXTRA_META[domain.id];
-              const IconComp = meta?.icon || MapPin;
-              const totalAfines = domain.groups
-                .filter((g) => g.kind === "mismo" || g.kind === "amigo")
-                .reduce((acc, g) => acc + g.total, 0);
-
-              return (
-                <button
-                  key={domain.id}
-                  type="button"
-                  onClick={() => setActiveTab(domain.id)}
-                  className={`text-left p-3.5 sm:p-4 rounded-[--radius-md] border transition-all relative ${
-                    isActive
-                      ? "bg-paper-alt border-accent text-foreground shadow-sm ring-1 ring-accent"
-                      : "bg-background border-border hover:border-ink/30 text-muted hover:text-foreground"
-                  }`}
-                >
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="font-mono text-[11px] text-muted">
-                      {NUMERAL[index] || String(index + 1).padStart(2, "0")}
-                    </span>
-                    <IconComp className={`w-4 h-4 ${isActive ? "text-accent" : "text-muted/70"}`} />
-                  </div>
-
-                  <span className="block font-heading text-sm sm:text-base font-bold truncate">
-                    {domain.label}
-                  </span>
-
-                  <div className="mt-2 flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-accent font-semibold">{totalAfines} afines</span>
-                    <span className="text-muted/60">{domain.evaluated} tot.</span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── Desglose del Dominio Activo o Todos ─────────────────────── */}
-        <div className="mt-8">
-          <AnimatePresence mode="wait">
-            {activeTab === "all" ? (
-              <motion.div
-                key="all-domains"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="space-y-4"
-              >
-                {visibles.map((d, i) => (
-                  <DomainBlock
-                    key={d.id}
-                    domain={d}
-                    numeral={NUMERAL[i] ?? String(i + 1).padStart(2, "0")}
-                    userAnimal={map.animal}
-                    userCountryISO={map.userCountryISO}
-                  />
-                ))}
-              </motion.div>
-            ) : activeDomain ? (
-              <motion.div
-                key={activeDomain.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <DomainBlock
-                  domain={activeDomain}
-                  numeral={
-                    NUMERAL[visibles.findIndex((v) => v.id === activeDomain.id)] || "01"
-                  }
-                  userAnimal={map.animal}
-                  userCountryISO={map.userCountryISO}
-                />
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </div>
-
-        {/* ── Banner Puente Hacia Lectura ──────────────────────────── */}
-        <motion.div
-          {...editorialReveal}
-          className="mt-16 p-8 sm:p-10 rounded-[--radius-lg] bg-ink text-paper border border-paper/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden"
-        >
-          <div className="max-w-xl space-y-2 relative z-10">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light block">
-              SÍNTESIS INTERPRETATIVA
-            </span>
-            <h3 className="font-display text-2xl sm:text-3xl text-paper uppercase leading-tight">
-              De las afinidades del mundo a tu mundo interno
-            </h3>
-            <p className="text-sm text-paper/75 font-serif leading-relaxed">
-              Tu mapa aplicado conecta tu signo con la realidad exterior. En tu Lectura encontrás
-              el cuadro de nacimiento, la convergencia de tus energías y la dirección de tus próximos movimientos.
-            </p>
-          </div>
-
-          <Link
-            href={lecturaHref}
-            className="shrink-0 px-6 py-3.5 rounded-[--radius-md] bg-paper text-ink hover:bg-accent hover:text-white font-mono text-xs font-semibold uppercase tracking-[0.15em] transition-colors inline-flex items-center gap-2 relative z-10"
-          >
-            <span>Ir a tu Lectura personal</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+        {/* ── Afinidades por relación (mismo modelo que /lectura) ──── */}
+        <LecturaAfinidadesFull userAnimal={map.animal} catalog={catalog} />
 
         {/* ── Todavía sin fecha exacta (Colapsable) ─────────────────── */}
         {enEspera.length > 0 && (
