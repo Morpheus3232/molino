@@ -33,12 +33,19 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
   };
 }
 
-export default async function AffinityTypePage({ params }: { params: Promise<{ type: string }> }) {
+export default async function AffinityTypePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ type: string }>;
+  searchParams: Promise<{ animal?: string }>;
+}) {
   const { type } = await params;
+  const { animal } = await searchParams;
   if (!VALID_TYPES.includes(type as EntityType)) notFound();
 
   const meta = ENTITY_TYPES[type as EntityType];
   const entities = getEntitiesByType(type as EntityType).map(toLightweightEntity);
 
-  return <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} />;
+  return <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} initialAnimal={animal} />;
 }

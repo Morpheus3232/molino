@@ -18,6 +18,7 @@ interface AffinityTypeContentProps {
   type: EntityType;
   meta: { label: string; plural: string; icon: string; description: string };
   entities: LightweightEntity[];
+  initialAnimal?: string;
 }
 
 const transitionVariants = {
@@ -67,15 +68,25 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
   return groups;
 }
 
-export default function AffinityTypeContent({ type, meta, entities }: AffinityTypeContentProps) {
+export default function AffinityTypeContent({ type, meta, entities, initialAnimal }: AffinityTypeContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
 
-  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(null);
+  const validInitial = (initialAnimal && ANIMALS.includes(initialAnimal as Animal))
+    ? (initialAnimal as Animal)
+    : null;
+
+  const [selectedAnimal, setSelectedAnimal] = useState<Animal | null>(validInitial);
   const [searchQuery, setSearchQuery] = useState("");
   const activeAnimal: Animal = selectedAnimal
     ?? ((profile?.chineseZodiac as Animal) || "Rata");
+
+  useEffect(() => {
+    if (validInitial) {
+      setSelectedAnimal(validInitial);
+    }
+  }, [validInitial]);
 
   const sorted = useMemo(
     () => sortLightEntities(activeAnimal, entities, userCountry),

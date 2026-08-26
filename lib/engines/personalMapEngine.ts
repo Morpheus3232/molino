@@ -304,9 +304,9 @@ const DOMAIN_SPECS: DomainSpec[] = [
   {
     id: "gente",
     question: "¿Con quién compartís el año?",
-    label: "Gente",
+    label: "Gente Famosa",
     scope:
-      "Personas del atlas — artistas y futbolistas — fechadas por su año de nacimiento, no por una obra.",
+      "Personas famosas del atlas — artistas y futbolistas — fechadas por su año de nacimiento, no por una obra.",
     href: "/affinity/artist",
     matches: (e) => e.type === "artist" || e.type === "football_player",
     generational: true,
@@ -314,7 +314,7 @@ const DOMAIN_SPECS: DomainSpec[] = [
   {
     id: "pantalla",
     question: "¿Qué mirar?",
-    label: "Pantalla",
+    label: "Películas",
     scope: "Películas fechadas por su año de estreno.",
     href: "/affinity/movie",
     matches: (e) => e.type === "movie",
