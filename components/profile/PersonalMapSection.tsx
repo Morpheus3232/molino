@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { editorialReveal } from "@/lib/utils/motion";
@@ -110,6 +111,8 @@ function EntityRow({
             imageUrl={entity.imageUrl}
             name={entity.name}
             countryISO={entity.countryISO}
+            type={entity.type}
+            category={entity.category}
             size={36}
           />
           <span className="min-w-0 flex-1">
@@ -339,7 +342,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
           return (
             <li
               key={e.animal}
-              className={`flex items-baseline gap-3 py-3.5 border-b ${
+              className={`flex items-center gap-2.5 py-3.5 border-b ${
                 propio ? "border-accent/40" : "border-border/60"
               }`}
             >
@@ -347,6 +350,11 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className={`h-2 w-2 shrink-0 self-center ${tone.bar}`} aria-hidden="true" />
+              <ZodiacAnimalIcon
+                animal={e.animal}
+                size={16}
+                className={`shrink-0 ${propio ? "text-accent" : "text-foreground/70"}`}
+              />
               <span
                 className={`font-heading text-sm font-bold ${propio ? "text-accent" : "text-foreground"}`}
               >

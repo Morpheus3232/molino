@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CHINESE_ANIMALS, CHINESE_ELEMENTS, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
 import { MOLINO_DISCLAIMER } from "@/lib/data/sources";
 import Reveal from "@/components/ui/Reveal";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 export default function ZodiacoChinoContent() {
   return (
@@ -62,7 +63,9 @@ export default function ZodiacoChinoContent() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {CHINESE_ANIMALS.map((animal) => (
               <Link key={animal.name} href={`/conocimiento/zodiaco-chino/${animal.name.toLowerCase()}`} className="text-left p-4 border border-ink/10 hover:border-accent transition-colors group">
-                <p className="text-2xl mb-1">{animal.emoji}</p>
+                <div className="mb-2 text-accent group-hover:scale-105 transition-transform origin-left">
+                  <ZodiacAnimalIcon animal={animal.name} size={32} />
+                </div>
                 <h3 className="font-heading text-base font-semibold text-foreground group-hover:text-accent transition-colors">{animal.name}</h3>
                  <p className="text-xs text-muted mt-1 group-hover:text-accent transition-colors inline-flex items-center gap-1">
                    {animal.traits.slice(0, 3).join(", ")}

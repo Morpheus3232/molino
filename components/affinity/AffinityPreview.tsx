@@ -7,6 +7,7 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useReducedMotion } from "@/lib/utils/motion-hooks";
+import type { VisualType } from "@/types/atlas";
 
 interface LightHighlight {
   tier: string;
@@ -19,6 +20,9 @@ interface LightHighlight {
     id: string;
     name: string;
     type: string;
+    category?: string;
+    countryISO?: string;
+    visualType?: VisualType;
     emoji?: string;
   };
 }
@@ -96,9 +100,12 @@ export default function AffinityPreview({ highlights, onEnter }: AffinityPreview
               >
                 <div className="flex flex-col sm:flex-row sm:items-end gap-8">
                   <EntityVisual
-                    visualType="emoji"
+                    visualType={main.entity.visualType}
                     emoji={main.entity.emoji}
                     name={main.entity.name}
+                    type={main.entity.type}
+                    category={main.entity.category}
+                    countryISO={main.entity.countryISO}
                     size={96}
                   />
                   <div className="flex-1 min-w-0">
@@ -141,9 +148,12 @@ export default function AffinityPreview({ highlights, onEnter }: AffinityPreview
                 >
                   <div className="flex items-start justify-between gap-4">
                     <EntityVisual
-                      visualType="emoji"
+                      visualType={result.entity.visualType}
                       emoji={result.entity.emoji}
                       name={result.entity.name}
+                      type={result.entity.type}
+                      category={result.entity.category}
+                      countryISO={result.entity.countryISO}
                       size={48}
                     />
                     <span className="font-heading text-2xl text-foreground tabular-nums">

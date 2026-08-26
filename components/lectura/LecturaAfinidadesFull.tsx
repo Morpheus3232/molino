@@ -350,6 +350,8 @@ export default function LecturaAfinidadesFull({
                     imageUrl={entity.imageUrl}
                     name={entity.name}
                     countryISO={entity.countryISO}
+                    type={entity.type}
+                    category={entity.category}
                     size={36}
                   />
                   <div className="min-w-0 flex-1">

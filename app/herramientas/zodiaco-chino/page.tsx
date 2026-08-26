@@ -7,6 +7,7 @@ import { fadeUp } from "@/lib/utils/motion";
 import Button from "@/components/ui/Button";
 import { getChineseZodiac, getChineseZodiacInfo, getChineseElement } from "@/lib/engines/chineseZodiacEngine";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const MONTHS = [
   { value: "01", label: "Enero" }, { value: "02", label: "Febrero" },
@@ -136,14 +137,14 @@ export default function ZodiacoChinoCalcPage() {
                   >
                     Tu Animal del Zodiaco Chino
                   </motion.p>
-                  <motion.p
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-7xl sm:text-8xl mb-4"
+                    className="flex justify-center text-accent mb-4"
                   >
-                    {getAnimalData(result.animal)?.emoji || "\ud83d\udc09"}
-                  </motion.p>
+                    <ZodiacAnimalIcon animal={result.animal} size={88} />
+                  </motion.div>
                   <motion.h2
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}

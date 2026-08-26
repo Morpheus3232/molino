@@ -10,6 +10,8 @@ import type { Animal } from "@/lib/data/animalRelations";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
+import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const CATEGORY_LABELS: Record<string, string> = {
   country: "Países",
@@ -69,11 +71,7 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground uppercase leading-[0.95]">
               {catLabel}
             </h1>
-            {animalEmoji && (
-              <span className="text-2xl leading-none opacity-25 shrink-0" aria-hidden="true">
-                {animalEmoji}
-              </span>
-            )}
+            <ZodiacAnimalIcon animal={animal} size={28} className="text-accent/40 shrink-0" />
           </div>
 
           <p className="text-sm text-muted mt-3">
@@ -94,9 +92,16 @@ export default function AnimalCategoryListing({ animal, category, entities }: An
                   href={`/affinity/${e.type}/${e.id}`}
                   className="flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-lg hover:bg-ink/[0.03] transition-colors group"
                 >
-                  <span className="text-lg leading-none shrink-0 select-none" role="img" aria-label={e.name}>
-                    {e.emoji || "🔮"}
-                  </span>
+                  <EntityVisual
+                    name={e.name}
+                    emoji={e.emoji}
+                    type={e.type}
+                    category={e.category}
+                    visualType={e.visualType}
+                    countryISO={e.countryISO}
+                    size={28}
+                    className="shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                       {e.name}

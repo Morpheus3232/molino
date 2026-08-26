@@ -41,6 +41,7 @@ export interface LightAffinityResult {
   countryISO?: string;
   city?: string;
   type: string;
+  category?: string;
   score: number;
   tier: LightTier;
   relationship: string;
@@ -130,6 +131,7 @@ export function sortLightEntities(
       countryISO: e.countryISO,
       city: e.city,
       type: e.type,
+      category: e.category,
       score: boostedScore,
       tier,
       relationship,
@@ -163,6 +165,7 @@ type LightweightLike = {
   countryISO?: string;
   city?: string;
   type: string;
+  category?: string;
   isApproximate?: boolean;
   origin?: string;
 };

@@ -270,7 +270,15 @@ function ResultRow({
       className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start sm:items-center gap-4">
-        <EntityVisual visualType={result.visualType as VisualType} emoji={result.emoji} name={result.name} countryISO={result.countryISO} size={40} />
+        <EntityVisual
+          visualType={result.visualType as VisualType}
+          emoji={result.emoji}
+          name={result.name}
+          type={result.type}
+          category={result.category}
+          countryISO={result.countryISO}
+          size={40}
+        />
         <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
           <div className="flex-1 min-w-0">
             <p className="text-base font-medium text-foreground group-hover:text-accent transition-colors sm:truncate">

@@ -41,6 +41,8 @@ export default function AffinityHero({
         imageUrl={entity.imageUrl}
         name={entity.name}
         countryISO={entity.countryISO}
+        type={type}
+        category={entity.category}
         size={72}
         shape="circle"
         className="mx-auto mb-4"

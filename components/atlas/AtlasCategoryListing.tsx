@@ -7,6 +7,7 @@ import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import { bucketEntitiesByResonance, resonanceReasoning, type ResonanceBucket } from "@/lib/resonance";
 import { useProfile } from "@/lib/hooks/useProfile";
 import EntityCard from "@/components/atlas/EntityCard";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 interface AtlasCategoryListingProps {
   entities: LightweightEntity[];
@@ -74,7 +75,11 @@ export default function AtlasCategoryListing({ entities, countryISO, category }:
                     : "border-ink/10 text-muted hover:border-accent/40 hover:text-foreground"
                 }`}
               >
-                <span aria-hidden="true">{display.emoji}</span>
+                <ZodiacAnimalIcon
+                  animal={animal}
+                  size={18}
+                  className={`shrink-0 ${isActive ? "text-accent" : "text-muted"}`}
+                />
                 <span className="font-medium">{display.name}</span>
               </button>
             );

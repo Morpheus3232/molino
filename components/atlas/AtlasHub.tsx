@@ -13,8 +13,10 @@ import {
 } from "@/lib/affinity-light";
 import { getAnimalProfile, ANIMALS } from "@/lib/data/animalRelations";
 import type { Animal } from "@/lib/data/animalRelations";
-import CountryGrid from "@/components/atlas/CountryGrid";
 import PersonalAtlasPilot from "@/components/atlas/PersonalAtlasPilot";
+import CountryGrid from "@/components/atlas/CountryGrid";
+import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
@@ -52,9 +54,16 @@ function CategoryPreview({
               href={`/affinity/${e.type}/${e.id}`}
               className="inline-flex items-center gap-1.5 text-sm text-foreground hover:text-accent transition-colors py-1 px-2 -mx-2 rounded-md hover:bg-ink/[0.04]"
             >
-              <span className="text-base leading-none shrink-0" role="img" aria-label={e.name}>
-                {e.emoji || "🔮"}
-              </span>
+              <EntityVisual
+                name={e.name}
+                emoji={e.emoji}
+                type={e.type}
+                category={e.category}
+                visualType={e.visualType}
+                countryISO={e.countryISO}
+                size={20}
+                className="shrink-0"
+              />
               <span className="truncate max-w-[200px]">{e.name}</span>
               {e.origin && (
                 <span className="text-muted/70 text-[11px] whitespace-nowrap"> — {e.origin}</span>
@@ -106,9 +115,11 @@ function AnimalSelector({
                   : "border-ink/10 text-foreground hover:border-accent/40"
               }`}
             >
-              <span className="text-base leading-none" aria-hidden="true">
-                {emoji}
-              </span>
+              <ZodiacAnimalIcon
+                animal={animal}
+                size={18}
+                className={`shrink-0 ${isActive ? "text-accent" : "text-foreground/70"}`}
+              />
               <span className="truncate">{animal}</span>
             </button>
           );

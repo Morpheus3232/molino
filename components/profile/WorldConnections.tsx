@@ -51,6 +51,8 @@ function EntityCard({ entity, score, tier }: { entity: LightAffinityResult; scor
           visualType={entity.visualType as "emoji" | "logo" | "portrait" | "flag" | "album"}
           emoji={entity.emoji}
           name={entity.name}
+          type={entity.type}
+          category={entity.category}
           countryISO={entity.countryISO}
           size={24}
         />

@@ -14,6 +14,7 @@ import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { ENTITIES, type EntityProfile } from "@/lib/data/entities";
 import type { SymbolicEntity } from "@/lib/data/symbolic-entities";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 const transitionVariants = {
   enter: { opacity: 0, y: 8 },
@@ -164,8 +165,14 @@ export default function CompatibilityContent({ entity, atlasEntity }: Compatibil
             exit="exit"
           >
             <div className="mx-auto max-w-content px-4 sm:px-6 py-12 text-center">
-              <div className="mb-6">
-                <span className="text-5xl">{entity.emoji}</span>
+              <div className="mb-6 flex justify-center">
+                <EntityVisual
+                  name={entity.name}
+                  emoji={entity.emoji}
+                  type={entity.category}
+                  category={entity.category}
+                  size={64}
+                />
               </div>
               <h1 className="font-heading text-3xl font-semibold text-foreground mb-4">
                 Tu conexión con {entity.name}
@@ -198,7 +205,15 @@ export default function CompatibilityContent({ entity, atlasEntity }: Compatibil
 
               {/* 1+2. Entidad + conexión concreta */}
               <motion.section {...fadeUp} className="mb-12 text-center">
-                <span className="text-5xl block mb-4">{entity.emoji}</span>
+                <EntityVisual
+                  name={entity.name}
+                  emoji={entity.emoji}
+                  type={entity.category}
+                  category={entity.category}
+                  size={72}
+                  shape="circle"
+                  className="mx-auto mb-4"
+                />
                 <p className="font-heading text-2xl sm:text-3xl font-semibold text-foreground leading-tight mb-2">
                   {entity.name}
                 </p>
@@ -323,7 +338,13 @@ export default function CompatibilityContent({ entity, atlasEntity }: Compatibil
                         className="flex items-center justify-between gap-4 py-4 hover:bg-muted/20 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">{other.emoji}</span>
+                          <EntityVisual
+                            name={other.name}
+                            emoji={other.emoji}
+                            type={other.category}
+                            category={other.category}
+                            size={32}
+                          />
                           <div>
                             <p className="text-sm font-medium text-foreground">{other.name}</p>
                             <p className="text-xs text-muted">{CATEGORY_LABELS[other.category] || other.category}</p>

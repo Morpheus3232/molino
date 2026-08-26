@@ -9,6 +9,7 @@ import Halftone from "@/components/ui/Halftone";
 import Badge from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { CHINESE_ANIMALS, type ChineseAnimal, CHINESE_ZODIAC_DISCLAIMER } from "@/lib/data/zodiaco-chino-content";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const cellPad = "p-8 lg:p-12";
 
@@ -69,10 +70,10 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 ZODÍACO CHINO · SIGNO {String(currentIndex + 1).padStart(2, "0")} DE 12
               </p>
 
-              <div className="flex flex-wrap items-end gap-6 lg:gap-10">
-                <span className="text-[clamp(4rem,12vw,10rem)] leading-none" role="img" aria-label={animal.name}>
-                  {animal.emoji}
-                </span>
+              <div className="flex flex-wrap items-center gap-6 lg:gap-10">
+                <div className="text-accent shrink-0">
+                  <ZodiacAnimalIcon animal={animal.name} size={96} />
+                </div>
                 <h1 className="font-display text-[clamp(3rem,10vw,8rem)] leading-[0.85] tracking-tight text-foreground uppercase">
                   {animal.name}
                 </h1>
@@ -263,8 +264,8 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                   </span>
                   <span>
                     <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Anterior</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase">
-                      {prev.emoji} {prev.name}
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center gap-2">
+                      <ZodiacAnimalIcon animal={prev.name} size={20} className="text-accent" /> {prev.name}
                     </span>
                   </span>
                 </Link>
@@ -279,8 +280,8 @@ export default function AnimalContent({ animal }: { animal: ChineseAnimal | null
                 >
                   <span>
                     <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">Siguiente</span>
-                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase">
-                      {next.name} {next.emoji}
+                    <span className="block font-heading text-xl text-foreground group-hover:text-accent transition-colors uppercase inline-flex items-center justify-end gap-2">
+                      {next.name} <ZodiacAnimalIcon animal={next.name} size={20} className="text-accent" />
                     </span>
                   </span>
                   <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted group-hover:translate-x-1 transition-transform">

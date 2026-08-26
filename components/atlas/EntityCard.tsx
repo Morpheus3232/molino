@@ -40,6 +40,8 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
         imageUrl={entity.imageUrl}
         name={entity.name}
         countryISO={entity.countryISO}
+        type={entity.type}
+        category={entity.category}
         size={44}
       />
       <div className="flex-1 min-w-0">

@@ -5,6 +5,7 @@ import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 import { getRelationshipMap, type Animal } from "@/lib/data/animalRelations";
 import { getAnimalBirthYears, getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import type { UserProfile } from "@/types/user";
 
 interface CircleAlignmentProps {
@@ -102,7 +103,7 @@ function AnimalCard({ animal }: { animal: Animal }) {
   return (
     <div className="min-w-[150px] px-4 py-3 border border-ink/10 rounded-lg bg-background">
       <div className="flex items-center gap-2 mb-2">
-        <span role="img" aria-label={display.name}>{display.emoji}</span>
+        <ZodiacAnimalIcon animal={animal} size={20} className="text-accent" />
         <span className="font-medium">{display.name}</span>
       </div>
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-1.5">

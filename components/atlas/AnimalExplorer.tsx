@@ -11,6 +11,8 @@ import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { formatViewAll } from "@/lib/utils/plural";
+import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 const CATEGORY_ORDER = [
   { type: "country", label: "Países" },
@@ -97,13 +99,9 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                   : "Explorá países, ciudades, marcas y entidades que comparten este animal del Zodiaco Chino."}
               </p>
             </div>
-            {animalEmoji && (
-              <div className="shrink-0 select-none">
-                <span className="text-[clamp(3rem,6vw,5rem)] leading-none opacity-20">
-                  {animalEmoji}
-                </span>
-              </div>
-            )}
+            <div className="shrink-0 select-none">
+              <ZodiacAnimalIcon animal={animal} size={64} className="text-accent/30" />
+            </div>
           </div>
         </motion.header>
 
@@ -130,9 +128,16 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                       href={entityHref(e)}
                       className="flex items-center gap-3 py-2.5 px-3 -mx-3 rounded-lg hover:bg-ink/[0.03] transition-colors group"
                     >
-                      <span className="text-lg leading-none shrink-0 select-none" role="img" aria-label={e.name}>
-                        {e.emoji || "🔮"}
-                      </span>
+                      <EntityVisual
+                        name={e.name}
+                        emoji={e.emoji}
+                        type={e.type}
+                        category={e.category}
+                        visualType={e.visualType}
+                        countryISO={e.countryISO}
+                        size={28}
+                        className="shrink-0"
+                      />
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                           {e.name}

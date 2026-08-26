@@ -10,6 +10,7 @@ import { useUserContext } from "@/lib/hooks/useUserContext";
 import { sortLightEntities } from "@/lib/affinity-light";
 import { useProfile } from "@/lib/hooks/useProfile";
 import { Globe2, Building2, Sparkles, Trophy, GraduationCap, Mic2, Clapperboard, ArrowRight, type LucideIcon } from "lucide-react";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 interface LocalizedAffinityHubProps {
   catalog: LightweightEntity[];
@@ -110,7 +111,16 @@ export default function LocalizedAffinityHub({ catalog }: LocalizedAffinityHubPr
                       href={`/affinity/${e.type}/${e.id}`}
                       className="flex items-center gap-2 p-2 rounded-md bg-background/40 hover:bg-background/80 transition-colors group"
                     >
-                      <span className="text-lg">{e.emoji || "🔮"}</span>
+                      <EntityVisual
+                        name={e.name}
+                        emoji={e.emoji}
+                        type={e.type}
+                        category={e.category}
+                        visualType={e.visualType}
+                        countryISO={e.countryISO}
+                        size={24}
+                        className="shrink-0"
+                      />
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium text-foreground group-hover:text-accent transition-colors truncate">
                           {e.name}

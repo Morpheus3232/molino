@@ -107,6 +107,8 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                 visualType={selectedEntityA.visualType}
                 emoji={selectedEntityA.emoji}
                 name={selectedEntityA.name}
+                type={selectedEntityA.type}
+                category={selectedEntityA.category}
                 countryISO={selectedEntityA.countryISO}
                 imageUrl={selectedEntityA.imageUrl}
                 size={32}
@@ -146,6 +148,8 @@ export default function ComparePicker({ catalog }: { catalog: LightweightEntity[
                   visualType={entity.visualType}
                   emoji={entity.emoji}
                   name={entity.name}
+                  type={entity.type}
+                  category={entity.category}
                   countryISO={entity.countryISO}
                   imageUrl={entity.imageUrl}
                   size={32}

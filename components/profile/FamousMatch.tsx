@@ -9,8 +9,11 @@ import {
 } from "@/lib/data/famousPeopleToEntities";
 import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
+import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
 import { Sparkles, Users, Award, Compass, Star, Check } from "lucide-react";
+import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 interface FamousMatchProps {
   profile: UserProfile;
@@ -61,12 +64,17 @@ function MatchCard({
         )}
       </div>
 
-      {/* Header: emoji + Name + Meta (sin avatar de iniciales) */}
+      {/* Header: Visual + Name + Meta */}
       <div className="flex-1">
       <div className="flex items-start gap-3">
-        <span className="text-xl leading-none flex-shrink-0 mt-0.5" aria-hidden="true">
-          {person.emoji}
-        </span>
+        <EntityVisual
+          name={person.name}
+          emoji={person.emoji}
+          visualType="portrait"
+          countryISO={getCountryISO(person.country) ?? undefined}
+          size={36}
+          className="shrink-0 mt-0.5"
+        />
         <div className="min-w-0 flex-1 pr-14">
           <h3 className="font-heading text-sm sm:text-base font-bold text-foreground leading-tight">
             {person.name}
@@ -123,8 +131,9 @@ function MatchCard({
             Zodíaco
             {matchChineseZodiac && <Check className="w-2.5 h-2.5" aria-label="Coincide" />}
           </span>
-          <span className="font-mono text-xs font-bold">
-            {zodiacDisplay.emoji} {zodiacDisplay.name}
+          <span className="font-mono text-xs font-bold inline-flex items-center gap-1.5">
+            <ZodiacAnimalIcon animal={person.chineseZodiac} size={14} className="shrink-0" />
+            {zodiacDisplay.name}
           </span>
         </div>
 

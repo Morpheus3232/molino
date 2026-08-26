@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import { formatAnimalSimple, formatAnimalEmoji } from "@/lib/utils/zodiacDisplay";
 import { resolveUserContext } from "@/lib/context/userContext";
 import EntityVisual from "@/components/ui/EntityVisual";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 interface RecommendationContentProps {
   entityType: string;
@@ -289,10 +290,18 @@ function RecommendationCard({
       className="w-full text-left py-5 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start gap-4">
-        {/* Emoji + animal */}
-        <div className="text-center shrink-0">
-          <EntityVisual visualType={rec.visualType as VisualType} emoji={rec.emoji} name={rec.name} countryISO={rec.countryISO} size={40} />
-          <span className="text-xs text-muted">{formatAnimalEmoji(rec.animal)}</span>
+        {/* Visual + animal */}
+        <div className="text-center shrink-0 flex flex-col items-center gap-1">
+          <EntityVisual
+            visualType={rec.visualType as VisualType}
+            emoji={rec.emoji}
+            name={rec.name}
+            type={rec.type}
+            category={rec.category}
+            countryISO={rec.countryISO}
+            size={40}
+          />
+          <ZodiacAnimalIcon animal={rec.animal} size={14} className="text-muted" />
         </div>
 
         {/* Info */}

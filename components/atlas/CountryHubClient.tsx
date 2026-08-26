@@ -110,7 +110,7 @@ export default function CountryHubClient({
                 className="group flex items-center justify-between p-3.5 rounded-xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-all min-h-[52px]"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <EntityVisual visualType="emoji" emoji={city.emoji || "🏛️"} name={city.name} size={28} />
+                  <EntityVisual visualType="emoji" emoji={city.emoji || "🏛️"} name={city.name} type="city" size={28} />
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-foreground group-hover:text-accent transition-colors truncate">
                       {city.name}

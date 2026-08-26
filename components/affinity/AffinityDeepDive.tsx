@@ -9,6 +9,7 @@ import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
 import type { UserProfile } from "@/types/user";
 import { formatAnimalSimple } from "@/lib/utils/zodiacDisplay";
 import { SectionHeader, CollapsibleSection, DataRow, OtherEventCard, formatDisplayDate } from "@/components/affinity/AffinitySectionPrimitives";
+import EntityVisual from "@/components/ui/EntityVisual";
 
 /**
  * Read-only deep-dive content for the with-profile flow: calculation basis,
@@ -102,7 +103,15 @@ export default function AffinityDeepDive({
       <motion.section {...fadeUp} className="mb-12" role="region" aria-labelledby="section-por-que">
         <CollapsibleSection title="¿Por qué esta afinidad?" id="section-por-que">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">{entity.emoji}</span>
+            <EntityVisual
+              name={entity.name}
+              emoji={entity.emoji}
+              type={entity.type}
+              category={entity.category}
+              visualType={entity.visualType}
+              countryISO={entity.countryISO}
+              size={28}
+            />
             <p className="text-sm font-medium text-foreground">
               {formatAnimalSimple(result.userAnimal)} ↔ {formatAnimalSimple(result.entityAnimal)}
             </p>
@@ -235,7 +244,16 @@ export default function AffinityDeepDive({
           <SectionHeader title="Tu conexión" />
           <div className="p-6 border border-ink/10 bg-transparent">
             <div className="flex items-start gap-4 mb-4">
-              <span className="text-3xl shrink-0">{entity.emoji}</span>
+              <EntityVisual
+                name={entity.name}
+                emoji={entity.emoji}
+                type={entity.type}
+                category={entity.category}
+                visualType={entity.visualType}
+                countryISO={entity.countryISO}
+                size={36}
+                className="shrink-0"
+              />
               <div>
                 <h3 className="font-heading text-xl font-semibold text-foreground mb-1">
                   {story.headline}
