@@ -133,29 +133,19 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
             <main className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-24" id="main-content">
 
               {/* HERO */}
-              <motion.div {...fadeUp} className="border-t border-ink/10 py-10 sm:py-16">
-                <nav className="flex items-center gap-2 text-xs text-muted mb-6" aria-label="Breadcrumb">
+              <motion.div {...fadeUp} className="border-t border-ink/10 py-6 sm:py-8">
+                <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">
                   <button type="button" onClick={() => router.push("/affinity")} className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</button>
                   <span>›</span>
                   <span className="text-foreground font-medium">{meta.plural}</span>
                 </nav>
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-foreground leading-[0.95] tracking-tight">
+                <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl text-foreground leading-[0.95] tracking-tight">
                   Cómo resuena cada {meta.label.toLowerCase()}
                 </h1>
-                <p className="text-sm text-muted mt-4 max-w-xl">
-                  Elegí un animal del zodíaco chino y mirá con qué {meta.plural.toLowerCase()} aparecen sus patrones.
+                <p className="text-sm text-muted mt-3 max-w-xl leading-relaxed">
+                  Cada entidad tiene un animal según su fecha de origen. La resonancia compara ese animal con el tuyo — una lectura simbólica, no una predicción.
                 </p>
               </motion.div>
-
-              {/* Contexto editorial — qué es y qué no es la resonancia */}
-              <div className="border-t border-ink/10 py-8">
-                <p className="text-sm text-foreground leading-relaxed max-w-2xl">
-                  Cada entidad tiene un animal asociado según su fecha de origen. La resonancia compara ese animal con el de tu mapa.
-                </p>
-                <p className="text-xs text-muted leading-relaxed mt-3 max-w-2xl">
-                  No es una predicción ni una medida de compatibilidad personal. Es una lectura simbólica basada exclusivamente en la relación entre ambos animales del zodíaco chino.
-                </p>
-              </div>
 
               {/* SELECTOR DE ANIMAL — 12 animales, siempre visible */}
               <div className="border-t border-ink/10 py-8">
