@@ -402,7 +402,7 @@ function DomainBlock({
 function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelationEntry[] }) {
   return (
     <motion.div {...editorialReveal} className="border-t border-border pt-10 sm:pt-12 pb-6">
-      <div className="max-w-3xl mb-8">
+      <div className="max-w-3xl mb-6">
         <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-2">
           El ciclo entero, leído desde {animal}
         </h3>
@@ -413,7 +413,7 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
         </p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-1">
         {entries.map((e, i) => {
           const propio = e.kind === "mismo";
           const amigo = e.kind === "amigo";
@@ -421,45 +421,32 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
           return (
             <div
               key={e.animal}
-              className={`relative flex flex-col items-center text-center p-4 sm:p-5 rounded-[--radius-lg] border transition-colors ${
-                propio
-                  ? "bg-accent/[0.06] border-accent/30 ring-1 ring-accent/20"
-                  : enemigo
-                    ? "bg-ink/[0.03] border-ink/15"
-                    : "bg-background border-border/70 hover:border-ink/20"
+              className={`flex items-center gap-2.5 py-2 border-b ${
+                propio ? "border-accent/30" : "border-border/50"
               }`}
             >
-              {/* Number */}
-              <span className="absolute top-2.5 left-3 font-mono text-[10px] tabular-nums text-muted/50">
+              <span className="font-mono text-[10px] tabular-nums text-muted/50 shrink-0 w-4">
                 {String(i + 1).padStart(2, "0")}
               </span>
-
-              {/* Icon — 40px para que se vean los detalles */}
               <ZodiacAnimalIcon
                 animal={e.animal}
-                size={40}
-                className={`mb-2.5 ${propio ? "text-accent" : amigo ? "text-foreground" : "text-foreground/60"}`}
+                size={22}
+                className={`shrink-0 ${propio ? "text-accent" : amigo ? "text-foreground" : "text-foreground/50"}`}
               />
-
-              {/* Name */}
               <span
-                className={`font-heading text-sm font-bold leading-tight ${
-                  propio ? "text-accent" : "text-foreground"
-                }`}
+                className={`font-heading text-sm font-bold ${propio ? "text-accent" : "text-foreground"}`}
               >
                 {e.animal}
               </span>
-
-              {/* Relation badge */}
               <span
-                className={`mt-2 font-mono text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-full ${
+                className={`ml-auto font-mono text-[10px] uppercase tracking-wide shrink-0 ${
                   propio
-                    ? "bg-accent/15 text-accent"
+                    ? "text-accent"
                     : amigo
-                      ? "bg-accent/10 text-accent/80"
+                      ? "text-accent/70"
                       : enemigo
-                        ? "bg-ink/10 text-foreground/70 border border-ink/15"
-                        : "text-muted/50"
+                        ? "text-foreground/70"
+                        : "text-muted/40"
                 }`}
               >
                 {KIND_SHORT[e.kind]}
