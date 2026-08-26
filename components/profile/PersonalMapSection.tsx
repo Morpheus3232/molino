@@ -541,7 +541,7 @@ export default function PersonalMapSection({
         <CycleTable animal={map.animal} entries={map.relationMap} />
 
         {/* ── Afinidades por relación (mismo modelo que /lectura) ──── */}
-        <LecturaAfinidadesFull userAnimal={map.animal} catalog={catalog} />
+        <LecturaAfinidadesFull userAnimal={map.animal} catalog={catalog ?? []} />
 
         {/* ── Todavía sin fecha exacta (Colapsable) ─────────────────── */}
         {enEspera.length > 0 && (
