@@ -55,14 +55,14 @@ export default function ClaritySection() {
           <h2
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-6"
           >
-            Cada número tiene
+            Tu vida no es azar,
             <br />
-            <span className="text-accent">fórmula, noSorte.</span>
+            <span className="text-accent">es una fórmula.</span>
           </h2>
 
           <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl mx-auto">
-            Tu mapa se construye con métodos verificables: numerología pitagórica, astrología tropical,
-            zodíaco chino y ciclos personales. Sin adivinación — con fórmulas que podés comprobar.
+            Numerología, astrología y zodíaco chino convertidos en un mapa personal
+            con fórmulas que podés verificar.
           </p>
         </div>
 
@@ -108,7 +108,7 @@ export default function ClaritySection() {
             href="/metodos-y-fuentes"
             className="inline-flex items-center gap-2 font-mono text-xs text-accent hover:underline underline-offset-2 group"
           >
-            <span>Ver fórmulas y fuentes</span>
+            <span>Ver mi mapa</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
           </Link>
         </div>
