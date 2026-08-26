@@ -62,7 +62,7 @@ export default function ClaritySection() {
 
           <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl mx-auto">
             Numerología, astrología y zodíaco chino convertidos en un mapa personal
-            con fórmulas que podés verificar.
+            que podés verificar.
           </p>
         </div>
 
