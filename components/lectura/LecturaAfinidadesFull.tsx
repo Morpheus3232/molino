@@ -16,7 +16,6 @@ import { Compass, ArrowRight, Sparkles, Shield, AlertCircle } from "lucide-react
 export type RelationTabKey = "same" | "triad" | "clash";
 
 export type CategoryFilterKey =
-  | "all"
   | "country"
   | "city"
   | "football"
@@ -65,7 +64,6 @@ const RELATION_CONFIG: Record<
 };
 
 const CATEGORY_TABS: { key: CategoryFilterKey; label: string }[] = [
-  { key: "all", label: "Todos" },
   { key: "country", label: "Países" },
   { key: "city", label: "Ciudades" },
   { key: "football", label: "Fútbol" },
@@ -95,7 +93,7 @@ export default function LecturaAfinidadesFull({
   className = "",
 }: LecturaAfinidadesFullProps) {
   const [activeRelation, setActiveRelation] = useState<RelationTabKey>("same");
-  const [activeCategory, setActiveCategory] = useState<CategoryFilterKey>("all");
+  const [activeCategory, setActiveCategory] = useState<CategoryFilterKey>("country");
   const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
 
   const allies = useMemo(() => {
@@ -154,7 +152,6 @@ export default function LecturaAfinidadesFull({
 
   // Filtro por categoría dentro de la relación activa
   const filteredEntities = useMemo(() => {
-    if (activeCategory === "all") return activeRelationEntities;
     if (activeCategory === "football") {
       return activeRelationEntities.filter(
         (e) => e.type === "team" || e.type === "football_player"
@@ -166,7 +163,6 @@ export default function LecturaAfinidadesFull({
   // Conteos por categoría para las píldoras de navegación
   const categoryCounts = useMemo(() => {
     const counts: Record<CategoryFilterKey, number> = {
-      all: activeRelationEntities.length,
       country: 0,
       city: 0,
       football: 0,
@@ -197,7 +193,7 @@ export default function LecturaAfinidadesFull({
   // Cambio de pestaña de relación: resetea paginación
   const handleSelectRelation = useCallback((rel: RelationTabKey) => {
     setActiveRelation(rel);
-    setActiveCategory("all");
+    setActiveCategory("country");
     setVisibleCount(PAGE_SIZE);
   }, []);
 
@@ -303,7 +299,7 @@ export default function LecturaAfinidadesFull({
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
-            Categoría
+            Categorías
           </span>
           <span className="font-mono text-[11px] text-muted">
             {filteredEntities.length} {filteredEntities.length === 1 ? "entidad" : "entidades"}
@@ -313,7 +309,7 @@ export default function LecturaAfinidadesFull({
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
           {CATEGORY_TABS.map((cat) => {
             const count = categoryCounts[cat.key];
-            if (count === 0 && cat.key !== "all") return null;
+            if (count === 0) return null;
             const isSelected = activeCategory === cat.key;
 
             return (
