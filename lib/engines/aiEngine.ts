@@ -101,7 +101,7 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
   required: [
     'opening', 'summary', 'corePattern', 'alignment', 'tensions',
     'howYouOperate', 'blindSpot', 'lifeAreas', 'relationalNote', 'timing',
-    'suggestedNextStep', 'closingSynthesis', 'strengths', 'whatToConsider',
+    'suggestedNextStep', 'suggestedQuestions', 'closingSynthesis', 'strengths', 'whatToConsider',
     'confidence', 'limitations',
   ],
   properties: {
@@ -134,6 +134,7 @@ const MOLINO_INTERPRETATION_JSON_SCHEMA = {
     relationalNote: { type: ['string', 'null'] },
     timing: { type: ['string', 'null'] },
     suggestedNextStep: { type: ['string', 'null'] },
+    suggestedQuestions: { type: ['array', 'null'], items: { type: 'string' } },
     closingSynthesis: { type: ['string', 'null'] },
     strengths: { type: 'array', items: { type: 'string' } },
     whatToConsider: { type: 'array', items: { type: 'string' } },

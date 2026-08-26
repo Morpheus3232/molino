@@ -24,6 +24,7 @@ import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
 import Logo from "@/components/ui/Logo";
 import BuildingMolino from "@/components/ui/BuildingMolino";
 import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
+import PremiumChatSection from "@/components/chat/PremiumChatSection";
 import { Gift } from "lucide-react";
 
 interface Props {
@@ -383,11 +384,39 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 initial={reduceMotion ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.5 }}
-                className="text-center font-display italic text-xl sm:text-2xl leading-[1.5] text-foreground max-w-xl mx-auto mb-20 sm:mb-24"
+                className="text-center font-display italic text-xl sm:text-2xl leading-[1.5] text-foreground max-w-xl mx-auto mb-16 sm:mb-20"
               >
                 &ldquo;{interpretation.closingSynthesis}&rdquo;
               </motion.blockquote>
             )}
+
+            {/* Diferencial Principal de Molino: Conversación contextual con tu mapa */}
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.55 }}
+              className="mb-20 sm:mb-24"
+            >
+              <PremiumChatSection
+                profile={profile}
+                readingContext={{
+                  summary: interpretation.summary,
+                  corePattern: interpretation.corePattern
+                    ? { what: interpretation.corePattern.what, source: interpretation.corePattern.source }
+                    : undefined,
+                  howYouOperate: interpretation.howYouOperate,
+                  closingSynthesis: interpretation.closingSynthesis,
+                  tensions: interpretation.tensions,
+                  alignment: interpretation.alignment,
+                  timing: interpretation.timing,
+                  strengths: interpretation.strengths,
+                  whatToConsider: interpretation.whatToConsider,
+                  suggestedNextStep: interpretation.suggestedNextStep,
+                  opening: interpretation.opening,
+                  relationalNote: interpretation.relationalNote,
+                }}
+              />
+            </motion.div>
           </>
         )}
 

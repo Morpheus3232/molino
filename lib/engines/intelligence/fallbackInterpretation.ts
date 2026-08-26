@@ -193,15 +193,23 @@ export function generateFallbackInterpretation(
     // vuelva a estar disponible (mismo principio que "no fabricar" del resto
     // del engine, aplicado a un caso donde la única respuesta honesta es
     // "no puedo responder esto todavía").
-    case 'question':
+    case 'question': {
       summary = request.question
         ? `Todavía no pudimos generar una respuesta a "${request.question}" — necesita interpretación de IA, que no está disponible en este momento.`
         : 'No pudimos generar una respuesta — intentá de nuevo en un momento.';
-      alignment = `Mientras tanto, tu Life Path ${userProfile.lifePath} (${userProfile.archetype}) y tu animal chino ${userProfile.chineseZodiac} son los datos base que Molino ya tiene calculados sobre vos.`;
+      alignment = `Mientras tanto, tu **Camino de Vida ${userProfile.lifePath}** (${userProfile.archetype}), tu **Sol en ${request.context.astrology.sunSign}** y tu **Zodíaco Chino ${userProfile.chineseZodiac}** son los datos base que Molino ya tiene calculados sobre vos.`;
       timing = '';
       suggestedNextStep = 'Volvé a intentar en unos segundos.';
       whatToConsider = [];
+      narrativeExtension = {
+        suggestedQuestions: [
+          `¿Cómo influye mi Año Personal ${cycles.personalYear} en mis decisiones actuales?`,
+          `¿Qué desafíos presenta mi combinación de Camino de Vida ${userProfile.lifePath} con Sol en ${request.context.astrology.sunSign}?`,
+          `¿Cómo resuena mi animal chino ${userProfile.chineseZodiac} con mis proyectos de este año?`,
+        ],
+      } as any;
       break;
+    }
 
     default:
       summary = `Tu perfil de ${userProfile.archetype} con Life Path ${userProfile.lifePath} muestra una energía única.`;

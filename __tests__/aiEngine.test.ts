@@ -127,7 +127,7 @@ describe('OPENROUTER_MODEL_DEFAULT fallback', () => {
 const MOLINO_CONTRACT_FIELDS = [
   'opening', 'summary', 'corePattern', 'alignment', 'tensions', 'howYouOperate',
   'blindSpot', 'lifeAreas',
-  'relationalNote', 'timing', 'suggestedNextStep', 'closingSynthesis',
+  'relationalNote', 'timing', 'suggestedNextStep', 'suggestedQuestions', 'closingSynthesis',
   'strengths', 'whatToConsider', 'confidence', 'limitations',
 ];
 

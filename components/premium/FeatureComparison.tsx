@@ -77,7 +77,7 @@ const FEATURES: FeatureItem[] = [
     free: false,
     premium: true,
     highlight: true,
-    description: "Consultas ilimitadas sobre tus decisiones, momentos y arquetipo.",
+    description: "50 consultas incluidas con la IA que ya conoce tu mapa completo, sin tener que explicar tu contexto.",
   },
   {
     category: "Privacidad & Acceso",

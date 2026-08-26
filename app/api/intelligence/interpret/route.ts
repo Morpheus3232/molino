@@ -308,7 +308,7 @@ export async function POST(req: NextRequest) {
           // invalid, and null !== undefined).
           const NULLABLE_OPTIONAL_FIELDS = [
             'opening', 'alignment', 'howYouOperate', 'relationalNote',
-            'timing', 'suggestedNextStep', 'closingSynthesis', 'confidence', 'corePattern',
+            'timing', 'suggestedNextStep', 'suggestedQuestions', 'closingSynthesis', 'confidence', 'corePattern',
             'blindSpot', 'lifeAreas',
           ] as const;
           for (const field of NULLABLE_OPTIONAL_FIELDS) {
@@ -375,6 +375,9 @@ export async function POST(req: NextRequest) {
           tensions: structured.tensions || [],
           whatToConsider: structured.whatToConsider || [],
           suggestedNextStep: structured.suggestedNextStep || '',
+          suggestedQuestions: Array.isArray(structured.suggestedQuestions)
+            ? structured.suggestedQuestions.filter((q): q is string => typeof q === 'string')
+            : undefined,
           confidence: structured.confidence || 'Alta',
           limitations: structured.limitations?.length ? structured.limitations : ['Interpretación generada con IA.'],
           opening: structured.opening,

@@ -16,6 +16,8 @@ const PRODUCT_PRICE_ARS = 11880;
 const PRODUCT_CURRENCY_USD = 'USD';
 const PRODUCT_CURRENCY_ARS = 'ARS';
 const PRODUCT_ID = 'molino_premium';
+export const CREDITS_RELOAD_PRODUCT_ID = 'molino_credits_28';
+export const CREDITS_RELOAD_PRICE_USD = 1.70;
 
 /** Product id para un plan pagado (ej. "molino_pro_monthly"). */
 export function planProductId(planId: string, cycle: BillingCycle): string {
@@ -33,6 +35,9 @@ const PLAN_PRODUCT_RE = /^molino_([a-z]+)_(monthly|yearly)$/;
 export function expectedAmountFor(product: string | undefined, currencyId: string): number {
   if (product === PRODUCT_ID) {
     return currencyId === PRODUCT_CURRENCY_ARS ? PRODUCT_PRICE_ARS : PRODUCT_PRICE_USD;
+  }
+  if (product === CREDITS_RELOAD_PRODUCT_ID) {
+    return CREDITS_RELOAD_PRICE_USD;
   }
   const match = product ? PLAN_PRODUCT_RE.exec(product) : null;
   if (match && currencyId === PRODUCT_CURRENCY_USD) {

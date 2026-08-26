@@ -1,10 +1,29 @@
 import type { UserProfile } from '@/types/user';
+import { getMoonSign } from '../astrologyEngine';
 import type { CompatibilityResult } from '../compatibilityEngine';
 import type { DailyEnergyResult } from '../dailyEnergyEngine';
 import type { TimingResult } from '../timingEngine';
 import type { DecisionResult } from '../decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
 import type { MolinoContext } from './types';
+
+const CHINESE_EARTHLY_BRANCHES: Record<string, string> = {
+  Rata: "Zi (子)",
+  Buey: "Chou (丑)",
+  Tigre: "Yin (寅)",
+  Conejo: "Mao (卯)",
+  Gato: "Mao (卯)",
+  Dragón: "Chen (辰)",
+  Serpiente: "Si (巳)",
+  Caballo: "Wu (午)",
+  Cabra: "Wei (未)",
+  Mono: "Shen (申)",
+  Gallo: "You (酉)",
+  Perro: "Xu (戌)",
+  Cerdo: "Hai (亥)",
+};
+
+const YANG_ANIMALS = new Set(["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Perro"]);
 
 /**
  * Build a MolinoContext from user profile and optional modules.
@@ -20,6 +39,13 @@ export function buildMolinoContext(
     decision?: DecisionResult;
   } = {}
 ): MolinoContext {
+  const moonSign = profile.birthDate ? getMoonSign(profile.birthDate, profile.birthTime) : undefined;
+  const baseVibration =
+    profile.lifePath === 11 ? 2 : profile.lifePath === 22 ? 4 : profile.lifePath === 33 ? 6 : profile.lifePath;
+  const animal = profile.chineseZodiac || '';
+  const polarity = animal ? (YANG_ANIMALS.has(animal) ? 'Yang' : 'Yin') : undefined;
+  const branch = animal ? CHINESE_EARTHLY_BRANCHES[animal] : undefined;
+
   return {
     userProfile: {
       name: profile.name || '',
@@ -38,6 +64,7 @@ export function buildMolinoContext(
     },
     numerology: {
       lifePath: profile.lifePath,
+      baseVibration,
       expressionNumber: profile.expressionNumber,
       personalityNumber: profile.personalityNumber,
       archetype: profile.archetype,
@@ -55,6 +82,8 @@ export function buildMolinoContext(
     },
     astrology: {
       sunSign: profile.sunSign,
+      moonSign,
+      ascendant: undefined,
       element: profile.element,
       modality: profile.modality,
       symbol: profile.sunSignInfo?.symbol || '',
@@ -62,6 +91,8 @@ export function buildMolinoContext(
     chineseZodiac: {
       animal: profile.chineseZodiac,
       element: profile.chineseZodiacInfo?.element || '',
+      polarity,
+      branch,
     },
     cycles: {
       personalYear: profile.cycles?.personalYear || 0,

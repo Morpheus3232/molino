@@ -60,13 +60,14 @@ export function buildIntelligencePromptV2(request: InterpretationRequest): strin
 <user_context>
 CONTEXTO DEL USUARIO:
 - Nombre: ${userName}
-- Life Path: ${userProfile.lifePath}
+- Life Path (Camino de Vida): ${userProfile.lifePath}${numerology.baseVibration ? ` (Vibración Base: ${numerology.baseVibration})` : ''}
 - Arquetipo: ${userProfile.archetype}
-- Signo Solar: ${astrology.sunSign} (${astrology.element}, ${astrology.modality})
-- Zodiaco Chino: ${chineseZodiac.animal} (${chineseZodiac.element})
+- Astrología: Sol en ${astrology.sunSign} (${astrology.element}, ${astrology.modality})${astrology.moonSign ? `, Luna en ${astrology.moonSign}` : ''}
+- Zodiaco Chino: ${chineseZodiac.animal} (${chineseZodiac.element})${chineseZodiac.polarity ? `, Polaridad: ${chineseZodiac.polarity}` : ''}${chineseZodiac.branch ? `, Rama: ${chineseZodiac.branch}` : ''}
 - Elemento: ${userProfile.element}
 - Año personal: ${cycles.personalYear}
 - Mes personal: ${cycles.personalMonth}
+- Día personal: ${cycles.personalDay}
 ${numerology.expressionNumber ? `- Expresión: ${numerology.expressionNumber}` : ''}
 ${numerology.personalityNumber ? `- Personalidad: ${numerology.personalityNumber} (en Molino se calcula solo desde el día de nacimiento, no desde el nombre; para el 9 representa capacidad de adaptación — no uses el significado clásico de "número de personalidad" por consonantes)` : ''}
 </user_context>`;
@@ -441,13 +442,16 @@ ${readingBlock}${conversationContext}
 PREGUNTA DEL USUARIO: "${safeQuestion || ''}"
 
 TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este es el chat contextual de Molino, no un asistente genérico.
+- La premisa central de Molino es que YA conocés el mapa completo del usuario antes de que escriba. NO le pidas sus fechas, signos ni números.
+- Cuando hagas referencia a conceptos o coordenadas de su mapa (ej. **Camino de Vida 4**, **Sol en Leo**, **Luna en Virgo**, **Año Personal 4**, **Tigre de Madera**), destacalos en negrita (**...**) dentro de tu respuesta.
 - Si recibiste CONTEXTO DE LA LECTURA PREMIUM: usalo como grounding para responder LA PREGUNTA específica, no para repetir la lectura. La respuesta debe sumar un ángulo nuevo sobre la pregunta, no resumir lo que el usuario ya leyó.
 - Las REGLAS PRÁCTICAS y el TIMING son datos ya calculados: usalos solo cuando la pregunta los ponga en juego, no los listes de forma genérica.
+- Al final, generá 2 a 3 sugerencias contextuales en "suggestedQuestions" basadas en lo que respondió la IA y las tensiones/ciclos del mapa (ej. "¿Querés explorar cómo aprovechar este ciclo de cimiento en tu trabajo?", "¿Te interesa ver cómo tu Luna afecta tus decisiones?").
 
 REGLAS ESTRICTAS:
 - Nunca inventes un dato (número, signo, animal, relación) que no esté en el CONTEXTO DEL USUARIO o en los bloques de arriba.
 - Distinguí SIEMPRE, dentro de tu respuesta, entre estas tres capas — no las mezcles como si fueran lo mismo:
-  1) DATO CALCULADO: lo que Molino ya calculó (citalo tal cual, ej. "tu Life Path es 4").
+  1) DATO CALCULADO: lo que Molino ya calculó (citalo tal cual en negrita, ej. "**Camino de Vida 4**").
   2) INTERPRETACIÓN SIMBÓLICA: qué podría significar ese dato — con lenguaje de posibilidad ("puede sugerir", "tiende a"), nunca de certeza.
   3) RECOMENDACIÓN: una acción concreta, solo si la pregunta la pide — dejala vacía si no aplica.
 - Si la pregunta pide algo que Molino NO calcula (compatibilidad con una persona sin sus datos, un evento futuro con certeza, un consejo médico/financiero/legal/psicológico clínico), decilo explícitamente en "limitations" en vez de inventar una respuesta — y en ese caso "confidence" debe ser "Baja".
@@ -456,9 +460,14 @@ REGLAS ESTRICTAS:
 
 Generá una respuesta JSON con:
 {
-  "summary": "La respuesta directa a la pregunta, 2-4 oraciones",
+  "summary": "La respuesta directa a la pregunta en texto fluido, 2-4 oraciones, con coordenadas del mapa en **negrita**",
   "alignment": "La interpretación simbólica detrás de esa respuesta — qué significa dentro del mapa del usuario",
   "suggestedNextStep": "Una recomendación concreta si la pregunta la pide, vacío ('') si no aplica",
+  "suggestedQuestions": [
+    "Pregunta de seguimiento contextual 1 basada en su mapa y momento",
+    "Pregunta de seguimiento contextual 2",
+    "Pregunta de seguimiento contextual 3"
+  ],
   "whatToConsider": ["qué no se puede saber con este sistema, si corresponde"],
   "confidence": "Alta/Media/Baja",
   "limitations": ["qué falta o qué está fuera del alcance de Molino, si corresponde"]

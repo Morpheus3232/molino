@@ -117,6 +117,7 @@ export interface MolinoContractJSON {
   tensions?: string[];
   whatToConsider?: string[];
   suggestedNextStep?: string;
+  suggestedQuestions?: string[];
   confidence?: string;
   limitations?: string[];
   opening?: string;
@@ -173,6 +174,7 @@ export function isValidMolinoInterpretation(data: unknown): data is MolinoContra
     'tensions',
     'whatToConsider',
     'limitations',
+    'suggestedQuestions',
   ];
   for (const field of arrayFields) {
     if (data[field] !== undefined && !isStringArray(data[field])) return false;

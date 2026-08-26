@@ -28,6 +28,7 @@ export interface MolinoContext {
   };
   numerology: {
     lifePath: number;
+    baseVibration?: number;
     expressionNumber?: number;
     personalityNumber?: number;
     archetype: string;
@@ -37,6 +38,8 @@ export interface MolinoContext {
   };
   astrology: {
     sunSign: string;
+    moonSign?: string;
+    ascendant?: string;
     element: string;
     modality: string;
     symbol: string;
@@ -44,6 +47,8 @@ export interface MolinoContext {
   chineseZodiac: {
     animal: string;
     element: string;
+    polarity?: string;
+    branch?: string;
   };
   cycles: {
     personalYear: number;
@@ -114,6 +119,7 @@ export interface MolinoInterpretation {
   tensions: string[];
   whatToConsider: string[];
   suggestedNextStep: string;
+  suggestedQuestions?: string[];
   confidence: string;
   limitations: string[];
   rawContext: MolinoContext;
