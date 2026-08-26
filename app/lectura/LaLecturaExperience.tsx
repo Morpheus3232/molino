@@ -8,15 +8,12 @@ import { usePremiumAccess } from "@/lib/hooks/usePremiumAccess";
 import { getProfileSalt } from "@/lib/profile-salt";
 import { getPremiumTokenClient } from "@/lib/premium";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
-import { getChineseZodiacRecommendations } from "@/lib/engines/chineseZodiacEngine";
 import {
   buildPatterns,
   buildTensions,
   generatePaywallHook,
 } from "@/lib/engines/synthesisEngine";
 import { safeNumber } from "@/lib/utils/score";
-import { buildLuckyNumberProof } from "@/lib/calculations/proof";
-import CalculationProof from "@/components/shared/CalculationProof";
 import PremiumGate from "@/components/profile/PremiumGate";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
@@ -105,22 +102,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   }, [profile.birthDate, profile.name, isPremium]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
-
-  // Las 4 lecturas nuevas del zodíaco chino (alimento, mascota, timing,
-  // color de elemento) — cálculo puro y local, sin IA, mismo criterio que
-  // el resto de Molino.
-  const zodiacExtras = useMemo(() => {
-    try {
-      return getChineseZodiacRecommendations(profile.birthDate);
-    } catch {
-      return null;
-    }
-  }, [profile.birthDate]);
-
-  const luckyNumberInputs = useMemo(() => {
-    const [year, month] = profile.birthDate.split("-").map((p) => parseInt(p, 10));
-    return Number.isFinite(year) && Number.isFinite(month) ? { month, year } : null;
-  }, [profile.birthDate]);
 
   // Mismo preview que arma LecturaPremium en /profile (LecturaProfunda.tsx) —
   // el paywall muestra un patrón y una tensión reales de ESTE perfil, no una
@@ -428,93 +409,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             afinidades. Una sola franja visual (border-t-2) marca dónde
             termina la lectura narrativa (si la hubo) y empieza el material
             de referencia. */}
-        {(revealed || locked) && (zodiacExtras || catalog.length > 0) && (
+        {(revealed || locked) && catalog.length > 0 && (
               <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
-                {zodiacExtras && (
-                  <motion.section
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.55 }}
-                  >
-                    <p className="font-heading text-lg sm:text-xl text-foreground mb-2">
-                      Tu ciclo, en detalle
-                    </p>
-                    <p className="text-xs text-muted mb-6">
-                      Cuatro lecturas más de tu signo del zodíaco chino, {zodiacExtras.sign}.
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-ink/10">
-                      <div className="bg-paper p-6 sm:p-7">
-                        <h3 className="font-heading text-sm text-foreground mb-2">Alimento</h3>
-                        {zodiacExtras.food.restriction === "EVITAR" ? (
-                          <p className="text-sm text-muted leading-relaxed">
-                            Alimento a moderar: <strong className="text-foreground">{zodiacExtras.food.alimento}</strong>. {zodiacExtras.food.razon}
-                          </p>
-                        ) : (
-                          <p className="text-sm text-muted leading-relaxed">Sin restricción alimentaria específica según esta tradición.</p>
-                        )}
-                      </div>
-                      <div className="bg-paper-alt p-6 sm:p-7">
-                        <h3 className="font-heading text-sm text-foreground mb-2">Mascota</h3>
-                        <p className="text-sm text-muted leading-relaxed">
-                          Energía en tensión: <strong className="text-foreground">{zodiacExtras.pet.petToAvoid}</strong>. {zodiacExtras.pet.razon}
-                        </p>
-                      </div>
-                      <div className="bg-paper p-6 sm:p-7">
-                        <h3 className="font-heading text-sm text-foreground mb-2">Timing anual</h3>
-                        <p className="text-sm text-muted leading-relaxed">
-                          {zodiacExtras.timing.consejo}{" "}
-                          {zodiacExtras.timing.isOwnYear ? (
-                            <>
-                              Estás transitando tu año propio ({zodiacExtras.timing.currentYear}). El siguiente será en{" "}
-                              <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
-                            </>
-                          ) : (
-                            <>
-                              Tu próximo año propio:{" "}
-                              <strong className="text-foreground">{zodiacExtras.timing.nextOwnYear}</strong>.
-                            </>
-                          )}
-                        </p>
-                      </div>
-                      <div className="bg-paper-alt p-6 sm:p-7">
-                        <h3 className="font-heading text-sm text-foreground mb-2">Color de tu elemento</h3>
-                        <p className="text-sm text-muted leading-relaxed flex items-start gap-2">
-                          <span
-                            className="mt-1 w-3 h-3 rounded-full shrink-0 border border-ink/10"
-                            style={{ backgroundColor: zodiacExtras.elementColor.colorHex }}
-                            aria-hidden="true"
-                          />
-                          <span>
-                            <strong className="text-foreground">{zodiacExtras.elementColor.color}</strong> — {zodiacExtras.elementColor.descripcion}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </motion.section>
-                )}
-
-                {luckyNumberInputs && (
-                  <motion.section
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.6 }}
-                  >
-                    <p className="font-heading text-lg sm:text-xl text-foreground mb-2">Tu número de la suerte</p>
-                    <p className="font-display italic text-4xl sm:text-5xl mt-2 mb-3 text-accent">
-                      {profile.luckyNumber}
-                    </p>
-                    <p className="text-sm text-muted leading-relaxed max-w-xl">
-                      Sale de combinar la primera cifra de tu mes de nacimiento con la última cifra distinta de
-                      cero de tu año. Es un número de referencia personal, no una predicción.
-                    </p>
-                    <CalculationProof
-                      label="Número de la suerte"
-                      data={buildLuckyNumberProof(luckyNumberInputs.month, luckyNumberInputs.year)}
-                      className="mt-4"
-                    />
-                  </motion.section>
-                )}
-
                 {/* 05 — Tu relación con el mundo: catálogo completo categorizado por relación */}
                 <LecturaAfinidadesFull userAnimal={userAnimal} catalog={catalog} />
               </div>
