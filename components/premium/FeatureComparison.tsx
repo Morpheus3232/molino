@@ -119,7 +119,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
         </div>
 
         {/* Desktop Table View */}
-        <div className="hidden md:block rounded-2xl border border-ink/10 bg-card overflow-hidden shadow-sm">
+        <div className="hidden md:block rounded-xl border border-ink/10 bg-card overflow-hidden shadow-sm">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-ink/10 bg-background/50">
@@ -144,7 +144,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                   <tr key={category} className="contents">
                     <td
                       colSpan={3}
-                      className="py-2.5 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4A843] bg-ink/[0.03] border-y border-ink/10 font-bold"
+                      className="py-2.5 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-gold bg-ink/[0.03] border-y border-ink/10 font-bold"
                     >
                       {category}
                     </td>
@@ -165,7 +165,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                         </td>
                         <td className="py-4 px-6 text-center">
                           {f.free ? (
-                            <Check className="w-4 h-4 text-emerald-400 mx-auto" />
+                            <Check className="w-4 h-4 text-success mx-auto" />
                           ) : (
                             <X className="w-4 h-4 text-muted/40 mx-auto" />
                           )}
@@ -193,9 +193,9 @@ export default function FeatureComparison({ className = "" }: { className?: stri
             return (
               <div
                 key={category}
-                className="rounded-2xl border border-ink/10 bg-card p-5 space-y-4"
+                className="rounded-xl border border-ink/10 bg-card p-5 space-y-4"
               >
-                <h3 className="font-mono text-xs uppercase tracking-wider text-[#D4A843] font-bold border-b border-ink/10 pb-2">
+                <h3 className="font-mono text-xs uppercase tracking-wider text-gold font-bold border-b border-ink/10 pb-2">
                   {category}
                 </h3>
                 <div className="space-y-3.5">
@@ -216,7 +216,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
                             f.free
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              ? "bg-success/10 text-success border border-success/30"
                               : "bg-ink/5 text-muted/60"
                           }`}
                         >
@@ -241,7 +241,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
         </div>
 
         {/* Value Anchor Box */}
-        <div className="mt-12 rounded-3xl border border-accent/25 bg-card/70 p-6 sm:p-8">
+        <div className="mt-12 rounded-xl border border-accent/25 bg-card/70 p-6 sm:p-8">
           <div className="text-center sm:text-left mb-6">
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
               Ancla de Valor & Transparencia
@@ -255,19 +255,19 @@ export default function FeatureComparison({ className = "" }: { className?: stri
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+            <div className="p-4 rounded-lg bg-background border border-ink/5 space-y-1">
               <span className="text-[11px] font-mono text-muted block">Consulta Personal Tradicional</span>
               <span className="text-sm font-bold text-foreground line-through opacity-60">$50 – $120 USD</span>
               <p className="text-xs text-muted leading-relaxed">Sesión de 1 hora, sin reporte interactivo ni actualizaciones de por vida.</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-background border border-ink/5 space-y-1">
+            <div className="p-4 rounded-lg bg-background border border-ink/5 space-y-1">
               <span className="text-[11px] font-mono text-muted block">Apps con Suscripción Mensual</span>
               <span className="text-sm font-bold text-foreground line-through opacity-60">$10 – $15 / mes</span>
               <p className="text-xs text-muted leading-relaxed">Pagos recurrentes que suman $120 al año y recopilan datos para publicidad.</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-accent/10 border border-accent/30 space-y-1">
+            <div className="p-4 rounded-lg bg-accent/10 border border-accent/30 space-y-1">
               <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
               <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
               <p className="text-xs text-foreground/90 leading-relaxed">$8 USD. Acceso vitalicio permanente, informe con síntesis narrativa y 0 tracking.</p>

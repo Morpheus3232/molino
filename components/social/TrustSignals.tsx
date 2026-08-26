@@ -79,7 +79,7 @@ function BadgeCard({ icon: Icon, title, detail }: { icon: BadgeIcon; title: stri
       className="group h-full"
     >
       <Card hover={false} padding="lg" className="h-full transition-colors duration-200 group-hover:border-accent/40 bg-card/60">
-        <div className="w-10 h-10 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-4">
+        <div className="w-10 h-10 rounded-lg bg-accent/10 text-accent flex items-center justify-center mb-4">
           <Icon className="w-5 h-5" />
         </div>
         <h3 className="font-heading text-sm sm:text-base font-bold text-foreground mb-1.5">{title}</h3>
@@ -127,7 +127,7 @@ export default function TrustSignals() {
         </div>
 
         {/* 2 — Cómo funciona el flujo de privacidad */}
-        <div className="rounded-3xl border border-ink/10 bg-card/40 p-6 sm:p-10">
+        <div className="rounded-xl border border-ink/10 bg-card/40 p-6 sm:p-10">
           <h3 className="font-heading text-base sm:text-xl font-bold text-foreground text-center mb-8">
             El ciclo de procesamiento local en 3 pasos
           </h3>
@@ -137,7 +137,7 @@ export default function TrustSignals() {
               const Icon = step.icon;
               return (
                 <div key={step.title} className="text-center space-y-2.5">
-                  <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-accent/10 text-accent mb-2">
+                  <div className="inline-flex items-center justify-center w-11 h-11 rounded-lg bg-accent/10 text-accent mb-2">
                     <Icon className="w-5 h-5" />
                   </div>
                   <h4 className="font-heading text-sm sm:text-base font-bold text-foreground">

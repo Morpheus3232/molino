@@ -9,6 +9,7 @@ export interface PersonalSigilProps {
   width?: number;
   height?: number;
   className?: string;
+  color?: string;
 }
 
 /**
@@ -25,6 +26,7 @@ export default function PersonalSigil({
   width = 880,
   height = 1800,
   className,
+  color = "inherit",
 }: PersonalSigilProps) {
   const paths = useMemo(() => {
     const cx = width / 2;
@@ -66,11 +68,17 @@ export default function PersonalSigil({
   }, [lifePath, birthDay, birthMonth, width, height]);
 
   return (
-    <g stroke="#1D1B17" strokeWidth="2" fill="none" className={className}>
+    <g
+      stroke="currentColor"
+      strokeWidth="2"
+      fill="none"
+      className={className}
+      style={{ color: color !== "inherit" ? color : undefined }}
+    >
       {paths.map((d, idx) => (
         <path key={idx} d={d} />
       ))}
-      <circle cx={width / 2} cy={height / 2} r="6" fill="#1D1B17" />
+      <circle cx={width / 2} cy={height / 2} r="6" fill="currentColor" />
     </g>
   );
 }

@@ -18,7 +18,7 @@ const MARQUEE_SEGMENTS: MarqueeSegment[] = [
   { text: "·" },
   { text: "SOL EN LEO", isAccent: false },
   { text: "·" },
-  { text: "LUNA EN VIRGO", isAccent: false },
+  { text: "AÑO PERSONAL 4", isAccent: false },
   { text: "·" },
   { text: "ZODÍACO CHINO TIGRE", isAccent: true },
   { text: "·" },
@@ -80,7 +80,7 @@ export default function ArchetypeMarquee() {
 
       {/* Screen Reader solo para accesibilidad */}
       <span className="sr-only">
-        Patrones del mapa simbólico: El Constructor, El Adaptador, Camino de Vida 4, Ciclo de Cimiento, Sol en Leo, Luna en Virgo, Zodíaco Chino Tigre.
+        Patrones del mapa simbólico: El Constructor, El Adaptador, Camino de Vida 4, Ciclo de Cimiento, Sol en Leo, Año Personal 4, Zodíaco Chino Tigre.
       </span>
 
       {/* Gradientes laterales de desvanecimiento suave */}

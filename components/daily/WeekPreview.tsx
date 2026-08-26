@@ -16,10 +16,10 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
   if (!forecast || forecast.length === 0) return null;
 
   return (
-    <div className={`rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6 ${className}`}>
+    <div className={`rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6 ${className}`}>
       <div className="flex items-center justify-between gap-3 pb-4 border-b border-ink/10">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-accent/10 text-accent flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-accent/10 text-accent flex items-center justify-center">
             <CalendarDays className="w-4 h-4" />
           </div>
           <div>
@@ -46,7 +46,7 @@ export default function WeekPreview({ forecast, className = "" }: WeekPreviewPro
         {forecast.map((f, idx) => (
           <div
             key={f.date}
-            className="rounded-2xl border border-ink/5 bg-background p-4 sm:p-5 flex flex-col justify-between hover:border-accent/30 transition-all"
+            className="rounded-lg border border-ink/5 bg-background p-4 sm:p-5 flex flex-col justify-between hover:border-accent/30 transition-all"
           >
             <div>
               <div className="flex items-center justify-between text-xs text-muted font-mono mb-2">

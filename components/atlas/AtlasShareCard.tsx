@@ -95,7 +95,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
       {/* The card — square, story/post format */}
       <div
         ref={cardRef}
-        className="relative w-full max-w-[480px] aspect-square overflow-hidden rounded-2xl border border-ink/10 bg-paper-alt text-foreground"
+        className="relative w-full max-w-[480px] aspect-square overflow-hidden rounded-xl border border-ink/10 bg-paper-alt text-foreground"
       >
         {/* Sello Personal determinístico de fondo */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.08] pointer-events-none" aria-hidden="true">

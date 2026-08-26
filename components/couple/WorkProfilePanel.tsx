@@ -19,8 +19,8 @@ export default function WorkProfilePanel({ profile, className = "" }: WorkProfil
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className={`rounded-3xl border border-accent/25 bg-card p-6 sm:p-10 shadow-sm space-y-8 ${className}`}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      className={`rounded-xl border border-accent/25 bg-card p-6 sm:p-10 shadow-sm space-y-8 ${className}`}
     >
       <div className="flex items-center gap-2 justify-center">
         <Briefcase className="w-4 h-4 text-accent" />

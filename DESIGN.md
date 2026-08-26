@@ -1,182 +1,179 @@
----
-name: Molino — Almanaque Cálido
-description: El molino de viento de la marca, ya existente, como protagonista funcional sobre una identidad cálida y editorial — fondo papel, tinta oscura, acento terracota, tipografía serif itálica para títulos. Gira cuando el sitio carga o navega, se queda quieto cuando está listo.
-colors:
-  paper: "#F7F4EE"
-  paper-alt: "#EFEAE0"
-  ink: "#1D1B17"
-  muted: "#6A6459"
-  border: "#DEDACE"
-  accent: "#A83A23"
-  accent-hover: "#87301C"
-  accent-light: "#D9805F"
-  gold: "#F5B022"
-  gold-hover: "#FCC044"
-  gold-foreground: "#1A1200"
-  sistema-numerologia: "#6B4C7A"
-  sistema-astrologia: "#2E5C8A"
-  sistema-zodiaco: "#85681D"
-  biblioteca-libro: "#7B5E1C"
-  biblioteca-articulo: "#5F6773"
-  biblioteca-video: "#7C6487"
-  biblioteca-sitio: "#5A7262"
-typography:
-  display:
-    fontFamily: "Newsreader, serif"
-    fontStyle: italic
-    fontSize: "clamp(5rem, 14vw, 8.5rem)"
-    fontWeight: 400
-    lineHeight: 0.85
-    letterSpacing: "-0.02em"
-  heading:
-    fontFamily: "Space Grotesk, sans-serif"
-  body:
-    fontFamily: "Inter, sans-serif"
-  data:
-    fontFamily: "JetBrains Mono, monospace"
+# DESIGN.md — Sistema de Diseño y Contrato Visual de Molino.app
+
+**Versión:** 2.0 (Almanaque Cálido & Geometría Determinística)  
+**Idioma:** Español rioplatense (`lang="es-AR"`, vos)  
+**Última actualización:** 2026-08-26  
+
 ---
 
-## Overview
+## 1. Filosofía de Diseño & Principios Guía
 
-Molino computa (no ilustra) sistemas simbólicos — numerología, astrología, zodíaco chino — a partir de la fecha de nacimiento, 100% client-side, sin backend que persista perfiles. La dirección visual usa el molino de viento **ya existente en la marca** (`components/ui/Logo.tsx`, molinete americano clásico) como elemento vivo y funcional, no decorativo: sus aspas giran cuando el sitio está cargando o navegando, y se quedan quietas cuando terminó — el movimiento comunica estado real, nunca es ambiental.
+Molino es una aplicación simbólica de autoconocimiento estructurado (numerología, astrología y zodíaco chino) construida bajo el principio de **honestidad radical**.
 
-**Primer intento descartado:** una versión inicial reemplazó el molino por una "turbina" abstracta de 3 aspas de colores (una por sistema de cálculo). El usuario lo rechazó explícitamente: el logo tiene que ser un molino de viento, no un ícono inventado. Esa pieza (`TurbineCore.tsx`) fue eliminada del repo — no reintroducirla.
+### Principios Fundamentales
+1. **Método Visible (Sin Cajas Negras):** Cada número, arquetipo y clasificación muestra su fórmula o regla de cálculo comprobable. El usuario ve la aritmética; el sistema no actúa como oráculo misterioso.
+2. **Determinismo Absoluto:** Misma fecha de nacimiento = exactamente los mismos resultados y el mismo entramado geométrico (`PersonalSigil`, `PersonalSynergySigil`). Todo el cálculo ocurre en la CPU local del navegador del usuario sin backend ni base de datos.
+3. **Estructura Filosa, Detalle Suave:** Las divisiones macro del layout, secciones full-bleed y grillas son filosas (`rounded-none`). Los elementos táctiles (botones, tarjetas, inputs, badges) son suaves y amables (`--radius-sm/md/lg/xl`).
+4. **El País Ordena, Nunca Puntúa:** En afinidades, el país del usuario prioriza qué ve primero (hasta 3 entidades locales), pero no modifica la casilla ni el puntaje intrínseco.
+5. **Silencio ante la Duda:** Si una entidad histórica o de marca no tiene fecha exacta documentada con día y mes (crítico para el corte del Año Nuevo Chino entre el 21 de enero y 21 de febrero), no se inventa: se excluye o se lista transparentemente en *"Todavía sin fecha exacta"*.
+6. **Dos Páginas, Dos Preguntas:**
+   - `/profile` ("Mi Mapa") responde: *¿Dónde toca el mundo mi signo?*
+   - `/lectura` responde: *¿Qué significa mi configuración arquetípica?*
 
-**Glow up "Almanaque Cálido":** el sitio pasó de "panel de instrumento oscuro con acento indigo" a **almanaque cálido** — fondo tipo papel, tinta oscura, acento terracota, tipografía serif itálica para títulos. El molino se mantiene con el mismo comportamiento de giro ligado a carga real (sin cambios de lógica), pero cambia de paleta. **No hay dark mode** en esta iteración — quedó retirado, no archivado como alternativa. El re-skin cubre todo el sitio: home, onboarding, `/profile` y sus secciones, `/affinity`, `/biblioteca`, `/academy`, herramientas, etc. La estructura de cada página (layout, grids, jerarquía de contenido) no cambió — fue una pasada de tokens de color/tipografía/componentes, no una reestructuración.
+---
 
-## Colors
+## 2. Design Tokens Unificados
 
-Estrategia: **restringida** (neutros + un acento), no una paleta de colores por sistema. El acento tiene más presencia que el indigo anterior: no solo CTAs, también headers de sección, números clave, bordes destacados.
+### 2.1 Paleta de Colores Semánticos
 
-| Token | Valor | Uso |
-|---|---|---|
-| `paper` | `#F7F4EE` | Fondo principal |
-| `paper-alt` | `#EFEAE0` | Tarjetas, superficies elevadas |
-| `ink` | `#1D1B17` | Texto principal, molino, iconografía |
-| `muted` | `#6A6459` | Texto secundario — verificado 5.34:1 sobre `paper` (WCAG AA ≥4.5:1) |
-| `border` | `#DEDACE` | Reglas, separadores, bordes de card |
-| `accent` | `#A83A23` | CTAs, links, headers de sección, números clave, bordes destacados — verificado 5.81:1 sobre `paper` |
-| `accent-hover` | `#87301C` | Estado hover/active de elementos en `accent` |
-| `accent-light` | `#D9805F` | Hover states sobre fondo oscuro, fondos de pill, `eyebrow` sobre bloques full-bleed |
-| `gold` | `#F5B022` | CTAs de alta urgencia (`Button` variant `gold`) — texto sobre gold usa `gold-foreground`, no `paper` |
-| `gold-foreground` | `#1A1200` | Texto sobre fondo `gold`, verificado ≥7:1 |
+El sistema se basa en la estética editorial de **Almanaque Cálido** con contrastes auditados bajo fórmula WCAG (AA/AAA).
 
-Valores verificados (2026-08-25) contra `app/globals.css` (bloque `:root`) y `scripts/check-contrast.mjs`, que ahora lee `--color-paper` en vivo del CSS en vez de un hex hardcodeado. Correr `node scripts/check-contrast.mjs "#hex" ...` antes de dar por buena cualquier verificación de contraste — la tabla de arriba puede desviarse del código con el tiempo si no se corre.
+| Token | CSS Variable | HEX | Formato RGB Tailwind | Contraste / Uso |
+|---|---|---|---|---|
+| **Ink** | `--color-ink` | `#1D1B17` | `29 27 23` | Texto principal, marca, fondo full-bleed de Mapa Aplicado (15.7:1 sobre Paper). |
+| **Paper** | `--color-paper` | `#F7F4EE` | `247 244 238` | Superficie clara principal (background). |
+| **Paper Alt / Card** | `--color-paper-alt` | `#EFEAE0` | `239 234 224` | Tarjetas, contenedores interiores, bloques de fórmula. |
+| **Border** | `--color-border` | `#DEDACE` | `222 218 206` | Líneas divisorias de 1px en superficies claras. |
+| **Muted** | `--color-muted` | `#6A6459` | `106 100 89` | Texto secundario, overlines, metadata técnica (5.3:1 sobre Paper). |
+| **Accent Primary** | `--color-accent` | `#A83A23` | `168 58 35` | Terracota editorial: Camino de Vida, CTAs principales, alertas de tensión (5.8:1 sobre Paper). |
+| **Accent Light** | `--color-accent-light` | `#D9805F` | `217 128 95` | Acento luminoso para lectura sobre fondos oscuros (`bg-ink`). |
+| **Gold** | `--color-gold` | `#F5B022` | `245 176 34` | Acento dorado para CTAs de alta urgencia, Zodíaco Chino y nodos de resonancia. |
+| **Success** | `--color-success` | `#1F7A4D` | `31 122 77` | Sinergias armónicas, afinidades naturales y confirmaciones. |
+| **Warning** | `--color-warning` | `#8A5B00` | `138 91 0` | Desafíos de ritmo, puntos de atención consciente (4.6:1 sobre Paper). |
+| **Error** | `--color-error` | `#B3261E` | `179 38 30` | Validaciones de formulario y errores de rango. |
 
-- **Colores por sistema** (preexistentes, documentados acá para que no lean como deriva): numerología `#6B4C7A`, astrología `#2E5C8A`, zodíaco chino `#85681D` — este último se oscureció desde `#C49A2A` (el tono original de la base oscura) para seguir pasando AA sobre el fondo claro `paper`. Uso restringido: un punto de 8px junto al nombre del sistema (`TresSistemas.tsx`) — nunca como fondo de sección ni como acento general.
-- **Colores de tipo de fuente en `/biblioteca`** (`TYPE_META` en `BibliotecaContent.tsx`): libro `#7B5E1C`, artículo `#5F6773`, video `#7C6487`, sitio web `#5A7262` — todos oscurecidos respecto de sus valores originales sobre fondo oscuro (`#D4A843`, `#77808E`, `#897095`, `#708F7B`) para volver a pasar 4.5:1 sobre `paper`. Uso restringido: texto + fondo al 15% de opacidad en el pill de tipo de fuente. Mismo patrón que los colores por sistema: no agregar un color nuevo por tipo sin sumarlo acá primero.
-- No hay `Grainient` (textura WebGL) en el hero actual — se evaluó retunear el grano a un tono `ink` sutil sobre `paper`, pero el hero implementado (`components/sections/HeroInstrument.tsx`) no lleva textura de fondo. `Grainient.jsx` ya no existe en el repo.
+---
 
-## Typography
+### 2.2 Escala Tipográfica Cerrada
 
-- **Display** (títulos de hero, cifras destacadas): **Newsreader**, itálica, peso 400 (peso variable por defecto de la fuente vía `next/font/google`, sin cargar un weight explícito — ver `app/layout.tsx`). Reemplaza Archivo Black. Óptica literaria/almanaque, no geométrica/gauge.
-- **Heading**: se mantiene **Space Grotesk** para subtítulos, labels de sección y CTAs — contraste serif/sans clásico, evita agregar una tercera familia.
-- **Body**: se mantiene **Inter**.
-- **Data** (fechas, breakdowns, fórmulas): se mantiene **JetBrains Mono** — el molino sigue siendo un instrumento de cálculo por dentro, aunque la piel sea cálida.
+No se utilizan tamaños arbitrarios fuera de la escala.
 
-## Layout
+| Nivel | Token / Utility | Tamaño | Line-Height | Familia | Uso |
+|---|---|---|---|---|---|
+| **Display** | `--step-8` / `text-7xl` | 4.5rem (72px) | 0.85 | `--font-display` (Newsreader / Archivo) | Grandes números y títulos hero de perfil. |
+| **H1** | `--step-6` / `text-5xl` | 3.0rem (48px) | 0.90 | `--font-display` | Títulos principales de página y onboarding. |
+| **H2** | `--step-5` / `text-4xl` | 2.25rem (36px) | 1.00 | `--font-display` | Encabezados de secciones principales. |
+| **H3** | `--step-4` / `text-3xl` | 1.75rem (28px) | 1.10 | `--font-heading` (Space Grotesk) | Títulos de dominios y bloques de afinidad. |
+| **H4** | `--step-3` / `text-xl` | 1.25rem (20px) | 1.20 | `--font-heading` (Space Grotesk) | Títulos de tarjetas y nombres de entidades. |
+| **Body Large** | `--step-2` / `text-lg` | 1.125rem (18px) | 1.60 | `--font-sans` (Inter) | Párrafos introductorios destacados. |
+| **Body** | `--step-1` / `text-base` | 1.0rem (16px) | 1.60 | `--font-sans` (Inter) | Cuerpo de lectura y descripciones. |
+| **Caption** | `text-sm` | 0.875rem (14px) | 1.50 | `--font-sans` (Inter) | Notas de pie, explicaciones secundarias. |
+| **Overline / Label** | `text-xs` | 0.75rem (12px) | 1.00 | `--font-mono` (JetBrains Mono) | Badges técnicos, pasos de cálculo (`tracking-[0.2em]`). |
 
-El hero de home (`components/sections/HeroInstrument.tsx`) es una sola columna centrada — headline + `DateInput` + CTA — sin el molino ni un grid de 2 columnas (corregido 2026-08-25: esta sección afirmaba un layout que no existe en el código). El resto de páginas conserva su composición base; esta iteración fue mayormente un re-skin de color/tipo/componentes, no una reestructuración de IA o de jerarquía de contenido.
+---
 
-Medidas de contenido definidas en `app/globals.css` (`--max-width-*`) y `tailwind.config.ts` (`maxWidth`): `content` (680px, prosa/columna angosta), `article` (720px), `wide`/`layout` (1280px, ambas definidas pero sin uso actual — no agregar una quinta medida sin retirar antes alguna de estas), y `8xl` (90rem/1440px vía Tailwind, la grilla ancha usada en `/profile` y `EditorialSection`).
+### 2.3 Escala Modular de Espaciado (Múltiplos de 8px)
 
-## Elevation & Depth
-
-Se retiró el halo `blur-3xl` (pensado para destacar sobre fondo casi negro). En su lugar: sombra de "papel levantado" — tinte marrón cálido (no gris neutro), muy baja opacidad, sin blur agresivo:
-
+```css
+--space-xs:  0.5rem;   /* 8px  → p-2, gap-2 */
+--space-sm:  0.75rem;  /* 12px → p-3, gap-3 */
+--space-md:  1.0rem;   /* 16px → p-4, gap-4 */
+--space-lg:  1.5rem;   /* 24px → p-6, gap-6 */
+--space-xl:  2.0rem;   /* 32px → p-8, gap-8 */
+--space-2xl: 3.0rem;   /* 48px → p-12, gap-12 */
+--space-3xl: 4.0rem;   /* 64px → p-16, gap-16 */
+--space-4xl: 6.0rem;   /* 96px → p-24 */
 ```
---shadow-sm: 0 1px 2px rgba(36, 31, 23, 0.06);
---shadow-md: 0 2px 6px rgba(36, 31, 23, 0.08);
---shadow-lg: 0 4px 12px rgba(36, 31, 23, 0.10);
---shadow-xl: 0 8px 24px rgba(36, 31, 23, 0.12);
+
+---
+
+### 2.4 Sistema de Radios (Estricto: 4 Tokens)
+
+**PROHIBIDO:** Usar `rounded-2xl` o `rounded-3xl` (defaults de Tailwind que caen fuera de la proporción).
+
+```css
+--radius-sm: 0.375rem; /* 6px  → chips, badges, tags, píldoras técnicas */
+--radius-md: 0.625rem; /* 10px → botones, inputs, tarjetas chicas */
+--radius-lg: 0.875rem; /* 14px → modales, tarjetas medianas, bloques de pilares */
+--radius-xl: 1.25rem;  /* 20px → contenedores destacados, tarjetas SVG, hero cards */
 ```
 
-Sin neobrutalism. Sin `blur-3xl` decorativo (halos ambientales) — eliminados los 2 usos restantes 2026-08-25 (`not-found.tsx`, `AtlasShareCard.tsx`); si reaparece uno, es una regresión, no una excepción. `backdrop-blur` sigue en uso en 6 componentes como scrim funcional (drawers, sticky CTA, preview de paywall) sobre contenido que se mueve detrás — eso es legibilidad, no glassmorphism decorativo, y se mantiene.
+---
 
-## Components
+### 2.5 Sombras ("Papel Levantado")
 
-### `Logo` (`components/ui/Logo.tsx`) — el molino
-Molinete americano clásico (torre fija, rotor con 10 aspas). Un solo trazo heredado vía `currentColor` (color `ink`), sin halo ni recoloreo de acento — mismo componente reusado en Header, Hero de home y `SiteIntro`. Mismo comportamiento de giro (`lib/utils/loadingSignal.ts`) — no se tocó la lógica, solo el color heredado.
+Sombra sutil con tinte cálido marrón (`rgba(29, 27, 23, ...)`), sin halos fríos ni blur artificial excesivo:
+- `--shadow-sm`: `0 1px 2px rgba(29, 27, 23, 0.06)`
+- `--shadow-md`: `0 2px 6px rgba(29, 27, 23, 0.08)`
+- `--shadow-lg`: `0 4px 12px rgba(29, 27, 23, 0.10)`
+- `--shadow-xl`: `0 8px 24px rgba(29, 27, 23, 0.12)`
 
-### Señal de carga (`lib/utils/loadingSignal.ts`)
-Sin cambios respecto de la base anterior: evento global refcounted (`startLoading`/`stopLoading`/`subscribeLoading`), disparado por `AnimatedLayout` en cada cambio de ruta y por `PremiumGate`. No gira en el montaje inicial, esa carga la cubre `SiteIntro`.
+---
 
-### `EditorialSection` (`components/ui/EditorialSection.tsx`)
-Sección editorial reutilizable con 4 tonos: `paper`, `paperAlt`, `ink`, `accent`. **Corrección encontrada en implementación:** el tono `ink` está pensado para un bloque full-bleed *oscuro* (ej. "SIGNIFICADO" en `AnimalContent.tsx`). Bajo la paleta anterior, `--color-ink` era el tono CLARO de texto y `--color-paper` el fondo OSCURO — nombres invertidos respecto de su significado literal — y el tono `ink` compensaba eso con un workaround: `bg-paper text-ink`. Con Almanaque Cálido, `--color-ink` pasó a ser el tono OSCURO real y `--color-paper` el fondo CLARO real, así que la Task 8 del plan **invirtió el class mapping de la tabla `TONES`** (commit `c5b602f`): de `bg-paper text-ink` / `title: text-ink` / `intro: text-ink/70` / `rule: border-ink/15` al mapeo directo `bg-ink text-paper` / `text-paper` / `text-paper/70` / `border-paper/15`. Sin ese cambio el bloque "oscuro" habría quedado claro con texto claro. Ojo: los hijos de cada `EditorialSection tone="ink"` también tienen que usar clases `paper` sobre fondo oscuro (ver `AnimalContent.tsx`).
+### 2.6 Sistema de Movimiento & Curvas de Animación
 
-### Botones/CTA
-Fill `accent` sólido con texto `paper`, o outline `accent` sobre fondo `paper` para variantes secundarias.
+| Interacción | Duración | Easing | Propósito |
+|---|---|---|---|
+| **Micro-interacciones** (hover, tap) | `150ms` | `easeOut` | Feedback táctil inmediato. |
+| **Despliegues** (acordeones, tabs) | `250ms` | `easeOut` | Fluidez sin lentitud de espera. |
+| **Entradas de panel / modales** | `350ms` | `cubic-bezier(0.16, 1, 0.3, 1)` (`--ease-editorial`) | Entrada amortiguada editorial. |
+| **Flip numérico en Loader** | `380ms` | `cubic-bezier(0.16, 1, 0.3, 1)` | Rotación física de dígitos de cálculo. |
+| **Reducción Teosófica completa** | `3.4s` | Sincronizado | 3 etapas (1.2s, 2.2s, 3.4s). |
+| **Marquee Ambiental** | `45s` | `linear infinite` | Fondo continuo sin distraer la lectura. |
 
-### Cards
-`paper-alt` sobre `paper`, borde `border` de 1px, sombra de "papel levantado" (ver Elevation & Depth).
+**Regla de Accesibilidad:** Si `prefers-reduced-motion: reduce` está activo, todas las animaciones se detienen o concluyen en `< 500ms` sin saltos perceptibles.
 
-### Headers de sección
-Heading real (`h2`/`h3`, Space Grotesk) — se mantiene la regla de no usar `eyebrow-brutalist` como heading; el eyebrow mono ahora puede llevar color `accent` (o `accent-light` sobre bloques full-bleed) para reforzar la mayor presencia del acento.
+---
 
-## Motion
+## 3. Catálogo de Componentes Clave
 
-Sin cambios: el molino sigue girando solo cuando hay carga/navegación real en curso (`lib/utils/loadingSignal.ts`), nunca de forma ambiental. `SiteIntro` mantiene su timing actual. Este glow up no tocó `MOTION.md`.
+### 3.1 `PersonalSigil` (`components/ui/PersonalSigil.tsx`)
+- **Descripción:** Generador determinístico de onda armónica en SVG puro (<2KB).
+- **Entrada:** `(lifePath, birthDay, birthMonth)`.
+- **Renderizado:** Usa `stroke="currentColor"` y `fill="currentColor"`. Hereda color del contexto (opacidad `0.08` en fondo claro, `0.3` en modo sinergia).
 
-## Site-wide cleanup (segunda pasada, base oscura anterior)
+### 3.2 `PersonalSynergySigil` (`components/ui/PersonalSynergySigil.tsx`)
+- **Descripción:** Patrón de interferencia armónica de pareja (<4KB).
+- **Capas:**
+  1. *Sello A y Sello B:* Polos desfasados en opacidad 0.32.
+  2. *Zonas de Tensión:* Arcos transversales terracota (`#A83A23`, stroke 2.2px).
+  3. *Zonas de Resonancia:* Nodos dorados concéntricos (`#F5B022`).
+  4. *Envoltura de Afinidad:* Óvalo Cassini punteado (`strokeOpacity="0.22"`).
+  5. *Leyenda mínima:* `"Afinidad · Tensión · Resonancia"`.
 
-Después del hero, se extendió la dirección (entonces oscura) a todo el sitio:
+### 3.3 `MethodReductionLoader` (`components/ui/MethodReductionLoader.tsx`)
+- **Descripción:** Loader interactivo que muestra el cálculo teosófico aritmético paso a paso en lugar de un spinner genérico.
+- **Tokens:** `bg-paper`, `border-border`, `text-ink`, `text-accent`, `bg-paper-alt`, `rounded-xl`.
+- **Accesibilidad:** Anuncio vía `aria-live="polite"` y descripción completa en `sr-only`.
 
-- **`eyebrow-brutalist` eliminado en los 28 usos que quedaban** (home + `affinity`, `biblioteca`, `compatibility`, `evolution`, `explore`, `guia`, `nudo`, `onboarding`, `semana`, `timing`, `hoy`). Cada caso se resolvió con criterio: si ya había un heading real debajo, se borró el eyebrow; si el eyebrow era el único heading de la sección, se promovió a `h2`/`h3` real; si llevaba información propia (fecha, "paso N de 3") se mantuvo como texto de apoyo normal, no como heading.
-- **23 páginas que tiraban 500** (`/conocimiento/astrologia/[signo]`, `/conocimiento/zodiaco-chino/[animal]`, y preventivamente `/conocimiento/numerologia/[numero]`) por falta de `"use client"` en componentes que usan `framer-motion` dentro de un Server Component — arreglado. Verificado con un crawler propio: 55 páginas públicas, 0 rotas, 0 links vacíos.
-- **Emoji-como-ícono-de-UI reemplazado por lucide-react** en `/affinity` (hub de categorías) y `/herramientas` (numerología/astrología/zodíaco/compatibilidad) — el emoji sigue siendo válido como dato de contenido (`entity.emoji`), pero no como ícono de navegación.
-- **Bug de encoding real**: `/herramientas` tenía el h1 literalmente roto (`Calculá tu identidad` en vez de "Calculá tu identidad") — un escape Unicode sin interpretar dentro de texto JSX (no de un string). Corregido. Se verificó que no era sistémico: el resto de ocurrencias de `\u00XX` en el repo están dentro de literales de string válidos (`lib/data/*.ts`), que sí se decodifican bien en runtime.
-- **Colores por sistema documentados** (no inventados): ya existían en `TresSistemas.tsx`, con uso acotado (punto de 8px junto al nombre, nunca fondo de sección) desde entonces.
+### 3.4 `AtlasShareCardSVG` (`components/atlas/AtlasShareCardSVG.tsx`)
+- **Descripción:** Tarjeta vectorial exportable de 1080×1900px optimizada para Web Share y PNG de alta definición.
+- **Pilares:**
+  - *Pilar I (Numerología):* Título `text-ink`, número en `text-accent` (`#A83A23`).
+  - *Pilar II (Zodíaco Chino):* Título `text-ink`, rama terrestre en `text-gold` (`#F5B022`).
+  - *Pilar III (Astrología):* Título `text-muted`, glifo solar en `text-accent`.
 
-> Las auditorías de accesibilidad/performance de esta sección se hicieron contra
-> la base oscura anterior. La re-verificación de contraste para la paleta clara
-> actual está documentada en las secciones de color de arriba y en
-> `scripts/check-contrast.mjs`.
+### 3.5 `Button` (`components/ui/Button.tsx`)
+- **Variantes:** `primary` (bg-ink text-paper), `accent` (bg-accent text-paper), `secondary` (border-border hover:border-accent), `gold` (bg-gold text-gold-foreground), `ghost` (transparente text-muted).
+- **Estados:** `focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2`, `active:scale-95`, `disabled:opacity-50`. Altura táctil mínima de `44px`.
 
-## Auditoría técnica (accesibilidad + performance, medida con Lighthouse real contra build de producción)
+### 3.6 `DateInput` (`components/ui/DateInput.tsx`)
+- **Formato:** DD / MM / YYYY con auto-avance, auto-corrección de días según mes/año y reporte de campo incompleto sin bloquear el teclado nativo.
+- **Accesibilidad:** Labels semánticos asociados con `htmlFor`, `inputMode="numeric"`, `pattern="\d*"`.
 
-- **`--color-muted` corregido de `#A6A69C` a `#B0B0A6`** (valores de la base oscura anterior — hoy `--color-muted` es `#6B6252`, ver tabla de Colors arriba): el valor previo hacía que `text-muted/70` (el uso más común de texto secundario en todo el sitio) cayera a ~4.3:1 sobre los fondos oscuros de entonces, por debajo del mínimo WCAG AA de 4.5:1. Todo uso de `text-muted` por debajo de `/70` (en `/50`, `/60`, `/40`, `/30`) fue auditado caso por caso y subido a `/70` cuando era texto legible real; se dejaron sin tocar solo los casos genuinamente decorativos (un separador "·", un placeholder de input).
-- **`--element-metal` corregido de `#6B7280` a `#838C95`**: el valor anterior daba 4.09:1 sobre fondo oscuro (falla AA) cuando se usaba como color de texto en `WorldConnections.tsx`/`IdentityCard.tsx`. Mismo tono gris-azulado, ahora en 5.79:1.
-- **Bug sistémico de accesibilidad, no cosmético**: ~12 páginas (`/timing`, `/evolution`, `/nudo`, `/affinity`, `/affinity/compare/[a]/[b]`, `/compatibility/brands`, `/compatibility/countries`, `/analytics/affinity`, y las fichas "no encontrado" de astrología/zodíaco/numerología) renderizan 2-4 estados (loading / sin perfil / contenido) como ramas condicionales, pero solo la rama de contenido real tenía `<main id="main-content">` — las ramas de loading/vacío usaban un `<div>` plano. Esto rompía el skip-link del sitio (apunta a `#main-content`) y dejaba la página sin landmark `<main>` para lectores de pantalla en cualquier estado que no fuera "ya tengo tu perfil cargado". Arreglado en las ~35 ramas afectadas. Verificado con Lighthouse: accesibilidad 100/100 en home, `/profile`, `/timing`, `/evolution` (antes: 92-95).
-- **Botones con `aria-label` que no contenía el texto visible** (`ActionButtons.tsx`: "Descargar mapa" visible vs. `aria-label="Descargar mi mapa"`) — falla WCAG 2.5.3 (Label in Name), rompe el control por voz. Se sacó el `aria-label` redundante donde el texto visible ya alcanza.
-- **Footer usaba `<h4>`** (`UniversityFooter.tsx`) sin que existiera ningún `h1`-`h3` antes en varias páginas — rompía el orden secuencial de headings. Cambiado a `<p>`: los labels de columna del footer no son parte del outline semántico de la página.
-- **Dots del carrusel de testimonios** (`Testimonial.tsx`) con área de click de 6×6px, por debajo del mínimo táctil de 24×24px. El punto visual se mantuvo en 6px pero ahora vive dentro de un botón de 24×24px.
-- **`favicon.ico` con 404 real** en cada carga del sitio (solo existía `favicon.svg`). Generado un `.ico` real (16/32/48px) desde el SVG con `sharp`. De paso, `favicon.svg` y `apple-touch-icon.svg` todavía tenían el molino wireframe viejo (10 aspas) descartado — actualizados al diseño actual de `Logo.tsx`.
-- **Resultado medido** (Lighthouse contra `next build && next start`, no contra dev server): home 89 performance / 100 accesibilidad / 100 best-practices / 100 SEO. `/profile` y `/timing`: 100 accesibilidad, 100 best-practices. Performance ronda 80-89 en todas las páginas medidas.
-- **`/profile`, `/timing`, `/evolution` dan SEO 66/100 — es intencional, no un bug**: son páginas con datos personales del usuario en la URL (`?dob=...`) y llevan `robots: { index: false }` a propósito (ver `app/profile/page.tsx`). No indexar una URL con la fecha de nacimiento de una persona es lo correcto.
+---
 
-## Segunda pasada: performance, mobile, teclado
+## 4. Patrones de Composición & Jerarquía Visual
 
-- **`SiteIntro` (splash de arranque) reducido de 2.2s a 1.1s mínimo de display** (fade de 700ms a 500ms): verificado con capturas reales (no solo Lighthouse) que el intro tapaba el contenido real del sitio ~2.9s antes del cambio — la causa dominante del LCP alto en la home para el primer visitante de la sesión. Ahora son ~1.6s. Se mantiene el mismo carácter de la animación (la ráfaga de viento sigue siendo visible), solo se acortó la espera forzada. No se tocó el resto del mecanismo (sessionStorage, fade, reduced-motion).
-- **`experimental.optimizeCss` evaluado y descartado**: Lighthouse marca ~16KB de CSS como "render-blocking" bajo su throttling simulado, pero arreglarlo requiere instalar una dependencia nueva (`beasties`) para un ahorro marginal con riesgo real de romper estilos en producción. No vale la trade.
-- **Bug de layout real en `MapVisualization.tsx`** (el radar chart del hero de `/profile`): la etiqueta de eje "NUMEROLOGÍA" (texto completo) se superponía visualmente con el nombre del arquetipo en el centro del gráfico, tanto en mobile como en desktop en perfiles con valores bajos en algún eje. El componente ya tenía un `shortLabel` ("Num"/"Ast"/"Zod") definido en `SYSTEMS` pero nunca conectado al render — se usa ahora. Verificado con capturas en 390px y 1440px.
-- **Skip-link no movía el foco de teclado**: `<a href="#main-content">` navegaba el hash (scrolleaba) pero el `<main id="main-content">` no tenía `tabindex`, así que el foco real quedaba en `<body>` — un usuario de teclado que activa "Saltar al contenido principal" no llegaba a ningún lado utilizable. Extraído a `components/ui/SkipLink.tsx` (client component): al activarse, setea `tabindex="-1"` en el target, lo enfoca, y lo saca al perder el foco. Funciona en cualquier página sin tocar los ~40 archivos que usan `id="main-content"`. Verificado con Playwright: `document.activeElement` ahora es el `<main>` real tras Tab+Enter.
-- **Mobile revisado con capturas reales** en home, onboarding, herramientas y `/profile` completo (390px) — sin overflow ni truncamiento nuevo encontrado más allá del bug del radar chart ya descripto arriba.
+### Orden Visual del Ojo en Pantalla
+1. **Punto Focal Primario:** Número clave / Arquetipo en Display serif/heading + CTA principal.
+2. **Contexto Secundario:** Lectura breve de orientación e implicancia cotidiana.
+3. **Comprobación Terciaria:** Fórmula explícita, fecha exacta de origen o regla del ciclo (tres casillas).
+4. **Capa Ambiental:** Sello personal en filigrana (`opacity: 0.08`), líneas de constelación sutiles.
 
-## Tercera pasada: axe-core (auditoría real de accesibilidad, no solo Lighthouse)
+### Manejo de Estados
+- **Carga:** Skeleton determinístico (`bg-ink/5` o `bg-paper-alt border border-border/40`) con la misma forma geométrica que el componente final.
+- **Vacío:** Mensaje sobrio que explica por qué no hay datos (ej. cobertura pendiente) sin reproche al usuario.
+- **Error:** Explicación clara en lenguaje directo y acción de reintento inmediata.
 
-Lighthouse solo audita una página a la vez y con una muestra parcial de reglas. Se corrió `axe-core` (el motor que usa Lighthouse por debajo, pero con la cobertura completa WCAG 2.0/2.1 A/AA) contra 34 rutas del sitio con Playwright. Resultado final: **0 violaciones en 33 de 34 páginas**, 1 excepción documentada abajo.
+---
 
-- **Bug de producto real, no solo de contraste, sobre la base oscura anterior**: `EditorialSection`'s tone `"ink"` (pensado para un bloque negro full-bleed) usaba `bg-ink text-paper`. En esa base, `--color-ink` era el tono CLARO de texto (`#F3F1EA`) y `--color-paper` el fondo OSCURO (`#0A0A0C`) — nombres heredados de un rebuild que invirtió la paleta sin renombrar las variables. El resultado: la sección "negra" renderizaba con **fondo claro**, lo opuesto de la intención. Corregido en el único lugar (`EditorialSection.tsx`, commit `c5b602f` — Task 8 del plan), invirtiendo el mapeo de `bg-paper text-ink` a `bg-ink text-paper`, lo que arregla los 3 usos existentes (`AnimalContent.tsx`, `CircleScreen.tsx`, `IdentityScreen.tsx`) de una vez. Con Almanaque Cálido, `--color-ink`/`--color-paper` volvieron a nombrar lo que literalmente son (ver "Components" arriba), así que el mapeo directo es el correcto.
-- **Botón sin nombre accesible en `/academy`** (crítico): el árbol de conocimiento tenía un botón-ícono decorativo duplicando la acción del botón de texto adyacente (mismo `onClick`), sin `aria-label`. Convertido a `<div aria-hidden="true">` no interactivo — la acción real vive en el único botón con texto, que ahora también lleva `aria-expanded`.
-- **Colores de categoría sin contraste en `/biblioteca`** (`TYPE_META`: articulo/video/sitio) y **colores de sistema usados como texto en `/herramientas`** (`--element-fire`, `--layer-astrology`, `--layer-moment`) — mismo patrón que los tokens `--color-muted`/`--element-metal` de la segunda pasada: colores pensados para otro uso (fondos, íconos, dots) reutilizados como color de texto sin verificar contraste. Corregidos con el mismo método (mismo tono, aclarado hasta pasar 4.5:1), documentados inline en el código donde se aplicó.
-- **Breadcrumbs del sitio entero distinguibles solo por color**: el link "Inicio" en el patrón `<nav aria-label="Breadcrumb">` (30 instancias en 17 archivos, 2 variantes de className idénticas) no tenía subrayado — en estado normal, el color de link vs. texto circundante no alcanza el 3:1 mínimo de WCAG 1.4.1. Agregado `underline decoration-ink/25 underline-offset-2` a las dos variantes vía reemplazo global (los className eran textualmente idénticos y exclusivos de este patrón, verificado antes del reemplazo).
-- **Tabla de fórmulas en `/docs/motores`**: encabezados usaban el mismo token (`text-muted` sobre `bg-muted/50`) para texto Y fondo — contraste casi nulo por diseño accidental, no por decisión. Encabezados pasados a `text-foreground`; celda de ejemplo (`text-accent/80`) subida a `text-accent-light`.
-- **Excepción documentada, no resuelta**: los numerales de fondo decorativos ("01", "02"...) en `text-ink/15` (60-96px, usados en `AnimalContent.tsx` y en el prop `numeral` de `EditorialSection`) siguen marcados por axe pese a llevar `aria-hidden="true"` — axe no exime la regla `color-contrast` para elementos ocultos del árbol de accesibilidad, porque el contraste bajo también es un problema para usuarios de baja visión que sí los ven. Es un patrón editorial deliberado (numeral fantasma muy tenue, siempre con un label real y bien contrastado inmediatamente al lado — ej. "CARACTERÍSTICAS") repetido en todo el sitio; subir su opacidad para pasar el linter cambiaría un efecto visual intencional por una ganancia de accesibilidad marginal (la información ya está disponible en el label adyacente). Se dejó como está — es la única violación axe-core restante en todo el sitio (8 nodos, 1 sola página).
+## 5. Checklist Pre-Deploy (Reglas de Oro)
 
-## Cómo se mantiene
+Antes de cualquier despliegue a producción, validar:
 
-Si el código y este doc no coinciden, el doc está mal — se corrige en el mismo PR que toca el código, no después. Un token de color nuevo se agrega a la tabla de arriba antes que al CSS. Cualquier color nuevo aplicado a texto pasa por `node scripts/check-contrast.mjs "#hex"` antes de aceptarse.
-
-## Do's and Don'ts
-
-- **Hacé** que el molino sea siempre el mismo componente (`Logo`) en cualquier tamaño — no crear un ícono nuevo para "verse más pro"; el nivel profesional viene del detalle y el estado, no de reemplazar la marca.
-- **Hacé** que el giro comunique un estado real (carga, navegación, pago procesando) — nunca decorativo/ambiental. Si el sitio está listo, el molino está quieto.
-- **Hacé** un heading real por sección — nunca un `eyebrow-brutalist` (label mono uppercase chiquito) haciendo de heading.
-- **Hacé** re-skinear con los tokens de la tabla de Colors en vez de introducir colores nuevos ad-hoc — si hace falta un tono que no está ahí, se agrega acá primero.
-- **Hacé** verificar contraste AA de cualquier color heredado (sistema, biblioteca) contra `paper` antes de darlo por bueno — no asumas que un hue que pasaba sobre el fondo oscuro anterior sigue pasando sobre `#F5F0E4`.
-- **No** reintroduzcas una turbina/ícono abstracto en vez del molino — ya se probó y el usuario lo descartó explícitamente.
-- **No** reintroduzcas el halo/blur del acento indigo ni el `blur-3xl` — quedaron con la dirección anterior.
-- **No** construyas un dark mode paralelo — quedó retirado en esta iteración; reintroducirlo es un proyecto aparte con su propia paleta derivada de estos mismos tokens de tinta/acento.
-- **No** uses emoji Unicode como sistema de íconos de UI/navegación — lucide-react ya está instalado. El emoji como dato de contenido (`entity.emoji`, banderas, el emoji de un animal del zodíaco) sigue siendo válido.
-- **No** escribas caracteres acentuados como escape `\u00XX` directamente en texto JSX (fuera de comillas) — no se interpreta y se renderiza literal. Dentro de un string literal (`"Camino de Vida"` con `á` adentro) es válido y decodifica bien.
-- **No** cambies la lógica de giro del molino ni los engines de cálculo — esto es exclusivamente visual.
+- [ ] **Sin `rounded-2xl` ni `rounded-3xl`:** Todo radio pertenece a `rounded-none`, `sm`, `md`, `lg` o `xl`.
+- [ ] **Sin HEX arbitrario en JSX:** Todos los colores provienen de las variables de Tailwind (`bg-paper`, `text-ink`, `border-border`, etc.).
+- [ ] **Sin Base de Datos de Perfil:** Todo cálculo se ejecuta en el cliente; persistencia en localStorage/URL hash.
+- [ ] **Accesibilidad de Teclado:** Todo link/botón responde a Tab y muestra focus ring visible.
+- [ ] **Tests & Build:** `npm run typecheck`, `npm test -- --run` y `npm run build` pasan con 0 errores y 0 warnings.

@@ -173,7 +173,7 @@ export default function ParejaClient() {
               className="max-w-4xl mx-auto"
             >
               {/* Quick Sample Demo Banner */}
-              <div className="mb-6 p-4 rounded-2xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3">
+              <div className="mb-6 p-4 rounded-xl bg-accent/5 border border-accent/20 flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-accent flex-shrink-0" />
                   <p className="text-xs text-muted">
@@ -192,7 +192,7 @@ export default function ParejaClient() {
                       window.history.replaceState(null, "", "/pareja?a=1990-03-15&b=1988-07-22&na=Ana&nb=Lucas");
                     }
                   }}
-                  className="px-3 py-1.5 rounded-xl bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg bg-accent/15 hover:bg-accent/25 border border-accent/30 text-accent font-mono text-xs font-semibold transition-all inline-flex items-center gap-1.5"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
                   Cargar ejemplo (Ana & Lucas)
@@ -203,9 +203,9 @@ export default function ParejaClient() {
                 {/* Two Input Cards Grid (Side by side on desktop, stacked on mobile) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Card 1: Persona A */}
-                  <div className="rounded-3xl border border-amber-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
+                  <div className="rounded-xl border border-gold/30 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 font-bold">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-gold/10 text-gold-foreground font-bold">
                         Persona A
                       </span>
                       <span className="font-mono text-xs text-muted">Primer mapa</span>
@@ -224,7 +224,7 @@ export default function ParejaClient() {
                         placeholder="Ej. Alex"
                         value={nameA}
                         onChange={(e) => setNameA(e.target.value)}
-                        className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
+                        className="w-full rounded-md bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
                       />
                     </div>
 
@@ -237,9 +237,9 @@ export default function ParejaClient() {
                   </div>
 
                   {/* Card 2: Persona B */}
-                  <div className="rounded-3xl border border-blue-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
+                  <div className="rounded-xl border border-ink/20 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 font-bold">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-ink/5 text-foreground font-bold">
                         Persona B
                       </span>
                       <span className="font-mono text-xs text-muted">Segundo mapa</span>
@@ -258,7 +258,7 @@ export default function ParejaClient() {
                         placeholder="Ej. Sam"
                         value={nameB}
                         onChange={(e) => setNameB(e.target.value)}
-                        className="w-full rounded-xl bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
+                        className="w-full rounded-md bg-background border border-ink/10 px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:border-accent"
                       />
                     </div>
 
@@ -293,7 +293,7 @@ export default function ParejaClient() {
                         setCopiedInvite(true);
                         setTimeout(() => setCopiedInvite(false), 2500);
                       }}
-                      className="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-accent/10 hover:bg-accent/20 border border-accent/25 text-accent font-mono text-xs font-semibold inline-flex items-center justify-center gap-2 transition-colors"
+                      className="w-full sm:w-auto px-5 py-3.5 rounded-md bg-accent/10 hover:bg-accent/20 border border-accent/25 text-accent font-mono text-xs font-semibold inline-flex items-center justify-center gap-2 transition-colors"
                       title="Copiar invitación P2P para tu pareja"
                     >
                       {copiedInvite ? (
@@ -320,7 +320,7 @@ export default function ParejaClient() {
 
               {/* Explanatory Pills Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
+                <div className="p-4 rounded-xl bg-card border border-ink/5">
                   <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
                     01 · Numerología
                   </span>
@@ -329,8 +329,8 @@ export default function ParejaClient() {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-amber-700 font-bold uppercase tracking-wider block mb-1">
+                <div className="p-4 rounded-xl bg-card border border-ink/5">
+                  <span className="font-mono text-xs text-gold-foreground font-bold uppercase tracking-wider block mb-1">
                     02 · Astrología & Elementos
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -338,7 +338,7 @@ export default function ParejaClient() {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
+                <div className="p-4 rounded-xl bg-card border border-ink/5">
                   <span className="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider block mb-1">
                     03 · Zodíaco Chino
                   </span>

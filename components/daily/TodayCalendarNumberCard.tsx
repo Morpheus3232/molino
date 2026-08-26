@@ -22,7 +22,7 @@ export default function TodayCalendarNumberCard({ className = "" }: { className?
   return (
     <motion.div
       {...fadeUp}
-      className={`rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 shadow-sm ${className}`}
+      className={`rounded-xl border border-ink/10 bg-card p-6 sm:p-8 shadow-sm ${className}`}
     >
       <div className="flex items-start gap-5">
         <div className="shrink-0 text-center">

@@ -35,7 +35,7 @@ export default function CategoryGrid({ countryISO, categories }: CategoryGridPro
           >
             <Link
               href={`/atlas/${countryISO}/${category.type}`}
-              className="group flex flex-col gap-3 p-6 rounded-2xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors min-h-[140px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              className="group flex flex-col gap-3 p-6 rounded-xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors min-h-[140px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
             >
               <Icon className="w-6 h-6 text-accent" strokeWidth={1.5} aria-hidden="true" />
               <div>

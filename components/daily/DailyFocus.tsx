@@ -82,7 +82,7 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
     : `/journal?prompt=${encodeURIComponent(daily.dailyAdvice)}`;
 
   return (
-    <div className={`rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${className}`}>
+    <div className={`rounded-xl border border-ink/10 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${className}`}>
       <div className="space-y-2 flex-1">
         <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
           <Compass className="w-4 h-4" />
@@ -101,7 +101,7 @@ export function MomentAdvice({ daily, todayEntry, journalStreak = 0, className =
           </div>
         )}
         {journalStreak >= 2 && (
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-700">
+          <p className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent">
             <Flame className="w-3.5 h-3.5" />
             {journalStreak} días escribiendo en tu Journal
           </p>
@@ -132,8 +132,8 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
       {/* 2-Card Grid: Focus vs Avoid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
         {/* Card 1: Focus */}
-        <div className="rounded-3xl border border-emerald-500/25 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-bold uppercase tracking-wider">
+        <div className="rounded-xl border border-success/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
+          <div className="flex items-center gap-2 text-success font-mono text-xs font-bold uppercase tracking-wider">
             <Target className="w-4 h-4" />
             <span>Favorable hoy</span>
           </div>
@@ -146,8 +146,8 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
         </div>
 
         {/* Card 2: Avoid */}
-        <div className="rounded-3xl border border-rose-500/25 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
-          <div className="flex items-center gap-2 text-rose-400 font-mono text-xs font-bold uppercase tracking-wider">
+        <div className="rounded-xl border border-error/30 bg-card p-6 sm:p-7 shadow-sm space-y-3 relative overflow-hidden">
+          <div className="flex items-center gap-2 text-error font-mono text-xs font-bold uppercase tracking-wider">
             <AlertOctagon className="w-4 h-4" />
             <span>Observar hoy</span>
           </div>
@@ -162,7 +162,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
 
       {/* Favorece Hoy: desglose por área — daily.areas ya lo calculaba el
           motor (calculateAreaScores) pero no se renderizaba en ningún lado. */}
-      <div className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-7 space-y-4">
+      <div className="rounded-xl border border-ink/10 bg-card p-6 sm:p-7 space-y-4">
         <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
           <Sparkles className="w-4 h-4" />
           <span>Áreas del día</span>
@@ -173,7 +173,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
             const { name, icon: Icon } = AREA_META[key];
             const advice = AREA_ADVICE[key][area.label] || AREA_ADVICE[key]["Neutral"];
             return (
-              <div key={key} className="p-4 rounded-2xl bg-background/70 border border-ink/5 space-y-2">
+              <div key={key} className="p-4 rounded-lg bg-background/70 border border-ink/5 space-y-2">
                 <div className="flex items-center gap-2">
                   <Icon className="w-4 h-4 text-accent shrink-0" />
                   <span className="font-heading text-xs font-bold text-foreground">{name}</span>
@@ -193,7 +193,7 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
 
       {/* Conexión del día — cuando existe afinidad contextual activa */}
       {daily.dailyConnection && (
-        <div className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-7 space-y-3">
+        <div className="rounded-xl border border-ink/10 bg-card p-6 sm:p-7 space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
               <Compass className="w-4 h-4" />

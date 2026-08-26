@@ -16,11 +16,11 @@ interface EntityCardProps {
   reasoning?: string;
 }
 
-// Sober, analytical tone — no cheap esotericism. Green-ish for harmony,
-// warm/amber for tension, muted for neutral.
+// Sober, analytical tone — no cheap esotericism. Success for harmony,
+// warning for tension, muted for neutral.
 const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
-  affine: { label: "Afinidad", className: "text-emerald-400 bg-emerald-500/10 border-emerald-500/25" },
-  tension: { label: "Tensión", className: "text-amber-700 bg-amber-500/10 border-amber-500/25" },
+  affine: { label: "Afinidad", className: "text-success bg-success/10 border-success/30" },
+  tension: { label: "Tensión", className: "text-warning bg-warning/10 border-warning/30" },
   neutral: { label: "Neutro", className: "text-muted bg-ink/[0.04] border-ink/10" },
 };
 
@@ -83,12 +83,12 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
       {hasDetailPage ? (
         <Link
           href={`/affinity/${category}/${entity.id}`}
-          className="group flex items-center gap-4 p-4 rounded-2xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         >
           {content}
         </Link>
       ) : (
-        <div className="group flex items-center gap-4 p-4 rounded-2xl border border-ink/10 bg-card">
+        <div className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card">
           {content}
         </div>
       )}

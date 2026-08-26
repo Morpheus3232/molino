@@ -29,7 +29,7 @@ export default function CountryGrid({ countries, userCountryISO }: CountryGridPr
           >
             <Link
               href={`/atlas/${country.iso}`}
-              className={`group relative flex flex-col items-center justify-center gap-2 p-6 rounded-2xl border transition-colors text-center min-h-[120px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+              className={`group relative flex flex-col items-center justify-center gap-2 p-6 rounded-xl border transition-colors text-center min-h-[120px] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                 isUserCountry
                   ? "border-accent/50 bg-accent/[0.04] hover:border-accent"
                   : "border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02]"

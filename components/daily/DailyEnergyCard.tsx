@@ -37,7 +37,7 @@ export default function DailyEnergyCard({
 
   return (
     <div
-      className={`rounded-2xl sm:rounded-3xl border border-accent/20 bg-card shadow-sm overflow-hidden ${className}`}
+      className={`rounded-xl border border-accent/20 bg-card shadow-sm overflow-hidden ${className}`}
     >
       {/* ── 1. Top Bar: Fecha + Racha Amigable ─────────────────── */}
       <div className="px-6 sm:px-8 py-4 border-b border-border/70 flex flex-wrap items-center justify-between gap-3 bg-background/50">
@@ -126,7 +126,7 @@ export default function DailyEnergyCard({
       {/* ── 3. SECCIÓN: Energía del día & Pilares ── */}
       <div className="p-6 sm:p-8 bg-background/50 space-y-6">
         {/* Banner de Energía & Año Personal */}
-        <div className="p-6 rounded-2xl bg-card border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-6 rounded-xl bg-card border border-border/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1.5 max-w-2xl">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-accent" />

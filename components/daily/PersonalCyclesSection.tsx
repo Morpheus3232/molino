@@ -32,7 +32,7 @@ export default function PersonalCyclesSection({ profile, daily }: PersonalCycles
   if (!yearMeaning) return null;
 
   return (
-    <div className="rounded-3xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 shadow-xl">
+    <div className="rounded-xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-8 shadow-xl">
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">
         Tu año personal
       </p>

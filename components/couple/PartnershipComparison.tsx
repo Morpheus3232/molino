@@ -34,8 +34,8 @@ export default function PartnershipComparison({
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="rounded-3xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-xl text-center relative overflow-hidden"
+        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-accent/25 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-xl text-center relative overflow-hidden"
       >
         <div className="flex items-center justify-center gap-2 mb-3">
           <Handshake className="w-4 h-4 text-accent" />
@@ -65,11 +65,11 @@ export default function PartnershipComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.15 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
+        transition={{ duration: 0.35, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-success/10 text-success flex items-center justify-center">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function PartnershipComparison({
           {result.connections.map((c) => (
             <div
               key={c.id}
-              className="p-4 sm:p-5 rounded-2xl bg-background border border-ink/5 hover:border-accent/30 transition-all flex flex-col justify-between"
+              className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 hover:border-accent/30 transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-2">
@@ -111,11 +111,11 @@ export default function PartnershipComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.25 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
+        transition={{ duration: 0.35, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8 space-y-6"
       >
         <div className="flex items-center gap-2.5 pb-4 border-b border-ink/10">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-warning/10 text-warning flex items-center justify-center">
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
@@ -130,9 +130,9 @@ export default function PartnershipComparison({
 
         <div className="space-y-4">
           {result.challenges.map((ch) => (
-            <div key={ch.id} className="p-4 sm:p-5 rounded-2xl bg-background border border-ink/5 space-y-2">
+            <div key={ch.id} className="p-4 sm:p-5 rounded-lg bg-background border border-ink/5 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-amber-700 font-semibold">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-warning font-semibold">
                   Área: {ch.area}
                 </span>
               </div>
@@ -150,8 +150,8 @@ export default function PartnershipComparison({
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.35 }}
-        className="rounded-3xl border border-ink/10 bg-card p-6 sm:p-8"
+        transition={{ duration: 0.35, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+        className="rounded-xl border border-ink/10 bg-card p-6 sm:p-8"
       >
         <div className="flex items-center gap-2.5 mb-3">
           <Compass className="w-5 h-5 text-accent" />

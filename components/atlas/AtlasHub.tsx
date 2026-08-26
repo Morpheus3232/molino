@@ -120,7 +120,7 @@ function AnimalSelector({
 
 function NoCoverageBanner({ country, topCountries }: { country: string; topCountries: AtlasCountry[] }) {
   return (
-    <div className="mb-8 p-4 rounded-2xl border border-ink/10 bg-card">
+    <div className="mb-8 p-4 rounded-xl border border-ink/10 bg-card">
       <p className="text-sm text-foreground">
         Todavía no tenemos entidades para {country} en el Atlas.
       </p>

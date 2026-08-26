@@ -138,7 +138,7 @@ export default function MethodReductionLoader({
 
   return (
     <div
-      className={`relative w-full max-w-lg mx-auto p-6 sm:p-8 bg-[#F7F4EE] border border-[#DEDACE] rounded-2xl shadow-lg text-[#1D1B17] overflow-hidden select-none ${className}`}
+      className={`relative w-full max-w-lg mx-auto p-6 sm:p-8 bg-paper border border-border rounded-xl shadow-lg text-ink overflow-hidden select-none ${className}`}
       role="status"
       aria-live="polite"
       aria-atomic="true"
@@ -186,14 +186,14 @@ export default function MethodReductionLoader({
       </div>
 
       {/* Header técnico de transparencia local */}
-      <div className="flex items-center justify-between pb-4 mb-6 border-b border-[#DEDACE]">
+      <div className="flex items-center justify-between pb-4 mb-6 border-b border-border">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#A83A23] animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#6A6459]">
+          <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
             REDUCCIÓN TEOSÓFICA LOCAL
           </span>
         </div>
-        <span className="font-mono text-xs font-bold text-[#A83A23]">
+        <span className="font-mono text-xs font-bold text-accent">
           Paso {Math.min(stage + 1, 3)} / 3
         </span>
       </div>
@@ -201,7 +201,7 @@ export default function MethodReductionLoader({
       {/* Visor central del cálculo en vivo */}
       <div className="min-h-[170px] flex flex-col justify-center items-center text-center">
         {/* Label de la fase actual */}
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-[#6A6459] mb-3">
+        <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-3">
           {currentStep.label}
         </p>
 
@@ -209,7 +209,7 @@ export default function MethodReductionLoader({
         <div className="my-1">
           <span
             key={`num-${stage}-${currentStep.result}`}
-            className="font-heading text-6xl sm:text-7xl font-bold text-[#A83A23] leading-none animate-flip-num"
+            className="font-heading text-6xl sm:text-7xl font-bold text-accent leading-none animate-flip-num"
           >
             {currentStep.result}
           </span>
@@ -218,7 +218,7 @@ export default function MethodReductionLoader({
         {/* Nombre / Arquetipo */}
         <p
           key={`name-${stage}-${currentStep.name}`}
-          className="font-display italic text-xl sm:text-2xl text-[#1D1B17] mt-2 mb-3 animate-formula-fade"
+          className="font-display italic text-xl sm:text-2xl text-ink mt-2 mb-3 animate-formula-fade"
         >
           {currentStep.name}
         </p>
@@ -226,7 +226,7 @@ export default function MethodReductionLoader({
         {/* Fórmula desglosada */}
         <div
           key={`formula-${stage}-${currentStep.formula}`}
-          className="font-mono text-xs sm:text-sm text-[#6A6459] bg-[#EFEAE0] py-1.5 px-3.5 rounded-md border border-[#DEDACE] animate-formula-fade max-w-full overflow-x-auto"
+          className="font-mono text-xs sm:text-sm text-muted bg-paper-alt py-1.5 px-3.5 rounded-md border border-border animate-formula-fade max-w-full overflow-x-auto"
         >
           {currentStep.formula}
           {currentStep.reduced ? ` → ${currentStep.reduced}` : ""}
@@ -234,14 +234,14 @@ export default function MethodReductionLoader({
       </div>
 
       {/* Barra de progreso inferior */}
-      <div className="mt-6 pt-4 border-t border-[#DEDACE]">
-        <div className="flex justify-between items-center text-[11px] font-mono text-[#6A6459] mb-2">
+      <div className="mt-6 pt-4 border-t border-border">
+        <div className="flex justify-between items-center text-[11px] font-mono text-muted mb-2">
           <span>{stage >= 2 ? "Consolidando mapa…" : "Calculando matrices…"}</span>
           <span>{stage === 0 ? "33%" : stage === 1 ? "66%" : "100%"}</span>
         </div>
-        <div className="w-full h-1.5 bg-[#EFEAE0] rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-paper-alt rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#A83A23] transition-all duration-500 ease-out rounded-full"
+            className="h-full bg-accent transition-all duration-500 ease-out rounded-full"
             style={{ width: stage === 0 ? "33%" : stage === 1 ? "66%" : "100%" }}
           />
         </div>
