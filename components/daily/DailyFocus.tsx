@@ -190,38 +190,6 @@ export default function DailyFocus({ daily, className = "" }: Omit<DailyFocusPro
           })}
         </div>
       </div>
-
-      {/* Conexión del día — cuando existe afinidad contextual activa */}
-      {daily.dailyConnection && (
-        <div className="rounded-xl border border-ink/10 bg-card p-6 sm:p-7 space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
-              <Compass className="w-4 h-4" />
-              <span>Conexión del día</span>
-            </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-accent font-semibold">
-              {daily.dailyConnection.relationLabel}
-            </span>
-          </div>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
-            <div className="space-y-1 max-w-xl">
-              <h4 className="font-heading text-base sm:text-lg font-bold text-foreground">
-                {daily.dailyConnection.name}
-              </h4>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                {daily.dailyConnection.explanation}
-              </p>
-            </div>
-            <Link
-              href={daily.dailyConnection.href}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-accent hover:underline shrink-0 min-h-[44px]"
-            >
-              <span>Explorar ficha</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
