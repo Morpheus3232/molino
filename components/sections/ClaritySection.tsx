@@ -47,19 +47,22 @@ export default function ClaritySection() {
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6">
+          <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-4">
             <SlidersHorizontal className="w-3.5 h-3.5" aria-hidden="true" />
-            El método
+            Método
           </p>
 
           <h2
-            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.08] mb-6"
+            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-6"
           >
-            Tu inteligencia personal, con método visible.
+            Cada número tiene
+            <br />
+            <span className="text-accent">fórmula, noSorte.</span>
           </h2>
 
-          <p className="text-base sm:text-lg text-muted leading-relaxed font-normal">
-            Estructura patrones a partir de tu fecha con métodos verificables. No es adivinación: es información para pensar tus propias decisiones.
+          <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl mx-auto">
+            Tu mapa se construye con métodos verificables: numerología pitagórica, astrología tropical,
+            zodíaco chino y ciclos personales. Sin adivinación — con fórmulas que podés comprobar.
           </p>
         </div>
 
