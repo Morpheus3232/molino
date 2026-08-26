@@ -105,8 +105,8 @@ describe("buildPersonalMap", () => {
       "territorio",
       "vestimenta",
       "autos",
-      "cancha",
       "aula",
+      "cancha",
       "gente",
       "pantalla",
     ]);

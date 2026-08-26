@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
@@ -19,8 +19,8 @@ import {
 
 /**
  * EL MAPA APLICADO — la parte de "Mi Mapa" que sale del retrato y aterriza en
- * decisiones: dónde vivir, adónde ir, cómo vestirse, qué manejar, de qué
- * equipo sentirse, dónde estudiar, con quién comparte el año, qué mirar.
+ * decisiones: dónde vivir, adónde ir, cómo vestirse, qué manejar, dónde
+ * estudiar, de qué equipo sentirse, con quién comparte el año, qué mirar.
  *
  * No hay un dominio genérico de "marcas": vestimenta y autos van cada uno por
  * su lado, porque son dos preguntas distintas y ninguna se responde con una
@@ -33,9 +33,8 @@ import {
  * sistema no tiene. Cada grupo lleva su regla escrita al lado, comprobable
  * contra las tablas del ciclo.
  *
- * Bloque `ink` full-bleed: es el cambio de registro de la página. Arriba se
- * describe cómo está configurada la persona; acá empieza lo que puede hacer
- * con eso.
+ * Jerarquía visual editorial: integrada con el fondo claro/oscuro del perfil,
+ * con espaciado amplio, tipografía rigurosa y sin cards con sombras.
  */
 
 const NUMERAL = ["01", "02", "03", "04", "05", "06", "07"];
@@ -49,22 +48,21 @@ const KIND_SHORT: Record<MapRelation, string> = {
 };
 
 /**
- * Peso visual por casilla. El enemigo no se esconde: se marca — antes tenía
- * menos contraste que "amigo" (text-paper/55 vs text-accent-light), lo
- * opuesto de lo que dice el comentario. Ahora es la única casilla con chip
- * propio, y "vos"/"amigo"/"otro" bajan en una escalera de opacidad del mismo
- * tono en vez de compartir el mismo color entre sí.
+ * Peso visual por casilla bajo la paleta editorial.
  */
 const KIND_TONE: Record<MapRelation, { accent: string; bar: string; badge?: string }> = {
-  mismo: { accent: "text-accent-light", bar: "bg-accent-light" },
-  amigo: { accent: "text-accent-light/70", bar: "bg-accent-light/50" },
+  mismo: { accent: "text-accent", bar: "bg-accent" },
+  amigo: { accent: "text-accent/80", bar: "bg-accent/60" },
   enemigo: {
-    accent: "text-paper",
+    accent: "text-foreground",
     bar: "bg-accent",
-    badge: "bg-accent/15 border border-accent/40 rounded-sm px-1.5 py-0.5",
+    badge: "bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold",
   },
-  otro: { accent: "text-paper/35", bar: "bg-paper/12" },
+  otro: { accent: "text-muted", bar: "bg-border" },
 };
+
+/** Dominios secundarios donde se prioriza acotar la cantidad visible inicial. */
+const SECONDARY_DOMAINS = new Set(["cancha", "gente", "pantalla"]);
 
 /** Tipos sin ruta de ficha propia — ver components/atlas/EntityCard.tsx. */
 const SIN_FICHA = new Set(["football_player"]);
@@ -103,9 +101,9 @@ function EntityRow({
   const fecha = fechaLarga(entity.originDate);
 
   return (
-    <li className="border-b border-paper/10">
-      <Row {...(rowProps as { href: string })} className="block py-4 group">
-        <span className="flex items-center gap-4">
+    <li className="border-b border-border/60 last:border-b-0">
+      <Row {...(rowProps as { href: string })} className="block py-3.5 sm:py-4 group">
+        <span className="flex items-center gap-3.5 sm:gap-4">
           <EntityVisual
             visualType={entity.visualType}
             emoji={entity.emoji}
@@ -115,32 +113,31 @@ function EntityRow({
             size={36}
           />
           <span className="min-w-0 flex-1">
-            <span className="block font-heading text-base font-bold text-paper group-hover:text-accent-light transition-colors truncate">
+            <span className="block font-heading text-base font-bold text-foreground group-hover:text-accent transition-colors truncate">
               {entity.name}
             </span>
             {(entity.country && entity.country !== entity.name) || local ? (
-              <span className="block font-mono text-xs text-paper/40 truncate mt-0.5">
+              <span className="block font-mono text-xs text-muted truncate mt-0.5">
                 {entity.country !== entity.name ? entity.country : ""}
                 {local && (
-                  <span className="text-accent-light/80">
-                    {entity.country && entity.country !== entity.name ? " · " : ""}tu país
+                  <span className="text-accent font-semibold ml-1">
+                    {entity.country && entity.country !== entity.name ? "· " : ""}tu país
                   </span>
                 )}
               </span>
             ) : null}
           </span>
-          {/* La fecha exacta es el insumo, no un adorno: de ahí sale el signo,
-              y sin ella la entidad no estaría en esta lista. */}
+          {/* La fecha exacta es el insumo, no un adorno: de ahí sale el signo */}
           <span className="shrink-0 text-right font-mono text-xs tabular-nums">
-            <span className="block text-paper/70">{fecha ?? entity.year}</span>
-            <span className="block text-accent-light/70">año {animal}</span>
+            <span className="block text-foreground/85 font-medium">{fecha ?? entity.year}</span>
+            <span className="block text-accent">año {animal}</span>
           </span>
         </span>
 
         {entity.originNote && (
-          <span className="mt-2 block pl-13 text-xs text-paper/50 leading-relaxed font-serif">
+          <span className="mt-2 block pl-12 sm:pl-13 text-xs sm:text-sm text-muted leading-relaxed font-serif">
             {entity.originLabel && (
-              <span className="font-mono uppercase tracking-[0.14em] text-paper/35">
+              <span className="font-mono uppercase tracking-[0.14em] text-muted/70 text-[11px]">
                 {entity.originLabel} ·{" "}
               </span>
             )}
@@ -156,33 +153,41 @@ function GroupBlock({
   group,
   domainHref,
   userCountryISO,
+  isSecondary,
 }: {
   group: RelationGroup<LightweightEntity>;
   domainHref: string;
   userCountryISO: string | null;
+  isSecondary?: boolean;
 }) {
+  const [expanded, setExpanded] = useState(false);
   const tone = KIND_TONE[group.kind];
-  const restantes = group.total - group.entities.length;
+
+  // Principales: 4 iniciales. Secundarios o enemigo: 3 iniciales.
+  const initialLimit = isSecondary || group.kind === "enemigo" ? 3 : 4;
+  const hasMoreInline = group.entities.length > initialLimit;
+  const visibleEntities = expanded ? group.entities : group.entities.slice(0, initialLimit);
+  const restantesAtlas = group.total - group.entities.length;
 
   return (
     <div className="pt-8 first:pt-0">
       <div className="flex items-baseline gap-3 flex-wrap">
         <span className={`h-2.5 w-2.5 shrink-0 self-center ${tone.bar}`} aria-hidden="true" />
-        <h4 className="font-heading text-lg font-bold text-paper uppercase tracking-tight">
+        <h4 className="font-heading text-base sm:text-lg font-bold text-foreground uppercase tracking-tight">
           {group.title}
         </h4>
         {group.chinese && (
           <span className={`font-mono text-xs ${tone.accent}`}>{group.chinese}</span>
         )}
-        <span className="font-mono text-xs text-paper/35 tabular-nums ml-auto">
+        <span className="font-mono text-xs text-muted tabular-nums ml-auto">
           {group.total} {group.total === 1 ? "entrada" : "entradas"}
         </span>
       </div>
 
-      <p className="mt-2 max-w-2xl font-mono text-xs text-paper/55 leading-relaxed">{group.rule}</p>
+      <p className="mt-2 max-w-2xl font-mono text-xs text-muted/80 leading-relaxed">{group.rule}</p>
 
-      <ul className="mt-4 border-t border-paper/15">
-        {group.entities.map((e) => (
+      <ul className="mt-4 border-t border-border">
+        {visibleEntities.map((e) => (
           <EntityRow
             key={e.id}
             entity={e}
@@ -192,14 +197,26 @@ function GroupBlock({
         ))}
       </ul>
 
-      {restantes > 0 && (
-        <Link
-          href={domainHref}
-          className="mt-4 inline-block font-mono text-xs text-paper/45 hover:text-accent-light transition-colors underline decoration-dotted underline-offset-4"
-        >
-          + {restantes} más en esta relación →
-        </Link>
-      )}
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+        {hasMoreInline && (
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="font-mono text-xs text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4 py-1"
+          >
+            {expanded ? "− Ver menos" : `+ Ver más (${group.entities.length - initialLimit} restantes)`}
+          </button>
+        )}
+
+        {restantesAtlas > 0 && (
+          <Link
+            href={domainHref}
+            className="font-mono text-xs text-muted hover:text-accent transition-colors underline decoration-dotted underline-offset-4 py-1"
+          >
+            + {restantesAtlas} más en el Atlas →
+          </Link>
+        )}
+      </div>
     </div>
   );
 }
@@ -215,73 +232,82 @@ function DomainBlock({
 }) {
   if (domain.groups.length === 0) return null;
 
-  // El orden es la recomendación: primero tu propio signo, después el de tus
-  // dos amigos, y al final la energía opuesta — que se muestra completa, no
-  // plegada: "qué evitar" es una respuesta tan concreta como "qué elegir".
+  const isSecondary = SECONDARY_DOMAINS.has(domain.id);
   const afines = domain.groups.filter((g) => g.kind === "mismo" || g.kind === "amigo");
   const opuesta = domain.groups.find((g) => g.kind === "enemigo") ?? null;
 
   return (
     <motion.section
       {...editorialReveal}
-      className="py-16 sm:py-20 lg:py-24 border-b border-paper/15 last:border-b-0"
+      className="py-16 sm:py-20 lg:py-24 border-b border-border last:border-b-0"
       aria-labelledby={`dominio-${domain.id}`}
     >
-      <div className="flex items-baseline gap-5 flex-wrap">
+      <div className="flex items-baseline gap-4 flex-wrap">
         <span
-          className="font-display text-[clamp(1.75rem,4vw,3rem)] leading-[0.85] text-paper/20"
+          className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold"
           aria-hidden="true"
         >
-          {numeral}
-        </span>
-        <h3
-          id={`dominio-${domain.id}`}
-          className="font-display text-[clamp(1.75rem,5vw,3.25rem)] leading-[0.9] tracking-tight text-paper uppercase font-bold"
-        >
-          {domain.question}
-        </h3>
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light">
-          {domain.label}
+          {numeral} / {domain.label}
         </span>
       </div>
 
-      <p className="mt-5 max-w-2xl text-base sm:text-lg text-paper/70 leading-relaxed font-serif">
+      <h3
+        id={`dominio-${domain.id}`}
+        className="mt-2 font-display text-2xl sm:text-4xl font-bold tracking-tight text-foreground uppercase leading-[1.0]"
+      >
+        {domain.question}
+      </h3>
+
+      <p className="mt-4 max-w-3xl text-base sm:text-lg text-muted leading-relaxed font-serif">
         {domain.reading}
       </p>
-      <p className="mt-2 max-w-2xl font-mono text-xs text-paper/35 leading-relaxed">
+
+      <p className="mt-2 max-w-3xl font-mono text-xs text-muted/80 leading-relaxed">
         {domain.scope}
         {domain.descartadas > 0 && (
-          <>
-            {" "}
-            <span className="text-paper/25">
-              {domain.descartadas} quedaron afuera por no tener fecha exacta documentada.
-            </span>
-          </>
+          <span className="text-muted/60">
+            {" "}{domain.descartadas} quedaron afuera por no tener fecha exacta documentada.
+          </span>
         )}
       </p>
 
+      {isSecondary && (
+        <p className="mt-3 font-mono text-xs text-muted bg-paper-alt border border-border/80 rounded-md px-3.5 py-2 inline-block">
+          Este dominio cuenta con {domain.evaluated} entradas. Se muestran hasta 3 ejemplos por casilla para mantener la lectura ágil.
+        </p>
+      )}
+
       <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-10">
         {afines.map((g) => (
-          <GroupBlock key={g.kind} group={g} domainHref={domain.href} userCountryISO={userCountryISO} />
+          <GroupBlock
+            key={g.kind}
+            group={g}
+            domainHref={domain.href}
+            userCountryISO={userCountryISO}
+            isSecondary={isSecondary}
+          />
         ))}
       </div>
 
       {opuesta && (
-        <div className="mt-14 border-t border-paper/20 pt-10">
-          {/* Solo la etiqueta: la regla y el conteo ya los trae el grupo de
-              abajo, repetirlos acá era decir dos veces lo mismo. */}
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mb-6">
-            Lo que conviene evitar
+        <div className="mt-12 sm:mt-16 border-t border-border pt-8 sm:pt-10">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-6">
+            Lo que conviene evitar (六冲)
           </p>
           <div className="max-w-3xl">
-            <GroupBlock group={opuesta} domainHref={domain.href} userCountryISO={userCountryISO} />
+            <GroupBlock
+              group={opuesta}
+              domainHref={domain.href}
+              userCountryISO={userCountryISO}
+              isSecondary={isSecondary}
+            />
           </div>
         </div>
       )}
 
       <Link
         href={domain.href}
-        className="mt-10 inline-block font-mono text-xs uppercase tracking-[0.2em] text-accent-light hover:text-paper transition-colors underline decoration-dotted underline-offset-4"
+        className="mt-8 sm:mt-10 inline-block font-mono text-xs uppercase tracking-[0.2em] text-accent hover:text-foreground transition-colors underline decoration-dotted underline-offset-4"
       >
         Ver las {domain.evaluated} entradas del dominio →
       </Link>
@@ -292,23 +318,21 @@ function DomainBlock({
 /** El ciclo completo: los doce signos y qué es cada uno para vos. */
 function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelationEntry[] }) {
   return (
-    <motion.div {...editorialReveal} className="border-t border-paper/15 pt-12 sm:pt-16 pb-6">
-      <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-paper/40 mb-2">
-        El ciclo entero, leído desde {animal}
-      </h3>
-      <p className="max-w-2xl text-xs sm:text-sm text-paper/50 font-serif leading-relaxed mb-8">
-        Los doce signos, numerados en el orden del ciclo. Cada signo tiene dos amigos y un
-        enemigo, y la cuenta se puede hacer a ojo: los amigos son los dos que están a cuatro
-        posiciones (三合 San He) y el enemigo el que está a seis (六冲 Liu Chong), contando en
-        círculo. Los otros ocho no dicen nada. Cada entidad del atlas cae en una de estas doce
-        casillas según el año en que nació. No hay nada más en el cálculo.
-      </p>
-      {/* La posición en el ciclo va impresa. Sin ella la grilla se llena de
-          izquierda a derecha y bajar por una columna saltea de a cuatro
-          signos: el orden se lee roto. Numerada, además, las dos reglas se
-          pueden contar a ojo — los amigos están a cuatro posiciones, el
-          enemigo a seis. */}
-      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 border-t border-paper/20">
+    <motion.div {...editorialReveal} className="border-t border-border pt-12 sm:pt-16 pb-6">
+      <div className="max-w-3xl mb-8">
+        <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-2">
+          El ciclo entero, leído desde {animal}
+        </h3>
+        <p className="text-sm sm:text-base text-muted font-serif leading-relaxed">
+          Los doce signos, numerados en el orden del ciclo. Cada signo tiene dos amigos y un
+          enemigo, y la cuenta se puede hacer a ojo: los amigos son los dos que están a cuatro
+          posiciones (三合 San He) y el enemigo el que está a seis (六冲 Liu Chong), contando en
+          círculo. Los otros ocho no dicen nada. Cada entidad del atlas cae en una de estas doce
+          casillas según el año en que nació. No hay nada más en el cálculo.
+        </p>
+      </div>
+
+      <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 border-t border-border">
         {entries.map((e, i) => {
           const tone = KIND_TONE[e.kind];
           const propio = e.kind === "mismo";
@@ -316,15 +340,15 @@ function CycleTable({ animal, entries }: { animal: string; entries: AnimalRelati
             <li
               key={e.animal}
               className={`flex items-baseline gap-3 py-3.5 border-b ${
-                propio ? "border-accent-light/25" : "border-paper/10"
+                propio ? "border-accent/40" : "border-border/60"
               }`}
             >
-              <span className="font-mono text-xs tabular-nums text-paper/30 shrink-0 w-5">
+              <span className="font-mono text-xs tabular-nums text-muted/60 shrink-0 w-5">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span className={`h-2 w-2 shrink-0 self-center ${tone.bar}`} aria-hidden="true" />
               <span
-                className={`font-heading text-sm font-bold ${propio ? "text-accent-light" : "text-paper"}`}
+                className={`font-heading text-sm font-bold ${propio ? "text-accent" : "text-foreground"}`}
               >
                 {e.animal}
               </span>
@@ -381,25 +405,30 @@ export default function PersonalMapSection({
   const evaluadas = map.domains.reduce((sum, d) => sum + d.evaluated, 0);
 
   return (
-    <section className="section-full-bleed bg-ink text-paper overflow-hidden">
+    <section
+      className="border-b border-border bg-background text-foreground overflow-hidden"
+      aria-labelledby="mapa-aplicado-heading"
+    >
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* ── Encabezado ───────────────────────────────────────────── */}
-        <motion.div {...editorialReveal} className="pt-20 lg:pt-28 pb-10 lg:pb-14">
-          <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase mb-6 text-accent-light">
+        <motion.div {...editorialReveal} className="pt-20 lg:pt-28 pb-12 lg:pb-16">
+          <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase mb-4 text-accent">
             EL MAPA APLICADO
           </p>
-          <h2 className="font-display text-[clamp(2.25rem,6vw,5.5rem)] leading-[0.88] tracking-tight max-w-4xl text-paper uppercase">
+          <h2
+            id="mapa-aplicado-heading"
+            className="font-display text-3xl sm:text-5xl lg:text-6xl tracking-tight max-w-4xl text-foreground uppercase leading-[0.95]"
+          >
             DÓNDE TU SIGNO
             <br />
             TOCA EL MUNDO.
           </h2>
-          <p className="font-serif text-base lg:text-lg mt-8 max-w-xl leading-relaxed text-paper/70">
+          <p className="font-serif text-base sm:text-lg mt-6 max-w-2xl leading-relaxed text-muted">
             Sos {map.animal}
-            {map.element ? ` de ${map.element}` : ""}. Cada país, ciudad, auto, prenda, club,
-            universidad, persona y película del atlas también tiene un signo: el del año en que
-            nació. Cruzar
-            los dos es todo el cálculo — {evaluadas.toLocaleString("es-AR")} entradas con fecha de
-            origen <strong className="font-normal text-paper">exacta</strong>, repartidas en las
+            {map.element ? ` de ${map.element}` : ""}. Cada país, ciudad, prenda, auto, universidad, club,
+            persona y película del atlas también tiene un signo: el del año en que
+            nació. Cruzar los dos es todo el cálculo — {evaluadas.toLocaleString("es-AR")} entradas con fecha de
+            origen <strong className="font-semibold text-foreground">exacta</strong>, repartidas en las
             tres casillas que el ciclo reconoce: tu propio signo, tus dos amigos y tu enemigo.
           </p>
 
@@ -407,7 +436,7 @@ export default function PersonalMapSection({
               dentro de una casilla que el signo ya decidió. Se dice, para que
               no parezca que el cálculo te favorece por ser de acá. */}
           {userCountryISO && country && (
-            <p className="mt-4 max-w-xl font-mono text-xs text-paper/45 leading-relaxed">
+            <p className="mt-4 max-w-2xl font-mono text-xs text-muted/90 leading-relaxed border-l-2 border-accent/40 pl-3 py-0.5">
               Dentro de cada casilla van primero hasta tres de {country}, y después el mundo. El
               orden atiende a dónde estás; la afinidad, solo al signo.
             </p>
@@ -418,47 +447,67 @@ export default function PersonalMapSection({
         <CycleTable animal={map.animal} entries={map.relationMap} />
 
         {/* ── Los dominios aplicados ───────────────────────────────── */}
-        <div className="mt-4">
+        <div className="mt-8">
           {visibles.map((d, i) => (
             <DomainBlock
               key={d.id}
               domain={d}
-              numeral={NUMERAL[i] ?? String(i + 1)}
+              numeral={NUMERAL[i] ?? String(i + 1).padStart(2, "0")}
               userCountryISO={map.userCountryISO}
             />
           ))}
         </div>
 
+        {/* ── Todavía sin fecha exacta (Colapsable) ─────────────────── */}
         {enEspera.length > 0 && (
-          <motion.div {...editorialReveal} className="mt-16 border-t border-paper/15 pt-12">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mb-2">
-              Todavía sin fecha exacta
-            </p>
-            <p className="max-w-2xl text-sm font-serif text-paper/55 leading-relaxed mb-6">
-              Están cargados en el atlas, pero casi ninguna de sus entradas documenta el día
-              exacto de su origen. Mejor anunciarlos pendientes que abrir una sección con dos
-              opciones adentro.
-            </p>
-            <ul className="border-t border-paper/15 max-w-2xl">
-              {enEspera.map((d) => (
-                <li
-                  key={d.id}
-                  className="flex items-baseline justify-between gap-4 py-3 border-b border-paper/10"
-                >
-                  <span className="font-heading text-sm font-bold text-paper/70">{d.question}</span>
-                  <span className="font-mono text-xs text-paper/35 tabular-nums shrink-0">
-                    {d.evaluated > 0 ? `${d.evaluated} con fecha · ` : ""}
-                    {d.descartadas} sin fecha
+          <motion.div {...editorialReveal} className="mt-16 border-t border-border pt-10">
+            <details className="group">
+              <summary className="cursor-pointer list-none flex items-center justify-between gap-4 py-2 select-none">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold">
+                    Todavía sin fecha exacta
                   </span>
-                </li>
-              ))}
-            </ul>
+                  <span className="font-mono text-xs text-muted/70 tabular-nums">
+                    · {enEspera.length} {enEspera.length === 1 ? "dominio en espera" : "dominios en espera"}
+                  </span>
+                </div>
+                <span className="font-mono text-xs text-muted group-open:hidden">
+                  [+ Desplegar]
+                </span>
+                <span className="font-mono text-xs text-accent hidden group-open:inline">
+                  [− Colapsar]
+                </span>
+              </summary>
+
+              <div className="mt-4 pt-4 border-t border-border/60">
+                <p className="max-w-2xl text-sm font-serif text-muted leading-relaxed mb-6">
+                  Están cargados en el atlas, pero casi ninguna de sus entradas documenta el día
+                  exacto de su origen. Mejor anunciarlos pendientes que abrir una sección con pocas
+                  opciones adentro.
+                </p>
+                <ul className="border-t border-border/60 max-w-2xl">
+                  {enEspera.map((d) => (
+                    <li
+                      key={d.id}
+                      className="flex items-baseline justify-between gap-4 py-3 border-b border-border/60"
+                    >
+                      <span className="font-heading text-sm font-bold text-foreground/80">{d.question}</span>
+                      <span className="font-mono text-xs text-muted tabular-nums shrink-0">
+                        {d.evaluated > 0 ? `${d.evaluated} con fecha · ` : ""}
+                        {d.descartadas} sin fecha
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </details>
           </motion.div>
         )}
 
-        <div className="mt-16 pt-10 border-t border-paper/15 space-y-4">
-          <p className="max-w-2xl text-xs sm:text-sm text-paper/50 font-serif leading-relaxed">
-            <strong className="font-normal text-paper/80">Por qué hay entidades que no aparecen.</strong>{" "}
+        {/* ── Disclaimer final sutil ──────────────────────────────── */}
+        <div className="mt-16 pt-8 border-t border-border space-y-4 max-w-3xl">
+          <p className="text-xs sm:text-sm text-muted font-serif leading-relaxed">
+            <strong className="font-semibold text-foreground">Por qué hay entidades que no aparecen.</strong>{" "}
             El Año Nuevo chino cae entre el 21 de enero y el 21 de febrero: un origen fechado solo
             por año podría pertenecer al signo anterior, y una fecha anterior a 1886 cae fuera de la
             tabla de cortes documentados. En los dos casos el signo no se puede afirmar y la entidad
@@ -466,7 +515,7 @@ export default function PersonalMapSection({
             construida sobre una duda.
           </p>
 
-          <p className="max-w-2xl text-xs sm:text-sm text-paper/40 font-serif italic leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted/80 font-serif italic leading-relaxed">
             El cruce es una sola operación sobre dos fechas: la tuya y la de origen de cada entidad,
             cada una llevada a su signo con el corte real del Año Nuevo chino. Que dos fechas caigan
             en la misma casilla del ciclo es comprobable; que eso signifique algo sobre dónde vivir o
@@ -475,8 +524,9 @@ export default function PersonalMapSection({
           </p>
         </div>
 
-        <div className="h-20 lg:h-28" />
+        <div className="h-16 lg:h-24" />
       </div>
     </section>
   );
 }
+

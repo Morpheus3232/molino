@@ -286,20 +286,20 @@ const DOMAIN_SPECS: DomainSpec[] = [
     matches: (e) => e.type === "brand" && !!e.category && AUTO_CATEGORIES.has(e.category),
   },
   {
+    id: "aula",
+    question: "¿Dónde estudiar?",
+    label: "Universidades",
+    scope: "Universidades fechadas por su fundación documentada.",
+    href: "/affinity/university",
+    matches: (e) => e.type === "university",
+  },
+  {
     id: "cancha",
     question: "¿De qué equipo sentirte?",
     label: "Cancha",
     scope: "Clubes fechados por su fundación documentada.",
     href: "/affinity/team",
     matches: (e) => e.type === "team",
-  },
-  {
-    id: "aula",
-    question: "¿Dónde estudiar?",
-    label: "Aula",
-    scope: "Universidades fechadas por su fundación documentada.",
-    href: "/affinity/university",
-    matches: (e) => e.type === "university",
   },
   {
     id: "gente",
