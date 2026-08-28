@@ -70,7 +70,6 @@ const TIME_GROUPS_NO_PROFILE: NavGroup[] = [
 // labels arrancando igual, la palabra que diferencia caía siempre segunda y
 // el ojo tenía que leer cada label entero en vez de escanear.
 const PROFILE_LINKS = {
-  map: { href: "/profile", label: "Mi Mapa" },
   journal: { href: "/journal", label: "Journal" },
 } satisfies Record<string, NavLink>;
 
@@ -349,13 +348,6 @@ export default function UniversityHeader() {
               </>
             ) : (
               <>
-                <Link
-                  href={PROFILE_LINKS.map.href}
-                  className={navButtonClass(isActive(PROFILE_LINKS.map.href))}
-                  aria-current={pathname === PROFILE_LINKS.map.href ? "page" : undefined}
-                >
-                  {PROFILE_LINKS.map.label}
-                </Link>
                 <NavDropdown
                   id="affinities"
                   label="Afinidades"
@@ -483,7 +475,6 @@ export default function UniversityHeader() {
                   </>
                 ) : (
                   <>
-                    <MobileLink link={PROFILE_LINKS.map} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     <MobileGroups groups={AFFINITY_GROUPS} heading="Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
@@ -491,6 +482,15 @@ export default function UniversityHeader() {
 
                     <div className="border-t border-ink/10 my-2" />
 
+                    {lecturaHref && (
+                      <Link
+                        href="/profile"
+                        className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-foreground hover:text-accent"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Mi Mapa
+                      </Link>
+                    )}
                     {lecturaHref && (
                       <Link
                         href={lecturaHref}
