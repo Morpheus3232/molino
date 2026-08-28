@@ -7,20 +7,14 @@ import type { UserProfile } from "@/types/user";
  * MATRIX DE CÁLCULO — la cuenta real que genera el mapa, animada.
  *
  * Mientras el mapa se carga mostramos, en vivo y en el orden en que el motor
- * la hace, la suma genuina que produce cada número del retrato. No es una
- * reproducción decorativa: son los mismos pasos que corren
- * profileBuilder → numerologyEngine / astrologyEngine / chineseZodiacEngine.
+ * la hace, la suma genuina que produce cada número del retrato.
  *
  * Diseño:
- *  - Fondo: lluvia de código (canvas), sutil, como un terminal de Matrix.
- *  - Contenido fijo por encima, arriba a la derecha: el cálculo real,
- *    bien explicado, línea por línea.
+ *  - Fondo ink oscuro con lluvia de código suave en gold (paleta Molino).
+ *  - Nube flotante centrada con el cálculo real, línea por línea.
  *  - Cuando la cuenta termina, `onComplete` deja pasar a Mi Mapa.
  */
 
-// ──────────────────────────────────────────────────────────────────────────
-// Cálculo genuino (mismo algoritmo que calculateLifePath)
-// ──────────────────────────────────────────────────────────────────────────
 interface LifePathStep {
   label: string;
   result: number;
@@ -65,7 +59,6 @@ const SUN_SIGN_RANGES: Record<string, [string, string]> = {
 const FORMULA_URL =
   "https://github.com/search?q=path%3Alib%2Fengines%2FnumerologyEngine.ts&type=code";
 
-/** Caracteres de la lluvia: katakana + dígitos para el efecto Matrix. */
 const RAIN_CHARS =
   "アィウエオカキクケコサシスセソタチツテトナニヌネノ0123456789$#&*+";
 
@@ -82,7 +75,7 @@ function makeColumns(width: number): Column[] {
     const len = 8 + Math.floor(Math.random() * 14);
     return {
       y: Math.random() * -120,
-      speed: 0.4 + Math.random() * 1.1,
+      speed: 0.3 + Math.random() * 0.8,
       chars: Array.from({ length: len }, () =>
         RAIN_CHARS[Math.floor(Math.random() * RAIN_CHARS.length)]
       ),
@@ -115,7 +108,7 @@ function MatrixRain({ dimmed }: { dimmed: boolean }) {
     resize();
 
     const draw = () => {
-      ctx.fillStyle = "rgba(7, 12, 14, 0.12)";
+      ctx.fillStyle = "rgba(29, 27, 23, 0.14)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.font = `${fontSize}px monospace`;
@@ -128,8 +121,8 @@ function MatrixRain({ dimmed }: { dimmed: boolean }) {
           if (y < 0) continue;
           const isHead = i === 0;
           ctx.fillStyle = isHead
-            ? "rgba(180, 255, 220, 0.85)"
-            : "rgba(46, 200, 120, 0.32)";
+            ? "rgba(245, 176, 34, 0.75)"
+            : "rgba(245, 176, 34, 0.20)";
           ctx.fillText(col.chars[i], x, y);
         }
       }
@@ -149,7 +142,7 @@ function MatrixRain({ dimmed }: { dimmed: boolean }) {
     <canvas
       ref={canvasRef}
       className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-        dimmed ? "opacity-40" : "opacity-100"
+        dimmed ? "opacity-30" : "opacity-100"
       }`}
       aria-hidden="true"
     />
@@ -174,7 +167,6 @@ export default function CalculationMatrix({
   const steps = useMemo(() => buildLifePathSteps(birthDate), [birthDate]);
   const sunRange = SUN_SIGN_RANGES[sunSign];
 
-  // Líneas de la cuenta en orden, para revelarlas una a una.
   const lines = useMemo(() => {
     const l: string[] = [];
     l.push("CALCULANDO TU MAPA…");
@@ -190,7 +182,6 @@ export default function CalculationMatrix({
     return l;
   }, [birthDate, steps, lifePath, sunRange, sunSign, animal, element, birthYear]);
 
-  // Revelado secuencial de líneas, como si el terminal las fuera escribiendo.
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (count >= lines.length) return;
@@ -207,18 +198,46 @@ export default function CalculationMatrix({
   }, [done, onComplete]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#070c0e] text-[#cde8d9]">
+    <div className="relative min-h-screen overflow-hidden bg-ink flex items-center justify-center">
+      {/* Lluvia de código */}
       <MatrixRain dimmed={done} />
 
-      {/* Contenido fijo por encima, arriba a la derecha */}
-      <div className="relative z-10 mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-24">
-        <div className="flex justify-end">
-          <div className="w-full max-w-sm sm:max-w-md rounded-[--radius-lg] border border-emerald-400/20 bg-[#07110c]/70 backdrop-blur-sm p-6 shadow-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-emerald-300/70 mb-5">
-              Mientras se arma tu mapa…
-            </p>
+      {/* Glow difuso detrás de la nube */}
+      <div
+        className="absolute w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] opacity-40 blur-3xl pointer-events-none"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(245,176,34,0.18) 0%, rgba(168,58,35,0.08) 45%, transparent 70%)",
+        }}
+      />
 
-            <div className="space-y-3 font-mono text-[13px] leading-relaxed">
+      {/* ── Nube centrada ──────────────────────────────────── */}
+      <div className="relative z-10 w-full max-w-lg mx-4 sm:mx-auto">
+        {/* Forma de nube: border-radius orgánico, sin clipPath */}
+        <div
+          className="relative overflow-hidden border border-ink/10"
+          style={{
+            borderRadius: "42% 58% 55% 45% / 56% 44% 56% 44%",
+            background:
+              "linear-gradient(145deg, rgba(247,244,238,0.96) 0%, rgba(239,234,224,0.93) 45%, rgba(241,236,225,0.91) 100%)",
+          }}
+        >
+          {/* Contenido */}
+          <div className="p-8 sm:p-10 min-h-[360px]">
+            {/* Encabezado */}
+            <div className="flex items-center gap-3 mb-6">
+              <span
+                className="h-2 w-2 rounded-full bg-gold animate-pulse"
+                aria-hidden="true"
+              />
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+                Mientras se arma tu mapa…
+              </p>
+            </div>
+
+            {/* Líneas del cálculo */}
+            <div className="space-y-3 font-mono text-sm leading-relaxed">
               {lines.slice(0, count).map((line, i) => {
                 const isHeading = i === 0;
                 const isResult =
@@ -229,30 +248,30 @@ export default function CalculationMatrix({
                 return (
                   <p
                     key={i}
-                    className={`${
+                    className={`transition-all duration-300 ${
                       isHeading
-                        ? "text-emerald-200 font-bold tracking-[0.2em] text-xs uppercase"
+                        ? "text-ink font-bold tracking-[0.2em] text-xs uppercase"
                         : isResult
-                          ? "text-emerald-300"
-                          : "text-[#cdffDD]/80"
+                          ? "text-accent font-semibold"
+                          : "text-muted"
                     }`}
-                    style={{ textShadow: "0 0 8px rgba(80,255,160,0.25)" }}
                   >
                     {line}
                   </p>
                 );
               })}
               {!done && (
-                <span className="inline-block h-4 w-2 bg-emerald-300/80 animate-pulse align-middle" />
+                <span className="inline-block h-4 w-2 bg-gold animate-pulse align-middle" />
               )}
             </div>
 
-            <div className="mt-5 pt-4 border-t border-emerald-400/15">
+            {/* Fórmula */}
+            <div className="mt-6 pt-4 border-t border-ink/10">
               <a
                 href={FORMULA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-emerald-300/70 hover:text-emerald-200 transition-colors"
+                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-accent hover:text-accent-hover transition-colors"
               >
                 Ver fórmula en GitHub →
               </a>
@@ -260,9 +279,9 @@ export default function CalculationMatrix({
           </div>
         </div>
 
-        {/* Estado mientras termina */}
-        <div className="absolute bottom-10 left-0 right-0 text-center">
-          <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-emerald-300/50">
+        {/* Estado */}
+        <div className="mt-6 text-center">
+          <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-paper/50">
             {done ? "abriendo tu mapa" : "calculando…"}
           </span>
         </div>
