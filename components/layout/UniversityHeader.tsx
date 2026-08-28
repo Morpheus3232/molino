@@ -9,7 +9,7 @@ import { getSavedProfilesVault } from "@/lib/session/multiProfiles";
 import { getPremiumTokenClient } from "@/lib/premium";
 import { encodeProfileData } from "@/lib/utils/profileShare";
 import type { UserProfile } from "@/types/user";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Plus } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
 import SavedProfilesDrawer from "@/components/profile/SavedProfilesDrawer";
@@ -409,13 +409,31 @@ export default function UniversityHeader() {
             ) : (
               <div className="hidden lg:flex items-center gap-2">
                 {lecturaHref && (
-                  <Link
-                    href={lecturaHref}
-                    className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors"
-                  >
-                    Mi Lectura
-                  </Link>
+                  <>
+                    <Link
+                      href="/profile"
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
+                    >
+                      Mi Mapa
+                    </Link>
+                    <Link
+                      href={lecturaHref}
+                      className="inline-flex items-center px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-accent/40 text-accent hover:border-accent hover:bg-accent/[0.08] transition-colors"
+                    >
+                      Mi Lectura
+                    </Link>
+                  </>
                 )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleNewProfile();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-mono font-semibold tracking-[0.08em] uppercase whitespace-nowrap rounded-xl border border-ink/15 text-foreground hover:border-accent hover:text-accent transition-colors"
+                >
+                  <Plus className="w-3.5 h-3.5" aria-hidden="true" focusable="false" />
+                  Crear nuevo mapa
+                </button>
                 <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className={actionClass} />
               </div>
             )}
@@ -498,9 +516,10 @@ export default function UniversityHeader() {
                         setMenuOpen(false);
                         handleNewProfile();
                       }}
-                      className="flex items-center min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
+                      className="flex items-center gap-2 min-h-[44px] w-full text-left px-3 py-2 text-xs font-mono text-muted hover:text-rose-400 transition-colors"
                     >
-                      Reiniciar perfil actual
+                      <Plus className="w-4 h-4" aria-hidden="true" focusable="false" />
+                      Crear nuevo mapa
                     </button>
                   </>
                 )}

@@ -423,7 +423,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               ¿Pensaste en alguien mientras leías esto?
             </span>
             <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-              Regalale su propio mapa personal
+              Regala una lectura personalizada
             </h3>
             <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed max-w-md">
               No necesitás saber su fecha de nacimiento. Comprás el regalo ($8 USD) y se lo mandás por WhatsApp en un enlace listo para canjear.
@@ -434,7 +434,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md"
           >
             <Gift className="w-4 h-4" />
-            Regalar mapa · $8 USD
+            Regalar lectura · $8 USD
           </Link>
         </div>
 
