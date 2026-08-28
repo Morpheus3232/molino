@@ -1,5 +1,4 @@
 import type { UserProfile } from "@/types/user";
-import { ChevronDown } from "lucide-react";
 
 const FORMULA_URL =
   "https://github.com/search?q=path%3Alib%2Fengines%2FnumerologyEngine.ts&type=code";
@@ -68,15 +67,12 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
   const birthYear = birthDate.slice(0, 4);
 
   return (
-    <details className="group border border-ink/10 rounded-md bg-background/50">
-      <summary className="flex cursor-pointer select-none list-none items-center justify-between px-4 py-3">
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
-          ¿Cómo se calculó esto?
-        </span>
-        <ChevronDown className="h-4 w-4 text-muted transition-transform group-open:rotate-180" />
-      </summary>
+    <section className="border border-ink/10 rounded-md bg-background/50 px-4 py-5 sm:px-5 sm:py-6">
+      <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-5">
+        ¿Cómo se calculó esto?
+      </h2>
 
-      <div className="space-y-5 px-4 pb-5 pt-1 text-sm text-muted">
+      <div className="space-y-5 text-sm text-muted">
         {/* Camino de Vida */}
         <section>
           <h3 className="font-mono text-xs uppercase tracking-widest text-foreground">
@@ -152,6 +148,6 @@ export default function CalculationDetails({ profile }: { profile: UserProfile }
           Ver fórmula en GitHub →
         </a>
       </div>
-    </details>
+    </section>
   );
 }

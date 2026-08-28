@@ -48,6 +48,11 @@ const PROFILE: UserProfile = {
 
 beforeEach(() => {
   localStorage.clear();
+  sessionStorage.clear();
+  // La animación matrix de la cuenta real se muestra solo en la primera carga
+  // de la sesión; acá la marcamos como ya vista para probar el flujo que viene
+  // después: hash persistence y reescritura del hash en la barra de direcciones.
+  sessionStorage.setItem("molino.matrix-seen", "1");
   window.history.replaceState(null, "", "/profile");
 });
 

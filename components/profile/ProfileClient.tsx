@@ -10,6 +10,7 @@ import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import { encodeProfileData, profileFromEncoded } from "@/lib/utils/profileShare";
 import { recordVisit } from "@/lib/session/discovery";
 import ProfileHub from "@/components/profile/ProfileHub";
+import CalculationMatrix from "@/components/profile/CalculationMatrix";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 
@@ -37,10 +38,42 @@ function buildFromLocal(): UserProfile | null {
   return null;
 }
 
+/**
+ * Resolución síncrona del perfil para pintar la cuenta real durante la
+ * carga. El hash nunca llega al servidor, así que en el primer render
+ * (serverProfile = null) el perfil solo puede salir de acá o de
+ * localStorage — las dos son lecturas síncronas, perfectas para la
+ * animación matrix que muestra la suma genuina que estamos haciendo.
+ */
+function resolveProfileSync(serverProfile: UserProfile | null): UserProfile | null {
+  if (serverProfile) return serverProfile;
+  if (typeof window === "undefined") return null;
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    const fromHash = profileFromEncoded(hash);
+    if (fromHash) return fromHash;
+  }
+  return buildFromLocal();
+}
+
+const MATRIX_SEEN_KEY = "molino.matrix-seen";
+
 export default function ProfileClient({ serverProfile, futureDateError, catalog }: ProfileClientProps) {
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(serverProfile);
   const [mounted, setMounted] = useState(false);
+  // La animación matrix de la cuenta real se muestra una sola vez por sesión:
+  // la primera vez que el perfil se carga en esta pestaña. Después, directo al
+  // mapa. La bandera vive en sessionStorage para que un usuario recurrente que
+  // ya vio su mapa no vuelva a pasar por la animación en cada clic de "Mi Mapa".
+  const [matrixDone, setMatrixDone] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.sessionStorage.getItem(MATRIX_SEEN_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -51,7 +84,9 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
       return;
     }
 
-    if (!profile) {
+    // Ya vimos la animación matrix en esta sesión (matrixDone comenzó true), así
+    // que resolvemos el perfil de la forma clásica (hash → localStorage).
+    if (!profile && matrixDone) {
       // The hash never reaches the server (see the URL-sync effect below), so
       // reconstructing a bookmarked /profile#<hash> only happens here.
       const hash = window.location.hash.slice(1);
@@ -98,6 +133,30 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
     if (window.location.hash.slice(1) === encoded && !window.location.search) return;
     window.history.replaceState(null, "", `/profile#${encoded}`);
   }, [mounted, profile]);
+
+  // La animación matrix con la cuenta real corre una sola vez por sesión, la
+  // primera vez que el perfil se carga (venga de ?dob= del onboarding, del hash
+  // compartido o del localStorage). Al terminar, onComplete abre Mi Mapa. Un
+  // usuario que ya vio su mapa esta sesión va directo, sin volver a animar.
+  const pendingProfile = !futureDateError && !matrixDone ? resolveProfileSync(serverProfile) : null;
+
+  if (pendingProfile) {
+    return (
+      <CalculationMatrix
+        profile={pendingProfile}
+        onComplete={() => {
+          setProfile(pendingProfile);
+          setMatrixDone(true);
+          try {
+            window.sessionStorage.setItem(MATRIX_SEEN_KEY, "1");
+          } catch {
+            /* noop */
+          }
+          saveProfileToStorage(pendingProfile);
+        }}
+      />
+    );
+  }
 
   if (!mounted && !profile && !futureDateError) {
     return (

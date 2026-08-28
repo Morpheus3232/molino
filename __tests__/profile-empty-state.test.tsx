@@ -48,6 +48,10 @@ const VALID_PROFILE: UserProfile = {
 beforeEach(() => {
   push.mockClear();
   localStorage.clear();
+  sessionStorage.clear();
+  // Primera carga de la sesión ya vista: probamos el flujo posterior a la
+  // animación matrix (empty state / mapa directo).
+  sessionStorage.setItem("molino.matrix-seen", "1");
   window.history.replaceState(null, "", "/profile");
 });
 
