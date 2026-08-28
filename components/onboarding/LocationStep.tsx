@@ -39,6 +39,7 @@ function normalize(text: string): string {
  */
 export default function LocationStep({ onDone, isSubmitting }: LocationStepProps) {
   const [selected, setSelected] = useState("");
+  const [declined, setDeclined] = useState(false);
   const [search, setSearch] = useState("");
 
   const selectedCountry = useMemo(
@@ -59,6 +60,7 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
 
   const selectCountry = (name: string) => {
     setSelected(name);
+    setDeclined(false);
     setSearch("");
   };
 
@@ -97,7 +99,30 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
         className="mb-8 max-w-sm mx-auto"
       >
         <AnimatePresence mode="wait" initial={false}>
-          {selectedCountry ? (
+          {declined ? (
+            <motion.div
+              key="declined"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center justify-between gap-3 rounded-md border border-border bg-card px-4 py-3"
+            >
+              <span className="flex items-center gap-2 text-sm text-foreground">
+                <Check className="w-4 h-4 text-muted shrink-0" aria-hidden="true" />
+                Sin país — tu mapa prioriza el resto del mundo.
+              </span>
+              <button
+                type="button"
+                onClick={() => setDeclined(false)}
+                className="inline-flex items-center justify-center w-8 h-8 rounded-sm text-muted hover:text-foreground hover:bg-ink/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                aria-label="Elegir país"
+                title="Elegir país"
+              >
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </motion.div>
+          ) : selectedCountry ? (
             <motion.div
               key="selected"
               initial={{ opacity: 0 }}
@@ -172,10 +197,10 @@ export default function LocationStep({ onDone, isSubmitting }: LocationStepProps
           )}
         </AnimatePresence>
 
-        {!selectedCountry && (
+        {!selectedCountry && !declined && (
           <button
             type="button"
-            onClick={() => setSelected("")}
+            onClick={() => setDeclined(true)}
             className="block mx-auto mt-4 text-sm text-muted underline decoration-border underline-offset-4 hover:text-foreground hover:decoration-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 rounded-sm"
           >
             Preferí no decirlo
