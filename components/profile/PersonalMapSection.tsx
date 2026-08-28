@@ -524,13 +524,13 @@ export default function PersonalMapSection({
 
           <p className="font-serif text-base sm:text-lg mt-5 max-w-3xl leading-relaxed text-muted">
             Sos <strong className="font-semibold text-foreground">{map.animal}</strong>
-            {map.element ? ` de ${map.element}` : ""}. Cada país, ciudad, prenda, auto, universidad,
-            club, persona y película del atlas también tiene un signo: el del año en que nació.
-            Cruzar los dos es todo el cálculo —{" "}
+            {map.element ? ` de ${map.element}` : ""}. Ahora mirá el mundo con esa clave: cada país,
+            ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún
+            año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —{" "}
             <strong className="font-semibold text-foreground">
-              {evaluadas.toLocaleString("es-AR")} entradas
+              {evaluadas.toLocaleString("es-AR")} entradas con fecha exacta
             </strong>{" "}
-            con fecha exacta repartidas en tu propio signo, tus dos amigos y tu enemigo.
+            que se acomodan en tres casillas: tu propio signo, tus dos amigos y tu enemigo.
           </p>
         </motion.div>
 
