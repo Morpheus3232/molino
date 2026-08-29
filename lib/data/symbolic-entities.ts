@@ -21,6 +21,7 @@ import { AUTOS_ATLAS } from "./autos-atlas";
 import { ROPA_ATLAS } from "./ropa-atlas";
 import { BRANDS_ARGENTINA } from "./brands-argentina";
 import { BRAND_LOGO_DOMAINS } from "./brand-logo-domains";
+import { ENTITY_IMAGE_URLS } from "./entity-images";
 import { COUNTRIES_60 } from "./countries-60";
 import { COUNTRIES_ATLAS } from "./countries-atlas";
 import { CITIES_60 } from "./cities-60";
@@ -124,7 +125,10 @@ import { getCountryISO as resolveCountryISO } from "./country-iso";
  */
 export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
   const type = input.type as EntityType;
-  const visualType = VISUAL_TYPE_BY_TYPE[type] ?? "emoji";
+  const visualType =
+    input.type === "football_player"
+      ? "portrait"
+      : VISUAL_TYPE_BY_TYPE[type] ?? "emoji";
   const countryISO = resolveCountryISO(input.country);
   const imageUrl =
     input.imageUrl ??
@@ -133,7 +137,8 @@ export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
           const domain = BRAND_LOGO_DOMAINS[input.name];
           return domain ? `https://logo.clearbit.com/${domain}` : undefined;
         })()
-      : undefined);
+      : undefined) ??
+    ENTITY_IMAGE_URLS[input.id];
   return { ...input, visualType, countryISO, ...(imageUrl ? { imageUrl } : {}) };
 }
 
