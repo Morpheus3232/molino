@@ -46,9 +46,12 @@ export function normalizeWesternSign(name?: string): string {
 }
 
 /**
- * Western Astrology sign icons — clean, minimalist SVG line-art.
- * Matches the editorial style of ZodiacAnimalIcon.
- * viewBox 0 0 100 100, stroke-based, currentColor.
+ * Glifos del zodíaco occidental — los símbolos astronómicos reales, dibujados
+ * con la misma gramática que ZodiacAnimalIcon: trazo único en `currentColor`,
+ * extremos redondeados, relleno tenue solo donde el glifo tiene un cuerpo
+ * (el disco de Tauro, las pinzas de Cáncer).
+ *
+ * viewBox 0 0 100 100.
  */
 export default function AstrologySignIcon({
   sign,
@@ -63,115 +66,113 @@ export default function AstrologySignIcon({
     switch (canonical) {
       case "Aries":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M25 70 Q25 40 40 30 Q50 24 50 20" />
-            <path d="M50 20 Q50 24 60 30 Q75 40 75 70" />
-            <path d="M40 55 L35 48 M60 55 L65 48" />
-          </g>
+          <>
+            <path d="M50 44 C50 28 41 20 32 24 C19 30 16 54 25 68 C30 76 40 76 42 68" />
+            <path d="M50 44 C50 28 59 20 68 24 C81 30 84 54 75 68 C70 76 60 76 58 68" />
+          </>
         );
 
       case "Tauro":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <circle cx="50" cy="58" r="18" />
-            <path d="M25 35 Q25 25 35 25 Q42 25 42 32" />
-            <path d="M75 35 Q75 25 65 25 Q58 25 58 32" />
-            <circle cx="43" cy="55" r="2.5" fill="currentColor" />
-            <circle cx="57" cy="55" r="2.5" fill="currentColor" />
-          </g>
+          <>
+            <circle cx="50" cy="62" r="17" fill="currentColor" fillOpacity="0.07" />
+            <path d="M27 45 C27 24 73 24 73 45" />
+          </>
         );
 
       case "Géminis":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M30 25 L30 75" />
-            <path d="M70 25 L70 75" />
-            <path d="M25 30 Q50 42 75 30" />
-            <path d="M25 70 Q50 58 75 70" />
-          </g>
+          <>
+            <path d="M33 31 L33 69 M67 31 L67 69" />
+            <path d="M23 31 C36 22 64 22 77 31" />
+            <path d="M23 69 C36 78 64 78 77 69" />
+          </>
         );
 
       case "Cáncer":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M25 40 Q25 25 40 25 Q50 25 50 35 Q50 45 40 45 Q30 45 30 55 Q30 65 40 65" />
-            <path d="M75 60 Q75 75 60 75 Q50 75 50 65 Q50 55 60 55 Q70 55 70 45 Q70 35 60 35" />
-          </g>
+          <>
+            <path d="M19 43 C27 31 45 27 63 33" />
+            <circle cx="28" cy="51" r="8" fill="currentColor" fillOpacity="0.12" />
+            <path d="M81 63 C73 75 55 79 37 73" />
+            <circle cx="72" cy="55" r="8" fill="currentColor" fillOpacity="0.12" />
+          </>
         );
 
       case "Leo":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M25 55 Q25 30 45 30 Q60 30 60 42 Q60 55 45 55 Q30 55 30 70 Q30 80 50 80 Q70 80 75 70" />
-            <circle cx="25" cy="55" r="3" fill="currentColor" />
-          </g>
+          <>
+            <path d="M79 63 C81 70 78 76 71 78 C61 81 51 74 51 62 C51 49 39 43 29 50 C19 57 22 73 34 73 C42 73 47 67 44 60" />
+          </>
         );
 
       case "Virgo":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M20 25 L20 65 Q20 75 30 75 Q38 75 38 65 L38 35 Q38 25 48 25 Q58 25 58 35 L58 65 Q58 75 68 75 Q78 75 78 65 L78 25" />
-            <path d="M78 25 L85 40" />
-          </g>
+          <>
+            <path d="M24 72 L24 34 C24 25 34 25 34 34 L34 72" />
+            <path d="M34 34 C34 25 44 25 44 34 L44 72" />
+            <path d="M44 34 C44 25 57 25 57 36 L57 57 C57 68 48 72 41 67" />
+            <path d="M57 45 C62 62 70 70 81 72" />
+          </>
         );
 
       case "Libra":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M15 50 Q15 35 30 35 Q42 35 50 45 Q58 35 70 35 Q85 35 85 50" />
-            <path d="M50 45 L50 70" />
-            <path d="M35 70 L65 70" />
-          </g>
+          <>
+            <path d="M18 71 L82 71" />
+            <path d="M18 54 L35 54 C35 37 65 37 65 54 L82 54" />
+          </>
         );
 
       case "Escorpio":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M20 25 L20 65 Q20 75 30 75 Q38 75 38 65 L38 35 Q38 25 48 25 Q58 25 58 35 L58 65 Q58 75 68 75 Q78 75 78 65 L78 25" />
-            <path d="M78 25 L85 18 M78 25 L82 20 M78 25 L85 30" />
-          </g>
+          <>
+            <path d="M22 72 L22 34 C22 25 32 25 32 34 L32 72" />
+            <path d="M32 34 C32 25 42 25 42 34 L42 72" />
+            <path d="M42 34 C42 25 54 25 54 34 L54 64 L76 42" />
+            <path d="M76 42 L63 42 M76 42 L76 55" />
+          </>
         );
 
       case "Sagitario":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
+          <>
             <path d="M25 75 L75 25" />
-            <path d="M55 25 L75 25 L75 45" />
-            <path d="M30 60 L38 52" />
-          </g>
+            <path d="M54 25 L75 25 L75 46" />
+            <path d="M34 50 L52 68" />
+          </>
         );
 
       case "Capricornio":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M25 30 L40 65 Q45 75 55 65 L65 40 Q70 30 78 30" />
-            <path d="M25 30 L30 22 M78 30 L85 45 Q88 55 80 60" />
-          </g>
+          <>
+            <path d="M21 27 L34 64 C36 71 43 71 45 62 L50 41 C52 34 58 32 64 36 C72 42 75 57 68 65 C63 71 54 70 52 62" />
+          </>
         );
 
       case "Acuario":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <path d="M20 40 Q30 30 40 40 Q50 50 60 40 Q70 30 80 40" />
-            <path d="M20 55 Q30 45 40 55 Q50 65 60 55 Q70 45 80 55" />
-          </g>
+          <>
+            <path d="M19 45 L32 36 L45 45 L58 36 L71 45 L84 36" />
+            <path d="M19 62 L32 53 L45 62 L58 53 L71 62 L84 53" />
+          </>
         );
 
       case "Piscis":
         return (
-          <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <ellipse cx="35" cy="45" rx="15" ry="20" transform="rotate(-15 35 45)" />
-            <ellipse cx="65" cy="55" rx="15" ry="20" transform="rotate(-15 65 55)" />
-            <path d="M42 35 L58 65" />
-          </g>
+          <>
+            <path d="M34 22 C21 37 21 63 34 78" />
+            <path d="M66 22 C79 37 79 63 66 78" />
+            <path d="M24 50 L76 50" />
+          </>
         );
 
       default:
         return (
-          <g stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none">
-            <circle cx="50" cy="50" r="25" />
-            <circle cx="50" cy="50" r="5" fill="currentColor" fillOpacity="0.2" />
-          </g>
+          <>
+            <circle cx="50" cy="50" r="26" strokeWidth="2.4" opacity="0.35" />
+            <circle cx="50" cy="50" r="8" fill="currentColor" fillOpacity="0.12" stroke="none" />
+          </>
         );
     }
   };
@@ -185,7 +186,15 @@ export default function AstrologySignIcon({
       role="img"
       aria-label={label}
     >
-      {renderPath()}
+      <g
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {renderPath()}
+      </g>
     </svg>
   );
 }

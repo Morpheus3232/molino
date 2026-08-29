@@ -7,22 +7,23 @@ import React from "react";
  * en el mismo lenguaje line-art que AstrologySignIcon y ZodiacAnimalIcon.
  *
  * viewBox 0 0 100 100, trazo redondeado, `currentColor` (el acento lo da la
- * clase CSS). Los dígitos 0-9 se dibujan como glifos geométricos manuales
- * (cartografía simple, sin fuentes externas) y los números maestros
- * (11/22/33) se componen como dos dígitos pareados a menor escala.
+ * clase CSS). Los dígitos son un set geométrico propio, trazado sobre una
+ * grilla fija —altura de caja y=22..78, ancho x=34..66— para que los diez
+ * tengan el mismo peso óptico y ninguno parezca dibujado a pulso. Los números
+ * maestros (11/22/33) se componen como dos dígitos pareados a menor escala.
  */
 
 const DIGIT_PATHS: Record<string, string> = {
-  "0": "M50 24 C33 24 33 78 50 78 C67 78 67 24 50 24 Z",
-  "1": "M44 36 L52 26 L52 36 M52 36 L52 78 M40 80 H62",
-  "2": "M40 25 Q50 16 60 26 L34 72 L62 72",
-  "3": "M38 25 C34 16 64 14 64 28 C64 38 48 42 44 50 C48 58 62 62 62 72 C62 86 40 86 38 74",
-  "4": "M62 24 L62 78 M62 24 L35 55 M35 24 L35 55",
-  "5": "M64 24 H38 M38 24 L38 50 M38 50 C35 72 62 78 62 62",
-  "6": "M50 74 C36 74 36 52 50 52 C64 52 64 74 50 74 M38 26 C34 44 40 52 50 52",
-  "7": "M36 24 H64 M64 24 L48 76",
-  "8": "M50 26 C38 26 38 40 50 40 C62 40 62 26 50 26 M50 60 C38 60 38 76 50 76 C62 76 62 60 50 60",
-  "9": "M50 26 C36 26 36 48 50 48 C64 48 64 26 50 26 M50 48 C46 58 52 74 62 74",
+  "0": "M50 22 C61 22 66 34 66 50 C66 66 61 78 50 78 C39 78 34 66 34 50 C34 34 39 22 50 22 Z",
+  "1": "M36 33 L50 22 L50 78 M38 78 L62 78",
+  "2": "M34 34 C34 24 44 20 53 23 C63 26 67 37 59 46 L34 78 L67 78",
+  "3": "M35 30 C40 21 61 21 63 32 C65 42 55 48 46 48 C57 48 67 53 67 64 C67 77 44 82 35 71",
+  "4": "M60 78 L60 22 L30 61 L68 61",
+  "5": "M64 22 L40 22 L36 47 C47 40 65 45 65 60 C65 75 48 82 36 74",
+  "6": "M61 26 C48 18 34 29 34 51 C34 68 42 78 50 78 C60 78 66 70 66 61 C66 51 58 45 48 47 C41 49 35 55 34 61",
+  "7": "M34 22 L67 22 L44 78",
+  "8": "M50 22 C41 22 35 27 35 34 C35 43 44 47 50 50 C56 53 66 57 66 65 C66 74 58 78 50 78 C42 78 34 74 34 65 C34 57 44 53 50 50 C56 47 65 43 65 34 C65 27 59 22 50 22 Z",
+  "9": "M39 74 C52 82 66 71 66 49 C66 32 58 22 50 22 C40 22 34 30 34 39 C34 49 42 55 52 53 C59 51 65 45 66 39",
 };
 
 interface LifePathGlyphProps {
