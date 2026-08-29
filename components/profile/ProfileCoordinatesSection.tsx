@@ -12,11 +12,12 @@ import { ANIMAL_INTERPRETATIONS_ES } from "@/lib/data/interpretations/chinese-zo
 import type { WesternSign } from "@/lib/data/facts/astrology-facts";
 import type { ChineseAnimal } from "@/lib/data/facts/chinese-zodiac-facts";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import { getMasterNumbers, getMasterPositionMeaning, type MasterPosition } from "@/lib/engines/numerologyEngine";
+import { getMasterNumbers, getMasterPositionMeaning, calculateBirthDayReduction, type MasterPosition } from "@/lib/engines/numerologyEngine";
 import { safeNumber } from "@/lib/utils/score";
 import { editorialReveal } from "@/lib/utils/motion";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import AstrologySignIcon from "@/components/ui/AstrologySignIcon";
+import LifePathGlyph from "@/components/ui/LifePathGlyph";
 
 interface ProfileCoordinatesSectionProps {
   profile: UserProfile;
@@ -79,8 +80,8 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         <motion.article {...editorialReveal} className="border-t border-border pt-12 lg:pt-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             <div className="lg:col-span-4 flex items-baseline lg:flex-col gap-4 lg:gap-2">
-              <span className="font-mono text-[56px] sm:text-6xl font-bold leading-none text-accent tabular-nums">
-                {lifePath}
+              <span className="inline-flex items-center justify-center text-accent">
+                <LifePathGlyph value={lifePath} size={64} />
               </span>
               <div>
                 <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">

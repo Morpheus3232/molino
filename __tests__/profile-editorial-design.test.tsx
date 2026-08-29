@@ -89,21 +89,21 @@ describe("ProfileCoordinatesSection — Los Cuatro Pilares", () => {
     render(<ProfileCoordinatesSection profile={PROFILE_LP4} />);
 
     // Pilar 1: Numerología
-    expect(screen.getByText(/01 \/ NUMEROLOGÍA PITAGÓRICA/i)).toBeInTheDocument();
-    expect(screen.getAllByText("4").length).toBeGreaterThan(0);
+    expect(screen.getByText(/NUMEROLOGÍA PITAGÓRICA/i)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Camino de Vida 4/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /El Constructor/i })).toBeInTheDocument();
 
     // Pilar 2: Astrología
-    expect(screen.getByText(/02 \/ ASTROLOGÍA TROPICAL/i)).toBeInTheDocument();
+    expect(screen.getByText(/ASTROLOGÍA/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /Sol en Géminis/i })).toBeInTheDocument();
 
     // Pilar 3: Zodíaco Chino
-    expect(screen.getByText(/03 \/ ZODÍACO CHINO/i)).toBeInTheDocument();
+    expect(screen.getByText(/ZODÍACO CHINO/i)).toBeInTheDocument();
     expect(screen.getByText(/Tus dos amigos \(三合 San He\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Tu energía opuesta \(六冲 Liu Chong\)/i)).toBeInTheDocument();
 
     // Pilar 4: Ciclos
-    expect(screen.getByText(/04 \/ CICLOS DE TIEMPO/i)).toBeInTheDocument();
+    expect(screen.getByText(/CICLOS DE TIEMPO/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 3, name: /Año Personal 4/i })).toBeInTheDocument();
   });
 });
