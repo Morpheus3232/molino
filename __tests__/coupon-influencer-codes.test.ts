@@ -40,6 +40,12 @@ const redeem = (coupon: string, salt: string) =>
 const stats = (secret: string) =>
   GET(new NextRequest(`http://localhost/api/mp/coupon?secret=${secret}`));
 
+/** Mismo endpoint, pero como lo pide un navegador. */
+const statsPage = (secret: string) =>
+  GET(new NextRequest(`http://localhost/api/mp/coupon?secret=${secret}`, {
+    headers: { accept: 'text/html,application/xhtml+xml' },
+  }));
+
 beforeEach(() => kvStore.clear());
 
 describe('códigos por influencer', () => {
@@ -70,5 +76,23 @@ describe('códigos por influencer', () => {
 
   test('las métricas no son públicas', async () => {
     expect((await stats('mal')).status).toBe(404);
+    expect((await statsPage('mal')).status).toBe(404);
+  });
+
+  test('desde el navegador devuelve una pantalla, desde curl JSON', async () => {
+    await redeem('VALEN', 'c1');
+    await redeem('CAFECONSOMBRA', 'c2');
+    await redeem('CAFECONSOMBRA', 'c3');
+
+    const page = await statsPage('stats-secret');
+    expect(page.headers.get('content-type')).toContain('text/html');
+    const html = await page.text();
+    expect(html).toContain('CAFECONSOMBRA');
+    expect(html).toContain('>3<');            // total
+    expect(html).toContain('>2<');            // el código de más canjes
+    expect(html.indexOf('CAFECONSOMBRA')).toBeLessThan(html.indexOf('VALEN')); // ordenado por canjes
+
+    const json = await stats('stats-secret');
+    expect(json.headers.get('content-type')).toContain('application/json');
   });
 });
