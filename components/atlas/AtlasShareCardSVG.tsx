@@ -2,6 +2,9 @@
 
 import React from "react";
 import PersonalSigil from "@/components/ui/PersonalSigil";
+import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
+import AstrologySignIcon from "@/components/ui/AstrologySignIcon";
+import LifePathGlyph from "@/components/ui/LifePathGlyph";
 import PersonalSynergySigil from "@/components/ui/PersonalSynergySigil";
 
 export interface AtlasShareCardSVGProps {
@@ -26,9 +29,43 @@ export interface AtlasShareCardSVGProps {
 }
 
 /**
+ * Medallón de la columna derecha: los tres pilares comparten centro, diámetro
+ * y aro, así que los tres dibujos —número, animal, glifo solar— se leen como
+ * una misma serie y no como tres adornos sueltos.
+ */
+function PillarMedallion({
+  color,
+  box = 104,
+  children,
+}: {
+  color: string;
+  /** Lado del dibujo dentro del aro; se ajusta por glifo para igualar peso óptico. */
+  box?: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <g transform="translate(770, 115)" style={{ color }}>
+      <circle r="62" fill="#F7F4EE" stroke="#DEDACE" strokeWidth="2" />
+      <g transform={`translate(-${box / 2}, -${box / 2})`}>{children}</g>
+    </g>
+  );
+}
+
+/** "Tigre · Perro" → ["Tigre", "Perro"]. El campo llega ya formateado para leer. */
+function splitSigns(value: string): string[] {
+  return value
+    .split(/[·,/]|\sy\s/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+/**
  * AtlasShareCardSVG — Tarjeta SVG Vectorial Compartible de Alta Definición (1080x1900)
  *
  * Incluye:
+ * - Un medallón por pilar, todos al mismo centro y diámetro: el número del
+ *   Camino de Vida, la silueta del signo chino y el glifo solar — los mismos
+ *   dibujos que usa el resto del sitio
  * - Sello Personal determinístico (PersonalSigil o PersonalSynergySigil) como fondo en opacidad 0.08
  * - Header editorial con línea divisoria (#DEDACE, 1px) y tipografía Newsreader
  * - Números clave en círculos de 40px con acento #A83A23
@@ -116,7 +153,7 @@ export default function AtlasShareCardSVG({
         {/* HEADER con más aire vertical y línea divisoria */}
         <g transform="translate(100, 90)">
           <text className="mono" fontSize="13" fill="#6A6459" letterSpacing="4">
-            MOLINO · MAPA PERSONAL · {currentYear}
+            MAPA PERSONAL · {currentYear}
           </text>
 
           {/* Línea divisoria sutil */}
@@ -177,7 +214,7 @@ export default function AtlasShareCardSVG({
         </g>
 
         {/* 6. BLOQUE 1: NUMEROLOGÍA */}
-        <g transform="translate(100, 390)">
+        <g transform="translate(100, 400)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
           <rect x="0" y="0" width="8" height="230" fill="#A83A23" rx="4" />
 
@@ -195,15 +232,15 @@ export default function AtlasShareCardSVG({
             Reducción determinista: {lifePathFormula}
           </text>
 
-          <text x="830" y="145" textAnchor="end" className="heading" fontSize="90" fill="#A83A23">
-            {lifePathNumber}
-          </text>
+          <PillarMedallion color="#A83A23">
+            <LifePathGlyph value={lifePathNumber} size={104} />
+          </PillarMedallion>
         </g>
 
         {/* 7. BLOQUE 2: ZODÍACO CHINO */}
-        <g transform="translate(100, 650)">
+        <g transform="translate(100, 690)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
-          <rect x="0" y="0" width="8" height="230" fill="#F5B022" rx="4" />
+          <rect x="0" y="0" width="8" height="230" fill="#A83A23" rx="4" />
 
           <text x="40" y="44" className="mono" fontSize="14" fill="#1D1B17" letterSpacing="3">
             PILAR II · ZODÍACO CHINO
@@ -219,13 +256,17 @@ export default function AtlasShareCardSVG({
             Ciclo sexagesimal de resonancia temporal
           </text>
 
-          <text x="830" y="145" textAnchor="end" className="heading" fontSize="85" fill="#F5B022">
+          {/* La silueta del signo, no el ideograma: se lee de un vistazo. */}
+          <PillarMedallion color="#A83A23">
+            <ZodiacAnimalIcon animal={chineseSign} size={104} />
+          </PillarMedallion>
+          <text x="770" y="205" textAnchor="middle" className="mono" fontSize="15" fill="#6A6459">
             {chineseBranch}
           </text>
         </g>
 
         {/* 8. BLOQUE 3: ASTROLOGÍA */}
-        <g transform="translate(100, 910)">
+        <g transform="translate(100, 980)">
           <rect width="880" height="230" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
           <rect x="0" y="0" width="8" height="230" fill="#A83A23" rx="4" />
 
@@ -243,12 +284,13 @@ export default function AtlasShareCardSVG({
             Coordenada solar geocéntrica de nacimiento
           </text>
 
-          <circle cx="780" cy="115" r="38" fill="none" stroke="#A83A23" strokeWidth="3" />
-          <circle cx="780" cy="115" r="9" fill="#A83A23" />
+          <PillarMedallion color="#A83A23" box={116}>
+            <AstrologySignIcon sign={solarSign} size={116} />
+          </PillarMedallion>
         </g>
 
         {/* 9. BLOQUE 4: MAPA DE AFINIDADES CATEGÓRICAS */}
-        <g transform="translate(100, 1170)">
+        <g transform="translate(100, 1270)">
           <rect width="880" height="340" fill="#EFEAE0" stroke="#DEDACE" strokeWidth="1.5" rx="14" />
 
           <text x="40" y="44" className="mono" fontSize="14" fill="#A83A23" letterSpacing="3">
@@ -263,9 +305,21 @@ export default function AtlasShareCardSVG({
             <text y="36" className="serif" fontSize="26" fill="#1D1B17">
               {chineseAffinityFriends}
             </text>
+
             <text y="68" className="mono" fontSize="13" fill="#6A6459">
               Resonancia natural y fluidez en vínculos
             </text>
+            {/* Mismo tamaño de caja para los tres animales del bloque y mismo
+                borde derecho, para que la fila se lea como una serie. */}
+            <g transform="translate(496, -34)" style={{ color: "#1D1B17" }}>
+              {splitSigns(chineseAffinityFriends)
+                .slice(0, 2)
+                .map((sign, i) => (
+                  <g key={sign} transform={`translate(${i * 112}, 0)`}>
+                    <ZodiacAnimalIcon animal={sign} size={96} />
+                  </g>
+                ))}
+            </g>
           </g>
 
           <line x1="40" y1="195" x2="840" y2="195" stroke="#DEDACE" strokeWidth="1.5" />
@@ -278,6 +332,9 @@ export default function AtlasShareCardSVG({
             <text y="36" className="serif" fontSize="24" fill="#A83A23">
               {chineseAffinityClash}
             </text>
+            <g transform="translate(608, -36)" style={{ color: "#A83A23" }}>
+              <ZodiacAnimalIcon animal={chineseAffinityClash} size={96} />
+            </g>
             <text y="66" className="mono" fontSize="13" fill="#6A6459">
               Tensión estructural que requiere atención consciente
             </text>
@@ -285,14 +342,12 @@ export default function AtlasShareCardSVG({
         </g>
 
         {/* 10. FOOTER Y FIRMA EDITORIAL */}
-        <g transform="translate(100, 1560)">
+        <g transform="translate(100, 1700)">
           <line x1="0" y1="0" x2="880" y2="0" stroke="#DEDACE" strokeWidth="1" />
           <text y="40" className="mono" fontSize="13" fill="#6A6459" letterSpacing="2">
             CÁLCULO 100% LOCAL · DETERMINISTA · PRIVACIDAD ABSOLUTA
           </text>
-          <text y="80" className="heading" fontSize="28" fill="#1D1B17" letterSpacing="3">
-            molino.app
-          </text>
+
         </g>
 
         {/* 11. MARCA DE AGUA EN ESQUINA INFERIOR DERECHA (opacity="0.3") */}

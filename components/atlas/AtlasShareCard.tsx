@@ -39,7 +39,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
   const shareText = [
     headline ?? `Mi afinidad simbólica con ${entity.name}`,
     subline,
-    "Leé tu mapa en Molino ✨",
   ]
     .filter(Boolean)
     .join(" · ");
@@ -113,12 +112,7 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
         <div className="relative flex flex-col h-full p-7">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 items-center justify-center bg-ink text-paper">
-                <span className="font-serif text-lg font-bold leading-none text-gold">M</span>
-              </span>
-              <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em]">Molino</span>
-            </div>
+            <span className="font-heading text-sm font-semibold uppercase tracking-[0.2em]">Mapa personal</span>
             <span className="font-mono text-[10px] uppercase tracking-wider text-muted">Atlas</span>
           </div>
 
@@ -145,7 +139,6 @@ export default function AtlasShareCard({ entity, headline, subline, url }: Atlas
           {/* Footer */}
           <div className="pt-5 border-t border-ink/10 flex items-center justify-between text-xs text-muted">
             <span>Lectura simbólica del zodíaco chino</span>
-            <span className="font-mono">molino.app</span>
           </div>
         </div>
       </div>
