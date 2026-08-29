@@ -6,15 +6,6 @@ import Link from "next/link";
 import { getOrCreateProfile } from "@/lib/hooks/useProfile";
 import type { UserProfile } from "@/types/user";
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
 export default function CTASection() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -40,20 +31,21 @@ export default function CTASection() {
             <h2 className="font-display font-normal normal-case tracking-tight text-paper leading-[0.98] text-[clamp(2.75rem,6vw,4.5rem)]">
               {isReturningUser ? (
                 <>
-                  Tu mapa te <em className="text-gradient-warm-dark">espera.</em>
+                  Seguí donde{" "}
+                  <em className="text-gradient-warm-dark">lo dejaste.</em>
                 </>
               ) : (
                 <>
                   Tu patrón ya existe.
-                  <span className="block italic text-gradient-warm-dark">Veni a verlo.</span>
+                  <span className="block italic text-gradient-warm-dark">Vení a verlo.</span>
                 </>
               )}
             </h2>
 
             <p className="text-lg sm:text-xl text-paper/70 leading-relaxed">
               {isReturningUser
-                ? "Volvé cuando quieras a tu lectura completa, ciclos y decisiones."
-                : "Toma 30 segundos. Sin registro. Tu fecha no se envía a ningún servidor."}
+                ? "Tu lectura completa, tus ciclos y tus afinidades, cuando quieras."
+                : "Treinta segundos y ya lo estás leyendo."}
             </p>
           </div>
 
@@ -67,22 +59,13 @@ export default function CTASection() {
             </Link>
           </div>
 
-          <p className="font-mono text-xs text-paper/50 tracking-wide">
-            {isReturningUser ? (
-              <>
-                <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
-                  Ver ejemplo interactivo
-                </Link>
-              </>
-            ) : (
-              <>
-                Gratis · Sin tracking ·{" "}
-                <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
-                  Ver ejemplo
-                </Link>
-              </>
-            )}
-          </p>
+          {!isReturningUser && (
+            <p className="font-mono text-xs text-paper/50 tracking-wide">
+              <Link href="/ejemplo" className="text-accent-light hover:underline underline-offset-2">
+                Ver un ejemplo primero
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </section>

@@ -1,113 +1,69 @@
-"use client";
-
-import React from "react";
-import {
-  CheckCircle2,
-  ArrowRight,
-} from "lucide-react";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-interface MethodItem {
-  category: string;
-  title: string;
-  description: string;
-}
-
-// Antes esto era una comparación "Molino vs Astrología Tradicional" —
-// se reemplazó por el método de Molino hecho visible, sin retratar otras
-// disciplinas como opacas o deshonestas (Molino usa astrología como uno de
-// sus tres sistemas; atacarla como categoría era inconsistente).
-const methodRows: MethodItem[] = [
+// Antes acá había una tabla de 4 filas ("¿Qué hace?", "¿Se guardan tus datos?",
+// "¿Cómo se verifica?", "¿Para quién es?") que era un FAQ duplicado: tres de
+// esas cuatro respuestas ya estaban, más completas, en la sección de Preguntas
+// frecuentes al pie, y la privacidad ya se promete en el hero. En su lugar va
+// lo único que esta parte de la página tiene que decir y no dice ninguna otra:
+// qué son los tres sistemas y qué aporta cada uno.
+const SYSTEMS = [
   {
-    category: "¿Qué hace?",
-    title: "Estructura tu realidad",
-    description: "Identifica patrones matemáticos, tensiones arquetípicas y ciclos activos para orientar decisiones. No promete adivinar el futuro.",
+    n: "01",
+    name: "Numerología",
+    lead: "Tu Camino de Vida y tus ciclos",
+    body: "Aritmética pitagórica sobre los dígitos de tu fecha. Cada reducción queda a la vista.",
   },
   {
-    category: "¿Se guardan tus datos?",
-    title: "Tu mapa básico no sale de tu navegador",
-    description: "El cálculo ocurre 100% en tu dispositivo (Web Workers), sin registro. Si activás Premium o IA, guardamos un hash irreversible de tu perfil — nunca tu fecha en claro.",
+    n: "02",
+    name: "Astrología",
+    lead: "Tu signo solar y sus tensiones",
+    body: "La posición del Sol el día que naciste, y los arquetipos que tira en direcciones opuestas.",
   },
   {
-    category: "¿Cómo se verifica?",
-    title: "Fórmulas visibles y documentadas",
-    description: "Fórmulas pitagóricas visibles y fuentes documentadas. Podés revisar y comprobar cada número en /metodos-y-fuentes.",
-  },
-  {
-    category: "¿Para quién es?",
-    title: "Curiosos y analistas",
-    description: "Para quien busca herramientas de autoconocimiento lúcido — el mapa muestra el método, la decisión sigue siendo tuya.",
+    n: "03",
+    name: "Zodíaco chino",
+    lead: "Tu signo del año y con qué resuena",
+    body: "El animal de tu año, tus dos amigos del ciclo y tu opuesto. Una sola regla: signo contra signo.",
   },
 ];
 
 export default function ClaritySection() {
   return (
-    <section className="relative py-24 sm:py-36 px-4 sm:px-8 bg-background border-b border-border">
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <h2
-            className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-6"
-          >
-            Tu vida no es azar,
-            <br />
-            <span className="text-accent">es una fórmula.</span>
-          </h2>
-
-          <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl mx-auto">
-            Numerología, astrología y zodíaco chino convertidos en un mapa personal
-            que podés verificar.
+    <section className="bg-background border-b border-border px-4 sm:px-8 py-20 sm:py-28">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-14 max-w-2xl">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-5">
+            Qué se calcula
           </p>
+          <h2 className="font-display font-normal normal-case tracking-tight text-foreground leading-[1.05] text-[clamp(2.25rem,5vw,3.5rem)]">
+            Tres sistemas,{" "}
+            <em className="text-gradient-warm">una sola fecha.</em>
+          </h2>
         </div>
 
-        {/* ── El método, hecho visible ── */}
-        <div className="rounded-md border border-border bg-card overflow-hidden mb-16">
-          <div className="p-6 sm:p-8 border-b border-border/80 flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-accent shrink-0" aria-hidden="true" />
-            <div>
-              <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground">
-                Cómo se construye el mapa
-              </h3>
-              <span className="font-mono text-xs text-muted">
-                Documentado en /metodos-y-fuentes
-              </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 border-y border-border divide-y md:divide-y-0 md:divide-x divide-border">
+          {SYSTEMS.map((s) => (
+            <div key={s.n} className="p-7 sm:p-9 space-y-3">
+              <span className="font-mono text-xs text-accent tracking-[0.2em]">{s.n}</span>
+              <h3 className="font-display italic text-2xl text-foreground">{s.name}</h3>
+              <p className="font-heading text-sm font-bold text-foreground">{s.lead}</p>
+              <p className="text-sm text-muted leading-relaxed">{s.body}</p>
             </div>
-          </div>
-
-          <div className="divide-y divide-border/60">
-            {methodRows.map((row, idx) => (
-              <div
-                key={idx}
-                className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-2 sm:gap-8 transition-colors duration-200 hover:bg-ink/[0.02]"
-              >
-                <span className="font-mono text-xs uppercase tracking-wider text-muted font-bold block sm:pt-1">
-                  {row.category}
-                </span>
-                <div className="space-y-2">
-                  <p className="font-heading text-base sm:text-lg font-bold text-foreground">
-                    {row.title}
-                  </p>
-                  <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-normal max-w-xl">
-                    {row.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
 
-        {/* ── Call To Action to Methods & Sources ── */}
-        <div className="text-center">
+        <p className="mt-8 text-sm text-muted">
+          Ninguno de los tres se mezcla con los otros dentro de un mismo número.{" "}
           <Link
             href="/metodos-y-fuentes"
-            className="inline-flex items-center gap-2 font-mono text-xs text-accent hover:underline underline-offset-2 group"
+            className="group inline-flex items-center gap-1.5 text-accent font-medium underline-offset-4 hover:underline"
           >
-            <span>Ver mi mapa</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+            Ver métodos y fuentes
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           </Link>
-        </div>
+        </p>
       </div>
     </section>
   );
 }
-

@@ -20,6 +20,11 @@ export const FAQS = [
       "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers: tu fecha de nacimiento se procesa en tu CPU local y nunca se transmite en texto plano. Si activás Premium o una interpretación con IA, se guarda un hash HMAC-SHA256 irreversible de tu perfil — nunca tu fecha de nacimiento en claro. Podés ver el detalle exacto en /privacidad.",
   },
   {
+    question: "¿Esto predice el futuro?",
+    answer:
+      "No, y no lo intenta. Molino identifica patrones matemáticos, tensiones entre arquetipos y en qué ciclo estás hoy. Eso sirve para orientar una decisión que igual vas a tomar vos: el mapa muestra el método y el resultado, la lectura de tu propia vida sigue siendo tuya.",
+  },
+  {
     question: "¿Puedo comparar mi mapa con mi pareja o guardar varios perfiles?",
     answer:
       "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas (pareja, familia, socios) en tu navegador sin crear cuentas.",
