@@ -19,6 +19,10 @@ import {
   getRegenerationCount,
   incrementRegenerationCount,
   REGENERATE_DAILY_LIMIT,
+  getChatQuestionCount,
+  incrementChatQuestionCount,
+  CHAT_LIFETIME_LIMIT,
+  getDailyCost,
 } from '@/lib/kv';
 import { recordGeneration } from '@/lib/ai/costTracking';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
@@ -134,6 +138,7 @@ export async function POST(req: NextRequest) {
       : undefined;
 
     let regenerateStatus: { used: number; limit: number; remaining: number } | null = null;
+    let chatStatus: { used: number; limit: number; remaining: number } | null = null;
 
     // Computed for every type (not just premium): also the cache key's
     // identity — see lib/cache/interpretationCache.ts.
@@ -167,9 +172,7 @@ export async function POST(req: NextRequest) {
       // Regenerate quota: only the explicit "Regenerar" click on the premium
       // synthesis consumes it — the automatic first generation (isRegenerate
       // unset) never counts, it only reads the current count so the client
-      // can render "Regenerar (2/5 hoy)" from the very first load. "question"
-      // (the chat) has its own separate cap (MAX_QUESTIONS_PER_SESSION,
-      // client-side) and isn't gated here.
+      // can render "Regenerar (2/5 hoy)" from the very first load.
       if (type === 'personal_profile') {
         const currentCount = await getRegenerationCount(profileHash);
         if (isRegenerate) {
@@ -190,6 +193,27 @@ export async function POST(req: NextRequest) {
         } else {
           regenerateStatus = { used: currentCount, limit: REGENERATE_DAILY_LIMIT, remaining: Math.max(0, REGENERATE_DAILY_LIMIT - currentCount) };
         }
+      }
+
+      // Cupo de chat: cada turno es una llamada real a la IA, con costo por
+      // token, contra un pago único. El contador de localStorage
+      // (lib/session/chatCredits.ts) es la UI; este es el que decide.
+      if (type === 'question') {
+        const used = await getChatQuestionCount(profileHash);
+        if (used >= CHAT_LIFETIME_LIMIT) {
+          return NextResponse.json(
+            {
+              error: {
+                code: 'chat_limit_reached',
+                message: `Usaste las ${CHAT_LIFETIME_LIMIT} preguntas incluidas en tu acceso.`,
+              },
+              chatStatus: { used, limit: CHAT_LIFETIME_LIMIT, remaining: 0 },
+            },
+            { status: 429, headers: PRIVATE_NO_STORE }
+          );
+        }
+        const nowUsed = await incrementChatQuestionCount(profileHash);
+        chatStatus = { used: nowUsed, limit: CHAT_LIFETIME_LIMIT, remaining: Math.max(0, CHAT_LIFETIME_LIMIT - nowUsed) };
       }
     }
 
@@ -215,7 +239,7 @@ export async function POST(req: NextRequest) {
       if (cached) {
         const cachedBody = JSON.parse(cached.response);
         return NextResponse.json(
-          { ...cachedBody, cached: true, ...(regenerateStatus && { regenerateStatus }) },
+          { ...cachedBody, cached: true, ...(regenerateStatus && { regenerateStatus }), ...(chatStatus && { chatStatus }) },
           { headers: PRIVATE_NO_STORE }
         );
       }
@@ -227,7 +251,28 @@ export async function POST(req: NextRequest) {
     let fallbackUsed = false;
     const generationStartedAt = Date.now();
 
+    // Techo de gasto diario. incrementDailyCost ya venía acumulando el costo
+    // estimado de cada generación, pero nadie leía el total: era telemetría,
+    // no un límite. Si AI_DAILY_BUDGET_USD no está seteada no hay techo, o
+    // sea que el comportamiento por defecto no cambia; con la variable puesta,
+    // pasado el techo se sirve el fallback determinista (que ya está armado
+    // acá abajo) en vez de seguir llamando al proveedor.
+    const dailyBudgetUsd = Number(process.env.AI_DAILY_BUDGET_USD) || 0;
+    let overBudget = false;
+    if (dailyBudgetUsd > 0) {
+      try {
+        overBudget = (await getDailyCost(new Date().toISOString().slice(0, 10))) >= dailyBudgetUsd;
+      } catch {
+        overBudget = false;
+      }
+    }
+
+    if (overBudget) {
+      console.warn('[/api/intelligence/interpret] daily AI budget reached — serving local fallback');
+    }
+
     try {
+      if (overBudget) throw new Error('daily_budget_reached');
       const compatResult = compatibility || {
         user: profile,
         target: {},
@@ -472,7 +517,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { ...responseBody, ...(regenerateStatus && { regenerateStatus }) },
+      { ...responseBody, ...(regenerateStatus && { regenerateStatus }), ...(chatStatus && { chatStatus }) },
       { headers: PRIVATE_NO_STORE }
     );
   } catch (error) {

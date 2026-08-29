@@ -170,15 +170,13 @@ describe("Chat Redesign UI Components", () => {
   });
 
   describe("ChatReloadModal", () => {
-    it("renders modal with $1.70 USD 28-questions reload pack and handles confirmation", async () => {
-      const onConfirmReload = vi.fn();
+    it("shows the pack as not yet purchasable and never grants credits client-side", () => {
       const onClose = vi.fn();
 
       render(
         <ChatReloadModal
           isOpen={true}
           onClose={onClose}
-          onConfirmReload={onConfirmReload}
           profileName="Sofia"
           birthDate="1990-08-10"
         />
@@ -186,14 +184,9 @@ describe("Chat Redesign UI Components", () => {
 
       expect(screen.getByText("Te quedaste sin saldo Molino")).toBeDefined();
       expect(screen.getByText(/28 preguntas adicionales/i)).toBeDefined();
-      expect(screen.getAllByText(/\$1.70/i).length).toBeGreaterThanOrEqual(1);
-
-      const reloadBtn = screen.getByRole("button", { name: /Recargar saldo/i });
-      fireEvent.click(reloadBtn);
-
-      await waitFor(() => {
-        expect(onConfirmReload).toHaveBeenCalledWith(28);
-      });
+      expect(screen.getByText(/Todavía no se puede comprar/i)).toBeDefined();
+      // El botón que simulaba el cobro de USD 1.70 y regalaba 28 créditos ya no existe.
+      expect(screen.queryByRole("button", { name: /Recargar saldo/i })).toBeNull();
     });
   });
 

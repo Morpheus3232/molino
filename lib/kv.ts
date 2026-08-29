@@ -522,6 +522,74 @@ export async function getRegenerationCount(profileHash: string): Promise<number>
   }
 }
 
+/** Preguntas de chat incluidas de por vida en el acceso Premium.
+ * Espejo server-side de INITIAL_PREMIUM_QUESTIONS (lib/session/chatCredits.ts):
+ * ese contador vive en localStorage y es la UI — resetearlo desde la consola
+ * daba preguntas infinitas por los mismos USD 8, con el costo por token
+ * corriendo entero por nuestra cuenta. Esta es la autoridad. */
+export const CHAT_LIFETIME_LIMIT = 50;
+
+/** Sin TTL a propósito: el cupo es de por vida, no diario. Mismo caveat de
+ * read-modify-write no atómico que incrementRegenerationCount — una carrera
+ * puede regalar una pregunta suelta, no un cupo entero. */
+export async function incrementChatQuestionCount(profileHash: string): Promise<number> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 0;
+    const key = `chat_count:${profileHash}`;
+    const next = ((await kv.get<number>(key)) || 0) + 1;
+    await kv.set(key, next);
+    return next;
+  } catch (error) {
+    console.error('[KV] Error in incrementChatQuestionCount:', error);
+    return 0;
+  }
+}
+
+export async function getChatQuestionCount(profileHash: string): Promise<number> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 0;
+    return (await kv.get<number>(`chat_count:${profileHash}`)) || 0;
+  } catch (error) {
+    console.error('[KV] Error in getChatQuestionCount:', error);
+    return 0;
+  }
+}
+
+/**
+ * Conteo de canjes por código de cupón, para saber cuánta gente trajo cada
+ * influencer. Deduplicado por perfil: la misma persona canjeando dos veces
+ * (otro dispositivo, localStorage borrado) cuenta una sola. El marcador de
+ * "ya contado" usa nx, así que la dedup sí es atómica; el contador en sí
+ * tiene el mismo caveat de read-modify-write que incrementDailyCost — una
+ * carrera puede perder un canje, y es métrica, no facturación.
+ */
+export async function countCouponRedemption(code: string, profileHash: string): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    const firstTime = await kv.set(`coupon_seen:${code}:${profileHash}`, 1, { nx: true });
+    if (!firstTime) return;
+    const key = `coupon_uses:${code}`;
+    await kv.set(key, ((await kv.get<number>(key)) || 0) + 1);
+  } catch (error) {
+    console.error('[KV] Error in countCouponRedemption:', error);
+  }
+}
+
+export async function getCouponCounts(codes: string[]): Promise<Record<string, number>> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return {};
+    const counts = await Promise.all(codes.map((c) => kv.get<number>(`coupon_uses:${c}`)));
+    return Object.fromEntries(codes.map((c, i) => [c, counts[i] || 0]));
+  } catch (error) {
+    console.error('[KV] Error in getCouponCounts:', error);
+    return {};
+  }
+}
+
 export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

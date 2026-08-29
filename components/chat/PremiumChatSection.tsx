@@ -121,6 +121,26 @@ export default function PremiumChatSection({
           return;
         }
 
+        // El cupo real lo lleva el servidor (chat_count en KV): el contador
+        // local es solo la UI, así que puede quedar por debajo del real.
+        if (res.status === 429) {
+          const body = await res.json().catch(() => null);
+          setTurns((prev) =>
+            prev.map((t, i) =>
+              i === newIndex
+                ? {
+                    ...t,
+                    loading: false,
+                    error: body?.error?.message || "Alcanzaste el límite de preguntas por ahora.",
+                  }
+                : t
+            )
+          );
+          credits.setShowReloadModal(true);
+          setIsLoading(false);
+          return;
+        }
+
         if (!res.ok) throw new Error(`API error: ${res.status}`);
 
         const data = await res.json();
@@ -151,11 +171,6 @@ export default function PremiumChatSection({
     },
     [credits, turns, isLoading, profile.birthDate, profile.name, readingContext]
   );
-
-  const handleReloadSuccess = (addedCount: number) => {
-    credits.reloadCredits(addedCount);
-    setReloadNotice(`Saldo recargado. Tenés ${addedCount} preguntas nuevas.`);
-  };
 
   if (isPremium === false) {
     return (
@@ -256,7 +271,6 @@ export default function PremiumChatSection({
       <ChatReloadModal
         isOpen={credits.showReloadModal}
         onClose={() => credits.setShowReloadModal(false)}
-        onConfirmReload={handleReloadSuccess}
         profileName={profile.name}
         birthDate={profile.birthDate}
       />

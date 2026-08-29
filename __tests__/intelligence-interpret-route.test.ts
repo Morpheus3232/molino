@@ -4,9 +4,11 @@ import { NextRequest } from 'next/server';
 vi.stubEnv('MP_WEBHOOK_SECRET', 'test-webhook-secret');
 
 // hoisted so individual tests can flip the premium gate open/closed
-const { mockHasPremiumAccess, mockVerifyPremiumToken } = vi.hoisted(() => ({
+const { mockHasPremiumAccess, mockVerifyPremiumToken, mockGetChatQuestionCount, mockIncrementChatQuestionCount } = vi.hoisted(() => ({
   mockHasPremiumAccess: vi.fn(),
   mockVerifyPremiumToken: vi.fn(),
+  mockGetChatQuestionCount: vi.fn(),
+  mockIncrementChatQuestionCount: vi.fn(),
 }));
 
 // hashProfile is pure — real implementation is fine. Premium gating and the
@@ -20,6 +22,10 @@ vi.mock('@/lib/kv', () => ({
   getRegenerationCount: vi.fn(async () => 0),
   incrementRegenerationCount: vi.fn(async () => 1),
   REGENERATE_DAILY_LIMIT: 5,
+  getDailyCost: vi.fn(async () => 0),
+  getChatQuestionCount: mockGetChatQuestionCount,
+  incrementChatQuestionCount: mockIncrementChatQuestionCount,
+  CHAT_LIFETIME_LIMIT: 50,
 }));
 
 const mockGenerateWithRouting = vi.fn();
@@ -87,6 +93,42 @@ describe('POST /api/intelligence/interpret — AI validity contract', () => {
     // below flip these per-case.
     mockHasPremiumAccess.mockResolvedValue(true);
     mockVerifyPremiumToken.mockResolvedValue(true);
+    mockGetChatQuestionCount.mockResolvedValue(0);
+    mockIncrementChatQuestionCount.mockResolvedValue(1);
+  });
+
+  describe('cupo de chat (server-side)', () => {
+    const QUESTION_BODY = { type: 'question', dob: '1990-04-15', name: 'Test User', premiumToken: 'token', question: '¿Qué me conviene cerrar este año?' };
+
+    test('rechaza la pregunta cuando el cupo de por vida está agotado', async () => {
+      mockGetChatQuestionCount.mockResolvedValue(50);
+
+      const res = await POST(req(QUESTION_BODY));
+
+      expect(res.status).toBe(429);
+      const body = await res.json();
+      expect(body.error.code).toBe('chat_limit_reached');
+      expect(body.chatStatus.remaining).toBe(0);
+      // Lo importante: no se llamó al proveedor de IA, o sea no se gastó un token.
+      expect(mockGenerateWithRouting).not.toHaveBeenCalled();
+      expect(mockIncrementChatQuestionCount).not.toHaveBeenCalled();
+    });
+
+    test('consume cupo del servidor, no del localStorage del cliente', async () => {
+      mockGetChatQuestionCount.mockResolvedValue(12);
+      mockIncrementChatQuestionCount.mockResolvedValue(13);
+      mockGenerateWithRouting.mockResolvedValue({
+        interpretation: { rawResponse: JSON.stringify(VALID_CONTRACT), model: 'test', usage: undefined },
+        providerUsed: 'openai',
+        fallbackUsed: false,
+      });
+
+      const res = await POST(req(QUESTION_BODY));
+      const body = await res.json();
+
+      expect(mockIncrementChatQuestionCount).toHaveBeenCalledTimes(1);
+      expect(body.chatStatus).toEqual({ used: 13, limit: 50, remaining: 37 });
+    });
   });
 
   test('valid, semantically sound JSON → ai is populated, aiStatus "valid"', async () => {

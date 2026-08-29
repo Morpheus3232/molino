@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X, Check, ArrowRight, ShieldCheck, RefreshCw } from "lucide-react";
+import { Sparkles, X, ArrowRight, ShieldCheck } from "lucide-react";
 import { RELOAD_PACK_PRICE_USD, RELOAD_PACK_QUESTIONS } from "@/lib/session/chatCredits";
 
 interface ChatReloadModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirmReload: (questionsCount: number) => void;
   profileName?: string;
   birthDate?: string;
 }
@@ -16,29 +15,11 @@ interface ChatReloadModalProps {
 export default function ChatReloadModal({
   isOpen,
   onClose,
-  onConfirmReload,
   profileName,
   birthDate,
 }: ChatReloadModalProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   if (!isOpen) return null;
 
-  const handleReload = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      // Direct client-side credit update & reload confirmation
-      // (Future extension can redirect to MP preference when live backend endpoint is ready)
-      await new Promise((r) => setTimeout(r, 600));
-      onConfirmReload(RELOAD_PACK_QUESTIONS);
-      onClose();
-    } catch (err) {
-      setError("No pudimos procesar la recarga. Por favor intentá de nuevo.");
-      setLoading(false);
-    }
-  };
 
   return (
     <AnimatePresence>
@@ -89,81 +70,46 @@ export default function ChatReloadModal({
           </h3>
 
           <p className="mt-3 text-sm text-paper/80 leading-relaxed font-sans">
-            Usaste todas tus preguntas incluidas. Podés recargar para seguir explorando tu mapa y consultando tus decisiones.
+            Usaste las 50 preguntas incluidas en tu acceso. El pack de recarga todavía no está
+            a la venta: cuando lo esté, lo vas a poder comprar desde acá. Mientras tanto tu mapa, tu lectura y todo lo
+            que ya generaste siguen disponibles.
           </p>
 
-          {/* Card de recarga destacada */}
-          <div className="mt-6 p-5 rounded-[--radius-lg] bg-paper/[0.06] border border-accent-light/30 space-y-3">
+          <div className="mt-6 p-5 rounded-[--radius-lg] bg-paper/[0.06] border border-paper/15 space-y-3">
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <span className="font-heading text-lg font-bold text-paper block">
                   Pack de {RELOAD_PACK_QUESTIONS} preguntas adicionales
                 </span>
                 <span className="text-xs text-paper/70 block mt-0.5">
-                  Consultas profundas sin límite de tiempo sobre tus ciclos y arquetipo.
+                  Precio previsto. Todavía no se puede comprar.
                 </span>
               </div>
               <div className="text-right shrink-0">
-                <span className="font-display text-2xl font-bold text-accent-light">
+                <span className="font-display text-2xl font-bold text-paper/50">
                   ${RELOAD_PACK_PRICE_USD.toFixed(2)}
                 </span>
-                <span className="text-[11px] font-mono text-paper/60 block">USD · Único</span>
+                <span className="text-[11px] font-mono text-paper/50 block">USD · Único</span>
               </div>
             </div>
 
             <ul className="pt-3 border-t border-paper/10 space-y-1.5 text-xs text-paper/85">
               <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-accent-light shrink-0" />
-                <span>28 preguntas nuevas añadidas inmediatamente</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Check className="w-3.5 h-3.5 text-accent-light shrink-0" />
-                <span>La IA conserva todo el contexto de tu mapa y tu sesión</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-accent-light shrink-0" />
+                <ShieldCheck className="w-3.5 h-3.5 text-paper/60 shrink-0" />
                 <span>Sin suscripciones automáticas ni cobros recurrentes</span>
               </li>
             </ul>
           </div>
 
-          {error && (
-            <p className="mt-4 text-xs text-red-400 bg-red-950/40 p-2.5 rounded-[--radius-sm] border border-red-500/20">
-              {error}
-            </p>
-          )}
-
-          {/* Botón de Recargar */}
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 text-center">
             <button
               type="button"
-              disabled={loading}
-              onClick={handleReload}
-              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[--radius-md] bg-accent-light text-ink font-heading text-sm font-bold uppercase tracking-wider hover:bg-accent-light/90 active:scale-[0.99] disabled:opacity-50 transition-all shadow-md"
+              onClick={onClose}
+              className="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-[--radius-md] border border-paper/25 text-paper font-heading text-sm font-bold uppercase tracking-wider hover:bg-paper/10 transition-all"
             >
-              {loading ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Procesando recarga…</span>
-                </>
-              ) : (
-                <>
-                  <span>Recargar saldo · ${RELOAD_PACK_PRICE_USD.toFixed(2)} USD</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
+              <span>Volver a mi mapa</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
-
-            {/* Alternativa */}
-            <div className="text-center pt-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="text-xs text-paper/60 hover:text-paper font-mono underline underline-offset-4 transition-colors"
-              >
-                O podés volver más tarde. Tu mapa sigue acá.
-              </button>
-            </div>
           </div>
         </motion.div>
       </div>
