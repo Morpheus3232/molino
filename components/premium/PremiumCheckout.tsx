@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/components/ui/Button";
 import Logo from "@/components/ui/Logo";
@@ -17,6 +17,7 @@ import {
 import { savePremiumTokenClient } from "@/lib/premium";
 import { invalidatePremiumAccessCache } from "@/lib/hooks/usePremiumAccess";
 import { analytics } from "@/lib/analytics/analytics";
+import BtcPayment from "./BtcPayment";
 
 const PROFILE_SALT_KEY = "molino-profile-salt";
 
@@ -52,6 +53,20 @@ export default function PremiumCheckout({
   const [recoverBirthDate, setRecoverBirthDate] = useState(birthDate);
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
+
+  // El pago en BTC se ofrece solo si el server tiene BTC_ADDRESS configurada;
+  // si no, el enlace ni aparece.
+  const [showBtc, setShowBtc] = useState(false);
+  const [btcEnabled, setBtcEnabled] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    fetch("/api/btc/quote")
+      .then((r) => r.json())
+      .then((d) => { if (vivo && d?.address) setBtcEnabled(true); })
+      .catch(() => {});
+    return () => { vivo = false; };
+  }, []);
 
   const [showCoupon, setShowCoupon] = useState(false);
   const [couponCode, setCouponCode] = useState("");
@@ -228,6 +243,7 @@ export default function PremiumCheckout({
               onClick={() => {
                 setShowRecover(true);
                 setShowCoupon(false);
+                setShowBtc(false);
               }}
               className="hover:text-accent transition-colors underline"
             >
@@ -241,13 +257,40 @@ export default function PremiumCheckout({
               onClick={() => {
                 setShowCoupon(true);
                 setShowRecover(false);
+                setShowBtc(false);
               }}
               className="hover:text-accent transition-colors underline"
             >
               ¿Tenés un cupón?
             </button>
           )}
+
+          {btcEnabled && !showBtc && (
+            <button
+              type="button"
+              onClick={() => {
+                setShowBtc(true);
+                setShowRecover(false);
+                setShowCoupon(false);
+              }}
+              className="hover:text-accent transition-colors underline"
+            >
+              Pagar con Bitcoin
+            </button>
+          )}
         </div>
+
+        <AnimatePresence>
+          {showBtc && (
+            <BtcPayment
+              name={name}
+              birthDate={birthDate}
+              salt={getOrCreateProfileSalt()}
+              onUnlocked={onUnlocked}
+              onClose={() => setShowBtc(false)}
+            />
+          )}
+        </AnimatePresence>
 
         {/* Recover Form Modal / Inline */}
         <AnimatePresence>

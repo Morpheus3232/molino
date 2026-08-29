@@ -302,6 +302,47 @@ export async function hasPremiumAccess(profileHash: string): Promise<boolean> {
   }
 }
 
+/**
+ * Reclama un txid de Bitcoin para un perfil. Un comprobante, un mapa.
+ *
+ * NO se usa markPaymentProcessed acá por dos motivos:
+ *
+ * 1. Ese candado expira a las 24h. Sirve para MercadoPago, donde solo protege
+ *    de los reintentos del webhook, pero un txid lo aporta la persona a mano:
+ *    si la clave expira, el mismo comprobante activa otro mapa al día
+ *    siguiente. Un txid está gastado para siempre, así que esta clave no
+ *    lleva TTL.
+ * 2. Devuelve false cuando KV no está disponible, y eso acá sería
+ *    indistinguible de "ya lo usó otro" — le diríamos a alguien que pagó que
+ *    su transacción es de otra persona. Por eso este devuelve 'unavailable'
+ *    aparte, y quien llama decide.
+ *
+ * 'claimed'       → primera vez, el acceso es de este perfil
+ * 'already-yours' → este MISMO perfil ya lo canjeó (reintento legítimo)
+ * 'taken'         → el txid ya activó otro perfil
+ * 'unavailable'   → KV caído; no se puede afirmar nada
+ */
+export async function claimBtcTxid(
+  txid: string,
+  profileHash: string,
+): Promise<'claimed' | 'already-yours' | 'taken' | 'unavailable'> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return 'unavailable';
+
+    const key = `btc:txid:${txid}`;
+    const set = await kv.set(key, profileHash, { nx: true });
+    if (set === 'OK') return 'claimed';
+
+    const owner = await kv.get(key);
+    if (owner === null || owner === undefined) return 'unavailable';
+    return String(owner) === profileHash ? 'already-yours' : 'taken';
+  } catch (error) {
+    console.error('[KV] Error in claimBtcTxid:', error);
+    return 'unavailable';
+  }
+}
+
 export async function markPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

@@ -265,7 +265,10 @@ class Analytics {
     });
   }
 
-  trackCheckoutStarted(currencyId: string, paymentMethod: "mercadopago" = "mercadopago") {
+  trackCheckoutStarted(
+    currencyId: string,
+    paymentMethod: "mercadopago" | "bitcoin" = "mercadopago",
+  ) {
     this.track({
       type: "checkout_started",
       data: { currencyId, paymentMethod, amount: currencyId === "USD" ? 8 : 8100 },
