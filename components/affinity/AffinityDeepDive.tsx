@@ -106,6 +106,7 @@ export default function AffinityDeepDive({
             <EntityVisual
               name={entity.name}
               emoji={entity.emoji}
+              imageUrl={entity.imageUrl}
               type={entity.type}
               category={entity.category}
               visualType={entity.visualType}
@@ -247,6 +248,7 @@ export default function AffinityDeepDive({
               <EntityVisual
                 name={entity.name}
                 emoji={entity.emoji}
+                imageUrl={entity.imageUrl}
                 type={entity.type}
                 category={entity.category}
                 visualType={entity.visualType}

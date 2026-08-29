@@ -295,6 +295,7 @@ function RecommendationCard({
           <EntityVisual
             visualType={rec.visualType as VisualType}
             emoji={rec.emoji}
+            imageUrl={rec.imageUrl}
             name={rec.name}
             type={rec.type}
             category={rec.category}

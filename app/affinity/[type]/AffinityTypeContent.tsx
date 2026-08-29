@@ -274,6 +274,7 @@ function ResultRow({
         <EntityVisual
           visualType={result.visualType as VisualType}
           emoji={result.emoji}
+          imageUrl={result.imageUrl}
           name={result.name}
           type={result.type}
           category={result.category}

@@ -131,6 +131,7 @@ export default function AnimalExplorer({ animal, entities, isEnemy }: AnimalExpl
                       <EntityVisual
                         name={e.name}
                         emoji={e.emoji}
+                        imageUrl={e.imageUrl}
                         type={e.type}
                         category={e.category}
                         visualType={e.visualType}
