@@ -20,6 +20,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'molino.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'logo.clearbit.com',
+      },
     ],
     // Las portadas del blog (public/blog/*.svg) son SVGs propios, servidos
     // desde el mismo dominio. `dangerouslyAllowSVG` habilita que next/image
@@ -91,7 +95,7 @@ const nextConfig = {
               "default-src 'self'",
 `script-src 'self' 'unsafe-inline' https://js.mercadopago.com${__impeccableLiveDev}${__devEval}`,
           "style-src 'self' 'unsafe-inline'",
-          "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com",
+          "img-src 'self' data: blob: https://*.vercel.app https://molino.app https://*.mercadopago.com https://logo.clearbit.com",
           "font-src 'self'",
 `connect-src 'self' https://api.mercadopago.com https://*.mercadopago.com${__impeccableLiveDev}`,
           "frame-src 'self' https://www.mercadopago.com.ar https://www.mercadopago.com https://checkout.mercadopago.com",

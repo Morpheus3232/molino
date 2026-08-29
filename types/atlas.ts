@@ -62,6 +62,8 @@ export interface AtlasEntityInput {
   category?: string;
   events: AtlasHistoricalEvent[];
   sourceNote?: string;
+  /** Optional CDN/remote asset URL (logo, portrait, album cover) — enriquecido automáticamente para marcas vía Clearbit. */
+  imageUrl?: string;
   /**
    * Solo para type:"university" (Fase 6A) — criterio explícito de por qué
    * esta institución es una de las 3-5 relevantes de su país, en vez de una

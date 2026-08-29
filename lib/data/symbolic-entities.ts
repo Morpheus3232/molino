@@ -20,6 +20,7 @@ import { BRANDS_AUTOS_60 } from "./brands-autos-60";
 import { AUTOS_ATLAS } from "./autos-atlas";
 import { ROPA_ATLAS } from "./ropa-atlas";
 import { BRANDS_ARGENTINA } from "./brands-argentina";
+import { BRAND_LOGO_DOMAINS } from "./brand-logo-domains";
 import { COUNTRIES_60 } from "./countries-60";
 import { COUNTRIES_ATLAS } from "./countries-atlas";
 import { CITIES_60 } from "./cities-60";
@@ -117,14 +118,23 @@ import { getCountryISO as resolveCountryISO } from "./country-iso";
  * Enrich a raw entity input into a full AtlasEntity: attach the deterministic
  * visualType (by entity type) and countryISO (from the country name). No
  * per-entity hand-written visual data — the mapping is the source of truth.
+ *
+ * Para marcas sin imageUrl, se genera automáticamente desde Clearbit Logo API
+ * usando el dominio del mapa BRAND_LOGO_DOMAINS.
  */
 export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
   const type = input.type as EntityType;
-  return {
-    ...input,
-    visualType: VISUAL_TYPE_BY_TYPE[type] ?? "emoji",
-    countryISO: resolveCountryISO(input.country),
-  };
+  const visualType = VISUAL_TYPE_BY_TYPE[type] ?? "emoji";
+  const countryISO = resolveCountryISO(input.country);
+  const imageUrl =
+    input.imageUrl ??
+    (type === "brand"
+      ? (() => {
+          const domain = BRAND_LOGO_DOMAINS[input.name];
+          return domain ? `https://logo.clearbit.com/${domain}` : undefined;
+        })()
+      : undefined);
+  return { ...input, visualType, countryISO, ...(imageUrl ? { imageUrl } : {}) };
 }
 
 /**
