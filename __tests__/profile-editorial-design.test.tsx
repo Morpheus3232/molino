@@ -99,8 +99,8 @@ describe("ProfileCoordinatesSection — Los Cuatro Pilares", () => {
 
     // Pilar 3: Zodíaco Chino
     expect(screen.getByText(/ZODÍACO CHINO/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tus dos amigos \(三合 San He\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tu energía opuesta \(六冲 Liu Chong\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tus dos amigos.*三合/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tu energía opuesta.*六冲/i)).toBeInTheDocument();
 
     // Pilar 4: Ciclos
     expect(screen.getByText(/CICLOS DE TIEMPO/i)).toBeInTheDocument();

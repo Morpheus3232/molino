@@ -12,7 +12,7 @@ import { ANIMAL_INTERPRETATIONS_ES } from "@/lib/data/interpretations/chinese-zo
 import type { WesternSign } from "@/lib/data/facts/astrology-facts";
 import type { ChineseAnimal } from "@/lib/data/facts/chinese-zodiac-facts";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
-import { getMasterNumbers, getMasterPositionMeaning, calculateBirthDayReduction, type MasterPosition } from "@/lib/engines/numerologyEngine";
+import { getMasterNumbers, getMasterPositionMeaning, type MasterPosition } from "@/lib/engines/numerologyEngine";
 import { safeNumber } from "@/lib/utils/score";
 import { editorialReveal } from "@/lib/utils/motion";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
@@ -71,274 +71,323 @@ export default function ProfileCoordinatesSection({ profile }: ProfileCoordinate
         </h2>
         <p className="mt-4 font-serif text-base sm:text-lg text-muted leading-relaxed">
           Cada sistema calcula una coordenada exacta a partir de tu fecha de nacimiento.
-          Sin cajas negras: la regla aritmética y astronómica de cada pilar queda expuesta.
+          Sin procesos opacos: la regla aritmética y astronómica de cada pilar queda expuesta.
         </p>
       </div>
 
-      <div className="space-y-16 lg:space-y-20">
+      <div className="space-y-8 lg:space-y-10">
         {/* ── 01 / Numerología Pitagórica ──────────────────────────── */}
-        <motion.article {...editorialReveal} className="border-t border-border pt-12 lg:pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-4 flex items-baseline lg:flex-col gap-4 lg:gap-2">
-              <span className="inline-flex items-center justify-center text-accent">
-                <LifePathGlyph value={lifePath} size={64} />
-              </span>
-              <div>
-                <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  NUMEROLOGÍA PITAGÓRICA
-                </span>
-                <span className="block font-mono text-xs text-muted/80 mt-0.5">
-                  Camino de Vida
-                </span>
-              </div>
-            </div>
+        <motion.article {...editorialReveal} className="group">
+          <div className="relative rounded-[--radius-xl] border border-ink/8 bg-card overflow-hidden">
+            {/* Barra vertical de acento */}
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent" aria-hidden="true" />
 
-            <div className="lg:col-span-8 space-y-4">
-              <h3 className="font-display text-2xl sm:text-[32px] font-bold text-foreground leading-tight tracking-tight uppercase">
-                {archetypeName}
-              </h3>
-
-              <p className="font-serif text-base sm:text-[18px] text-muted leading-relaxed">
-                {archetype.essence || archetype.description}
-              </p>
-
-              {archetype.quote && (
-                <p className="font-serif italic text-sm sm:text-base text-foreground/80 border-l-2 border-accent/40 pl-4 py-1">
-                  &ldquo;{archetype.quote}&rdquo;
-                </p>
-              )}
-
-              {/* Badges de Números Maestros si aplican */}
-              {masterHits.length > 0 && (
-                <div className="pt-2 space-y-2">
-                  {masterHits.map((hit) => (
-                    <div
-                      key={`${hit.position}-${hit.number}`}
-                      className="p-3.5 bg-paper-alt border border-accent/30 rounded-md text-xs font-mono text-foreground"
-                    >
-                      <span className="text-accent font-bold uppercase tracking-wider">
-                        Número Maestro {hit.number} en {hit.position === "lifePath" ? "Camino de Vida" : hit.position === "expression" ? "Expresión" : "Personalidad"}
-                      </span>
-                      <p className="font-serif text-muted text-xs sm:text-sm mt-1 leading-relaxed">
-                        {getMasterPositionMeaning(hit.number, hit.position as MasterPosition)}
-                      </p>
-                    </div>
-                  ))}
+            <div className="p-6 sm:p-8 lg:p-10">
+              {/* Header con número grande */}
+              <div className="flex items-start justify-between gap-6 mb-6">
+                <div className="flex items-center gap-4">
+                  <span className="inline-flex items-center justify-center text-accent">
+                    <LifePathGlyph value={lifePath} size={72} />
+                  </span>
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                      01 · Numerología Pitagórica
+                    </span>
+                    <span className="block font-mono text-[11px] text-muted mt-0.5">
+                      Camino de Vida
+                    </span>
+                  </div>
                 </div>
-              )}
+              </div>
 
-              <div className="pt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-muted/70 border-t border-border/60">
-                <span>Fórmula: Suma de dígitos ({profile.birthDate}) reducida a base 9</span>
-                {profile.expressionNumber && (
-                  <>
-                    <span className="w-px h-3 bg-border" aria-hidden="true" />
-                    <span>Expresión: {profile.expressionNumber}</span>
-                  </>
+              {/* Contenido principal */}
+              <div className="space-y-4">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                  {archetypeName}
+                </h3>
+
+                <p className="font-serif text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
+                  {archetype.essence || archetype.description}
+                </p>
+
+                {archetype.quote && (
+                  <blockquote className="font-serif italic text-sm sm:text-base text-foreground/80 border-l-2 border-accent/40 pl-4 py-1 max-w-xl">
+                    &ldquo;{archetype.quote}&rdquo;
+                  </blockquote>
                 )}
-                {profile.personalityNumber && (
-                  <>
-                    <span className="w-px h-3 bg-border" aria-hidden="true" />
-                    <span>Personalidad: {profile.personalityNumber}</span>
-                  </>
+
+                {/* Badges de Números Maestros */}
+                {masterHits.length > 0 && (
+                  <div className="pt-3 space-y-2">
+                    {masterHits.map((hit) => (
+                      <div
+                        key={`${hit.position}-${hit.number}`}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/8 border border-accent/20 rounded-[--radius-sm]"
+                      >
+                        <span className="font-mono text-xs font-bold text-accent">
+                          Nº Maestro {hit.number}
+                        </span>
+                        <span className="text-xs text-muted">
+                          en {hit.position === "lifePath" ? "Camino de Vida" : hit.position === "expression" ? "Expresión" : "Personalidad"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 )}
+              </div>
+
+              {/* Footer: fórmula y datos */}
+              <div className="mt-6 pt-4 border-t border-border/60">
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-mono text-muted/70">
+                  <span>
+                    Fórmula: Suma de dígitos ({profile.birthDate}) reducida a base 9
+                  </span>
+                  {profile.expressionNumber && (
+                    <>
+                      <span className="w-px h-3 bg-border" aria-hidden="true" />
+                      <span>Expresión: {profile.expressionNumber}</span>
+                    </>
+                  )}
+                  {profile.personalityNumber && (
+                    <>
+                      <span className="w-px h-3 bg-border" aria-hidden="true" />
+                      <span>Personalidad: {profile.personalityNumber}</span>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </motion.article>
 
         {/* ── 02 / Astrología Occidental ───────────────────────────── */}
-        <motion.article {...editorialReveal} className="border-t border-border pt-12 lg:pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-4 flex items-baseline lg:flex-col gap-4 lg:gap-2">
-              <AstrologySignIcon
-                sign={profile.sunSign || ""}
-                size={72}
-                className="text-accent"
-              />
-              <div>
-                <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  ASTROLOGÍA
-                </span>
-                <span className="block font-mono text-xs text-muted/80 mt-0.5">
-                  Posicionamiento Solar
-                </span>
-              </div>
-            </div>
+        <motion.article {...editorialReveal} className="group">
+          <div className="relative rounded-[--radius-xl] border border-ink/8 bg-card overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent" aria-hidden="true" />
 
-            <div className="lg:col-span-8 space-y-4">
-              <h3 className="font-display text-2xl sm:text-[32px] font-bold text-foreground leading-tight tracking-tight uppercase">
-                Sol en {profile.sunSign}
-              </h3>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] px-2.5 py-1 bg-paper-alt rounded-sm text-foreground">
-                  Elemento {profile.sunSignInfo?.element || profile.element}
-                </span>
-                <span className="font-mono text-xs uppercase tracking-[0.15em] px-2.5 py-1 bg-paper-alt rounded-sm text-foreground">
-                  Modalidad {profile.sunSignInfo?.modality || profile.modality}
-                </span>
-                {astroInfo?.archetype && (
-                  <span className="font-mono text-xs uppercase tracking-[0.15em] px-2.5 py-1 bg-accent/10 text-accent rounded-sm">
-                    {astroInfo.archetype}
+            <div className="p-6 sm:p-8 lg:p-10">
+              {/* Header */}
+              <div className="flex items-start justify-between gap-6 mb-6">
+                <div className="flex items-center gap-4">
+                  <span className="inline-flex items-center justify-center text-accent">
+                    <AstrologySignIcon
+                      sign={profile.sunSign || ""}
+                      size={72}
+                      className="text-accent"
+                    />
                   </span>
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                      02 · Astrología Occidental
+                    </span>
+                    <span className="block font-mono text-[11px] text-muted mt-0.5">
+                      Posicionamiento Solar
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contenido */}
+              <div className="space-y-4">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                  Sol en {profile.sunSign}
+                </h3>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                    Elemento {profile.sunSignInfo?.element || profile.element}
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                    Modalidad {profile.sunSignInfo?.modality || profile.modality}
+                  </span>
+                  {astroInfo?.archetype && (
+                    <span className="inline-flex items-center px-3 py-1.5 bg-accent/8 border border-accent/20 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-accent font-bold">
+                      {astroInfo.archetype}
+                    </span>
+                  )}
+                </div>
+
+                <p className="font-serif text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
+                  {astroInfo?.description ||
+                    `Tu energía solar en ${profile.sunSign} expresa la modalidad ${profile.modality?.toLowerCase() || "fundamental"} y el elemento ${profile.element?.toLowerCase() || "natal"}.`}
+                </p>
+
+                {astroInfo?.keywords && (
+                  <p className="font-mono text-xs text-muted">
+                    Rasgos clave: {astroInfo.keywords.join(" · ")}
+                  </p>
                 )}
               </div>
 
-              <p className="font-serif text-base sm:text-[18px] text-muted leading-relaxed">
-                {astroInfo?.description ||
-                  `Tu energía solar en ${profile.sunSign} expresa la modalidad ${profile.modality?.toLowerCase() || "fundamental"} y el elemento ${profile.element?.toLowerCase() || "natal"}.`}
-              </p>
-
-              {astroInfo?.keywords && (
-                <p className="font-mono text-xs text-muted">
-                  Rasgos clave: {astroInfo.keywords.join(" · ")}
-                </p>
-              )}
-
-              <div className="pt-4 text-xs font-mono text-muted/70 border-t border-border/60">
-                <span>Geometría celeste: luminaria solar sobre el horizonte en el momento natal</span>
+              {/* Footer */}
+              <div className="mt-6 pt-4 border-t border-border/60">
+                <span className="text-[11px] font-mono text-muted/70">
+                  Geometría celeste: luminaria solar sobre el horizonte en el momento natal
+                </span>
               </div>
             </div>
           </div>
         </motion.article>
 
         {/* ── 03 / Zodíaco Chino ──────────────────────────────────── */}
-        <motion.article {...editorialReveal} className="border-t border-border pt-12 lg:pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-4 flex items-baseline lg:flex-col gap-4 lg:gap-2">
-              <span className="inline-flex items-center justify-center text-accent">
-                <ZodiacAnimalIcon animal={userAnimal} size={56} />
-              </span>
-              <div>
-                <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  ZODÍACO CHINO
-                </span>
-                <span className="block font-mono text-xs text-muted/80 mt-0.5">
-                  Ciclo Sexagesimal
-                </span>
-              </div>
-            </div>
+        <motion.article {...editorialReveal} className="group">
+          <div className="relative rounded-[--radius-xl] border border-ink/8 bg-card overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent" aria-hidden="true" />
 
-            <div className="lg:col-span-8 space-y-4">
-              <h3 className="font-display text-2xl sm:text-[32px] font-bold text-foreground leading-tight tracking-tight uppercase">
-                {display.name} de {chineseElement}
-              </h3>
-
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="font-mono text-xs uppercase tracking-[0.15em] px-2.5 py-1 bg-paper-alt rounded-sm text-foreground">
-                  Polaridad {polarity}
-                </span>
-                <span className="font-mono text-xs uppercase tracking-[0.15em] px-2.5 py-1 bg-paper-alt rounded-sm text-foreground">
-                  Tronco {chineseElement}
-                </span>
-              </div>
-
-              <p className="font-serif text-base sm:text-[18px] text-muted leading-relaxed">
-                {animalInfo?.description ||
-                  `Nacido bajo la influencia de ${display.name}, integrás la energía del elemento ${chineseElement} en polaridad ${polarity}.`}
-              </p>
-
-              {/* Relaciones del ciclo */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 bg-paper-alt rounded-md border border-border/80">
-                  <span className="block font-mono text-xs uppercase tracking-wider text-accent font-semibold">
-                    Tus dos amigos (三合 San He)
+            <div className="p-6 sm:p-8 lg:p-10">
+              {/* Header */}
+              <div className="flex items-start justify-between gap-6 mb-6">
+                <div className="flex items-center gap-4">
+                  <span className="inline-flex items-center justify-center text-accent">
+                    <ZodiacAnimalIcon animal={userAnimal} size={72} />
                   </span>
-                  <span className="mt-1 block font-heading text-base font-bold text-foreground">
-                    {allies.length > 0 ? allies.join(" y ") : "Tríada armónica"}
-                  </span>
-                  <span className="mt-1 block font-mono text-xs text-muted">
-                    Cuatro posiciones en el ciclo · Misma afinidad elemental oculta
-                  </span>
-                </div>
-
-                <div className="p-4 bg-paper-alt rounded-md border border-border/80">
-                  <span className="block font-mono text-xs uppercase tracking-wider text-muted font-semibold">
-                    Tu energía opuesta (六冲 Liu Chong)
-                  </span>
-                  <span className="mt-1 block font-heading text-base font-bold text-foreground">
-                    {enemy || "Oposición directa"}
-                  </span>
-                  <span className="mt-1 block font-mono text-xs text-muted">
-                    Seis posiciones en el ciclo · Eje polar de máxima tensión
-                  </span>
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                      03 · Zodíaco Chino
+                    </span>
+                    <span className="block font-mono text-[11px] text-muted mt-0.5">
+                      Ciclo Sexagesimal
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 text-xs font-mono text-muted/70 border-t border-border/60">
-                <span>Cálculo luni-solar: corte exacto de Año Nuevo chino (21 de enero a 21 de febrero)</span>
+              {/* Contenido */}
+              <div className="space-y-4">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                  {display.name} de {chineseElement}
+                </h3>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                    Polaridad {polarity}
+                  </span>
+                  <span className="inline-flex items-center px-3 py-1.5 bg-background border border-ink/10 rounded-[--radius-sm] font-mono text-[11px] uppercase tracking-[0.12em] text-foreground">
+                    Tronco {chineseElement}
+                  </span>
+                </div>
+
+                <p className="font-serif text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
+                  {animalInfo?.description ||
+                    `Nacido bajo la influencia de ${display.name}, integrás la energía del elemento ${chineseElement} en polaridad ${polarity}.`}
+                </p>
+
+                {/* Relaciones del ciclo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-accent font-bold mb-1.5">
+                      Tus dos amigos · 三合
+                    </span>
+                    <span className="block font-heading text-lg font-bold text-foreground">
+                      {allies.length > 0 ? allies.join(" y ") : "Tríada armónica"}
+                    </span>
+                    <span className="mt-1 block font-mono text-[11px] text-muted">
+                      Cuatro posiciones en el ciclo
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                      Tu energía opuesta · 六冲
+                    </span>
+                    <span className="block font-heading text-lg font-bold text-foreground">
+                      {enemy || "Oposición directa"}
+                    </span>
+                    <span className="mt-1 block font-mono text-[11px] text-muted">
+                      Seis posiciones en el ciclo
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-6 pt-4 border-t border-border/60">
+                <span className="text-[11px] font-mono text-muted/70">
+                  Cálculo luni-solar: corte exacto de Año Nuevo chino (21 de enero a 21 de febrero)
+                </span>
               </div>
             </div>
           </div>
         </motion.article>
 
         {/* ── 04 / Ciclos y Tiempo Personal ────────────────────────── */}
-        <motion.article {...editorialReveal} className="border-t border-border pt-12 lg:pt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-4 flex items-baseline lg:flex-col gap-4 lg:gap-2">
-              <span className="font-mono text-[56px] sm:text-6xl font-bold leading-none text-accent tabular-nums">
-                {personalYear}
-              </span>
-              <div>
-                <span className="block font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  CICLOS DE TIEMPO
-                </span>
-                <span className="block font-mono text-xs text-muted/80 mt-0.5">
-                  Frecuencia Anual Activa
-                </span>
-              </div>
-            </div>
+        <motion.article {...editorialReveal} className="group">
+          <div className="relative rounded-[--radius-xl] border border-ink/8 bg-card overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent" aria-hidden="true" />
 
-            <div className="lg:col-span-8 space-y-4">
-              <h3 className="font-display text-2xl sm:text-[32px] font-bold text-foreground leading-tight tracking-tight uppercase">
-                Año Personal {personalYear} · {yearTheme || "Ciclo de Tiempo"}
-              </h3>
-
-              <p className="font-serif text-base sm:text-[18px] text-muted leading-relaxed">
-                El ciclo de nueve años modula cómo se expresa tu Camino de Vida durante el año en curso.
-                Cada año transita una etapa de un ciclo evolutivo de 9 fases.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="p-4 bg-paper-alt rounded-md border border-border/80">
-                  <span className="block font-mono text-xs uppercase tracking-wider text-muted">
-                    Año Personal
-                  </span>
-                  <span className="mt-1 block font-mono text-2xl font-bold text-accent tabular-nums">
+            <div className="p-6 sm:p-8 lg:p-10">
+              {/* Header con número grande */}
+              <div className="flex items-start justify-between gap-6 mb-6">
+                <div className="flex items-center gap-4">
+                  <span className="font-mono text-[56px] sm:text-6xl font-bold leading-none text-accent tabular-nums">
                     {personalYear}
                   </span>
-                  <span className="mt-1 block text-xs text-muted font-sans">
-                    {yearTheme || "Fase anual"}
-                  </span>
-                </div>
-
-                <div className="p-4 bg-paper-alt rounded-md border border-border/80">
-                  <span className="block font-mono text-xs uppercase tracking-wider text-muted">
-                    Mes Personal
-                  </span>
-                  <span className="mt-1 block font-mono text-2xl font-bold text-foreground tabular-nums">
-                    {personalMonth}
-                  </span>
-                  <span className="mt-1 block text-xs text-muted font-sans">
-                    Modulación mensual
-                  </span>
-                </div>
-
-                <div className="p-4 bg-paper-alt rounded-md border border-border/80">
-                  <span className="block font-mono text-xs uppercase tracking-wider text-muted">
-                    Día Personal
-                  </span>
-                  <span className="mt-1 block font-mono text-2xl font-bold text-foreground tabular-nums">
-                    {personalDay}
-                  </span>
-                  <span className="mt-1 block text-xs text-muted font-sans">
-                    Vibración de hoy
-                  </span>
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold">
+                      04 · Ciclos de Tiempo
+                    </span>
+                    <span className="block font-mono text-[11px] text-muted mt-0.5">
+                      Frecuencia Anual Activa
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="pt-4 text-xs font-mono text-muted/70 border-t border-border/60">
-                <span>Aritmética teosófica cíclica: Día ({profile.birthDate.split("-")[2] || "1"}) + Mes ({profile.birthDate.split("-")[1] || "1"}) + Año en curso</span>
+              {/* Contenido */}
+              <div className="space-y-4">
+                <h3 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] tracking-tight uppercase">
+                  Año Personal {personalYear} · {yearTheme || "Ciclo de Tiempo"}
+                </h3>
+
+                <p className="font-serif text-base sm:text-lg text-muted leading-relaxed max-w-2xl">
+                  El ciclo de nueve años modula cómo se expresa tu Camino de Vida durante el año en curso.
+                  Cada año transita una etapa de un ciclo evolutivo de 9 fases.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                  <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                      Año Personal
+                    </span>
+                    <span className="block font-mono text-3xl font-bold text-accent tabular-nums">
+                      {personalYear}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted">
+                      {yearTheme || "Fase anual"}
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                      Mes Personal
+                    </span>
+                    <span className="block font-mono text-3xl font-bold text-foreground tabular-nums">
+                      {personalMonth}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted">
+                      Modulación mensual
+                    </span>
+                  </div>
+
+                  <div className="p-4 bg-background border border-ink/5 rounded-[--radius-md]">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.15em] text-muted font-bold mb-1.5">
+                      Día Personal
+                    </span>
+                    <span className="block font-mono text-3xl font-bold text-foreground tabular-nums">
+                      {personalDay}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted">
+                      Vibración de hoy
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-6 pt-4 border-t border-border/60">
+                <span className="text-[11px] font-mono text-muted/70">
+                  Aritmética teosófica cíclica: Día ({profile.birthDate.split("-")[2] || "1"}) + Mes ({profile.birthDate.split("-")[1] || "1"}) + Año en curso
+                </span>
               </div>
             </div>
           </div>
