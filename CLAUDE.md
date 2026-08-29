@@ -4,8 +4,9 @@
 zodíaco chino, afinidad) en español rioplatense (`lang="es-AR"`, vos). Sin
 backend propio ni base de datos: los motores de cálculo son funciones puras
 y la persistencia del perfil vive en localStorage / URL (share por hash) /
-memoria efímera. Monetiza exclusivamente con MercadoPago (`lib/mercadopago.ts`,
-`lib/premium.ts`) — Stripe y PayPal se eliminaron por completo (2026-08-17):
+memoria efímera. Monetiza con MercadoPago (`lib/mercadopago.ts`,
+`lib/premium.ts`) y, desde 2026-08-29, con Bitcoin (`lib/bitcoin.ts`,
+`app/api/btc/`) — Stripe y PayPal se eliminaron por completo (2026-08-17):
 ninguno de los dos tenía credenciales configuradas en producción ni UI que
 los ofreciera como opción de pago.
 
@@ -281,7 +282,23 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 
 - No introducir un backend/DB para el perfil de usuario: es una decisión de producto (privacidad, sin fricción), no una limitación técnica a "arreglar"
 - Nuevo motor de cálculo → función pura en `lib/engines/`, con tests en `__tests__` junto al motor, siguiendo el patrón de `numerologyEngine.ts`
-- Único proveedor de pago: MercadoPago. No reintroducir Stripe/PayPal sin una decisión de producto explícita — se eliminaron a propósito, no por descuido
+- Dos métodos de pago: **MercadoPago** (principal) y **Bitcoin**. No
+  reintroducir Stripe/PayPal sin una decisión de producto explícita — se
+  eliminaron a propósito, no por descuido.
+- **BTC no usa procesador ni webhook.** Una wallet no custodial no avisa
+  cuando llega la plata, y como todos pagan a la misma dirección tampoco se
+  sabría de quién es. El comprobante lo aporta la persona: pega el txid y
+  `app/api/btc/claim` lo verifica contra la blockchain (mempool.space, sin
+  API key) — que pague a nuestra dirección, que el monto alcance, y que ese
+  txid no se haya usado. No se le cree nada al cliente.
+- La dirección va en la env var `BTC_ADDRESS`, nunca en el repo. Sin esa
+  variable el método queda deshabilitado y la UI no lo ofrece: no hay
+  dirección por defecto.
+- Para la idempotencia de BTC se usa `claimBtcTxid` (lib/kv.ts), **no**
+  `markPaymentProcessed`: ese candado expira a las 24h (alcanza para los
+  reintentos del webhook de MP, pero un txid lo tipea la persona y al día
+  siguiente el mismo comprobante activaría otro mapa) y no distingue "KV
+  caído" de "ya lo usó otro", que acá significaría acusar a alguien que pagó.
 - Después de cambios estructurales, correr `graphify update .`
 
 ## graphify
