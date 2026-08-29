@@ -7,7 +7,7 @@ import type { LightweightEntity } from "@/types/atlas";
 const mockCatalog: LightweightEntity[] = [
   // Caballo (Same)
   { id: "c1", name: "Argentina", type: "country", animal: "Caballo", isApproximate: false, visualType: "flag" },
-  { id: "c2", name: "Buenos Aires", type: "city", animal: "Caballo", isApproximate: false, visualType: "emoji" },
+  { id: "c2", name: "Buenos Aires", type: "city", animal: "Caballo", isApproximate: false, visualType: "flag" },
   { id: "c3", name: "UBA", type: "university", animal: "Caballo", isApproximate: false, visualType: "logo" },
   { id: "c4", name: "Boca Juniors", type: "team", animal: "Caballo", isApproximate: false, visualType: "logo" },
   { id: "c5", name: "Lionel Messi", type: "football_player", animal: "Caballo", isApproximate: false, visualType: "portrait" },
@@ -17,16 +17,16 @@ const mockCatalog: LightweightEntity[] = [
 
   // Tigre (Triad - Ally 1)
   { id: "t1", name: "México", type: "country", animal: "Tigre", isApproximate: false, visualType: "flag" },
-  { id: "t2", name: "Monterrey", type: "city", animal: "Tigre", isApproximate: false, visualType: "emoji" },
+  { id: "t2", name: "Monterrey", type: "city", animal: "Tigre", isApproximate: false, visualType: "flag" },
   { id: "t3", name: "UNAM", type: "university", animal: "Tigre", isApproximate: false, visualType: "logo" },
 
   // Perro (Triad - Ally 2)
   { id: "p1", name: "España", type: "country", animal: "Perro", isApproximate: false, visualType: "flag" },
-  { id: "p2", name: "Madrid", type: "city", animal: "Perro", isApproximate: false, visualType: "emoji" },
+  { id: "p2", name: "Madrid", type: "city", animal: "Perro", isApproximate: false, visualType: "flag" },
 
   // Rata (Clash - Opposite)
   { id: "r1", name: "Francia", type: "country", animal: "Rata", isApproximate: false, visualType: "flag" },
-  { id: "r2", name: "París", type: "city", animal: "Rata", isApproximate: false, visualType: "emoji" },
+  { id: "r2", name: "París", type: "city", animal: "Rata", isApproximate: false, visualType: "flag" },
   { id: "r3", name: "Nike", type: "brand", animal: "Rata", isApproximate: false, visualType: "logo" },
 ];
 

@@ -40,7 +40,7 @@ function artist(id: string): LightweightEntity {
 }
 
 function city(id: string): LightweightEntity {
-  return { id, name: id, animal: "Caballo", isApproximate: false, visualType: "emoji", type: "city" };
+  return { id, name: id, animal: "Caballo", isApproximate: false, visualType: "flag", type: "city" };
 }
 
 const GROUPS: PersonalAtlasGroup[] = [

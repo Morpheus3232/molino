@@ -11,7 +11,8 @@ import ZodiacAnimalIcon, { normalizeZodiacAnimal } from "./ZodiacAnimalIcon";
  * EntityVisual — renders the correct asset for an Atlas entity.
  *
  * Visual hierarchy:
- *  1. Flag: native regional-indicator flag emoji derived from countryISO.
+ *  1. Flag: native regional-indicator flag emoji derived from countryISO
+ *     (con la bandera del propio registro como respaldo si no hay ISO).
  *  2. ImageUrl: trusted remote image via next/image when present.
  *  3. Chinese Zodiac Animal: genuine bespoke vector SVG illustration.
  *  4. Domain / Category generic icon: genuine vector SVG (sneaker for footwear,
@@ -46,6 +47,16 @@ export function countryCodeToFlagEmoji(iso?: string): string | null {
   return String.fromCodePoint(base + a, base + b);
 }
 
+/** True si el string es una bandera: dos indicadores regionales secuenciales. */
+function isRegionalFlagEmoji(emoji: string): boolean {
+  const cps = [...emoji];
+  if (cps.length !== 2) return false;
+  return cps.every((c) => {
+    const cp = c.codePointAt(0) ?? 0;
+    return cp >= 0x1f1e6 && cp <= 0x1f1ff;
+  });
+}
+
 // Deterministic gradient pairs keyed by visualType — subtle, on-brand.
 const GRADIENTS: Record<VisualType, string> = {
   flag: "from-accent/30 via-paper-alt to-background",
@@ -71,7 +82,10 @@ export default function EntityVisual({
   size = 40,
   className = "",
 }: EntityVisualProps) {
-  const flag = useMemo(() => (visualType === "flag" ? countryCodeToFlagEmoji(countryISO) : null), [visualType, countryISO]);
+  const flag = useMemo(() => {
+    if (visualType !== "flag") return null;
+    return countryCodeToFlagEmoji(countryISO) ?? (emoji && isRegionalFlagEmoji(emoji) ? emoji : null);
+  }, [visualType, countryISO, emoji]);
 
   const zodiacAnimal = useMemo(() => {
     if (animal) return normalizeZodiacAnimal(animal);
@@ -114,7 +128,7 @@ export default function EntityVisual({
         aria-label={`Bandera de ${name}`}
       >
         <span style={{ fontSize: size * 0.62 }} className="leading-none select-none">
-          {flag ?? countryCodeToFlagEmoji(countryISO) ?? "🌐"}
+          {flag ?? "🌐"}
         </span>
       </span>
     );

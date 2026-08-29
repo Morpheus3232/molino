@@ -59,6 +59,7 @@ export const COUNTRY_ISO: Record<string, string> = {
   "Papúa Nueva Guinea": "PG", Paraguay: "PY", Qatar: "QA", "República Centroafricana": "CF",
   "República Democrática del Congo": "CD", "República Dominicana": "DO", Ruanda: "RW", Rumanía: "RO",
   Samoa: "WS", "San Cristóbal y Nieves": "KN", "San Marino": "SM", "San Vicente y las Granadinas": "VC",
+  "Puerto Rico": "PR",
   "Santa Lucía": "LC", "Santo Tomé y Príncipe": "ST", Senegal: "SN", Serbia: "RS",
   Seychelles: "SC", "Sierra Leona": "SL", Siria: "SY", Somalia: "SO",
   "Sri Lanka": "LK", Sudán: "SD", "Sudán del Sur": "SS", Surinam: "SR",

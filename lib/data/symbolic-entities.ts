@@ -67,7 +67,7 @@ export type EntityType =
 /** Visual kind by entity type — deterministic mapping, no per-entity hacks. */
 export const VISUAL_TYPE_BY_TYPE: Record<EntityType, VisualType> = {
   brand: "logo",
-  city: "emoji",
+  city: "flag",
   country: "flag",
   university: "logo",
   team: "logo",

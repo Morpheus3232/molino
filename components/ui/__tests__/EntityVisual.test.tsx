@@ -85,6 +85,20 @@ describe("EntityVisual Component", () => {
     expect(container.textContent).toContain("🇦🇷");
   });
 
+  it("renders the country flag for a city with its countryISO (Buenos Aires → Argentina)", () => {
+    const { container } = render(
+      <EntityVisual visualType="flag" countryISO="AR" name="Buenos Aires" type="city" size={36} />
+    );
+    expect(container.textContent).toContain("🇦🇷");
+  });
+
+  it("falls back to the flag emoji del propio registro cuando no hay countryISO", () => {
+    const { container } = render(
+      <EntityVisual visualType="flag" emoji="🇵🇷" name="San Juan PR" type="city" size={36} />
+    );
+    expect(container.textContent).toContain("🇵🇷");
+  });
+
   it("renders genuine ZodiacAnimalIcon when given a zodiac animal", () => {
     const { container } = render(
       <EntityVisual name="Caballo" animal="Caballo" size={36} />

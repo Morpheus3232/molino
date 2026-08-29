@@ -8,7 +8,7 @@ import type { AtlasEntityInput } from "@/types/atlas";
 // ─── CIUDADES ─────────────────────────────────────────────
 export const CITIES_COLOMBIA: AtlasEntityInput[] = [
   {
-    id: "bogota-col", name: "Bogotá", type: "city", country: "Colombia", emoji: "🏙️",
+    id: "bogota-col", name: "Bogotá", type: "city", country: "Colombia", emoji: "🇨🇴",
     description: "Capital de Colombia, fundada sobre el altiplano cundiboyacense. Centro político y cultural del país.",
     keyThemes: ["Capital", "Andes", "Cultura", "Centro"],
     sourceNote: "Fundada el 6 de agosto de 1538 por Gonzalo Jiménez de Quesada.",
@@ -22,7 +22,7 @@ export const CITIES_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "medellin", name: "Medellín", type: "city", country: "Colombia", emoji: "🌄",
+    id: "medellin", name: "Medellín", type: "city", country: "Colombia", emoji: "🇨🇴",
     description: "Capital de Antioquia, conocida como la 'Ciudad de la Eterna Primavera' y hub de innovación.",
     keyThemes: ["Antioquia", "Innovación", "Montaña", "Transformación"],
     sourceNote: "Fundada el 2 de noviembre de 1675.",
@@ -36,7 +36,7 @@ export const CITIES_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "cali", name: "Cali", type: "city", country: "Colombia", emoji: "🌴",
+    id: "cali", name: "Cali", type: "city", country: "Colombia", emoji: "🇨🇴",
     description: "Capital del Valle del Cauca y capital mundial de la salsa. Centro económico del suroccidente.",
     keyThemes: ["Salsa", "Valle", "Tropical", "Deporte"],
     sourceNote: "Fundada el 25 de julio de 1536 por Sebastián de Belalcázar.",
@@ -50,7 +50,7 @@ export const CITIES_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "cartagena", name: "Cartagena de Indias", type: "city", country: "Colombia", emoji: "⚓",
+    id: "cartagena", name: "Cartagena de Indias", type: "city", country: "Colombia", emoji: "🇨🇴",
     description: "Ciudad amurallada del Caribe colombiano, Patrimonio de la Humanidad y joya colonial.",
     keyThemes: ["Colonial", "Caribe", "Murallas", "Patrimonio"],
     sourceNote: "Fundada el 1 de junio de 1533 por Pedro de Heredia.",

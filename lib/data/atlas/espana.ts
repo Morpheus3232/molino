@@ -8,7 +8,7 @@ import type { AtlasEntityInput } from "@/types/atlas";
 // ─── CIUDADES ─────────────────────────────────────────────
 export const CITIES_ESPANA: AtlasEntityInput[] = [
   {
-    id: "madrid-es", name: "Madrid", type: "city", country: "España", emoji: "🏙️",
+    id: "madrid-es", name: "Madrid", type: "city", country: "España", emoji: "🇪🇸",
     description: "Capital de España, sede de la Corona y centro político, económico y cultural del país.",
     keyThemes: ["Capital", "Corona", "Cultura", "Centro"],
     sourceNote: "Establecida como capital del Reino en 1561 por Felipe II.",
@@ -22,7 +22,7 @@ export const CITIES_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "barcelona", name: "Barcelona", type: "city", country: "España", emoji: "🏖️",
+    id: "barcelona", name: "Barcelona", type: "city", country: "España", emoji: "🇪🇸",
     description: "Capital de Cataluña, gran metrópolis mediterránea y epicentro del modernismo y el arte.",
     keyThemes: ["Mediterráneo", "Modernismo", "Cataluña", "Arte"],
     sourceNote: "Consolidada como ciudad condal medieval; su expansión moderna data de 1854 con el derribo de murallas.",
@@ -36,7 +36,7 @@ export const CITIES_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "valencia", name: "Valencia", type: "city", country: "España", emoji: "🍊",
+    id: "valencia", name: "Valencia", type: "city", country: "España", emoji: "🇪🇸",
     description: "Tercera ciudad de España, capital de la Comunidad Valenciana, cuna de la paella y las Fallas.",
     keyThemes: ["Mediterráneo", "Paella", "Fallas", "Huerta"],
     sourceNote: "Conquistada a los musulmanes por Jaime I en 1238.",
@@ -50,7 +50,7 @@ export const CITIES_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "sevilla", name: "Sevilla", type: "city", country: "España", emoji: "💃",
+    id: "sevilla", name: "Sevilla", type: "city", country: "España", emoji: "🇪🇸",
     description: "Capital de Andalucía, ciudad del flamenco y puerto histórico del comercio con América.",
     keyThemes: ["Flamenco", "Andalucía", "Historia", "Río Guadalquivir"],
     sourceNote: "Reconquistada por Fernando III en 1248.",

@@ -8,7 +8,7 @@ import type { AtlasEntityInput } from "@/types/atlas";
 // ─── CIUDADES ─────────────────────────────────────────────
 export const CITIES_MEXICO: AtlasEntityInput[] = [
   {
-    id: "cdmx", name: "Ciudad de México", type: "city", country: "México", emoji: "🌆",
+    id: "cdmx", name: "Ciudad de México", type: "city", country: "México", emoji: "🇲🇽",
     description: "Capital del país, construida sobre las ruinas de Tenochtitlan. Una de las megalópolis más grandes del mundo.",
     keyThemes: ["Historia", "Cultura", "Megaciudad", "Centro"],
     sourceNote: "Fundada por los españoles en 1521 sobre Tenochtitlan.",
@@ -22,7 +22,7 @@ export const CITIES_MEXICO: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "guadalajara", name: "Guadalajara", type: "city", country: "México", emoji: "🏜️",
+    id: "guadalajara", name: "Guadalajara", type: "city", country: "México", emoji: "🇲🇽",
     description: "Capital de Jalisco, cuna de la música de mariachi y el tequila. Segunda ciudad más poblada de México.",
     keyThemes: ["Mariachi", "Tequila", "Tradición", "Jalisco"],
     sourceNote: "Fundada en 1542 por orden de la Corona española.",
@@ -36,7 +36,7 @@ export const CITIES_MEXICO: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "monterrey", name: "Monterrey", type: "city", country: "México", emoji: "🏭",
+    id: "monterrey", name: "Monterrey", type: "city", country: "México", emoji: "🇲🇽",
     description: "Capital industrial de Nuevo León, conocida como la 'Sultana del Norte' por su pujanza económica.",
     keyThemes: ["Industria", "Norte", "Negocios", "Montaña"],
     sourceNote: "Fundada en 1596 como Ciudad Metropolitana de Nuestra Señora de Monterrey.",
@@ -50,7 +50,7 @@ export const CITIES_MEXICO: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "puebla", name: "Puebla de Zaragoza", type: "city", country: "México", emoji: "🏛️",
+    id: "puebla", name: "Puebla de Zaragoza", type: "city", country: "México", emoji: "🇲🇽",
     description: "Ciudad colonial Patrimonio de la Humanidad, famosa por su gastronomía y arquitectura barroca.",
     keyThemes: ["Barroco", "Gastronomía", "Patrimonio", "Colonial"],
     sourceNote: "Fundada en 1531 como Puebla de los Ángeles.",
