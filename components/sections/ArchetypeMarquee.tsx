@@ -12,13 +12,13 @@ const MARQUEE_SEGMENTS: MarqueeSegment[] = [
   { text: "·" },
   { text: "MOLINO.APP", isAccent: false },
   { text: "·" },
-  { text: "TU MAPA PERSONAL DE AUTOCONOCIMIENTO", isAccent: false },
+  { text: "CHEQUEEMOS DE DÓNDE VIENE EL VIENTO", isAccent: false },
   { text: "·" },
   { text: "TE AYUDAMOS A ENTENDER DE DONDE VIENE EL VIENTO", isAccent: true },
   { text: "·" },
   { text: "MOLINO.APP", isAccent: false },
   { text: "·" },
-  { text: "TU MAPA PERSONAL DE AUTOCONOCIMIENTO", isAccent: false },
+  { text: "CHEQUEEMOS DE DÓNDE VIENE EL VIENTO", isAccent: false },
   { text: "·" },
 ];
 
