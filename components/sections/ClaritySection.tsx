@@ -4,7 +4,6 @@ import React from "react";
 import {
   CheckCircle2,
   ArrowRight,
-  SlidersHorizontal,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -47,11 +46,6 @@ export default function ClaritySection() {
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <p className="flex items-center justify-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-4">
-            <SlidersHorizontal className="w-3.5 h-3.5" aria-hidden="true" />
-            Método
-          </p>
-
           <h2
             className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.05] mb-6"
           >
