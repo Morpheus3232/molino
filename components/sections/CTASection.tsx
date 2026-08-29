@@ -22,10 +22,8 @@ export default function CTASection() {
       <div className="relative z-10 max-w-3xl mx-auto text-center">
         <div className="space-y-10">
           <div className="space-y-6">
-            <p className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-paper/50">
-              <span className="inline-block h-px w-8 bg-accent/40" aria-hidden="true" />
-              Empezá ahora
-              <span className="inline-block h-px w-8 bg-accent/40" aria-hidden="true" />
+            <p className="font-mono text-xs uppercase tracking-[0.25em] text-paper/50">
+              {isReturningUser ? "Donde lo dejaste" : "Treinta segundos"}
             </p>
 
             <h2 className="font-display font-normal normal-case tracking-tight text-paper leading-[0.98] text-[clamp(2.75rem,6vw,4.5rem)]">
@@ -45,7 +43,7 @@ export default function CTASection() {
             <p className="text-lg sm:text-xl text-paper/70 leading-relaxed">
               {isReturningUser
                 ? "Tu lectura completa, tus ciclos y tus afinidades, cuando quieras."
-                : "Treinta segundos y ya lo estás leyendo."}
+                : "Una fecha, tres sistemas, un mapa."}
             </p>
           </div>
 
@@ -54,7 +52,7 @@ export default function CTASection() {
               href={isReturningUser ? "/profile" : "#mapa-form"}
               className="group inline-flex items-center justify-center gap-3 px-12 py-5 bg-accent text-paper rounded-lg font-heading font-bold uppercase tracking-[0.1em] text-lg transition-colors duration-200 hover:bg-accent-hover active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              {isReturningUser ? "Ver mi mapa" : "Descubrir"}
+              {isReturningUser ? "Ver mi mapa" : "Ingresar mi fecha"}
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>

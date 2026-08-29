@@ -1,36 +1,34 @@
 "use client";
 
-import React from "react";
-import { Calendar, Users, Target, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
-interface Feature {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  href: string;
-}
 
 // CORE: lo que sostiene el mapa personal (mismo criterio que Fase 3 de la
 // auditoría — mapa / ciclos / afinidades). El resto es ecosistema: útil,
 // pero no debería competir en peso visual con el núcleo del producto.
-const coreFeatures: Feature[] = [
+//
+// `meta` es la línea mono de arriba de cada tarjeta: dice de qué está hecha
+// la pantalla, no la vende. En "Hoy" es la fecha real del visitante —
+// resuelta después del mount, porque el servidor renderiza en su propio huso
+// y una fecha calculada en render sería un mismatch de hidratación.
+const coreFeatures = [
   {
-    icon: <Calendar className="w-6 h-6" />,
     title: "Hoy",
-    description: "Tu vibración del día, actualizada cada 24 horas. Ciclos numerológicos y astrales.",
+    meta: null,
+    description: "Qué número está activo hoy, y qué te pide.",
     href: "/hoy",
   },
   {
-    icon: <Target className="w-6 h-6" />,
     title: "Ciclos",
-    description: "Ventanas óptimas para decisiones. Tu calendario de ciclos personales.",
+    meta: "año · mes · día personal",
+    description: "En qué ciclo estás y cuál es la próxima ventana que se abre.",
     href: "/calendario",
   },
   {
-    icon: <Users className="w-6 h-6" />,
     title: "Afinidades",
-    description: "Cómo tu mapa se conecta con otra persona, o con lugares y marcas.",
+    meta: "personas · lugares · marcas",
+    description: "Con quién resonás por signo, y con qué parte del mundo.",
     href: "/pareja",
   },
 ];
@@ -42,13 +40,21 @@ const ecosystemLinks: { title: string; href: string }[] = [
 ];
 
 export default function FeaturesSection() {
+  const [today, setToday] = useState<string | null>(null);
+
+  useEffect(() => {
+    setToday(
+      new Intl.DateTimeFormat("es-AR", { weekday: "long", day: "numeric", month: "long" }).format(new Date()),
+    );
+  }, []);
+
   return (
     <section className="relative py-20 sm:py-32 px-4 sm:px-8 bg-ink overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-14 max-w-2xl">
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent font-semibold mb-5">
-            Tu mapa, en movimiento
+            Qué hacés con eso
           </p>
           <h2 className="font-display font-normal normal-case tracking-tight text-paper leading-[1.05] text-[clamp(2.25rem,5vw,3.5rem)]">
             El mapa cambia{" "}
@@ -56,45 +62,48 @@ export default function FeaturesSection() {
           </h2>
         </div>
 
-        {/* Core Grid — 3 capacidades de un mismo sistema, no 3 productos */}
-        <div
-          className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-paper/10 border-y border-paper/10"
-        >
-          {coreFeatures.map((feature, idx) => (
-            <div key={idx}>
-              <Link href={feature.href} className="group block h-full p-8 md:p-10 space-y-4 transition-colors duration-300 hover:bg-paper/[0.03]">
-                <div className="text-accent">
-                  {feature.icon}
-                </div>
+        {/* Core Grid — 3 capacidades de un mismo sistema, no 3 productos.
+            Antes el "Explorar →" aparecía solo en hover: en touch no existe
+            y en desktop escondía la única señal de que la tarjeta es un link.
+            Ahora la flecha está siempre y lo que cambia en hover es su
+            posición, no su presencia. */}
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-paper/10 border-y border-paper/10">
+          {coreFeatures.map((feature) => (
+            <Link
+              key={feature.href}
+              href={feature.href}
+              className="group relative flex h-full flex-col gap-3 p-8 md:p-10 transition-colors duration-300 hover:bg-paper/[0.04] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-accent"
+            >
+              <span className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-light/80">
+                {feature.meta ?? today ?? "\u00a0"}
+              </span>
 
-                <h3 className="font-display italic font-normal normal-case text-2xl text-paper">
-                  {feature.title}
-                </h3>
+              <h3 className="font-display italic font-normal normal-case text-[1.75rem] text-paper leading-none">
+                {feature.title}
+              </h3>
 
-                <p className="text-paper/70 leading-relaxed text-sm">
-                  {feature.description}
-                </p>
+              <p className="text-paper/60 leading-relaxed text-sm max-w-xs">
+                {feature.description}
+              </p>
 
-                <span className="inline-flex items-center gap-1 font-mono text-xs text-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Explorar →
-                </span>
-              </Link>
-            </div>
+              <ArrowUpRight
+                className="mt-auto pt-6 w-9 h-9 text-paper/35 transition-all duration-300 group-hover:text-accent-light group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </Link>
           ))}
         </div>
 
         {/* Ecosistema — accesible, sin competir en peso con el core */}
-        <div
-          className="mt-10 pt-8 border-t border-paper/10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3"
-        >
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40">
-            También en tu mapa:
+        <div className="mt-10 flex flex-wrap items-center gap-3">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-paper/40 mr-1">
+            También en tu mapa
           </span>
           {ecosystemLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-paper/60 hover:text-accent-light transition-colors underline-offset-4 hover:underline"
+              className="rounded-sm border border-paper/15 px-3 py-1.5 text-sm text-paper/70 transition-colors hover:border-accent-light/60 hover:text-accent-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {link.title}
             </Link>
