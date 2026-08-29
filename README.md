@@ -16,7 +16,7 @@ Molino generates a personal "symbol map" — your numerological path, astrologic
 
 ### Core commitments
 
-- 🔍 **Transparency over mystique**: Every formula is shown; no "trust the algorithm" claims. Each result links to its source.
+- 🔍 **Transparency over mystique**: Every formula is shown. Each result links to its source and shows the calculation behind it.
 - 🔒 **Radical privacy**: Your map lives in browser localStorage only. No registration, no cookies, no fingerprinting, no server persistence.
 - 📚 **Open source**: All code is MIT. Anyone can verify, fork, or contribute.
 - 🎓 **For the curious, not initiated**: Designed for people discovering numerology/astrology for the first time, not advanced practitioners.

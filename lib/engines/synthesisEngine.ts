@@ -567,8 +567,9 @@ export interface PrincipleInsight {
   body: string;
   /**
    * De dónde sale el principio. El motor ya filtraba por `RuleInsight.source`
-   * para armarlo, pero no lo devolvía, así que el lector veía la conclusión
-   * sin su origen — la misma caja negra que el producto dice no ser.
+* para armarlo, pero no lo devolvía, así que el lector veía la conclusión
+   * sin su origen — un proceso opaco, lo contrario de lo que el producto
+   * promete.
    */
   source: string;
 }

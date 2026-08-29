@@ -140,7 +140,7 @@ its formula and source visible.
 - **Radical privacy**: Your map lives in browser localStorage only. 
   No registration, no cookies, no fingerprinting.
 - **Transparency over mystique**: Every formula is explained; 
-  no "trust the algorithm" claims.
+  each result shows its source and calculation.
 - **For the curious, not the initiated**: Designed for people 
   discovering numerology/astrology for the first time, not advanced practitioners.
 ```

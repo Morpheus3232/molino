@@ -16,7 +16,7 @@ Molino generates a personal "symbol map" — numerological path, astrological ch
 
 ## Positioning
 
-**Radical transparency + privacy by design.** Every calculation shows its formula and source — no "trust the algorithm" black boxes. The symbol map lives **only in browser localStorage** — no registration, no cookies, no fingerprinting, no backend persistence. This differentiates Molino from commercial astrology/numerology apps that retain data, monetize via opaque subscriptions, or present claims without traceability. Open source (MIT) and independently verifiable.
+**Radical transparency + privacy by design.** Every calculation shows its formula and source, step by step. The symbol map lives **only in browser localStorage** — no registration, no cookies, no fingerprinting, no backend persistence. This differentiates Molino from commercial astrology/numerology apps that retain data, monetize via opaque subscriptions, or present claims without traceability. Open source (MIT) and independently verifiable.
 
 ## Operating Context
 

@@ -16,9 +16,9 @@ import { getChineseZodiac } from './chineseZodiacEngine';
 /**
  * Puntaje de un área del día. `reasons` lista los factores que efectivamente
  * juegan a favor, en lenguaje llano. Sin eso el lector ve "Trabajo:
- * Favorable" sin poder saber por qué, que es la misma caja negra que el
- * producto dice no ser. No expone la aritmética interna: el lector quiere
- * saber qué lo favorece, no de qué base parte el cálculo.
+ * Favorable" sin poder saber por qué, que es un proceso opaco — lo
+ * contrario de lo que el producto promete. No expone la aritmética interna:
+ * el lector quiere saber qué lo favorece, no de qué base parte el cálculo.
  */
 export interface AreaScore {
   score: number;

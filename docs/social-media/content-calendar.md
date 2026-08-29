@@ -185,7 +185,7 @@ Así que el motor de numerología de Molino es público. Cualquiera puede
 leerlo, auditarlo, o encontrar un error y reportarlo. Esa transparencia es
 lo que nos permitió, después, construir el widget embebible con la
 confianza de que cualquier sitio que lo instale está mostrando un cálculo
-verificable, no una caja negra.
+verificable, no un método opaco.
 
 Para nosotros, "abierto" no es una etiqueta de marketing — es una forma
 de que la herramienta se sostenga sola, sin que tengas que confiar

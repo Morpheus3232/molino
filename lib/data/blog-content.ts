@@ -668,7 +668,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "Lo que hicimos bien",
         paragraphs: [
           "La privacidad no es una promesa de marketing acá: el cálculo del mapa gratuito corre enteramente en tu navegador. Tu fecha de nacimiento no viaja a un servidor de Molino para darte tu Camino de Vida, tu signo solar o tu animal del zodíaco chino.",
-          "El motor de cálculo está publicado como código abierto — no hay una caja negra propietaria escondiendo cómo se llega a cada resultado. Y no hay suscripción mensual: lo gratuito es gratuito para siempre, y lo único que tiene costo (la síntesis con IA) se paga una sola vez, no todos los meses.",
+          "El motor de cálculo está publicado como código abierto — no hay un proceso propietario y opaco escondiendo cómo se llega a cada resultado. Y no hay suscripción mensual: lo gratuito es gratuito para siempre, y lo único que tiene costo (la síntesis con IA) se paga una sola vez, no todos los meses.",
         ],
       },
       {
@@ -781,7 +781,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "como-molino-calcula-compatibilidad-de-pareja",
     title: "Cómo Molino calcula la compatibilidad de pareja: las 5 capas detrás del número",
     excerpt:
-      "El % que ves en Modo Pareja no sale de un solo sistema — es un promedio ponderado de cinco capas distintas. Así se arma ese número, capa por capa, sin caja negra.",
+      "El % que ves en Modo Pareja no sale de un solo sistema — es un promedio ponderado de cinco capas distintas. Así se arma ese número, capa por capa, sin métodos ocultos.",
     metaDescription:
       "Cómo se calcula el porcentaje de compatibilidad en el Modo Pareja de Molino: las 5 capas (numerología, astrología occidental, zodíaco chino, arquetipo y elemento) y el peso real de cada una en el resultado final.",
     category: "Autoconocimiento",
@@ -789,7 +789,7 @@ export const BLOG_POSTS: BlogPost[] = [
     image: "/blog/como-molino-calcula-compatibilidad-de-pareja.svg",
     author: "Equipo Molino",
     intro: [
-      "Cuando dos personas usan el Modo Pareja de Molino, el resultado final es un solo número — un porcentaje de compatibilidad. Es tentador tratarlo como una caja negra ('el algoritmo dijo 78%'), pero no lo es: ese número sale de promediar cinco capas distintas, cada una con un peso específico, y las cinco están calculadas con datos reales de las dos personas, no con un puntaje al azar.",
+      "Cuando dos personas usan el Modo Pareja de Molino, el resultado final es un solo número — un porcentaje de compatibilidad. Es tentador tratarlo como un cálculo cerrado ('el algoritmo dijo 78%'), pero no lo es: ese número sale de promediar cinco capas distintas, cada una con un peso específico, y las cinco están calculadas con datos reales de las dos personas, no con un puntaje al azar.",
       "Publicamos esta desagregación porque creemos que un número sin su método detrás no sirve para nada — y porque un score de compatibilidad que no podés desarmar es indistinguible de una tirada de dados.",
     ],
     sections: [
