@@ -18,6 +18,23 @@ function isValidBirthDate(value: string): boolean {
   return year >= 1900 && birth < new Date();
 }
 
+/**
+ * Entrada para quien llega con un código de un influencer. Va último y en
+ * tamaño de nota al pie a propósito: la gran mayoría llega sin código, y
+ * para esa mayoría esto no debe competir con "Ver tu mapa". Quien sí tiene
+ * uno lo está buscando, y un link chico alcanza.
+ */
+function CouponLink() {
+  return (
+    <p className="pt-4 text-xs text-muted">
+      ¿Tenés un código?{" "}
+      <Link href="/canjear" className="font-semibold text-accent underline-offset-4 hover:underline">
+        Canjealo acá
+      </Link>
+    </p>
+  );
+}
+
 export default function HeroInstrument() {
   const router = useRouter();
   const [dateValue, setDateValue] = useState("");
@@ -89,6 +106,8 @@ export default function HeroInstrument() {
                 <ArrowRight className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
               </Link>
             </motion.div>
+
+            <CouponLink />
           </motion.div>
         </div>
       </section>
@@ -198,6 +217,8 @@ export default function HeroInstrument() {
               <ShieldCheck className="w-3.5 h-3.5" aria-hidden="true" />
               Cálculo 100% local · toma 30 segundos
             </p>
+
+            <CouponLink />
           </motion.div>
         </motion.div>
       </div>
