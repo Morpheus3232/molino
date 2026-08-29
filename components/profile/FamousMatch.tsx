@@ -70,31 +70,29 @@ function Coordinates({
   const on = (hit: boolean) =>
     hit ? { color: elementColor, fontWeight: 700 } : undefined;
 
+  // Sin separadores "·" y con flex-wrap: en la grilla de 4 columnas la tira
+  // mide ~204px y "Caballo · Camino 5 · ♑ Capricornio" no entra, así que
+  // envuelve — y al envolver los puntos quedaban colgando al final del
+  // renglón. El gap separa igual de bien y aguanta cualquier ancho.
   return (
-    <div className="flex items-center gap-2 font-mono text-xs border-t border-ink/10 pt-2.5 mt-3">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs border-t border-ink/10 pt-2.5 mt-3">
       <span
-        className={`inline-flex items-center gap-1 ${matchChineseZodiac ? "" : "text-muted/70"}`}
+        className={`inline-flex items-center gap-1 whitespace-nowrap ${matchChineseZodiac ? "" : "text-muted/70"}`}
         style={on(matchChineseZodiac)}
         title={`Zodíaco chino: ${zodiacDisplay.name}`}
       >
         <ZodiacAnimalIcon animal={person.chineseZodiac} size={13} className="shrink-0" />
         {zodiacDisplay.name}
       </span>
-      <span className="text-ink/20" aria-hidden>
-        ·
-      </span>
       <span
-        className={matchLifePath ? "" : "text-muted/70"}
+        className={`whitespace-nowrap ${matchLifePath ? "" : "text-muted/70"}`}
         style={on(matchLifePath)}
         title={`Camino de vida: ${person.lifePath}`}
       >
         Camino {person.lifePath}
       </span>
-      <span className="text-ink/20" aria-hidden>
-        ·
-      </span>
       <span
-        className={matchSunSign ? "" : "text-muted/70"}
+        className={`whitespace-nowrap ${matchSunSign ? "" : "text-muted/70"}`}
         style={on(matchSunSign)}
         title={`Signo solar: ${person.sunSign}`}
       >
