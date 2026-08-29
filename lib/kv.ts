@@ -590,6 +590,26 @@ export async function getCouponCounts(codes: string[]): Promise<Record<string, n
   }
 }
 
+/**
+ * Pone en cero los contadores de canje. Para arrancar una campaña limpia
+ * (o descartar canjes de prueba) sin tocar los accesos ya otorgados: borra
+ * la métrica, no el premium de nadie.
+ *
+ * No borra los marcadores coupon_seen:* — son la dedup por persona, y sin
+ * SCAN no se pueden enumerar. Consecuencia: alguien que ya canjeó antes del
+ * reset no vuelve a sumar. Es lo correcto para un reset de prueba, y para
+ * una campaña nueva conviene un código nuevo igual.
+ */
+export async function resetCouponCounts(codes: string[]): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    await Promise.all(codes.map((c) => kv.del(`coupon_uses:${c}`)));
+  } catch (error) {
+    console.error('[KV] Error in resetCouponCounts:', error);
+  }
+}
+
 export async function isPaymentProcessed(paymentId: string): Promise<boolean> {
   try {
     const kv = await getKvClient();

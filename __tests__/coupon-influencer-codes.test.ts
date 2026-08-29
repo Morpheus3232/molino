@@ -25,7 +25,7 @@ vi.mock('@vercel/kv', () => ({
   },
 }));
 
-import { POST, GET } from '@/app/api/mp/coupon/route';
+import { POST, GET, DELETE } from '@/app/api/mp/coupon/route';
 
 // IP distinta por llamada: el rate limit real es 3 canjes por IP cada 5
 // minutos, y el test hace más que eso a propósito.
@@ -45,6 +45,9 @@ const statsPage = (secret: string) =>
   GET(new NextRequest(`http://localhost/api/mp/coupon?secret=${secret}`, {
     headers: { accept: 'text/html,application/xhtml+xml' },
   }));
+
+const reset = (secret: string) =>
+  DELETE(new NextRequest(`http://localhost/api/mp/coupon?secret=${secret}`, { method: 'DELETE' }));
 
 beforeEach(() => kvStore.clear());
 
@@ -94,5 +97,25 @@ describe('códigos por influencer', () => {
 
     const json = await stats('stats-secret');
     expect(json.headers.get('content-type')).toContain('application/json');
+  });
+});
+
+describe('reset de contadores', () => {
+  test('vuelve todo a cero sin tocar el acceso ya otorgado', async () => {
+    await redeem('VALEN', 'r1');
+    await redeem('CAFECONSOMBRA', 'r2');
+    expect((await (await stats('stats-secret')).json()).codes).toEqual({ VALEN: 1, CAFECONSOMBRA: 1 });
+
+    const res = await reset('stats-secret');
+    expect((await res.json())).toEqual({ reset: true, codes: { VALEN: 0, CAFECONSOMBRA: 0 } });
+
+    // el premium de quien ya canjeó sigue en KV: se borró la métrica, no el acceso
+    expect([...kvStore.keys()].some((k) => k.startsWith('premium:'))).toBe(true);
+  });
+
+  test('no se puede resetear sin el secreto', async () => {
+    await redeem('VALEN', 'r3');
+    expect((await reset('mal')).status).toBe(404);
+    expect((await (await stats('stats-secret')).json()).codes.VALEN).toBe(1);
   });
 });

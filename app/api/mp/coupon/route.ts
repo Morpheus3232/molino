@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hashProfile } from '@/lib/mercadopago';
-import { grantPremiumAccess, savePremiumToken, saveProfileSalt, countCouponRedemption, getCouponCounts } from '@/lib/kv';
+import { grantPremiumAccess, savePremiumToken, saveProfileSalt, countCouponRedemption, getCouponCounts, resetCouponCounts } from '@/lib/kv';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, COUPON_RATE_LIMIT } from '@/lib/rate-limit';
 import { isValidDate } from '@/lib/validation';
 
@@ -99,6 +99,19 @@ export async function GET(req: NextRequest) {
   return new NextResponse(renderStatsPage(codes), {
     headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' },
   });
+}
+
+/**
+ * DELETE /api/mp/coupon?secret=... → contadores a cero.
+ * Borra sólo la métrica: quien ya canjeó conserva su acceso.
+ */
+export async function DELETE(req: NextRequest) {
+  const secret = process.env.COUPON_STATS_SECRET;
+  if (!secret || req.nextUrl.searchParams.get('secret') !== secret) {
+    return new NextResponse('Not found', { status: 404 });
+  }
+  await resetCouponCounts(COUPON_CODES);
+  return NextResponse.json({ reset: true, codes: await getCouponCounts(COUPON_CODES) });
 }
 
 /** Escapa el código antes de meterlo en el HTML: sale de una env var, pero
