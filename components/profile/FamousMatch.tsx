@@ -1,23 +1,107 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import {
   findFamousMatches,
   type FamousMatchResult,
 } from "@/lib/data/famousPeopleToEntities";
+import { PERSON_IMAGE_URLS } from "@/lib/data/person-images";
 import { ZODIAC_SYMBOLS, ELEMENT_COLORS } from "@/lib/data/constants";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import { Sparkles, Users, Award, Compass, Star, Check } from "lucide-react";
-import EntityVisual from "@/components/ui/EntityVisual";
+import { Sparkles, Users, Star } from "lucide-react";
+import EntityIcon from "@/components/ui/EntityIcon";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 
 interface FamousMatchProps {
   profile: UserProfile;
   className?: string;
+}
+
+/**
+ * Retrato de la figura. Cuando Wikipedia no tiene foto se cae a la silueta
+ * genérica del sitio, centrada sobre el mismo fondo, para que el hueco no se
+ * lea como una imagen rota. `object-top` porque en los retratos de Wikipedia
+ * la cara casi siempre está en el tercio superior y un `center` la recorta.
+ */
+function Portrait({ name, id, className = "" }: { name: string; id: string; className?: string }) {
+  const [errored, setErrored] = useState(false);
+  const src = PERSON_IMAGE_URLS[id];
+
+  return (
+    <div className={`relative overflow-hidden bg-ink/[0.06] ${className}`}>
+      {src && !errored ? (
+        <Image
+          src={src}
+          alt={name}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover object-top"
+          onError={() => setErrored(true)}
+        />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center text-foreground/25">
+          <EntityIcon kind="person" size={56} title={name} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Las tres coordenadas en una sola línea. Antes eran tres cajas con borde que
+ * repetían el dato que el titular ya decía ("Compartís Número de Vida 5 y
+ * Zodíaco Chino"). Acá el titular explica y esta línea muestra los valores:
+ * las que coinciden en el color del elemento, el resto apagado.
+ */
+function Coordinates({
+  match,
+  elementColor,
+}: {
+  match: FamousMatchResult;
+  elementColor: string;
+}) {
+  const { person, matchLifePath, matchSunSign, matchChineseZodiac } = match;
+  const zodiacDisplay = getZodiacDisplay(person.chineseZodiac);
+  const sunSymbol = ZODIAC_SYMBOLS[person.sunSign] || "☀";
+  const on = (hit: boolean) =>
+    hit ? { color: elementColor, fontWeight: 700 } : undefined;
+
+  return (
+    <div className="flex items-center gap-2 font-mono text-xs border-t border-ink/10 pt-2.5 mt-3">
+      <span
+        className={`inline-flex items-center gap-1 ${matchChineseZodiac ? "" : "text-muted/70"}`}
+        style={on(matchChineseZodiac)}
+        title={`Zodíaco chino: ${zodiacDisplay.name}`}
+      >
+        <ZodiacAnimalIcon animal={person.chineseZodiac} size={13} className="shrink-0" />
+        {zodiacDisplay.name}
+      </span>
+      <span className="text-ink/20" aria-hidden>
+        ·
+      </span>
+      <span
+        className={matchLifePath ? "" : "text-muted/70"}
+        style={on(matchLifePath)}
+        title={`Camino de vida: ${person.lifePath}`}
+      >
+        Camino {person.lifePath}
+      </span>
+      <span className="text-ink/20" aria-hidden>
+        ·
+      </span>
+      <span
+        className={matchSunSign ? "" : "text-muted/70"}
+        style={on(matchSunSign)}
+        title={`Signo solar: ${person.sunSign}`}
+      >
+        {sunSymbol} {person.sunSign}
+      </span>
+    </div>
+  );
 }
 
 function MatchCard({
@@ -31,154 +115,114 @@ function MatchCard({
   elementColor: string;
   featured?: boolean;
 }) {
-  const { person, matchLifePath, matchSunSign, matchChineseZodiac, matchCount, headline } = match;
-  const zodiacDisplay = getZodiacDisplay(person.chineseZodiac);
-  const sunSymbol = ZODIAC_SYMBOLS[person.sunSign] || "☀️";
+  const { person, matchCount, headline } = match;
+  const birthYear = person.birthDate ? person.birthDate.split("-")[0] : "";
 
-  const birthYearFormatted = person.birthDate ? person.birthDate.split("-")[0] : "";
+  // Un solo badge por tarjeta. Antes "Principal" y "Doble" se posicionaban
+  // absolutos en la misma esquina con el mismo fondo, así que en la primera
+  // tarjeta se dibujaban pegados y contra el nombre. "Principal" ya implica
+  // ser la coincidencia más fuerte, así que gana y el otro no se muestra.
+  const badge = featured
+    ? { label: "Principal", Icon: Star }
+    : matchCount >= 2
+      ? { label: matchCount === 3 ? "Triple" : "Doble", Icon: Sparkles }
+      : null;
+
+  // La tarjeta principal va apaisada y al doble de ancho: la foto ocupa su
+  // propia columna y el texto respira. El resto son verticales.
+  if (featured) {
+    return (
+      <motion.article
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        className="sm:col-span-2 rounded-lg border border-accent/30 bg-gradient-to-br from-card to-background shadow-md overflow-hidden flex flex-col sm:flex-row"
+      >
+        <div className="relative sm:w-[42%] shrink-0">
+          <Portrait
+            name={person.name}
+            id={person.id}
+            className="h-56 sm:h-full sm:min-h-[19rem]"
+          />
+          {badge && (
+            <span className="absolute top-0 left-0 inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2.5 py-1 rounded-br-lg bg-accent text-background font-bold shadow-sm">
+              <badge.Icon className="w-3 h-3" />
+              {badge.label}
+            </span>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0 p-5 flex flex-col">
+          <h3 className="font-heading text-xl sm:text-2xl font-bold text-foreground leading-tight">
+            {person.name}
+          </h3>
+          <p className="font-mono text-xs uppercase tracking-wider text-muted mt-1.5">
+            {person.field} · {person.country}
+            {birthYear ? ` · ${birthYear}` : ""}
+          </p>
+
+          <p className="text-sm font-medium text-foreground leading-snug flex items-start gap-1.5 mt-3.5">
+            <Star className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
+            <span>{headline}</span>
+          </p>
+
+          <p className="text-sm text-muted mt-2.5 leading-relaxed">{person.shortBio}</p>
+
+          {person.quote && (
+            <blockquote className="mt-3 text-sm italic text-foreground/80 border-l-2 border-accent/40 pl-2.5 py-0.5">
+              &ldquo;{person.quote}&rdquo;
+            </blockquote>
+          )}
+
+          <div className="mt-auto">
+            <Coordinates match={match} elementColor={elementColor} />
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.1 * Math.min(index, 4), ease: [0.22, 1, 0.36, 1] }}
-      className={`rounded-md border p-4 sm:p-5 transition-all relative overflow-hidden flex flex-col ${
+      className={`rounded-lg border overflow-hidden flex flex-col transition-shadow hover:shadow-md ${
         matchCount >= 2
           ? "bg-gradient-to-br from-card to-background border-accent/30 shadow-sm"
           : "bg-card border-ink/10 shadow-sm"
       }`}
     >
-      {/* Top resonance badge */}
-      <div className="absolute top-0 right-0 flex">
-        {featured && (
-          <span className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
-            <Star className="w-2.5 h-2.5" />
-            Principal
-          </span>
-        )}
-        {matchCount >= 2 && (
-          <span className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-bl-lg bg-accent text-background font-bold shadow-sm">
-            <Sparkles className="w-2.5 h-2.5" />
-            {matchCount === 3 ? "Triple" : "Doble"}
+      <div className="relative">
+        <Portrait name={person.name} id={person.id} className="h-44 w-full" />
+        {badge && (
+          <span className="absolute top-0 left-0 inline-flex items-center gap-1 font-mono text-xs uppercase tracking-[0.14em] px-2 py-0.5 rounded-br-lg bg-accent text-background font-bold shadow-sm">
+            <badge.Icon className="w-2.5 h-2.5" />
+            {badge.label}
           </span>
         )}
       </div>
 
-      {/* Header: Visual + Name + Meta */}
-      <div className="flex-1">
-      <div className="flex items-start gap-3">
-        <EntityVisual
-          name={person.name}
-          emoji={person.emoji}
-          visualType="portrait"
-          countryISO={getCountryISO(person.country) ?? undefined}
-          size={36}
-          className="shrink-0 mt-0.5"
-        />
-        <div className="min-w-0 flex-1 pr-14">
-          <h3 className="font-heading text-sm sm:text-base font-bold text-foreground leading-tight">
-            {person.name}
-          </h3>
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 mt-1">
-            <span className="font-mono text-xs uppercase tracking-wider px-1.5 py-0.5 rounded border bg-ink/5 text-muted border-ink/10">
-              {person.field}
-            </span>
-            <span className="text-xs text-muted">
-              {person.country} {birthYearFormatted ? `· ${birthYearFormatted}` : ""}
-            </span>
-          </div>
-        </div>
-      </div>
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-heading text-base font-bold text-foreground leading-tight">
+          {person.name}
+        </h3>
+        <p className="font-mono text-xs uppercase tracking-wider text-muted mt-1">
+          {person.field} · {person.country}
+          {birthYear ? ` · ${birthYear}` : ""}
+        </p>
 
-      {/* Headline callout */}
-      <div className={`mt-3 p-2.5 rounded-lg bg-background/60 border border-ink/5`}>
-        <p className="text-xs sm:text-xs font-medium text-foreground leading-snug flex items-start gap-1.5">
-          <Star className="w-3 h-3 text-accent mt-0.5 flex-shrink-0" />
+        <p className="text-xs font-medium text-foreground leading-snug flex items-start gap-1.5 mt-3">
+          <Star className="w-3 h-3 text-accent mt-0.5 shrink-0" />
           <span>{headline}</span>
         </p>
-      </div>
 
-      {/* Bio */}
-      <p className="text-xs text-muted mt-2.5 leading-relaxed line-clamp-3">
-        {person.shortBio}
-      </p>
+        <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-3">
+          {person.shortBio}
+        </p>
 
-      {/* Quote if available */}
-      {person.quote && (
-        <blockquote className="mt-2.5 text-xs italic text-foreground/80 border-l-2 border-accent/40 pl-2 py-0.5">
-          &ldquo;{person.quote}&rdquo;
-        </blockquote>
-      )}
-      </div>
-
-      {/* Pillars Breakdown — Zodíaco chino primero y a ancho completo (es el
-          pilar que organiza la sección); Camino/Solar debajo en dos columnas.
-          Sin truncamientos: los nombres largos ("Capricornio") entran en media
-          tarjeta. Coincidencias marcadas con check y color del elemento. */}
-      <div className="mt-4 space-y-1">
-        {/* Chinese Zodiac — pilar principal, fila completa */}
-        <div
-          className={`flex items-center justify-between px-2.5 py-1.5 rounded-md border transition-colors ${
-            matchChineseZodiac ? "font-semibold" : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
-          }`}
-          style={
-            matchChineseZodiac
-              ? { backgroundColor: `${elementColor}1a`, borderColor: `${elementColor}4d`, color: elementColor }
-              : undefined
-          }
-        >
-          <span className="flex items-center gap-1 font-mono text-xs uppercase tracking-wider">
-            Zodíaco
-            {matchChineseZodiac && <Check className="w-2.5 h-2.5" aria-label="Coincide" />}
-          </span>
-          <span className="font-mono text-xs font-bold inline-flex items-center gap-1.5">
-            <ZodiacAnimalIcon animal={person.chineseZodiac} size={14} className="shrink-0" />
-            {zodiacDisplay.name}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-1">
-          {/* Life Path */}
-          <div
-            className={`px-2.5 py-1.5 rounded-md border transition-colors ${
-              matchLifePath
-                ? "bg-accent/[0.06] border-accent/25"
-                : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
-            }`}
-          >
-            <span className="flex items-center justify-between font-mono text-xs uppercase tracking-wider">
-              Camino
-              {matchLifePath && <Check className="w-2.5 h-2.5 text-accent" aria-label="Coincide" />}
-            </span>
-            <span
-              className={`block font-mono text-xs font-bold text-right ${
-                matchLifePath ? "text-foreground" : ""
-              }`}
-            >
-              {person.lifePath}
-            </span>
-          </div>
-
-          {/* Sun Sign */}
-          <div
-            className={`px-2.5 py-1.5 rounded-md border transition-colors ${
-              matchSunSign
-                ? "bg-accent/[0.06] border-accent/25"
-                : "bg-ink/[0.02] border-ink/5 text-muted opacity-60"
-            }`}
-          >
-            <span className="flex items-center justify-between font-mono text-xs uppercase tracking-wider">
-              Solar
-              {matchSunSign && <Check className="w-2.5 h-2.5 text-accent" aria-label="Coincide" />}
-            </span>
-            <span
-              className={`block font-mono text-xs font-bold text-right ${
-                matchSunSign ? "text-foreground" : ""
-              }`}
-            >
-              {sunSymbol} {person.sunSign}
-            </span>
-          </div>
+        <div className="mt-auto">
+          <Coordinates match={match} elementColor={elementColor} />
         </div>
       </div>
     </motion.article>
@@ -193,7 +237,6 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
     return null;
   }
 
-  const primaryMatch = matches[0];
   const totalMatchesAvailable = matches.length;
   const element = typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
   const elementColor = ELEMENT_COLORS[element] || "var(--element-fire)";
@@ -245,12 +288,12 @@ export default function FamousMatch({ profile, className = "" }: FamousMatchProp
           ))}
         </div>
 
-        {/* Subtle footer tip */}
-        <div className="mt-6 flex items-center justify-between flex-wrap gap-3 text-xs text-muted font-mono border-t border-ink/5 pt-4">
-          <span>Fechas de nacimiento documentadas en registros biográficos</span>
-          <span className="text-accent/90">
-            Coincidencia principal: {primaryMatch.person.name} ({primaryMatch.person.field})
-          </span>
+        {/* Pie: solo la procedencia del dato. Antes repetía "Coincidencia
+            principal: <nombre>", que es exactamente lo que ya dice el badge
+            Principal en la tarjeta de esa persona. */}
+        <div className="mt-6 text-xs text-muted font-mono border-t border-ink/5 pt-4">
+          Fechas de nacimiento documentadas en registros biográficos · retratos
+          de Wikipedia
         </div>
       </div>
     </section>

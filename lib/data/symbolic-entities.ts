@@ -20,7 +20,6 @@ import { BRANDS_AUTOS_60 } from "./brands-autos-60";
 import { AUTOS_ATLAS } from "./autos-atlas";
 import { ROPA_ATLAS } from "./ropa-atlas";
 import { BRANDS_ARGENTINA } from "./brands-argentina";
-import { BRAND_LOGO_DOMAINS } from "./brand-logo-domains";
 import { ENTITY_IMAGE_URLS } from "./entity-images";
 import { COUNTRIES_60 } from "./countries-60";
 import { COUNTRIES_ATLAS } from "./countries-atlas";
@@ -120,8 +119,9 @@ import { getCountryISO as resolveCountryISO } from "./country-iso";
  * visualType (by entity type) and countryISO (from the country name). No
  * per-entity hand-written visual data — the mapping is the source of truth.
  *
- * Para marcas sin imageUrl, se genera automáticamente desde Clearbit Logo API
- * usando el dominio del mapa BRAND_LOGO_DOMAINS.
+ * `imageUrl` sale de `input.imageUrl` o del mapa `ENTITY_IMAGE_URLS`
+ * (generado por scripts/fetch-wiki-images.mjs desde Wikipedia, misma fuente
+ * para todos los tipos). Sin match → ícono genérico del dominio.
  */
 export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
   const type = input.type as EntityType;
@@ -130,15 +130,7 @@ export function enrichEntity(input: AtlasEntityInput): AtlasEntity {
       ? "portrait"
       : VISUAL_TYPE_BY_TYPE[type] ?? "emoji";
   const countryISO = resolveCountryISO(input.country);
-  const imageUrl =
-    input.imageUrl ??
-    (type === "brand"
-      ? (() => {
-          const domain = BRAND_LOGO_DOMAINS[input.name];
-          return domain ? `https://logo.clearbit.com/${domain}` : undefined;
-        })()
-      : undefined) ??
-    ENTITY_IMAGE_URLS[input.id];
+  const imageUrl = input.imageUrl ?? ENTITY_IMAGE_URLS[input.id];
   return { ...input, visualType, countryISO, ...(imageUrl ? { imageUrl } : {}) };
 }
 

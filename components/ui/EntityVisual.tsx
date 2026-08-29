@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import type { VisualType } from "@/types/atlas";
@@ -82,6 +82,10 @@ export default function EntityVisual({
   size = 40,
   className = "",
 }: EntityVisualProps) {
+  // Si la imagen remota falla (URL 404, host caído), caemos al ícono genérico
+  // en vez de dejar un tile vacío.
+  const [imageErrored, setImageErrored] = useState(false);
+
   const flag = useMemo(() => {
     if (visualType !== "flag") return null;
     return countryCodeToFlagEmoji(countryISO) ?? (emoji && isRegionalFlagEmoji(emoji) ? emoji : null);
@@ -135,7 +139,7 @@ export default function EntityVisual({
   }
 
   // 2. Image-backed (logo/portrait/album) — trusted remote image.
-  if (imageUrl && (visualType === "logo" || visualType === "portrait" || visualType === "album")) {
+  if (imageUrl && !imageErrored && (visualType === "logo" || visualType === "portrait" || visualType === "album")) {
     return (
       <span
         style={baseStyle}
@@ -148,6 +152,7 @@ export default function EntityVisual({
           height={size}
           className="object-cover"
           unoptimized={false}
+          onError={() => setImageErrored(true)}
         />
       </span>
     );
