@@ -140,9 +140,13 @@ export default function HeroInstrument() {
             <span className="block mt-2 italic text-gradient-warm">Es un patrón.</span>
           </h1>
 
-          {/* Subheadline */}
+          {/* Subheadline. La segunda línea NO es decorativa: ClaritySection
+              omite a propósito el mensaje de privacidad porque cuenta con que
+              el hero lo dice (ver su comentario de cabecera). Si se saca de
+              acá, el home se queda sin esa promesa en ningún lado. */}
           <motion.p {...fadeUpMountDelayed(0.12)} className="text-lg sm:text-xl text-muted leading-relaxed max-w-xl mx-auto">
-            Se calculan numerología, astrología y zodíaco chino a partir de tu fecha.
+            Cada mapa es casi único: se construye desde tu fecha de nacimiento
+            leída como un código de ocho dígitos.
             <br className="hidden sm:block" />
             Sin registro. Tu fecha no se envía a ningún servidor.
           </motion.p>
