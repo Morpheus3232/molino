@@ -402,7 +402,7 @@ export default function SociosClient() {
                     03 · Zodíaco Chino
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
-                    Descubre tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.
+                    Descubrí tríadas de afinidad, amigos secretos y puntos de contraste tradicionales.
                   </p>
                 </div>
               </div>

@@ -87,10 +87,10 @@ const homeSchemas = [
 
 export const metadata = {
   title: "Tu Mapa Personal de Autoconocimiento",
-  description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
+  description: "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
   openGraph: {
     title: "Tu Mapa Personal de Autoconocimiento",
-    description: "Descubre tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro.",
+    description: "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro.",
     type: "website",
     url: SITE_URL,
   },

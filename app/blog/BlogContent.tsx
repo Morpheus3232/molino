@@ -15,7 +15,7 @@ const FILTERS: Filter[] = ["Todos", ...BLOG_CATEGORIES];
 const CATEGORY_META: Record<Filter, { icon: React.ComponentType<{ className?: string }>, description: string, color: string }> = {
   Todos: {
     icon: Compass,
-    description: "Explora todos los artículos",
+    description: "Explorá todos los artículos",
     color: "text-accent",
   },
   Numerología: {
