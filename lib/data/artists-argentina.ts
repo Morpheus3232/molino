@@ -144,15 +144,6 @@ export const ARTISTS_ARGENTINA: AtlasEntityInput[] = [
      events: [{ id: "gieco-nac", type: "creacion", label: "Nacimiento", date: "1951-11-20", year: 1951, description: "León Gieco nace en La Plata.", source: "Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true }],
    },
    {
-     id: "joan-manuel-serrat", name: "Joan Manuel Serrat (argentino)", type: "artist", country: "Argentina",
-     emoji: "🎤",
-     description: "Joan Manuel Serrat es figura legendaria de la música hispanohablante, poeta-cantautor.",
-     keyThemes: ["Canción de autor", "Poesía", "Clásico", "Hispanohablante"],
-     category: "Música",
-     sourceNote: "Nacido el 27 de diciembre de 1943 en Barcelona; residencia argentina.",
-     events: [{ id: "serrat-nac", type: "creacion", label: "Nacimiento", date: "1943-12-27", year: 1943, description: "Joan Manuel Serrat nace en Barcelona pero es adoptado por Argentina.", source: "Encyclopaedia Britannica", confidence: "media", primaryForAffinity: false }],
-   },
-   {
      id: "david-lebón", name: "David Lebón", type: "artist", country: "Argentina",
      emoji: "🎸",
      description: "David Lebón es guitarrista y compositor del rock nacional, miembro de Serú Girán.",

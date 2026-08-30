@@ -332,6 +332,21 @@ export const BRANDS_ESPANA: AtlasEntityInput[] = [
 // ─── ARTISTAS / PERSONAS ──────────────────────────────────
 export const ARTISTS_ESPANA: AtlasEntityInput[] = [
   {
+    id: "joan-manuel-serrat", name: "Joan Manuel Serrat", type: "artist", country: "España", emoji: "🎤",
+    description: "Cantautor y poeta barcelonés, figura central de la canción de autor en castellano y en catalán.",
+    keyThemes: ["Canción de autor", "Poesía", "Clásico", "Hispanohablante"],
+    category: "Música",
+    sourceNote: "Nacido el 27 de diciembre de 1943 en Barcelona, España.",
+    events: [
+      {
+        id: "serrat-nac", type: "creacion", label: "Nacimiento",
+        date: "1943-12-27", year: 1943,
+        description: "Nace Joan Manuel Serrat en el barrio del Poble-sec, Barcelona.",
+        source: "Encyclopaedia Britannica", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
     id: "picasso", name: "Pablo Picasso", type: "artist", country: "España", emoji: "🎨",
     description: "Pintor malagueño, cofundador del cubismo y uno de los artistas más influyentes del siglo XX.",
     keyThemes: ["Cubismo", "Arte", "Pintura", "Vanguardia"],
