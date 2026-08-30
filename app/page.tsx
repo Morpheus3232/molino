@@ -65,7 +65,12 @@ const homeSchemas = [
         name: "¿Cómo garantizan que mi fecha y datos no se guardan en servidores?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Todos los motores matemáticos se ejecutan 100% en tu propio navegador usando Web Workers: tu fecha de nacimiento se procesa en tu CPU local y nunca se transmite en texto plano. Si activás Premium o una interpretación con IA, se guarda un hash HMAC-SHA256 irreversible de tu perfil — nunca tu fecha de nacimiento en claro. Detalle completo en /privacidad.",
+          // Este texto lo amplifica Google como rich result, así que no puede
+          // llevar un absoluto que el código no cumple. Decía "nunca se
+          // transmite en texto plano": falso — /api/intelligence/interpret
+          // recibe `dob` en el body para poder armar el prompt. Lo que no se
+          // guarda es la fecha; lo que viaja, viaja.
+          text: "Depende de qué uses. Los motores de cálculo corren enteros en tu navegador: si te quedás con el mapa y la lectura gratuitos, tu fecha no sale de tu dispositivo. La Lectura Pro y las preguntas a la IA sí la envían a nuestro servidor (por HTTPS) para poder redactarse, y de ahí al proveedor del modelo. Lo que nunca guardamos es tu fecha: en la base solo queda un hash HMAC-SHA256 irreversible de tu perfil, que sirve para validar tu acceso. Detalle completo en /privacidad.",
         },
       },
       {
