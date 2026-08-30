@@ -255,6 +255,7 @@ export async function POST(req: NextRequest) {
     let aiError: string | null = null;
     let providerUsed: Provider = 'openai';
     let fallbackUsed = false;
+    let aiModelUsed = 'unknown';
     const generationStartedAt = Date.now();
 
     // Techo de gasto diario. incrementDailyCost ya venía acumulando el costo
@@ -333,6 +334,7 @@ export async function POST(req: NextRequest) {
         await Promise.race([routingPromise, globalTimeoutPromise]);
       providerUsed = usedProvider;
       fallbackUsed = usedFallback;
+      aiModelUsed = aiResponse.model || 'unknown';
 
       await recordGeneration({
         type,
@@ -501,7 +503,9 @@ export async function POST(req: NextRequest) {
         type,
         source: aiResult ? 'ai' : 'fallback',
         provider: providerUsed,
+        model: aiModelUsed,
         fallbackUsed,
+        modelOverrideApplied: PREMIUM_INTERPRETATION_TYPES.has(type) && !!process.env.AI_HEAVY_MODEL,
         durationMs: Date.now() - generationStartedAt,
         aiError: aiError || undefined,
       }));

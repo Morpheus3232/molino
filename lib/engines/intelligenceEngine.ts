@@ -50,6 +50,14 @@ export { buildMolinoContext } from './intelligence/contextBuilder';
  */
 export function buildIntelligencePrompt(request: InterpretationRequest): string {
   const useV2 = process.env.INTELLIGENCE_ENGINE_V2_ENABLED === 'true';
+  // Observabilidad: si la lectura paga (personal_profile) corre el builder
+  // legacy, NO usa la síntesis canónica de buildSynthesis (renderPersonalModel)
+  // ni emite blindSpot/lifeAreas — es una degradación silenciosa del centro
+  // intelectual del producto. El flag existe para rollback instantáneo, pero
+  // cuando se dispara en el tipo pago debe ser visible en logs, no muda.
+  if (!useV2 && request.type === 'personal_profile') {
+    console.error('[lectura_v2_disabled] type=personal_profile — la lectura paga está usando el builder legacy sin buildSynthesis canónico ni blindSpot/lifeAreas. Setear INTELLIGENCE_ENGINE_V2_ENABLED=true.');
+  }
   return useV2 ? buildIntelligencePromptV2(request) : buildIntelligencePromptLegacy(request);
 }
 

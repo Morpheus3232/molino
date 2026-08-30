@@ -193,10 +193,18 @@ export async function generateWithRouting(
 
   if (config.enableFallback) {
     const fallback = resolveEffectiveProvider(config.fallback);
-    console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${effectivePrimary}`);
-    const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs, modelOverride);
+    // NO pasar modelOverride al fallback: el identificador de modelo es
+    // específico del proveedor (ej. "anthropic/claude-3.7-sonnet" es un ID
+    // de OpenRouter, no de OpenAI). Si el modelo primario falla y el
+    // fallback intenta el mismo ID en un proveedor distinto, el request
+    // falla → todos los providers fallan → el usuario que pagó recibe el
+    // fallback determinista (template local) en vez de una interpretación
+    // real de IA. Con esto, el fallback usa su propio modelo por defecto
+    // y siempre produce una lectura genuina — de menor gama, sí, pero real.
+    console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${effectivePrimary} modelOverride_dropped=${!!modelOverride}`);
+    const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs, undefined);
     if (fallbackResult) {
-      console.log(`[AI] result=success provider=${fallback} fallback=true`);
+      console.log(`[AI] result=success provider=${fallback} fallback=true modelOverride_dropped=${!!modelOverride}`);
       return { interpretation: fallbackResult, providerUsed: fallback, fallbackUsed: true };
     }
   }
