@@ -24,8 +24,22 @@ export const dynamic = 'force-dynamic';
  * así no hay estado que expire ni ventana que vencer.
  */
 export async function GET() {
+  // Un `enabled:false` pelado no dejaba distinguir "no la cargué" de "la
+  // cargué mal", que para quien opera el sitio son problemas MUY distintos.
+  // Se informa el estado, nunca el valor: la dirección solo sale de acá
+  // cuando es válida, que es cuando igual se le muestra a quien va a pagar.
   if (!isBtcEnabled()) {
-    return NextResponse.json({ enabled: false }, { status: 503 });
+    const configurada = Boolean(process.env.BTC_ADDRESS?.trim());
+    return NextResponse.json(
+      {
+        enabled: false,
+        reason: configurada ? "direccion-invalida" : "sin-configurar",
+        detalle: configurada
+          ? "BTC_ADDRESS está cargada pero no pasa la validación de checksum. Revisá que se haya copiado completa y sin caracteres cambiados."
+          : "BTC_ADDRESS no está configurada.",
+      },
+      { status: 503 },
+    );
   }
 
   try {
