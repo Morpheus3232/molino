@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Bitcoin, Copy, Check, AlertTriangle, Loader2 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { savePremiumTokenClient } from "@/lib/premium";
@@ -17,12 +17,98 @@ interface Quote {
   uri: string;
 }
 
-interface BtcPaymentProps {
+interface BtcPanelProps {
   name?: string;
   birthDate?: string;
   salt: string;
-  onUnlocked?: () => void;
+  onUnlocked?: (premiumToken: string) => void;
   onClose: () => void;
+}
+
+interface BtcPayOptionProps {
+  name?: string;
+  birthDate?: string;
+  onUnlocked?: (premiumToken: string) => void;
+  /** Se cierra el resto de los paneles del paywall al abrir este. */
+  onOpen?: () => void;
+  className?: string;
+}
+
+const PROFILE_SALT_KEY = "molino-profile-salt";
+
+function getOrCreateProfileSalt(): string {
+  if (typeof window === "undefined") return "";
+  let salt = localStorage.getItem(PROFILE_SALT_KEY);
+  if (!salt) {
+    salt = crypto.randomUUID();
+    localStorage.setItem(PROFILE_SALT_KEY, salt);
+  }
+  return salt;
+}
+
+/**
+ * La opción de pago en BTC, entera y autocontenida: consulta si está
+ * habilitada, dibuja el botón y despliega el panel.
+ *
+ * Es un solo componente a propósito. El sitio tiene DOS paywalls
+ * —PremiumCheckout en /premium y PremiumPaywallContent en /lectura— y la
+ * primera versión de esto se cableó a mano en uno solo, así que en /lectura
+ * el botón nunca apareció. Con esto, sumar el pago en BTC a un paywall nuevo
+ * es una línea y no se puede hacer a medias.
+ */
+export function BtcPayOption({
+  name = "",
+  birthDate = "",
+  onUnlocked,
+  onOpen,
+  className = "",
+}: BtcPayOptionProps) {
+  const [enabled, setEnabled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    fetch("/api/btc/quote")
+      .then((r) => r.json())
+      .then((d) => {
+        if (vivo && d?.address) setEnabled(true);
+      })
+      .catch(() => {});
+    return () => {
+      vivo = false;
+    };
+  }, []);
+
+  if (!enabled) return null;
+
+  return (
+    <div className={className}>
+      {!open && (
+        <button
+          type="button"
+          onClick={() => {
+            onOpen?.();
+            setOpen(true);
+          }}
+          className="w-full py-3.5 rounded-md border border-ink/15 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors inline-flex items-center justify-center gap-2 font-mono text-sm font-bold text-foreground"
+        >
+          <Bitcoin className="w-4 h-4 text-accent" />
+          Pagar con Bitcoin
+        </button>
+      )}
+      <AnimatePresence>
+        {open && (
+          <BtcPanel
+            name={name}
+            birthDate={birthDate}
+            salt={getOrCreateProfileSalt()}
+            onUnlocked={onUnlocked}
+            onClose={() => setOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
 }
 
 /**
@@ -40,13 +126,13 @@ interface BtcPaymentProps {
  * móvil y en desktop se copia la dirección. Si hace falta el QR para el flujo
  * desktop→teléfono, es agregar `qrcode` y pintar quote.uri.
  */
-export default function BtcPayment({
+function BtcPanel({
   name = "",
   birthDate = "",
   salt,
   onUnlocked,
   onClose,
-}: BtcPaymentProps) {
+}: BtcPanelProps) {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteError, setQuoteError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -106,7 +192,7 @@ export default function BtcPayment({
 
       savePremiumTokenClient(data.premiumToken);
       invalidatePremiumAccessCache(name, birthDate);
-      onUnlocked?.();
+      onUnlocked?.(data.premiumToken);
     } catch {
       setError("No pudimos verificar el pago. Probá de nuevo en un minuto.");
     } finally {

@@ -18,7 +18,7 @@ import {
 import { savePremiumTokenClient } from "@/lib/premium";
 import { invalidatePremiumAccessCache } from "@/lib/hooks/usePremiumAccess";
 import { analytics } from "@/lib/analytics/analytics";
-import BtcPayment from "./BtcPayment";
+import { BtcPayOption } from "./BtcPayment";
 
 const PROFILE_SALT_KEY = "molino-profile-salt";
 
@@ -54,20 +54,6 @@ export default function PremiumCheckout({
   const [recoverBirthDate, setRecoverBirthDate] = useState(birthDate);
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const [isRecovering, setIsRecovering] = useState(false);
-
-  // El pago en BTC se ofrece solo si el server tiene BTC_ADDRESS configurada;
-  // si no, el enlace ni aparece.
-  const [showBtc, setShowBtc] = useState(false);
-  const [btcEnabled, setBtcEnabled] = useState(false);
-
-  useEffect(() => {
-    let vivo = true;
-    fetch("/api/btc/quote")
-      .then((r) => r.json())
-      .then((d) => { if (vivo && d?.address) setBtcEnabled(true); })
-      .catch(() => {});
-    return () => { vivo = false; };
-  }, []);
 
   const [showCoupon, setShowCoupon] = useState(false);
   const [couponCode, setCouponCode] = useState("");
@@ -229,36 +215,19 @@ export default function PremiumCheckout({
             </Button>
           )}
 
-          {/* Bitcoin como segundo método, no como enlace escondido en el pie.
-              Secundario en peso visual porque MercadoPago sigue siendo el
-              camino principal, pero visible como lo que es: una forma de
-              pagar. Solo aparece si el server tiene BTC_ADDRESS cargada. */}
-          {btcEnabled && !showBtc && !checkoutLoading && (
-            <button
-              type="button"
-              onClick={() => {
-                setShowBtc(true);
+          {/* La opción de BTC entera en un componente: se autoconsulta si
+              está habilitada y se dibuja sola. Ver BtcPayOption. */}
+          {!checkoutLoading && (
+            <BtcPayOption
+              name={name}
+              birthDate={birthDate}
+              onUnlocked={onUnlocked}
+              onOpen={() => {
                 setShowRecover(false);
                 setShowCoupon(false);
               }}
-              className="w-full py-3.5 rounded-md border border-ink/15 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors inline-flex items-center justify-center gap-2 font-mono text-sm font-bold text-foreground"
-            >
-              <Bitcoin className="w-4 h-4 text-accent" />
-              Pagar con Bitcoin ($8 USD)
-            </button>
+            />
           )}
-
-          <AnimatePresence>
-            {showBtc && (
-              <BtcPayment
-                name={name}
-                birthDate={birthDate}
-                salt={getOrCreateProfileSalt()}
-                onUnlocked={onUnlocked}
-                onClose={() => setShowBtc(false)}
-              />
-            )}
-          </AnimatePresence>
 
           {errorMsg && (
             <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
@@ -275,7 +244,6 @@ export default function PremiumCheckout({
               onClick={() => {
                 setShowRecover(true);
                 setShowCoupon(false);
-                setShowBtc(false);
               }}
               className="hover:text-accent transition-colors underline"
             >
@@ -289,7 +257,6 @@ export default function PremiumCheckout({
               onClick={() => {
                 setShowCoupon(true);
                 setShowRecover(false);
-                setShowBtc(false);
               }}
               className="hover:text-accent transition-colors underline"
             >

@@ -22,6 +22,7 @@ import {
   Clock,
 } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import { BtcPayOption } from '@/components/premium/BtcPayment';
 import FeatureComparison from '@/components/premium/FeatureComparison';
 import type { Dictionary } from '@/lib/i18n/dictionaries/es';
 
@@ -45,6 +46,10 @@ interface PremiumPaywallContentProps {
   chargePriceUsd: number;
   mercadoPagoEnabled: boolean;
   onCheckout: () => void;
+  /** Para el pago en BTC, que arma el hash de perfil igual que el resto. */
+  name?: string;
+  birthDate?: string;
+  onUnlocked?: (premiumToken: string) => void;
 
   showRecover: boolean;
   setShowRecover: (show: boolean) => void;
@@ -75,6 +80,9 @@ export default function PremiumPaywallContent({
   chargePriceUsd,
   mercadoPagoEnabled,
   onCheckout,
+  name,
+  birthDate,
+  onUnlocked,
   showRecover,
   setShowRecover,
   recoverPaymentId,
@@ -262,6 +270,19 @@ export default function PremiumPaywallContent({
             {t.premium.paymentUnavailable}
           </p>
         )}
+
+        {/* Bitcoin como segundo método, debajo de MercadoPago. Se dibuja solo
+            si el server tiene BTC_ADDRESS válida; si no, no ocupa lugar. */}
+        <BtcPayOption
+          name={name}
+          birthDate={birthDate}
+          onUnlocked={onUnlocked}
+          onOpen={() => {
+            setShowRecover(false);
+            setShowCoupon(false);
+          }}
+          className="mt-3"
+        />
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-muted/90 font-mono">
           <span className="flex items-center gap-1.5">

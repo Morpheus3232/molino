@@ -273,6 +273,9 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     <AnimatePresence mode="wait">
       {state === 'locked' && (
         <PremiumPaywallContent
+          name={name}
+          birthDate={birthDate}
+          onUnlocked={(premiumToken) => commitUnlock(premiumToken)}
           t={t}
           preview={preview}
           chargePriceUsd={chargePriceUsd}
