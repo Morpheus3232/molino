@@ -172,7 +172,7 @@ export async function generateWithRouting(
   if (primary === 'omniroute') {
     if (isOmniRouteConfigured()) {
       try {
-        const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template);
+        const { interpretation, modelUsed, fallbackUsed } = await generateWithOmniRoute(user, target, result, template, modelOverride);
         console.log(`[AI] result=success provider=omniroute model=${modelUsed} fallback=${fallbackUsed}`);
         return { interpretation, providerUsed: 'omniroute', fallbackUsed };
       } catch (error) {
