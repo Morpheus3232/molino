@@ -194,7 +194,13 @@ Basado en la arquitectura del prompt y la calidad del modelo:
 
 ## 7. Que queda pendiente
 
-1. **Ejecucion con API** — requiere claves en el entorno. El harness esta listo: `npx tsx scripts/evaluate-reading.ts --api`
+1. **Ejecucion con API (BLOQUEADA por decision del dueño, 2026-08-30)** — El harness esta listo
+   (`npx tsx scripts/evaluate-reading.ts --api`), las claves estan presentes, pero el dueño
+   congelo la configuracion del modelo y no autorizo gasto en experimentos. Regla: no tocar
+   `AI_HEAVY_MODEL` (queda sin setear a proposito), no tocar routing de proveedores, no gastar
+   dinero de API en benchmarks. Si en el futuro se autoriza, el harness ya valida y avisa
+   (`--api` + `INTELLIGENCE_ENGINE_V2_ENABLED=true` + `AI_HEAVY_MODEL` seteado). No confundir
+   "bloqueado por decision" con "falta de claves".
 2. **Evaluacion humana** — un humano puntua las 15 Lecturas en los 12 criterios. El harness genera los archivos para facilitar esto.
-3. **Comparacion A/B** — correr el mismo corpus con 2 modelos y comparar scores. Util para validar la recomendacion de `MODEL_QUALITY_BENCHMARK.md`.
+3. **Comparacion A/B** — correr el mismo corpus con 2 modelos y comparar scores. Util para validar la recomendacion de `MODEL_QUALITY_BENCHMARK.md`. (Tambien bloqueada por la misma decision de no gastar.)
 4. **Degradacion por fallback** — verificar que con el fix de fallback (no pasar modelOverride al fallback provider), la Lectura de fallback sigue siendo util.
