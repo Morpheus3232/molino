@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import ClaritySection from "@/components/sections/ClaritySection";
+import ThreeLevelsSection from "@/components/sections/ThreeLevelsSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import ArchetypeMarquee from "@/components/sections/ArchetypeMarquee";
 import CTASection from "@/components/sections/CTASection";
@@ -97,8 +98,12 @@ export default function HomePage() {
         {/* Hero — Date Input */}
         <HeroInstrument />
 
-        {/* Clarity — Molino vs Traditional */}
+        {/* Clarity — qué son los tres sistemas */}
         <ClaritySection />
+
+        {/* Los tres NIVELES del producto: Mapa → Lectura → IA. Faltaban en la
+            portada; un visitante nuevo no tenía cómo distinguirlos. */}
+        <ThreeLevelsSection />
 
         {/* Features — Core del mapa (ciclos, afinidades) + ecosistema +
             Premium fusionado como su continuación, no como venta aparte */}

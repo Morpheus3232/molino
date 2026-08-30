@@ -64,6 +64,24 @@ export default function ClaritySection() {
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           </Link>
         </p>
+
+        {/* El matiz del claim "100% local". Los tres cálculos de arriba SÍ
+            corren enteros en el navegador. Lo que no: la Lectura Pro y las
+            preguntas a la IA, que mandan la fecha a un proveedor de modelo
+            para poder redactarse. Decirlo acá, al lado del claim, en vez de
+            dejar que "100% local" se lea como si valiera para todo. */}
+        <p className="mt-3 text-xs text-muted leading-relaxed max-w-2xl">
+          Estos tres cálculos corren enteros en tu navegador: tu fecha no sale de tu
+          dispositivo. Las dos funciones que usan IA —la Lectura Pro y las preguntas— sí la
+          envían a un proveedor de modelo para poder escribirse, y el acceso pago se valida
+          con un hash de tu perfil, nunca con tu fecha en claro.{" "}
+          <Link
+            href="/privacidad"
+            className="text-accent font-medium underline-offset-4 hover:underline"
+          >
+            Política de privacidad
+          </Link>
+        </p>
       </div>
     </section>
   );

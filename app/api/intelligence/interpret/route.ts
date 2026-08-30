@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { calculateUserProfile } from '@/lib/engines/profileBuilder';
+import { buildSynthesis } from '@/lib/engines/synthesisEngine';
 import {
   buildMolinoContext,
   buildIntelligencePrompt,
@@ -226,8 +227,13 @@ export async function POST(req: NextRequest) {
       decision,
     });
 
+    // Modelo personal unificado (buildSynthesis) computado del UserProfile
+    // completo — la fuente canónica que también consumen /profile y /lectura.
+    // El prompt lo usa en vez de re-derivar patrones/tensiones/convergencias.
+    const synthesis = buildSynthesis(profile);
+
     const fallback = generateFallbackInterpretation({ type, context, question });
-    const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext });
+    const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext, synthesis });
     const promptHash = generatePromptHash(prompt);
 
     if (isRegenerate) {
@@ -300,13 +306,25 @@ export async function POST(req: NextRequest) {
       // timeout que este mismo cambio le acaba de dar a personal_profile/
       // question en el paso anterior, así que el techo también es por tipo.
       const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 65_000 : 35_000;
+
+      // El centro intelectual de la Lectura (personal_profile) y el chat
+      // anclado (question) piden síntesis multi-sistema y prosa cuidada en
+      // español rioplatense — no el mismo modelo barato que sirve daily/
+      // timing/compatibility. AI_HEAVY_MODEL (sin default en código: lo setea
+      // ops, así no sube el gasto solo) fuerza un modelo de gama alta para
+      // esos dos tipos. Si no está seteada, no cambia nada.
+      const modelOverride = PREMIUM_INTERPRETATION_TYPES.has(type)
+        ? (process.env.AI_HEAVY_MODEL || undefined)
+        : undefined;
+
       const routingPromise = generateWithRouting(
         profile,
         entity || { name: 'Análisis' },
         compatResult,
         prompt,
         provider,
-        timeoutMs
+        timeoutMs,
+        modelOverride
       );
       const globalTimeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => reject(new Error('global_ai_timeout')), globalTimeoutMs);

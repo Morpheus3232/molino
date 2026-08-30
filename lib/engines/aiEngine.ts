@@ -217,10 +217,11 @@ export async function generateWithOpenAI(
   target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
-  timeoutMs?: number
+  timeoutMs?: number,
+  modelOverride?: string
 ): Promise<AIInterpretation> {
   const apiKey = process.env.OPENAI_API_KEY;
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+  const model = modelOverride || process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY no configurada');
@@ -296,10 +297,11 @@ export async function generateWithClaude(
   target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
-  timeoutMs?: number
+  timeoutMs?: number,
+  modelOverride?: string
 ): Promise<AIInterpretation> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  const model = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
+  const model = modelOverride || process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-20241022';
 
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY no configurada');
@@ -373,10 +375,11 @@ export async function generateWithOpenRouter(
   target: CompatibilityTarget,
   result: CompatibilityResult,
   template?: string,
-  timeoutMs?: number
+  timeoutMs?: number,
+  modelOverride?: string
 ): Promise<AIInterpretation> {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  const model = process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT;
+  const model = modelOverride || process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT;
 
   if (!apiKey) {
     throw new Error('OPENROUTER_API_KEY no configurada');

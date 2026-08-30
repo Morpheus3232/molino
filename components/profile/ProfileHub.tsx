@@ -13,6 +13,7 @@ import { safeNumber } from "@/lib/utils/score";
 import PersonalSigil from "@/components/ui/PersonalSigil";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
 import PersonalMapSection from "@/components/profile/PersonalMapSection";
+import ReadingThreshold from "@/components/profile/ReadingThreshold";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
@@ -166,6 +167,14 @@ export default function ProfileHub({
           y pantalla con afinidad de 3 casillas.
           ═══════════════════════════════════════════════ */}
       <PersonalMapSection profile={profile} catalog={catalog} />
+
+      {/* ═══════════════════════════════════════════════
+          EL UMBRAL — el corte entre MAPA (estructura) y
+          LECTURA (síntesis). Único bloque invertido de la
+          página; muestra lo que buildSynthesis ya encontró
+          en ESTE mapa, no una promesa genérica.
+          ═══════════════════════════════════════════════ */}
+      {!isDemo && <ReadingThreshold profile={profile} />}
 
       {/* ═══════════════════════════════════════════════
           ACCIONES DEL MAPA — Guardar / Rehacer

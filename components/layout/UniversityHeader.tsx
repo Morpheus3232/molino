@@ -79,35 +79,45 @@ const MODES_LINKS: NavLink[] = [
   { href: "/regalar", label: "Regalar Mapa 🎁" },
 ];
 
-// "Aprender" difiere apenas por perfil: sin perfil, Atlas ya es un link CORE
-// (no se duplica acá); con perfil, Atlas deja de ser CORE y entra a Explorar.
-const LEARN_LINKS_NO_PROFILE: NavLink[] = [
-  { href: "/academy", label: "Academia" },
-  { href: "/biblioteca", label: "Biblioteca" },
+// "Conocimiento" — los tres sistemas son la arquitectura intelectual
+// dominante, así que van PRIMERO. Después el resto del contenido educativo.
+// Antes este grupo se llamaba "Aprender" y arrancaba por Academia/Biblioteca,
+// dejando `/conocimiento/*` (la autoridad SEO) sin puerta en el header.
+const KNOWLEDGE_LINKS: NavLink[] = [
+  { href: "/conocimiento/numerologia", label: "Numerología" },
+  { href: "/conocimiento/astrologia", label: "Astrología" },
+  { href: "/conocimiento/zodiaco-chino", label: "Zodíaco chino" },
   { href: "/blog", label: "Blog" },
+  { href: "/biblioteca", label: "Biblioteca" },
+  { href: "/academy", label: "Academia" },
 ];
 
-const LEARN_LINKS_WITH_PROFILE: NavLink[] = [
-  { href: "/academy", label: "Academia" },
+// Con perfil, Atlas deja de ser link CORE del header y se agrega acá.
+const KNOWLEDGE_LINKS_WITH_PROFILE: NavLink[] = [
+  ...KNOWLEDGE_LINKS,
   { href: "/atlas", label: "Atlas" },
-  { href: "/biblioteca", label: "Biblioteca" },
-  { href: "/blog", label: "Blog" },
 ];
 
-// El bloque de aprender es enteramente accesible sin mapa, así que sube al
-// header como grupo propio en vez de quedar sepultado en un cajón.
-const LEARN_GROUPS_NO_PROFILE: NavGroup[] = [{ links: LEARN_LINKS_NO_PROFILE }];
+// "Proyecto" — la identidad open-source deja de vivir solo en el footer.
+const PROJECT_LINKS: NavLink[] = [
+  { href: "/filosofia", label: "Filosofía" },
+  { href: "/transparencia", label: "Transparencia" },
+  { href: "/metodos-y-fuentes", label: "Métodos y fuentes" },
+  { href: "/changelog", label: "Changelog" },
+];
 
-// Modos (Socios/Parejas) también suben al header como grupo propio, en
-// ambos estados — no necesitan un mapa activo para tener sentido, y vivían
-// enterrados dentro de "Explorar"/footer sin puerta de entrada visible.
+// Conocimiento es accesible sin mapa — sube al header como grupo propio.
+const KNOWLEDGE_GROUPS_NO_PROFILE: NavGroup[] = [{ links: KNOWLEDGE_LINKS }];
+
+// Con perfil, Conocimiento NO desaparece del centro (antes sí — el usuario
+// con mapa perdía toda puerta a `/conocimiento` desde el header).
+const KNOWLEDGE_GROUPS_WITH_PROFILE: NavGroup[] = [{ links: KNOWLEDGE_LINKS_WITH_PROFILE }];
+
+const PROJECT_GROUPS: NavGroup[] = [{ links: PROJECT_LINKS }];
+
+// Modos (Socios/Parejas/Regalar) suben al header como grupo propio en ambos
+// estados.
 const MODES_GROUPS: NavGroup[] = [{ links: MODES_LINKS }];
-
-// Modos ya no repite acá — tiene su propio dropdown/sección arriba en
-// ambos estados. Explorar (con perfil) queda solo con lo que sigue sin
-// puerta propia: Aprender, que para el usuario con mapa no justifica un
-// quinto grupo en el centro (Atlas ya vive en Afinidades/Mi Mapa).
-const EXPLORE_GROUPS_WITH_PROFILE: NavGroup[] = [{ links: LEARN_LINKS_WITH_PROFILE }];
 
 // Categorías reales de /affinity/[type] — mismas 7 que generateStaticParams
 // en app/affinity/[type]/page.tsx. No se agrega ninguna que no tenga ruta.
@@ -140,7 +150,7 @@ const TIME_GROUPS: NavGroup[] = [
   },
 ];
 
-type MenuId = "explore" | "affinities" | "time" | "learn" | "modes";
+type MenuId = "explore" | "affinities" | "time" | "knowledge" | "modes" | "project";
 
 export default function UniversityHeader() {
   const pathname = usePathname();
@@ -264,9 +274,6 @@ export default function UniversityHeader() {
   // del sitio rompe esa sensación de "testamento que se despliega solo".
   if (pathname.startsWith("/lectura")) return null;
 
-  // Solo el menú móvil con perfil sigue usando "Explorar" — Aprender/Modos
-  // en el estado sin perfil ya son secciones propias en el mobile de arriba.
-  const exploreGroups = EXPLORE_GROUPS_WITH_PROFILE;
   // El label anterior de la bóveda era el plural literal del ancla del
   // centro: dos etiquetas casi idénticas a tres ítems de distancia, una para
   // el mapa activo y otra para la bóveda. "Guardados" no compite con ella.
@@ -304,6 +311,15 @@ export default function UniversityHeader() {
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navegación principal">
             {!hasProfile ? (
               <>
+                <NavDropdown
+                  id="knowledge"
+                  label="Conocimiento"
+                  groups={KNOWLEDGE_GROUPS_NO_PROFILE}
+                  isOpen={openMenu === "knowledge"}
+                  isActive={isGroupActive(KNOWLEDGE_GROUPS_NO_PROFILE)}
+                  onToggle={() => toggleMenu("knowledge")}
+                  isActiveLink={isActive}
+                />
                 <Link
                   href={NO_PROFILE_LINKS.atlas.href}
                   className={navButtonClass(isActive(NO_PROFILE_LINKS.atlas.href))}
@@ -321,15 +337,6 @@ export default function UniversityHeader() {
                   isActiveLink={isActive}
                 />
                 <NavDropdown
-                  id="learn"
-                  label="Aprender"
-                  groups={LEARN_GROUPS_NO_PROFILE}
-                  isOpen={openMenu === "learn"}
-                  isActive={isGroupActive(LEARN_GROUPS_NO_PROFILE)}
-                  onToggle={() => toggleMenu("learn")}
-                  isActiveLink={isActive}
-                />
-                <NavDropdown
                   id="modes"
                   label="Modos"
                   groups={MODES_GROUPS}
@@ -338,16 +345,27 @@ export default function UniversityHeader() {
                   onToggle={() => toggleMenu("modes")}
                   isActiveLink={isActive}
                 />
-                <Link
-                  href={NO_PROFILE_LINKS.journal.href}
-                  className={navButtonClass(isActive(NO_PROFILE_LINKS.journal.href))}
-                  aria-current={pathname === NO_PROFILE_LINKS.journal.href ? "page" : undefined}
-                >
-                  {NO_PROFILE_LINKS.journal.label}
-                </Link>
+                <NavDropdown
+                  id="project"
+                  label="Proyecto"
+                  groups={PROJECT_GROUPS}
+                  isOpen={openMenu === "project"}
+                  isActive={isGroupActive(PROJECT_GROUPS)}
+                  onToggle={() => toggleMenu("project")}
+                  isActiveLink={isActive}
+                />
               </>
             ) : (
               <>
+                <NavDropdown
+                  id="knowledge"
+                  label="Conocimiento"
+                  groups={KNOWLEDGE_GROUPS_WITH_PROFILE}
+                  isOpen={openMenu === "knowledge"}
+                  isActive={isGroupActive(KNOWLEDGE_GROUPS_WITH_PROFILE)}
+                  onToggle={() => toggleMenu("knowledge")}
+                  isActiveLink={isActive}
+                />
                 <NavDropdown
                   id="affinities"
                   label="Afinidades"
@@ -414,6 +432,13 @@ export default function UniversityHeader() {
                     >
                       Mi Lectura
                     </Link>
+                    <Link
+                      href="/ai"
+                      className={navButtonClass(isActive("/ai"))}
+                      aria-current={pathname === "/ai" ? "page" : undefined}
+                    >
+                      Preguntá
+                    </Link>
                   </>
                 )}
                 <button
@@ -467,17 +492,20 @@ export default function UniversityHeader() {
                     >
                       CREAR MI MAPA
                     </Link>
+                    <MobileGroups groups={KNOWLEDGE_GROUPS_NO_PROFILE} heading="Conocimiento" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={NO_PROFILE_LINKS.atlas} isActive={isActive} onClick={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS_NO_PROFILE} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
-                    <MobileGroups groups={LEARN_GROUPS_NO_PROFILE} heading="Aprender" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={PROJECT_GROUPS} heading="Proyecto" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={NO_PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
                   </>
                 ) : (
                   <>
+                    <MobileGroups groups={KNOWLEDGE_GROUPS_WITH_PROFILE} heading="Conocimiento" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={AFFINITY_GROUPS} heading="Afinidades" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={TIME_GROUPS} heading="Tiempo" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileGroups groups={MODES_GROUPS} heading="Modos" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
+                    <MobileGroups groups={PROJECT_GROUPS} heading="Proyecto" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                     <MobileLink link={PROFILE_LINKS.journal} isActive={isActive} onClick={() => setMenuOpen(false)} />
 
                     <div className="border-t border-ink/10 my-2" />
@@ -500,10 +528,16 @@ export default function UniversityHeader() {
                         Mi Lectura
                       </Link>
                     )}
+                    <Link
+                      href="/ai"
+                      className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-foreground hover:text-accent"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      Preguntá (IA)
+                    </Link>
                     <div className="px-3 py-1.5">
                       <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>
-                    <MobileGroups groups={exploreGroups} heading="Explorar" isActive={isActive} onNavigate={() => setMenuOpen(false)} />
                   </>
                 )}
 

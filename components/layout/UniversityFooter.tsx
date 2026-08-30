@@ -9,44 +9,51 @@ import { getMemberCount } from "@/lib/metrics";
 // aparecer en alguna de estas cuatro columnas o queda sin puerta de entrada.
 const FOOTER_COLUMNS = [
   {
-    title: "Tu mapa",
+    title: "Mi Molino",
     links: [
-      { href: "/mundo", label: "Afinidades" },
+      { href: "/profile", label: "Mi Mapa" },
+      { href: "/lectura", label: "Mi Lectura" },
+      { href: "/ai", label: "Preguntá (IA)" },
       { href: "/pareja", label: "Modo Pareja" },
       { href: "/premium", label: "Premium" },
-      { href: "/regalar", label: "Regalar mapa 🎁" },
       { href: "/onboarding", label: "Crear mi mapa" },
     ],
   },
   {
-    title: "Explorar",
+    title: "Conocer y explorar",
     links: [
-      { href: "/atlas", label: "Atlas" },
-      { href: "/academy", label: "Academia" },
-      { href: "/biblioteca", label: "Biblioteca" },
+      { href: "/conocimiento/numerologia", label: "Numerología" },
+      { href: "/conocimiento/astrologia", label: "Astrología" },
+      { href: "/conocimiento/zodiaco-chino", label: "Zodíaco chino" },
       { href: "/blog", label: "Blog" },
-      { href: "/journal", label: "Journal" },
+      { href: "/biblioteca", label: "Biblioteca" },
+      { href: "/academy", label: "Academia" },
+      { href: "/affinity", label: "Afinidades" },
+      { href: "/atlas", label: "Atlas" },
       { href: "/calendario", label: "Calendario" },
+      { href: "/journal", label: "Journal" },
     ],
   },
   {
-    title: "Molino",
+    title: "Proyecto",
     links: [
-      { href: "/nosotros", label: "Nosotros" },
-      { href: "/profesionales", label: "Profesionales" },
-      { href: "/socios", label: "Socios" },
-      { href: "/embed", label: "Widget" },
-      { href: "/docs", label: "API / Docs" },
-    ],
-  },
-  {
-    title: "Transparencia",
-    links: [
-      { href: "/metodos-y-fuentes", label: "Métodos y Fuentes" },
+      { href: "/filosofia", label: "Filosofía" },
       { href: "/transparencia", label: "Transparencia" },
+      { href: "/metodos-y-fuentes", label: "Métodos y fuentes" },
+      { href: "/changelog", label: "Changelog" },
+      { href: "/docs", label: "API / Docs" },
+      { href: "/nosotros", label: "Nosotros" },
+    ],
+  },
+  {
+    title: "Más",
+    links: [
+      { href: "/regalar", label: "Regalar mapa 🎁" },
+      { href: "/socios", label: "Modo Socios" },
+      { href: "/profesionales", label: "Para profesionales" },
+      { href: "/widget", label: "Widget para tu sitio" },
       { href: "/privacidad", label: "Privacidad" },
       { href: "/terminos", label: "Términos" },
-      { href: "/changelog", label: "Changelog" },
     ],
   },
 ];

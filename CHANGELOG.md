@@ -16,7 +16,7 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1
 - **Experiencia de Regalar Mapa / Lectura Pro (`/regalar`):**
   - Verificación y blindaje del flujo completo de regalo de mapas: compra sin conocer la fecha de nacimiento previa, generación de código unívoco `MOLINO-XXXX-XXXX`, y canje instantáneo (`CanjeClient.tsx`) con guardado automático del perfil y activación del token Pro sin pantallas vacías.
   - Integración y promoción visible de "Regalar mapa 🎁" en todo el sitio: acceso directo en la barra de navegación (`UniversityHeader.tsx` en Modos), en el pie de página (`UniversityFooter.tsx`), tarjeta destacada en `/premium` (`PremiumClient.tsx`), enlace en el paywall (`PremiumPaywallContent.tsx`), y tarjeta de invitación al pie de la lectura completa (`LaLecturaExperience.tsx`).
-  - Rediseño de la landing `/regalar` (`RegalarClient.tsx`) con valor claro, desglose de beneficios y opciones de envío instantáneo por WhatsApp.
+  - Rediseño de la landing `/regalar` (`RegalarClient.tsx`) con valor claro, desglose de beneficios y envío instantáneo por enlace compartible.
   - Soporte de `returnPath` dinámico en las preferencias de pago para que quienes compren desde `/lectura` o `/premium` regresen directo a `/lectura` a ver su lectura generándose en vivo.
   - `/lectura` (`LecturaClient.tsx`) ahora resuelve de forma transparente el perfil desde `localStorage` ante accesos directos o redirecciones sin hash en la URL, eliminando fricción.
   - Reemplazo de llamadas a `window.open` bloqueadas por navegadores móviles por una pantalla de revelación celebratoria (`PremiumUnlockReveal.tsx`) con botón directo a la lectura.

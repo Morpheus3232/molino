@@ -102,14 +102,15 @@ async function tryLegacyProvider(
   attempt: number = 1,
   maxRetries: number = 2,
   retryDelayMs: number = 1000,
-  timeoutMs?: number
+  timeoutMs?: number,
+  modelOverride?: string
 ): Promise<Awaited<ReturnType<typeof generateWithOpenAI>> | null> {
   try {
     const interpretation = provider === 'claude'
-      ? await generateWithClaude(user, target, result, template, timeoutMs)
+      ? await generateWithClaude(user, target, result, template, timeoutMs, modelOverride)
       : provider === 'openrouter'
-        ? await generateWithOpenRouter(user, target, result, template, timeoutMs)
-        : await generateWithOpenAI(user, target, result, template, timeoutMs);
+        ? await generateWithOpenRouter(user, target, result, template, timeoutMs, modelOverride)
+        : await generateWithOpenAI(user, target, result, template, timeoutMs, modelOverride);
     return interpretation;
   } catch (error) {
     const retryable = isRetryableError(error);
@@ -126,7 +127,7 @@ async function tryLegacyProvider(
       const delay = retryDelayMs * attempt;
       console.log(`[AI] provider=${provider} stage=retry attempt=${attempt + 1} delayMs=${delay}`);
       await sleep(delay);
-      return tryLegacyProvider(provider, user, target, result, template, attempt + 1, maxRetries, retryDelayMs, timeoutMs);
+      return tryLegacyProvider(provider, user, target, result, template, attempt + 1, maxRetries, retryDelayMs, timeoutMs, modelOverride);
     }
 
     return null;
@@ -152,7 +153,14 @@ export async function generateWithRouting(
   result: CompatibilityResult,
   template?: string,
   preferredProvider?: Provider,
-  timeoutMs?: number
+  timeoutMs?: number,
+  /**
+   * Fuerza un modelo específico para esta llamada (independiente del env por
+   * proveedor). La ruta lo setea desde AI_HEAVY_MODEL solo para los tipos
+   * premium (personal_profile / question) — el centro intelectual de la
+   * Lectura no debería correr en el modelo barato de los tipos gratuitos.
+   */
+  modelOverride?: string
 ): Promise<{
   interpretation: Awaited<ReturnType<typeof generateWithOpenAI>>;
   providerUsed: Provider;
@@ -177,7 +185,7 @@ export async function generateWithRouting(
   }
 
   const effectivePrimary = resolveEffectiveProvider(primary);
-  const primaryResult = await tryLegacyProvider(effectivePrimary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs);
+  const primaryResult = await tryLegacyProvider(effectivePrimary, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs, modelOverride);
   if (primaryResult) {
     console.log(`[AI] result=success provider=${effectivePrimary} fallback=false`);
     return { interpretation: primaryResult, providerUsed: effectivePrimary, fallbackUsed: false };
@@ -186,7 +194,7 @@ export async function generateWithRouting(
   if (config.enableFallback) {
     const fallback = resolveEffectiveProvider(config.fallback);
     console.log(`[AI] provider=${fallback} stage=request reason=primary_failed primary=${effectivePrimary}`);
-    const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs);
+    const fallbackResult = await tryLegacyProvider(fallback, user, target, result, template, 1, config.maxRetries, config.retryDelayMs, timeoutMs, modelOverride);
     if (fallbackResult) {
       console.log(`[AI] result=success provider=${fallback} fallback=true`);
       return { interpretation: fallbackResult, providerUsed: fallback, fallbackUsed: true };

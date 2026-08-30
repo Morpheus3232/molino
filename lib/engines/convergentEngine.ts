@@ -225,18 +225,11 @@ function detectConvergences(
     });
   }
 
-  const yangAnimals = ["Rata", "Tigre", "Dragón", "Caballo", "Mono", "Perro"];
-  const isYangAnimal = yangAnimals.includes(userAnimal);
-  const isOddLifePath = lifePath % 2 === 1;
-  if (isYangAnimal === isOddLifePath) {
-    const polaridad = isYangAnimal ? "Yang" : "Yin";
-    const paridad = isOddLifePath ? "impar" : "par";
-    matches.push({
-      between: ["life-path", "animal"],
-      label: `Tu Camino de Vida ${paridad} y tu animal ${polaridad} comparten polaridad`,
-      rule: `Camino de Vida ${paridad} ↔ animal ${polaridad}`,
-    });
-  }
+  // Se quitó la regla "paridad Yin/Yang del animal ↔ paridad par/impar del
+  // Life Path": coincide en ~50% de los perfiles por azar (6 de 12 animales
+  // son Yang, la mitad de los Life Path son impares) y no tiene base
+  // tradicional — inflaba el nivel de resonancia con una coincidencia que no
+  // lo era. El resto del motor es disciplinado contra exactamente esto.
 
   return matches;
 }

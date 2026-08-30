@@ -52,7 +52,13 @@ export default function PremiumChatSection({
 
   const scrollToBottom = () => {
     setTimeout(() => {
-      scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
+      // `scrollIntoView` no existe en jsdom ni en algunos entornos SSR/preview;
+      // el timeout puede además dispararse tras desmontar. Guardar evita un
+      // unhandled rejection sin cambiar el comportamiento en el navegador.
+      const el = scrollAnchorRef.current;
+      if (el && typeof el.scrollIntoView === "function") {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     }, 100);
   };
 

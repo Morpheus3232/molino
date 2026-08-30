@@ -24,10 +24,18 @@ describe("Technical SEO & Canonical URLs", () => {
     }
   });
 
-  it("includes all 144 programmatic sinastria routes in sitemap", () => {
+  it("incluye las 144 rutas signo×signo en /compatibilidad (canónica) y NINGUNA en /sinastria", () => {
+    // Fase 3 — `/sinastria/a/b` y `/compatibilidad/a-b` cubrían el mismo
+    // intent. `/compatibilidad/[pair]` queda canónica; `/sinastria/*` salió
+    // del sitemap (canonical + noindex apuntando a compatibilidad).
     const entries = sitemap();
-    const sinastriaEntries = entries.filter((e) => e.url.includes("/sinastria/"));
-    expect(sinastriaEntries.length).toBe(144);
+    expect(entries.filter((e) => e.url.includes("/sinastria/")).length).toBe(0);
+    expect(entries.filter((e) => /\/compatibilidad\/[a-z]+-[a-z]+$/.test(e.url)).length).toBe(144);
+  });
+
+  it("no anuncia la familia consolidada /compatibility/* (301 → /affinity/*)", () => {
+    const entries = sitemap();
+    expect(entries.filter((e) => e.url.includes("/compatibility/")).length).toBe(0);
   });
 
   it("formats titles consistently with formatTitle", () => {

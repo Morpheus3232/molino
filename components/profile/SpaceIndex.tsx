@@ -18,18 +18,13 @@ interface SpaceIndexProps {
 // UniversityFooter.tsx) — no necesitan estar acá también. Círculo es la
 // excepción: no está en ningún otro nav del sitio, así que se queda para no
 // dejarlo inalcanzable.
+//
+// Fase 4: la Lectura SALIÓ de esta lista. Era la primera de cuatro filas, al
+// mismo nivel que "Círculo" — el centro intelectual del producto presentado
+// como una utilidad más. Ahora tiene su propio umbral (ReadingThreshold), y
+// esto queda como lo que realmente es: el índice de herramientas laterales.
 export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndexProps) {
   const items = [
-    {
-      // Destino principal desde que Mi Mapa quedó con una sola pregunta: el
-      // cuadro de nacimiento, la convergencia, los dos movimientos y la
-      // sincronicidad viven ahora en /lectura, gratis, con la Pro al final.
-      label: "Leer qué significa tu mapa",
-      teaser:
-        "Los dígitos de tu fecha, dónde coinciden tus sistemas y la lectura de los dos movimientos. Gratis.",
-      href: `/lectura#${encodeProfileData(profile)}`,
-      icon: BookOpen,
-    },
     {
       label: "Hoy",
       teaser: `Energía diaria y fase lunar para tu Camino ${profile.lifePath}.`,
@@ -56,18 +51,13 @@ export default function SpaceIndex({ profile, circleName, allyName }: SpaceIndex
       className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 py-20 lg:py-28 border-t border-border"
       aria-label="Explorá tu mapa"
     >
-      <div className="max-w-3xl mb-12 lg:mb-16">
-        <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent block mb-3">
-          INTEGRACIÓN DE TU MAPA
+      <div className="max-w-3xl mb-10 lg:mb-12">
+        <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted block mb-3">
+          También con tus coordenadas
         </span>
-        <h2 className="font-display text-3xl sm:text-5xl font-bold text-foreground tracking-tight uppercase leading-[0.95]">
-          ¿Y AHORA QUÉ?
-          <br />
-          EXPLORÁ TU MAPA.
-        </h2>
-        <p className="font-serif text-base sm:text-lg text-muted mt-4 leading-relaxed">
-          Esta página responde dónde tu signo toca el mundo. Lo que ese mapa significa se lee
-          aparte, y el resto son herramientas que se desprenden de las mismas coordenadas.
+        <p className="text-base text-muted leading-relaxed max-w-xl">
+          Herramientas que se desprenden de los mismos números, para cuando quieras mirar tu
+          mapa desde otro ángulo.
         </p>
       </div>
 

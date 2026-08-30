@@ -141,7 +141,7 @@ export function generateFallbackInterpretation(
         relationalNote: friends.length || challengingRelations.length
           ? `Tu animal chino (${animal}) tiende a complementarse con ${friends.map(f => f.animal).join(', ') || 'perfiles afines'}${challengingRelations.length ? `, y suele generar más fricción con ${challengingRelations.map(c => c.animal).join(', ')}` : ''}.`
           : undefined,
-        // Pensado explícitamente para compartirse (screenshot/WhatsApp): corto,
+        // Pensado explícitamente para compartirse (screenshot/enlace): corto,
         // en forma de contraste (no de resumen), y sin ningún dato que no
         // esté ya en el perfil. Combina 3 señales reales e independientes
         // (animal chino, Life Path, motor+challenge del arquetipo) — la

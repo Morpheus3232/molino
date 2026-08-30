@@ -20,21 +20,37 @@ const FEATURES: FeatureItem[] = [
     premium: true,
     description: "Cálculo determinista de tus tres coordenadas simbólicas.",
   },
+  // Fase 4 — corrección de exactitud. Estas dos filas decían "✗ gratis", y
+  // desde que `buildSynthesis` es el modelo canónico (Fase 2) eso es
+  // literalmente falso: los cruces entre sistemas, las tensiones estructurales
+  // y la lista de incertidumbre se calculan sin IA y se muestran en la Lectura
+  // gratuita. Lo que se paga NO es el análisis: es la interpretación escrita y
+  // la conversación. Marcarlas como exclusivas Pro era vender como cerrado algo
+  // que el producto ya regala.
   {
     category: "Identidad & Síntesis",
-    name: "Síntesis profunda cruzada (Conexión de los 3 sistemas)",
-    free: false,
+    name: "Cruces entre los 3 sistemas, con su evidencia",
+    free: true,
     premium: true,
-    highlight: true,
-    description: "Lectura personalizada que explica qué significa la combinación de tus energías.",
+    description:
+      "Dónde dos o tres sistemas coinciden, calculado sin IA y con la derivación a la vista. Si no hay cruce real, se dice.",
   },
   {
     category: "Identidad & Síntesis",
-    name: "Detección de dinámicas y tensiones entre sistemas",
+    name: "Tensiones estructurales y qué no se puede afirmar de vos",
+    free: true,
+    premium: true,
+    description:
+      "Las contradicciones entre señales (ritmo, modo, elemento) y la lista explícita de límites del cálculo.",
+  },
+  {
+    category: "Identidad & Síntesis",
+    name: "La Lectura escrita — interpretación narrativa de tu síntesis",
     free: false,
     premium: true,
     highlight: true,
-    description: "Análisis de desfasajes entre tu elemento occidental y ritmo lunar.",
+    description:
+      "El punto ciego, cómo operás en la práctica y qué implica cada cruce, redactado para tu mapa concreto.",
   },
   {
     category: "Identidad & Síntesis",
@@ -114,7 +130,8 @@ export default function FeatureComparison({ className = "" }: { className?: stri
             Gratis vs Premium
           </h2>
           <p className="text-xs sm:text-sm text-muted mt-2 max-w-xl mx-auto">
-            El mapa esencial siempre es gratis. El acceso Premium desbloquea la síntesis profunda y la interacción sin límites.
+            El mapa y la síntesis calculada son gratis, siempre. Lo Pro es la interpretación
+            escrita y la conversación con tu mapa.
           </p>
         </div>
 
@@ -240,39 +257,28 @@ export default function FeatureComparison({ className = "" }: { className?: stri
           })}
         </div>
 
-        {/* Value Anchor Box */}
-        <div className="mt-12 rounded-xl border border-accent/25 bg-card/70 p-6 sm:p-8">
-          <div className="text-center sm:text-left mb-6">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
-              Ancla de Valor & Transparencia
-            </span>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-              ¿Por qué $8 USD en pago único de por vida?
-            </h3>
-            <p className="text-xs text-muted mt-1 leading-relaxed">
-              Comparamos nuestra propuesta de valor con las opciones habituales del mercado:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div className="p-4 rounded-lg bg-background border border-ink/5 space-y-1">
-              <span className="text-[11px] font-mono text-muted block">Consulta Personal Tradicional</span>
-              <span className="text-sm font-bold text-foreground line-through opacity-60">$50 – $120 USD</span>
-              <p className="text-xs text-muted leading-relaxed">Sesión de 1 hora, sin reporte interactivo ni actualizaciones de por vida.</p>
-            </div>
-
-            <div className="p-4 rounded-lg bg-background border border-ink/5 space-y-1">
-              <span className="text-[11px] font-mono text-muted block">Apps con Suscripción Mensual</span>
-              <span className="text-sm font-bold text-foreground line-through opacity-60">$10 – $15 / mes</span>
-              <p className="text-xs text-muted leading-relaxed">Pagos recurrentes que suman $120 al año y recopilan datos para publicidad.</p>
-            </div>
-
-            <div className="p-4 rounded-lg bg-accent/10 border border-accent/30 space-y-1">
-              <span className="text-[11px] font-mono text-accent font-bold block">Molino Premium</span>
-              <span className="text-lg font-bold text-accent">$8 USD · Pago Único</span>
-              <p className="text-xs text-foreground/90 leading-relaxed">$8 USD. Acceso vitalicio permanente, informe con síntesis narrativa y 0 tracking.</p>
-            </div>
-          </div>
+        {/* A dónde va el dinero.
+            Fase 4: acá había un bloque "Ancla de Valor" que comparaba los 8
+            dólares contra consultas de $50–$120 y suscripciones de $10–$15/mes,
+            con los precios ajenos tachados. Eso es anclaje de precio — una
+            táctica de venta que el proyecto rechaza explícitamente, y que
+            además le pedía al lector que valorara Molino por lo que NO es.
+            Si la lectura vale, se sostiene sola. */}
+        <div className="mt-12 border-t border-ink/10 pt-8">
+          <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
+            Qué paga ese pago único
+          </h3>
+          <p className="text-sm text-muted mt-3 leading-relaxed max-w-2xl">
+            Cada lectura Pro y cada pregunta que le hacés a tu mapa son una llamada real a un
+            modelo de lenguaje, y eso tiene un costo por uso. Los 8 dólares cubren ese costo y
+            sostienen el trabajo de mantener el proyecto abierto: los motores de cálculo, el
+            atlas de entidades con sus fuentes, y la parte gratuita, que es la mayor parte.
+          </p>
+          <p className="text-sm text-muted mt-3 leading-relaxed max-w-2xl">
+            No hay suscripción, no hay renovación y no vendemos datos — no tenemos ninguno que
+            vender. Si el mapa y la lectura gratuitos ya te alcanzan, está perfecto: para eso
+            son.
+          </p>
         </div>
       </div>
     </section>

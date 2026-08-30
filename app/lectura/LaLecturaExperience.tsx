@@ -21,8 +21,8 @@ import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
 import Logo from "@/components/ui/Logo";
 import BuildingMolino from "@/components/ui/BuildingMolino";
 import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
+import ReadingToAI from "@/components/lectura/ReadingToAI";
 import PremiumChatSection from "@/components/chat/PremiumChatSection";
-import { Gift } from "lucide-react";
 
 interface Props {
   profile: UserProfile;
@@ -409,39 +409,40 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             afinidades. Una sola franja visual (border-t-2) marca dónde
             termina la lectura narrativa (si la hubo) y empieza el material
             de referencia. */}
+        {/* LECTURA → IA. Se muestra a todos (con y sin acceso): es el tercer
+            nivel del producto y antes un lector sin acceso no se enteraba
+            nunca de que existía. Va acá, pegado al final de la lectura —
+            el catálogo de afinidades de abajo es material de referencia, no
+            la continuación del argumento. */}
+        {(revealed || locked) && (
+          <ReadingToAI profile={profile} hasAccess={isPremium === true} />
+        )}
+
         {(revealed || locked) && catalog.length > 0 && (
-              <div className="border-t-2 border-ink/15 pt-10 mt-4 space-y-14 sm:space-y-16">
+              <div className="border-t-2 border-ink/15 pt-10 mt-20 space-y-14 sm:space-y-16">
                 {/* 05 — Tu relación con el mundo: catálogo completo categorizado por relación */}
                 <LecturaAfinidadesFull userAnimal={userAnimal} catalog={catalog} />
               </div>
         )}
 
-        <div className="mt-16 rounded-2xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-5 shadow-sm">
-          <div>
-            <span className="inline-flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-accent mb-1">
-              <Gift className="w-4 h-4" />
-              ¿Pensaste en alguien mientras leías esto?
-            </span>
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-              Regala una lectura personalizada
-            </h3>
-            <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed max-w-md">
-              No necesitás saber su fecha de nacimiento. Comprás el regalo ($8 USD) y se lo mandás por WhatsApp en un enlace listo para canjear.
-            </p>
-          </div>
+        {/* Regalar — bajado de rango (Fase 4). Antes era un bloque en caja de
+            acento, con precio, y era LO ÚLTIMO que se leía: la lectura
+            terminaba en un upsell. Ahora es una línea al pie, al lado de
+            "volver a tu mapa", donde corresponde a una acción secundaria. */}
+        <div className="mt-16 pt-8 border-t border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <Link
-            href="/regalar"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent text-background rounded-xl font-heading text-xs sm:text-sm font-bold uppercase tracking-wider hover:bg-accent-hover active:scale-[0.98] transition-all shrink-0 w-full sm:w-auto shadow-md"
+            href="/profile"
+            className="text-xs font-mono uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors"
           >
-            <Gift className="w-4 h-4" />
-            Regalar lectura · $8 USD
-          </Link>
-        </div>
-
-        <div className="text-center mt-12">
-          <Link href="/profile" className="text-xs font-mono text-muted hover:text-accent transition-colors">
             ← Volver a tu mapa
           </Link>
+          <p className="text-xs text-muted leading-relaxed">
+            ¿Pensaste en alguien mientras leías?{" "}
+            <Link href="/regalar" className="text-accent hover:underline underline-offset-4">
+              Regalale una lectura
+            </Link>{" "}
+            — no hace falta que sepas su fecha.
+          </p>
         </div>
       </div>
     </section>

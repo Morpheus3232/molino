@@ -81,17 +81,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `Compatibilidad ${signA.name} y ${signB.name}: Amor, Sinergia y Elementos`;
   const description = `Descubrí la química astrológica entre ${signA.name} (${signA.element}) y ${signB.name} (${signB.element}). Puntos de conexión, desafíos y sinastría completa.`;
+  // Fase 3 — `/sinastria/a/b` y `/compatibilidad/a-b` cubren el mismo intent
+  // (144 pares signo×signo cada una). `/compatibilidad/[pair]` queda canónica
+  // (integrada al catálogo programático). Esta familia: canonical + noindex
+  // (follow, para no perder link equity) y fuera del sitemap. El 301 duro
+  // queda para cuando se confirme paridad de contenido y rank.
+  const canonicalCompat = siteUrl(`/compatibilidad/${signA.slug}-${signB.slug}`);
 
   return {
     title,
     description,
     alternates: {
-      canonical: siteUrl(`/sinastria/${signA.slug}/${signB.slug}`),
+      canonical: canonicalCompat,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       title,
       description,
-      url: `${SITE_URL}/sinastria/${signA.slug}/${signB.slug}`,
+      url: canonicalCompat,
       type: "article",
     },
     twitter: {
@@ -275,7 +282,7 @@ export default async function SinastriaPage({ params }: PageProps) {
               return (
                 <Link
                   key={slug}
-                  href={`/sinastria/${signA.slug}/${other.slug}`}
+                  href={`/compatibilidad/${signA.slug}-${other.slug}`}
                   className="p-2 rounded-xl bg-card border border-ink/5 hover:border-accent/40 text-muted hover:text-foreground transition-all text-center"
                 >
                   {signA.name} + {other.name}

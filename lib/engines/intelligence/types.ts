@@ -9,6 +9,7 @@ import type { DailyEnergyResult } from '../dailyEnergyEngine';
 import type { TimingResult } from '../timingEngine';
 import type { DecisionResult } from '../decisionsEngine';
 import type { EntityProfile } from '@/lib/data/entities';
+import type { PersonalSynthesis } from '../synthesisEngine';
 
 export interface MolinoContext {
   userProfile: {
@@ -109,6 +110,14 @@ export interface InterpretationRequest {
   template?: string;
   conversationHistory?: ConversationTurn[];
   readingContext?: ReadingContext;
+  /**
+   * El modelo personal unificado (buildSynthesis). Cuando está presente, el
+   * prompt lo usa como fuente canónica de patrones/convergencias/tensiones/
+   * reglas/incertidumbre en vez de re-derivarlos desde las coordenadas. Lo
+   * computa la ruta a partir del UserProfile completo (que ya tiene). Si
+   * falta, el builder cae a computar lo básico desde el context.
+   */
+  synthesis?: PersonalSynthesis;
 }
 
 export interface MolinoInterpretation {
