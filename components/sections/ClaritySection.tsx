@@ -4,7 +4,8 @@ import { ArrowRight } from "lucide-react";
 // Antes acá había una tabla de 4 filas ("¿Qué hace?", "¿Se guardan tus datos?",
 // "¿Cómo se verifica?", "¿Para quién es?") que era un FAQ duplicado: tres de
 // esas cuatro respuestas ya estaban, más completas, en la sección de Preguntas
-// frecuentes al pie, y la privacidad ya se promete en el hero. En su lugar va
+// frecuentes al pie, y la privacidad ya se promete en el hero ("Cálculo 100%
+// local", con escudo, debajo del form). En su lugar va
 // lo único que esta parte de la página tiene que decir y no dice ninguna otra:
 // qué son los tres sistemas y qué aporta cada uno.
 const SYSTEMS = [

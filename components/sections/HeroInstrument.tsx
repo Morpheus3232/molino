@@ -129,7 +129,7 @@ export default function HeroInstrument() {
           {/* Eyebrow */}
           <p className="flex items-center justify-center gap-3 font-mono text-xs uppercase tracking-[0.25em] text-muted">
             <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
-            Descubrí tu patrón
+            Tres sistemas, una fecha
             <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
           </p>
 
@@ -140,15 +140,10 @@ export default function HeroInstrument() {
             <span className="block mt-2 italic text-gradient-warm">Es un patrón.</span>
           </h1>
 
-          {/* Subheadline. La segunda línea NO es decorativa: ClaritySection
-              omite a propósito el mensaje de privacidad porque cuenta con que
-              el hero lo dice (ver su comentario de cabecera). Si se saca de
-              acá, el home se queda sin esa promesa en ningún lado. */}
+          {/* Subheadline */}
           <motion.p {...fadeUpMountDelayed(0.12)} className="text-lg sm:text-xl text-muted leading-relaxed max-w-xl mx-auto">
             Cada mapa es casi único: se construye desde tu fecha de nacimiento
             leída como un código de ocho dígitos.
-            <br className="hidden sm:block" />
-            Sin registro. Tu fecha no se envía a ningún servidor.
           </motion.p>
 
           {/* Form */}
