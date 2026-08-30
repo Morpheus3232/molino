@@ -48,6 +48,41 @@ describe("validación de entrada", () => {
     expect(looksLikeBtcAddress("")).toBe(false);
     expect(looksLikeBtcAddress(undefined)).toBe(false);
   });
+
+  // El motivo de existir del checksum: BTC_ADDRESS se carga a mano una vez y
+  // si tiene un carácter cambiado, TODO pago va a una dirección inexistente.
+  // Los vectores de abajo son los de BIP-173/BIP-350.
+  it("acepta vectores válidos de bech32 (v0) y bech32m (taproot)", () => {
+    expect(looksLikeBtcAddress("bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4")).toBe(true);
+    expect(looksLikeBtcAddress("bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3")).toBe(true);
+    expect(
+      looksLikeBtcAddress("bc1p0xlxvlhemja6c4dqv22uapctqupfhlxm9h8z3k2e72q4k9hcz7vqzk5jj0"),
+    ).toBe(true);
+  });
+
+  it("RECHAZA una dirección con un solo carácter cambiado", () => {
+    const valida = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+    expect(looksLikeBtcAddress(valida)).toBe(true);
+    // Mismo largo, mismo formato: un regex de forma la dejaría pasar.
+    const rota = valida.slice(0, 10) + (valida[10] === "j" ? "k" : "j") + valida.slice(11);
+    expect(rota).toHaveLength(valida.length);
+    expect(/^bc1[02-9ac-hj-np-z]{7,71}$/.test(rota)).toBe(true);
+    expect(looksLikeBtcAddress(rota)).toBe(false);
+  });
+
+  it("rechaza carácter de menos, de más, o dos transpuestos", () => {
+    const v = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
+    expect(looksLikeBtcAddress(v.slice(0, 20) + v.slice(21))).toBe(false);
+    expect(looksLikeBtcAddress(v.slice(0, 20) + v[20] + v.slice(20))).toBe(false);
+    const t = v.split("");
+    [t[20], t[21]] = [t[21], t[20]];
+    expect(looksLikeBtcAddress(t.join(""))).toBe(false);
+  });
+
+  it("rechaza mayúsculas y minúsculas mezcladas (prohibido por BIP-173)", () => {
+    expect(looksLikeBtcAddress("BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4")).toBe(true);
+    expect(looksLikeBtcAddress("bc1QW508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4")).toBe(false);
+  });
 });
 
 describe("cotización", () => {

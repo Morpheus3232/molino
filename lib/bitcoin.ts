@@ -34,18 +34,89 @@ export function isValidTxid(txid: unknown): txid is string {
   return typeof txid === "string" && /^[0-9a-fA-F]{64}$/.test(txid);
 }
 
+// ── Validación de dirección ───────────────────────────────────────────────
+//
+// Un regex de forma NO alcanza acá. Si al cargar BTC_ADDRESS se pierde o se
+// duplica un carácter, una validación de formato lo deja pasar igual, el
+// sitio muestra una dirección que no existe y CADA pago se pierde sin que
+// nadie se entere. Las direcciones bech32 traen un checksum BCH justamente
+// para esto: detecta cualquier error de hasta 4 caracteres y los errores al
+// azar con probabilidad ~1 en mil millones.
+//
+// BIP-173 (bech32, segwit v0: bc1q...) y BIP-350 (bech32m, segwit v1+:
+// bc1p... taproot). La constante final del polymod es lo único que cambia.
+
+const BECH32_CHARSET = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
+const BECH32_CONST = 1;
+const BECH32M_CONST = 0x2bc830a3;
+
+function bech32Polymod(values: number[]): number {
+  const GEN = [0x3b6a57b2, 0x26508e6d, 0x1ea119fa, 0x3d4233dd, 0x2a1462b3];
+  let chk = 1;
+  for (const v of values) {
+    const b = chk >>> 25;
+    chk = ((chk & 0x1ffffff) << 5) ^ v;
+    for (let i = 0; i < 5; i++) {
+      if ((b >>> i) & 1) chk ^= GEN[i];
+    }
+  }
+  return chk >>> 0;
+}
+
+function hrpExpand(hrp: string): number[] {
+  const high: number[] = [];
+  const low: number[] = [];
+  for (const c of hrp) {
+    high.push(c.charCodeAt(0) >> 5);
+    low.push(c.charCodeAt(0) & 31);
+  }
+  return [...high, 0, ...low];
+}
+
+/** Verifica el checksum de una dirección bech32/bech32m. */
+function bech32ChecksumOk(addr: string): boolean {
+  const lower = addr.toLowerCase();
+  // Mayúsculas y minúsculas mezcladas están prohibidas por BIP-173.
+  if (addr !== lower && addr !== addr.toUpperCase()) return false;
+
+  const sep = lower.lastIndexOf("1");
+  if (sep < 1 || sep + 7 > lower.length || lower.length > 90) return false;
+
+  const hrp = lower.slice(0, sep);
+  const dataPart = lower.slice(sep + 1);
+
+  const data: number[] = [];
+  for (const c of dataPart) {
+    const idx = BECH32_CHARSET.indexOf(c);
+    if (idx === -1) return false;
+    data.push(idx);
+  }
+
+  const poly = bech32Polymod([...hrpExpand(hrp), ...data]);
+  // La versión de testigo (primer dato) decide qué constante corresponde.
+  const witnessVersion = data[0];
+  const expected = witnessVersion === 0 ? BECH32_CONST : BECH32M_CONST;
+  return poly === expected;
+}
+
 /**
- * Direcciones Bitcoin que aceptamos configurar: bech32 (bc1...) y las
- * legacy/P2SH (1... / 3...). Es una validación de forma, no de checksum: solo
- * evita que un valor obviamente mal cargado en la env var llegue a mostrarse
- * como destino de pago.
+ * ¿Es una dirección Bitcoin de mainnet realmente válida?
+ *
+ * Para bech32 se verifica el checksum, no solo la forma: un carácter mal
+ * copiado se rechaza en vez de convertirse en un destino de pago inexistente.
+ *
+ * Las legacy (1.../3...) usan Base58Check, cuyo checksum es un doble SHA-256.
+ * Se validan solo por forma: no las usamos —Cake Wallet entrega bech32— y
+ * traer una implementación de Base58Check para un caso que no ocurre sería
+ * código sin uso. Si algún día se configura una legacy, el peor caso vuelve a
+ * ser el de antes, así que el chequeo de forma se mantiene.
  */
 export function looksLikeBtcAddress(addr: unknown): addr is string {
   if (typeof addr !== "string") return false;
-  return (
-    /^bc1[02-9ac-hj-np-z]{7,71}$/.test(addr) ||
-    /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(addr)
-  );
+  if (/^(bc1|BC1)/.test(addr)) {
+    return /^(bc1|BC1)[02-9ac-hj-np-zAC-HJ-NP-Z]{7,71}$/.test(addr) && bech32ChecksumOk(addr);
+  }
+  return /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(addr);
 }
 
 /** La dirección de cobro vive en la env var: se rota sin deploy y no va al repo. */

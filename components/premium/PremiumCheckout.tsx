@@ -13,6 +13,7 @@ import {
   HelpCircle,
   RefreshCw,
   Lock,
+  Bitcoin,
 } from "lucide-react";
 import { savePremiumTokenClient } from "@/lib/premium";
 import { invalidatePremiumAccessCache } from "@/lib/hooks/usePremiumAccess";
@@ -228,6 +229,37 @@ export default function PremiumCheckout({
             </Button>
           )}
 
+          {/* Bitcoin como segundo método, no como enlace escondido en el pie.
+              Secundario en peso visual porque MercadoPago sigue siendo el
+              camino principal, pero visible como lo que es: una forma de
+              pagar. Solo aparece si el server tiene BTC_ADDRESS cargada. */}
+          {btcEnabled && !showBtc && !checkoutLoading && (
+            <button
+              type="button"
+              onClick={() => {
+                setShowBtc(true);
+                setShowRecover(false);
+                setShowCoupon(false);
+              }}
+              className="w-full py-3.5 rounded-md border border-ink/15 hover:border-accent/40 hover:bg-ink/[0.02] transition-colors inline-flex items-center justify-center gap-2 font-mono text-sm font-bold text-foreground"
+            >
+              <Bitcoin className="w-4 h-4 text-accent" />
+              Pagar con Bitcoin ($8 USD)
+            </button>
+          )}
+
+          <AnimatePresence>
+            {showBtc && (
+              <BtcPayment
+                name={name}
+                birthDate={birthDate}
+                salt={getOrCreateProfileSalt()}
+                onUnlocked={onUnlocked}
+                onClose={() => setShowBtc(false)}
+              />
+            )}
+          </AnimatePresence>
+
           {errorMsg && (
             <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-2.5 rounded-xl">
               {errorMsg}
@@ -265,32 +297,7 @@ export default function PremiumCheckout({
             </button>
           )}
 
-          {btcEnabled && !showBtc && (
-            <button
-              type="button"
-              onClick={() => {
-                setShowBtc(true);
-                setShowRecover(false);
-                setShowCoupon(false);
-              }}
-              className="hover:text-accent transition-colors underline"
-            >
-              Pagar con Bitcoin
-            </button>
-          )}
         </div>
-
-        <AnimatePresence>
-          {showBtc && (
-            <BtcPayment
-              name={name}
-              birthDate={birthDate}
-              salt={getOrCreateProfileSalt()}
-              onUnlocked={onUnlocked}
-              onClose={() => setShowBtc(false)}
-            />
-          )}
-        </AnimatePresence>
 
         {/* Recover Form Modal / Inline */}
         <AnimatePresence>
