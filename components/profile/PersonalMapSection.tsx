@@ -24,7 +24,6 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react";
-import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
 import {
   buildPersonalMap,
   type AnimalRelationEntry,
@@ -537,8 +536,11 @@ export default function PersonalMapSection({
         {/* ── El ciclo entero, como clave de lectura ────────────────── */}
         <CycleTable animal={map.animal} entries={map.relationMap} />
 
-        {/* ── Afinidades por relación (mismo modelo que /lectura) ──── */}
-        <LecturaAfinidadesFull userAnimal={map.animal} catalog={catalog ?? []} />
+        {/* ── Afinidades por relación ──────────────────────────────
+            El catálogo interactivo completo (LecturaAfinidadesFull) vive solo
+            en /lectura como capítulo "05 · Tu relación con el mundo". Acá el
+            Mapa muestra las casillas resumidas y el ciclo; explorar la lista
+            completa es parte de la Lectura, no de "dónde toca el mundo". */}
 
         {/* ── Disclaimer final sutil ──────────────────────────────── */}
         <div className="mt-14 pt-8 border-t border-border space-y-4 max-w-3xl">

@@ -15,8 +15,8 @@ const sections = [
     body: `Tus datos se utilizan exclusivamente para:
 
 - Calcular tu mapa personal de numerología, astrología y zodíaco chino (procesamiento 100% local en el navegador).
-- Procesar pagos Premium a través de Mercado Pago (este proveedor recibe solo los datos necesarios para la transacción: email, monto, hash de verificación).
-- Generar interpretaciones asistidas por IA (solo para usuarios Premium, a través de OpenRouter (routing) y DeepSeek v4 (modelo de IA), bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento).
+- Procesar pagos Premium: a través de Mercado Pago (recibe solo lo necesario para la transacción: email, monto, hash de verificación) o Bitcoin/BTC mediante wallet autocustodiada (sin procesador ni webhook: no se recibe ningún dato personal, el comprobante lo aporta la persona con su txid).
+- Generar interpretaciones asistidas por IA (solo para usuarios Premium): el perfil simbólico se envía al proveedor primario — OpenRouter (routing) con el modelo DeepSeek v4 — y, si ese proveedor falla, a los de respaldo OpenAI (GPT-4o-mini) o Anthropic (Claude). En todos los casos bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento.
 - Analítica de uso anónima y agregada (eventos en localStorage, sin servidor) para mejorar la experiencia.
 
 **Base legal (RGPD Art. 6):**
@@ -49,8 +49,11 @@ const sections = [
 | Proveedor | Propósito | Datos recibidos | Política de privacidad |
 |-----------|-----------|-----------------|------------------------|
 | Mercado Pago | Procesamiento de pagos | Email, hash de perfil, monto, país | https://www.mercadopago.com.ar/privacy |
+| Bitcoin (wallet autocustodiada) | Pago Premium | Ninguno: el comprobante (txid) lo aporta la persona y se verifica contra la blockchain | — |
 | OpenRouter (routing) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://openrouter.ai/privacy |
-| DeepSeek v4 (modelo de IA) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://api-docs.deepseek.com |
+| DeepSeek v4 (modelo de IA, vía OpenRouter) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://api-docs.deepseek.com |
+| OpenAI (GPT-4o-mini, respaldo) | Generación de interpretaciones IA si el primario falla | Perfil simbólico, preguntas, nombre (si diste) | https://openai.com/privacy |
+| Anthropic (Claude, respaldo) | Generación de interpretaciones IA si el primario falla | Perfil simbólico, preguntas, nombre (si diste) | https://www.anthropic.com/privacy |
 | Vercel | Hosting y edge functions | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |
 
 Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas contractuales estándar para transferencias internacionales.`,

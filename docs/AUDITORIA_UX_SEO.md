@@ -5,7 +5,7 @@
 | Issue | Fix | Impact |
 |-------|-----|--------|
 | `<link rel="canonical">` apuntaba a `molino-alpha.vercel.app` | Creado `lib/seo.ts` con `SITE_URL = "https://www.molino.app"`. Root layout, robots, sitemap, y todos los JSON-LD ahora usan la constante. | Los motores de búsqueda ahora canonicalizan a producción, no a staging. |
-| OG image en SVG (no renderiza en WhatsApp/Twitter/LinkedIn) | Reemplazado por `app/opengraph-image.tsx` que genera PNG dinámico 1200×630 vía `next/og`. | Preview social funcional en todas las plataformas. |
+| OG image en SVG (no renderiza en varias plataformas sociales) | Reemplazado por `app/opengraph-image.tsx` que genera PNG dinámico 1200×630 vía `next/og`. | Preview social funcional en todas las plataformas. |
 | 46 URLs hardcodeadas con `molino-alpha.vercel.app` en JSON-LD | Reemplazadas con `SITE_URL` + `siteUrl()` en 13 archivos. | Datos estructurados correctos en producción. |
 | `/method` sin metadata (página "use client" sin export `metadata`) | Separado en `page.tsx` (servidor con metadata) + `MethodContent.tsx` (cliente). | Título y OG tags correctos en /method. |
 | `/guia` sin OG/Twitter cards | Agregados `openGraph` y `twitter` al metadata. | Preview social funcional en /guia. |

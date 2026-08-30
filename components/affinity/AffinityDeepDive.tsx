@@ -132,19 +132,23 @@ export default function AffinityDeepDive({
         </CollapsibleSection>
       </motion.section>
 
-      {/* Link to multi-factor analysis — after deep content */}
+      {/* Fase 3 — se quitó el CTA a `/compatibility/[id]` (análisis multi-factor
+          por entidad): esa página se consolidó en `/affinity/[type]/[slug]`
+          (esta misma) y la síntesis cruzada de los 3 sistemas para TU mapa
+          vive ahora en /lectura. El puente correcto es hacia la lectura. */}
       <motion.section {...fadeUp} className="mb-12">
         <div className="p-6 border border-accent/20 bg-accent/[0.03]">
-          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Análisis multi-factor</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-accent font-medium mb-2">Tu mapa completo</p>
           <p className="text-sm text-muted leading-relaxed mb-3">
-            Este resultado usa solo el zodíaco chino. Si querés ver numerología, astrología y arquetipos, explorá el análisis avanzado.
+            Esta afinidad usa la regla signo contra signo. La lectura que cruza tus tres sistemas
+            —numerología, astrología y zodíaco chino— vive en tu Lectura.
           </p>
           <button
             type="button"
-            onClick={() => router.push(`/compatibility/${entity.id}`)}
+            onClick={() => router.push(`/lectura`)}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded"
           >
-            Explorar análisis avanzado
+            Abrir mi Lectura
             <span aria-hidden="true">→</span>
           </button>
         </div>

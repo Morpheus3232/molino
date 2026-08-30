@@ -47,21 +47,28 @@ const nextConfig = {
   staticPageGenerationTimeout: 120,
   async redirects() {
     return [
-      {
-        source: '/principios',
-        destination: '/filosofia',
-        permanent: true,
-      },
-      {
-        source: '/patterns',
-        destination: '/profile',
-        permanent: true,
-      },
-      {
-        source: '/synthesis',
-        destination: '/profile',
-        permanent: true,
-      },
+      { source: '/principios', destination: '/filosofia', permanent: true },
+      { source: '/patterns', destination: '/profile', permanent: true },
+      { source: '/synthesis', destination: '/profile', permanent: true },
+
+      // ── Fase 3 — consolidación de IA (ver docs/ROUTE_CONSOLIDATION_PLAN.md) ──
+      // Stubs de redirect client-side (malos para SEO) → 301 server-side.
+      { source: '/portal', destination: '/explore', permanent: true },
+      { source: '/for-you', destination: '/profile', permanent: true },
+      { source: '/alignment', destination: '/profile', permanent: true },
+      // "¿Debería hacer X?" pasó a ser una consulta de IA.
+      { source: '/decisions', destination: '/ai', permanent: true },
+      // Metodología: `/method` (nombre en inglés, wrapper delgado) y
+      // `/conocimiento/fuentes` (thin) → sus equivalentes canónicos.
+      { source: '/method', destination: '/metodos-y-fuentes', permanent: true },
+      { source: '/conocimiento/fuentes', destination: '/biblioteca', permanent: true },
+      // Superficies integradas a la síntesis / al mapa.
+      { source: '/nudo', destination: '/lectura', permanent: true },
+      { source: '/linea', destination: '/evolution', permanent: true },
+      { source: '/profile/insights', destination: '/profile', permanent: true },
+      // Familia `/compatibility/*` → `/affinity/*` (misma dirección que `/entities/[id]`).
+      { source: '/compatibility/brands', destination: '/affinity/brand', permanent: true },
+      { source: '/compatibility/countries', destination: '/affinity/country', permanent: true },
     ];
   },
   async headers() {

@@ -171,8 +171,8 @@ export default function PremiumPreview({
                     Contenido exclusivo del Acceso Premium
                   </h3>
                   <p className="text-xs text-muted max-w-sm mt-1 mb-5 leading-relaxed">
-                    Desbloqueá la síntesis completa de tus 3 sistemas, detección de tensiones y preguntas
-                    ilimitadas a Molino AI.
+                    Desbloqueá la síntesis completa de tus 3 sistemas, detección de tensiones y la IA
+                    que ya conoce tu mapa.
                   </p>
                   <Button
                     variant="accent"

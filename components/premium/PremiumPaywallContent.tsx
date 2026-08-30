@@ -110,7 +110,7 @@ export default function PremiumPaywallContent({
     {
       icon: MessageSquare,
       title: "Preguntale a Molino",
-      desc: "Consultas abiertas ilimitadas con la IA que ya conoce tu mapa.",
+      desc: "50 consultas iniciales con la IA que ya conoce tu mapa, con recargas disponibles.",
     },
     {
       icon: Calendar,

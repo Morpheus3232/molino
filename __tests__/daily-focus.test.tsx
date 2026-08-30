@@ -58,17 +58,16 @@ describe("DailyFocus Component (Fase 2)", () => {
     expect(screen.getByText("Relaciones")).toBeInTheDocument();
   });
 
-  it("renderiza la Conexión del día con explicación explícita y enlace navegable", () => {
+  it("no renderiza el bloque 'Conexión del día' (retirado de DailyFocus en Fase 4)", () => {
+    // La entidad de afinidad del día ya no vive dentro de DailyFocus: el
+    // componente se enfocó en Favorable/Observar/Áreas. El mock conserva
+    // dailyConnection, pero el componente no debe pintarlo acá.
     render(<DailyFocus daily={mockDaily} />);
 
-    expect(screen.getByText("Conexión del día")).toBeInTheDocument();
-    expect(screen.getByText("Buena compatibilidad")).toBeInTheDocument();
-    expect(screen.getByText("Buenos Aires")).toBeInTheDocument();
-    expect(screen.getByText(/Pertenece a uno de tus dos animales aliados/i)).toBeInTheDocument();
-
-    const link = screen.getByRole("link", { name: /Explorar ficha/i });
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "/affinity/city/buenos-aires");
+    expect(screen.queryByText("Conexión del día")).not.toBeInTheDocument();
+    expect(screen.queryByText("Buena compatibilidad")).not.toBeInTheDocument();
+    expect(screen.queryByText("Buenos Aires")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Explorar ficha/i })).not.toBeInTheDocument();
   });
 
   it("MomentAdvice renderiza el consejo y la evidencia sin textos ambiguos", () => {

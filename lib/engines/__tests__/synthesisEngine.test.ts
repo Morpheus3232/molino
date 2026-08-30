@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildPrinciples, hasCircularSources, generatePaywallHook } from "../synthesisEngine";
+import { buildPersonalCode, buildPatterns, buildTensions, buildRules, buildPrinciples, hasCircularSources, generatePaywallHook, buildSynthesis, buildConvergences, buildDifferences, buildUncertainties } from "../synthesisEngine";
 import { ARCHETYPE_DESCRIPTIONS, getArchetypeInfo, getMasterNumbers } from "../numerologyEngine";
 import type { UserProfile } from "@/types/user";
 
@@ -501,5 +501,134 @@ describe("generatePaywallHook", () => {
   it("determinismo: mismo perfil produce siempre el mismo hook", () => {
     const profile = profileWith({ lifePath: 5, element: "Tierra", chineseZodiac: "Gato", cycles: { personalYear: 1, personalMonth: 1, personalDay: 1 } });
     expect(generatePaywallHook(profile)).toEqual(generatePaywallHook(profile));
+  });
+});
+
+// ════════════════════════════════════════════════════════════════════
+// buildSynthesis — el MODELO PERSONAL unificado (Fase 2)
+// ════════════════════════════════════════════════════════════════════
+describe("buildSynthesis — modelo personal unificado", () => {
+  it("compone coordenadas + patterns + convergencias + tensiones + reglas + incertidumbre", () => {
+    const s = buildSynthesis(profileWith({ lifePath: 4, element: "Aire", modality: "Mutable" }));
+    expect(s.coordinates.lifePath).toBe(4);
+    expect(Array.isArray(s.patterns)).toBe(true);
+    expect(Array.isArray(s.convergences)).toBe(true);
+    expect(Array.isArray(s.tensions)).toBe(true);
+    expect(Array.isArray(s.rules)).toBe(true);
+    expect(s.uncertainties.length).toBeGreaterThan(0);
+  });
+
+  it("moonApproximate es true y la incertidumbre nombra el signo lunar cuando no hay birthTime", () => {
+    const s = buildSynthesis(profileWith({ birthTime: undefined }));
+    expect(s.coordinates.moonApproximate).toBe(true);
+    expect(s.uncertainties.some((u) => u.field === "Signo lunar")).toBe(true);
+  });
+
+  it("moonApproximate es false cuando se conoce la hora de nacimiento", () => {
+    const s = buildSynthesis(profileWith({ birthTime: "08:30" }));
+    expect(s.coordinates.moonApproximate).toBe(false);
+    expect(s.uncertainties.some((u) => u.field === "Signo lunar")).toBe(false);
+  });
+
+  it("la incertidumbre siempre incluye el número de expresión (flujo sin nombre) y la naturaleza de los sistemas", () => {
+    const s = buildSynthesis(profileWith({ name: "", expressionNumber: undefined }));
+    expect(s.uncertainties.some((u) => u.field === "Número de expresión")).toBe(true);
+    expect(s.uncertainties.some((u) => u.field === "Naturaleza de los sistemas")).toBe(true);
+  });
+
+  it("NO fabrica convergencias: cada una tiene >=2 sistemas y una evidencia verificable", () => {
+    const LIFE_PATHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33];
+    const ANIMALS = ["Rata", "Buey", "Tigre", "Gato", "Dragón", "Serpiente", "Caballo", "Cabra", "Mono", "Gallo", "Perro", "Cerdo"];
+    const MODS = ["Cardinal", "Fijo", "Mutable"];
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of ANIMALS) {
+        for (const modality of MODS) {
+          const conv = buildConvergences(
+            profileWith({ lifePath, chineseZodiac, modality, cycles: { personalYear: 3, personalMonth: 1, personalDay: 1 } })
+          );
+          for (const c of conv) {
+            expect(c.systems.length, JSON.stringify(c)).toBeGreaterThanOrEqual(2);
+            expect(c.evidence.trim().length, JSON.stringify(c)).toBeGreaterThan(0);
+            expect(c.kind).toBe("convergencia");
+          }
+        }
+      }
+    }
+  });
+
+  it("un perfil sin ninguna igualdad ni modo compartido no produce convergencias numéricas ni de modo", () => {
+    const conv = buildConvergences(
+      profileWith({
+        lifePath: 2, // sin modo
+        personalityNumber: 7,
+        modality: "Cardinal",
+        chineseZodiac: "Cerdo",
+        chineseZodiacInfo: { animal: "Cerdo", element: "Madera" },
+        cycles: { personalYear: 9, personalMonth: 1, personalDay: 1 },
+      })
+    );
+    // Puede haber una convergencia de 3-sistemas por tema, pero NUNCA una
+    // numérica (nada es igual) ni una de modo (Life Path 2 no tiene modo).
+    expect(conv.some((c) => c.layer === "calculo")).toBe(false);
+    expect(conv.some((c) => c.evidence.includes('modo "'))).toBe(false);
+  });
+
+  it("convergencia numérica real: Life Path == Año Personal", () => {
+    const conv = buildConvergences(
+      profileWith({ lifePath: 5, cycles: { personalYear: 5, personalMonth: 1, personalDay: 1 } })
+    );
+    expect(conv.some((c) => c.evidence.includes("Camino de Vida 5 = Año Personal 5"))).toBe(true);
+  });
+
+  it("convergencia de modo: Life Path 4 (consolidar) + modalidad Fijo (consolidar)", () => {
+    const conv = buildConvergences(profileWith({ lifePath: 4, modality: "Fijo" }));
+    expect(conv.some((c) => c.systems.includes("Astrología") && c.systems.includes("Numerología"))).toBe(true);
+  });
+
+  it("tensión de modo: Life Path 4 (consolidar) vs modalidad Mutable (adaptar)", () => {
+    const t = buildTensions(profileWith({ lifePath: 4, modality: "Mutable", element: "Aire" }));
+    expect(t.some((x) => x.title === "Terminás y soltás con lógicas distintas")).toBe(true);
+  });
+
+  it("diferencia (no tensión): Life Path 1 (iniciar) vs modalidad Fijo (consolidar) — modos distintos, no opuestos", () => {
+    const d = buildDifferences(profileWith({ lifePath: 1, modality: "Fijo" }));
+    expect(d.length).toBe(1);
+    expect(d[0].kind).toBe("diferencia");
+    const t = buildTensions(profileWith({ lifePath: 1, modality: "Fijo", element: "Aire" }));
+    expect(t.some((x) => x.title === "Terminás y soltás con lógicas distintas")).toBe(false);
+  });
+
+  it("tensión térmica: Sol Fuego + año chino Agua", () => {
+    const t = buildTensions(
+      profileWith({ element: "Fuego", modality: "Cardinal", chineseZodiacInfo: { animal: "Rata", element: "Agua" } })
+    );
+    expect(t.some((x) => x.title === "Tu temperatura de base tira para dos lados")).toBe(true);
+  });
+
+  it("elemento occidental Aire nunca produce convergencia/tensión de elemento con el chino", () => {
+    // Aire no tiene equivalente en el marco chino — no se afirma nada.
+    const conv = buildConvergences(profileWith({ element: "Aire", chineseZodiacInfo: { animal: "Rata", element: "Metal" } }));
+    expect(conv.some((c) => c.evidence.includes("elemento del año chino"))).toBe(false);
+  });
+
+  it("systemsEngaged nunca incluye 'Ciclos' ni 'Arquetipos' (no son sistemas independientes acá) y solo lista los 3 reales", () => {
+    const LIFE_PATHS = [1, 4, 5, 7, 8, 9];
+    const ANIMALS = ["Rata", "Dragón", "Caballo", "Cabra", "Perro"];
+    const allowed = new Set(["Numerología", "Astrología", "Zodiaco Chino"]);
+    for (const lifePath of LIFE_PATHS) {
+      for (const chineseZodiac of ANIMALS) {
+        const s = buildSynthesis(
+          profileWith({ lifePath, chineseZodiac, modality: "Fijo", cycles: { personalYear: lifePath, personalMonth: 1, personalDay: 1 } })
+        );
+        for (const sys of s.systemsEngaged) {
+          expect(allowed.has(sys), sys).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("determinismo: mismo perfil → misma síntesis", () => {
+    const p = profileWith({ lifePath: 4, modality: "Fijo", element: "Tierra" });
+    expect(JSON.stringify(buildSynthesis(p))).toBe(JSON.stringify(buildSynthesis(p)));
   });
 });

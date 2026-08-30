@@ -38,7 +38,7 @@ const CONCEPTS = [
   { title: "Arquetipos", description: "Los 9 arquetipos numerológicos y lo que describen sobre tu energía natural.", href: "/conocimiento/numerologia" },
   { title: "Elementos", description: "Fuego, Tierra, Aire, Agua. Cada elemento tiene una cualidad fundamental.", href: "/conocimiento/astrologia" },
   { title: "Ciclos", description: "Tu año, mes y día personal. Cómo cambia tu energía a lo largo del tiempo.", href: "/profile#moment" },
-  { title: "Compatibilidad", description: "Cómo conectás con personas, lugares, marcas y conceptos a través de tus sistemas.", href: "/compatibility/argentina" },
+  { title: "Compatibilidad", description: "Cómo conectás con personas, lugares, marcas y conceptos a través de tus sistemas.", href: "/affinity/country" },
   { title: "Números maestros", description: "11, 22, 33. Números especiales que amplifican la energía de tu Camino de Vida.", href: "/conocimiento/numerologia" },
   { title: "Modalidades", description: "Cardinal, Fijo, Mutable. Cómo implementás tu energía en el mundo.", href: "/conocimiento/astrologia" },
 ];
@@ -215,7 +215,7 @@ export default function ExplorePage() {
               Ver tu mapa de afinidades
             </Link>
             <Link
-              href="/compatibility/countries"
+              href="/affinity/country"
               className="inline-flex items-center justify-center gap-2 font-medium px-6 py-3 text-sm border border-ink/10 text-foreground hover:border-ink/20 transition-colors min-h-[44px]"
             >
               Compatibilidad

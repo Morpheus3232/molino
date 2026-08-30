@@ -70,7 +70,7 @@ export default function RegalarClient() {
               "Detección de puntos ciegos, fortalezas y tensiones internas",
               "Preguntale a Molino (IA interactiva para consultas personales)",
               "Mapa de evolución y ciclos 2026–2030",
-              "Enlace instantáneo para compartir por WhatsApp o email",
+              "Enlace instantáneo para compartir por el medio que prefieras",
             ].map((feature) => (
               <div key={feature} className="flex items-start gap-2.5 text-xs text-foreground/90 leading-relaxed">
                 <span className="w-4 h-4 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0 mt-0.5">
@@ -112,10 +112,10 @@ export default function RegalarClient() {
           <div className="p-4 rounded-2xl bg-card border border-ink/10 space-y-1.5">
             <span className="text-accent font-mono text-xs font-bold block flex items-center gap-1.5">
               <MessageCircle className="w-3.5 h-3.5" />
-              Envío por WhatsApp
+              Envío en un clic
             </span>
             <p className="text-xs text-muted leading-relaxed">
-              Te damos un mensaje personalizado con el link para que se lo mandes directamente.
+              Te damos un mensaje personalizado con el link para que se lo mandes por donde quieras.
             </p>
           </div>
         </div>

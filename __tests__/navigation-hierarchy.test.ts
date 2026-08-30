@@ -6,21 +6,22 @@ function read(relPath: string): string {
   return fs.readFileSync(path.resolve(__dirname, "..", relPath), "utf8");
 }
 
-// El header tiene tres zonas fijas: logo | destinos | acción del estado.
-// Sin mapa los destinos son Atlas/Hoy y la acción es "Crear mi mapa"; con
-// mapa son Mi Mapa/Afinidades/Tiempo/Journal y las acciones son
-// Lectura/Guardar. "Explorar" salió del header desktop (vive en el footer)
-// y solo queda en el menú móvil. Mismas rutas reales de siempre.
+// Fase 3 — el header se reorganizó en 4 puertas conceptuales:
+// Conocimiento | Explorar (Atlas/Afinidades) | Tiempo | Proyecto, más Modos,
+// y las acciones del estado (Mi Mapa / Mi Lectura / Preguntá / Crear /
+// Guardar). Los tres sistemas (`/conocimiento/*`) son la arquitectura
+// intelectual dominante y encabezan el dropdown de Conocimiento.
 
 describe("Header — navegación sin perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("los destinos sin perfil son Atlas, Tiempo, Aprender y Journal", () => {
+  test("los destinos sin perfil son Conocimiento, Atlas, Tiempo, Modos y Proyecto", () => {
     const src = header();
     expect(src).toContain('atlas: { href: "/atlas"');
     expect(src).toContain('journal: { href: "/journal"');
+    expect(src).toContain('label="Conocimiento"');
     expect(src).toContain('label="Tiempo"');
-    expect(src).toContain('label="Aprender"');
+    expect(src).toContain('label="Proyecto"');
   });
 
   test("Tiempo sin perfil ofrece solo lo que funciona sin mapa", () => {
@@ -35,10 +36,25 @@ describe("Header — navegación sin perfil", () => {
     expect(block).not.toContain('href: "/evolution"');
   });
 
-  test("Aprender sin perfil sube Academia/Biblioteca/Blog al header", () => {
+  test("Conocimiento encabeza con los 3 sistemas y suma Blog/Biblioteca/Academia", () => {
     const src = header();
-    expect(src).toContain("LEARN_GROUPS_NO_PROFILE");
-    for (const href of ["/academy", "/biblioteca", "/blog"]) {
+    expect(src).toContain("KNOWLEDGE_GROUPS_NO_PROFILE");
+    for (const href of [
+      "/conocimiento/numerologia",
+      "/conocimiento/astrologia",
+      "/conocimiento/zodiaco-chino",
+      "/blog",
+      "/biblioteca",
+      "/academy",
+    ]) {
+      expect(src).toContain(`href: "${href}"`);
+    }
+  });
+
+  test("Proyecto sube la identidad open-source al header (no solo al footer)", () => {
+    const src = header();
+    expect(src).toContain("PROJECT_GROUPS");
+    for (const href of ["/filosofia", "/transparencia", "/metodos-y-fuentes", "/changelog"]) {
       expect(src).toContain(`href: "${href}"`);
     }
   });
@@ -68,15 +84,22 @@ describe("Header — navegación sin perfil", () => {
 describe("Header — navegación con perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("solo el ancla conserva el prefijo 'Mi' — el resto escanea por su propia palabra", () => {
+  test("las acciones del estado con perfil son Mi Mapa / Mi Lectura / Preguntá", () => {
     const src = header();
-    expect(src).toContain('label: "Mi Mapa"');
+    expect(src).toMatch(/href="\/profile"[\s\S]{0,300}Mi Mapa/);
+    expect(src).toMatch(/href=\{lecturaHref\}[\s\S]{0,300}Mi Lectura/);
+    expect(src).toMatch(/href="\/ai"[\s\S]{0,300}Preguntá/);
     expect(src).toContain('label="Afinidades"');
     expect(src).toContain('label="Tiempo"');
     expect(src).toContain('label: "Journal"');
-    expect(src).not.toContain('label="Mis Afinidades"');
-    expect(src).not.toContain('label="Mi Tiempo"');
-    expect(src).not.toContain('label: "Mi Journal"');
+  });
+
+  test("Conocimiento NO desaparece del centro cuando hay perfil", () => {
+    const src = header();
+    expect(src).toContain("KNOWLEDGE_GROUPS_WITH_PROFILE");
+    // con perfil, Atlas entra al dropdown de Conocimiento
+    const block = src.match(/KNOWLEDGE_LINKS_WITH_PROFILE[\s\S]*?\n\];/)![0];
+    expect(block).toContain('href: "/atlas"');
   });
 
   test("Afinidades usa las 7 categorías reales de /affinity/[type]", () => {
@@ -109,12 +132,13 @@ describe("Header — navegación con perfil", () => {
     expect(src).toContain("MODES_GROUPS");
   });
 
-  test("Explorar (con perfil, solo móvil) ahora es solo Aprender — Modos ya no repite acá", () => {
+  test("Modos (Socios/Parejas/Regalar) es su propio grupo, separado de Conocimiento", () => {
     const src = header();
-    expect(src).toContain("EXPLORE_GROUPS_WITH_PROFILE");
-    expect(src).toContain("LEARN_LINKS_WITH_PROFILE");
-    const block = src.match(/EXPLORE_GROUPS_WITH_PROFILE[\s\S]*?\n\];/)![0];
-    expect(block).not.toContain("Modos");
+    const block = src.match(/MODES_LINKS[\s\S]*?\n\];/)![0];
+    expect(block).toContain('href: "/socios"');
+    expect(block).toContain('href: "/pareja"');
+    expect(block).toContain('href: "/regalar"');
+    expect(block).not.toContain("/conocimiento");
   });
 
   test("no aparece 'Afinidades'/'Bóveda' como primer nivel plano fuera de sus dropdowns", () => {
@@ -164,16 +188,41 @@ describe("lib/session/localStorage.ts — único choke point de escritura del pe
   });
 });
 
-describe("Footer — único hogar en desktop de lo que salió del header", () => {
+describe("Footer — 4 columnas alineadas a las 4 puertas conceptuales (Fase 3)", () => {
   const footer = () => read("components/layout/UniversityFooter.tsx");
 
-  test("Afinidades sigue apuntando a /mundo", () => {
-    expect(footer()).toMatch(/href:\s*"\/mundo",\s*label:\s*"Afinidades"/);
+  test('"Afinidades" apunta al hub real /affinity, no a la vista de compartir /mundo', () => {
+    const src = footer();
+    expect(src).toMatch(/href:\s*"\/affinity",\s*label:\s*"Afinidades"/);
+    expect(src).not.toMatch(/href:\s*"\/mundo"/);
   });
 
-  test("cubre todo el ex-dropdown Explorar, incluida Academia", () => {
+  test("la columna de conocimiento encabeza con los 3 sistemas y cubre el resto del contenido público", () => {
     const src = footer();
-    for (const href of ["/atlas", "/academy", "/biblioteca", "/blog", "/journal", "/calendario"]) {
+    for (const href of [
+      "/conocimiento/numerologia",
+      "/conocimiento/astrologia",
+      "/conocimiento/zodiaco-chino",
+      "/blog",
+      "/biblioteca",
+      "/academy",
+      "/atlas",
+      "/calendario",
+    ]) {
+      expect(src).toContain(`href: "${href}"`);
+    }
+  });
+
+  test("la columna Proyecto expone la identidad open-source", () => {
+    const src = footer();
+    for (const href of ["/filosofia", "/transparencia", "/metodos-y-fuentes", "/changelog", "/docs", "/nosotros"]) {
+      expect(src).toContain(`href: "${href}"`);
+    }
+  });
+
+  test("Mi Molino agrupa el producto personal, IA incluida", () => {
+    const src = footer();
+    for (const href of ["/profile", "/lectura", "/ai", "/pareja", "/premium", "/onboarding"]) {
       expect(src).toContain(`href: "${href}"`);
     }
   });

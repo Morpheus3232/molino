@@ -112,12 +112,18 @@ export default function FeaturesSection() {
 
         {/* Premium — el detalle (precio y tabla gratis/Pro) vive en /premium:
             PremiumGate es la fuente única. Acá va la línea que hace falta para
-            saber que existe, nada más. Antes esto era un grid de 3 perks que
-            repetía esa tabla y el precio dos veces en la misma pantalla. */}
+            saber que existe, nada más.
+
+            Fase 4: la línea anterior era "Ver tu mapa es gratis. Entenderlo es
+            Premium." Además de contradecir de frente la posición del proyecto
+            (el conocimiento no se paga), era FALSA: la Lectura gratuita ya trae
+            toda la síntesis determinista —cruces entre sistemas, tensiones,
+            patrones, reglas y lo que no se puede afirmar—. Lo que se paga es la
+            interpretación escrita y la conversación, no el entendimiento. */}
         <div className="mt-20 pt-10 border-t border-paper/10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-          <h3 className="font-display font-normal normal-case text-2xl sm:text-3xl text-paper tracking-tight leading-[1.1] max-w-md">
-            Ver tu mapa es gratis.{" "}
-            <em className="text-gradient-warm-dark">Entenderlo es Premium.</em>
+          <h3 className="font-display font-normal normal-case text-2xl sm:text-3xl text-paper tracking-tight leading-[1.1] max-w-lg">
+            Tu mapa y tu lectura son gratis.{" "}
+            <em className="text-gradient-warm-dark">La conversación es Pro.</em>
           </h3>
           <Link
             href="/premium"

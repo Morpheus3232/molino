@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Check, Copy, MessageCircle, Gift } from "lucide-react";
+import { Check, Copy, Share2, Gift } from "lucide-react";
 import Button from "@/components/ui/Button";
 
 export default function CompradoClient() {
@@ -42,9 +42,19 @@ export default function CompradoClient() {
     }
   };
 
-  const whatsappText = encodeURIComponent(
-    `Te regalé un mapa personal de Molino ✨ Canjealo acá: ${shareUrl}`
-  );
+  const shareMessage = `Te regalé un mapa personal de Molino ✨ Canjealo acá: ${shareUrl}`;
+
+  const share = async () => {
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ text: shareMessage, url: shareUrl });
+        return;
+      } catch {
+        return; // el usuario canceló
+      }
+    }
+    copy(shareMessage, setCopiedLink);
+  };
 
   return (
     <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-24">
@@ -85,12 +95,16 @@ export default function CompradoClient() {
             </button>
           </div>
 
-          <a href={`https://wa.me/?text=${whatsappText}`} target="_blank" rel="noopener noreferrer" className="block mt-4">
-            <Button variant="accent" size="md" fullWidth className="flex items-center justify-center gap-2">
-              <MessageCircle className="w-4 h-4" />
-              Compartir por WhatsApp
-            </Button>
-          </a>
+          <Button
+            variant="accent"
+            size="md"
+            fullWidth
+            onClick={share}
+            className="mt-4 flex items-center justify-center gap-2"
+          >
+            <Share2 className="w-4 h-4" />
+            Compartir enlace
+          </Button>
         </div>
 
         <p className="mt-6 inline-flex items-center gap-1.5 text-xs text-muted font-mono">

@@ -20,11 +20,83 @@
  */
 
 import type { UserProfile } from '@/types/user';
-import { buildPersonalCode, buildPatterns, buildTensions, buildRules } from '../synthesisEngine';
+import { buildPersonalCode, buildSynthesis, type PersonalSynthesis } from '../synthesisEngine';
 import { getFriends, getChallenging, type Animal } from '@/lib/data/animalRelations';
 import { sanitizeNameForPrompt, sanitizeUserText } from '@/lib/ai/piiSanitizer';
 import { getMasterNumbers, MASTER_POSITION_LABELS_ES } from '../numerologyEngine';
 import type { InterpretationRequest, MolinoContext } from './types';
+
+/**
+ * Reconstruye un UserProfile parcial desde el MolinoContext, suficiente para
+ * buildSynthesis. Solo se usa cuando la request NO trae `synthesis` ya
+ * computada (la ruta sí la manda; esto cubre llamadas legacy / otros
+ * callers). El signo lunar queda sin calcular en esta rama porque el context
+ * no lleva birthDate — es aceptable: la ruta real pasa la síntesis completa.
+ */
+function synthesisFromContext(context: MolinoContext): PersonalSynthesis {
+  const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
+  return buildSynthesis({
+    lifePath: userProfile.lifePath,
+    personalityNumber: numerology.personalityNumber,
+    expressionNumber: numerology.expressionNumber,
+    sunSign: astrology.sunSign,
+    element: userProfile.element,
+    modality: userProfile.modality,
+    chineseZodiac: chineseZodiac.animal,
+    chineseZodiacInfo: { animal: chineseZodiac.animal, element: chineseZodiac.element },
+    archetype: userProfile.archetype,
+    archetypeInfo: {
+      description: numerology.archetypeDescription,
+      strengths: numerology.archetypeStrengths,
+      challenges: numerology.archetypeChallenges,
+    },
+    cycles: {
+      personalYear: cycles.personalYear,
+      personalMonth: cycles.personalMonth,
+      personalDay: cycles.personalDay,
+    },
+  } as UserProfile);
+}
+
+/**
+ * Render canónico del modelo personal para el prompt. Misma estructura para
+ * `personal_profile` y `question` — ninguno vuelve a derivar la síntesis.
+ */
+function renderPersonalModel(s: PersonalSynthesis): string {
+  const pat = s.patterns
+    .map(p => `- ${p.label}: ${p.keyword} (${p.sources.join(' + ')}) — ${p.description}`)
+    .join('\n');
+  const conv = s.convergences.length
+    ? s.convergences.map(c => `- [${c.systems.join(' × ')}] ${c.statement}\n  evidencia: ${c.evidence}`).join('\n')
+    : '- (ninguna: los sistemas de este perfil no coinciden en un mismo punto — NO inventes una convergencia para llenar el hueco)';
+  const diff = s.differences.length
+    ? s.differences.map(d => `- [${d.systems.join(' × ')}] ${d.statement}`).join('\n')
+    : '';
+  const tens = s.tensions.length
+    ? s.tensions.map(t => `- ${t.title}: ${t.evidence}\n  implicación: ${t.implication}`).join('\n')
+    : '- (el motor no detectó una contradicción estructural; si ves una tensión REAL entre dos señales del mapa es aporte nuevo, si no, no la fuerces)';
+  const rul = s.rules.slice(0, 3).map(r => `- ${r.rule}`).join('\n') || '- sin datos';
+  const unc = s.uncertainties.map(u => `- ${u.field}: ${u.note}`).join('\n');
+  return `MODELO PERSONAL DE MOLINO — fuente canónica, ya calculada por el motor determinista (sin IA). El usuario YA vio esto en la parte gratuita.
+CÓMO USARLO: es MATERIAL EN BRUTO. Las frases de abajo están en tono de plantilla a propósito — NO copies ninguna. Tu trabajo es reescribir con voz de editor: profundizar la mecánica de cada punto, conectarlos, y no contradecir ninguno. Si un punto ya es obvio, decilo distinto o pasá al siguiente.
+
+PATRONES:
+${pat}
+
+CONVERGENCIAS ENTRE SISTEMAS (dónde 2+ sistemas apuntan a lo mismo):
+${conv}
+${diff ? `\nDIFERENCIAS (no son contradicciones — dominios distintos):\n${diff}\n` : ''}
+TENSIONES ESTRUCTURALES:
+${tens}
+
+SEÑALES DE COMPORTAMIENTO (crudas — 3 de varias; convertilas en observación, no en consejo de galleta de la suerte):
+${rul}
+
+INCERTIDUMBRE — si el tema lo toca, decíselo al usuario con estas palabras; NO presentes estos puntos como certezas:
+${unc}
+
+Sistemas que realmente se cruzan en este perfil: ${s.systemsEngaged.join(', ') || 'ninguno con fuerza — decilo, no lo maquilles'}.`;
+}
 
 /**
  * Bloque condicional para el prompt cuando el perfil tiene números maestros
@@ -44,6 +116,11 @@ IMPORTANTE: Este perfil tiene números maestros. Los maestros (11/22/33) NO debe
 export function buildIntelligencePromptV2(request: InterpretationRequest): string {
   const { type, context, question, template, conversationHistory, readingContext } = request;
   const { userProfile, numerology, astrology, chineseZodiac, cycles } = context;
+  // Modelo personal unificado — solo lo usan personal_profile y question. Lo
+  // manda la ruta (computado del UserProfile completo); si no vino, se
+  // reconstruye lo posible del context. Lazy para no computarlo en los tipos
+  // que no lo renderizan.
+  const getSynthesis = () => request.synthesis ?? synthesisFromContext(context);
   const userName = sanitizeNameForPrompt(userProfile.name || '');
   const safeQuestion = sanitizeUserText(question || '', userProfile.name || '');
 
@@ -62,7 +139,7 @@ CONTEXTO DEL USUARIO:
 - Nombre: ${userName}
 - Life Path (Camino de Vida): ${userProfile.lifePath}${numerology.baseVibration ? ` (Vibración Base: ${numerology.baseVibration})` : ''}
 - Arquetipo: ${userProfile.archetype}
-- Astrología: Sol en ${astrology.sunSign} (${astrology.element}, ${astrology.modality})${astrology.moonSign ? `, Luna en ${astrology.moonSign}` : ''}
+- Astrología: Sol en ${astrology.sunSign} (${astrology.element}, ${astrology.modality})${astrology.moonSign ? `, Luna en ${astrology.moonSign} (aproximada — sin hora de nacimiento; ver INCERTIDUMBRE)` : ''}
 - Zodiaco Chino: ${chineseZodiac.animal} (${chineseZodiac.element})${chineseZodiac.polarity ? `, Polaridad: ${chineseZodiac.polarity}` : ''}${chineseZodiac.branch ? `, Rama: ${chineseZodiac.branch}` : ''}
 - Elemento: ${userProfile.element}
 - Año personal: ${cycles.personalYear}
@@ -142,6 +219,8 @@ CÓDIGO PERSONAL (numerología completa):
 ${personalCode.expression.number ? `- Expresión ${personalCode.expression.number} — ${personalCode.expression.name}: ${personalCode.expression.meaning}` : ''}
 ${buildMasterNumbersBlock(numerology)}
 ${relationsBlock}
+
+${renderPersonalModel(getSynthesis())}
 ${dailyEnergy ? `MOMENTO ACTUAL:
 - Score de energía de hoy: ${dailyEnergy.overallScore}/100
 - Tema del día: ${dailyEnergy.theme}` : ''}
@@ -371,37 +450,13 @@ Generá una respuesta JSON con:
 }`;
 
     case 'question': {
-      // Reusa exactamente el mismo nivel de grounding que "personal_profile"
-      // (personalCode, patterns reales con guardrail anti-fabricación,
-      // relaciones reales del animal chino) — el chat no debe responder con
-      // menos base que la síntesis paga que lo precede.
+      // Mismo modelo personal canónico que "personal_profile" (renderPersonalModel
+      // sobre buildSynthesis) — el chat responde con la MISMA base que la
+      // lectura paga que lo precede, sin re-derivar nada.
       const personalCode = buildPersonalCode({
         lifePath: userProfile.lifePath,
         expressionNumber: numerology.expressionNumber,
         personalityNumber: numerology.personalityNumber,
-      } as UserProfile);
-      const patterns = buildPatterns({
-        lifePath: userProfile.lifePath,
-        element: userProfile.element,
-        sunSign: astrology.sunSign,
-        chineseZodiac: chineseZodiac.animal,
-        archetypeInfo: { description: numerology.archetypeDescription, challenges: numerology.archetypeChallenges },
-        cycles: { personalYear: cycles.personalYear },
-      } as UserProfile);
-      const questionTensions = buildTensions({
-        lifePath: userProfile.lifePath,
-        element: userProfile.element,
-      } as UserProfile);
-      const questionRules = buildRules({
-        lifePath: userProfile.lifePath,
-        element: userProfile.element,
-        archetypeInfo: {
-          description: numerology.archetypeDescription,
-          strengths: numerology.archetypeStrengths,
-          challenges: numerology.archetypeChallenges,
-        },
-        sunSign: astrology.sunSign,
-        chineseZodiac: chineseZodiac.animal,
       } as UserProfile);
       const animal = chineseZodiac.animal as Animal;
       const friends = getFriends(animal);
@@ -431,10 +486,7 @@ ${baseContext}
 CÓDIGO PERSONAL:
 - Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
 ${buildMasterNumbersBlock(numerology)}
-PATRONES YA CALCULADOS:
-${patterns.map(p => `- ${p.label}: ${p.keyword} (${p.sources.join(' + ')})`).join('\n')}
-${questionTensions.length ? `TENSIONES YA DETECTADAS:\n${questionTensions.map(t => `- ${t.title}: ${t.evidence}`).join('\n')}\n` : ''}
-${questionRules.length ? `REGLAS PRÁCTICAS YA DERIVADAS DEL PERFIL:\n${questionRules.map(r => `- ${r.rule}`).join('\n')}\n` : ''}
+${renderPersonalModel(getSynthesis())}
 ${friends.length || challenging.length ? `RELACIONES REALES DE TU ANIMAL CHINO (${animal}):\n- Afines: ${friends.map(f => f.animal).join(', ') || 'sin datos'}\n- Desafiantes: ${challenging.map(c => c.animal).join(', ') || 'sin datos'}\n` : ''}
 ${dailyEnergy ? `MOMENTO ACTUAL: energía del día ${dailyEnergy.overallScore}/100, tema "${dailyEnergy.theme}"\n` : ''}
 ${timingCtx ? `TIMING (intención "${timingCtx.intention}"): score ${timingCtx.timingScore}/100 — ${timingCtx.explanation}\n` : ''}
@@ -445,7 +497,8 @@ TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este 
 - La premisa central de Molino es que YA conocés el mapa completo del usuario antes de que escriba. NO le pidas sus fechas, signos ni números.
 - Cuando hagas referencia a conceptos o coordenadas de su mapa (ej. **Camino de Vida 4**, **Sol en Leo**, **Luna en Virgo**, **Año Personal 4**, **Tigre de Madera**), destacalos en negrita (**...**) dentro de tu respuesta.
 - Si recibiste CONTEXTO DE LA LECTURA PREMIUM: usalo como grounding para responder LA PREGUNTA específica, no para repetir la lectura. La respuesta debe sumar un ángulo nuevo sobre la pregunta, no resumir lo que el usuario ya leyó.
-- Las REGLAS PRÁCTICAS y el TIMING son datos ya calculados: usalos solo cuando la pregunta los ponga en juego, no los listes de forma genérica.
+- Las SEÑALES DE COMPORTAMIENTO y el TIMING son datos ya calculados: usalos solo cuando la pregunta los ponga en juego, no los listes de forma genérica.
+- Si la pregunta toca un punto que figura en INCERTIDUMBRE (ej. signo lunar, ascendente, número de expresión), decí explícitamente que Molino no puede afirmar eso con precisión y por qué — no completes el dato que falta.
 - Al final, generá 2 a 3 sugerencias contextuales en "suggestedQuestions" basadas en lo que respondió la IA y las tensiones/ciclos del mapa (ej. "¿Querés explorar cómo aprovechar este ciclo de cimiento en tu trabajo?", "¿Te interesa ver cómo tu Luna afecta tus decisiones?").
 
 REGLAS ESTRICTAS:

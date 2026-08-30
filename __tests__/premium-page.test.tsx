@@ -9,8 +9,12 @@ describe("Premium Experience Components", () => {
     render(<FeatureComparison />);
 
     expect(screen.getByText(/Gratis vs Premium/i)).toBeDefined();
-    expect(screen.getAllByText(/Síntesis profunda cruzada/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText(/Detección de dinámicas y tensiones entre sistemas/i).length).toBeGreaterThanOrEqual(1);
+    // Fase 4: los cruces entre sistemas y las tensiones pasaron a GRATIS
+    // (los calcula buildSynthesis sin IA). Lo que queda del lado Pro es la
+    // interpretación escrita. Los nombres de fila cambiaron en consecuencia.
+    expect(screen.getAllByText(/Cruces entre los 3 sistemas/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/Tensiones estructurales/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/La Lectura escrita/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Calendario energético y mapa de evolución/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/Acceso permanente de por vida/i).length).toBeGreaterThanOrEqual(1);
   });

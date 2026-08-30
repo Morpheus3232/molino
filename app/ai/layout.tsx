@@ -1,8 +1,8 @@
 import { createRouteMetadata } from "@/lib/seo";
 
 export const metadata = createRouteMetadata({
-  title: "AI",
-  description: "Síntesis e interpretaciones asistidas por IA de tu mapa.",
+  title: "Preguntale a tu Molino",
+  description: "La capa de diálogo de Molino: una IA que ya conoce tu mapa, tu síntesis y tus tensiones antes de que escribas.",
   noIndex: true,
   noFollow: true,
 });

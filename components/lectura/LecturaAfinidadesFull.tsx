@@ -335,11 +335,15 @@ export default function LecturaAfinidadesFull({
       <div>
         {visibleEntities.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {visibleEntities.map((entity) => (
-              <Link
+            {visibleEntities.map((entity) => {
+              const SIN_FICHA = entity.type === "football_player";
+              const CardTag = SIN_FICHA ? "div" : Link;
+              const cardProps = SIN_FICHA ? {} : { href: `/affinity/${entity.type}/${entity.id}` };
+              return (
+              <CardTag
                 key={entity.id}
-                href={`/affinity/${entity.type}/${entity.id}`}
-                className="group flex flex-col justify-between p-4 rounded-xl border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-all min-h-[110px]"
+                {...(cardProps as { href: string })}
+                className={`group flex flex-col justify-between p-4 rounded-xl border border-ink/10 transition-all min-h-[110px] ${SIN_FICHA ? "bg-card/50" : "bg-card hover:border-accent/40 hover:bg-ink/[0.02]"}`}
               >
                 <div className="flex items-start gap-3">
                   <EntityVisual
@@ -370,12 +374,15 @@ export default function LecturaAfinidadesFull({
 
                 <div className="mt-3 pt-2 border-t border-ink/5 flex items-center justify-between text-[11px] font-mono text-muted">
                   <span>{currentConfig.label}</span>
-                  <span className="text-accent group-hover:translate-x-1 transition-transform" aria-hidden="true">
-                    →
-                  </span>
+                  {!SIN_FICHA && (
+                    <span className="text-accent group-hover:translate-x-1 transition-transform" aria-hidden="true">
+                      →
+                    </span>
+                  )}
                 </div>
-              </Link>
-            ))}
+              </CardTag>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12 border border-dashed border-ink/15 rounded-2xl">

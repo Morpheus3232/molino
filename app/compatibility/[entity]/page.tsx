@@ -1,68 +1,21 @@
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import { siteUrl } from '@/lib/seo';
-import { ENTITIES } from '@/lib/data/entities';
-import { getEntityById } from '@/lib/data/symbolic-entities';
-import CompatibilityContent from '@/components/compatibility/CompatibilityContent';
+import { permanentRedirect } from "next/navigation";
+import { getEntityById } from "@/lib/data/symbolic-entities";
 
-export async function generateStaticParams() {
-  return ENTITIES.map((entity) => ({
-    entity: entity.id,
-  }));
-}
-
-export async function generateMetadata({ params }: { params: Promise<{ entity: string }> }): Promise<Metadata> {
-  const { entity: entityId } = await params;
-  const entity = ENTITIES.find(e => e.id === entityId);
-  if (!entity) {
-    return {
-      title: 'Análisis no encontrado',
-      description: 'La entidad que buscas no existe en nuestra base de datos.',
-    };
-  }
-
-  const description = `Compatibilidad simbólica con ${entity.name}: numerología, astrología y zodíaco chino. Mapa personal de autoconocimiento.`;
-
-  return {
-    title: `Análisis multi-factor de ${entity.name}`,
-    description,
-    alternates: {
-      canonical: siteUrl(`/compatibility/${entityId}`),
-    },
-    openGraph: {
-      title: `Análisis multi-factor de ${entity.name}`,
-      description,
-      type: 'website',
-      url: siteUrl(`/compatibility/${entityId}`),
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `Análisis multi-factor de ${entity.name}`,
-      description,
-    },
-    keywords: [
-      entity.name,
-      'análisis multi-factor',
-      'compatibilidad',
-      'numerología',
-      'astrología',
-      'zodiaco chino',
-      'arquetipos',
-      ...entity.context.keyThemes,
-    ],
-  };
-}
-
-export default async function CompatibilityPage({ params }: { params: Promise<{ entity: string }> }) {
-  const { entity: entityId } = await params;
-  const entity = ENTITIES.find(e => e.id === entityId);
-  if (!entity) notFound();
-
-  // Cuando el mismo id existe en el atlas de /affinity (mismo país, misma
-  // marca, etc.), reusamos su evento histórico real como evidencia — en vez
-  // de inventar una para esta página. Si no hay match, la página se apoya
-  // solo en los datos propios de `entity` (sin evidencia de evento).
-  const atlasEntity = getEntityById(entityId) ?? null;
-
-  return <CompatibilityContent entity={entity} atlasEntity={atlasEntity} />;
+/**
+ * Fase 3 — `/compatibility/*` se consolidó en `/affinity/*` (misma dirección
+ * que `/entities/[id]`). Ver docs/ROUTE_CONSOLIDATION_PLAN.md.
+ *
+ * Un id que no resuelve a una entidad simbólica (raro: la familia
+ * `/compatibility` usaba `lib/data/entities`, no `symbolic-entities`) cae al
+ * hub `/affinity` en vez de 404 — no perdemos al visitante por un mismatch
+ * de catálogo.
+ */
+export default async function CompatibilityRedirect({
+  params,
+}: {
+  params: Promise<{ entity: string }>;
+}) {
+  const { entity: id } = await params;
+  const entity = getEntityById(id);
+  permanentRedirect(entity ? `/affinity/${entity.type}/${entity.id}` : "/affinity");
 }

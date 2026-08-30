@@ -25,8 +25,6 @@ const EXCEPCIONES: Record<string, string> = {
     "es el test del propio componente: prueba a propósito los casos sin imagen",
   "components/atlas/CountryHubClient.tsx":
     'usa visualType="flag" para ciudades, y las banderas son emoji nativo (rama 1 de EntityVisual), no imagen remota',
-  "components/compatibility/CompatibilityContent.tsx":
-    "usa el dataset legacy ENTITIES (lib/data/entities.ts), cuyo EntityProfile no tiene imageUrl — distinto del Atlas",
   "components/affinity/AffinityPreview.tsx":
     "componente muerto: ningún archivo lo importa. Candidato a borrar, no a arreglar",
 };

@@ -206,7 +206,7 @@ export async function createPreference(
 const GIFT_CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
 /** MOLINO-XXXX-XXXX — 8 caracteres aleatorios (~40 bits), agrupados para
- * que sea fácil de leer/tipear cuando se comparte por WhatsApp/email. */
+ * que sea fácil de leer/tipear cuando se comparte por mensaje o email. */
 export function generateGiftCode(): string {
   const bytes = randomBytes(8);
   let chars = '';

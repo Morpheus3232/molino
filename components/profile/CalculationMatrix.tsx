@@ -1,18 +1,27 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { UserProfile } from "@/types/user";
+import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 
 /**
- * MATRIX DE CÁLCULO — la cuenta real que genera el mapa, animada.
+ * LA CUENTA — la aritmética real que produce el mapa, revelada línea por línea.
  *
- * Mientras el mapa se carga mostramos, en vivo y en el orden en que el motor
- * la hace, la suma genuina que produce cada número del retrato.
+ * Es el primer momento del producto: antes de mostrar una sola interpretación,
+ * Molino muestra la cuenta. Eso es la promesa de transparencia hecha gesto, no
+ * copy.
  *
- * Diseño:
- *  - Fondo ink oscuro con lluvia de código suave en gold (paleta Molino).
- *  - Nube flotante centrada con el cálculo real, línea por línea.
- *  - Cuando la cuenta termina, `onComplete` deja pasar a Mi Mapa.
+ * Rediseño (Fase 4). La versión anterior era el elemento más fuera de norma de
+ * todo el producto: canvas de "lluvia de código" estilo Matrix, glow radial con
+ * blur-3xl, fondo ink a pantalla completa y una tarjeta con `border-radius`
+ * orgánico ("blob") + `overflow-hidden` que RECORTABA el texto — el encabezado
+ * se leía "ENTRAS SE ARMA TU MAPA" y el enlace de la fórmula quedaba cortado.
+ * Todo eso contradecía el estándar del sistema (nítido, editorial, silencioso)
+ * y la regla explícita de no usar partículas decorativas, blur ni gradientes.
+ *
+ * Ahora: papel, hairlines, mono. La cuenta se lee como un comprobante. Sin
+ * canvas, sin glow, sin blob. Y dura la mitad: la computación es síncrona e
+ * instantánea, así que cada ms de más era espera inventada.
  */
 
 interface LifePathStep {
@@ -59,95 +68,19 @@ const SUN_SIGN_RANGES: Record<string, [string, string]> = {
 const FORMULA_URL =
   "https://github.com/search?q=path%3Alib%2Fengines%2FnumerologyEngine.ts&type=code";
 
-const RAIN_CHARS =
-  "アィウエオカキクケコサシスセソタチツテトナニヌネノ0123456789$#&*+";
-
-interface Column {
-  y: number;
-  speed: number;
-  chars: string[];
+/** Una fila de la cuenta: etiqueta a la izquierda, valor a la derecha. */
+interface CalcRow {
+  label: string;
+  value: string;
+  /** Resultado de un sistema (se resalta), vs. paso intermedio. */
+  result?: boolean;
+  system?: string;
 }
 
-function makeColumns(width: number): Column[] {
-  const fontSize = 16;
-  const count = Math.ceil(width / fontSize);
-  return Array.from({ length: count }, () => {
-    const len = 8 + Math.floor(Math.random() * 14);
-    return {
-      y: Math.random() * -120,
-      speed: 0.3 + Math.random() * 0.8,
-      chars: Array.from({ length: len }, () =>
-        RAIN_CHARS[Math.floor(Math.random() * RAIN_CHARS.length)]
-      ),
-    };
-  });
-}
-
-function MatrixRain({ dimmed }: { dimmed: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const fontSize = 16;
-
-    let raf = 0;
-    let columns: Column[] = [];
-
-    const resize = () => {
-      const { clientWidth, clientHeight } = canvas;
-      canvas.width = clientWidth * dpr;
-      canvas.height = clientHeight * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      columns = makeColumns(clientWidth);
-    };
-    resize();
-
-    const draw = () => {
-      ctx.fillStyle = "rgba(29, 27, 23, 0.14)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = `${fontSize}px monospace`;
-      for (let ci = 0; ci < columns.length; ci++) {
-        const col = columns[ci];
-        const x = ci * fontSize;
-        col.y += col.speed;
-        for (let i = 0; i < col.chars.length; i++) {
-          const y = (col.y - i * fontSize) % (canvas.height / dpr || 1);
-          if (y < 0) continue;
-          const isHead = i === 0;
-          ctx.fillStyle = isHead
-            ? "rgba(245, 176, 34, 0.75)"
-            : "rgba(245, 176, 34, 0.20)";
-          ctx.fillText(col.chars[i], x, y);
-        }
-      }
-      raf = requestAnimationFrame(draw);
-    };
-    raf = requestAnimationFrame(draw);
-
-    window.addEventListener("resize", resize);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-        dimmed ? "opacity-30" : "opacity-100"
-      }`}
-      aria-hidden="true"
-    />
-  );
-}
+// La computación real es síncrona: estos tiempos son solo legibilidad, no
+// espera. 110ms alcanza para leer una fila corta sin que se sienta lento.
+const ROW_MS = 110;
+const TAIL_MS = 320;
 
 export default function CalculationMatrix({
   profile,
@@ -156,6 +89,8 @@ export default function CalculationMatrix({
   profile: UserProfile | null;
   onComplete?: () => void;
 }) {
+  const reduceMotion = useSafeReducedMotion();
+
   const birthDate = profile?.birthDate || "1990-04-18";
   const lifePath = (profile?.lifePath as number) || 5;
   const sunSign = profile?.sunSign || "Aries";
@@ -167,122 +102,111 @@ export default function CalculationMatrix({
   const steps = useMemo(() => buildLifePathSteps(birthDate), [birthDate]);
   const sunRange = SUN_SIGN_RANGES[sunSign];
 
-  const lines = useMemo(() => {
-    const l: string[] = [];
-    l.push("CALCULANDO TU MAPA…");
-    l.push(`Fecha: ${birthDate}`);
-    steps.forEach((s, i) => {
-      l.push(`${i + 1}. ${s.label} = ${s.result}`);
+  const rows = useMemo<CalcRow[]>(() => {
+    const r: CalcRow[] = [];
+    steps.forEach((s) => {
+      r.push({ label: s.label, value: String(s.result) });
     });
-    l.push(`Camino de Vida: ${lifePath}`);
-    l.push(`Sol: ${sunRange ? sunRange.join(" → ") : sunSign}`);
-    l.push(`→ ${sunSign}`);
-    l.push(`${birthYear} → ${animal}`);
-    l.push(`Elemento: ${element}`);
-    return l;
-  }, [birthDate, steps, lifePath, sunRange, sunSign, animal, element, birthYear]);
+    r.push({
+      label: "Camino de Vida",
+      value: steps[steps.length - 1].master ? `${lifePath} · maestro` : String(lifePath),
+      result: true,
+      system: "Numerología",
+    });
+    r.push({
+      label: sunRange ? `${sunRange[0]} → ${sunRange[1]}` : "Rango solar",
+      value: sunSign,
+      result: true,
+      system: "Astrología",
+    });
+    r.push({
+      label: `Año ${birthYear}`,
+      value: `${animal} · ${element}`,
+      result: true,
+      system: "Zodíaco chino",
+    });
+    return r;
+  }, [steps, lifePath, sunRange, sunSign, animal, element, birthYear]);
 
-  const [count, setCount] = useState(0);
+  // Con motion reducido se muestra la cuenta completa de una: la animación es
+  // legibilidad, nunca información — nadie se pierde nada al saltearla.
+  const [count, setCount] = useState(() => (reduceMotion ? rows.length : 0));
+
   useEffect(() => {
-    if (count >= lines.length) return;
-    const t = setTimeout(() => setCount((c) => c + 1), 260);
+    if (reduceMotion || count >= rows.length) return;
+    const t = setTimeout(() => setCount((c) => c + 1), ROW_MS);
     return () => clearTimeout(t);
-  }, [count, lines.length]);
+  }, [count, rows.length, reduceMotion]);
 
-  const done = count >= lines.length;
+  const done = count >= rows.length;
 
   useEffect(() => {
     if (!done || !onComplete) return;
-    const t = setTimeout(onComplete, 700);
+    const t = setTimeout(onComplete, reduceMotion ? 0 : TAIL_MS);
     return () => clearTimeout(t);
-  }, [done, onComplete]);
+  }, [done, onComplete, reduceMotion]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-ink flex items-center justify-center">
-      {/* Lluvia de código */}
-      <MatrixRain dimmed={done} />
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 sm:px-8">
+      <div className="w-full max-w-xl">
+        <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+          La cuenta
+        </p>
+        <h1 className="mt-3 font-display text-[clamp(2rem,6vw,3.25rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+          Antes de interpretar
+          <br />
+          nada, la aritmética.
+        </h1>
+        <p className="mt-5 text-sm text-muted leading-relaxed max-w-md">
+          Tres sistemas, una sola fecha. Cada número de tu mapa sale de esta cuenta
+          — se puede rehacer a mano.
+        </p>
 
-      {/* Glow difuso detrás de la nube */}
-      <div
-        className="absolute w-[600px] h-[600px] sm:w-[800px] sm:h-[800px] opacity-40 blur-3xl pointer-events-none"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(245,176,34,0.18) 0%, rgba(168,58,35,0.08) 45%, transparent 70%)",
-        }}
-      />
-
-      {/* ── Nube centrada ──────────────────────────────────── */}
-      <div className="relative z-10 w-full max-w-lg mx-4 sm:mx-auto">
-        {/* Forma de nube: border-radius orgánico, sin clipPath */}
         <div
-          className="relative overflow-hidden border border-ink/10"
-          style={{
-            borderRadius: "42% 58% 55% 45% / 56% 44% 56% 44%",
-            background:
-              "linear-gradient(145deg, rgba(247,244,238,0.96) 0%, rgba(239,234,224,0.93) 45%, rgba(241,236,225,0.91) 100%)",
-          }}
+          className="mt-10 border-t border-ink/10"
+          role="status"
+          aria-live="polite"
+          aria-label={done ? "Cálculo completo" : "Calculando tu mapa"}
         >
-          {/* Contenido */}
-          <div className="p-8 sm:p-10 min-h-[360px]">
-            {/* Encabezado */}
-            <div className="flex items-center gap-3 mb-6">
-              <span
-                className="h-2 w-2 rounded-full bg-gold animate-pulse"
-                aria-hidden="true"
-              />
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-                Mientras se arma tu mapa…
-              </p>
+          {rows.slice(0, count).map((row, i) => (
+            <div
+              key={`${row.label}-${i}`}
+              className="flex items-baseline justify-between gap-4 py-3 border-b border-ink/10"
+            >
+              <span className="font-mono text-xs sm:text-sm text-muted tabular-nums truncate">
+                {row.label}
+              </span>
+              <span className="flex items-baseline gap-3 shrink-0">
+                {row.system && (
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink/30 hidden sm:inline">
+                    {row.system}
+                  </span>
+                )}
+                <span
+                  className={
+                    row.result
+                      ? "font-heading text-base sm:text-lg font-bold text-accent"
+                      : "font-mono text-xs sm:text-sm text-foreground tabular-nums"
+                  }
+                >
+                  {row.value}
+                </span>
+              </span>
             </div>
-
-            {/* Líneas del cálculo */}
-            <div className="space-y-3 font-mono text-sm leading-relaxed">
-              {lines.slice(0, count).map((line, i) => {
-                const isHeading = i === 0;
-                const isResult =
-                  line.startsWith("Camino") ||
-                  line.startsWith("→") ||
-                  line.endsWith("→") ||
-                  line.includes("Elemento");
-                return (
-                  <p
-                    key={i}
-                    className={`transition-all duration-300 ${
-                      isHeading
-                        ? "text-ink font-bold tracking-[0.2em] text-xs uppercase"
-                        : isResult
-                          ? "text-accent font-semibold"
-                          : "text-muted"
-                    }`}
-                  >
-                    {line}
-                  </p>
-                );
-              })}
-              {!done && (
-                <span className="inline-block h-4 w-2 bg-gold animate-pulse align-middle" />
-              )}
-            </div>
-
-            {/* Fórmula */}
-            <div className="mt-6 pt-4 border-t border-ink/10">
-              <a
-                href={FORMULA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-accent hover:text-accent-hover transition-colors"
-              >
-                Ver fórmula en GitHub →
-              </a>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Estado */}
-        <div className="mt-6 text-center">
-          <span className="font-mono text-[11px] uppercase tracking-[0.35em] text-paper/50">
-            {done ? "abriendo tu mapa" : "calculando…"}
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <a
+            href={FORMULA_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-xs uppercase tracking-wide text-accent hover:underline underline-offset-4"
+          >
+            Ver la fórmula en GitHub →
+          </a>
+          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted">
+            {done ? "Abriendo tu mapa" : "Calculando"}
           </span>
         </div>
       </div>

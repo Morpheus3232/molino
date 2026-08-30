@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 import { SYMBOLIC_ENTITIES, getAvailableTypes, type EntityType } from "@/lib/data/symbolic-entities";
-import { ENTITIES } from "@/lib/data/entities";
 import { CHINESE_ANIMALS } from "@/lib/data/zodiaco-chino-content";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
@@ -30,7 +29,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/docs`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/docs/motores`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/biblioteca`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
-    { url: `${BASE_URL}/method`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
+    { url: `${BASE_URL}/metodos-y-fuentes`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
+    { url: `${BASE_URL}/transparencia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.5 },
     { url: `${BASE_URL}/academy`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
     { url: `${BASE_URL}/privacidad`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE_URL}/terminos`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
@@ -45,18 +45,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Sinastría — Programmatic SEO (144 combinaciones zodiacales)
-  const signSlugs = ["aries", "tauro", "geminis", "cancer", "leo", "virgo", "libra", "escorpio", "sagitario", "capricornio", "acuario", "piscis"];
-  const sinastriaPages: { url: string; lastModified: Date; changeFrequency: "monthly"; priority: number }[] = [];
-  for (const a of signSlugs) {
-    for (const b of signSlugs) {
-      sinastriaPages.push({
-        url: `${BASE_URL}/sinastria/${a}/${b}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      });
-    }
-  }
+  // Fase 3 — `/sinastria/a/b` salió del sitemap: cubre el mismo intent
+  // signo×signo que `/compatibilidad/a-b` (canónica, ver
+  // lib/seo/programmatic.ts). Las páginas siguen vivas con canonical + noindex.
 
   // Affinity hub + category listings
   const affinityPages = [
@@ -81,20 +72,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.4,
   }));
 
-  // Compatibility pages
-  const compatibilityPages = ENTITIES.map((entity) => ({
-    url: `${BASE_URL}/compatibility/${entity.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  // Fase 3 — `/compatibility/*` se consolidó en `/affinity/*` (301). Ya no
+  // se anuncia en el sitemap.
 
   // Conocimiento — educational content (high SEO value)
   const conocimientoPages = [
     { url: `${BASE_URL}/conocimiento/astrologia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/conocimiento/numerologia`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${BASE_URL}/conocimiento/zodiaco-chino`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.8 },
-    { url: `${BASE_URL}/conocimiento/fuentes`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.6 },
     ...ZODIAC_SIGNS.map((sign) => ({
       url: `${BASE_URL}/conocimiento/astrologia/${encodeURIComponent(sign.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))}`,
       lastModified: new Date(),
@@ -158,5 +143,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 
-  return [...staticPages, ...sinastriaPages, ...affinityPages, ...entityPages, ...compatibilityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages];
+  return [...staticPages, ...affinityPages, ...entityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages];
 }

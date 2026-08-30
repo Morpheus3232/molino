@@ -557,7 +557,7 @@ export function LecturaLibre({
       tone="paperAlt"
       eyebrow="TU MAPA"
       title={<>LEER TU MAPA<br />EN DOS MOVIMIENTOS.</>}
-      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Tus principios te esperan en la lectura completa."
+      intro="Hasta ahora viste las piezas por separado. Esta es la conversación — tu identidad y tu momento vistos como un solo sistema. Los principios que las ordenan están en la lectura completa."
     >
       <div className="pt-10 sm:pt-14">
         <PiezasLibres profile={profile} onData={onData} />
