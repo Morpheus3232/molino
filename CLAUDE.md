@@ -139,13 +139,23 @@ Consecuencias operativas:
 - **Sin intención de venta ni autoelogio en el producto.** La sección no habla
   de la marca ni se recomienda a sí misma; muestra el cálculo y la regla, y
   deja la decisión en el usuario.
-- **Dos páginas, dos preguntas (2026-08-25).** `/profile` ("Mi Mapa") responde
-  **dónde tu signo toca el mundo** y no contiene nada más: hero de identidad +
-  `PersonalMapSection` + acciones + índice. Todo lo interpretativo —cuadro de
-  nacimiento, convergencia, los dos movimientos, sincronicidad y el detalle
-  del cálculo— se mudó a `/lectura`, compuesto en
-  `components/lectura/LecturaGratis.tsx`. `/lectura` abre **gratis** con eso y
-  cierra con la **Lectura Pro (USD 8, pago único)**, cuyo detalle de
+- **Dos páginas, dos preguntas (2026-08-25, validado 2026-08-30).** `/profile`
+  ("Mi Mapa") responde **dónde tu signo toca el mundo** y no contiene nada
+  más: hero de identidad + `PersonalMapSection` (domain groups +
+  `CycleTable`) + acciones + índice. **`LecturaAfinidadesFull` (el
+  catálogo interactivo completo con 3 pestañas de relación + 8 filtros de
+  categoría) vive SOLO en `/lectura`**, no en `/profile`. Mostrar el
+  catálogo en el Mapa duplicaba contenido: el usuario lo veía en las
+  casillas resumidas Y en el browser completo, y volvía a verlo en
+  `/lectura`. La separación es: Mapa = estructura (dónde toca), Lectura =
+  exploración interactiva (qué significa, cómo conecta). El Mapa muestra
+  hasta 3 entidades por país en las casillas; la lista completa con filtros
+  es el capítulo "05 · Tu relación con el mundo" de la Lectura. Todo lo
+  demás interpretativo —cuadro de nacimiento, convergencia, los dos
+  movimientos, sincronicidad y el detalle del cálculo— también se mudó a
+  `/lectura`, compuesto en
+  `components/lectura/LecturaGratis.tsx`. `/lectura` abre **gratis** con
+  eso y cierra con la **Lectura Pro (USD 8, pago único)**, cuyo detalle de
   beneficios lo arma `PremiumGate` → `PremiumPaywallContent` →
   `FeatureComparison`: esa es la fuente única del precio y de la tabla
   gratis/Pro, no duplicar el listado en otro lado.
