@@ -73,8 +73,8 @@ describe("Chat Redesign UI Components", () => {
     it("renders hero title, PersonalSigil, and dynamic contextual line based on profile", () => {
       render(<ChatHero profile={mockProfile} />);
 
-      expect(screen.getByText(/Ya conozco tu mapa/i)).toBeDefined();
-      expect(screen.getByText(/Preguntá lo que necesites/i)).toBeDefined();
+       expect(screen.getByText(/Tu mapa ya está/i)).toBeDefined();
+       expect(screen.getByText(/sobre la mesa/i)).toBeDefined();
       expect(screen.getAllByText(/Año Personal 4/i).length).toBeGreaterThanOrEqual(1);
       expect(screen.getAllByText(/Camino de Vida 4/i).length).toBeGreaterThanOrEqual(1);
       expect(screen.getAllByText(/Sol en Leo/i).length).toBeGreaterThanOrEqual(1);
@@ -214,8 +214,8 @@ describe("Chat Redesign UI Components", () => {
 
       render(<PremiumChatSection profile={mockProfile} />);
 
-      expect(screen.getByText(/Ya conozco tu mapa/i)).toBeDefined();
-      expect(screen.getByText("50")).toBeDefined(); // Remaining credits
+       expect(screen.getByText(/Tu mapa ya está/i)).toBeDefined();
+       expect(screen.getByText("50")).toBeDefined(); // Remaining credits
 
       const input = screen.getByPlaceholderText("Escribí tu pregunta…");
       fireEvent.change(input, { target: { value: "¿Cuál es mi mayor fortaleza?" } });

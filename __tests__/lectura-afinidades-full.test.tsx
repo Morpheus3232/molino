@@ -35,7 +35,7 @@ describe("LecturaAfinidadesFull Component (Sub-Fase 4.1)", () => {
     render(<LecturaAfinidadesFull userAnimal="Caballo" catalog={mockCatalog} />);
 
     expect(screen.getByText("05 · Tu relación con el mundo")).toBeInTheDocument();
-    expect(screen.getByText("Afinidades y Correspondencias")).toBeInTheDocument();
+    expect(screen.getByText("Qué hay de vos en el mundo")).toBeInTheDocument();
 
     // 3 pestañas principales de relación
     expect(screen.getByRole("tab", { name: /Alta compatibilidad/i })).toBeInTheDocument();
@@ -123,7 +123,7 @@ describe("LecturaAfinidadesFull Component (Sub-Fase 4.1)", () => {
   it("renderiza el puente de salida hacia el Atlas general", () => {
     render(<LecturaAfinidadesFull userAnimal="Caballo" catalog={mockCatalog} />);
 
-    expect(screen.getByText("Explorá todo tu Atlas")).toBeInTheDocument();
+    expect(screen.getByText("El resto del mapa")).toBeInTheDocument();
     const atlasLink = screen.getByRole("link", { name: /Ir al Atlas/i });
     expect(atlasLink).toHaveAttribute("href", "/atlas");
   });

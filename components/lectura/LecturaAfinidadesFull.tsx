@@ -44,21 +44,21 @@ const RELATION_CONFIG: Record<
     label: "Alta compatibilidad",
     tag: "Mismo animal",
     hint: (userAnimal) =>
-      `Comparte tu mismo animal del zodíaco chino (${userAnimal}). Máxima sintonía de ritmo y cualidades compartidas.`,
+      `Tu mismo animal del zodíaco chino (${userAnimal}). Máxima sintonía — lo que resuena con vos, vos ya lo sabés.`,
     icon: Sparkles,
   },
   triad: {
     label: "Buena compatibilidad",
     tag: "Animales aliados",
     hint: (_userAnimal, allies) =>
-      `Pertenece a tus dos animales aliados en el ciclo (${allies.join(" y ")}). Colaboración natural y complementariedad fluida.`,
+      `Tus dos animales aliados en el ciclo (${allies.join(" y ")}). Lo que colabora naturalmente con vos.`,
     icon: Shield,
   },
   clash: {
     label: "Energía opuesta",
     tag: "Posición de contraste",
     hint: (_userAnimal, _allies, clashAnimal) =>
-      `Pertenece a ${clashAnimal || "tu signo opuesto"}, el animal en posición opuesta (180°). Tensión que conviene observar con cautela.`,
+      `Tu energía opuesta (${clashAnimal || "tu signo opuesto"}). Lo que conviene observar con curiosidad, no con miedo.`,
     icon: AlertCircle,
   },
 };
@@ -232,10 +232,11 @@ export default function LecturaAfinidadesFull({
           id="lectura-afinidades-title"
           className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground uppercase"
         >
-          Afinidades y Correspondencias
+          Qué hay de vos en el mundo
         </h2>
         <p className="text-sm text-muted mt-2 max-w-xl leading-relaxed">
-          Explorá países, ciudades, marcas e instituciones del mundo organizadas por su nivel de sintonía o contraste con tu mapa.
+          Organizá por sintonía todo lo que existe afuera: países, ciudades,
+          marcas, equipos, gente. Tu signo es el filtro.
         </p>
       </div>
 
@@ -415,10 +416,12 @@ export default function LecturaAfinidadesFull({
             <span>Atlas Mundial</span>
           </div>
           <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">
-            Explorá todo tu Atlas
+            El resto del mapa
           </h3>
           <p className="text-xs sm:text-sm text-muted leading-relaxed">
-            El Atlas contiene el catálogo completo de países, ciudades, universidades y clubes del mundo organizado para explorar sin límites.
+            El Atlas tiene todo lo que no entraste acá: el catálogo completo
+            de países, ciudades, universidades y clubes del mundo. Sin filtro,
+            para cuando quieras buscar más lejos.
           </p>
         </div>
 

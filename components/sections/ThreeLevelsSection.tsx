@@ -38,7 +38,7 @@ const LEVELS = [
     n: "03",
     name: "Preguntale",
     question: "¿Y en mi caso?",
-    body: "Una IA que entra sabiendo tu mapa entero —patrones, cruces, tensiones e incertidumbre— para pensar una situación concreta con vos.",
+    body: "Tu mapa entero —patrones, cruces, tensiones e incertidumbre— se pone al servicio de una pregunta tuya. La IA piensa con tus coordenadas, no las impone.",
     tag: "Pro",
     href: "/ai",
     cta: "Cómo funciona",

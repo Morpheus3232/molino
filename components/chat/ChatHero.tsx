@@ -53,20 +53,20 @@ export default function ChatHero({
         {/* Micro-etiqueta superior */}
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[--radius-sm] bg-paper/10 border border-paper/15 text-accent-light text-[11px] font-mono uppercase tracking-[0.25em] mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-light animate-ping" />
-          La IA ya te conoce
+          Tu mapa, listo para usar
         </div>
 
         {/* Display Title */}
         <h2 className="font-display text-[clamp(2.1rem,5.5vw,3.5rem)] leading-[0.94] tracking-tight uppercase text-paper max-w-2xl mx-auto">
-          Ya conozco tu mapa.
+          Tu mapa ya está
           <br />
           <span className="text-accent-light italic font-normal">
-            Preguntá lo que necesites.
+            sobre la mesa.
           </span>
         </h2>
 
         {/* Línea contextual automática que demuestra conocimiento del mapa */}
-        <p className="mt-5 text-sm sm:text-base text-paper/85 max-w-xl mx-auto leading-relaxed font-sans">
+        <p className="mt-5 text-sm sm:text-base text-paper/85 max-w-xl mx-auto leading-relaxed font-serif">
           <MapHighlightText
             text={hookData.hookSentence}
             highlightClassName="font-semibold text-accent-light"
@@ -100,7 +100,7 @@ export default function ChatHero({
         {!compact && onSelectStarter && (
           <div className="mt-8 pt-6 border-t border-paper/10 text-left">
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-paper/50 text-center mb-3">
-              Preguntas para empezar
+              Para qué querés usarlo
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {hookData.suggestedStarters.map((q) => (

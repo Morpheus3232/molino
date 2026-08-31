@@ -13,6 +13,9 @@ import PremiumChatSection from "@/components/chat/PremiumChatSection";
  * escribas — el mismo `buildSynthesis` que alimenta el Mapa y la Lectura.
  * Antes esta ruta redirigía a /explore (un índice de conocimiento), así que
  * la IA no tenía superficie propia.
+ *
+ * Desde 2026-08-31: la página se enmarca como exploración, no como chatbot.
+ * Después de la lectura, el mapa se pone al servicio de una pregunta tuya.
  */
 const EJEMPLOS = [
   "Estoy por cambiar de trabajo. ¿Qué de mi mapa conviene tener en cuenta?",
@@ -32,14 +35,16 @@ export default function AiPage() {
       <main className="min-h-screen bg-background" id="main-content">
         <div className="mx-auto max-w-2xl px-4 sm:px-8 lg:px-12 pt-24 sm:pt-32 pb-24 text-center">
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-4">
-            Preguntale a tu Molino
+            Primer paso: tu mapa
           </p>
           <h1 className="font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
-            Primero, tu mapa.
+            Después de la lectura,
+            <br />
+            la conversación.
           </h1>
           <p className="mt-6 text-base text-muted leading-relaxed">
-            La IA de Molino responde sobre tu mapa concreto: tus números, tus signos y
-            lo que sale de cruzarlos. Necesita ese mapa para poder hablar.
+            La IA de Molino responde desde tu mapa concreto — tus números, tus
+            signos y lo que sale de cruzarlos. Necesita que lo construyas primero.
           </p>
           <Link
             href="/onboarding"
@@ -62,17 +67,16 @@ export default function AiPage() {
           >
             ← Mi Mapa
           </Link>
-          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">La IA</p>
+          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">Preguntale</p>
           <h1 className="mt-2 font-display text-[clamp(2.25rem,7vw,4rem)] leading-[0.9] tracking-tight text-foreground uppercase">
-            Preguntale
+            Ya sabés lo que
             <br />
-            a tu Molino.
+            tu mapa dice.
           </h1>
           <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
-            No es un chatbot: ya tiene tu mapa completo —patrones, convergencias entre
-            sistemas, tensiones, reglas y lo que no se puede afirmar de vos— antes de que
-            escribas. Responde una pregunta concreta sobre tu momento o una situación real,
-            leída a través de esa estructura.
+            Tu lectura te mostró patrones, convergencias y tensiones. Acá, esas
+            mismas coordenadas se ponen al servicio de una pregunta tuya — la que
+            sea, sobre el momento o la situación que te trae.
           </p>
         </header>
 
@@ -84,7 +88,7 @@ export default function AiPage() {
           <div className="pt-10">
             <div className="rounded-[--radius-lg] border border-ink/10 bg-paper p-6 sm:p-8">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
-                Ejemplos de lo que podés preguntar
+                Ejemplos de lo que el mapa puede ayudarte a pensar
               </p>
               <ul className="space-y-3">
                 {EJEMPLOS.map((q) => (
