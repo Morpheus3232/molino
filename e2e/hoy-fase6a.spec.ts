@@ -5,14 +5,14 @@ import { test, expect } from "@playwright/test";
 // buildOrientation() con evidencia trazable, en vez de una plantilla ad-hoc.
 
 test.describe("/hoy — jerarquía Fase 6A", () => {
-  test("desktop: Consejo del Momento aparece antes que Favorece hoy, sin overflow", async ({ page }) => {
+  test("desktop: Consejo del Momento aparece antes que Favorable hoy, sin overflow", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/hoy");
     await expect(page.getByText("Consejo del Momento")).toBeVisible();
-    await expect(page.getByText("Favorece hoy")).toBeVisible();
+    await expect(page.getByText("Favorable hoy")).toBeVisible();
 
     const consejoY = await page.getByText("Consejo del Momento").boundingBox();
-    const favoreceY = await page.getByText("Favorece hoy").boundingBox();
+    const favoreceY = await page.getByText("Favorable hoy").boundingBox();
     expect(consejoY!.y).toBeLessThan(favoreceY!.y);
 
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);

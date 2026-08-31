@@ -18,7 +18,7 @@ test.describe("QA — Molino Suite de Robustez y Funcionalidad", () => {
       await page.goto("/");
       const dateInput = page.getByRole("group", { name: "Fecha de nacimiento" }).first();
       await expect(dateInput).toBeVisible();
-      const cta = page.getByRole("button", { name: "Descubrí tu mapa" }).first();
+      const cta = page.getByRole("button", { name: /ver tu mapa/i }).first();
       await expect(cta).toBeVisible();
     });
 
@@ -39,7 +39,7 @@ test.describe("QA — Molino Suite de Robustez y Funcionalidad", () => {
 
       await expect(page.locator("h1").first()).toBeVisible({ timeout: 15000 });
       await expect(page.getByText(/CAMINO DE VIDA/i).first()).toBeVisible({ timeout: 15000 });
-      await expect(page.getByText(/Aries/i).first()).toBeVisible({ timeout: 15000 });
+      await expect(page.getByText(/aries/i).first()).toBeVisible({ timeout: 15000 });
     });
 
     test("Profile loads cleanly in fresh context", async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe("QA — Molino Suite de Robustez y Funcionalidad", () => {
       await newPage.goto("/profile?dob=1988-11-23");
       await newPage.waitForLoadState("domcontentloaded");
       await expect(newPage.locator("h1").first()).toBeVisible({ timeout: 15000 });
-      await newPage.close();
+      newPage.close();
     });
   });
 
@@ -70,7 +70,7 @@ test.describe("QA — Molino Suite de Robustez y Funcionalidad", () => {
   });
 
   // ──────────────────────────────────────────────
-  // 4. Responsive Layouts
+  // 4. Responsive Viewports
   // ──────────────────────────────────────────────
   test.describe("4. Responsive Viewports", () => {
     test("Mobile (375px) renders Hero and CTA properly", async ({ page }) => {
