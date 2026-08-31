@@ -1,51 +1,70 @@
 import { test, expect } from "@playwright/test";
 
-// Fase 3 (2026-08-22): rediseño de narrativa de la homepage — smoke tests
-// de los puntos de contacto críticos: CTA principal, CTA "ver ejemplo",
-// /ejemplo, FAQ y la línea de Premium en FeaturesSection.
+// Fase actual (2026-08-29): narrativa de la homepage.
+// Smoke tests semánticos de los puntos de contacto críticos:
+// qué es Molino, los tres sistemas, los tres niveles
+// (Mapa → Lectura → IA), conocimiento abierto, línea Premium,
+// FAQ y experiencia mobile.
 
-test.describe("Homepage — narrativa Fase 3", () => {
-  test("hero: H1, CTA principal y CTA 'ver ejemplo' visibles", async ({ page }) => {
+test.describe("Homepage — narrativa actual", () => {
+  test("hero: qué es Molino y CTAs visibles", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("h1").first()).toBeVisible();
-    await expect(page.getByRole("button", { name: /ver tu mapa/i })).toBeVisible();
-    await expect(page.getByRole("link", { name: /ver ejemplo interactivo/i })).toBeVisible();
+    await expect(page.getByText(/Tu fecha no es un dato/)).toBeVisible();
+    await expect(page.getByRole("button", { name: /Ver tu mapa/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Ver ejemplo interactivo/i })).toBeVisible();
   });
 
-  test("tres niveles: La Lectura linkea a /ejemplo", async ({ page }) => {
+  test("tres sistemas: numerología, astrología, zodíaco chino", async ({ page }) => {
     await page.goto("/");
-    const link = page.getByRole("link", { name: "Ver un ejemplo" });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/ejemplo");
+    await expect(page.getByText(/Tres sistemas, una sola fecha/)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Numerología" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Astrología" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Zodíaco chino" })).toBeVisible();
   });
 
-  test("Preguntale linkea a /ai", async ({ page }) => {
+  test("tres niveles: Mapa, Lectura, IA con destinos actuales", async ({ page }) => {
     await page.goto("/");
-    const link = page.getByRole("link", { name: /cómo funciona/i });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/ai");
+    await expect(page.getByText("Primero la estructura")).toBeVisible();
+
+    const mapLink = page.getByText("Primero la estructura").locator("xpath=following::ol").getByRole("link", { name: /Crear mi mapa/ });
+    await expect(mapLink).toBeVisible();
+    await expect(mapLink).toHaveAttribute("href", "/onboarding");
+
+    const lecturaLink = page.getByText("Primero la estructura").locator("xpath=following::ol").getByRole("link", { name: /Ver un ejemplo/ });
+    await expect(lecturaLink).toBeVisible();
+    await expect(lecturaLink).toHaveAttribute("href", "/ejemplo");
+
+    const aiLink = page.getByText("Primero la estructura").locator("xpath=following::ol").getByRole("link", { name: /Cómo funciona/ });
+    await expect(aiLink).toBeVisible();
+    await expect(aiLink).toHaveAttribute("href", "/ai");
   });
 
-  test("/ejemplo reusa ProfileHub — badge Perfil de ejemplo y botón Generá tu propio mapa", async ({ page }) => {
-    await page.goto("/ejemplo");
-    await expect(page.getByText("Perfil de ejemplo")).toBeVisible();
-    await expect(page.getByRole("link", { name: /generá tu propio mapa/i })).toBeVisible();
-    await expect(page.locator("h1").first()).toBeVisible();
-  });
-
-  test("FeaturesSection: línea Premium y CTA a /premium", async ({ page }) => {
+  test("conocimiento abierto y transparencia", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText(/tu mapa y tu lectura son gratis/i)).toBeVisible();
-    const link = page.getByRole("link", { name: /ver qué incluye/i });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/premium");
+    await expect(page.getByText(/Cálculo 100% local/)).toBeVisible();
+    await expect(page.getByRole("link", { name: /Cómo lo verificás/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /Política de privacidad/i })).toBeVisible();
+  });
+
+  test("features: núcleo del mapa + línea Premium con CTA a /premium", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByText("Qué hacés con eso")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Hoy" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Ciclos" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Afinidades" })).toBeVisible();
+    await expect(page.getByText(/Tu mapa y tu lectura son gratis/)).toBeVisible();
+    await expect(page.getByText(/La conversación es Pro/)).toBeVisible();
+    const premiumLink = page.getByRole("link", { name: /Ver qué incluye/ });
+    await expect(premiumLink).toBeVisible();
+    await expect(premiumLink).toHaveAttribute("href", "/premium");
   });
 
   test("FAQ se expande", async ({ page }) => {
     await page.goto("/");
     await page.locator("#faq").scrollIntoViewIfNeeded();
-    const firstQuestion = page.getByRole("button", { name: /100% gratuito/i });
-    await expect(firstQuestion).toBeVisible();
+    const firstQuestion = page.getByRole("button", { name: /¿Por qué el mapa esencial es 100% gratuito/ });
+    await expect(firstQuestion).toBeVisible({ timeout: 15000 });
     const initiallyExpanded = await firstQuestion.getAttribute("aria-expanded");
     await firstQuestion.click();
     await expect(firstQuestion).not.toHaveAttribute("aria-expanded", initiallyExpanded ?? "");
