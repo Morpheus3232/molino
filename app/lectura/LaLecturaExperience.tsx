@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
 import { usePremiumAccess } from "@/lib/hooks/usePremiumAccess";
+import { usePremiumActivation } from "@/components/premium/PremiumActivationContext";
 import { getProfileSalt } from "@/lib/profile-salt";
 import { getPremiumTokenClient } from "@/lib/premium";
 import { getCachedLectura, setCachedLectura } from "@/lib/session/lecturaCache";
@@ -15,6 +16,7 @@ import {
 } from "@/lib/engines/synthesisEngine";
 import { safeNumber } from "@/lib/utils/score";
 import PremiumGate from "@/components/profile/PremiumGate";
+import PremiumActivationFeedback from "@/components/premium/PremiumActivationFeedback";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
@@ -56,6 +58,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const [interpretation, setInterpretation] = useState<MolinoInterpretation | null>(null);
   const [fetchDone, setFetchDone] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const { step, setStep } = usePremiumActivation();
 
   // El acceso premium es por (fecha de nacimiento + dispositivo), no por
   // dispositivo a secas: cargar un mapa nuevo sin pagarlo NO da acceso a su
@@ -76,18 +79,19 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // inicializador de useState produce un mismatch de hidratación — server y
   // cliente arrancan iguales (revealed=false) y este efecto, que solo corre
   // en el cliente después del mount, resuelve el caché sin ese desajuste.
+  const hasFetched = useRef(false);
+
+  // Cuando el cupón es aceptado (step='success' desde usePremiumCoupon)
+  // y el servidor confirma el acceso (isPremium=true), arrancar la fetch
+  // y pasar al estado ready. La fetch corre en background; el usuario ve
+  // "Tu Lectura Pro está lista" inmediatamente.
   useEffect(() => {
-    const cached = getCachedLectura(profile.birthDate, profile.name || "");
-    if (cached) {
-      setInterpretation(cached);
-      setFetchDone(true);
-      setRevealed(true);
-      return;
-    }
-    // `null` = todavía consultando el entitlement; `false` = hay que pagar.
-    // En ninguno de los dos casos tiene sentido disparar la llamada de IA
-    // (que puede tardar hasta 55s y, sin acceso, termina en 403 igual).
-    if (isPremium !== true) return;
+    if (step !== 'success' || isPremium !== true || hasFetched.current) return;
+    hasFetched.current = true;
+    setStep('preparing');
+    // Transición inmediata a ready: el fetch de la lectura corre en
+    // background sin bloquear la UI.
+    setTimeout(() => setStep('ready'), 0);
     let cancelled = false;
     fetchLectura(profile).then((result) => {
       if (cancelled) return;
@@ -95,11 +99,30 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
       setFetchDone(true);
       if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
     });
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile.birthDate, profile.name, isPremium]);
+  }, [step, isPremium, profile.birthDate, profile.name]);
+
+  // "La Lectura" es un documento único e irrepetible — si ya se generó para
+  // este perfil, reabrirla la muestra tal cual quedó, sin recrearla ni
+  // repetir la animación de construcción (ver lib/session/lecturaCache.ts).
+  // El chequeo vive en este efecto (no en el estado inicial) a propósito:
+  // localStorage no existe en el render de servidor, así que leerlo en el
+  // inicializador de useState produce un mismatch de hidratación — server y
+  // cliente arrancan iguales (revealed=false) y este efecto, que solo corre
+  // en el cliente después del mount, resuelve el caché sin ese desajuste.
+  useEffect(() => {
+    const cached = getCachedLectura(profile.birthDate, profile.name || "");
+    if (cached) {
+      setInterpretation(cached);
+      setFetchDone(true);
+      setRevealed(true);
+      // Solo marcar como lista si venimos de una activación reciente
+      if (step === 'success') setStep('ready');
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile.birthDate, profile.name]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
@@ -447,7 +470,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             — no hace falta que sepas su fecha.
           </p>
         </div>
-      </div>
-    </section>
-  );
-}
+        </div>
+        <PremiumActivationFeedback />
+      </section>
+    );
+  }

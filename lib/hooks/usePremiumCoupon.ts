@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { getOrCreateProfileSalt } from '@/lib/premium';
+import { usePremiumActivationSafe } from '@/components/premium/PremiumActivationContext';
 
 interface UsePremiumCouponParams {
   name?: string;
@@ -11,6 +12,8 @@ interface UsePremiumCouponParams {
 }
 
 export function usePremiumCoupon({ name, birthDate, commitUnlock }: UsePremiumCouponParams) {
+  const activation = usePremiumActivationSafe();
+  const { setStep } = activation || { setStep: () => {} };
   const [showCoupon, setShowCoupon] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [couponError, setCouponError] = useState<string | null>(null);
@@ -22,6 +25,7 @@ export function usePremiumCoupon({ name, birthDate, commitUnlock }: UsePremiumCo
 
     setIsApplyingCoupon(true);
     setCouponError(null);
+    setStep('submitting');
 
     try {
       const res = await fetch('/api/mp/coupon', {
@@ -32,15 +36,18 @@ export function usePremiumCoupon({ name, birthDate, commitUnlock }: UsePremiumCo
       const data = await res.json();
       if (res.ok && data.valid) {
         commitUnlock(data.premiumToken);
+        setStep('success');
       } else {
         setCouponError(data.reason || 'Código inválido');
+        setStep('error');
       }
     } catch {
       setCouponError('Error al aplicar el cupón');
+      setStep('error');
     } finally {
       setIsApplyingCoupon(false);
     }
-  }, [couponCode, name, birthDate, commitUnlock]);
+  }, [couponCode, name, birthDate, commitUnlock, setStep]);
 
   return {
     showCoupon,
