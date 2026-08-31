@@ -270,9 +270,10 @@ export default function UniversityHeader() {
     router.push("/onboarding");
   }, [router]);
 
-  // La Lectura vive en su propia pestaña como un objeto autónomo — el nav
-  // del sitio rompe esa sensación de "testamento que se despliega solo".
-  if (pathname.startsWith("/lectura")) return null;
+  // La Lectura vive en su propia pestaña como objeto autónomo.
+  // El nav del sitio no rompe esa sensación — el header sigue
+  // visible para que el usuario siempre tenga puerta a las otras
+  // capas del producto (Mapa, IA, resto del sitio).
 
   // El label anterior de la bóveda era el plural literal del ancla del
   // centro: dos etiquetas casi idénticas a tres ítems de distancia, una para

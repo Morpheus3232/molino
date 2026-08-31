@@ -58,27 +58,25 @@ export default function LecturaClient({ catalog }: Props) {
 
   return (
     <main id="main-content" className="min-h-screen bg-background">
-      {/* Encabezado de la página. Antes /lectura entraba directo al bloque
-          pago; ahora abre con lo gratis, así que necesita decir de quién es
-          la lectura y de dónde viene. */}
       <header className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-20 sm:pt-28 pb-12 border-b border-ink/10">
         <Link
           href="/profile"
           className="font-mono text-xs uppercase tracking-[0.2em] text-muted hover:text-accent transition-colors"
         >
-          ← Mi Mapa
+          ← Tu mapa
         </Link>
         <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">La lectura</p>
-        <h1 className="mt-2 font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.88] tracking-tight text-foreground uppercase">
-          ¿QUÉ SIGNIFICA
+        <h1 className="mt-2 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+          ¿Qué significa
           <br />
-          TU MAPA?
+          tu mapa?
         </h1>
         <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
-          Mi Mapa te dice dónde tu signo toca el mundo. Acá se lee qué dice de vos: los dígitos de
-          tu fecha, dónde coinciden tus sistemas y qué sale de cruzarlos.
+          Tu mapa te dice dónde tu signo toca el mundo. Acá se lee qué significa:
+          los dígitos de tu fecha, dónde coinciden tus sistemas y qué sale de
+          cruzarlos.
         </p>
-        <p className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted">
+        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted">
           <span>Camino de vida {profile.lifePath}</span>
           <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
           <span>{profile.sunSign}</span>
@@ -87,6 +85,9 @@ export default function LecturaClient({ catalog }: Props) {
             {display.name}
             {elemento ? ` de ${elemento}` : ""}
           </span>
+        </div>
+        <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.15em] text-muted/70">
+          Lectura · 02 · Tu relación con el mundo
         </p>
       </header>
 

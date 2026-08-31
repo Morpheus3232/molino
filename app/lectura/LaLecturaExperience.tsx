@@ -205,6 +205,9 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.1 }}
               className="mb-16 sm:mb-20"
             >
+              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted/70 mb-4">
+                Lo que sigue sale de tu mapa
+              </p>
               {interpretation.opening && (
                 <p className="text-center font-display italic text-lg sm:text-xl leading-[1.4] text-muted mb-10 max-w-xl mx-auto">
                   {interpretation.opening}
