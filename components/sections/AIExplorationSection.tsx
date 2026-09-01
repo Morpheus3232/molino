@@ -18,7 +18,7 @@ const AI_STEPS = [
   },
   {
     icon: ArrowRight,
-    title: "Volvés al mapa",
+    title: "Volvé al mapa",
     body: "Cada respuesta se vincula al origen: qué sistema y qué punto del mapa la produjo. Sin cajas negras.",
   },
 ];
@@ -39,27 +39,22 @@ export default function AIExplorationSection() {
           </h2>
         </div>
 
-        {/* Step indicator */}
-        <div className="flex justify-center mb-10 border-b border-border">
-          <div className="inline-flex max-w-full overflow-x-auto">
+        {/* Step indicator — pill style */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex items-center gap-1 rounded-xl border border-border bg-card p-1">
             {AI_STEPS.map((step, i) => {
-              const Icon = step.icon;
+              const isActive = activeStep === i;
               return (
                 <button
                   key={i}
                   onClick={() => setActiveStep(i)}
-                  className={`relative flex items-center gap-2 px-4 sm:px-6 py-4 font-heading font-medium text-sm tracking-wide transition-colors duration-200 whitespace-nowrap ${
-                    activeStep === i ? "text-accent" : "text-muted hover:text-foreground"
+                  className={`relative rounded-lg px-5 sm:px-6 py-2.5 font-heading font-medium text-sm tracking-wide transition-all duration-200 ${
+                    isActive
+                      ? "bg-accent text-accent-foreground shadow-sm"
+                      : "text-muted hover:text-foreground"
                   }`}
                 >
-                  {activeStep === i && (
-                    <motion.div
-                      layoutId="aiTabUnderline"
-                      className="absolute inset-x-0 -bottom-px h-px bg-accent"
-                      transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                    />
-                  )}
-                  <span>{step.title}</span>
+                  {step.title}
                 </button>
               );
             })}

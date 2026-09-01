@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface MapPillar {
   label: string;
@@ -30,9 +30,9 @@ const demoMap: Record<string, MapPillar[]> = {
 };
 
 const tabs = [
-  { id: "identity", label: "Identidad", icon: "🔢" },
-  { id: "reading", label: "Lectura", icon: "📖" },
-  { id: "ai", label: "IA", icon: "🧠" },
+  { id: "identity", label: "Identidad" },
+  { id: "reading", label: "Lectura" },
+  { id: "ai", label: "IA" },
 ];
 
 export default function MapPreview() {
@@ -57,27 +57,25 @@ export default function MapPreview() {
           </p>
         </div>
 
-        {/* Tab navigator */}
-        <div className="flex justify-center mb-10 border-b border-border">
-          <div className="inline-flex max-w-full overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center gap-2 px-4 sm:px-6 py-4 font-heading font-medium text-sm tracking-wide transition-colors duration-200 whitespace-nowrap ${
-                  activeTab === tab.id ? "text-accent" : "text-muted hover:text-foreground"
-                }`}
-              >
-                {activeTab === tab.id && (
-                  <motion.div
-                    layoutId="mapPreviewTabUnderline"
-                    className="absolute inset-x-0 -bottom-px h-px bg-accent"
-                    transition={{ type: "spring", bounce: 0.15, duration: 0.5 }}
-                  />
-                )}
-                <span>{tab.label}</span>
-              </button>
-            ))}
+        {/* Tab navigator — pill style */}
+        <div className="flex justify-center mb-10">
+          <div className="inline-flex items-center gap-1 rounded-xl border border-border bg-card p-1">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative rounded-lg px-5 sm:px-6 py-2.5 font-heading font-medium text-sm tracking-wide transition-all duration-200 ${
+                    isActive
+                      ? "bg-accent text-accent-foreground shadow-sm"
+                      : "text-muted hover:text-foreground"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
