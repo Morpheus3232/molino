@@ -13,7 +13,7 @@ const AI_STEPS = [
   },
   {
     icon: Sparkles,
-    title: "Razona, no invente",
+    title: "Razona, no inventa",
     body: "El modelo trabaja con tus coordenadas simbólicas. Lo que genera es una interpretación, no una predicción. Siempre hay incertidumbre declarada.",
   },
   {
