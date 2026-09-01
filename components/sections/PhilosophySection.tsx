@@ -92,7 +92,7 @@ export default function PhilosophySection() {
             capas viven en sus propias secciones y no se cruzan con el Mapa.
           </p>
           <Link
-            href="/afinidad"
+             href="/affinity"
             className="group mt-5 inline-flex items-center gap-1.5 text-accent font-medium underline-offset-4 hover:underline"
           >
             Explorar afinidades
