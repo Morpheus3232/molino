@@ -14,13 +14,14 @@ describe("Home page — universal access without profile", () => {
     const source = fs.readFileSync(pagePath, "utf8");
     expect(source).toBeTruthy();
     expect(source).toContain("HeroInstrument");
-    expect(source).toContain("ClaritySection");
-    // Fase 4: los tres NIVELES (Mapa → Lectura → IA). Sin esta sección, un
-    // visitante nuevo no tiene cómo distinguirlos. `ProofSection` que se
-    // esperaba acá antes ya no existe en la home.
-    expect(source).toContain("ThreeLevelsSection");
-    expect(source).toContain("FeaturesSection");
-    expect(source).toContain("CTASection");
+    expect(source).toContain("MapPreview");
+    expect(source).toContain("ThreeSystemsSection");
+    expect(source).toContain("SynthesisSection");
+    expect(source).toContain("MapToReadingSection");
+    expect(source).toContain("AIExplorationSection");
+    expect(source).toContain("OpenKnowledgeSection");
+    expect(source).toContain("PhilosophySection");
+    expect(source).toContain("FinalCTA");
     expect(source).toContain("FAQ");
   });
 });

@@ -29,6 +29,11 @@ export const FAQS = [
     answer:
       "Sí. El Modo Pareja (/pareja) te permite cruzar dos fechas para analizar sinergias y desafíos. Además, la Bóveda Local te permite guardar y alternar hasta 30 mapas (pareja, familia, socios) en tu navegador sin crear cuentas.",
   },
+  {
+    question: "¿Qué son los Números Maestros (11/22/33)?",
+    answer:
+      "Son vibraciones intensificadas que aparecen cuando la reducción da 11, 22 o 33. No se reducen más: cargan con un significado específico según la posición (Camino de Vida, Expresión o Personalidad). Podés ver el badge en tu resumen de perfil.",
+  },
 ];
 
 function FAQItem({
@@ -66,13 +71,6 @@ function FAQItem({
         </button>
       </h3>
 
-      {/* Apertura/cierre por grid-template-rows (0fr → 1fr) en CSS puro.
-          Antes era un motion.div montado condicionalmente con `exit`, pero sin
-          AnimatePresence alrededor: el `exit` nunca corría, así que el panel
-          abría animado y cerraba de golpe. Además animaba `height: auto`, que
-          obliga a framer a medir layout en el hilo principal. Esta versión es
-          simétrica, no mide nada y respeta prefers-reduced-motion por el reset
-          global de globals.css. */}
       <div
         id={panelId}
         role="region"

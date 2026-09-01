@@ -133,6 +133,13 @@ export default function HeroInstrument() {
             <span className="inline-block h-px w-8 bg-border" aria-hidden="true" />
           </p>
 
+          {/* Molino context — qué es esta calculadora */}
+          <p className="font-mono text-[11px] sm:text-xs text-muted/80 max-w-md mx-auto leading-relaxed">
+            Molino cruza tu fecha de nacimiento con numerología pitagórica,
+            astrología occidental y zodíaco chino para devolver un mapa
+            simbólico de tu patrón personal.
+          </p>
+
           {/* Headline dramático — serif editorial, remate en itálica con
               gradiente cálido animado */}
           <h1 className="font-display font-normal normal-case tracking-tight text-ink leading-[0.95] text-[clamp(2.75rem,7vw,5rem)]">

@@ -1,10 +1,13 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
-import ClaritySection from "@/components/sections/ClaritySection";
-import ThreeLevelsSection from "@/components/sections/ThreeLevelsSection";
-import FeaturesSection from "@/components/sections/FeaturesSection";
-import ArchetypeMarquee from "@/components/sections/ArchetypeMarquee";
-import CTASection from "@/components/sections/CTASection";
+import MapPreview from "@/components/sections/MapPreview";
+import ThreeSystemsSection from "@/components/sections/ThreeSystemsSection";
+import SynthesisSection from "@/components/sections/SynthesisSection";
+import MapToReadingSection from "@/components/sections/MapToReadingSection";
+import AIExplorationSection from "@/components/sections/AIExplorationSection";
+import OpenKnowledgeSection from "@/components/sections/OpenKnowledgeSection";
+import PhilosophySection from "@/components/sections/PhilosophySection";
+import FinalCTA from "@/components/sections/FinalCTA";
 import { SITE_URL } from "@/lib/seo";
 
 const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true });
@@ -103,22 +106,29 @@ export default function HomePage() {
         {/* Hero — Date Input */}
         <HeroInstrument />
 
-        {/* Clarity — qué son los tres sistemas */}
-        <ClaritySection />
+        {/* MapPreview — show the object early */}
+        <MapPreview />
 
-        {/* Los tres NIVELES del producto: Mapa → Lectura → IA. Faltaban en la
-            portada; un visitante nuevo no tenía cómo distinguirlos. */}
-        <ThreeLevelsSection />
+        {/* Tres sistemas, una lectura */}
+        <ThreeSystemsSection />
 
-        {/* Features — Core del mapa (ciclos, afinidades) + ecosistema +
-            Premium fusionado como su continuación, no como venta aparte */}
-        <FeaturesSection />
+        {/* Data vs Synthesis */}
+        <SynthesisSection />
 
-        {/* Marquee de Arquetipos — Conector continuo */}
-        <ArchetypeMarquee />
+        {/* Mapa → Lectura → IA (evolved ThreeLevelsSection) */}
+        <MapToReadingSection />
+
+        {/* Reading → IA */}
+        <AIExplorationSection />
+
+        {/* Aprendé cómo funciona */}
+        <OpenKnowledgeSection />
+
+        {/* Posición epistémica */}
+        <PhilosophySection />
 
         {/* Final CTA */}
-        <CTASection />
+        <FinalCTA />
 
         {/* FAQ */}
         <FAQ />
