@@ -132,6 +132,15 @@ export default function CalculationMatrix({
   // legibilidad, nunca información — nadie se pierde nada al saltearla.
   const [count, setCount] = useState(() => (reduceMotion ? rows.length : 0));
 
+  // Si reduceMotion cambia a true después del primer render, avanzar
+  // inmediatamente al final para que onComplete se dispare y no quede
+  // colgado en "Calculando".
+  useEffect(() => {
+    if (reduceMotion) {
+      setCount(rows.length);
+    }
+  }, [reduceMotion, rows.length]);
+
   useEffect(() => {
     if (reduceMotion || count >= rows.length) return;
     const t = setTimeout(() => setCount((c) => c + 1), ROW_MS);
