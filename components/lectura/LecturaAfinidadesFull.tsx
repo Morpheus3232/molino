@@ -246,17 +246,34 @@ export default function LecturaAfinidadesFull({
         aria-label="Nivel de compatibilidad"
         className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-1.5 rounded-2xl bg-paper-alt border border-ink/10"
       >
-        {(["same", "triad", "clash"] as RelationTabKey[]).map((relKey) => {
+        {(["same", "triad", "clash"] as RelationTabKey[]).map((relKey, idx) => {
           const cfg = RELATION_CONFIG[relKey];
           const isSelected = activeRelation === relKey;
           const count = groupedByRelation[relKey].length;
 
+          const handleKeyDown = (e: React.KeyboardEvent) => {
+            if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+              e.preventDefault();
+              const next = (idx + 1) % 3;
+              handleSelectRelation((["same", "triad", "clash"] as RelationTabKey[])[next]);
+              document.getElementById(`relation-tab-${(["same", "triad", "clash"] as RelationTabKey[])[next]}`)?.focus();
+            } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+              e.preventDefault();
+              const prev = (idx - 1 + 3) % 3;
+              handleSelectRelation((["same", "triad", "clash"] as RelationTabKey[])[prev]);
+              document.getElementById(`relation-tab-${(["same", "triad", "clash"] as RelationTabKey[])[prev]}`)?.focus();
+            }
+          };
+
           return (
             <button
               key={relKey}
+              id={`relation-tab-${relKey}`}
               role="tab"
               type="button"
               aria-selected={isSelected}
+              tabIndex={isSelected ? 0 : -1}
+              onKeyDown={handleKeyDown}
               onClick={() => handleSelectRelation(relKey)}
               className={`flex items-center justify-between p-3.5 rounded-xl text-left transition-all min-h-[48px] ${
                 isSelected
@@ -302,21 +319,44 @@ export default function LecturaAfinidadesFull({
           <span className="font-mono text-[11px] uppercase tracking-wider text-muted font-semibold">
             Categorías
           </span>
-          <span className="font-mono text-[11px] text-muted">
+          <span
+            className="font-mono text-[11px] text-muted"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {filteredEntities.length} {filteredEntities.length === 1 ? "entidad" : "entidades"}
           </span>
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
-          {CATEGORY_TABS.map((cat) => {
+          {CATEGORY_TABS.map((cat, idx) => {
             const count = categoryCounts[cat.key];
             if (count === 0) return null;
             const isSelected = activeCategory === cat.key;
 
+            const handleKeyDown = (e: React.KeyboardEvent) => {
+              if (e.key === "ArrowRight") {
+                e.preventDefault();
+                const visible = CATEGORY_TABS.filter((c) => categoryCounts[c.key] > 0);
+                const next = (idx + 1) % visible.length;
+                handleSelectCategory(visible[next].key);
+                document.getElementById(`cat-pill-${visible[next].key}`)?.focus();
+              } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                const visible = CATEGORY_TABS.filter((c) => categoryCounts[c.key] > 0);
+                const prev = (idx - 1 + visible.length) % visible.length;
+                handleSelectCategory(visible[prev].key);
+                document.getElementById(`cat-pill-${visible[prev].key}`)?.focus();
+              }
+            };
+
             return (
               <button
                 key={cat.key}
+                id={`cat-pill-${cat.key}`}
                 type="button"
+                tabIndex={isSelected ? 0 : -1}
+                onKeyDown={handleKeyDown}
                 onClick={() => handleSelectCategory(cat.key)}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 min-h-[44px] border ${
                   isSelected

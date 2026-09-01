@@ -9,7 +9,7 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 import { getCountryISO } from "@/lib/data/country-iso";
 import { useUserContext } from "@/lib/hooks/useUserContext";
-import { editorialReveal } from "@/lib/utils/motion";
+import { editorialReveal, editorialRevealMount } from "@/lib/utils/motion";
 import { encodeProfileData } from "@/lib/utils/profileShare";
 import {
   MapPin,
@@ -61,14 +61,10 @@ const KIND_SHORT: Record<MapRelation, string> = {
 };
 
 /** Peso visual por casilla bajo la paleta editorial. */
-const KIND_TONE: Record<MapRelation, { accent: string; bar: string; badge?: string }> = {
+const KIND_TONE: Record<MapRelation, { accent: string; bar: string }> = {
   mismo: { accent: "text-accent", bar: "bg-accent" },
   amigo: { accent: "text-accent/80", bar: "bg-accent/60" },
-  enemigo: {
-    accent: "text-foreground",
-    bar: "bg-accent",
-    badge: "bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold",
-  },
+  enemigo: { accent: "text-foreground", bar: "bg-accent" },
   otro: { accent: "text-muted", bar: "bg-border" },
 };
 
@@ -235,6 +231,11 @@ function GroupBlock({
         </h4>
         {group.chinese && (
           <span className={`font-mono text-xs ${tone.accent}`}>{group.chinese}</span>
+        )}
+        {group.kind === "enemigo" && (
+          <span className="ml-2 font-mono text-[10px] uppercase tracking-wider bg-accent/10 border border-accent/30 rounded-sm px-1.5 py-0.5 text-accent font-semibold">
+            Evitar
+          </span>
         )}
         <span className="font-mono text-xs text-muted tabular-nums ml-auto">
           {group.total} {group.total === 1 ? "entrada" : "entradas"}
@@ -488,6 +489,7 @@ export default function PersonalMapSection({
   if (!map || map.domains.length === 0 || visibles.length === 0) return null;
 
   const evaluadas = map.domains.reduce((sum, d) => sum + d.evaluated, 0);
+  const neutralTotal = map.domains.reduce((sum, d) => sum + d.neutralCount, 0);
 
   return (
     <section
@@ -496,7 +498,7 @@ export default function PersonalMapSection({
     >
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">
         {/* ── Encabezado Resumido ───────────────────────────────────── */}
-        <motion.div {...editorialReveal} className="pt-16 lg:pt-24 pb-10">
+        <motion.div {...editorialRevealMount} className="pt-16 lg:pt-24 pb-10">
           <div className="flex items-center justify-between gap-4 flex-wrap mb-3">
             <p className="font-mono text-xs font-semibold tracking-[0.25em] uppercase text-accent">
               EL MAPA APLICADO
@@ -526,10 +528,16 @@ export default function PersonalMapSection({
             {map.element ? ` de ${map.element}` : ""}. Ahora mirá el mundo con esa clave: cada país,
             ciudad, prenda, auto, universidad, club, persona y película del atlas también nació en algún
             año, y ese año le dio su propio signo. Cruzar tu signo con el de cada uno es todo el cálculo —{" "}
-            <strong className="font-semibold text-foreground">
-              {evaluadas.toLocaleString("es-AR")} entradas con fecha exacta
-            </strong>{" "}
-            que se acomodan en tres casillas: tu propio signo, tus dos amigos y tu enemigo.
+             <strong className="font-semibold text-foreground">
+               {evaluadas.toLocaleString("es-AR")} entradas con fecha exacta
+             </strong>{" "}
+             que se acomodan en tres casillas: tu propio signo, tus dos amigos y tu enemigo.
+             {neutralTotal > 0 && (
+               <>
+                 {" "}Las restantes {neutralTotal.toLocaleString("es-AR")} del resto del ciclo no
+                 entran en ninguna casilla — el ciclo no dice nada sobre ellas.
+               </>
+             )}
           </p>
         </motion.div>
 

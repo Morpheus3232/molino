@@ -166,7 +166,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
             Cargando tu mapa...
           </p>
           <div className="animate-pulse">
-            <div className="h-3 bg-[var(--skeleton)] rounded w-10rem mb-6" />
+            <div className="h-3 bg-[var(--skeleton)] rounded w-[25rem] mb-6" />
             <div className="h-10 bg-[var(--skeleton)] rounded w-3/4 mb-4" />
             <div className="h-4 bg-[var(--skeleton)] rounded w-1/2 mb-12" />
             <div className="h-64 bg-[var(--skeleton)] border border-ink/10 rounded-md mb-6" />

@@ -71,14 +71,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // ya pagó no cae nunca en el paywall por no tener el token a mano.
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
 
-  // "La Lectura" es un documento único e irrepetible — si ya se generó para
-  // este perfil, reabrirla la muestra tal cual quedó, sin recrearla ni
-  // repetir la animación de construcción (ver lib/session/lecturaCache.ts).
-  // El chequeo vive en este efecto (no en el estado inicial) a propósito:
-  // localStorage no existe en el render de servidor, así que leerlo en el
-  // inicializador de useState produce un mismatch de hidratación — server y
-  // cliente arrancan iguales (revealed=false) y este efecto, que solo corre
-  // en el cliente después del mount, resuelve el caché sin ese desajuste.
   const hasFetched = useRef(false);
 
   // Cuando el cupón es aceptado (step='success' desde usePremiumCoupon)
@@ -103,14 +95,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, isPremium, profile.birthDate, profile.name]);
 
-  // "La Lectura" es un documento único e irrepetible — si ya se generó para
-  // este perfil, reabrirla la muestra tal cual quedó, sin recrearla ni
-  // repetir la animación de construcción (ver lib/session/lecturaCache.ts).
-  // El chequeo vive en este efecto (no en el estado inicial) a propósito:
-  // localStorage no existe en el render de servidor, así que leerlo en el
-  // inicializador de useState produce un mismatch de hidratación — server y
-  // cliente arrancan iguales (revealed=false) y este efecto, que solo corre
-  // en el cliente después del mount, resuelve el caché sin ese desajuste.
+  // Reabre la lectura cacheada sin refetch: localStorage no existe en SSR,
+  // así que el efecto post-mount resuelve el caché sin desajuste de hidratación.
   useEffect(() => {
     const cached = getCachedLectura(profile.birthDate, profile.name || "");
     if (cached) {
