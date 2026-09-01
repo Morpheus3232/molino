@@ -20,17 +20,6 @@ describe("Claims de privacidad — consistencia con la arquitectura real", () =>
     expect(src).toContain("base de datos");
   });
 
-  test("ClaritySection no promete '0% almacenamiento externo' sin calificar", () => {
-    const src = read("components/sections/ClaritySection.tsx");
-    expect(src).not.toContain("0% Almacenamiento externo");
-    expect(src).not.toMatch(/sin bases de datos ni registro/i);
-  });
-
-  test("TrustMetrics no afirma '0 datos en el servidor' de forma absoluta", () => {
-    const src = read("components/social/TrustMetrics.tsx");
-    expect(src).not.toContain("No guardamos tus datos personales");
-  });
-
   test("FAQ no afirma que nada se almacena en ninguna base de datos externa", () => {
     const src = read("components/sections/FAQ.tsx");
     expect(src).not.toMatch(
@@ -38,11 +27,6 @@ describe("Claims de privacidad — consistencia con la arquitectura real", () =>
     );
     // debe mencionar la excepción real (hash) en vez del absoluto
     expect(src.toLowerCase()).toContain("hash");
-  });
-
-  test("ProofSection no promete '0% almacenamiento en nube'", () => {
-    const src = read("components/sections/ProofSection.tsx");
-    expect(src).not.toContain("0% almacenamiento en nube");
   });
 
   test("Metadata de la homepage no promete 'sin datos guardados' de forma absoluta", () => {
@@ -57,9 +41,19 @@ describe("Claims de privacidad — consistencia con la arquitectura real", () =>
     );
   });
 
-  test("ClaritySection califica el claim '100% Local' con la excepción de Premium/IA", () => {
-    const src = read("components/sections/ClaritySection.tsx");
-    expect(src.toLowerCase()).toMatch(/hash|premium/);
+  test("ThreeSystemsSection califica el claim '100% local' con la excepción de Premium/IA", () => {
+    const src = read("components/sections/ThreeSystemsSection.tsx");
+    expect(src.toLowerCase()).toMatch(/hash|premium/i);
+  });
+
+  test("MapToReadingSection califica el claim 'local' con la excepción de IA", () => {
+    const src = read("components/sections/MapToReadingSection.tsx");
+    expect(src.toLowerCase()).toMatch(/modelo|premium|ia/);
+  });
+
+  test("TrustMetrics no afirma '0 datos en el servidor' de forma absoluta", () => {
+    const src = read("components/social/TrustMetrics.tsx");
+    expect(src).not.toContain("No guardamos tus datos personales");
   });
 
   test("TrustSignals no usa una promesa legal absoluta ('garantizada') sin matiz", () => {

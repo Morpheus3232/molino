@@ -15,7 +15,7 @@ function isValidBirthDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [year] = value.split("-").map(Number);
   const birth = new Date(`${value}T00:00:00`);
-  return year >= 1900 && birth < new Date();
+  return year >= 1900 && birth <= new Date();
 }
 
 /**
@@ -120,10 +120,9 @@ export default function HeroInstrument() {
       className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
     >
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
-        <div aria-live="polite" aria-atomic="true" className="sr-only">
-          {isSubmitting && "Generando tu mapa..."}
-          {!isSubmitting && isDateValid && "Fecha válida. Lista para generar tu mapa."}
-        </div>
+          <div aria-live="polite" aria-atomic="true" className="sr-only">
+            {isSubmitting && "Generando tu mapa..."}
+          </div>
 
         <motion.div {...fadeUpMount} className="space-y-10">
           {/* Eyebrow */}

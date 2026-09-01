@@ -6,7 +6,7 @@ export const SITE_URL = "https://www.molino.app";
 export const SITE_NAME = "molino.app";
 export const SITE_DESCRIPTION =
   "Tu mapa personal de autoconocimiento. Pitagórica, astrología y zodiaco chino — gratis, sin registro, 100% local.";
-export const OG_IMAGE = "/og-image.png";
+export const OG_IMAGE = "/og-image.svg";
 
 export function siteUrl(path: string = ""): string {
   if (path === "") return SITE_URL;

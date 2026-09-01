@@ -85,13 +85,14 @@ export default function MapToReadingSection() {
         </ol>
 
         <p className="mt-8 text-sm text-muted leading-relaxed max-w-2xl">
-          Los dos primeros niveles se calculan enteros en tu navegador, con código abierto y
-          sin cuenta. El tercero necesita mandarle tu mapa a un modelo para poder responder.{" "}
+          Los dos primeros niveles corren enteros en tu navegador, sin cuenta
+          ni registro. El tercero necesita mandarle tu mapa a un modelo para
+          poder responder.{" "}
           <Link
-            href="/transparencia"
+            href="/privacidad"
             className="group inline-flex items-center gap-1.5 text-accent font-medium underline-offset-4 hover:underline"
           >
-            Cómo lo verificás
+            Política de privacidad
             <ArrowRight
               className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"
               aria-hidden="true"

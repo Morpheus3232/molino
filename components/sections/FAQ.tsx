@@ -75,8 +75,8 @@ function FAQItem({
         id={panelId}
         role="region"
         aria-labelledby={buttonId}
-        className={`grid transition-[grid-template-rows] duration-200 ease-out ${
-          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr] invisible"
+            className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr] hidden"
         }`}
       >
         <div className="overflow-hidden">

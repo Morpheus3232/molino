@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { calculateLifePath } from "@/lib/engines/numerologyEngine";
 import { getPersonalYear } from "@/lib/calculations";
 
-describe("ProofSection mathematical verification", () => {
+describe("Verificación matemática del mapa (datos de ejemplo)", () => {
   it("verifica que 15/06/1990 produce exactamente Camino de Vida 4", () => {
     const lp = calculateLifePath("1990-06-15");
     expect(lp).toBe(4);
