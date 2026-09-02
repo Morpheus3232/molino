@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { hasStoredProfile, clearStoredProfile, loadProfileFromStorage } from "@/lib/session/localStorage";
@@ -250,10 +251,16 @@ export default function UniversityHeader() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-        setOpenMenu(null);
-      }
+      const target = e.target as HTMLElement | null;
+      // Clic dentro del header (botones del nav) → no cerrar.
+      if (headerRef.current && headerRef.current.contains(target)) return;
+      // Clic dentro de un panel dropdown renderizado por portal en <body>:
+      // si lo cerramos acá en mousedown, el nodo se desmonta antes del click
+      // y el Link nunca navega. Se deja que el click complete; el efecto de
+      // [pathname] cierra el menú tras la navegación.
+      if (target && typeof target.closest === "function" && target.closest('[id$="-menu"]')) return;
+      setMenuOpen(false);
+      setOpenMenu(null);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -309,7 +316,7 @@ export default function UniversityHeader() {
           </Link>
 
           {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
-          <nav className="hidden lg:flex items-center gap-1.5 min-w-0" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center gap-1.5 min-w-0 overflow-hidden" aria-label="Navegación principal">
             {!hasProfile ? (
               <>
                 <NavDropdown
@@ -600,7 +607,15 @@ export default function UniversityHeader() {
 /** Dropdown de desktop — un solo patrón de accesibilidad (aria-expanded,
  * aria-haspopup, cierre por Escape/click-afuera ya cubiertos por los
  * listeners globales del header) reutilizado por Explorar / Mis Afinidades
- * / Mi Tiempo en vez de tres implementaciones separadas. */
+ * / Mi Tiempo en vez de tres implementaciones separadas.
+ *
+ * El panel se renderiza con createPortal directamente en <body> en vez de
+ * como hijo del nav: el nav central usa overflow-hidden para recortar su
+ * fila sin entrecruzar títulos en anchor de pantalla (1024-1300px con mapa),
+ * y ese mismo overflow recortaría un panel absoluto que cuelga hacia abajo.
+ * Al montarlo en body, el panel escapa del recorte y queda visible. Se
+ * posiciona con position:fixed usando la geometría real del botón, alineado
+ * a su borde derecho (mismo look que el `absolute right-0` original). */
 function NavDropdown({
   id,
   label,
@@ -619,9 +634,35 @@ function NavDropdown({
   isActiveLink: (href: string) => boolean;
 }) {
   const menuId = `${id}-menu`;
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
+
+  const positionMenu = useCallback(() => {
+    const rect = btnRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setPos({
+      top: rect.bottom + 8,
+      right: window.innerWidth - rect.right,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    positionMenu();
+    const onResize = () => positionMenu();
+    const onScroll = () => positionMenu();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, true);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll, true);
+    };
+  }, [isOpen, positionMenu]);
+
   return (
     <div className="relative">
       <button
+        ref={btnRef}
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
@@ -640,36 +681,40 @@ function NavDropdown({
         />
       </button>
 
-      {isOpen && (
-        <div
-          id={menuId}
-          className="absolute top-full right-0 mt-2 w-56 py-1.5 rounded-xl border border-ink/10 bg-background shadow-lg"
-        >
-          {groups.map((group, i) => (
-            <div key={group.heading ?? i} className={i > 0 ? "mt-1.5 pt-1.5 border-t border-ink/10" : ""}>
-              {group.heading && (
-                <p className="px-4 pt-1 pb-1 text-[10px] font-mono uppercase tracking-[0.15em] text-muted/70">
-                  {group.heading}
-                </p>
-              )}
-              {group.links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={isActiveLink(link.href) ? "page" : undefined}
-                  className={`block px-4 py-2 text-sm transition-colors ${
-                    isActiveLink(link.href)
-                      ? "text-accent font-semibold bg-ink/[0.03]"
-                      : "text-foreground hover:bg-ink/[0.04] hover:text-accent"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
+      {isOpen &&
+        pos &&
+        createPortal(
+          <div
+            id={menuId}
+            style={{ top: pos.top, right: pos.right }}
+            className="fixed z-[90] mt-0 w-56 py-1.5 rounded-xl border border-ink/10 bg-background shadow-lg"
+          >
+            {groups.map((group, i) => (
+              <div key={group.heading ?? i} className={i > 0 ? "mt-1.5 pt-1.5 border-t border-ink/10" : ""}>
+                {group.heading && (
+                  <p className="px-4 pt-1 pb-1 text-[10px] font-mono uppercase tracking-[0.15em] text-muted/70">
+                    {group.heading}
+                  </p>
+                )}
+                {group.links.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    aria-current={isActiveLink(link.href) ? "page" : undefined}
+                    className={`block px-4 py-2 text-sm transition-colors ${
+                      isActiveLink(link.href)
+                        ? "text-accent font-semibold bg-ink/[0.03]"
+                        : "text-foreground hover:bg-ink/[0.04] hover:text-accent"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
