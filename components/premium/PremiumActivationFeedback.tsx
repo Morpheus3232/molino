@@ -56,7 +56,7 @@ export default function PremiumActivationFeedback() {
   }, [step]);
 
   const handleViewReading = useCallback(() => {
-    const el = document.getElementById('lectura-premium-reveal');
+    const el = document.getElementById('lectura-contenido');
     if (el) {
       el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       el.focus({ preventScroll: true });

@@ -22,8 +22,7 @@ import type { LightweightEntity } from "@/types/atlas";
 import type { MolinoInterpretation } from "@/lib/engines/intelligence/types";
 import Logo from "@/components/ui/Logo";
 import BuildingMolino from "@/components/ui/BuildingMolino";
-import LecturaAfinidadesFull from "@/components/lectura/LecturaAfinidadesFull";
-import ReadingToAI from "@/components/lectura/ReadingToAI";
+import LecturaGratis from "@/components/lectura/LecturaGratis";
 import PremiumChatSection from "@/components/chat/PremiumChatSection";
 
 interface Props {
@@ -32,6 +31,8 @@ interface Props {
 }
 
 async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation | null> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15_000);
   try {
     const res = await fetch("/api/intelligence/interpret", {
       method: "POST",
@@ -43,12 +44,16 @@ async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation 
         type: "personal_profile",
         premiumToken: getPremiumTokenClient(),
       }),
+      signal: controller.signal,
     });
     const data = await res.json();
     if (!res.ok) return null;
     return (data.ai as MolinoInterpretation) ?? (data.fallback as MolinoInterpretation) ?? null;
-  } catch {
+  } catch (err) {
+    console.warn("[fetchLectura] aborted or error:", err);
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
@@ -72,13 +77,16 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
 
   const hasFetched = useRef(false);
+  const prevIsPremium = useRef(isPremium);
 
-  // Cuando el cupón es aceptado (step='success' desde usePremiumCoupon)
-  // y el servidor confirma el acceso (isPremium=true), arrancar la fetch
-  // y pasar al estado ready. La fetch corre en background; el usuario ve
-  // "Tu Lectura Pro está lista" inmediatamente.
+  // La fetch arranca cuando el cupón es aceptado (step='success' desde
+  // usePremiumCoupon) O cuando isPremium pasa a true (pago normal por
+  // Mercado Pago). En ambos casos el servidor ya confirmó el acceso.
   useEffect(() => {
-    if (step !== 'success' || isPremium !== true || hasFetched.current) return;
+    const premiumJustActivated = isPremium === true && prevIsPremium.current !== true;
+    prevIsPremium.current = isPremium;
+    if (step !== 'success' && !premiumJustActivated && !isPremium) return;
+    if (hasFetched.current) return;
     hasFetched.current = true;
     setStep('preparing');
     // Transición inmediata a ready: el fetch de la lectura corre en
@@ -164,25 +172,11 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
              desbloquear, sus children pasan a renderizarse y el efecto de
              arriba dispara la generación real. */
           <div className="pt-4 pb-16">
-            {/* Encabezado del tramo pago. El detalle de qué incluye lo arma
-                PremiumGate → PremiumPaywallContent → FeatureComparison, que
-                ya es la fuente única del precio y de la tabla gratis/Pro; un
-                segundo listado acá se desincronizaría del primero. */}
-            <div className="mb-10 border-b border-ink/10 pb-8">
-              <p className="font-mono text-xs font-semibold tracking-[0.3em] uppercase text-accent mb-4">
-                LECTURA PRO
-              </p>
-              <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.9] tracking-tight text-foreground">
-                LA CONVERSACIÓN
-                <br />
-                ENTRE TUS SISTEMAS.
-              </h2>
-              <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
-                Todo lo de arriba es tuyo y no se paga. Lo que sigue es la parte que cruza los tres
-                sistemas en una sola lectura escrita para tu mapa, más las preguntas abiertas sobre
-                tus decisiones. Pago único de 8 dólares, acceso permanente — sin suscripción.
-              </p>
-            </div>
+            {/* El paywall muestra la conversación entre los tres sistemas
+                (LA CONVERSACIÓN ENTRE TUS SISTEMAS), la síntesis y el
+                checkout. PremiumGate → PremiumPaywallContent es la fuente
+                única del precio y del copy de venta; un segundo listado
+                acá se desincronizaría del primero. */}
             <PremiumGate name={profile.name} birthDate={profile.birthDate} preview={gatePreview}>
               <div className="pt-4 pb-16">
                 <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
@@ -198,16 +192,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             No pudimos generar tu lectura esta vez. El resto de tu lectura sigue disponible abajo.
           </p>
         ) : (
-          <>
-            {/* Panel central — el ícono de este testamento. Antes las tres
-                piezas (epígrafe, titular, párrafo) llevaban el mismo
-                tratamiento centrado, sin distinguir cuál es la cita, cuál el
-                titular y cuál el desarrollo. Ahora solo el epígrafe queda
-                centrado (es una cita, no un título); titular y párrafo se
-                alinean a la izquierda como el resto de la lectura, con el
-                titular en acento — antes tomaba el color de elemento chino,
-                que el sistema de diseño reserva a un punto de 8px, nunca a
-                un titular entero. */}
+          <section id="lectura-contenido" className="space-y-0">
+            <LecturaGratis profile={profile} />
             <motion.section
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -409,32 +395,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                   relationalNote: interpretation.relationalNote,
                 }}
               />
-            </motion.div>
-          </>
-        )}
-
-        {/* Companion — contenido determinista, calculado localmente sin IA.
-            Espera a `revealed` igual que la lectura narrativa: mostrarlo
-            mientras BuildingMolino todavía está en pantalla se leía como
-            "ya terminó" a mitad de carga. Primero las 4 lecturas nuevas del
-            zodíaco chino, después el número de la suerte, después las
-            afinidades. Una sola franja visual (border-t-2) marca dónde
-            termina la lectura narrativa (si la hubo) y empieza el material
-            de referencia. */}
-        {/* LECTURA → IA. Se muestra a todos (con y sin acceso): es el tercer
-            nivel del producto y antes un lector sin acceso no se enteraba
-            nunca de que existía. Va acá, pegado al final de la lectura —
-            el catálogo de afinidades de abajo es material de referencia, no
-            la continuación del argumento. */}
-        {(revealed || locked) && (
-          <ReadingToAI profile={profile} hasAccess={isPremium === true} />
-        )}
-
-        {(revealed || locked) && catalog.length > 0 && (
-              <div className="border-t-2 border-ink/15 pt-10 mt-20 space-y-14 sm:space-y-16">
-                {/* 05 — Tu relación con el mundo: catálogo completo categorizado por relación */}
-                <LecturaAfinidadesFull userAnimal={userAnimal} catalog={catalog} />
-              </div>
+             </motion.div>
+          </section>
         )}
 
         {/* Regalar — bajado de rango (Fase 4). Antes era un bloque en caja de

@@ -8,7 +8,6 @@ import { profileFromEncoded } from "@/lib/utils/profileShare";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { PremiumActivationProvider } from "@/components/premium/PremiumActivationContext";
 import LaLecturaExperience from "./LaLecturaExperience";
-import LecturaGratis from "@/components/lectura/LecturaGratis";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
 import type { Animal } from "@/lib/data/animalRelations";
 
@@ -93,7 +92,6 @@ export default function LecturaClient({ catalog }: Props) {
           </p>
         </header>
 
-        <LecturaGratis profile={profile} />
         <LaLecturaExperience profile={profile} catalog={catalog} />
       </main>
     </PremiumActivationProvider>
