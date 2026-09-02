@@ -309,7 +309,7 @@ export default function UniversityHeader() {
           </Link>
 
           {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
-          <nav className="hidden lg:flex items-center gap-1.5" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center gap-1.5 flex-1 min-w-0" aria-label="Navegación principal">
             {!hasProfile ? (
               <>
                 <NavDropdown
@@ -409,7 +409,7 @@ export default function UniversityHeader() {
               crearlo. Antes esa acción solo existía en el menú móvil, así que
               en desktop un usuario nuevo veía seis herramientas y ninguna
               indicación de por dónde empezar. */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {!hasProfile ? (
               <Link
                 href="/onboarding"
