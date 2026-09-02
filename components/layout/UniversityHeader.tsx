@@ -309,7 +309,7 @@ export default function UniversityHeader() {
           </Link>
 
           {/* ZONA CENTRO — destinos. Solo texto: todo lo de acá navega. */}
-          <nav className="hidden lg:flex items-center gap-1.5 min-w-0 overflow-hidden" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center gap-1.5 min-w-0" aria-label="Navegación principal">
             {!hasProfile ? (
               <>
                 <NavDropdown
