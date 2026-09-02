@@ -1,16 +1,6 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
-import MapPreview from "@/components/sections/MapPreview";
-import ThreeSystemsSection from "@/components/sections/ThreeSystemsSection";
-import SynthesisSection from "@/components/sections/SynthesisSection";
-import MapToReadingSection from "@/components/sections/MapToReadingSection";
-import AIExplorationSection from "@/components/sections/AIExplorationSection";
-import OpenKnowledgeSection from "@/components/sections/OpenKnowledgeSection";
-import PhilosophySection from "@/components/sections/PhilosophySection";
-import FinalCTA from "@/components/sections/FinalCTA";
 import { SITE_URL } from "@/lib/seo";
-
-const FAQ = dynamic(() => import("@/components/sections/FAQ"), { ssr: true });
 
 const homeSchemas = [
   {
@@ -105,33 +95,6 @@ export default function HomePage() {
       <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
         {/* Hero — Date Input */}
         <HeroInstrument />
-
-        {/* MapPreview — show the object early */}
-        <MapPreview />
-
-        {/* Tres sistemas, una lectura */}
-        <ThreeSystemsSection />
-
-        {/* Data vs Synthesis */}
-        <SynthesisSection />
-
-        {/* Mapa → Lectura → IA (evolved ThreeLevelsSection) */}
-        <MapToReadingSection />
-
-        {/* Reading → IA */}
-        <AIExplorationSection />
-
-        {/* Aprendé cómo funciona */}
-        <OpenKnowledgeSection />
-
-        {/* Posición epistémica */}
-        <PhilosophySection />
-
-        {/* Final CTA */}
-        <FinalCTA />
-
-        {/* FAQ */}
-        <FAQ />
       </main>
 
       {/* JSON-LD Schema */}

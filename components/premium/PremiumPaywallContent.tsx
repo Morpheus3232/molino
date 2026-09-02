@@ -8,12 +8,9 @@ import {
   Sparkles,
   ShieldCheck,
   Zap,
-  HelpCircle,
   KeyRound,
   Ticket,
   ArrowRight,
-  Lock,
-  Check,
   Gift,
   Eye,
   MessageSquare,
@@ -46,11 +43,9 @@ interface PremiumPaywallContentProps {
   chargePriceUsd: number;
   mercadoPagoEnabled: boolean;
   onCheckout: () => void;
-  /** Para el pago en BTC, que arma el hash de perfil igual que el resto. */
   name?: string;
   birthDate?: string;
   onUnlocked?: (premiumToken: string) => void;
-
   showRecover: boolean;
   setShowRecover: (show: boolean) => void;
   recoverPaymentId: string;
@@ -59,7 +54,6 @@ interface PremiumPaywallContentProps {
   isRecovering: boolean;
   handleRecover: (e: React.FormEvent) => void;
   cancelRecover: () => void;
-
   showCoupon: boolean;
   setShowCoupon: (show: boolean) => void;
   couponCode: string;
@@ -69,11 +63,6 @@ interface PremiumPaywallContentProps {
   handleApplyCoupon: (e: React.FormEvent) => void;
 }
 
-/**
- * Paywall de la Lectura Pro: muestra la síntesis cruzada, beneficios
- * concretos, precio y checkout. Diseñado para máxima conversión con
- * claridad absoluta sobre qué incluye y qué no.
- */
 export default function PremiumPaywallContent({
   t,
   preview,
@@ -129,6 +118,9 @@ export default function PremiumPaywallContent({
     },
   ];
 
+  const keyword = preview?.pattern?.keyword ?? "";
+  const zodiac = preview?.chineseZodiac ?? "";
+
   return (
     <motion.div
       key="locked"
@@ -138,98 +130,94 @@ export default function PremiumPaywallContent({
       exit="exit"
       className="max-w-2xl"
     >
-      {/* ── Sección 1: Encabezado y contexto ──────────────────────── */}
+      {/* ── Encabezado: conversación entre los tres sistemas ── */}
       <div className="mb-8">
-        <div className="flex flex-wrap items-center gap-2.5 mb-5">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] bg-accent/15 border border-accent/30 text-accent font-mono text-[11px] uppercase tracking-wider font-bold">
-            <Sparkles className="w-3.5 h-3.5" />
-            Lectura Pro
-          </span>
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[--radius-sm] bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-mono text-[11px] font-bold">
-            Pago único · de por vida
-          </span>
-        </div>
-
-        <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-[1.08] tracking-tight mb-4">
-          {t.premium.headline}{" "}
-          <span className="text-gradient-warm">{t.premium.headlineLine2}</span>
-        </h3>
-
+        <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] leading-[0.9] tracking-tight text-foreground mb-4">
+          {t.premium.conversationHeading}
+          <span className="block mt-1">{t.premium.conversationHeadingLine2}</span>
+        </h2>
         <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl">
-          {t.premium.body}
+          {t.premium.conversationBody}
         </p>
       </div>
 
-      {/* ── Sección 2: Gancho personalizado ──────────────────────── */}
-      {preview && (
+      {/* ── Badges ── */}
+      <div className="flex flex-wrap items-center gap-2.5 mb-8">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] bg-accent/15 border border-accent/30 text-accent font-mono text-[11px] uppercase tracking-wider font-bold">
+          <Sparkles className="w-3.5 h-3.5" />
+          {t.premium.eyebrow}
+        </span>
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[--radius-sm] bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-mono text-[11px] font-bold">
+          {t.premium.priceNote}
+        </span>
+      </div>
+
+      {/* ── Sub-headline ── */}
+      <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground leading-[1.08] tracking-tight mb-4">
+        {t.premium.headline}{" "}
+        <span className="text-gradient-warm">{t.premium.headlineLine2}</span>
+      </h3>
+
+      <p className="text-base sm:text-lg text-muted leading-relaxed max-w-xl mb-8">
+        {t.premium.body}
+      </p>
+
+      {/* ── Gancho personalizado: Arquetipos × Zodiaco Chino ── */}
+      {preview && preview.pattern && (
         <div className="relative rounded-[--radius-lg] border border-accent/25 bg-accent/[0.03] p-5 sm:p-6 mb-8 overflow-hidden">
           <div className="absolute top-0 left-0 w-1 h-full bg-accent" aria-hidden="true" />
-          <p className="font-heading text-base sm:text-lg font-bold text-foreground leading-snug">
-            {preview.hook.question}
+          <p className="font-heading text-base sm:text-lg font-bold text-foreground leading-snug mb-2">
+            {t.premium.hookTitle.replace("{keyword}", keyword)}
           </p>
-          <p className="text-xs sm:text-sm text-muted mt-2 leading-relaxed">
-            {preview.hook.context}
+          <p className="text-xs sm:text-sm text-muted leading-relaxed">
+            {t.premium.hookDescription.replace("{keyword}", keyword).replace("{zodiac}", zodiac).replace("{element}", "libertad")}
           </p>
         </div>
       )}
 
-      {/* ── Sección 3: Beneficios concretos ──────────────────────── */}
+      {/* ── Beneficios ── */}
       <div className="rounded-[--radius-lg] border border-ink/10 bg-card p-5 sm:p-6 mb-8 shadow-sm">
         <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-ink/10">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold">
             {t.premium.whatYouGetLabel}
           </span>
-          <span className="text-xs font-mono text-muted">{benefits.length} beneficios</span>
+          <span className="text-xs font-mono text-muted">{t.premium.benefitsCount}</span>
         </div>
 
-        <div className="space-y-3">
-          {/* Preview context: either tension or pattern */}
-          <blockquote className="text-xs sm:text-sm text-foreground/90 leading-relaxed italic border-l-2 border-accent/40 pl-3.5 py-1 mb-2">
-            {preview?.tension ? (
-              <>
-                Tu tensión principal —<span className="font-semibold not-italic text-foreground">{preview.tension.title.toLowerCase()}</span>— no se queda en una frase: la síntesis Pro explica exactamente de dónde surge y cómo desbloquearlo.
-              </>
-            ) : preview?.pattern && preview.pattern.sources.length > 1 ? (
-              <>
-                Tus coordenadas de {preview.pattern.sources.join(" y ")} convergen en:{" "}
-                <span className="font-semibold not-italic text-foreground">{preview.pattern.keyword}</span>.
-                La lectura completa profundiza en cómo se manifiesta en tus decisiones y qué hacer hoy.
-              </>
-            ) : (
-              <>
-                Tu numerología, astrología y zodíaco chino cuentan tres historias distintas.
-                La síntesis Pro las une en una sola lectura personalizada — sin horóscopos repetitivos ni predicciones vagas.
-              </>
-            )}
+        {preview?.pattern && preview.pattern.sources.length > 1 && (
+          <blockquote className="text-xs sm:text-sm text-foreground/90 leading-relaxed italic border-l-2 border-accent/40 pl-3.5 py-1 mb-4">
+            Tus coordenadas de {preview.pattern.sources.join(" y ")} convergen en:{" "}
+            <span className="font-semibold not-italic text-foreground">{preview.pattern.keyword}</span>.
+            La lectura completa profundiza en cómo se manifiesta en tus decisiones y qué hacer hoy.
           </blockquote>
+        )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {benefits.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.title}
-                  className="flex items-start gap-3 p-3 rounded-[--radius-md] bg-background/50 border border-ink/5 hover:border-accent/20 transition-colors"
-                >
-                  <span className="w-7 h-7 rounded-[--radius-sm] bg-accent/10 text-accent flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon className="w-4 h-4" strokeWidth={2} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {benefits.map((item) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.title}
+                className="flex items-start gap-3 p-3 rounded-[--radius-md] bg-background/50 border border-ink/5 hover:border-accent/20 transition-colors"
+              >
+                <span className="w-7 h-7 rounded-[--radius-sm] bg-accent/10 text-accent flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon className="w-4 h-4" strokeWidth={2} />
+                </span>
+                <div>
+                  <span className="font-heading text-sm font-bold text-foreground block">
+                    {item.title}
                   </span>
-                  <div>
-                    <span className="font-heading text-sm font-bold text-foreground block">
-                      {item.title}
-                    </span>
-                    <span className="text-xs text-muted leading-tight block mt-0.5">
-                      {item.desc}
-                    </span>
-                  </div>
+                  <span className="text-xs text-muted leading-tight block mt-0.5">
+                    {item.desc}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* ── Sección 4: Checkout ──────────────────────────────────── */}
+      {/* ── Checkout ── */}
       <div className="rounded-[--radius-lg] border border-accent/30 bg-card p-5 sm:p-6 mb-8 shadow-lg relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-4">
           <div>
@@ -241,17 +229,17 @@ export default function PremiumPaywallContent({
                 ${chargePriceUsd} <span className="text-lg font-medium text-muted tracking-normal">{t.premium.priceSuffix}</span>
               </span>
               <span className="text-xs font-mono text-muted">
-                (~11.880 ARS)
+                {t.premium.priceArs}
               </span>
             </div>
           </div>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[--radius-sm] bg-accent/10 border border-accent/20 text-accent font-mono text-xs font-bold">
-            ⚡ Pago único
+            {t.premium.priceBadge}
           </span>
         </div>
 
         <p className="text-xs sm:text-sm text-muted leading-relaxed mb-5">
-          Pagás una sola vez con Mercado Pago y desbloqueás tu Lectura Pro completa. Sin suscripciones, sin cobros extra.
+          {t.premium.payDescription}
         </p>
 
         {mercadoPagoEnabled ? (
@@ -263,7 +251,7 @@ export default function PremiumPaywallContent({
             className="flex items-center justify-center gap-2 py-4 text-base font-bold shadow-lg hover:shadow-accent/20 active:scale-[0.99]"
           >
             <Sparkles className="w-4 h-4" />
-            {t.premium.payWithMercadoPago} · ${chargePriceUsd} USD
+            {t.premium.payWithMercadoPago} · ${chargePriceUsd} {t.premium.priceSuffix}
           </Button>
         ) : (
           <p className="text-sm text-muted border border-ink/10 bg-ink/[0.02] px-4 py-3 rounded-[--radius-md] text-center">
@@ -271,8 +259,6 @@ export default function PremiumPaywallContent({
           </p>
         )}
 
-        {/* Bitcoin como segundo método, debajo de MercadoPago. Se dibuja solo
-            si el server tiene BTC_ADDRESS válida; si no, no ocupa lugar. */}
         <BtcPayOption
           name={name}
           birthDate={birthDate}
@@ -287,15 +273,15 @@ export default function PremiumPaywallContent({
         <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-muted/90 font-mono">
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-            Sin cobros sorpresa
+            {t.premium.featureBadges.noSurprises}
           </span>
           <span className="flex items-center gap-1.5">
             <KeyRound className="w-3.5 h-3.5 text-accent" />
-            Recuperable multidispositivo
+            {t.premium.featureBadges.multiDevice}
           </span>
           <span className="flex items-center gap-1.5">
             <Zap className="w-3.5 h-3.5 text-accent" />
-            Entrega instantánea
+            {t.premium.featureBadges.instantDelivery}
           </span>
         </div>
 
@@ -305,18 +291,18 @@ export default function PremiumPaywallContent({
             className="text-xs font-mono text-accent hover:underline inline-flex items-center gap-1.5 font-bold"
           >
             <Gift className="w-3.5 h-3.5" />
-            ¿Querés regalárselo a alguien?
+            {t.premium.giftQuestion}
           </Link>
           <Link
             href="/premium"
             className="text-xs font-mono text-muted hover:text-foreground transition-colors"
           >
-            Ver qué incluye Premium & FAQ →
+            {t.premium.faqLink}
           </Link>
         </div>
       </div>
 
-      {/* ── Sección 5: Comparativa ───────────────────────────────── */}
+      {/* ── Comparativa ── */}
       <div className="rounded-[--radius-lg] border border-ink/10 bg-card/40 p-4 sm:p-5 mb-6">
         <button
           type="button"
@@ -326,7 +312,7 @@ export default function PremiumPaywallContent({
         >
           <span className="font-heading text-sm font-bold text-foreground group-hover:text-accent transition-colors flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-accent" />
-            Comparativa detallada: Gratis vs Lectura Pro
+            {t.premium.comparisonTitle}
           </span>
           <ChevronDown
             className={`w-4 h-4 text-muted transition-transform duration-200 shrink-0 ${showComparison ? 'rotate-180 text-accent' : ''}`}
@@ -340,7 +326,7 @@ export default function PremiumPaywallContent({
         )}
       </div>
 
-      {/* ── Sección 6: Acciones secundarias ──────────────────────── */}
+      {/* ── Acciones secundarias ── */}
       <div className="pt-2 border-t border-ink/10 flex flex-wrap items-center justify-between gap-4 text-xs">
         {!showRecover ? (
           <button
@@ -413,7 +399,7 @@ export default function PremiumPaywallContent({
                   type="text"
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value)}
-                  placeholder="Ingresá tu código"
+                  placeholder={t.premium.couponPlaceholder}
                   className="flex-1 px-3 py-2 text-sm rounded-[--radius-md] border border-ink/15 bg-background text-foreground focus:outline-none focus:border-accent transition-colors font-mono uppercase"
                 />
                 <Button
