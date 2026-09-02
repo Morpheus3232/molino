@@ -73,9 +73,10 @@ export default function LecturaClient({ catalog }: Props) {
             tu mapa?
           </h1>
           <p className="mt-6 max-w-xl text-base text-muted leading-relaxed">
-            Tu mapa te dice dónde tu signo toca el mundo. Acá se lee qué significa:
-            los dígitos de tu fecha, dónde coinciden tus sistemas y qué sale de
-            cruzarlos.
+            En tu mapa leés los dígitos de tu fecha, dónde coinciden tus
+            sistemas y los dos movimientos. Acá cierra con la síntesis entre
+            tus sistemas, la sincronicidad y una conversación abierta con tu
+            mapa.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted">
             <span>Camino de vida {profile.lifePath}</span>

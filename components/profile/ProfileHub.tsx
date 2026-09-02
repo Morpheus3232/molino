@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { UserProfile } from "@/types/user";
 import type { LightweightEntity } from "@/types/atlas";
 import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
@@ -13,6 +13,9 @@ import { safeNumber } from "@/lib/utils/score";
 import PersonalSigil from "@/components/ui/PersonalSigil";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
 import PersonalMapSection from "@/components/profile/PersonalMapSection";
+import BirthGridSection from "@/components/profile/BirthGridSection";
+import ConvergenceSection from "@/components/profile/ConvergenceSection";
+import { LecturaLibre, type LecturaPieces } from "@/components/profile/LecturaProfunda";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import ActionButtons from "@/components/profile/ActionButtons";
 import { getYearTheme } from "@/lib/engines/dailyEnergyEngine";
@@ -75,6 +78,11 @@ export default function ProfileHub({
   const personalYear = profile.cycles?.personalYear;
   const yearTheme =
     typeof personalYear === "number" ? getYearTheme(personalYear) : null;
+
+  // Las piezas de lectura gratuita que calcula LecturaLibre ya se consumen
+  // en /lectura; acá no hay lectura Pro embebida, así que solo se retienen
+  // para cumplir el contrato del componente sin descartarlas.
+  const [, setPieces] = useState<LecturaPieces | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
@@ -166,6 +174,14 @@ export default function ProfileHub({
           y pantalla con afinidad de 3 casillas.
           ═══════════════════════════════════════════════ */}
       <PersonalMapSection profile={profile} catalog={catalog} />
+
+      {/* ═══════════════════════════════════════════════
+          LA LECTURA — Tu cuadro de nacimiento, dónde
+          coinciden tus sistemas y los dos movimientos.
+          ═══════════════════════════════════════════════ */}
+      <BirthGridSection profile={profile} />
+      <ConvergenceSection profile={profile} />
+      <LecturaLibre profile={profile} onData={setPieces} />
 
       {/* ═══════════════════════════════════════════════
           ACCIONES DEL MAPA — Guardar / Rehacer

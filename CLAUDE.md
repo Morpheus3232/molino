@@ -150,15 +150,21 @@ Consecuencias operativas:
   `/lectura`. La separación es: Mapa = estructura (dónde toca), Lectura =
   exploración interactiva (qué significa, cómo conecta). El Mapa muestra
   hasta 3 entidades por país en las casillas; la lista completa con filtros
-  es el capítulo "05 · Tu relación con el mundo" de la Lectura. Todo lo
-  demás interpretativo —cuadro de nacimiento, convergencia, los dos
-  movimientos, sincronicidad y el detalle del cálculo— también se mudó a
-  `/lectura`, compuesto en
-  `components/lectura/LecturaGratis.tsx`. `/lectura` abre **gratis** con
-  eso y cierra con la **Lectura Pro (USD 8, pago único)**, cuyo detalle de
-  beneficios lo arma `PremiumGate` → `PremiumPaywallContent` →
-  `FeatureComparison`: esa es la fuente única del precio y de la tabla
-  gratis/Pro, no duplicar el listado en otro lado.
+  es el capítulo "05 · Tu relación con el mundo" de la Lectura.
+
+  **Actualización 2026-09-02**: el bloque interpretativo determinista
+  (cuadro de nacimiento, convergencia y los dos movimientos) **volvió a
+  `/profile`** ("Mi Mapa"), compuesto en `ProfileHub` después de
+  `PersonalMapSection` y ANTES de las acciones:
+  `BirthGridSection` → `ConvergenceSection` → `LecturaLibre`. `/lectura`
+  conserva la sincronicidad (`FamousMatch`) + el detalle del cálculo
+  (`CalculationDetails`) en `components/lectura/LecturaGratis.tsx` para
+  usuarios no premium, y cierra con la **Lectura Pro (USD 8, pago único)**,
+  cuyo detalle de beneficios lo arma `PremiumGate` → `PremiumPaywallContent`
+  → `FeatureComparison`: esa es la fuente única del precio y de la tabla
+  gratis/Pro, no duplicar el listado en otro lado. La separación casa
+  actual: Mapa = lectura gratuita completa de tu mapa; Lectura = cierre con
+  la síntesis y la conversación Pro.
 - **Motor**: `lib/engines/personalMapEngine.ts` (puro, client-safe) es la
   implementación de todo lo anterior. UI: `components/profile/PersonalMapSection.tsx`
   dentro de `/profile` ("Mi Mapa"). Cubre los ocho dominios del Atlas
