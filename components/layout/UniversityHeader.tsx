@@ -297,11 +297,11 @@ export default function UniversityHeader() {
     <>
       <motion.header
         ref={headerRef}
-        className={`fixed top-0 left-0 right-0 z-50 bg-background transition-shadow duration-300 ${
+        className={`fixed top-0 left-0 right-0 w-full z-50 bg-background transition-shadow duration-300 ${
           scrolled ? "border-b border-ink/10 shadow-sm" : "border-b border-transparent"
         }`}
       >
-        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
+        <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 min-h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group shrink-0" aria-label="Ir al inicio — Molino">
             <span className="inline-flex h-10 w-10 items-center justify-center bg-background text-foreground border border-ink/10 rounded-xl group-hover:text-accent transition-colors">
               <Logo className="w-7 h-7" />
