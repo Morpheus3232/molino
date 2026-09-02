@@ -141,6 +141,10 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // pagó — justo el usuario al que no hay que mostrárselo.
   const locked = isPremium === false && !interpretation;
 
+  // Para usuarios no premium, mostrar LecturaGratis directamente
+  // sin pasar por BuildingMolino (el fetch solo es para la lectura Pro).
+  const isNonPremiumFreeUser = isPremium === false;
+
   return (
     <section className="bg-background border-t border-ink/10">
 
@@ -149,7 +153,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           girando — mostrar los dos a la vez (uno quieto arriba, uno girando
           más abajo) leía como dos elementos sin relación, no como una sola
           idea. */}
-      {revealed && (
+      {(revealed || isNonPremiumFreeUser) && (
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -164,7 +168,11 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         {/* La IA es un enriquecimiento encima del contenido determinista de
             abajo, no un gate para verlo — mientras carga o si falla, el
             zodíaco/número de la suerte/afinidades siguen disponibles. */}
-        {locked ? (
+        {isNonPremiumFreeUser ? (
+          <section id="lectura-contenido" className="space-y-0">
+            <LecturaGratis profile={profile} />
+          </section>
+        ) : locked ? (
           /* Falta pagar ESTA lectura. PremiumGate ya es el dueño del checkout
              (Mercado Pago, cupón, recuperar compra) y del copy de venta, así
              que se reutiliza tal cual en vez de escribir un segundo paywall

@@ -29,6 +29,8 @@ import { recordGeneration } from '@/lib/ai/costTracking';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
 import { generatePromptHash, getCachedInterpretation, setCachedInterpretation, invalidateCache, getCacheExpiry } from '@/lib/cache/interpretationCache';
 
+export const maxDuration = 60;
+
 // "personal_profile" is the paid synthesis shown behind PremiumGate on
 // /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
 // the component mounts — it's a UI convenience, not a security boundary. A
