@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, createRouteMetadata } from "@/lib/seo";
 
 const homeSchemas = [
   {
@@ -78,16 +78,15 @@ const homeSchemas = [
   },
 ];
 
-export const metadata = {
+export const metadata = createRouteMetadata({
   title: "Tu Mapa Personal de Autoconocimiento",
-  description: "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
-  openGraph: {
-    title: "Tu Mapa Personal de Autoconocimiento",
-    description: "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro.",
-    type: "website",
-    url: SITE_URL,
-  },
-};
+  description:
+    "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
+  path: "",
+  ogTitle: "Tu Mapa Personal de Autoconocimiento",
+  ogDescription:
+    "Descubrí tu patrón personal: numerología, astrología, zodíaco chino. Mapa básico 100% local, sin registro. Transparencia radical.",
+});
 
 export default function HomePage() {
   return (

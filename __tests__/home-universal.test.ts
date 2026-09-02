@@ -9,19 +9,15 @@ describe("Home page — universal access without profile", () => {
     expect(source).toBeTruthy();
   });
 
-  test("home includes onboarding form and conversion sections", () => {
+  test("home includes the instrument form and JSON-LD schemas", () => {
     const pagePath = path.resolve(__dirname, "..", "app", "page.tsx");
     const source = fs.readFileSync(pagePath, "utf8");
     expect(source).toBeTruthy();
+    // La home actual es un único instrumento interactivo de ingreso de fecha
+    // (HeroInstrument) + JSON-LD: cualquier persona la abre sin perfil.
     expect(source).toContain("HeroInstrument");
-    expect(source).toContain("MapPreview");
-    expect(source).toContain("ThreeSystemsSection");
-    expect(source).toContain("SynthesisSection");
-    expect(source).toContain("MapToReadingSection");
-    expect(source).toContain("AIExplorationSection");
-    expect(source).toContain("OpenKnowledgeSection");
-    expect(source).toContain("PhilosophySection");
-    expect(source).toContain("FinalCTA");
-    expect(source).toContain("FAQ");
+    expect(source).toContain("HowTo");
+    expect(source).toContain("FAQPage");
+    expect(source).toContain("#mapa-form");
   });
 });

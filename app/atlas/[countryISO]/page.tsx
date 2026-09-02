@@ -16,6 +16,9 @@ interface Props {
   params: Promise<{ countryISO: string }>;
 }
 
+// Todos los países se pre-generan; cualquier otro ISO resuelve a 404 real.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return getAllCountryISOs().map((countryISO) => ({ countryISO }));
 }

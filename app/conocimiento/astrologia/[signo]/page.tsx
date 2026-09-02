@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { ZODIAC_SIGNS } from "@/lib/data/astrologia-content";
 import SignoContent from "./SignoContent";
@@ -8,6 +9,14 @@ function normalize(str: string) {
 }
 
 type Props = { params: Promise<{ signo: string }> };
+
+// Los 12 signos válidos se pre-generan; cualquier otro slug resuelve a 404 real
+// en el router (antes renderizaba "Signo no encontrado" con status 200).
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return ZODIAC_SIGNS.map((s) => ({ signo: normalize(s.name) }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { signo: signId } = await params;
@@ -35,6 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function SignoPage({ params }: Props) {
   const { signo: signId } = await params;
   const sign = ZODIAC_SIGNS.find(s => normalize(s.name) === normalize(signId));
+
+  if (!sign) notFound();
 
   const jsonLd = sign ? [
     {

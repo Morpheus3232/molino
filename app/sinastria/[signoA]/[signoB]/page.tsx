@@ -8,6 +8,10 @@ import { siteUrl, SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
+// Los 144 pares de signos se pre-generan; cualquier otro par resuelve a 404
+// real en el router.
+export const dynamicParams = false;
+
 interface SignInfo {
   slug: string;
   name: string;

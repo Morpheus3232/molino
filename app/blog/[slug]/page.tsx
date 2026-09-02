@@ -6,6 +6,11 @@ import BlogArticleContent from "./BlogArticleContent";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// Solo los slugs pre-generados en generateStaticParams son válidos. Cualquier
+// otro slug resuelve a 404 real en el router (evita los soft-404 donde la
+// página renderizaba "Artículo no encontrado" con HTTP 200 en vez de 404).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return BLOG_POSTS.map((post) => ({ slug: post.slug }));
 }

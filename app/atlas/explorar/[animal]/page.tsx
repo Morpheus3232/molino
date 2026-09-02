@@ -11,6 +11,9 @@ interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+// Todos los animales se pre-generan; cualquier otro animal resuelve a 404 real.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return getAllAnimalNames().map((animal) => ({ animal }));
 }

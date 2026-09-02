@@ -8,6 +8,11 @@ import AffinityDetailContent from "./AffinityDetailContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
 
+// Todos los pares {type, slug} válidos se pre-generan; cualquier combinación
+// no listada (type inválido, slug inexistente o entidad fuera de su type)
+// resuelve a 404 real en el router.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const params: { type: string; slug: string }[] = [];
   for (const type of VALID_TYPES) {

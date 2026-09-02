@@ -6,6 +6,9 @@ import BibliotecaSourceContent from "./BibliotecaSourceContent";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// Solo los slugs pre-generados son válidos; el resto resuelve a 404 real.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return SOURCES.map((source) => ({ slug: source.slug }));
 }

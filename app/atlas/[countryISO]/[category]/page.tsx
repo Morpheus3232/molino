@@ -13,6 +13,11 @@ interface Props {
   params: Promise<{ countryISO: string; category: string }>;
 }
 
+// Solo las combinaciones país×categoría con entidades se pre-generan
+// (getCategoriesByCountry devuelve solo categorías con count > 0). Cualquier
+// otro combo resuelve a 404 real, coherente con el notFound() de la página.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const params: { countryISO: string; category: string }[] = [];
   for (const countryISO of getAllCountryISOs()) {

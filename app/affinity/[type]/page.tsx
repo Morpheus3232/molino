@@ -6,6 +6,9 @@ import AffinityTypeContent from "./AffinityTypeContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
 
+// Solo los types pre-generados son válidos; cualquier otro resuelve a 404 real.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return VALID_TYPES.map((type) => ({ type }));
 }

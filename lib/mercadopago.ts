@@ -113,13 +113,12 @@ export function normalizeName(name: string): string {
     .trim();
 }
 
-// TODO(security, medium): birthDate reaches here unvalidated from the payment
-// routes (mp/coupon, mp/preference, mp/process, mp/recover) — only
-// the /api/{synthesis,compatibility,convergence}/calculate routes check
-// isValidDate() before use. Not exploitable today (birthDate is just opaque
-// HMAC input, never parsed as a Date here), but a malformed value silently
-// produces a hash the user can't reproduce on recovery. Add the same
-// isValidDate() check to the payment routes before this call.
+// Los call-sites de pago (mp/coupon, mp/preference, mp/process, mp/recover)
+// validan birthDate con isValidDate() ANTES de llegar acá y devuelven 400 si
+// está mal formada — el mismo check que las rutas de cálculo. Esto garantiza
+// que un valor malformado jamás produzca un hash que el usuario no pueda
+// reproducir en recovery. (Este TODO quedó obsoleto cuando se aplicó el check
+// a las cuatro rutas de pago.)
 // `salt` es un UUID aleatorio generado en el cliente (guardado en localStorage
 // bajo "molino-profile-salt") que se envía junto a birthDate en el body de cada
 // request de pago. Al concatenarlo antes del HMAC, el hash deja de ser una

@@ -15,6 +15,10 @@ interface Props {
   params: Promise<{ animal: string; category: string }>;
 }
 
+// Todas las combinaciones animal×categoría se pre-generan; cualquier otra
+// resuelve a 404 real en el router.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const params: { animal: string; category: string }[] = [];
   for (const animal of getAllAnimalNames()) {

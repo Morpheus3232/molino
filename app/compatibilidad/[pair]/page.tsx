@@ -21,6 +21,10 @@ function parsePair(param: string): { a: string; b: string } | null {
   return { a, b };
 }
 
+// Los 144 pares signo×signo se pre-generan; cualquier otro par resuelve a 404
+// real en el router (evita el soft-404 con status 200).
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const params: { pair: string }[] = [];
   for (const a of SIGN_SLUGS) {

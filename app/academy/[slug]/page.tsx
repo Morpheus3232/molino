@@ -8,6 +8,10 @@ import AcademyGuideContent from "./AcademyGuideContent";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// Todos los slugs válidos se pre-generan (piezas + guías); el resto resuelve
+// a 404 real en el router en vez de servir un soft-404 con status 200.
+export const dynamicParams = false;
+
 // Dos colecciones de contenido conviven bajo /academy/[slug]: las piezas
 // históricas (ACADEMY_PIECES) y las guías prácticas (ACADEMY_GUIDES). Los
 // slugs de ambas son mutuamente excluyentes por diseño editorial — se

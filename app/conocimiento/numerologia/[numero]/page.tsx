@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { NUMBERS } from "@/lib/data/numerologia-content";
 import NumeroContent from "./NumeroContent";
 
 type Props = { params: Promise<{ numero: string }> };
+
+// Los números válidos del catálogo se pre-generan; cualquier otro resuelve a
+// 404 real en el router (antes renderizaba "Número no encontrado" con 200).
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return NUMBERS.map((n) => ({ numero: String(n.number) }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { numero: numId } = await params;
@@ -31,6 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function NumeroPage({ params }: Props) {
   const { numero: numId } = await params;
   const num = NUMBERS.find(n => n.number === parseInt(numId));
+
+  if (!num) notFound();
 
   const jsonLd = num ? [
     {

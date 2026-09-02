@@ -11,6 +11,9 @@ import { siteUrl, SITE_URL } from "@/lib/seo";
  * lib/data/knowledge (HOUSES).
  */
 
+// Las 108 combinaciones se pre-generan; cualquier otra resuelve a 404 real.
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{ n: string; c: string }>;
 }
