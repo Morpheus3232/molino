@@ -440,13 +440,6 @@ export default function UniversityHeader() {
                     >
                       Mi Lectura
                     </Link>
-                    <Link
-                      href="/ai"
-                      className={navButtonClass(isActive("/ai"))}
-                      aria-current={pathname === "/ai" ? "page" : undefined}
-                    >
-                      Preguntá
-                    </Link>
                   </>
                 )}
                 <button
@@ -536,13 +529,6 @@ export default function UniversityHeader() {
                         Mi Lectura
                       </Link>
                     )}
-                    <Link
-                      href="/ai"
-                      className="flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors text-foreground hover:text-accent"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Preguntá (IA)
-                    </Link>
                     <div className="px-3 py-1.5">
                       <SavedProfilesDrawer currentProfile={activeProfile} label={vaultLabel} premiumShortcut={isPremium} className="w-full justify-center !min-h-[44px] !py-2.5" />
                     </div>

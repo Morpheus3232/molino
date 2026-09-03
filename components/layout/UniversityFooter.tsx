@@ -13,7 +13,6 @@ const FOOTER_COLUMNS = [
     links: [
       { href: "/profile", label: "Mi Mapa" },
       { href: "/lectura", label: "Mi Lectura" },
-      { href: "/ai", label: "Preguntá (IA)" },
       { href: "/pareja", label: "Modo Pareja" },
       { href: "/premium", label: "Premium" },
       { href: "/onboarding", label: "Crear mi mapa" },
