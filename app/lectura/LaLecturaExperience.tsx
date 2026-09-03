@@ -139,11 +139,12 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // arranca en 'locked' y acá ocupa la pantalla entera, así que montarlo antes
   // de saber la respuesta le haría ver el paywall un instante a alguien que ya
   // pagó — justo el usuario al que no hay que mostrárselo.
+  //
+  // El que no pagó ve el paywall (beneficios + comprar), sin animación; el que
+  // pagó ve la animación solo la primera vez y después su lectura + chat
+  // directo (el caché de /lectura reabre con `revealed=true`, ver reproceso
+  // de abajo).
   const locked = isPremium === false && !interpretation;
-
-  // Para usuarios no premium, mostrar LecturaGratis directamente
-  // sin pasar por BuildingMolino (el fetch solo es para la lectura Pro).
-  const isNonPremiumFreeUser = isPremium === false;
 
   return (
     <section className="bg-background border-t border-ink/10">
@@ -153,7 +154,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           girando — mostrar los dos a la vez (uno quieto arriba, uno girando
           más abajo) leía como dos elementos sin relación, no como una sola
           idea. */}
-      {(revealed || isNonPremiumFreeUser) && (
+      {revealed && (
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -165,14 +166,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
       )}
 
       <div className="mx-auto max-w-[760px] px-6 sm:px-8 pb-32">
-        {/* La IA es un enriquecimiento encima del contenido determinista de
-            abajo, no un gate para verlo — mientras carga o si falla, el
-            zodíaco/número de la suerte/afinidades siguen disponibles. */}
-        {isNonPremiumFreeUser ? (
-          <section id="lectura-contenido" className="space-y-0">
-            <LecturaGratis profile={profile} />
-          </section>
-        ) : locked ? (
+        {locked ? (
           /* Falta pagar ESTA lectura. PremiumGate ya es el dueño del checkout
              (Mercado Pago, cupón, recuperar compra) y del copy de venta, así
              que se reutiliza tal cual en vez de escribir un segundo paywall

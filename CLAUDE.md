@@ -156,15 +156,20 @@ Consecuencias operativas:
   (cuadro de nacimiento, convergencia y los dos movimientos) **volvió a
   `/profile`** ("Mi Mapa"), compuesto en `ProfileHub` después de
   `PersonalMapSection` y ANTES de las acciones:
-  `BirthGridSection` → `ConvergenceSection` → `LecturaLibre`. `/lectura`
-  conserva la sincronicidad (`FamousMatch`) + el detalle del cálculo
-  (`CalculationDetails`) en `components/lectura/LecturaGratis.tsx` para
-  usuarios no premium, y cierra con la **Lectura Pro (USD 8, pago único)**,
-  cuyo detalle de beneficios lo arma `PremiumGate` → `PremiumPaywallContent`
-  → `FeatureComparison`: esa es la fuente única del precio y de la tabla
-  gratis/Pro, no duplicar el listado en otro lado. La separación casa
-  actual: Mapa = lectura gratuita completa de tu mapa; Lectura = cierre con
-  la síntesis y la conversación Pro.
+  `BirthGridSection` → `ConvergenceSection` → `LecturaLibre`.
+  La separación casa actual: **Mapa = lectura gratuita completa de tu mapa**;
+  **Lectura = contenido pago (Pro)**.
+
+  **Actualización 2026-09-03**: en `/lectura` el que **no pagó ve el paywall**
+  (todos los beneficios de la lectura + botón de comprar), sin animación —
+  ya no se le muestra el contenido gratis (`LecturaGratis`) acá; ese
+  contenido vive en `/profile`. El que **pagó** ve la animación
+  (`BuildingMolino`) solo la primera vez y después su **lectura Pro
+  completa + chat con la IA** directo (el caché de `/lectura` reabre con
+  `revealed=true`). El detalle de beneficios lo arma `PremiumGate` →
+  `PremiumPaywallContent` → `FeatureComparison`: esa es la fuente única del
+  precio (USD 8, pago único) y de la tabla gratis/Pro, no duplicar el
+  listado en otro lado.
 - **Motor**: `lib/engines/personalMapEngine.ts` (puro, client-safe) es la
   implementación de todo lo anterior. UI: `components/profile/PersonalMapSection.tsx`
   dentro de `/profile` ("Mi Mapa"). Cubre los ocho dominios del Atlas
