@@ -485,7 +485,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
 
             {/* Referencias — sincronicidad histórica y fórmulas, después del
                 AI reading para que la lectura interpretativa sea la estrella. */}
-            <LecturaGratis profile={profile} hideBorderTop />
+            <LecturaGratis profile={profile} />
           </section>
         )}
 
