@@ -26,7 +26,7 @@ export const AI_TIMEOUT_MS = 20_000;
  * routinely needs more than 20s to complete; aborting it early only to
  * retry (or fail over to a second provider) wastes time instead of saving
  * it. Other types keep the tighter AI_TIMEOUT_MS. */
-export const AI_HEAVY_TIMEOUT_MS = 55_000;
+export const AI_HEAVY_TIMEOUT_MS = 70_000;
 
 /**
  * The structured MolinoInterpretation schema (used whenever `template` is
@@ -75,7 +75,7 @@ function logProviderRequest(provider: string, model: string, status: number, dur
  * ignores the JSON schema, so an unset env var used to silently degrade
  * Premium output instead of just failing loud.
  */
-export const OPENROUTER_MODEL_DEFAULT = 'deepseek/deepseek-v4-flash';
+export const OPENROUTER_MODEL_DEFAULT = 'google/gemini-2.5-flash';
 
 /**
  * OpenRouter/OpenAI-style structured output schema for the premium

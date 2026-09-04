@@ -32,7 +32,10 @@ interface Props {
 
 async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation | null> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15_000);
+  // El servidor permite hasta ~80s para premium (global timeout en route.ts).
+  // El timeout del cliente tiene que superar ese techo: si aborta antes, el
+  // servidor sigue procesando en vano y el cliente nunca recibe la respuesta.
+  const timeout = setTimeout(() => controller.abort(), 80_000);
   try {
     const res = await fetch("/api/intelligence/interpret", {
       method: "POST",

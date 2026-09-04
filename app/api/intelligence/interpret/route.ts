@@ -29,7 +29,9 @@ import { recordGeneration } from '@/lib/ai/costTracking';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, AI_RATE_LIMIT } from '@/lib/rate-limit';
 import { generatePromptHash, getCachedInterpretation, setCachedInterpretation, invalidateCache, getCacheExpiry } from '@/lib/cache/interpretationCache';
 
-export const maxDuration = 60;
+// Vercel Pro/Enterprise permite hasta 300s; 90 da margen para el global
+// timeout de 80s más overhead de serialización y KV.
+export const maxDuration = 90;
 
 // "personal_profile" is the paid synthesis shown behind PremiumGate on
 // /profile (Intelligence). The gate in PremiumGate.tsx only controls whether
@@ -308,7 +310,7 @@ export async function POST(req: NextRequest) {
       // fijo de 30-40s para TODOS los tipos habría anulado el aumento de
       // timeout que este mismo cambio le acaba de dar a personal_profile/
       // question en el paso anterior, así que el techo también es por tipo.
-      const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 65_000 : 35_000;
+      const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 80_000 : 35_000;
 
       // El centro intelectual de la Lectura (personal_profile) y el chat
       // anclado (question) piden síntesis multi-sistema y prosa cuidada en
