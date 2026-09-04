@@ -50,7 +50,7 @@ export const AI_HEAVY_TIMEOUT_MS = 22_000;
  * pagó recibe la versión determinista. Por eso el presupuesto se mueve
  * junto con el prompt y no después.
  */
-const STRUCTURED_OUTPUT_MAX_TOKENS = 6000;
+const STRUCTURED_OUTPUT_MAX_TOKENS = 4000;
 const DEFAULT_MAX_TOKENS = 800;
 
 /** Truncates a provider error body for logging and strips anything that
@@ -75,7 +75,7 @@ function logProviderRequest(provider: string, model: string, status: number, dur
  * ignores the JSON schema, so an unset env var used to silently degrade
  * Premium output instead of just failing loud.
  */
-export const OPENROUTER_MODEL_DEFAULT = 'google/gemini-2.5-flash';
+export const OPENROUTER_MODEL_DEFAULT = 'google/gemini-2.5-flash-lite';
 
 /**
  * OpenRouter/OpenAI-style structured output schema for the premium
