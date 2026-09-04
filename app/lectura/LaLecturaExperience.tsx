@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSafeReducedMotion } from "@/lib/hooks/useSafeReducedMotion";
@@ -32,11 +32,10 @@ interface Props {
 
 async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation | null> {
   const controller = new AbortController();
-  // 30s: suficiente para que Gemini 2.5 Flash genere la lectura (~10s en
-  // pruebas), con margen para latencia de red y cold start de Vercel. Si
-  // el servidor no responde en 30s, es un error real — mejor mostrar el
-  // fallback que dejar al usuario esperando indefinidamente.
-  const timeout = setTimeout(() => controller.abort(), 30_000);
+  // 60s: Vercel cold start + generación IA de ~10-15s + latencia de red.
+  // El anterior 30s provocaba aborts en cold starts y mostraba "No pudimos
+  // generar" cuando el servidor estaba respondiendo bien, solo que lento.
+  const timeout = setTimeout(() => controller.abort(), 60_000);
   try {
     console.log("[fetchLectura] starting request...");
     const res = await fetch("/api/intelligence/interpret", {
@@ -164,6 +163,26 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
+  // Reintentar manual: resetea el guión del 401/429/timeout y vuelve a
+  // intentar la generación. Sin esto, un fallo puntual (cold start lento,
+  // KV ocupado, rate limit) condenaba al usuario para siempre al mensaje
+  // "No pudimos generar tu lectura" — no había camino de recuperación sin
+  // recargar la página, y a veces ni eso (la fetch sigue corriendo a mano).
+  const retryLectura = useCallback(() => {
+    console.log("[LaLectura] retryLectura");
+    setInterpretation(null);
+    setFetchDone(false);
+    setRevealed(false);
+    hasFetched.current = true;
+    setStep('preparing');
+    setTimeout(() => setStep('ready'), 0);
+    fetchLectura(profile).then((result) => {
+      setInterpretation(result);
+      setFetchDone(true);
+      if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
+    });
+  }, [profile, setStep]);
+
   // Mismo preview que arma LecturaPremium en /profile (LecturaProfunda.tsx) —
   // el paywall muestra un patrón y una tensión reales de ESTE perfil, no una
   // promesa genérica.
@@ -234,9 +253,19 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
             <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
           </div>
         ) : !interpretation ? (
-          <p className="text-center text-muted text-sm py-16">
-            No pudimos generar tu lectura esta vez. El resto de tu lectura sigue disponible abajo.
-          </p>
+          <div className="text-center py-16 px-4">
+            <p className="text-muted text-sm mb-4">
+              No pudimos generar tu lectura esta vez. El resto de tu lectura sigue disponible abajo.
+            </p>
+            <button
+              type="button"
+              onClick={retryLectura}
+              className="inline-flex items-center gap-2 rounded-md bg-ink px-4 py-2 text-sm font-medium text-background transition hover:bg-ink/90"
+            >
+              <span aria-hidden="true">↻</span>
+              Reintentar
+            </button>
+          </div>
         ) : (
           <section id="lectura-contenido" className="space-y-0">
             <LecturaGratis profile={profile} />
