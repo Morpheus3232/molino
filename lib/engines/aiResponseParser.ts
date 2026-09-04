@@ -205,7 +205,10 @@ const META_LANGUAGE_PATTERNS: RegExp[] = [
   /\bsystem prompt\b/i,
   /\b(the )?instructions?\b/i,
   /\breasoning\b/i,
-  /\banalysis\b/i,
+  // 'analysis' matchea "análisis" en español vía \b (Unicode no distingue
+  // tildes). Se reemplaza por negative lookbehind/lookahead para no
+  // falsos-positivos en texto interpretativo legítimo.
+  /(?<![a-záéíóúñ])analysis(?![a-záéíóúñ])/i,
   // The model echoing its own schema/field names back as prose ("summary:
   // connective synthesis...", "corePattern: object with what, source...") —
   // legitimate Spanish interpretive text never contains these as labels.

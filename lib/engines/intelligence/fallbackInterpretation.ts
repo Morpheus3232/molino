@@ -194,18 +194,20 @@ export function generateFallbackInterpretation(
     // del engine, aplicado a un caso donde la única respuesta honesta es
     // "no puedo responder esto todavía").
     case 'question': {
+      // Sin IA, el fallback incluye la pregunta del usuario y datos
+      // específicos del mapa para que la respuesta no sea genérica.
       summary = request.question
-        ? `Todavía no pudimos generar una respuesta a "${request.question}" — necesita interpretación de IA, que no está disponible en este momento.`
+        ? `Sobre tu pregunta "${request.question}": tu **Camino de Vida ${userProfile.lifePath}** (${userProfile.archetype}), tu **Sol en ${request.context.astrology.sunSign}** y tu **${userProfile.chineseZodiac}** son los datos que Molino tiene calculados. La respuesta requiere interpretación de IA, que no está disponible en este momento — probá de nuevo en unos segundos.`
         : 'No pudimos generar una respuesta — intentá de nuevo en un momento.';
-      alignment = `Mientras tanto, tu **Camino de Vida ${userProfile.lifePath}** (${userProfile.archetype}), tu **Sol en ${request.context.astrology.sunSign}** y tu **Zodíaco Chino ${userProfile.chineseZodiac}** son los datos base que Molino ya tiene calculados sobre vos.`;
+      alignment = `Tu Camino de Vida **${userProfile.lifePath}** (${userProfile.archetype}), tu **Sol en ${request.context.astrology.sunSign}** y tu **${userProfile.chineseZodiac}** son los puntos de referencia para cualquier pregunta sobre tu momento actual.`;
       timing = '';
-      suggestedNextStep = 'Volvé a intentar en unos segundos.';
+      suggestedNextStep = 'Volvé a intentar en unos segundos — la IA suele estar disponible la mayor parte del tiempo.';
       whatToConsider = [];
       narrativeExtension = {
         suggestedQuestions: [
           `¿Cómo influye mi Año Personal ${cycles.personalYear} en mis decisiones actuales?`,
           `¿Qué desafíos presenta mi combinación de Camino de Vida ${userProfile.lifePath} con Sol en ${request.context.astrology.sunSign}?`,
-          `¿Cómo resuena mi animal chino ${userProfile.chineseZodiac} con mis proyectos de este año?`,
+          `¿Cómo resuena mi ${userProfile.chineseZodiac} con mis proyectos de este año?`,
         ],
       } as any;
       break;

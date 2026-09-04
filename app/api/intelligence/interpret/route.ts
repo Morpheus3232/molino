@@ -317,7 +317,9 @@ export async function POST(req: NextRequest) {
       // fijo de 30-40s para TODOS los tipos habría anulado el aumento de
       // timeout que este mismo cambio le acaba de dar a personal_profile/
       // question en el paso anterior, así que el techo también es por tipo.
-      const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 25_000 : 35_000;
+      // 40s para premium: permite al menos un reintento (22s) + delay (1s) +
+      // un intento del fallback provider (22s) sin ser cortado.
+      const globalTimeoutMs = PREMIUM_INTERPRETATION_TYPES.has(type) ? 40_000 : 35_000;
 
       // El centro intelectual de la Lectura (personal_profile) y el chat
       // anclado (question) piden síntesis multi-sistema y prosa cuidada en
