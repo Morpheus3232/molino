@@ -26,7 +26,7 @@ export const AI_TIMEOUT_MS = 20_000;
  * routinely needs more than 20s to complete; aborting it early only to
  * retry (or fail over to a second provider) wastes time instead of saving
  * it. Other types keep the tighter AI_TIMEOUT_MS. */
-export const AI_HEAVY_TIMEOUT_MS = 70_000;
+export const AI_HEAVY_TIMEOUT_MS = 22_000;
 
 /**
  * The structured MolinoInterpretation schema (used whenever `template` is

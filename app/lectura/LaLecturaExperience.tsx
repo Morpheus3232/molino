@@ -32,11 +32,13 @@ interface Props {
 
 async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation | null> {
   const controller = new AbortController();
-  // El servidor permite hasta ~80s para premium (global timeout en route.ts).
-  // El timeout del cliente tiene que superar ese techo: si aborta antes, el
-  // servidor sigue procesando en vano y el cliente nunca recibe la respuesta.
-  const timeout = setTimeout(() => controller.abort(), 80_000);
+  // 30s: suficiente para que Gemini 2.5 Flash genere la lectura (~10s en
+  // pruebas), con margen para latencia de red y cold start de Vercel. Si
+  // el servidor no responde en 30s, es un error real — mejor mostrar el
+  // fallback que dejar al usuario esperando indefinidamente.
+  const timeout = setTimeout(() => controller.abort(), 30_000);
   try {
+    console.log("[fetchLectura] starting request...");
     const res = await fetch("/api/intelligence/interpret", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,9 +51,15 @@ async function fetchLectura(profile: UserProfile): Promise<MolinoInterpretation 
       }),
       signal: controller.signal,
     });
+    console.log("[fetchLectura] response received, status:", res.status);
     const data = await res.json();
-    if (!res.ok) return null;
-    return (data.ai as MolinoInterpretation) ?? (data.fallback as MolinoInterpretation) ?? null;
+    if (!res.ok) {
+      console.warn("[fetchLectura] not ok:", res.status, data?.error);
+      return null;
+    }
+    const result = (data.ai as MolinoInterpretation) ?? (data.fallback as MolinoInterpretation) ?? null;
+    console.log("[fetchLectura] result:", result ? "ok" : "null");
+    return result;
   } catch (err) {
     console.warn("[fetchLectura] aborted or error:", err);
     return null;
@@ -85,10 +93,43 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // La fetch arranca cuando el cupón es aceptado (step='success' desde
   // usePremiumCoupon) O cuando isPremium pasa a true (pago normal por
   // Mercado Pago). En ambos casos el servidor ya confirmó el acceso.
+  //
+  // SAFETY: si isPremium queda null (KV lento/caído), un timeout de 6s
+  // fuerza el inicio de la fetch de todas formas — el servidor hace su
+  // propio check de premium y rechaza con 403 si no corresponde. Sin esto,
+  // BuildingMolino se muestra pero la fetch nunca arranca y la UI queda
+  // trabada en "Detectando tus tensiones" para siempre.
   useEffect(() => {
     const premiumJustActivated = isPremium === true && prevIsPremium.current !== true;
     prevIsPremium.current = isPremium;
-    if (step !== 'success' && !premiumJustActivated && !isPremium) return;
+    if (step !== 'success' && !premiumJustActivated && !isPremium) {
+      // Safety timeout: si después de 6s isPremium sigue null, lanzamos la
+      // fetch de todas formas. El servidor es la autoridad definitiva.
+      const safetyTimer = setTimeout(() => {
+        if (!hasFetched.current) {
+          console.log("[LaLectura] safety timeout: isPremium still null, starting fetch anyway");
+          hasFetched.current = true;
+          setStep('preparing');
+          setTimeout(() => setStep('ready'), 0);
+          let cancelled = false;
+          fetchLectura(profile).then((result) => {
+            if (cancelled) return;
+            setInterpretation(result);
+            setFetchDone(true);
+            if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
+          });
+          // Store cancel function for cleanup
+          (globalThis as any).__lecturaSafetyCleanup = () => { cancelled = true; };
+        }
+      }, 6_000);
+      return () => {
+        clearTimeout(safetyTimer);
+        if ((globalThis as any).__lecturaSafetyCleanup) {
+          (globalThis as any).__lecturaSafetyCleanup();
+          (globalThis as any).__lecturaSafetyCleanup = null;
+        }
+      };
+    }
     if (hasFetched.current) return;
     hasFetched.current = true;
     setStep('preparing');

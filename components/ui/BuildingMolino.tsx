@@ -74,6 +74,20 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     onCompleteRef.current = onComplete;
   }, [done, onComplete]);
 
+  // Safety: si después de 20s `done` no se activó (fetch colgada, KV
+  // caído, etc.), forzamos la finalización para que la UI nunca se quede
+  // trabada en "Detectando tus tensiones" para siempre.
+  useEffect(() => {
+    if (done) return;
+    const safetyTimer = setTimeout(() => {
+      if (!doneRef.current) {
+        console.warn("[BuildingMolino] safety timeout: forcing completion after 20s");
+        onCompleteRef.current();
+      }
+    }, 20_000);
+    return () => clearTimeout(safetyTimer);
+  }, [done]);
+
   // El checklist deja de avanzar en el penúltimo paso hasta que `done` sea
   // real — si la IA tarda (puede pasar), esos ~10s+ se sentían como un
   // bloque vacío y estático. Este mensaje confirma que sigue en curso, sin
