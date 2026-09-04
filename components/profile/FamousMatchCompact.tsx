@@ -19,6 +19,9 @@ import ZodiacAnimalIcon from "@/components/ui/ZodiacAnimalIcon";
 interface FamousMatchCompactProps {
   profile: UserProfile;
   className?: string;
+  /** Oculta el border-t cuando el componente ya está dentro de un contexto
+   * con separación visual (ej. debajo del AI reading en /lectura). */
+  hideBorderTop?: boolean;
 }
 
 function MiniPortrait({
@@ -118,6 +121,7 @@ function MiniCard({
 export default function FamousMatchCompact({
   profile,
   className = "",
+  hideBorderTop = false,
 }: FamousMatchCompactProps) {
   const { country } = useUserContext();
   const matches = useMemo(
@@ -137,7 +141,7 @@ export default function FamousMatchCompact({
 
   return (
     <section
-      className={`py-10 border-t border-ink/10 ${className}`}
+      className={`py-10 ${hideBorderTop ? "" : "border-t border-ink/10"} ${className}`}
       aria-labelledby="famous-compact-title"
     >
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12">

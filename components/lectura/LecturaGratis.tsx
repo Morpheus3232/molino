@@ -11,10 +11,10 @@ import CalculationDetails from "@/components/profile/CalculationDetails";
  * resumida (3 figuras) y el detalle del cálculo, que respaldan lo que ya se
  * vio en el Mapa.
  */
-export default function LecturaGratis({ profile }: { profile: UserProfile }) {
+export default function LecturaGratis({ profile, hideBorderTop = false }: { profile: UserProfile; hideBorderTop?: boolean }) {
   return (
     <>
-      <FamousMatchCompact profile={profile} />
+      <FamousMatchCompact profile={profile} hideBorderTop={hideBorderTop} />
 
       <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-6">
         <CalculationDetails profile={profile} />

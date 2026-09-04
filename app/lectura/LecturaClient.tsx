@@ -8,8 +8,6 @@ import { profileFromEncoded } from "@/lib/utils/profileShare";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
 import { PremiumActivationProvider } from "@/components/premium/PremiumActivationContext";
 import LaLecturaExperience from "./LaLecturaExperience";
-import { getZodiacDisplay } from "@/lib/utils/zodiacDisplay";
-import type { Animal } from "@/lib/data/animalRelations";
 
 interface Props {
   catalog: LightweightEntity[];
@@ -52,10 +50,6 @@ export default function LecturaClient({ catalog }: Props) {
     );
   }
 
-  const display = getZodiacDisplay((profile.chineseZodiac ?? "") as Animal);
-  const elemento =
-    typeof profile.chineseZodiacInfo?.element === "string" ? profile.chineseZodiacInfo.element : "";
-
   return (
     <PremiumActivationProvider>
       <main id="main-content" className="min-h-screen bg-background">
@@ -66,8 +60,7 @@ export default function LecturaClient({ catalog }: Props) {
           >
             ← Tu mapa
           </Link>
-          <p className="mt-8 font-mono text-xs uppercase tracking-[0.2em] text-accent">La lectura</p>
-          <h1 className="mt-2 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
+          <h1 className="mt-8 font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[0.95] tracking-tight text-foreground uppercase">
             ¿Qué significa
             <br />
             tu mapa?
@@ -78,18 +71,8 @@ export default function LecturaClient({ catalog }: Props) {
             tus sistemas, la sincronicidad y una conversación abierta con tu
             mapa.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted">
-            <span>Camino de vida {profile.lifePath}</span>
-            <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
-            <span>{profile.sunSign}</span>
-            <span className="w-px h-4 bg-ink/10" aria-hidden="true" />
-            <span>
-              {display.name}
-              {elemento ? ` de ${elemento}` : ""}
-            </span>
-          </div>
           <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.15em] text-muted/70">
-            Lectura · 02 · Tu relación con el mundo
+            Tu lectura
           </p>
         </header>
 

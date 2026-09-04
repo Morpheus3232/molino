@@ -275,7 +275,6 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
           </div>
         ) : (
           <section id="lectura-contenido" className="space-y-0">
-            <LecturaGratis profile={profile} />
             <motion.section
               initial={reduceMotion ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -478,6 +477,10 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                 }}
               />
              </motion.div>
+
+            {/* Referencias — sincronicidad histórica y fórmulas, después del
+                AI reading para que la lectura interpretativa sea la estrella. */}
+            <LecturaGratis profile={profile} hideBorderTop />
           </section>
         )}
 
