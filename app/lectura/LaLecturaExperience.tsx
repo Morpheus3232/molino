@@ -168,12 +168,17 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
       setInterpretation(cached);
       setFetchDone(true);
       setRevealed(true);
-      // Solo marcar como lista si venimos de una activación reciente
-      if (step === 'success') setStep('ready');
       return;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile.birthDate, profile.name]);
+
+  // El banner fijo (PremiumActivationFeedback) es una confirmación
+  // transitoria post-activación, no un aviso permanente: apenas la lectura
+  // está en pantalla se descarta solo, y el paso 'ready' deja de quedar
+  // guardado en localStorage para tapar el header en cada visita siguiente.
+  useEffect(() => {
+    if (revealed) setStep('idle');
+  }, [revealed, setStep]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
