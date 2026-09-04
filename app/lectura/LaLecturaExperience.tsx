@@ -87,7 +87,53 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
 
   const hasFetched = useRef(false);
-  const prevIsPremium = useRef(isPremium);
+  // Guard de montaje, NO de cancelación por cleanup: el código anterior
+  // ponía `cancelled = true` apenas el setStep interno (preparing → ready)
+  // re-corría el efecto — y como `step` está en sus dependencias, la
+  // transición descartaba la respuesta del fetch cuando llegaba (segundos
+  // después). Resultado: `interpretation` quedaba en null y la UI mostraba
+  // "No pudimos generar tu lectura" para siempre, sin importar cuántas
+  // veces se recargara. isMounted solo corta si el componente se desmontó.
+  const isMounted = useRef(true);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  // Aplica la respuesta de /api/intelligence/interpret. Un fetch fallido
+  // (null) NO pisa una lectura cacheada que ya está en pantalla: el error
+  // solo aparece cuando no hay nada que mostrar.
+  const applyLecturaResult = useCallback(
+    (result: MolinoInterpretation | null) => {
+      if (!isMounted.current) return;
+      setFetchDone(true);
+      if (result) {
+        setInterpretation(result);
+        setCachedLectura(profile.birthDate, profile.name || "", result);
+      }
+    },
+    [profile]
+  );
+
+  const launchLecturaFetch = useCallback(() => {
+    fetchLectura(profile).then(applyLecturaResult);
+  }, [profile, applyLecturaResult]);
+
+  // Arranca la generación UNA vez por perfil (guard de hasFetched). setStep
+  // transiciona preparing → ready sin cancelar nada: el fetch corre en
+  // background y la UI no se bloquea mientras tanto.
+  const startLectura = useCallback(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    setStep('preparing');
+    setTimeout(() => {
+      if (isMounted.current) setStep('ready');
+    }, 0);
+    launchLecturaFetch();
+  }, [launchLecturaFetch, setStep]);
 
   // La fetch arranca cuando el cupón es aceptado (step='success' desde
   // usePremiumCoupon) O cuando isPremium pasa a true (pago normal por
@@ -99,50 +145,18 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // BuildingMolino se muestra pero la fetch nunca arranca y la UI queda
   // trabada en "Detectando tus tensiones" para siempre.
   useEffect(() => {
-    const premiumJustActivated = isPremium === true && prevIsPremium.current !== true;
-    prevIsPremium.current = isPremium;
-    if (step !== 'success' && !premiumJustActivated && !isPremium) {
-      // Safety timeout: si después de 6s isPremium sigue null, lanzamos la
-      // fetch de todas formas. El servidor es la autoridad definitiva.
-      const safetyTimer = setTimeout(() => {
-        if (!hasFetched.current) {
-          console.log("[LaLectura] safety timeout: isPremium still null, starting fetch anyway");
-          hasFetched.current = true;
-          setStep('preparing');
-          setTimeout(() => setStep('ready'), 0);
-          let cancelled = false;
-          fetchLectura(profile).then((result) => {
-            if (cancelled) return;
-            setInterpretation(result);
-            setFetchDone(true);
-            if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
-          });
-          // Store cancel function for cleanup
-          (globalThis as any).__lecturaSafetyCleanup = () => { cancelled = true; };
-        }
-      }, 6_000);
-      return () => {
-        clearTimeout(safetyTimer);
-        if ((globalThis as any).__lecturaSafetyCleanup) {
-          (globalThis as any).__lecturaSafetyCleanup();
-          (globalThis as any).__lecturaSafetyCleanup = null;
-        }
-      };
+    if (step === 'success' || isPremium === true) {
+      startLectura();
+      return;
     }
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-    setStep('preparing');
-    // Transición inmediata a ready: el fetch de la lectura corre en
-    // background sin bloquear la UI.
-    setTimeout(() => setStep('ready'), 0);
-    let cancelled = false;
-    fetchLectura(profile).then((result) => {
-      if (cancelled) return;
-      setInterpretation(result);
-      setFetchDone(true);
-      if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
-    });
-    return () => { cancelled = true; };
+    if (isPremium === null) {
+      const safetyTimer = setTimeout(() => {
+        console.log("[LaLectura] safety timeout: isPremium still null, starting fetch anyway");
+        startLectura();
+      }, 6_000);
+      return () => clearTimeout(safetyTimer);
+    }
+    // isPremium === false → falta pagar ESTE mapa: PremiumGate se ocupa.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, isPremium, profile.birthDate, profile.name]);
 
@@ -173,15 +187,8 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     setInterpretation(null);
     setFetchDone(false);
     setRevealed(false);
-    hasFetched.current = true;
-    setStep('preparing');
-    setTimeout(() => setStep('ready'), 0);
-    fetchLectura(profile).then((result) => {
-      setInterpretation(result);
-      setFetchDone(true);
-      if (result) setCachedLectura(profile.birthDate, profile.name || "", result);
-    });
-  }, [profile, setStep]);
+    launchLecturaFetch();
+  }, [launchLecturaFetch]);
 
   // Mismo preview que arma LecturaPremium en /profile (LecturaProfunda.tsx) —
   // el paywall muestra un patrón y una tensión reales de ESTE perfil, no una
@@ -255,7 +262,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         ) : !interpretation ? (
           <div className="text-center py-16 px-4">
             <p className="text-muted text-sm mb-4">
-              No pudimos generar tu lectura esta vez. El resto de tu lectura sigue disponible abajo.
+              No pudimos generar tu lectura esta vez. Esperá un momento y volvé a intentarlo.
             </p>
             <button
               type="button"
