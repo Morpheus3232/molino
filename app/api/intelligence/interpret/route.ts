@@ -244,7 +244,7 @@ export async function POST(req: NextRequest) {
     const modelOverrideForHash = PREMIUM_INTERPRETATION_TYPES.has(type)
       ? (process.env.AI_HEAVY_MODEL || undefined)
       : undefined;
-    const effectiveModel = modelOverrideForHash || process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash';
+    const effectiveModel = modelOverrideForHash || process.env.OPENROUTER_MODEL || OPENROUTER_MODEL_DEFAULT;
     const promptHash = generatePromptHash(prompt, effectiveModel);
 
     if (isRegenerate) {
