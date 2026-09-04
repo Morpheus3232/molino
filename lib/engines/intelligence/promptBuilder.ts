@@ -449,7 +449,7 @@ Generá una respuesta JSON con:
   "limitations": ["limitación 1"]
 }`;
 
-    case 'question': {
+case 'question': {
       // Mismo modelo personal canónico que "personal_profile" (renderPersonalModel
       // sobre buildSynthesis) — el chat responde con la MISMA base que la
       // lectura paga que lo precede, sin re-derivar nada.
@@ -463,67 +463,58 @@ Generá una respuesta JSON con:
       const challenging = getChallenging(animal);
       const dailyEnergy = context.dailyEnergy;
       const timingCtx = context.timing;
+      // Grounding mínimo: solo lo que el modelo necesita para saber QUÉ
+      // ya sabe el usuario, sin darle material para regurgitar. El
+      // closingSynthesis y suggestedNextStep de la lectura original NO
+      // se incluyen — el modelo NO debe repetirlos como respuesta.
       const readingBlock = readingContext
-        ? `CONTEXTO DE LA LECTURA PREMIUM (interpretación previa que el usuario ya leyó — usala como GROUNDING, NO la repitas verbatim):
+        ? `CONTEXTO DE LA LECTURA PREMIUM (lo que el usuario ya leyó — usalo como GROUNDING para saber qué ya conoce, NO lo repitas como respuesta):
 ${readingContext.summary ? `- Resumen conectivo: ${readingContext.summary}` : ''}
 ${readingContext.corePattern?.what ? `- Patrón central: ${readingContext.corePattern.what} (${readingContext.corePattern.source || 'fuente'})` : ''}
-${readingContext.alignment ? `- Qué significa para tu vida ahora: ${readingContext.alignment}` : ''}
-${readingContext.howYouOperate ? `- Cómo opera en la práctica: ${readingContext.howYouOperate}` : ''}
-${readingContext.closingSynthesis ? `- Síntesis de cierre: ${readingContext.closingSynthesis}` : ''}
+${readingContext.alignment ? `- Qué significa para su vida ahora: ${readingContext.alignment}` : ''}
 ${readingContext.tensions?.length ? `- Tensiones destacadas: ${readingContext.tensions.join(' | ')}` : ''}
-${readingContext.strengths?.length ? `- Fortalezas combinadas: ${readingContext.strengths.join(' | ')}` : ''}
-${readingContext.timing ? `- Por qué el momento importa: ${readingContext.timing}` : ''}
-${readingContext.suggestedNextStep ? `- Próximo paso sugerido: ${readingContext.suggestedNextStep}` : ''}
-${readingContext.opening ? `- Apertura: ${readingContext.opening}` : ''}
-${readingContext.relationalNote ? `- Nota relacional: ${readingContext.relationalNote}` : ''}
-${readingContext.whatToConsider?.length ? `- Consideraciones: ${readingContext.whatToConsider.join(' | ')}` : ''}
 `
         : '';
 
       return `${rolePrompt}
 
 ${baseContext}
-CÓDIGO PERSONAL:
-- Life Path ${personalCode.lifePath.number} — ${personalCode.lifePath.name}: ${personalCode.lifePath.meaning}
-${buildMasterNumbersBlock(numerology)}
+PREGUNTA DEL USUARIO: "${safeQuestion || ''}"
+
+TAREA: Responder EXCLUSIVAMENTE a esta pregunta. Este es el chat contextual de Molino — respondé como quien conoce el mapa completo del usuario.
+
+CONTEXTO DEL MAPA (ya conocido por el usuario — úsalo como referencia, NO lo listes):
 ${renderPersonalModel(getSynthesis())}
 ${friends.length || challenging.length ? `RELACIONES REALES DE TU ANIMAL CHINO (${animal}):\n- Afines: ${friends.map(f => f.animal).join(', ') || 'sin datos'}\n- Desafiantes: ${challenging.map(c => c.animal).join(', ') || 'sin datos'}\n` : ''}
 ${dailyEnergy ? `MOMENTO ACTUAL: energía del día ${dailyEnergy.overallScore}/100, tema "${dailyEnergy.theme}"\n` : ''}
 ${timingCtx ? `TIMING (intención "${timingCtx.intention}"): score ${timingCtx.timingScore}/100 — ${timingCtx.explanation}\n` : ''}
 ${readingBlock}${conversationContext}
-PREGUNTA DEL USUARIO: "${safeQuestion || ''}"
 
-TAREA: Responder la pregunta usando EXCLUSIVAMENTE los datos de arriba — este es el chat contextual de Molino, no un asistente genérico.
-- La premisa central de Molino es que YA conocés el mapa completo del usuario antes de que escriba. NO le pidas sus fechas, signos ni números.
-- Cuando hagas referencia a conceptos o coordenadas de su mapa (ej. **Camino de Vida 4**, **Sol en Leo**, **Luna en Virgo**, **Año Personal 4**, **Tigre de Madera**), destacalos en negrita (**...**) dentro de tu respuesta.
-- Si recibiste CONTEXTO DE LA LECTURA PREMIUM: usalo como grounding para responder LA PREGUNTA específica, no para repetir la lectura. La respuesta debe sumar un ángulo nuevo sobre la pregunta, no resumir lo que el usuario ya leyó.
+REGLAS CRÍTICAS:
+- Tu ÚNICO trabajo es responder la pregunta del usuario. No resumas la lectura, no reformules el resumen, no cierres con una síntesis genérica de la lectura.
+- NO uses el "closingSynthesis" ni el "suggestedNextStep" de la lectura como respuesta — esos campos son de la lectura PREMIUM, no del chat.
+- Si la pregunta pide un consejo/concreto (ej. qué estudiar, qué hacer, tips), respondé con datos ESPECÍFICOS del mapa del usuario, no con frases motivacionales genéricas.
+- Cuando hagas referencia a conceptos o coordenadas de su mapa (ej. **Camino de Vida 4**, **Sol en Leo**, **Año Personal 4**, **Tigre de Madera**), destacalos en negrita (**...**) dentro de tu respuesta.
+- La respuesta debe SUMAR algo nuevo sobre la pregunta, no repetir lo que el usuario ya leyó.
+- Si la pregunta toca un punto que figura en INCERTIDUMBRE (ej. signo lunar, ascendente), decí explícitamente que Molino no puede afirmar eso con precisión.
 - Las SEÑALES DE COMPORTAMIENTO y el TIMING son datos ya calculados: usalos solo cuando la pregunta los ponga en juego, no los listes de forma genérica.
-- Si la pregunta toca un punto que figura en INCERTIDUMBRE (ej. signo lunar, ascendente, número de expresión), decí explícitamente que Molino no puede afirmar eso con precisión y por qué — no completes el dato que falta.
-- Al final, generá 2 a 3 sugerencias contextuales en "suggestedQuestions" basadas en lo que respondió la IA y las tensiones/ciclos del mapa (ej. "¿Querés explorar cómo aprovechar este ciclo de cimiento en tu trabajo?", "¿Te interesa ver cómo tu Luna afecta tus decisiones?").
-
-REGLAS ESTRICTAS:
-- Nunca inventes un dato (número, signo, animal, relación) que no esté en el CONTEXTO DEL USUARIO o en los bloques de arriba.
-- Distinguí SIEMPRE, dentro de tu respuesta, entre estas tres capas — no las mezcles como si fueran lo mismo:
-  1) DATO CALCULADO: lo que Molino ya calculó (citalo tal cual en negrita, ej. "**Camino de Vida 4**").
-  2) INTERPRETACIÓN SIMBÓLICA: qué podría significar ese dato — con lenguaje de posibilidad ("puede sugerir", "tiende a"), nunca de certeza.
-  3) RECOMENDACIÓN: una acción concreta, solo si la pregunta la pide — dejala vacía si no aplica.
-- Si la pregunta pide algo que Molino NO calcula (compatibilidad con una persona sin sus datos, un evento futuro con certeza, un consejo médico/financiero/legal/psicológico clínico), decilo explícitamente en "limitations" en vez de inventar una respuesta — y en ese caso "confidence" debe ser "Baja".
-- Si la pregunta hace referencia implícita a la conversación previa, interpretala como continuación de esa conversación.
-- Nunca dés certeza médica, financiera, legal o de diagnóstico psicológico. Si la pregunta lo pide, decí que Molino es una herramienta de reflexión simbólica y sugerí un profesional para eso específico.
+- Nunca inventes un dato que no esté en los bloques de arriba.
+- Nunca dés certeza médica, financiera, legal o de diagnóstico psicológico.
 
 Generá una respuesta JSON con:
 {
-  "summary": "La respuesta directa a la pregunta en texto fluido, 2-4 oraciones, con coordenadas del mapa en **negrita**",
-  "alignment": "La interpretación simbólica detrás de esa respuesta — qué significa dentro del mapa del usuario",
-  "suggestedNextStep": "Una recomendación concreta si la pregunta la pide, vacío ('') si no aplica",
+  "summary": "Respuesta directa y específica a la pregunta en texto fluido, 2-4 oraciones, con coordenadas del mapa en **negrita**. DEBE responder a la pregunta exacta, no a un tema genérico.",
+  "alignment": "La interpretación simbólica detrás de esa respuesta — qué significa dentro del mapa del usuario. 1-2 oraciones.",
+  "suggestedNextStep": "Una recomendación concreta si la pregunta la pide, vacío ('') si no aplica. DEBE ser específica a la pregunta, no una recomendación genérica.",
   "suggestedQuestions": [
-    "Pregunta de seguimiento contextual 1 basada en su mapa y momento",
+    "Pregunta de seguimiento contextual 1 que profundice en lo que respondiste",
     "Pregunta de seguimiento contextual 2",
     "Pregunta de seguimiento contextual 3"
   ],
   "whatToConsider": ["qué no se puede saber con este sistema, si corresponde"],
   "confidence": "Alta/Media/Baja",
-  "limitations": ["qué falta o qué está fuera del alcance de Molino, si corresponde"]
+  "limitations": ["qué falta o qué está fuera del alcance de Molino, si corresponde"
+  ]
 }`;
     }
 

@@ -26,11 +26,13 @@ export interface PremiumChatSectionProps {
   initialQuestion?: string;
 }
 
+// Compact highlights for conversation context — solo resúmenes que
+// permitan al modelo entender qué ya se respondió, SIN reinyectar
+// closingSynthesis o suggestedNextStep (que el modelo regurgita si los ve).
 function compactHighlights(a: MolinoInterpretation): string {
   const parts: string[] = [];
   if (a.corePattern?.what) parts.push(`patrón: ${a.corePattern.what}`);
   if (a.howYouOperate) parts.push(`cómo opera: ${a.howYouOperate}`);
-  if (a.closingSynthesis) parts.push(`síntesis: ${a.closingSynthesis}`);
   return parts.join(" | ").slice(0, 500);
 }
 
