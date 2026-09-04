@@ -27,12 +27,16 @@ const crypto = typeof globalThis.crypto !== 'undefined'
   ? globalThis.crypto
   : require('crypto').webcrypto;
 
-export function generatePromptHash(prompt: string): string {
+export function generatePromptHash(prompt: string, model?: string): string {
   // Sync, no I/O — sha256 vía Node's require('crypto') (no expuesto en
   // globalThis.crypto.subtle de forma síncrona). Determinístico, suficiente
   // para una clave de cache (no es un secreto ni una firma de seguridad).
+  // El modelo se incluye en el hash: si cambia el proveedor/modelo sin
+  // cambiar el prompt, el hash cambia y la respuesta cacheada del modelo
+  // anterior no se sirve.
   const nodeCrypto = require('crypto');
-  return nodeCrypto.createHash('sha256').update(prompt).digest('hex').slice(0, 32);
+  const input = model ? `${model}:${prompt}` : prompt;
+  return nodeCrypto.createHash('sha256').update(input).digest('hex').slice(0, 32);
 }
 
 /** TTL en segundos, o null si el tipo no expira por tiempo (solo por promptHash/versión). */

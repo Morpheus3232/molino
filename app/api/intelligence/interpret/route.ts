@@ -238,7 +238,14 @@ export async function POST(req: NextRequest) {
 
     const fallback = generateFallbackInterpretation({ type, context, question });
     const prompt = buildIntelligencePrompt({ type, context, question, conversationHistory: safeHistory, readingContext: safeReadingContext, synthesis });
-    const promptHash = generatePromptHash(prompt);
+
+    // El modelo efectivo determina el hash del caché: si cambia el modelo
+    // (ej. DeepSeek → Gemini), las respuestas viejas no se sirven.
+    const modelOverrideForHash = PREMIUM_INTERPRETATION_TYPES.has(type)
+      ? (process.env.AI_HEAVY_MODEL || undefined)
+      : undefined;
+    const effectiveModel = modelOverrideForHash || process.env.OPENROUTER_MODEL || 'google/gemini-2.5-flash';
+    const promptHash = generatePromptHash(prompt, effectiveModel);
 
     if (isRegenerate) {
       // "Regenerar" siempre debe producir contenido nuevo: tira el cache
@@ -318,9 +325,7 @@ export async function POST(req: NextRequest) {
       // timing/compatibility. AI_HEAVY_MODEL (sin default en código: lo setea
       // ops, así no sube el gasto solo) fuerza un modelo de gama alta para
       // esos dos tipos. Si no está seteada, no cambia nada.
-      const modelOverride = PREMIUM_INTERPRETATION_TYPES.has(type)
-        ? (process.env.AI_HEAVY_MODEL || undefined)
-        : undefined;
+      const modelOverride = modelOverrideForHash;
 
       const routingPromise = generateWithRouting(
         profile,
