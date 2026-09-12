@@ -24,13 +24,14 @@ describe("Technical SEO & Canonical URLs", () => {
     }
   });
 
-  it("incluye las 144 rutas signo×signo en /compatibilidad (canónica) y NINGUNA en /sinastria", () => {
-    // Fase 3 — `/sinastria/a/b` y `/compatibilidad/a-b` cubrían el mismo
-    // intent. `/compatibilidad/[pair]` queda canónica; `/sinastria/*` salió
-    // del sitemap (canonical + noindex apuntando a compatibilidad).
+  it("no anuncia las rutas programáticas de exploración (thin content, se descubren por enlaces internos)", () => {
     const entries = sitemap();
     expect(entries.filter((e) => e.url.includes("/sinastria/")).length).toBe(0);
-    expect(entries.filter((e) => /\/compatibilidad\/[a-z]+-[a-z]+$/.test(e.url)).length).toBe(144);
+    // Programáticas (signo×casa + compatibilidad signo-signo) salieron
+    // del sitemap en Fase 4 — contenido de exploración con plantilla
+    // corta; se descubren vía enlaces internos sin consumir crawl budget.
+    expect(entries.filter((e) => /\/compatibilidad\/[a-z]+-[a-z]+$/.test(e.url)).length).toBe(0);
+    expect(entries.filter((e) => /\/signo\/\d+\/casa\/\d+/.test(e.url)).length).toBe(0);
   });
 
   it("no anuncia la familia consolidada /compatibility/* (301 → /affinity/*)", () => {
