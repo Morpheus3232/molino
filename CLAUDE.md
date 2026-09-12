@@ -153,10 +153,10 @@ Consecuencias operativas:
   es el capítulo "05 · Tu relación con el mundo" de la Lectura.
 
   **Actualización 2026-09-02**: el bloque interpretativo determinista
-  (cuadro de nacimiento, convergencia y los dos movimientos) **volvió a
+  (cuadro de nacimiento y los dos movimientos) **volvió a
   `/profile`** ("Mi Mapa"), compuesto en `ProfileHub` después de
   `PersonalMapSection` y ANTES de las acciones:
-  `BirthGridSection` → `ConvergenceSection` → `LecturaLibre`.
+  `BirthGridSection` → `LecturaLibre`.
   La separación casa actual: **Mapa = lectura gratuita completa de tu mapa**;
   **Lectura = contenido pago (Pro)**.
 

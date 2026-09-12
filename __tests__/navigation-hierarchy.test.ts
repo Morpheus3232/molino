@@ -84,11 +84,12 @@ describe("Header — navegación sin perfil", () => {
 describe("Header — navegación con perfil", () => {
   const header = () => read("components/layout/UniversityHeader.tsx");
 
-  test("las acciones del estado con perfil son Mi Mapa / Mi Lectura / Preguntá", () => {
+  test("las acciones del estado con perfil son Mi Mapa / Mi Lectura + el guardado", () => {
     const src = header();
     expect(src).toMatch(/href="\/profile"[\s\S]{0,300}Mi Mapa/);
     expect(src).toMatch(/href=\{lecturaHref\}[\s\S]{0,300}Mi Lectura/);
-    expect(src).toMatch(/href="\/ai"[\s\S]{0,300}Preguntá/);
+    // Preguntá (/ai) salió del nav en be23adc2: el chat con la IA vive en /lectura.
+    expect(src).not.toMatch(/href="\/ai"/);
     expect(src).toContain('label="Afinidades"');
     expect(src).toContain('label="Tiempo"');
     expect(src).toContain('label: "Journal"');
@@ -220,11 +221,12 @@ describe("Footer — 4 columnas alineadas a las 4 puertas conceptuales (Fase 3)"
     }
   });
 
-  test("Mi Molino agrupa el producto personal, IA incluida", () => {
+  test("Mi Molino agrupa el producto personal, con la IA vía /lectura", () => {
     const src = footer();
-    for (const href of ["/profile", "/lectura", "/ai", "/pareja", "/premium", "/onboarding"]) {
+    for (const href of ["/profile", "/lectura", "/pareja", "/premium", "/onboarding"]) {
       expect(src).toContain(`href: "${href}"`);
     }
+    expect(src).not.toContain('href: "/ai"');
   });
 });
 

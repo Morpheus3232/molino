@@ -14,7 +14,6 @@ import PersonalSigil from "@/components/ui/PersonalSigil";
 import ProfileCoordinatesSection from "@/components/profile/ProfileCoordinatesSection";
 import PersonalMapSection from "@/components/profile/PersonalMapSection";
 import BirthGridSection from "@/components/profile/BirthGridSection";
-import ConvergenceSection from "@/components/profile/ConvergenceSection";
 import { LecturaLibre, type LecturaPieces } from "@/components/profile/LecturaProfunda";
 import SpaceIndex from "@/components/profile/SpaceIndex";
 import ActionButtons from "@/components/profile/ActionButtons";
@@ -176,11 +175,9 @@ export default function ProfileHub({
       <PersonalMapSection profile={profile} catalog={catalog} />
 
       {/* ═══════════════════════════════════════════════
-          LA LECTURA — Tu cuadro de nacimiento, dónde
-          coinciden tus sistemas y los dos movimientos.
+          LA LECTURA — Tu cuadro de nacimiento y los dos movimientos.
           ═══════════════════════════════════════════════ */}
       <BirthGridSection profile={profile} />
-      <ConvergenceSection profile={profile} />
       <LecturaLibre profile={profile} onData={setPieces} />
 
       {/* ═══════════════════════════════════════════════
