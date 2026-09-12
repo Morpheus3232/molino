@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion } from "framer-motion";
 import { Check, X, Sparkles, Shield, Zap, Lock, Unlock } from "lucide-react";
 
@@ -158,13 +159,15 @@ export default function FeatureComparison({ className = "" }: { className?: stri
               {categories.map((category) => {
                 const catFeatures = FEATURES.filter((f) => f.category === category);
                 return (
-                  <tr key={category} className="contents">
-                    <td
-                      colSpan={3}
-                      className="py-2.5 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-gold bg-ink/[0.03] border-y border-ink/10 font-bold"
-                    >
-                      {category}
-                    </td>
+                  <Fragment key={category}>
+                    <tr className="border-b border-ink/10">
+                      <td
+                        colSpan={3}
+                        className="py-2.5 px-6 font-mono text-[10px] uppercase tracking-[0.2em] text-gold bg-ink/[0.03] border-y border-ink/10 font-bold"
+                      >
+                        {category}
+                      </td>
+                    </tr>
                     {catFeatures.map((f) => (
                       <tr
                         key={f.name}
@@ -196,7 +199,7 @@ export default function FeatureComparison({ className = "" }: { className?: stri
                         </td>
                       </tr>
                     ))}
-                  </tr>
+                  </Fragment>
                 );
               })}
             </tbody>
