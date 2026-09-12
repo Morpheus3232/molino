@@ -69,6 +69,10 @@ const nextConfig = {
       // Familia `/compatibility/*` → `/affinity/*` (misma dirección que `/entities/[id]`).
       { source: '/compatibility/brands', destination: '/affinity/brand', permanent: true },
       { source: '/compatibility/countries', destination: '/affinity/country', permanent: true },
+      // Wildcard para el resto de URLs legacy (142+ combinaciones y
+      // entidades que ya no existen) — evita 404s; el usuario llega
+      // al hub en vez de a una página de error.
+      { source: '/compatibility/:path*', destination: '/affinity', permanent: true },
     ];
   },
   async headers() {
