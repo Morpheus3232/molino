@@ -73,6 +73,9 @@ const nextConfig = {
       // entidades que ya no existen) — evita 404s; el usuario llega
       // al hub en vez de a una página de error.
       { source: '/compatibility/:path*', destination: '/affinity', permanent: true },
+      // /precios redirige permanente a /premium: el pricing ladder de 3
+      // planes se pausó; un solo pago de $8 desbloquea todo.
+      { source: '/precios', destination: '/premium', permanent: true },
     ];
   },
   async headers() {

@@ -80,7 +80,7 @@ export default function ProfesionalesPage() {
           </div>
 
           <Link
-            href="/precios"
+            href="/premium"
             className="inline-flex items-center gap-1.5 mt-5 font-mono text-xs uppercase tracking-[0.2em] text-accent font-medium hover:text-accent/80 transition-colors"
           >
             Ver planes y precios →

@@ -39,11 +39,11 @@ function buildFromLocal(): UserProfile | null {
 }
 
 /**
- * Resolución síncrona del perfil para pintar la cuenta real durante la
- * carga. El hash nunca llega al servidor, así que en el primer render
- * (serverProfile = null) el perfil solo puede salir de acá o de
- * localStorage — las dos son lecturas síncronas, perfectas para la
- * animación matrix que muestra la suma genuina que estamos haciendo.
+ * Resolución síncrona del perfil para la animación matrix.
+ * Se llama dentro de useEffect (nunca durante el render) para evitar
+ * React error #418: localStorage y el hash del URL no existen en el
+ * servidor, así que si se leen durante el render el output del cliente
+ * difiere del servidor.
  */
 function resolveProfileSync(serverProfile: UserProfile | null): UserProfile | null {
   if (serverProfile) return serverProfile;
@@ -74,6 +74,7 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
       return false;
     }
   });
+  const [pendingProfile, setPendingProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -81,14 +82,15 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
 
     if (serverProfile) {
       saveProfileToStorage(serverProfile);
+      if (!matrixDone && !futureDateError) {
+        setPendingProfile(serverProfile);
+      }
       return;
     }
 
     // Ya vimos la animación matrix en esta sesión (matrixDone comenzó true), así
     // que resolvemos el perfil de la forma clásica (hash → localStorage).
     if (!profile && matrixDone) {
-      // The hash never reaches the server (see the URL-sync effect below), so
-      // reconstructing a bookmarked /profile#<hash> only happens here.
       const hash = window.location.hash.slice(1);
       const fromHash = hash ? profileFromEncoded(hash) : null;
       if (fromHash) {
@@ -98,6 +100,15 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
       }
       const local = buildFromLocal();
       if (local) setProfile(local);
+      return;
+    }
+
+    // Primera visita: resolvemos el perfil para la animación matrix.
+    // Antes esto vivía en el render (resolveProfileSync leía localStorage
+    // y el hash durante la hidratación, causando React error #418).
+    if (!matrixDone && !futureDateError) {
+      const resolved = resolveProfileSync(serverProfile);
+      if (resolved) setPendingProfile(resolved);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverProfile]);
@@ -138,14 +149,13 @@ export default function ProfileClient({ serverProfile, futureDateError, catalog 
   // primera vez que el perfil se carga (venga de ?dob= del onboarding, del hash
   // compartido o del localStorage). Al terminar, onComplete abre Mi Mapa. Un
   // usuario que ya vio su mapa esta sesión va directo, sin volver a animar.
-  const pendingProfile = !futureDateError && !matrixDone ? resolveProfileSync(serverProfile) : null;
-
   if (pendingProfile) {
     return (
       <CalculationMatrix
         profile={pendingProfile}
         onComplete={() => {
           setProfile(pendingProfile);
+          setPendingProfile(null);
           setMatrixDone(true);
           try {
             window.sessionStorage.setItem(MATRIX_SEEN_KEY, "1");

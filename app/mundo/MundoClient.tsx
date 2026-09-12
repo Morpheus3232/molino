@@ -128,6 +128,9 @@ export default function MundoClient({ refParam, catalog }: MundoClientProps) {
           <span>›</span>
           <span className="text-foreground font-medium">Mundo</span>
         </nav>
+        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-2">
+          Tu mundo
+        </h1>
       </div>
       <main id="main-content">
         <div className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-4 mb-4 flex justify-end">

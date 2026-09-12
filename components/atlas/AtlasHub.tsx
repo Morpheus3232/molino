@@ -207,14 +207,14 @@ export default function AtlasHub({ countries, topCountries, allEntities, globalC
 
         <div className="flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
           <div className="flex-1">
-            <motion.h2
+            <motion.h1
               className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground uppercase leading-[0.92]"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             >
               Tu mapa de afinidades
-            </motion.h2>
+            </motion.h1>
             <motion.p
               className="text-sm sm:text-base text-muted mt-4 max-w-lg leading-relaxed"
               initial={{ opacity: 0, y: 12 }}

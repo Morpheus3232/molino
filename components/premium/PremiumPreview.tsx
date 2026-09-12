@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { UserProfile } from "@/types/user";
 import { loadProfileFromStorage } from "@/lib/session/localStorage";
@@ -24,21 +24,31 @@ interface PremiumPreviewProps {
   onUnlockClick?: () => void;
 }
 
+// Perfil de referencia (El Investigador / Piscis / Caballo): lo que se
+// muestra mientras no hay un perfil guardado y en SSR. Como no depende de
+// nada del componente, vive en módulo para no recalcularse en cada render.
+const FALLBACK_PROFILE = calculateUserProfile("Alex", "1990-04-18");
+
 export default function PremiumPreview({
   className = "",
   onUnlockClick,
 }: PremiumPreviewProps) {
   const [isUnlockedPreview, setIsUnlockedPreview] = useState(true);
 
-  // Load real user profile from storage or fallback to dynamic reference profile
-  const profile = useMemo<UserProfile>(() => {
+  // El perfil se carga en useEffect (no en useMemo durante el render):
+  // leer localStorage en el render rompe la igualdad servidor/cliente y
+  // dispara React error #418. El servidor y la hidratación muestran el
+  // perfil de referencia; apenas monta, se reemplaza por el guardado.
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
     const stored = loadProfileFromStorage();
-    if (stored) return stored as UserProfile;
-    // High quality sample profile (El Investigador / Piscis / Caballo)
-    return calculateUserProfile("Alex", "1990-04-18");
+    setProfile(stored ? (stored as UserProfile) : null);
   }, []);
 
-  const lifePath = safeNumber(profile.lifePath, 1);
+  const displayProfile = profile || FALLBACK_PROFILE;
+
+  const lifePath = safeNumber(displayProfile.lifePath, 1);
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = archetype.name || "El Caminante";
 
@@ -56,8 +66,8 @@ export default function PremiumPreview({
             Así se ve tu lectura desbloqueada
           </h2>
           <p className="text-xs sm:text-sm text-muted mt-2 max-w-xl mx-auto">
-            Interactuá con la vista previa basada en tu mapa ({archetypeName}, {profile.sunSign},{" "}
-            {profile.chineseZodiac}).
+            Interactuá con la vista previa basada en tu mapa ({archetypeName}, {displayProfile.sunSign},{" "}
+            {displayProfile.chineseZodiac}).
           </p>
 
           {/* Interactive Toggle */}
@@ -102,7 +112,7 @@ export default function PremiumPreview({
                   Perfil Activo
                 </span>
                 <span className="font-heading text-sm sm:text-base font-bold text-foreground">
-                  {archetypeName} · Camino {lifePath} · {profile.sunSign}
+                  {archetypeName} · Camino {lifePath} · {displayProfile.sunSign}
                 </span>
               </div>
             </div>
@@ -125,7 +135,7 @@ export default function PremiumPreview({
               </h3>
               <p className="text-xs sm:text-sm text-foreground/90 leading-relaxed">
                 Tu Camino {lifePath} ({archetypeName}) te impulsa a construir con autonomía, pero tu
-                naturaleza de {profile.chineseZodiac} ({profile.chineseZodiacInfo?.element || "Fuego"}) busca
+                naturaleza de {displayProfile.chineseZodiac} ({displayProfile.chineseZodiacInfo?.element || "Fuego"}) busca
                 movimiento continuo.
               </p>
               <div className="p-3 rounded-xl bg-accent/5 border border-accent/15 text-xs text-muted leading-relaxed">
@@ -148,7 +158,7 @@ export default function PremiumPreview({
                 </div>
                 <div className="p-3.5 rounded-xl bg-accent/10 border border-accent/20 text-foreground mr-6 leading-relaxed">
                   <p className="font-semibold text-accent mb-1">Molino:</p>
-                  Estás en tu Año Personal {profile.cycles?.personalYear || 7} (Introspección y Estrategia),
+                  Estás en tu Año Personal {displayProfile.cycles?.personalYear || 7} (Introspección y Estrategia),
                   un ciclo que muchas personas usan para planificar antes de actuar. Esto no determina si es
                   buen momento para vos — es una perspectiva más para sumar a lo que ya sabés de tu situación.
                 </div>
