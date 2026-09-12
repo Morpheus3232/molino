@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { SYMBOLIC_ENTITIES, toLightweightEntity } from "@/lib/data/symbolic-entities";
+import { siteUrl } from "@/lib/seo";
 import LecturaClient from "./LecturaClient";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "La Lectura",
+    alternates: { canonical: siteUrl("/lectura") },
     // Contenido personal de una sola persona — no tiene sentido indexarlo.
     robots: { index: false, follow: true },
   };

@@ -148,7 +148,7 @@ export default async function SinastriaPage({ params }: PageProps) {
       name: "Molino",
       url: SITE_URL,
     },
-    mainEntityOfPage: `${SITE_URL}/sinastria/${signA.slug}/${signB.slug}`,
+    mainEntityOfPage: siteUrl(`/compatibilidad/${signA.slug}-${signB.slug}`),
   };
 
   const breadcrumbLd = {
@@ -157,7 +157,7 @@ export default async function SinastriaPage({ params }: PageProps) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
       { "@type": "ListItem", position: 2, name: "Modo Pareja", item: `${SITE_URL}/pareja` },
-      { "@type": "ListItem", position: 3, name: `${signA.name} y ${signB.name}`, item: `${SITE_URL}/sinastria/${signA.slug}/${signB.slug}` },
+      { "@type": "ListItem", position: 3, name: `${signA.name} y ${signB.name}`, item: siteUrl(`/compatibilidad/${signA.slug}-${signB.slug}`) },
     ],
   };
 
