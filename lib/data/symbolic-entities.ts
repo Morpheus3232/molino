@@ -256,14 +256,16 @@ const CONFIDENCE_RANK: Record<string, number> = {
 };
 
 /**
- * Higher is better. Confidence of the primary event dominates (a
- * well-sourced exact date beats a vague one); description length is only a
- * tiebreaker within the same confidence tier.
+ * Higher is better. Having an exact `date` dominates — it's the only thing
+ * that lets the Mapa show the entity at all, and the `confidence` label alone
+ * lied (cities-60 tagged year-only records "exacta"). Then confidence, then
+ * description length as a tiebreaker.
  */
 function entityQualityScore(entity: AtlasEntity): number {
   const primary = getPrimaryEvent(entity);
   const confidenceScore = primary ? (CONFIDENCE_RANK[primary.confidence] ?? 0) : 0;
-  return confidenceScore * 1000 + (entity.description?.length ?? 0);
+  const dateScore = primary?.date ? 1 : 0;
+  return dateScore * 1_000_000 + confidenceScore * 1000 + (entity.description?.length ?? 0);
 }
 
 /**

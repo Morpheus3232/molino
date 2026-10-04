@@ -50,6 +50,8 @@ const nextConfig = {
       { source: '/principios', destination: '/filosofia', permanent: true },
       { source: '/patterns', destination: '/profile', permanent: true },
       { source: '/synthesis', destination: '/profile', permanent: true },
+      // El dedup del atlas ahora prefiere la CDMX con fecha exacta (id "cdmx").
+      { source: '/affinity/city/mexico-city', destination: '/affinity/city/cdmx', permanent: true },
 
       // ── Fase 3 — consolidación de IA (ver docs/ROUTE_CONSOLIDATION_PLAN.md) ──
       // Stubs de redirect client-side (malos para SEO) → 301 server-side.

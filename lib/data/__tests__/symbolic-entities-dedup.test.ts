@@ -33,6 +33,13 @@ describe("SYMBOLIC_ENTITIES — sin duplicados ni colisiones de id", () => {
     expect(duplicates, `entidades duplicadas: ${JSON.stringify(duplicates)}`).toEqual([]);
   });
 
+  test("entre duplicados gana el que trae fecha exacta, no la etiqueta de confianza", () => {
+    // cities-60 tenía CDMX con confidence "exacta" pero solo año; le ganaba
+    // a la de atlas/mexico.ts, que sí trae fecha, y el Mapa la descartaba.
+    const cdmx = SYMBOLIC_ENTITIES.find((e) => e.type === "city" && e.name === "Ciudad de México");
+    expect(cdmx?.events?.some((ev) => ev.primaryForAffinity && ev.date)).toBe(true);
+  });
+
   test("homónimos reales entre países se conservan (no son duplicados)", () => {
     // "Universidad de los Andes" existe en Chile y en Colombia — son dos
     // universidades distintas que comparten nombre; el dedup no debe
