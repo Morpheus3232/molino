@@ -3,6 +3,8 @@ import { createShareToken, generateTokenId, verifyShareToken } from '@/lib/share
 import { storeShareProfile, resolveShareProfile } from '@/lib/kv';
 import { calculateUserProfile } from '@/lib/engines/profileBuilder';
 import { hashProfile } from '@/lib/mercadopago';
+import { paymentIdentitySchema } from '@/lib/validation/payments';
+import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, CHECK_RATE_LIMIT } from '@/lib/rate-limit';
 import type { UserProfile } from '@/types/user';
 
 export const runtime = 'nodejs';
@@ -21,17 +23,18 @@ export const dynamic = 'force-dynamic';
  *     404/410 if invalid/expired.
  */
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json().catch(() => null);
-    const birthDate = typeof body?.birthDate === 'string' ? body.birthDate : '';
-    const name = typeof body?.name === 'string' ? body.name : '';
-    const salt = typeof body?.salt === 'string' ? body.salt : undefined;
+  // Cada POST escribe en KV: sin límite, cualquiera puede llenarlo.
+  const rl = checkRateLimit(rateLimitKey(getClientIp(req), 'profile/share'), CHECK_RATE_LIMIT);
+  if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDate)) {
+  try {
+    const identity = paymentIdentitySchema.safeParse(await req.json().catch(() => null));
+    if (!identity.success) {
       return NextResponse.json({ error: 'Invalid birthDate' }, { status: 400 });
     }
 
-    const hash = hashProfile(name || '', birthDate, salt);
+    const { name, birthDate, salt } = identity.data;
+    const hash = hashProfile(name, birthDate, salt);
     const tid = generateTokenId();
 
     const stored = await storeShareProfile(tid, { n: name || undefined, b: birthDate, h: hash });

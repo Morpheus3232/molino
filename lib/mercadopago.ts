@@ -155,6 +155,7 @@ export async function createPreference(
   // Los planes se cobran en USD; el producto legacy respeta la moneda pasada.
   const currency = isPlan ? PRODUCT_CURRENCY_USD : currencyId;
   const price = expectedAmountFor(productId, currency);
+  if (!price) throw new Error(`Unknown product/currency: ${productId}/${currency}`);
 
   const item = {
     id: `${productId}_${profileHash}`,
@@ -179,7 +180,8 @@ export async function createPreference(
         failure: `${baseUrl}${safeReturn}?payment_status=failed`,
         pending: `${baseUrl}${safeReturn}?payment_status=pending`,
       },
-      // auto_return: 'approved', // Temporarily disabled for localhost testing
+      // MP rechaza auto_return con back_urls no-https (localhost).
+      ...(baseUrl.startsWith('https://') && { auto_return: 'approved' }),
       notification_url: `${baseUrl}/api/mp/webhook`,
       metadata: {
         profile_hash: profileHash,

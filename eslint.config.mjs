@@ -1,12 +1,8 @@
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
-import reactHooks from "eslint-plugin-react-hooks";
 
 const eslintConfig = [
   ...nextCoreWebVitals,
   {
-    plugins: {
-      "react-hooks": reactHooks,
-    },
     rules: {
       // Este codebase usa setState dentro de useEffect intencionalmente para:
       // 1. Hydration safety (mount flags: setMounted(true) después del primer render)

@@ -69,11 +69,12 @@ export async function GET(request: Request) {
       },
       { status: 200, headers: CORS_HEADERS }
     );
-  } catch (err: any) {
+  } catch (err) {
+    console.error("[api/v1]", err);
     return NextResponse.json(
       {
         error: "Error calculando compatibilidad",
-        message: err?.message || "Ocurrió un error inesperado.",
+        message: "Ocurrió un error inesperado.",
       },
       { status: 500, headers: CORS_HEADERS }
     );

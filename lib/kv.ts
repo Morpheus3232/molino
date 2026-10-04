@@ -250,7 +250,8 @@ export async function getProfileHashByPaymentId(paymentId: string): Promise<stri
 }
 
 export async function saveProfileSalt(profileHash: string, salt: string): Promise<void> {
-  if (!salt) return;
+  // Viene del cliente sin validar en varias rutas: solo UUID/hex (ver lib/profile-salt.ts).
+  if (typeof salt !== 'string' || !/^[0-9a-f-]{1,64}$/.test(salt)) return;
   try {
     const kv = await getKvClient();
     if (!kv) return;

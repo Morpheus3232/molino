@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processPayment, hashProfile } from '@/lib/mercadopago';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, PAYMENT_RATE_LIMIT } from '@/lib/rate-limit';
-import { isValidDate } from '@/lib/validation';
+import { paymentIdentitySchema } from '@/lib/validation/payments';
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -9,23 +9,15 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, paymentData, salt } = await req.json();
-
-    if (!birthDate || !paymentData) {
-      return NextResponse.json(
-        { error: 'birthDate and paymentData are required' },
-        { status: 400 },
-      );
+    const body = await req.json().catch(() => ({}));
+    const identity = paymentIdentitySchema.safeParse(body);
+    const paymentData = body?.paymentData;
+    if (!identity.success || !paymentData || typeof paymentData !== 'object') {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    if (!isValidDate(birthDate)) {
-      return NextResponse.json(
-        { error: 'birthDate must be a valid date in YYYY-MM-DD format (year >= 1900, not future)' },
-        { status: 400 },
-      );
-    }
-
-    const profileHash = hashProfile(name ?? '', birthDate, salt);
+    const { name, birthDate, salt } = identity.data;
+    const profileHash = hashProfile(name, birthDate, salt);
     const result = await processPayment({ profileHash, paymentData });
 
     return NextResponse.json(result);
@@ -34,8 +26,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error: 'Payment processing failed',
-        status: 'rejected',
-        detail: error instanceof Error ? error.message : 'Unknown error',
+        status: 'rejected'
       },
       { status: 500 },
     );

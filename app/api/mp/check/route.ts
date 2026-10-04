@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { hasPremiumAccess, getOrCreatePremiumToken } from '@/lib/kv';
 import { hashProfile } from '@/lib/mercadopago';
+import { paymentIdentitySchema } from '@/lib/validation/payments';
 import { checkRateLimit, rateLimitKey, rateLimitResponse, getClientIp, CHECK_RATE_LIMIT } from '@/lib/rate-limit';
 
 export async function POST(req: NextRequest) {
@@ -9,16 +10,13 @@ export async function POST(req: NextRequest) {
   if (!rl.allowed) return rateLimitResponse(rl.resetAt);
 
   try {
-    const { name, birthDate, salt } = await req.json().catch(() => ({}));
-
-    if (!birthDate) {
-      return NextResponse.json(
-        { error: 'birthDate is required' },
-        { status: 400 },
-      );
+    const identity = paymentIdentitySchema.safeParse(await req.json().catch(() => ({})));
+    if (!identity.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
     }
 
-    const profileHash = hashProfile(name ?? '', birthDate, salt);
+    const { name, birthDate, salt } = identity.data;
+    const profileHash = hashProfile(name, birthDate, salt);
     const premium = await hasPremiumAccess(profileHash);
     // A device that already knows it's premium (returning visit) but lost
     // its device-bound token (localStorage cleared, new browser, token TTL

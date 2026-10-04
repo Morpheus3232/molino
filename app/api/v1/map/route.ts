@@ -82,11 +82,12 @@ export async function GET(request: Request) {
         "Content-Type": "application/json",
       },
     });
-  } catch (err: any) {
+  } catch (err) {
+    console.error("[api/v1]", err);
     return NextResponse.json(
       {
         error: "Error en el cálculo",
-        message: err?.message || "No se pudo procesar la fecha proporcionada.",
+        message: "No se pudo procesar la fecha proporcionada.",
       },
       { status: 500, headers: CORS_HEADERS }
     );

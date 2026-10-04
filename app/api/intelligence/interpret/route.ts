@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isValidDate } from '@/lib/validation';
 import { calculateUserProfile } from '@/lib/engines/profileBuilder';
 import { buildSynthesis } from '@/lib/engines/synthesisEngine';
 import {
@@ -94,11 +95,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { type, dob, name, dailyEnergy, timing, compatibility, entity, decision, question, provider, conversationHistory, readingContext, premiumToken, salt, isRegenerate } = body as RequestBody;
+    const { type, dob, dailyEnergy, timing, compatibility, entity, decision, provider, conversationHistory, readingContext, premiumToken, salt, isRegenerate } = body as RequestBody;
 
-    if (!dob) {
+    if (typeof dob !== 'string' || !isValidDate(dob)) {
       return NextResponse.json({ error: 'Missing birth date' }, { status: 400 });
     }
+
+    const name = typeof body.name === 'string' ? body.name.slice(0, 120) : '';
+    // Mismo motivo que el tope de conversationHistory: inflado de tokens.
+    const question = typeof body.question === 'string' ? body.question.slice(0, 1000) : undefined;
 
     // Cap conversationHistory: max 8 turns, max 500 chars per turn.
     // Prevents token-inflation attacks from oversized client payloads.

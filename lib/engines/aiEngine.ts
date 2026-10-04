@@ -176,40 +176,6 @@ async function fetchWithTimeout<T = Response>(
   }
 }
 
-export async function generateAIInterpretation(
-  user: UserProfile,
-  target: CompatibilityTarget,
-  result: CompatibilityResult,
-  provider: 'openai' | 'claude' = 'openai',
-  template?: string
-): Promise<AIInterpretation> {
-  try {
-    const response = await fetch('/api/ai/interpretation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        target,
-        result,
-        provider,
-        template,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.interpretation;
-  } catch (error) {
-    console.error('Error en API de IA:', error);
-    return generateFallbackInterpretation(user, target, result);
-  }
-}
-
 // NOTE: This function must only be called from server-side (API routes)
 // It accesses process.env which should never be exposed to client-side code
 export async function generateWithOpenAI(
