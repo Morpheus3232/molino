@@ -455,6 +455,17 @@ export async function getGiftCode(code: string): Promise<StoredGiftCode | null> 
   }
 }
 
+/** Anula un código de regalo (reembolso/contracargo del pago que lo compró). */
+export async function deleteGiftCode(code: string): Promise<void> {
+  try {
+    const kv = await getKvClient();
+    if (!kv) return;
+    await kv.del(`gift:${code}`);
+  } catch (error) {
+    console.error('[KV] Error in deleteGiftCode:', error);
+  }
+}
+
 /**
  * Canjea un código para `profileHash`. No es atómico (read-then-write, igual
  * que el resto de este archivo — ver incrementDailyCost más abajo): dos

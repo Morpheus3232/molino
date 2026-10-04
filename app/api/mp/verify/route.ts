@@ -26,31 +26,32 @@ export async function POST(req: NextRequest) {
     }
 
     const { name, birthDate, salt } = identity.data;
-    const calculatedHash = name && birthDate ? hashProfile(name, birthDate, salt) : undefined;
+    // Sin el `name &&` de antes: el onboarding no pide nombre, y con name
+    // vacío no se calculaba hash, así que un paymentId ajeno alcanzaba para
+    // reemitir (rotar) el token de su dueño. preference hashea igual que acá.
+    const calculatedHash = hashProfile(name, birthDate, salt);
 
     // Fast path: the paymentId is already linked to this profile in KV.
     // Only trust it when the requester proves ownership of the profile
     // (same name+birthDate that produced the hash). This also prevents
     // someone who decodes a shared profile URL from claiming access with
     // an arbitrary paymentId.
-    if (calculatedHash) {
-      const linkedHash = await getProfileHashByPaymentId(String(paymentId).trim());
-      if (linkedHash === calculatedHash) {
-        const inKv = await hasPremiumAccess(calculatedHash);
-        if (inKv) {
-          const premiumToken = await savePremiumToken(calculatedHash);
-          if (!premiumToken) {
-            return NextResponse.json({
-              error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
-            }, { status: 503 });
-          }
+    const linkedHash = await getProfileHashByPaymentId(String(paymentId).trim());
+    if (linkedHash === calculatedHash) {
+      const inKv = await hasPremiumAccess(calculatedHash);
+      if (inKv) {
+        const premiumToken = await savePremiumToken(calculatedHash);
+        if (!premiumToken) {
           return NextResponse.json({
-            verified: true,
-            source: 'kv',
-            status: 'approved',
-            premiumToken,
-          });
+            error: 'No pudimos confirmar tu acceso en este momento — probá de nuevo en unos minutos. Si el problema persiste, escribinos con tu payment ID a versionlimitada@proton.me.',
+          }, { status: 503 });
         }
+        return NextResponse.json({
+          verified: true,
+          source: 'kv',
+          status: 'approved',
+          premiumToken,
+        });
       }
     }
 
@@ -65,6 +66,16 @@ export async function POST(req: NextRequest) {
         status: payment.status,
         source: 'mp-api',
       });
+    }
+
+    // Un regalo no está atado a ningún perfil: se activa solo con su código
+    // (/api/gift/[codigo]/redeem). Si no, el número de pago activaba a
+    // cualquiera que lo pegara acá, sin límite de veces.
+    if (payment.metadata?.gift_code) {
+      return NextResponse.json({
+        verified: false,
+        reason: 'Este pago es un regalo: se activa con el código de regalo.',
+      }, { status: 400 });
     }
 
     const metadataHash = payment.metadata?.profile_hash as string | undefined;

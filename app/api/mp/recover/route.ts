@@ -59,6 +59,14 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
+    // Un regalo se activa solo con su código (ver mp/verify).
+    if (payment.metadata?.gift_code) {
+      return NextResponse.json({
+        verified: false,
+        reason: 'Este pago es un regalo: se activa con el código de regalo.',
+      }, { status: 400 });
+    }
+
     const profileHash =
       (payment.metadata?.profile_hash as string | undefined) ||
       (name && birthDate ? hashProfile(name, birthDate, salt) : undefined);

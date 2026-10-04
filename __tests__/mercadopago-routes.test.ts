@@ -532,3 +532,53 @@ describe('API routes de gifting', () => {
     expect(afterData.redeemedProfileHash).toBeUndefined();
   });
 });
+
+describe('Regresión: un pago de regalo solo se activa con su código', () => {
+  // El pago de un regalo no lleva profile_hash. verify/recover tomaban el hash
+  // de quien llamaba, así que con el número de pago cualquiera activaba su
+  // propio perfil, sin límite de veces.
+  const giftPayment = () =>
+    approvedPayment({ metadata: { gift_code: GIFT_CODE, product: 'molino_premium' }, external_reference: GIFT_CODE });
+
+  test('verify con el paymentId de un regalo no otorga acceso', async () => {
+    mpState.paymentResponse = giftPayment();
+    const res = await verifyRoute(requestTo('http://localhost/api/mp/verify', { paymentId: GIFT_PAYMENT_ID, name: NAME, birthDate: BIRTH }));
+    const data = await res.json();
+    expect(data.verified).toBe(false);
+    expect(await hasPremiumAccess(HASH)).toBe(false);
+  });
+
+  test('recover con el paymentId de un regalo no otorga acceso', async () => {
+    mpState.paymentResponse = giftPayment();
+    const res = await recoverRoute(requestTo('http://localhost/api/mp/recover', { paymentId: GIFT_PAYMENT_ID, name: NAME, birthDate: BIRTH }));
+    const data = await res.json();
+    expect(data.verified).toBe(false);
+    expect(await hasPremiumAccess(HASH)).toBe(false);
+  });
+
+  test('reembolsar un regalo ya canjeado revoca al destinatario y anula el código', async () => {
+    await storeGiftCode(GIFT_CODE, GIFT_PAYMENT_ID);
+    await redeemGiftCode(GIFT_CODE, HASH);
+    await grantPremiumAccess(HASH, GIFT_PAYMENT_ID);
+
+    mpState.paymentResponse = { ...giftPayment(), status: 'refunded' };
+    await webhookRoute(webhookRequest(GIFT_PAYMENT_ID));
+
+    expect(await hasPremiumAccess(HASH)).toBe(false);
+    expect(await getGiftCode(GIFT_CODE)).toBeNull();
+  });
+});
+
+describe('Regresión: verify sin nombre no reemite el token de otro perfil', () => {
+  test('con el paymentId ajeno y name vacío no verifica ni rota el token del dueño', async () => {
+    mpState.paymentResponse = approvedPayment();
+    const owner = await verifyRoute(requestTo('http://localhost/api/mp/verify', { paymentId: PAYMENT_ID, name: NAME, birthDate: BIRTH }));
+    const { premiumToken } = await owner.json();
+
+    const res = await verifyRoute(requestTo('http://localhost/api/mp/verify', { paymentId: PAYMENT_ID, name: '', birthDate: '2000-01-01' }));
+    const data = await res.json();
+
+    expect(data.verified).toBe(false);
+    expect(await verifyPremiumToken(HASH, premiumToken)).toBe(true);
+  });
+});

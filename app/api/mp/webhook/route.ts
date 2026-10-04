@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPaymentStatus, validatePayment, verifyWebhookSignature } from '@/lib/mercadopago';
-import { createRecoveryLinkToken, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess, storeGiftCode } from '@/lib/kv';
+import { createRecoveryLinkToken, deleteGiftCode, getGiftCode, grantPremiumAccess, hasPremiumAccess, markPaymentProcessed, revokeAccess, storeGiftCode } from '@/lib/kv';
 import { incrementMemberCount } from '@/lib/metrics';
 import { sendPremiumConfirmationEmail } from '@/lib/email';
 
@@ -45,6 +45,14 @@ export async function POST(req: NextRequest) {
     if (payment.status === 'refunded' || payment.status === 'charged_back' || payment.status === 'cancelled') {
       if (profileHash) {
         await revokeAccess(profileHash, paymentId);
+      }
+      // Un regalo no tiene profile_hash: se revoca a quien lo canjeó y el
+      // código deja de existir, si no comprar-canjear-reembolsar salía gratis.
+      const refundedGift = payment.metadata?.gift_code as string | undefined;
+      if (refundedGift) {
+        const gift = await getGiftCode(refundedGift);
+        if (gift?.redeemedProfileHash) await revokeAccess(gift.redeemedProfileHash, paymentId);
+        await deleteGiftCode(refundedGift);
       }
       return NextResponse.json({ received: true, status: payment.status, revoked: true });
     }
