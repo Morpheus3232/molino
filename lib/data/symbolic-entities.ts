@@ -65,7 +65,8 @@ export type EntityType =
   | "university"
   | "team"
   | "movie"
-  | "artist";
+  | "artist"
+  | "football_player";
 
 /** Visual kind by entity type — deterministic mapping, no per-entity hacks. */
 export const VISUAL_TYPE_BY_TYPE: Record<EntityType, VisualType> = {
@@ -76,6 +77,7 @@ export const VISUAL_TYPE_BY_TYPE: Record<EntityType, VisualType> = {
   team: "logo",
   movie: "album",
   artist: "portrait",
+  football_player: "portrait",
 };
 
 export type { AtlasEntity, AtlasEntityInput, AtlasHistoricalEvent, LightweightEntity, VisualType };
@@ -216,6 +218,7 @@ export const ENTITY_TYPES: Record<EntityType, { label: string; plural: string; i
   team:       { label: "Equipo",     plural: "Equipos",       icon: "\u26bd",  description: "Ved qu\u00e9 equipos deportivos vibran con tu energ\u00eda" },
   movie:      { label: "Pel\u00edcula", plural: "Pel\u00edculas", icon: "\ud83c\udfac", description: "Descubr\u00ed qu\u00e9 pel\u00edculas resuenan con vos" },
   artist:     { label: "Famoso",     plural: "Famosos",       icon: "\ud83c\udfa4", description: "Encontr\u00e1 qu\u00e9 famosos conectan con tu esencia" },
+  football_player: { label: "Futbolista", plural: "Futbolistas", icon: "\u26bd", description: "Encontr\u00e1 qu\u00e9 futbolistas comparten tu signo" },
 };
 
 /** Chinese zodiac animal for a given year (Gregorian fallback, pre-1900 compatible) */
@@ -308,12 +311,23 @@ function dedupeAtlasEntities(entities: AtlasEntity[]): AtlasEntity[] {
   const result: AtlasEntity[] = [];
   for (const entity of entities) {
     const key = keyOf(entity);
+    const kept = bestByKey.get(key)!;
+    if (kept.id !== entity.id) ENTITY_ID_ALIASES[entity.id] = kept.id;
     if (seen.has(key)) continue;
     seen.add(key);
-    result.push(bestByKey.get(key)!);
+    result.push(kept);
   }
   return result;
 }
+
+/**
+ * id descartado por el dedup → id que sobrevivió. Cada uno fue en algún
+ * momento la URL pública de la entidad (cambia cuál gana cuando cambian los
+ * datos o el criterio), y Google los sigue pidiendo: 46 de los 404 de Search
+ * Console eran esto. Alimenta lib/data/entity-redirects.json → 308 en
+ * next.config.js (ver lib/data/__tests__/entity-redirects.test.ts).
+ */
+export const ENTITY_ID_ALIASES: Record<string, string> = {};
 
 // ════════════════════════════════════════════════════
 // SAMPLE DATA — Real, verifiable entities
@@ -725,13 +739,6 @@ export function getEntityById(id: string): SymbolicEntity | undefined {
 /** Helper: get all available types that have at least one entity */
 export function getAvailableTypes(): EntityType[] {
   const types = new Set<EntityType>(SYMBOLIC_ENTITIES.map(e => e.type as EntityType));
-  // "football_player" existe en la data (ver artists-argentina.ts) para el
-  // piloto de Atlas Personal (getPersonalAtlas), pero no es un EntityType
-  // real (no está en ENTITY_TYPES/VISUAL_TYPE_BY_TYPE) ni tiene ruta en
-  // /affinity/[type] — excluirlo acá evita un tile o URL de sitemap que
-  // devuelve 404. Los dos consumidores de esta función son
-  // app/affinity/page.tsx y app/sitemap.ts.
-  types.delete("football_player" as EntityType);
   return Array.from(types);
 }
 

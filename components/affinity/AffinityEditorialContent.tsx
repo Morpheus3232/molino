@@ -7,6 +7,11 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
 import { CollapsibleSection, DataRow, SectionHeader } from "@/components/affinity/AffinitySectionPrimitives";
 import Link from "next/link";
+import { getAllCountryISOs } from "@/lib/data/atlas-queries";
+
+// Solo los países con página en /atlas (los que tienen entidades además de la
+// propia ficha de país). Enlazar al resto daba 404: 26 en Search Console.
+const ATLAS_ISOS = new Set(getAllCountryISOs());
 
 // formatDisplayDate vive en AffinitySectionPrimitives.tsx ("use client") — no
 // se puede invocar como función desde un Server Component, solo importar el
@@ -68,7 +73,7 @@ export default function AffinityEditorialContent({
             {entity.country && (
               <>
                 <span aria-hidden="true">·</span>
-                {entity.countryISO ? (
+                {entity.countryISO && ATLAS_ISOS.has(entity.countryISO) ? (
                   <Link
                     href={`/atlas/${entity.countryISO}`}
                     className="text-foreground hover:text-accent underline underline-offset-4 decoration-dotted transition-colors"

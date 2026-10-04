@@ -50,8 +50,9 @@ const nextConfig = {
       { source: '/principios', destination: '/filosofia', permanent: true },
       { source: '/patterns', destination: '/profile', permanent: true },
       { source: '/synthesis', destination: '/profile', permanent: true },
-      // El dedup del atlas ahora prefiere la CDMX con fecha exacta (id "cdmx").
-      { source: '/affinity/city/mexico-city', destination: '/affinity/city/cdmx', permanent: true },
+      // Ids que descarta el dedup del atlas → la ficha que sobrevivió (generado,
+      // ver lib/data/__tests__/entity-redirects.test.ts).
+      ...require('./lib/data/entity-redirects.json').map((r) => ({ ...r, permanent: true })),
       // Variantes que la gente tipea del signo: sin tilde, y "conejo" (el sitio usa Gato).
       { source: '/conocimiento/zodiaco-chino/dragon', destination: '/conocimiento/zodiaco-chino/drag%C3%B3n', permanent: true },
       { source: '/conocimiento/zodiaco-chino/conejo', destination: '/conocimiento/zodiaco-chino/gato', permanent: true },

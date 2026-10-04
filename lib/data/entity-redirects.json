@@ -1,0 +1,710 @@
+[
+  {
+    "source": "/affinity/artist/frida",
+    "destination": "/affinity/artist/frida-kahlo"
+  },
+  {
+    "source": "/affinity/artist/person-pablo-picasso",
+    "destination": "/affinity/artist/picasso"
+  },
+  {
+    "source": "/affinity/brand/auto-acura",
+    "destination": "/affinity/brand/acura-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-aston-martin",
+    "destination": "/affinity/brand/aston-martin-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-bugatti",
+    "destination": "/affinity/brand/bugatti-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-buick",
+    "destination": "/affinity/brand/buick-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-cadillac",
+    "destination": "/affinity/brand/cadillac-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-chrysler",
+    "destination": "/affinity/brand/chrysler-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-citroen",
+    "destination": "/affinity/brand/citroen-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-dodge",
+    "destination": "/affinity/brand/dodge-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-fiat",
+    "destination": "/affinity/brand/fiat-1899-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-gmc",
+    "destination": "/affinity/brand/gmc-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-infiniti",
+    "destination": "/affinity/brand/infiniti-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-isuzu",
+    "destination": "/affinity/brand/isuzu-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-jaguar",
+    "destination": "/affinity/brand/jaguar-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-kia",
+    "destination": "/affinity/brand/kia-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-lexus",
+    "destination": "/affinity/brand/lexus-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-maserati",
+    "destination": "/affinity/brand/maserati-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-mclaren",
+    "destination": "/affinity/brand/mclaren-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-mini",
+    "destination": "/affinity/brand/mini-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-mitsubishi",
+    "destination": "/affinity/brand/mitsubishi-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-opel",
+    "destination": "/affinity/brand/opel-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-peugeot",
+    "destination": "/affinity/brand/peugeot-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-renault",
+    "destination": "/affinity/brand/renault-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-rolls-royce",
+    "destination": "/affinity/brand/rolls-royce-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-saab",
+    "destination": "/affinity/brand/saab-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-seat",
+    "destination": "/affinity/brand/seat-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-skoda",
+    "destination": "/affinity/brand/skoda-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-suzuki",
+    "destination": "/affinity/brand/suzuki-autos"
+  },
+  {
+    "source": "/affinity/brand/auto-volkswagen",
+    "destination": "/affinity/brand/vw-autos"
+  },
+  {
+    "source": "/affinity/brand/bmw-autos",
+    "destination": "/affinity/brand/bmw"
+  },
+  {
+    "source": "/affinity/brand/ferrari-autos",
+    "destination": "/affinity/brand/ferrari"
+  },
+  {
+    "source": "/affinity/brand/ford-autos",
+    "destination": "/affinity/brand/ford"
+  },
+  {
+    "source": "/affinity/brand/harley-autos",
+    "destination": "/affinity/brand/harley-davidson"
+  },
+  {
+    "source": "/affinity/brand/honda-autos",
+    "destination": "/affinity/brand/honda"
+  },
+  {
+    "source": "/affinity/brand/jeep-autos",
+    "destination": "/affinity/brand/jeep"
+  },
+  {
+    "source": "/affinity/brand/north-face-wear",
+    "destination": "/affinity/brand/north-face"
+  },
+  {
+    "source": "/affinity/brand/patagonia-wear",
+    "destination": "/affinity/brand/patagonia-outdoor"
+  },
+  {
+    "source": "/affinity/brand/ropa-burberry",
+    "destination": "/affinity/brand/burberry"
+  },
+  {
+    "source": "/affinity/brand/ropa-cartier",
+    "destination": "/affinity/brand/cartier"
+  },
+  {
+    "source": "/affinity/brand/ropa-dior",
+    "destination": "/affinity/brand/dior"
+  },
+  {
+    "source": "/affinity/brand/ropa-dolce-gabbana",
+    "destination": "/affinity/brand/dolce-gabbana"
+  },
+  {
+    "source": "/affinity/brand/ropa-fila",
+    "destination": "/affinity/brand/fila"
+  },
+  {
+    "source": "/affinity/brand/ropa-h-m",
+    "destination": "/affinity/brand/h-and-m"
+  },
+  {
+    "source": "/affinity/brand/ropa-hermes",
+    "destination": "/affinity/brand/hermes"
+  },
+  {
+    "source": "/affinity/brand/ropa-lacoste",
+    "destination": "/affinity/brand/lacoste"
+  },
+  {
+    "source": "/affinity/brand/ropa-levi-s",
+    "destination": "/affinity/brand/levi-strauss"
+  },
+  {
+    "source": "/affinity/brand/ropa-louis-vuitton",
+    "destination": "/affinity/brand/louis-vuitton"
+  },
+  {
+    "source": "/affinity/brand/ropa-off-white",
+    "destination": "/affinity/brand/off-white"
+  },
+  {
+    "source": "/affinity/brand/ropa-puma",
+    "destination": "/affinity/brand/puma"
+  },
+  {
+    "source": "/affinity/brand/ropa-ralph-lauren",
+    "destination": "/affinity/brand/ralph-lauren"
+  },
+  {
+    "source": "/affinity/brand/ropa-rolex",
+    "destination": "/affinity/brand/rolex"
+  },
+  {
+    "source": "/affinity/brand/ropa-tommy-hilfiger",
+    "destination": "/affinity/brand/tommy-hilfiger"
+  },
+  {
+    "source": "/affinity/brand/ropa-uniqlo",
+    "destination": "/affinity/brand/uniqlo"
+  },
+  {
+    "source": "/affinity/brand/ropa-zara",
+    "destination": "/affinity/brand/zara"
+  },
+  {
+    "source": "/affinity/brand/tesla-motors",
+    "destination": "/affinity/brand/tesla-autos"
+  },
+  {
+    "source": "/affinity/brand/toyota-autos",
+    "destination": "/affinity/brand/toyota"
+  },
+  {
+    "source": "/affinity/brand/volvo-autos",
+    "destination": "/affinity/brand/volvo"
+  },
+  {
+    "source": "/affinity/city/bogota",
+    "destination": "/affinity/city/bogota-col"
+  },
+  {
+    "source": "/affinity/city/buenos-aires-old",
+    "destination": "/affinity/city/buenos-aires"
+  },
+  {
+    "source": "/affinity/city/city-barcelona",
+    "destination": "/affinity/city/barcelona"
+  },
+  {
+    "source": "/affinity/city/city-cartagena-de-indias",
+    "destination": "/affinity/city/cartagena"
+  },
+  {
+    "source": "/affinity/city/city-medellin",
+    "destination": "/affinity/city/medellin"
+  },
+  {
+    "source": "/affinity/city/cordoba",
+    "destination": "/affinity/city/cordoba-ar"
+  },
+  {
+    "source": "/affinity/city/la-plata",
+    "destination": "/affinity/city/la-plata-ar"
+  },
+  {
+    "source": "/affinity/city/madrid-es",
+    "destination": "/affinity/city/madrid"
+  },
+  {
+    "source": "/affinity/city/mendoza-ar",
+    "destination": "/affinity/city/mendoza"
+  },
+  {
+    "source": "/affinity/city/mexico-city",
+    "destination": "/affinity/city/cdmx"
+  },
+  {
+    "source": "/affinity/city/salta-ar",
+    "destination": "/affinity/city/salta"
+  },
+  {
+    "source": "/affinity/city/tucuman-ar",
+    "destination": "/affinity/city/tucuman"
+  },
+  {
+    "source": "/affinity/country/country-etiopia",
+    "destination": "/affinity/country/etiopia"
+  },
+  {
+    "source": "/affinity/country/country-islandia",
+    "destination": "/affinity/country/islandia"
+  },
+  {
+    "source": "/affinity/country/country-jordania",
+    "destination": "/affinity/country/jordania"
+  },
+  {
+    "source": "/affinity/country/country-sudafrica",
+    "destination": "/affinity/country/sudafrica"
+  },
+  {
+    "source": "/affinity/country/country-sudan",
+    "destination": "/affinity/country/sudan"
+  },
+  {
+    "source": "/atlas/AD",
+    "destination": "/affinity/country/country-andorra"
+  },
+  {
+    "source": "/atlas/AF",
+    "destination": "/affinity/country/country-afganistan"
+  },
+  {
+    "source": "/atlas/AG",
+    "destination": "/affinity/country/country-antigua-y-barbuda"
+  },
+  {
+    "source": "/atlas/AL",
+    "destination": "/affinity/country/country-albania"
+  },
+  {
+    "source": "/atlas/AM",
+    "destination": "/affinity/country/country-armenia"
+  },
+  {
+    "source": "/atlas/AO",
+    "destination": "/affinity/country/country-angola"
+  },
+  {
+    "source": "/atlas/AZ",
+    "destination": "/affinity/country/country-azerbaiyan"
+  },
+  {
+    "source": "/atlas/BA",
+    "destination": "/affinity/country/country-bosnia-y-herzegovina"
+  },
+  {
+    "source": "/atlas/BB",
+    "destination": "/affinity/country/country-barbados"
+  },
+  {
+    "source": "/atlas/BH",
+    "destination": "/affinity/country/country-barein"
+  },
+  {
+    "source": "/atlas/BI",
+    "destination": "/affinity/country/country-burundi"
+  },
+  {
+    "source": "/atlas/BJ",
+    "destination": "/affinity/country/country-benin"
+  },
+  {
+    "source": "/atlas/BN",
+    "destination": "/affinity/country/country-brunei"
+  },
+  {
+    "source": "/atlas/BO",
+    "destination": "/affinity/country/country-bolivia"
+  },
+  {
+    "source": "/atlas/BS",
+    "destination": "/affinity/country/country-bahamas"
+  },
+  {
+    "source": "/atlas/BW",
+    "destination": "/affinity/country/country-botsuana"
+  },
+  {
+    "source": "/atlas/BY",
+    "destination": "/affinity/country/country-bielorrusia"
+  },
+  {
+    "source": "/atlas/BZ",
+    "destination": "/affinity/country/country-belice"
+  },
+  {
+    "source": "/atlas/CV",
+    "destination": "/affinity/country/country-cabo-verde"
+  },
+  {
+    "source": "/atlas/CY",
+    "destination": "/affinity/country/country-chipre"
+  },
+  {
+    "source": "/atlas/DJ",
+    "destination": "/affinity/country/country-djibouti"
+  },
+  {
+    "source": "/atlas/DM",
+    "destination": "/affinity/country/country-dominica"
+  },
+  {
+    "source": "/atlas/DO",
+    "destination": "/affinity/country/country-republica-dominicana"
+  },
+  {
+    "source": "/atlas/DZ",
+    "destination": "/affinity/country/country-argelia"
+  },
+  {
+    "source": "/atlas/EE",
+    "destination": "/affinity/country/country-estonia"
+  },
+  {
+    "source": "/atlas/ER",
+    "destination": "/affinity/country/country-eritrea"
+  },
+  {
+    "source": "/atlas/ET",
+    "destination": "/affinity/country/etiopia"
+  },
+  {
+    "source": "/atlas/FJ",
+    "destination": "/affinity/country/country-fiyi"
+  },
+  {
+    "source": "/atlas/FM",
+    "destination": "/affinity/country/country-micronesia"
+  },
+  {
+    "source": "/atlas/GD",
+    "destination": "/affinity/country/country-granada"
+  },
+  {
+    "source": "/atlas/GN",
+    "destination": "/affinity/country/country-guinea"
+  },
+  {
+    "source": "/atlas/GQ",
+    "destination": "/affinity/country/country-guinea-ecuatorial"
+  },
+  {
+    "source": "/atlas/GT",
+    "destination": "/affinity/country/country-guatemala"
+  },
+  {
+    "source": "/atlas/GW",
+    "destination": "/affinity/country/country-guinea-bisau"
+  },
+  {
+    "source": "/atlas/GY",
+    "destination": "/affinity/country/country-guyana"
+  },
+  {
+    "source": "/atlas/HN",
+    "destination": "/affinity/country/country-honduras"
+  },
+  {
+    "source": "/atlas/HR",
+    "destination": "/affinity/country/country-croacia"
+  },
+  {
+    "source": "/atlas/HT",
+    "destination": "/affinity/country/country-haiti"
+  },
+  {
+    "source": "/atlas/IQ",
+    "destination": "/affinity/country/country-irak"
+  },
+  {
+    "source": "/atlas/IS",
+    "destination": "/affinity/country/islandia"
+  },
+  {
+    "source": "/atlas/JO",
+    "destination": "/affinity/country/jordania"
+  },
+  {
+    "source": "/atlas/KH",
+    "destination": "/affinity/country/country-camboya"
+  },
+  {
+    "source": "/atlas/KM",
+    "destination": "/affinity/country/country-comoras"
+  },
+  {
+    "source": "/atlas/KN",
+    "destination": "/affinity/country/country-san-cristobal-y-nieves"
+  },
+  {
+    "source": "/atlas/KP",
+    "destination": "/affinity/country/country-corea-del-norte"
+  },
+  {
+    "source": "/atlas/KW",
+    "destination": "/affinity/country/country-kuwait"
+  },
+  {
+    "source": "/atlas/LA",
+    "destination": "/affinity/country/country-laos"
+  },
+  {
+    "source": "/atlas/LI",
+    "destination": "/affinity/country/country-liechtenstein"
+  },
+  {
+    "source": "/atlas/LK",
+    "destination": "/affinity/country/country-sri-lanka"
+  },
+  {
+    "source": "/atlas/LS",
+    "destination": "/affinity/country/country-lesoto"
+  },
+  {
+    "source": "/atlas/LT",
+    "destination": "/affinity/country/country-lituania"
+  },
+  {
+    "source": "/atlas/LU",
+    "destination": "/affinity/country/country-luxemburgo"
+  },
+  {
+    "source": "/atlas/LV",
+    "destination": "/affinity/country/country-letonia"
+  },
+  {
+    "source": "/atlas/LY",
+    "destination": "/affinity/country/country-libia"
+  },
+  {
+    "source": "/atlas/MC",
+    "destination": "/affinity/country/country-monaco"
+  },
+  {
+    "source": "/atlas/MD",
+    "destination": "/affinity/country/country-moldavia"
+  },
+  {
+    "source": "/atlas/ME",
+    "destination": "/affinity/country/country-montenegro"
+  },
+  {
+    "source": "/atlas/MH",
+    "destination": "/affinity/country/country-islas-marshall"
+  },
+  {
+    "source": "/atlas/MM",
+    "destination": "/affinity/country/country-myanmar"
+  },
+  {
+    "source": "/atlas/MT",
+    "destination": "/affinity/country/country-malta"
+  },
+  {
+    "source": "/atlas/MU",
+    "destination": "/affinity/country/country-mauricio"
+  },
+  {
+    "source": "/atlas/MV",
+    "destination": "/affinity/country/country-maldivas"
+  },
+  {
+    "source": "/atlas/MW",
+    "destination": "/affinity/country/country-malaui"
+  },
+  {
+    "source": "/atlas/MZ",
+    "destination": "/affinity/country/country-mozambique"
+  },
+  {
+    "source": "/atlas/NA",
+    "destination": "/affinity/country/country-namibia"
+  },
+  {
+    "source": "/atlas/NI",
+    "destination": "/affinity/country/country-nicaragua"
+  },
+  {
+    "source": "/atlas/NP",
+    "destination": "/affinity/country/country-nepal"
+  },
+  {
+    "source": "/atlas/NR",
+    "destination": "/affinity/country/country-nauru"
+  },
+  {
+    "source": "/atlas/OM",
+    "destination": "/affinity/country/country-oman"
+  },
+  {
+    "source": "/atlas/PG",
+    "destination": "/affinity/country/country-papua-nueva-guinea"
+  },
+  {
+    "source": "/atlas/PK",
+    "destination": "/affinity/country/country-pakistan"
+  },
+  {
+    "source": "/atlas/PS",
+    "destination": "/affinity/country/country-palestina"
+  },
+  {
+    "source": "/atlas/PW",
+    "destination": "/affinity/country/country-palaos"
+  },
+  {
+    "source": "/atlas/QA",
+    "destination": "/affinity/country/country-qatar"
+  },
+  {
+    "source": "/atlas/RS",
+    "destination": "/affinity/country/country-serbia"
+  },
+  {
+    "source": "/atlas/SB",
+    "destination": "/affinity/country/country-islas-salomon"
+  },
+  {
+    "source": "/atlas/SC",
+    "destination": "/affinity/country/country-seychelles"
+  },
+  {
+    "source": "/atlas/SD",
+    "destination": "/affinity/country/sudan"
+  },
+  {
+    "source": "/atlas/SG",
+    "destination": "/affinity/country/singapur"
+  },
+  {
+    "source": "/atlas/SI",
+    "destination": "/affinity/country/country-eslovenia"
+  },
+  {
+    "source": "/atlas/SK",
+    "destination": "/affinity/country/country-eslovaquia"
+  },
+  {
+    "source": "/atlas/SL",
+    "destination": "/affinity/country/country-sierra-leona"
+  },
+  {
+    "source": "/atlas/SM",
+    "destination": "/affinity/country/country-san-marino"
+  },
+  {
+    "source": "/atlas/SR",
+    "destination": "/affinity/country/country-surinam"
+  },
+  {
+    "source": "/atlas/SS",
+    "destination": "/affinity/country/country-sudan-del-sur"
+  },
+  {
+    "source": "/atlas/ST",
+    "destination": "/affinity/country/country-santo-tome-y-principe"
+  },
+  {
+    "source": "/atlas/SV",
+    "destination": "/affinity/country/country-el-salvador"
+  },
+  {
+    "source": "/atlas/SY",
+    "destination": "/affinity/country/country-siria"
+  },
+  {
+    "source": "/atlas/SZ",
+    "destination": "/affinity/country/country-esuatini"
+  },
+  {
+    "source": "/atlas/TL",
+    "destination": "/affinity/country/country-timor-oriental"
+  },
+  {
+    "source": "/atlas/TN",
+    "destination": "/affinity/country/country-tunez"
+  },
+  {
+    "source": "/atlas/TO",
+    "destination": "/affinity/country/country-tonga"
+  },
+  {
+    "source": "/atlas/TT",
+    "destination": "/affinity/country/country-trinidad-y-tobago"
+  },
+  {
+    "source": "/atlas/TW",
+    "destination": "/affinity/country/taiwan"
+  },
+  {
+    "source": "/atlas/TZ",
+    "destination": "/affinity/country/country-tanzania"
+  },
+  {
+    "source": "/atlas/UA",
+    "destination": "/affinity/country/country-ucrania"
+  },
+  {
+    "source": "/atlas/VA",
+    "destination": "/affinity/country/country-vaticano"
+  },
+  {
+    "source": "/atlas/VU",
+    "destination": "/affinity/country/country-vanuatu"
+  },
+  {
+    "source": "/atlas/XK",
+    "destination": "/affinity/country/country-kosovo"
+  },
+  {
+    "source": "/atlas/YE",
+    "destination": "/affinity/country/country-yemen"
+  },
+  {
+    "source": "/atlas/ZA",
+    "destination": "/affinity/country/sudafrica"
+  },
+  {
+    "source": "/atlas/ZM",
+    "destination": "/affinity/country/country-zambia"
+  }
+]

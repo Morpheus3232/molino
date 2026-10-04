@@ -27,11 +27,6 @@ const RESONANCE_STYLE: Record<string, { label: string; className: string }> = {
 export default function EntityCard({ entity, countryISO, category, resonance, reasoning }: EntityCardProps) {
   const resonanceStyle = resonance ? RESONANCE_STYLE[resonance.bucket] : null;
 
-  // football_player (piloto de Atlas Personal) todavía no tiene ficha en
-  // /affinity/[type] — ponytail: sin detalle propio, agregar cuando el
-  // piloto gane su propia ruta. Hasta entonces la card se muestra sin link.
-  const hasDetailPage = category !== "football_player";
-
   const content = (
     <>
       <EntityVisual
@@ -68,11 +63,9 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
         </span>
       )}
 
-      {hasDetailPage && (
-        <span className="text-accent group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true">
-          →
-        </span>
-      )}
+      <span className="text-accent group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true">
+        →
+      </span>
     </>
   );
 
@@ -82,18 +75,12 @@ export default function EntityCard({ entity, countryISO, category, resonance, re
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
     >
-      {hasDetailPage ? (
-        <Link
-          href={`/affinity/${category}/${entity.id}`}
-          className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
-        >
-          {content}
-        </Link>
-      ) : (
-        <div className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card">
-          {content}
-        </div>
-      )}
+      <Link
+        href={`/affinity/${category}/${entity.id}`}
+        className="group flex items-center gap-4 p-4 rounded-lg border border-ink/10 bg-card hover:border-accent/40 hover:bg-ink/[0.02] transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+      >
+        {content}
+      </Link>
     </motion.div>
   );
 }

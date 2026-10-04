@@ -12,6 +12,7 @@ const SCHEMA_TYPE: Record<EntityType, string> = {
   university: "CollegeOrUniversity",
   artist: "Person",
   movie: "Movie",
+  football_player: "Person",
 };
 
 /** JSON-LD for a single entity's affinity detail page (/affinity/[type]/[slug]). */

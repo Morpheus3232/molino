@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, type LucideIcon } from "lucide-react";
+import { Sparkles, Building2, Globe2, GraduationCap, Trophy, Clapperboard, Mic2, Shirt, type LucideIcon } from "lucide-react";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
 import type { LightweightEntity } from "@/types/atlas";
@@ -12,12 +12,13 @@ import type { EntityType } from "@/lib/data/symbolic-entities";
 
 const EXPLORE_COPY: Record<EntityType, string> = {
   brand: "Explorar marcas relacionadas con tu perfil.",
-  country: "Explorar países que comparten tu animal.",
-  city: "Explorar ciudades que comparten tu animal.",
-  university: "Explorar universidades que comparten tu animal.",
-  team: "Explorar equipos que comparten tu animal.",
-  movie: "Explorar películas que comparten tu animal.",
-  artist: "Explorar famosos que comparten tu animal.",
+  country: "Explorar países que comparten tu signo.",
+  city: "Explorar ciudades que comparten tu signo.",
+  university: "Explorar universidades que comparten tu signo.",
+  team: "Explorar equipos que comparten tu signo.",
+  movie: "Explorar películas que comparten tu signo.",
+  artist: "Explorar famosos que comparten tu signo.",
+  football_player: "Explorar futbolistas que comparten tu signo.",
 };
 
 const TYPE_ICONS: Record<EntityType, LucideIcon> = {
@@ -28,6 +29,7 @@ const TYPE_ICONS: Record<EntityType, LucideIcon> = {
   team: Trophy,
   movie: Clapperboard,
   artist: Mic2,
+  football_player: Shirt,
 };
 
 const transitionVariants = {

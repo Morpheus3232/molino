@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles, Building2, Trophy, GraduationCap, Mic2, Clapperboard, type LucideIcon } from "lucide-react";
+import { Sparkles, Building2, Trophy, GraduationCap, Mic2, Clapperboard, Shirt, type LucideIcon } from "lucide-react";
 import type { AtlasCategory } from "@/lib/data/atlas-queries";
 import type { EntityType } from "@/lib/data/symbolic-entities";
 
@@ -14,6 +14,7 @@ const CATEGORY_ICONS: Record<EntityType, LucideIcon> = {
   artist: Mic2,
   movie: Clapperboard,
   country: Building2,
+  football_player: Shirt,
 };
 
 interface CategoryGridProps {

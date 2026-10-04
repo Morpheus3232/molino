@@ -6,7 +6,7 @@ import { ENTITY_TYPES, getEntityById, getEntitiesByType, SYMBOLIC_ENTITIES, toLi
 import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
 
-const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist"];
+const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist", "football_player"];
 
 // Todos los pares {type, slug} válidos se pre-generan; cualquier combinación
 // no listada (type inválido, slug inexistente o entidad fuera de su type)

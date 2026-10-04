@@ -60,9 +60,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Affinity entity detail pages (canonical URLs) — solo tipos con ruta real en
-  // /affinity/[type]/[slug]; football_player existe en SYMBOLIC_ENTITIES pero
-  // no es un EntityType publicable (ver getAvailableTypes()), y sin este filtro
-  // el sitemap anuncia URLs que devuelven 404.
+  // /affinity/[type]/[slug] (getAvailableTypes).
   const availableTypes = new Set<EntityType>(getAvailableTypes());
   const entityPages = SYMBOLIC_ENTITIES.filter((entity) => availableTypes.has(entity.type as EntityType)).map((entity) => ({
     url: `${BASE_URL}/affinity/${entity.type}/${entity.id}`,

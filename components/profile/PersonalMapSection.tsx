@@ -71,8 +71,6 @@ const KIND_TONE: Record<MapRelation, { accent: string; bar: string }> = {
 /** Dominios secundarios donde se prioriza acotar la cantidad visible inicial. */
 const SECONDARY_DOMAINS = new Set(["cancha", "gente", "pantalla"]);
 
-/** Tipos sin ruta de ficha propia — ver components/atlas/EntityCard.tsx. */
-const SIN_FICHA = new Set(["football_player"]);
 
 const MESES = [
   "enero", "febrero", "marzo", "abril", "mayo", "junio",
@@ -148,14 +146,11 @@ function EntityRow({
   animal: string;
   local?: boolean;
 }) {
-  const conFicha = !SIN_FICHA.has(entity.type);
-  const Row = conFicha ? Link : "div";
-  const rowProps = conFicha ? { href: `/affinity/${entity.type}/${entity.id}` } : {};
   const fecha = fechaLarga(entity.originDate);
 
   return (
     <li className="border-b border-border/60 last:border-b-0">
-      <Row {...(rowProps as { href: string })} className="block py-3.5 sm:py-4 group">
+      <Link href={`/affinity/${entity.type}/${entity.id}`} className="block py-3.5 sm:py-4 group">
         <span className="flex items-center gap-3.5 sm:gap-4">
           <EntityVisual
             visualType={entity.visualType}
@@ -198,7 +193,7 @@ function EntityRow({
             {entity.originNote}
           </span>
         )}
-      </Row>
+      </Link>
     </li>
   );
 }
