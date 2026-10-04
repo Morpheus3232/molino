@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#F5F0E4",
+          background: "#F7F4EE",
           fontFamily: "Space Grotesk",
           position: "relative",
         }}
@@ -54,24 +54,24 @@ export async function GET(req: NextRequest) {
             fontSize: 22,
             fontWeight: 600,
             letterSpacing: "0.3em",
-            color: "#9A4A18",
+            color: "#A83A23",
             textTransform: "uppercase",
             marginBottom: 16,
           }}
         >
           {name ? `El Camino de Vida de ${name}` : "Camino de Vida"}
         </div>
-        <div style={{ fontSize: 220, fontWeight: 800, color: "#241F17", lineHeight: 1, display: "flex" }}>
+        <div style={{ fontSize: 220, fontWeight: 800, color: "#1D1B17", lineHeight: 1, display: "flex" }}>
           {lifePath || "?"}
         </div>
         {archetype ? (
-          <div style={{ fontSize: 28, fontWeight: 500, color: "#6B6252", marginTop: 16 }}>{archetype}</div>
+          <div style={{ fontSize: 28, fontWeight: 500, color: "#6A6459", marginTop: 16 }}>{archetype}</div>
         ) : null}
         <div
           style={{
             fontSize: 22,
             fontWeight: 700,
-            color: "#241F17",
+            color: "#1D1B17",
             letterSpacing: "0.2em",
             marginTop: 40,
           }}

@@ -26,7 +26,7 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
         style={{
           width: "100%",
           height: "100%",
-          background: "#F5F0E4",
+          background: "#F7F4EE",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -54,13 +54,13 @@ export default async function Image({ params }: { params: Promise<{ countryISO: 
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 36 }}>
           <span style={{ fontSize: 32 }}>M</span>
-          <span style={{ color: "#241F17", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
+          <span style={{ color: "#1D1B17", fontSize: 18, fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase" }}>Molino · Atlas</span>
         </div>
 
         <span style={{ fontSize: 96, lineHeight: 1 }}>{isoToFlagEmoji(iso)}</span>
-        <span style={{ color: "#241F17", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
-        <span style={{ color: "#9A4A18", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
-        <span style={{ color: "#6B6252", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
+        <span style={{ color: "#1D1B17", fontSize: 60, fontWeight: 700, marginTop: 20 }}>{catLabel}</span>
+        <span style={{ color: "#A83A23", fontSize: 28, fontWeight: 600, marginTop: 8 }}>de {name}</span>
+        <span style={{ color: "#6A6459", fontSize: 16, marginTop: 36 }}>Explorá las afinidades simbólicas en Molino</span>
       </div>
     ),
     { ...size }

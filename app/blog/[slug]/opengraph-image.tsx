@@ -21,7 +21,7 @@ export default async function OgImage({ params }: Props) {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px 88px",
-          background: "#F5F0E4",
+          background: "#F7F4EE",
           fontFamily: "sans-serif",
         }}
       >
@@ -36,14 +36,14 @@ export default async function OgImage({ params }: Props) {
             background: "radial-gradient(circle, rgba(154,74,24,0.20) 0%, transparent 70%)",
           }}
         />
-        <div style={{ fontSize: 26, letterSpacing: "0.3em", color: "#9A4A18", fontWeight: 700, marginBottom: 28 }}>
+        <div style={{ fontSize: 26, letterSpacing: "0.3em", color: "#A83A23", fontWeight: 700, marginBottom: 28 }}>
           {post?.category?.toUpperCase() ?? "MOLINO"}
         </div>
         <div
           style={{
             fontSize: 64,
             fontWeight: 700,
-            color: "#241F17",
+            color: "#1D1B17",
             letterSpacing: "-0.01em",
             lineHeight: 1.1,
             maxWidth: 900,
@@ -52,7 +52,7 @@ export default async function OgImage({ params }: Props) {
         >
           {post?.title ?? "Artículo de Molino"}
         </div>
-        <div style={{ fontSize: 24, color: "#6B6252", letterSpacing: "0.15em", marginTop: 40 }}>
+        <div style={{ fontSize: 24, color: "#6A6459", letterSpacing: "0.15em", marginTop: 40 }}>
           MOLINO — AUTOCONOCIMIENTO
         </div>
       </div>

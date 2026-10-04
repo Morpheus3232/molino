@@ -177,7 +177,7 @@ export default function DailyTimeline({ profile }: DailyTimelineProps) {
                       cy="18"
                       r="16"
                       fill="none"
-                      stroke="var(--color-ink, #241F17)"
+                      stroke="var(--color-ink, #1D1B17)"
                       strokeWidth="2"
                       opacity="0.15"
                     />

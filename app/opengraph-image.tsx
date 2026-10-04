@@ -15,7 +15,7 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#F5F0E4",
+          background: "#F7F4EE",
           fontFamily: "sans-serif",
         }}
       >
@@ -29,27 +29,27 @@ export default function OpenGraphImage() {
           style={{ width: 140, height: 140, marginBottom: 24 }}
           fill="none"
         >
-          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#241F17" />
-          <path d="M44,46 Q50,34 56,46 Z" fill="#241F17" />
+          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#1D1B17" />
+          <path d="M44,46 Q50,34 56,46 Z" fill="#1D1B17" />
           <g transform="translate(50 38) rotate(45)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#241F17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
           </g>
           <g transform="translate(50 38) rotate(135)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#241F17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
           </g>
           <g transform="translate(50 38) rotate(225)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#241F17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
           </g>
           <g transform="translate(50 38) rotate(315)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#241F17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
           </g>
-          <circle cx="50" cy="38" r="3.2" fill="#241F17" />
+          <circle cx="50" cy="38" r="3.2" fill="#1D1B17" />
         </svg>
         <div
           style={{
             fontSize: 48,
             fontWeight: 700,
-            color: "#241F17",
+            color: "#1D1B17",
             letterSpacing: "0.05em",
             textAlign: "center",
           }}
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
           style={{
             fontSize: 22,
             fontWeight: 500,
-            color: "#6B6252",
+            color: "#6A6459",
             letterSpacing: "0.15em",
             marginTop: 8,
             textAlign: "center",
