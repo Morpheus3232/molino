@@ -1,5 +1,7 @@
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
-import { getPrimaryEvent } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent, toLightweightEntity } from "@/lib/data/symbolic-entities";
+import type { Animal } from "@/lib/data/animalRelations";
+import EntitySignSection from "@/components/affinity/EntitySignSection";
 import type { LightweightEntity } from "@/types/atlas";
 import EntityVisual from "@/components/ui/EntityVisual";
 import AtlasBreadcrumbs from "@/components/atlas/AtlasBreadcrumbs";
@@ -33,6 +35,8 @@ export default function AffinityEditorialContent({
   type: EntityType;
 }) {
   const primaryEvent = getPrimaryEvent(entity);
+  const light = toLightweightEntity(entity);
+  const signo = primaryEvent?.date && light.animal && !light.isApproximate ? (light.animal as Animal) : null;
 
   return (
     <div className="mb-12">
@@ -119,6 +123,9 @@ export default function AffinityEditorialContent({
         </section>
       )}
 
+      {signo && primaryEvent?.date && (
+        <EntitySignSection name={entity.name} animal={signo} eventLabel={primaryEvent.label} eventDate={primaryEvent.date} />
+      )}
     </div>
   );
 }

@@ -142,5 +142,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Las páginas siguen existiendo (generateStaticParams en cada page.tsx).
   const programmaticPages: MetadataRoute.Sitemap = [];
 
-  return [...staticPages, ...affinityPages, ...entityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages];
+  // El protocolo de sitemaps exige URLs escapadas: ids como "dragón" o
+  // "david-lebón" salían crudos. encodeURI no toca lo que ya es ASCII.
+  return [...staticPages, ...affinityPages, ...entityPages, ...conocimientoPages, ...guiaPages, ...academyPages, ...bibliotecaPages, ...blogPages, ...programmaticPages]
+    .map((entry) => ({ ...entry, url: encodeURI(entry.url) }));
 }

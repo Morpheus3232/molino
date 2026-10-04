@@ -5,6 +5,14 @@ import AnimalContent from "./AnimalContent";
 
 type Props = { params: Promise<{ animal: string }> };
 
+// Los 12 signos se pre-generan; cualquier otro slug es un 404 real del router.
+// Antes respondía 200 con canónica a la home (soft 404 en Search Console).
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return CHINESE_ANIMALS.map((a) => ({ animal: a.name.toLowerCase() }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { animal: animalId } = await params;
   const animal = CHINESE_ANIMALS.find(a => a.name.toLowerCase() === animalId.toLowerCase());
