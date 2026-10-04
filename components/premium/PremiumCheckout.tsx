@@ -167,7 +167,7 @@ export default function PremiumCheckout({
   return (
     <div
       id="checkout-box"
-      className={`rounded-3xl border border-accent/30 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-2xl relative overflow-hidden ${className}`}
+      className={`rounded-xl border border-accent/30 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-2xl relative overflow-hidden ${className}`}
     >
       <div className="max-w-xl mx-auto text-center space-y-6">
         {/* Top Badge */}
@@ -197,7 +197,7 @@ export default function PremiumCheckout({
         {/* Checkout Buttons */}
         <div className="space-y-3 pt-2">
           {checkoutLoading ? (
-            <div className="p-6 rounded-2xl bg-ink/5 border border-ink/10 flex flex-col items-center justify-center gap-3">
+            <div className="p-6 rounded-lg bg-ink/5 border border-ink/10 flex flex-col items-center justify-center gap-3">
               <Logo className="w-8 h-8 text-accent animate-spin" />
               <p className="text-xs font-mono text-muted">
                 Conectando con Mercado Pago de forma segura...
@@ -274,7 +274,7 @@ export default function PremiumCheckout({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               onSubmit={handleRecover}
-              className="p-4 rounded-2xl bg-background border border-ink/10 space-y-3 text-left"
+              className="p-4 rounded-lg bg-background border border-ink/10 space-y-3 text-left"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-foreground">
@@ -322,7 +322,7 @@ export default function PremiumCheckout({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               onSubmit={handleApplyCoupon}
-              className="p-4 rounded-2xl bg-background border border-ink/10 space-y-3 text-left"
+              className="p-4 rounded-lg bg-background border border-ink/10 space-y-3 text-left"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-foreground">Canjear cupón</span>

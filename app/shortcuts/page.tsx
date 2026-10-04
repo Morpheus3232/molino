@@ -91,7 +91,7 @@ export default function ShortcutsPage() {
         </div>
 
         {/* How to configure guide */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-card border border-ink/10 space-y-4">
+        <div className="p-6 sm:p-8 rounded-xl bg-card border border-ink/10 space-y-4">
           <h3 className="font-heading text-base sm:text-lg font-bold text-foreground flex items-center gap-2">
             <Zap className="w-4 h-4 text-accent" />
             <span>Cómo crear tu atajo en 3 pasos:</span>

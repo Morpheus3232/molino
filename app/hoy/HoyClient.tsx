@@ -34,10 +34,10 @@ export default function HoyClient() {
         <p className="sr-only" role="status" aria-live="polite">Cargando tu energía del día...</p>
         <div className="animate-pulse space-y-6">
           <div className="h-4 bg-[var(--skeleton)] rounded w-48 mb-6" />
-          <div className="h-64 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
+          <div className="h-64 bg-[var(--skeleton)] rounded-xl border border-border/40" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="h-40 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
-            <div className="h-40 bg-[var(--skeleton)] rounded-3xl border border-border/40" />
+            <div className="h-40 bg-[var(--skeleton)] rounded-xl border border-border/40" />
+            <div className="h-40 bg-[var(--skeleton)] rounded-xl border border-border/40" />
           </div>
         </div>
       </>

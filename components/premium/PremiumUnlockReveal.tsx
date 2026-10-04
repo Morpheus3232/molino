@@ -29,7 +29,7 @@ export default function PremiumUnlockReveal({ preview, children }: PremiumUnlock
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="space-y-8"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-accent/30 bg-accent/[0.04] p-6 sm:p-8 shadow-lg">
+      <div className="relative overflow-hidden rounded-lg border border-accent/30 bg-accent/[0.04] p-6 sm:p-8 shadow-lg">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div className="flex items-start gap-4">
             <span className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/40 flex items-center justify-center shrink-0 text-accent">

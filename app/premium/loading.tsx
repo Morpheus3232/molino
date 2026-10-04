@@ -6,7 +6,7 @@ export default function PremiumLoading() {
           <div className="h-4 w-40 bg-ink/10 rounded-full mx-auto" />
           <div className="h-12 w-96 bg-ink/15 rounded-xl mx-auto" />
         </div>
-        <div className="h-96 rounded-3xl bg-card border border-ink/10" />
+        <div className="h-96 rounded-xl bg-card border border-ink/10" />
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export default async function TransparenciaPage() {
         </header>
 
         {/* Member counter — honest, only shown when there's real data */}
-        <section className="rounded-2xl bg-card border border-ink/10 p-6 mb-8">
+        <section className="rounded-lg bg-card border border-ink/10 p-6 mb-8">
           <h2 className="font-heading text-base font-bold mb-1">Miembros</h2>
           <p className="text-xs text-muted mb-4">
             Personas que desbloquearon acceso premium mediante un pago único validado.
@@ -46,7 +46,7 @@ export default async function TransparenciaPage() {
         </section>
 
         {/* Monthly breakdown */}
-        <section className="rounded-2xl bg-card border border-ink/10 p-6">
+        <section className="rounded-lg bg-card border border-ink/10 p-6">
           <h2 className="font-heading text-base font-bold mb-4">Nuevos miembros por mes</h2>
           <div className="space-y-2">
             {monthly.map(({ month, count }) => (
@@ -68,7 +68,7 @@ export default async function TransparenciaPage() {
         </section>
 
         {/* Financing philosophy + contact */}
-        <section className="mt-10 rounded-2xl bg-paper-alt border border-border p-6">
+        <section className="mt-10 rounded-lg bg-paper-alt border border-border p-6">
           <h2 className="font-heading text-base font-bold mb-2">Cómo nos financiamos</h2>
           <p className="text-sm text-muted leading-relaxed mb-4">
             Molino se sostiene con un pago único opcional de acceso premium. No vendemos

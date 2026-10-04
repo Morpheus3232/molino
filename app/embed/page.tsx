@@ -68,7 +68,7 @@ export default function EmbedWidgetPage() {
       } flex flex-col justify-center items-center p-4 sm:p-6`}
     >
       <div
-        className={`w-full max-w-md rounded-3xl ${
+        className={`w-full max-w-md rounded-xl ${
           selectedTheme === "light"
             ? "bg-white border-black/10 shadow-xl"
             : "bg-card border-ink/10 shadow-2xl"
@@ -108,7 +108,7 @@ export default function EmbedWidgetPage() {
         )}
 
         {showConfig ? (
-          <div className="text-left bg-background/50 p-4 rounded-2xl border border-ink/10 space-y-4 mb-2">
+          <div className="text-left bg-background/50 p-4 rounded-lg border border-ink/10 space-y-4 mb-2">
             <div className="space-y-2">
               <span className="text-[10px] font-mono uppercase text-muted font-bold block">
                 Opciones del Widget

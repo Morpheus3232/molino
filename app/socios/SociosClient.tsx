@@ -223,7 +223,7 @@ export default function SociosClient() {
                 className="max-w-md mx-auto"
               >
                 <form onSubmit={handleAnalyzeSolo} className="space-y-6">
-                  <div className="rounded-3xl border border-accent/25 bg-card p-6 sm:p-8 shadow-sm space-y-5">
+                  <div className="rounded-xl border border-accent/25 bg-card p-6 sm:p-8 shadow-sm space-y-5">
                     <div>
                       <label
                         htmlFor="name-solo"
@@ -292,7 +292,7 @@ export default function SociosClient() {
             >
               <form onSubmit={handleCompare} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="rounded-3xl border border-amber-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
+                  <div className="rounded-xl border border-amber-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 font-bold">
                         Socio A
@@ -325,7 +325,7 @@ export default function SociosClient() {
                     </div>
                   </div>
 
-                  <div className="rounded-3xl border border-blue-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
+                  <div className="rounded-xl border border-blue-500/25 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-400 font-bold">
                         Socio B
@@ -379,7 +379,7 @@ export default function SociosClient() {
               </form>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 pt-12 border-t border-ink/10">
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
+                <div className="p-4 rounded-lg bg-card border border-ink/5">
                   <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
                     01 · Numerología
                   </span>
@@ -388,7 +388,7 @@ export default function SociosClient() {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
+                <div className="p-4 rounded-lg bg-card border border-ink/5">
                   <span className="font-mono text-xs text-amber-700 font-bold uppercase tracking-wider block mb-1">
                     02 · Astrología & Elementos
                   </span>
@@ -397,7 +397,7 @@ export default function SociosClient() {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-card border border-ink/5">
+                <div className="p-4 rounded-lg bg-card border border-ink/5">
                   <span className="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider block mb-1">
                     03 · Zodíaco Chino
                   </span>

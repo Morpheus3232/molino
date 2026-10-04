@@ -162,7 +162,7 @@ export default function AffinityDeepDive({
             <button
               type="button"
               onClick={onToggleOtherEvents}
-              className="w-full flex items-center justify-between p-6 text-left hover:bg-muted/30 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-2xl"
+              className="w-full flex items-center justify-between p-6 text-left hover:bg-muted/30 transition-colors focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-t-lg"
               aria-expanded={showOtherEvents}
             >
               <div>

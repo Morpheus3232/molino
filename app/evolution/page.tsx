@@ -206,7 +206,7 @@ export default function EvolutionPage() {
                 </div>
 
                 {recentJournalEntries.length === 0 ? (
-                  <div className="rounded-2xl border border-ink/10 bg-card p-6 text-center">
+                  <div className="rounded-lg border border-ink/10 bg-card p-6 text-center">
                     <p className="text-sm text-muted mb-4">Todavía no registraste ninguna entrada en tu Journal.</p>
                     <Link href="/journal">
                       <Button variant="accent" size="sm">Escribir mi primera entrada</Button>
@@ -220,7 +220,7 @@ export default function EvolutionPage() {
                         <Link
                           key={entry.id}
                           href="/journal"
-                          className="block rounded-2xl border border-ink/10 bg-card p-4 hover:border-accent/40 transition-colors"
+                          className="block rounded-lg border border-ink/10 bg-card p-4 hover:border-accent/40 transition-colors"
                         >
                           <div className="flex items-center gap-2 mb-1.5">
                             <span>{cfg.emoji}</span>

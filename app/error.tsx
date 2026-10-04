@@ -17,8 +17,8 @@ export default function GlobalError({
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-20 bg-background text-foreground">
-      <div className="max-w-md w-full text-center p-8 rounded-3xl bg-card border border-ink/10 shadow-lg">
-        <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 mx-auto flex items-center justify-center mb-5">
+      <div className="max-w-md w-full text-center p-8 rounded-xl bg-card border border-ink/10 shadow-lg">
+        <div className="w-14 h-14 rounded-lg bg-amber-500/10 text-amber-400 mx-auto flex items-center justify-center mb-5">
           <AlertCircle className="w-7 h-7" />
         </div>
 

@@ -17,8 +17,8 @@ export default function BlogArticleError({
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-20 px-4 flex items-center justify-center">
-      <div className="max-w-md w-full text-center p-8 rounded-3xl bg-card border border-ink/10 shadow-lg">
-        <div className="w-14 h-14 rounded-2xl bg-accent/10 text-accent mx-auto flex items-center justify-center mb-5">
+      <div className="max-w-md w-full text-center p-8 rounded-xl bg-card border border-ink/10 shadow-lg">
+        <div className="w-14 h-14 rounded-lg bg-accent/10 text-accent mx-auto flex items-center justify-center mb-5">
           <BookOpen className="w-7 h-7" />
         </div>
 

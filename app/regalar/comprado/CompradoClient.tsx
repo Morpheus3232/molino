@@ -68,7 +68,7 @@ export default function CompradoClient() {
           ¡Listo! Tu regalo está pago.
         </h1>
 
-        <div className="mt-8 rounded-2xl border border-ink/10 bg-card p-6 sm:p-7 text-left">
+        <div className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left">
           <p className="text-xs font-mono uppercase tracking-wider text-muted mb-2">Tu código</p>
           <div className="flex items-center justify-between gap-3 p-4 rounded-xl bg-background border border-ink/10">
             <span className="font-mono text-lg sm:text-xl font-bold text-foreground tracking-wider">{code}</span>

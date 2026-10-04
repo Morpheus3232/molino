@@ -6,10 +6,10 @@ export default function HoyLoading() {
           <div className="h-4 w-28 bg-ink/10 rounded-full mx-auto" />
           <div className="h-9 w-60 bg-ink/15 rounded-xl mx-auto" />
         </div>
-        <div className="h-48 rounded-3xl bg-card border border-ink/10" />
+        <div className="h-48 rounded-xl bg-card border border-ink/10" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="h-40 rounded-2xl bg-card border border-ink/10" />
-          <div className="h-40 rounded-2xl bg-card border border-ink/10" />
+          <div className="h-40 rounded-lg bg-card border border-ink/10" />
+          <div className="h-40 rounded-lg bg-card border border-ink/10" />
         </div>
       </div>
     </div>

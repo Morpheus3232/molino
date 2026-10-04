@@ -114,7 +114,7 @@ export default function BibliotecaContent() {
                 key={item.title}
                 role="button"
                 tabIndex={0}
-                className="p-5 rounded-2xl bg-card/70 border border-ink/10 hover:border-accent/30 transition-all cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                className="p-5 rounded-lg bg-card/70 border border-ink/10 hover:border-accent/30 transition-all cursor-pointer text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 onClick={() => {
                   setActiveTag(item.tag);
                   document.getElementById("biblioteca-search")?.scrollIntoView({ behavior: "smooth" });
@@ -193,7 +193,7 @@ export default function BibliotecaContent() {
                         initial={{ opacity: 0, y: 12 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: Math.min(i, 8) * 0.03, duration: 0.35 }}
-                        className="p-6 rounded-2xl border border-ink/10 bg-card flex flex-col justify-between hover:border-ink/25 transition-all"
+                        className="p-6 rounded-lg border border-ink/10 bg-card flex flex-col justify-between hover:border-ink/25 transition-all"
                       >
                         <div>
                           <div className="flex items-start justify-between gap-2 mb-2">
@@ -237,7 +237,7 @@ export default function BibliotecaContent() {
             );
           })
         ) : (
-          <div className="p-12 text-center rounded-2xl border border-dashed border-ink/15 text-muted font-mono text-xs">
+          <div className="p-12 text-center rounded-lg border border-dashed border-ink/15 text-muted font-mono text-xs">
             No se encontraron obras para los filtros seleccionados.
           </div>
         )}

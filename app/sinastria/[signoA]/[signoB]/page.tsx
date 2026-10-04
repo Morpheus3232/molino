@@ -186,7 +186,7 @@ export default async function SinastriaPage({ params }: PageProps) {
         </header>
 
         {/* Synergy Score Hero Card */}
-        <div className="p-6 sm:p-10 rounded-3xl bg-gradient-to-b from-card via-card to-background border border-accent/25 shadow-xl text-center mb-10 relative overflow-hidden">
+        <div className="p-6 sm:p-10 rounded-xl bg-gradient-to-b from-card via-card to-background border border-accent/25 shadow-xl text-center mb-10 relative overflow-hidden">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
             Índice de Afinidad Elemental
           </span>
@@ -264,7 +264,7 @@ export default async function SinastriaPage({ params }: PageProps) {
         </div>
 
         {/* Social Share Bar */}
-        <div className="p-6 rounded-2xl bg-card border border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4 mb-16">
+        <div className="p-6 rounded-lg bg-card border border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4 mb-16">
           <div className="text-center sm:text-left">
             <span className="font-heading text-sm font-bold text-foreground block">
               Compartir este análisis de compatibilidad

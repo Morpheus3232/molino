@@ -92,7 +92,7 @@ export default function PWAProvider({ children }: { children?: React.ReactNode }
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 p-4 rounded-2xl bg-card border border-accent/30 shadow-2xl backdrop-blur-md"
+            className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-50 p-4 rounded-lg bg-card border border-accent/30 shadow-2xl backdrop-blur-md"
             role="dialog"
             aria-label="Instalar Molino como aplicación"
           >

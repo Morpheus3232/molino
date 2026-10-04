@@ -42,7 +42,7 @@ export default function NotFound() {
               <Link
                 key={route.href}
                 href={route.href}
-                className="p-3.5 rounded-2xl bg-card border border-ink/10 hover:border-accent/40 hover:bg-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all group flex items-center justify-between"
+                className="p-3.5 rounded-lg bg-card border border-ink/10 hover:border-accent/40 hover:bg-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-all group flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-xl bg-ink/5 text-accent flex items-center justify-center group-hover:scale-110 transition-transform">

@@ -135,7 +135,7 @@ export default function DocsPage() {
             <div
               key={ep.path}
               id={ep.path.replace(/[/]/g, "-")}
-              className="p-6 sm:p-8 rounded-3xl bg-card border border-ink/10 shadow-sm space-y-6"
+              className="p-6 sm:p-8 rounded-xl bg-card border border-ink/10 shadow-sm space-y-6"
             >
               <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-ink/10">
                 <div className="flex items-center gap-3">
@@ -207,7 +207,7 @@ export default function DocsPage() {
                     Probar en vivo <ArrowRight className="w-3 h-3" />
                   </a>
                 </div>
-                <pre className="p-4 rounded-2xl bg-background border border-ink/10 text-[11px] font-mono text-foreground/90 overflow-x-auto leading-relaxed">
+                <pre className="p-4 rounded-lg bg-background border border-ink/10 text-[11px] font-mono text-foreground/90 overflow-x-auto leading-relaxed">
                   <code>{ep.response}</code>
                 </pre>
               </div>
@@ -219,7 +219,7 @@ export default function DocsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link
             href="/embed"
-            className="p-6 rounded-3xl bg-accent/5 border border-accent/20 hover:border-accent/40 transition-all flex items-center justify-between group"
+            className="p-6 rounded-xl bg-accent/5 border border-accent/20 hover:border-accent/40 transition-all flex items-center justify-between group"
           >
             <div>
               <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider block mb-1">
@@ -237,7 +237,7 @@ export default function DocsPage() {
 
           <Link
             href="/docs/motores"
-            className="p-6 rounded-3xl bg-card border border-ink/10 hover:border-accent/40 transition-all flex items-center justify-between group"
+            className="p-6 rounded-xl bg-card border border-ink/10 hover:border-accent/40 transition-all flex items-center justify-between group"
           >
             <div>
               <span className="font-mono text-xs text-muted font-bold uppercase tracking-wider block mb-1">

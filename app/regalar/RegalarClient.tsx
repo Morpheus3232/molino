@@ -46,7 +46,7 @@ export default function RegalarClient() {
           </strong>
         </p>
 
-        <div className="mt-10 rounded-3xl border border-accent/30 bg-card p-7 sm:p-9 text-left max-w-lg mx-auto shadow-xl relative overflow-hidden">
+        <div className="mt-10 rounded-xl border border-accent/30 bg-card p-7 sm:p-9 text-left max-w-lg mx-auto shadow-xl relative overflow-hidden">
           <div className="flex items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
               <Sparkles className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default function RegalarClient() {
         </div>
 
         <div className="mt-10 max-w-lg mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-          <div className="p-4 rounded-2xl bg-card border border-ink/10 space-y-1.5">
+          <div className="p-4 rounded-lg bg-card border border-ink/10 space-y-1.5">
             <span className="text-accent font-mono text-xs font-bold block flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
               100% Privado
@@ -109,7 +109,7 @@ export default function RegalarClient() {
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-card border border-ink/10 space-y-1.5">
+          <div className="p-4 rounded-lg bg-card border border-ink/10 space-y-1.5">
             <span className="text-accent font-mono text-xs font-bold block flex items-center gap-1.5">
               <MessageCircle className="w-3.5 h-3.5" />
               Envío en un clic

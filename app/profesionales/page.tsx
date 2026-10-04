@@ -135,7 +135,7 @@ export default function ProfesionalesPage() {
             const Icon = p.icon;
             return (
               <Card key={p.title} padding="lg" className="h-full border-ink/10 bg-card">
-                <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center mb-5">
                   <Icon className="w-6 h-6" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-foreground mb-2">
@@ -150,7 +150,7 @@ export default function ProfesionalesPage() {
         </div>
 
         {/* How to use in sessions */}
-        <div className="rounded-3xl border border-ink/10 bg-card/60 p-8 sm:p-12 max-w-4xl mx-auto space-y-8">
+        <div className="rounded-xl border border-ink/10 bg-card/60 p-8 sm:p-12 max-w-4xl mx-auto space-y-8">
           <div className="border-b border-ink/10 pb-6">
             <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">
               Metodología de Aplicación

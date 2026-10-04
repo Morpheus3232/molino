@@ -142,7 +142,7 @@ export default function ChangelogPage() {
         </div>
 
         {/* Open Source / GitHub Footer banner */}
-        <div className="mt-16 p-6 sm:p-8 rounded-3xl bg-accent/5 border border-accent/20 text-center space-y-3">
+        <div className="mt-16 p-6 sm:p-8 rounded-xl bg-accent/5 border border-accent/20 text-center space-y-3">
           <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">
             Código Abierto & Transparencia
           </span>

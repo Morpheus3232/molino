@@ -128,7 +128,7 @@ export default function GuiaContent() {
           </Link>
         </div>
 
-        <div className="mt-8 p-6 sm:p-8 rounded-2xl bg-accent/5 border border-accent/20 text-center">
+        <div className="mt-8 p-6 sm:p-8 rounded-lg bg-accent/5 border border-accent/20 text-center">
           <p className="font-heading text-lg sm:text-xl text-foreground mb-4">
             ¿Querés ver tu Camino de Vida ahora?
           </p>

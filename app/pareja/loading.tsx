@@ -7,8 +7,8 @@ export default function ParejaLoading() {
           <div className="h-9 w-64 bg-ink/15 rounded-xl mx-auto" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="h-56 rounded-3xl bg-card border border-ink/10" />
-          <div className="h-56 rounded-3xl bg-card border border-ink/10" />
+          <div className="h-56 rounded-xl bg-card border border-ink/10" />
+          <div className="h-56 rounded-xl bg-card border border-ink/10" />
         </div>
       </div>
     </div>

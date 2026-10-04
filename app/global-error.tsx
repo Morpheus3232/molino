@@ -18,8 +18,8 @@ export default function RootGlobalError({
   return (
     <html lang="es">
       <body className="bg-paper text-ink antialiased min-h-screen flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center p-8 rounded-3xl bg-paper-alt border border-ink/10 shadow-2xl">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 mx-auto flex items-center justify-center mb-5">
+        <div className="max-w-md w-full text-center p-8 rounded-xl bg-paper-alt border border-ink/10 shadow-2xl">
+          <div className="w-14 h-14 rounded-lg bg-amber-500/10 text-amber-400 mx-auto flex items-center justify-center mb-5">
             <AlertCircle className="w-7 h-7" />
           </div>
 

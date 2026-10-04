@@ -102,7 +102,7 @@ export default function WidgetPage() {
             const Icon = b.icon;
             return (
               <Card key={b.title} padding="lg" className="h-full border-ink/10 bg-card">
-                <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-lg bg-accent/10 text-accent flex items-center justify-center mb-5">
                   <Icon className="w-6 h-6" />
                 </div>
                 <h3 className="font-heading text-lg font-bold text-foreground mb-2">{b.title}</h3>
@@ -166,7 +166,7 @@ export default function WidgetPage() {
           <div className="mb-8">
             <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">Preguntas frecuentes</span>
           </div>
-          <div className="space-y-px bg-ink/10 rounded-2xl overflow-hidden">
+          <div className="space-y-px bg-ink/10 rounded-lg overflow-hidden">
             {FAQ.map((item) => (
               <div key={item.q} className="p-6 sm:p-8 bg-background">
                 <h3 className="font-heading text-base text-foreground mb-2">{item.q}</h3>
@@ -177,7 +177,7 @@ export default function WidgetPage() {
         </div>
 
         {/* CTA final */}
-        <div className="p-8 sm:p-12 rounded-3xl bg-accent/5 border border-accent/20 text-center">
+        <div className="p-8 sm:p-12 rounded-xl bg-accent/5 border border-accent/20 text-center">
           <p className="font-heading text-xl sm:text-2xl text-foreground mb-6">
             Instalá el widget en 2 minutos
           </p>

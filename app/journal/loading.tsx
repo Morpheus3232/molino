@@ -7,8 +7,8 @@ export default function JournalLoading() {
           <div className="h-10 w-72 bg-ink/15 rounded-xl" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-5 h-96 rounded-2xl bg-card border border-ink/10" />
-          <div className="lg:col-span-7 h-96 rounded-2xl bg-card border border-ink/10" />
+          <div className="lg:col-span-5 h-96 rounded-lg bg-card border border-ink/10" />
+          <div className="lg:col-span-7 h-96 rounded-lg bg-card border border-ink/10" />
         </div>
       </div>
     </div>

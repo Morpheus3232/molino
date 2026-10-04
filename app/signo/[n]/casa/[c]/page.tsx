@@ -87,19 +87,19 @@ export default async function SignoCasaPage({ params }: Props) {
         </header>
 
         <div className="grid grid-cols-2 gap-4 mb-8 text-center">
-          <div className="p-5 rounded-2xl bg-card border border-ink/10">
+          <div className="p-5 rounded-lg bg-card border border-ink/10">
             <h2 className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold mb-2">Número</h2>
             <div className="font-display text-5xl font-bold">{num}</div>
             <p className="text-xs text-muted font-mono mt-2">{fact.keywords.join(" · ")}</p>
           </div>
-          <div className="p-5 rounded-2xl bg-card border border-ink/10">
+          <div className="p-5 rounded-lg bg-card border border-ink/10">
             <h2 className="font-mono text-[10px] uppercase tracking-wider text-accent font-bold mb-2">Casa</h2>
             <div className="font-display text-5xl font-bold">{house.number}</div>
             <p className="text-xs text-muted font-mono mt-2">{house.name}</p>
           </div>
         </div>
 
-        <section className="rounded-2xl bg-card border border-ink/10 p-6 mb-8">
+        <section className="rounded-lg bg-card border border-ink/10 p-6 mb-8">
           <h2 className="font-heading text-base font-bold mb-2">{fact.title} en {house.name}</h2>
           <p className="text-sm text-muted leading-relaxed">{fact.interpretation}</p>
         </section>

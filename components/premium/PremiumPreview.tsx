@@ -102,7 +102,7 @@ export default function PremiumPreview({
         </div>
 
         {/* Live Preview Container */}
-        <div className="relative rounded-3xl border border-ink/15 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-2xl overflow-hidden">
+        <div className="relative rounded-xl border border-ink/15 bg-gradient-to-b from-card via-card to-background p-6 sm:p-10 shadow-2xl overflow-hidden">
           {/* Top Bar with user badge */}
           <div className="flex items-center justify-between gap-3 pb-6 border-b border-ink/10 mb-8">
             <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export default function PremiumPreview({
           {/* Preview Content Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
             {/* Section 1: Síntesis de Convergencia */}
-            <div className="p-6 rounded-2xl bg-background border border-ink/10 space-y-3">
+            <div className="p-6 rounded-lg bg-background border border-ink/10 space-y-3">
               <div className="flex items-center gap-2 text-accent font-mono text-xs font-bold uppercase tracking-wider">
                 <Sparkles className="w-4 h-4" />
                 <span>Síntesis de Convergencia</span>
@@ -145,7 +145,7 @@ export default function PremiumPreview({
             </div>
 
             {/* Section 2: Oráculo Molino AI */}
-            <div className="p-6 rounded-2xl bg-background border border-ink/10 space-y-3">
+            <div className="p-6 rounded-lg bg-background border border-ink/10 space-y-3">
               <div className="flex items-center gap-2 text-[#60A5FA] font-mono text-xs font-bold uppercase tracking-wider">
                 <MessageSquare className="w-4 h-4" />
                 <span>Preguntale a Molino (AI)</span>
@@ -172,9 +172,9 @@ export default function PremiumPreview({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute inset-0 bg-background/85 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center p-6 text-center z-20"
+                  className="absolute inset-0 bg-background/85 backdrop-blur-md rounded-lg flex flex-col items-center justify-center p-6 text-center z-20"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-accent/15 text-accent flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 rounded-lg bg-accent/15 text-accent flex items-center justify-center mb-3">
                     <Lock className="w-6 h-6" />
                   </div>
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-foreground">

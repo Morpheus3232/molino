@@ -117,7 +117,7 @@ export default function CanjeClient({ codigo }: { codigo: string }) {
           Un mapa personal completo — numerología, astrología y zodíaco chino, en una sola lectura.
         </p>
 
-        <form onSubmit={handleRedeem} className="mt-8 rounded-2xl border border-ink/10 bg-card p-6 sm:p-7 text-left space-y-4">
+        <form onSubmit={handleRedeem} className="mt-8 rounded-lg border border-ink/10 bg-card p-6 sm:p-7 text-left space-y-4">
           <div>
             <label htmlFor="gift-birthdate" className="block font-mono text-[11px] uppercase tracking-wider text-muted mb-1.5 font-semibold">
               Tu fecha de nacimiento

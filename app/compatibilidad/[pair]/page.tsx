@@ -96,7 +96,7 @@ export default async function CompatibilidadPage({ params }: Props) {
           </p>
         </header>
 
-        <div className="p-6 rounded-3xl bg-gradient-to-b from-card to-background border border-accent/25 text-center mb-10">
+        <div className="p-6 rounded-xl bg-gradient-to-b from-card to-background border border-accent/25 text-center mb-10">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent font-bold block mb-2">
             Índice de Afinidad Elemental
           </span>
@@ -106,7 +106,7 @@ export default async function CompatibilidadPage({ params }: Props) {
 
         <div className="grid grid-cols-2 gap-4 text-center">
           {[{ sign: nameA, fact: factA }, { sign: nameB, fact: factB }].map(({ sign, fact }) => (
-            <div key={sign} className="p-4 rounded-2xl bg-card border border-ink/10">
+            <div key={sign} className="p-4 rounded-lg bg-card border border-ink/10">
               <div className="text-2xl">{fact.symbol}</div>
               <h2 className="font-display text-lg font-bold mt-1">{sign}</h2>
               <p className="text-xs text-muted font-mono mt-1">{fact.element} · {fact.modality}</p>

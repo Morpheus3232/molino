@@ -113,7 +113,7 @@ export default function PremiumClient() {
 
         {/* 4. Gift Banner */}
         <div className="pb-12 max-w-2xl mx-auto">
-          <div className="rounded-3xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+          <div className="rounded-xl border border-accent/25 bg-accent/[0.04] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
             <div className="space-y-2 text-center sm:text-left">
               <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-accent">
                 <Gift className="w-3.5 h-3.5" />
