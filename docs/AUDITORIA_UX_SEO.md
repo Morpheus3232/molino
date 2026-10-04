@@ -45,7 +45,6 @@
 | Servicio | Tipo | Estado |
 |----------|------|--------|
 | Google Fonts | Tipografía | Self-hosted vía `next/font/google` — sin requests externos en runtime. |
-| PostHog | Analytics | Condicional (solo con env var), `cookieless_mode: always`, sin autocapture, sin pageview automático. |
 | OpenAI / Anthropic | AI | Server-side only — datos de fecha de nacimiento nunca expuestos al cliente. |
 | Facebook, Google Analytics, Hotjar, etc. | Tracking | Ausentes en todo el código. |
 

@@ -85,7 +85,7 @@ Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas cont
   },
   {
     title: "7. Analítica anónima (localStorage)",
-    body: `Molino registra eventos de uso de forma **100% anónima y local** en tu navegador. No enviamos estos eventos a servidores. No utilizamos Google Analytics, PostHog, ni ningún servicio de rastreo de terceros.
+    body: `Molino registra eventos de uso de forma **100% anónima y local** en tu navegador. No enviamos estos eventos a servidores. No utilizamos Google Analytics ni ningún servicio de rastreo de terceros.
 
 **Qué eventos registramos (solo en tu navegador):**
 - \`page_view\`: Qué páginas visitás (sin datos personales)
