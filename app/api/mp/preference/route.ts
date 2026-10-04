@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
 
     const result = await createPreference(
       profileHash,
-      name,
       mpCurrencySchema.safeParse(currencyId).data,
       profileHash, // external_reference: deterministic per profile
       plan ?? null,

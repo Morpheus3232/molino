@@ -75,6 +75,8 @@ export async function sendPremiumConfirmationEmail({
     const { error } = await resend.emails.send(
       {
         from: FROM_ADDRESS,
+        // molino.app no recibe mails (sin MX): las respuestas van al contacto real.
+        replyTo: 'versionlimitada@proton.me',
         to: [to],
         subject: '✨ Tu Lectura Pro está lista — Acceso permanente a tu mapa',
         html: buildConfirmationEmailHtml(paymentId, claimUrl),

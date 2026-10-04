@@ -1,139 +1,100 @@
 import Link from "next/link";
+import LegalText from "@/components/legal/LegalText";
+
+const CONTACTO = "versionlimitada@proton.me";
 
 const sections = [
   {
-    title: "1. Datos que recopilamos",
-    body: `Molino opera bajo el principio de minimización de datos. Recopilamos únicamente:
+    title: "1. Datos que pedimos",
+    body: `Molino funciona con lo mínimo:
 
-- **Fecha de nacimiento** (obligatoria): Se ingresa en el navegador y se procesa localmente para calcular tu mapa personal. No se almacena en servidores de Molino para usuarios sin acceso Premium.
-- **Eventos anónimos** (automático): Registramos eventos agregados y anónimos directamente en tu navegador (localStorage) para mejorar el producto. Estos eventos NO contienen datos personales — ver sección 7 para detalles.
+- **Fecha de nacimiento** (obligatoria): con ella se calcula tu mapa, en tu navegador.
+- **Nombre** (opcional): solo si lo cargás. Se usa para personalizar el texto.
+- **País** (opcional): ordena qué entidades ves primero en tu mapa.
 
-**Usuarios Premium:** Al activar Premium, se genera un hash HMAC-SHA256 de tu fecha de nacimiento para verificar tu acceso sin almacenar los datos en claro. Este hash se guarda en nuestra base de datos junto con el estado de tu suscripción.`,
+No hay cuentas, contraseñas ni registro. Tu perfil vive en el almacenamiento local de tu navegador (localStorage) y no lo mandamos a nuestros servidores salvo en los casos de la sección 3.`,
   },
   {
-    title: "2. Cómo usamos tus datos",
-    body: `Tus datos se utilizan exclusivamente para:
+    title: "2. Qué queda solo en tu navegador",
+    body: `- Tu perfil (fecha, nombre y país si los diste) y los mapas que guardes.
+- Un identificador aleatorio de dispositivo (\`molino-profile-salt\`), que se mezcla con tus datos para que tu hash sea único.
+- Si comprás la Lectura Pro: un token de acceso de este dispositivo y una copia de tu lectura.
+- Eventos de uso (\`molino-analytics-events\`): qué páginas abrís y qué funciones usás, con fecha y hora. Nunca tu fecha de nacimiento, nombre, país ni ningún dato de tu mapa. No salen de tu navegador; los podés ver y borrar en \`/analytics\`.
+- Una copia de páginas del sitio (service worker) para que cargue más rápido.
 
-- Calcular tu mapa personal de numerología, astrología y zodíaco chino (procesamiento 100% local en el navegador).
-- Procesar pagos Premium: a través de Mercado Pago (recibe solo lo necesario para la transacción: email, monto, hash de verificación) o Bitcoin/BTC mediante wallet autocustodiada (sin procesador ni webhook: no se recibe ningún dato personal, el comprobante lo aporta la persona con su txid).
-- Generar interpretaciones asistidas por IA (solo para usuarios Premium): el perfil simbólico se envía al proveedor primario — OpenRouter (routing) con el modelo DeepSeek v4 — y, si ese proveedor falla, a los de respaldo OpenAI (GPT-4o-mini) o Anthropic (Claude). En todos los casos bajo acuerdos de confidencialidad y sin uso de datos para entrenamiento.
-- Analítica de uso anónima y agregada (eventos en localStorage, sin servidor) para mejorar la experiencia.
-
-**Base legal (RGPD Art. 6):**
-- Ejecución de contrato (Art. 6.1.b): procesamiento de pagos y entrega del servicio Premium.
-- Consentimiento (Art. 6.1.a): analítica (opt-in).
-- Interés legítimo (Art. 6.1.f): mejora del servicio con datos agregados anónimos.
-
-**Retención:** Los datos de pago los conservan los proveedores según sus políticas (mínimo 5-10 años por obligaciones fiscales). Tu perfil local (localStorage) persiste hasta que lo borrás. El hash de verificación Premium se elimina a los 30 días de cancelar la suscripción. Los eventos de analítica se almacenan en localStorage de tu navegador y se borran cuando limpiás el almacenamiento.`,
+Todo esto se borra cuando limpiás los datos del sitio en tu navegador.`,
   },
   {
-    title: "3. Almacenamiento y seguridad",
-    body: `Tu perfil se guarda en el almacenamiento local de tu navegador (localStorage). No enviamos tu perfil a nuestros servidores, excepto cuando:
+    title: "3. Qué llega a nuestros servidores",
+    body: `**Visitas (Vercel Web Analytics):** contamos visitas de forma agregada: página, país, tipo de dispositivo, navegador y sitio de origen. No usa cookies ni guarda tu IP; el identificador de visitante es un hash que se descarta cada día. No hay perfil por persona.
 
-- Activás una compra Premium (se genera un identificador hash HMAC-SHA256 de tu fecha de nacimiento para verificar tu acceso).
-- Solicitás una interpretación con IA (tu perfil simbólico —sin nombre real si no lo diste— se envía a proveedores de IA bajo acuerdos de confidencialidad y data processing addendums).
+**Compra de la Lectura Pro:** guardamos un hash HMAC-SHA256 de tu nombre normalizado, tu fecha y el identificador de dispositivo. Sin nuestra clave no se puede revertir a tus datos. Junto al hash guardamos: el identificador de dispositivo (para que puedas recuperar la compra desde otro equipo), el ID de pago, un token de acceso (vence a los 180 días y se renueva solo) y las lecturas generadas por IA. Se conserva mientras tengas acceso: es lo que te permite recuperarlo.
 
-**Medidas de seguridad:**
-- HTTPS obligatorio (TLS 1.2+) en todas las conexiones.
-- Content Security Policy estricta.
-- Headers de seguridad: HSTS, X-Frame-Options, Referrer-Policy.
-- No almacenamos contraseñas (no hay autenticación tradicional).
-- El hash Premium es irreversible (no permite recuperar nombre ni fecha).
+**Lecturas con IA (solo Lectura Pro):** el servidor arma tu perfil simbólico (signos, números y elementos derivados de tu fecha, más tu nombre si lo diste) y lo envía al proveedor de IA junto con tus preguntas del chat. No se envía tu fecha de nacimiento completa.
 
-**Cifrado en tránsito:** Todo el tráfico viaja sobre TLS. Los proveedores de pago e IA usan sus propios certificados y estándares (PCI-DSS para pagos).`,
+**Compartir tu perfil:** si usás "compartir", tu nombre y fecha se guardan 24 horas bajo un enlace aleatorio para que quien lo abra vea tu mapa. Después se borran solos.
+
+**Regalos:** el código, el ID de pago y si ya fue canjeado (y el hash de quien lo canjeó). Un código sin canjear vence a los 30 días.
+
+**Pago con Bitcoin:** recibimos el ID de la transacción que pegás. Lo verificamos contra la blockchain pública y queda registrado para que no se use dos veces.
+
+**Registros técnicos:** Vercel registra cada pedido al servidor (IP, navegador, página) para operar y proteger el sitio.`,
   },
   {
-    title: "4. Proveedores externos",
-    body: `Utilizamos los siguientes proveedores de terceros:
+    title: "4. Proveedores",
+    body: `| Proveedor | Para qué | Qué recibe |
+|-----------|----------|------------|
+| Vercel | Hosting, registros técnicos, Web Analytics | Pedidos al sitio; visitas agregadas sin cookies |
+| Upstash (base de datos de Vercel) | Guardar lo descripto en la sección 3 | Hashes, IDs de pago, perfiles compartidos por 24 h |
+| Mercado Pago | Cobro de la Lectura Pro | Lo que cargás en su checkout (email, medio de pago); de nosotros: hash del perfil, producto y monto |
+| Resend | Email de confirmación de compra | Tu email (el que diste en Mercado Pago) y el ID de pago |
+| OpenRouter | Lecturas con IA (Pro) | Perfil simbólico, nombre si lo diste, preguntas del chat. Lo envía al proveedor del modelo configurado |
+| mempool.space | Verificar pagos con Bitcoin y cotizar | Solo el ID de transacción; la consulta la hace nuestro servidor, no tu navegador |
+| Wikimedia | Imágenes de las entidades del Atlas | Tu navegador las descarga de upload.wikimedia.org: Wikimedia ve tu IP y navegador, como en cualquier imagen externa |
 
-| Proveedor | Propósito | Datos recibidos | Política de privacidad |
-|-----------|-----------|-----------------|------------------------|
-| Mercado Pago | Procesamiento de pagos | Email, hash de perfil, monto, país | https://www.mercadopago.com.ar/privacy |
-| Bitcoin (wallet autocustodiada) | Pago Premium | Ninguno: el comprobante (txid) lo aporta la persona y se verifica contra la blockchain | — |
-| OpenRouter (routing) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://openrouter.ai/privacy |
-| DeepSeek v4 (modelo de IA, vía OpenRouter) | Generación de interpretaciones IA (Premium) | Perfil simbólico, preguntas, nombre (si diste) | https://api-docs.deepseek.com |
-| OpenAI (GPT-4o-mini, respaldo) | Generación de interpretaciones IA si el primario falla | Perfil simbólico, preguntas, nombre (si diste) | https://openai.com/privacy |
-| Anthropic (Claude, respaldo) | Generación de interpretaciones IA si el primario falla | Perfil simbólico, preguntas, nombre (si diste) | https://www.anthropic.com/privacy |
-| Vercel | Hosting y edge functions | Logs de acceso, métricas de rendimiento | https://vercel.com/privacy |
-
-Todos los proveedores firman Data Processing Agreements (DPAs) y cláusulas contractuales estándar para transferencias internacionales.`,
+Cada proveedor trata los datos según su propia política de privacidad. No usamos Google Analytics, píxeles de redes sociales ni ningún otro servicio de rastreo.`,
   },
   {
-    title: "5. Tus derechos",
-    body: `De acuerdo con la legislación aplicable (RGPD, LOPD, CCPA), tenés derecho a:
+    title: "5. Para qué los usamos y base legal",
+    body: `- Calcular tu mapa y mostrártelo (se hace en tu navegador).
+- Cobrar y darte acceso a la Lectura Pro: ejecución del contrato.
+- Generar tus lecturas con IA: ejecución del contrato.
+- Medir visitas en forma agregada y anónima, y mantener el sitio seguro: interés legítimo.
 
-- **Acceso:** Solicitar una copia de los datos que tenemos sobre vos (hash Premium, logs de pago anonimizados).
-- **Supresión:** Solicitar que eliminemos tus datos (cancelación de Premium + borrado de hash en <30 días).
-- **Portabilidad:** Exportar tu perfil en formato JSON (disponible desde la configuración de tu mapa → "Exportar datos").
-- **Oposición:** Oponerte al procesamiento para analítica (desactivable en Ajustes) o marketing (no hacemos).
-- **Limitación:** Pedir que limitemos el procesamiento mientras se verifica una reclamación.
-- **No decisiones automatizadas:** No tomamos decisiones automatizadas con efecto legal.
-
-**Para ejercer estos derechos:** Escribinos a **privacidad@molino.app** (respuesta en <30 días según RGPD). Incluí tu hash de perfil (visible en Ajustes → Cuenta) para identificación.
-
-**Autoridad de control:** Podés presentar reclamación ante la AEPD (España), AAIP (Argentina), o la autoridad de tu país de residencia.`,
+No vendemos datos, no hacemos publicidad ni marketing y no tomamos decisiones automatizadas con efecto legal sobre vos.`,
   },
   {
-    title: "6. Cookies y tecnologías de rastreo",
-    body: `Molino **no utiliza cookies de rastreo, marketing, ni sesión**. El único almacenamiento que utilizamos es el **localStorage** de tu navegador, que:
-
-- Es controlado exclusivamente por vos (podés borrarlo en cualquier momento desde DevTools o Ajustes del navegador).
-- No es accesible por terceros (same-origin policy).
-- No se envía automáticamente con cada request HTTP (a diferencia de cookies).
-
-**Sin banners innecesarios:** Al no usar cookies de rastreo ni datos personales sin consentimiento, no requerimos banner de cookies bajo ePrivacy/RGPD.`,
+    title: "6. Seguridad",
+    body: `- HTTPS obligatorio, con HSTS.
+- Content Security Policy que limita de dónde se cargan scripts, imágenes y marcos.
+- Headers de seguridad: X-Frame-Options, Referrer-Policy, X-Content-Type-Options y Permissions-Policy.
+- Sin contraseñas que robar: no hay cuentas.
+- El acceso Pro exige un token que solo tiene el dispositivo que compró; con tu nombre y fecha no alcanza.`,
   },
   {
-    title: "7. Analítica anónima (localStorage)",
-    body: `Molino registra eventos de uso de forma **100% anónima y local** en tu navegador. No enviamos estos eventos a servidores. No utilizamos Google Analytics ni ningún servicio de rastreo de terceros.
-
-**Qué eventos registramos (solo en tu navegador):**
-- \`page_view\`: Qué páginas visitás (sin datos personales)
-- \`onboarding_completed\`: Si completás el onboarding
-- \`return_visit\`: Si volvés en un día diferente (medido por fecha en localStorage)
-- \`feature_used\`: Qué funciones usás (ej: "compartir", "descargar")
-- \`paywall_viewed\`, \`payment_approved\`, \`premium_unlocked\`: Eventos de compra
-- \`profile_created\`: Perfil creado (puede incluir lifePath, archetype agregados **solo en localStorage local**, nunca en servidor)
-
-**Qué NO registramos NUNCA:**
-- Tu fecha de nacimiento
-- Tu nombre
-- Tu país
-- Tu camino de vida, signo solar, zodiaco chino
-- Cualquier dato de tu perfil personal
-
-**Cómo verificar:** Abrí DevTools → Application → LocalStorage → busca \`molino-analytics-\`. Verás que los eventos solo contienen nombre del evento, timestamp y un ID de sesión anónimo. No hay datos del perfil.
-
-**Tus eventos, tu control:**
-- Podés borrar todos los eventos desde el panel en \`/analytics\`
-- Podés borrar el localStorage completo desde DevTools o Ajustes del navegador
-- Los eventos no se envían a ningún servidor — solo existen en tu navegador`,
+    title: "7. Cookies",
+    body: `Molino no usa cookies: ni de sesión, ni de rastreo, ni de publicidad. Vercel Web Analytics tampoco. Por eso no hay banner de cookies.`,
   },
   {
-    title: "8. Menores de edad",
-    body: `Molino no está dirigido a menores de 16 años. No recopilamos intencionalmente datos de menores.
+    title: "8. Tus derechos",
+    body: `Según la ley argentina 25.326, el RGPD y normas similares, podés pedir acceso, rectificación o supresión de tus datos, y oponerte a su tratamiento.
 
-Si detectamos que un menor de 16 años ha proporcionado datos (ej. al comprar Premium), procederemos a eliminar la información y cancelar la suscripción. Los padres/tutores pueden contactarnos a privacidad@molino.app para solicitar supresión.`,
+- **Lo que está en tu navegador** lo controlás vos: borrá los datos del sitio y desaparece.
+- **Lo que está en nuestros servidores** (hash de compra, lecturas guardadas): escribinos a **${CONTACTO}** con tu ID de pago y lo borramos. Ojo: borrarlo significa perder el acceso Pro.
+
+Respondemos dentro de los 30 días. Podés reclamar ante la AAIP (Argentina), la AEPD (España) o la autoridad de protección de datos de tu país.`,
   },
   {
-    title: "9. Cambios en esta política",
-    body: `Nos reservamos el derecho de actualizar esta política de privacidad. Los cambios significativos se comunicarán a través del sitio web (banner en homepage) y, si tenés Premium activo, por email.
-
-**Última actualización:** 12 de agosto de 2026
-
-**Historial de versiones:** Disponible en GitHub (repositorio público) para transparencia total.`,
+    title: "9. Menores de edad",
+    body: `Molino no está dirigido a menores de 16 años. Si un adulto responsable detecta que un menor nos dio datos, puede escribirnos a ${CONTACTO} y los borramos.`,
   },
   {
-    title: "10. Contacto",
-    body: `Si tenés preguntas sobre esta política de privacidad o sobre el tratamiento de tus datos, contactanos a:
-
-**Responsable del tratamiento:** Molino (proyecto de código abierto)
-**Email:** privacidad@molino.app
-**Repositorio:** https://github.com/Morpheus3232/molino (issues públicos para transparencia)
-**Dirección:** Proyecto distribuido, sin sede física única
-
-Para consultas sobre pagos: pagos@molino.app
-Para consultas técnicas/seguridad: security@molino.app`,
+    title: "10. Cambios",
+    body: `Si esta política cambia, publicamos acá la versión nueva con su fecha. El historial completo de cambios está en el repositorio público del proyecto: https://github.com/Morpheus3232/molino`,
+  },
+  {
+    title: "11. Contacto",
+    body: `Para cualquier consulta sobre privacidad, pagos o seguridad: **${CONTACTO}**`,
   },
 ];
 
@@ -154,7 +115,7 @@ export default function PrivacidadContent() {
             Política de Privacidad
           </h1>
           <p className="text-muted mb-2 text-sm animate-fade-in-up stagger-1">
-            Última actualización: 12 de agosto de 2026
+            Última actualización: 4 de octubre de 2026
           </p>
           <p className="text-foreground/70 mb-12 leading-relaxed animate-fade-in-up stagger-2">
             En Molino, tu privacidad es una prioridad. Esta política describe
@@ -171,8 +132,8 @@ export default function PrivacidadContent() {
                 <h2 className="font-heading text-xl font-semibold text-foreground mb-4">
                   {section.title}
                 </h2>
-                <div className="text-foreground/70 leading-relaxed whitespace-pre-line text-sm">
-                  {section.body}
+                <div className="text-foreground/70 leading-relaxed text-sm">
+                  <LegalText body={section.body} />
                 </div>
               </section>
             ))}

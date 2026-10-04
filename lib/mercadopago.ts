@@ -142,7 +142,6 @@ export function requireSecrets(): void {
 
 export async function createPreference(
   profileHash: string,
-  name: string,
   currencyId = 'USD',
   externalReference?: string,
   plan?: { id: string; cycle: BillingCycle } | null,
@@ -188,7 +187,6 @@ export async function createPreference(
         product: productId,
         ...(isPlan ? { plan_id: plan!.id, plan_cycle: plan!.cycle } : {}),
         version: 'bricks_v1',
-        customer_name: name,
       },
       statement_descriptor: 'MOLINO',
     },

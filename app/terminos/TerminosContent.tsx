@@ -1,3 +1,6 @@
+import LegalText from "@/components/legal/LegalText";
+
+const CONTACTO = "versionlimitada@proton.me";
 
 const sections = [
   {
@@ -22,12 +25,12 @@ Molino es una herramienta educativa de código abierto que explora sistemas simb
     title: "3. Cuenta Premium",
     body: `Molino ofrece una capa Premium opcional que incluye interpretaciones asistidas por IA y funcionalidades adicionales.
 
-- El acceso Premium se activa mediante pago único a través de Mercado Pago.
-- El precio (USD 8) y las condiciones se muestran claramente antes del pago. No hay suscripciones recurrentes ni cargos ocultos.
-- El acceso se vincula a un hash SHA-256 de tu perfil (nombre + fecha de nacimiento) y persiste mientras exista el registro en nuestro sistema.
-- **Política de reembolsos:** Al ser un servicio digital de entrega inmediata (interpretación IA generada al momento), no ofrecemos reembolsos salvo error técnico comprobable (duplicidad de cargo, fallo de generación). Contactá a pagos@molino.app en 48hs.
+- El acceso Premium se activa con un pago único, por Mercado Pago o con Bitcoin.
+- El precio es USD 8 ($ 11.880 si pagás en pesos con Mercado Pago, o su equivalente en bitcoin al momento de pagar) y se muestra antes de pagar. No hay suscripciones recurrentes ni cargos ocultos.
+- El acceso se vincula a un hash HMAC-SHA256 de tu perfil (nombre, fecha de nacimiento e identificador de tu dispositivo) y persiste mientras exista ese registro en nuestro sistema.
+- **Política de reembolsos:** Al ser un servicio digital de entrega inmediata (interpretación IA generada al momento), no ofrecemos reembolsos salvo error técnico comprobable (duplicidad de cargo, fallo de generación). Escribinos a ${CONTACTO} dentro de las 48 horas.
 - **Duración:** Acceso permanente a la versión actual. Futuras versiones mayores (v2.0+) podrían requerir actualización (comunicado con 90 días de antelación).
-- **Cancelación:** Podés solicitar la eliminación de tu hash Premium en cualquier momento (Ajustes → Cuenta → Eliminar cuenta Premium). El acceso se revoca inmediatamente.`,
+- **Cancelación:** Podés pedir que borremos tu registro Premium en cualquier momento escribiendo a ${CONTACTO} con tu ID de pago. El acceso se revoca al borrarlo.`,
   },
   {
     title: "4. Propiedad intelectual",
@@ -35,7 +38,7 @@ Molino es una herramienta educativa de código abierto que explora sistemas simb
 
 El contenido educativo (textos, explicaciones, fuentes, metodologías) se distribuye bajo los mismos términos de la licencia MIT.
 
-**Contenido generado por IA (Premium):** Las interpretaciones generadas por OpenAI/Anthropic son obra derivada de tu perfil + prompts del sistema. Te concedemos licencia irrevocable, mundial y libre de regalías para usar, copiar, modificar y compartir tus interpretaciones personales. Los proveedores de IA conservan derechos sobre sus modelos (no sobre tus outputs).`,
+**Contenido generado por IA (Premium):** Las interpretaciones generadas por el modelo de IA (vía OpenRouter) son obra derivada de tu perfil + prompts del sistema. Te concedemos licencia irrevocable, mundial y libre de regalías para usar, copiar, modificar y compartir tus interpretaciones personales. Los proveedores de IA conservan derechos sobre sus modelos (no sobre tus outputs).`,
   },
   {
     title: "5. Limitación de responsabilidad",
@@ -53,22 +56,17 @@ El contenido educativo (textos, explicaciones, fuentes, metodologías) se distri
   },
   {
     title: "6. Cambios en los términos",
-    body: `Nos reservamos el derecho de modificar estos términos. Los cambios significativos se comunicarán a través del sitio web (banner en homepage) y, si tenés Premium activo, por email con 30 días de antelación.
+    body: `Nos reservamos el derecho de modificar estos términos. Si cambian, publicamos acá la versión nueva con su fecha.
 
-El uso continuado tras la notificación implica aceptación. Si no estás de acuerdo, podés cancelar tu acceso Premium (ver §3).
+El uso continuado después de la publicación implica aceptación. Si no estás de acuerdo, podés cancelar tu acceso Premium (ver §3).
 
-**Última actualización:** 7 de agosto de 2025
+**Última actualización:** 4 de octubre de 2026
 
 **Historial de versiones:** Disponible en GitHub para transparencia total.`,
   },
   {
     title: "7. Contacto",
-    body: `Para preguntas sobre estos términos, contactanos a:
-
-**General:** legal@molino.app
-**Pagos:** pagos@molino.app
-**Privacidad:** privacidad@molino.app
-**Seguridad:** security@molino.app
+    body: `Para preguntas sobre estos términos, pagos, privacidad o seguridad: **${CONTACTO}**
 
 **Repositorio público:** https://github.com/Morpheus3232/molino (issues para transparencia)`,
   },
@@ -85,7 +83,7 @@ export default function TerminosContent() {
             Términos y Condiciones
           </h1>
           <p className="text-muted mb-2 text-sm animate-fade-in-up stagger-1">
-            Última actualización: 7 de agosto de 2025
+            Última actualización: 4 de octubre de 2026
           </p>
           <p className="text-foreground/70 mb-12 leading-relaxed animate-fade-in-up stagger-2">
             Al utilizar Molino, aceptás los siguientes términos y condiciones.
@@ -101,8 +99,8 @@ export default function TerminosContent() {
                 <h2 className="font-heading text-xl font-semibold text-foreground mb-4">
                   {section.title}
                 </h2>
-                <div className="text-foreground/70 leading-relaxed whitespace-pre-line text-sm">
-                  {section.body}
+                <div className="text-foreground/70 leading-relaxed text-sm">
+                  <LegalText body={section.body} />
                 </div>
               </section>
             ))}
