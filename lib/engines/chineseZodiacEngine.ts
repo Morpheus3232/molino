@@ -42,12 +42,18 @@ export function getChineseZodiac(birthDate: string): Animal {
  * Ejemplos reales que esto atrapa: Buenos Aires (1580-02-03), Santiago
  * (1541-02-12), Guadalajara (1542-02-14). Quedan marcadas como aproximadas y
  * el Mapa Personal las descarta.
+ *
+ * Antes de 1753 la fecha puede venir en calendario juliano (España y sus
+ * colonias cambiaron en 1582, Gran Bretaña en 1752), que va 10-11 días
+ * atrás del gregoriano: el borde de la ventana se adelanta otro tanto. Lima
+ * (1535-01-18 juliano = 28 de enero gregoriano) es el caso real.
  */
 function boundaryIsCertain(dateStr: string): boolean {
   const [y, m, d] = dateStr.split("-").map(Number);
   if (!y || !m || !d) return false;
   if (CHINESE_NEW_YEAR_DATES[y]) return true; // corte real documentado
-  const enVentana = (m === 1 && d >= 21) || (m === 2 && d <= 21);
+  const desfaseJuliano = y < 1700 ? 10 : y < 1753 ? 11 : 0;
+  const enVentana = (m === 1 && d >= 21 - desfaseJuliano) || (m === 2 && d <= 21);
   return !enVentana;
 }
 

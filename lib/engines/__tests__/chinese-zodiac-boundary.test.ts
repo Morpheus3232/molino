@@ -24,6 +24,14 @@ describe("certeza del corte de Año Nuevo chino", () => {
     expect(calculateAnimalFromDate("1680-01-21").isApproximate).toBe(true); // Colonia
   });
 
+  it("antes de 1753 la ventana se corre 10 días: la fecha puede ser juliana", () => {
+    // Lima: 18 de enero de 1535 juliano = 28 de enero gregoriano, en ventana.
+    expect(calculateAnimalFromDate("1535-01-18").isApproximate).toBe(true);
+    expect(calculateAnimalFromDate("1535-01-10").isApproximate).toBe(false);
+    // Desde 1753 todo Occidente es gregoriano: el 18 de enero queda fuera.
+    expect(calculateAnimalFromDate("1810-01-18").isApproximate).toBe(false);
+  });
+
   it("dentro de la tabla real la ventana no es un problema", () => {
     // 1990 sí tiene corte documentado (27 de enero), así que una fecha de esa
     // ventana se resuelve con certeza.
