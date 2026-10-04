@@ -63,6 +63,217 @@ export const CITIES_MEXICO: AtlasEntityInput[] = [
       },
     ],
   },
+  // Fechas cruzadas Wikidata + Wikipedia (es), coincidencia de día, mes y año (2026-10-04).
+  {
+    id: "merida", name: "Mérida", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Yucatán, la Ciudad Blanca, levantada sobre la ciudad maya de T'Hó.",
+    keyThemes: ["Maya", "Yucatán", "Colonial", "Península"],
+    sourceNote: "Fundada el 6 de enero de 1542.",
+    events: [
+      {
+        id: "merida-fundacion", type: "fundacion", label: "Fundación",
+        date: "1542-01-06", year: 1542,
+        description: "Francisco de Montejo el Mozo funda Mérida sobre la antigua ciudad maya de T'Hó.",
+        source: "Wikidata Q165204 + Wikipedia (es): Mérida (México)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "queretaro", name: "Santiago de Querétaro", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital del estado de Querétaro; su centro histórico es Patrimonio de la Humanidad y allí se promulgó la Constitución de 1917.",
+    keyThemes: ["Constitución", "Patrimonio", "Bajío", "Colonial"],
+    sourceNote: "Fundada el 25 de julio de 1531.",
+    events: [
+      {
+        id: "queretaro-fundacion", type: "fundacion", label: "Fundación",
+        date: "1531-07-25", year: 1531,
+        description: "Fundación de Santiago de Querétaro, el día de Santiago Apóstol.",
+        source: "Wikidata Q173121 + Wikipedia (es): Santiago de Querétaro", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "culiacan", name: "Culiacán", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Sinaloa, en el noroeste agrícola de México.",
+    keyThemes: ["Sinaloa", "Agricultura", "Noroeste", "Valle"],
+    sourceNote: "Fundada el 29 de septiembre de 1531.",
+    events: [
+      {
+        id: "culiacan-fundacion", type: "fundacion", label: "Fundación",
+        date: "1531-09-29", year: 1531,
+        description: "Nuño Beltrán de Guzmán funda la villa de San Miguel de Culiacán.",
+        source: "Wikidata Q211760 + Wikipedia (es): Culiacán", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "villahermosa", name: "Villahermosa", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Tabasco, entre ríos y lagunas del sureste mexicano.",
+    keyThemes: ["Tabasco", "Ríos", "Petróleo", "Sureste"],
+    sourceNote: "Fundada el 24 de junio de 1564.",
+    events: [
+      {
+        id: "villahermosa-fundacion", type: "fundacion", label: "Fundación",
+        date: "1564-06-24", year: 1564,
+        description: "Diego de Quijada funda la Villa Hermosa de San Juan Bautista.",
+        source: "Wikidata Q210886 + Wikipedia (es): Villahermosa (Tabasco)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "la-paz-bcs", name: "La Paz", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Baja California Sur, frente al mar de Cortés.",
+    keyThemes: ["Mar de Cortés", "Puerto", "Península", "Baja California"],
+    sourceNote: "Fundada el 3 de mayo de 1535.",
+    events: [
+      {
+        id: "la-paz-bcs-fundacion", type: "fundacion", label: "Fundación",
+        date: "1535-05-03", year: 1535,
+        description: "Hernán Cortés desembarca en la bahía y la nombra Santa Cruz.",
+        source: "Wikidata Q214215 + Wikipedia (es): La Paz (Baja California Sur)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "chetumal", name: "Chetumal", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Quintana Roo, en la frontera con Belice sobre la bahía de Chetumal.",
+    keyThemes: ["Caribe", "Frontera", "Bahía", "Quintana Roo"],
+    sourceNote: "Fundada el 5 de mayo de 1898.",
+    events: [
+      {
+        id: "chetumal-fundacion", type: "fundacion", label: "Fundación",
+        date: "1898-05-05", year: 1898,
+        description: "Othón Pompeyo Blanco funda Payo Obispo, el poblado que hoy es Chetumal.",
+        source: "Wikidata Q459553 + Wikipedia (es): Chetumal", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "san-cristobal-de-las-casas", name: "San Cristóbal de las Casas", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Ciudad colonial de los Altos de Chiapas, rodeada de comunidades tsotsiles y tseltales.",
+    keyThemes: ["Chiapas", "Altos", "Colonial", "Pueblos originarios"],
+    sourceNote: "Fundada el 31 de marzo de 1528.",
+    events: [
+      {
+        id: "san-cristobal-de-las-casas-fundacion", type: "fundacion", label: "Fundación",
+        date: "1528-03-31", year: 1528,
+        description: "Diego de Mazariegos funda Villa Real de Chiapa.",
+        source: "Wikidata Q524894 + Wikipedia (es): San Cristóbal de Las Casas", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "campeche", name: "Campeche", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital del estado de Campeche, puerto amurallado del golfo de México y Patrimonio de la Humanidad.",
+    keyThemes: ["Murallas", "Puerto", "Piratas", "Patrimonio"],
+    sourceNote: "Fundada el 4 de octubre de 1540.",
+    events: [
+      {
+        id: "campeche-fundacion", type: "fundacion", label: "Fundación",
+        date: "1540-10-04", year: 1540,
+        description: "Francisco de Montejo el Mozo funda la villa de San Francisco de Campeche.",
+        source: "Wikidata Q61301 + Wikipedia (es): San Francisco de Campeche", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "chihuahua", name: "Chihuahua", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital del estado más extenso de México, en el norte desértico.",
+    keyThemes: ["Norte", "Desierto", "Minería", "Revolución"],
+    sourceNote: "Fundada el 12 de octubre de 1709.",
+    events: [
+      {
+        id: "chihuahua-fundacion", type: "fundacion", label: "Fundación",
+        date: "1709-10-12", year: 1709,
+        description: "Antonio de Deza y Ulloa funda el Real de Minas de San Francisco de Cuéllar, hoy Chihuahua.",
+        source: "Wikidata Q61302 + Wikipedia (es): Chihuahua (Chihuahua)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "reynosa", name: "Reynosa", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Ciudad fronteriza de Tamaulipas sobre el río Bravo, frente a Texas.",
+    keyThemes: ["Frontera", "Río Bravo", "Industria", "Norte"],
+    sourceNote: "Fundada el 14 de marzo de 1749.",
+    events: [
+      {
+        id: "reynosa-fundacion", type: "fundacion", label: "Fundación",
+        date: "1749-03-14", year: 1749,
+        description: "Se funda la villa de Nuestra Señora de Guadalupe de Reynosa, dentro de la colonización del Nuevo Santander de José de Escandón.",
+        source: "Wikidata Q738303 + Wikipedia (es): Reynosa", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "puerto-vallarta", name: "Puerto Vallarta", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Puerto de Jalisco en la bahía de Banderas, sobre el Pacífico.",
+    keyThemes: ["Pacífico", "Playa", "Turismo", "Bahía"],
+    sourceNote: "Fundada el 12 de diciembre de 1851.",
+    events: [
+      {
+        id: "puerto-vallarta-fundacion", type: "fundacion", label: "Fundación",
+        date: "1851-12-12", year: 1851,
+        description: "Guadalupe Sánchez Torres se asienta en la bahía y nace el poblado de Las Peñas, hoy Puerto Vallarta.",
+        source: "Wikidata Q853258 + Wikipedia (es): Puerto Vallarta", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "cancun", name: "Cancún", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Destino del Caribe mexicano, planificado desde cero por el Estado en los años setenta.",
+    keyThemes: ["Caribe", "Playa", "Turismo", "Planificada"],
+    sourceNote: "Fundada el 20 de abril de 1970.",
+    events: [
+      {
+        id: "cancun-fundacion", type: "fundacion", label: "Fundación",
+        date: "1970-04-20", year: 1970,
+        description: "Comienzan las obras del centro turístico planificado de Cancún.",
+        source: "Wikidata Q8969 + Wikipedia (es): Cancún", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "ciudad-del-carmen", name: "Ciudad del Carmen", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Ciudad isleña de Campeche, centro de la industria petrolera del golfo.",
+    keyThemes: ["Isla", "Petróleo", "Golfo", "Puerto"],
+    sourceNote: "Fundada el 16 de julio de 1717.",
+    events: [
+      {
+        id: "ciudad-del-carmen-fundacion", type: "fundacion", label: "Fundación",
+        date: "1717-07-16", year: 1717,
+        description: "Alonso Felipe de Andrade expulsa a los piratas de la isla y funda el Presidio del Carmen.",
+        source: "Wikidata Q991435 + Wikipedia (es): Ciudad del Carmen", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "piedras-negras", name: "Piedras Negras", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Ciudad fronteriza de Coahuila frente a Eagle Pass, sobre el río Bravo.",
+    keyThemes: ["Frontera", "Río Bravo", "Norte", "Coahuila"],
+    sourceNote: "Fundada el 15 de junio de 1850.",
+    events: [
+      {
+        id: "piedras-negras-fundacion", type: "fundacion", label: "Fundación",
+        date: "1850-06-15", year: 1850,
+        description: "Se establece la colonia militar de Piedras Negras sobre el río Bravo.",
+        source: "Wikidata Q1856408 + Wikipedia (es): Piedras Negras", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "chilpancingo", name: "Chilpancingo", type: "city", country: "México", emoji: "🇲🇽",
+    description: "Capital de Guerrero; allí sesionó en 1813 el Congreso de Anáhuac.",
+    keyThemes: ["Independencia", "Guerrero", "Sierra", "Congreso"],
+    sourceNote: "Fundada el 1 de noviembre de 1591.",
+    events: [
+      {
+        id: "chilpancingo-fundacion", type: "fundacion", label: "Fundación",
+        date: "1591-11-01", year: 1591,
+        description: "Fundación de Chilpancingo, en el camino entre Acapulco y la Ciudad de México.",
+        source: "Wikidata Q207935 + Wikipedia (es): Chilpancingo de los Bravo", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
 ];
 
 // ─── CLUBES DE FÚTBOL ─────────────────────────────────────

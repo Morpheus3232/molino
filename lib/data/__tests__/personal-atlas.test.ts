@@ -96,9 +96,10 @@ describe("getPersonalAtlas — casos de prueba obligatorios", () => {
     // plantel real), lo cual vuelve usedCountry=true honestamente — pero
     // las categorías con datos previos a esta tarea siguen dependiendo de
     // región, exactamente como antes de completar football_player.
+    // city también resuelve local desde 2026-10-04 (ver test de city abajo).
     const result = getPersonalAtlas({ animal: "Dragón", countryISO: "MX" });
     for (const g of result.groups) {
-      if (g.category === "football_player") continue;
+      if (g.category === "football_player" || g.category === "city") continue;
       expect(g.level.startsWith("country-")).toBe(false);
     }
   });
@@ -145,10 +146,13 @@ describe("getPersonalAtlas — city (piloto ampliado)", () => {
     expect(group.entities.length).toBeGreaterThan(0);
   });
 
-  test("México + Dragón: city — categoría regional, no local — resuelve en región", () => {
+  test("México + Dragón: city resuelve en el país por sus amigos (Rata/Mono)", () => {
+    // Hasta 2026-10-04 dependía de la región: México tenía 4 ciudades con
+    // fecha. Con las 15 verificadas no hay ninguna Dragón, pero sí Rata y
+    // Mono, así que la casilla se llena con ciudades mexicanas.
     const result = getPersonalAtlas({ animal: "Dragón", countryISO: "MX", category: "city" });
     const [group] = result.groups;
-    expect(["region-animal", "region-relation"]).toContain(group.level);
+    expect(group.level).toBe("country-relation");
   });
 
   test("España + Gallo: city resuelve en región o mundo, nunca país", () => {

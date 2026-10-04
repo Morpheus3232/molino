@@ -63,6 +63,175 @@ export const CITIES_COLOMBIA: AtlasEntityInput[] = [
       },
     ],
   },
+  // Fechas cruzadas Wikidata + Wikipedia (es), coincidencia de día, mes y año (2026-10-04).
+  {
+    id: "santa-marta", name: "Santa Marta", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Magdalena, sobre el Caribe al pie de la Sierra Nevada; la ciudad más antigua de Colombia.",
+    keyThemes: ["Caribe", "Sierra Nevada", "Historia", "Bolívar"],
+    sourceNote: "Fundada el 29 de julio de 1525.",
+    events: [
+      {
+        id: "santa-marta-fundacion", type: "fundacion", label: "Fundación",
+        date: "1525-07-29", year: 1525,
+        description: "Rodrigo de Bastidas funda Santa Marta.",
+        source: "Wikidata Q209016 + Wikipedia (es): Santa Marta (Colombia)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "cucuta", name: "Cúcuta", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Norte de Santander, en la frontera con Venezuela; allí se reunió el Congreso de Cúcuta de 1821.",
+    keyThemes: ["Frontera", "Congreso", "Comercio", "Oriente"],
+    sourceNote: "Fundada el 17 de junio de 1733.",
+    events: [
+      {
+        id: "cucuta-fundacion", type: "fundacion", label: "Fundación",
+        date: "1733-06-17", year: 1733,
+        description: "Juana Rangel de Cuéllar dona las tierras donde nace San José de Cúcuta.",
+        source: "Wikidata Q216847 + Wikipedia (es): Cúcuta", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "ibague", name: "Ibagué", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Tolima, conocida como la Capital Musical de Colombia.",
+    keyThemes: ["Música", "Tolima", "Andes", "Conservatorio"],
+    sourceNote: "Fundada el 14 de octubre de 1550.",
+    events: [
+      {
+        id: "ibague-fundacion", type: "fundacion", label: "Fundación",
+        date: "1550-10-14", year: 1550,
+        description: "Andrés López de Galarza funda San Bonifacio de Ibagué.",
+        source: "Wikidata Q222755 + Wikipedia (es): Ibagué", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "manizales", name: "Manizales", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Caldas, en el Eje Cafetero, construida sobre las laderas de la cordillera Central.",
+    keyThemes: ["Café", "Montaña", "Feria", "Eje Cafetero"],
+    sourceNote: "Fundada el 12 de octubre de 1849.",
+    events: [
+      {
+        id: "manizales-fundacion", type: "fundacion", label: "Fundación",
+        date: "1849-10-12", year: 1849,
+        description: "Colonos antioqueños fundan Manizales.",
+        source: "Wikidata Q235190 + Wikipedia (es): Manizales", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "tunja", name: "Tunja", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Boyacá, una de las ciudades coloniales más antiguas del país, sobre el antiguo asiento muisca de Hunza.",
+    keyThemes: ["Muisca", "Colonial", "Boyacá", "Altiplano"],
+    sourceNote: "Fundada el 6 de agosto de 1539.",
+    events: [
+      {
+        id: "tunja-fundacion", type: "fundacion", label: "Fundación",
+        date: "1539-08-06", year: 1539,
+        description: "Gonzalo Suárez Rendón funda Tunja.",
+        source: "Wikidata Q236744 + Wikipedia (es): Tunja", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "bucaramanga", name: "Bucaramanga", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Santander, la Ciudad de los Parques.",
+    keyThemes: ["Parques", "Santander", "Comercio", "Oriente"],
+    sourceNote: "Fundada el 22 de diciembre de 1622.",
+    events: [
+      {
+        id: "bucaramanga-fundacion", type: "fundacion", label: "Fundación",
+        date: "1622-12-22", year: 1622,
+        description: "Se funda Bucaramanga como pueblo de indios.",
+        source: "Wikidata Q243766 + Wikipedia (es): Bucaramanga", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "armenia-quindio", name: "Armenia", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Quindío, en el corazón del Eje Cafetero.",
+    keyThemes: ["Café", "Eje Cafetero", "Quindío", "Montaña"],
+    sourceNote: "Fundada el 14 de octubre de 1889.",
+    events: [
+      {
+        id: "armenia-quindio-fundacion", type: "fundacion", label: "Fundación",
+        date: "1889-10-14", year: 1889,
+        description: "Jesús María Ocampo encabeza la fundación de Armenia.",
+        source: "Wikidata Q328518 + Wikipedia (es): Armenia (Quindío)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "pereira", name: "Pereira", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Risaralda y polo comercial del Eje Cafetero.",
+    keyThemes: ["Café", "Comercio", "Eje Cafetero", "Risaralda"],
+    sourceNote: "Fundada el 30 de agosto de 1863.",
+    events: [
+      {
+        id: "pereira-fundacion", type: "fundacion", label: "Fundación",
+        date: "1863-08-30", year: 1863,
+        description: "Remigio Antonio Cañarte oficia la misa con la que se funda Pereira.",
+        source: "Wikidata Q51111 + Wikipedia (es): Pereira", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "neiva", name: "Neiva", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Huila, a orillas del río Magdalena.",
+    keyThemes: ["Magdalena", "Huila", "San Pedro", "Valle"],
+    sourceNote: "Fundada el 24 de mayo de 1612.",
+    events: [
+      {
+        id: "neiva-fundacion", type: "fundacion", label: "Fundación",
+        date: "1612-05-24", year: 1612,
+        description: "Diego de Ospina y Medinilla funda Neiva en su emplazamiento definitivo.",
+        source: "Wikidata Q638260 + Wikipedia (es): Neiva", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "villavicencio", name: "Villavicencio", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Meta, puerta de entrada a los Llanos Orientales.",
+    keyThemes: ["Llanos", "Joropo", "Meta", "Ganadería"],
+    sourceNote: "Fundada el 6 de abril de 1840.",
+    events: [
+      {
+        id: "villavicencio-fundacion", type: "fundacion", label: "Fundación",
+        date: "1840-04-06", year: 1840,
+        description: "Esteban Aguirre funda el caserío de Gramalote, origen de Villavicencio.",
+        source: "Wikidata Q749224 + Wikipedia (es): Villavicencio", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "monteria", name: "Montería", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital de Córdoba, a orillas del río Sinú, en la región ganadera del Caribe colombiano.",
+    keyThemes: ["Sinú", "Ganadería", "Caribe", "Río"],
+    sourceNote: "Fundada el 1 de mayo de 1777.",
+    events: [
+      {
+        id: "monteria-fundacion", type: "fundacion", label: "Fundación",
+        date: "1777-05-01", year: 1777,
+        description: "Antonio de la Torre y Miranda funda San Jerónimo de Buenavista, hoy Montería.",
+        source: "Wikidata Q852725 + Wikipedia (es): Montería", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
+  {
+    id: "florencia-caqueta", name: "Florencia", type: "city", country: "Colombia", emoji: "🇨🇴",
+    description: "Capital del Caquetá, puerta de entrada a la Amazonía colombiana.",
+    keyThemes: ["Amazonía", "Caquetá", "Selva", "Ríos"],
+    sourceNote: "Fundada el 25 de diciembre de 1902.",
+    events: [
+      {
+        id: "florencia-caqueta-fundacion", type: "fundacion", label: "Fundación",
+        date: "1902-12-25", year: 1902,
+        description: "Fray Doroteo de Pupiales funda Florencia.",
+        source: "Wikidata Q849859 + Wikipedia (es): Florencia (Caquetá)", confidence: "exacta", primaryForAffinity: true,
+      },
+    ],
+  },
 ];
 
 // ─── CLUBES DE FÚTBOL ─────────────────────────────────────

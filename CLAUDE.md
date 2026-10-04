@@ -114,18 +114,23 @@ Consecuencias operativas:
   |---|---|---|---|---|---|---|
   | Argentina | 108 | 28 | 3 | 19 | 18 | 38 |
   | Uruguay | 57 | 8 | 0 | 13 | 1 | 34 |
-  | Chile | 46 | 1 | 0 | 10 | 9 | 26 |
-  | Perú | 45 | 1 | 0 | 10 | 9 | 25 |
-  | México | 40 | 3 | 4 | 5 | 5 | 23 |
+  | Chile | 50 | 5 | 0 | 10 | 9 | 26 |
+  | Perú | 50 | 6 | 0 | 10 | 9 | 25 |
+  | México | 55 | 18 | 4 | 5 | 5 | 23 |
   | España | 35 | 2 | 3 | 7 | 2 | 20 |
-  | Colombia | 33 | 4 | 1 | 5 | 3 | 20 |
+  | Colombia | 45 | 16 | 1 | 5 | 3 | 20 |
 
   (La columna "marcas" de esa tabla ya no tiene dominio propio: solo cuenta
-  para vestimenta y autos.) El hueco local más grande son las **ciudades fuera
-  de Argentina**, y ahí el problema NO son las fechas —solo 5 ciudades de esos
-  países carecen de fecha exacta— sino que el atlas tiene muy pocas ciudades
-  cargadas fuera de Argentina. Completarlo es cargar entidades con su fecha y
-  su `source`, nunca estimarla.
+  para vestimenta y autos.) Ciudades actualizadas el 2026-10-04: se cargaron
+  38 (Chile 5, Perú 6, México 15, Colombia 12) cuya fecha coincide en día,
+  mes y año entre Wikidata y Wikipedia en español — se descartaron 13 que no
+  coincidían; el `source` guarda el Q-id. Wikidata devuelve las fechas
+  julianas (pre-1582) ya convertidas al gregoriano: para comparar hay que
+  restar el desfase (10 días en el siglo XVI). Pendientes: **España** (sus
+  ciudades son antiguas, casi ninguna tiene día de fundación) y **Chile**
+  (Concepción, La Serena, Temuco y Chillán tienen día en Wikipedia pero solo
+  año en Wikidata: falta una segunda fuente, p. ej. la municipalidad). Santiago
+  y Lima caen en la ventana de Año Nuevo chino y no se muestran.
 - **Nada de listas sin criterio.** Se eliminaron (2026-08-25) tres secciones
   que mostraban "entidades relacionadas" que no tenían ninguna relación con lo
   que el lector estaba mirando —eran las primeras N del catálogo ordenadas por

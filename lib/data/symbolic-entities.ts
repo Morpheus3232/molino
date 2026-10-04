@@ -28,6 +28,8 @@ import { CITIES_ATLAS } from "./cities-atlas";
 import { CITIES_ARGENTINA } from "./cities-argentina";
 import { CITIES_ARGENTINA_COMPLETO } from "./cities-argentina-completo";
 import { CITIES_URUGUAY } from "./cities-uruguay";
+import { CITIES_CHILE } from "./cities-chile";
+import { CITIES_PERU } from "./cities-peru";
 import { TEAMS_ARGENTINA } from "./teams-argentina";
 import { TEAMS_CHILE } from "./teams-chile";
 import { TEAMS_PERU } from "./teams-peru";
@@ -330,6 +332,8 @@ export const SYMBOLIC_ENTITIES: SymbolicEntity[] = dedupeAtlasEntities([
   ...CITIES_ARGENTINA,
   ...CITIES_ARGENTINA_COMPLETO,
   ...CITIES_URUGUAY,
+  ...CITIES_CHILE,
+  ...CITIES_PERU,
 
   ...TEAMS_ARGENTINA,
   ...TEAMS_CHILE,
