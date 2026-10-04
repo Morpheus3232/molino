@@ -60,8 +60,8 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
         <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
           <defs>
             <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#D4A843" stopOpacity={0.4} />
-              <stop offset="95%" stopColor="#D4A843" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="var(--color-gold)" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="var(--color-gold)" stopOpacity={0.0} />
             </linearGradient>
           </defs>
           <XAxis
@@ -83,11 +83,11 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
           <Area
             type="monotone"
             dataKey="mood"
-            stroke="#D4A843"
+            stroke="var(--color-gold)"
             strokeWidth={2.5}
             fillOpacity={1}
             fill="url(#moodGradient)"
-            dot={{ fill: "#D4A843", r: 3, strokeWidth: 1, stroke: "var(--color-paper)" }}
+            dot={{ fill: "var(--color-gold)", r: 3, strokeWidth: 1, stroke: "var(--color-paper)" }}
             activeDot={{ r: 5, fill: "var(--color-ink)" }}
           />
         </AreaChart>

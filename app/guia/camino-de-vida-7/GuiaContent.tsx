@@ -136,7 +136,7 @@ export default function GuiaContent() {
             href="/"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gold text-gold-foreground font-heading text-xs uppercase tracking-wider font-bold hover:bg-gold-hover transition-colors"
           >
-            Generá tu mapa gratuito
+            Crear mi mapa
           </Link>
         </div>
       </main>

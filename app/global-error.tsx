@@ -39,7 +39,7 @@ export default function RootGlobalError({
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#D4A843] text-ink text-xs uppercase tracking-wider font-bold hover:bg-[#E5B954] transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#F5B022] text-ink text-xs uppercase tracking-wider font-bold hover:bg-[#FCC044] transition-colors"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Recargar Aplicación

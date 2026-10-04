@@ -12,7 +12,7 @@ import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 const TIER_COLOR: Record<string, string> = {
   "resonancia-alta": "#2D5A3A",
   "afinidad-media": "#4A6FA5",
-  complementarios: "#D4A843",
+  complementarios: "var(--color-gold)",
   desafiante: "#B45309",
   distante: "#838C95",
 };

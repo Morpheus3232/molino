@@ -594,7 +594,7 @@ export default function AcademyContent() {
             href="/profile"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-lg bg-accent text-accent-foreground font-semibold hover:bg-accent/90 transition-colors group"
           >
-            <span>Generá tu mapa</span>
+            <span>Crear mi mapa</span>
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.section>

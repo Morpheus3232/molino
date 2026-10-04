@@ -111,7 +111,7 @@ function SidebarCta() {
         href="/profile"
         className="inline-flex w-full items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-4 py-3 text-xs bg-accent text-accent-foreground hover:opacity-90 min-h-[44px] transition-opacity"
       >
-        Generá tu mapa
+        Crear mi mapa
       </Link>
     </div>
   );
@@ -267,7 +267,7 @@ export default function BlogArticleContent({ post }: { post: BlogPost }) {
                   href="/profile"
                   className="inline-flex items-center justify-center gap-2 rounded-md font-heading uppercase tracking-wider font-semibold px-6 py-3 text-sm bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground min-h-[44px] transition-colors"
                 >
-                  Generá tu mapa →
+                  Crear mi mapa →
                 </Link>
               </div>
             </motion.section>

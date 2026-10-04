@@ -83,7 +83,7 @@ function SemanaContent() {
             Necesitás tu perfil para ver el timing de tu semana.
           </p>
           <Button variant="primary" size="lg" onClick={() => router.push("/")}>
-            Generá tu mapa
+            Crear mi mapa
           </Button>
         </div>
       </div>

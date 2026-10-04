@@ -20,14 +20,6 @@ interface RecommendationContentProps {
   subtitle: string;
 }
 
-const TIER_COLOR: Record<string, string> = {
-  "resonancia-alta": "#2D5A3A",
-  "afinidad-media": "#4A6FA5",
-  complementarios: "#D4A843",
-  desafiante: "#B45309",
-  distante: "#838C95",
-};
-
 const TIER_LABEL: Record<string, string> = {
   "resonancia-alta": "Resonancia alta",
   "afinidad-media": "Afinidad media",
