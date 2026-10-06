@@ -9,7 +9,6 @@ import { useAffinityResult } from "@/lib/hooks/useAffinityResult";
 import { TIER_META } from "@/lib/engines/affinityEngine";
 import { calculateUserProfile } from "@/lib/engines/profileBuilder";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
-import type { LightweightEntity } from "@/types/atlas";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import { analytics } from "@/lib/analytics/analytics";
 import { saveAffinityResult, hasSavedAffinity } from "@/lib/session/localStorage";
@@ -36,12 +35,10 @@ export default function AffinityQuickEntryForm({
   entity,
   meta,
   type,
-  catalog,
 }: {
   entity: SymbolicEntity;
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
-  catalog: LightweightEntity[];
 }) {
   const router = useRouter();
   const currentYear = new Date().getFullYear();

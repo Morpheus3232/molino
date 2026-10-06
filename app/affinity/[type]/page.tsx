@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/seo";
 import { ENTITY_TYPES, getEntitiesByType, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
+import { ANIMALS } from "@/lib/data/animalRelations";
 import AffinityTypeContent from "./AffinityTypeContent";
 
 const VALID_TYPES: EntityType[] = ["brand", "city", "country", "university", "team", "movie", "artist", "football_player"];
@@ -50,5 +52,42 @@ export default async function AffinityTypePage({
   const meta = ENTITY_TYPES[type as EntityType];
   const entities = getEntitiesByType(type as EntityType).map(toLightweightEntity);
 
-  return <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} initialAnimal={animal} />;
+  // Índice por signo en el HTML del servidor: el listado de arriba se arma en
+  // el cliente y Google no veía ningún enlace a las fichas. Solo fecha exacta,
+  // como el resto del Atlas; cada fila está acá porque nació en ese signo.
+  const bySign = ANIMALS.map((a) => ({
+    animal: a,
+    items: entities.filter((e) => e.originDate && e.animal === a).sort((x, y) => x.name.localeCompare(y.name, "es")),
+  })).filter((g) => g.items.length > 0);
+
+  return (
+    <>
+      <AffinityTypeContent type={type as EntityType} meta={meta} entities={entities} initialAnimal={animal} />
+      {bySign.length > 0 && (
+        <nav aria-labelledby="indice-por-signo" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pb-24">
+          <h2 id="indice-por-signo" className="font-heading text-xl font-semibold text-foreground mb-6">
+            {meta.plural} por signo chino
+          </h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {bySign.map((g) => (
+              <section key={g.animal}>
+                <h3 className="text-sm font-semibold text-foreground mb-2">
+                  <Link href={`/conocimiento/zodiaco-chino/${g.animal.toLowerCase()}`} className="hover:text-accent">
+                    Signo {g.animal}
+                  </Link>
+                </h3>
+                <ul className="text-sm text-muted space-y-1">
+                  {g.items.map((e) => (
+                    <li key={e.id}>
+                      <Link href={`/affinity/${type}/${e.id}`} className="hover:text-accent">{e.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </nav>
+      )}
+    </>
+  );
 }

@@ -7,6 +7,7 @@ import { ACADEMY_PIECES } from "@/lib/data/academy-content";
 import { SOURCES as BIBLIOTECA_SOURCES } from "@/lib/data/biblioteca-content";
 import { BLOG_POSTS } from "@/lib/data/blog-content";
 import { SITE_URL } from "@/lib/seo";
+import { getPrimaryEvent } from "@/lib/data/entity-events";
 
 const BASE_URL = SITE_URL;
 
@@ -60,9 +61,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Affinity entity detail pages (canonical URLs) — solo tipos con ruta real en
-  // /affinity/[type]/[slug] (getAvailableTypes).
+  // /affinity/[type]/[slug] (getAvailableTypes), y solo con fecha exacta: las
+  // demás son noindex (ver generateMetadata de la ficha).
   const availableTypes = new Set<EntityType>(getAvailableTypes());
-  const entityPages = SYMBOLIC_ENTITIES.filter((entity) => availableTypes.has(entity.type as EntityType)).map((entity) => ({
+  const entityPages = SYMBOLIC_ENTITIES.filter((entity) => availableTypes.has(entity.type as EntityType) && getPrimaryEvent(entity)?.date).map((entity) => ({
     url: `${BASE_URL}/affinity/${entity.type}/${entity.id}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,

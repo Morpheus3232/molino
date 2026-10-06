@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "@/lib/utils/motion";
 import { useProfile } from "@/lib/hooks/useProfile";
@@ -69,7 +69,6 @@ export function groupByRelation(userAnimal: Animal, sorted: LightAffinityResult[
 }
 
 export default function AffinityTypeContent({ type, meta, entities, initialAnimal }: AffinityTypeContentProps) {
-  const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const userCountry = useUserContext().country;
 
@@ -135,7 +134,7 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
               {/* HERO */}
               <motion.div {...fadeUp} className="border-t border-ink/10 py-6 sm:py-8">
                 <nav className="flex items-center gap-2 text-xs text-muted mb-4" aria-label="Breadcrumb">
-                  <button type="button" onClick={() => router.push("/affinity")} className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</button>
+                  <Link href="/affinity" className="underline decoration-ink/25 underline-offset-2 hover:text-foreground hover:decoration-foreground transition-colors">Afinidad</Link>
                   <span>›</span>
                   <span className="text-foreground font-medium">{meta.plural}</span>
                 </nav>
@@ -223,7 +222,7 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
                         </div>
                         <div className="space-y-0">
                           {items.map((result) => (
-                            <ResultRow key={result.id} result={result} onClick={() => router.push(`/affinity/${type}/${result.id}`)} />
+                            <ResultRow key={result.id} result={result} href={`/affinity/${type}/${result.id}`} />
                           ))}
                         </div>
                         {hasMore && (
@@ -250,10 +249,10 @@ export default function AffinityTypeContent({ type, meta, entities, initialAnima
 
 function ResultRow({
   result,
-  onClick,
+  href,
 }: {
   result: LightAffinityResult;
-  onClick: () => void;
+  href: string;
 }) {
   // Presentación editorial: el label del engine se mantiene, el color pasa
   // a tonos de marca (accent/muted) — nunca semáforo verde/rojo.
@@ -265,10 +264,9 @@ function ResultRow({
   const tierLabel = result.relationship;
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+    <Link
+      href={href}
+      className="block w-full text-left py-4 border-b border-ink/10 last:border-b-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="flex items-start sm:items-center gap-4">
         <EntityVisual
@@ -295,6 +293,6 @@ function ResultRow({
           </div>
         </div>
       </div>
-    </button>
+    </Link>
   );
 }

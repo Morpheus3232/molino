@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { SITE_URL, siteUrl } from "@/lib/seo";
 import { buildEntityJsonLd } from "@/lib/seo-jsonld";
-import { ENTITY_TYPES, getEntityById, getEntitiesByType, SYMBOLIC_ENTITIES, toLightweightEntity, type EntityType } from "@/lib/data/symbolic-entities";
+import { ENTITY_TYPES, getEntityById, getEntitiesByType, type EntityType } from "@/lib/data/symbolic-entities";
+import { getPrimaryEvent } from "@/lib/data/entity-events";
 import AffinityEditorialContent from "@/components/affinity/AffinityEditorialContent";
 import AffinityDetailContent from "./AffinityDetailContent";
 
@@ -40,6 +41,9 @@ export async function generateMetadata({ params }: { params: Promise<{ type: str
     alternates: {
       canonical: siteUrl(`/affinity/${type}/${slug}`),
     },
+    // Sin fecha exacta el signo no es afirmable (CLAUDE.md) y la ficha queda
+    // sin su sección de signo: no se ofrece a Google. Sigue enlazando.
+    ...(getPrimaryEvent(entity)?.date ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       title: `Mi afinidad simbólica con ${entity.name}`,
       description: `Afinidad simbólica con ${entity.name} según el zodíaco chino. Descubrí la tuya en Molino.`,
@@ -63,13 +67,6 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
   if (entity.type !== type) notFound();
 
   const meta = ENTITY_TYPES[type as EntityType];
-  // Client needs the full entity (for the affinity explanation) plus the
-  // lightweight projections of ALL entities (for the discovery loop across
-  // types) and same-type entities (for the quick selector). The rich data
-  // layer never reaches the client bundle — only these props do.
-  const catalog = SYMBOLIC_ENTITIES.map(toLightweightEntity);
-  // Capa 1 (editorial): otras entidades del mismo tipo ya existentes en el
-  // dataset, sin calcular afinidad — solo un listado, no un descubrimiento.
   const jsonLd = buildEntityJsonLd(entity, type as EntityType, `/affinity/${type}/${slug}`);
 
   return (
@@ -81,7 +78,7 @@ export default async function AffinityDetailPage({ params }: { params: Promise<{
       <div className="min-h-screen bg-background">
         <main className="mx-auto max-w-[800px] px-4 sm:px-6 pt-16 sm:pt-20 pb-24" id="main-content">
           <AffinityEditorialContent entity={entity} meta={meta} type={type as EntityType} />
-          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} catalog={catalog} />
+          <AffinityDetailContent entity={entity} meta={meta} type={type as EntityType} />
         </main>
       </div>
     </>

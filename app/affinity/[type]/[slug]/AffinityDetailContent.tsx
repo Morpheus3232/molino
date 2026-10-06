@@ -8,7 +8,6 @@ import { useProfile } from "@/lib/hooks/useProfile";
 import { useAffinityResult } from "@/lib/hooks/useAffinityResult";
 import { TIER_META } from "@/lib/engines/affinityEngine";
 import type { EntityType, SymbolicEntity } from "@/lib/data/symbolic-entities";
-import type { LightweightEntity } from "@/types/atlas";
 import AffinityHero from "@/components/affinity/AffinityHero";
 import AffinityDeepDive from "@/components/affinity/AffinityDeepDive";
 import { formatViewAll } from "@/lib/utils/plural";
@@ -18,11 +17,9 @@ interface AffinityDetailContentProps {
   entity: SymbolicEntity;
   meta: { label: string; plural: string; icon: string; description: string };
   type: EntityType;
-  /** Lightweight projections of ALL entities (for the discovery loop). */
-  catalog: LightweightEntity[];
 }
 
-export default function AffinityDetailContent({ entity, meta, type, catalog }: AffinityDetailContentProps) {
+export default function AffinityDetailContent({ entity, meta, type }: AffinityDetailContentProps) {
   const router = useRouter();
   const { profile, mounted } = useProfile({ redirectIfNotFound: false });
   const [showOtherEvents, setShowOtherEvents] = useState(false);
@@ -45,7 +42,7 @@ export default function AffinityDetailContent({ entity, meta, type, catalog }: A
 
   if (!profile) {
     return (
-      <AffinityQuickEntryForm entity={entity} meta={meta} type={type} catalog={catalog} />
+      <AffinityQuickEntryForm entity={entity} meta={meta} type={type} />
     );
   }
 
