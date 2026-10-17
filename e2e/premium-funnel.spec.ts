@@ -99,6 +99,8 @@ async function setupCouponActivationMocks(page: import("@playwright/test").Page)
           howYouOperate: "test",
           closingSynthesis: "test",
           tensions: [],
+          strengths: [],
+          whatToConsider: [],
           summary: "Lectura de prueba",
           suggestedNextStep: "Continúa explorando",
         },
@@ -193,7 +195,7 @@ test.describe("Premium Funnel E2E", () => {
     await expect(page.getByRole("status").filter({ hasText: "Código aceptado" })).toBeVisible({ timeout: 15000 });
   });
 
-  test("VALEN: el botón 'Ver mi lectura' aparece cuando la lectura está lista", async ({ page }) => {
+  test("VALEN: la lectura aparece y el aviso de preparación se va", async ({ page }) => {
     await seedProfile(page);
     await setupCouponActivationMocks(page);
     await page.goto("/lectura");
@@ -204,25 +206,8 @@ test.describe("Premium Funnel E2E", () => {
     await couponInput.fill("VALEN");
     await couponInput.press("Enter");
     await expect(page.getByText("Código aceptado")).toBeVisible({ timeout: 15000 });
-    await expect(page.getByRole("button", { name: /Ver mi lectura/ })).toBeVisible({ timeout: 30000 });
-  });
-
-  test("VALEN: el feedback persiste en el almacenamiento local", async ({ page }) => {
-    await seedProfile(page);
-    await setupCouponActivationMocks(page);
-    await page.goto("/lectura");
-    await page.waitForLoadState("networkidle");
-    await page.getByText("Tengo un cupón").click({ force: true });
-    await page.waitForSelector("#coupon-code", { timeout: 10000 });
-    const couponInput = page.locator("#coupon-code");
-    await couponInput.fill("VALEN");
-    await couponInput.press("Enter");
-    await expect(page.getByText("Código aceptado")).toBeVisible({ timeout: 15000 });
-    const storedStep = await page.evaluate(() => {
-      const raw = localStorage.getItem("molino.activation-step.v1");
-      return raw ? JSON.parse(raw).step : null;
-    });
-    expect(["success", "preparing", "ready"]).toContain(storedStep);
+    await expect(page.locator("#lectura-contenido")).toBeVisible({ timeout: 30000 });
+    await expect(page.getByText("Estamos preparando tu lectura")).toHaveCount(0);
   });
 
   test("VALEN: accesibilidad con teclado y lector de pantalla", async ({ page }) => {

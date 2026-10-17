@@ -5,12 +5,10 @@ import { analytics } from '@/lib/analytics/analytics';
 import { savePremiumTokenClient } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
 import { clearSelectedPlan } from '@/lib/session/selectedPlan';
-import { calculateUserProfile } from '@/lib/engines/profileBuilder';
-import { encodeProfileData } from '@/lib/utils/profileShare';
 
-export type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked' | 'pay_error' | 'verifying_redirect';
+export type GateState = 'locked' | 'paying' | 'verifying' | 'unlocked' | 'pay_error' | 'verifying_redirect' | 'pending';
 
-function cleanUrlParams() {
+export function cleanPaymentParams() {
   if (typeof window === 'undefined') return;
   const url = new URL(window.location.href);
   url.searchParams.delete('payment_status');
@@ -52,18 +50,7 @@ export function useCommitPremiumUnlock({ setState, setJustUnlocked, name, birthD
       if (premiumToken) savePremiumTokenClient(premiumToken);
       invalidatePremiumAccessCache(name, birthDate);
       analytics.trackPremiumUnlocked();
-      if (opts?.cleanUrl) cleanUrlParams();
-      // Si no estamos en /lectura, intentamos abrir la lectura en pestaña nueva.
-      // Si el navegador bloquea el popup (frecuente tras redirect de MP),
-      // PremiumUnlockReveal muestra el botón de acceso directo como respaldo visible.
-      if (typeof window !== 'undefined' && birthDate && !window.location.pathname.startsWith('/lectura')) {
-        try {
-          const encoded = encodeProfileData(calculateUserProfile(name || '', birthDate));
-          window.open(`/lectura#${encoded}`, '_blank');
-        } catch {
-          // Popups bloqueados por el navegador: el botón en PremiumUnlockReveal lo resuelve en 1 clic
-        }
-      }
+      if (opts?.cleanUrl) cleanPaymentParams();
     },
     [setState, setJustUnlocked, name, birthDate],
   );

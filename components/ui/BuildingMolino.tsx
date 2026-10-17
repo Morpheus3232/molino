@@ -74,19 +74,9 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
     onCompleteRef.current = onComplete;
   }, [done, onComplete]);
 
-  // Safety: si después de 20s `done` no se activó (fetch colgada, KV
-  // caído, etc.), forzamos la finalización para que la UI nunca se quede
-  // trabada en "Detectando tus tensiones" para siempre.
-  useEffect(() => {
-    if (done) return;
-    const safetyTimer = setTimeout(() => {
-      if (!doneRef.current) {
-        console.warn("[BuildingMolino] safety timeout: forcing completion after 20s");
-        onCompleteRef.current();
-      }
-    }, 20_000);
-    return () => clearTimeout(safetyTimer);
-  }, [done]);
+  // Sin tope propio: el que corta es el timeout de la fetch (60s en
+  // LaLecturaExperience), que termina en `done`. Un tope de 20s acá forzaba
+  // "No pudimos generar tu lectura" mientras la IA todavía escribía.
 
   // El checklist deja de avanzar en el penúltimo paso hasta que `done` sea
   // real — si la IA tarda (puede pasar), esos ~10s+ se sentían como un
@@ -195,7 +185,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         {/* Overline — framing the process, not the price */}
         <motion.p
           variants={fadeIn(0.4)}
-          className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted"
+          className="text-sm font-medium text-muted label-caps"
         >
           Construyendo tu lectura
         </motion.p>
@@ -206,7 +196,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeOut", delay: reduceMotion ? 0 : 0.08 }}
-          className="mt-3 text-balance font-heading text-2xl uppercase leading-[1.05] tracking-tight text-foreground sm:text-3xl"
+          className="mt-3 text-balance font-heading text-2xl leading-[1.05] text-foreground sm:text-3xl label-caps"
         >
           {hero}
         </motion.h3>
@@ -239,7 +229,7 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
         {/* Meta row — state word + step counter */}
         <motion.div variants={fadeIn(0.4)} className="mt-3 flex items-baseline justify-between">
           <p
-            className={`font-mono text-xs uppercase tracking-[0.2em] transition-colors duration-300 ${
+            className={`text-sm transition-colors duration-300 label-caps ${
               isReady ? "text-accent" : "text-muted/70"
             }`}
           >
@@ -317,16 +307,9 @@ export default function BuildingMolino({ done, onComplete }: BuildingMolinoProps
             transition={{ duration: reduceMotion ? 0 : 0.4 }}
             className="mt-4 text-center font-heading text-sm italic text-muted leading-relaxed max-w-md whitespace-pre-line mx-auto"
           >
-            {`Ya casi. Algo grande está por revelarse...
-
-Tu mapa no te va a decir qué hacer.
-Te va a dar la claridad que necesitás para decidir.
-
-No es magia.
-Es matemática que lleva siglos esperándote.
-
-Y cuando lo veas,
-no vas a poder volver a mirarte igual.`}
+            {`La primera vez tu lectura se escribe desde cero
+y puede tardar hasta un minuto.
+No cierres esta página.`}
           </motion.p>
         )}
       </motion.div>

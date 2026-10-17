@@ -87,6 +87,9 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   const { isPremium } = usePremiumAccess(profile.name, profile.birthDate);
 
   const hasFetched = useRef(false);
+  // Antes de saber si pagó no se muestra la animación de la lectura paga (el
+  // que no pagó la veía un instante antes del paywall): solo un molino quieto.
+  const [started, setStarted] = useState(false);
   // Guard de montaje, NO de cancelación por cleanup: el código anterior
   // ponía `cancelled = true` apenas el setStep interno (preparing → ready)
   // re-corría el efecto — y como `step` está en sus dependencias, la
@@ -122,16 +125,14 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
     fetchLectura(profile).then(applyLecturaResult);
   }, [profile, applyLecturaResult]);
 
-  // Arranca la generación UNA vez por perfil (guard de hasFetched). setStep
-  // transiciona preparing → ready sin cancelar nada: el fetch corre en
-  // background y la UI no se bloquea mientras tanto.
+  // Arranca la generación UNA vez por perfil (guard de hasFetched): el fetch
+  // corre en background y la UI no se bloquea mientras tanto.
   const startLectura = useCallback(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
+    setStarted(true);
+    // 'preparing' hasta que la lectura se revela (ahí pasa a 'idle').
     setStep('preparing');
-    setTimeout(() => {
-      if (isMounted.current) setStep('ready');
-    }, 0);
     launchLecturaFetch();
   }, [launchLecturaFetch, setStep]);
 
@@ -174,11 +175,11 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
 
   // El banner fijo (PremiumActivationFeedback) es una confirmación
   // transitoria post-activación, no un aviso permanente: apenas la lectura
-  // está en pantalla se descarta solo, y el paso 'ready' deja de quedar
-  // guardado en localStorage para tapar el header en cada visita siguiente.
+  // está en pantalla se descarta solo — también cuando la generación arranca
+  // DESPUÉS de reabrir una lectura cacheada (refresco silencioso).
   useEffect(() => {
-    if (revealed) setStep('idle');
-  }, [revealed, setStep]);
+    if (revealed && step !== 'idle') setStep('idle');
+  }, [revealed, step, setStep]);
 
   const userAnimal = typeof profile.chineseZodiac === "string" ? profile.chineseZodiac : "";
 
@@ -219,7 +220,20 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
   // pagó ve la animación solo la primera vez y después su lectura + chat
   // directo (el caché de /lectura reabre con `revealed=true`, ver reproceso
   // de abajo).
-  const locked = isPremium === false && !interpretation;
+  //
+  // Una vez montado, PremiumGate queda montado hasta que la lectura se revela:
+  // si se desmontara apenas `isPremium` pasa a true (lo invalida el propio
+  // desbloqueo), la confirmación del pago destellaba y desaparecía. La vuelta
+  // de Mercado Pago (o de /premium/claim) lo monta de entrada aunque el webhook
+  // ya haya otorgado el acceso: es PremiumGate quien confirma el pago, muestra
+  // pendiente/rechazado y limpia los parámetros de la URL.
+  const [gateShown, setGateShown] = useState(false);
+  useEffect(() => {
+    if (isPremium === false || /[?&](payment_status|claimed)=/.test(window.location.search)) {
+      setGateShown(true);
+    }
+  }, [isPremium]);
+  const locked = gateShown && !revealed;
 
   return (
     <section className="bg-background border-t border-ink/10">
@@ -260,6 +274,10 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               </div>
             </PremiumGate>
           </div>
+        ) : !revealed && !started ? (
+          <div className="flex justify-center py-24" aria-busy="true">
+            <Logo className="h-8 w-8 text-accent/40" />
+          </div>
         ) : !revealed ? (
           <div className="pt-4 pb-16">
             <BuildingMolino done={fetchDone} onComplete={() => setRevealed(true)} />
@@ -286,7 +304,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
               transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1], delay: reduceMotion ? 0 : 0.1 }}
               className="mb-16 sm:mb-20"
             >
-              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted/70 mb-4">
+              <p className="text-sm text-muted/70 mb-4 label-caps">
                 Lo que sigue sale de tu mapa
               </p>
               {interpretation.opening && (
@@ -377,7 +395,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     pensado para superficies oscuras. */}
                 <div className="flex items-center gap-3 mb-6">
                   <span className="w-6 h-px bg-accent-light" aria-hidden="true" />
-                  <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent-light">
+                  <p className="text-sm text-accent-light label-caps">
                     El punto ciego
                   </p>
                 </div>
@@ -418,7 +436,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
                     <div key={label} className="bg-paper p-6 sm:p-7">
                       <div className="flex items-baseline gap-2 mb-3">
                         <span className="font-mono text-xs text-accent">{num}</span>
-                        <h3 className="font-heading text-sm uppercase tracking-[0.1em] text-foreground">
+                        <h3 className="font-heading text-sm text-foreground label-caps">
                           {label}
                         </h3>
                       </div>
@@ -496,7 +514,7 @@ export default function LaLecturaExperience({ profile, catalog }: Props) {
         <div className="mt-16 pt-8 border-t border-ink/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <Link
             href="/profile"
-            className="text-xs font-mono uppercase tracking-[0.15em] text-muted hover:text-accent transition-colors"
+            className="text-sm text-muted hover:text-accent transition-colors label-caps"
           >
             ← Volver a tu mapa
           </Link>

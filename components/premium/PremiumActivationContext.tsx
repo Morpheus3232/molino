@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useCallback, useState, type ReactNode } from 'react';
 
-export type ActivationStep = 'idle' | 'submitting' | 'success' | 'preparing' | 'ready' | 'error';
+export type ActivationStep = 'idle' | 'submitting' | 'success' | 'preparing' | 'error';
 
 interface PremiumActivationContextValue {
   step: ActivationStep;

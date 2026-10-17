@@ -17,7 +17,7 @@ import ChatCreditsBadge from "./ChatCreditsBadge";
 import ChatReloadModal from "./ChatReloadModal";
 import ChatTurnItem, { type ChatTurnData } from "./ChatTurnItem";
 import ChatInputBox from "./ChatInputBox";
-import { Sparkles, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 export interface PremiumChatSectionProps {
   profile: UserProfile;
@@ -51,6 +51,30 @@ export default function PremiumChatSection({
   const [reloadNotice, setReloadNotice] = useState<string | null>(null);
 
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
+
+  // Cada respuesta descuenta una de las 50 preguntas pagas: no se pierde al
+  // recargar. Solo los turnos terminados; uno en curso o fallido no se guarda.
+  const turnsKey = `molino_chat_turns_v1::${profile.birthDate}::${(profile.name || "").trim().toLowerCase()}`;
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(turnsKey);
+      if (raw) setTurns(JSON.parse(raw) as ChatTurnData[]);
+    } catch {
+      // Storage bloqueado o JSON corrupto: se arranca sin historial.
+    }
+  }, [turnsKey]);
+  useEffect(() => {
+    const done = turns.filter((t) => t.answer && !t.loading);
+    if (done.length === 0) return;
+    try {
+      localStorage.setItem(
+        turnsKey,
+        JSON.stringify(done.map(({ question, answer }) => ({ question, answer, loading: false, error: null }))),
+      );
+    } catch {
+      // Best effort.
+    }
+  }, [turns, turnsKey]);
 
   const scrollToBottom = () => {
     setTimeout(() => {
@@ -183,8 +207,7 @@ export default function PremiumChatSection({
   if (isPremium === false) {
     return (
       <div className="rounded-[--radius-xl] bg-ink text-paper p-8 border border-paper/10 text-center">
-        <Sparkles className="w-8 h-8 text-accent-light mx-auto mb-3" />
-        <h3 className="font-display text-2xl uppercase tracking-tight text-paper mb-2">
+        <h3 className="font-display text-2xl text-paper mb-2 label-caps">
           Preguntale a tu mapa
         </h3>
         <p className="text-sm text-paper/70 max-w-md mx-auto leading-relaxed">

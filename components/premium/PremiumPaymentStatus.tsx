@@ -12,13 +12,16 @@ const blockVariants = {
 };
 
 interface PremiumPaymentStatusProps {
-  state: Extract<GateState, 'paying' | 'pay_error' | 'verifying' | 'verifying_redirect'>;
+  state: Extract<GateState, 'paying' | 'pay_error' | 'verifying' | 'verifying_redirect' | 'pending'>;
   checkoutLoading: boolean;
   chargePriceUsd: number;
   payError: string | null;
   verificationError: string | null;
   pollTimedOut: boolean;
   startCheckout: () => void;
+  onCheckAgain: () => void;
+  pendingChecking: boolean;
+  pendingNotYet: boolean;
   setState: (state: GateState) => void;
   setVerificationError: (error: string | null) => void;
   setShowRecover: (show: boolean) => void;
@@ -37,6 +40,9 @@ export default function PremiumPaymentStatus({
   verificationError,
   pollTimedOut,
   startCheckout,
+  onCheckAgain,
+  pendingChecking,
+  pendingNotYet,
   setState,
   setVerificationError,
   setShowRecover,
@@ -149,6 +155,30 @@ export default function PremiumPaymentStatus({
                   Recuperar acceso
                 </Button>
               </>
+            )}
+          </motion.div>
+        )}
+
+        {state === 'pending' && (
+          <motion.div key="pending" variants={blockVariants} initial="hidden" animate="visible" exit="exit">
+            <p className="label-micro mb-3">Pago pendiente · Mercado Pago</p>
+            <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
+              Tu pago está registrado. Falta que se acredite.
+            </h3>
+            <p className="text-sm text-muted leading-relaxed mb-3">
+              Si pagaste en efectivo o por transferencia, Mercado Pago lo acredita cuando
+              lo recibe; según el medio puede tardar desde minutos hasta un par de días.
+              No hace falta pagar de nuevo.
+            </p>
+            <p className="text-sm text-muted leading-relaxed mb-6">
+              Cuando se acredite te llega un email con el enlace a tu lectura, y si volvés
+              a esta página desde este dispositivo la vas a encontrar abierta.
+            </p>
+            <Button variant="accent" onClick={onCheckAgain} disabled={pendingChecking}>
+              {pendingChecking ? 'Revisando…' : 'Revisar si ya se acreditó'}
+            </Button>
+            {pendingNotYet && !pendingChecking && (
+              <p role="status" className="mt-3 text-xs text-muted">Todavía no figura acreditado.</p>
             )}
           </motion.div>
         )}

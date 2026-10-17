@@ -1,73 +1,23 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Loader2, AlertCircle, ArrowRight, X } from 'lucide-react';
+import { CheckCircle2, Loader2, AlertCircle, X } from 'lucide-react';
 import { usePremiumActivation } from './PremiumActivationContext';
 import { useSafeReducedMotion } from '@/lib/hooks/useSafeReducedMotion';
-import Button from '@/components/ui/Button';
-
-const ACTIVATION_STORAGE_KEY = 'molino.activation-step.v1';
-
-function readStoredStep(): string | null {
-  try {
-    const raw = window.localStorage.getItem(ACTIVATION_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (typeof parsed.step === 'string') return parsed.step;
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-function storeStep(step: string) {
-  try {
-    window.localStorage.setItem(ACTIVATION_STORAGE_KEY, JSON.stringify({ step, timestamp: Date.now() }));
-  } catch {
-    // localStorage unavailable
-  }
-}
-
-function clearStoredStep() {
-  try {
-    window.localStorage.removeItem(ACTIVATION_STORAGE_KEY);
-  } catch {
-    // ignore
-  }
-}
 
 export default function PremiumActivationFeedback() {
   const { step, setStep } = usePremiumActivation();
   const reduceMotion = useSafeReducedMotion();
 
-  const stored = readStoredStep();
-
-  // Derive effective step: live context takes priority, fallback to stored value
-  const effectiveStep = step !== 'idle' ? step : (stored ?? 'idle');
-
-  // Persist step changes to localStorage so the feedback survives rerenders
-  useEffect(() => {
-    if (step !== 'idle') {
-      storeStep(step);
-    } else {
-      clearStoredStep();
-    }
-  }, [step]);
-
-  const handleViewReading = useCallback(() => {
-    const el = document.getElementById('lectura-contenido');
-    if (el) {
-      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-      el.focus({ preventScroll: true });
-    }
-  }, [reduceMotion]);
-
   const handleDismiss = useCallback(() => {
     setStep('idle');
   }, [setStep]);
 
-  const isVisible = effectiveStep !== 'idle';
+  // Solo el paso de esta sesión: guardarlo en localStorage (para sobrevivir
+  // a una recarga) dejaba el banner pegado — se leía en el render y el
+  // borrado del efecto nunca volvía a renderizar.
+  const isVisible = step !== 'idle';
 
   if (!isVisible) return null;
 
@@ -87,7 +37,7 @@ export default function PremiumActivationFeedback() {
         >
           <div className="mx-auto max-w-2xl px-4 sm:px-6 py-3 sm:py-4">
             {/* SUBMITTING */}
-            {effectiveStep === 'submitting' && (
+            {step === 'submitting' && (
               <div className="flex items-center gap-3">
                 <Loader2 className="w-5 h-5 text-accent shrink-0 animate-spin" aria-hidden="true" />
                 <p className="text-sm text-foreground font-heading">Activando acceso…</p>
@@ -95,7 +45,7 @@ export default function PremiumActivationFeedback() {
             )}
 
             {/* SUCCESS */}
-            {effectiveStep === 'success' && (
+            {step === 'success' && (
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="flex-1 min-w-0">
@@ -114,7 +64,7 @@ export default function PremiumActivationFeedback() {
             )}
 
             {/* PREPARING */}
-            {effectiveStep === 'preparing' && (
+            {step === 'preparing' && (
               <div className="flex items-center gap-3">
                 <Loader2 className="w-5 h-5 text-accent shrink-0 animate-spin" aria-hidden="true" />
                 <p className="text-sm text-foreground font-heading">
@@ -123,26 +73,8 @@ export default function PremiumActivationFeedback() {
               </div>
             )}
 
-            {/* READY */}
-            {effectiveStep === 'ready' && (
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground font-heading">Tu Lectura Pro está lista.</p>
-                </div>
-                <Button
-                  variant="accent"
-                  size="sm"
-                  onClick={handleViewReading}
-                  className="shrink-0 text-xs"
-                >
-                  Ver mi lectura <ArrowRight className="w-3 h-3 ml-1" aria-hidden="true" />
-                </Button>
-              </div>
-            )}
-
             {/* ERROR */}
-            {effectiveStep === 'error' && (
+            {step === 'error' && (
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-error shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="flex-1 min-w-0">

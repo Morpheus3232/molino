@@ -273,8 +273,7 @@ export default function JournalEditor({
             rows={9}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Querido diario…"
-            className="diary-paper w-full text-lg text-foreground placeholder:italic placeholder:text-muted/60 focus:outline-none resize-y font-sans"
+            className="diary-paper w-full text-lg text-foreground focus:outline-none resize-y font-sans"
             required
           />
 

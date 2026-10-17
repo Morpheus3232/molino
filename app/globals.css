@@ -33,7 +33,9 @@
   /* #5C5C5C verificado a 5.34:1 sobre --color-paper (#FFFFFF) — por
      encima del mínimo WCAG AA de 4.5:1 para texto normal, con margen
      similar al que ya regía en la base oscura. */
-  --color-muted: #5C5C5C;
+  /* #474747: 9.4:1 sobre blanco (antes #5C5C5C, 6.6:1). Más oscuro para que el
+     texto secundario en Garamond se lea bien en el celular. */
+  --color-muted: #474747;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -331,8 +333,6 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 4rem;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
@@ -342,9 +342,17 @@
     font-family: var(--font-sans), var(--font-emoji);
     font-size: var(--step-1-text);
     line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Legibilidad en pantalla: Garamond a 400 tiene trazos muy finos y en el
+       celular se pierden. 450 (eje wght de EB Garamond) le da cuerpo sin
+       parecer negrita. Sin `antialiased`: en macOS afinaba todavía más la
+       letra; el suavizado por defecto del sistema la deja más sólida. */
+    font-weight: 450;
     overflow-x: hidden;
+  }
+
+  /* En pantallas grandes el trazo aguanta: un punto menos de peso. */
+  @media (min-width: 768px) {
+    body { font-weight: 420; }
   }
 
   body::before {

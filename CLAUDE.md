@@ -294,7 +294,7 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 - Español rioplatense (vos), `lang="es-AR"` en todo el sitio
 - **Línea de diseño (2026-10-17): libro de Penguin + el Quijote de la
   portada.** Base blanco y negro: paper `#FFFFFF`, ink `#0A0A0A`, muted
-  `#5C5C5C`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son
+  `#474747`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son
   tinta (los tokens siguen para no tocar ~1000 usos). **Un solo color**:
   `vermilion` (`#CC2E24`, el rojo de la ilustración `public/home/quijote-sancho.jpg`
   un punto más oscuro para pasar AA con texto blanco). Va SOLO en el botón
@@ -311,6 +311,12 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
   `Sparkles`/✨ (donde un ícono es estructural, `Asterisk`). Emoji en Noto
   Emoji monocromo; no usar el selector U+FE0F. Sin gradientes de texto ni
   grain. El Diario (`/journal`) es una hoja de cuaderno: `.diary-paper`.
+- Legibilidad: el cuerpo va a `font-weight` 450 en celular y 420 desde 768px
+  (Garamond a 400 se pierde en pantalla), sin `antialiased`. Ojo:
+  `--color-muted-rgb` NO está definida, así que las clases `text-muted*` de
+  Tailwind no aplican color y heredan el del padre; el gris que sí rige es el
+  de `p { color: var(--color-muted) }`. Definirla volvería grises cientos de
+  textos de golpe (algunos sobre fondo negro): hacerlo solo revisando.
 - Radio 0 en los 4 tokens (página impresa); `rounded-full` sigue para pastillas.
   No usar `rounded-2xl`/`rounded-3xl` (`lib/__tests__/radius-tokens.test.ts`).
   Sombras: `sm`/`md` no existen; `lg`/`xl` solo para lo que flota.

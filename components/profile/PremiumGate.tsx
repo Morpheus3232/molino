@@ -7,7 +7,7 @@ import { startLoading, stopLoading } from '@/lib/utils/loadingSignal';
 import { useDictionary } from '@/lib/i18n/useDictionary';
 import { savePremiumTokenClient, getOrCreateProfileSalt } from '@/lib/premium';
 import { invalidatePremiumAccessCache } from '@/lib/hooks/usePremiumAccess';
-import { useCommitPremiumUnlock, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
+import { useCommitPremiumUnlock, cleanPaymentParams, type GateState } from '@/lib/hooks/useCommitPremiumUnlock';
 import { usePremiumCoupon } from '@/lib/hooks/usePremiumCoupon';
 import { usePremiumRecovery } from '@/lib/hooks/usePremiumRecovery';
 import { usePremiumCheckout } from '@/lib/hooks/usePremiumCheckout';
@@ -84,6 +84,9 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
   const [justUnlocked, setJustUnlocked] = useState(false);
   const [pollTimedOut, setPollTimedOut] = useState(false);
   const [verificationError, setVerificationError] = useState<string | null>(null);
+  // Volvió de Mercado Pago sin pagar (rechazado o abandonado): el paywall
+  // vuelve, pero diciendo qué pasó en vez de hacer como si nada.
+  const [paymentFailed, setPaymentFailed] = useState(false);
   const [flags, setFlags] = useState<FeatureFlags>(getDefaultFlags());
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pollAttemptsRef = useRef(0);
@@ -150,6 +153,22 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     }
   }, [name, birthDate]);
 
+  // Pago pendiente: una consulta puntual, no el polling de 60s de 'verifying'
+  // (que termina en "todavía no vemos el pago" — un efectivo tarda más que eso).
+  const [pendingChecking, setPendingChecking] = useState(false);
+  const [pendingNotYet, setPendingNotYet] = useState(false);
+  const checkPending = useCallback(async () => {
+    setPendingChecking(true);
+    const premium = await checkServer();
+    setPendingChecking(false);
+    setPendingNotYet(!premium);
+    if (premium) {
+      setState('unlocked');
+      setJustUnlocked(true);
+      analytics.trackPremiumUnlocked();
+    }
+  }, [checkServer]);
+
   useEffect(() => {
     const paymentStatus = getSearchParam('payment_status');
     const paymentId = getSearchParam('payment_id') || getSearchParam('collection_id');
@@ -167,7 +186,8 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           if (data.verified) {
             commitUnlock(data.premiumToken, { cleanUrl: true });
           } else {
-            setVerificationError(data.reason || 'No se pudo verificar el pago');
+            // El 503 trae su explicación en `error`, no en `reason`.
+            setVerificationError(data.reason || data.error || 'No se pudo verificar el pago');
             setState('pay_error');
           }
         })
@@ -176,6 +196,28 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           setState('pay_error');
         });
       return;
+    }
+
+    // Efectivo, transferencia o un pago en revisión: Mercado Pago lo acredita
+    // después y el webhook otorga el acceso. Sin esto la persona volvía al
+    // paywall con el botón de comprar, como si no hubiera pagado.
+    if (paymentStatus === 'pending') {
+      cleanPaymentParams();
+      checkServer().then(premium => {
+        if (premium) {
+          setState('unlocked');
+          setJustUnlocked(true);
+          analytics.trackPremiumUnlocked();
+        } else {
+          setState('pending');
+        }
+      });
+      return;
+    }
+
+    if (paymentStatus === 'failed') {
+      cleanPaymentParams();
+      setPaymentFailed(true);
     }
 
     // Vuelta de /premium/claim (recuperación por link, otro dispositivo): el
@@ -266,10 +308,16 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
     // propia en vez de aparecer sin más. Un usuario que vuelve otro día
     // (justUnlocked queda false, nunca se seteó) ve el contenido directo.
     if (!justUnlocked) return <>{children}</>;
-    return <PremiumUnlockReveal preview={preview}>{children}</PremiumUnlockReveal>;
+    return <PremiumUnlockReveal>{children}</PremiumUnlockReveal>;
   }
 
   return (
+    <>
+    {state === 'locked' && paymentFailed && (
+      <p role="status" className="mb-6 rounded-[--radius-md] border border-ink/10 bg-paper-alt px-4 py-3 text-sm text-muted">
+        El pago no se completó y no se te cobró nada. Podés intentarlo de nuevo con otro medio.
+      </p>
+    )}
     <AnimatePresence mode="wait">
       {state === 'locked' && (
         <PremiumPaywallContent
@@ -299,7 +347,7 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         />
       )}
 
-      {(state === 'paying' || state === 'pay_error' || state === 'verifying' || state === 'verifying_redirect') && (
+      {(state === 'paying' || state === 'pay_error' || state === 'verifying' || state === 'verifying_redirect' || state === 'pending') && (
         <PremiumPaymentStatus
           state={state}
           checkoutLoading={checkoutLoading}
@@ -308,6 +356,9 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
           verificationError={verificationError}
           pollTimedOut={pollTimedOut}
           startCheckout={() => startCheckout()}
+          onCheckAgain={checkPending}
+          pendingChecking={pendingChecking}
+          pendingNotYet={pendingNotYet}
           setState={setState}
           setVerificationError={setVerificationError}
           setShowRecover={setShowRecover}
@@ -316,5 +367,6 @@ export default function PremiumGate({ name, birthDate, preview, children, curren
         />
       )}
     </AnimatePresence>
+    </>
   );
 }

@@ -717,8 +717,8 @@ function MobileLink({
     <Link
       href={link.href}
       aria-current={isActive(link.href) ? "page" : undefined}
-      className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
-        isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground hover:text-accent"
+      className={`flex items-center min-h-[48px] px-3 py-2 text-lg font-medium rounded-xl transition-colors ${
+        isActive(link.href) ? "bg-accent/10 text-accent font-semibold" : "text-foreground hover:bg-ink/5"
       }`}
       onClick={onClick}
     >
@@ -740,7 +740,7 @@ function MobileGroups({
 }) {
   return (
     <>
-      <p className="px-3 pt-4 pb-1 text-sm text-muted/70 label-caps">
+      <p className="px-3 pt-5 pb-1 text-sm text-foreground font-semibold label-caps border-t border-ink/10 mt-2">
         {heading}
       </p>
       {groups.flatMap((g) => g.links).map((link) => (
@@ -748,8 +748,8 @@ function MobileGroups({
           key={link.href}
           href={link.href}
           aria-current={isActive(link.href) ? "page" : undefined}
-          className={`flex items-center min-h-[44px] px-3 py-2 text-sm font-medium rounded-xl transition-colors ${
-            isActive(link.href) ? "bg-accent/10 text-accent font-bold" : "text-foreground/80 hover:text-accent"
+          className={`flex items-center min-h-[48px] px-3 py-2 text-lg font-medium rounded-xl transition-colors ${
+            isActive(link.href) ? "bg-accent/10 text-accent font-semibold" : "text-foreground hover:bg-ink/5"
           }`}
           onClick={onNavigate}
         >

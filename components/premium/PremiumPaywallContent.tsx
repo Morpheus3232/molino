@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   ChevronDown,
-  Sparkles,
   ShieldCheck,
   Zap,
   KeyRound,
@@ -99,7 +98,7 @@ export default function PremiumPaywallContent({
     {
       icon: MessageSquare,
       title: "Preguntale a Molino",
-      desc: "50 consultas iniciales con la IA que ya conoce tu mapa, con recargas disponibles.",
+      desc: "50 preguntas incluidas con la IA que ya conoce tu mapa.",
     },
     {
       icon: Calendar,
@@ -143,8 +142,7 @@ export default function PremiumPaywallContent({
 
       {/* ── Badges ── */}
       <div className="flex flex-wrap items-center gap-2.5 mb-8">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] bg-accent/15 border border-accent/30 text-accent font-mono text-[11px] uppercase tracking-wider font-bold">
-          <Sparkles className="w-3.5 h-3.5" />
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[--radius-sm] bg-accent/15 border border-accent/30 text-accent text-sm font-bold label-caps">
           {t.premium.eyebrow}
         </span>
         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[--radius-sm] bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-mono text-[11px] font-bold">
@@ -178,7 +176,7 @@ export default function PremiumPaywallContent({
       {/* ── Beneficios ── */}
       <div className="rounded-[--radius-lg] border border-ink/10 bg-card p-5 sm:p-6 mb-8 shadow-sm">
         <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-ink/10">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold">
+          <span className="text-sm text-accent font-bold label-caps">
             {t.premium.whatYouGetLabel}
           </span>
           <span className="text-xs font-mono text-muted">{t.premium.benefitsCount}</span>
@@ -221,7 +219,7 @@ export default function PremiumPaywallContent({
       <div className="rounded-[--radius-lg] border border-accent/30 bg-card p-5 sm:p-6 mb-8 shadow-lg relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-4">
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent font-bold block mb-1">
+            <span className="text-sm text-accent font-bold block mb-1 label-caps">
               Acceso inmediato
             </span>
             <div className="flex items-baseline gap-2.5">
@@ -250,7 +248,6 @@ export default function PremiumPaywallContent({
             onClick={onCheckout}
             className="flex items-center justify-center gap-2 py-4 text-base font-bold shadow-lg hover:shadow-accent/20 active:scale-[0.99]"
           >
-            <Sparkles className="w-4 h-4" />
             {t.premium.payWithMercadoPago} · ${chargePriceUsd} {t.premium.priceSuffix}
           </Button>
         ) : (
@@ -311,7 +308,6 @@ export default function PremiumPaywallContent({
           className="w-full flex items-center justify-between text-left group cursor-pointer"
         >
           <span className="font-heading text-sm font-bold text-foreground group-hover:text-accent transition-colors flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-accent" />
             {t.premium.comparisonTitle}
           </span>
           <ChevronDown
@@ -400,7 +396,7 @@ export default function PremiumPaywallContent({
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value)}
                   placeholder={t.premium.couponPlaceholder}
-                  className="flex-1 px-3 py-2 text-sm rounded-[--radius-md] border border-ink/15 bg-background text-foreground focus:outline-none focus:border-accent transition-colors font-mono uppercase"
+                  className="flex-1 px-3 py-2 text-sm rounded-[--radius-md] border border-ink/15 bg-background text-foreground focus:outline-none focus:border-accent transition-colors label-caps"
                 />
                 <Button
                   type="submit"

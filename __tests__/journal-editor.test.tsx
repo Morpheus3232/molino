@@ -55,7 +55,7 @@ describe("JournalEditor component (Fase 2)", () => {
     const onSave = vi.fn().mockResolvedValue(undefined);
     render(<JournalEditor profile={null} onSaveEntry={onSave} />);
 
-    const textarea = screen.getByPlaceholderText(/Querido diario/i);
+    const textarea = screen.getByLabelText("Lo que querés escribir hoy");
     fireEvent.change(textarea, { target: { value: "Hoy fue un día de claridad y avances." } });
 
     const submitBtn = screen.getByRole("button", { name: /Guardar en el diario/i });
