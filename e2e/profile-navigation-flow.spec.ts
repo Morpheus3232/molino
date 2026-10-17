@@ -18,7 +18,7 @@ test.describe("Flujo Crítico Completo — Portada → Onboarding → Perfil →
     await yyyyInput.pressSequentially("1990");
 
     const generateBtn = page.getByRole("button", { name: /ver tu mapa/i }).first();
-    await generateBtn.click({ force: true });
+    await generateBtn.click();
 
     await page.waitForURL(/\/onboarding|\/profile/, { waitUntil: "commit", timeout: 15000 });
     expect(page.url()).toMatch(/\/onboarding|\/profile/);

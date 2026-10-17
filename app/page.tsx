@@ -1,5 +1,6 @@
 import HeroInstrument from "@/components/sections/HeroInstrument";
 import HoyClient from "@/app/hoy/HoyClient";
+import HomeAlmanac from "@/components/sections/HomeAlmanac";
 import { SITE_URL, createRouteMetadata } from "@/lib/seo";
 
 const homeSchemas = [
@@ -94,15 +95,21 @@ export default function HomePage() {
       <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
         {/* Hoy — lo mismo que /hoy, visible para todos: sin mapa es la
             energía universal del día; con mapa suma Año/Mes/Día Personal. */}
-        <section aria-labelledby="hoy-home" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24">
-          <h2 id="hoy-home" className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-6">
-            Tu energía de hoy
-          </h2>
-          <HoyClient />
+        <section aria-labelledby="hoy-home" className="mx-auto max-w-5xl px-4 sm:px-8 pt-24 sm:pt-28 pb-16 sm:pb-24">
+          <HomeAlmanac />
+          {/* Reserva la altura que ocupa el contenido ya cargado (medida sin
+              mapa, el caso más bajo): el esqueleto de carga es mucho más
+              corto y, sin esto, el formulario de abajo salta al hidratar y un
+              click destinado a "Ver tu mapa" cae en otro botón. */}
+          <div className="min-h-[2800px] sm:min-h-[2000px] lg:min-h-[1780px]">
+            <HoyClient />
+          </div>
         </section>
 
-        {/* Hero — Date Input */}
-        <HeroInstrument />
+        {/* Hero — Date Input. Hoja aparte: el día es de todos, el mapa es tuyo. */}
+        <div className="border-t border-border bg-paper-alt/60">
+          <HeroInstrument />
+        </div>
       </main>
 
       {/* JSON-LD Schema */}

@@ -58,7 +58,10 @@ export default function SiteIntro() {
     };
   }, [reducedMotion]);
 
-  if (phase === "gone" || reducedMotion) return null;
+  // Solo `phase`: useReducedMotion() es null en el servidor y true en el
+  // primer render del cliente, así que cortar por reducedMotion acá rompe
+  // la hidratación. El efecto ya pasa a "gone" en ese caso.
+  if (phase === "gone") return null;
 
   return (
     <AnimatePresence>
