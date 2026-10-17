@@ -53,7 +53,7 @@ interface NavGroup {
 // este header trata de eliminar.
 const NO_PROFILE_LINKS = {
   atlas: { href: "/atlas", label: "Atlas" },
-  journal: { href: "/journal", label: "Journal" },
+  journal: { href: "/journal", label: "Diario" },
 } satisfies Record<string, NavLink>;
 
 // Mismo nombre de grupo que con perfil, menos ítems: sin mapa, Semana y Año
@@ -71,7 +71,7 @@ const TIME_GROUPS_NO_PROFILE: NavGroup[] = [
 // labels arrancando igual, la palabra que diferencia caía siempre segunda y
 // el ojo tenía que leer cada label entero en vez de escanear.
 const PROFILE_LINKS = {
-  journal: { href: "/journal", label: "Journal" },
+  journal: { href: "/journal", label: "Diario" },
 } satisfies Record<string, NavLink>;
 
 const MODES_LINKS: NavLink[] = [

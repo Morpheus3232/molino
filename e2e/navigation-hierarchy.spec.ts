@@ -138,7 +138,7 @@ test.describe("Navegación — sin perfil", () => {
     await expect(mobileMenu.getByText("Tiempo")).toBeVisible();
     await expect(mobileMenu.getByText("Modos")).toBeVisible();
     await expect(mobileMenu.getByText("Proyecto")).toBeVisible();
-    await expect(mobileMenu.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: "Diario", exact: true })).toBeVisible();
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(391);
   });
@@ -164,7 +164,7 @@ test.describe("Navegación — con perfil", () => {
     await expect(nav.getByRole("button", { name: "Conocimiento" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Tiempo" })).toBeVisible();
     await expect(nav.getByRole("button", { name: "Modos" })).toBeVisible();
-    await expect(nav.getByRole("link", { name: "Journal" })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Diario" })).toBeVisible();
     await expect(nav.getByRole("button", { name: /explorar/i })).toHaveCount(0);
     await expect(page.getByRole("button", { name: /^guardar$/i })).toBeVisible();
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -212,11 +212,11 @@ test.describe("Navegación — con perfil", () => {
     await page.waitForURL("**/socios");
   });
 
-  test("Journal link with perfil navega al atlas de lecturas", async ({ page }) => {
+  test("Diario link with perfil navega al atlas de lecturas", async ({ page }) => {
     await seedProfile(page);
     const nav = page.getByRole("navigation", { name: "Navegación principal" });
-    await expect(nav.getByRole("link", { name: "Journal" })).toBeVisible();
-    await nav.getByRole("link", { name: "Journal", exact: true }).click();
+    await expect(nav.getByRole("link", { name: "Diario" })).toBeVisible();
+    await nav.getByRole("link", { name: "Diario", exact: true }).click();
     await page.waitForURL("**/journal");
   });
 
@@ -238,7 +238,7 @@ test.describe("Navegación — con perfil", () => {
     await expect(mobileMenu.getByText("Tiempo")).toBeVisible();
     await expect(mobileMenu.getByText("Modos")).toBeVisible();
     await expect(mobileMenu.getByText("Proyecto")).toBeVisible();
-    await expect(mobileMenu.getByRole("link", { name: "Journal", exact: true })).toBeVisible();
+    await expect(mobileMenu.getByRole("link", { name: "Diario", exact: true })).toBeVisible();
     await expect(mobileMenu.getByRole("button", { name: /^guardar$/i })).toBeVisible();
     const bodyWidth = await page.evaluate(() => document.documentElement.scrollWidth);
     expect(bodyWidth).toBeLessThanOrEqual(391);
@@ -280,7 +280,7 @@ test.describe("Footer — enlaces actualizados", () => {
   test("footer: Conocer y explorar tiene las entradas del sistema", async ({ page }) => {
     await page.goto("/");
     const footer = page.locator("footer");
-    for (const label of ["Numerología", "Astrología", "Zodíaco chino", "Blog", "Biblioteca", "Academia", "Afinidades", "Atlas", "Calendario", "Journal"]) {
+    for (const label of ["Numerología", "Astrología", "Zodíaco chino", "Blog", "Biblioteca", "Academia", "Afinidades", "Atlas", "Calendario", "Diario"]) {
       await expect(footer.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
   });

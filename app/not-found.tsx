@@ -12,7 +12,7 @@ const SUGGESTED_ROUTES = [
   { href: "/hoy", label: "Energía de Hoy", icon: Sun, desc: "Foco y ciclo diario" },
   { href: "/onboarding", label: "Calcular Mapa", icon: Asterisk, desc: "Tu mapa en 30 seg" },
   { href: "/pareja", label: "Modo Pareja", icon: Heart, desc: "Sinergia de dos mapas" },
-  { href: "/journal", label: "Journal", icon: BookOpen, desc: "Registro reflexivo" },
+  { href: "/journal", label: "Diario", icon: BookOpen, desc: "Tu cuaderno privado" },
 ];
 
 export default function NotFound() {

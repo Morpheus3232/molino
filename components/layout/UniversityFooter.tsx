@@ -30,7 +30,7 @@ const FOOTER_COLUMNS = [
       { href: "/affinity", label: "Afinidades" },
       { href: "/atlas", label: "Atlas" },
       { href: "/calendario", label: "Calendario" },
-      { href: "/journal", label: "Journal" },
+      { href: "/journal", label: "Diario" },
     ],
   },
   {

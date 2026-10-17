@@ -92,7 +92,7 @@ describe("Header — navegación con perfil", () => {
     expect(src).not.toMatch(/href="\/ai"/);
     expect(src).toContain('label="Afinidades"');
     expect(src).toContain('label="Tiempo"');
-    expect(src).toContain('label: "Journal"');
+    expect(src).toContain('label: "Diario"');
   });
 
   test("Conocimiento NO desaparece del centro cuando hay perfil", () => {
