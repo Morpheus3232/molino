@@ -83,9 +83,9 @@ export default function HeroInstrument() {
     return (
       <section
         id="mapa-form"
-        className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
+        className="relative bg-paper flex items-center justify-center overflow-hidden"
       >
-        <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
+        <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 pt-12 pb-8 sm:pt-16 sm:pb-10 text-center w-full">
           <motion.div {...fadeUpMount} className="space-y-10">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted mb-6">
@@ -117,9 +117,9 @@ export default function HeroInstrument() {
   return (
     <section
       id="mapa-form"
-      className="relative bg-paper min-h-[calc(100dvh-4rem)] flex items-center justify-center overflow-hidden"
+      className="relative bg-paper flex items-center justify-center overflow-hidden"
     >
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 py-16 sm:py-24 text-center w-full">
+      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-8 pt-12 pb-8 sm:pt-16 sm:pb-10 text-center w-full">
           <div aria-live="polite" aria-atomic="true" className="sr-only">
             {isSubmitting && "Generando tu mapa..."}
           </div>

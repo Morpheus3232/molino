@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
 import HeroInstrument from "@/components/sections/HeroInstrument";
+import HoyClient from "@/app/hoy/HoyClient";
 import { SITE_URL, createRouteMetadata } from "@/lib/seo";
 
 const homeSchemas = [
@@ -92,6 +92,15 @@ export default function HomePage() {
   return (
     <>
       <main className="relative z-10 min-h-screen bg-paper overflow-hidden">
+        {/* Hoy — lo mismo que /hoy, visible para todos: sin mapa es la
+            energía universal del día; con mapa suma Año/Mes/Día Personal. */}
+        <section aria-labelledby="hoy-home" className="mx-auto max-w-8xl px-4 sm:px-8 lg:px-12 pt-16 sm:pt-24">
+          <h2 id="hoy-home" className="font-heading text-2xl sm:text-3xl font-bold text-foreground mb-6">
+            Tu energía de hoy
+          </h2>
+          <HoyClient />
+        </section>
+
         {/* Hero — Date Input */}
         <HeroInstrument />
       </main>
