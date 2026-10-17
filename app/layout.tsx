@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Newsreader, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Archivo, Archivo_Narrow, Source_Serif_4, IBM_Plex_Mono, Noto_Emoji } from "next/font/google";
 import "./globals.css";
 import AnimatedLayout from "@/components/ui/AnimatedLayout";
 import SiteIntro from "@/components/ui/SiteIntro";
@@ -17,10 +17,16 @@ import MotionFailsafe from "@/components/ui/MotionFailsafe";
 import { SITE_URL, SITE_NAME, OG_IMAGE, siteUrl } from "@/lib/seo";
 import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-sans" });
-const newsreader = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-display" });
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
+// Blanco y negro, tipografía de almanaque impreso: titulares en grotesca
+// angosta (como las hojas de calendario), lectura en serif, datos en mono.
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-sans" });
+const archivoNarrow = Archivo_Narrow({ subsets: ["latin"], style: ["normal", "italic"], display: "swap", variable: "--font-display" });
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], display: "swap", variable: "--font-mono" });
+const archivo = Archivo({ subsets: ["latin"], display: "swap", variable: "--font-heading" });
+// Emoji monocromo: va en cada pila tipográfica antes que el emoji a color del
+// sistema, así los íconos del Atlas (⚽ 🎓 🚗…) quedan en blanco y negro sin
+// tocar los datos. Sin preload: solo se baja en páginas que muestran emoji.
+const notoEmoji = Noto_Emoji({ subsets: ["emoji"], display: "swap", preload: false, variable: "--font-emoji" });
 
 // Root-caused 2026-08-17: title.template above stopped applying past
 // certain route segments because 4 intermediate layouts (herramientas,
@@ -93,7 +99,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F7F4EE",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -170,7 +176,7 @@ export default function RootLayout({
       lang="es-AR"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${newsreader.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
+      className={`${sourceSerif.variable} ${archivoNarrow.variable} ${plexMono.variable} ${archivo.variable} ${notoEmoji.variable}`}
     >
       <head>
         {jsonLd.map((schema, i) => (

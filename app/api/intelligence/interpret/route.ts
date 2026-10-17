@@ -466,7 +466,7 @@ export async function POST(req: NextRequest) {
           howYouOperate: structured.howYouOperate,
           relationalNote: structured.relationalNote,
           closingSynthesis: structured.closingSynthesis,
-          // ⚠️ Esta proyección es una whitelist explícita: un campo que el
+          // ⚠ Esta proyección es una whitelist explícita: un campo que el
           // modelo devuelve y que NO esté listado acá se descarta en silencio,
           // sin error ni log. Agregar un campo al contrato son 7 lugares
           // (types, json schema en aiEngine, MolinoContractJSON en el parser,
@@ -578,7 +578,7 @@ function sanitizeInterpretation(interp: MolinoInterpretation) {
     opening: interp.opening,
     corePattern: interp.corePattern,
     howYouOperate: interp.howYouOperate,
-    // ⚠️ SEGUNDA whitelist explícita en este mismo archivo (la primera es la
+    // ⚠ SEGUNDA whitelist explícita en este mismo archivo (la primera es la
     // proyección de `structured` a `aiResult`, ~90 líneas arriba). Un campo
     // nuevo del contrato tiene que agregarse a AMBAS o se pierde en silencio
     // entre `aiResult` (que sí lo tiene) y la respuesta HTTP (que no) — así

@@ -15,41 +15,41 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#F7F4EE",
+          background: "#FFFFFF",
           fontFamily: "sans-serif",
         }}
       >
         <div style={{
           position: "absolute", top: -120, right: -120,
           width: 420, height: 420, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(154,74,24,0.18) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(97,97,97,0.18) 0%, transparent 70%)",
         }} />
         <svg
           viewBox="0 0 100 100"
           style={{ width: 140, height: 140, marginBottom: 24 }}
           fill="none"
         >
-          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#1D1B17" />
-          <path d="M44,46 Q50,34 56,46 Z" fill="#1D1B17" />
+          <path d="M34,96 L66,96 L56,46 L44,46 Z" fill="#0A0A0A" />
+          <path d="M44,46 Q50,34 56,46 Z" fill="#0A0A0A" />
           <g transform="translate(50 38) rotate(45)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
           </g>
           <g transform="translate(50 38) rotate(135)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
           </g>
           <g transform="translate(50 38) rotate(225)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
           </g>
           <g transform="translate(50 38) rotate(315)">
-            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#1D1B17" />
+            <path d="M0,0 L-3,-5 L-4,-11 L-2,-20 L0,-26 L2,-20 L4,-11 L3,-5 Z" fill="#0A0A0A" />
           </g>
-          <circle cx="50" cy="38" r="3.2" fill="#1D1B17" />
+          <circle cx="50" cy="38" r="3.2" fill="#0A0A0A" />
         </svg>
         <div
           style={{
             fontSize: 48,
             fontWeight: 700,
-            color: "#1D1B17",
+            color: "#0A0A0A",
             letterSpacing: "0.05em",
             textAlign: "center",
           }}
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
           style={{
             fontSize: 22,
             fontWeight: 500,
-            color: "#6A6459",
+            color: "#5C5C5C",
             letterSpacing: "0.15em",
             marginTop: 8,
             textAlign: "center",

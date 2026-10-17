@@ -146,7 +146,7 @@ export default function PremiumPreview({
 
             {/* Section 2: Oráculo Molino AI */}
             <div className="p-6 rounded-lg bg-background border border-ink/10 space-y-3">
-              <div className="flex items-center gap-2 text-[#60A5FA] font-mono text-xs font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-[#A2A2A2] font-mono text-xs font-bold uppercase tracking-wider">
                 <MessageSquare className="w-4 h-4" />
                 <span>Preguntale a Molino (AI)</span>
               </div>

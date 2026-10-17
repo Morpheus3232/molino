@@ -163,7 +163,7 @@ export const KNOWLEDGE_BASE = {
   frameworks: [
     { id: "human-design", name: "Human Design", description: "Tipos y estrategias.", icon: "🧬" },
     { id: "eneagrama", name: "Eneagrama", description: "9 personalidades básicas.", icon: "🧩" },
-    { id: "i-ching", name: "I Ching", description: "Hexagramas y cambio.", icon: "☯️" },
+    { id: "i-ching", name: "I Ching", description: "Hexagramas y cambio.", icon: "☯" },
     { id: "kabbalah", name: "Kabbalah", description: "Árbol de la vida y sefirot.", icon: "🌳" },
     { id: "gene-keys", name: "Gene Keys", description: "Dones y sombras.", icon: "🧪" },
   ],

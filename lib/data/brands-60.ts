@@ -37,7 +37,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "ebay", name: "eBay", type: "brand", country: "Estados Unidos",
-    emoji: "🏷️",
+    emoji: "🏷",
     description: "eBay creó el primer gran mercado de subastas en línea donde cualquier persona puede comprar y vender.",
     keyThemes: ["Subasta", "Comercio", "Comunidad", "Oportunidad"],
     category: "otro",events: [{ id: "ebay-fund", type: "fundacion", label: "Fundación de eBay", year: 1995, date: "1995-09-03", confidence: "exacta", primaryForAffinity: true, description: "Pierre Omidyar programó AuctionWeb en 1995 como web de subastas personales; el primer objeto vendido fue un puntero láser roto.", source: "Documentación histórica" }],
@@ -55,7 +55,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "honda", name: "Honda", type: "brand", country: "Japón",
-    emoji: "🏍️",
+    emoji: "🏍",
     description: "Honda construyó su reputación en motores confiables desde motocicletas hasta automóviles y robótica.",
     keyThemes: ["Ingeniería", "Confiabilidad", "Innovación", "Respeto"],
     category: "otro",events: [{ id: "honda-fund", type: "fundacion", label: "Fundación de Honda Motor Co.", year: 1948, date: "1948-09-24", confidence: "exacta", primaryForAffinity: true, description: "Soichiro Honda, mecánico autodidacta, montó motores de posguerra en bicicletas antes de fundar Honda Motor en 1948 junto a Takeo Fujisawa.", source: "Documentación histórica" }],
@@ -63,7 +63,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "ibm", name: "IBM", type: "brand", country: "Estados Unidos",
-    emoji: "🖥️",
+    emoji: "🖥",
     description: "IBM lideró la revolución de la computación empresarial durante más de un siglo con innovación constante.",
     keyThemes: ["Tecnología", "Confianza", "Empresa", "Legado"],
     category: "otro",events: [{ id: "ibm-fund", type: "fundacion", label: "Fundación de IBM", year: 1911, date: "1911-06-16", confidence: "exacta", primaryForAffinity: true, description: "Charles Ranlett Flint fusionó en 1911 tres empresas de tarjetas perforadas y básculas, dando origen a la futura IBM.", source: "Documentación histórica" }],
@@ -239,7 +239,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "lockheed-martin", name: "Lockheed Martin", type: "brand", country: "Estados Unidos",
-    emoji: "✈️",
+    emoji: "✈",
     description: "Lockheed Martin es el contratista de defensa y aeroespacial más grande del mundo impulsando tecnología de vanguardia.",
     keyThemes: ["Defensa", "Innovación", "Tecnología", "Sigilo"],
     category: "otro",events: [{ id: "lockheed-fund", type: "fundacion", label: "Fundación de Lockheed", year: 1912, confidence: "alta", primaryForAffinity: true, description: "Los hermanos Allan y Malcolm Loughead fundaron en 1912 una fábrica de hidroaviones en Santa Bárbara, precursora del gigante aeroespacial.", source: "Documentación histórica" }],
@@ -257,7 +257,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   // CABALLO
   {
     id: "ferrari", name: "Ferrari", type: "brand", country: "Italia",
-    emoji: "🏎️",
+    emoji: "🏎",
     description: "Ferrari es el símbolo del automovilismo de lujo con una herencia imbatible en la Fórmula 1.",
     keyThemes: ["Velocidad", "Pasión", "Exclusividad", "Legado"],
     category: "otro",events: [{ id: "ferrari-fund", type: "fundacion", label: "Fundación de Ferrari", year: 1939, confidence: "alta", primaryForAffinity: true, description: "Enzo Ferrari fundó en 1939 su escudería tras desvincularse de Alfa Romeo; el primer coche con su nombre, el 125 S, llegó en 1947.", source: "Documentación histórica" }],
@@ -289,7 +289,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "harley-davidson", name: "Harley-Davidson", type: "brand", country: "Estados Unidos",
-    emoji: "🏍️",
+    emoji: "🏍",
     description: "Harley-Davidson es el ícono de la libertad sobre dos ruedas con más de un siglo de tradición motociclista.",
     keyThemes: ["Libertad", "Rebeldía", "Ruta", "Hermandad"],
     category: "otro",events: [{ id: "harley-fund", type: "fundacion", label: "Fundación de Harley-Davidson", year: 1903, confidence: "alta", primaryForAffinity: true, description: "William Harley y los hermanos Davidson ensamblaron en 1903 su primera motocicleta en un cobertizo de Milwaukee.", source: "Documentación histórica" }],
@@ -331,7 +331,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "playstation", name: "PlayStation", type: "brand", country: "Japón",
-    emoji: "🕹️",
+    emoji: "🕹",
     description: "PlayStation redefinió el entretenimiento interactivo con franquicias exclusivas y tecnología de vanguardia.",
     keyThemes: ["Juego", "Innovación", "Inmersión", "Comunidad"],
     category: "otro",events: [{ id: "ps-fund", type: "lanzamiento", label: "Lanzamiento de PlayStation", year: 1994, date: "1994-12-03", confidence: "exacta", primaryForAffinity: true, description: "Sony lanzó PlayStation en 1994 en Japón tras un acuerdo fallido con Nintendo para un lector de CD, que la impulsó a hacer su propia consola.", source: "Documentación histórica" }],
@@ -399,7 +399,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "siemens", name: "Siemens", type: "brand", country: "Alemania",
-    emoji: "⚙️",
+    emoji: "⚙",
     description: "Siemens es el gigante industrial alemán que impulsó la electrificación y automatización global.",
     keyThemes: ["Industria", "Tecnología", "Innovación", "Eficiencia"],
     category: "otro",events: [{ id: "siemens-fund", type: "fundacion", label: "Fundación de Siemens", year: 1847, date: "1847-10-01", confidence: "exacta", primaryForAffinity: true, description: "Werner von Siemens, inventor prusiano, fundó en 1847 en Berlín su taller de telegrafía junto a Johann Georg Halske.", source: "Documentación histórica" }],
@@ -425,7 +425,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   // PERRO
   {
     id: "patagonia-outdoor", name: "Patagonia", type: "brand", country: "Estados Unidos",
-    emoji: "🏔️",
+    emoji: "🏔",
     description: "Patagonia lidera la responsabilidad ambiental corporativa mientras fabrica ropa outdoor de alta calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
     category: "otro",events: [{ id: "patagonia-fund", type: "fundacion", label: "Fundación de Patagonia", year: 1973, confidence: "media", primaryForAffinity: true, description: "El escalador Yvon Chouinard, forjador de pitones de alpinismo, creó en 1973 en Ventura la línea de ropa técnica Patagonia.", source: "Documentación histórica" }],
@@ -457,7 +457,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "rei", name: "REI", type: "brand", country: "Estados Unidos",
-    emoji: "🏕️",
+    emoji: "🏕",
     description: "REI es la cooperativa de equipamiento outdoor más grande de Estados Unidos propiedad de sus miembros.",
     keyThemes: ["Comunidad", "Naturaleza", "Cooperación", "Aventura"],
     category: "otro",events: [{ id: "rei-fund", type: "fundacion", label: "Fundación de REI", year: 1938, confidence: "media", primaryForAffinity: true, description: "Lloyd y Mary Anderson fundaron REI en 1938 como cooperativa de escaladores en Seattle con una cuota de un dólar.", source: "Documentación histórica" }],
@@ -592,7 +592,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "superdry", name: "Superdry", type: "brand",
-    country: "Reino Unido", emoji: "🏷️",
+    country: "Reino Unido", emoji: "🏷",
     category: "ropa",
     description: "Marca británica que mezcla estética japonesa con ropa informal.",
     keyThemes: ["Informal", "Japonés", "Británico", "Estilo"],
@@ -675,7 +675,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "valentino", name: "Valentino", type: "brand",
-    country: "Italia", emoji: "❤️",
+    country: "Italia", emoji: "❤",
     category: "ropa",
     description: "Casa de moda italiana famosa por sus vestidos rojos y alta costura.",
     keyThemes: ["Elegancia", "Alta Costura", "Pasión", "Arte"],
@@ -776,7 +776,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "ann-demeulemeester", name: "Ann Demeulemeester", type: "brand",
-    country: "Bélgica", emoji: "🕊️",
+    country: "Bélgica", emoji: "🕊",
     category: "ropa",
     description: "Diseñadora belga conocida por su estética poética y deconstructivista.",
     keyThemes: ["Poético", "Deconstructivista", "Arte", "Elegancia"],
@@ -914,7 +914,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "moncler", name: "Moncler", type: "brand",
-    country: "Francia", emoji: "⛷️",
+    country: "Francia", emoji: "⛷",
     category: "ropa",
     description: "Marca francesa de plumíferos de lujo que viste a esquiadores y fashionistas.",
     keyThemes: ["Lujo", "Deporte", "Invierno", "Estilo"],
@@ -970,7 +970,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   // PERRO
   {
     id: "patagonia-wear", name: "Patagonia", type: "brand",
-    country: "Estados Unidos", emoji: "🏔️",
+    country: "Estados Unidos", emoji: "🏔",
     category: "ropa",
     description: "Ropa outdoor que lidera la responsabilidad ambiental y la calidad.",
     keyThemes: ["Naturaleza", "Sostenibilidad", "Aventura", "Propósito"],
@@ -997,7 +997,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "eddie-bauer", name: "Eddie Bauer", type: "brand",
-    country: "Estados Unidos", emoji: "🏕️",
+    country: "Estados Unidos", emoji: "🏕",
     category: "ropa",
     description: "Pionero americano de ropa outdoor y plumíferos.",
     keyThemes: ["Aventura", "Naturaleza", "Innovación", "Calidad"],
@@ -1072,7 +1072,7 @@ export const BRANDS_60: AtlasEntityInput[] = [
   },
   {
     id: "under-armour", name: "Under Armour", type: "brand",
-    country: "Estados Unidos", emoji: "🏋️",
+    country: "Estados Unidos", emoji: "🏋",
     category: "ropa",
     description: "Nacida de la obsesión de un jugador de fútbol americano por una camiseta que no se empapara de sudor, Under Armour revolucionó la ropa deportiva técnica.",
     keyThemes: ["Deporte", "Rendimiento", "Innovación", "Técnica"],

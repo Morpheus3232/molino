@@ -205,7 +205,7 @@ export default function ParejaClient() {
                   {/* Card 1: Persona A */}
                   <div className="rounded-xl border border-gold/30 bg-card p-6 sm:p-8 shadow-sm space-y-5 relative overflow-hidden">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-gold/10 text-gold-foreground font-bold">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-gold/10 text-foreground font-bold">
                         Persona A
                       </span>
                       <span className="font-mono text-xs text-muted">Primer mapa</span>
@@ -330,7 +330,7 @@ export default function ParejaClient() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-gold-foreground font-bold uppercase tracking-wider block mb-1">
+                  <span className="font-mono text-xs text-foreground font-bold uppercase tracking-wider block mb-1">
                     02 · Astrología & Elementos
                   </span>
                   <p className="text-xs text-muted leading-relaxed">
@@ -339,7 +339,7 @@ export default function ParejaClient() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-ink/5">
-                  <span className="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider block mb-1">
+                  <span className="font-mono text-xs text-foreground font-bold uppercase tracking-wider block mb-1">
                     03 · Zodíaco Chino
                   </span>
                   <p className="text-xs text-muted leading-relaxed">

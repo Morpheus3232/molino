@@ -63,7 +63,7 @@ export default function EmbedWidgetPage() {
     <div
       className={`min-h-screen ${
         selectedTheme === "light"
-          ? "bg-[#F9F8F5] text-[#1A1A1E]"
+          ? "bg-[#FFFFFF] text-[#0A0A0A]"
           : "bg-background text-foreground"
       } flex flex-col justify-center items-center p-4 sm:p-6`}
     >

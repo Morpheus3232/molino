@@ -31,7 +31,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-bugatti", name: "Bugatti", type: "brand",
-    country: "Francia", emoji: "🏎️",
+    country: "Francia", emoji: "🏎",
     category: "autos",
     description: "Marca automotriz francesa fundada en 1909.",
     keyThemes: ["Lujo","Velocidad","Arte","Exclusivo"],
@@ -171,7 +171,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-chrysler", name: "Chrysler", type: "brand",
-    country: "Estados Unidos", emoji: "🛡️",
+    country: "Estados Unidos", emoji: "🛡",
     category: "autos",
     description: "Marca automotriz estadounidense fundada en 1925.",
     keyThemes: ["Americano","Innovación","Motor","Diseño"],
@@ -227,7 +227,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-suzuki", name: "Suzuki", type: "brand",
-    country: "Japón", emoji: "🏍️",
+    country: "Japón", emoji: "🏍",
     category: "autos",
     description: "Marca automotriz japonesa fundada en 1909.",
     keyThemes: ["Japonés","Compacto","Moto","Eficiencia"],
@@ -325,7 +325,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-saab", name: "Saab", type: "brand",
-    country: "Suecia", emoji: "✈️",
+    country: "Suecia", emoji: "✈",
     category: "autos",
     description: "Marca automotriz sueca fundada en 1945.",
     keyThemes: ["Sueco","Aeronáutico","Seguridad","Original"],
@@ -381,7 +381,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-infiniti", name: "Infiniti", type: "brand",
-    country: "Japón", emoji: "♾️",
+    country: "Japón", emoji: "♾",
     category: "autos",
     description: "Marca automotriz japonesa fundada en 1989.",
     keyThemes: ["Lujo","Japonés","Elegancia","Innovación"],
@@ -493,7 +493,7 @@ export const AUTOS_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "auto-mclaren", name: "McLaren", type: "brand",
-    country: "Reino Unido", emoji: "🏎️",
+    country: "Reino Unido", emoji: "🏎",
     category: "autos",
     description: "Marca automotriz británica fundada en 1963.",
     keyThemes: ["Británico","F1","Superauto","Tecnología"],

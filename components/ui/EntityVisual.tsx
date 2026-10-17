@@ -62,7 +62,7 @@ const GRADIENTS: Record<VisualType, string> = {
   flag: "from-accent/30 via-paper-alt to-background",
   logo: "from-accent/20 via-paper-alt to-background",
   portrait: "from-gold/25 via-paper-alt to-background",
-  album: "from-[#A78BFA]/25 via-paper-alt to-background",
+  album: "from-[#9D9D9D]/25 via-paper-alt to-background",
   emoji: "from-ink/20 via-paper-alt to-background",
 };
 

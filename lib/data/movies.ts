@@ -150,7 +150,7 @@ export const MOVIES: AtlasEntityInput[] = [
   },
   {
     id: "spider-man-2002", name: "Spider-Man", type: "movie", country: "Estados Unidos",
-    emoji: "🕷️",
+    emoji: "🕷",
     description: "Spider-Man (2002) definió el molde del superhéroe moderno en cine, con Peter Parker como origen emocional central.",
     keyThemes: ["Responsabilidad", "Origen", "Identidad", "Heroísmo"],
     sourceNote: "Estrenada el 3 de mayo de 2002. Dirigida por Sam Raimi.",
@@ -230,7 +230,7 @@ export const MOVIES: AtlasEntityInput[] = [
   },
   {
     id: "saving-private-ryan", name: "Rescatando al Soldado Ryan", type: "movie", country: "Estados Unidos",
-    emoji: "🎖️",
+    emoji: "🎖",
     description: "Rescatando al Soldado Ryan redefinió el cine bélico con su representación cruda del desembarco de Normandía.",
     keyThemes: ["Sacrificio", "Camaradería", "Guerra", "Deber"],
     sourceNote: "Estrenada el 24 de julio de 1998. Dirigida por Steven Spielberg.",

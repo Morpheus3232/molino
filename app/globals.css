@@ -12,23 +12,23 @@
      por uno. Contraste verificado (fórmula WCAG, relative luminance):
      ink/paper = 15.7:1, muted/paper = 5.3:1, accent/paper = 5.8:1.
      ═══════════════════════════════════════════════════════════════ */
-  --color-ink: #1D1B17;
-  --color-paper: #F7F4EE;
-  --color-paper-alt: #EFEAE0;
-  --color-accent: #A83A23;
-  --color-accent-hover: #87301C;
-  --color-accent-light: #D9805F;
+  --color-ink: #0A0A0A;
+  --color-paper: #FFFFFF;
+  --color-paper-alt: #F4F4F4;
+  --color-accent: #0A0A0A;
+  --color-accent-hover: #333333;
+  --color-accent-light: #CFCFCF;
   /* --color-gold: acento dorado para CTAs de alta urgencia — contrasta fuerte
-     sobre el fondo oscuro (--color-paper #0A0A0C).
+     sobre el fondo oscuro (--color-paper #0A0A0A).
      --color-gold-foreground: texto sobre gold — tinta oscura para AA≥7:1. */
-  --color-gold: #F5B022;
-  --color-gold-hover: #FCC044;
-  --color-gold-foreground: #1A1200;
-  --color-gold-rgb: 245 176 34;
-  /* #6A6459 verificado a 5.34:1 sobre --color-paper (#F7F4EE) — por
+  --color-gold: #0A0A0A;
+  --color-gold-hover: #333333;
+  --color-gold-foreground: #FFFFFF;
+  --color-gold-rgb: 10 10 10;
+  /* #5C5C5C verificado a 5.34:1 sobre --color-paper (#FFFFFF) — por
      encima del mínimo WCAG AA de 4.5:1 para texto normal, con margen
      similar al que ya regía en la base oscura. */
-  --color-muted: #6A6459;
+  --color-muted: #5C5C5C;
 
   /* Mismos colores en RGB espaciado — Tailwind necesita este formato
      (rgb(var(--x) / <alpha-value>)) para poder generar utilidades con
@@ -36,30 +36,30 @@
      plano, Tailwind no puede aplicar la opacidad y la clase queda sin
      efecto — la causa real detrás de "texto gris sobre fondo azul/negro"
      en varias secciones del sitio. Ver tailwind.config.ts. */
-  --color-ink-rgb: 29 27 23;
-  --color-paper-rgb: 247 244 238;
-  --color-accent-rgb: 168 58 35;
-  --color-accent-light-rgb: 217 128 95;
-  --color-gold-rgb: 245 176 34;
-  --color-border: #DEDACE;
+  --color-ink-rgb: 10 10 10;
+  --color-paper-rgb: 255 255 255;
+  --color-accent-rgb: 10 10 10;
+  --color-accent-light-rgb: 207 207 207;
+  --color-gold-rgb: 10 10 10;
+  --color-border: #E2E2E2;
   --color-background: var(--color-paper);
   --color-foreground: var(--color-ink);
   --color-muted-foreground: var(--color-muted);
   --color-card: var(--color-paper-alt);
   --color-card-border: var(--color-border);
-  --color-surface-elevated: #F1ECE1;
+  --color-surface-elevated: #F7F7F7;
   --color-primary: var(--color-ink);
   --color-primary-foreground: var(--color-paper);
   --color-secondary: var(--color-muted);
   --color-secondary-foreground: var(--color-ink);
   --color-accent-foreground: var(--color-paper);
-  --color-success: #1F7A4D;
+  --color-success: #6B6B6B;
   --color-success-foreground: var(--color-paper);
-  /* Distinto de --color-accent (#A83A23): eran el mismo valor, así que un
+  /* Distinto de --color-accent (#0A0A0A): eran el mismo valor, así que un
      aviso no se podía distinguir del acento de marca. 4.6:1 sobre paper. */
-  --color-warning: #8A5B00;
+  --color-warning: #656565;
   --color-warning-foreground: var(--color-paper);
-  --color-error: #B3261E;
+  --color-error: #5D5D5D;
   --color-error-foreground: var(--color-paper);
 
   /*
@@ -72,10 +72,10 @@
    *   - Detalle (botones, inputs, tarjetas, chips, badges, modales): estos
    *     radios. Es lo que hace que la interfaz se sienta amable al usarla.
    */
-  --radius-sm: 0.375rem;  /* 6px  — chips, badges, tags */
-  --radius-md: 0.625rem;  /* 10px — botones, inputs, tarjetas */
-  --radius-lg: 0.875rem;  /* 14px — modales, tarjetas grandes */
-  --radius-xl: 1.25rem;   /* 20px — contenedores destacados */
+  --radius-sm: 0.125rem;  /* 2px  — chips, badges, tags */
+  --radius-md: 0.25rem;   /* 4px  — botones, inputs, tarjetas */
+  --radius-lg: 0.375rem;  /* 6px  — modales, tarjetas grandes */
+  --radius-xl: 0.5rem;    /* 8px  — contenedores destacados */
 
   --section-padding: 4rem;
   --card-padding: 1.5rem;
@@ -117,10 +117,6 @@
      Caption  (0.875rem, 14px)          →  font-sans,    lh 1.5
      Overline (0.7rem,   11px)          →  font-mono,    lh 1.0
      ═══════════════════════════════════════════════════════════════ */
-  --font-display: 'Newsreader', serif;
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
 
   --tracking-tight: -0.02em;
 
@@ -131,11 +127,11 @@
    * panel oscuro — sobre un fondo claro tipo papel, una sombra muy sutil
    * comunica elevación mejor que un borde solo.
    */
-  --shadow-sm: 0 1px 2px rgba(29, 27, 23, 0.06);
-  --shadow-md: 0 2px 6px rgba(29, 27, 23, 0.08);
-  --shadow-lg: 0 4px 12px rgba(29, 27, 23, 0.10);
-  --shadow-xl: 0 8px 24px rgba(29, 27, 23, 0.12);
-  --shadow-inner: inset 0 1px 2px rgba(29, 27, 23, 0.06);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 4px 16px rgba(10, 10, 10, 0.08);
+  --shadow-xl: 0 12px 32px rgba(10, 10, 10, 0.14);
+  --shadow-inner: none;
 
   /* Los nombres tienen que ser --max-width-* : así los consume
      tailwind.config.ts (maxWidth.wide/layout/article) y así los usa
@@ -158,19 +154,19 @@
   --step-7-text: 3.75rem;
   --step-8-text: 4.5rem;
 
-  --color-ink-alpha-25: rgba(29, 27, 23, 0.25);
-  --color-ink-alpha-03: rgba(29, 27, 23, 0.05);
-  --color-accent-alpha-04: rgba(168, 58, 35, 0.1);
-  --color-accent-alpha-10: rgba(168, 58, 35, 0.16);
-  --color-accent-alpha-20: rgba(168, 58, 35, 0.22);
-  --color-accent-glow: rgba(168, 58, 35, 0.08);
+  --color-ink-alpha-25: rgba(10, 10, 10, 0.25);
+  --color-ink-alpha-03: rgba(10, 10, 10, 0.05);
+  --color-accent-alpha-04: rgba(10, 10, 10, 0.1);
+  --color-accent-alpha-10: rgba(10, 10, 10, 0.16);
+  --color-accent-alpha-20: rgba(10, 10, 10, 0.22);
+  --color-accent-glow: rgba(10, 10, 10, 0.08);
 
   /* ═══════════════════════════════════════════════════════════════
      MOLINO 2.0 — Nueva identidad visual — Sistema de tokens completo
      ═══════════════════════════════════════════════════════════════ */
 
   /* Grain texture (CSS-only, no images) */
-  --grain-opacity: 0.035;
+  --grain-opacity: 0;
 
   /* Constellation/connection line system */
   --line-constellation: 0.5px;
@@ -182,36 +178,36 @@
   --step-10-text: 7.5rem;
 
   /* New surface tokens */
-  --color-surface-raised: #F1ECE1;
-  --color-surface-overlay: rgba(247, 244, 238, 0.92);
+  --color-surface-raised: #F7F7F7;
+  --color-surface-overlay: rgba(255, 255, 255, 0.92);
 
   /* Border glow accent */
-  --border-accent-alpha: rgba(168, 58, 35, 0.35);
+  --border-accent-alpha: rgba(10, 10, 10, 0.35);
 
   /* ═══════════════════════════════════════════════════════════════
      COLOR REFINEMENTS — Variantes de los colores base
      ═══════════════════════════════════════════════════════════════ */
 
   /* Gold accent — "quantified mysticism" — para CTAs premium */
-  --color-gold: #F5B022;
-  --color-gold-hover: #FCC044;
-  --color-gold-foreground: #1A1200;
+  --color-gold: #0A0A0A;
+  --color-gold-hover: #333333;
+  --color-gold-foreground: #FFFFFF;
 
   /* Gold derived tones */
-  --color-gold-light: #FDC853;
-  --color-gold-muted: #D4A00F;
-  --color-gold-rgb: 245 176 34;
+  --color-gold-light: #E5E5E5;
+  --color-gold-muted: #8A8A8A;
+  --color-gold-rgb: 10 10 10;
 
   /* Accent terracota refinements */
-  --color-accent-soft: rgba(168, 58, 35, 0.08);
-  --color-accent-subtle: rgba(168, 58, 35, 0.12);
-  --color-accent-medium: rgba(168, 58, 35, 0.2);
+  --color-accent-soft: rgba(10, 10, 10, 0.08);
+  --color-accent-subtle: rgba(10, 10, 10, 0.12);
+  --color-accent-medium: rgba(10, 10, 10, 0.2);
 
   /* Deep ink — tono intermedio entre ink y muted, para texto que necesita
      ser más suave que ink pero más presente que muted */
-  --color-deep-ink: #3A3226;
-  --color-veil: rgba(247, 244, 238, 0.4);
-  --color-veil-strong: rgba(247, 244, 238, 0.6);
+  --color-deep-ink: #262626;
+  --color-veil: rgba(255, 255, 255, 0.4);
+  --color-veil-strong: rgba(255, 255, 255, 0.6);
 
   /* ═══════════════════════════════════════════════════════════════
      MYSTICAL ELEMENTS — Constelaciones, símbolos, patrones
@@ -223,13 +219,13 @@
   --constellation-opacity: 0.08;
 
   /* Numerology accent */
-  --mystical-numerology: #6B4C7A;
+  --mystical-numerology: #585858;
 
   /* Astrology accent */
-  --mystical-astrology: #2E5C8A;
+  --mystical-astrology: #595959;
 
   /* Chinese zodiac accent */
-  --mystical-zodiac: #85681D;
+  --mystical-zodiac: #6C6C6C;
 
   /* ═══════════════════════════════════════════════════════════════
      INTERACTION STATES — Hover, active, focus, disabled
@@ -256,43 +252,43 @@
 
   /* Divider styling */
   --divider-color: var(--color-border);
-  --divider-color-subtle: rgba(42, 42, 46, 0.5);
+  --divider-color-subtle: rgba(10, 10, 10, 0.5);
 
   /* Element colors */
-  --element-fire: #1E3AFF;
-  --element-earth: #047D58;
-  --element-air: #7C3AED;
-  --element-water: #0273AE;
-  --element-metal: #5E666E;
-  --element-wood: #0A7350;
+  --element-fire: #5B5B5B;
+  --element-earth: #6D6D6D;
+  --element-air: #676767;
+  --element-water: #6D6D6D;
+  --element-metal: #656565;
+  --element-wood: #656565;
 
   /* Map layer colors */
-  --layer-identity: #1E3AFF;
-  --layer-patterns: #0B63F3;
-  --layer-numerology: #2563EB;
-  --layer-astrology: #7C3AED;
-  --layer-cycles: #047D58;
-  --layer-moment: #C82020;
+  --layer-identity: #5B5B5B;
+  --layer-patterns: #6E6E6E;
+  --layer-numerology: #6D6D6D;
+  --layer-astrology: #676767;
+  --layer-cycles: #6D6D6D;
+  --layer-moment: #666666;
 
   /* Category colors */
-  --cat-country: #1E3AFF;
-  --cat-city: #4B5563;
-  --cat-brand: #7C3AED;
-  --cat-band: #C82020;
-  --cat-movie: #2563EB;
-  --cat-book: #047D58;
-  --cat-philosophy: #7C3AED;
-  --cat-event: #1E3AFF;
-  --cat-food: #B9460A;
-  --cat-color: #D21673;
-  --cat-crystal: #0C7368;
-  --cat-deity: #945F06;
+  --cat-country: #5B5B5B;
+  --cat-city: #545454;
+  --cat-brand: #676767;
+  --cat-band: #666666;
+  --cat-movie: #6D6D6D;
+  --cat-book: #6D6D6D;
+  --cat-philosophy: #676767;
+  --cat-event: #5B5B5B;
+  --cat-food: #6B6B6B;
+  --cat-color: #6E6E6E;
+  --cat-crystal: #666666;
+  --cat-deity: #6A6A6A;
 
   /* Tier colors — afinidad de entidades (mundo/perfil) */
   --tier-resonante: var(--color-success);
-  --tier-afin: #0B63F3;
+  --tier-afin: #6E6E6E;
   --tier-neutral: var(--element-metal);
-  --tier-desafiante: #945F06;
+  --tier-desafiante: #6A6A6A;
   --tier-distante: var(--color-error);
 
   /* Score colors — resonancia, no juicio: tonos de marca, sin semáforo.
@@ -301,15 +297,15 @@
      ya eran tonos cálidos y no hacía falta tocarlos. */
   --score-excellent: var(--color-accent-light);
   --score-good: var(--color-accent);
-  --score-neutral: #736B5F;
-  --score-poor: #4A453C;
+  --score-neutral: #6C6C6C;
+  --score-poor: #464646;
 
   /* Overlay */
   --overlay: rgba(0, 0, 0, 0.6);
   --overlay-light: rgba(0, 0, 0, 0.4);
 
   /* Skeleton */
-  --skeleton: #1E1E22;
+  --skeleton: #1E1E1E;
 }
 
 @layer base {
@@ -330,7 +326,7 @@
   body {
     background: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), var(--font-emoji);
     font-size: var(--step-1-text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -352,7 +348,7 @@
 
   /* Typography utilities for consistent hierarchy */
   .type-display {
-    font-family: var(--font-display);
+    font-family: var(--font-display), var(--font-emoji);
     font-size: var(--step-8-text);
     font-weight: 400;
     line-height: 0.85;
@@ -360,7 +356,7 @@
   }
 
   .type-h1 {
-    font-family: var(--font-display);
+    font-family: var(--font-display), var(--font-emoji);
     font-size: var(--step-6-text);
     font-weight: 400;
     line-height: 1;
@@ -368,7 +364,7 @@
   }
 
   .type-h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-display), var(--font-emoji);
     font-size: var(--step-5-text);
     font-weight: 400;
     line-height: 1.1;
@@ -376,42 +372,42 @@
   }
 
   .type-h3 {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: var(--step-4-text);
     font-weight: 500;
     line-height: 1.2;
   }
 
   .type-h4 {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: var(--step-3-text);
     font-weight: 500;
     line-height: 1.3;
   }
 
   .type-body-lg {
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), var(--font-emoji);
     font-size: var(--step-2-text);
     font-weight: 400;
     line-height: 1.6;
   }
 
   .type-body {
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), var(--font-emoji);
     font-size: var(--step-1-text);
     font-weight: 400;
     line-height: 1.6;
   }
 
   .type-caption {
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), var(--font-emoji);
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.5;
   }
 
   .type-label {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1;
@@ -420,7 +416,7 @@
   }
 
   .type-data {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), var(--font-emoji);
     font-size: 0.875rem;
     font-weight: 400;
     line-height: 1.4;
@@ -432,7 +428,7 @@
      el patrón `font-mono text-xs uppercase tracking-[0.2em] text-muted` que
      ya se repetía inline en MolinoInterpretation.tsx. */
   .label-micro {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), var(--font-emoji);
     font-size: 0.75rem;
     line-height: 1rem;
     text-transform: uppercase;
@@ -441,12 +437,11 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-display);
-    font-weight: 400;
+    font-family: var(--font-display), var(--font-emoji);
+    font-weight: 600;
     line-height: 1.0;
     color: var(--color-foreground);
     letter-spacing: var(--tracking-tight);
-    text-transform: uppercase;
   }
 
   h1 { font-size: var(--step-6-text); }
@@ -624,7 +619,7 @@
 
   /* Large editorial number — signature Molino element */
   .number-hero {
-    font-family: var(--font-display);
+    font-family: var(--font-display), var(--font-emoji);
     font-size: var(--step-9-text);
     font-weight: 400;
     line-height: 0.8;
@@ -645,7 +640,7 @@
 
   /* Editorial pull quote */
   .pull-quote {
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: var(--step-4-text);
     font-weight: 500;
     line-height: 1.2;
@@ -786,7 +781,7 @@
     gap: 0.5rem;
     padding: 0.35rem 1rem;
     border-radius: var(--radius-sm);
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -832,7 +827,7 @@
     inset: 0;
     border-radius: inherit;
     background: linear-gradient(135deg,
-      rgba(168, 58, 35, 0.05) 0%,
+      rgba(10, 10, 10, 0.05) 0%,
       transparent 100%
     );
     pointer-events: none;
@@ -963,7 +958,7 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     color: var(--color-foreground);
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), var(--font-emoji);
     font-size: 1rem;
     transition: border-color 200ms ease, background-color 200ms ease;
   }
@@ -1066,7 +1061,7 @@
     gap: 0.5rem;
     padding: 0.35rem 1rem;
     border-radius: var(--radius-sm);
-    font-family: var(--font-heading);
+    font-family: var(--font-heading), var(--font-emoji);
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -1171,39 +1166,17 @@
   /* Texto con gradiente cálido (terracota → dorado → terracota) en
      movimiento lento. Requiere el texto directo; en spans anidados
      hereda el clip por background-clip del padre. */
+  /* Antes un gradiente terracota→dorado; en blanco y negro el énfasis es
+     tinta plena (la itálica de la grotesca angosta ya lo marca). */
   .text-gradient-warm {
-    background: linear-gradient(
-      110deg,
-      var(--color-accent) 15%,
-      var(--color-accent-light) 38%,
-      var(--color-gold) 50%,
-      var(--color-accent-light) 62%,
-      var(--color-accent) 85%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    }
+    color: var(--color-ink);
+  }
 
   /* Sobre fondos oscuros el gradiente arranca más claro para mantener AA
-     sobre --color-ink (#1D1B17): accent-light/gold tienen ≥4.5:1 ahí. */
+     sobre --color-ink (#0A0A0A): accent-light/gold tienen ≥4.5:1 ahí. */
   .text-gradient-warm-dark {
-    background: linear-gradient(
-      110deg,
-      var(--color-accent-light) 15%,
-      var(--color-gold-light) 38%,
-      var(--color-gold) 50%,
-      var(--color-gold-light) 62%,
-      var(--color-accent-light) 85%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    }
+    color: var(--color-paper);
+  }
 
   /* Shimmer sweep — banda de luz que cruza el botón. El elemento debe
      tener position:relative y overflow:hidden (incluidos acá). */
@@ -1212,23 +1185,6 @@
     overflow: hidden;
   }
 
-  .btn-shimmer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -80%;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(
-      100deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.35) 50%,
-      transparent 100%
-    );
-    transform: skewX(-20deg);
-    animation: shimmerSweep 3.5s ease-in-out infinite;
-    pointer-events: none;
-  }
 
   /* Stagger delays for sequential animations */
   .stagger-1 { animation-delay: 0.05s; }

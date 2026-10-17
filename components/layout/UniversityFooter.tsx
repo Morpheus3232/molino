@@ -116,7 +116,7 @@ export default async function UniversityFooter() {
             <p className="flex items-center gap-2">
               <span className="font-mono text-xs uppercase tracking-wider text-paper/80">¿Hablamos?</span>
             </p>
-            <p>
+            <p className="text-paper/70">
               Escribinos a{" "}
               <a
                 href={`mailto:${CONTACT_EMAIL}`}
@@ -126,7 +126,7 @@ export default async function UniversityFooter() {
                 {CONTACT_EMAIL}
               </a>
             </p>
-            <p className="inline-flex items-center gap-1.5 text-xs font-mono">
+            <p className="inline-flex items-center gap-1.5 text-xs font-mono text-paper/70">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
               No vendemos tus datos. Tu privacidad importa.
             </p>

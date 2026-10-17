@@ -185,7 +185,7 @@ export const ROPA_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "ropa-moncler", name: "Moncler", type: "brand",
-    country: "Italia", emoji: "⛷️",
+    country: "Italia", emoji: "⛷",
     category: "ropa",
     description: "Marca italiana de moda fundada en 1952.",
     keyThemes: ["Italiano","Plumífero","Lujo","Alpino"],
@@ -227,7 +227,7 @@ export const ROPA_ATLAS: AtlasEntityInput[] = [
   },
   {
     id: "ropa-tom-ford", name: "Tom Ford", type: "brand",
-    country: "Estados Unidos", emoji: "🕶️",
+    country: "Estados Unidos", emoji: "🕶",
     category: "ropa",
     description: "Marca estadounidense de moda fundada en 2005.",
     keyThemes: ["Americano","Glamour","Lujo","Sensualidad"],

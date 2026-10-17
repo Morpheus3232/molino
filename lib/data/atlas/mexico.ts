@@ -395,7 +395,7 @@ export const UNIVERSITIES_MEXICO: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "uam", name: "Universidad Autónoma Metropolitana", type: "university", country: "México", emoji: "🏛️",
+    id: "uam", name: "Universidad Autónoma Metropolitana", type: "university", country: "México", emoji: "🏛",
     description: "La UAM, institución pública de la Ciudad de México creada para descentralizar la educación superior.",
     keyThemes: ["Pública", "Metropolitana", "Ciencia", "Autonomía"],
     sourceNote: "Creada el 1 de enero de 1974 por decreto presidencial.",
@@ -511,7 +511,7 @@ export const BRANDS_MEXICO: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "aero-mexico", name: "Aeroméxico", type: "brand", country: "México", emoji: "✈️",
+    id: "aero-mexico", name: "Aeroméxico", type: "brand", country: "México", emoji: "✈",
     description: "Aeroméxico, la aerolínea de bandera de México y miembro fundador de la alianza SkyTeam.",
     keyThemes: ["Aviación", "Bandera", "Global", "Viajes"],
     sourceNote: "Fundada el 14 de septiembre de 1934 como Aeronaves de México.",
@@ -529,7 +529,7 @@ export const BRANDS_MEXICO: AtlasEntityInput[] = [
 // ─── ARTISTAS / PERSONAS ──────────────────────────────────
 export const ARTISTS_MEXICO: AtlasEntityInput[] = [
   {
-    id: "octavio-paz", name: "Octavio Paz", type: "artist", country: "México", emoji: "✒️",
+    id: "octavio-paz", name: "Octavio Paz", type: "artist", country: "México", emoji: "✒",
     description: "Poeta y ensayista mexicano, Premio Nobel de Literatura 1990, autor de 'El laberinto de la soledad'.",
     keyThemes: ["Poesía", "Ensayo", "Nobel", "Literatura"],
     sourceNote: "Nacido el 31 de marzo de 1914 en la Ciudad de México.",

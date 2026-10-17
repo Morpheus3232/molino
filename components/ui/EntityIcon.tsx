@@ -95,7 +95,7 @@ export function resolveEntityIconKind(entity: EntityDataLike): EntityIconKind {
     type === "team" ||
     type === "football_player" ||
     emoji === "⚽" ||
-    emoji === "🏟️" ||
+    emoji === "🏟" ||
     themes.some((t) => t.includes("fútbol") || t.includes("futbol") || t.includes("selección") || t.includes("delantero") || t.includes("arquero") || t.includes("defensor") || t.includes("mediocampista") || t.includes("afa") || t.includes("fifa"))
   ) {
     return "football";
@@ -132,7 +132,7 @@ export function resolveEntityIconKind(entity: EntityDataLike): EntityIconKind {
     cat === "autos" ||
     cat === "automotriz" ||
     emoji === "🚗" ||
-    emoji === "🏎️" ||
+    emoji === "🏎" ||
     emoji === "🚘" ||
     emoji === "🚙" ||
     AUTO_BRANDS.has(name) ||
@@ -153,8 +153,8 @@ export function resolveEntityIconKind(entity: EntityDataLike): EntityIconKind {
   // 6. CITIES / TERRITORIO / ARQUITECTURA
   if (
     type === "city" ||
-    emoji === "🏛️" ||
-    emoji === "🏙️" ||
+    emoji === "🏛" ||
+    emoji === "🏙" ||
     emoji === "🏰" ||
     themes.some((t) => t.includes("ciudad") || t.includes("capital") || t.includes("urban") || t.includes("puerto"))
   ) {
@@ -171,7 +171,7 @@ export function resolveEntityIconKind(entity: EntityDataLike): EntityIconKind {
     type === "movie" ||
     emoji === "🎬" ||
     emoji === "🎥" ||
-    emoji === "🎞️" ||
+    emoji === "🎞" ||
     themes.some((t) => t.includes("película") || t.includes("cine") || t.includes("dirección") || t.includes("guion") || t.includes("oscar"))
   ) {
     return "movie";
@@ -265,9 +265,9 @@ export default function EntityIcon({
             <path d="M7.8 10h8.4c.4 0 .7.2.9.5l2 3.5H6.2l1.6-4z" fill="currentColor" fillOpacity="0.2" strokeWidth="1.2" />
             <path d="M12.5 10v4" strokeWidth="1.1" />
             {/* Front and rear wheels */}
-            <circle cx="6.5" cy="16.5" r="2.8" fill="var(--color-paper, #F7F4EE)" strokeWidth="1.6" />
+            <circle cx="6.5" cy="16.5" r="2.8" fill="var(--color-paper, #FFFFFF)" strokeWidth="1.6" />
             <circle cx="6.5" cy="16.5" r="1.1" fill="currentColor" />
-            <circle cx="17.5" cy="16.5" r="2.8" fill="var(--color-paper, #F7F4EE)" strokeWidth="1.6" />
+            <circle cx="17.5" cy="16.5" r="2.8" fill="var(--color-paper, #FFFFFF)" strokeWidth="1.6" />
             <circle cx="17.5" cy="16.5" r="1.1" fill="currentColor" />
             {/* Headlight & bumper accent */}
             <path d="M21.5 13.5h1M1.5 13.5h1" strokeWidth="1.3" />

@@ -140,8 +140,8 @@ function renderStatsPage(codes: Record<string, number>): string {
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Cupones · molino</title>
 <style>
-  :root{--bg:#faf8f5;--fg:#17150f;--muted:#7c766a;--line:#e2ddd3;--card:#fff;--accent:#b4531f}
-  @media(prefers-color-scheme:dark){:root{--bg:#0f0e0c;--fg:#f2efe9;--muted:#8f887b;--line:#2a2724;--card:#17150f;--accent:#e0813f}}
+  :root{--bg:#F8F8F8;--fg:#151515;--muted:#777777;--line:#DDDDDD;--card:#FFFFFF;--accent:#6F6F6F}
+  @media(prefers-color-scheme:dark){:root{--bg:#0E0E0E;--fg:#EFEFEF;--muted:#898989;--line:#272727;--card:#151515;--accent:#999999}}
   *{box-sizing:border-box}
   body{margin:0;padding:32px 20px 64px;background:var(--bg);color:var(--fg);
     font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Inter",sans-serif}

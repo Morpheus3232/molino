@@ -85,7 +85,7 @@ export default async function TransparenciaPage() {
             </a>
           </p>
           <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted font-mono">
-            🛡️ No vendemos tus datos. Tu privacidad importa.
+            🛡 No vendemos tus datos. Tu privacidad importa.
           </p>
         </section>
       </div>

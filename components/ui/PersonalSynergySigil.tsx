@@ -250,25 +250,25 @@ export default function PersonalSynergySigil({
         </g>
 
         {/* 5. Zonas de Tensión / Alta Interferencia (Arcos Terracota) */}
-        <g stroke="#A83A23" strokeWidth="2.2" strokeOpacity="0.8" fill="none" strokeLinecap="round">
+        <g stroke="#0A0A0A" strokeWidth="2.2" strokeOpacity="0.8" fill="none" strokeLinecap="round">
           {geometry.tensionArcs.map((d, i) => (
             <path key={`tension-${i}`} d={d} />
           ))}
         </g>
 
         {/* 6. Zonas de Resonancia (Puntos Dorados en Fase) */}
-        <g fill="#F5B022">
+        <g fill="#0A0A0A">
           {geometry.resonanceNodes.map((node, i) => (
             <g key={`res-${i}`}>
-              <circle cx={node.x} cy={node.y} r={node.r * 1.8} fill="#F5B022" opacity="0.25" />
-              <circle cx={node.x} cy={node.y} r={node.r} fill="#F5B022" opacity="0.9" />
+              <circle cx={node.x} cy={node.y} r={node.r * 1.8} fill="#0A0A0A" opacity="0.25" />
+              <circle cx={node.x} cy={node.y} r={node.r} fill="#0A0A0A" opacity="0.9" />
             </g>
           ))}
         </g>
 
         {/* 7. Nodo central de conexión */}
-        <circle cx={geometry.cx} cy={geometry.cy} r="5" fill="#F5B022" />
-        <circle cx={geometry.cx} cy={geometry.cy} r="9" fill="none" stroke="#F5B022" strokeWidth="1.5" strokeOpacity="0.5" />
+        <circle cx={geometry.cx} cy={geometry.cy} r="5" fill="#0A0A0A" />
+        <circle cx={geometry.cx} cy={geometry.cy} r="9" fill="none" stroke="#0A0A0A" strokeWidth="1.5" strokeOpacity="0.5" />
       </svg>
 
       {/* 8. Leyenda Mínima de Visualización */}
@@ -279,11 +279,11 @@ export default function PersonalSynergySigil({
             <span>Afinidad</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#A83A23] inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" />
             <span className="text-foreground">Tensión</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#F5B022] inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#0A0A0A] inline-block" />
             <span className="text-foreground">Resonancia</span>
           </div>
         </div>

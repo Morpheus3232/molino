@@ -10,11 +10,11 @@ import EntityVisual from "@/components/ui/EntityVisual";
 import { useRevealFallback } from "@/lib/hooks/useRevealFallback";
 
 const TIER_COLOR: Record<string, string> = {
-  "resonancia-alta": "#2D5A3A",
-  "afinidad-media": "#4A6FA5",
+  "resonancia-alta": "#515151",
+  "afinidad-media": "#6E6E6E",
   complementarios: "var(--color-gold)",
-  desafiante: "#B45309",
-  distante: "#838C95",
+  desafiante: "#6F6F6F",
+  distante: "#8B8B8B",
 };
 const TIER_LABEL: Record<string, string> = {
   "resonancia-alta": "Resonancia alta",

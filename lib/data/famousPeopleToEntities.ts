@@ -61,7 +61,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Ciencia",
     country: "Polonia",
     shortBio: "Pionera en radiactividad y primera persona con dos premios Nobel.",
-    emoji: "⚗️",
+    emoji: "⚗",
     quote: "Nada en la vida debe ser temido, solo comprendido.",
   },
   {
@@ -113,7 +113,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Tecnología",
     country: "Reino Unido",
     shortBio: "Matemática y primera programadora de computadoras de la historia.",
-    emoji: "⚙️",
+    emoji: "⚙",
   },
   {
     name: "Steve Jobs",
@@ -154,7 +154,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Tecnología",
     country: "Estados Unidos",
     shortBio: "Cofundador de Microsoft y filántropo global en salud y educación.",
-    emoji: "🖥️",
+    emoji: "🖥",
   },
 
   // ──── MÚSICA ────
@@ -196,7 +196,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Música",
     country: "Reino Unido",
     shortBio: "Miembro de The Beatles, pacifista y autor de himnos generacionales.",
-    emoji: "✌️",
+    emoji: "✌",
     quote: "La vida es lo que te pasa mientras estás ocupado haciendo otros planes.",
   },
   {
@@ -213,7 +213,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Música",
     country: "Estados Unidos",
     shortBio: "Cantautor poético, renovador de la música popular y Nobel de Literatura.",
-    emoji: "🎙️",
+    emoji: "🎙",
   },
   {
     name: "Bob Marley",
@@ -221,7 +221,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Música",
     country: "Jamaica",
     shortBio: "Embajador mundial del reggae, espiritualidad y justicia social.",
-    emoji: "☀️",
+    emoji: "☀",
   },
   {
     name: "Beyoncé",
@@ -328,7 +328,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Arte",
     country: "España",
     shortBio: "Cofundador del cubismo y figura transformadora del arte del siglo XX.",
-    emoji: "🖼️",
+    emoji: "🖼",
   },
   {
     name: "Vincent van Gogh",
@@ -344,7 +344,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Arte",
     country: "España",
     shortBio: "Máximo exponente del surrealismo pictórico y onírico.",
-    emoji: "🕰️",
+    emoji: "🕰",
   },
   {
     name: "Frida Kahlo",
@@ -401,7 +401,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Cine",
     country: "Canadá",
     shortBio: "Actor protagonista de Matrix y John Wick, admirado por su generosidad.",
-    emoji: "🕶️",
+    emoji: "🕶",
   },
   {
     name: "Robin Williams",
@@ -459,7 +459,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Literatura",
     country: "Reino Unido",
     shortBio: "Dramaturgo y poeta cumbre de la lengua inglesa y el teatro universal.",
-    emoji: "✒️",
+    emoji: "✒",
   },
   {
     name: "Edgar Allan Poe",
@@ -499,7 +499,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Filosofía",
     country: "Alemania",
     shortBio: "Filósofo de la voluntad de poder y el pensamiento crítico radical.",
-    emoji: "🏔️",
+    emoji: "🏔",
   },
   {
     name: "Carl Jung",
@@ -541,7 +541,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Deporte",
     country: "Brasil",
     shortBio: "Tricampeón de Fórmula 1 y piloto legendario por su maestría bajo lluvia.",
-    emoji: "🏎️",
+    emoji: "🏎",
   },
   {
     name: "Roger Federer",
@@ -591,7 +591,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Política",
     country: "India",
     shortBio: "Líder de la no violencia que guió a la India hacia la independencia.",
-    emoji: "🕊️",
+    emoji: "🕊",
     quote: "Sé el cambio que querés ver en el mundo.",
   },
   {
@@ -618,7 +618,7 @@ export const RAW_FAMOUS_PEOPLE: RawFamousPerson[] = [
     field: "Política",
     country: "Estados Unidos",
     shortBio: "Presidente que preservó la Unión estadounidense y abolió la esclavitud.",
-    emoji: "🏛️",
+    emoji: "🏛",
   },
   {
     name: "Barack Obama",

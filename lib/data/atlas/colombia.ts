@@ -342,7 +342,7 @@ export const UNIVERSITIES_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "javeriana", name: "Pontificia Universidad Javeriana", type: "university", country: "Colombia", emoji: "🏛️",
+    id: "javeriana", name: "Pontificia Universidad Javeriana", type: "university", country: "Colombia", emoji: "🏛",
     description: "Universidad jesuita de Bogotá con más de 390 años de historia académica.",
     keyThemes: ["Jesuita", "Historia", "Bogotá", "Humanismo"],
     sourceNote: "Fundada el 13 de junio de 1623.",
@@ -356,7 +356,7 @@ export const UNIVERSITIES_COLOMBIA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "udea", name: "Universidad de Antioquia", type: "university", country: "Colombia", emoji: "🏛️",
+    id: "udea", name: "Universidad de Antioquia", type: "university", country: "Colombia", emoji: "🏛",
     description: "La UdeA, institución pública de Medellín con más de dos siglos de historia.",
     keyThemes: ["Pública", "Medellín", "Antioquia", "Historia"],
     sourceNote: "Fundada en 1803 como Colegio Franciscano.",
@@ -416,7 +416,7 @@ export const UNIVERSITIES_COLOMBIA: AtlasEntityInput[] = [
 // ─── MARCAS ───────────────────────────────────────────────
 export const BRANDS_COLOMBIA: AtlasEntityInput[] = [
   {
-    id: "avianca", name: "Avianca", type: "brand", country: "Colombia", emoji: "✈️",
+    id: "avianca", name: "Avianca", type: "brand", country: "Colombia", emoji: "✈",
     description: "Aerolínea colombiana, una de las más antiguas del mundo en operación continua, fundada como SCADTA.",
     keyThemes: ["Aviación", "Historia", "Bandera", "Latinoamérica"],
     sourceNote: "Fundada el 5 de diciembre de 1919 como SCADTA.",

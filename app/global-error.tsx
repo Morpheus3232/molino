@@ -31,7 +31,7 @@ export default function RootGlobalError({
             Ocurrió un error inesperado
           </h1>
 
-          <p className="text-sm text-[#7A7870] leading-relaxed mb-8">
+          <p className="text-sm text-[#787878] leading-relaxed mb-8">
             El sistema se ha protegido. Ningún dato privado se ha compartido. Podés recargar la aplicación para continuar.
           </p>
 
@@ -39,7 +39,7 @@ export default function RootGlobalError({
             <button
               type="button"
               onClick={() => reset()}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#F5B022] text-ink text-xs uppercase tracking-wider font-bold hover:bg-[#FCC044] transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A0A0A] text-ink text-xs uppercase tracking-wider font-bold hover:bg-[#333333] transition-colors"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Recargar Aplicación

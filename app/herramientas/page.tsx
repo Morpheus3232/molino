@@ -13,10 +13,10 @@ const TOOLS: { title: string; subtitle: string; description: string; href: strin
     href: "/herramientas/camino-de-vida",
     icon: Hash,
     color: "var(--element-fire)",
-    // --element-fire (#1E3AFF) da 2.74:1 sobre fondo oscuro como color de
+    // --element-fire (#5B5B5B) da 2.74:1 sobre fondo oscuro como color de
     // texto \u2014 falla WCAG AA. Mismo tono, aclarado solo para este uso; el
     // \u00edcono sigue usando el token compartido tal cual.
-    labelColor: "#6275FF",
+    labelColor: "#838383",
   },
   {
     title: "Signo Solar",
@@ -25,7 +25,7 @@ const TOOLS: { title: string; subtitle: string; description: string; href: strin
     href: "/herramientas/signo-solar",
     icon: Sun,
     color: "var(--layer-astrology)",
-    labelColor: "#9661F1",
+    labelColor: "#7F7F7F",
   },
   {
     title: "Zodiaco Chino",
@@ -34,7 +34,7 @@ const TOOLS: { title: string; subtitle: string; description: string; href: strin
     href: "/herramientas/zodiaco-chino",
     icon: Moon,
     color: "var(--layer-moment)",
-    labelColor: "#E14747",
+    labelColor: "#7E7E7E",
   },
   {
     title: "Compatibilidad",

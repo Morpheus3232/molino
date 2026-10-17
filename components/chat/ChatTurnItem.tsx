@@ -24,7 +24,7 @@ export default function ChatTurnItem({
   turn,
   index,
   onSelectSuggestion,
-  elementColor = "var(--color-accent-light, #D9805F)",
+  elementColor = "var(--color-accent-light, #CFCFCF)",
 }: ChatTurnItemProps) {
   return (
     <motion.div

@@ -184,7 +184,7 @@ export const UNIVERSITIES_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "valladolid", name: "Universidad de Valladolid", type: "university", country: "España", emoji: "🏛️",
+    id: "valladolid", name: "Universidad de Valladolid", type: "university", country: "España", emoji: "🏛",
     description: "Una de las universidades más antiguas de España, fundada en el siglo XIV.",
     keyThemes: ["Historia", "Castilla", "Derecho", "Excelencia"],
     sourceNote: "Fundada en 1346.",
@@ -314,7 +314,7 @@ export const BRANDS_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "iberia", name: "Iberia", type: "brand", country: "España", emoji: "✈️",
+    id: "iberia", name: "Iberia", type: "brand", country: "España", emoji: "✈",
     description: "La aerolínea de bandera de España, miembro fundador de la alianza Oneworld.",
     keyThemes: ["Aviación", "Bandera", "Global", "Historia"],
     sourceNote: "Fundada el 28 de junio de 1927.",
@@ -375,7 +375,7 @@ export const ARTISTS_ESPANA: AtlasEntityInput[] = [
     ],
   },
   {
-    id: "garcia-lorca", name: "Federico García Lorca", type: "artist", country: "España", emoji: "✒️",
+    id: "garcia-lorca", name: "Federico García Lorca", type: "artist", country: "España", emoji: "✒",
     description: "Poeta y dramaturgo granadino, una de las voces más importantes de la Generación del 27.",
     keyThemes: ["Poesía", "Teatro", "Generación del 27", "Granada"],
     sourceNote: "Nacido el 5 de junio de 1898 en Fuente Vaqueros.",

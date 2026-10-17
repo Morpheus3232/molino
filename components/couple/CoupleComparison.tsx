@@ -41,14 +41,14 @@ export function PersonCard({
   const archetype = ARCHETYPES[lifePath] || ARCHETYPES[1];
   const archetypeName = archetype.name || "El Caminante";
   const sunSign = profile.sunSign || "Aries";
-  const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "☀️";
+  const sunSymbol = ZODIAC_SYMBOLS[sunSign] || "☀";
   const zodiacDisplay = getZodiacDisplay(profile.chineseZodiac);
   const element = profile.chineseZodiacInfo?.element || profile.element || "Fuego";
   const name = profile.name?.trim() || archetypeName;
 
   const isGold = colorScheme === "gold";
   const accentBorder = isGold ? "border-gold/30" : "border-ink/20";
-  const accentBg = isGold ? "bg-gold/10 text-gold-foreground" : "bg-ink/5 text-foreground";
+  const accentBg = isGold ? "bg-gold/10 text-foreground" : "bg-ink/5 text-foreground";
 
   return (
     <div className={`rounded-xl border p-5 sm:p-6 bg-card ${accentBorder} shadow-sm relative flex flex-col justify-between`}>

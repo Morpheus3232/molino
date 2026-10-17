@@ -233,7 +233,7 @@ export const ENTITIES: EntityProfile[] = [
   },
 
   // ============================================
-  // 🏙️ CIUDADES (40+)
+  // 🏙 CIUDADES (40+)
   // ============================================
   {
     id: 'buenos-aires',
@@ -317,7 +317,7 @@ export const ENTITIES: EntityProfile[] = [
   },
 
   // ============================================
-  // 🏷️ MARCAS (50+)
+  // 🏷 MARCAS (50+)
   // ============================================
   {
     id: 'apple',
@@ -479,7 +479,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'marie-curie',
     name: 'Marie Curie',
     category: 'person',
-    emoji: '⚛️',
+    emoji: '⚛',
     symbolism: { lifePath: 7, sunSign: 'Escorpio', chineseZodiac: 'Gallo', element: 'Metal', archetype: 'El Investigador' },
     context: { description: 'Ciencia, persistencia y descubrimiento radiactivo.', keyThemes: ['Ciencia', 'Persistencia', 'Descubrimiento', 'Premio'], funFact: 'Es la única persona en ganar Nobels en dos ciencias distintas.' }
   },
@@ -527,7 +527,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'mona-lisa',
     name: 'Mona Lisa',
     category: 'art',
-    emoji: '🖼️',
+    emoji: '🖼',
     symbolism: { lifePath: 7, sunSign: 'Escorpio', chineseZodiac: 'Serpiente', element: 'Agua', archetype: 'El Investigador' },
     context: { description: 'Misterio, sonrisa y genio artístico.', keyThemes: ['Misterio', 'Sonrisa', 'Genio', 'Arte'], funFact: 'Es la pintura más valiosa del mundo.' }
   },
@@ -535,7 +535,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'socrates',
     name: 'Sócrates',
     category: 'philosophy',
-    emoji: '🏛️',
+    emoji: '🏛',
     symbolism: { lifePath: 7, sunSign: 'Géminis', chineseZodiac: 'Mono', element: 'Aire', archetype: 'El Investigador' },
     context: { description: 'Preguntas, método socrático y sabiduría.', keyThemes: ['Preguntas', 'Método', 'Sabiduría', 'Verdad'], funFact: 'Nunca escribió nada. Todo lo sabemos por Platón.' }
   },
@@ -561,7 +561,7 @@ export const ENTITIES: EntityProfile[] = [
   },
 
   // ============================================
-  // 🍽️ GASTRONOMÍA (20+)
+  // 🍽 GASTRONOMÍA (20+)
   // ============================================
   {
     id: 'sushi',
@@ -607,7 +607,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'zelda',
     name: 'The Legend of Zelda',
     category: 'videoGame',
-    emoji: '🗡️',
+    emoji: '🗡',
     symbolism: { lifePath: 4, sunSign: 'Capricornio', chineseZodiac: 'Dragón', element: 'Tierra', archetype: 'El Héroe' },
     context: { description: 'La épica aventura de Link y la princesa Zelda. Coraje, sabiduría y poder.', keyThemes: ['Aventura', 'Destino', 'Coraje', 'Misterio'], funFact: 'El juego tiene más de 35 años de historia.' }
   },
@@ -615,7 +615,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'minecraft',
     name: 'Minecraft',
     category: 'videoGame',
-    emoji: '⛏️',
+    emoji: '⛏',
     symbolism: { lifePath: 4, sunSign: 'Tauro', chineseZodiac: 'Buey', element: 'Tierra', archetype: 'El Constructor' },
     context: { description: 'Creatividad sin límites, supervivencia y bloques infinitos.', keyThemes: ['Creatividad', 'Construcción', 'Supervivencia', 'Libertad'], funFact: 'Es el videojuego más vendido de la historia.' }
   },
@@ -639,7 +639,7 @@ export const ENTITIES: EntityProfile[] = [
     id: 'spiderman',
     name: 'Spider-Man',
     category: 'comic',
-    emoji: '🕷️',
+    emoji: '🕷',
     symbolism: { lifePath: 5, sunSign: 'Géminis', chineseZodiac: 'Mono', element: 'Aire', archetype: 'El Héroe' },
     context: { description: 'El héroe vecinal. Responsabilidad, humor y poderes arácnidos.', keyThemes: ['Responsabilidad', 'Humor', 'Heroísmo', 'NYC'], funFact: 'Su creador Stan Lee lo consideró su favorito.' }
   },

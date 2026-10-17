@@ -54,11 +54,11 @@ export type AffinityTier =
 // Colores por tier: token de diseño, no depende del locale — por eso vive
 // acá y no en el diccionario (lib/i18n solo tiene label/description).
 const AFFINITY_TIER_COLORS: Record<AffinityTier, string> = {
-  "resonancia-alta": "#2D5A3D",
-  "afinidad-media": "#426393",
-  "complementarios": "#7B5E1C",
-  "desafiante": "#9C4808",
-  "distante": "#5E666E",
+  "resonancia-alta": "#515151",
+  "afinidad-media": "#626262",
+  "complementarios": "#626262",
+  "desafiante": "#606060",
+  "distante": "#656565",
 };
 
 // Copy vive en lib/i18n (transcreable por idioma); el engine combina texto +

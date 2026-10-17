@@ -52,25 +52,25 @@ export const YEAR_CYCLE_META: Record<YearCycleType, {
 }> = {
   "same-sign": {
     label: "Alta resonancia anual",
-    color: "#2D5A3D",
+    color: "#515151",
     stars: 5,
     description: "Tu signo coincide con el animal del año actual",
   },
   harmonious: {
     label: "Periodo de afinidad simbólica",
-    color: "#426393",
+    color: "#626262",
     stars: 4,
     description: "El año pertenece a un signo aliado con el tuyo",
   },
   neutral: {
     label: "Periodo de observación y adaptación",
-    color: "#7B5E1C",
+    color: "#626262",
     stars: 3,
     description: "Sin relación especial con el ciclo actual",
   },
   challenge: {
     label: "Periodo de mayor atención simbólica",
-    color: "#9C4808",
+    color: "#606060",
     stars: 2,
     description: "Ciclo de contraste — oportunidad de reflexión",
   },
@@ -195,22 +195,22 @@ export function calculateYearResonance(
     type = "alignment";
     label = "Año de alineación";
     advice = "Tu signo coincide con el ciclo actual. Un período de fuerte resonancia personal.";
-    color = "#2D5A3D";
+    color = "#515151";
   } else if (relation.type === "triad" || relation.type === "harmonious") {
     type = "harmony";
     label = "Año de armonía";
     advice = `El ciclo actual pertenece a ${currentYearAnimal}, un signo aliado con tu ${userAnimal}. Favorece la colaboración y la expansión.`;
-    color = "#426393";
+    color = "#626262";
   } else if (relation.type === "clash" || relation.type === "harm") {
     type = "adaptation";
     label = "Año de mayor adaptación";
     advice = `El ciclo actual presenta un contraste con tu signo. La tradición recomienda priorizar estrategia y estabilidad.`;
-    color = "#9C4808";
+    color = "#606060";
   } else {
     type = "neutral";
     label = "Año de observación";
     advice = "Sin relación especial con el ciclo actual. Un período de construcción silenciosa.";
-    color = "#7B5E1C";
+    color = "#626262";
   }
 
   return {

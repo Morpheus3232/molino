@@ -1,5 +1,11 @@
 # DESIGN.md — Sistema de Diseño y Contrato Visual de Molino.app
 
+> **2026-10-17 — la paleta y la tipografía de este documento quedaron
+> reemplazadas**: el sitio es blanco y negro (Archivo Narrow / Archivo /
+> Source Serif 4 / IBM Plex Mono). Los valores vigentes están en
+> `app/globals.css`, `app/layout.tsx` y la sección "Convenciones" de
+> `CLAUDE.md`. Los principios de la sección 1 siguen valiendo.
+
 **Versión:** 2.0 (Almanaque Cálido & Geometría Determinística)  
 **Idioma:** Español rioplatense (`lang="es-AR"`, vos)  
 **Última actualización:** 2026-08-26  

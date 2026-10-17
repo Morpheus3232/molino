@@ -29,7 +29,7 @@ const SHORTCUTS = [
   },
   {
     id: "sinastria-pareja",
-    title: "❤️ Sinergia Rápida en Modo Pareja",
+    title: "❤ Sinergia Rápida en Modo Pareja",
     desc: "Abrí directamente la comparativa de mapas entre vos y otra persona con un solo toque.",
     action: "URL: https://molino.app/pareja?a=FECHA_A&b=FECHA_B",
     siriPhrase: "Oye Siri, sinastría de pareja",

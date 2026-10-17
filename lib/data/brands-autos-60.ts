@@ -34,7 +34,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Rata
   {
     id: "honda-motor-autos", name: "Honda Motor", type: "brand",
-    country: "Japón", emoji: "🏍️",
+    country: "Japón", emoji: "🏍",
     category: "autos",
     description: "De motorizar bicicletas con excedentes de guerra a dominar el mundo, Honda convirtió la ingeniería japonesa en pura obstinación y genio.",
     keyThemes: ["Japón", "Innovación", "Motocicletas", "Confiabilidad"],
@@ -174,7 +174,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Gato
   {
     id: "harley-autos", name: "Harley-Davidson", type: "brand",
-    country: "Estados Unidos", emoji: "🏍️",
+    country: "Estados Unidos", emoji: "🏍",
     category: "autos",
     description: "Nacida en un cobertizo de Milwaukee, Harley-Davidson es más que una moto: el rugido de una nación que aprendió a ser libre sobre dos ruedas.",
     keyThemes: ["Americano", "Libertad", "Rebeldía", "Tradición"],
@@ -184,7 +184,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Gato
   {
     id: "volvo-autos", name: "Volvo", type: "brand",
-    country: "Suecia", emoji: "🛡️",
+    country: "Suecia", emoji: "🛡",
     category: "autos",
     description: "Marcada por la seguridad obsesiva nacida en los fiordos de Suecia, cada Volvo es una promesa silenciosa de proteger lo que más importa.",
     keyThemes: ["Seguridad", "Suecia", "Confiabilidad", "Diseño"],
@@ -234,7 +234,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Dragón
   {
     id: "panoz-autos", name: "Panoz", type: "brand",
-    country: "Estados Unidos", emoji: "🏎️",
+    country: "Estados Unidos", emoji: "🏎",
     category: "autos",
     description: "Del rancho de un empresario georgiano, Panoz moldeó deportivos de aluminio que llevan la pura esencia americana a la pista y a la carretera.",
     keyThemes: ["Deportivo", "Americano", "Innovación", "Potencia"],
@@ -244,7 +244,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Cerdo
   {
     id: "ferrari-autos", name: "Ferrari", type: "brand",
-    country: "Italia", emoji: "🏎️",
+    country: "Italia", emoji: "🏎",
     category: "autos",
     description: "Del circuito de Maranello a los sueños de velocidad, el cavallino rampante encarna la pasión italiana por la belleza mecánica.",
     keyThemes: ["Pasión", "Velocidad", "Lujo", "Excelencia"],
@@ -304,7 +304,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Serpiente
   {
     id: "infiniti-autos", name: "Infiniti", type: "brand",
-    country: "Japón", emoji: "♾️",
+    country: "Japón", emoji: "♾",
     category: "autos",
     description: "El horizonte infinito del lujo japonés, Infiniti elevó a Nissan hacia una elegancia que se siente antes de verse.",
     keyThemes: ["Japón", "Lujo", "Rendimiento", "Diseño"],
@@ -364,7 +364,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Cabra
   {
     id: "porsche-autos", name: "Porsche", type: "brand",
-    country: "Alemania", emoji: "🏎️",
+    country: "Alemania", emoji: "🏎",
     category: "autos",
     description: "De un despacho de ingeniería en Stuttgart a las victorias de Le Mans, Porsche perfeccionó la idea de que el auto deportivo es una obra de precisión.",
     keyThemes: ["Deportivo", "Lujo", "Alemán", "Precisión"],
@@ -374,7 +374,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Cabra
   {
     id: "bentley-autos", name: "Bentley", type: "brand",
-    country: "Reino Unido", emoji: "🅱️",
+    country: "Reino Unido", emoji: "🅱",
     category: "autos",
     description: "Forjada por un hombre que diseñaba motores de avión, Bentley unió las victorias de Le Mans con la artesanía más exquisita de la isla.",
     keyThemes: ["Lujo", "Británico", "Velocidad", "Artesanía"],
@@ -394,7 +394,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Rata
   {
     id: "porsche-cabra", name: "Porsche 356", type: "brand",
-    country: "Alemania", emoji: "🏎️",
+    country: "Alemania", emoji: "🏎",
     category: "autos",
     description: "Construido en un aserradero de Gmünd por Ferry Porsche, el 356 fue la primera nota de una sinfonía que sigue afinando la esencia del deportivo.",
     keyThemes: ["Deportivo", "Clásico", "Alemán", "Innovación"],
@@ -484,7 +484,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Gallo
   {
     id: "saab-autos", name: "Saab", type: "brand",
-    country: "Suecia", emoji: "✈️",
+    country: "Suecia", emoji: "✈",
     category: "autos",
     description: "Con alma de aeronave y cabina de caza, Saab diseñó autos suecos tan singulares que volar en carretera parecía lo más natural del mundo.",
     keyThemes: ["Suecia", "Innovación", "Seguridad", "Diseño"],
@@ -504,7 +504,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Gallo
   {
     id: "triumph-autos", name: "Triumph", type: "brand",
-    country: "Reino Unido", emoji: "🏍️",
+    country: "Reino Unido", emoji: "🏍",
     category: "autos",
     description: "De Coventry al corazón de la cultura británica, Triumph canta el rugido de motos que hicieron de la rebeldía un arte en dos ruedas.",
     keyThemes: ["Británico", "Clásico", "Estilo", "Motocicletas"],
@@ -564,7 +564,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Perro
   {
     id: "ktm-autos", name: "KTM", type: "brand",
-    country: "Austria", emoji: "🏍️",
+    country: "Austria", emoji: "🏍",
     category: "autos",
     description: "Del taller de reparaciones de Trunkenpolz en Mattighofen, KTM forjó motos naranjas que muerden el polvo, la piedra y el barro sin piedad.",
     keyThemes: ["Austria", "Deportivo", "Motocicletas", "Aventura"],
@@ -644,7 +644,7 @@ export const BRANDS_AUTOS_60: AtlasEntityInput[] = [
   // Serpiente
   {
     id: "ferrari-racing", name: "Scuderia Ferrari", type: "brand",
-    country: "Italia", emoji: "🏎️",
+    country: "Italia", emoji: "🏎",
     category: "autos",
     description: "La escuadra donde el cavallino rampante aprendió a correr, Scuderia Ferrari lleva casi un siglo tiñendo de rojo el altar de la Fórmula 1.",
     keyThemes: ["Pasión", "Velocidad", "Competencia", "Historia"],

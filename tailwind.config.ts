@@ -1,4 +1,25 @@
 import type { Config } from "tailwindcss";
+import twColors from "tailwindcss/colors";
+
+// El sitio es blanco y negro. Las paletas con tono de Tailwind (emerald-600,
+// red-500, amber-100…) que quedan sueltas en componentes se reemplazan acá
+// por el gris de la MISMA luminancia relativa: el contraste WCAG depende solo
+// de la luminancia, así que ningún texto queda menos legible que antes.
+const toLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const fromLinear = (y: number) => (y <= 0.0031308 ? 12.92 * y : 1.055 * y ** (1 / 2.4) - 0.055);
+function toGray(hex: string): string {
+  const [r, g, b] = [1, 3, 5].map((i) => toLinear(parseInt(hex.slice(i, i + 2), 16) / 255));
+  const v = Math.round(fromLinear(0.2126 * r + 0.7152 * g + 0.0722 * b) * 255);
+  const h = v.toString(16).padStart(2, "0");
+  return `#${h}${h}${h}`;
+}
+const HUES = ["red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose", "stone"] as const;
+const grayHues = Object.fromEntries(
+  HUES.map((name) => [
+    name,
+    Object.fromEntries(Object.entries(twColors[name] as Record<string, string>).map(([shade, hex]) => [shade, toGray(hex)])),
+  ]),
+);
 
 const config: Config = {
   content: [
@@ -9,10 +30,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-display)", "Archivo Black", "sans-serif"],
-        heading: ["var(--font-heading)", "Space Grotesk", "sans-serif"],
-        sans: ["var(--font-sans)", "Inter", "sans-serif"],
-        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
+        display: ["var(--font-display)", "var(--font-emoji)", "Arial Narrow", "sans-serif"],
+        heading: ["var(--font-heading)", "var(--font-emoji)", "Arial", "sans-serif"],
+        sans: ["var(--font-sans)", "var(--font-emoji)", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "var(--font-emoji)", "ui-monospace", "monospace"],
       },
       fontSize: {
         // Escala tipográfica — alineada con DESIGN.md.
@@ -52,6 +73,7 @@ const config: Config = {
         xl: "var(--radius-xl)",
       },
       colors: {
+        ...grayHues,
         // background/foreground/muted/ink/paper/accent(+light) usan el patrón
         // rgb(var(--x-rgb) / <alpha-value>) para que las utilidades con
         // modificador de opacidad (ej. text-paper/70, bg-ink/10) generen CSS

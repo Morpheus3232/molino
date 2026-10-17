@@ -66,18 +66,18 @@ export default function MoodChart({ chartData }: { chartData: MoodChartDatum[] }
           </defs>
           <XAxis
             dataKey="formattedDate"
-            stroke="#7A7870"
+            stroke="#787878"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: "rgba(36,31,23,0.1)" }}
+            axisLine={{ stroke: "rgba(32,32,32,0.1)" }}
           />
           <YAxis
             domain={[1, 5]}
             ticks={[1, 2, 3, 4, 5]}
-            stroke="#7A7870"
+            stroke="#787878"
             fontSize={10}
             tickLine={false}
-            axisLine={{ stroke: "rgba(36,31,23,0.1)" }}
+            axisLine={{ stroke: "rgba(32,32,32,0.1)" }}
           />
           <Tooltip content={<CustomTooltip />} />
           <Area

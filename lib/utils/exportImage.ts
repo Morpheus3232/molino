@@ -38,7 +38,7 @@ export async function nodeToPng(
     quality: 1,
     pixelRatio,
     cacheBust: true,
-    backgroundColor: "#09090D",
+    backgroundColor: "#090909",
     width,
     height,
   });

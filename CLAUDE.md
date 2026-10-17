@@ -292,14 +292,24 @@ confiar en el código y en graphify antes que en ese doc para detalles finos.
 ## Convenciones
 
 - Español rioplatense (vos), `lang="es-AR"` en todo el sitio
-- `font-heading` (Space Grotesk) para títulos, `font-sans` (Inter) para cuerpo
-- Radio: estructura filosa (0), detalle suave. 4 tokens en `app/globals.css`
-  (`--radius-sm` 6px chips/badges, `md` 10px botones/inputs/cards, `lg` 14px
-  modales/cards grandes, `xl` 20px contenedores destacados) — no usar
-  `rounded-2xl`/`rounded-3xl` (defaults de Tailwind fuera del sistema; migrados
-  2026-10-04 y bloqueados por `lib/__tests__/radius-tokens.test.ts`).
-  Sombra "papel levantado" (`--shadow-sm/md/lg/xl`, tinte cálido, ver
-  `DESIGN.md`) — no es solo para dark mode.
+- **Blanco y negro (2026-10-17).** Paper `#FFFFFF`, ink `#0A0A0A`, muted
+  `#5C5C5C`, borde `#E2E2E2`, superficie `#F4F4F4`. `accent` y `gold` son
+  tinta: los tokens siguen existiendo para no tocar ~1000 usos, pero no hay
+  color de marca. Las paletas con tono de Tailwind (`emerald-600`, `red-500`…)
+  se convierten en `tailwind.config.ts` al gris de la misma luminancia, así
+  que el contraste de cada texto queda igual que antes. No agregar colores
+  nuevos; la única excepción son datos que SON un color (los swatches de
+  `zodiacElementColorEngine.ts`: un "Rojo" no puede verse gris).
+- Tipografía: `font-display` Archivo Narrow (titulares, números grandes),
+  `font-heading` Archivo (títulos chicos, botones), `font-sans` Source Serif 4
+  (lectura), `font-mono` IBM Plex Mono (datos/etiquetas). Emoji en Noto Emoji
+  monocromo (va en cada pila antes del emoji del sistema): no usar el selector
+  U+FE0F, que fuerza el emoji a color. Sin gradientes de texto, sin grain.
+- Radio: estructura filosa (0), detalle apenas suave. 4 tokens en
+  `app/globals.css` (`--radius-sm` 2px, `md` 4px, `lg` 6px, `xl` 8px) — no usar
+  `rounded-2xl`/`rounded-3xl` (bloqueados por `lib/__tests__/radius-tokens.test.ts`).
+  Sombras: `sm`/`md` no existen (borde de 1px); `lg`/`xl` solo para lo que
+  flota (modales, menús).
 - `"use client"` solo en componentes que realmente necesitan interactividad
 - Motores de cálculo (`lib/engines/`) son funciones puras: misma fecha de entrada → mismo resultado, sin I/O
 - Sin servidor de estado para el perfil del usuario: todo vive en localStorage, URL, o sesión efímera — no agregar una base de datos para esto sin justificarlo explícitamente

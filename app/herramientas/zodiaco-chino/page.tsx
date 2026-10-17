@@ -25,7 +25,7 @@ function getDaysInMonth(month: string, year: string): number {
 const ELEMENT_COLORS: Record<string, string> = {
   "Madera": "var(--element-wood)",
   "Fuego": "var(--element-fire)",
-  "Tierra": "#8B7355",
+  "Tierra": "#777777",
   "Metal": "var(--element-metal)",
   "Agua": "var(--element-water)",
 };

@@ -142,13 +142,13 @@ export function buildEntityConnectionStory(
  */
 export function getRelationColor(relationType: RelationType): string {
   switch (relationType) {
-    case "same": return "#2D5A3D";
-    case "triad": return "#2D5A3D";
-    case "harmonious": return "#426393";
-    case "neutral": return "#5E666E";
-    case "clash": return "#9C4808";
-    case "harm": return "#9C4808";
-    default: return "#5E666E";
+    case "same": return "#515151";
+    case "triad": return "#515151";
+    case "harmonious": return "#626262";
+    case "neutral": return "#656565";
+    case "clash": return "#606060";
+    case "harm": return "#606060";
+    default: return "#656565";
   }
 }
 
